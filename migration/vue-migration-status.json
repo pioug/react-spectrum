@@ -100,6 +100,26 @@
         }
       ]
     },
+    "@react-spectrum/dialog": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/dialog",
+      "targetPath": "packages/@vue-spectrum/dialog",
+      "notes": "Composition-layer migration step providing a Vue dialog primitive.",
+      "acceptanceTests": [
+        {
+          "name": "Vue dialog package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/dialog/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    },
     "@react-spectrum/radio": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/radio",

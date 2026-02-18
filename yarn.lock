@@ -11726,6 +11726,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/dialog@workspace:*, @vue-spectrum/dialog@workspace:packages/@vue-spectrum/dialog":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/dialog@workspace:packages/@vue-spectrum/dialog"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/provider@workspace:*, @vue-spectrum/provider@workspace:packages/@vue-spectrum/provider":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/provider@workspace:packages/@vue-spectrum/provider"
@@ -30130,6 +30140,7 @@ __metadata:
     "@vue-spectrum/button": "workspace:*"
     "@vue-spectrum/checkbox": "workspace:*"
     "@vue-spectrum/components": "workspace:*"
+    "@vue-spectrum/dialog": "workspace:*"
     "@vue-spectrum/provider": "workspace:*"
     "@vue-spectrum/radio": "workspace:*"
     "@vue-spectrum/textfield": "workspace:*"

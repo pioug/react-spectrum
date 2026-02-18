@@ -14,6 +14,7 @@
     "@vue-spectrum/button": "workspace:*",
     "@vue-spectrum/checkbox": "workspace:*",
     "@vue-spectrum/components": "workspace:*",
+    "@vue-spectrum/dialog": "workspace:*",
     "@vue-spectrum/provider": "workspace:*",
     "@vue-spectrum/radio": "workspace:*",
     "@vue-spectrum/textfield": "workspace:*",

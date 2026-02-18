@@ -219,3 +219,61 @@
   cursor: not-allowed;
   opacity: 0.55;
 }
+
+.vs-dialog-layer {
+  align-items: center;
+  display: grid;
+  inset: 0;
+  justify-items: center;
+  padding: 24px;
+  position: fixed;
+  z-index: 1000;
+}
+
+.vs-dialog-layer__backdrop {
+  background: rgba(0, 0, 0, 0.42);
+  border: 0;
+  inset: 0;
+  position: fixed;
+}
+
+.vs-dialog {
+  background: var(--vs-color-secondary-bg);
+  border: 1px solid var(--vs-color-border);
+  border-radius: 12px;
+  box-shadow: 0 20px 32px rgba(0, 0, 0, 0.25);
+  display: grid;
+  gap: 12px;
+  max-width: 520px;
+  padding: 16px;
+  position: relative;
+  width: min(100%, 520px);
+  z-index: 1001;
+}
+
+.vs-dialog__header {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.vs-dialog__title {
+  font-size: 18px;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.vs-dialog__close {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+  padding: 2px 6px;
+}
+
+.vs-dialog__body {
+  font-size: 14px;
+  line-height: 1.5;
+}

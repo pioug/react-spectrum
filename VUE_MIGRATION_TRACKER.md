@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 7 |
+| in_progress | 8 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 145 |
+| not_started | 144 |
 
 ## Package tracker
 
@@ -25,6 +25,7 @@ Tracked source packages: 154
 | --- | --- | --- | --- | --- | --- | --- |
 | `@react-spectrum/button` | `packages/@react-spectrum/button` | `@vue-spectrum/button` | `packages/@vue-spectrum/button` | in_progress | Vue button package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive aligned with existing VueButton baseline work. |
 | `@react-spectrum/checkbox` | `packages/@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | `packages/@vue-spectrum/checkbox` | in_progress | Vue checkbox package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for form controls. |
+| `@react-spectrum/dialog` | `packages/@react-spectrum/dialog` | `@vue-spectrum/dialog` | `packages/@vue-spectrum/dialog` | in_progress | Vue dialog package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step providing a Vue dialog primitive. |
 | `@react-spectrum/provider` | `packages/@react-spectrum/provider` | `@vue-spectrum/provider` | `packages/@vue-spectrum/provider` | in_progress | Vue provider package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave target after the initial Vue baseline package, to establish theming and app-level context. |
 | `@react-spectrum/radio` | `packages/@react-spectrum/radio` | `@vue-spectrum/radio` | `packages/@vue-spectrum/radio` | in_progress | Vue radio package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for form controls. |
 | `@react-spectrum/textfield` | `packages/@react-spectrum/textfield` | `@vue-spectrum/textfield` | `packages/@vue-spectrum/textfield` | in_progress | Vue textfield package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive aligned with existing VueTextField baseline work. |
@@ -100,7 +101,6 @@ Tracked source packages: 154
 | `@react-spectrum/combobox` | `packages/@react-spectrum/combobox` | `@vue-spectrum/combobox` | `packages/@vue-spectrum/combobox` | not_started | - | - |
 | `@react-spectrum/contextualhelp` | `packages/@react-spectrum/contextualhelp` | `@vue-spectrum/contextualhelp` | `packages/@vue-spectrum/contextualhelp` | not_started | - | - |
 | `@react-spectrum/datepicker` | `packages/@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | `packages/@vue-spectrum/datepicker` | not_started | - | - |
-| `@react-spectrum/dialog` | `packages/@react-spectrum/dialog` | `@vue-spectrum/dialog` | `packages/@vue-spectrum/dialog` | not_started | - | - |
 | `@react-spectrum/divider` | `packages/@react-spectrum/divider` | `@vue-spectrum/divider` | `packages/@vue-spectrum/divider` | not_started | - | - |
 | `@react-spectrum/dnd` | `packages/@react-spectrum/dnd` | `@vue-spectrum/dnd` | `packages/@vue-spectrum/dnd` | not_started | - | - |
 | `@react-spectrum/dropzone` | `packages/@react-spectrum/dropzone` | `@vue-spectrum/dropzone` | `packages/@vue-spectrum/dropzone` | not_started | - | - |

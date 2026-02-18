@@ -28,6 +28,8 @@ Phase 1 is implemented:
   * `@react-spectrum/radio` -> `@vue-spectrum/radio` (`in_progress`)
 * Started Tailwind plugin migration:
   * `tailwindcss-react-aria-components` -> `tailwindcss-vue-aria-components` (`in_progress`)
+* Started composition-component migration:
+  * `@react-spectrum/dialog` -> `@vue-spectrum/dialog` (`in_progress`)
 
 ## Migration phases
 

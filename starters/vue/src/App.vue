@@ -36,11 +36,23 @@
           <VueButton variant="primary" @click="count += 1">
             {{ ctaLabel }}
           </VueButton>
+          <VueButton variant="secondary" @click="isDialogOpen = true">
+            Open dialog
+          </VueButton>
           <VueButton variant="secondary" @click="reset">
             Reset
           </VueButton>
         </div>
       </section>
+
+      <VueDialog
+        :open="isDialogOpen"
+        title="Vue Dialog"
+        @close="isDialogOpen = false">
+        <p>
+          This dialog is provided by <code>@vue-spectrum/dialog</code> as the next composition-layer migration step.
+        </p>
+      </VueDialog>
     </main>
   </VueSpectrumProvider>
 </template>
@@ -49,6 +61,7 @@
 import {computed, ref} from 'vue';
 import {Button as VueButton} from '@vue-spectrum/button';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
+import {Dialog as VueDialog} from '@vue-spectrum/dialog';
 import {Provider as VueSpectrumProvider} from '@vue-spectrum/provider';
 import {Radio as VueRadio, RadioGroup as VueRadioGroup} from '@vue-spectrum/radio';
 import {TextField as VueTextField} from '@vue-spectrum/textfield';
@@ -57,6 +70,7 @@ const count = ref(0);
 const name = ref('');
 const isSubscribed = ref(true);
 const favoriteFramework = ref('vue');
+const isDialogOpen = ref(false);
 
 const ctaLabel = computed(() => {
   let suffix = name.value ? `, ${name.value}` : '';
@@ -68,6 +82,7 @@ function reset() {
   name.value = '';
   isSubscribed.value = true;
   favoriteFramework.value = 'vue';
+  isDialogOpen.value = false;
 }
 </script>
 
