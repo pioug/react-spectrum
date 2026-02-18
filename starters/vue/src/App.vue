@@ -7,6 +7,9 @@
         <p class="lead">
           This starter uses <code>@vue-spectrum/components</code> from this monorepo.
         </p>
+        <VueLink href="https://react-spectrum.adobe.com/" target="_blank" rel="noreferrer">
+          React Spectrum docs
+        </VueLink>
       </header>
 
       <section class="demo-card">
@@ -92,6 +95,7 @@ import {Button as VueButton} from '@vue-spectrum/button';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
 import {ComboBox as VueComboBox} from '@vue-spectrum/combobox';
 import {Dialog as VueDialog} from '@vue-spectrum/dialog';
+import {Link as VueLink} from '@vue-spectrum/link';
 import {ListBox as VueListBox} from '@vue-spectrum/listbox';
 import {Menu as VueMenu} from '@vue-spectrum/menu';
 import {Popover as VuePopover} from '@vue-spectrum/overlays';

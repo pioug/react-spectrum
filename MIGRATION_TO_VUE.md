@@ -26,6 +26,7 @@ Phase 1 is implemented:
   * `@react-spectrum/textfield` -> `@vue-spectrum/textfield` (`in_progress`)
   * `@react-spectrum/checkbox` -> `@vue-spectrum/checkbox` (`in_progress`)
   * `@react-spectrum/radio` -> `@vue-spectrum/radio` (`in_progress`)
+  * `@react-spectrum/link` -> `@vue-spectrum/link` (`in_progress`)
 * Started Tailwind plugin migration:
   * `tailwindcss-react-aria-components` -> `tailwindcss-vue-aria-components` (`in_progress`)
 * Started composition-component migration:

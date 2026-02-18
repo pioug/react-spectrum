@@ -16,6 +16,7 @@
     "@vue-spectrum/combobox": "workspace:*",
     "@vue-spectrum/components": "workspace:*",
     "@vue-spectrum/dialog": "workspace:*",
+    "@vue-spectrum/link": "workspace:*",
     "@vue-spectrum/listbox": "workspace:*",
     "@vue-spectrum/menu": "workspace:*",
     "@vue-spectrum/overlays": "workspace:*",

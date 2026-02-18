@@ -429,3 +429,13 @@
   border-color: var(--vs-color-primary);
   box-shadow: var(--vs-focus-ring);
 }
+
+.vs-link {
+  color: var(--vs-color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.vs-link:hover {
+  color: var(--vs-color-primary-hover);
+}

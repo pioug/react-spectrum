@@ -160,6 +160,26 @@
         }
       ]
     },
+    "@react-spectrum/link": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/link",
+      "targetPath": "packages/@vue-spectrum/link",
+      "notes": "First-wave visual/content migration step with a Vue link primitive.",
+      "acceptanceTests": [
+        {
+          "name": "Vue link package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/link/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    },
     "@react-spectrum/menu": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/menu",

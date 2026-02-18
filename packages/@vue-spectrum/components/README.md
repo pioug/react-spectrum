@@ -15,6 +15,7 @@ Vue-native Spectrum-inspired primitives for incremental migration from React pac
 * `VueComboBox`
 * `VueMenu`
 * `VueListBox`
+* `VueLink`
 
 ## Quick start
 

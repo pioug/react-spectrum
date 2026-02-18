@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 12 |
+| in_progress | 13 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 140 |
+| not_started | 139 |
 
 ## Package tracker
 
@@ -27,6 +27,7 @@ Tracked source packages: 154
 | `@react-spectrum/checkbox` | `packages/@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | `packages/@vue-spectrum/checkbox` | in_progress | Vue checkbox package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for form controls. |
 | `@react-spectrum/combobox` | `packages/@react-spectrum/combobox` | `@vue-spectrum/combobox` | `packages/@vue-spectrum/combobox` | in_progress | Vue combobox package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step with an initial Vue combobox primitive. |
 | `@react-spectrum/dialog` | `packages/@react-spectrum/dialog` | `@vue-spectrum/dialog` | `packages/@vue-spectrum/dialog` | in_progress | Vue dialog package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step providing a Vue dialog primitive. |
+| `@react-spectrum/link` | `packages/@react-spectrum/link` | `@vue-spectrum/link` | `packages/@vue-spectrum/link` | in_progress | Vue link package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave visual/content migration step with a Vue link primitive. |
 | `@react-spectrum/listbox` | `packages/@react-spectrum/listbox` | `@vue-spectrum/listbox` | `packages/@vue-spectrum/listbox` | in_progress | Vue listbox package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step with an initial Vue listbox primitive. |
 | `@react-spectrum/menu` | `packages/@react-spectrum/menu` | `@vue-spectrum/menu` | `packages/@vue-spectrum/menu` | in_progress | Vue menu package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step with an initial Vue menu primitive. |
 | `@react-spectrum/overlays` | `packages/@react-spectrum/overlays` | `@vue-spectrum/overlays` | `packages/@vue-spectrum/overlays` | in_progress | Vue overlays package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step providing a Vue popover primitive. |
@@ -116,7 +117,6 @@ Tracked source packages: 154
 | `@react-spectrum/label` | `packages/@react-spectrum/label` | `@vue-spectrum/label` | `packages/@vue-spectrum/label` | not_started | - | - |
 | `@react-spectrum/labeledvalue` | `packages/@react-spectrum/labeledvalue` | `@vue-spectrum/labeledvalue` | `packages/@vue-spectrum/labeledvalue` | not_started | - | - |
 | `@react-spectrum/layout` | `packages/@react-spectrum/layout` | `@vue-spectrum/layout` | `packages/@vue-spectrum/layout` | not_started | - | - |
-| `@react-spectrum/link` | `packages/@react-spectrum/link` | `@vue-spectrum/link` | `packages/@vue-spectrum/link` | not_started | - | - |
 | `@react-spectrum/list` | `packages/@react-spectrum/list` | `@vue-spectrum/list` | `packages/@vue-spectrum/list` | not_started | - | - |
 | `@react-spectrum/meter` | `packages/@react-spectrum/meter` | `@vue-spectrum/meter` | `packages/@vue-spectrum/meter` | not_started | - | - |
 | `@react-spectrum/numberfield` | `packages/@react-spectrum/numberfield` | `@vue-spectrum/numberfield` | `packages/@vue-spectrum/numberfield` | not_started | - | - |

@@ -11746,6 +11746,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/link@workspace:*, @vue-spectrum/link@workspace:packages/@vue-spectrum/link":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/link@workspace:packages/@vue-spectrum/link"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/listbox@workspace:*, @vue-spectrum/listbox@workspace:packages/@vue-spectrum/listbox":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/listbox@workspace:packages/@vue-spectrum/listbox"
@@ -30182,6 +30192,7 @@ __metadata:
     "@vue-spectrum/combobox": "workspace:*"
     "@vue-spectrum/components": "workspace:*"
     "@vue-spectrum/dialog": "workspace:*"
+    "@vue-spectrum/link": "workspace:*"
     "@vue-spectrum/listbox": "workspace:*"
     "@vue-spectrum/menu": "workspace:*"
     "@vue-spectrum/overlays": "workspace:*"
