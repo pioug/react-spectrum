@@ -29,6 +29,10 @@
           Send me product updates
         </VueCheckbox>
 
+        <VueSwitch v-model="isDigestEnabled">
+          Enable weekly digest
+        </VueSwitch>
+
         <VueRadioGroup v-model="favoriteFramework" label="Favorite framework" orientation="horizontal">
           <VueRadio value="vue">Vue</VueRadio>
           <VueRadio value="react">React</VueRadio>
@@ -51,6 +55,8 @@
           Menu: <strong>{{ favoriteComponent }}</strong>
           <span> · </span>
           List: <strong>{{ favoriteLibrary }}</strong>
+          <span> · </span>
+          Digest: <strong>{{ isDigestEnabled ? 'on' : 'off' }}</strong>
           <span> · </span>
           Subscribed: <strong>{{ isSubscribed ? 'yes' : 'no' }}</strong>
         </p>
@@ -105,11 +111,13 @@ import {Menu as VueMenu} from '@vue-spectrum/menu';
 import {Popover as VuePopover} from '@vue-spectrum/overlays';
 import {Provider as VueSpectrumProvider} from '@vue-spectrum/provider';
 import {Radio as VueRadio, RadioGroup as VueRadioGroup} from '@vue-spectrum/radio';
+import {Switch as VueSwitch} from '@vue-spectrum/switch';
 import {TextField as VueTextField} from '@vue-spectrum/textfield';
 
 const count = ref(0);
 const name = ref('');
 const favoriteLanguage = ref('TypeScript');
+const isDigestEnabled = ref(false);
 const isSubscribed = ref(true);
 const favoriteFramework = ref('vue');
 const favoriteComponent = ref('Forms');
@@ -129,6 +137,7 @@ function reset() {
   count.value = 0;
   name.value = '';
   favoriteLanguage.value = 'TypeScript';
+  isDigestEnabled.value = false;
   isSubscribed.value = true;
   favoriteFramework.value = 'vue';
   favoriteComponent.value = 'Forms';

@@ -260,6 +260,26 @@
         }
       ]
     },
+    "@react-spectrum/switch": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/switch",
+      "targetPath": "packages/@vue-spectrum/switch",
+      "notes": "First-wave primitive for binary toggles.",
+      "acceptanceTests": [
+        {
+          "name": "Vue switch package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/switch/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    },
     "tailwindcss-react-aria-components": {
       "status": "in_progress",
       "targetPackage": "tailwindcss-vue-aria-components",

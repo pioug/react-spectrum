@@ -26,6 +26,7 @@ Phase 1 is implemented:
   * `@react-spectrum/textfield` -> `@vue-spectrum/textfield` (`in_progress`)
   * `@react-spectrum/checkbox` -> `@vue-spectrum/checkbox` (`in_progress`)
   * `@react-spectrum/radio` -> `@vue-spectrum/radio` (`in_progress`)
+  * `@react-spectrum/switch` -> `@vue-spectrum/switch` (`in_progress`)
   * `@react-spectrum/link` -> `@vue-spectrum/link` (`in_progress`)
   * `@react-spectrum/form` -> `@vue-spectrum/form` (`in_progress`)
 * Started Tailwind plugin migration:
@@ -43,7 +44,7 @@ Phase 1 is implemented:
    * Establish Vue package namespace and starter app.
    * Define base provider, styling tokens, and component API conventions.
 2. Primitive components
-   * Implement Vue primitives for button, field, text input, checkbox, and radio.
+   * Implement Vue primitives for button, field, text input, checkbox, radio, and switch.
    * Add unit tests for keyboard and pointer interactions.
 3. Composition components
    * Port listbox, menu, dialog, popover, and combo patterns.
