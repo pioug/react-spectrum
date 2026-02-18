@@ -396,3 +396,36 @@
   border-color: var(--vs-color-primary);
   box-shadow: var(--vs-focus-ring);
 }
+
+.vs-listbox {
+  display: grid;
+  gap: 8px;
+}
+
+.vs-listbox__label {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.vs-listbox__items {
+  display: grid;
+  gap: 6px;
+}
+
+.vs-listbox__item {
+  background: var(--vs-color-secondary-bg);
+  border: 1px solid var(--vs-color-border);
+  border-radius: 6px;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  min-height: 30px;
+  padding: 6px 10px;
+  text-align: left;
+}
+
+.vs-listbox__item.is-selected {
+  border-color: var(--vs-color-primary);
+  box-shadow: var(--vs-focus-ring);
+}

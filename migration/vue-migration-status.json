@@ -140,6 +140,26 @@
         }
       ]
     },
+    "@react-spectrum/listbox": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/listbox",
+      "targetPath": "packages/@vue-spectrum/listbox",
+      "notes": "Composition-layer migration step with an initial Vue listbox primitive.",
+      "acceptanceTests": [
+        {
+          "name": "Vue listbox package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/listbox/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    },
     "@react-spectrum/menu": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/menu",

@@ -37,10 +37,17 @@
           label="Favorite component category"
           :items="componentOptions" />
 
+        <VueListBox
+          v-model="favoriteLibrary"
+          label="Favorite library"
+          :items="libraryOptions" />
+
         <p class="summary">
           Selected: <strong>{{ favoriteFramework }}</strong>
           <span> · </span>
           Menu: <strong>{{ favoriteComponent }}</strong>
+          <span> · </span>
+          List: <strong>{{ favoriteLibrary }}</strong>
           <span> · </span>
           Subscribed: <strong>{{ isSubscribed ? 'yes' : 'no' }}</strong>
         </p>
@@ -85,6 +92,7 @@ import {Button as VueButton} from '@vue-spectrum/button';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
 import {ComboBox as VueComboBox} from '@vue-spectrum/combobox';
 import {Dialog as VueDialog} from '@vue-spectrum/dialog';
+import {ListBox as VueListBox} from '@vue-spectrum/listbox';
 import {Menu as VueMenu} from '@vue-spectrum/menu';
 import {Popover as VuePopover} from '@vue-spectrum/overlays';
 import {Provider as VueSpectrumProvider} from '@vue-spectrum/provider';
@@ -97,10 +105,12 @@ const favoriteLanguage = ref('TypeScript');
 const isSubscribed = ref(true);
 const favoriteFramework = ref('vue');
 const favoriteComponent = ref('Forms');
+const favoriteLibrary = ref('Vue Spectrum');
 const isDialogOpen = ref(false);
 const isPopoverOpen = ref(false);
 const languageOptions = ['TypeScript', 'JavaScript', 'Rust', 'Go', 'Python'];
 const componentOptions = ['Forms', 'Navigation', 'Overlays', 'Data display'];
+const libraryOptions = ['Vue Spectrum', 'React Spectrum', 'Tailwind CSS'];
 
 const ctaLabel = computed(() => {
   let suffix = name.value ? `, ${name.value}` : '';
@@ -114,6 +124,7 @@ function reset() {
   isSubscribed.value = true;
   favoriteFramework.value = 'vue';
   favoriteComponent.value = 'Forms';
+  favoriteLibrary.value = 'Vue Spectrum';
   isDialogOpen.value = false;
   isPopoverOpen.value = false;
 }
