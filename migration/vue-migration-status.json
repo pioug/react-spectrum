@@ -100,6 +100,26 @@
         }
       ]
     },
+    "@react-spectrum/combobox": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/combobox",
+      "targetPath": "packages/@vue-spectrum/combobox",
+      "notes": "Composition-layer migration step with an initial Vue combobox primitive.",
+      "acceptanceTests": [
+        {
+          "name": "Vue combobox package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/combobox/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    },
     "@react-spectrum/dialog": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/dialog",

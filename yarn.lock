@@ -11718,6 +11718,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/combobox@workspace:*, @vue-spectrum/combobox@workspace:packages/@vue-spectrum/combobox":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/combobox@workspace:packages/@vue-spectrum/combobox"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/components@npm:^0.1.0, @vue-spectrum/components@workspace:*, @vue-spectrum/components@workspace:packages/@vue-spectrum/components":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/components@workspace:packages/@vue-spectrum/components"
@@ -30149,6 +30159,7 @@ __metadata:
     "@vitejs/plugin-vue": "npm:^5.2.1"
     "@vue-spectrum/button": "workspace:*"
     "@vue-spectrum/checkbox": "workspace:*"
+    "@vue-spectrum/combobox": "workspace:*"
     "@vue-spectrum/components": "workspace:*"
     "@vue-spectrum/dialog": "workspace:*"
     "@vue-spectrum/overlays": "workspace:*"

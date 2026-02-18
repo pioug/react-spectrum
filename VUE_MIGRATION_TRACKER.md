@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 9 |
+| in_progress | 10 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 143 |
+| not_started | 142 |
 
 ## Package tracker
 
@@ -25,6 +25,7 @@ Tracked source packages: 154
 | --- | --- | --- | --- | --- | --- | --- |
 | `@react-spectrum/button` | `packages/@react-spectrum/button` | `@vue-spectrum/button` | `packages/@vue-spectrum/button` | in_progress | Vue button package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive aligned with existing VueButton baseline work. |
 | `@react-spectrum/checkbox` | `packages/@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | `packages/@vue-spectrum/checkbox` | in_progress | Vue checkbox package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for form controls. |
+| `@react-spectrum/combobox` | `packages/@react-spectrum/combobox` | `@vue-spectrum/combobox` | `packages/@vue-spectrum/combobox` | in_progress | Vue combobox package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step with an initial Vue combobox primitive. |
 | `@react-spectrum/dialog` | `packages/@react-spectrum/dialog` | `@vue-spectrum/dialog` | `packages/@vue-spectrum/dialog` | in_progress | Vue dialog package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step providing a Vue dialog primitive. |
 | `@react-spectrum/overlays` | `packages/@react-spectrum/overlays` | `@vue-spectrum/overlays` | `packages/@vue-spectrum/overlays` | in_progress | Vue overlays package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step providing a Vue popover primitive. |
 | `@react-spectrum/provider` | `packages/@react-spectrum/provider` | `@vue-spectrum/provider` | `packages/@vue-spectrum/provider` | in_progress | Vue provider package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave target after the initial Vue baseline package, to establish theming and app-level context. |
@@ -99,7 +100,6 @@ Tracked source packages: 154
 | `@react-spectrum/calendar` | `packages/@react-spectrum/calendar` | `@vue-spectrum/calendar` | `packages/@vue-spectrum/calendar` | not_started | - | - |
 | `@react-spectrum/card` | `packages/@react-spectrum/card` | `@vue-spectrum/card` | `packages/@vue-spectrum/card` | not_started | - | - |
 | `@react-spectrum/color` | `packages/@react-spectrum/color` | `@vue-spectrum/color` | `packages/@vue-spectrum/color` | not_started | - | - |
-| `@react-spectrum/combobox` | `packages/@react-spectrum/combobox` | `@vue-spectrum/combobox` | `packages/@vue-spectrum/combobox` | not_started | - | - |
 | `@react-spectrum/contextualhelp` | `packages/@react-spectrum/contextualhelp` | `@vue-spectrum/contextualhelp` | `packages/@vue-spectrum/contextualhelp` | not_started | - | - |
 | `@react-spectrum/datepicker` | `packages/@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | `packages/@vue-spectrum/datepicker` | not_started | - | - |
 | `@react-spectrum/divider` | `packages/@react-spectrum/divider` | `@vue-spectrum/divider` | `packages/@vue-spectrum/divider` | not_started | - | - |

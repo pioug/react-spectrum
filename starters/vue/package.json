@@ -13,6 +13,7 @@
   "dependencies": {
     "@vue-spectrum/button": "workspace:*",
     "@vue-spectrum/checkbox": "workspace:*",
+    "@vue-spectrum/combobox": "workspace:*",
     "@vue-spectrum/components": "workspace:*",
     "@vue-spectrum/dialog": "workspace:*",
     "@vue-spectrum/overlays": "workspace:*",

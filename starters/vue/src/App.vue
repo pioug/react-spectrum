@@ -16,6 +16,12 @@
           description="Used to demonstrate v-model and accessible labeling."
           placeholder="Ada Lovelace" />
 
+        <VueComboBox
+          v-model="favoriteLanguage"
+          label="Favorite language"
+          :options="languageOptions"
+          placeholder="Type or select" />
+
         <VueCheckbox v-model="isSubscribed">
           Send me product updates
         </VueCheckbox>
@@ -70,6 +76,7 @@
 import {computed, ref} from 'vue';
 import {Button as VueButton} from '@vue-spectrum/button';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
+import {ComboBox as VueComboBox} from '@vue-spectrum/combobox';
 import {Dialog as VueDialog} from '@vue-spectrum/dialog';
 import {Popover as VuePopover} from '@vue-spectrum/overlays';
 import {Provider as VueSpectrumProvider} from '@vue-spectrum/provider';
@@ -78,10 +85,12 @@ import {TextField as VueTextField} from '@vue-spectrum/textfield';
 
 const count = ref(0);
 const name = ref('');
+const favoriteLanguage = ref('TypeScript');
 const isSubscribed = ref(true);
 const favoriteFramework = ref('vue');
 const isDialogOpen = ref(false);
 const isPopoverOpen = ref(false);
+const languageOptions = ['TypeScript', 'JavaScript', 'Rust', 'Go', 'Python'];
 
 const ctaLabel = computed(() => {
   let suffix = name.value ? `, ${name.value}` : '';
@@ -91,6 +100,7 @@ const ctaLabel = computed(() => {
 function reset() {
   count.value = 0;
   name.value = '';
+  favoriteLanguage.value = 'TypeScript';
   isSubscribed.value = true;
   favoriteFramework.value = 'vue';
   isDialogOpen.value = false;
