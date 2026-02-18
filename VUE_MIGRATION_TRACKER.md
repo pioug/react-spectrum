@@ -15,15 +15,23 @@ Tracked source packages: 154
 | --- | ---: |
 | in_progress | 1 |
 | ported | 0 |
-| planned | 0 |
-| blocked | 0 |
-| not_started | 153 |
+| planned | 6 |
+| blocked | 2 |
+| not_started | 145 |
 
 ## Package tracker
 
 | Source package | Source path | Target package | Target path | Status | Acceptance tests | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | `react-aria-components` | `packages/react-aria-components` | `@vue-spectrum/components` | `packages/@vue-spectrum/components` | in_progress | Vue package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Initial Vue baseline package exists, but React Aria Components parity is still in progress. |
+| `@react-spectrum/button` | `packages/@react-spectrum/button` | `@vue-spectrum/button` | `packages/@vue-spectrum/button` | planned | - | First-wave primitive aligned with existing VueButton baseline work. |
+| `@react-spectrum/checkbox` | `packages/@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | `packages/@vue-spectrum/checkbox` | planned | - | First-wave primitive for form controls. |
+| `@react-spectrum/provider` | `packages/@react-spectrum/provider` | `@vue-spectrum/provider` | `packages/@vue-spectrum/provider` | planned | - | First-wave target after the initial Vue baseline package, to establish theming and app-level context. |
+| `@react-spectrum/radio` | `packages/@react-spectrum/radio` | `@vue-spectrum/radio` | `packages/@vue-spectrum/radio` | planned | - | First-wave primitive for form controls. |
+| `@react-spectrum/textfield` | `packages/@react-spectrum/textfield` | `@vue-spectrum/textfield` | `packages/@vue-spectrum/textfield` | planned | - | First-wave primitive aligned with existing VueTextField baseline work. |
+| `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | planned | - | Planned after core Vue component primitives are stable. |
+| `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
+| `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
 | `@react-aria/actiongroup` | `packages/@react-aria/actiongroup` | `@vue-aria/actiongroup` | `packages/@vue-aria/actiongroup` | not_started | - | - |
 | `@react-aria/aria-modal-polyfill` | `packages/@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` | `packages/@vue-aria/aria-modal-polyfill` | not_started | - | - |
 | `@react-aria/autocomplete` | `packages/@react-aria/autocomplete` | `@vue-aria/autocomplete` | `packages/@vue-aria/autocomplete` | not_started | - | - |
@@ -85,11 +93,9 @@ Tracked source packages: 154
 | `@react-spectrum/avatar` | `packages/@react-spectrum/avatar` | `@vue-spectrum/avatar` | `packages/@vue-spectrum/avatar` | not_started | - | - |
 | `@react-spectrum/badge` | `packages/@react-spectrum/badge` | `@vue-spectrum/badge` | `packages/@vue-spectrum/badge` | not_started | - | - |
 | `@react-spectrum/breadcrumbs` | `packages/@react-spectrum/breadcrumbs` | `@vue-spectrum/breadcrumbs` | `packages/@vue-spectrum/breadcrumbs` | not_started | - | - |
-| `@react-spectrum/button` | `packages/@react-spectrum/button` | `@vue-spectrum/button` | `packages/@vue-spectrum/button` | not_started | - | - |
 | `@react-spectrum/buttongroup` | `packages/@react-spectrum/buttongroup` | `@vue-spectrum/buttongroup` | `packages/@vue-spectrum/buttongroup` | not_started | - | - |
 | `@react-spectrum/calendar` | `packages/@react-spectrum/calendar` | `@vue-spectrum/calendar` | `packages/@vue-spectrum/calendar` | not_started | - | - |
 | `@react-spectrum/card` | `packages/@react-spectrum/card` | `@vue-spectrum/card` | `packages/@vue-spectrum/card` | not_started | - | - |
-| `@react-spectrum/checkbox` | `packages/@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | `packages/@vue-spectrum/checkbox` | not_started | - | - |
 | `@react-spectrum/color` | `packages/@react-spectrum/color` | `@vue-spectrum/color` | `packages/@vue-spectrum/color` | not_started | - | - |
 | `@react-spectrum/combobox` | `packages/@react-spectrum/combobox` | `@vue-spectrum/combobox` | `packages/@vue-spectrum/combobox` | not_started | - | - |
 | `@react-spectrum/contextualhelp` | `packages/@react-spectrum/contextualhelp` | `@vue-spectrum/contextualhelp` | `packages/@vue-spectrum/contextualhelp` | not_started | - | - |
@@ -116,8 +122,6 @@ Tracked source packages: 154
 | `@react-spectrum/overlays` | `packages/@react-spectrum/overlays` | `@vue-spectrum/overlays` | `packages/@vue-spectrum/overlays` | not_started | - | - |
 | `@react-spectrum/picker` | `packages/@react-spectrum/picker` | `@vue-spectrum/picker` | `packages/@vue-spectrum/picker` | not_started | - | - |
 | `@react-spectrum/progress` | `packages/@react-spectrum/progress` | `@vue-spectrum/progress` | `packages/@vue-spectrum/progress` | not_started | - | - |
-| `@react-spectrum/provider` | `packages/@react-spectrum/provider` | `@vue-spectrum/provider` | `packages/@vue-spectrum/provider` | not_started | - | - |
-| `@react-spectrum/radio` | `packages/@react-spectrum/radio` | `@vue-spectrum/radio` | `packages/@vue-spectrum/radio` | not_started | - | - |
 | `@react-spectrum/s2` | `packages/@react-spectrum/s2` | `@vue-spectrum/s2` | `packages/@vue-spectrum/s2` | not_started | - | - |
 | `@react-spectrum/searchfield` | `packages/@react-spectrum/searchfield` | `@vue-spectrum/searchfield` | `packages/@vue-spectrum/searchfield` | not_started | - | - |
 | `@react-spectrum/slider` | `packages/@react-spectrum/slider` | `@vue-spectrum/slider` | `packages/@vue-spectrum/slider` | not_started | - | - |
@@ -131,7 +135,6 @@ Tracked source packages: 154
 | `@react-spectrum/tag` | `packages/@react-spectrum/tag` | `@vue-spectrum/tag` | `packages/@vue-spectrum/tag` | not_started | - | - |
 | `@react-spectrum/test-utils` | `packages/@react-spectrum/test-utils` | `@vue-spectrum/test-utils` | `packages/@vue-spectrum/test-utils` | not_started | - | - |
 | `@react-spectrum/text` | `packages/@react-spectrum/text` | `@vue-spectrum/text` | `packages/@vue-spectrum/text` | not_started | - | - |
-| `@react-spectrum/textfield` | `packages/@react-spectrum/textfield` | `@vue-spectrum/textfield` | `packages/@vue-spectrum/textfield` | not_started | - | - |
 | `@react-spectrum/theme-dark` | `packages/@react-spectrum/theme-dark` | `@vue-spectrum/theme-dark` | `packages/@vue-spectrum/theme-dark` | not_started | - | - |
 | `@react-spectrum/theme-default` | `packages/@react-spectrum/theme-default` | `@vue-spectrum/theme-default` | `packages/@vue-spectrum/theme-default` | not_started | - | - |
 | `@react-spectrum/theme-express` | `packages/@react-spectrum/theme-express` | `@vue-spectrum/theme-express` | `packages/@vue-spectrum/theme-express` | not_started | - | - |
@@ -174,6 +177,3 @@ Tracked source packages: 154
 | `@react-stately/tree` | `packages/@react-stately/tree` | `@vue-stately/tree` | `packages/@vue-stately/tree` | not_started | - | - |
 | `@react-stately/utils` | `packages/@react-stately/utils` | `@vue-stately/utils` | `packages/@vue-stately/utils` | not_started | - | - |
 | `@react-stately/virtualizer` | `packages/@react-stately/virtualizer` | `@vue-stately/virtualizer` | `packages/@vue-stately/virtualizer` | not_started | - | - |
-| `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | not_started | - | - |
-| `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | not_started | - | - |
-| `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | not_started | - | - |

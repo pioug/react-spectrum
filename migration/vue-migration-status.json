@@ -19,6 +19,38 @@
           "command": "yarn workspace vue-spectrum-starter build"
         }
       ]
+    },
+    "@react-spectrum/provider": {
+      "status": "planned",
+      "notes": "First-wave target after the initial Vue baseline package, to establish theming and app-level context."
+    },
+    "@react-spectrum/button": {
+      "status": "planned",
+      "notes": "First-wave primitive aligned with existing VueButton baseline work."
+    },
+    "@react-spectrum/textfield": {
+      "status": "planned",
+      "notes": "First-wave primitive aligned with existing VueTextField baseline work."
+    },
+    "@react-spectrum/checkbox": {
+      "status": "planned",
+      "notes": "First-wave primitive for form controls."
+    },
+    "@react-spectrum/radio": {
+      "status": "planned",
+      "notes": "First-wave primitive for form controls."
+    },
+    "tailwindcss-react-aria-components": {
+      "status": "planned",
+      "notes": "Planned after core Vue component primitives are stable."
+    },
+    "react-aria": {
+      "status": "blocked",
+      "notes": "Meta-package migration depends on a critical mass of @vue-aria package ports."
+    },
+    "react-stately": {
+      "status": "blocked",
+      "notes": "Meta-package migration depends on foundational @vue-stately package ports."
     }
   }
 }

@@ -17,6 +17,8 @@ Phase 1 is implemented:
   * `migration/vue-migration-status.json` (status and acceptance test definitions)
   * `yarn vue:migration:report` (regenerates tracker)
   * `yarn vue:migration:test` (runs acceptance tests for active ports)
+* Added CI enforcement:
+  * CircleCI `vue-migration` job runs `yarn vue:migration:report` and `yarn vue:migration:test`.
 
 ## Migration phases
 
