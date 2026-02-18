@@ -129,6 +129,56 @@
   border-color: var(--vs-color-danger);
 }
 
+.vs-number-field {
+  display: grid;
+  gap: 8px;
+}
+
+.vs-number-field__label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.vs-number-field__description {
+  color: #707070;
+  font-size: 12px;
+}
+
+.vs-provider[data-color-scheme='dark'] .vs-number-field__description {
+  color: #c2c2c2;
+}
+
+.vs-number-field__input {
+  background: transparent;
+  border: 1px solid var(--vs-color-border);
+  border-radius: 6px;
+  color: inherit;
+  font: inherit;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.vs-number-field__input:focus-visible {
+  border-color: var(--vs-color-primary);
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-number-field__input--medium {
+  font-size: 14px;
+  min-height: 32px;
+  padding: 6px 10px;
+}
+
+.vs-number-field__input--large {
+  font-size: 16px;
+  min-height: 40px;
+  padding: 8px 12px;
+}
+
+.vs-number-field__input.is-invalid {
+  border-color: var(--vs-color-danger);
+}
+
 .vs-search-field {
   display: grid;
   gap: 8px;

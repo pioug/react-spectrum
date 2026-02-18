@@ -19,6 +19,13 @@
           description="Used to demonstrate v-model and accessible labeling."
           placeholder="Ada Lovelace" />
 
+        <VueNumberField
+          v-model="seatCount"
+          label="Seats"
+          description="Numeric entry via the number field port."
+          :min="1"
+          :max="20" />
+
         <VueComboBox
           v-model="favoriteLanguage"
           label="Favorite language"
@@ -57,6 +64,8 @@
 
         <p class="summary">
           Selected: <strong>{{ favoriteFramework }}</strong>
+          <span> · </span>
+          Seats: <strong>{{ seatCount ?? 'none' }}</strong>
           <span> · </span>
           Menu: <strong>{{ favoriteComponent }}</strong>
           <span> · </span>
@@ -116,6 +125,7 @@ import {Form as VueForm} from '@vue-spectrum/form';
 import {Link as VueLink} from '@vue-spectrum/link';
 import {ListBox as VueListBox} from '@vue-spectrum/listbox';
 import {Menu as VueMenu} from '@vue-spectrum/menu';
+import {NumberField as VueNumberField} from '@vue-spectrum/numberfield';
 import {Popover as VuePopover} from '@vue-spectrum/overlays';
 import {Provider as VueSpectrumProvider} from '@vue-spectrum/provider';
 import {Radio as VueRadio, RadioGroup as VueRadioGroup} from '@vue-spectrum/radio';
@@ -125,6 +135,7 @@ import {TextField as VueTextField} from '@vue-spectrum/textfield';
 
 const count = ref(0);
 const name = ref('');
+const seatCount = ref<number | null>(2);
 const favoriteLanguage = ref('TypeScript');
 const isDigestEnabled = ref(false);
 const searchQuery = ref('');
@@ -146,6 +157,7 @@ const ctaLabel = computed(() => {
 function reset() {
   count.value = 0;
   name.value = '';
+  seatCount.value = 2;
   favoriteLanguage.value = 'TypeScript';
   isDigestEnabled.value = false;
   searchQuery.value = '';

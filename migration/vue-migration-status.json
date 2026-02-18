@@ -220,6 +220,26 @@
         }
       ]
     },
+    "@react-spectrum/numberfield": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/numberfield",
+      "targetPath": "packages/@vue-spectrum/numberfield",
+      "notes": "First-wave primitive for numeric text entry.",
+      "acceptanceTests": [
+        {
+          "name": "Vue numberfield package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/numberfield/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    },
     "@react-spectrum/overlays": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/overlays",
