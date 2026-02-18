@@ -63,7 +63,7 @@ export const VueTextField = defineComponent({
     return function render() {
       let descriptionId = props.description ? `${inputId.value}-description` : undefined;
 
-      return h('label', {class: ['vs-text-field', attrs.class]}, [
+      return h('label', {class: ['vs-text-field', attrs.class], 'data-vac': ''}, [
         props.label ? h('span', {class: 'vs-text-field__label'}, props.label) : null,
         h('input', {
           id: inputId.value,

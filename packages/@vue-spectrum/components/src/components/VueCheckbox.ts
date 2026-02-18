@@ -42,6 +42,7 @@ export const VueCheckbox = defineComponent({
     return function render() {
       return h('label', {
         ...attrs,
+        'data-vac': '',
         class: [classes.value, attrs.class]
       }, [
         h('input', {

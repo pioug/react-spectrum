@@ -40,6 +40,7 @@ export const VueSpectrumProvider = defineComponent({
         class: ['vs-provider', attrs.class],
         lang: props.locale,
         dir: direction.value,
+        'data-vac': '',
         'data-scale': props.scale,
         'data-color-scheme': props.colorScheme
       }, slots.default ? slots.default() : []);

@@ -13,9 +13,9 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 6 |
+| in_progress | 7 |
 | ported | 0 |
-| planned | 1 |
+| planned | 0 |
 | blocked | 2 |
 | not_started | 145 |
 
@@ -29,7 +29,7 @@ Tracked source packages: 154
 | `@react-spectrum/radio` | `packages/@react-spectrum/radio` | `@vue-spectrum/radio` | `packages/@vue-spectrum/radio` | in_progress | Vue radio package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for form controls. |
 | `@react-spectrum/textfield` | `packages/@react-spectrum/textfield` | `@vue-spectrum/textfield` | `packages/@vue-spectrum/textfield` | in_progress | Vue textfield package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive aligned with existing VueTextField baseline work. |
 | `react-aria-components` | `packages/react-aria-components` | `@vue-spectrum/components` | `packages/@vue-spectrum/components` | in_progress | Vue package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Initial Vue baseline package exists, but React Aria Components parity is still in progress. |
-| `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | planned | - | Planned after core Vue component primitives are stable. |
+| `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
 | `@react-aria/actiongroup` | `packages/@react-aria/actiongroup` | `@vue-aria/actiongroup` | `packages/@vue-aria/actiongroup` | not_started | - | - |

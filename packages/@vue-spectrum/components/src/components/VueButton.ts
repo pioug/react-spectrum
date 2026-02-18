@@ -49,6 +49,7 @@ export const VueButton = defineComponent({
         class: [classes.value, attrs.class],
         type: props.type,
         disabled: props.disabled,
+        'data-vac': '',
         'aria-disabled': props.disabled ? 'true' : undefined,
         onClick
       }, slots.default ? slots.default() : 'Button');

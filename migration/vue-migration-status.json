@@ -121,8 +121,20 @@
       ]
     },
     "tailwindcss-react-aria-components": {
-      "status": "planned",
-      "notes": "Planned after core Vue component primitives are stable."
+      "status": "in_progress",
+      "targetPackage": "tailwindcss-vue-aria-components",
+      "targetPath": "packages/tailwindcss-vue-aria-components",
+      "notes": "Tailwind plugin baseline for Vue Aria-style data attribute variants.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Tailwind plugin source lint",
+          "command": "yarn eslint packages/tailwindcss-vue-aria-components/src"
+        },
+        {
+          "name": "Vue Tailwind plugin module load",
+          "command": "node -e \"require('./packages/tailwindcss-vue-aria-components/src/index.js')\""
+        }
+      ]
     },
     "react-aria": {
       "status": "blocked",

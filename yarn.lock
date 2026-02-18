@@ -28344,6 +28344,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"tailwindcss-vue-aria-components@workspace:packages/tailwindcss-vue-aria-components":
+  version: 0.0.0-use.local
+  resolution: "tailwindcss-vue-aria-components@workspace:packages/tailwindcss-vue-aria-components"
+  peerDependencies:
+    tailwindcss: ^4.0.0
+  languageName: unknown
+  linkType: soft
+
 "tailwindcss@npm:4.0.17, tailwindcss@npm:^4.0.0":
   version: 4.0.17
   resolution: "tailwindcss@npm:4.0.17"

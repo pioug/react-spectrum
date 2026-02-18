@@ -62,6 +62,7 @@ export const VueRadioGroup = defineComponent({
           props.orientation === 'horizontal' ? 'vs-radio-group--horizontal' : 'vs-radio-group--vertical',
           attrs.class
         ],
+        'data-vac': '',
         role: 'radiogroup',
         'aria-disabled': props.disabled ? 'true' : undefined,
         'aria-describedby': props.description ? descriptionId : undefined
@@ -137,6 +138,7 @@ export const VueRadio = defineComponent({
     return function render() {
       return h('label', {
         ...attrs,
+        'data-vac': '',
         class: [classes.value, attrs.class]
       }, [
         h('input', {

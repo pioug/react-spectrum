@@ -77,6 +77,7 @@
     "packages/react-aria",
     "packages/react-aria-components",
     "packages/tailwindcss-react-aria-components",
+    "packages/tailwindcss-vue-aria-components",
     "packages/dev/mcp/s2",
     "packages/dev/mcp/react-aria",
     "starters/vue",
