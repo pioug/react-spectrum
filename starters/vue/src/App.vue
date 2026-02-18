@@ -12,7 +12,7 @@
         </VueLink>
       </header>
 
-      <section class="demo-card">
+      <VueForm class="demo-card" @submit="count += 1">
         <VueTextField
           v-model="name"
           label="Name"
@@ -68,8 +68,11 @@
           <VueButton variant="secondary" @click="reset">
             Reset
           </VueButton>
+          <VueButton variant="secondary" type="submit">
+            Submit form
+          </VueButton>
         </div>
-      </section>
+      </VueForm>
 
       <VueDialog
         :open="isDialogOpen"
@@ -95,6 +98,7 @@ import {Button as VueButton} from '@vue-spectrum/button';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
 import {ComboBox as VueComboBox} from '@vue-spectrum/combobox';
 import {Dialog as VueDialog} from '@vue-spectrum/dialog';
+import {Form as VueForm} from '@vue-spectrum/form';
 import {Link as VueLink} from '@vue-spectrum/link';
 import {ListBox as VueListBox} from '@vue-spectrum/listbox';
 import {Menu as VueMenu} from '@vue-spectrum/menu';

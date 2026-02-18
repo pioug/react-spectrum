@@ -439,3 +439,8 @@
 .vs-link:hover {
   color: var(--vs-color-primary-hover);
 }
+
+.vs-form {
+  display: grid;
+  gap: 16px;
+}

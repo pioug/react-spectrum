@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 13 |
+| in_progress | 14 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 139 |
+| not_started | 138 |
 
 ## Package tracker
 
@@ -27,6 +27,7 @@ Tracked source packages: 154
 | `@react-spectrum/checkbox` | `packages/@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | `packages/@vue-spectrum/checkbox` | in_progress | Vue checkbox package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for form controls. |
 | `@react-spectrum/combobox` | `packages/@react-spectrum/combobox` | `@vue-spectrum/combobox` | `packages/@vue-spectrum/combobox` | in_progress | Vue combobox package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step with an initial Vue combobox primitive. |
 | `@react-spectrum/dialog` | `packages/@react-spectrum/dialog` | `@vue-spectrum/dialog` | `packages/@vue-spectrum/dialog` | in_progress | Vue dialog package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step providing a Vue dialog primitive. |
+| `@react-spectrum/form` | `packages/@react-spectrum/form` | `@vue-spectrum/form` | `packages/@vue-spectrum/form` | in_progress | Vue form package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave form grouping migration step with a Vue form primitive. |
 | `@react-spectrum/link` | `packages/@react-spectrum/link` | `@vue-spectrum/link` | `packages/@vue-spectrum/link` | in_progress | Vue link package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave visual/content migration step with a Vue link primitive. |
 | `@react-spectrum/listbox` | `packages/@react-spectrum/listbox` | `@vue-spectrum/listbox` | `packages/@vue-spectrum/listbox` | in_progress | Vue listbox package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step with an initial Vue listbox primitive. |
 | `@react-spectrum/menu` | `packages/@react-spectrum/menu` | `@vue-spectrum/menu` | `packages/@vue-spectrum/menu` | in_progress | Vue menu package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step with an initial Vue menu primitive. |
@@ -109,7 +110,6 @@ Tracked source packages: 154
 | `@react-spectrum/dnd` | `packages/@react-spectrum/dnd` | `@vue-spectrum/dnd` | `packages/@vue-spectrum/dnd` | not_started | - | - |
 | `@react-spectrum/dropzone` | `packages/@react-spectrum/dropzone` | `@vue-spectrum/dropzone` | `packages/@vue-spectrum/dropzone` | not_started | - | - |
 | `@react-spectrum/filetrigger` | `packages/@react-spectrum/filetrigger` | `@vue-spectrum/filetrigger` | `packages/@vue-spectrum/filetrigger` | not_started | - | - |
-| `@react-spectrum/form` | `packages/@react-spectrum/form` | `@vue-spectrum/form` | `packages/@vue-spectrum/form` | not_started | - | - |
 | `@react-spectrum/icon` | `packages/@react-spectrum/icon` | `@vue-spectrum/icon` | `packages/@vue-spectrum/icon` | not_started | - | - |
 | `@react-spectrum/illustratedmessage` | `packages/@react-spectrum/illustratedmessage` | `@vue-spectrum/illustratedmessage` | `packages/@vue-spectrum/illustratedmessage` | not_started | - | - |
 | `@react-spectrum/image` | `packages/@react-spectrum/image` | `@vue-spectrum/image` | `packages/@vue-spectrum/image` | not_started | - | - |

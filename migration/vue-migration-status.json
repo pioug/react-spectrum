@@ -140,6 +140,26 @@
         }
       ]
     },
+    "@react-spectrum/form": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/form",
+      "targetPath": "packages/@vue-spectrum/form",
+      "notes": "First-wave form grouping migration step with a Vue form primitive.",
+      "acceptanceTests": [
+        {
+          "name": "Vue form package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/form/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    },
     "@react-spectrum/listbox": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/listbox",

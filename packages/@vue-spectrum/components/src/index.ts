@@ -3,6 +3,7 @@ import {VueButton} from './components/VueButton';
 import {VueCheckbox} from './components/VueCheckbox';
 import {VueComboBox} from './components/VueComboBox';
 import {VueDialog} from './components/VueDialog';
+import {VueForm} from './components/VueForm';
 import {VueLink} from './components/VueLink';
 import {VueListBox} from './components/VueListBox';
 import {VueMenu} from './components/VueMenu';
@@ -18,6 +19,7 @@ export const VueSpectrumPlugin: Plugin = {
     app.component(VueCheckbox.name ?? 'VueCheckbox', VueCheckbox);
     app.component(VueComboBox.name ?? 'VueComboBox', VueComboBox);
     app.component(VueDialog.name ?? 'VueDialog', VueDialog);
+    app.component(VueForm.name ?? 'VueForm', VueForm);
     app.component(VueLink.name ?? 'VueLink', VueLink);
     app.component(VueListBox.name ?? 'VueListBox', VueListBox);
     app.component(VueMenu.name ?? 'VueMenu', VueMenu);
@@ -28,5 +30,5 @@ export const VueSpectrumPlugin: Plugin = {
   }
 };
 
-export {VueButton, VueCheckbox, VueComboBox, VueDialog, VueLink, VueListBox, VueMenu, VuePopover, VueRadio, VueRadioGroup, VueSpectrumProvider, VueTextField};
+export {VueButton, VueCheckbox, VueComboBox, VueDialog, VueForm, VueLink, VueListBox, VueMenu, VuePopover, VueRadio, VueRadioGroup, VueSpectrumProvider, VueTextField};
 export type {SpectrumContextValue} from './context';
