@@ -81,12 +81,44 @@
       ]
     },
     "@react-spectrum/checkbox": {
-      "status": "planned",
-      "notes": "First-wave primitive for form controls."
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/checkbox",
+      "targetPath": "packages/@vue-spectrum/checkbox",
+      "notes": "First-wave primitive for form controls.",
+      "acceptanceTests": [
+        {
+          "name": "Vue checkbox package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/checkbox/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
     },
     "@react-spectrum/radio": {
-      "status": "planned",
-      "notes": "First-wave primitive for form controls."
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/radio",
+      "targetPath": "packages/@vue-spectrum/radio",
+      "notes": "First-wave primitive for form controls.",
+      "acceptanceTests": [
+        {
+          "name": "Vue radio package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/radio/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
     },
     "tailwindcss-react-aria-components": {
       "status": "planned",

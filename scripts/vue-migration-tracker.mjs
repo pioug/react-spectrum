@@ -251,6 +251,7 @@ function runAcceptanceTests(entries) {
   }
 
   let hasFailure = false;
+  let commandResults = new Map();
 
   for (let entry of activeEntries) {
     console.log(`\n=== ${entry.sourcePackage} -> ${entry.targetPackage} (${entry.status}) ===`);
@@ -266,13 +267,24 @@ function runAcceptanceTests(entries) {
       console.log(`\n[ACCEPTANCE] ${test.name}`);
       console.log(`$ ${test.command}`);
 
+      if (commandResults.has(test.command)) {
+        let passed = commandResults.get(test.command);
+        console.log(`Skipping duplicate command (already ${passed ? 'passed' : 'failed'} earlier).`);
+        if (!passed) {
+          hasFailure = true;
+        }
+        continue;
+      }
+
       try {
         execSync(test.command, {
           cwd: REPO_ROOT,
           stdio: 'inherit'
         });
+        commandResults.set(test.command, true);
       } catch {
         hasFailure = true;
+        commandResults.set(test.command, false);
       }
     }
   }

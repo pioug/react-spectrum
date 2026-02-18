@@ -11708,6 +11708,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/checkbox@workspace:*, @vue-spectrum/checkbox@workspace:packages/@vue-spectrum/checkbox":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/checkbox@workspace:packages/@vue-spectrum/checkbox"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/components@npm:^0.1.0, @vue-spectrum/components@workspace:*, @vue-spectrum/components@workspace:packages/@vue-spectrum/components":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/components@workspace:packages/@vue-spectrum/components"
@@ -11719,6 +11729,16 @@ __metadata:
 "@vue-spectrum/provider@workspace:*, @vue-spectrum/provider@workspace:packages/@vue-spectrum/provider":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/provider@workspace:packages/@vue-spectrum/provider"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
+"@vue-spectrum/radio@workspace:*, @vue-spectrum/radio@workspace:packages/@vue-spectrum/radio":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/radio@workspace:packages/@vue-spectrum/radio"
   dependencies:
     "@vue-spectrum/components": "npm:^0.1.0"
   peerDependencies:
@@ -30100,8 +30120,10 @@ __metadata:
   dependencies:
     "@vitejs/plugin-vue": "npm:^5.2.1"
     "@vue-spectrum/button": "workspace:*"
+    "@vue-spectrum/checkbox": "workspace:*"
     "@vue-spectrum/components": "workspace:*"
     "@vue-spectrum/provider": "workspace:*"
+    "@vue-spectrum/radio": "workspace:*"
     "@vue-spectrum/textfield": "workspace:*"
     typescript: "npm:^5.8.2"
     vite: "npm:^5.4.19"

@@ -16,6 +16,22 @@
           description="Used to demonstrate v-model and accessible labeling."
           placeholder="Ada Lovelace" />
 
+        <VueCheckbox v-model="isSubscribed">
+          Send me product updates
+        </VueCheckbox>
+
+        <VueRadioGroup v-model="favoriteFramework" label="Favorite framework" orientation="horizontal">
+          <VueRadio value="vue">Vue</VueRadio>
+          <VueRadio value="react">React</VueRadio>
+          <VueRadio value="svelte">Svelte</VueRadio>
+        </VueRadioGroup>
+
+        <p class="summary">
+          Selected: <strong>{{ favoriteFramework }}</strong>
+          <span> · </span>
+          Subscribed: <strong>{{ isSubscribed ? 'yes' : 'no' }}</strong>
+        </p>
+
         <div class="actions">
           <VueButton variant="primary" @click="count += 1">
             {{ ctaLabel }}
@@ -32,11 +48,15 @@
 <script setup lang="ts">
 import {computed, ref} from 'vue';
 import {Button as VueButton} from '@vue-spectrum/button';
+import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
 import {Provider as VueSpectrumProvider} from '@vue-spectrum/provider';
+import {Radio as VueRadio, RadioGroup as VueRadioGroup} from '@vue-spectrum/radio';
 import {TextField as VueTextField} from '@vue-spectrum/textfield';
 
 const count = ref(0);
 const name = ref('');
+const isSubscribed = ref(true);
+const favoriteFramework = ref('vue');
 
 const ctaLabel = computed(() => {
   let suffix = name.value ? `, ${name.value}` : '';
@@ -46,6 +66,8 @@ const ctaLabel = computed(() => {
 function reset() {
   count.value = 0;
   name.value = '';
+  isSubscribed.value = true;
+  favoriteFramework.value = 'vue';
 }
 </script>
 
@@ -96,6 +118,10 @@ h1 {
 .actions {
   display: flex;
   gap: 12px;
+}
+
+.summary {
+  margin: 0;
 }
 
 code {

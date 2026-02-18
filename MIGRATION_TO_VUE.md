@@ -21,6 +21,11 @@ Phase 1 is implemented:
   * CircleCI `vue-migration` job runs `yarn vue:migration:report` and `yarn vue:migration:test`.
 * Started first package-level port:
   * `@react-spectrum/provider` -> `@vue-spectrum/provider` is now tracked as `in_progress`.
+* Expanded first-wave ports:
+  * `@react-spectrum/button` -> `@vue-spectrum/button` (`in_progress`)
+  * `@react-spectrum/textfield` -> `@vue-spectrum/textfield` (`in_progress`)
+  * `@react-spectrum/checkbox` -> `@vue-spectrum/checkbox` (`in_progress`)
+  * `@react-spectrum/radio` -> `@vue-spectrum/radio` (`in_progress`)
 
 ## Migration phases
 

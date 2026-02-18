@@ -13,9 +13,9 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 4 |
+| in_progress | 6 |
 | ported | 0 |
-| planned | 3 |
+| planned | 1 |
 | blocked | 2 |
 | not_started | 145 |
 
@@ -24,11 +24,11 @@ Tracked source packages: 154
 | Source package | Source path | Target package | Target path | Status | Acceptance tests | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | `@react-spectrum/button` | `packages/@react-spectrum/button` | `@vue-spectrum/button` | `packages/@vue-spectrum/button` | in_progress | Vue button package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive aligned with existing VueButton baseline work. |
+| `@react-spectrum/checkbox` | `packages/@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | `packages/@vue-spectrum/checkbox` | in_progress | Vue checkbox package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for form controls. |
 | `@react-spectrum/provider` | `packages/@react-spectrum/provider` | `@vue-spectrum/provider` | `packages/@vue-spectrum/provider` | in_progress | Vue provider package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave target after the initial Vue baseline package, to establish theming and app-level context. |
+| `@react-spectrum/radio` | `packages/@react-spectrum/radio` | `@vue-spectrum/radio` | `packages/@vue-spectrum/radio` | in_progress | Vue radio package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for form controls. |
 | `@react-spectrum/textfield` | `packages/@react-spectrum/textfield` | `@vue-spectrum/textfield` | `packages/@vue-spectrum/textfield` | in_progress | Vue textfield package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive aligned with existing VueTextField baseline work. |
 | `react-aria-components` | `packages/react-aria-components` | `@vue-spectrum/components` | `packages/@vue-spectrum/components` | in_progress | Vue package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Initial Vue baseline package exists, but React Aria Components parity is still in progress. |
-| `@react-spectrum/checkbox` | `packages/@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | `packages/@vue-spectrum/checkbox` | planned | - | First-wave primitive for form controls. |
-| `@react-spectrum/radio` | `packages/@react-spectrum/radio` | `@vue-spectrum/radio` | `packages/@vue-spectrum/radio` | planned | - | First-wave primitive for form controls. |
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | planned | - | Planned after core Vue component primitives are stable. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
