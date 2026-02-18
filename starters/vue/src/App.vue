@@ -31,7 +31,8 @@
 
 <script setup lang="ts">
 import {computed, ref} from 'vue';
-import {VueButton, VueTextField} from '@vue-spectrum/components';
+import {Button as VueButton} from '@vue-spectrum/button';
+import {VueTextField} from '@vue-spectrum/components';
 import {Provider as VueSpectrumProvider} from '@vue-spectrum/provider';
 
 const count = ref(0);

@@ -11698,6 +11698,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vue-spectrum/button@workspace:*, @vue-spectrum/button@workspace:packages/@vue-spectrum/button":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/button@workspace:packages/@vue-spectrum/button"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/components@npm:^0.1.0, @vue-spectrum/components@workspace:*, @vue-spectrum/components@workspace:packages/@vue-spectrum/components":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/components@workspace:packages/@vue-spectrum/components"
@@ -30079,6 +30089,7 @@ __metadata:
   resolution: "vue-spectrum-starter@workspace:starters/vue"
   dependencies:
     "@vitejs/plugin-vue": "npm:^5.2.1"
+    "@vue-spectrum/button": "workspace:*"
     "@vue-spectrum/components": "workspace:*"
     "@vue-spectrum/provider": "workspace:*"
     typescript: "npm:^5.8.2"

@@ -11,6 +11,7 @@
     "prepublishOnly": "echo \"Skipping publish for starter workspace\""
   },
   "dependencies": {
+    "@vue-spectrum/button": "workspace:*",
     "@vue-spectrum/components": "workspace:*",
     "@vue-spectrum/provider": "workspace:*",
     "vue": "^3.5.13"

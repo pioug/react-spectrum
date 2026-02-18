@@ -41,8 +41,24 @@
       ]
     },
     "@react-spectrum/button": {
-      "status": "planned",
-      "notes": "First-wave primitive aligned with existing VueButton baseline work."
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/button",
+      "targetPath": "packages/@vue-spectrum/button",
+      "notes": "First-wave primitive aligned with existing VueButton baseline work.",
+      "acceptanceTests": [
+        {
+          "name": "Vue button package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/button/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
     },
     "@react-spectrum/textfield": {
       "status": "planned",
