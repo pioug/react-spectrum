@@ -1,0 +1,24 @@
+{
+  "ports": {
+    "react-aria-components": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/components",
+      "targetPath": "packages/@vue-spectrum/components",
+      "notes": "Initial Vue baseline package exists, but React Aria Components parity is still in progress.",
+      "acceptanceTests": [
+        {
+          "name": "Vue package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/components/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,130 @@
+.vs-provider {
+  --vs-color-bg: #f8f8f8;
+  --vs-color-fg: #2c2c2c;
+  --vs-color-border: #b8b8b8;
+  --vs-color-primary: #1473e6;
+  --vs-color-primary-hover: #0d66d0;
+  --vs-color-secondary-bg: #ffffff;
+  --vs-color-secondary-hover: #f2f2f2;
+  --vs-color-danger: #d31510;
+  --vs-focus-ring: 0 0 0 2px rgba(20, 115, 230, 0.35);
+  background: var(--vs-color-bg);
+  color: var(--vs-color-fg);
+  min-height: 100%;
+}
+
+.vs-provider[data-color-scheme='dark'] {
+  --vs-color-bg: #1e1e1e;
+  --vs-color-fg: #ffffff;
+  --vs-color-border: #6b6b6b;
+  --vs-color-primary: #378ef0;
+  --vs-color-primary-hover: #4b9cf5;
+  --vs-color-secondary-bg: #2b2b2b;
+  --vs-color-secondary-hover: #393939;
+  --vs-color-danger: #ff6d70;
+}
+
+.vs-button {
+  align-items: center;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-weight: 600;
+  gap: 8px;
+  justify-content: center;
+  line-height: 1;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, box-shadow 120ms ease;
+}
+
+.vs-button:focus-visible {
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-button--medium {
+  font-size: 14px;
+  min-height: 32px;
+  padding: 6px 14px;
+}
+
+.vs-button--large {
+  font-size: 16px;
+  min-height: 40px;
+  padding: 8px 16px;
+}
+
+.vs-button--primary {
+  background: var(--vs-color-primary);
+  color: #ffffff;
+}
+
+.vs-button--primary:hover:not(.is-disabled) {
+  background: var(--vs-color-primary-hover);
+}
+
+.vs-button--secondary {
+  background: var(--vs-color-secondary-bg);
+  border-color: var(--vs-color-border);
+  color: var(--vs-color-fg);
+}
+
+.vs-button--secondary:hover:not(.is-disabled) {
+  background: var(--vs-color-secondary-hover);
+}
+
+.vs-button.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.vs-text-field {
+  display: grid;
+  gap: 8px;
+}
+
+.vs-text-field__label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.vs-text-field__description {
+  color: #707070;
+  font-size: 12px;
+}
+
+.vs-provider[data-color-scheme='dark'] .vs-text-field__description {
+  color: #c2c2c2;
+}
+
+.vs-text-field__input {
+  background: transparent;
+  border: 1px solid var(--vs-color-border);
+  border-radius: 6px;
+  color: inherit;
+  font: inherit;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.vs-text-field__input:focus-visible {
+  border-color: var(--vs-color-primary);
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-text-field__input--medium {
+  font-size: 14px;
+  min-height: 32px;
+  padding: 6px 10px;
+}
+
+.vs-text-field__input--large {
+  font-size: 16px;
+  min-height: 40px;
+  padding: 8px 12px;
+}
+
+.vs-text-field__input.is-invalid {
+  border-color: var(--vs-color-danger);
+}

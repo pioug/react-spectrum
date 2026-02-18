@@ -2,6 +2,28 @@
 
 A collection of libraries and tools that help you build adaptive, accessible, and robust user experiences.
 
+## Vue migration baseline
+
+This repository now includes a Vue migration baseline so teams can begin moving off React incrementally:
+
+* `packages/@vue-spectrum/components` contains initial Vue components (`VueSpectrumProvider`, `VueButton`, and `VueTextField`).
+* `starters/vue` is a runnable Vue + Vite starter wired to the new package.
+* `MIGRATION_TO_VUE.md` describes the migration plan from existing React packages to Vue packages.
+* `VUE_MIGRATION_TRACKER.md` tracks package-by-package migration status and acceptance tests.
+
+Use the starter from the repository root:
+
+```sh
+yarn start:vue
+```
+
+Regenerate and validate the migration tracker:
+
+```sh
+yarn vue:migration:report
+yarn vue:migration:test
+```
+
 ### React Spectrum
 
 A React implementation of Spectrum, Adobe’s design system. Spectrum provides adaptive, accessible, and cohesive experiences for all Adobe applications.

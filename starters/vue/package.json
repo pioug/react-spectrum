@@ -1,0 +1,23 @@
+{
+  "name": "vue-spectrum-starter",
+  "version": "0.0.1",
+  "private": true,
+  "packageManager": "yarn@4.2.2",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit",
+    "prepublishOnly": "echo \"Skipping publish for starter workspace\""
+  },
+  "dependencies": {
+    "@vue-spectrum/components": "workspace:*",
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "typescript": "^5.8.2",
+    "vite": "^5.4.19",
+    "vue-tsc": "^2.2.0"
+  }
+}
