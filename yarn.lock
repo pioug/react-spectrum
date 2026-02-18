@@ -11726,6 +11726,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/textfield@workspace:*, @vue-spectrum/textfield@workspace:packages/@vue-spectrum/textfield":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/textfield@workspace:packages/@vue-spectrum/textfield"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue/compiler-core@npm:3.5.28":
   version: 3.5.28
   resolution: "@vue/compiler-core@npm:3.5.28"
@@ -30092,6 +30102,7 @@ __metadata:
     "@vue-spectrum/button": "workspace:*"
     "@vue-spectrum/components": "workspace:*"
     "@vue-spectrum/provider": "workspace:*"
+    "@vue-spectrum/textfield": "workspace:*"
     typescript: "npm:^5.8.2"
     vite: "npm:^5.4.19"
     vue: "npm:^3.5.13"

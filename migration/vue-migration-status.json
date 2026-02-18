@@ -61,8 +61,24 @@
       ]
     },
     "@react-spectrum/textfield": {
-      "status": "planned",
-      "notes": "First-wave primitive aligned with existing VueTextField baseline work."
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/textfield",
+      "targetPath": "packages/@vue-spectrum/textfield",
+      "notes": "First-wave primitive aligned with existing VueTextField baseline work.",
+      "acceptanceTests": [
+        {
+          "name": "Vue textfield package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/textfield/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
     },
     "@react-spectrum/checkbox": {
       "status": "planned",
