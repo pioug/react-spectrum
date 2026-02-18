@@ -32,6 +32,7 @@ Phase 1 is implemented:
   * `@react-spectrum/dialog` -> `@vue-spectrum/dialog` (`in_progress`)
   * `@react-spectrum/overlays` -> `@vue-spectrum/overlays` (`in_progress`)
   * `@react-spectrum/combobox` -> `@vue-spectrum/combobox` (`in_progress`)
+  * `@react-spectrum/menu` -> `@vue-spectrum/menu` (`in_progress`)
 
 ## Migration phases
 

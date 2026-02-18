@@ -32,8 +32,15 @@
           <VueRadio value="svelte">Svelte</VueRadio>
         </VueRadioGroup>
 
+        <VueMenu
+          v-model="favoriteComponent"
+          label="Favorite component category"
+          :items="componentOptions" />
+
         <p class="summary">
           Selected: <strong>{{ favoriteFramework }}</strong>
+          <span> · </span>
+          Menu: <strong>{{ favoriteComponent }}</strong>
           <span> · </span>
           Subscribed: <strong>{{ isSubscribed ? 'yes' : 'no' }}</strong>
         </p>
@@ -78,6 +85,7 @@ import {Button as VueButton} from '@vue-spectrum/button';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
 import {ComboBox as VueComboBox} from '@vue-spectrum/combobox';
 import {Dialog as VueDialog} from '@vue-spectrum/dialog';
+import {Menu as VueMenu} from '@vue-spectrum/menu';
 import {Popover as VuePopover} from '@vue-spectrum/overlays';
 import {Provider as VueSpectrumProvider} from '@vue-spectrum/provider';
 import {Radio as VueRadio, RadioGroup as VueRadioGroup} from '@vue-spectrum/radio';
@@ -88,9 +96,11 @@ const name = ref('');
 const favoriteLanguage = ref('TypeScript');
 const isSubscribed = ref(true);
 const favoriteFramework = ref('vue');
+const favoriteComponent = ref('Forms');
 const isDialogOpen = ref(false);
 const isPopoverOpen = ref(false);
 const languageOptions = ['TypeScript', 'JavaScript', 'Rust', 'Go', 'Python'];
+const componentOptions = ['Forms', 'Navigation', 'Overlays', 'Data display'];
 
 const ctaLabel = computed(() => {
   let suffix = name.value ? `, ${name.value}` : '';
@@ -103,6 +113,7 @@ function reset() {
   favoriteLanguage.value = 'TypeScript';
   isSubscribed.value = true;
   favoriteFramework.value = 'vue';
+  favoriteComponent.value = 'Forms';
   isDialogOpen.value = false;
   isPopoverOpen.value = false;
 }

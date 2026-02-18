@@ -9,7 +9,7 @@ This repository now includes a Vue migration baseline so teams can begin moving 
 * `packages/@vue-spectrum/components` contains initial Vue primitives (`VueSpectrumProvider`, `VueButton`, and `VueTextField`).
 * `packages/@vue-spectrum/provider` provides the first package-level port (`Provider`/`VueProvider`) layered on the Vue primitives.
 * `packages/@vue-spectrum/button`, `packages/@vue-spectrum/textfield`, `packages/@vue-spectrum/checkbox`, and `packages/@vue-spectrum/radio` provide first-wave package-level ports.
-* `packages/@vue-spectrum/dialog`, `packages/@vue-spectrum/overlays`, and `packages/@vue-spectrum/combobox` start the composition-component migration layer.
+* `packages/@vue-spectrum/dialog`, `packages/@vue-spectrum/overlays`, `packages/@vue-spectrum/combobox`, and `packages/@vue-spectrum/menu` start the composition-component migration layer.
 * `packages/tailwindcss-vue-aria-components` provides a Vue-tailored Tailwind variant plugin baseline.
 * `starters/vue` is a runnable Vue + Vite starter wired to the new package.
 * `MIGRATION_TO_VUE.md` describes the migration plan from existing React packages to Vue packages.
