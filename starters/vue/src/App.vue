@@ -33,6 +33,12 @@
           Enable weekly digest
         </VueSwitch>
 
+        <VueSearchField
+          v-model="searchQuery"
+          label="Search components"
+          description="Demonstrates search input semantics and clear behavior."
+          placeholder="Search components" />
+
         <VueRadioGroup v-model="favoriteFramework" label="Favorite framework" orientation="horizontal">
           <VueRadio value="vue">Vue</VueRadio>
           <VueRadio value="react">React</VueRadio>
@@ -57,6 +63,8 @@
           List: <strong>{{ favoriteLibrary }}</strong>
           <span> · </span>
           Digest: <strong>{{ isDigestEnabled ? 'on' : 'off' }}</strong>
+          <span> · </span>
+          Search: <strong>{{ searchQuery || 'none' }}</strong>
           <span> · </span>
           Subscribed: <strong>{{ isSubscribed ? 'yes' : 'no' }}</strong>
         </p>
@@ -111,6 +119,7 @@ import {Menu as VueMenu} from '@vue-spectrum/menu';
 import {Popover as VuePopover} from '@vue-spectrum/overlays';
 import {Provider as VueSpectrumProvider} from '@vue-spectrum/provider';
 import {Radio as VueRadio, RadioGroup as VueRadioGroup} from '@vue-spectrum/radio';
+import {SearchField as VueSearchField} from '@vue-spectrum/searchfield';
 import {Switch as VueSwitch} from '@vue-spectrum/switch';
 import {TextField as VueTextField} from '@vue-spectrum/textfield';
 
@@ -118,6 +127,7 @@ const count = ref(0);
 const name = ref('');
 const favoriteLanguage = ref('TypeScript');
 const isDigestEnabled = ref(false);
+const searchQuery = ref('');
 const isSubscribed = ref(true);
 const favoriteFramework = ref('vue');
 const favoriteComponent = ref('Forms');
@@ -138,6 +148,7 @@ function reset() {
   name.value = '';
   favoriteLanguage.value = 'TypeScript';
   isDigestEnabled.value = false;
+  searchQuery.value = '';
   isSubscribed.value = true;
   favoriteFramework.value = 'vue';
   favoriteComponent.value = 'Forms';

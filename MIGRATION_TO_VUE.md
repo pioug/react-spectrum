@@ -24,6 +24,7 @@ Phase 1 is implemented:
 * Expanded first-wave ports:
   * `@react-spectrum/button` -> `@vue-spectrum/button` (`in_progress`)
   * `@react-spectrum/textfield` -> `@vue-spectrum/textfield` (`in_progress`)
+  * `@react-spectrum/searchfield` -> `@vue-spectrum/searchfield` (`in_progress`)
   * `@react-spectrum/checkbox` -> `@vue-spectrum/checkbox` (`in_progress`)
   * `@react-spectrum/radio` -> `@vue-spectrum/radio` (`in_progress`)
   * `@react-spectrum/switch` -> `@vue-spectrum/switch` (`in_progress`)

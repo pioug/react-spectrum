@@ -11816,6 +11816,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/searchfield@workspace:*, @vue-spectrum/searchfield@workspace:packages/@vue-spectrum/searchfield":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/searchfield@workspace:packages/@vue-spectrum/searchfield"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/switch@workspace:*, @vue-spectrum/switch@workspace:packages/@vue-spectrum/switch":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/switch@workspace:packages/@vue-spectrum/switch"
@@ -30219,6 +30229,7 @@ __metadata:
     "@vue-spectrum/overlays": "workspace:*"
     "@vue-spectrum/provider": "workspace:*"
     "@vue-spectrum/radio": "workspace:*"
+    "@vue-spectrum/searchfield": "workspace:*"
     "@vue-spectrum/switch": "workspace:*"
     "@vue-spectrum/textfield": "workspace:*"
     typescript: "npm:^5.8.2"

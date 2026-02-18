@@ -260,6 +260,26 @@
         }
       ]
     },
+    "@react-spectrum/searchfield": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/searchfield",
+      "targetPath": "packages/@vue-spectrum/searchfield",
+      "notes": "First-wave primitive for search-oriented text input.",
+      "acceptanceTests": [
+        {
+          "name": "Vue searchfield package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/searchfield/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    },
     "@react-spectrum/switch": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/switch",

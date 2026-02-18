@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 15 |
+| in_progress | 16 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 137 |
+| not_started | 136 |
 
 ## Package tracker
 
@@ -34,6 +34,7 @@ Tracked source packages: 154
 | `@react-spectrum/overlays` | `packages/@react-spectrum/overlays` | `@vue-spectrum/overlays` | `packages/@vue-spectrum/overlays` | in_progress | Vue overlays package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step providing a Vue popover primitive. |
 | `@react-spectrum/provider` | `packages/@react-spectrum/provider` | `@vue-spectrum/provider` | `packages/@vue-spectrum/provider` | in_progress | Vue provider package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave target after the initial Vue baseline package, to establish theming and app-level context. |
 | `@react-spectrum/radio` | `packages/@react-spectrum/radio` | `@vue-spectrum/radio` | `packages/@vue-spectrum/radio` | in_progress | Vue radio package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for form controls. |
+| `@react-spectrum/searchfield` | `packages/@react-spectrum/searchfield` | `@vue-spectrum/searchfield` | `packages/@vue-spectrum/searchfield` | in_progress | Vue searchfield package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for search-oriented text input. |
 | `@react-spectrum/switch` | `packages/@react-spectrum/switch` | `@vue-spectrum/switch` | `packages/@vue-spectrum/switch` | in_progress | Vue switch package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for binary toggles. |
 | `@react-spectrum/textfield` | `packages/@react-spectrum/textfield` | `@vue-spectrum/textfield` | `packages/@vue-spectrum/textfield` | in_progress | Vue textfield package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive aligned with existing VueTextField baseline work. |
 | `react-aria-components` | `packages/react-aria-components` | `@vue-spectrum/components` | `packages/@vue-spectrum/components` | in_progress | Vue package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Initial Vue baseline package exists, but React Aria Components parity is still in progress. |
@@ -124,7 +125,6 @@ Tracked source packages: 154
 | `@react-spectrum/picker` | `packages/@react-spectrum/picker` | `@vue-spectrum/picker` | `packages/@vue-spectrum/picker` | not_started | - | - |
 | `@react-spectrum/progress` | `packages/@react-spectrum/progress` | `@vue-spectrum/progress` | `packages/@vue-spectrum/progress` | not_started | - | - |
 | `@react-spectrum/s2` | `packages/@react-spectrum/s2` | `@vue-spectrum/s2` | `packages/@vue-spectrum/s2` | not_started | - | - |
-| `@react-spectrum/searchfield` | `packages/@react-spectrum/searchfield` | `@vue-spectrum/searchfield` | `packages/@vue-spectrum/searchfield` | not_started | - | - |
 | `@react-spectrum/slider` | `packages/@react-spectrum/slider` | `@vue-spectrum/slider` | `packages/@vue-spectrum/slider` | not_started | - | - |
 | `@react-spectrum/statuslight` | `packages/@react-spectrum/statuslight` | `@vue-spectrum/statuslight` | `packages/@vue-spectrum/statuslight` | not_started | - | - |
 | `@react-spectrum/steplist` | `packages/@react-spectrum/steplist` | `@vue-spectrum/steplist` | `packages/@vue-spectrum/steplist` | not_started | - | - |

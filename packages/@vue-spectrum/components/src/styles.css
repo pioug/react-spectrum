@@ -129,6 +129,83 @@
   border-color: var(--vs-color-danger);
 }
 
+.vs-search-field {
+  display: grid;
+  gap: 8px;
+}
+
+.vs-search-field__label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.vs-search-field__description {
+  color: #707070;
+  font-size: 12px;
+}
+
+.vs-provider[data-color-scheme='dark'] .vs-search-field__description {
+  color: #c2c2c2;
+}
+
+.vs-search-field__control {
+  position: relative;
+}
+
+.vs-search-field__input {
+  background: transparent;
+  border: 1px solid var(--vs-color-border);
+  border-radius: 6px;
+  color: inherit;
+  font: inherit;
+  inline-size: 100%;
+  padding-inline-end: 62px;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.vs-search-field__input:focus-visible {
+  border-color: var(--vs-color-primary);
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-search-field__input--medium {
+  font-size: 14px;
+  min-height: 32px;
+  padding-block: 6px;
+  padding-inline-start: 10px;
+}
+
+.vs-search-field__input--large {
+  font-size: 16px;
+  min-height: 40px;
+  padding-block: 8px;
+  padding-inline-start: 12px;
+}
+
+.vs-search-field__input.is-invalid {
+  border-color: var(--vs-color-danger);
+}
+
+.vs-search-field__clear {
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  color: inherit;
+  cursor: pointer;
+  font-size: 12px;
+  inset-block-start: 50%;
+  inset-inline-end: 8px;
+  line-height: 1;
+  padding: 4px 6px;
+  position: absolute;
+  transform: translateY(-50%);
+}
+
+.vs-search-field__clear:hover {
+  background: var(--vs-color-secondary-hover);
+}
+
 .vs-checkbox {
   align-items: center;
   cursor: pointer;
