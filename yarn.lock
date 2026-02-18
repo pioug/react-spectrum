@@ -11698,9 +11698,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue-spectrum/components@workspace:*, @vue-spectrum/components@workspace:packages/@vue-spectrum/components":
+"@vue-spectrum/components@npm:^0.1.0, @vue-spectrum/components@workspace:*, @vue-spectrum/components@workspace:packages/@vue-spectrum/components":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/components@workspace:packages/@vue-spectrum/components"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
+"@vue-spectrum/provider@workspace:*, @vue-spectrum/provider@workspace:packages/@vue-spectrum/provider":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/provider@workspace:packages/@vue-spectrum/provider"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -30070,6 +30080,7 @@ __metadata:
   dependencies:
     "@vitejs/plugin-vue": "npm:^5.2.1"
     "@vue-spectrum/components": "workspace:*"
+    "@vue-spectrum/provider": "workspace:*"
     typescript: "npm:^5.8.2"
     vite: "npm:^5.4.19"
     vue: "npm:^3.5.13"

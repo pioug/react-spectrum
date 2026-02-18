@@ -21,8 +21,24 @@
       ]
     },
     "@react-spectrum/provider": {
-      "status": "planned",
-      "notes": "First-wave target after the initial Vue baseline package, to establish theming and app-level context."
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/provider",
+      "targetPath": "packages/@vue-spectrum/provider",
+      "notes": "First-wave target after the initial Vue baseline package, to establish theming and app-level context.",
+      "acceptanceTests": [
+        {
+          "name": "Vue provider package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/provider/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
     },
     "@react-spectrum/button": {
       "status": "planned",

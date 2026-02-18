@@ -6,7 +6,8 @@ A collection of libraries and tools that help you build adaptive, accessible, an
 
 This repository now includes a Vue migration baseline so teams can begin moving off React incrementally:
 
-* `packages/@vue-spectrum/components` contains initial Vue components (`VueSpectrumProvider`, `VueButton`, and `VueTextField`).
+* `packages/@vue-spectrum/components` contains initial Vue primitives (`VueSpectrumProvider`, `VueButton`, and `VueTextField`).
+* `packages/@vue-spectrum/provider` provides the first package-level port (`Provider`/`VueProvider`) layered on the Vue primitives.
 * `starters/vue` is a runnable Vue + Vite starter wired to the new package.
 * `MIGRATION_TO_VUE.md` describes the migration plan from existing React packages to Vue packages.
 * `VUE_MIGRATION_TRACKER.md` tracks package-by-package migration status and acceptance tests.

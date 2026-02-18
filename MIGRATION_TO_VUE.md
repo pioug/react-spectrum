@@ -19,6 +19,8 @@ Phase 1 is implemented:
   * `yarn vue:migration:test` (runs acceptance tests for active ports)
 * Added CI enforcement:
   * CircleCI `vue-migration` job runs `yarn vue:migration:report` and `yarn vue:migration:test`.
+* Started first package-level port:
+  * `@react-spectrum/provider` -> `@vue-spectrum/provider` is now tracked as `in_progress`.
 
 ## Migration phases
 
