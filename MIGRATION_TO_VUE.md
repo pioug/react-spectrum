@@ -30,6 +30,7 @@ Phase 1 is implemented:
   * `tailwindcss-react-aria-components` -> `tailwindcss-vue-aria-components` (`in_progress`)
 * Started composition-component migration:
   * `@react-spectrum/dialog` -> `@vue-spectrum/dialog` (`in_progress`)
+  * `@react-spectrum/overlays` -> `@vue-spectrum/overlays` (`in_progress`)
 
 ## Migration phases
 

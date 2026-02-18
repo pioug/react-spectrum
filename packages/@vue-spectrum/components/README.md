@@ -11,6 +11,7 @@ Vue-native Spectrum-inspired primitives for incremental migration from React pac
 * `VueRadioGroup`
 * `VueRadio`
 * `VueDialog`
+* `VuePopover`
 
 ## Quick start
 

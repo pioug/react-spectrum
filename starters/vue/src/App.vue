@@ -36,6 +36,9 @@
           <VueButton variant="primary" @click="count += 1">
             {{ ctaLabel }}
           </VueButton>
+          <VueButton variant="secondary" @click="isPopoverOpen = !isPopoverOpen">
+            {{ isPopoverOpen ? 'Hide popover' : 'Show popover' }}
+          </VueButton>
           <VueButton variant="secondary" @click="isDialogOpen = true">
             Open dialog
           </VueButton>
@@ -53,6 +56,12 @@
           This dialog is provided by <code>@vue-spectrum/dialog</code> as the next composition-layer migration step.
         </p>
       </VueDialog>
+
+      <VuePopover :open="isPopoverOpen" placement="right" @close="isPopoverOpen = false">
+        <p class="summary">
+          Popover from <code>@vue-spectrum/overlays</code>.
+        </p>
+      </VuePopover>
     </main>
   </VueSpectrumProvider>
 </template>
@@ -62,6 +71,7 @@ import {computed, ref} from 'vue';
 import {Button as VueButton} from '@vue-spectrum/button';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
 import {Dialog as VueDialog} from '@vue-spectrum/dialog';
+import {Popover as VuePopover} from '@vue-spectrum/overlays';
 import {Provider as VueSpectrumProvider} from '@vue-spectrum/provider';
 import {Radio as VueRadio, RadioGroup as VueRadioGroup} from '@vue-spectrum/radio';
 import {TextField as VueTextField} from '@vue-spectrum/textfield';
@@ -71,6 +81,7 @@ const name = ref('');
 const isSubscribed = ref(true);
 const favoriteFramework = ref('vue');
 const isDialogOpen = ref(false);
+const isPopoverOpen = ref(false);
 
 const ctaLabel = computed(() => {
   let suffix = name.value ? `, ${name.value}` : '';
@@ -83,6 +94,7 @@ function reset() {
   isSubscribed.value = true;
   favoriteFramework.value = 'vue';
   isDialogOpen.value = false;
+  isPopoverOpen.value = false;
 }
 </script>
 

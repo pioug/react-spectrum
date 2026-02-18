@@ -120,6 +120,26 @@
         }
       ]
     },
+    "@react-spectrum/overlays": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/overlays",
+      "targetPath": "packages/@vue-spectrum/overlays",
+      "notes": "Composition-layer migration step providing a Vue popover primitive.",
+      "acceptanceTests": [
+        {
+          "name": "Vue overlays package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/overlays/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    },
     "@react-spectrum/radio": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/radio",
