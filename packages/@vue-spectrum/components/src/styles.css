@@ -1426,6 +1426,340 @@
   opacity: 0.6;
 }
 
+.vs-color-swatch {
+  block-size: 18px;
+  border-radius: 999px;
+  display: inline-block;
+  flex: 0 0 auto;
+  inline-size: 18px;
+}
+
+.vs-color-swatch.is-bordered {
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.vs-provider[data-color-scheme='dark'] .vs-color-swatch.is-bordered {
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.vs-color-swatch.is-selected {
+  box-shadow: var(--vs-focus-ring);
+}
+
+.vs-color-field {
+  display: grid;
+  gap: 6px;
+}
+
+.vs-color-field__label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.vs-color-field__control {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.vs-color-field__input {
+  background: var(--vs-color-input-bg);
+  border: 1px solid var(--vs-color-border);
+  border-radius: 6px;
+  color: inherit;
+  flex: 1;
+}
+
+.vs-color-field__input:focus-visible {
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-color-field__input--medium {
+  font-size: 13px;
+  min-block-size: 32px;
+  padding: 6px 10px;
+}
+
+.vs-color-field__input--large {
+  font-size: 15px;
+  min-block-size: 38px;
+  padding: 8px 12px;
+}
+
+.vs-color-field__input.is-invalid {
+  border-color: #b91c1c;
+}
+
+.vs-color-field__description {
+  color: #707070;
+  font-size: 12px;
+}
+
+.vs-provider[data-color-scheme='dark'] .vs-color-field__description {
+  color: #c2c2c2;
+}
+
+.vs-color-slider {
+  display: grid;
+  gap: 6px;
+}
+
+.vs-color-slider__header {
+  align-items: center;
+  display: flex;
+  font-size: 13px;
+  font-weight: 600;
+  justify-content: space-between;
+}
+
+.vs-color-slider__value {
+  color: #4f4f4f;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+}
+
+.vs-provider[data-color-scheme='dark'] .vs-color-slider__value {
+  color: #d0d0d0;
+}
+
+.vs-color-slider__input {
+  appearance: none;
+  block-size: 8px;
+  border-radius: 999px;
+  cursor: pointer;
+  inline-size: 100%;
+}
+
+.vs-color-slider__input:focus-visible {
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-color-slider__input--large {
+  block-size: 10px;
+}
+
+.vs-color-slider__description {
+  color: #707070;
+  font-size: 12px;
+}
+
+.vs-provider[data-color-scheme='dark'] .vs-color-slider__description {
+  color: #c2c2c2;
+}
+
+.vs-color-area {
+  border: 1px solid var(--vs-color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+}
+
+.vs-color-area__label {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0 4px;
+}
+
+.vs-color-area__preview {
+  block-size: 52px;
+  border: 1px solid var(--vs-color-border);
+  border-radius: 6px;
+}
+
+.vs-color-area__channel {
+  color: #4f4f4f;
+  display: grid;
+  font-size: 12px;
+  gap: 4px;
+}
+
+.vs-provider[data-color-scheme='dark'] .vs-color-area__channel {
+  color: #d0d0d0;
+}
+
+.vs-color-area__input {
+  inline-size: 100%;
+}
+
+.vs-color-area__input:focus-visible {
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-color-wheel {
+  display: grid;
+  gap: 8px;
+}
+
+.vs-color-wheel__label {
+  font-size: 13px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.vs-color-wheel__ring {
+  background: conic-gradient(#ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+  block-size: 120px;
+  border-radius: 50%;
+  justify-self: start;
+  position: relative;
+  inline-size: 120px;
+}
+
+.vs-color-wheel__indicator {
+  background: rgba(255, 255, 255, 0.95);
+  block-size: 2px;
+  border-radius: 999px;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.5);
+  inline-size: 46%;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform-origin: left center;
+}
+
+.vs-provider[data-color-scheme='dark'] .vs-color-wheel__indicator {
+  background: rgba(0, 0, 0, 0.85);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.6);
+}
+
+.vs-color-wheel__swatch-row {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.vs-color-wheel__value {
+  color: #4f4f4f;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+}
+
+.vs-provider[data-color-scheme='dark'] .vs-color-wheel__value {
+  color: #d0d0d0;
+}
+
+.vs-color-wheel__input {
+  inline-size: 100%;
+}
+
+.vs-color-wheel__input:focus-visible {
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-color-swatch-picker {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
+}
+
+.vs-color-swatch-picker__item {
+  align-items: center;
+  background: var(--vs-color-secondary-bg);
+  border: 1px solid var(--vs-color-border);
+  border-radius: 6px;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  gap: 8px;
+  min-block-size: 34px;
+  padding: 6px 8px;
+}
+
+.vs-color-swatch-picker__item:hover:not(:disabled) {
+  background: var(--vs-color-secondary-hover);
+}
+
+.vs-color-swatch-picker__item:focus-visible {
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-color-swatch-picker__item.is-selected {
+  border-color: var(--vs-color-primary);
+}
+
+.vs-color-swatch-picker__item:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.vs-color-swatch-picker__label {
+  font-size: 12px;
+}
+
+.vs-color-picker {
+  border: 1px solid var(--vs-color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 10px;
+  padding: 10px;
+}
+
+.vs-color-picker__preview {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.vs-color-picker__preview-value {
+  background: var(--vs-color-secondary-bg);
+  border: 1px solid var(--vs-color-border);
+  border-radius: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  padding: 2px 6px;
+}
+
+.vs-color-editor {
+  border: 1px solid var(--vs-color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+}
+
+.vs-color-editor__label {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0 4px;
+}
+
+.vs-color-editor__preview {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.vs-color-editor__preview-value {
+  color: #4f4f4f;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+}
+
+.vs-provider[data-color-scheme='dark'] .vs-color-editor__preview-value {
+  color: #d0d0d0;
+}
+
+.vs-color-editor__channel {
+  display: grid;
+  font-size: 12px;
+  gap: 4px;
+}
+
+.vs-color-editor__channel-input {
+  inline-size: 100%;
+}
+
+.vs-color-editor__channel-input:focus-visible {
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
 .vs-action-bar-container {
   display: grid;
   gap: 8px;

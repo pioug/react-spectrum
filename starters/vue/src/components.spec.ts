@@ -7,6 +7,7 @@ import {ButtonGroup} from '@vue-spectrum/buttongroup';
 import {Calendar, RangeCalendar} from '@vue-spectrum/calendar';
 import {Card, CardView} from '@vue-spectrum/card';
 import {Checkbox} from '@vue-spectrum/checkbox';
+import {ColorField, ColorPicker, ColorSwatchPicker} from '@vue-spectrum/color';
 import {FileTrigger} from '@vue-spectrum/filetrigger';
 import {Image} from '@vue-spectrum/image';
 import {Icon, Illustration, UIIcon} from '@vue-spectrum/icon';
@@ -331,6 +332,49 @@ describe('Vue migration primitives', () => {
     await wrapper.findAll('button.vs-card-view__item')[1].trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['quality']);
     expect(wrapper.emitted('action')?.[0]).toEqual([{id: 'quality', title: 'Quality'}]);
+  });
+
+  it('emits input and change events from color field edits', async () => {
+    let wrapper = mount(ColorField, {
+      props: {
+        modelValue: '#3366ff',
+        label: 'Theme color'
+      }
+    });
+
+    let input = wrapper.get('input.vs-color-field__input');
+    await input.setValue('#10b981');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['#10b981']);
+    expect(wrapper.emitted('change')?.[0]).toEqual(['#10b981']);
+  });
+
+  it('emits swatch selection changes and returns selected swatch item', async () => {
+    let wrapper = mount(ColorSwatchPicker, {
+      props: {
+        modelValue: 'azure',
+        items: [
+          {id: 'azure', label: 'Azure', color: '#0ea5e9'},
+          {id: 'emerald', label: 'Emerald', color: '#10b981'}
+        ]
+      }
+    });
+
+    await wrapper.findAll('button.vs-color-swatch-picker__item')[1].trigger('click');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['emerald']);
+    expect(wrapper.emitted('change')?.[0]).toEqual([{id: 'emerald', label: 'Emerald', color: '#10b981'}]);
+  });
+
+  it('emits color updates from color picker field edits', async () => {
+    let wrapper = mount(ColorPicker, {
+      props: {
+        modelValue: '#3366ff',
+        label: 'Picker'
+      }
+    });
+
+    await wrapper.get('input.vs-color-field__input').setValue('#f59e0b');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['#f59e0b']);
+    expect(wrapper.emitted('change')?.[0]).toEqual(['#f59e0b']);
   });
 
   it('updates model value from calendar date input', async () => {

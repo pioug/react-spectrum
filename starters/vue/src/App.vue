@@ -152,6 +152,33 @@
           :items="cardItems"
           :columns="3" />
 
+        <VueColorPicker
+          v-model="selectedColor"
+          label="Theme color"
+          description="Baseline color picker and field primitives." />
+
+        <VueColorEditor
+          v-model="selectedColor"
+          label="Color channel editor" />
+
+        <VueColorSwatchPicker
+          v-model="selectedColorPreset"
+          :items="colorPresetItems"
+          @change="handleColorPresetChange" />
+
+        <VueColorArea
+          v-model="colorArea"
+          label="Color area channels" />
+
+        <VueColorWheel
+          v-model="colorHue"
+          label="Hue wheel" />
+
+        <VueColorSwatch
+          class="app-color-swatch"
+          :color="selectedColor"
+          label="Selected color preview" />
+
         <VueAccordion v-model="expandedSections">
           <VueDisclosure id="foundation">
             <VueDisclosureTitle>
@@ -278,6 +305,8 @@
             Last group action: <strong>{{ lastActionGroupAction }}</strong>
             <span> · </span>
             Card: <strong>{{ selectedCard }}</strong>
+            <span> · </span>
+            Color: <strong>{{ selectedColor }}</strong>
           </p>
         </VueView>
 
@@ -347,6 +376,7 @@ import {ButtonGroup as VueButtonGroup} from '@vue-spectrum/buttongroup';
 import {Calendar as VueCalendar, RangeCalendar as VueRangeCalendar} from '@vue-spectrum/calendar';
 import {Card as VueCard, CardView as VueCardView} from '@vue-spectrum/card';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
+import {ColorArea as VueColorArea, ColorEditor as VueColorEditor, ColorPicker as VueColorPicker, ColorSwatch as VueColorSwatch, ColorSwatchPicker as VueColorSwatchPicker, ColorWheel as VueColorWheel} from '@vue-spectrum/color';
 import {SearchAutocomplete as VueSearchAutocomplete} from '@vue-spectrum/autocomplete';
 import {DropZone as VueDropZone} from '@vue-spectrum/dropzone';
 import {Divider as VueDivider} from '@vue-spectrum/divider';
@@ -401,6 +431,13 @@ const favoriteLibrary = ref('Vue Spectrum');
 const selectedActionGroupItems = ref<string[]>(['Edit']);
 const lastActionGroupAction = ref('none');
 const selectedCard = ref('overview');
+const selectedColor = ref('#0ea5e9');
+const selectedColorPreset = ref('azure');
+const colorHue = ref(195);
+const colorArea = ref({
+  x: 55,
+  y: 35
+});
 const expandedSections = ref<string[]>(['foundation']);
 const selectedActionItems = ref(2);
 const lastBulkAction = ref('none');
@@ -419,6 +456,11 @@ const cardItems = [
   {id: 'overview', title: 'Overview', description: 'Migration baseline summary'},
   {id: 'delivery', title: 'Delivery', description: 'Current milestone tracking'},
   {id: 'quality', title: 'Quality', description: 'Validation and test readiness'}
+];
+const colorPresetItems = [
+  {id: 'azure', label: 'Azure', color: '#0ea5e9'},
+  {id: 'violet', label: 'Violet', color: '#8b5cf6'},
+  {id: 'emerald', label: 'Emerald', color: '#10b981'}
 ];
 const acceptedFileTypes = ['image/png', 'image/jpeg', 'application/pdf'];
 const ticketColumns = [
@@ -526,6 +568,13 @@ function reset() {
   selectedActionGroupItems.value = ['Edit'];
   lastActionGroupAction.value = 'none';
   selectedCard.value = 'overview';
+  selectedColor.value = '#0ea5e9';
+  selectedColorPreset.value = 'azure';
+  colorHue.value = 195;
+  colorArea.value = {
+    x: 55,
+    y: 35
+  };
   expandedSections.value = ['foundation'];
   selectedActionItems.value = 2;
   lastBulkAction.value = 'none';
@@ -551,6 +600,10 @@ function handleActionBarAction(action: string) {
 
 function handleActionGroupAction(action: string) {
   lastActionGroupAction.value = action;
+}
+
+function handleColorPresetChange(item: {color: string, id: string}) {
+  selectedColor.value = item.color;
 }
 
 function handleBreadcrumbAction(item: string) {
@@ -597,6 +650,10 @@ function handleVirtualScroll(event: Event) {
 
 .helper-label {
   margin-bottom: 8px;
+}
+
+.app-color-swatch {
+  margin-top: 2px;
 }
 
 .eyebrow {

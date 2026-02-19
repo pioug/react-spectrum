@@ -11953,6 +11953,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/color@workspace:*, @vue-spectrum/color@workspace:packages/@vue-spectrum/color":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/color@workspace:packages/@vue-spectrum/color"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/combobox@workspace:*, @vue-spectrum/combobox@workspace:packages/@vue-spectrum/combobox":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/combobox@workspace:packages/@vue-spectrum/combobox"
@@ -31090,6 +31100,7 @@ __metadata:
     "@vue-spectrum/calendar": "workspace:*"
     "@vue-spectrum/card": "workspace:*"
     "@vue-spectrum/checkbox": "workspace:*"
+    "@vue-spectrum/color": "workspace:*"
     "@vue-spectrum/combobox": "workspace:*"
     "@vue-spectrum/components": "workspace:*"
     "@vue-spectrum/dialog": "workspace:*"
