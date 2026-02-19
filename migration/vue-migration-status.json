@@ -840,6 +840,30 @@
         }
       ]
     },
+    "@react-aria/selection": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/selection",
+      "targetPath": "packages/@vue-aria/selection",
+      "notes": "Foundational React Aria selection utilities for list keyboard delegation, typeahead focus targeting, and selectable item/collection behavior in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria selection source lint",
+          "command": "yarn eslint packages/@vue-aria/selection/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",

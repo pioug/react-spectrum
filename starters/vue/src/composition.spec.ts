@@ -69,6 +69,13 @@ import {useRadio as useAriaRadio, useRadioGroup as useAriaRadioGroup} from '@vue
 import {useSearchField as useAriaSearchField} from '@vue-aria/searchfield';
 import {useHiddenSelect as useAriaHiddenSelect, useSelect as useAriaSelect} from '@vue-aria/select';
 import {
+  ListKeyboardDelegate as VueListKeyboardDelegate,
+  useSelectableCollection as useAriaSelectableCollection,
+  useSelectableItem as useAriaSelectableItem,
+  useSelectableList as useAriaSelectableList,
+  useTypeSelect as useAriaTypeSelect
+} from '@vue-aria/selection';
+import {
   addWindowFocusTracking,
   setInteractionModality,
   useFocus,
@@ -1613,6 +1620,55 @@ describe('Vue migration composition components', () => {
     expect(hiddenSelect.selectProps.value.value).toBe('react');
     hiddenSelect.selectProps.value.onChange('vue');
     expect(selectedKey.value).toBe('vue');
+  });
+
+  it('computes vue-aria selection delegate, list, and typeahead behavior', () => {
+    let items = [
+      {key: 'react', textValue: 'React'},
+      {key: 'vue', textValue: 'Vue'},
+      {disabled: true, key: 'svelte', textValue: 'Svelte'}
+    ];
+
+    let keyboardDelegate = new VueListKeyboardDelegate(items);
+    expect(keyboardDelegate.getFirstKey()).toBe('react');
+    expect(keyboardDelegate.getLastKey()).toBe('vue');
+    expect(keyboardDelegate.getKeyBelow('react')).toBe('vue');
+    expect(keyboardDelegate.getKeyForSearch('v')).toBe('vue');
+
+    let selectableList = useAriaSelectableList({
+      selectionMode: 'single'
+    });
+    let selectionEvents: Array<Set<string | number>> = [];
+    let selectableCollection = useAriaSelectableCollection({
+      keyboardDelegate,
+      onSelectionChange: (keys) => {
+        selectionEvents.push(new Set(keys));
+      },
+      selectionManager: selectableList.selectionManager
+    });
+
+    selectableList.selectionManager.setFocusedKey('react');
+    selectableCollection.collectionProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
+    expect(selectableList.selectionManager.focusedKey.value).toBe('vue');
+    expect(Array.from(selectableList.selectionManager.selectedKeys.value)).toEqual(['vue']);
+    expect(selectionEvents.length).toBe(1);
+
+    let selectableItem = useAriaSelectableItem({
+      key: 'vue'
+    }, selectableList.selectionManager);
+    expect(selectableItem.itemProps.value['aria-selected']).toBe(true);
+
+    let typeSelectEvents: Array<string | number> = [];
+    let typeSelect = useAriaTypeSelect({
+      keyboardDelegate,
+      onTypeSelect: (key) => {
+        typeSelectEvents.push(key);
+      },
+      selectionManager: selectableList.selectionManager
+    });
+    typeSelect.typeSelectProps.value.onKeyDownCapture(new KeyboardEvent('keydown', {key: 'r'}));
+    expect(selectableList.selectionManager.focusedKey.value).toBe('react');
+    expect(typeSelectEvents).toEqual(['react']);
   });
 
   it('announces and clears live region messages with vue-aria live announcer', () => {
