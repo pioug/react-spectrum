@@ -26,6 +26,7 @@
     "@vue-spectrum/divider": "workspace:*",
     "@vue-spectrum/dnd": "workspace:*",
     "@vue-spectrum/dropzone": "workspace:*",
+    "@vue-spectrum/filetrigger": "workspace:*",
     "@vue-spectrum/form": "workspace:*",
     "@vue-spectrum/icon": "workspace:*",
     "@vue-spectrum/illustratedmessage": "workspace:*",

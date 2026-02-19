@@ -8,6 +8,7 @@ import {VueComboBox} from './components/VueComboBox';
 import {VueDialog} from './components/VueDialog';
 import {VueDivider} from './components/VueDivider';
 import {VueDropZone} from './components/VueDropZone';
+import {VueFileTrigger} from './components/VueFileTrigger';
 import {VueFlex} from './components/VueFlex';
 import {VueForm} from './components/VueForm';
 import {VueGrid} from './components/VueGrid';
@@ -49,6 +50,7 @@ export const VueSpectrumPlugin: Plugin = {
     app.component(VueDialog.name ?? 'VueDialog', VueDialog);
     app.component(VueDivider.name ?? 'VueDivider', VueDivider);
     app.component(VueDropZone.name ?? 'VueDropZone', VueDropZone);
+    app.component(VueFileTrigger.name ?? 'VueFileTrigger', VueFileTrigger);
     app.component(VueFlex.name ?? 'VueFlex', VueFlex);
     app.component(VueForm.name ?? 'VueForm', VueForm);
     app.component(VueGrid.name ?? 'VueGrid', VueGrid);
@@ -82,5 +84,5 @@ export const VueSpectrumPlugin: Plugin = {
   }
 };
 
-export {VueAvatar, VueBadge, VueButton, VueButtonGroup, VueCheckbox, VueComboBox, VueDialog, VueDivider, VueDropZone, VueFlex, VueForm, VueGrid, VueIcon, VueIllustration, VueIllustratedMessage, VueImage, VueInlineAlert, VueLabel, VueLabeledValue, VueLink, VueListBox, VueMenu, VueMeter, VueNumberField, VuePopover, VueProgressBar, VueRadio, VueRadioGroup, VueSearchField, VueSlider, VueSpectrumProvider, VueStatusLight, VueSwitch, VueTable, VueText, VueTextField, VueTree, VueUIIcon, VueView, VueWell};
+export {VueAvatar, VueBadge, VueButton, VueButtonGroup, VueCheckbox, VueComboBox, VueDialog, VueDivider, VueDropZone, VueFileTrigger, VueFlex, VueForm, VueGrid, VueIcon, VueIllustration, VueIllustratedMessage, VueImage, VueInlineAlert, VueLabel, VueLabeledValue, VueLink, VueListBox, VueMenu, VueMeter, VueNumberField, VuePopover, VueProgressBar, VueRadio, VueRadioGroup, VueSearchField, VueSlider, VueSpectrumProvider, VueStatusLight, VueSwitch, VueTable, VueText, VueTextField, VueTree, VueUIIcon, VueView, VueWell};
 export type {SpectrumContextValue} from './context';

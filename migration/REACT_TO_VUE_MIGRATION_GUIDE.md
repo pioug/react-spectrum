@@ -57,6 +57,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-spectrum/tree` | `@vue-spectrum/tree` |
 | `@react-spectrum/dnd` | `@vue-spectrum/dnd` |
 | `@react-spectrum/dropzone` | `@vue-spectrum/dropzone` |
+| `@react-spectrum/filetrigger` | `@vue-spectrum/filetrigger` |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` |
 
 ## Core API conversion patterns

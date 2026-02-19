@@ -5,6 +5,7 @@ import {Badge} from '@vue-spectrum/badge';
 import {Button} from '@vue-spectrum/button';
 import {ButtonGroup} from '@vue-spectrum/buttongroup';
 import {Checkbox} from '@vue-spectrum/checkbox';
+import {FileTrigger} from '@vue-spectrum/filetrigger';
 import {Image} from '@vue-spectrum/image';
 import {Icon, Illustration, UIIcon} from '@vue-spectrum/icon';
 import {IllustratedMessage} from '@vue-spectrum/illustratedmessage';
@@ -301,6 +302,33 @@ describe('Vue migration primitives', () => {
     await wrapper.get('input').setValue(true);
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([true]);
     expect(wrapper.emitted('change')?.[0]).toEqual([true]);
+  });
+
+  it('emits selected files from file trigger input', async () => {
+    let wrapper = mount(FileTrigger, {
+      props: {
+        allowsMultiple: true
+      },
+      slots: {
+        default: 'Select assets'
+      }
+    });
+
+    let input = wrapper.get('input[type="file"]');
+    let first = new File(['alpha'], 'alpha.txt', {type: 'text/plain'});
+    let second = new File(['beta'], 'beta.txt', {type: 'text/plain'});
+
+    Object.defineProperty(input.element, 'files', {
+      configurable: true,
+      value: [first, second]
+    });
+
+    await input.trigger('change');
+
+    let selected = wrapper.emitted('select')?.[0]?.[0] as File[];
+    let changed = wrapper.emitted('change')?.[0]?.[0] as File[];
+    expect(selected.map((file) => file.name)).toEqual(['alpha.txt', 'beta.txt']);
+    expect(changed.map((file) => file.name)).toEqual(['alpha.txt', 'beta.txt']);
   });
 
   it('propagates v-model through radio group', async () => {

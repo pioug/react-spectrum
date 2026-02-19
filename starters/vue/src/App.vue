@@ -160,6 +160,13 @@
           label="Drop design assets"
           @files-drop="handleFilesDrop" />
 
+        <VueFileTrigger
+          :accepted-file-types="acceptedFileTypes"
+          allows-multiple
+          @select="handleFileSelect">
+          Select attachments
+        </VueFileTrigger>
+
         <VueDivider />
 
         <VueView border padding="s">
@@ -179,6 +186,8 @@
             Tree: <strong>{{ selectedTreeNode }}</strong>
             <span> · </span>
             Files: <strong>{{ droppedFiles.length > 0 ? droppedFiles.length : 'none' }}</strong>
+            <span> · </span>
+            Trigger files: <strong>{{ selectedFiles.length > 0 ? selectedFiles.length : 'none' }}</strong>
             <span> · </span>
             Digest: <strong>{{ isDigestEnabled ? 'on' : 'off' }}</strong>
             <span> · </span>
@@ -252,6 +261,7 @@ import {SearchAutocomplete as VueSearchAutocomplete} from '@vue-spectrum/autocom
 import {DropZone as VueDropZone} from '@vue-spectrum/dropzone';
 import {Divider as VueDivider} from '@vue-spectrum/divider';
 import {Dialog as VueDialog} from '@vue-spectrum/dialog';
+import {FileTrigger as VueFileTrigger} from '@vue-spectrum/filetrigger';
 import {Form as VueForm} from '@vue-spectrum/form';
 import {Icon as VueIcon} from '@vue-spectrum/icon';
 import {Image as VueImage} from '@vue-spectrum/image';
@@ -294,11 +304,13 @@ const favoriteLibrary = ref('Vue Spectrum');
 const selectedTicket = ref('T-402');
 const selectedTreeNode = ref('project-alpha');
 const droppedFiles = ref<string[]>([]);
+const selectedFiles = ref<string[]>([]);
 const isDialogOpen = ref(false);
 const isPopoverOpen = ref(false);
 const languageOptions = ['TypeScript', 'JavaScript', 'Rust', 'Go', 'Python'];
 const componentOptions = ['Forms', 'Navigation', 'Overlays', 'Data display'];
 const libraryOptions = ['Vue Spectrum', 'React Spectrum', 'Tailwind CSS'];
+const acceptedFileTypes = ['image/png', 'image/jpeg', 'application/pdf'];
 const ticketColumns = [
   {key: 'ticket', label: 'Ticket'},
   {key: 'owner', label: 'Owner'},
@@ -398,12 +410,17 @@ function reset() {
   selectedTicket.value = 'T-402';
   selectedTreeNode.value = 'project-alpha';
   droppedFiles.value = [];
+  selectedFiles.value = [];
   isDialogOpen.value = false;
   isPopoverOpen.value = false;
 }
 
 function handleFilesDrop(files: File[]) {
   droppedFiles.value = files.map((file) => file.name);
+}
+
+function handleFileSelect(files: File[]) {
+  selectedFiles.value = files.map((file) => file.name);
 }
 
 function handleVirtualScroll(event: Event) {

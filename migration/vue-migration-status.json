@@ -428,6 +428,30 @@
         }
       ]
     },
+    "@react-spectrum/filetrigger": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/filetrigger",
+      "targetPath": "packages/@vue-spectrum/filetrigger",
+      "notes": "Data-heavy migration package exposing a Vue file trigger primitive for hidden-input file selection workflows.",
+      "acceptanceTests": [
+        {
+          "name": "Vue filetrigger package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/filetrigger/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/form": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/form",

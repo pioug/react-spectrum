@@ -1456,3 +1456,47 @@
 .vs-drop-zone__input {
   display: none;
 }
+
+.vs-file-trigger {
+  display: inline-grid;
+  gap: 8px;
+  justify-items: start;
+}
+
+.vs-file-trigger__button {
+  background: var(--vs-color-secondary-bg);
+  border: 1px solid var(--vs-color-border);
+  border-radius: 6px;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.vs-file-trigger--medium .vs-file-trigger__button {
+  min-height: 30px;
+  padding: 4px 10px;
+}
+
+.vs-file-trigger--large .vs-file-trigger__button {
+  min-height: 34px;
+  padding: 6px 12px;
+}
+
+.vs-file-trigger__button:hover:not(:disabled) {
+  background: var(--vs-color-secondary-hover);
+}
+
+.vs-file-trigger__button:focus-visible {
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-file-trigger__button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.vs-file-trigger__input {
+  display: none;
+}
