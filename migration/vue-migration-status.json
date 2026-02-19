@@ -1321,7 +1321,7 @@
       ]
     },
     "@react-spectrum/provider": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/provider",
       "targetPath": "packages/@vue-spectrum/provider",
       "notes": "First-wave target after the initial Vue baseline package, to establish theming and app-level context.",
@@ -1345,7 +1345,7 @@
       ]
     },
     "@react-spectrum/button": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/button",
       "targetPath": "packages/@vue-spectrum/button",
       "notes": "First-wave primitive aligned with existing VueButton baseline work.",
@@ -1369,7 +1369,7 @@
       ]
     },
     "@react-spectrum/accordion": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/accordion",
       "targetPath": "packages/@vue-spectrum/accordion",
       "notes": "Composition-layer migration step providing Vue accordion and disclosure primitives.",
@@ -1393,7 +1393,7 @@
       ]
     },
     "@react-spectrum/actionbar": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/actionbar",
       "targetPath": "packages/@vue-spectrum/actionbar",
       "notes": "Composition-layer migration step providing Vue action bar and container primitives for bulk action workflows.",
@@ -1417,7 +1417,7 @@
       ]
     },
     "@react-spectrum/actiongroup": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/actiongroup",
       "targetPath": "packages/@vue-spectrum/actiongroup",
       "notes": "Composition-layer migration step providing Vue action group primitives for grouped action buttons and selection.",
@@ -1441,7 +1441,7 @@
       ]
     },
     "@react-spectrum/breadcrumbs": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/breadcrumbs",
       "targetPath": "packages/@vue-spectrum/breadcrumbs",
       "notes": "Composition-layer migration step providing Vue breadcrumbs for hierarchy and navigation context trails.",
@@ -1465,7 +1465,7 @@
       ]
     },
     "@react-spectrum/calendar": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/calendar",
       "targetPath": "packages/@vue-spectrum/calendar",
       "notes": "Composition-layer migration step providing Vue calendar and range calendar primitives.",
@@ -1489,7 +1489,7 @@
       ]
     },
     "@react-spectrum/card": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/card",
       "targetPath": "packages/@vue-spectrum/card",
       "notes": "Composition-layer migration step providing Vue card and card view primitives.",
@@ -1513,7 +1513,7 @@
       ]
     },
     "@react-spectrum/color": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/color",
       "targetPath": "packages/@vue-spectrum/color",
       "notes": "Composition-layer migration step providing Vue color primitives for field, picker, swatch, and channel editing flows.",
@@ -1537,7 +1537,7 @@
       ]
     },
     "@react-spectrum/buttongroup": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/buttongroup",
       "targetPath": "packages/@vue-spectrum/buttongroup",
       "notes": "First-wave primitive for grouped button actions and layout alignment.",
@@ -1561,7 +1561,7 @@
       ]
     },
     "@react-spectrum/avatar": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/avatar",
       "targetPath": "packages/@vue-spectrum/avatar",
       "notes": "First-wave visual primitive for identity and user representation.",
@@ -1585,7 +1585,7 @@
       ]
     },
     "@react-spectrum/badge": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/badge",
       "targetPath": "packages/@vue-spectrum/badge",
       "notes": "First-wave visual primitive for compact labels and status context.",
@@ -1609,7 +1609,7 @@
       ]
     },
     "@react-spectrum/well": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/well",
       "targetPath": "packages/@vue-spectrum/well",
       "notes": "First-wave content container primitive for grouped inline context.",
@@ -1633,7 +1633,7 @@
       ]
     },
     "@react-spectrum/view": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/view",
       "targetPath": "packages/@vue-spectrum/view",
       "notes": "First-wave layout primitive for semantic container structure and spacing.",
@@ -1657,7 +1657,7 @@
       ]
     },
     "@react-spectrum/text": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/text",
       "targetPath": "packages/@vue-spectrum/text",
       "notes": "First-wave typography primitive for semantic text and emphasis variants.",
@@ -1681,7 +1681,7 @@
       ]
     },
     "@react-spectrum/textfield": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/textfield",
       "targetPath": "packages/@vue-spectrum/textfield",
       "notes": "First-wave primitive aligned with existing VueTextField baseline work.",
@@ -1705,7 +1705,7 @@
       ]
     },
     "@react-spectrum/checkbox": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/checkbox",
       "targetPath": "packages/@vue-spectrum/checkbox",
       "notes": "First-wave primitive for form controls.",
@@ -1729,7 +1729,7 @@
       ]
     },
     "@react-spectrum/combobox": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/combobox",
       "targetPath": "packages/@vue-spectrum/combobox",
       "notes": "Composition-layer migration step with an initial Vue combobox primitive.",
@@ -1753,7 +1753,7 @@
       ]
     },
     "@react-spectrum/autocomplete": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/autocomplete",
       "targetPath": "packages/@vue-spectrum/autocomplete",
       "notes": "Composition-layer migration step providing a Vue search autocomplete package wrapper.",
@@ -1777,7 +1777,7 @@
       ]
     },
     "@react-spectrum/contextualhelp": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/contextualhelp",
       "targetPath": "packages/@vue-spectrum/contextualhelp",
       "notes": "Composition-layer migration step providing a Vue contextual-help trigger and popover primitive.",
@@ -1801,7 +1801,7 @@
       ]
     },
     "@react-spectrum/datepicker": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/datepicker",
       "targetPath": "packages/@vue-spectrum/datepicker",
       "notes": "Composition-layer migration step providing Vue date picker, date range picker, date field, and time field primitives.",
@@ -1825,7 +1825,7 @@
       ]
     },
     "@react-spectrum/picker": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/picker",
       "targetPath": "packages/@vue-spectrum/picker",
       "notes": "Composition-layer migration step providing a Vue single-select picker primitive and collection item helpers.",
@@ -1849,7 +1849,7 @@
       ]
     },
     "@react-spectrum/dialog": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/dialog",
       "targetPath": "packages/@vue-spectrum/dialog",
       "notes": "Composition-layer migration step providing a Vue dialog primitive.",
@@ -1873,7 +1873,7 @@
       ]
     },
     "@react-spectrum/divider": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/divider",
       "targetPath": "packages/@vue-spectrum/divider",
       "notes": "First-wave visual primitive for section separation.",
@@ -1893,7 +1893,7 @@
       ]
     },
     "@react-spectrum/dnd": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/dnd",
       "targetPath": "packages/@vue-spectrum/dnd",
       "notes": "Data-heavy migration baseline for drag-and-drop interactions.",
@@ -1917,7 +1917,7 @@
       ]
     },
     "@react-spectrum/dropzone": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/dropzone",
       "targetPath": "packages/@vue-spectrum/dropzone",
       "notes": "Data-heavy migration package exposing Vue drop zone primitives for file and text drop interactions.",
@@ -1941,7 +1941,7 @@
       ]
     },
     "@react-spectrum/filetrigger": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/filetrigger",
       "targetPath": "packages/@vue-spectrum/filetrigger",
       "notes": "Data-heavy migration package exposing a Vue file trigger primitive for hidden-input file selection workflows.",
@@ -1965,7 +1965,7 @@
       ]
     },
     "@react-spectrum/form": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/form",
       "targetPath": "packages/@vue-spectrum/form",
       "notes": "First-wave form grouping migration step with a Vue form primitive.",
@@ -1989,7 +1989,7 @@
       ]
     },
     "@react-spectrum/icon": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/icon",
       "targetPath": "packages/@vue-spectrum/icon",
       "notes": "First-wave visual primitive for icon, UI icon, and illustration rendering.",
@@ -2013,7 +2013,7 @@
       ]
     },
     "@react-spectrum/image": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/image",
       "targetPath": "packages/@vue-spectrum/image",
       "notes": "First-wave media primitive for image rendering and object-fit behavior.",
@@ -2037,7 +2037,7 @@
       ]
     },
     "@react-spectrum/inlinealert": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/inlinealert",
       "targetPath": "packages/@vue-spectrum/inlinealert",
       "notes": "First-wave messaging primitive for contextual inline notices.",
@@ -2061,7 +2061,7 @@
       ]
     },
     "@react-spectrum/illustratedmessage": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/illustratedmessage",
       "targetPath": "packages/@vue-spectrum/illustratedmessage",
       "notes": "First-wave content primitive for empty-state and contextual illustrated messaging.",
@@ -2085,7 +2085,7 @@
       ]
     },
     "@react-spectrum/listbox": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/listbox",
       "targetPath": "packages/@vue-spectrum/listbox",
       "notes": "Composition-layer migration step with an initial Vue listbox primitive.",
@@ -2109,7 +2109,7 @@
       ]
     },
     "@react-spectrum/list": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/list",
       "targetPath": "packages/@vue-spectrum/list",
       "notes": "Composition-layer migration step providing a Vue list view package wrapper.",
@@ -2133,7 +2133,7 @@
       ]
     },
     "@react-spectrum/label": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/label",
       "targetPath": "packages/@vue-spectrum/label",
       "notes": "First-wave form primitive for semantic labeling and required indicators.",
@@ -2157,7 +2157,7 @@
       ]
     },
     "@react-spectrum/labeledvalue": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/labeledvalue",
       "targetPath": "packages/@vue-spectrum/labeledvalue",
       "notes": "First-wave content primitive for locale-aware read-only label/value presentation.",
@@ -2181,7 +2181,7 @@
       ]
     },
     "@react-spectrum/layout": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/layout",
       "targetPath": "packages/@vue-spectrum/layout",
       "notes": "First-wave layout migration package providing baseline Vue Flex and Grid primitives.",
@@ -2205,7 +2205,7 @@
       ]
     },
     "@react-spectrum/link": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/link",
       "targetPath": "packages/@vue-spectrum/link",
       "notes": "First-wave visual/content migration step with a Vue link primitive.",
@@ -2225,7 +2225,7 @@
       ]
     },
     "@react-spectrum/menu": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/menu",
       "targetPath": "packages/@vue-spectrum/menu",
       "notes": "Composition-layer migration step with an initial Vue menu primitive.",
@@ -2249,7 +2249,7 @@
       ]
     },
     "@react-spectrum/numberfield": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/numberfield",
       "targetPath": "packages/@vue-spectrum/numberfield",
       "notes": "First-wave primitive for numeric text entry.",
@@ -2269,7 +2269,7 @@
       ]
     },
     "@react-spectrum/overlays": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/overlays",
       "targetPath": "packages/@vue-spectrum/overlays",
       "notes": "Composition-layer migration step providing a Vue popover primitive.",
@@ -2293,7 +2293,7 @@
       ]
     },
     "@react-spectrum/radio": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/radio",
       "targetPath": "packages/@vue-spectrum/radio",
       "notes": "First-wave primitive for form controls.",
@@ -2317,7 +2317,7 @@
       ]
     },
     "@react-spectrum/searchfield": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/searchfield",
       "targetPath": "packages/@vue-spectrum/searchfield",
       "notes": "First-wave primitive for search-oriented text input.",
@@ -2337,7 +2337,7 @@
       ]
     },
     "@react-spectrum/slider": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/slider",
       "targetPath": "packages/@vue-spectrum/slider",
       "notes": "First-wave primitive for range input controls.",
@@ -2357,7 +2357,7 @@
       ]
     },
     "@react-spectrum/progress": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/progress",
       "targetPath": "packages/@vue-spectrum/progress",
       "notes": "First-wave primitive for progress feedback UI.",
@@ -2377,7 +2377,7 @@
       ]
     },
     "@react-spectrum/meter": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/meter",
       "targetPath": "packages/@vue-spectrum/meter",
       "notes": "First-wave primitive for bounded measurements.",
@@ -2397,7 +2397,7 @@
       ]
     },
     "@react-spectrum/statuslight": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/statuslight",
       "targetPath": "packages/@vue-spectrum/statuslight",
       "notes": "First-wave primitive for lightweight status signaling.",
@@ -2417,7 +2417,7 @@
       ]
     },
     "@react-spectrum/table": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/table",
       "targetPath": "packages/@vue-spectrum/table",
       "notes": "Data-heavy migration baseline for tabular collections.",
@@ -2441,7 +2441,7 @@
       ]
     },
     "@react-spectrum/tree": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/tree",
       "targetPath": "packages/@vue-spectrum/tree",
       "notes": "Data-heavy migration baseline for hierarchical collections.",
@@ -2465,7 +2465,7 @@
       ]
     },
     "@react-spectrum/s2": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/s2",
       "targetPath": "packages/@vue-spectrum/s2",
       "notes": "Spectrum 2 migration baseline package exposing a Vue aggregate entry point for core provider/form/data-display primitives.",
@@ -2489,7 +2489,7 @@
       ]
     },
     "@react-spectrum/switch": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/switch",
       "targetPath": "packages/@vue-spectrum/switch",
       "notes": "First-wave primitive for binary toggles.",
@@ -2513,7 +2513,7 @@
       ]
     },
     "@react-spectrum/tabs": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/tabs",
       "targetPath": "packages/@vue-spectrum/tabs",
       "notes": "Composition-layer migration baseline for tablist navigation, keyboard interaction, and tabpanel rendering in Vue.",
@@ -2537,7 +2537,7 @@
       ]
     },
     "@react-spectrum/tag": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/tag",
       "targetPath": "packages/@vue-spectrum/tag",
       "notes": "Composition-layer migration baseline for tag-group selection and removable tag interactions in Vue.",
@@ -2561,7 +2561,7 @@
       ]
     },
     "@react-spectrum/test-utils": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/test-utils",
       "targetPath": "packages/@vue-spectrum/test-utils",
       "notes": "Testing utility baseline re-exporting Vue Aria test helpers with mobile/desktop screen-width simulators.",
@@ -2585,7 +2585,7 @@
       ]
     },
     "@react-spectrum/theme-dark": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/theme-dark",
       "targetPath": "packages/@vue-spectrum/theme-dark",
       "notes": "Theme token baseline for dark Spectrum variants and scale classes in Vue package ports.",
@@ -2609,7 +2609,7 @@
       ]
     },
     "@react-spectrum/theme-default": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/theme-default",
       "targetPath": "packages/@vue-spectrum/theme-default",
       "notes": "Theme token baseline for the default Spectrum color-scheme pairing and scale classes in Vue package ports.",
@@ -2633,7 +2633,7 @@
       ]
     },
     "@react-spectrum/theme-express": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/theme-express",
       "targetPath": "packages/@vue-spectrum/theme-express",
       "notes": "Theme token baseline for Spectrum express variants layered on the default Vue theme package.",
@@ -2657,7 +2657,7 @@
       ]
     },
     "@react-spectrum/theme-light": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/theme-light",
       "targetPath": "packages/@vue-spectrum/theme-light",
       "notes": "Theme token baseline for lightest Spectrum variants and scale classes in Vue package ports.",
@@ -2681,7 +2681,7 @@
       ]
     },
     "@react-spectrum/toast": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/toast",
       "targetPath": "packages/@vue-spectrum/toast",
       "notes": "Toast container baseline with queue helpers and Vue Aria toast-region semantics.",
@@ -2705,7 +2705,7 @@
       ]
     },
     "@react-spectrum/tooltip": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/tooltip",
       "targetPath": "packages/@vue-spectrum/tooltip",
       "notes": "Tooltip and tooltip-trigger baseline components with Vue Aria trigger semantics and accessibility props.",
@@ -2729,7 +2729,7 @@
       ]
     },
     "@react-spectrum/utils": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/utils",
       "targetPath": "packages/@vue-spectrum/utils",
       "notes": "Utility baseline for Spectrum class-name composition, media-query state, and DOM-ref wrappers in Vue package ports.",
@@ -3521,7 +3521,7 @@
       ]
     },
     "@react-spectrum/steplist": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/steplist",
       "targetPath": "packages/@vue-spectrum/steplist",
       "notes": "Data-heavy migration baseline for workflow step navigation and progress indicators.",
@@ -3545,7 +3545,7 @@
       ]
     },
     "@react-spectrum/story-utils": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/story-utils",
       "targetPath": "packages/@vue-spectrum/story-utils",
       "notes": "Story migration utilities baseline with a Vue error boundary and powerset helper for demo and visual test scenarios.",
@@ -3569,7 +3569,7 @@
       ]
     },
     "@react-spectrum/style-macro-s1": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/style-macro-s1",
       "targetPath": "packages/@vue-spectrum/style-macro-s1",
       "notes": "Style macro baseline for Spectrum 1 token-style generation with runtime helper parity for Vue migration stories.",
