@@ -2560,6 +2560,30 @@
         }
       ]
     },
+    "@react-spectrum/test-utils": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/test-utils",
+      "targetPath": "packages/@vue-spectrum/test-utils",
+      "notes": "Testing utility baseline re-exporting Vue Aria test helpers with mobile/desktop screen-width simulators.",
+      "acceptanceTests": [
+        {
+          "name": "Vue test-utils package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/test-utils/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

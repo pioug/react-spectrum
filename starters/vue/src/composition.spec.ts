@@ -144,6 +144,7 @@ import {VueButton, VueSpectrumPlugin, VueSpectrumProvider, VueTextField, VueTree
 import {Button as S2Button, Provider as S2Provider, Spectrum2Plugin, TextField as S2TextField, TreeView as S2TreeView} from '@vue-spectrum/s2';
 import {baseColor as baseS1Color, focusRing as s1FocusRing, keyframes as s1Keyframes, lightDark as s1LightDark, raw as s1Raw, style as s1Style} from '@vue-spectrum/style-macro-s1';
 import {ErrorBoundary as StoryUtilsErrorBoundary, generatePowerset as generateStoryPowerset} from '@vue-spectrum/story-utils';
+import {pointerMap as spectrumPointerMap, simulateDesktop as simulateSpectrumDesktop, simulateMobile as simulateSpectrumMobile} from '@vue-spectrum/test-utils';
 
 function createPointerEvent(
   type: string,
@@ -2684,6 +2685,29 @@ describe('Vue migration composition components', () => {
       expect(events).toEqual(['tab-click', 'pointerdown', 'longpress-click']);
     } finally {
       document.body.innerHTML = previousMarkup;
+    }
+  });
+
+  it('re-exports vue-spectrum test-utils and simulates viewport width helpers', () => {
+    let previousWidthDescriptor = Object.getOwnPropertyDescriptor(window.screen, 'width');
+
+    try {
+      simulateSpectrumMobile(640);
+      expect(window.screen.width).toBe(640);
+
+      simulateSpectrumMobile(900);
+      expect(window.screen.width).toBe(700);
+
+      simulateSpectrumDesktop(640);
+      expect(window.screen.width).toBe(701);
+
+      simulateSpectrumDesktop(1200);
+      expect(window.screen.width).toBe(1200);
+      expect(spectrumPointerMap).toBe(vueAriaPointerMap);
+    } finally {
+      if (previousWidthDescriptor) {
+        Object.defineProperty(window.screen, 'width', previousWidthDescriptor);
+      }
     }
   });
 

@@ -119,6 +119,7 @@
     "@vue-spectrum/table": "workspace:*",
     "@vue-spectrum/tabs": "workspace:*",
     "@vue-spectrum/tag": "workspace:*",
+    "@vue-spectrum/test-utils": "workspace:*",
     "@vue-spectrum/text": "workspace:*",
     "@vue-spectrum/textfield": "workspace:*",
     "@vue-spectrum/tree": "workspace:*",
