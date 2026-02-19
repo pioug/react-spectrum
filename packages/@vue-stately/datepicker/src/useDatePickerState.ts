@@ -2,8 +2,9 @@ import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
 import {useDatePicker} from '@vue-aria/datepicker';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
+export type DateValue = string | number | Date;
 
-export interface DatePickerStateOptions {
+export interface DatePickerStateOptions<T extends DateValue = DateValue> {
   defaultOpen?: MaybeRef<boolean>,
   defaultValue?: string | null,
   isDisabled?: MaybeRef<boolean>,
@@ -41,7 +42,7 @@ export interface DatePickerState {
   toggle: () => void
 }
 
-export function useDatePickerState(options: DatePickerStateOptions = {}): DatePickerState {
+export function useDatePickerState<T extends DateValue = DateValue>(options: DatePickerStateOptions<T> = {}): DatePickerState {
   let internalValue = ref<string | null>(options.defaultValue ?? null);
   let value = options.value ?? internalValue;
   let timeValue = ref<string | null>(null);

@@ -4,7 +4,17 @@ import {useDateField} from '@vue-aria/datepicker';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 
-export interface DateFieldStateOptions {
+export type DateValue = string | number | Date;
+export type SegmentType = 'day' | 'hour' | 'literal' | 'minute' | 'month' | 'year';
+
+export interface DateSegment {
+  isEditable?: boolean,
+  text: string,
+  type: SegmentType,
+  value?: number | string | null
+}
+
+export interface DateFieldStateOptions<T extends DateValue = DateValue> {
   defaultValue?: string,
   isDisabled?: MaybeRef<boolean>,
   isReadOnly?: MaybeRef<boolean>,
@@ -31,7 +41,7 @@ export interface DateFieldState {
   setValue: (value: string) => void
 }
 
-export function useDateFieldState(options: DateFieldStateOptions = {}): DateFieldState {
+export function useDateFieldState<T extends DateValue = DateValue>(options: DateFieldStateOptions<T> = {}): DateFieldState {
   let internalValue = ref(options.defaultValue ?? '');
   let value = options.value ?? internalValue;
 

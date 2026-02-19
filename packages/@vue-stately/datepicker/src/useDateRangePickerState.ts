@@ -2,25 +2,12 @@ import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
 import {type DateRangeValue, useDateRangePicker} from '@vue-aria/datepicker';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
+export type DateValue = string | number | Date;
 
 type TimeRangeValue = {
   end: string | null,
   start: string | null
 };
-
-export interface DateRangePickerStateOptions {
-  defaultOpen?: MaybeRef<boolean>,
-  defaultValue?: DateRangeValue,
-  isDisabled?: MaybeRef<boolean>,
-  isReadOnly?: MaybeRef<boolean>,
-  isRequired?: MaybeRef<boolean>,
-  maxValue?: MaybeRef<string | undefined>,
-  minValue?: MaybeRef<string | undefined>,
-  onChange?: (value: DateRangeValue) => void,
-  onOpenChange?: (isOpen: boolean) => void,
-  shouldCloseOnSelect?: boolean | (() => boolean),
-  value?: Ref<DateRangeValue>
-}
 
 export interface DateRangePickerState {
   dateRange: ComputedRef<DateRangeValue>,
@@ -63,7 +50,21 @@ function cloneRange(value?: DateRangeValue): DateRangeValue {
   };
 }
 
-export function useDateRangePickerState(options: DateRangePickerStateOptions = {}): DateRangePickerState {
+export interface DateRangePickerStateOptions<T extends DateValue = DateValue> {
+  defaultOpen?: MaybeRef<boolean>,
+  defaultValue?: DateRangeValue,
+  isDisabled?: MaybeRef<boolean>,
+  isReadOnly?: MaybeRef<boolean>,
+  isRequired?: MaybeRef<boolean>,
+  maxValue?: MaybeRef<string | undefined>,
+  minValue?: MaybeRef<string | undefined>,
+  onChange?: (value: DateRangeValue) => void,
+  onOpenChange?: (isOpen: boolean) => void,
+  shouldCloseOnSelect?: boolean | (() => boolean),
+  value?: Ref<DateRangeValue>
+}
+
+export function useDateRangePickerState<T extends DateValue = DateValue>(options: DateRangePickerStateOptions<T> = {}): DateRangePickerState {
   let internalValue = ref(cloneRange(options.defaultValue));
   let value = options.value ?? internalValue;
   let timeRange = ref<TimeRangeValue>({

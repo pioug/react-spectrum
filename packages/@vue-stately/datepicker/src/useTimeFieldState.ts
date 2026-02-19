@@ -3,8 +3,9 @@ import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
 import {useTimeField} from '@vue-aria/datepicker';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
+export type TimeValue = string | number | Date;
 
-export interface TimeFieldStateOptions {
+export interface TimeFieldStateOptions<T extends TimeValue = TimeValue> {
   defaultValue?: string,
   isDisabled?: MaybeRef<boolean>,
   isReadOnly?: MaybeRef<boolean>,
@@ -30,7 +31,7 @@ export interface TimeFieldState {
   setValue: (value: string) => void
 }
 
-export function useTimeFieldState(options: TimeFieldStateOptions = {}): TimeFieldState {
+export function useTimeFieldState<T extends TimeValue = TimeValue>(options: TimeFieldStateOptions<T> = {}): TimeFieldState {
   let internalValue = ref(options.defaultValue ?? '');
   let value = options.value ?? internalValue;
 
