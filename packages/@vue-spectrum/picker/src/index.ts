@@ -18,3 +18,4 @@ export const Item = <T extends PickerItem>(item: T): T => item;
 export const Section = <T extends PickerSection>(section: T): T => section;
 
 export {VuePicker};
+export type {SpectrumPickerProps} from '@react-types/select';

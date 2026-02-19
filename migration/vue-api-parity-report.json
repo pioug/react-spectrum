@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T22:06:10.979Z",
+  "generatedAt": "2026-02-19T22:08:27.184Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 83,
+    "fullyMatchedPackages": 89,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 935,
-    "parityCoverage": 0.6501
+    "missingExportTotal": 926,
+    "parityCoverage": 0.6534
   },
   "packages": [
     {
@@ -1369,47 +1369,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-spectrum/breadcrumbs",
-      "sourcePath": "packages/@react-spectrum/breadcrumbs",
-      "targetPackage": "@vue-spectrum/breadcrumbs",
-      "targetPath": "packages/@vue-spectrum/breadcrumbs",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/breadcrumbs/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/breadcrumbs/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 2,
-      "parityRatio": 0.3333,
-      "missingExports": [
-        "Item",
-        "SpectrumBreadcrumbsProps"
-      ],
-      "extraExports": [
-        "VueBreadcrumbs"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/calendar",
-      "sourcePath": "packages/@react-spectrum/calendar",
-      "targetPackage": "@vue-spectrum/calendar",
-      "targetPath": "packages/@vue-spectrum/calendar",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/calendar/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/calendar/src/index.ts",
-      "sourceExportCount": 4,
-      "targetExportCount": 4,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumCalendarProps",
-        "SpectrumRangeCalendarProps"
-      ],
-      "extraExports": [
-        "VueCalendar",
-        "VueRangeCalendar"
-      ],
-      "error": null
-    },
-    {
       "sourcePackage": "@react-spectrum/list",
       "sourcePath": "packages/@react-spectrum/list",
       "targetPackage": "@vue-spectrum/list",
@@ -1469,27 +1428,6 @@
         "StepListItemData",
         "StepListValue",
         "VueStepList"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/tag",
-      "sourcePath": "packages/@react-spectrum/tag",
-      "targetPackage": "@vue-spectrum/tag",
-      "targetPath": "packages/@vue-spectrum/tag",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/tag/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/tag/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 3,
-      "parityRatio": 0.3333,
-      "missingExports": [
-        "Item",
-        "SpectrumTagGroupProps"
-      ],
-      "extraExports": [
-        "TagItemData",
-        "VueTagGroup"
       ],
       "error": null
     },
@@ -1918,25 +1856,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-spectrum/contextualhelp",
-      "sourcePath": "packages/@react-spectrum/contextualhelp",
-      "targetPackage": "@vue-spectrum/contextualhelp",
-      "targetPath": "packages/@vue-spectrum/contextualhelp",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/contextualhelp/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/contextualhelp/src/index.ts",
-      "sourceExportCount": 2,
-      "targetExportCount": 2,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumContextualHelpProps"
-      ],
-      "extraExports": [
-        "VueContextualHelp"
-      ],
-      "error": null
-    },
-    {
       "sourcePackage": "@react-spectrum/divider",
       "sourcePath": "packages/@react-spectrum/divider",
       "targetPackage": "@vue-spectrum/divider",
@@ -2123,46 +2042,6 @@
       ],
       "extraExports": [
         "VueNumberField"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/picker",
-      "sourcePath": "packages/@react-spectrum/picker",
-      "targetPackage": "@vue-spectrum/picker",
-      "targetPath": "packages/@vue-spectrum/picker",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/picker/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/picker/src/index.ts",
-      "sourceExportCount": 4,
-      "targetExportCount": 6,
-      "parityRatio": 0.75,
-      "missingExports": [
-        "SpectrumPickerProps"
-      ],
-      "extraExports": [
-        "PickerItem",
-        "PickerSection",
-        "VuePicker"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/searchfield",
-      "sourcePath": "packages/@react-spectrum/searchfield",
-      "targetPackage": "@vue-spectrum/searchfield",
-      "targetPath": "packages/@vue-spectrum/searchfield",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/searchfield/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/searchfield/src/index.ts",
-      "sourceExportCount": 2,
-      "targetExportCount": 2,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumSearchFieldProps"
-      ],
-      "extraExports": [
-        "VueSearchField"
       ],
       "error": null
     },
@@ -2937,6 +2816,23 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/breadcrumbs",
+      "sourcePath": "packages/@react-spectrum/breadcrumbs",
+      "targetPackage": "@vue-spectrum/breadcrumbs",
+      "targetPath": "packages/@vue-spectrum/breadcrumbs",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/breadcrumbs/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/breadcrumbs/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 4,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueBreadcrumbs"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/button",
       "sourcePath": "packages/@react-spectrum/button",
       "targetPackage": "@vue-spectrum/button",
@@ -2950,6 +2846,24 @@
       "missingExports": [],
       "extraExports": [
         "VueButton"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/calendar",
+      "sourcePath": "packages/@react-spectrum/calendar",
+      "targetPackage": "@vue-spectrum/calendar",
+      "targetPath": "packages/@vue-spectrum/calendar",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/calendar/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/calendar/src/index.ts",
+      "sourceExportCount": 4,
+      "targetExportCount": 6,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueCalendar",
+        "VueRangeCalendar"
       ],
       "error": null
     },
@@ -2984,6 +2898,23 @@
       "missingExports": [],
       "extraExports": [
         "VueComboBox"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/contextualhelp",
+      "sourcePath": "packages/@react-spectrum/contextualhelp",
+      "targetPackage": "@vue-spectrum/contextualhelp",
+      "targetPath": "packages/@vue-spectrum/contextualhelp",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/contextualhelp/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/contextualhelp/src/index.ts",
+      "sourceExportCount": 2,
+      "targetExportCount": 3,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueContextualHelp"
       ],
       "error": null
     },
@@ -3165,6 +3096,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/picker",
+      "sourcePath": "packages/@react-spectrum/picker",
+      "targetPackage": "@vue-spectrum/picker",
+      "targetPath": "packages/@vue-spectrum/picker",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/picker/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/picker/src/index.ts",
+      "sourceExportCount": 4,
+      "targetExportCount": 7,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "PickerItem",
+        "PickerSection",
+        "VuePicker"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/progress",
       "sourcePath": "packages/@react-spectrum/progress",
       "targetPackage": "@vue-spectrum/progress",
@@ -3196,6 +3146,23 @@
       "extraExports": [
         "SpectrumContextValue",
         "VueProvider"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/searchfield",
+      "sourcePath": "packages/@react-spectrum/searchfield",
+      "targetPackage": "@vue-spectrum/searchfield",
+      "targetPath": "packages/@vue-spectrum/searchfield",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/searchfield/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/searchfield/src/index.ts",
+      "sourceExportCount": 2,
+      "targetExportCount": 3,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueSearchField"
       ],
       "error": null
     },
@@ -3265,6 +3232,24 @@
         "TabItemData",
         "TabsValue",
         "VueTabs"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/tag",
+      "sourcePath": "packages/@react-spectrum/tag",
+      "targetPackage": "@vue-spectrum/tag",
+      "targetPath": "packages/@vue-spectrum/tag",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/tag/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/tag/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 5,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "TagItemData",
+        "VueTagGroup"
       ],
       "error": null
     },

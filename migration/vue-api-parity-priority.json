@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-02-19T22:06:21.234Z",
+  "generatedAt": "2026-02-19T22:08:39.366Z",
   "summary": {
     "trackedPackages": 154,
-    "packagesWithGaps": 71,
+    "packagesWithGaps": 65,
     "highestPriorityPackage": "react-aria-components",
     "highestPriorityScore": 1677.99
   },
@@ -41,61 +41,6 @@
       "priorityScore": 49.42
     },
     {
-      "sourcePackage": "@react-spectrum/breadcrumbs",
-      "targetPackage": "@vue-spectrum/breadcrumbs",
-      "missingExports": 2,
-      "sourceExportCount": 3,
-      "coveragePercent": 33.33,
-      "reverseDependents": 0,
-      "dependencyDepth": 13,
-      "criticalityWeight": 1.4,
-      "priorityScore": 45.3
-    },
-    {
-      "sourcePackage": "@react-spectrum/calendar",
-      "targetPackage": "@vue-spectrum/calendar",
-      "missingExports": 2,
-      "sourceExportCount": 4,
-      "coveragePercent": 50,
-      "reverseDependents": 1,
-      "dependencyDepth": 12,
-      "criticalityWeight": 1.4,
-      "priorityScore": 44.3
-    },
-    {
-      "sourcePackage": "@react-spectrum/picker",
-      "targetPackage": "@vue-spectrum/picker",
-      "missingExports": 1,
-      "sourceExportCount": 4,
-      "coveragePercent": 75,
-      "reverseDependents": 2,
-      "dependencyDepth": 12,
-      "criticalityWeight": 1.4,
-      "priorityScore": 43.15
-    },
-    {
-      "sourcePackage": "@react-spectrum/tag",
-      "targetPackage": "@vue-spectrum/tag",
-      "missingExports": 2,
-      "sourceExportCount": 3,
-      "coveragePercent": 33.33,
-      "reverseDependents": 0,
-      "dependencyDepth": 12,
-      "criticalityWeight": 1.4,
-      "priorityScore": 42.8
-    },
-    {
-      "sourcePackage": "@react-spectrum/contextualhelp",
-      "targetPackage": "@vue-spectrum/contextualhelp",
-      "missingExports": 1,
-      "sourceExportCount": 2,
-      "coveragePercent": 50,
-      "reverseDependents": 0,
-      "dependencyDepth": 13,
-      "criticalityWeight": 1.4,
-      "priorityScore": 41.4
-    },
-    {
       "sourcePackage": "@react-aria/gridlist",
       "targetPackage": "@vue-aria/gridlist",
       "missingExports": 3,
@@ -127,17 +72,6 @@
       "dependencyDepth": 7,
       "criticalityWeight": 1.9,
       "priorityScore": 39.1
-    },
-    {
-      "sourcePackage": "@react-spectrum/searchfield",
-      "targetPackage": "@vue-spectrum/searchfield",
-      "missingExports": 1,
-      "sourceExportCount": 2,
-      "coveragePercent": 50,
-      "reverseDependents": 0,
-      "dependencyDepth": 12,
-      "criticalityWeight": 1.4,
-      "priorityScore": 38.9
     },
     {
       "sourcePackage": "@react-stately/toggle",

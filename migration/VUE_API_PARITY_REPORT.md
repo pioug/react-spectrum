@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T22:06:10.979Z
+Generated: 2026-02-19T22:08:27.184Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 83
+* Fully matched packages: 89
 * Source exports inspected: 2672
-* Missing exports: 935
-* Coverage ratio: 65.01%
+* Missing exports: 926
+* Coverage ratio: 65.34%
 
 ## Package gaps
 
@@ -36,12 +36,9 @@ Generated: 2026-02-19T22:06:10.979Z
 | `@react-aria/toast` | `@vue-aria/toast` | missing | 6 | 2 | 66.7% |
 | `@react-aria/tooltip` | `@vue-aria/tooltip` | missing | 6 | 2 | 66.7% |
 | `@react-aria/tree` | `@vue-aria/tree` | missing | 8 | 2 | 75.0% |
-| `@react-spectrum/breadcrumbs` | `@vue-spectrum/breadcrumbs` | missing | 3 | 2 | 33.3% |
-| `@react-spectrum/calendar` | `@vue-spectrum/calendar` | missing | 4 | 2 | 50.0% |
 | `@react-spectrum/list` | `@vue-spectrum/list` | missing | 3 | 2 | 33.3% |
 | `@react-spectrum/radio` | `@vue-spectrum/radio` | missing | 4 | 2 | 50.0% |
 | `@react-spectrum/steplist` | `@vue-spectrum/steplist` | missing | 3 | 2 | 33.3% |
-| `@react-spectrum/tag` | `@vue-spectrum/tag` | missing | 3 | 2 | 33.3% |
 | `@react-spectrum/tooltip` | `@vue-spectrum/tooltip` | missing | 4 | 2 | 50.0% |
 | `@react-stately/color` | `@vue-stately/color` | missing | 25 | 2 | 92.0% |
 | `@react-aria/actiongroup` | `@vue-aria/actiongroup` | missing | 6 | 1 | 83.3% |
@@ -63,7 +60,6 @@ Generated: 2026-02-19T22:06:10.979Z
 | `@react-spectrum/badge` | `@vue-spectrum/badge` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/buttongroup` | `@vue-spectrum/buttongroup` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/card` | `@vue-spectrum/card` | missing | 9 | 1 | 88.9% |
-| `@react-spectrum/contextualhelp` | `@vue-spectrum/contextualhelp` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/divider` | `@vue-spectrum/divider` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/dropzone` | `@vue-spectrum/dropzone` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/filetrigger` | `@vue-spectrum/filetrigger` | missing | 2 | 1 | 50.0% |
@@ -74,8 +70,6 @@ Generated: 2026-02-19T22:06:10.979Z
 | `@react-spectrum/link` | `@vue-spectrum/link` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/meter` | `@vue-spectrum/meter` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/numberfield` | `@vue-spectrum/numberfield` | missing | 2 | 1 | 50.0% |
-| `@react-spectrum/picker` | `@vue-spectrum/picker` | missing | 4 | 1 | 75.0% |
-| `@react-spectrum/searchfield` | `@vue-spectrum/searchfield` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/statuslight` | `@vue-spectrum/statuslight` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/switch` | `@vue-spectrum/switch` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/toast` | `@vue-spectrum/toast` | missing | 4 | 1 | 75.0% |
@@ -115,9 +109,12 @@ Generated: 2026-02-19T22:06:10.979Z
 | `@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | ok | 5 | 0 | 100.0% |
 | `@react-spectrum/actiongroup` | `@vue-spectrum/actiongroup` | ok | 3 | 0 | 100.0% |
 | `@react-spectrum/autocomplete` | `@vue-spectrum/autocomplete` | ok | 4 | 0 | 100.0% |
+| `@react-spectrum/breadcrumbs` | `@vue-spectrum/breadcrumbs` | ok | 3 | 0 | 100.0% |
 | `@react-spectrum/button` | `@vue-spectrum/button` | ok | 10 | 0 | 100.0% |
+| `@react-spectrum/calendar` | `@vue-spectrum/calendar` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/combobox` | `@vue-spectrum/combobox` | ok | 4 | 0 | 100.0% |
+| `@react-spectrum/contextualhelp` | `@vue-spectrum/contextualhelp` | ok | 2 | 0 | 100.0% |
 | `@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | ok | 8 | 0 | 100.0% |
 | `@react-spectrum/dialog` | `@vue-spectrum/dialog` | ok | 10 | 0 | 100.0% |
 | `@react-spectrum/dnd` | `@vue-spectrum/dnd` | ok | 26 | 0 | 100.0% |
@@ -128,12 +125,15 @@ Generated: 2026-02-19T22:06:10.979Z
 | `@react-spectrum/listbox` | `@vue-spectrum/listbox` | ok | 6 | 0 | 100.0% |
 | `@react-spectrum/menu` | `@vue-spectrum/menu` | ok | 12 | 0 | 100.0% |
 | `@react-spectrum/overlays` | `@vue-spectrum/overlays` | ok | 5 | 0 | 100.0% |
+| `@react-spectrum/picker` | `@vue-spectrum/picker` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/progress` | `@vue-spectrum/progress` | ok | 5 | 0 | 100.0% |
 | `@react-spectrum/provider` | `@vue-spectrum/provider` | ok | 5 | 0 | 100.0% |
+| `@react-spectrum/searchfield` | `@vue-spectrum/searchfield` | ok | 2 | 0 | 100.0% |
 | `@react-spectrum/story-utils` | `@vue-spectrum/story-utils` | ok | 2 | 0 | 100.0% |
 | `@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | ok | 6 | 0 | 100.0% |
 | `@react-spectrum/table` | `@vue-spectrum/table` | ok | 13 | 0 | 100.0% |
 | `@react-spectrum/tabs` | `@vue-spectrum/tabs` | ok | 7 | 0 | 100.0% |
+| `@react-spectrum/tag` | `@vue-spectrum/tag` | ok | 3 | 0 | 100.0% |
 | `@react-spectrum/test-utils` | `@vue-spectrum/test-utils` | ok | 19 | 0 | 100.0% |
 | `@react-spectrum/text` | `@vue-spectrum/text` | ok | 6 | 0 | 100.0% |
 | `@react-spectrum/textfield` | `@vue-spectrum/textfield` | ok | 5 | 0 | 100.0% |
