@@ -528,6 +528,30 @@
         }
       ]
     },
+    "@react-aria/label": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/label",
+      "targetPath": "packages/@vue-aria/label",
+      "notes": "Foundational React Aria label composables for accessible field labeling, aria-labelledby wiring, and description/error associations in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria label source lint",
+          "command": "yarn eslint packages/@vue-aria/label/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",

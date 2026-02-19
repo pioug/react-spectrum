@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 74 |
+| in_progress | 75 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 78 |
+| not_started | 77 |
 
 ## Package tracker
 
@@ -44,6 +44,7 @@ Tracked source packages: 154
 | `@react-aria/gridlist` | `packages/@react-aria/gridlist` | `@vue-aria/gridlist` | `packages/@vue-aria/gridlist` | in_progress | Vue Aria gridlist source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria gridlist composables for single-column grid semantics, item-level interactions, sections, and selection checkbox wiring in Vue. |
 | `@react-aria/i18n` | `packages/@react-aria/i18n` | `@vue-aria/i18n` | `packages/@vue-aria/i18n` | in_progress | Vue Aria i18n source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria i18n composables for locale state, RTL detection, Intl formatters, and localized string/message formatting in Vue. |
 | `@react-aria/interactions` | `packages/@react-aria/interactions` | `@vue-aria/interactions` | `packages/@vue-aria/interactions` | in_progress | Vue Aria interactions source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria interaction composables for focus, hover, press, long-press, move, keyboard, and outside-interaction behavior in Vue. |
+| `@react-aria/label` | `packages/@react-aria/label` | `@vue-aria/label` | `packages/@vue-aria/label` | in_progress | Vue Aria label source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria label composables for accessible field labeling, aria-labelledby wiring, and description/error associations in Vue. |
 | `@react-aria/virtualizer` | `packages/@react-aria/virtualizer` | `@vue-aria/virtualizer` | `packages/@vue-aria/virtualizer` | in_progress | Vue Aria virtualizer source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria virtualizer port to support virtualized Vue collection components, now validated by starter interaction/composable tests and wired into the Vue starter virtualized backlog demo. |
 | `@react-spectrum/accordion` | `packages/@react-spectrum/accordion` | `@vue-spectrum/accordion` | `packages/@vue-spectrum/accordion` | in_progress | Vue accordion package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue accordion and disclosure primitives. |
 | `@react-spectrum/actionbar` | `packages/@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | `packages/@vue-spectrum/actionbar` | in_progress | Vue actionbar package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue action bar and container primitives for bulk action workflows. |
@@ -99,7 +100,6 @@ Tracked source packages: 154
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-aria/label` | `packages/@react-aria/label` | `@vue-aria/label` | `packages/@vue-aria/label` | not_started | - | - |
 | `@react-aria/landmark` | `packages/@react-aria/landmark` | `@vue-aria/landmark` | `packages/@vue-aria/landmark` | not_started | - | - |
 | `@react-aria/link` | `packages/@react-aria/link` | `@vue-aria/link` | `packages/@vue-aria/link` | not_started | - | - |
 | `@react-aria/listbox` | `packages/@react-aria/listbox` | `@vue-aria/listbox` | `packages/@vue-aria/listbox` | not_started | - | - |

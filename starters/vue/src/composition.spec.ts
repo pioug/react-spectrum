@@ -47,6 +47,7 @@ import {
   useMessageFormatter,
   useNumberFormatter
 } from '@vue-aria/i18n';
+import {useField, useLabel} from '@vue-aria/label';
 import {
   addWindowFocusTracking,
   setInteractionModality,
@@ -1020,6 +1021,36 @@ describe('Vue migration composition components', () => {
     expect(localizedFormatter.format('greeting', {name: 'Vue'})).toBe('Bonjour Vue');
 
     provider.clear();
+  });
+
+  it('computes vue-aria label and field accessibility relationships', () => {
+    let label = useLabel({
+      label: 'Email address'
+    });
+
+    expect(label.labelProps.value.id).toBeDefined();
+    expect(label.labelProps.value.htmlFor).toBe(label.fieldProps.value.id);
+    expect(label.fieldProps.value['aria-labelledby']).toContain(label.labelProps.value.id as string);
+
+    let ariaOnlyLabel = useLabel({
+      'aria-label': 'Support code'
+    });
+    expect(ariaOnlyLabel.labelProps.value.id).toBeUndefined();
+    expect(ariaOnlyLabel.fieldProps.value['aria-label']).toBe('Support code');
+
+    let field = useField({
+      ariaDescribedby: 'legacy-help',
+      description: 'Provide your strongest password.',
+      errorMessage: 'Password is required.',
+      isInvalid: true,
+      label: 'Password'
+    });
+
+    let describedBy = field.fieldProps.value['aria-describedby'] ?? '';
+    expect(describedBy).toContain(field.descriptionProps.value.id);
+    expect(describedBy).toContain(field.errorMessageProps.value.id);
+    expect(describedBy).toContain('legacy-help');
+    expect(field.fieldProps.value['aria-labelledby']).toContain(field.labelProps.value.id as string);
   });
 
   it('handles vue-aria interactions focus, keyboard, and press callbacks', () => {
