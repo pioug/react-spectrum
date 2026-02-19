@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T22:01:05.035Z",
+  "generatedAt": "2026-02-19T22:02:16.324Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 77,
+    "fullyMatchedPackages": 78,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 951,
-    "parityCoverage": 0.6441
+    "missingExportTotal": 950,
+    "parityCoverage": 0.6445
   },
   "packages": [
     {
@@ -2456,32 +2456,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-stately/selection",
-      "sourcePath": "packages/@react-stately/selection",
-      "targetPackage": "@vue-stately/selection",
-      "targetPath": "packages/@vue-stately/selection",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/selection/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/selection/src/index.ts",
-      "sourceExportCount": 7,
-      "targetExportCount": 14,
-      "parityRatio": 0.8571,
-      "missingExports": [
-        "SingleSelectionState"
-      ],
-      "extraExports": [
-        "DisabledBehavior",
-        "FocusStrategy",
-        "Selection",
-        "SelectionBehavior",
-        "SelectionManagerCollection",
-        "SelectionManagerCollectionItem",
-        "SelectionMode",
-        "SelectionValue"
-      ],
-      "error": null
-    },
-    {
       "sourcePackage": "@react-stately/tabs",
       "sourcePath": "packages/@react-stately/tabs",
       "targetPackage": "@vue-stately/tabs",
@@ -3761,6 +3735,30 @@
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/selection",
+      "sourcePath": "packages/@react-stately/selection",
+      "targetPackage": "@vue-stately/selection",
+      "targetPath": "packages/@vue-stately/selection",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/selection/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/selection/src/index.ts",
+      "sourceExportCount": 7,
+      "targetExportCount": 15,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "DisabledBehavior",
+        "FocusStrategy",
+        "Selection",
+        "SelectionBehavior",
+        "SelectionManagerCollection",
+        "SelectionManagerCollectionItem",
+        "SelectionMode",
+        "SelectionValue"
+      ],
       "error": null
     },
     {

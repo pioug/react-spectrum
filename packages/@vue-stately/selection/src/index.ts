@@ -7,6 +7,7 @@ export type {
   MultipleSelectionManager,
   MultipleSelectionState,
   MultipleSelectionStateProps,
+  SingleSelectionState,
   SelectionValue,
   SelectionBehavior,
   SelectionManagerCollection,

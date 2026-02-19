@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T22:01:05.035Z
+Generated: 2026-02-19T22:02:16.324Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 77
+* Fully matched packages: 78
 * Source exports inspected: 2672
-* Missing exports: 951
-* Coverage ratio: 64.41%
+* Missing exports: 950
+* Coverage ratio: 64.45%
 
 ## Package gaps
 
@@ -90,7 +90,6 @@ Generated: 2026-02-19T22:01:05.035Z
 | `@react-stately/radio` | `@vue-stately/radio` | missing | 3 | 1 | 66.7% |
 | `@react-stately/searchfield` | `@vue-stately/searchfield` | missing | 3 | 1 | 66.7% |
 | `@react-stately/select` | `@vue-stately/select` | missing | 4 | 1 | 75.0% |
-| `@react-stately/selection` | `@vue-stately/selection` | missing | 7 | 1 | 85.7% |
 | `@react-stately/tabs` | `@vue-stately/tabs` | missing | 4 | 1 | 75.0% |
 | `@react-stately/toggle` | `@vue-stately/toggle` | missing | 7 | 1 | 85.7% |
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` | ok | 1 | 0 | 100.0% |
@@ -159,6 +158,7 @@ Generated: 2026-02-19T22:01:05.035Z
 | `@react-stately/menu` | `@vue-stately/menu` | ok | 7 | 0 | 100.0% |
 | `@react-stately/numberfield` | `@vue-stately/numberfield` | ok | 3 | 0 | 100.0% |
 | `@react-stately/overlays` | `@vue-stately/overlays` | ok | 3 | 0 | 100.0% |
+| `@react-stately/selection` | `@vue-stately/selection` | ok | 7 | 0 | 100.0% |
 | `@react-stately/slider` | `@vue-stately/slider` | ok | 3 | 0 | 100.0% |
 | `@react-stately/steplist` | `@vue-stately/steplist` | ok | 3 | 0 | 100.0% |
 | `@react-stately/table` | `@vue-stately/table` | ok | 25 | 0 | 100.0% |

@@ -15,6 +15,12 @@ export interface FocusState {
   setFocusedKey: (key: Key | null, childFocusStrategy?: FocusStrategy) => void
 }
 
+export interface SingleSelectionState extends FocusState {
+  disallowEmptySelection?: boolean,
+  selectedKey: Ref<Key | null>,
+  setSelectedKey: (key: Key | null) => void
+}
+
 export interface MultipleSelectionState extends FocusState {
   disallowEmptySelection: boolean,
   disabledBehavior: DisabledBehavior,
