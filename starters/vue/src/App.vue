@@ -57,6 +57,14 @@
           :max="100"
           :step="5" />
 
+        <VueCalendar
+          v-model="selectedDate"
+          label="Target date" />
+
+        <VueRangeCalendar
+          v-model="selectedDateRange"
+          label="Target window" />
+
         <VueProgressBar
           label="Overall progress"
           :value="completionProgress" />
@@ -220,6 +228,10 @@
             <span> · </span>
             Breadcrumb: <strong>{{ currentBreadcrumb }}</strong>
             <span> · </span>
+            Date: <strong>{{ selectedDate || 'none' }}</strong>
+            <span> · </span>
+            Range: <strong>{{ selectedDateRange.start || 'none' }} to {{ selectedDateRange.end || 'none' }}</strong>
+            <span> · </span>
             Seats: <strong>{{ seatCount ?? 'none' }}</strong>
             <span> · </span>
             Progress: <strong>{{ completionProgress }}%</strong>
@@ -317,6 +329,7 @@ import {Badge as VueBadge} from '@vue-spectrum/badge';
 import {Breadcrumbs as VueBreadcrumbs} from '@vue-spectrum/breadcrumbs';
 import {Button as VueButton} from '@vue-spectrum/button';
 import {ButtonGroup as VueButtonGroup} from '@vue-spectrum/buttongroup';
+import {Calendar as VueCalendar, RangeCalendar as VueRangeCalendar} from '@vue-spectrum/calendar';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
 import {SearchAutocomplete as VueSearchAutocomplete} from '@vue-spectrum/autocomplete';
 import {DropZone as VueDropZone} from '@vue-spectrum/dropzone';
@@ -357,6 +370,11 @@ const seatCount = ref<number | null>(2);
 const completionProgress = ref(40);
 const breadcrumbItems = ['Home', 'Migration', 'Starter'];
 const currentBreadcrumb = ref('Starter');
+const selectedDate = ref('2026-02-19');
+const selectedDateRange = ref({
+  start: '2026-02-20',
+  end: '2026-02-24'
+});
 const favoriteLanguage = ref('TypeScript');
 const isDigestEnabled = ref(false);
 const searchQuery = ref('');
@@ -471,6 +489,11 @@ function reset() {
   seatCount.value = 2;
   completionProgress.value = 40;
   currentBreadcrumb.value = 'Starter';
+  selectedDate.value = '2026-02-19';
+  selectedDateRange.value = {
+    start: '2026-02-20',
+    end: '2026-02-24'
+  };
   favoriteLanguage.value = 'TypeScript';
   isDigestEnabled.value = false;
   searchQuery.value = '';

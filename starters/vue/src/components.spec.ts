@@ -4,6 +4,7 @@ import {Avatar} from '@vue-spectrum/avatar';
 import {Badge} from '@vue-spectrum/badge';
 import {Button} from '@vue-spectrum/button';
 import {ButtonGroup} from '@vue-spectrum/buttongroup';
+import {Calendar, RangeCalendar} from '@vue-spectrum/calendar';
 import {Checkbox} from '@vue-spectrum/checkbox';
 import {FileTrigger} from '@vue-spectrum/filetrigger';
 import {Image} from '@vue-spectrum/image';
@@ -302,6 +303,41 @@ describe('Vue migration primitives', () => {
     await wrapper.get('input').setValue(true);
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([true]);
     expect(wrapper.emitted('change')?.[0]).toEqual([true]);
+  });
+
+  it('updates model value from calendar date input', async () => {
+    let wrapper = mount(Calendar, {
+      props: {
+        modelValue: ''
+      }
+    });
+
+    await wrapper.get('input[type="date"]').setValue('2026-03-01');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['2026-03-01']);
+    expect(wrapper.emitted('change')?.[0]).toEqual(['2026-03-01']);
+  });
+
+  it('propagates v-model through range calendar inputs', async () => {
+    let wrapper = mount({
+      components: {RangeCalendar},
+      data: () => ({
+        range: {
+          start: '',
+          end: ''
+        }
+      }),
+      template: `
+        <RangeCalendar v-model="range" />
+      `
+    });
+
+    let inputs = wrapper.findAll('input[type="date"]');
+    await inputs[0].setValue('2026-03-01');
+    await inputs[1].setValue('2026-03-05');
+    expect((wrapper.vm as unknown as {range: {start: string, end: string}}).range).toEqual({
+      start: '2026-03-01',
+      end: '2026-03-05'
+    });
   });
 
   it('emits selected files from file trigger input', async () => {

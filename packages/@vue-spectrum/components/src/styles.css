@@ -1226,6 +1226,93 @@
   padding: 8px 12px;
 }
 
+.vs-calendar {
+  display: grid;
+  gap: 8px;
+}
+
+.vs-calendar__label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.vs-calendar__input {
+  background: transparent;
+  border: 1px solid var(--vs-color-border);
+  border-radius: 6px;
+  color: inherit;
+  font: inherit;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.vs-calendar__input:focus-visible {
+  border-color: var(--vs-color-primary);
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-calendar__input--medium {
+  min-height: 32px;
+  padding: 6px 10px;
+}
+
+.vs-calendar__input--large {
+  min-height: 40px;
+  padding: 8px 12px;
+}
+
+.vs-range-calendar {
+  border: 1px solid var(--vs-color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 10px;
+}
+
+.vs-range-calendar__label {
+  font-size: 14px;
+  font-weight: 600;
+  padding: 0 4px;
+}
+
+.vs-range-calendar__inputs {
+  align-items: center;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: auto 1fr auto 1fr;
+}
+
+.vs-range-calendar__field {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.vs-range-calendar__input {
+  background: transparent;
+  border: 1px solid var(--vs-color-border);
+  border-radius: 6px;
+  color: inherit;
+  font: inherit;
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.vs-range-calendar__input:focus-visible {
+  border-color: var(--vs-color-primary);
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-range-calendar__input--medium {
+  min-height: 32px;
+  padding: 6px 10px;
+}
+
+.vs-range-calendar__input--large {
+  min-height: 40px;
+  padding: 8px 12px;
+}
+
 .vs-action-bar-container {
   display: grid;
   gap: 8px;

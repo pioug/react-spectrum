@@ -23,6 +23,7 @@
     "@vue-spectrum/breadcrumbs": "workspace:*",
     "@vue-spectrum/button": "workspace:*",
     "@vue-spectrum/buttongroup": "workspace:*",
+    "@vue-spectrum/calendar": "workspace:*",
     "@vue-spectrum/checkbox": "workspace:*",
     "@vue-spectrum/combobox": "workspace:*",
     "@vue-spectrum/components": "workspace:*",

@@ -14,11 +14,13 @@ Vue-native Spectrum-inspired primitives for incremental migration from React pac
 * `VueBreadcrumbs`
 * `VueButton`
 * `VueButtonGroup`
+* `VueCalendar`
 * `VueTextField`
 * `VueNumberField`
 * `VueCheckbox`
 * `VueRadioGroup`
 * `VueRadio`
+* `VueRangeCalendar`
 * `VueDialog`
 * `VueDisclosure`
 * `VueDisclosureTitle`

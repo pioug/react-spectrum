@@ -192,6 +192,30 @@
         }
       ]
     },
+    "@react-spectrum/calendar": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/calendar",
+      "targetPath": "packages/@vue-spectrum/calendar",
+      "notes": "Composition-layer migration step providing Vue calendar and range calendar primitives.",
+      "acceptanceTests": [
+        {
+          "name": "Vue calendar package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/calendar/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/buttongroup": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/buttongroup",
