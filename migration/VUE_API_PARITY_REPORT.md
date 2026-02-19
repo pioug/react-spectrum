@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T22:03:15.228Z
+Generated: 2026-02-19T22:04:47.547Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 79
+* Fully matched packages: 81
 * Source exports inspected: 2672
-* Missing exports: 946
-* Coverage ratio: 64.60%
+* Missing exports: 941
+* Coverage ratio: 64.78%
 
 ## Package gaps
 
@@ -28,7 +28,6 @@ Generated: 2026-02-19T22:03:15.228Z
 | `@react-aria/gridlist` | `@vue-aria/gridlist` | missing | 12 | 3 | 75.0% |
 | `@react-aria/radio` | `@vue-aria/radio` | missing | 7 | 3 | 57.1% |
 | `@react-aria/slider` | `@vue-aria/slider` | missing | 8 | 3 | 62.5% |
-| `@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | missing | 5 | 3 | 40.0% |
 | `@react-spectrum/autocomplete` | `@vue-spectrum/autocomplete` | missing | 4 | 3 | 25.0% |
 | `@react-spectrum/combobox` | `@vue-spectrum/combobox` | missing | 4 | 3 | 25.0% |
 | `@react-spectrum/slider` | `@vue-spectrum/slider` | missing | 4 | 3 | 25.0% |
@@ -39,7 +38,6 @@ Generated: 2026-02-19T22:03:15.228Z
 | `@react-aria/toast` | `@vue-aria/toast` | missing | 6 | 2 | 66.7% |
 | `@react-aria/tooltip` | `@vue-aria/tooltip` | missing | 6 | 2 | 66.7% |
 | `@react-aria/tree` | `@vue-aria/tree` | missing | 8 | 2 | 75.0% |
-| `@react-spectrum/actiongroup` | `@vue-spectrum/actiongroup` | missing | 3 | 2 | 33.3% |
 | `@react-spectrum/breadcrumbs` | `@vue-spectrum/breadcrumbs` | missing | 3 | 2 | 33.3% |
 | `@react-spectrum/calendar` | `@vue-spectrum/calendar` | missing | 4 | 2 | 50.0% |
 | `@react-spectrum/list` | `@vue-spectrum/list` | missing | 3 | 2 | 33.3% |
@@ -116,6 +114,8 @@ Generated: 2026-02-19T22:03:15.228Z
 | `@react-aria/utils` | `@vue-aria/utils` | ok | 74 | 0 | 100.0% |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` | ok | 11 | 0 | 100.0% |
 | `@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | ok | 4 | 0 | 100.0% |
+| `@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | ok | 5 | 0 | 100.0% |
+| `@react-spectrum/actiongroup` | `@vue-spectrum/actiongroup` | ok | 3 | 0 | 100.0% |
 | `@react-spectrum/button` | `@vue-spectrum/button` | ok | 10 | 0 | 100.0% |
 | `@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | ok | 8 | 0 | 100.0% |
@@ -257,13 +257,6 @@ Generated: 2026-02-19T22:03:15.228Z
 * Missing export count: 3
 * Missing exports: `AriaSliderProps`, `AriaSliderThumbProps`, `Orientation`
 
-### @react-spectrum/actionbar -> @vue-spectrum/actionbar
-
-* Source entry: `packages/@react-spectrum/actionbar/src/index.ts`
-* Target entry: `packages/@vue-spectrum/actionbar/src/index.ts`
-* Missing export count: 3
-* Missing exports: `Item`, `SpectrumActionBarContainerProps`, `SpectrumActionBarProps`
-
 ### @react-spectrum/autocomplete -> @vue-spectrum/autocomplete
 
 * Source entry: `packages/@react-spectrum/autocomplete/src/index.ts`
@@ -312,4 +305,11 @@ Generated: 2026-02-19T22:03:15.228Z
 * Target entry: `packages/@vue-aria/tag/src/index.ts`
 * Missing export count: 2
 * Missing exports: `AriaTagGroupProps`, `AriaTagProps`
+
+### @react-aria/toast -> @vue-aria/toast
+
+* Source entry: `packages/@react-aria/toast/src/index.ts`
+* Target entry: `packages/@vue-aria/toast/src/index.ts`
+* Missing export count: 2
+* Missing exports: `AriaToastProps`, `AriaToastRegionProps`
 

@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T22:03:15.228Z",
+  "generatedAt": "2026-02-19T22:04:47.547Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 79,
+    "fullyMatchedPackages": 81,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 946,
-    "parityCoverage": 0.646
+    "missingExportTotal": 941,
+    "parityCoverage": 0.6478
   },
   "packages": [
     {
@@ -1193,28 +1193,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-spectrum/actionbar",
-      "sourcePath": "packages/@react-spectrum/actionbar",
-      "targetPackage": "@vue-spectrum/actionbar",
-      "targetPath": "packages/@vue-spectrum/actionbar",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/actionbar/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/actionbar/src/index.ts",
-      "sourceExportCount": 5,
-      "targetExportCount": 4,
-      "parityRatio": 0.4,
-      "missingExports": [
-        "Item",
-        "SpectrumActionBarContainerProps",
-        "SpectrumActionBarProps"
-      ],
-      "extraExports": [
-        "VueActionBar",
-        "VueActionBarContainer"
-      ],
-      "error": null
-    },
-    {
       "sourcePackage": "@react-spectrum/autocomplete",
       "sourcePath": "packages/@react-spectrum/autocomplete",
       "targetPackage": "@vue-spectrum/autocomplete",
@@ -1430,26 +1408,6 @@
       ],
       "extraExports": [
         "TreeItemNode"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/actiongroup",
-      "sourcePath": "packages/@react-spectrum/actiongroup",
-      "targetPackage": "@vue-spectrum/actiongroup",
-      "targetPath": "packages/@vue-spectrum/actiongroup",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/actiongroup/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/actiongroup/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 2,
-      "parityRatio": 0.3333,
-      "missingExports": [
-        "Item",
-        "SpectrumActionGroupProps"
-      ],
-      "extraExports": [
-        "VueActionGroup"
       ],
       "error": null
     },
@@ -2965,6 +2923,41 @@
         "AriaVisuallyHiddenOptions",
         "HiddenStyle",
         "VISUALLY_HIDDEN_STYLES"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/actionbar",
+      "sourcePath": "packages/@react-spectrum/actionbar",
+      "targetPackage": "@vue-spectrum/actionbar",
+      "targetPath": "packages/@vue-spectrum/actionbar",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/actionbar/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/actionbar/src/index.ts",
+      "sourceExportCount": 5,
+      "targetExportCount": 7,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueActionBar",
+        "VueActionBarContainer"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/actiongroup",
+      "sourcePath": "packages/@react-spectrum/actiongroup",
+      "targetPackage": "@vue-spectrum/actiongroup",
+      "targetPath": "packages/@vue-spectrum/actiongroup",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/actiongroup/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/actiongroup/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 4,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueActionGroup"
       ],
       "error": null
     },
