@@ -5,3 +5,4 @@ export {useOption} from './useOption';
 export type {AriaOptionProps, OptionAria} from './useOption';
 export {useListBoxSection} from './useListBoxSection';
 export type {AriaListBoxSectionProps, ListBoxSectionAria} from './useListBoxSection';
+export type {AriaListBoxProps} from '@react-types/listbox';

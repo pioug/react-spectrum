@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-02-19T22:08:39.366Z",
+  "generatedAt": "2026-02-19T22:11:16.941Z",
   "summary": {
     "trackedPackages": 154,
-    "packagesWithGaps": 65,
+    "packagesWithGaps": 58,
     "highestPriorityPackage": "react-aria-components",
     "highestPriorityScore": 1677.99
   },
@@ -74,17 +74,6 @@
       "priorityScore": 39.1
     },
     {
-      "sourcePackage": "@react-stately/toggle",
-      "targetPackage": "@vue-stately/toggle",
-      "missingExports": 1,
-      "sourceExportCount": 7,
-      "coveragePercent": 85.71,
-      "reverseDependents": 8,
-      "dependencyDepth": 1,
-      "criticalityWeight": 1.9,
-      "priorityScore": 38.54
-    },
-    {
       "sourcePackage": "@react-aria/select",
       "targetPackage": "@vue-aria/select",
       "missingExports": 4,
@@ -105,17 +94,6 @@
       "dependencyDepth": 10,
       "criticalityWeight": 1.4,
       "priorityScore": 38.1
-    },
-    {
-      "sourcePackage": "@react-spectrum/badge",
-      "targetPackage": "@vue-spectrum/badge",
-      "missingExports": 1,
-      "sourceExportCount": 2,
-      "coveragePercent": 50,
-      "reverseDependents": 0,
-      "dependencyDepth": 11,
-      "criticalityWeight": 1.4,
-      "priorityScore": 36.4
     },
     {
       "sourcePackage": "@react-spectrum/tooltip",
@@ -140,39 +118,6 @@
       "priorityScore": 35.76
     },
     {
-      "sourcePackage": "@react-aria/listbox",
-      "targetPackage": "@vue-aria/listbox",
-      "missingExports": 1,
-      "sourceExportCount": 12,
-      "coveragePercent": 91.67,
-      "reverseDependents": 5,
-      "dependencyDepth": 5,
-      "criticalityWeight": 1.9,
-      "priorityScore": 35.65
-    },
-    {
-      "sourcePackage": "@react-aria/dialog",
-      "targetPackage": "@vue-aria/dialog",
-      "missingExports": 1,
-      "sourceExportCount": 3,
-      "coveragePercent": 66.67,
-      "reverseDependents": 4,
-      "dependencyDepth": 5,
-      "criticalityWeight": 1.9,
-      "priorityScore": 35.4
-    },
-    {
-      "sourcePackage": "@react-spectrum/toast",
-      "targetPackage": "@vue-spectrum/toast",
-      "missingExports": 1,
-      "sourceExportCount": 4,
-      "coveragePercent": 75,
-      "reverseDependents": 0,
-      "dependencyDepth": 12,
-      "criticalityWeight": 1.4,
-      "priorityScore": 35.15
-    },
-    {
       "sourcePackage": "@react-aria/tag",
       "targetPackage": "@vue-aria/tag",
       "missingExports": 2,
@@ -182,28 +127,6 @@
       "dependencyDepth": 7,
       "criticalityWeight": 1.9,
       "priorityScore": 34.3
-    },
-    {
-      "sourcePackage": "@react-spectrum/dropzone",
-      "targetPackage": "@vue-spectrum/dropzone",
-      "missingExports": 1,
-      "sourceExportCount": 2,
-      "coveragePercent": 50,
-      "reverseDependents": 0,
-      "dependencyDepth": 10,
-      "criticalityWeight": 1.4,
-      "priorityScore": 33.9
-    },
-    {
-      "sourcePackage": "@react-spectrum/filetrigger",
-      "targetPackage": "@vue-spectrum/filetrigger",
-      "missingExports": 1,
-      "sourceExportCount": 2,
-      "coveragePercent": 50,
-      "reverseDependents": 0,
-      "dependencyDepth": 10,
-      "criticalityWeight": 1.4,
-      "priorityScore": 33.9
     },
     {
       "sourcePackage": "@react-aria/tabs",

@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T22:08:27.184Z",
+  "generatedAt": "2026-02-19T22:11:08.531Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 89,
+    "fullyMatchedPackages": 96,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 926,
-    "parityCoverage": 0.6534
+    "missingExportTotal": 919,
+    "parityCoverage": 0.6561
   },
   "packages": [
     {
@@ -1516,25 +1516,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-aria/dialog",
-      "sourcePath": "packages/@react-aria/dialog",
-      "targetPackage": "@vue-aria/dialog",
-      "targetPath": "packages/@vue-aria/dialog",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/dialog/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/dialog/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 3,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "AriaDialogProps"
-      ],
-      "extraExports": [
-        "AriaDialogOptions"
-      ],
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/disclosure",
       "sourcePath": "packages/@react-aria/disclosure",
       "targetPackage": "@vue-aria/disclosure",
@@ -1550,27 +1531,6 @@
       ],
       "extraExports": [
         "AriaDisclosureOptions"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/listbox",
-      "sourcePath": "packages/@react-aria/listbox",
-      "targetPackage": "@vue-aria/listbox",
-      "targetPath": "packages/@vue-aria/listbox",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/listbox/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/listbox/src/index.ts",
-      "sourceExportCount": 12,
-      "targetExportCount": 14,
-      "parityRatio": 0.9167,
-      "missingExports": [
-        "AriaListBoxProps"
-      ],
-      "extraExports": [
-        "ListBoxCollection",
-        "ListBoxItemNode",
-        "SelectionMode"
       ],
       "error": null
     },
@@ -1798,25 +1758,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-spectrum/badge",
-      "sourcePath": "packages/@react-spectrum/badge",
-      "targetPackage": "@vue-spectrum/badge",
-      "targetPath": "packages/@vue-spectrum/badge",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/badge/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/badge/src/index.ts",
-      "sourceExportCount": 2,
-      "targetExportCount": 2,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumBadgeProps"
-      ],
-      "extraExports": [
-        "VueBadge"
-      ],
-      "error": null
-    },
-    {
       "sourcePackage": "@react-spectrum/buttongroup",
       "sourcePath": "packages/@react-spectrum/buttongroup",
       "targetPackage": "@vue-spectrum/buttongroup",
@@ -1871,44 +1812,6 @@
       ],
       "extraExports": [
         "VueDivider"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/dropzone",
-      "sourcePath": "packages/@react-spectrum/dropzone",
-      "targetPackage": "@vue-spectrum/dropzone",
-      "targetPath": "packages/@vue-spectrum/dropzone",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/dropzone/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/dropzone/src/index.ts",
-      "sourceExportCount": 2,
-      "targetExportCount": 2,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumDropZoneProps"
-      ],
-      "extraExports": [
-        "VueDropZone"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/filetrigger",
-      "sourcePath": "packages/@react-spectrum/filetrigger",
-      "targetPackage": "@vue-spectrum/filetrigger",
-      "targetPath": "packages/@vue-spectrum/filetrigger",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/filetrigger/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/filetrigger/src/index.ts",
-      "sourceExportCount": 2,
-      "targetExportCount": 2,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "FileTriggerProps"
-      ],
-      "extraExports": [
-        "VueFileTrigger"
       ],
       "error": null
     },
@@ -2084,33 +1987,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-spectrum/toast",
-      "sourcePath": "packages/@react-spectrum/toast",
-      "targetPackage": "@vue-spectrum/toast",
-      "targetPath": "packages/@vue-spectrum/toast",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/toast/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/toast/src/index.ts",
-      "sourceExportCount": 4,
-      "targetExportCount": 12,
-      "parityRatio": 0.75,
-      "missingExports": [
-        "SpectrumToastContainerProps"
-      ],
-      "extraExports": [
-        "CreateToastQueueOptions",
-        "SpectrumQueuedToast",
-        "SpectrumToastQueue",
-        "SpectrumToastValue",
-        "ToastPlacement",
-        "ToastVariant",
-        "VueToastContainer",
-        "clearToastQueue",
-        "createToastQueue"
-      ],
-      "error": null
-    },
-    {
       "sourcePackage": "@react-spectrum/well",
       "sourcePath": "packages/@react-spectrum/well",
       "targetPackage": "@vue-spectrum/well",
@@ -2242,23 +2118,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-stately/toggle",
-      "sourcePath": "packages/@react-stately/toggle",
-      "targetPackage": "@vue-stately/toggle",
-      "targetPath": "packages/@vue-stately/toggle",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/toggle/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/toggle/src/index.ts",
-      "sourceExportCount": 7,
-      "targetExportCount": 6,
-      "parityRatio": 0.8571,
-      "missingExports": [
-        "ToggleProps"
-      ],
-      "extraExports": [],
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/aria-modal-polyfill",
       "sourcePath": "packages/@react-aria/aria-modal-polyfill",
       "targetPackage": "@vue-aria/aria-modal-polyfill",
@@ -2373,6 +2232,23 @@
         "AriaDateRangePickerOptions",
         "AriaTimeFieldOptions",
         "DateRangeValue"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/dialog",
+      "sourcePath": "packages/@react-aria/dialog",
+      "targetPackage": "@vue-aria/dialog",
+      "targetPath": "packages/@vue-aria/dialog",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/dialog/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/dialog/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 4,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaDialogOptions"
       ],
       "error": null
     },
@@ -2590,6 +2466,25 @@
       "missingExports": [],
       "extraExports": [
         "LinkDOMProps"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/listbox",
+      "sourcePath": "packages/@react-aria/listbox",
+      "targetPackage": "@vue-aria/listbox",
+      "targetPath": "packages/@vue-aria/listbox",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/listbox/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/listbox/src/index.ts",
+      "sourceExportCount": 12,
+      "targetExportCount": 15,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "ListBoxCollection",
+        "ListBoxItemNode",
+        "SelectionMode"
       ],
       "error": null
     },
@@ -2816,6 +2711,23 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/badge",
+      "sourcePath": "packages/@react-spectrum/badge",
+      "targetPackage": "@vue-spectrum/badge",
+      "targetPath": "packages/@vue-spectrum/badge",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/badge/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/badge/src/index.ts",
+      "sourceExportCount": 2,
+      "targetExportCount": 3,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueBadge"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/breadcrumbs",
       "sourcePath": "packages/@react-spectrum/breadcrumbs",
       "targetPackage": "@vue-spectrum/breadcrumbs",
@@ -2970,6 +2882,40 @@
       "extraExports": [
         "DropZone",
         "VueDropZone"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/dropzone",
+      "sourcePath": "packages/@react-spectrum/dropzone",
+      "targetPackage": "@vue-spectrum/dropzone",
+      "targetPath": "packages/@vue-spectrum/dropzone",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/dropzone/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/dropzone/src/index.ts",
+      "sourceExportCount": 2,
+      "targetExportCount": 3,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueDropZone"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/filetrigger",
+      "sourcePath": "packages/@react-spectrum/filetrigger",
+      "targetPackage": "@vue-spectrum/filetrigger",
+      "targetPath": "packages/@vue-spectrum/filetrigger",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/filetrigger/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/filetrigger/src/index.ts",
+      "sourceExportCount": 2,
+      "targetExportCount": 3,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueFileTrigger"
       ],
       "error": null
     },
@@ -3370,6 +3316,31 @@
       "extraExports": [
         "SpectrumTheme",
         "SpectrumThemeSection"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/toast",
+      "sourcePath": "packages/@react-spectrum/toast",
+      "targetPackage": "@vue-spectrum/toast",
+      "targetPath": "packages/@vue-spectrum/toast",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/toast/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/toast/src/index.ts",
+      "sourceExportCount": 4,
+      "targetExportCount": 13,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "CreateToastQueueOptions",
+        "SpectrumQueuedToast",
+        "SpectrumToastQueue",
+        "SpectrumToastValue",
+        "ToastPlacement",
+        "ToastVariant",
+        "VueToastContainer",
+        "clearToastQueue",
+        "createToastQueue"
       ],
       "error": null
     },
@@ -3786,6 +3757,21 @@
       "status": "ported",
       "sourceEntrypoint": "packages/@react-stately/toast/src/index.ts",
       "targetEntrypoint": "packages/@vue-stately/toast/src/index.ts",
+      "sourceExportCount": 7,
+      "targetExportCount": 7,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/toggle",
+      "sourcePath": "packages/@react-stately/toggle",
+      "targetPackage": "@vue-stately/toggle",
+      "targetPath": "packages/@vue-stately/toggle",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/toggle/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/toggle/src/index.ts",
       "sourceExportCount": 7,
       "targetExportCount": 7,
       "parityRatio": 1,

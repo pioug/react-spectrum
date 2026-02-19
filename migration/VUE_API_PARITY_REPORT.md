@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T22:08:27.184Z
+Generated: 2026-02-19T22:11:08.531Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 89
+* Fully matched packages: 96
 * Source exports inspected: 2672
-* Missing exports: 926
-* Coverage ratio: 65.34%
+* Missing exports: 919
+* Coverage ratio: 65.61%
 
 ## Package gaps
 
@@ -43,9 +43,7 @@ Generated: 2026-02-19T22:08:27.184Z
 | `@react-stately/color` | `@vue-stately/color` | missing | 25 | 2 | 92.0% |
 | `@react-aria/actiongroup` | `@vue-aria/actiongroup` | missing | 6 | 1 | 83.3% |
 | `@react-aria/combobox` | `@vue-aria/combobox` | missing | 4 | 1 | 75.0% |
-| `@react-aria/dialog` | `@vue-aria/dialog` | missing | 3 | 1 | 66.7% |
 | `@react-aria/disclosure` | `@vue-aria/disclosure` | missing | 3 | 1 | 66.7% |
-| `@react-aria/listbox` | `@vue-aria/listbox` | missing | 12 | 1 | 91.7% |
 | `@react-aria/menu` | `@vue-aria/menu` | missing | 16 | 1 | 93.8% |
 | `@react-aria/meter` | `@vue-aria/meter` | missing | 3 | 1 | 66.7% |
 | `@react-aria/numberfield` | `@vue-aria/numberfield` | missing | 3 | 1 | 66.7% |
@@ -57,12 +55,9 @@ Generated: 2026-02-19T22:08:27.184Z
 | `@react-aria/toggle` | `@vue-aria/toggle` | missing | 3 | 1 | 66.7% |
 | `@react-aria/toolbar` | `@vue-aria/toolbar` | missing | 3 | 1 | 66.7% |
 | `@react-spectrum/avatar` | `@vue-spectrum/avatar` | missing | 2 | 1 | 50.0% |
-| `@react-spectrum/badge` | `@vue-spectrum/badge` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/buttongroup` | `@vue-spectrum/buttongroup` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/card` | `@vue-spectrum/card` | missing | 9 | 1 | 88.9% |
 | `@react-spectrum/divider` | `@vue-spectrum/divider` | missing | 2 | 1 | 50.0% |
-| `@react-spectrum/dropzone` | `@vue-spectrum/dropzone` | missing | 2 | 1 | 50.0% |
-| `@react-spectrum/filetrigger` | `@vue-spectrum/filetrigger` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/illustratedmessage` | `@vue-spectrum/illustratedmessage` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/image` | `@vue-spectrum/image` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/inlinealert` | `@vue-spectrum/inlinealert` | missing | 2 | 1 | 50.0% |
@@ -72,7 +67,6 @@ Generated: 2026-02-19T22:08:27.184Z
 | `@react-spectrum/numberfield` | `@vue-spectrum/numberfield` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/statuslight` | `@vue-spectrum/statuslight` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/switch` | `@vue-spectrum/switch` | missing | 2 | 1 | 50.0% |
-| `@react-spectrum/toast` | `@vue-spectrum/toast` | missing | 4 | 1 | 75.0% |
 | `@react-spectrum/well` | `@vue-spectrum/well` | missing | 2 | 1 | 50.0% |
 | `@react-stately/autocomplete` | `@vue-stately/autocomplete` | missing | 4 | 1 | 75.0% |
 | `@react-stately/checkbox` | `@vue-stately/checkbox` | missing | 3 | 1 | 66.7% |
@@ -80,13 +74,13 @@ Generated: 2026-02-19T22:08:27.184Z
 | `@react-stately/searchfield` | `@vue-stately/searchfield` | missing | 3 | 1 | 66.7% |
 | `@react-stately/select` | `@vue-stately/select` | missing | 4 | 1 | 75.0% |
 | `@react-stately/tabs` | `@vue-stately/tabs` | missing | 4 | 1 | 75.0% |
-| `@react-stately/toggle` | `@vue-stately/toggle` | missing | 7 | 1 | 85.7% |
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` | ok | 1 | 0 | 100.0% |
 | `@react-aria/button` | `@vue-aria/button` | ok | 11 | 0 | 100.0% |
 | `@react-aria/calendar` | `@vue-aria/calendar` | ok | 14 | 0 | 100.0% |
 | `@react-aria/collections` | `@vue-aria/collections` | ok | 17 | 0 | 100.0% |
 | `@react-aria/color` | `@vue-aria/color` | ok | 20 | 0 | 100.0% |
 | `@react-aria/datepicker` | `@vue-aria/datepicker` | ok | 18 | 0 | 100.0% |
+| `@react-aria/dialog` | `@vue-aria/dialog` | ok | 3 | 0 | 100.0% |
 | `@react-aria/dnd` | `@vue-aria/dnd` | ok | 62 | 0 | 100.0% |
 | `@react-aria/example-theme` | `@vue-aria/example-theme` | ok | 0 | 0 | 100.0% |
 | `@react-aria/focus` | `@vue-aria/focus` | ok | 26 | 0 | 100.0% |
@@ -97,6 +91,7 @@ Generated: 2026-02-19T22:08:27.184Z
 | `@react-aria/label` | `@vue-aria/label` | ok | 6 | 0 | 100.0% |
 | `@react-aria/landmark` | `@vue-aria/landmark` | ok | 6 | 0 | 100.0% |
 | `@react-aria/link` | `@vue-aria/link` | ok | 3 | 0 | 100.0% |
+| `@react-aria/listbox` | `@vue-aria/listbox` | ok | 12 | 0 | 100.0% |
 | `@react-aria/live-announcer` | `@vue-aria/live-announcer` | ok | 3 | 0 | 100.0% |
 | `@react-aria/overlays` | `@vue-aria/overlays` | ok | 39 | 0 | 100.0% |
 | `@react-aria/selection` | `@vue-aria/selection` | ok | 15 | 0 | 100.0% |
@@ -109,6 +104,7 @@ Generated: 2026-02-19T22:08:27.184Z
 | `@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | ok | 5 | 0 | 100.0% |
 | `@react-spectrum/actiongroup` | `@vue-spectrum/actiongroup` | ok | 3 | 0 | 100.0% |
 | `@react-spectrum/autocomplete` | `@vue-spectrum/autocomplete` | ok | 4 | 0 | 100.0% |
+| `@react-spectrum/badge` | `@vue-spectrum/badge` | ok | 2 | 0 | 100.0% |
 | `@react-spectrum/breadcrumbs` | `@vue-spectrum/breadcrumbs` | ok | 3 | 0 | 100.0% |
 | `@react-spectrum/button` | `@vue-spectrum/button` | ok | 10 | 0 | 100.0% |
 | `@react-spectrum/calendar` | `@vue-spectrum/calendar` | ok | 4 | 0 | 100.0% |
@@ -118,6 +114,8 @@ Generated: 2026-02-19T22:08:27.184Z
 | `@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | ok | 8 | 0 | 100.0% |
 | `@react-spectrum/dialog` | `@vue-spectrum/dialog` | ok | 10 | 0 | 100.0% |
 | `@react-spectrum/dnd` | `@vue-spectrum/dnd` | ok | 26 | 0 | 100.0% |
+| `@react-spectrum/dropzone` | `@vue-spectrum/dropzone` | ok | 2 | 0 | 100.0% |
+| `@react-spectrum/filetrigger` | `@vue-spectrum/filetrigger` | ok | 2 | 0 | 100.0% |
 | `@react-spectrum/form` | `@vue-spectrum/form` | ok | 3 | 0 | 100.0% |
 | `@react-spectrum/icon` | `@vue-spectrum/icon` | ok | 9 | 0 | 100.0% |
 | `@react-spectrum/label` | `@vue-spectrum/label` | ok | 3 | 0 | 100.0% |
@@ -141,6 +139,7 @@ Generated: 2026-02-19T22:08:27.184Z
 | `@react-spectrum/theme-default` | `@vue-spectrum/theme-default` | ok | 1 | 0 | 100.0% |
 | `@react-spectrum/theme-express` | `@vue-spectrum/theme-express` | ok | 1 | 0 | 100.0% |
 | `@react-spectrum/theme-light` | `@vue-spectrum/theme-light` | ok | 1 | 0 | 100.0% |
+| `@react-spectrum/toast` | `@vue-spectrum/toast` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/tree` | `@vue-spectrum/tree` | ok | 7 | 0 | 100.0% |
 | `@react-spectrum/utils` | `@vue-spectrum/utils` | ok | 31 | 0 | 100.0% |
 | `@react-spectrum/view` | `@vue-spectrum/view` | ok | 8 | 0 | 100.0% |
@@ -163,6 +162,7 @@ Generated: 2026-02-19T22:08:27.184Z
 | `@react-stately/steplist` | `@vue-stately/steplist` | ok | 3 | 0 | 100.0% |
 | `@react-stately/table` | `@vue-stately/table` | ok | 25 | 0 | 100.0% |
 | `@react-stately/toast` | `@vue-stately/toast` | ok | 7 | 0 | 100.0% |
+| `@react-stately/toggle` | `@vue-stately/toggle` | ok | 7 | 0 | 100.0% |
 | `@react-stately/tooltip` | `@vue-stately/tooltip` | ok | 3 | 0 | 100.0% |
 | `@react-stately/tree` | `@vue-stately/tree` | ok | 4 | 0 | 100.0% |
 | `@react-stately/utils` | `@vue-stately/utils` | ok | 4 | 0 | 100.0% |
