@@ -75,6 +75,7 @@ Phase 1 is implemented:
   * `@react-spectrum/dnd` -> `@vue-spectrum/dnd` (`in_progress`)
   * `@react-spectrum/dropzone` -> `@vue-spectrum/dropzone` (`in_progress`)
   * `@react-spectrum/filetrigger` -> `@vue-spectrum/filetrigger` (`in_progress`)
+  * `@react-spectrum/s2` -> `@vue-spectrum/s2` (`in_progress`)
 * Started React Aria package migration:
   * `@react-aria/actiongroup` -> `@vue-aria/actiongroup` (`in_progress`)
   * `@react-aria/autocomplete` -> `@vue-aria/autocomplete` (`in_progress`)

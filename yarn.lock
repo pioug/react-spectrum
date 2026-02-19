@@ -12692,6 +12692,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/s2@workspace:*, @vue-spectrum/s2@workspace:packages/@vue-spectrum/s2":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/s2@workspace:packages/@vue-spectrum/s2"
+  dependencies:
+    "@vue-spectrum/components": "workspace:*"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/searchfield@workspace:*, @vue-spectrum/searchfield@workspace:packages/@vue-spectrum/searchfield":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/searchfield@workspace:packages/@vue-spectrum/searchfield"
@@ -31663,6 +31673,7 @@ __metadata:
     "@vue-spectrum/progress": "workspace:*"
     "@vue-spectrum/provider": "workspace:*"
     "@vue-spectrum/radio": "workspace:*"
+    "@vue-spectrum/s2": "workspace:*"
     "@vue-spectrum/searchfield": "workspace:*"
     "@vue-spectrum/slider": "workspace:*"
     "@vue-spectrum/statuslight": "workspace:*"

@@ -140,6 +140,8 @@ import {Dialog} from '@vue-spectrum/dialog';
 import {ListView} from '@vue-spectrum/list';
 import {Menu} from '@vue-spectrum/menu';
 import {Popover} from '@vue-spectrum/overlays';
+import {VueButton, VueSpectrumPlugin, VueSpectrumProvider, VueTextField, VueTree} from '@vue-spectrum/components';
+import {Button as S2Button, Provider as S2Provider, Spectrum2Plugin, TextField as S2TextField, TreeView as S2TreeView} from '@vue-spectrum/s2';
 
 function createPointerEvent(
   type: string,
@@ -2429,6 +2431,14 @@ describe('Vue migration composition components', () => {
     let nonFocusableHidden = useAriaVisuallyHidden();
     expect(nonFocusableHidden.visuallyHiddenProps.value.onFocusin).toBeUndefined();
     expect(nonFocusableHidden.visuallyHiddenProps.value.onFocusout).toBeUndefined();
+  });
+
+  it('re-exports vue-spectrum s2 aggregate components from vue-spectrum components', () => {
+    expect(Spectrum2Plugin).toBe(VueSpectrumPlugin);
+    expect(S2Provider).toBe(VueSpectrumProvider);
+    expect(S2Button).toBe(VueButton);
+    expect(S2TextField).toBe(VueTextField);
+    expect(S2TreeView).toBe(VueTree);
   });
 
   it('computes vue-aria tag group and tag remove behavior', () => {

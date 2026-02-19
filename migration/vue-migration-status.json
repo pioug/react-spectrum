@@ -2464,6 +2464,30 @@
         }
       ]
     },
+    "@react-spectrum/s2": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/s2",
+      "targetPath": "packages/@vue-spectrum/s2",
+      "notes": "Spectrum 2 migration baseline package exposing a Vue aggregate entry point for core provider/form/data-display primitives.",
+      "acceptanceTests": [
+        {
+          "name": "Vue s2 package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/s2/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/switch": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/switch",

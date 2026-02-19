@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 106 |
+| in_progress | 107 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 46 |
+| not_started | 45 |
 
 ## Package tracker
 
@@ -117,6 +117,7 @@ Tracked source packages: 154
 | `@react-spectrum/progress` | `packages/@react-spectrum/progress` | `@vue-spectrum/progress` | `packages/@vue-spectrum/progress` | in_progress | Vue progress package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for progress feedback UI. |
 | `@react-spectrum/provider` | `packages/@react-spectrum/provider` | `@vue-spectrum/provider` | `packages/@vue-spectrum/provider` | in_progress | Vue provider package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave target after the initial Vue baseline package, to establish theming and app-level context. |
 | `@react-spectrum/radio` | `packages/@react-spectrum/radio` | `@vue-spectrum/radio` | `packages/@vue-spectrum/radio` | in_progress | Vue radio package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave primitive for form controls. |
+| `@react-spectrum/s2` | `packages/@react-spectrum/s2` | `@vue-spectrum/s2` | `packages/@vue-spectrum/s2` | in_progress | Vue s2 package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Spectrum 2 migration baseline package exposing a Vue aggregate entry point for core provider/form/data-display primitives. |
 | `@react-spectrum/searchfield` | `packages/@react-spectrum/searchfield` | `@vue-spectrum/searchfield` | `packages/@vue-spectrum/searchfield` | in_progress | Vue searchfield package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for search-oriented text input. |
 | `@react-spectrum/slider` | `packages/@react-spectrum/slider` | `@vue-spectrum/slider` | `packages/@vue-spectrum/slider` | in_progress | Vue slider package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for range input controls. |
 | `@react-spectrum/statuslight` | `packages/@react-spectrum/statuslight` | `@vue-spectrum/statuslight` | `packages/@vue-spectrum/statuslight` | in_progress | Vue statuslight package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for lightweight status signaling. |
@@ -131,7 +132,6 @@ Tracked source packages: 154
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-spectrum/s2` | `packages/@react-spectrum/s2` | `@vue-spectrum/s2` | `packages/@vue-spectrum/s2` | not_started | - | - |
 | `@react-spectrum/steplist` | `packages/@react-spectrum/steplist` | `@vue-spectrum/steplist` | `packages/@vue-spectrum/steplist` | not_started | - | - |
 | `@react-spectrum/story-utils` | `packages/@react-spectrum/story-utils` | `@vue-spectrum/story-utils` | `packages/@vue-spectrum/story-utils` | not_started | - | - |
 | `@react-spectrum/style-macro-s1` | `packages/@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | `packages/@vue-spectrum/style-macro-s1` | not_started | - | - |

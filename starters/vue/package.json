@@ -108,6 +108,7 @@
     "@vue-spectrum/progress": "workspace:*",
     "@vue-spectrum/provider": "workspace:*",
     "@vue-spectrum/radio": "workspace:*",
+    "@vue-spectrum/s2": "workspace:*",
     "@vue-spectrum/searchfield": "workspace:*",
     "@vue-spectrum/slider": "workspace:*",
     "@vue-spectrum/statuslight": "workspace:*",
