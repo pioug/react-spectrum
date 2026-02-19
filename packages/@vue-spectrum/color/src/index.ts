@@ -45,3 +45,13 @@ export function getColorChannels(colorSpace: ColorSpace): [ColorChannel, ColorCh
 }
 
 export {VueColorArea, VueColorEditor, VueColorField, VueColorPicker, VueColorSlider, VueColorSwatch, VueColorSwatchPicker, VueColorWheel};
+export type {
+  SpectrumColorAreaProps,
+  SpectrumColorFieldProps,
+  SpectrumColorSliderProps,
+  SpectrumColorWheelProps
+} from '@react-types/color';
+export type SpectrumColorEditorProps = InstanceType<typeof VueColorEditor>['$props'];
+export type SpectrumColorPickerProps = InstanceType<typeof VueColorPicker>['$props'];
+export type SpectrumColorSwatchPickerProps = InstanceType<typeof VueColorSwatchPicker>['$props'];
+export type SpectrumColorSwatchProps = InstanceType<typeof VueColorSwatch>['$props'];

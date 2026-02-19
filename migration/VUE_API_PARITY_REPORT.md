@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T22:19:18.020Z
+Generated: 2026-02-19T22:25:44.986Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 129
+* Fully matched packages: 152
 * Source exports inspected: 2672
-* Missing exports: 886
-* Coverage ratio: 66.84%
+* Missing exports: 817
+* Coverage ratio: 69.42%
 
 ## Package gaps
 
@@ -18,33 +18,13 @@ Generated: 2026-02-19T22:19:18.020Z
 | --- | --- | --- | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | missing | 543 | 503 | 7.4% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | missing | 325 | 314 | 3.4% |
-| `@react-spectrum/color` | `@vue-spectrum/color` | missing | 21 | 8 | 61.9% |
-| `@react-aria/table` | `@vue-aria/table` | missing | 23 | 5 | 78.3% |
-| `@react-aria/autocomplete` | `@vue-aria/autocomplete` | missing | 10 | 4 | 60.0% |
-| `@react-aria/select` | `@vue-aria/select` | missing | 8 | 4 | 50.0% |
-| `@react-aria/tabs` | `@vue-aria/tabs` | missing | 11 | 4 | 63.6% |
-| `@react-spectrum/accordion` | `@vue-spectrum/accordion` | missing | 8 | 4 | 50.0% |
-| `@react-aria/checkbox` | `@vue-aria/checkbox` | missing | 8 | 3 | 62.5% |
-| `@react-aria/gridlist` | `@vue-aria/gridlist` | missing | 12 | 3 | 75.0% |
-| `@react-aria/radio` | `@vue-aria/radio` | missing | 7 | 3 | 57.1% |
-| `@react-aria/slider` | `@vue-aria/slider` | missing | 8 | 3 | 62.5% |
-| `@react-spectrum/slider` | `@vue-spectrum/slider` | missing | 4 | 3 | 25.0% |
-| `@react-stately/datepicker` | `@vue-stately/datepicker` | missing | 15 | 3 | 80.0% |
-| `@react-aria/breadcrumbs` | `@vue-aria/breadcrumbs` | missing | 6 | 2 | 66.7% |
-| `@react-aria/steplist` | `@vue-aria/steplist` | missing | 6 | 2 | 66.7% |
-| `@react-aria/tag` | `@vue-aria/tag` | missing | 6 | 2 | 66.7% |
-| `@react-aria/toast` | `@vue-aria/toast` | missing | 6 | 2 | 66.7% |
-| `@react-aria/tooltip` | `@vue-aria/tooltip` | missing | 6 | 2 | 66.7% |
-| `@react-aria/tree` | `@vue-aria/tree` | missing | 8 | 2 | 75.0% |
-| `@react-spectrum/list` | `@vue-spectrum/list` | missing | 3 | 2 | 33.3% |
-| `@react-spectrum/radio` | `@vue-spectrum/radio` | missing | 4 | 2 | 50.0% |
-| `@react-spectrum/steplist` | `@vue-spectrum/steplist` | missing | 3 | 2 | 33.3% |
-| `@react-spectrum/tooltip` | `@vue-spectrum/tooltip` | missing | 4 | 2 | 50.0% |
-| `@react-stately/color` | `@vue-stately/color` | missing | 25 | 2 | 92.0% |
 | `@react-aria/actiongroup` | `@vue-aria/actiongroup` | ok | 6 | 0 | 100.0% |
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` | ok | 1 | 0 | 100.0% |
+| `@react-aria/autocomplete` | `@vue-aria/autocomplete` | ok | 10 | 0 | 100.0% |
+| `@react-aria/breadcrumbs` | `@vue-aria/breadcrumbs` | ok | 6 | 0 | 100.0% |
 | `@react-aria/button` | `@vue-aria/button` | ok | 11 | 0 | 100.0% |
 | `@react-aria/calendar` | `@vue-aria/calendar` | ok | 14 | 0 | 100.0% |
+| `@react-aria/checkbox` | `@vue-aria/checkbox` | ok | 8 | 0 | 100.0% |
 | `@react-aria/collections` | `@vue-aria/collections` | ok | 17 | 0 | 100.0% |
 | `@react-aria/color` | `@vue-aria/color` | ok | 20 | 0 | 100.0% |
 | `@react-aria/combobox` | `@vue-aria/combobox` | ok | 4 | 0 | 100.0% |
@@ -56,6 +36,7 @@ Generated: 2026-02-19T22:19:18.020Z
 | `@react-aria/focus` | `@vue-aria/focus` | ok | 26 | 0 | 100.0% |
 | `@react-aria/form` | `@vue-aria/form` | ok | 1 | 0 | 100.0% |
 | `@react-aria/grid` | `@vue-aria/grid` | ok | 20 | 0 | 100.0% |
+| `@react-aria/gridlist` | `@vue-aria/gridlist` | ok | 12 | 0 | 100.0% |
 | `@react-aria/i18n` | `@vue-aria/i18n` | ok | 19 | 0 | 100.0% |
 | `@react-aria/interactions` | `@vue-aria/interactions` | ok | 60 | 0 | 100.0% |
 | `@react-aria/label` | `@vue-aria/label` | ok | 6 | 0 | 100.0% |
@@ -68,19 +49,30 @@ Generated: 2026-02-19T22:19:18.020Z
 | `@react-aria/numberfield` | `@vue-aria/numberfield` | ok | 3 | 0 | 100.0% |
 | `@react-aria/overlays` | `@vue-aria/overlays` | ok | 39 | 0 | 100.0% |
 | `@react-aria/progress` | `@vue-aria/progress` | ok | 3 | 0 | 100.0% |
+| `@react-aria/radio` | `@vue-aria/radio` | ok | 7 | 0 | 100.0% |
 | `@react-aria/searchfield` | `@vue-aria/searchfield` | ok | 3 | 0 | 100.0% |
+| `@react-aria/select` | `@vue-aria/select` | ok | 8 | 0 | 100.0% |
 | `@react-aria/selection` | `@vue-aria/selection` | ok | 15 | 0 | 100.0% |
 | `@react-aria/separator` | `@vue-aria/separator` | ok | 3 | 0 | 100.0% |
+| `@react-aria/slider` | `@vue-aria/slider` | ok | 8 | 0 | 100.0% |
 | `@react-aria/spinbutton` | `@vue-aria/spinbutton` | ok | 3 | 0 | 100.0% |
 | `@react-aria/ssr` | `@vue-aria/ssr` | ok | 4 | 0 | 100.0% |
+| `@react-aria/steplist` | `@vue-aria/steplist` | ok | 6 | 0 | 100.0% |
 | `@react-aria/switch` | `@vue-aria/switch` | ok | 3 | 0 | 100.0% |
+| `@react-aria/table` | `@vue-aria/table` | ok | 23 | 0 | 100.0% |
+| `@react-aria/tabs` | `@vue-aria/tabs` | ok | 11 | 0 | 100.0% |
+| `@react-aria/tag` | `@vue-aria/tag` | ok | 6 | 0 | 100.0% |
 | `@react-aria/test-utils` | `@vue-aria/test-utils` | ok | 17 | 0 | 100.0% |
 | `@react-aria/textfield` | `@vue-aria/textfield` | ok | 5 | 0 | 100.0% |
+| `@react-aria/toast` | `@vue-aria/toast` | ok | 6 | 0 | 100.0% |
 | `@react-aria/toggle` | `@vue-aria/toggle` | ok | 3 | 0 | 100.0% |
 | `@react-aria/toolbar` | `@vue-aria/toolbar` | ok | 3 | 0 | 100.0% |
+| `@react-aria/tooltip` | `@vue-aria/tooltip` | ok | 6 | 0 | 100.0% |
+| `@react-aria/tree` | `@vue-aria/tree` | ok | 8 | 0 | 100.0% |
 | `@react-aria/utils` | `@vue-aria/utils` | ok | 74 | 0 | 100.0% |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` | ok | 11 | 0 | 100.0% |
 | `@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | ok | 4 | 0 | 100.0% |
+| `@react-spectrum/accordion` | `@vue-spectrum/accordion` | ok | 8 | 0 | 100.0% |
 | `@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | ok | 5 | 0 | 100.0% |
 | `@react-spectrum/actiongroup` | `@vue-spectrum/actiongroup` | ok | 3 | 0 | 100.0% |
 | `@react-spectrum/autocomplete` | `@vue-spectrum/autocomplete` | ok | 4 | 0 | 100.0% |
@@ -92,6 +84,7 @@ Generated: 2026-02-19T22:19:18.020Z
 | `@react-spectrum/calendar` | `@vue-spectrum/calendar` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/card` | `@vue-spectrum/card` | ok | 9 | 0 | 100.0% |
 | `@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | ok | 4 | 0 | 100.0% |
+| `@react-spectrum/color` | `@vue-spectrum/color` | ok | 21 | 0 | 100.0% |
 | `@react-spectrum/combobox` | `@vue-spectrum/combobox` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/contextualhelp` | `@vue-spectrum/contextualhelp` | ok | 2 | 0 | 100.0% |
 | `@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | ok | 8 | 0 | 100.0% |
@@ -109,6 +102,7 @@ Generated: 2026-02-19T22:19:18.020Z
 | `@react-spectrum/labeledvalue` | `@vue-spectrum/labeledvalue` | ok | 2 | 0 | 100.0% |
 | `@react-spectrum/layout` | `@vue-spectrum/layout` | ok | 8 | 0 | 100.0% |
 | `@react-spectrum/link` | `@vue-spectrum/link` | ok | 2 | 0 | 100.0% |
+| `@react-spectrum/list` | `@vue-spectrum/list` | ok | 3 | 0 | 100.0% |
 | `@react-spectrum/listbox` | `@vue-spectrum/listbox` | ok | 6 | 0 | 100.0% |
 | `@react-spectrum/menu` | `@vue-spectrum/menu` | ok | 12 | 0 | 100.0% |
 | `@react-spectrum/meter` | `@vue-spectrum/meter` | ok | 2 | 0 | 100.0% |
@@ -117,8 +111,11 @@ Generated: 2026-02-19T22:19:18.020Z
 | `@react-spectrum/picker` | `@vue-spectrum/picker` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/progress` | `@vue-spectrum/progress` | ok | 5 | 0 | 100.0% |
 | `@react-spectrum/provider` | `@vue-spectrum/provider` | ok | 5 | 0 | 100.0% |
+| `@react-spectrum/radio` | `@vue-spectrum/radio` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/searchfield` | `@vue-spectrum/searchfield` | ok | 2 | 0 | 100.0% |
+| `@react-spectrum/slider` | `@vue-spectrum/slider` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/statuslight` | `@vue-spectrum/statuslight` | ok | 2 | 0 | 100.0% |
+| `@react-spectrum/steplist` | `@vue-spectrum/steplist` | ok | 3 | 0 | 100.0% |
 | `@react-spectrum/story-utils` | `@vue-spectrum/story-utils` | ok | 2 | 0 | 100.0% |
 | `@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | ok | 6 | 0 | 100.0% |
 | `@react-spectrum/switch` | `@vue-spectrum/switch` | ok | 2 | 0 | 100.0% |
@@ -133,6 +130,7 @@ Generated: 2026-02-19T22:19:18.020Z
 | `@react-spectrum/theme-express` | `@vue-spectrum/theme-express` | ok | 1 | 0 | 100.0% |
 | `@react-spectrum/theme-light` | `@vue-spectrum/theme-light` | ok | 1 | 0 | 100.0% |
 | `@react-spectrum/toast` | `@vue-spectrum/toast` | ok | 4 | 0 | 100.0% |
+| `@react-spectrum/tooltip` | `@vue-spectrum/tooltip` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/tree` | `@vue-spectrum/tree` | ok | 7 | 0 | 100.0% |
 | `@react-spectrum/utils` | `@vue-spectrum/utils` | ok | 31 | 0 | 100.0% |
 | `@react-spectrum/view` | `@vue-spectrum/view` | ok | 8 | 0 | 100.0% |
@@ -141,8 +139,10 @@ Generated: 2026-02-19T22:19:18.020Z
 | `@react-stately/calendar` | `@vue-stately/calendar` | ok | 6 | 0 | 100.0% |
 | `@react-stately/checkbox` | `@vue-stately/checkbox` | ok | 3 | 0 | 100.0% |
 | `@react-stately/collections` | `@vue-stately/collections` | ok | 11 | 0 | 100.0% |
+| `@react-stately/color` | `@vue-stately/color` | ok | 25 | 0 | 100.0% |
 | `@react-stately/combobox` | `@vue-stately/combobox` | ok | 3 | 0 | 100.0% |
 | `@react-stately/data` | `@vue-stately/data` | ok | 9 | 0 | 100.0% |
+| `@react-stately/datepicker` | `@vue-stately/datepicker` | ok | 15 | 0 | 100.0% |
 | `@react-stately/disclosure` | `@vue-stately/disclosure` | ok | 6 | 0 | 100.0% |
 | `@react-stately/dnd` | `@vue-stately/dnd` | ok | 6 | 0 | 100.0% |
 | `@react-stately/flags` | `@vue-stately/flags` | ok | 4 | 0 | 100.0% |
@@ -186,130 +186,4 @@ Generated: 2026-02-19T22:19:18.020Z
 * Target entry: `packages/@vue-spectrum/s2/src/index.ts`
 * Missing export count: 314
 * Missing exports: `Accordion`, `AccordionContext`, `AccordionItem`, `AccordionItemHeader`, `AccordionItemHeaderProps`, `AccordionItemPanel`, `AccordionItemPanelProps`, `AccordionItemProps`, `AccordionItemRenderProps`, `AccordionItemState`, `AccordionItemTitle`, `AccordionItemTitleProps`, `AccordionProps`, `ActionBar`, `ActionBarContext`, `ActionBarProps`, `ActionButton`, `ActionButtonContext`, `ActionButtonGroup`, `ActionButtonGroupContext`, `ActionButtonGroupProps`, `ActionButtonProps`, `ActionMenu`, `ActionMenuContext`, `ActionMenuProps`, `AlertDialog`, `AlertDialogProps`, `AssetCard`, `AssetCardProps`, `AsyncListData`, `Autocomplete`, `AutocompleteProps`, `Avatar`, `AvatarContext`, `AvatarGroup`, `AvatarGroupContext`, `AvatarGroupProps`, `AvatarProps`, `Badge`, `BadgeContext` ...
-
-### @react-spectrum/color -> @vue-spectrum/color
-
-* Source entry: `packages/@react-spectrum/color/src/index.ts`
-* Target entry: `packages/@vue-spectrum/color/src/index.ts`
-* Missing export count: 8
-* Missing exports: `SpectrumColorAreaProps`, `SpectrumColorEditorProps`, `SpectrumColorFieldProps`, `SpectrumColorPickerProps`, `SpectrumColorSliderProps`, `SpectrumColorSwatchPickerProps`, `SpectrumColorSwatchProps`, `SpectrumColorWheelProps`
-
-### @react-aria/table -> @vue-aria/table
-
-* Source entry: `packages/@react-aria/table/src/index.ts`
-* Target entry: `packages/@vue-aria/table/src/index.ts`
-* Missing export count: 5
-* Missing exports: `AriaTableProps`, `AriaTableSelectionCheckboxProps`, `GridAria`, `GridRowAria`, `GridRowProps`
-
-### @react-aria/autocomplete -> @vue-aria/autocomplete
-
-* Source entry: `packages/@react-aria/autocomplete/src/index.ts`
-* Target entry: `packages/@vue-aria/autocomplete/src/index.ts`
-* Missing export count: 4
-* Missing exports: `AriaAutocompleteProps`, `AriaSearchAutocompleteProps`, `CollectionOptions`, `InputProps`
-
-### @react-aria/select -> @vue-aria/select
-
-* Source entry: `packages/@react-aria/select/src/index.ts`
-* Target entry: `packages/@vue-aria/select/src/index.ts`
-* Missing export count: 4
-* Missing exports: `AriaHiddenSelectProps`, `AriaSelectProps`, `HiddenSelect`, `HiddenSelectProps`
-
-### @react-aria/tabs -> @vue-aria/tabs
-
-* Source entry: `packages/@react-aria/tabs/src/index.ts`
-* Target entry: `packages/@vue-aria/tabs/src/index.ts`
-* Missing export count: 4
-* Missing exports: `AriaTabListProps`, `AriaTabPanelProps`, `AriaTabProps`, `Orientation`
-
-### @react-spectrum/accordion -> @vue-spectrum/accordion
-
-* Source entry: `packages/@react-spectrum/accordion/src/index.ts`
-* Target entry: `packages/@vue-spectrum/accordion/src/index.ts`
-* Missing export count: 4
-* Missing exports: `SpectrumAccordionProps`, `SpectrumDisclosurePanelProps`, `SpectrumDisclosureProps`, `SpectrumDisclosureTitleProps`
-
-### @react-aria/checkbox -> @vue-aria/checkbox
-
-* Source entry: `packages/@react-aria/checkbox/src/index.ts`
-* Target entry: `packages/@vue-aria/checkbox/src/index.ts`
-* Missing export count: 3
-* Missing exports: `AriaCheckboxGroupItemProps`, `AriaCheckboxGroupProps`, `AriaCheckboxProps`
-
-### @react-aria/gridlist -> @vue-aria/gridlist
-
-* Source entry: `packages/@react-aria/gridlist/src/index.ts`
-* Target entry: `packages/@vue-aria/gridlist/src/index.ts`
-* Missing export count: 3
-* Missing exports: `AriaGridSelectionCheckboxProps`, `GridListProps`, `GridSelectionCheckboxAria`
-
-### @react-aria/radio -> @vue-aria/radio
-
-* Source entry: `packages/@react-aria/radio/src/index.ts`
-* Target entry: `packages/@vue-aria/radio/src/index.ts`
-* Missing export count: 3
-* Missing exports: `AriaRadioGroupProps`, `AriaRadioProps`, `Orientation`
-
-### @react-aria/slider -> @vue-aria/slider
-
-* Source entry: `packages/@react-aria/slider/src/index.ts`
-* Target entry: `packages/@vue-aria/slider/src/index.ts`
-* Missing export count: 3
-* Missing exports: `AriaSliderProps`, `AriaSliderThumbProps`, `Orientation`
-
-### @react-spectrum/slider -> @vue-spectrum/slider
-
-* Source entry: `packages/@react-spectrum/slider/src/index.ts`
-* Target entry: `packages/@vue-spectrum/slider/src/index.ts`
-* Missing export count: 3
-* Missing exports: `RangeSlider`, `SpectrumRangeSliderProps`, `SpectrumSliderProps`
-
-### @react-stately/datepicker -> @vue-stately/datepicker
-
-* Source entry: `packages/@react-stately/datepicker/src/index.ts`
-* Target entry: `packages/@vue-stately/datepicker/src/index.ts`
-* Missing export count: 3
-* Missing exports: `DateSegment`, `FormatterOptions`, `SegmentType`
-
-### @react-aria/breadcrumbs -> @vue-aria/breadcrumbs
-
-* Source entry: `packages/@react-aria/breadcrumbs/src/index.ts`
-* Target entry: `packages/@vue-aria/breadcrumbs/src/index.ts`
-* Missing export count: 2
-* Missing exports: `AriaBreadcrumbItemProps`, `AriaBreadcrumbsProps`
-
-### @react-aria/steplist -> @vue-aria/steplist
-
-* Source entry: `packages/@react-aria/steplist/src/index.ts`
-* Target entry: `packages/@vue-aria/steplist/src/index.ts`
-* Missing export count: 2
-* Missing exports: `AriaStepListItemProps`, `AriaStepListProps`
-
-### @react-aria/tag -> @vue-aria/tag
-
-* Source entry: `packages/@react-aria/tag/src/index.ts`
-* Target entry: `packages/@vue-aria/tag/src/index.ts`
-* Missing export count: 2
-* Missing exports: `AriaTagGroupProps`, `AriaTagProps`
-
-### @react-aria/toast -> @vue-aria/toast
-
-* Source entry: `packages/@react-aria/toast/src/index.ts`
-* Target entry: `packages/@vue-aria/toast/src/index.ts`
-* Missing export count: 2
-* Missing exports: `AriaToastProps`, `AriaToastRegionProps`
-
-### @react-aria/tooltip -> @vue-aria/tooltip
-
-* Source entry: `packages/@react-aria/tooltip/src/index.ts`
-* Target entry: `packages/@vue-aria/tooltip/src/index.ts`
-* Missing export count: 2
-* Missing exports: `AriaTooltipProps`, `TooltipTriggerProps`
-
-### @react-aria/tree -> @vue-aria/tree
-
-* Source entry: `packages/@react-aria/tree/src/index.ts`
-* Target entry: `packages/@vue-aria/tree/src/index.ts`
-* Missing export count: 2
-* Missing exports: `AriaTreeProps`, `TreeProps`
 

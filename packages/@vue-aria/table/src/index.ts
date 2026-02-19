@@ -1,5 +1,6 @@
 export {useTable} from './useTable';
 export type {AriaTableOptions} from './useTable';
+export type {AriaTableOptions as AriaTableProps} from './useTable';
 export {useTableCell} from './useTableCell';
 export type {AriaTableCellProps, TableCellAria} from './useTableCell';
 export {useTableColumnHeader} from './useTableColumnHeader';
@@ -17,5 +18,7 @@ export type {
   TableSelectAllCheckboxAria,
   TableSelectionCheckboxAria
 } from './useTableSelectionCheckbox';
+export type {AriaTableSelectionCheckboxOptions as AriaTableSelectionCheckboxProps} from './useTableSelectionCheckbox';
 export {useTableRowGroup} from './useTableRowGroup';
 export type {TableRowGroupAria} from './useTableRowGroup';
+export type {GridAria, GridRowAria, GridRowProps} from '@react-aria/grid';

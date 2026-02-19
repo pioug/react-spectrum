@@ -7,3 +7,5 @@ export type {AriaGridListSectionProps, GridListSectionAria} from './useGridListS
 export {useGridListSelectionCheckbox} from './useGridListSelectionCheckbox';
 export type {AriaGridListSelectionCheckboxProps, GridListSelectionCheckboxAria} from './useGridListSelectionCheckbox';
 export type {GridListCollection, GridListItemNode, MaybeRef} from './types';
+export type {AriaGridSelectionCheckboxProps, GridSelectionCheckboxAria} from '@react-aria/grid';
+export type {AriaGridListOptions as GridListProps} from './useGridList';

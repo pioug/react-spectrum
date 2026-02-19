@@ -12,3 +12,4 @@ export {useColorChannelFieldState} from './useColorChannelFieldState';
 export type {ColorChannelFieldProps, ColorChannelFieldState, ColorChannelFieldStateOptions} from './useColorChannelFieldState';
 export {useColorPickerState} from './useColorPickerState';
 export type {ColorPickerProps, ColorPickerState} from './useColorPickerState';
+export type {ColorFieldProps, ColorWheelProps} from '@react-types/color';

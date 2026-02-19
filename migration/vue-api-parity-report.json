@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T22:19:18.020Z",
+  "generatedAt": "2026-02-19T22:25:44.986Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 129,
+    "fullyMatchedPackages": 152,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 886,
-    "parityCoverage": 0.6684
+    "missingExportTotal": 817,
+    "parityCoverage": 0.6942
   },
   "packages": [
     {
@@ -932,551 +932,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-spectrum/color",
-      "sourcePath": "packages/@react-spectrum/color",
-      "targetPackage": "@vue-spectrum/color",
-      "targetPath": "packages/@vue-spectrum/color",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/color/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/color/src/index.ts",
-      "sourceExportCount": 21,
-      "targetExportCount": 22,
-      "parityRatio": 0.619,
-      "missingExports": [
-        "SpectrumColorAreaProps",
-        "SpectrumColorEditorProps",
-        "SpectrumColorFieldProps",
-        "SpectrumColorPickerProps",
-        "SpectrumColorSliderProps",
-        "SpectrumColorSwatchPickerProps",
-        "SpectrumColorSwatchProps",
-        "SpectrumColorWheelProps"
-      ],
-      "extraExports": [
-        "ColorChannel",
-        "VueColorArea",
-        "VueColorEditor",
-        "VueColorField",
-        "VueColorPicker",
-        "VueColorSlider",
-        "VueColorSwatch",
-        "VueColorSwatchPicker",
-        "VueColorWheel"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/table",
-      "sourcePath": "packages/@react-aria/table",
-      "targetPackage": "@vue-aria/table",
-      "targetPath": "packages/@vue-aria/table",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/table/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/table/src/index.ts",
-      "sourceExportCount": 23,
-      "targetExportCount": 26,
-      "parityRatio": 0.7826,
-      "missingExports": [
-        "AriaTableProps",
-        "AriaTableSelectionCheckboxProps",
-        "GridAria",
-        "GridRowAria",
-        "GridRowProps"
-      ],
-      "extraExports": [
-        "AriaTableHeaderRowProps",
-        "AriaTableOptions",
-        "AriaTableRowProps",
-        "AriaTableSelectAllCheckboxOptions",
-        "AriaTableSelectionCheckboxOptions",
-        "TableRowAria",
-        "TableRowGroupAria",
-        "TableSortDirection"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/autocomplete",
-      "sourcePath": "packages/@react-aria/autocomplete",
-      "targetPackage": "@vue-aria/autocomplete",
-      "targetPath": "packages/@vue-aria/autocomplete",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/autocomplete/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/autocomplete/src/index.ts",
-      "sourceExportCount": 10,
-      "targetExportCount": 8,
-      "parityRatio": 0.6,
-      "missingExports": [
-        "AriaAutocompleteProps",
-        "AriaSearchAutocompleteProps",
-        "CollectionOptions",
-        "InputProps"
-      ],
-      "extraExports": [
-        "AutocompleteItem",
-        "AutocompleteItemInput"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/select",
-      "sourcePath": "packages/@react-aria/select",
-      "targetPackage": "@vue-aria/select",
-      "targetPath": "packages/@vue-aria/select",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/select/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/select/src/index.ts",
-      "sourceExportCount": 8,
-      "targetExportCount": 9,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "AriaHiddenSelectProps",
-        "AriaSelectProps",
-        "HiddenSelect",
-        "HiddenSelectProps"
-      ],
-      "extraExports": [
-        "AriaHiddenSelectOptions",
-        "HiddenSelectAria",
-        "MaybeRef",
-        "SelectKey",
-        "SelectOption"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/tabs",
-      "sourcePath": "packages/@react-aria/tabs",
-      "targetPackage": "@vue-aria/tabs",
-      "targetPath": "packages/@vue-aria/tabs",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/tabs/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/tabs/src/index.ts",
-      "sourceExportCount": 11,
-      "targetExportCount": 11,
-      "parityRatio": 0.6364,
-      "missingExports": [
-        "AriaTabListProps",
-        "AriaTabPanelProps",
-        "AriaTabProps",
-        "Orientation"
-      ],
-      "extraExports": [
-        "AriaTabOptions",
-        "AriaTabPanelOptions",
-        "TabListState",
-        "TabOrientation"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/accordion",
-      "sourcePath": "packages/@react-spectrum/accordion",
-      "targetPackage": "@vue-spectrum/accordion",
-      "targetPath": "packages/@vue-spectrum/accordion",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/accordion/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/accordion/src/index.ts",
-      "sourceExportCount": 8,
-      "targetExportCount": 8,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumAccordionProps",
-        "SpectrumDisclosurePanelProps",
-        "SpectrumDisclosureProps",
-        "SpectrumDisclosureTitleProps"
-      ],
-      "extraExports": [
-        "VueAccordion",
-        "VueDisclosure",
-        "VueDisclosurePanel",
-        "VueDisclosureTitle"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/checkbox",
-      "sourcePath": "packages/@react-aria/checkbox",
-      "targetPackage": "@vue-aria/checkbox",
-      "targetPath": "packages/@vue-aria/checkbox",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/checkbox/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/checkbox/src/index.ts",
-      "sourceExportCount": 8,
-      "targetExportCount": 8,
-      "parityRatio": 0.625,
-      "missingExports": [
-        "AriaCheckboxGroupItemProps",
-        "AriaCheckboxGroupProps",
-        "AriaCheckboxProps"
-      ],
-      "extraExports": [
-        "AriaCheckboxGroupItemOptions",
-        "AriaCheckboxGroupOptions",
-        "AriaCheckboxOptions"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/gridlist",
-      "sourcePath": "packages/@react-aria/gridlist",
-      "targetPackage": "@vue-aria/gridlist",
-      "targetPath": "packages/@vue-aria/gridlist",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/gridlist/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/gridlist/src/index.ts",
-      "sourceExportCount": 12,
-      "targetExportCount": 16,
-      "parityRatio": 0.75,
-      "missingExports": [
-        "AriaGridSelectionCheckboxProps",
-        "GridListProps",
-        "GridSelectionCheckboxAria"
-      ],
-      "extraExports": [
-        "AriaGridListSectionProps",
-        "AriaGridListSelectionCheckboxProps",
-        "GridListCollection",
-        "GridListItemNode",
-        "GridListSectionAria",
-        "GridListSelectionCheckboxAria",
-        "MaybeRef"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/radio",
-      "sourcePath": "packages/@react-aria/radio",
-      "targetPackage": "@vue-aria/radio",
-      "targetPath": "packages/@vue-aria/radio",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/radio/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/radio/src/index.ts",
-      "sourceExportCount": 7,
-      "targetExportCount": 7,
-      "parityRatio": 0.5714,
-      "missingExports": [
-        "AriaRadioGroupProps",
-        "AriaRadioProps",
-        "Orientation"
-      ],
-      "extraExports": [
-        "AriaRadioGroupOptions",
-        "AriaRadioOptions",
-        "MaybeRef"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/slider",
-      "sourcePath": "packages/@react-aria/slider",
-      "targetPackage": "@vue-aria/slider",
-      "targetPath": "packages/@vue-aria/slider",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/slider/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/slider/src/index.ts",
-      "sourceExportCount": 8,
-      "targetExportCount": 10,
-      "parityRatio": 0.625,
-      "missingExports": [
-        "AriaSliderProps",
-        "AriaSliderThumbProps",
-        "Orientation"
-      ],
-      "extraExports": [
-        "AriaSliderOptions",
-        "MaybeRef",
-        "SliderDirection",
-        "SliderOrientation",
-        "SliderState"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/slider",
-      "sourcePath": "packages/@react-spectrum/slider",
-      "targetPackage": "@vue-spectrum/slider",
-      "targetPath": "packages/@vue-spectrum/slider",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/slider/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/slider/src/index.ts",
-      "sourceExportCount": 4,
-      "targetExportCount": 2,
-      "parityRatio": 0.25,
-      "missingExports": [
-        "RangeSlider",
-        "SpectrumRangeSliderProps",
-        "SpectrumSliderProps"
-      ],
-      "extraExports": [
-        "VueSlider"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/datepicker",
-      "sourcePath": "packages/@react-stately/datepicker",
-      "targetPackage": "@vue-stately/datepicker",
-      "targetPath": "packages/@vue-stately/datepicker",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/datepicker/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/datepicker/src/index.ts",
-      "sourceExportCount": 15,
-      "targetExportCount": 12,
-      "parityRatio": 0.8,
-      "missingExports": [
-        "DateSegment",
-        "FormatterOptions",
-        "SegmentType"
-      ],
-      "extraExports": [],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/breadcrumbs",
-      "sourcePath": "packages/@react-aria/breadcrumbs",
-      "targetPackage": "@vue-aria/breadcrumbs",
-      "targetPath": "packages/@vue-aria/breadcrumbs",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/breadcrumbs/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/breadcrumbs/src/index.ts",
-      "sourceExportCount": 6,
-      "targetExportCount": 7,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "AriaBreadcrumbItemProps",
-        "AriaBreadcrumbsProps"
-      ],
-      "extraExports": [
-        "AriaBreadcrumbItemOptions",
-        "AriaBreadcrumbsOptions",
-        "BreadcrumbCurrentValue"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/steplist",
-      "sourcePath": "packages/@react-aria/steplist",
-      "targetPackage": "@vue-aria/steplist",
-      "targetPath": "packages/@vue-aria/steplist",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/steplist/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/steplist/src/index.ts",
-      "sourceExportCount": 6,
-      "targetExportCount": 7,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "AriaStepListItemProps",
-        "AriaStepListProps"
-      ],
-      "extraExports": [
-        "AriaStepListItemOptions",
-        "AriaStepListOptions",
-        "StepListState"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/tag",
-      "sourcePath": "packages/@react-aria/tag",
-      "targetPackage": "@vue-aria/tag",
-      "targetPath": "packages/@vue-aria/tag",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/tag/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/tag/src/index.ts",
-      "sourceExportCount": 6,
-      "targetExportCount": 9,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "AriaTagGroupProps",
-        "AriaTagProps"
-      ],
-      "extraExports": [
-        "AriaTagGroupOptions",
-        "AriaTagOptions",
-        "TagGroupItem",
-        "TagGroupItemNode",
-        "TagSelectionMode"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/toast",
-      "sourcePath": "packages/@react-aria/toast",
-      "targetPackage": "@vue-aria/toast",
-      "targetPath": "packages/@vue-aria/toast",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/toast/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/toast/src/index.ts",
-      "sourceExportCount": 6,
-      "targetExportCount": 10,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "AriaToastProps",
-        "AriaToastRegionProps"
-      ],
-      "extraExports": [
-        "AriaToastOptions",
-        "AriaToastRegionOptions",
-        "QueuedToast",
-        "ToastRegionState",
-        "ToastState",
-        "ToastTimer"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/tooltip",
-      "sourcePath": "packages/@react-aria/tooltip",
-      "targetPackage": "@vue-aria/tooltip",
-      "targetPath": "packages/@vue-aria/tooltip",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/tooltip/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/tooltip/src/index.ts",
-      "sourceExportCount": 6,
-      "targetExportCount": 8,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "AriaTooltipProps",
-        "TooltipTriggerProps"
-      ],
-      "extraExports": [
-        "AriaTooltipOptions",
-        "AriaTooltipTriggerOptions",
-        "TooltipTriggerMode",
-        "TooltipTriggerStateLike"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/tree",
-      "sourcePath": "packages/@react-aria/tree",
-      "targetPackage": "@vue-aria/tree",
-      "targetPath": "packages/@vue-aria/tree",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/tree/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/tree/src/index.ts",
-      "sourceExportCount": 8,
-      "targetExportCount": 7,
-      "parityRatio": 0.75,
-      "missingExports": [
-        "AriaTreeProps",
-        "TreeProps"
-      ],
-      "extraExports": [
-        "TreeItemNode"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/list",
-      "sourcePath": "packages/@react-spectrum/list",
-      "targetPackage": "@vue-spectrum/list",
-      "targetPath": "packages/@vue-spectrum/list",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/list/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/list/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 2,
-      "parityRatio": 0.3333,
-      "missingExports": [
-        "Item",
-        "SpectrumListViewProps"
-      ],
-      "extraExports": [
-        "VueListView"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/radio",
-      "sourcePath": "packages/@react-spectrum/radio",
-      "targetPackage": "@vue-spectrum/radio",
-      "targetPath": "packages/@vue-spectrum/radio",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/radio/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/radio/src/index.ts",
-      "sourceExportCount": 4,
-      "targetExportCount": 4,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumRadioGroupProps",
-        "SpectrumRadioProps"
-      ],
-      "extraExports": [
-        "VueRadio",
-        "VueRadioGroup"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/steplist",
-      "sourcePath": "packages/@react-spectrum/steplist",
-      "targetPackage": "@vue-spectrum/steplist",
-      "targetPath": "packages/@vue-spectrum/steplist",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/steplist/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/steplist/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 4,
-      "parityRatio": 0.3333,
-      "missingExports": [
-        "Item",
-        "SpectrumStepListProps"
-      ],
-      "extraExports": [
-        "StepListItemData",
-        "StepListValue",
-        "VueStepList"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/tooltip",
-      "sourcePath": "packages/@react-spectrum/tooltip",
-      "targetPackage": "@vue-spectrum/tooltip",
-      "targetPath": "packages/@vue-spectrum/tooltip",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/tooltip/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/tooltip/src/index.ts",
-      "sourceExportCount": 4,
-      "targetExportCount": 7,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumTooltipProps",
-        "SpectrumTooltipTriggerProps"
-      ],
-      "extraExports": [
-        "TooltipPlacement",
-        "TooltipSharedProps",
-        "TooltipVariant",
-        "VueTooltip",
-        "VueTooltipTrigger"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/color",
-      "sourcePath": "packages/@react-stately/color",
-      "targetPackage": "@vue-stately/color",
-      "targetPath": "packages/@vue-stately/color",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/color/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/color/src/index.ts",
-      "sourceExportCount": 25,
-      "targetExportCount": 25,
-      "parityRatio": 0.92,
-      "missingExports": [
-        "ColorFieldProps",
-        "ColorWheelProps"
-      ],
-      "extraExports": [
-        "ColorFieldStateOptions",
-        "ColorWheelStateOptions"
-      ],
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/actiongroup",
       "sourcePath": "packages/@react-aria/actiongroup",
       "targetPackage": "@vue-aria/actiongroup",
@@ -1507,6 +962,43 @@
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/autocomplete",
+      "sourcePath": "packages/@react-aria/autocomplete",
+      "targetPackage": "@vue-aria/autocomplete",
+      "targetPath": "packages/@vue-aria/autocomplete",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/autocomplete/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/autocomplete/src/index.ts",
+      "sourceExportCount": 10,
+      "targetExportCount": 12,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AutocompleteItem",
+        "AutocompleteItemInput"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/breadcrumbs",
+      "sourcePath": "packages/@react-aria/breadcrumbs",
+      "targetPackage": "@vue-aria/breadcrumbs",
+      "targetPath": "packages/@vue-aria/breadcrumbs",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/breadcrumbs/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/breadcrumbs/src/index.ts",
+      "sourceExportCount": 6,
+      "targetExportCount": 9,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaBreadcrumbItemOptions",
+        "AriaBreadcrumbsOptions",
+        "BreadcrumbCurrentValue"
+      ],
       "error": null
     },
     {
@@ -1553,6 +1045,25 @@
         "AriaRangeCalendarOptions",
         "DateRange",
         "RangeCalendarAria"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/checkbox",
+      "sourcePath": "packages/@react-aria/checkbox",
+      "targetPackage": "@vue-aria/checkbox",
+      "targetPath": "packages/@vue-aria/checkbox",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/checkbox/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/checkbox/src/index.ts",
+      "sourceExportCount": 8,
+      "targetExportCount": 11,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaCheckboxGroupItemOptions",
+        "AriaCheckboxGroupOptions",
+        "AriaCheckboxOptions"
       ],
       "error": null
     },
@@ -1766,6 +1277,29 @@
         "GridSelectionBehavior",
         "GridSelectionMode",
         "HighlightSelectionDescriptionAria",
+        "MaybeRef"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/gridlist",
+      "sourcePath": "packages/@react-aria/gridlist",
+      "targetPackage": "@vue-aria/gridlist",
+      "targetPath": "packages/@vue-aria/gridlist",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/gridlist/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/gridlist/src/index.ts",
+      "sourceExportCount": 12,
+      "targetExportCount": 19,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaGridListSectionProps",
+        "AriaGridListSelectionCheckboxProps",
+        "GridListCollection",
+        "GridListItemNode",
+        "GridListSectionAria",
+        "GridListSelectionCheckboxAria",
         "MaybeRef"
       ],
       "error": null
@@ -2017,6 +1551,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/radio",
+      "sourcePath": "packages/@react-aria/radio",
+      "targetPackage": "@vue-aria/radio",
+      "targetPath": "packages/@vue-aria/radio",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/radio/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/radio/src/index.ts",
+      "sourceExportCount": 7,
+      "targetExportCount": 10,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaRadioGroupOptions",
+        "AriaRadioOptions",
+        "MaybeRef"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/searchfield",
       "sourcePath": "packages/@react-aria/searchfield",
       "targetPackage": "@vue-aria/searchfield",
@@ -2031,6 +1584,27 @@
       "extraExports": [
         "AriaSearchFieldOptions",
         "MaybeRef"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/select",
+      "sourcePath": "packages/@react-aria/select",
+      "targetPackage": "@vue-aria/select",
+      "targetPath": "packages/@vue-aria/select",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/select/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/select/src/index.ts",
+      "sourceExportCount": 8,
+      "targetExportCount": 13,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaHiddenSelectOptions",
+        "HiddenSelectAria",
+        "MaybeRef",
+        "SelectKey",
+        "SelectOption"
       ],
       "error": null
     },
@@ -2069,6 +1643,27 @@
       "missingExports": [],
       "extraExports": [
         "SeparatorOptions"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/slider",
+      "sourcePath": "packages/@react-aria/slider",
+      "targetPackage": "@vue-aria/slider",
+      "targetPath": "packages/@vue-aria/slider",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/slider/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/slider/src/index.ts",
+      "sourceExportCount": 8,
+      "targetExportCount": 13,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaSliderOptions",
+        "MaybeRef",
+        "SliderDirection",
+        "SliderOrientation",
+        "SliderState"
       ],
       "error": null
     },
@@ -2114,6 +1709,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/steplist",
+      "sourcePath": "packages/@react-aria/steplist",
+      "targetPackage": "@vue-aria/steplist",
+      "targetPath": "packages/@vue-aria/steplist",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/steplist/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/steplist/src/index.ts",
+      "sourceExportCount": 6,
+      "targetExportCount": 9,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaStepListItemOptions",
+        "AriaStepListOptions",
+        "StepListState"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/switch",
       "sourcePath": "packages/@react-aria/switch",
       "targetPackage": "@vue-aria/switch",
@@ -2127,6 +1741,71 @@
       "missingExports": [],
       "extraExports": [
         "AriaSwitchOptions"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/table",
+      "sourcePath": "packages/@react-aria/table",
+      "targetPackage": "@vue-aria/table",
+      "targetPath": "packages/@vue-aria/table",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/table/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/table/src/index.ts",
+      "sourceExportCount": 23,
+      "targetExportCount": 31,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaTableHeaderRowProps",
+        "AriaTableOptions",
+        "AriaTableRowProps",
+        "AriaTableSelectAllCheckboxOptions",
+        "AriaTableSelectionCheckboxOptions",
+        "TableRowAria",
+        "TableRowGroupAria",
+        "TableSortDirection"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/tabs",
+      "sourcePath": "packages/@react-aria/tabs",
+      "targetPackage": "@vue-aria/tabs",
+      "targetPath": "packages/@vue-aria/tabs",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/tabs/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/tabs/src/index.ts",
+      "sourceExportCount": 11,
+      "targetExportCount": 15,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaTabOptions",
+        "AriaTabPanelOptions",
+        "TabListState",
+        "TabOrientation"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/tag",
+      "sourcePath": "packages/@react-aria/tag",
+      "targetPackage": "@vue-aria/tag",
+      "targetPath": "packages/@vue-aria/tag",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/tag/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/tag/src/index.ts",
+      "sourceExportCount": 6,
+      "targetExportCount": 11,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaTagGroupOptions",
+        "AriaTagOptions",
+        "TagGroupItem",
+        "TagGroupItemNode",
+        "TagSelectionMode"
       ],
       "error": null
     },
@@ -2164,6 +1843,28 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/toast",
+      "sourcePath": "packages/@react-aria/toast",
+      "targetPackage": "@vue-aria/toast",
+      "targetPath": "packages/@vue-aria/toast",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/toast/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/toast/src/index.ts",
+      "sourceExportCount": 6,
+      "targetExportCount": 12,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaToastOptions",
+        "AriaToastRegionOptions",
+        "QueuedToast",
+        "ToastRegionState",
+        "ToastState",
+        "ToastTimer"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/toggle",
       "sourcePath": "packages/@react-aria/toggle",
       "targetPackage": "@vue-aria/toggle",
@@ -2196,6 +1897,43 @@
       "extraExports": [
         "AriaToolbarOptions",
         "ToolbarOrientation"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/tooltip",
+      "sourcePath": "packages/@react-aria/tooltip",
+      "targetPackage": "@vue-aria/tooltip",
+      "targetPath": "packages/@vue-aria/tooltip",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/tooltip/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/tooltip/src/index.ts",
+      "sourceExportCount": 6,
+      "targetExportCount": 10,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaTooltipOptions",
+        "AriaTooltipTriggerOptions",
+        "TooltipTriggerMode",
+        "TooltipTriggerStateLike"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/tree",
+      "sourcePath": "packages/@react-aria/tree",
+      "targetPackage": "@vue-aria/tree",
+      "targetPath": "packages/@vue-aria/tree",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/tree/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/tree/src/index.ts",
+      "sourceExportCount": 8,
+      "targetExportCount": 9,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "TreeItemNode"
       ],
       "error": null
     },
@@ -2249,6 +1987,26 @@
         "AriaVisuallyHiddenOptions",
         "HiddenStyle",
         "VISUALLY_HIDDEN_STYLES"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/accordion",
+      "sourcePath": "packages/@react-spectrum/accordion",
+      "targetPackage": "@vue-spectrum/accordion",
+      "targetPath": "packages/@vue-spectrum/accordion",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/accordion/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/accordion/src/index.ts",
+      "sourceExportCount": 8,
+      "targetExportCount": 12,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueAccordion",
+        "VueDisclosure",
+        "VueDisclosurePanel",
+        "VueDisclosureTitle"
       ],
       "error": null
     },
@@ -2440,6 +2198,31 @@
       "missingExports": [],
       "extraExports": [
         "VueCheckbox"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/color",
+      "sourcePath": "packages/@react-spectrum/color",
+      "targetPackage": "@vue-spectrum/color",
+      "targetPath": "packages/@vue-spectrum/color",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/color/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/color/src/index.ts",
+      "sourceExportCount": 21,
+      "targetExportCount": 30,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "ColorChannel",
+        "VueColorArea",
+        "VueColorEditor",
+        "VueColorField",
+        "VueColorPicker",
+        "VueColorSlider",
+        "VueColorSwatch",
+        "VueColorSwatchPicker",
+        "VueColorWheel"
       ],
       "error": null
     },
@@ -2740,6 +2523,23 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/list",
+      "sourcePath": "packages/@react-spectrum/list",
+      "targetPackage": "@vue-spectrum/list",
+      "targetPath": "packages/@vue-spectrum/list",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/list/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/list/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 4,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueListView"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/listbox",
       "sourcePath": "packages/@react-spectrum/listbox",
       "targetPackage": "@vue-spectrum/listbox",
@@ -2879,6 +2679,24 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/radio",
+      "sourcePath": "packages/@react-spectrum/radio",
+      "targetPackage": "@vue-spectrum/radio",
+      "targetPath": "packages/@vue-spectrum/radio",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/radio/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/radio/src/index.ts",
+      "sourceExportCount": 4,
+      "targetExportCount": 6,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueRadio",
+        "VueRadioGroup"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/searchfield",
       "sourcePath": "packages/@react-spectrum/searchfield",
       "targetPackage": "@vue-spectrum/searchfield",
@@ -2896,6 +2714,23 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/slider",
+      "sourcePath": "packages/@react-spectrum/slider",
+      "targetPackage": "@vue-spectrum/slider",
+      "targetPath": "packages/@vue-spectrum/slider",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/slider/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/slider/src/index.ts",
+      "sourceExportCount": 4,
+      "targetExportCount": 5,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueSlider"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/statuslight",
       "sourcePath": "packages/@react-spectrum/statuslight",
       "targetPackage": "@vue-spectrum/statuslight",
@@ -2909,6 +2744,25 @@
       "missingExports": [],
       "extraExports": [
         "VueStatusLight"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/steplist",
+      "sourcePath": "packages/@react-spectrum/steplist",
+      "targetPackage": "@vue-spectrum/steplist",
+      "targetPath": "packages/@vue-spectrum/steplist",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/steplist/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/steplist/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 6,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "StepListItemData",
+        "StepListValue",
+        "VueStepList"
       ],
       "error": null
     },
@@ -3162,6 +3016,27 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/tooltip",
+      "sourcePath": "packages/@react-spectrum/tooltip",
+      "targetPackage": "@vue-spectrum/tooltip",
+      "targetPath": "packages/@vue-spectrum/tooltip",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/tooltip/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/tooltip/src/index.ts",
+      "sourceExportCount": 4,
+      "targetExportCount": 9,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "TooltipPlacement",
+        "TooltipSharedProps",
+        "TooltipVariant",
+        "VueTooltip",
+        "VueTooltipTrigger"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/tree",
       "sourcePath": "packages/@react-spectrum/tree",
       "targetPackage": "@vue-spectrum/tree",
@@ -3319,6 +3194,24 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-stately/color",
+      "sourcePath": "packages/@react-stately/color",
+      "targetPackage": "@vue-stately/color",
+      "targetPath": "packages/@vue-stately/color",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/color/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/color/src/index.ts",
+      "sourceExportCount": 25,
+      "targetExportCount": 27,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "ColorFieldStateOptions",
+        "ColorWheelStateOptions"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-stately/combobox",
       "sourcePath": "packages/@react-stately/combobox",
       "targetPackage": "@vue-stately/combobox",
@@ -3355,6 +3248,21 @@
         "SortDescriptor",
         "TreeNode"
       ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/datepicker",
+      "sourcePath": "packages/@react-stately/datepicker",
+      "targetPackage": "@vue-stately/datepicker",
+      "targetPath": "packages/@vue-stately/datepicker",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/datepicker/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/datepicker/src/index.ts",
+      "sourceExportCount": 15,
+      "targetExportCount": 15,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [],
       "error": null
     },
     {
@@ -3793,7 +3701,7 @@
       "sourceEntrypoint": "packages/react-aria/src/index.ts",
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
-      "targetExportCount": 814,
+      "targetExportCount": 821,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
@@ -3804,6 +3712,7 @@
         "AriaActionGroupItemProps",
         "AriaActionGroupProps",
         "AriaAutocompleteOptions",
+        "AriaAutocompleteProps",
         "AriaBreadcrumbItemOptions",
         "AriaBreadcrumbsOptions",
         "AriaCalendarCellOptions",
@@ -3841,12 +3750,15 @@
         "AriaRadioOptions",
         "AriaRangeCalendarOptions",
         "AriaSearchAutocompleteOptions",
+        "AriaSearchAutocompleteProps",
         "AriaSearchFieldOptions",
         "AriaSelectableCollectionOptions",
         "AriaSelectableListOptions",
         "AriaSliderOptions",
         "AriaStepListItemOptions",
+        "AriaStepListItemProps",
         "AriaStepListOptions",
+        "AriaStepListProps",
         "AriaSwitchOptions",
         "AriaTabOptions",
         "AriaTabPanelOptions",
@@ -3889,6 +3801,7 @@
         "CollectionBuilder",
         "CollectionBuilderProps",
         "CollectionNode",
+        "CollectionOptions",
         "CollectionProps",
         "ComboBoxItem",
         "ComboBoxTester",
@@ -3926,6 +3839,7 @@
         "GridKeyboardDelegateOptions",
         "GridListCollection",
         "GridListItemNode",
+        "GridListProps",
         "GridListSectionAria",
         "GridListSelectionCheckboxAria",
         "GridListTester",
@@ -3943,6 +3857,7 @@
         "HighlightSelectionDescriptionAria",
         "HighlightSelectionDescriptionProps",
         "I18nProviderAria",
+        "InputProps",
         "ItemNode",
         "KeyboardDOMProps",
         "KeyboardDelegate",
@@ -4204,7 +4119,7 @@
       "sourceEntrypoint": "packages/react-stately/src/index.ts",
       "targetEntrypoint": "packages/vue-stately/src/index.ts",
       "sourceExportCount": 165,
-      "targetExportCount": 270,
+      "targetExportCount": 272,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
@@ -4230,6 +4145,7 @@
         "FocusStrategy",
         "FormValidationProps",
         "FormValidationState",
+        "FormatterOptions",
         "GridCell",
         "GridCollection",
         "GridLayout",
@@ -4255,6 +4171,7 @@
         "RectCorner",
         "ReusableView",
         "SearchFieldStateOptions",
+        "SegmentType",
         "SelectionInput",
         "SelectionManager",
         "SelectionManagerCollection",
