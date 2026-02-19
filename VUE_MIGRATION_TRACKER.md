@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 51 |
+| in_progress | 52 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 101 |
+| not_started | 100 |
 
 ## Package tracker
 
@@ -39,6 +39,7 @@ Tracked source packages: 154
 | `@react-spectrum/color` | `packages/@react-spectrum/color` | `@vue-spectrum/color` | `packages/@vue-spectrum/color` | in_progress | Vue color package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue color primitives for field, picker, swatch, and channel editing flows. |
 | `@react-spectrum/combobox` | `packages/@react-spectrum/combobox` | `@vue-spectrum/combobox` | `packages/@vue-spectrum/combobox` | in_progress | Vue combobox package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step with an initial Vue combobox primitive. |
 | `@react-spectrum/contextualhelp` | `packages/@react-spectrum/contextualhelp` | `@vue-spectrum/contextualhelp` | `packages/@vue-spectrum/contextualhelp` | in_progress | Vue contextualhelp package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing a Vue contextual-help trigger and popover primitive. |
+| `@react-spectrum/datepicker` | `packages/@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | `packages/@vue-spectrum/datepicker` | in_progress | Vue datepicker package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue date picker, date range picker, date field, and time field primitives. |
 | `@react-spectrum/dialog` | `packages/@react-spectrum/dialog` | `@vue-spectrum/dialog` | `packages/@vue-spectrum/dialog` | in_progress | Vue dialog package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing a Vue dialog primitive. |
 | `@react-spectrum/divider` | `packages/@react-spectrum/divider` | `@vue-spectrum/divider` | `packages/@vue-spectrum/divider` | in_progress | Vue divider package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave visual primitive for section separation. |
 | `@react-spectrum/dnd` | `packages/@react-spectrum/dnd` | `@vue-spectrum/dnd` | `packages/@vue-spectrum/dnd` | in_progress | Vue dnd package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Data-heavy migration baseline for drag-and-drop interactions. |
@@ -129,7 +130,6 @@ Tracked source packages: 154
 | `@react-aria/tree` | `packages/@react-aria/tree` | `@vue-aria/tree` | `packages/@vue-aria/tree` | not_started | - | - |
 | `@react-aria/utils` | `packages/@react-aria/utils` | `@vue-aria/utils` | `packages/@vue-aria/utils` | not_started | - | - |
 | `@react-aria/visually-hidden` | `packages/@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | `packages/@vue-aria/visually-hidden` | not_started | - | - |
-| `@react-spectrum/datepicker` | `packages/@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | `packages/@vue-spectrum/datepicker` | not_started | - | - |
 | `@react-spectrum/picker` | `packages/@react-spectrum/picker` | `@vue-spectrum/picker` | `packages/@vue-spectrum/picker` | not_started | - | - |
 | `@react-spectrum/s2` | `packages/@react-spectrum/s2` | `@vue-spectrum/s2` | `packages/@vue-spectrum/s2` | not_started | - | - |
 | `@react-spectrum/steplist` | `packages/@react-spectrum/steplist` | `@vue-spectrum/steplist` | `packages/@vue-spectrum/steplist` | not_started | - | - |

@@ -1760,6 +1760,128 @@
   outline: none;
 }
 
+.vs-date-field,
+.vs-date-picker,
+.vs-time-field {
+  display: grid;
+  gap: 6px;
+}
+
+.vs-date-field__label,
+.vs-date-picker__label,
+.vs-time-field__label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.vs-date-field__input,
+.vs-date-picker__input,
+.vs-time-field__input {
+  background: var(--vs-color-input-bg);
+  border: 1px solid var(--vs-color-border);
+  border-radius: 6px;
+  color: inherit;
+}
+
+.vs-date-field__input:focus-visible,
+.vs-date-picker__input:focus-visible,
+.vs-time-field__input:focus-visible {
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-date-field__input--medium,
+.vs-date-picker__input--medium,
+.vs-time-field__input--medium {
+  font-size: 13px;
+  min-block-size: 32px;
+  padding: 6px 10px;
+}
+
+.vs-date-field__input--large,
+.vs-date-picker__input--large,
+.vs-time-field__input--large {
+  font-size: 15px;
+  min-block-size: 38px;
+  padding: 8px 12px;
+}
+
+.vs-date-field__description,
+.vs-date-picker__description,
+.vs-time-field__description {
+  color: #707070;
+  font-size: 12px;
+}
+
+.vs-provider[data-color-scheme='dark'] .vs-date-field__description,
+.vs-provider[data-color-scheme='dark'] .vs-date-picker__description,
+.vs-provider[data-color-scheme='dark'] .vs-time-field__description {
+  color: #c2c2c2;
+}
+
+.vs-date-range-picker {
+  border: 1px solid var(--vs-color-border);
+  border-radius: 8px;
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+}
+
+.vs-date-range-picker__label {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 0 4px;
+}
+
+.vs-date-range-picker__controls {
+  align-items: center;
+  display: grid;
+  gap: 6px;
+  grid-template-columns: auto minmax(0, 1fr);
+}
+
+.vs-date-range-picker__field-label {
+  color: #4f4f4f;
+  font-size: 12px;
+}
+
+.vs-provider[data-color-scheme='dark'] .vs-date-range-picker__field-label {
+  color: #d0d0d0;
+}
+
+.vs-date-range-picker__input {
+  background: var(--vs-color-input-bg);
+  border: 1px solid var(--vs-color-border);
+  border-radius: 6px;
+  color: inherit;
+}
+
+.vs-date-range-picker__input:focus-visible {
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-date-range-picker__input--medium {
+  font-size: 13px;
+  min-block-size: 32px;
+  padding: 6px 10px;
+}
+
+.vs-date-range-picker__input--large {
+  font-size: 15px;
+  min-block-size: 38px;
+  padding: 8px 12px;
+}
+
+.vs-date-range-picker__description {
+  color: #707070;
+  font-size: 12px;
+}
+
+.vs-provider[data-color-scheme='dark'] .vs-date-range-picker__description {
+  color: #c2c2c2;
+}
+
 .vs-contextual-help {
   display: inline-block;
   position: relative;

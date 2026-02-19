@@ -26,8 +26,12 @@ Vue-native Spectrum-inspired primitives for incremental migration from React pac
 * `VueColorSwatchPicker`
 * `VueColorWheel`
 * `VueContextualHelp`
+* `VueDateField`
+* `VueDatePicker`
+* `VueDateRangePicker`
 * `VueTextField`
 * `VueNumberField`
+* `VueTimeField`
 * `VueCheckbox`
 * `VueRadioGroup`
 * `VueRadio`

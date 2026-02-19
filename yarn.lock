@@ -11991,6 +11991,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/datepicker@workspace:*, @vue-spectrum/datepicker@workspace:packages/@vue-spectrum/datepicker":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/datepicker@workspace:packages/@vue-spectrum/datepicker"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/dialog@workspace:*, @vue-spectrum/dialog@workspace:packages/@vue-spectrum/dialog":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/dialog@workspace:packages/@vue-spectrum/dialog"
@@ -31114,6 +31124,7 @@ __metadata:
     "@vue-spectrum/combobox": "workspace:*"
     "@vue-spectrum/components": "workspace:*"
     "@vue-spectrum/contextualhelp": "workspace:*"
+    "@vue-spectrum/datepicker": "workspace:*"
     "@vue-spectrum/dialog": "workspace:*"
     "@vue-spectrum/divider": "workspace:*"
     "@vue-spectrum/dnd": "workspace:*"

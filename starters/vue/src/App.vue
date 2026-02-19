@@ -65,6 +65,21 @@
           v-model="selectedDateRange"
           label="Target window" />
 
+        <VueDatePicker
+          v-model="selectedDate"
+          label="Date picker"
+          description="Date picker package-level migration baseline." />
+
+        <VueDateRangePicker
+          v-model="selectedDateRange"
+          label="Date range picker"
+          description="Range picker package-level migration baseline." />
+
+        <VueTimeField
+          v-model="selectedTime"
+          label="Target time"
+          description="Time field package-level migration baseline." />
+
         <VueProgressBar
           label="Overall progress"
           :value="completionProgress" />
@@ -286,6 +301,8 @@
             <span> · </span>
             Range: <strong>{{ selectedDateRange.start || 'none' }} to {{ selectedDateRange.end || 'none' }}</strong>
             <span> · </span>
+            Time: <strong>{{ selectedTime || 'none' }}</strong>
+            <span> · </span>
             Seats: <strong>{{ seatCount ?? 'none' }}</strong>
             <span> · </span>
             Progress: <strong>{{ completionProgress }}%</strong>
@@ -395,6 +412,7 @@ import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
 import {ColorArea as VueColorArea, ColorEditor as VueColorEditor, ColorPicker as VueColorPicker, ColorSwatch as VueColorSwatch, ColorSwatchPicker as VueColorSwatchPicker, ColorWheel as VueColorWheel} from '@vue-spectrum/color';
 import {SearchAutocomplete as VueSearchAutocomplete} from '@vue-spectrum/autocomplete';
 import {ContextualHelp as VueContextualHelp} from '@vue-spectrum/contextualhelp';
+import {DatePicker as VueDatePicker, DateRangePicker as VueDateRangePicker, TimeField as VueTimeField} from '@vue-spectrum/datepicker';
 import {DropZone as VueDropZone} from '@vue-spectrum/dropzone';
 import {Divider as VueDivider} from '@vue-spectrum/divider';
 import {Dialog as VueDialog} from '@vue-spectrum/dialog';
@@ -438,6 +456,7 @@ const selectedDateRange = ref({
   start: '2026-02-20',
   end: '2026-02-24'
 });
+const selectedTime = ref('09:30');
 const favoriteLanguage = ref('TypeScript');
 const isDigestEnabled = ref(false);
 const searchQuery = ref('');
@@ -576,6 +595,7 @@ function reset() {
     start: '2026-02-20',
     end: '2026-02-24'
   };
+  selectedTime.value = '09:30';
   favoriteLanguage.value = 'TypeScript';
   isDigestEnabled.value = false;
   searchQuery.value = '';

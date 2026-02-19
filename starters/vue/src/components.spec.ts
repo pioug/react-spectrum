@@ -8,6 +8,7 @@ import {Calendar, RangeCalendar} from '@vue-spectrum/calendar';
 import {Card, CardView} from '@vue-spectrum/card';
 import {Checkbox} from '@vue-spectrum/checkbox';
 import {ColorField, ColorPicker, ColorSwatchPicker} from '@vue-spectrum/color';
+import {DatePicker, DateRangePicker, TimeField} from '@vue-spectrum/datepicker';
 import {FileTrigger} from '@vue-spectrum/filetrigger';
 import {Image} from '@vue-spectrum/image';
 import {Icon, Illustration, UIIcon} from '@vue-spectrum/icon';
@@ -375,6 +376,54 @@ describe('Vue migration primitives', () => {
     await wrapper.get('input.vs-color-field__input').setValue('#f59e0b');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['#f59e0b']);
     expect(wrapper.emitted('change')?.[0]).toEqual(['#f59e0b']);
+  });
+
+  it('emits update and change events from date picker inputs', async () => {
+    let wrapper = mount(DatePicker, {
+      props: {
+        modelValue: '2026-02-19',
+        label: 'Date picker'
+      }
+    });
+
+    await wrapper.get('input.vs-date-picker__input').setValue('2026-02-20');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['2026-02-20']);
+    expect(wrapper.emitted('change')?.[0]).toEqual(['2026-02-20']);
+  });
+
+  it('emits structured range updates from date range picker inputs', async () => {
+    let wrapper = mount(DateRangePicker, {
+      props: {
+        modelValue: {
+          start: '2026-02-20',
+          end: '2026-02-24'
+        },
+        label: 'Date range picker'
+      }
+    });
+
+    await wrapper.findAll('input.vs-date-range-picker__input')[1].setValue('2026-02-25');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([{
+      start: '2026-02-20',
+      end: '2026-02-25'
+    }]);
+    expect(wrapper.emitted('change')?.[0]).toEqual([{
+      start: '2026-02-20',
+      end: '2026-02-25'
+    }]);
+  });
+
+  it('emits update and change events from time field inputs', async () => {
+    let wrapper = mount(TimeField, {
+      props: {
+        modelValue: '09:30',
+        label: 'Target time'
+      }
+    });
+
+    await wrapper.get('input.vs-time-field__input').setValue('10:45');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['10:45']);
+    expect(wrapper.emitted('change')?.[0]).toEqual(['10:45']);
   });
 
   it('updates model value from calendar date input', async () => {

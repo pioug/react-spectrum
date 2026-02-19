@@ -528,6 +528,30 @@
         }
       ]
     },
+    "@react-spectrum/datepicker": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/datepicker",
+      "targetPath": "packages/@vue-spectrum/datepicker",
+      "notes": "Composition-layer migration step providing Vue date picker, date range picker, date field, and time field primitives.",
+      "acceptanceTests": [
+        {
+          "name": "Vue datepicker package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/datepicker/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/dialog": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/dialog",
