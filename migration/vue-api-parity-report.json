@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T21:49:43.944Z",
+  "generatedAt": "2026-02-19T21:51:51.981Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 69,
+    "fullyMatchedPackages": 70,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 976,
-    "parityCoverage": 0.6347
+    "missingExportTotal": 972,
+    "parityCoverage": 0.6362
   },
   "packages": [
     {
@@ -1168,28 +1168,6 @@
       ],
       "extraExports": [
         "VuePopover"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/progress",
-      "sourcePath": "packages/@react-spectrum/progress",
-      "targetPackage": "@vue-spectrum/progress",
-      "targetPath": "packages/@vue-spectrum/progress",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/progress/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/progress/src/index.ts",
-      "sourceExportCount": 5,
-      "targetExportCount": 2,
-      "parityRatio": 0.2,
-      "missingExports": [
-        "ProgressBarBase",
-        "ProgressCircle",
-        "SpectrumProgressBarProps",
-        "SpectrumProgressCircleProps"
-      ],
-      "extraExports": [
-        "VueProgressBar"
       ],
       "error": null
     },
@@ -3274,6 +3252,23 @@
       "missingExports": [],
       "extraExports": [
         "VueMenu"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/progress",
+      "sourcePath": "packages/@react-spectrum/progress",
+      "targetPackage": "@vue-spectrum/progress",
+      "targetPath": "packages/@vue-spectrum/progress",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/progress/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/progress/src/index.ts",
+      "sourceExportCount": 5,
+      "targetExportCount": 6,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueProgressBar"
       ],
       "error": null
     },
