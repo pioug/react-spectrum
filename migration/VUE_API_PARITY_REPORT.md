@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:54:26.231Z
+Generated: 2026-02-19T21:55:51.751Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 72
+* Fully matched packages: 73
 * Source exports inspected: 2672
-* Missing exports: 965
-* Coverage ratio: 63.88%
+* Missing exports: 963
+* Coverage ratio: 63.96%
 
 ## Package gaps
 
@@ -43,7 +43,6 @@ Generated: 2026-02-19T21:54:26.231Z
 | `@react-aria/toast` | `@vue-aria/toast` | missing | 6 | 2 | 66.7% |
 | `@react-aria/tooltip` | `@vue-aria/tooltip` | missing | 6 | 2 | 66.7% |
 | `@react-aria/tree` | `@vue-aria/tree` | missing | 8 | 2 | 75.0% |
-| `@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | missing | 4 | 2 | 50.0% |
 | `@react-spectrum/actiongroup` | `@vue-spectrum/actiongroup` | missing | 3 | 2 | 33.3% |
 | `@react-spectrum/breadcrumbs` | `@vue-spectrum/breadcrumbs` | missing | 3 | 2 | 33.3% |
 | `@react-spectrum/calendar` | `@vue-spectrum/calendar` | missing | 4 | 2 | 50.0% |
@@ -120,6 +119,7 @@ Generated: 2026-02-19T21:54:26.231Z
 | `@react-aria/test-utils` | `@vue-aria/test-utils` | ok | 17 | 0 | 100.0% |
 | `@react-aria/utils` | `@vue-aria/utils` | ok | 74 | 0 | 100.0% |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` | ok | 11 | 0 | 100.0% |
+| `@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/button` | `@vue-spectrum/button` | ok | 10 | 0 | 100.0% |
 | `@react-spectrum/dialog` | `@vue-spectrum/dialog` | ok | 10 | 0 | 100.0% |
 | `@react-spectrum/dnd` | `@vue-spectrum/dnd` | ok | 26 | 0 | 100.0% |

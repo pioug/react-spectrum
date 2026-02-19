@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T21:54:26.231Z",
+  "generatedAt": "2026-02-19T21:55:51.751Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 72,
+    "fullyMatchedPackages": 73,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 965,
-    "parityCoverage": 0.6388
+    "missingExportTotal": 963,
+    "parityCoverage": 0.6396
   },
   "packages": [
     {
@@ -1532,28 +1532,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-aria/visually-hidden",
-      "sourcePath": "packages/@react-aria/visually-hidden",
-      "targetPackage": "@vue-aria/visually-hidden",
-      "targetPath": "packages/@vue-aria/visually-hidden",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/visually-hidden/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/visually-hidden/src/index.ts",
-      "sourceExportCount": 4,
-      "targetExportCount": 5,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "VisuallyHidden",
-        "VisuallyHiddenProps"
-      ],
-      "extraExports": [
-        "AriaVisuallyHiddenOptions",
-        "HiddenStyle",
-        "VISUALLY_HIDDEN_STYLES"
-      ],
-      "error": null
-    },
-    {
       "sourcePackage": "@react-spectrum/actiongroup",
       "sourcePath": "packages/@react-spectrum/actiongroup",
       "targetPackage": "@vue-spectrum/actiongroup",
@@ -3069,6 +3047,25 @@
         "VirtualizerOptions",
         "VirtualizerState",
         "useVirtualizer"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/visually-hidden",
+      "sourcePath": "packages/@react-aria/visually-hidden",
+      "targetPackage": "@vue-aria/visually-hidden",
+      "targetPath": "packages/@vue-aria/visually-hidden",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/visually-hidden/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/visually-hidden/src/index.ts",
+      "sourceExportCount": 4,
+      "targetExportCount": 7,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaVisuallyHiddenOptions",
+        "HiddenStyle",
+        "VISUALLY_HIDDEN_STYLES"
       ],
       "error": null
     },
