@@ -2632,6 +2632,30 @@
         }
       ]
     },
+    "@react-spectrum/theme-express": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/theme-express",
+      "targetPath": "packages/@vue-spectrum/theme-express",
+      "notes": "Theme token baseline for Spectrum express variants layered on the default Vue theme package.",
+      "acceptanceTests": [
+        {
+          "name": "Vue theme-express package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/theme-express/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",
