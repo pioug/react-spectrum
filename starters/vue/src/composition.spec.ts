@@ -195,6 +195,11 @@ import {
   shadowDOM as statelyShadowDOM,
   tableNestedRows as statelyTableNestedRows
 } from '@vue-stately/flags';
+import {
+  DEFAULT_VALIDATION_RESULT as DEFAULT_STATELY_VALIDATION_RESULT,
+  mergeValidation as mergeStatelyValidation,
+  useFormValidationState as useStatelyFormValidationState
+} from '@vue-stately/form';
 
 function createPointerEvent(
   type: string,
@@ -1396,6 +1401,42 @@ describe('Vue migration composition components', () => {
     } finally {
       document.body.removeChild(form);
     }
+  });
+
+  it('manages vue-stately form validation state lifecycle and merge behavior', () => {
+    let value = ref('bad');
+    let state = useStatelyFormValidationState({
+      validate: (nextValue) => {
+        return nextValue === 'ok' ? undefined : 'Must be ok';
+      },
+      validationBehavior: ref<'native' | 'aria'>('native'),
+      value
+    });
+
+    expect(state.realtimeValidation.value.isInvalid).toBe(true);
+    expect(state.displayValidation.value.isInvalid).toBe(false);
+
+    state.commitValidation();
+    expect(state.displayValidation.value.isInvalid).toBe(true);
+    expect(state.displayValidation.value.validationErrors).toEqual(['Must be ok']);
+
+    state.resetValidation();
+    expect(state.displayValidation.value).toEqual(DEFAULT_STATELY_VALIDATION_RESULT);
+
+    let mergedValidation = mergeStatelyValidation(
+      DEFAULT_STATELY_VALIDATION_RESULT,
+      {
+        isInvalid: true,
+        validationErrors: ['Server error'],
+        validationDetails: {
+          ...DEFAULT_STATELY_VALIDATION_RESULT.validationDetails,
+          customError: true,
+          valid: false
+        }
+      }
+    );
+    expect(mergedValidation.isInvalid).toBe(true);
+    expect(mergedValidation.validationErrors).toEqual(['Server error']);
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {

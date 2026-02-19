@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 131 |
+| in_progress | 132 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 21 |
+| not_started | 20 |
 
 ## Package tracker
 
@@ -152,11 +152,11 @@ Tracked source packages: 154
 | `@react-stately/disclosure` | `packages/@react-stately/disclosure` | `@vue-stately/disclosure` | `packages/@vue-stately/disclosure` | in_progress | Vue stately disclosure package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for controlled/uncontrolled disclosure and disclosure-group expansion flows in Vue. |
 | `@react-stately/dnd` | `packages/@react-stately/dnd` | `@vue-stately/dnd` | `packages/@vue-stately/dnd` | in_progress | Vue stately dnd package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for draggable and droppable collection drag-and-drop workflows in Vue. |
 | `@react-stately/flags` | `packages/@react-stately/flags` | `@vue-stately/flags` | `packages/@vue-stately/flags` | in_progress | Vue stately flags package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for global feature-flag toggles used by migrated Vue stately packages. |
+| `@react-stately/form` | `packages/@react-stately/form` | `@vue-stately/form` | `packages/@vue-stately/form` | in_progress | Vue stately form package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for realtime and committed form validation state flows in Vue. |
 | `react-aria-components` | `packages/react-aria-components` | `@vue-spectrum/components` | `packages/@vue-spectrum/components` | in_progress | Vue package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Initial Vue baseline package exists, but React Aria Components parity is still in progress. |
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-stately/form` | `packages/@react-stately/form` | `@vue-stately/form` | `packages/@vue-stately/form` | not_started | - | - |
 | `@react-stately/grid` | `packages/@react-stately/grid` | `@vue-stately/grid` | `packages/@vue-stately/grid` | not_started | - | - |
 | `@react-stately/layout` | `packages/@react-stately/layout` | `@vue-stately/layout` | `packages/@vue-stately/layout` | not_started | - | - |
 | `@react-stately/list` | `packages/@react-stately/list` | `@vue-stately/list` | `packages/@vue-stately/list` | not_started | - | - |
