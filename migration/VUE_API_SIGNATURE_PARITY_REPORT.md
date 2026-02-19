@@ -1,19 +1,19 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-19T22:59:34.643Z
+Generated: 2026-02-19T23:01:41.638Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 79
+* Fully matched packages: 80
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 1849
-* Mismatched signatures: 823
+* Matched signatures: 1871
+* Mismatched signatures: 801
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 69.20%
+* Signature coverage ratio: 70.02%
 
 ## Package gaps
 
@@ -21,11 +21,10 @@ Generated: 2026-02-19T22:59:34.643Z
 | --- | --- | --- | ---: | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | mismatch | 543 | 299 | 0 | 44.9% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | mismatch | 325 | 134 | 0 | 58.8% |
-| `react-aria` | `vue-aria` | mismatch | 419 | 102 | 0 | 75.7% |
+| `react-aria` | `vue-aria` | mismatch | 419 | 91 | 0 | 78.3% |
 | `@react-aria/utils` | `@vue-aria/utils` | mismatch | 74 | 65 | 0 | 12.2% |
 | `@react-spectrum/utils` | `@vue-spectrum/utils` | mismatch | 31 | 27 | 0 | 12.9% |
 | `react-stately` | `vue-stately` | mismatch | 165 | 19 | 0 | 88.5% |
-| `@react-aria/dnd` | `@vue-aria/dnd` | mismatch | 62 | 11 | 0 | 82.3% |
 | `@react-aria/overlays` | `@vue-aria/overlays` | mismatch | 39 | 10 | 0 | 74.4% |
 | `@react-aria/table` | `@vue-aria/table` | mismatch | 23 | 9 | 0 | 60.9% |
 | `@react-aria/color` | `@vue-aria/color` | mismatch | 20 | 8 | 0 | 60.0% |
@@ -94,6 +93,7 @@ Generated: 2026-02-19T22:59:34.643Z
 | `@react-stately/tree` | `@vue-stately/tree` | mismatch | 4 | 1 | 0 | 75.0% |
 | `@react-stately/utils` | `@vue-stately/utils` | mismatch | 4 | 1 | 0 | 75.0% |
 | `@react-stately/virtualizer` | `@vue-stately/virtualizer` | mismatch | 10 | 1 | 0 | 90.0% |
+| `@react-aria/dnd` | `@vue-aria/dnd` | ok | 62 | 0 | 0 | 100.0% |
 | `@react-aria/example-theme` | `@vue-aria/example-theme` | ok | 0 | 0 | 0 | 100.0% |
 | `@react-aria/focus` | `@vue-aria/focus` | ok | 26 | 0 | 0 | 100.0% |
 | `@react-aria/interactions` | `@vue-aria/interactions` | ok | 60 | 0 | 0 | 100.0% |
@@ -199,7 +199,7 @@ Generated: 2026-02-19T22:59:34.643Z
 * Source entry: `packages/react-aria/src/index.ts`
 * Target entry: `packages/vue-aria/src/index.ts`
 * Compared exports: 419
-* Mismatched signatures: 102
+* Mismatched signatures: 91
 * Missing in target: 0
 * Example mismatches: `useBreadcrumbItem [call-signatures]`, `useBreadcrumbs [call-signatures]`, `useButton [call-signatures]`, `useToggleButton [call-signatures]`, `useToggleButtonGroup [call-signatures]`, `useToggleButtonGroupItem [call-signatures]`, `useCalendar [call-signatures]`, `useCalendarCell [call-signatures]`, `useCalendarGrid [call-signatures]`, `useRangeCalendar [call-signatures]`, `useCheckbox [call-signatures]`, `useCheckboxGroup [call-signatures]`, `useCheckboxGroupItem [call-signatures]`, `useColorArea [call-signatures]`, `useColorChannelField [call-signatures]`, `useColorField [call-signatures]`, `useColorSlider [call-signatures]`, `useColorSwatch [call-signatures]`, `useColorWheel [call-signatures]`, `useComboBox [call-signatures]`, `useDateField [call-signatures]`, `useDatePicker [call-signatures]`, `useDateRangePicker [call-signatures]`, `useDateSegment [call-signatures]`, `useTimeField [call-signatures]` ...
 
@@ -229,15 +229,6 @@ Generated: 2026-02-19T22:59:34.643Z
 * Mismatched signatures: 19
 * Missing in target: 0
 * Example mismatches: `Collection [value-availability]`, `useCalendarState [call-signatures]`, `useRangeCalendarState [call-signatures]`, `useCheckboxGroupState [call-signatures]`, `parseColor [call-signatures]`, `useColorFieldState [call-signatures]`, `useColorWheelState [call-signatures]`, `useComboBoxState [call-signatures]`, `useDateFieldState [call-signatures]`, `useDatePickerState [call-signatures]`, `useDateRangePickerState [call-signatures]`, `useTimeFieldState [call-signatures]`, `useDraggableCollectionState [call-signatures]`, `useRadioGroupState [call-signatures]`, `useSearchFieldState [call-signatures]`, `useSelectState [call-signatures]`, `useTableState [call-signatures]`, `useTableColumnResizeState [call-signatures]`, `useTreeState [call-signatures]`
-
-### @react-aria/dnd -> @vue-aria/dnd
-
-* Source entry: `packages/@react-aria/dnd/src/index.ts`
-* Target entry: `packages/@vue-aria/dnd/src/index.ts`
-* Compared exports: 62
-* Mismatched signatures: 11
-* Missing in target: 0
-* Example mismatches: `useDrag [call-signatures]`, `useDrop [call-signatures]`, `useDroppableCollection [call-signatures]`, `useDroppableItem [call-signatures]`, `useDropIndicator [call-signatures]`, `useDraggableItem [call-signatures]`, `useDraggableCollection [call-signatures]`, `useClipboard [call-signatures]`, `isDirectoryDropItem [call-signatures]`, `isFileDropItem [call-signatures]`, `isTextDropItem [call-signatures]`
 
 ### @react-aria/overlays -> @vue-aria/overlays
 
@@ -355,4 +346,13 @@ Generated: 2026-02-19T22:59:34.643Z
 * Mismatched signatures: 4
 * Missing in target: 0
 * Example mismatches: `useGridList [call-signatures]`, `useGridListItem [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]`, `useGridListSection [call-signatures]`
+
+### @react-aria/listbox -> @vue-aria/listbox
+
+* Source entry: `packages/@react-aria/listbox/src/index.ts`
+* Target entry: `packages/@vue-aria/listbox/src/index.ts`
+* Compared exports: 12
+* Mismatched signatures: 4
+* Missing in target: 0
+* Example mismatches: `useListBox [call-signatures]`, `useOption [call-signatures]`, `listData [value-type]`, `getItemId [call-signatures]`
 

@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-19T22:59:34.643Z",
+  "generatedAt": "2026-02-19T23:01:41.638Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 79,
+    "fullyMatchedPackages": 80,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 1849,
-    "mismatchedExportTotal": 823,
+    "matchedExportTotal": 1871,
+    "mismatchedExportTotal": 801,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.692
+    "parityCoverage": 0.7002
   },
   "packages": [
     {
@@ -5659,10 +5659,10 @@
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
       "comparedExportCount": 419,
-      "matchedExportCount": 317,
-      "mismatchedExportCount": 102,
+      "matchedExportCount": 328,
+      "mismatchedExportCount": 91,
       "missingInTargetCount": 0,
-      "parityRatio": 0.7566,
+      "parityRatio": 0.7828,
       "missingInTargetExports": [],
       "mismatches": [
         {
@@ -6675,413 +6675,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: AriaDisclosureOptions) => DisclosureAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useDrag",
-          "targetExportName": "useDrag",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDrag",
-            "resolvedName": "useDrag",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: DragOptions) => DragResult",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DragOptions) => DragResult"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDrag",
-            "resolvedName": "useDrag",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaDragOptions) => DragAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaDragOptions) => DragAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useDrop",
-          "targetExportName": "useDrop",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDrop",
-            "resolvedName": "useDrop",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: DropOptions) => DropResult",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DropOptions) => DropResult"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDrop",
-            "resolvedName": "useDrop",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaDropOptions) => DropAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaDropOptions) => DropAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useDraggableCollection",
-          "targetExportName": "useDraggableCollection",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDraggableCollection",
-            "resolvedName": "useDraggableCollection",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: DraggableCollectionOptions, state: DraggableCollectionState, ref: RefObject<HTMLElement | null>) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DraggableCollectionOptions, _: DraggableCollectionState, _: RefObject<HTMLElement | null>) => void"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDraggableCollection",
-            "resolvedName": "useDraggableCollection",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => { collectionProps: {};}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => { collectionProps: {}; }"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useDroppableCollection",
-          "targetExportName": "useDroppableCollection",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDroppableCollection",
-            "resolvedName": "useDroppableCollection",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: DroppableCollectionOptions, state: DroppableCollectionState, ref: RefObject<HTMLElement | null>) => DroppableCollectionResult",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DroppableCollectionOptions, _: DroppableCollectionState, _: RefObject<HTMLElement | null>) => DroppableCollectionResult"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDroppableCollection",
-            "resolvedName": "useDroppableCollection",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => { collectionProps: {};}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => { collectionProps: {}; }"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useDroppableItem",
-          "targetExportName": "useDroppableItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDroppableItem",
-            "resolvedName": "useDroppableItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: DroppableItemOptions, state: DroppableCollectionState, ref: RefObject<HTMLElement | null>) => DroppableItemResult",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DroppableItemOptions, _: DroppableCollectionState, _: RefObject<HTMLElement | null>) => DroppableItemResult"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDroppableItem",
-            "resolvedName": "useDroppableItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => { droppableItemProps: {};}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => { droppableItemProps: {}; }"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useDropIndicator",
-          "targetExportName": "useDropIndicator",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDropIndicator",
-            "resolvedName": "useDropIndicator",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: DropIndicatorProps, state: DroppableCollectionState, ref: RefObject<HTMLElement | null>) => DropIndicatorAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DropIndicatorProps, _: DroppableCollectionState, _: RefObject<HTMLElement | null>) => DropIndicatorAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDropIndicator",
-            "resolvedName": "useDropIndicator",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => { dropIndicatorProps: {};}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => { dropIndicatorProps: {}; }"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useDraggableItem",
-          "targetExportName": "useDraggableItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDraggableItem",
-            "resolvedName": "useDraggableItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: DraggableItemProps, state: DraggableCollectionState) => DraggableItemResult",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DraggableItemProps, _: DraggableCollectionState) => DraggableItemResult"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDraggableItem",
-            "resolvedName": "useDraggableItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => { draggableItemProps: {};}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => { draggableItemProps: {}; }"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useClipboard",
-          "targetExportName": "useClipboard",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useClipboard",
-            "resolvedName": "useClipboard",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: ClipboardProps) => ClipboardResult",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: ClipboardProps) => ClipboardResult"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useClipboard",
-            "resolvedName": "useClipboard",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => { clipboardProps: {};}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => { clipboardProps: {}; }"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "isDirectoryDropItem",
-          "targetExportName": "isDirectoryDropItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "isDirectoryDropItem",
-            "resolvedName": "isDirectoryDropItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(dropItem: DropItem) => dropItem is DirectoryDropItem",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DropItem) => dropItem is DirectoryDropItem"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "isDirectoryDropItem",
-            "resolvedName": "isDirectoryDropItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(item: unknown) => item is DirectoryDropItem",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: unknown) => item is DirectoryDropItem"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "isFileDropItem",
-          "targetExportName": "isFileDropItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "isFileDropItem",
-            "resolvedName": "isFileDropItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(dropItem: DropItem) => dropItem is FileDropItem",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DropItem) => dropItem is FileDropItem"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "isFileDropItem",
-            "resolvedName": "isFileDropItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(item: unknown) => item is FileDropItem",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: unknown) => item is FileDropItem"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "isTextDropItem",
-          "targetExportName": "isTextDropItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "isTextDropItem",
-            "resolvedName": "isTextDropItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(dropItem: DropItem) => dropItem is TextDropItem",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DropItem) => dropItem is TextDropItem"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "isTextDropItem",
-            "resolvedName": "isTextDropItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(item: unknown) => item is TextDropItem",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: unknown) => item is TextDropItem"
             ],
             "constructSignatures": []
           }
@@ -8639,9 +8232,416 @@
             ],
             "constructSignatures": []
           }
+        },
+        {
+          "exportName": "useTableSelectionCheckbox",
+          "targetExportName": "useTableSelectionCheckbox",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useTableSelectionCheckbox",
+            "resolvedName": "useTableSelectionCheckbox",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(props: AriaTableSelectionCheckboxProps, state: TableState<T>) => TableSelectionCheckboxAria",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: AriaTableSelectionCheckboxProps, _: TableState<T>) => TableSelectionCheckboxAria"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useTableSelectionCheckbox",
+            "resolvedName": "useTableSelectionCheckbox",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(options: AriaTableSelectionCheckboxOptions) => TableSelectionCheckboxAria",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: AriaTableSelectionCheckboxOptions) => TableSelectionCheckboxAria"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "useTab",
+          "targetExportName": "useTab",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useTab",
+            "resolvedName": "useTab",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(props: AriaTabProps, state: TabListState<T>, ref: RefObject<FocusableElement | null>) => TabAria",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: AriaTabProps, _: TabListState<T>, _: RefObject<FocusableElement | null>) => TabAria"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useTab",
+            "resolvedName": "useTab",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(options: AriaTabOptions, state: TabListState) => TabAria",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: AriaTabOptions, _: TabListState) => TabAria"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "useTabList",
+          "targetExportName": "useTabList",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useTabList",
+            "resolvedName": "useTabList",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(props: AriaTabListOptions<T>, state: TabListState<T>, ref: RefObject<HTMLElement | null>) => TabListAria",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: AriaTabListOptions<T>, _: TabListState<T>, _: RefObject<HTMLElement | null>) => TabListAria"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useTabList",
+            "resolvedName": "useTabList",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(options: AriaTabListOptions) => TabListAria",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: AriaTabListOptions) => TabListAria"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "useTabPanel",
+          "targetExportName": "useTabPanel",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useTabPanel",
+            "resolvedName": "useTabPanel",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(props: AriaTabPanelProps, state: TabListState<T> | null, ref: RefObject<Element | null>) => TabPanelAria",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: AriaTabPanelProps, _: TabListState<T> | null, _: RefObject<Element | null>) => TabPanelAria"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useTabPanel",
+            "resolvedName": "useTabPanel",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(options: AriaTabPanelOptions, state: TabListState | null) => TabPanelAria",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: AriaTabPanelOptions, _: TabListState | null) => TabPanelAria"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "useTag",
+          "targetExportName": "useTag",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useTag",
+            "resolvedName": "useTag",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(props: AriaTagProps<T>, state: ListState<T>, ref: RefObject<FocusableElement | null>) => TagAria",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: AriaTagProps<T>, _: ListState<T>, _: RefObject<FocusableElement | null>) => TagAria"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useTag",
+            "resolvedName": "useTag",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(options: AriaTagOptions) => TagAria",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: AriaTagOptions) => TagAria"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "useTagGroup",
+          "targetExportName": "useTagGroup",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useTagGroup",
+            "resolvedName": "useTagGroup",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(props: AriaTagGroupOptions<T>, state: ListState<T>, ref: RefObject<HTMLElement | null>) => TagGroupAria",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: AriaTagGroupOptions<T>, _: ListState<T>, _: RefObject<HTMLElement | null>) => TagGroupAria"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useTagGroup",
+            "resolvedName": "useTagGroup",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(options: AriaTagGroupOptions) => TagGroupAria",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: AriaTagGroupOptions) => TagGroupAria"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "useTextField",
+          "targetExportName": "useTextField",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useTextField",
+            "resolvedName": "useTextField",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T extends TextFieldIntrinsicElements = \"input\">(props: AriaTextFieldOptions<T>, ref: TextFieldRefObject<T>) => TextFieldAria<T>",
+            "declaredType": "",
+            "callSignatures": [
+              "<T extends TextFieldIntrinsicElements = \"input\">( _: AriaTextFieldOptions<T>, _: TextFieldRefObject<T>) => TextFieldAria<T>"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useTextField",
+            "resolvedName": "useTextField",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(options?: AriaTextFieldOptions) => TextFieldAria",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: AriaTextFieldOptions) => TextFieldAria"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "useToast",
+          "targetExportName": "useToast",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useToast",
+            "resolvedName": "useToast",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(props: AriaToastProps<T>, state: ToastState<T>, ref: RefObject<FocusableElement | null>) => ToastAria",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: AriaToastProps<T>, _: ToastState<T>, _: RefObject<FocusableElement | null>) => ToastAria"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useToast",
+            "resolvedName": "useToast",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(options: AriaToastOptions<T>, state: ToastState<T>) => ToastAria",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: AriaToastOptions<T>, _: ToastState<T>) => ToastAria"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "useToastRegion",
+          "targetExportName": "useToastRegion",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useToastRegion",
+            "resolvedName": "useToastRegion",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(props: AriaToastRegionProps, state: ToastState<T>, ref: RefObject<HTMLElement | null>) => ToastRegionAria",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: AriaToastRegionProps, _: ToastState<T>, _: RefObject<HTMLElement | null>) => ToastRegionAria"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useToastRegion",
+            "resolvedName": "useToastRegion",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(options: AriaToastRegionOptions, state: ToastRegionState<T>) => ToastRegionAria",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: AriaToastRegionOptions, _: ToastRegionState<T>) => ToastRegionAria"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "useTooltip",
+          "targetExportName": "useTooltip",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useTooltip",
+            "resolvedName": "useTooltip",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(props: AriaTooltipProps, state?: TooltipTriggerState) => TooltipAria",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: AriaTooltipProps, _: TooltipTriggerState) => TooltipAria"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useTooltip",
+            "resolvedName": "useTooltip",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(options?: AriaTooltipOptions, state?: TooltipTriggerStateLike) => TooltipAria",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: AriaTooltipOptions, _: TooltipTriggerStateLike) => TooltipAria"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "useTooltipTrigger",
+          "targetExportName": "useTooltipTrigger",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useTooltipTrigger",
+            "resolvedName": "useTooltipTrigger",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(props: TooltipTriggerProps, state: TooltipTriggerState, ref: RefObject<FocusableElement | null>) => TooltipTriggerAria",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: TooltipTriggerProps, _: TooltipTriggerState, _: RefObject<FocusableElement | null>) => TooltipTriggerAria"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useTooltipTrigger",
+            "resolvedName": "useTooltipTrigger",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(options?: AriaTooltipTriggerOptions) => TooltipTriggerAria",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: AriaTooltipTriggerOptions) => TooltipTriggerAria"
+            ],
+            "constructSignatures": []
+          }
         }
       ],
-      "truncatedMismatchCount": 22,
+      "truncatedMismatchCount": 11,
       "error": null
     },
     {
@@ -12771,433 +12771,6 @@
             "declaredType": "",
             "callSignatures": [
               "<T>( _: TreeProps<T>) => TreeState<T>"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/dnd",
-      "sourcePath": "packages/@react-aria/dnd",
-      "targetPackage": "@vue-aria/dnd",
-      "targetPath": "packages/@vue-aria/dnd",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/dnd/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/dnd/src/index.ts",
-      "sourceExportCount": 62,
-      "comparedExportCount": 62,
-      "matchedExportCount": 51,
-      "mismatchedExportCount": 11,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.8226,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useDrag",
-          "targetExportName": "useDrag",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDrag",
-            "resolvedName": "useDrag",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: DragOptions) => DragResult",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DragOptions) => DragResult"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDrag",
-            "resolvedName": "useDrag",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaDragOptions) => DragAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaDragOptions) => DragAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useDrop",
-          "targetExportName": "useDrop",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDrop",
-            "resolvedName": "useDrop",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: DropOptions) => DropResult",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DropOptions) => DropResult"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDrop",
-            "resolvedName": "useDrop",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaDropOptions) => DropAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaDropOptions) => DropAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useDroppableCollection",
-          "targetExportName": "useDroppableCollection",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDroppableCollection",
-            "resolvedName": "useDroppableCollection",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: DroppableCollectionOptions, state: DroppableCollectionState, ref: RefObject<HTMLElement | null>) => DroppableCollectionResult",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DroppableCollectionOptions, _: DroppableCollectionState, _: RefObject<HTMLElement | null>) => DroppableCollectionResult"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDroppableCollection",
-            "resolvedName": "useDroppableCollection",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => { collectionProps: {};}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => { collectionProps: {}; }"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useDroppableItem",
-          "targetExportName": "useDroppableItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDroppableItem",
-            "resolvedName": "useDroppableItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: DroppableItemOptions, state: DroppableCollectionState, ref: RefObject<HTMLElement | null>) => DroppableItemResult",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DroppableItemOptions, _: DroppableCollectionState, _: RefObject<HTMLElement | null>) => DroppableItemResult"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDroppableItem",
-            "resolvedName": "useDroppableItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => { droppableItemProps: {};}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => { droppableItemProps: {}; }"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useDropIndicator",
-          "targetExportName": "useDropIndicator",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDropIndicator",
-            "resolvedName": "useDropIndicator",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: DropIndicatorProps, state: DroppableCollectionState, ref: RefObject<HTMLElement | null>) => DropIndicatorAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DropIndicatorProps, _: DroppableCollectionState, _: RefObject<HTMLElement | null>) => DropIndicatorAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDropIndicator",
-            "resolvedName": "useDropIndicator",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => { dropIndicatorProps: {};}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => { dropIndicatorProps: {}; }"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useDraggableItem",
-          "targetExportName": "useDraggableItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDraggableItem",
-            "resolvedName": "useDraggableItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: DraggableItemProps, state: DraggableCollectionState) => DraggableItemResult",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DraggableItemProps, _: DraggableCollectionState) => DraggableItemResult"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDraggableItem",
-            "resolvedName": "useDraggableItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => { draggableItemProps: {};}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => { draggableItemProps: {}; }"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useDraggableCollection",
-          "targetExportName": "useDraggableCollection",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDraggableCollection",
-            "resolvedName": "useDraggableCollection",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: DraggableCollectionOptions, state: DraggableCollectionState, ref: RefObject<HTMLElement | null>) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DraggableCollectionOptions, _: DraggableCollectionState, _: RefObject<HTMLElement | null>) => void"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDraggableCollection",
-            "resolvedName": "useDraggableCollection",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => { collectionProps: {};}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => { collectionProps: {}; }"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useClipboard",
-          "targetExportName": "useClipboard",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useClipboard",
-            "resolvedName": "useClipboard",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: ClipboardProps) => ClipboardResult",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: ClipboardProps) => ClipboardResult"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useClipboard",
-            "resolvedName": "useClipboard",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => { clipboardProps: {};}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => { clipboardProps: {}; }"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "isDirectoryDropItem",
-          "targetExportName": "isDirectoryDropItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "isDirectoryDropItem",
-            "resolvedName": "isDirectoryDropItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(dropItem: DropItem) => dropItem is DirectoryDropItem",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DropItem) => dropItem is DirectoryDropItem"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "isDirectoryDropItem",
-            "resolvedName": "isDirectoryDropItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(item: unknown) => item is DirectoryDropItem",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: unknown) => item is DirectoryDropItem"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "isFileDropItem",
-          "targetExportName": "isFileDropItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "isFileDropItem",
-            "resolvedName": "isFileDropItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(dropItem: DropItem) => dropItem is FileDropItem",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DropItem) => dropItem is FileDropItem"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "isFileDropItem",
-            "resolvedName": "isFileDropItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(item: unknown) => item is FileDropItem",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: unknown) => item is FileDropItem"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "isTextDropItem",
-          "targetExportName": "isTextDropItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "isTextDropItem",
-            "resolvedName": "isTextDropItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(dropItem: DropItem) => dropItem is TextDropItem",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: DropItem) => dropItem is TextDropItem"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "isTextDropItem",
-            "resolvedName": "isTextDropItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(item: unknown) => item is TextDropItem",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: unknown) => item is TextDropItem"
             ],
             "constructSignatures": []
           }
@@ -20660,6 +20233,25 @@
           }
         }
       ],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/dnd",
+      "sourcePath": "packages/@react-aria/dnd",
+      "targetPackage": "@vue-aria/dnd",
+      "targetPath": "packages/@vue-aria/dnd",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/dnd/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/dnd/src/index.ts",
+      "sourceExportCount": 62,
+      "comparedExportCount": 62,
+      "matchedExportCount": 62,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
       "truncatedMismatchCount": 0,
       "error": null
     },
