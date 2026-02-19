@@ -26,6 +26,14 @@
           :min="1"
           :max="20" />
 
+        <VueSlider
+          v-model="completionProgress"
+          label="Completion"
+          description="Range selection via the slider port."
+          :min="0"
+          :max="100"
+          :step="5" />
+
         <VueComboBox
           v-model="favoriteLanguage"
           label="Favorite language"
@@ -66,6 +74,8 @@
           Selected: <strong>{{ favoriteFramework }}</strong>
           <span> · </span>
           Seats: <strong>{{ seatCount ?? 'none' }}</strong>
+          <span> · </span>
+          Progress: <strong>{{ completionProgress }}%</strong>
           <span> · </span>
           Menu: <strong>{{ favoriteComponent }}</strong>
           <span> · </span>
@@ -130,12 +140,14 @@ import {Popover as VuePopover} from '@vue-spectrum/overlays';
 import {Provider as VueSpectrumProvider} from '@vue-spectrum/provider';
 import {Radio as VueRadio, RadioGroup as VueRadioGroup} from '@vue-spectrum/radio';
 import {SearchField as VueSearchField} from '@vue-spectrum/searchfield';
+import {Slider as VueSlider} from '@vue-spectrum/slider';
 import {Switch as VueSwitch} from '@vue-spectrum/switch';
 import {TextField as VueTextField} from '@vue-spectrum/textfield';
 
 const count = ref(0);
 const name = ref('');
 const seatCount = ref<number | null>(2);
+const completionProgress = ref(40);
 const favoriteLanguage = ref('TypeScript');
 const isDigestEnabled = ref(false);
 const searchQuery = ref('');
@@ -158,6 +170,7 @@ function reset() {
   count.value = 0;
   name.value = '';
   seatCount.value = 2;
+  completionProgress.value = 40;
   favoriteLanguage.value = 'TypeScript';
   isDigestEnabled.value = false;
   searchQuery.value = '';

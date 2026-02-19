@@ -382,6 +382,54 @@
   cursor: not-allowed;
 }
 
+.vs-slider {
+  display: grid;
+  gap: 8px;
+}
+
+.vs-slider__header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.vs-slider__label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.vs-slider__value {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.vs-slider__description {
+  color: #707070;
+  font-size: 12px;
+}
+
+.vs-provider[data-color-scheme='dark'] .vs-slider__description {
+  color: #c2c2c2;
+}
+
+.vs-slider__input {
+  accent-color: var(--vs-color-primary);
+  inline-size: 100%;
+  margin: 0;
+}
+
+.vs-slider--medium .vs-slider__input {
+  block-size: 18px;
+}
+
+.vs-slider--large .vs-slider__input {
+  block-size: 22px;
+}
+
+.vs-slider.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
 .vs-radio-group {
   display: grid;
   gap: 8px;

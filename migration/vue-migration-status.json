@@ -300,6 +300,26 @@
         }
       ]
     },
+    "@react-spectrum/slider": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/slider",
+      "targetPath": "packages/@vue-spectrum/slider",
+      "notes": "First-wave primitive for range input controls.",
+      "acceptanceTests": [
+        {
+          "name": "Vue slider package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/slider/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    },
     "@react-spectrum/switch": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/switch",
