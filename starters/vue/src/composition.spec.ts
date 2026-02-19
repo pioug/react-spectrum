@@ -207,6 +207,13 @@ import {
   TableLayout as StatelyTableLayout,
   WaterfallLayout as StatelyWaterfallLayout
 } from '@vue-stately/layout';
+import {
+  ListCollection as StatelyListCollection,
+  type ListNode as StatelyListNode,
+  UNSTABLE_useFilteredListState as useStatelyFilteredListState,
+  useListState as useStatelyListState,
+  useSingleSelectListState as useStatelySingleSelectListState
+} from '@vue-stately/list';
 
 function createPointerEvent(
   type: string,
@@ -1520,6 +1527,75 @@ describe('Vue migration composition components', () => {
     let waterfallLayout = new StatelyWaterfallLayout({gap: 12, minColumnWidth: 120, rowHeight: 60});
     waterfallLayout.update(items, 420);
     expect(waterfallLayout.getLayoutInfo('item-2')).not.toBeNull();
+  });
+
+  it('manages vue-stately list collection selection and filtered focus state', () => {
+    let nodes: StatelyListNode<{label: string}>[] = [
+      {key: 'item-1', textValue: 'Vue', type: 'item', value: {label: 'Vue'}},
+      {key: 'item-2', textValue: 'React', type: 'item', value: {label: 'React'}},
+      {key: 'item-3', textValue: 'Svelte', type: 'item', value: {label: 'Svelte'}}
+    ];
+
+    let collection = new StatelyListCollection(nodes);
+    let selectedKeys = ref(new Set<string>(['item-2']));
+    let selectionChanges: string[][] = [];
+    let listState = useStatelyListState({
+      collection,
+      disabledKeys: ['item-3'],
+      selectedKeys,
+      selectionMode: 'multiple',
+      onSelectionChange: (keys) => {
+        selectionChanges.push(Array.from(keys) as string[]);
+      }
+    });
+
+    expect(listState.collection.getFirstKey()).toBe('item-1');
+    expect(listState.collection.getKeyAfter('item-1')).toBe('item-2');
+    expect(listState.collection.size).toBe(3);
+
+    listState.selectionManager.toggleSelection('item-1');
+    expect(Array.from(listState.selectionManager.selectedKeys.value)).toEqual(['item-2', 'item-1']);
+    listState.selectionManager.toggleSelection('item-3');
+    expect(Array.from(listState.selectionManager.selectedKeys.value)).toEqual(['item-2', 'item-1']);
+
+    listState.selectionManager.setFocusedKey('item-2');
+    let filteredState = useStatelyFilteredListState(listState, (textValue) => {
+      return textValue.toLowerCase().includes('vue');
+    });
+
+    expect(Array.from(filteredState.collection.getKeys())).toEqual(['item-1']);
+    expect(filteredState.selectionManager.focusedKey.value).toBe('item-1');
+    expect(filteredState.selectionManager.isSelected('item-2')).toBe(false);
+    expect(selectionChanges.length).toBeGreaterThan(0);
+  });
+
+  it('manages vue-stately single-select list state and selected item lookups', () => {
+    let nodes: StatelyListNode<{label: string}>[] = [
+      {key: 'overview', textValue: 'Overview', type: 'item', value: {label: 'Overview'}},
+      {key: 'details', textValue: 'Details', type: 'item', value: {label: 'Details'}}
+    ];
+
+    let selectedKey = ref<string | null>('overview');
+    let selectionChanges: Array<string | null> = [];
+    let listState = useStatelySingleSelectListState({
+      collection: new StatelyListCollection(nodes),
+      selectedKey,
+      onSelectionChange: (key) => {
+        selectionChanges.push(key as string | null);
+      }
+    });
+
+    expect(listState.selectedKey.value).toBe('overview');
+    expect(listState.selectedItem.value?.textValue).toBe('Overview');
+
+    listState.setSelectedKey('details');
+    expect(selectedKey.value).toBe('details');
+    expect(listState.selectionManager.firstSelectedKey).toBe('details');
+
+    listState.selectionManager.toggleSelection('details');
+    expect(selectedKey.value).toBe('details');
+    expect(listState.selectedItem.value?.key).toBe('details');
+    expect(selectionChanges[selectionChanges.length - 1]).toBe('details');
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {

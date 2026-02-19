@@ -3088,6 +3088,30 @@
         }
       ]
     },
+    "@react-stately/list": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/list",
+      "targetPath": "packages/@vue-stately/list",
+      "notes": "State baseline for list collections, filtered views, and single/multi selection flows in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately list package source lint",
+          "command": "yarn eslint packages/@vue-stately/list/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",
