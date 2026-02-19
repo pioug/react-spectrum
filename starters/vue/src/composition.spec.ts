@@ -181,6 +181,12 @@ import {
   useColorSliderState as useStatelyColorSliderState
 } from '@vue-stately/color';
 import {useAsyncList as useStatelyAsyncList, useListData as useStatelyListData, useTreeData as useStatelyTreeData} from '@vue-stately/data';
+import {
+  useDateFieldState as useStatelyDateFieldState,
+  useDatePickerState as useStatelyDatePickerState,
+  useDateRangePickerState as useStatelyDateRangePickerState,
+  useTimeFieldState as useStatelyTimeFieldState
+} from '@vue-stately/datepicker';
 
 function createPointerEvent(
   type: string,
@@ -972,6 +978,92 @@ describe('Vue migration composition components', () => {
       end: '2026-02-25'
     });
     expect(rangePicker.isInvalid.value).toBe(false);
+  });
+
+  it('manages vue-stately date and time field state', () => {
+    let dateValue = ref('2026-02-10');
+    let dateField = useStatelyDateFieldState({
+      maxValue: '2026-02-20',
+      minValue: '2026-02-01',
+      value: dateValue
+    });
+
+    dateField.increment();
+    expect(dateValue.value).toBe('2026-02-11');
+    dateField.decrement(2);
+    expect(dateValue.value).toBe('2026-02-09');
+    dateField.setValue('2026-03-01');
+    expect(dateValue.value).toBe('2026-02-20');
+    expect(dateField.validationState.value).toBeNull();
+
+    let timeValue = ref('23:30');
+    let timeField = useStatelyTimeFieldState({
+      value: timeValue
+    });
+
+    timeField.increment(90);
+    expect(timeValue.value).toBe('01:00');
+    timeField.decrement(60);
+    expect(timeValue.value).toBe('00:00');
+    timeField.clear();
+    expect(timeValue.value).toBe('');
+  });
+
+  it('manages vue-stately date picker open and selection state', () => {
+    let pickerValue = ref<string | null>(null);
+    let picker = useStatelyDatePickerState({
+      value: pickerValue
+    });
+
+    picker.open();
+    expect(picker.isOpen.value).toBe(true);
+
+    picker.setDateValue('2026-02-22');
+    expect(pickerValue.value).toBe('2026-02-22');
+    expect(picker.isOpen.value).toBe(false);
+
+    picker.setTimeValue('09:45');
+    picker.commit();
+    expect(picker.timeValue.value).toBe('09:45');
+    expect(picker.formatValue()).toBe('2026-02-22');
+  });
+
+  it('manages vue-stately date range picker date and time range state', () => {
+    let rangeValue = ref({
+      start: null as string | null,
+      end: null as string | null
+    });
+
+    let rangePicker = useStatelyDateRangePickerState({
+      value: rangeValue
+    });
+
+    rangePicker.open();
+    expect(rangePicker.isOpen.value).toBe(true);
+
+    rangePicker.setDate('start', '2026-02-20');
+    rangePicker.setDate('end', '2026-02-10');
+    expect(rangeValue.value).toEqual({
+      start: '2026-02-20',
+      end: '2026-02-20'
+    });
+
+    rangePicker.setDateRange({
+      start: '2026-02-21',
+      end: '2026-02-24'
+    });
+    expect(rangePicker.isOpen.value).toBe(false);
+
+    rangePicker.setTime('start', '08:30');
+    rangePicker.setTime('end', '18:15');
+    expect(rangePicker.timeRange.value).toEqual({
+      start: '08:30',
+      end: '18:15'
+    });
+    expect(rangePicker.formatValue()).toEqual({
+      start: '2026-02-21',
+      end: '2026-02-24'
+    });
   });
 
   it('manages vue-aria dialog labeling and open state', () => {

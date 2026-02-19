@@ -139,6 +139,7 @@
     "@vue-stately/color": "workspace:*",
     "@vue-stately/combobox": "workspace:*",
     "@vue-stately/data": "workspace:*",
+    "@vue-stately/datepicker": "workspace:*",
     "vue": "^3.5.13"
   },
   "devDependencies": {

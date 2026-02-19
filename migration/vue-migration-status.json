@@ -2920,6 +2920,30 @@
         }
       ]
     },
+    "@react-stately/datepicker": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/datepicker",
+      "targetPath": "packages/@vue-stately/datepicker",
+      "notes": "State baseline for date field/time field and date picker/date-range picker workflows in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately datepicker package source lint",
+          "command": "yarn eslint packages/@vue-stately/datepicker/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",
