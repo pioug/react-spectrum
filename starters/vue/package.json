@@ -49,6 +49,7 @@
     "@vue-aria/select": "workspace:*",
     "@vue-aria/selection": "workspace:*",
     "@vue-aria/separator": "workspace:*",
+    "@vue-aria/slider": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",

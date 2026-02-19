@@ -888,6 +888,30 @@
         }
       ]
     },
+    "@react-aria/slider": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/slider",
+      "targetPath": "packages/@vue-aria/slider",
+      "notes": "Foundational React Aria slider composables for grouped slider semantics, track interactions, and thumb range-input behavior in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria slider source lint",
+          "command": "yarn eslint packages/@vue-aria/slider/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",

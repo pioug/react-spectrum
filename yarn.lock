@@ -12115,6 +12115,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/slider@workspace:*, @vue-aria/slider@workspace:packages/@vue-aria/slider":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/slider@workspace:packages/@vue-aria/slider"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31443,6 +31451,7 @@ __metadata:
     "@vue-aria/select": "workspace:*"
     "@vue-aria/selection": "workspace:*"
     "@vue-aria/separator": "workspace:*"
+    "@vue-aria/slider": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"

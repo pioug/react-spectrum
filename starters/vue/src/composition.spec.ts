@@ -76,6 +76,7 @@ import {
   useTypeSelect as useAriaTypeSelect
 } from '@vue-aria/selection';
 import {useSeparator as useAriaSeparator} from '@vue-aria/separator';
+import {useSlider as useAriaSlider, useSliderThumb as useAriaSliderThumb} from '@vue-aria/slider';
 import {
   addWindowFocusTracking,
   setInteractionModality,
@@ -1683,6 +1684,131 @@ describe('Vue migration composition components', () => {
       elementType: 'hr'
     });
     expect(hrSeparator.separatorProps.value.role).toBeUndefined();
+  });
+
+  it('computes vue-aria slider track and thumb interactions', () => {
+    let values = ref([20, 80]);
+    let focusedThumb = ref<number | undefined>(undefined);
+    let draggingThumbs = ref(new Set<number>());
+    let editableThumbs = ref(new Set([0, 1]));
+
+    let setThumbValue = (index: number, value: number) => {
+      values.value[index] = Math.min(Math.max(Math.round(value), 0), 100);
+    };
+
+    let state = {
+      values,
+      focusedThumb,
+      pageSize: ref(10),
+      step: ref(1),
+      getPercentValue: (percent: number) => Math.round(percent * 100),
+      getThumbMaxValue: () => 100,
+      getThumbMinValue: () => 0,
+      getThumbPercent: (index: number) => (values.value[index] ?? 0) / 100,
+      getThumbValueLabel: (index: number) => `${values.value[index] ?? 0}`,
+      incrementThumb: (index: number, amount: number) => {
+        setThumbValue(index, (values.value[index] ?? 0) + amount);
+      },
+      decrementThumb: (index: number, amount: number) => {
+        setThumbValue(index, (values.value[index] ?? 0) - amount);
+      },
+      isThumbDragging: (index: number) => draggingThumbs.value.has(index),
+      isThumbEditable: (index: number) => editableThumbs.value.has(index),
+      setFocusedThumb: (index: number | undefined) => {
+        focusedThumb.value = index;
+      },
+      setThumbDragging: (index: number, isDragging: boolean) => {
+        let nextDraggingThumbs = new Set(draggingThumbs.value);
+        if (isDragging) {
+          nextDraggingThumbs.add(index);
+        } else {
+          nextDraggingThumbs.delete(index);
+        }
+        draggingThumbs.value = nextDraggingThumbs;
+      },
+      setThumbEditable: (index: number, isEditable: boolean) => {
+        let nextEditableThumbs = new Set(editableThumbs.value);
+        if (isEditable) {
+          nextEditableThumbs.add(index);
+        } else {
+          nextEditableThumbs.delete(index);
+        }
+        editableThumbs.value = nextEditableThumbs;
+      },
+      setThumbPercent: (index: number, percent: number) => {
+        setThumbValue(index, percent * 100);
+      },
+      setThumbValue
+    };
+
+    let trackElement = document.createElement('div');
+    trackElement.getBoundingClientRect = () => createDOMRect(0, 0, 200, 24);
+    let trackRef = ref<Element | null>(trackElement);
+
+    let slider = useAriaSlider({
+      label: 'Volume'
+    }, state, trackRef);
+
+    expect(slider.groupProps.value.role).toBe('group');
+    expect(slider.groupProps.value['aria-labelledby']).toContain('label');
+    expect(slider.outputProps.value.htmlFor.split(' ')).toHaveLength(2);
+
+    slider.trackProps.value.onMouseDown(new MouseEvent('mousedown', {
+      bubbles: true,
+      button: 0,
+      clientX: 160,
+      clientY: 12
+    }));
+    expect(focusedThumb.value).toBe(1);
+    expect(values.value[1]).toBe(80);
+
+    slider.trackProps.value.onMouseMove(new MouseEvent('mousemove', {
+      bubbles: true,
+      clientX: 120,
+      clientY: 12
+    }));
+    expect(values.value[1]).toBe(60);
+
+    slider.trackProps.value.onMouseUp(new MouseEvent('mouseup', {
+      bubbles: true,
+      clientX: 120,
+      clientY: 12
+    }));
+    expect(draggingThumbs.value.has(1)).toBe(false);
+
+    let inputRef = ref<HTMLInputElement | null>(document.createElement('input'));
+    let thumb = useAriaSliderThumb({
+      index: 0,
+      inputRef,
+      trackRef
+    }, state);
+
+    expect(thumb.inputProps.value.type).toBe('range');
+    expect(thumb.thumbProps.value.style.left).toBe('20%');
+
+    thumb.inputProps.value.onChange('42');
+    expect(values.value[0]).toBe(42);
+
+    thumb.inputProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'End'}));
+    expect(values.value[0]).toBe(100);
+
+    thumb.thumbProps.value.onMouseDown(new MouseEvent('mousedown', {
+      bubbles: true,
+      button: 0,
+      clientX: 40,
+      clientY: 12
+    }));
+    thumb.thumbProps.value.onMouseMove(new MouseEvent('mousemove', {
+      bubbles: true,
+      clientX: 10,
+      clientY: 12
+    }));
+    thumb.thumbProps.value.onMouseUp(new MouseEvent('mouseup', {
+      bubbles: true,
+      clientX: 10,
+      clientY: 12
+    }));
+    expect(values.value[0]).toBe(5);
   });
 
   it('announces and clears live region messages with vue-aria live announcer', () => {
