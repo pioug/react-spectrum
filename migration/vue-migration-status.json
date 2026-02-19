@@ -3496,6 +3496,30 @@
         }
       ]
     },
+    "@react-stately/virtualizer": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/virtualizer",
+      "targetPath": "packages/@vue-stately/virtualizer",
+      "notes": "State baseline for virtualizer geometry primitives, layout modeling, reusable views, and reactive virtualizer state in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately virtualizer package source lint",
+          "command": "yarn eslint packages/@vue-stately/virtualizer/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

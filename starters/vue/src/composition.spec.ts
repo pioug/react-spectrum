@@ -251,6 +251,14 @@ import {
   toFixedNumber as toStatelyFixedNumber,
   useControlledState as useStatelyControlledState
 } from '@vue-stately/utils';
+import {
+  Layout as StatelyVirtualizerLayout,
+  LayoutInfo as StatelyLayoutInfo,
+  Point as StatelyVirtualizerPoint,
+  Rect as StatelyVirtualizerRect,
+  Size as StatelyVirtualizerSize,
+  useVirtualizerState as useStatelyVirtualizerState
+} from '@vue-stately/virtualizer';
 
 function createPointerEvent(
   type: string,
@@ -2321,6 +2329,78 @@ describe('Vue migration composition components', () => {
     expect(roundStatelyStepPrecision(0.123456789, 1e-7)).toBe(0.12345679);
     expect(snapStatelyValueToStep(2, -0.5, 100, 3)).toBe(2.5);
     expect(toStatelyFixedNumber(Math.PI, 2)).toBe(3.14);
+  });
+
+  it('manages vue-stately virtualizer layout geometry and visible view state', () => {
+    type VirtualizedItem = {id: string};
+
+    class FixedRowLayout extends StatelyVirtualizerLayout<VirtualizedItem> {
+      private layoutInfos = new Map<string, StatelyLayoutInfo>();
+
+      constructor(private items: VirtualizedItem[]) {
+        super();
+
+        for (let index = 0; index < items.length; index++) {
+          let item = items[index];
+          this.layoutInfos.set(
+            item.id,
+            new StatelyLayoutInfo('item', item.id, new StatelyVirtualizerRect(0, index * 20, 100, 20))
+          );
+        }
+      }
+
+      getVisibleLayoutInfos(rect: StatelyVirtualizerRect): StatelyLayoutInfo[] {
+        return this.items
+          .map((item) => this.layoutInfos.get(item.id))
+          .filter((layoutInfo): layoutInfo is StatelyLayoutInfo => layoutInfo != null && layoutInfo.rect.intersects(rect));
+      }
+
+      getLayoutInfo(key: string | number): StatelyLayoutInfo | null {
+        return this.layoutInfos.get(String(key)) ?? null;
+      }
+
+      getContentSize(): StatelyVirtualizerSize {
+        return new StatelyVirtualizerSize(100, this.items.length * 20);
+      }
+    }
+
+    let items: VirtualizedItem[] = [
+      {id: 'one'},
+      {id: 'two'},
+      {id: 'three'},
+      {id: 'four'}
+    ];
+    let byId = new Map(items.map((item) => [item.id, item]));
+    let virtualizerState = useStatelyVirtualizerState({
+      collection: {
+        getItem: (key) => byId.get(String(key)) ?? null,
+        getKeys: () => items.map((item) => item.id)
+      },
+      layout: new FixedRowLayout(items),
+      renderView: (type, content) => `${type}:${content?.id ?? 'none'}`
+    });
+
+    virtualizerState.setVisibleRect(new StatelyVirtualizerRect(0, 0, 100, 45));
+    expect(virtualizerState.visibleViews.value.map((view) => view.layoutInfo?.key)).toEqual([
+      'one',
+      'two',
+      'three'
+    ]);
+    expect(virtualizerState.contentSize.value.height).toBe(80);
+
+    virtualizerState.startScrolling();
+    expect(virtualizerState.isScrolling.value).toBe(true);
+    virtualizerState.endScrolling();
+    expect(virtualizerState.isScrolling.value).toBe(false);
+
+    let visibleKey = virtualizerState.virtualizer.keyAtPoint(new StatelyVirtualizerPoint(10, 10));
+    expect(visibleKey).toBe('one');
+
+    let copiedLayout = virtualizerState.visibleViews.value[0]?.layoutInfo?.copy();
+    expect(copiedLayout?.rect.equals(new StatelyVirtualizerRect(0, 0, 100, 20))).toBe(true);
+
+    virtualizerState.setVisibleRect(new StatelyVirtualizerRect(0, 60, 100, 20));
+    expect(virtualizerState.visibleViews.value.map((view) => view.layoutInfo?.key)).toEqual(['three', 'four']);
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {
