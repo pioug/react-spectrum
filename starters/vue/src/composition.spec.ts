@@ -34,6 +34,19 @@ import {
   useGridListSection,
   useGridListSelectionCheckbox
 } from '@vue-aria/gridlist';
+import {
+  I18nProvider,
+  isRTL,
+  useCollator,
+  useDateFormatter,
+  useDefaultLocale,
+  useFilter,
+  useListFormatter,
+  useLocale,
+  useLocalizedStringFormatter,
+  useMessageFormatter,
+  useNumberFormatter
+} from '@vue-aria/i18n';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -918,6 +931,60 @@ describe('Vue migration composition components', () => {
     expect(section.rowHeaderProps.value.role).toBe('rowheader');
     expect(section.rowGroupProps.value.role).toBe('rowgroup');
     expect(section.rowGroupProps.value['aria-label']).toBe('Open stories');
+  });
+
+  it('formats locale-sensitive values with vue-aria i18n helpers', () => {
+    let provider = I18nProvider({
+      locale: 'fr-FR'
+    });
+
+    expect(useLocale().locale).toBe('fr-FR');
+    expect(isRTL('ar-EG')).toBe(true);
+    expect(useDefaultLocale().locale.length).toBeGreaterThan(0);
+
+    let collator = useCollator({
+      sensitivity: 'base',
+      usage: 'search'
+    });
+    expect(collator.compare('é', 'e')).toBe(0);
+
+    let filter = useFilter();
+    expect(filter.contains('Vue Spectrum', 'spectrum')).toBe(true);
+    expect(filter.startsWith('Migration', 'mig')).toBe(true);
+
+    let listFormatter = useListFormatter({
+      style: 'long',
+      type: 'conjunction'
+    });
+    expect(listFormatter.format(['Vue', 'React']).length).toBeGreaterThan(0);
+
+    let numberFormatter = useNumberFormatter({
+      maximumFractionDigits: 1
+    });
+    expect(numberFormatter.format(12.34).length).toBeGreaterThan(0);
+
+    let dateFormatter = useDateFormatter({
+      day: 'numeric',
+      month: 'short',
+      timeZone: 'UTC'
+    });
+    expect(dateFormatter.format(new Date(Date.UTC(2026, 1, 14))).length).toBeGreaterThan(0);
+
+    let strings = {
+      'en-US': {
+        greeting: 'Hello {name}'
+      },
+      'fr-FR': {
+        greeting: 'Bonjour {name}'
+      }
+    };
+    let messageFormatter = useMessageFormatter(strings);
+    expect(messageFormatter('greeting', {name: 'Codex'})).toBe('Bonjour Codex');
+
+    let localizedFormatter = useLocalizedStringFormatter(strings);
+    expect(localizedFormatter.format('greeting', {name: 'Vue'})).toBe('Bonjour Vue');
+
+    provider.clear();
   });
 
   it('emits close events from dismissable dialog controls', async () => {

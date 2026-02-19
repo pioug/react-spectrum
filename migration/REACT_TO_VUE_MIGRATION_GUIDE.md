@@ -84,6 +84,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-aria/form` | `@vue-aria/form` |
 | `@react-aria/grid` | `@vue-aria/grid` |
 | `@react-aria/gridlist` | `@vue-aria/gridlist` |
+| `@react-aria/i18n` | `@vue-aria/i18n` |
 | `@react-aria/disclosure` | `@vue-aria/disclosure` |
 | `@react-aria/color` | `@vue-aria/color` |
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` |

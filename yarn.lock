@@ -11979,6 +11979,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/i18n@workspace:*, @vue-aria/i18n@workspace:packages/@vue-aria/i18n":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/i18n@workspace:packages/@vue-aria/i18n"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31290,6 +31298,7 @@ __metadata:
     "@vue-aria/form": "workspace:*"
     "@vue-aria/grid": "workspace:*"
     "@vue-aria/gridlist": "workspace:*"
+    "@vue-aria/i18n": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"

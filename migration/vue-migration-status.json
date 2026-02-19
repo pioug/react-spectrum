@@ -480,6 +480,30 @@
         }
       ]
     },
+    "@react-aria/i18n": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/i18n",
+      "targetPath": "packages/@vue-aria/i18n",
+      "notes": "Foundational React Aria i18n composables for locale state, RTL detection, Intl formatters, and localized string/message formatting in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria i18n source lint",
+          "command": "yarn eslint packages/@vue-aria/i18n/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",
