@@ -18,6 +18,7 @@ Roadmap baseline coverage is complete across all migration phases for tracked pa
   * `yarn vue:migration:assert-complete`
   * `yarn vue:parity:api:report`
   * `yarn vue:parity:api:assert`
+  * `yarn vue:parity:api:priority`
   * `yarn vue:parity:visual:capture`
   * `yarn vue:parity:visual:compare`
 * Added a package-by-package tracker:
@@ -210,6 +211,9 @@ Roadmap baseline coverage is complete across all migration phases for tracked pa
     * `migration/VUE_VISUAL_PARITY_REPORT.md`
     * `migration/vue-visual-parity-report.json`
     * `migration/visual-parity/baseline/*.png`
+  * Added API gap priority ranking artifacts:
+    * `migration/VUE_API_PARITY_PRIORITY.md`
+    * `migration/vue-api-parity-priority.json`
   * Expanded package-level usage and limitations docs for `@vue-stately/toggle`, `@vue-stately/tooltip`, `@vue-stately/tree`, `@vue-stately/utils`, and `@vue-stately/virtualizer`.
   * Added concrete conversion examples for `@vue-stately/toggle`, `@vue-stately/tooltip`, `@vue-stately/tree`, `@vue-stately/utils`, and `@vue-stately/virtualizer` in `migration/REACT_TO_VUE_MIGRATION_GUIDE.md`.
   * On February 19, 2026, `yarn vue:migration:test` passed with all active migration acceptance checks.

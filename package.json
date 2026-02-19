@@ -28,6 +28,7 @@
     "vue:migration:assert-complete": "node scripts/vue-migration-tracker.mjs assert-complete",
     "vue:parity:api:report": "node scripts/vue-parity-pipeline.mjs api-report --write",
     "vue:parity:api:assert": "node scripts/vue-parity-pipeline.mjs api-assert --write --max-missing 0",
+    "vue:parity:api:priority": "node scripts/vue-parity-pipeline.mjs api-priority --write",
     "vue:parity:visual:capture": "node scripts/vue-visual-parity.mjs capture --start-server --write",
     "vue:parity:visual:compare": "node scripts/vue-visual-parity.mjs compare --start-server --write",
     "build:storybook": "storybook build -c .storybook -o dist/$(git rev-parse HEAD)/storybook",

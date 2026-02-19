@@ -9,6 +9,8 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 const STATUS_FILE = path.join(REPO_ROOT, 'migration', 'vue-migration-status.json');
 const API_REPORT_JSON = path.join(REPO_ROOT, 'migration', 'vue-api-parity-report.json');
 const API_REPORT_MD = path.join(REPO_ROOT, 'migration', 'VUE_API_PARITY_REPORT.md');
+const API_PRIORITY_JSON = path.join(REPO_ROOT, 'migration', 'vue-api-parity-priority.json');
+const API_PRIORITY_MD = path.join(REPO_ROOT, 'migration', 'VUE_API_PARITY_PRIORITY.md');
 
 const STATUS_ORDER = ['in_progress', 'ported', 'planned', 'blocked', 'not_started'];
 
@@ -606,6 +608,206 @@ function buildApiParityMarkdown(report) {
   return lines.join('\n');
 }
 
+function readPackageJsonAt(relativePackagePath) {
+  let packageJsonPath = path.join(REPO_ROOT, relativePackagePath, 'package.json');
+  if (!fs.existsSync(packageJsonPath)) {
+    return null;
+  }
+
+  return readJson(packageJsonPath);
+}
+
+function getTrackedSourceDependencyMap(entries) {
+  let trackedSources = new Set(entries.map(entry => entry.sourcePackage));
+  let dependencyMap = new Map();
+
+  for (let entry of entries) {
+    let pkgJson = readPackageJsonAt(entry.sourcePath);
+    let dependencies = new Set();
+
+    if (pkgJson) {
+      for (let section of ['dependencies', 'peerDependencies', 'optionalDependencies']) {
+        let sectionDeps = pkgJson[section] ?? {};
+        for (let dependencyName of Object.keys(sectionDeps)) {
+          if (trackedSources.has(dependencyName)) {
+            dependencies.add(dependencyName);
+          }
+        }
+      }
+    }
+
+    dependencyMap.set(entry.sourcePackage, [...dependencies].sort());
+  }
+
+  return dependencyMap;
+}
+
+function getReverseDependentCounts(dependencyMap) {
+  let reverseCounts = new Map();
+  for (let packageName of dependencyMap.keys()) {
+    reverseCounts.set(packageName, 0);
+  }
+
+  for (let dependencies of dependencyMap.values()) {
+    for (let dependencyName of dependencies) {
+      reverseCounts.set(dependencyName, (reverseCounts.get(dependencyName) ?? 0) + 1);
+    }
+  }
+
+  return reverseCounts;
+}
+
+function getDependencyDepths(dependencyMap) {
+  let cache = new Map();
+  let active = new Set();
+
+  let walk = (packageName) => {
+    if (cache.has(packageName)) {
+      return cache.get(packageName);
+    }
+
+    if (active.has(packageName)) {
+      return 0;
+    }
+
+    active.add(packageName);
+    let dependencies = dependencyMap.get(packageName) ?? [];
+    let depth = dependencies.length === 0
+      ? 0
+      : 1 + Math.max(...dependencies.map(dependencyName => walk(dependencyName)));
+    active.delete(packageName);
+    cache.set(packageName, depth);
+    return depth;
+  };
+
+  for (let packageName of dependencyMap.keys()) {
+    walk(packageName);
+  }
+
+  return cache;
+}
+
+function getPackageCriticalityWeight(sourcePackage) {
+  if (sourcePackage === 'react-aria-components') {
+    return 3.2;
+  }
+
+  if (sourcePackage === 'react-aria' || sourcePackage === 'react-stately') {
+    return 2.6;
+  }
+
+  if (sourcePackage.startsWith('@react-aria/') || sourcePackage.startsWith('@react-stately/')) {
+    return 1.9;
+  }
+
+  if (sourcePackage.startsWith('@react-spectrum/')) {
+    return 1.4;
+  }
+
+  return 1;
+}
+
+function buildApiPriorityReport(entries, apiReport) {
+  let dependencyMap = getTrackedSourceDependencyMap(entries);
+  let reverseDependentCounts = getReverseDependentCounts(dependencyMap);
+  let dependencyDepths = getDependencyDepths(dependencyMap);
+  let reportBySourcePackage = new Map(apiReport.packages.map(pkg => [pkg.sourcePackage, pkg]));
+  let priorityPackages = [];
+
+  for (let entry of entries) {
+    let packageReport = reportBySourcePackage.get(entry.sourcePackage);
+    if (!packageReport || packageReport.error) {
+      continue;
+    }
+
+    if (packageReport.missingExports.length === 0) {
+      continue;
+    }
+
+    let reverseDependents = reverseDependentCounts.get(entry.sourcePackage) ?? 0;
+    let dependencyDepth = dependencyDepths.get(entry.sourcePackage) ?? 0;
+    let criticalityWeight = getPackageCriticalityWeight(entry.sourcePackage);
+    let missingExports = packageReport.missingExports.length;
+
+    let priorityScore = Number((
+      missingExports * criticalityWeight +
+      reverseDependents * 4 +
+      dependencyDepth * 2.5 +
+      Math.max(0, 100 - (packageReport.parityRatio * 100)) * 0.15
+    ).toFixed(2));
+
+    priorityPackages.push({
+      sourcePackage: entry.sourcePackage,
+      targetPackage: entry.targetPackage,
+      missingExports,
+      sourceExportCount: packageReport.sourceExportCount,
+      coveragePercent: Number((packageReport.parityRatio * 100).toFixed(2)),
+      reverseDependents,
+      dependencyDepth,
+      criticalityWeight,
+      priorityScore
+    });
+  }
+
+  priorityPackages.sort((a, b) => b.priorityScore - a.priorityScore || b.missingExports - a.missingExports || a.sourcePackage.localeCompare(b.sourcePackage));
+
+  return {
+    generatedAt: new Date().toISOString(),
+    summary: {
+      trackedPackages: entries.length,
+      packagesWithGaps: priorityPackages.length,
+      highestPriorityPackage: priorityPackages[0]?.sourcePackage ?? null,
+      highestPriorityScore: priorityPackages[0]?.priorityScore ?? 0
+    },
+    packages: priorityPackages
+  };
+}
+
+function buildApiPriorityMarkdown(priorityReport) {
+  let lines = [];
+  lines.push('# Vue API Parity Priority');
+  lines.push('');
+  lines.push(`Generated: ${priorityReport.generatedAt}`);
+  lines.push('');
+  lines.push('## Summary');
+  lines.push('');
+  lines.push(`* Tracked packages: ${priorityReport.summary.trackedPackages}`);
+  lines.push(`* Packages with API gaps: ${priorityReport.summary.packagesWithGaps}`);
+  lines.push(`* Highest priority package: ${priorityReport.summary.highestPriorityPackage ?? 'n/a'}`);
+  lines.push(`* Highest priority score: ${priorityReport.summary.highestPriorityScore}`);
+  lines.push('');
+  lines.push('## Ranked packages');
+  lines.push('');
+  lines.push('| Rank | Source | Target | Missing | Coverage | Reverse deps | Depth | Score |');
+  lines.push('| ---: | --- | --- | ---: | ---: | ---: | ---: | ---: |');
+
+  for (let [index, pkg] of priorityReport.packages.entries()) {
+    lines.push(`| ${index + 1} | \`${pkg.sourcePackage}\` | \`${pkg.targetPackage}\` | ${pkg.missingExports} | ${pkg.coveragePercent.toFixed(2)}% | ${pkg.reverseDependents} | ${pkg.dependencyDepth} | ${pkg.priorityScore.toFixed(2)} |`);
+  }
+
+  lines.push('');
+  lines.push('## Top execution tranche');
+  lines.push('');
+  for (let pkg of priorityReport.packages.slice(0, 12)) {
+    lines.push(`* \`${pkg.sourcePackage}\` -> \`${pkg.targetPackage}\` (score: ${pkg.priorityScore.toFixed(2)}, missing: ${pkg.missingExports}, reverse deps: ${pkg.reverseDependents}, depth: ${pkg.dependencyDepth})`);
+  }
+  lines.push('');
+
+  return lines.join('\n');
+}
+
+function writeApiPriorityReport(priorityReport) {
+  fs.writeFileSync(API_PRIORITY_JSON, JSON.stringify(priorityReport, null, 2));
+  fs.writeFileSync(API_PRIORITY_MD, `${buildApiPriorityMarkdown(priorityReport)}\n`);
+}
+
+function printApiPrioritySummary(priorityReport) {
+  console.log(`Tracked packages: ${priorityReport.summary.trackedPackages}`);
+  console.log(`Packages with API gaps: ${priorityReport.summary.packagesWithGaps}`);
+  console.log(`Highest priority package: ${priorityReport.summary.highestPriorityPackage ?? 'n/a'}`);
+  console.log(`Highest priority score: ${priorityReport.summary.highestPriorityScore}`);
+}
+
 function writeApiReport(report) {
   fs.writeFileSync(API_REPORT_JSON, JSON.stringify(report, null, 2));
   fs.writeFileSync(API_REPORT_MD, `${buildApiParityMarkdown(report)}\n`);
@@ -675,6 +877,21 @@ function runApiAssert({write, maxMissing}) {
   assertApiParity(report, maxMissing);
 }
 
+function runApiPriority({write}) {
+  let statusConfig = readJson(STATUS_FILE);
+  let sourcePackages = discoverSourcePackages();
+  let entries = buildTrackerEntries(sourcePackages, statusConfig);
+  let apiReport = buildApiParityReport(entries);
+  let priorityReport = buildApiPriorityReport(entries, apiReport);
+
+  if (write) {
+    writeApiPriorityReport(priorityReport);
+    console.log(`Wrote ${path.relative(REPO_ROOT, API_PRIORITY_JSON)} and ${path.relative(REPO_ROOT, API_PRIORITY_MD)}.`);
+  }
+
+  printApiPrioritySummary(priorityReport);
+}
+
 function main() {
   let {command, write, maxMissing} = parseArgs(process.argv.slice(2));
 
@@ -688,8 +905,13 @@ function main() {
     return;
   }
 
+  if (command === 'api-priority') {
+    runApiPriority({write});
+    return;
+  }
+
   console.error(`Unknown command: ${command}`);
-  console.error('Usage: node scripts/vue-parity-pipeline.mjs [api-report|api-assert] [--write] [--max-missing N]');
+  console.error('Usage: node scripts/vue-parity-pipeline.mjs [api-report|api-assert|api-priority] [--write] [--max-missing N]');
   process.exitCode = 1;
 }
 
