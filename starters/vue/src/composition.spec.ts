@@ -11,6 +11,7 @@ import {useCheckbox, useCheckboxGroup, useCheckboxGroupItem} from '@vue-aria/che
 import {CollectionBuilder, useCachedChildren} from '@vue-aria/collections';
 import {useComboBox} from '@vue-aria/combobox';
 import {useColorArea, useColorChannelField, useColorField, useColorSlider, useColorSwatch, useColorWheel} from '@vue-aria/color';
+import {useDateField, useDatePicker, useDateRangePicker, useTimeField} from '@vue-aria/datepicker';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -424,6 +425,69 @@ describe('Vue migration composition components', () => {
     inputValue.value = 'Custom value';
     comboBox.commit();
     expect(inputValue.value).toBe('One');
+  });
+
+  it('clamps vue-aria date field and time field values within min/max bounds', () => {
+    let dateValue = ref('2026-02-05');
+    let dateField = useDateField({
+      inputValue: dateValue,
+      maxValue: '2026-02-20',
+      minValue: '2026-02-01'
+    });
+    dateField.setValue('2026-03-01');
+    expect(dateValue.value).toBe('2026-02-20');
+    expect(dateField.isInvalid.value).toBe(false);
+
+    let timeValue = ref('09:30');
+    let timeField = useTimeField({
+      inputValue: timeValue,
+      maxValue: '10:00'
+    });
+    timeField.setValue('11:45');
+    expect(timeValue.value).toBe('10:00');
+  });
+
+  it('updates vue-aria date picker and date range picker selection state', () => {
+    let pickerValue = ref<string | null>(null);
+    let picker = useDatePicker({
+      maxValue: '2026-02-28',
+      minValue: '2026-02-01',
+      value: pickerValue
+    });
+
+    picker.open();
+    expect(picker.isOpen.value).toBe(true);
+    picker.setValue('2026-03-10');
+    expect(pickerValue.value).toBe('2026-02-28');
+    picker.close();
+    expect(picker.isOpen.value).toBe(false);
+
+    let rangeValue = ref({
+      start: null as string | null,
+      end: null as string | null
+    });
+    let rangePicker = useDateRangePicker({
+      maxValue: '2026-02-28',
+      minValue: '2026-02-01',
+      value: rangeValue
+    });
+
+    rangePicker.setStart('2026-02-20');
+    rangePicker.setEnd('2026-03-10');
+    expect(rangeValue.value).toEqual({
+      start: '2026-02-20',
+      end: '2026-02-28'
+    });
+
+    rangePicker.setRange({
+      start: '2026-02-25',
+      end: '2026-02-10'
+    });
+    expect(rangeValue.value).toEqual({
+      start: '2026-02-25',
+      end: '2026-02-25'
+    });
+    expect(rangePicker.isInvalid.value).toBe(false);
   });
 
   it('emits close events from dismissable dialog controls', async () => {

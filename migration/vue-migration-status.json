@@ -288,6 +288,30 @@
         }
       ]
     },
+    "@react-aria/datepicker": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/datepicker",
+      "targetPath": "packages/@vue-aria/datepicker",
+      "notes": "Foundational React Aria date picker composables for date fields, time fields, single-date pickers, and range selection in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria datepicker source lint",
+          "command": "yarn eslint packages/@vue-aria/datepicker/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/provider": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/provider",

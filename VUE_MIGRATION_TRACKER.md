@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 63 |
+| in_progress | 64 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 89 |
+| not_started | 88 |
 
 ## Package tracker
 
@@ -33,6 +33,7 @@ Tracked source packages: 154
 | `@react-aria/collections` | `packages/@react-aria/collections` | `@vue-aria/collections` | `packages/@vue-aria/collections` | in_progress | Vue Aria collections source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria collection node/base classes, cached-children rendering, and builder helpers for Vue data-collection flows. |
 | `@react-aria/color` | `packages/@react-aria/color` | `@vue-aria/color` | `packages/@vue-aria/color` | in_progress | Vue Aria color source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria color composables for sliders, wheels, areas, swatches, and channel/text field controls in Vue. |
 | `@react-aria/combobox` | `packages/@react-aria/combobox` | `@vue-aria/combobox` | `packages/@vue-aria/combobox` | in_progress | Vue Aria combobox source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria combobox composable for filtering, selection, and popup semantics in Vue. |
+| `@react-aria/datepicker` | `packages/@react-aria/datepicker` | `@vue-aria/datepicker` | `packages/@vue-aria/datepicker` | in_progress | Vue Aria datepicker source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria date picker composables for date fields, time fields, single-date pickers, and range selection in Vue. |
 | `@react-aria/virtualizer` | `packages/@react-aria/virtualizer` | `@vue-aria/virtualizer` | `packages/@vue-aria/virtualizer` | in_progress | Vue Aria virtualizer source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria virtualizer port to support virtualized Vue collection components, now validated by starter interaction/composable tests and wired into the Vue starter virtualized backlog demo. |
 | `@react-spectrum/accordion` | `packages/@react-spectrum/accordion` | `@vue-spectrum/accordion` | `packages/@vue-spectrum/accordion` | in_progress | Vue accordion package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue accordion and disclosure primitives. |
 | `@react-spectrum/actionbar` | `packages/@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | `packages/@vue-spectrum/actionbar` | in_progress | Vue actionbar package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue action bar and container primitives for bulk action workflows. |
@@ -88,7 +89,6 @@ Tracked source packages: 154
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-aria/datepicker` | `packages/@react-aria/datepicker` | `@vue-aria/datepicker` | `packages/@vue-aria/datepicker` | not_started | - | - |
 | `@react-aria/dialog` | `packages/@react-aria/dialog` | `@vue-aria/dialog` | `packages/@vue-aria/dialog` | not_started | - | - |
 | `@react-aria/disclosure` | `packages/@react-aria/disclosure` | `@vue-aria/disclosure` | `packages/@vue-aria/disclosure` | not_started | - | - |
 | `@react-aria/dnd` | `packages/@react-aria/dnd` | `@vue-aria/dnd` | `packages/@vue-aria/dnd` | not_started | - | - |

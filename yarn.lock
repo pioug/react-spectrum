@@ -11905,6 +11905,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/datepicker@workspace:*, @vue-aria/datepicker@workspace:packages/@vue-aria/datepicker":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/datepicker@workspace:packages/@vue-aria/datepicker"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31207,6 +31215,7 @@ __metadata:
     "@vue-aria/collections": "workspace:*"
     "@vue-aria/color": "workspace:*"
     "@vue-aria/combobox": "workspace:*"
+    "@vue-aria/datepicker": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"
