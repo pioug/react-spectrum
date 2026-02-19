@@ -11833,6 +11833,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/accordion@workspace:*, @vue-spectrum/accordion@workspace:packages/@vue-spectrum/accordion":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/accordion@workspace:packages/@vue-spectrum/accordion"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/autocomplete@workspace:*, @vue-spectrum/autocomplete@workspace:packages/@vue-spectrum/autocomplete":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/autocomplete@workspace:packages/@vue-spectrum/autocomplete"
@@ -31018,6 +31028,7 @@ __metadata:
   dependencies:
     "@vitejs/plugin-vue": "npm:^5.2.1"
     "@vue-aria/virtualizer": "workspace:*"
+    "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/autocomplete": "workspace:*"
     "@vue-spectrum/avatar": "workspace:*"
     "@vue-spectrum/badge": "workspace:*"

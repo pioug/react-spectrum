@@ -52,6 +52,7 @@ Phase 1 is implemented:
 * Started Tailwind plugin migration:
   * `tailwindcss-react-aria-components` -> `tailwindcss-vue-aria-components` (`in_progress`)
 * Started composition-component migration:
+  * `@react-spectrum/accordion` -> `@vue-spectrum/accordion` (`in_progress`)
   * `@react-spectrum/dialog` -> `@vue-spectrum/dialog` (`in_progress`)
   * `@react-spectrum/overlays` -> `@vue-spectrum/overlays` (`in_progress`)
   * `@react-spectrum/combobox` -> `@vue-spectrum/combobox` (`in_progress`)
@@ -70,7 +71,7 @@ Phase 1 is implemented:
   * Vue starter now includes a virtualized backlog demo wired to `@vue-aria/virtualizer`.
 * Started Vue test adaptation:
   * `starters/vue` runs Vitest + Vue Test Utils interaction tests for `button`, `buttongroup`, `textfield`, `checkbox`, `radio`, `switch`, `layout`, `labeledvalue`, `illustratedmessage`, and `icon`.
-  * Added composition coverage for `dialog`, `overlays`, `menu`, `listbox`, `list`, `combobox`, and `autocomplete`.
+  * Added composition coverage for `accordion`, `dialog`, `overlays`, `menu`, `listbox`, `list`, `combobox`, and `autocomplete`.
   * Added data-heavy and virtualization coverage for `table`, `tree`, `dnd`, `dropzone`, `filetrigger`, and `@vue-aria/virtualizer`.
 * Started API stabilization and deprecation planning:
   * `migration/VUE_PUBLISH_CHECKLIST.md`

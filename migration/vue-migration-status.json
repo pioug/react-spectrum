@@ -96,6 +96,30 @@
         }
       ]
     },
+    "@react-spectrum/accordion": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/accordion",
+      "targetPath": "packages/@vue-spectrum/accordion",
+      "notes": "Composition-layer migration step providing Vue accordion and disclosure primitives.",
+      "acceptanceTests": [
+        {
+          "name": "Vue accordion package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/accordion/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/buttongroup": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/buttongroup",

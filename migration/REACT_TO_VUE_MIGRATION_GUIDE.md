@@ -46,6 +46,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 
 | React package | Vue package |
 | --- | --- |
+| `@react-spectrum/accordion` | `@vue-spectrum/accordion` |
 | `@react-spectrum/dialog` | `@vue-spectrum/dialog` |
 | `@react-spectrum/overlays` | `@vue-spectrum/overlays` |
 | `@react-spectrum/combobox` | `@vue-spectrum/combobox` |

@@ -5,6 +5,7 @@ Vue-native Spectrum-inspired primitives for incremental migration from React pac
 ## Included components
 
 * `VueSpectrumProvider`
+* `VueAccordion`
 * `VueAvatar`
 * `VueBadge`
 * `VueButton`
@@ -15,6 +16,9 @@ Vue-native Spectrum-inspired primitives for incremental migration from React pac
 * `VueRadioGroup`
 * `VueRadio`
 * `VueDialog`
+* `VueDisclosure`
+* `VueDisclosureTitle`
+* `VueDisclosurePanel`
 * `VueDivider`
 * `VueDropZone`
 * `VueFileTrigger`

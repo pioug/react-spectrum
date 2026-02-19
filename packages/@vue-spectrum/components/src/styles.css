@@ -1226,6 +1226,99 @@
   padding: 8px 12px;
 }
 
+.vs-accordion {
+  display: grid;
+  gap: 8px;
+}
+
+.vs-accordion__item {
+  background: var(--vs-color-secondary-bg);
+  border: 1px solid var(--vs-color-border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.vs-accordion__item.is-disabled {
+  opacity: 0.6;
+}
+
+.vs-accordion__item.is-quiet {
+  background: transparent;
+  border-color: transparent;
+}
+
+.vs-disclosure__heading {
+  margin: 0;
+}
+
+.vs-disclosure__trigger {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  justify-content: space-between;
+  text-align: left;
+  inline-size: 100%;
+}
+
+.vs-accordion--medium .vs-disclosure__trigger {
+  min-height: 36px;
+  padding: 8px 12px;
+}
+
+.vs-accordion--large .vs-disclosure__trigger {
+  min-height: 40px;
+  padding: 10px 14px;
+}
+
+.vs-disclosure__trigger:hover:not(:disabled) {
+  background: var(--vs-color-secondary-hover);
+}
+
+.vs-disclosure__trigger:focus-visible {
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-disclosure__trigger:disabled {
+  cursor: not-allowed;
+}
+
+.vs-disclosure__label {
+  font-weight: 600;
+}
+
+.vs-disclosure__indicator {
+  font-size: 16px;
+  line-height: 1;
+  transition: transform 120ms ease;
+}
+
+.vs-accordion__item.is-expanded .vs-disclosure__indicator {
+  transform: rotate(90deg);
+}
+
+.vs-disclosure__panel {
+  border-top: 1px solid var(--vs-color-border);
+  font-size: 14px;
+}
+
+.vs-accordion--medium .vs-disclosure__panel {
+  padding: 10px 12px;
+}
+
+.vs-accordion--large .vs-disclosure__panel {
+  padding: 12px 14px;
+}
+
+.vs-disclosure__panel.is-quiet {
+  border-top: 0;
+  padding-top: 0;
+}
+
 .vs-menu {
   display: grid;
   gap: 8px;

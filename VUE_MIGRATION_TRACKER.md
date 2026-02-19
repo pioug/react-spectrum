@@ -13,17 +13,18 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 43 |
+| in_progress | 44 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 109 |
+| not_started | 108 |
 
 ## Package tracker
 
 | Source package | Source path | Target package | Target path | Status | Acceptance tests | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | `@react-aria/virtualizer` | `packages/@react-aria/virtualizer` | `@vue-aria/virtualizer` | `packages/@vue-aria/virtualizer` | in_progress | Vue Aria virtualizer source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria virtualizer port to support virtualized Vue collection components, now validated by starter interaction/composable tests and wired into the Vue starter virtualized backlog demo. |
+| `@react-spectrum/accordion` | `packages/@react-spectrum/accordion` | `@vue-spectrum/accordion` | `packages/@vue-spectrum/accordion` | in_progress | Vue accordion package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue accordion and disclosure primitives. |
 | `@react-spectrum/autocomplete` | `packages/@react-spectrum/autocomplete` | `@vue-spectrum/autocomplete` | `packages/@vue-spectrum/autocomplete` | in_progress | Vue autocomplete package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing a Vue search autocomplete package wrapper. |
 | `@react-spectrum/avatar` | `packages/@react-spectrum/avatar` | `@vue-spectrum/avatar` | `packages/@vue-spectrum/avatar` | in_progress | Vue avatar package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave visual primitive for identity and user representation. |
 | `@react-spectrum/badge` | `packages/@react-spectrum/badge` | `@vue-spectrum/badge` | `packages/@vue-spectrum/badge` | in_progress | Vue badge package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave visual primitive for compact labels and status context. |
@@ -121,7 +122,6 @@ Tracked source packages: 154
 | `@react-aria/tree` | `packages/@react-aria/tree` | `@vue-aria/tree` | `packages/@vue-aria/tree` | not_started | - | - |
 | `@react-aria/utils` | `packages/@react-aria/utils` | `@vue-aria/utils` | `packages/@vue-aria/utils` | not_started | - | - |
 | `@react-aria/visually-hidden` | `packages/@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | `packages/@vue-aria/visually-hidden` | not_started | - | - |
-| `@react-spectrum/accordion` | `packages/@react-spectrum/accordion` | `@vue-spectrum/accordion` | `packages/@vue-spectrum/accordion` | not_started | - | - |
 | `@react-spectrum/actionbar` | `packages/@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | `packages/@vue-spectrum/actionbar` | not_started | - | - |
 | `@react-spectrum/actiongroup` | `packages/@react-spectrum/actiongroup` | `@vue-spectrum/actiongroup` | `packages/@vue-spectrum/actiongroup` | not_started | - | - |
 | `@react-spectrum/breadcrumbs` | `packages/@react-spectrum/breadcrumbs` | `@vue-spectrum/breadcrumbs` | `packages/@vue-spectrum/breadcrumbs` | not_started | - | - |
