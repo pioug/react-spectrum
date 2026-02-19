@@ -11825,6 +11825,14 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@vue-aria/actiongroup@workspace:*, @vue-aria/actiongroup@workspace:packages/@vue-aria/actiongroup":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/actiongroup@workspace:packages/@vue-aria/actiongroup"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31117,6 +31125,7 @@ __metadata:
   resolution: "vue-spectrum-starter@workspace:starters/vue"
   dependencies:
     "@vitejs/plugin-vue": "npm:^5.2.1"
+    "@vue-aria/actiongroup": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"

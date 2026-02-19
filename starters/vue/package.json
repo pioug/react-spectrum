@@ -13,6 +13,7 @@
     "prepublishOnly": "echo \"Skipping publish for starter workspace\""
   },
   "dependencies": {
+    "@vue-aria/actiongroup": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",

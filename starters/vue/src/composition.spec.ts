@@ -1,5 +1,7 @@
 import {mount} from '@vue/test-utils';
+import {ref} from 'vue';
 import {describe, expect, it} from 'vitest';
+import {useActionGroup, useActionGroupItem} from '@vue-aria/actiongroup';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -12,6 +14,31 @@ import {Menu} from '@vue-spectrum/menu';
 import {Popover} from '@vue-spectrum/overlays';
 
 describe('Vue migration composition components', () => {
+  it('computes next selection state for vue-aria action group composables', () => {
+    let selectedKeys = ref(['Edit']);
+    let actionGroup = useActionGroup({
+      selectedKeys,
+      selectionMode: ref('multiple')
+    });
+    let presses: Array<{key: string, selectedKeys: string[]}> = [];
+
+    let item = useActionGroupItem({
+      actionGroup,
+      key: 'Delete',
+      onPress: (key, nextSelectedKeys) => {
+        presses.push({
+          key,
+          selectedKeys: Array.from(nextSelectedKeys)
+        });
+      }
+    });
+
+    expect(item.isSelected.value).toBe(false);
+    expect(item.itemProps.value.role).toBe('menuitemcheckbox');
+    item.press();
+    expect(presses).toEqual([{key: 'Delete', selectedKeys: ['Edit', 'Delete']}]);
+  });
+
   it('emits close events from dismissable dialog controls', async () => {
     let wrapper = mount(Dialog, {
       props: {
