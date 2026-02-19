@@ -189,6 +189,12 @@ import {
 } from '@vue-stately/datepicker';
 import {useDisclosureGroupState as useStatelyDisclosureGroupState, useDisclosureState as useStatelyDisclosureState} from '@vue-stately/disclosure';
 import {useDraggableCollectionState as useStatelyDraggableCollectionState, useDroppableCollectionState as useStatelyDroppableCollectionState} from '@vue-stately/dnd';
+import {
+  enableShadowDOM as enableStatelyShadowDOM,
+  enableTableNestedRows as enableStatelyTableNestedRows,
+  shadowDOM as statelyShadowDOM,
+  tableNestedRows as statelyTableNestedRows
+} from '@vue-stately/flags';
 
 function createPointerEvent(
   type: string,
@@ -1273,6 +1279,17 @@ describe('Vue migration composition components', () => {
     expect(droppable.enter(items)).toBe(true);
     expect(droppable.drop(items)).toBe('move');
     expect(dropEvents).toEqual(['drop:move']);
+  });
+
+  it('toggles vue-stately global feature flags', () => {
+    expect(statelyTableNestedRows()).toBe(false);
+    expect(statelyShadowDOM()).toBe(false);
+
+    enableStatelyTableNestedRows();
+    enableStatelyShadowDOM();
+
+    expect(statelyTableNestedRows()).toBe(true);
+    expect(statelyShadowDOM()).toBe(true);
   });
 
   it('computes vue-aria example theme class and color scheme metadata', () => {

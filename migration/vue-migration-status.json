@@ -2992,6 +2992,30 @@
         }
       ]
     },
+    "@react-stately/flags": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/flags",
+      "targetPath": "packages/@vue-stately/flags",
+      "notes": "State baseline for global feature-flag toggles used by migrated Vue stately packages.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately flags package source lint",
+          "command": "yarn eslint packages/@vue-stately/flags/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

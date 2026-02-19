@@ -142,6 +142,7 @@
     "@vue-stately/datepicker": "workspace:*",
     "@vue-stately/disclosure": "workspace:*",
     "@vue-stately/dnd": "workspace:*",
+    "@vue-stately/flags": "workspace:*",
     "vue": "^3.5.13"
   },
   "devDependencies": {

@@ -146,6 +146,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-stately/datepicker` | `@vue-stately/datepicker` |
 | `@react-stately/disclosure` | `@vue-stately/disclosure` |
 | `@react-stately/dnd` | `@vue-stately/dnd` |
+| `@react-stately/flags` | `@vue-stately/flags` |
 
 ## Core API conversion patterns
 
