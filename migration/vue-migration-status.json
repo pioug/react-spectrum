@@ -72,6 +72,30 @@
         }
       ]
     },
+    "@react-aria/aria-modal-polyfill": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/aria-modal-polyfill",
+      "targetPath": "packages/@vue-aria/aria-modal-polyfill",
+      "notes": "Foundational React Aria modal-watcher utility for applying aria-hidden around active Vue modals.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria aria-modal-polyfill source lint",
+          "command": "yarn eslint packages/@vue-aria/aria-modal-polyfill/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/provider": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/provider",

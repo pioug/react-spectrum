@@ -77,12 +77,13 @@ Phase 1 is implemented:
   * `@react-spectrum/filetrigger` -> `@vue-spectrum/filetrigger` (`in_progress`)
 * Started React Aria package migration:
   * `@react-aria/actiongroup` -> `@vue-aria/actiongroup` (`in_progress`)
+  * `@react-aria/aria-modal-polyfill` -> `@vue-aria/aria-modal-polyfill` (`in_progress`)
   * `@react-aria/virtualizer` -> `@vue-aria/virtualizer` (`in_progress`)
-  * Vue starter now includes composable coverage for `@vue-aria/actiongroup` and a virtualized backlog demo wired to `@vue-aria/virtualizer`.
+  * Vue starter now includes composable coverage for `@vue-aria/actiongroup` and `@vue-aria/aria-modal-polyfill`, plus a virtualized backlog demo wired to `@vue-aria/virtualizer`.
 * Started Vue test adaptation:
   * `starters/vue` runs Vitest + Vue Test Utils interaction tests for `button`, `buttongroup`, `textfield`, `checkbox`, `radio`, `switch`, `layout`, `labeledvalue`, `illustratedmessage`, and `icon`.
   * Added composition coverage for `accordion`, `actionbar`, `actiongroup`, `breadcrumbs`, `calendar`, `card`, `color`, `contextualhelp`, `datepicker`, `picker`, `dialog`, `overlays`, `menu`, `listbox`, `list`, `combobox`, and `autocomplete`.
-  * Added data-heavy and virtualization coverage for `table`, `tree`, `dnd`, `dropzone`, `filetrigger`, `@vue-aria/actiongroup`, and `@vue-aria/virtualizer`.
+  * Added data-heavy and virtualization coverage for `table`, `tree`, `dnd`, `dropzone`, `filetrigger`, `@vue-aria/actiongroup`, `@vue-aria/aria-modal-polyfill`, and `@vue-aria/virtualizer`.
 * Started API stabilization and deprecation planning:
   * `migration/VUE_PUBLISH_CHECKLIST.md`
   * `migration/REACT_DEPRECATION_PLAN.md`

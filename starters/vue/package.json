@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@vue-aria/actiongroup": "workspace:*",
+    "@vue-aria/aria-modal-polyfill": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",

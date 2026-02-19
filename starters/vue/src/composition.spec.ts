@@ -2,6 +2,7 @@ import {mount} from '@vue/test-utils';
 import {ref} from 'vue';
 import {describe, expect, it} from 'vitest';
 import {useActionGroup, useActionGroupItem} from '@vue-aria/actiongroup';
+import {watchModals} from '@vue-aria/aria-modal-polyfill';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -37,6 +38,36 @@ describe('Vue migration composition components', () => {
     expect(item.itemProps.value.role).toBe('menuitemcheckbox');
     item.press();
     expect(presses).toEqual([{key: 'Delete', selectedKeys: ['Edit', 'Delete']}]);
+  });
+
+  it('toggles aria-hidden when watched modal containers are added and removed', async () => {
+    let previousMarkup = document.body.innerHTML;
+    document.body.innerHTML = '<main data-testid=\"app-shell\"></main><div data-testid=\"portal-root\"></div>';
+
+    try {
+      let portalRoot = document.querySelector('[data-testid=\"portal-root\"]');
+      let appShell = document.querySelector('[data-testid=\"app-shell\"]');
+
+      if (!(portalRoot instanceof HTMLElement) || !(appShell instanceof HTMLElement)) {
+        throw new Error('Expected portal and app shell nodes');
+      }
+
+      let stopWatching = watchModals('[data-testid=\"portal-root\"]', {document});
+      let modalContainer = document.createElement('div');
+      modalContainer.innerHTML = '<section aria-modal=\"true\"><p>Modal content</p></section>';
+
+      portalRoot.append(modalContainer);
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      expect(appShell.getAttribute('aria-hidden')).toBe('true');
+
+      portalRoot.removeChild(modalContainer);
+      await new Promise((resolve) => setTimeout(resolve, 0));
+      expect(appShell.getAttribute('aria-hidden')).toBeNull();
+
+      stopWatching();
+    } finally {
+      document.body.innerHTML = previousMarkup;
+    }
   });
 
   it('emits close events from dismissable dialog controls', async () => {
