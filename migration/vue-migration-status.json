@@ -2584,6 +2584,30 @@
         }
       ]
     },
+    "@react-spectrum/theme-dark": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/theme-dark",
+      "targetPath": "packages/@vue-spectrum/theme-dark",
+      "notes": "Theme token baseline for dark Spectrum variants and scale classes in Vue package ports.",
+      "acceptanceTests": [
+        {
+          "name": "Vue theme-dark package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/theme-dark/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

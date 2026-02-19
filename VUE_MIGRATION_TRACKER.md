@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 113 |
+| in_progress | 114 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 39 |
+| not_started | 38 |
 
 ## Package tracker
 
@@ -131,6 +131,7 @@ Tracked source packages: 154
 | `@react-spectrum/test-utils` | `packages/@react-spectrum/test-utils` | `@vue-spectrum/test-utils` | `packages/@vue-spectrum/test-utils` | in_progress | Vue test-utils package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Testing utility baseline re-exporting Vue Aria test helpers with mobile/desktop screen-width simulators. |
 | `@react-spectrum/text` | `packages/@react-spectrum/text` | `@vue-spectrum/text` | `packages/@vue-spectrum/text` | in_progress | Vue text package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave typography primitive for semantic text and emphasis variants. |
 | `@react-spectrum/textfield` | `packages/@react-spectrum/textfield` | `@vue-spectrum/textfield` | `packages/@vue-spectrum/textfield` | in_progress | Vue textfield package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave primitive aligned with existing VueTextField baseline work. |
+| `@react-spectrum/theme-dark` | `packages/@react-spectrum/theme-dark` | `@vue-spectrum/theme-dark` | `packages/@vue-spectrum/theme-dark` | in_progress | Vue theme-dark package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Theme token baseline for dark Spectrum variants and scale classes in Vue package ports. |
 | `@react-spectrum/tree` | `packages/@react-spectrum/tree` | `@vue-spectrum/tree` | `packages/@vue-spectrum/tree` | in_progress | Vue tree package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Data-heavy migration baseline for hierarchical collections. |
 | `@react-spectrum/view` | `packages/@react-spectrum/view` | `@vue-spectrum/view` | `packages/@vue-spectrum/view` | in_progress | Vue view package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave layout primitive for semantic container structure and spacing. |
 | `@react-spectrum/well` | `packages/@react-spectrum/well` | `@vue-spectrum/well` | `packages/@vue-spectrum/well` | in_progress | Vue well package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave content container primitive for grouped inline context. |
@@ -138,7 +139,6 @@ Tracked source packages: 154
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-spectrum/theme-dark` | `packages/@react-spectrum/theme-dark` | `@vue-spectrum/theme-dark` | `packages/@vue-spectrum/theme-dark` | not_started | - | - |
 | `@react-spectrum/theme-default` | `packages/@react-spectrum/theme-default` | `@vue-spectrum/theme-default` | `packages/@vue-spectrum/theme-default` | not_started | - | - |
 | `@react-spectrum/theme-express` | `packages/@react-spectrum/theme-express` | `@vue-spectrum/theme-express` | `packages/@vue-spectrum/theme-express` | not_started | - | - |
 | `@react-spectrum/theme-light` | `packages/@react-spectrum/theme-light` | `@vue-spectrum/theme-light` | `packages/@vue-spectrum/theme-light` | not_started | - | - |

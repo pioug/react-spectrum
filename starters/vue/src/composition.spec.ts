@@ -145,6 +145,7 @@ import {Button as S2Button, Provider as S2Provider, Spectrum2Plugin, TextField a
 import {baseColor as baseS1Color, focusRing as s1FocusRing, keyframes as s1Keyframes, lightDark as s1LightDark, raw as s1Raw, style as s1Style} from '@vue-spectrum/style-macro-s1';
 import {ErrorBoundary as StoryUtilsErrorBoundary, generatePowerset as generateStoryPowerset} from '@vue-spectrum/story-utils';
 import {pointerMap as spectrumPointerMap, simulateDesktop as simulateSpectrumDesktop, simulateMobile as simulateSpectrumMobile} from '@vue-spectrum/test-utils';
+import {theme as darkTheme} from '@vue-spectrum/theme-dark';
 
 function createPointerEvent(
   type: string,
@@ -2501,6 +2502,14 @@ describe('Vue migration composition components', () => {
     expect(scaledColor.isHovered).toBe('blue-600');
     expect(s1LightDark('gray-100', 'gray-900')).toBe('[light-dark(gray-100, gray-900)]');
     expect(s1FocusRing({isFocusVisible: true})).toContain('s1-outlinecolor-highlight');
+  });
+
+  it('exposes vue-spectrum dark theme token sections', () => {
+    expect(darkTheme.global.className).toBe('spectrum-dark-global');
+    expect(darkTheme.light.colorScheme).toBe('dark');
+    expect(darkTheme.dark.className).toBe('spectrum-darkest');
+    expect(darkTheme.medium.scale).toBe('medium');
+    expect(darkTheme.large.scale).toBe('large');
   });
 
   it('computes vue-aria tag group and tag remove behavior', () => {
