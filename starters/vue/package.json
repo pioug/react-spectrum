@@ -154,6 +154,7 @@
     "@vue-stately/searchfield": "workspace:*",
     "@vue-stately/select": "workspace:*",
     "@vue-stately/selection": "workspace:*",
+    "@vue-stately/slider": "workspace:*",
     "vue": "^3.5.13"
   },
   "devDependencies": {

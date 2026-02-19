@@ -225,6 +225,7 @@ import {
   useMultipleSelectionState as useStatelyMultipleSelectionState
 } from '@vue-stately/selection';
 import {useSelectState as useStatelySelectState} from '@vue-stately/select';
+import {useSliderState as useStatelySliderState} from '@vue-stately/slider';
 
 function createPointerEvent(
   type: string,
@@ -1907,6 +1908,49 @@ describe('Vue migration composition components', () => {
     multiState.setValue(['react', 'svelte']);
     expect(multiState.value.value).toEqual(['react', 'svelte']);
     expect(Array.from(multiState.selectionManager.selectedKeys.value)).toEqual(['react', 'svelte']);
+  });
+
+  it('manages vue-stately slider thumb values, constraints, and drag lifecycle', () => {
+    let sliderValue = ref<number[] | undefined>([20, 60]);
+    let changeValues: number[][] = [];
+    let changeEndValues: number[][] = [];
+    let slider = useStatelySliderState({
+      maxValue: 100,
+      minValue: 0,
+      numberFormatter: new Intl.NumberFormat('en-US'),
+      onChange: (nextValue) => {
+        let nextValues = Array.isArray(nextValue) ? nextValue : [nextValue];
+        sliderValue.value = [...nextValues];
+        changeValues.push([...nextValues]);
+      },
+      onChangeEnd: (nextValue) => {
+        let nextValues = Array.isArray(nextValue) ? nextValue : [nextValue];
+        changeEndValues.push([...nextValues]);
+      },
+      step: 5,
+      value: sliderValue
+    });
+
+    expect(slider.values.value).toEqual([20, 60]);
+    expect(slider.getThumbMinValue(1)).toBe(20);
+    expect(slider.getThumbMaxValue(0)).toBe(60);
+    expect(slider.getThumbValueLabel(0)).toBe('20');
+
+    slider.setThumbValue(0, 80);
+    expect(slider.values.value).toEqual([60, 60]);
+    slider.setThumbPercent(1, 1);
+    expect(slider.getThumbValue(1)).toBe(100);
+    expect(slider.getThumbPercent(1)).toBe(1);
+
+    slider.setThumbDragging(0, true);
+    expect(slider.isThumbDragging(0)).toBe(true);
+    slider.incrementThumb(0, 10);
+    slider.setThumbDragging(0, false);
+
+    expect(slider.values.value).toEqual([70, 100]);
+    expect(changeValues[changeValues.length - 1]).toEqual([70, 100]);
+    expect(changeEndValues[changeEndValues.length - 1]).toEqual([70, 100]);
+    expect(slider.decrementThumb).toBeTypeOf('function');
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {

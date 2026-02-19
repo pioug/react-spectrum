@@ -3280,6 +3280,30 @@
         }
       ]
     },
+    "@react-stately/slider": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/slider",
+      "targetPath": "packages/@vue-stately/slider",
+      "notes": "State baseline for slider thumb values, multi-thumb constraints, dragging lifecycle callbacks, and value label formatting in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately slider package source lint",
+          "command": "yarn eslint packages/@vue-stately/slider/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",
