@@ -52,6 +52,9 @@ Phase 1 is implemented:
   * `@react-aria/virtualizer` -> `@vue-aria/virtualizer` (`in_progress`)
 * Started Vue test adaptation:
   * `starters/vue` runs Vitest + Vue Test Utils interaction tests for `button`, `textfield`, `checkbox`, `radio`, and `switch`.
+* Started API stabilization and deprecation planning:
+  * `migration/VUE_PUBLISH_CHECKLIST.md`
+  * `migration/REACT_DEPRECATION_PLAN.md`
 
 ## Migration phases
 

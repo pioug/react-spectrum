@@ -15,6 +15,7 @@ This repository now includes a Vue migration baseline so teams can begin moving 
 * `starters/vue` is a runnable Vue + Vite starter wired to the new package.
 * `MIGRATION_TO_VUE.md` describes the migration plan from existing React packages to Vue packages.
 * `VUE_MIGRATION_TRACKER.md` tracks package-by-package migration status and acceptance tests.
+* `migration/VUE_PUBLISH_CHECKLIST.md` and `migration/REACT_DEPRECATION_PLAN.md` track publish and deprecation execution for the stabilization phase.
 
 Use the starter from the repository root:
 
