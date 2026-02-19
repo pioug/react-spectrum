@@ -5,6 +5,7 @@ import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
 import {SearchAutocomplete} from '@vue-spectrum/autocomplete';
 import {Breadcrumbs} from '@vue-spectrum/breadcrumbs';
+import {ContextualHelp} from '@vue-spectrum/contextualhelp';
 import {Dialog} from '@vue-spectrum/dialog';
 import {ListView} from '@vue-spectrum/list';
 import {Menu} from '@vue-spectrum/menu';
@@ -40,6 +41,28 @@ describe('Vue migration composition components', () => {
 
     expect(wrapper.get('section.vs-popover').classes()).toContain('vs-popover--right');
     await wrapper.get('button.vs-popover-layer__backdrop').trigger('click');
+    expect(wrapper.emitted('close')).toHaveLength(1);
+  });
+
+  it('emits open and close lifecycle events from contextual help controls', async () => {
+    let wrapper = mount(ContextualHelp, {
+      props: {
+        modelValue: false,
+        title: 'Need help',
+        variant: 'info'
+      },
+      slots: {
+        default: 'Additional context'
+      }
+    });
+
+    await wrapper.get('button.vs-contextual-help__trigger').trigger('click');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([true]);
+    expect(wrapper.emitted('open')).toHaveLength(1);
+    expect(wrapper.find('section.vs-contextual-help__dialog').exists()).toBe(true);
+
+    await wrapper.get('button.vs-contextual-help__close').trigger('click');
+    expect(wrapper.emitted('update:modelValue')?.[1]).toEqual([false]);
     expect(wrapper.emitted('close')).toHaveLength(1);
   });
 

@@ -12,6 +12,7 @@ import {VueCard, VueCardView} from './components/VueCard';
 import {VueCheckbox} from './components/VueCheckbox';
 import {VueColorArea, VueColorEditor, VueColorField, VueColorPicker, VueColorSlider, VueColorSwatch, VueColorSwatchPicker, VueColorWheel} from './components/VueColor';
 import {VueComboBox} from './components/VueComboBox';
+import {VueContextualHelp} from './components/VueContextualHelp';
 import {VueDialog} from './components/VueDialog';
 import {VueDivider} from './components/VueDivider';
 import {VueDropZone} from './components/VueDropZone';
@@ -70,6 +71,7 @@ export const VueSpectrumPlugin: Plugin = {
     app.component(VueColorSwatchPicker.name ?? 'VueColorSwatchPicker', VueColorSwatchPicker);
     app.component(VueColorWheel.name ?? 'VueColorWheel', VueColorWheel);
     app.component(VueComboBox.name ?? 'VueComboBox', VueComboBox);
+    app.component(VueContextualHelp.name ?? 'VueContextualHelp', VueContextualHelp);
     app.component(VueDisclosure.name ?? 'VueDisclosure', VueDisclosure);
     app.component(VueDisclosurePanel.name ?? 'VueDisclosurePanel', VueDisclosurePanel);
     app.component(VueDisclosureTitle.name ?? 'VueDisclosureTitle', VueDisclosureTitle);
@@ -111,5 +113,5 @@ export const VueSpectrumPlugin: Plugin = {
   }
 };
 
-export {VueAccordion, VueActionBar, VueActionBarContainer, VueActionGroup, VueAvatar, VueBadge, VueBreadcrumbs, VueButton, VueButtonGroup, VueCalendar, VueCard, VueCardView, VueCheckbox, VueColorArea, VueColorEditor, VueColorField, VueColorPicker, VueColorSlider, VueColorSwatch, VueColorSwatchPicker, VueColorWheel, VueComboBox, VueDisclosure, VueDisclosurePanel, VueDisclosureTitle, VueDialog, VueDivider, VueDropZone, VueFileTrigger, VueFlex, VueForm, VueGrid, VueIcon, VueIllustration, VueIllustratedMessage, VueImage, VueInlineAlert, VueLabel, VueLabeledValue, VueLink, VueListBox, VueMenu, VueMeter, VueNumberField, VuePopover, VueProgressBar, VueRadio, VueRadioGroup, VueRangeCalendar, VueSearchField, VueSlider, VueSpectrumProvider, VueStatusLight, VueSwitch, VueTable, VueText, VueTextField, VueTree, VueUIIcon, VueView, VueWell};
+export {VueAccordion, VueActionBar, VueActionBarContainer, VueActionGroup, VueAvatar, VueBadge, VueBreadcrumbs, VueButton, VueButtonGroup, VueCalendar, VueCard, VueCardView, VueCheckbox, VueColorArea, VueColorEditor, VueColorField, VueColorPicker, VueColorSlider, VueColorSwatch, VueColorSwatchPicker, VueColorWheel, VueComboBox, VueContextualHelp, VueDisclosure, VueDisclosurePanel, VueDisclosureTitle, VueDialog, VueDivider, VueDropZone, VueFileTrigger, VueFlex, VueForm, VueGrid, VueIcon, VueIllustration, VueIllustratedMessage, VueImage, VueInlineAlert, VueLabel, VueLabeledValue, VueLink, VueListBox, VueMenu, VueMeter, VueNumberField, VuePopover, VueProgressBar, VueRadio, VueRadioGroup, VueRangeCalendar, VueSearchField, VueSlider, VueSpectrumProvider, VueStatusLight, VueSwitch, VueTable, VueText, VueTextField, VueTree, VueUIIcon, VueView, VueWell};
 export type {SpectrumContextValue} from './context';

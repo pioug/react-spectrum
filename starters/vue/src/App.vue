@@ -84,6 +84,20 @@
           Vue baseline ports are being expanded package by package.
         </VueInlineAlert>
 
+        <VueContextualHelp
+          v-model="isContextualHelpOpen"
+          title="Migration baseline details"
+          variant="info"
+          placement="right">
+          This contextual help popover is wired to the new
+          <code>@vue-spectrum/contextualhelp</code> composition port.
+          <template #footer>
+            <VueText variant="detail">
+              Dismiss using the backdrop or close control.
+            </VueText>
+          </template>
+        </VueContextualHelp>
+
         <VueIllustratedMessage
           title="Incremental migration in progress"
           description="New package-level Vue ports are shipped one checkpoint at a time."
@@ -307,6 +321,8 @@
             Card: <strong>{{ selectedCard }}</strong>
             <span> · </span>
             Color: <strong>{{ selectedColor }}</strong>
+            <span> · </span>
+            Help: <strong>{{ isContextualHelpOpen ? 'open' : 'closed' }}</strong>
           </p>
         </VueView>
 
@@ -378,6 +394,7 @@ import {Card as VueCard, CardView as VueCardView} from '@vue-spectrum/card';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
 import {ColorArea as VueColorArea, ColorEditor as VueColorEditor, ColorPicker as VueColorPicker, ColorSwatch as VueColorSwatch, ColorSwatchPicker as VueColorSwatchPicker, ColorWheel as VueColorWheel} from '@vue-spectrum/color';
 import {SearchAutocomplete as VueSearchAutocomplete} from '@vue-spectrum/autocomplete';
+import {ContextualHelp as VueContextualHelp} from '@vue-spectrum/contextualhelp';
 import {DropZone as VueDropZone} from '@vue-spectrum/dropzone';
 import {Divider as VueDivider} from '@vue-spectrum/divider';
 import {Dialog as VueDialog} from '@vue-spectrum/dialog';
@@ -445,6 +462,7 @@ const selectedTicket = ref('T-402');
 const selectedTreeNode = ref('project-alpha');
 const droppedFiles = ref<string[]>([]);
 const selectedFiles = ref<string[]>([]);
+const isContextualHelpOpen = ref(false);
 const isDialogOpen = ref(false);
 const isPopoverOpen = ref(false);
 const languageOptions = ['TypeScript', 'JavaScript', 'Rust', 'Go', 'Python'];
@@ -582,6 +600,7 @@ function reset() {
   selectedTreeNode.value = 'project-alpha';
   droppedFiles.value = [];
   selectedFiles.value = [];
+  isContextualHelpOpen.value = false;
   isDialogOpen.value = false;
   isPopoverOpen.value = false;
 }

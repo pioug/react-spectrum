@@ -504,6 +504,30 @@
         }
       ]
     },
+    "@react-spectrum/contextualhelp": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/contextualhelp",
+      "targetPath": "packages/@vue-spectrum/contextualhelp",
+      "notes": "Composition-layer migration step providing a Vue contextual-help trigger and popover primitive.",
+      "acceptanceTests": [
+        {
+          "name": "Vue contextualhelp package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/contextualhelp/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/dialog": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/dialog",
