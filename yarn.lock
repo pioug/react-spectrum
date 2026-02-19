@@ -11921,6 +11921,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/disclosure@workspace:*, @vue-aria/disclosure@workspace:packages/@vue-aria/disclosure":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/disclosure@workspace:packages/@vue-aria/disclosure"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31225,6 +31233,7 @@ __metadata:
     "@vue-aria/combobox": "workspace:*"
     "@vue-aria/datepicker": "workspace:*"
     "@vue-aria/dialog": "workspace:*"
+    "@vue-aria/disclosure": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"

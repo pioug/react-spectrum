@@ -13,6 +13,7 @@ import {useComboBox} from '@vue-aria/combobox';
 import {useColorArea, useColorChannelField, useColorField, useColorSlider, useColorSwatch, useColorWheel} from '@vue-aria/color';
 import {useDateField, useDatePicker, useDateRangePicker, useTimeField} from '@vue-aria/datepicker';
 import {useDialog as useAriaDialog} from '@vue-aria/dialog';
+import {useDisclosure as useAriaDisclosure} from '@vue-aria/disclosure';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -524,6 +525,37 @@ describe('Vue migration composition components', () => {
     expect(dialog.isOpen.value).toBe(true);
     expect(dialog.dialogProps.value.role).toBe('alertdialog');
     expect(dialog.dialogProps.value['aria-label']).toBe('Critical alert');
+  });
+
+  it('toggles vue-aria disclosure expanded state and panel visibility', () => {
+    let disclosure = useAriaDisclosure();
+    expect(disclosure.isExpanded.value).toBe(false);
+    expect(disclosure.panelProps.value.hidden).toBe(true);
+
+    disclosure.toggle();
+    expect(disclosure.isExpanded.value).toBe(true);
+    expect(disclosure.buttonProps.value['aria-expanded']).toBe(true);
+    expect(disclosure.panelProps.value.hidden).toBe(false);
+
+    disclosure.collapse();
+    expect(disclosure.isExpanded.value).toBe(false);
+  });
+
+  it('preserves controlled disclosure state when disabled', () => {
+    let expanded = ref(true);
+    let changes: boolean[] = [];
+    let disclosure = useAriaDisclosure({
+      isDisabled: true,
+      isExpanded: expanded,
+      onExpandedChange: (nextExpanded) => {
+        changes.push(nextExpanded);
+      }
+    });
+
+    disclosure.toggle();
+    expect(expanded.value).toBe(true);
+    expect(disclosure.buttonProps.value.disabled).toBe(true);
+    expect(changes).toEqual([]);
   });
 
   it('emits close events from dismissable dialog controls', async () => {
