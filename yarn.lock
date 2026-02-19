@@ -11866,6 +11866,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/statuslight@workspace:*, @vue-spectrum/statuslight@workspace:packages/@vue-spectrum/statuslight":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/statuslight@workspace:packages/@vue-spectrum/statuslight"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/switch@workspace:*, @vue-spectrum/switch@workspace:packages/@vue-spectrum/switch":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/switch@workspace:packages/@vue-spectrum/switch"
@@ -30274,6 +30284,7 @@ __metadata:
     "@vue-spectrum/radio": "workspace:*"
     "@vue-spectrum/searchfield": "workspace:*"
     "@vue-spectrum/slider": "workspace:*"
+    "@vue-spectrum/statuslight": "workspace:*"
     "@vue-spectrum/switch": "workspace:*"
     "@vue-spectrum/textfield": "workspace:*"
     typescript: "npm:^5.8.2"

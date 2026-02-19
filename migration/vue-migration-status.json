@@ -360,6 +360,26 @@
         }
       ]
     },
+    "@react-spectrum/statuslight": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/statuslight",
+      "targetPath": "packages/@vue-spectrum/statuslight",
+      "notes": "First-wave primitive for lightweight status signaling.",
+      "acceptanceTests": [
+        {
+          "name": "Vue statuslight package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/statuslight/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    },
     "@react-spectrum/switch": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/switch",

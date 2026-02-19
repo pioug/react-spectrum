@@ -45,6 +45,10 @@
           :high="75"
           :optimum="90" />
 
+        <VueStatusLight :variant="statusTone">
+          {{ statusLabel }}
+        </VueStatusLight>
+
         <VueComboBox
           v-model="favoriteLanguage"
           label="Favorite language"
@@ -154,6 +158,7 @@ import {Provider as VueSpectrumProvider} from '@vue-spectrum/provider';
 import {Radio as VueRadio, RadioGroup as VueRadioGroup} from '@vue-spectrum/radio';
 import {SearchField as VueSearchField} from '@vue-spectrum/searchfield';
 import {Slider as VueSlider} from '@vue-spectrum/slider';
+import {StatusLight as VueStatusLight} from '@vue-spectrum/statuslight';
 import {Switch as VueSwitch} from '@vue-spectrum/switch';
 import {TextField as VueTextField} from '@vue-spectrum/textfield';
 
@@ -173,6 +178,30 @@ const isPopoverOpen = ref(false);
 const languageOptions = ['TypeScript', 'JavaScript', 'Rust', 'Go', 'Python'];
 const componentOptions = ['Forms', 'Navigation', 'Overlays', 'Data display'];
 const libraryOptions = ['Vue Spectrum', 'React Spectrum', 'Tailwind CSS'];
+
+const statusTone = computed(() => {
+  if (completionProgress.value >= 80) {
+    return 'positive';
+  }
+
+  if (completionProgress.value >= 50) {
+    return 'notice';
+  }
+
+  return 'negative';
+});
+
+const statusLabel = computed(() => {
+  if (statusTone.value === 'positive') {
+    return 'Delivery status: on track';
+  }
+
+  if (statusTone.value === 'notice') {
+    return 'Delivery status: monitor';
+  }
+
+  return 'Delivery status: at risk';
+});
 
 const ctaLabel = computed(() => {
   let suffix = name.value ? `, ${name.value}` : '';

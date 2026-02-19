@@ -514,6 +514,43 @@
   transition: inline-size 160ms ease;
 }
 
+.vs-status-light {
+  align-items: center;
+  display: inline-flex;
+  gap: 8px;
+}
+
+.vs-status-light__dot {
+  block-size: 10px;
+  border-radius: 50%;
+  inline-size: 10px;
+}
+
+.vs-status-light__label {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.vs-status-light--neutral .vs-status-light__dot {
+  background: #6b6b6b;
+}
+
+.vs-status-light--info .vs-status-light__dot {
+  background: #1473e6;
+}
+
+.vs-status-light--positive .vs-status-light__dot {
+  background: #2d9d78;
+}
+
+.vs-status-light--notice .vs-status-light__dot {
+  background: #e68619;
+}
+
+.vs-status-light--negative .vs-status-light__dot {
+  background: #d31510;
+}
+
 .vs-radio-group {
   display: grid;
   gap: 8px;

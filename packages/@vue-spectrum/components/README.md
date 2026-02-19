@@ -22,6 +22,7 @@ Vue-native Spectrum-inspired primitives for incremental migration from React pac
 * `VueSearchField`
 * `VueSlider`
 * `VueProgressBar`
+* `VueStatusLight`
 * `VueSwitch`
 
 ## Quick start

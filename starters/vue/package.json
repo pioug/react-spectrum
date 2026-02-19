@@ -28,6 +28,7 @@
     "@vue-spectrum/radio": "workspace:*",
     "@vue-spectrum/searchfield": "workspace:*",
     "@vue-spectrum/slider": "workspace:*",
+    "@vue-spectrum/statuslight": "workspace:*",
     "@vue-spectrum/switch": "workspace:*",
     "@vue-spectrum/textfield": "workspace:*",
     "vue": "^3.5.13"
