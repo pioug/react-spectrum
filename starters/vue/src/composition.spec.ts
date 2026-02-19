@@ -65,6 +65,7 @@ import {
   usePreventScroll as useAriaPreventScroll
 } from '@vue-aria/overlays';
 import {useProgressBar as useAriaProgressBar} from '@vue-aria/progress';
+import {useRadio as useAriaRadio, useRadioGroup as useAriaRadioGroup} from '@vue-aria/radio';
 import {
   addWindowFocusTracking,
   setInteractionModality,
@@ -1489,6 +1490,56 @@ describe('Vue migration composition components', () => {
     expect(indeterminateProgressBar.progressBarProps.value['aria-label']).toBe('Loading');
     expect(indeterminateProgressBar.progressBarProps.value['aria-valuenow']).toBeUndefined();
     expect(indeterminateProgressBar.progressBarProps.value['aria-valuetext']).toBeUndefined();
+  });
+
+  it('computes vue-aria radio group selection and keyboard movement', () => {
+    let selectedValue = ref<string | null>(null);
+    let radioGroup = useAriaRadioGroup({
+      label: 'Framework',
+      selectedValue
+    });
+    let reactRadio = useAriaRadio({
+      value: 'react'
+    }, radioGroup);
+    let vueRadio = useAriaRadio({
+      value: 'vue'
+    }, radioGroup);
+    let disabledRadio = useAriaRadio({
+      isDisabled: true,
+      value: 'svelte'
+    }, radioGroup);
+
+    expect(radioGroup.radioGroupProps.value.role).toBe('radiogroup');
+    expect(reactRadio.inputProps.value.tabIndex).toBe(0);
+    expect(vueRadio.inputProps.value.tabIndex).toBe(-1);
+    expect(disabledRadio.inputProps.value.disabled).toBe(true);
+
+    reactRadio.inputProps.value.onChange();
+    expect(selectedValue.value).toBe('react');
+    expect(reactRadio.isSelected.value).toBe(true);
+
+    let targetInput = document.createElement('input');
+    targetInput.type = 'radio';
+    targetInput.value = 'react';
+    let rightArrow = {
+      key: 'ArrowRight',
+      preventDefault: () => {},
+      composedPath: () => [targetInput]
+    } as unknown as KeyboardEvent;
+    radioGroup.radioGroupProps.value.onKeyDown(rightArrow);
+    expect(selectedValue.value).toBe('vue');
+
+    vueRadio.inputProps.value.onMouseDown();
+    expect(vueRadio.isPressed.value).toBe(true);
+    vueRadio.inputProps.value.onMouseUp();
+    expect(vueRadio.isPressed.value).toBe(false);
+
+    disabledRadio.inputProps.value.onChange();
+    expect(selectedValue.value).toBe('vue');
+
+    reactRadio.dispose();
+    vueRadio.dispose();
+    disabledRadio.dispose();
   });
 
   it('announces and clears live region messages with vue-aria live announcer', () => {
