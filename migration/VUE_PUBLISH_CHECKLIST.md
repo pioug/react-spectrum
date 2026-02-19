@@ -24,3 +24,8 @@ This checklist defines the minimum release bar for promoting Vue migration packa
 1. Verify starter app works against published package versions.
 2. Verify docs examples compile against published versions.
 3. Track migration defects under a dedicated Vue migration label.
+
+## Current baseline evidence
+
+1. On February 19, 2026, `yarn vue:migration:test` passed with all active migration acceptance checks.
+2. On February 19, 2026, `yarn test:vue` passed in `starters/vue` with 171 passing tests.

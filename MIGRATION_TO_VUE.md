@@ -189,6 +189,7 @@ Phase 1 is implemented:
   * `migration/VUE_PACKAGE_ARCHITECTURE.md`
   * Expanded package-level usage and limitations docs for `@vue-stately/toggle`, `@vue-stately/tooltip`, `@vue-stately/tree`, `@vue-stately/utils`, and `@vue-stately/virtualizer`.
   * Added concrete conversion examples for `@vue-stately/toggle`, `@vue-stately/tooltip`, `@vue-stately/tree`, `@vue-stately/utils`, and `@vue-stately/virtualizer` in `migration/REACT_TO_VUE_MIGRATION_GUIDE.md`.
+  * On February 19, 2026, `yarn vue:migration:test` passed with all active migration acceptance checks.
 
 ## Migration phases
 
