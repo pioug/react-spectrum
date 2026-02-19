@@ -12123,6 +12123,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/spinbutton@workspace:*, @vue-aria/spinbutton@workspace:packages/@vue-aria/spinbutton":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/spinbutton@workspace:packages/@vue-aria/spinbutton"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31452,6 +31460,7 @@ __metadata:
     "@vue-aria/selection": "workspace:*"
     "@vue-aria/separator": "workspace:*"
     "@vue-aria/slider": "workspace:*"
+    "@vue-aria/spinbutton": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"

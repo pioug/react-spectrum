@@ -77,6 +77,7 @@ import {
 } from '@vue-aria/selection';
 import {useSeparator as useAriaSeparator} from '@vue-aria/separator';
 import {useSlider as useAriaSlider, useSliderThumb as useAriaSliderThumb} from '@vue-aria/slider';
+import {useSpinButton as useAriaSpinButton} from '@vue-aria/spinbutton';
 import {
   addWindowFocusTracking,
   setInteractionModality,
@@ -1809,6 +1810,87 @@ describe('Vue migration composition components', () => {
       clientY: 12
     }));
     expect(values.value[0]).toBe(5);
+  });
+
+  it('computes vue-aria spinbutton keyboard and press interactions', () => {
+    vi.useFakeTimers();
+
+    try {
+      let value = ref(2);
+      let minValue = 0;
+      let maxValue = 5;
+      let incrementCount = 0;
+      let decrementCount = 0;
+
+      let spinButton = useAriaSpinButton({
+        maxValue,
+        minValue,
+        textValue: ref('2 items'),
+        value,
+        onDecrement: () => {
+          decrementCount += 1;
+          value.value = Math.max(minValue, value.value - 1);
+        },
+        onDecrementPage: () => {
+          value.value = Math.max(minValue, value.value - 2);
+        },
+        onDecrementToMin: () => {
+          value.value = minValue;
+        },
+        onIncrement: () => {
+          incrementCount += 1;
+          value.value = Math.min(maxValue, value.value + 1);
+        },
+        onIncrementPage: () => {
+          value.value = Math.min(maxValue, value.value + 2);
+        },
+        onIncrementToMax: () => {
+          value.value = maxValue;
+        }
+      });
+
+      expect(spinButton.spinButtonProps.value.role).toBe('spinbutton');
+      expect(spinButton.spinButtonProps.value['aria-valuenow']).toBe(2);
+      expect(spinButton.spinButtonProps.value['aria-valuetext']).toBe('2 items');
+
+      spinButton.spinButtonProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowUp'}));
+      expect(value.value).toBe(3);
+      spinButton.spinButtonProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'PageUp'}));
+      expect(value.value).toBe(5);
+      spinButton.spinButtonProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
+      expect(value.value).toBe(4);
+      spinButton.spinButtonProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Home'}));
+      expect(value.value).toBe(0);
+
+      spinButton.incrementButtonProps.value.onPressStart({pointerType: 'mouse'});
+      expect(value.value).toBe(1);
+      vi.advanceTimersByTime(520);
+      expect(value.value).toBe(4);
+      spinButton.incrementButtonProps.value.onPressUp({pointerType: 'mouse'});
+      spinButton.incrementButtonProps.value.onPressEnd({pointerType: 'mouse'});
+
+      spinButton.decrementButtonProps.value.onPressStart({pointerType: 'touch'});
+      spinButton.decrementButtonProps.value.onPressUp({pointerType: 'touch'});
+      spinButton.decrementButtonProps.value.onPressEnd({pointerType: 'touch'});
+      expect(value.value).toBe(3);
+
+      spinButton.incrementButtonProps.value.onPressStart({pointerType: 'touch'});
+      vi.advanceTimersByTime(620);
+      spinButton.incrementButtonProps.value.onPressUp({pointerType: 'touch'});
+      spinButton.incrementButtonProps.value.onPressEnd({pointerType: 'touch'});
+      expect(value.value).toBe(4);
+
+      expect(incrementCount).toBeGreaterThan(0);
+      expect(decrementCount).toBeGreaterThan(0);
+
+      let negativeSpinButton = useAriaSpinButton({
+        textValue: ref('-2 items'),
+        value: ref(-2)
+      });
+      expect(negativeSpinButton.spinButtonProps.value['aria-valuetext']).toBe('−2 items');
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('announces and clears live region messages with vue-aria live announcer', () => {
