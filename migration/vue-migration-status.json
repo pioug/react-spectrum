@@ -96,6 +96,30 @@
         }
       ]
     },
+    "@react-aria/autocomplete": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/autocomplete",
+      "targetPath": "packages/@vue-aria/autocomplete",
+      "notes": "Foundational React Aria autocomplete composables for filtering collections and handling search submit/clear behavior in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria autocomplete source lint",
+          "command": "yarn eslint packages/@vue-aria/autocomplete/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/provider": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/provider",

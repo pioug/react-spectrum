@@ -2,6 +2,7 @@ import {mount} from '@vue/test-utils';
 import {ref} from 'vue';
 import {describe, expect, it} from 'vitest';
 import {useActionGroup, useActionGroupItem} from '@vue-aria/actiongroup';
+import {useAutocomplete, useSearchAutocomplete} from '@vue-aria/autocomplete';
 import {watchModals} from '@vue-aria/aria-modal-polyfill';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
@@ -68,6 +69,45 @@ describe('Vue migration composition components', () => {
     } finally {
       document.body.innerHTML = previousMarkup;
     }
+  });
+
+  it('filters autocomplete items and exposes focused key', () => {
+    let inputValue = ref('vue');
+    let autocomplete = useAutocomplete({
+      inputValue,
+      items: ['Vue', 'React', 'Svelte']
+    });
+
+    expect(autocomplete.filteredItems.value.map((item) => item.textValue)).toEqual(['Vue']);
+    expect(autocomplete.focusedKey.value).toBe('Vue');
+
+    inputValue.value = '';
+    expect(autocomplete.filteredItems.value.map((item) => item.textValue)).toEqual(['Vue', 'React', 'Svelte']);
+  });
+
+  it('submits and clears search autocomplete state', () => {
+    let inputValue = ref('rea');
+    let submissions: Array<{focusedKey: string | null, value: string}> = [];
+    let clearCount = 0;
+
+    let autocomplete = useSearchAutocomplete({
+      inputValue,
+      items: ['React', 'Vue'],
+      onClear: () => {
+        clearCount += 1;
+      },
+      onSubmit: (value, focusedKey) => {
+        submissions.push({value, focusedKey});
+      }
+    });
+
+    autocomplete.submit();
+    expect(submissions).toEqual([{value: 'rea', focusedKey: 'React'}]);
+
+    autocomplete.clear();
+    expect(inputValue.value).toBe('');
+    expect(clearCount).toBe(1);
+    expect(autocomplete.clearButtonProps.value.disabled).toBe(true);
   });
 
   it('emits close events from dismissable dialog controls', async () => {
