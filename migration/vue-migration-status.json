@@ -3448,6 +3448,30 @@
         }
       ]
     },
+    "@react-stately/tree": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/tree",
+      "targetPath": "packages/@vue-stately/tree",
+      "notes": "State baseline for flattened tree collections, expanded-key state updates, and selection manager integration in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately tree package source lint",
+          "command": "yarn eslint packages/@vue-stately/tree/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

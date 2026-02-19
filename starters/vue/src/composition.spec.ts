@@ -243,6 +243,7 @@ import {
   useToggleState as useStatelyToggleState
 } from '@vue-stately/toggle';
 import {useTooltipTriggerState as useStatelyTooltipTriggerState} from '@vue-stately/tooltip';
+import {useTreeState as useStatelyTreeState} from '@vue-stately/tree';
 
 function createPointerEvent(
   type: string,
@@ -2225,6 +2226,66 @@ describe('Vue migration composition components', () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+
+  it('manages vue-stately tree collection expansion and selection behavior', () => {
+    let expandedKeys = ref<Set<string | number> | undefined>(new Set(['animals']));
+    let expandedChanges: string[][] = [];
+    let treeState = useStatelyTreeState({
+      expandedKeys,
+      items: [
+        {
+          key: 'animals',
+          childNodes: [
+            {
+              key: 'mammals',
+              childNodes: [
+                {key: 'bear'}
+              ]
+            },
+            {key: 'birds'}
+          ]
+        },
+        {key: 'plants'}
+      ],
+      onExpandedChange: (nextKeys) => {
+        let values = Array.from(nextKeys).map((key) => String(key));
+        expandedChanges.push(values);
+        expandedKeys.value = new Set(values);
+      },
+      selectionMode: 'multiple'
+    });
+
+    expect(Array.from(treeState.collection.getKeys())).toEqual([
+      'animals',
+      'mammals',
+      'birds',
+      'plants'
+    ]);
+
+    treeState.toggleKey('mammals');
+    expect(Array.from(treeState.collection.getKeys())).toEqual([
+      'animals',
+      'mammals',
+      'bear',
+      'birds',
+      'plants'
+    ]);
+    expect(expandedChanges).toEqual([['animals', 'mammals']]);
+
+    treeState.selectionManager.toggleSelection('birds');
+    treeState.selectionManager.toggleSelection('bear');
+    expect(Array.from(treeState.selectionManager.selectedKeys)).toEqual(['birds', 'bear']);
+
+    treeState.selectionManager.setFocusedKey('bear');
+    treeState.setExpandedKeys(new Set(['animals']));
+    expect(treeState.selectionManager.focusedKey).toBeNull();
+    expect(Array.from(treeState.collection.getKeys())).toEqual([
+      'animals',
+      'mammals',
+      'birds',
+      'plants'
+    ]);
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {
