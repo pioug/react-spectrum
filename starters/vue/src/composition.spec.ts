@@ -216,6 +216,7 @@ import {
 } from '@vue-stately/list';
 import {useMenuTriggerState as useStatelyMenuTriggerState, useSubmenuTriggerState as useStatelySubmenuTriggerState} from '@vue-stately/menu';
 import {useNumberFieldState as useStatelyNumberFieldState} from '@vue-stately/numberfield';
+import {useOverlayTriggerState as useStatelyOverlayTriggerState} from '@vue-stately/overlays';
 
 function createPointerEvent(
   type: string,
@@ -1694,6 +1695,33 @@ describe('Vue migration composition components', () => {
     numberField.commit();
     expect(numberField.inputValue.value).toContain('10');
     expect(changedValues).toEqual([6, 4, 10, 0, 10]);
+  });
+
+  it('manages vue-stately overlay trigger open, close, and toggle state', () => {
+    let changes: boolean[] = [];
+    let isOpen = ref(false);
+    let overlayState = useStatelyOverlayTriggerState({
+      isOpen,
+      onOpenChange: (nextOpen) => {
+        changes.push(nextOpen);
+      }
+    });
+
+    expect(overlayState.isOpen.value).toBe(false);
+    overlayState.open();
+    expect(isOpen.value).toBe(true);
+    overlayState.toggle();
+    expect(isOpen.value).toBe(false);
+    overlayState.setOpen(true);
+    expect(isOpen.value).toBe(true);
+    overlayState.close();
+    expect(isOpen.value).toBe(false);
+    expect(changes).toEqual([true, false, true, false]);
+
+    let uncontrolledOverlayState = useStatelyOverlayTriggerState({defaultOpen: true});
+    expect(uncontrolledOverlayState.isOpen.value).toBe(true);
+    uncontrolledOverlayState.close();
+    expect(uncontrolledOverlayState.isOpen.value).toBe(false);
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {

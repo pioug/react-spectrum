@@ -13074,6 +13074,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-stately/overlays@workspace:*, @vue-stately/overlays@workspace:packages/@vue-stately/overlays":
+  version: 0.0.0-use.local
+  resolution: "@vue-stately/overlays@workspace:packages/@vue-stately/overlays"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue/compiler-core@npm:3.5.28":
   version: 3.5.28
   resolution: "@vue/compiler-core@npm:3.5.28"
@@ -31986,6 +31994,7 @@ __metadata:
     "@vue-stately/list": "workspace:*"
     "@vue-stately/menu": "workspace:*"
     "@vue-stately/numberfield": "workspace:*"
+    "@vue-stately/overlays": "workspace:*"
     "@vue/test-utils": "npm:^2.4.6"
     jsdom: "npm:^26.0.0"
     typescript: "npm:^5.8.2"

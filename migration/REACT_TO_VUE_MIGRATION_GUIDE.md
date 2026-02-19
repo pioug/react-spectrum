@@ -153,6 +153,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-stately/list` | `@vue-stately/list` |
 | `@react-stately/menu` | `@vue-stately/menu` |
 | `@react-stately/numberfield` | `@vue-stately/numberfield` |
+| `@react-stately/overlays` | `@vue-stately/overlays` |
 
 ## Core API conversion patterns
 

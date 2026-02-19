@@ -3160,6 +3160,30 @@
         }
       ]
     },
+    "@react-stately/overlays": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/overlays",
+      "targetPath": "packages/@vue-stately/overlays",
+      "notes": "State baseline for controlled/uncontrolled overlay trigger open, close, and toggle behavior in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately overlays package source lint",
+          "command": "yarn eslint packages/@vue-stately/overlays/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",
