@@ -144,6 +144,30 @@
         }
       ]
     },
+    "@react-aria/button": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/button",
+      "targetPath": "packages/@vue-aria/button",
+      "notes": "Foundational React Aria button and toggle-button composables for press state and grouped selection behavior in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria button source lint",
+          "command": "yarn eslint packages/@vue-aria/button/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/provider": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/provider",

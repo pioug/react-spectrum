@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 57 |
+| in_progress | 58 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 95 |
+| not_started | 94 |
 
 ## Package tracker
 
@@ -27,6 +27,7 @@ Tracked source packages: 154
 | `@react-aria/aria-modal-polyfill` | `packages/@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` | `packages/@vue-aria/aria-modal-polyfill` | in_progress | Vue Aria aria-modal-polyfill source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria modal-watcher utility for applying aria-hidden around active Vue modals. |
 | `@react-aria/autocomplete` | `packages/@react-aria/autocomplete` | `@vue-aria/autocomplete` | `packages/@vue-aria/autocomplete` | in_progress | Vue Aria autocomplete source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria autocomplete composables for filtering collections and handling search submit/clear behavior in Vue. |
 | `@react-aria/breadcrumbs` | `packages/@react-aria/breadcrumbs` | `@vue-aria/breadcrumbs` | `packages/@vue-aria/breadcrumbs` | in_progress | Vue Aria breadcrumbs source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria breadcrumb composables for navigation labels and per-item accessibility state in Vue. |
+| `@react-aria/button` | `packages/@react-aria/button` | `@vue-aria/button` | `packages/@vue-aria/button` | in_progress | Vue Aria button source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria button and toggle-button composables for press state and grouped selection behavior in Vue. |
 | `@react-aria/virtualizer` | `packages/@react-aria/virtualizer` | `@vue-aria/virtualizer` | `packages/@vue-aria/virtualizer` | in_progress | Vue Aria virtualizer source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria virtualizer port to support virtualized Vue collection components, now validated by starter interaction/composable tests and wired into the Vue starter virtualized backlog demo. |
 | `@react-spectrum/accordion` | `packages/@react-spectrum/accordion` | `@vue-spectrum/accordion` | `packages/@vue-spectrum/accordion` | in_progress | Vue accordion package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue accordion and disclosure primitives. |
 | `@react-spectrum/actionbar` | `packages/@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | `packages/@vue-spectrum/actionbar` | in_progress | Vue actionbar package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue action bar and container primitives for bulk action workflows. |
@@ -82,7 +83,6 @@ Tracked source packages: 154
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-aria/button` | `packages/@react-aria/button` | `@vue-aria/button` | `packages/@vue-aria/button` | not_started | - | - |
 | `@react-aria/calendar` | `packages/@react-aria/calendar` | `@vue-aria/calendar` | `packages/@vue-aria/calendar` | not_started | - | - |
 | `@react-aria/checkbox` | `packages/@react-aria/checkbox` | `@vue-aria/checkbox` | `packages/@vue-aria/checkbox` | not_started | - | - |
 | `@react-aria/collections` | `packages/@react-aria/collections` | `@vue-aria/collections` | `packages/@vue-aria/collections` | not_started | - | - |

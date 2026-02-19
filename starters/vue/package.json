@@ -17,6 +17,7 @@
     "@vue-aria/aria-modal-polyfill": "workspace:*",
     "@vue-aria/autocomplete": "workspace:*",
     "@vue-aria/breadcrumbs": "workspace:*",
+    "@vue-aria/button": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",

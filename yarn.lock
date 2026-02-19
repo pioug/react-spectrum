@@ -11857,6 +11857,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/button@workspace:*, @vue-aria/button@workspace:packages/@vue-aria/button":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/button@workspace:packages/@vue-aria/button"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31153,6 +31161,7 @@ __metadata:
     "@vue-aria/aria-modal-polyfill": "workspace:*"
     "@vue-aria/autocomplete": "workspace:*"
     "@vue-aria/breadcrumbs": "workspace:*"
+    "@vue-aria/button": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"

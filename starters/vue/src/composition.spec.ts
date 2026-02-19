@@ -5,6 +5,7 @@ import {useActionGroup, useActionGroupItem} from '@vue-aria/actiongroup';
 import {useAutocomplete, useSearchAutocomplete} from '@vue-aria/autocomplete';
 import {watchModals} from '@vue-aria/aria-modal-polyfill';
 import {useBreadcrumbItem, useBreadcrumbs} from '@vue-aria/breadcrumbs';
+import {useButton, useToggleButton, useToggleButtonGroup, useToggleButtonGroupItem} from '@vue-aria/button';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -150,6 +151,59 @@ describe('Vue migration composition components', () => {
     expect(currentItem.itemProps.value.tabindex).toBe(-1);
     currentItem.press();
     expect(pressCount).toBe(1);
+  });
+
+  it('computes vue-aria button props and press interactions', () => {
+    let pressCount = 0;
+    let button = useButton({
+      elementType: 'a',
+      href: '/docs',
+      onPress: () => {
+        pressCount += 1;
+      }
+    });
+
+    expect(button.buttonProps.value.role).toBe('button');
+    expect(button.buttonProps.value.href).toBe('/docs');
+    expect(button.buttonProps.value.tabindex).toBe(0);
+    button.press();
+    expect(button.isPressed.value).toBe(false);
+    expect(pressCount).toBe(1);
+
+    let disabledButton = useButton({
+      elementType: 'a',
+      href: '/docs',
+      isDisabled: true
+    });
+    expect(disabledButton.buttonProps.value['aria-disabled']).toBe(true);
+    expect(disabledButton.buttonProps.value.href).toBeUndefined();
+  });
+
+  it('toggles vue-aria button selection and group-item radio state', () => {
+    let isSelected = ref(false);
+    let toggleButton = useToggleButton({
+      isSelected
+    });
+
+    toggleButton.press();
+    expect(isSelected.value).toBe(true);
+    expect(toggleButton.buttonProps.value['aria-pressed']).toBe(true);
+
+    let selectedKeys = ref<Iterable<string>>(['bold']);
+    let group = useToggleButtonGroup({
+      selectedKeys,
+      selectionMode: 'single'
+    });
+
+    let italicItem = useToggleButtonGroupItem({
+      group,
+      id: 'italic'
+    });
+
+    expect(italicItem.buttonProps.value.role).toBe('radio');
+    expect(italicItem.buttonProps.value['aria-checked']).toBe(false);
+    italicItem.press();
+    expect(Array.from(selectedKeys.value)).toEqual(['italic']);
   });
 
   it('emits close events from dismissable dialog controls', async () => {
