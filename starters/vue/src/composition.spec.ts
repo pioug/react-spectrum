@@ -105,6 +105,7 @@ import {
   useLabels as useAriaLabels,
   useSlotId as useAriaSlotId
 } from '@vue-aria/utils';
+import {VISUALLY_HIDDEN_STYLES as ARIA_VISUALLY_HIDDEN_STYLES, useVisuallyHidden as useAriaVisuallyHidden} from '@vue-aria/visually-hidden';
 import {
   useTable as useAriaTable,
   useTableCell as useAriaTableCell,
@@ -2387,6 +2388,47 @@ describe('Vue migration composition components', () => {
     );
     expect(labels['aria-label']).toBe('Expand row');
     expect(labels['aria-labelledby']).toBe('row-label');
+  });
+
+  it('computes vue-aria visually hidden props and focus reveal behavior', () => {
+    expect(ARIA_VISUALLY_HIDDEN_STYLES.position).toBe('absolute');
+    expect(ARIA_VISUALLY_HIDDEN_STYLES.clipPath).toBe('inset(50%)');
+
+    let hiddenLink = useAriaVisuallyHidden({
+      isFocusable: true,
+      style: {
+        color: 'red'
+      }
+    });
+
+    let linkElement = document.createElement('a');
+    let hiddenProps = hiddenLink.visuallyHiddenProps.value;
+    if (hiddenProps.onFocusin) {
+      linkElement.addEventListener('focusin', hiddenProps.onFocusin as EventListener);
+    }
+    if (hiddenProps.onFocusout) {
+      linkElement.addEventListener('focusout', hiddenProps.onFocusout as EventListener);
+    }
+    document.body.append(linkElement);
+
+    try {
+      expect(hiddenLink.visuallyHiddenProps.value.style?.position).toBe('absolute');
+      expect(hiddenLink.visuallyHiddenProps.value.style?.color).toBe('red');
+
+      linkElement.dispatchEvent(new FocusEvent('focusin', {bubbles: true}));
+      expect(hiddenLink.isFocused.value).toBe(true);
+      expect(hiddenLink.visuallyHiddenProps.value.style).toEqual({color: 'red'});
+
+      linkElement.dispatchEvent(new FocusEvent('focusout', {bubbles: true}));
+      expect(hiddenLink.isFocused.value).toBe(false);
+      expect(hiddenLink.visuallyHiddenProps.value.style?.position).toBe('absolute');
+    } finally {
+      document.body.removeChild(linkElement);
+    }
+
+    let nonFocusableHidden = useAriaVisuallyHidden();
+    expect(nonFocusableHidden.visuallyHiddenProps.value.onFocusin).toBeUndefined();
+    expect(nonFocusableHidden.visuallyHiddenProps.value.onFocusout).toBeUndefined();
   });
 
   it('computes vue-aria tag group and tag remove behavior', () => {

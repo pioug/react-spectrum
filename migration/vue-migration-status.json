@@ -1128,6 +1128,30 @@
         }
       ]
     },
+    "@react-aria/visually-hidden": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/visually-hidden",
+      "targetPath": "packages/@vue-aria/visually-hidden",
+      "notes": "Foundational React Aria visually-hidden composable for screen-reader-only content and optional focus reveal behavior in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria visually-hidden source lint",
+          "command": "yarn eslint packages/@vue-aria/visually-hidden/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/tabs": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/tabs",

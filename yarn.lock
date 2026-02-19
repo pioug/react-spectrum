@@ -12273,6 +12273,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/visually-hidden@workspace:*, @vue-aria/visually-hidden@workspace:packages/@vue-aria/visually-hidden":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/visually-hidden@workspace:packages/@vue-aria/visually-hidden"
+  dependencies:
+    "@vue-aria/interactions": "workspace:*"
+    "@vue-aria/utils": "workspace:*"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/accordion@workspace:*, @vue-spectrum/accordion@workspace:packages/@vue-spectrum/accordion":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/accordion@workspace:packages/@vue-spectrum/accordion"
@@ -31610,6 +31621,7 @@ __metadata:
     "@vue-aria/tree": "workspace:*"
     "@vue-aria/utils": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
+    "@vue-aria/visually-hidden": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"
     "@vue-spectrum/actiongroup": "workspace:*"

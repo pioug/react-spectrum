@@ -111,6 +111,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-aria/tooltip` | `@vue-aria/tooltip` |
 | `@react-aria/tree` | `@vue-aria/tree` |
 | `@react-aria/utils` | `@vue-aria/utils` |
+| `@react-aria/visually-hidden` | `@vue-aria/visually-hidden` |
 | `@react-aria/tag` | `@vue-aria/tag` |
 | `@react-aria/test-utils` | `@vue-aria/test-utils` |
 | `@react-aria/textfield` | `@vue-aria/textfield` |
