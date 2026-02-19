@@ -233,6 +233,11 @@ import {
   useTableState as useStatelyTableState
 } from '@vue-stately/table';
 import {useTabListState as useStatelyTabListState} from '@vue-stately/tabs';
+import {
+  ToastQueue as StatelyToastQueue,
+  useToastQueue as useStatelyToastQueue,
+  useToastState as useStatelyToastState
+} from '@vue-stately/toast';
 
 function createPointerEvent(
   type: string,
@@ -2080,6 +2085,44 @@ describe('Vue migration composition components', () => {
       disabledKeys: ['vue', 'react']
     });
     expect(fallbackTabListState.selectedKey.value).toBe('svelte');
+  });
+
+  it('manages vue-stately toast queue visibility, close lifecycle, and queue subscriptions', () => {
+    let closedToasts: string[] = [];
+    let toastState = useStatelyToastState<string>({
+      maxVisibleToasts: 2
+    });
+
+    let firstKey = toastState.add('First toast', {
+      onClose: () => {
+        closedToasts.push('first');
+      },
+      timeout: 10_000
+    });
+    let secondKey = toastState.add('Second toast', {
+      onClose: () => {
+        closedToasts.push('second');
+      }
+    });
+    let thirdKey = toastState.add('Third toast');
+
+    expect(toastState.visibleToasts.value.map((toast) => toast.key)).toEqual([thirdKey, secondKey]);
+    toastState.pauseAll();
+    toastState.resumeAll();
+
+    toastState.close(secondKey);
+    expect(closedToasts).toEqual(['second']);
+    expect(toastState.visibleToasts.value.map((toast) => toast.key)).toEqual([thirdKey, firstKey]);
+
+    let queue = new StatelyToastQueue<string>({maxVisibleToasts: 1});
+    let queueState = useStatelyToastQueue(queue);
+    let queuedToastKey = queueState.add('Queued toast');
+    expect(queueState.visibleToasts.value).toHaveLength(1);
+    expect(queueState.visibleToasts.value[0]?.key).toBe(queuedToastKey);
+
+    toastState.close(firstKey);
+    toastState.close(thirdKey);
+    queue.close(queuedToastKey);
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {

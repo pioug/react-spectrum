@@ -3376,6 +3376,30 @@
         }
       ]
     },
+    "@react-stately/toast": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/toast",
+      "targetPath": "packages/@vue-stately/toast",
+      "notes": "State baseline for toast queue ordering, visible-toast limits, close callbacks, and timeout pause/resume control in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately toast package source lint",
+          "command": "yarn eslint packages/@vue-stately/toast/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",
