@@ -85,6 +85,8 @@
           label="Favorite library"
           :items="libraryOptions" />
 
+        <VueDivider />
+
         <p class="summary">
           Selected: <strong>{{ favoriteFramework }}</strong>
           <span> · </span>
@@ -145,6 +147,7 @@ import {computed, ref} from 'vue';
 import {Button as VueButton} from '@vue-spectrum/button';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
 import {ComboBox as VueComboBox} from '@vue-spectrum/combobox';
+import {Divider as VueDivider} from '@vue-spectrum/divider';
 import {Dialog as VueDialog} from '@vue-spectrum/dialog';
 import {Form as VueForm} from '@vue-spectrum/form';
 import {Link as VueLink} from '@vue-spectrum/link';

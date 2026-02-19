@@ -611,6 +611,23 @@
   opacity: 0.55;
 }
 
+.vs-divider {
+  background: var(--vs-color-border);
+  display: block;
+}
+
+.vs-divider--horizontal {
+  block-size: 1px;
+  inline-size: 100%;
+  margin-block: 4px;
+}
+
+.vs-divider--vertical {
+  block-size: 100%;
+  inline-size: 1px;
+  min-block-size: 16px;
+}
+
 .vs-dialog-layer {
   align-items: center;
   display: grid;

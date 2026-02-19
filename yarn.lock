@@ -11746,6 +11746,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/divider@workspace:*, @vue-spectrum/divider@workspace:packages/@vue-spectrum/divider":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/divider@workspace:packages/@vue-spectrum/divider"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/form@workspace:*, @vue-spectrum/form@workspace:packages/@vue-spectrum/form":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/form@workspace:packages/@vue-spectrum/form"
@@ -30272,6 +30282,7 @@ __metadata:
     "@vue-spectrum/combobox": "workspace:*"
     "@vue-spectrum/components": "workspace:*"
     "@vue-spectrum/dialog": "workspace:*"
+    "@vue-spectrum/divider": "workspace:*"
     "@vue-spectrum/form": "workspace:*"
     "@vue-spectrum/link": "workspace:*"
     "@vue-spectrum/listbox": "workspace:*"

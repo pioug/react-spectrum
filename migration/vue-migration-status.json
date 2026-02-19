@@ -140,6 +140,26 @@
         }
       ]
     },
+    "@react-spectrum/divider": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/divider",
+      "targetPath": "packages/@vue-spectrum/divider",
+      "notes": "First-wave visual primitive for section separation.",
+      "acceptanceTests": [
+        {
+          "name": "Vue divider package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/divider/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    },
     "@react-spectrum/form": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/form",
