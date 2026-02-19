@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:34:15.992Z
+Generated: 2026-02-19T21:35:38.767Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 59
+* Fully matched packages: 60
 * Source exports inspected: 2672
-* Missing exports: 1067
-* Coverage ratio: 60.07%
+* Missing exports: 1046
+* Coverage ratio: 60.85%
 
 ## Package gaps
 
@@ -19,7 +19,6 @@ Generated: 2026-02-19T21:34:15.992Z
 | `react-aria-components` | `@vue-spectrum/components` | missing | 543 | 503 | 7.4% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | missing | 325 | 314 | 3.4% |
 | `@react-aria/overlays` | `@vue-aria/overlays` | missing | 39 | 24 | 38.5% |
-| `@react-aria/focus` | `@vue-aria/focus` | missing | 26 | 21 | 19.2% |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` | missing | 11 | 11 | 0.0% |
 | `@react-aria/datepicker` | `@vue-aria/datepicker` | missing | 18 | 10 | 44.4% |
 | `@react-spectrum/color` | `@vue-spectrum/color` | missing | 21 | 8 | 61.9% |
@@ -115,6 +114,7 @@ Generated: 2026-02-19T21:34:15.992Z
 | `@react-aria/collections` | `@vue-aria/collections` | ok | 17 | 0 | 100.0% |
 | `@react-aria/dnd` | `@vue-aria/dnd` | ok | 62 | 0 | 100.0% |
 | `@react-aria/example-theme` | `@vue-aria/example-theme` | ok | 0 | 0 | 100.0% |
+| `@react-aria/focus` | `@vue-aria/focus` | ok | 26 | 0 | 100.0% |
 | `@react-aria/form` | `@vue-aria/form` | ok | 1 | 0 | 100.0% |
 | `@react-aria/grid` | `@vue-aria/grid` | ok | 20 | 0 | 100.0% |
 | `@react-aria/i18n` | `@vue-aria/i18n` | ok | 19 | 0 | 100.0% |
@@ -193,13 +193,6 @@ Generated: 2026-02-19T21:34:15.992Z
 * Target entry: `packages/@vue-aria/overlays/src/index.ts`
 * Missing export count: 24
 * Missing exports: `AriaModalOverlayProps`, `AriaOverlayProps`, `AriaPopoverProps`, `AriaPositionProps`, `DismissButton`, `DismissButtonProps`, `ModalProvider`, `ModalProviderAria`, `ModalProviderProps`, `Overlay`, `OverlayContainer`, `OverlayContainerProps`, `OverlayProps`, `OverlayProvider`, `OverlayTriggerProps`, `Placement`, `PlacementAxis`, `PortalProviderContextValue`, `PortalProviderProps`, `PositionProps`, `UNSAFE_PortalProvider`, `useModalProvider`, `useOverlayFocusContain`, `useUNSAFE_PortalContext`
-
-### @react-aria/focus -> @vue-aria/focus
-
-* Source entry: `packages/@react-aria/focus/src/index.ts`
-* Target entry: `packages/@vue-aria/focus/src/index.ts`
-* Missing export count: 21
-* Missing exports: `FocusManager`, `FocusManagerOptions`, `FocusRing`, `FocusScope`, `FocusScopeProps`, `Focusable`, `FocusableAria`, `FocusableOptions`, `FocusableProvider`, `FocusableProviderProps`, `createFocusManager`, `dispatchVirtualBlur`, `dispatchVirtualFocus`, `focusSafely`, `getFocusableTreeWalker`, `getVirtuallyFocusedElement`, `isElementInChildOfActiveScope`, `isFocusable`, `moveVirtualFocus`, `useFocusManager`, `useFocusable`
 
 ### @react-aria/virtualizer -> @vue-aria/virtualizer
 
@@ -312,4 +305,11 @@ Generated: 2026-02-19T21:34:15.992Z
 * Target entry: `packages/@vue-spectrum/provider/src/index.ts`
 * Missing export count: 4
 * Missing exports: `ProviderContext`, `ProviderProps`, `useProvider`, `useProviderProps`
+
+### @react-spectrum/textfield -> @vue-spectrum/textfield
+
+* Source entry: `packages/@react-spectrum/textfield/src/index.ts`
+* Target entry: `packages/@vue-spectrum/textfield/src/index.ts`
+* Missing export count: 4
+* Missing exports: `SpectrumTextAreaProps`, `SpectrumTextFieldProps`, `TextArea`, `TextFieldBase`
 

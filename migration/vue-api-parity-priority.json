@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-02-19T21:34:23.009Z",
+  "generatedAt": "2026-02-19T21:35:46.349Z",
   "summary": {
     "trackedPackages": 154,
-    "packagesWithGaps": 95,
+    "packagesWithGaps": 94,
     "highestPriorityPackage": "react-aria-components",
     "highestPriorityScore": 1677.99
   },
@@ -50,17 +50,6 @@
       "dependencyDepth": 5,
       "criticalityWeight": 1.4,
       "priorityScore": 238.1
-    },
-    {
-      "sourcePackage": "@react-aria/focus",
-      "targetPackage": "@vue-aria/focus",
-      "missingExports": 21,
-      "sourceExportCount": 26,
-      "coveragePercent": 19.23,
-      "reverseDependents": 43,
-      "dependencyDepth": 3,
-      "criticalityWeight": 1.9,
-      "priorityScore": 231.52
     },
     {
       "sourcePackage": "@react-aria/overlays",

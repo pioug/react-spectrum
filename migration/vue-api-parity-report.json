@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T21:34:15.992Z",
+  "generatedAt": "2026-02-19T21:35:38.767Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 59,
+    "fullyMatchedPackages": 60,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 1067,
-    "parityCoverage": 0.6007
+    "missingExportTotal": 1046,
+    "parityCoverage": 0.6085
   },
   "packages": [
     {
@@ -979,46 +979,6 @@
         "OverlayTriggerType",
         "PreventScrollAria",
         "PreventScrollOptions"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/focus",
-      "sourcePath": "packages/@react-aria/focus",
-      "targetPackage": "@vue-aria/focus",
-      "targetPath": "packages/@vue-aria/focus",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/focus/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/focus/src/index.ts",
-      "sourceExportCount": 26,
-      "targetExportCount": 7,
-      "parityRatio": 0.1923,
-      "missingExports": [
-        "FocusManager",
-        "FocusManagerOptions",
-        "FocusRing",
-        "FocusScope",
-        "FocusScopeProps",
-        "Focusable",
-        "FocusableAria",
-        "FocusableOptions",
-        "FocusableProvider",
-        "FocusableProviderProps",
-        "createFocusManager",
-        "dispatchVirtualBlur",
-        "dispatchVirtualFocus",
-        "focusSafely",
-        "getFocusableTreeWalker",
-        "getVirtuallyFocusedElement",
-        "isElementInChildOfActiveScope",
-        "isFocusable",
-        "moveVirtualFocus",
-        "useFocusManager",
-        "useFocusable"
-      ],
-      "extraExports": [
-        "AriaHasTabbableChildOptions",
-        "MaybeElementRef"
       ],
       "error": null
     },
@@ -3079,6 +3039,24 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/focus",
+      "sourcePath": "packages/@react-aria/focus",
+      "targetPackage": "@vue-aria/focus",
+      "targetPath": "packages/@vue-aria/focus",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/focus/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/focus/src/index.ts",
+      "sourceExportCount": 26,
+      "targetExportCount": 28,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaHasTabbableChildOptions",
+        "MaybeElementRef"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/form",
       "sourcePath": "packages/@react-aria/form",
       "targetPackage": "@vue-aria/form",
@@ -4044,7 +4022,7 @@
       "sourceEntrypoint": "packages/react-aria/src/index.ts",
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
-      "targetExportCount": 787,
+      "targetExportCount": 794,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
@@ -4301,17 +4279,21 @@
         "clearAnnouncer",
         "createBranchComponent",
         "createEventHandler",
+        "createFocusManager",
         "createHideableComponent",
         "createLeafComponent",
         "createShadowTreeWalker",
         "destroyAnnouncer",
         "disableTextSelection",
+        "dispatchVirtualBlur",
+        "dispatchVirtualFocus",
         "filterDOMProps",
         "focusSafely",
         "focusWithoutScrolling",
         "getActiveElement",
         "getDefaultLocale",
         "getEventTarget",
+        "getFocusableTreeWalker",
         "getInteractionModality",
         "getItemId",
         "getOffset",
@@ -4321,6 +4303,7 @@
         "getScrollParent",
         "getScrollParents",
         "getSyntheticLinkProps",
+        "getVirtuallyFocusedElement",
         "handleLinkClick",
         "inertValue",
         "installMouseEvent",
@@ -4329,6 +4312,7 @@
         "isAppleDevice",
         "isChrome",
         "isCtrlKeyPressed",
+        "isElementInChildOfActiveScope",
         "isFirefox",
         "isFocusVisible",
         "isFocusWithin",
@@ -4347,6 +4331,7 @@
         "listData",
         "mergeIds",
         "mergeRefs",
+        "moveVirtualFocus",
         "nodeContains",
         "openLink",
         "pointerMap",
