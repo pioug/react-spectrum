@@ -49,6 +49,7 @@ import {
 } from '@vue-aria/i18n';
 import {useField, useLabel} from '@vue-aria/label';
 import {UNSTABLE_createLandmarkController, useLandmark} from '@vue-aria/landmark';
+import {useLink as useAriaLink} from '@vue-aria/link';
 import {
   addWindowFocusTracking,
   setInteractionModality,
@@ -1104,6 +1105,58 @@ describe('Vue migration composition components', () => {
       document.body.removeChild(main);
       document.body.removeChild(navigation);
     }
+  });
+
+  it('applies vue-aria link semantics and press interactions', () => {
+    let pressCount = 0;
+    let customLink = useAriaLink({
+      elementType: 'span',
+      onPress: () => {
+        pressCount += 1;
+      }
+    });
+
+    expect(customLink.linkProps.value.role).toBe('link');
+    expect(customLink.linkProps.value.tabindex).toBe(0);
+    expect(customLink.linkProps.value.href).toBeUndefined();
+
+    let span = document.createElement('span');
+    document.body.append(span);
+
+    try {
+      if (customLink.linkProps.value.onKeyDown) {
+        span.addEventListener('keydown', customLink.linkProps.value.onKeyDown as EventListener);
+      }
+      if (customLink.linkProps.value.onKeyUp) {
+        span.addEventListener('keyup', customLink.linkProps.value.onKeyUp as EventListener);
+      }
+      if (customLink.linkProps.value.onClick) {
+        span.addEventListener('click', customLink.linkProps.value.onClick as EventListener);
+      }
+
+      span.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'Enter'}));
+      span.dispatchEvent(new KeyboardEvent('keyup', {bubbles: true, key: 'Enter'}));
+      span.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true}));
+      expect(pressCount).toBe(2);
+    } finally {
+      document.body.removeChild(span);
+    }
+
+    let disabledLink = useAriaLink({
+      href: '/docs',
+      isDisabled: true
+    });
+
+    let anchor = document.createElement('a');
+    if (disabledLink.linkProps.value.onClick) {
+      anchor.addEventListener('click', disabledLink.linkProps.value.onClick as EventListener);
+    }
+
+    let disabledClickEvent = new MouseEvent('click', {bubbles: true, cancelable: true});
+    anchor.dispatchEvent(disabledClickEvent);
+    expect(disabledLink.linkProps.value['aria-disabled']).toBe(true);
+    expect(disabledLink.linkProps.value.href).toBeUndefined();
+    expect(disabledClickEvent.defaultPrevented).toBe(true);
   });
 
   it('handles vue-aria interactions focus, keyboard, and press callbacks', () => {
