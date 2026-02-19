@@ -4,6 +4,7 @@ import {describe, expect, it} from 'vitest';
 import {useActionGroup, useActionGroupItem} from '@vue-aria/actiongroup';
 import {useAutocomplete, useSearchAutocomplete} from '@vue-aria/autocomplete';
 import {watchModals} from '@vue-aria/aria-modal-polyfill';
+import {useBreadcrumbItem, useBreadcrumbs} from '@vue-aria/breadcrumbs';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -108,6 +109,47 @@ describe('Vue migration composition components', () => {
     expect(inputValue.value).toBe('');
     expect(clearCount).toBe(1);
     expect(autocomplete.clearButtonProps.value.disabled).toBe(true);
+  });
+
+  it('provides breadcrumb nav props with default and custom labels', () => {
+    let breadcrumbs = useBreadcrumbs();
+    expect(breadcrumbs.navProps.value['aria-label']).toBe('Breadcrumbs');
+
+    let customBreadcrumbs = useBreadcrumbs({
+      ariaLabel: ref('Project trail')
+    });
+    expect(customBreadcrumbs.navProps.value['aria-label']).toBe('Project trail');
+  });
+
+  it('computes breadcrumb item props and press behavior', () => {
+    let pressCount = 0;
+    let item = useBreadcrumbItem({
+      elementType: 'span',
+      onPress: () => {
+        pressCount += 1;
+      }
+    });
+
+    expect(item.itemProps.value.role).toBe('link');
+    expect(item.itemProps.value.tabindex).toBe(0);
+    expect(item.itemProps.value['aria-disabled']).toBeUndefined();
+    item.press();
+    expect(pressCount).toBe(1);
+
+    let currentItem = useBreadcrumbItem({
+      autoFocus: true,
+      elementType: 'span',
+      isCurrent: true,
+      onPress: () => {
+        pressCount += 1;
+      }
+    });
+
+    expect(currentItem.itemProps.value['aria-current']).toBe('page');
+    expect(currentItem.itemProps.value['aria-disabled']).toBe(true);
+    expect(currentItem.itemProps.value.tabindex).toBe(-1);
+    currentItem.press();
+    expect(pressCount).toBe(1);
   });
 
   it('emits close events from dismissable dialog controls', async () => {

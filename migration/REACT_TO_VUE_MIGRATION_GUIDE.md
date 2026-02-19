@@ -70,6 +70,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-spectrum/filetrigger` | `@vue-spectrum/filetrigger` |
 | `@react-aria/actiongroup` | `@vue-aria/actiongroup` |
 | `@react-aria/autocomplete` | `@vue-aria/autocomplete` |
+| `@react-aria/breadcrumbs` | `@vue-aria/breadcrumbs` |
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` |
 

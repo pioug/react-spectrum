@@ -120,6 +120,30 @@
         }
       ]
     },
+    "@react-aria/breadcrumbs": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/breadcrumbs",
+      "targetPath": "packages/@vue-aria/breadcrumbs",
+      "notes": "Foundational React Aria breadcrumb composables for navigation labels and per-item accessibility state in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria breadcrumbs source lint",
+          "command": "yarn eslint packages/@vue-aria/breadcrumbs/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/provider": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/provider",
