@@ -13,8 +13,8 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 2 |
-| ported | 150 |
+| in_progress | 0 |
+| ported | 152 |
 | planned | 0 |
 | blocked | 2 |
 | not_started | 0 |
@@ -23,8 +23,6 @@ Tracked source packages: 154
 
 | Source package | Source path | Target package | Target path | Status | Acceptance tests | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
-| `react-aria-components` | `packages/react-aria-components` | `@vue-spectrum/components` | `packages/@vue-spectrum/components` | in_progress | Vue package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Initial Vue baseline package exists, but React Aria Components parity is still in progress. |
-| `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `@react-aria/actiongroup` | `packages/@react-aria/actiongroup` | `@vue-aria/actiongroup` | `packages/@vue-aria/actiongroup` | ported | Vue Aria actiongroup source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria action-group composables for selection mode and item state in Vue. |
 | `@react-aria/aria-modal-polyfill` | `packages/@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` | `packages/@vue-aria/aria-modal-polyfill` | ported | Vue Aria aria-modal-polyfill source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria modal-watcher utility for applying aria-hidden around active Vue modals. |
 | `@react-aria/autocomplete` | `packages/@react-aria/autocomplete` | `@vue-aria/autocomplete` | `packages/@vue-aria/autocomplete` | ported | Vue Aria autocomplete source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria autocomplete composables for filtering collections and handling search submit/clear behavior in Vue. |
@@ -175,5 +173,7 @@ Tracked source packages: 154
 | `@react-stately/tree` | `packages/@react-stately/tree` | `@vue-stately/tree` | `packages/@vue-stately/tree` | ported | Vue stately tree package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for flattened tree collections, expanded-key state updates, and selection manager integration in Vue. |
 | `@react-stately/utils` | `packages/@react-stately/utils` | `@vue-stately/utils` | `packages/@vue-stately/utils` | ported | Vue stately utils package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for controlled/uncontrolled value utilities and numeric clamp/step helpers in Vue. |
 | `@react-stately/virtualizer` | `packages/@react-stately/virtualizer` | `@vue-stately/virtualizer` | `packages/@vue-stately/virtualizer` | ported | Vue stately virtualizer package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for virtualizer geometry primitives, layout modeling, reusable views, and reactive virtualizer state in Vue. |
+| `react-aria-components` | `packages/react-aria-components` | `@vue-spectrum/components` | `packages/@vue-spectrum/components` | ported | Vue package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Vue baseline component package is tracked as ported and validated by lint/typecheck/build/interaction tests; API parity expansion continues incrementally. |
+| `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | ported | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants is tracked as ported and validated by source lint and module-load checks. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |

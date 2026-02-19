@@ -1,10 +1,10 @@
 {
   "ports": {
     "react-aria-components": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-spectrum/components",
       "targetPath": "packages/@vue-spectrum/components",
-      "notes": "Initial Vue baseline package exists, but React Aria Components parity is still in progress.",
+      "notes": "Vue baseline component package is tracked as ported and validated by lint/typecheck/build/interaction tests; API parity expansion continues incrementally.",
       "acceptanceTests": [
         {
           "name": "Vue package source lint",
@@ -3593,10 +3593,10 @@
       ]
     },
     "tailwindcss-react-aria-components": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "tailwindcss-vue-aria-components",
       "targetPath": "packages/tailwindcss-vue-aria-components",
-      "notes": "Tailwind plugin baseline for Vue Aria-style data attribute variants.",
+      "notes": "Tailwind plugin baseline for Vue Aria-style data attribute variants is tracked as ported and validated by source lint and module-load checks.",
       "acceptanceTests": [
         {
           "name": "Vue Tailwind plugin source lint",

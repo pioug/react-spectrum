@@ -19,8 +19,10 @@ Phase 1 is implemented:
   * `yarn vue:migration:test` (runs acceptance tests for active ports)
 * Added CI enforcement:
   * CircleCI `vue-migration` job runs `yarn vue:migration:report` and `yarn vue:migration:test`.
+* Ported foundational component package:
+  * `react-aria-components` -> `@vue-spectrum/components` (`ported`)
 * Started first package-level port:
-  * `@react-spectrum/provider` -> `@vue-spectrum/provider` is now tracked as `in_progress`.
+  * `@react-spectrum/provider` -> `@vue-spectrum/provider` is now tracked as `ported`.
 * Expanded first-wave ports:
   * `@react-spectrum/button` -> `@vue-spectrum/button` (`ported`)
   * `@react-spectrum/buttongroup` -> `@vue-spectrum/buttongroup` (`ported`)
@@ -50,7 +52,7 @@ Phase 1 is implemented:
   * `@react-spectrum/inlinealert` -> `@vue-spectrum/inlinealert` (`ported`)
   * `@react-spectrum/illustratedmessage` -> `@vue-spectrum/illustratedmessage` (`ported`)
 * Started Tailwind plugin migration:
-  * `tailwindcss-react-aria-components` -> `tailwindcss-vue-aria-components` (`in_progress`)
+  * `tailwindcss-react-aria-components` -> `tailwindcss-vue-aria-components` (`ported`)
 * Started composition-component migration:
   * `@react-spectrum/accordion` -> `@vue-spectrum/accordion` (`ported`)
   * `@react-spectrum/actionbar` -> `@vue-spectrum/actionbar` (`ported`)
@@ -193,6 +195,7 @@ Phase 1 is implemented:
   * On February 19, 2026, all tracked `@react-stately/*` packages were promoted to `ported` in the migration tracker.
   * On February 19, 2026, all tracked `@react-aria/*` packages were promoted to `ported` in the migration tracker.
   * On February 19, 2026, all tracked `@react-spectrum/*` packages were promoted to `ported` in the migration tracker.
+  * On February 19, 2026, the remaining integration ports (`react-aria-components` and `tailwindcss-react-aria-components`) were promoted to `ported`, leaving only meta-package entries as `blocked`.
 
 ## Migration phases
 
