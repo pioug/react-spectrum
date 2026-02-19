@@ -142,6 +142,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-stately/combobox` | `@vue-stately/combobox` |
 | `@react-stately/collections` | `@vue-stately/collections` |
 | `@react-stately/color` | `@vue-stately/color` |
+| `@react-stately/data` | `@vue-stately/data` |
 
 ## Core API conversion patterns
 

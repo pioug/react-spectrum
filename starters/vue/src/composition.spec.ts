@@ -180,6 +180,7 @@ import {
   useColorPickerState as useStatelyColorPickerState,
   useColorSliderState as useStatelyColorSliderState
 } from '@vue-stately/color';
+import {useAsyncList as useStatelyAsyncList, useListData as useStatelyListData, useTreeData as useStatelyTreeData} from '@vue-stately/data';
 
 function createPointerEvent(
   type: string,
@@ -806,6 +807,108 @@ describe('Vue migration composition components', () => {
     state.revert();
     expect(inputValue.value).toBe('Vue');
     expect(state.isFocused.value).toBe(true);
+  });
+
+  it('manages vue-stately list data insertion, selection, filtering, and movement', () => {
+    let list = useStatelyListData({
+      filter: (item: {id: string, label: string}, filterText: string) => {
+        return item.label.toLowerCase().includes(filterText.toLowerCase());
+      },
+      getKey: (item) => item.id,
+      initialItems: [
+        {id: 'alpha', label: 'Alpha'},
+        {id: 'beta', label: 'Beta'},
+        {id: 'gamma', label: 'Gamma'}
+      ],
+      initialSelectedKeys: ['beta']
+    });
+
+    list.insertAfter('alpha', {id: 'delta', label: 'Delta'});
+    list.setSelectedKeys(['alpha']);
+    list.addKeysToSelection(['delta']);
+    expect(Array.from(list.selectedKeys.value)).toEqual(['alpha', 'delta']);
+
+    list.move('delta', 0);
+    expect(list.items.value.map((item) => item.id)).toEqual(['delta', 'alpha', 'beta', 'gamma']);
+
+    list.remove('beta');
+    expect(list.items.value.map((item) => item.id)).toEqual(['delta', 'alpha', 'gamma']);
+
+    list.setFilterText('ga');
+    expect(list.items.value.map((item) => item.id)).toEqual(['gamma']);
+  });
+
+  it('manages vue-stately tree data insertion, movement, selection, and removal', () => {
+    type TreeItem = {children?: TreeItem[], id: string, label: string};
+    let tree = useStatelyTreeData<TreeItem>({
+      getChildren: (item) => item.children ?? [],
+      getKey: (item) => item.id,
+      initialItems: [
+        {
+          id: 'root-1',
+          label: 'Root 1',
+          children: [{id: 'child-1', label: 'Child 1'}]
+        },
+        {id: 'root-2', label: 'Root 2'}
+      ]
+    });
+
+    tree.append(null, {id: 'root-3', label: 'Root 3'});
+    expect(tree.items.value.map((item) => item.key)).toEqual(['root-1', 'root-2', 'root-3']);
+    expect(tree.getItem('child-1')?.parentKey).toBe('root-1');
+
+    tree.move('child-1', null, 0);
+    expect(tree.items.value[0].key).toBe('child-1');
+    expect(tree.getItem('child-1')?.parentKey).toBeNull();
+
+    tree.setSelectedKeys(['root-2', 'root-3']);
+    tree.removeSelectedItems();
+    expect(tree.items.value.map((item) => item.key)).toEqual(['child-1', 'root-1']);
+  });
+
+  it('loads, paginates, and filters vue-stately async list data', async () => {
+    let allItems = [
+      {id: 'alpha', label: 'Alpha'},
+      {id: 'beta', label: 'Beta'},
+      {id: 'gamma', label: 'Gamma'}
+    ];
+
+    let asyncList = useStatelyAsyncList<typeof allItems[number], string>({
+      getKey: (item) => item.id,
+      load: async ({cursor, filterText}) => {
+        let source = filterText
+          ? allItems.filter((item) => item.label.toLowerCase().includes(filterText.toLowerCase()))
+          : allItems;
+
+        if (cursor === 'page-2') {
+          return {
+            items: source.slice(2),
+            cursor: undefined
+          };
+        }
+
+        return {
+          items: source.slice(0, 2),
+          cursor: source.length > 2 ? 'page-2' : undefined
+        };
+      }
+    });
+
+    await nextTick();
+    await Promise.resolve();
+    expect(asyncList.items.value.map((item) => item.id)).toEqual(['alpha', 'beta']);
+    expect(asyncList.loadingState.value).toBe('idle');
+
+    asyncList.loadMore();
+    await nextTick();
+    await Promise.resolve();
+    expect(asyncList.items.value.map((item) => item.id)).toEqual(['alpha', 'beta', 'gamma']);
+
+    asyncList.setFilterText('ga');
+    await nextTick();
+    await Promise.resolve();
+    expect(asyncList.filterText.value).toBe('ga');
+    expect(asyncList.items.value.map((item) => item.id)).toEqual(['gamma']);
   });
 
   it('clamps vue-aria date field and time field values within min/max bounds', () => {
