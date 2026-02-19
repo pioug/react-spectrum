@@ -11929,6 +11929,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/dnd@workspace:*, @vue-aria/dnd@workspace:packages/@vue-aria/dnd":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/dnd@workspace:packages/@vue-aria/dnd"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31234,6 +31242,7 @@ __metadata:
     "@vue-aria/datepicker": "workspace:*"
     "@vue-aria/dialog": "workspace:*"
     "@vue-aria/disclosure": "workspace:*"
+    "@vue-aria/dnd": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"

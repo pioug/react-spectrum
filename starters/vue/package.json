@@ -26,6 +26,7 @@
     "@vue-aria/datepicker": "workspace:*",
     "@vue-aria/dialog": "workspace:*",
     "@vue-aria/disclosure": "workspace:*",
+    "@vue-aria/dnd": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",

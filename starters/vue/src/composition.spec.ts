@@ -14,6 +14,7 @@ import {useColorArea, useColorChannelField, useColorField, useColorSlider, useCo
 import {useDateField, useDatePicker, useDateRangePicker, useTimeField} from '@vue-aria/datepicker';
 import {useDialog as useAriaDialog} from '@vue-aria/dialog';
 import {useDisclosure as useAriaDisclosure} from '@vue-aria/disclosure';
+import {useDrag, useDrop} from '@vue-aria/dnd';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -556,6 +557,53 @@ describe('Vue migration composition components', () => {
     expect(expanded.value).toBe(true);
     expect(disclosure.buttonProps.value.disabled).toBe(true);
     expect(changes).toEqual([]);
+  });
+
+  it('tracks vue-aria dnd drag lifecycle callbacks and operation state', () => {
+    let dragEvents: Array<string> = [];
+    let drag = useDrag({
+      dragItems: [{id: 'ticket-1', type: 'ticket', value: {id: 1}}],
+      onDragEnd: (operation) => {
+        dragEvents.push(`end:${operation}`);
+      },
+      onDragMove: (point) => {
+        dragEvents.push(`move:${point.x},${point.y}`);
+      },
+      onDragStart: () => {
+        dragEvents.push('start');
+      }
+    });
+
+    drag.startDrag();
+    drag.moveDrag({x: 40, y: 88});
+    drag.endDrag('move');
+
+    expect(drag.isDragging.value).toBe(false);
+    expect(drag.lastDropOperation.value).toBe('move');
+    expect(dragEvents).toEqual(['start', 'move:40,88', 'end:move']);
+  });
+
+  it('filters vue-aria dnd drops by accepted drag types', () => {
+    let dropEvents: Array<string> = [];
+    let drop = useDrop({
+      acceptedDragTypes: ['ticket'],
+      onDrop: (_items, operation) => {
+        dropEvents.push(`drop:${operation}`);
+      },
+      onDropEnter: () => {
+        dropEvents.push('enter');
+      }
+    });
+
+    let ticketItems = [{id: 'ticket-2', type: 'ticket', value: {id: 2}}];
+    let fileItems = [{id: 'asset-1', type: 'file', value: {name: 'spec.pdf'}}];
+
+    expect(drop.enter(ticketItems)).toBe(true);
+    expect(drop.drop(ticketItems, 'copy')).toBe('copy');
+    expect(drop.lastDropOperation.value).toBe('copy');
+    expect(drop.enter(fileItems)).toBe(false);
+    expect(drop.drop(fileItems)).toBe('cancel');
+    expect(dropEvents).toEqual(['enter', 'drop:copy']);
   });
 
   it('emits close events from dismissable dialog controls', async () => {
