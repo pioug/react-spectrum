@@ -148,6 +148,7 @@ import {pointerMap as spectrumPointerMap, simulateDesktop as simulateSpectrumDes
 import {theme as darkTheme} from '@vue-spectrum/theme-dark';
 import {theme as defaultTheme} from '@vue-spectrum/theme-default';
 import {theme as expressTheme} from '@vue-spectrum/theme-express';
+import {theme as lightTheme} from '@vue-spectrum/theme-light';
 
 function createPointerEvent(
   type: string,
@@ -2527,6 +2528,15 @@ describe('Vue migration composition components', () => {
     expect(expressTheme.medium.express).toBe('spectrum-express-medium');
     expect(expressTheme.large.express).toBe('spectrum-express-large');
     expect(expressTheme.light.colorScheme).toBe('light');
+  });
+
+  it('exposes vue-spectrum light theme token sections', () => {
+    expect(lightTheme.global.className).toBe('spectrum-light-global');
+    expect(lightTheme.light.className).toBe('spectrum-lightest');
+    expect(lightTheme.light.colorScheme).toBe('light');
+    expect(lightTheme.dark.className).toBe('spectrum-darkest');
+    expect(lightTheme.medium.scale).toBe('medium');
+    expect(lightTheme.large.scale).toBe('large');
   });
 
   it('computes vue-aria tag group and tag remove behavior', () => {

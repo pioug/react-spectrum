@@ -12857,6 +12857,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/theme-light@workspace:*, @vue-spectrum/theme-light@workspace:packages/@vue-spectrum/theme-light":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/theme-light@workspace:packages/@vue-spectrum/theme-light"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/tree@workspace:*, @vue-spectrum/tree@workspace:packages/@vue-spectrum/tree":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/tree@workspace:packages/@vue-spectrum/tree"
@@ -31775,6 +31783,7 @@ __metadata:
     "@vue-spectrum/theme-dark": "workspace:*"
     "@vue-spectrum/theme-default": "workspace:*"
     "@vue-spectrum/theme-express": "workspace:*"
+    "@vue-spectrum/theme-light": "workspace:*"
     "@vue-spectrum/tree": "workspace:*"
     "@vue-spectrum/view": "workspace:*"
     "@vue-spectrum/well": "workspace:*"
