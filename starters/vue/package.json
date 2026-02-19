@@ -24,6 +24,7 @@
     "@vue-spectrum/divider": "workspace:*",
     "@vue-spectrum/dnd": "workspace:*",
     "@vue-spectrum/form": "workspace:*",
+    "@vue-spectrum/inlinealert": "workspace:*",
     "@vue-spectrum/link": "workspace:*",
     "@vue-spectrum/listbox": "workspace:*",
     "@vue-spectrum/menu": "workspace:*",

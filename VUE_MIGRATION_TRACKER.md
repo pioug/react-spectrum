@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 30 |
+| in_progress | 31 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 122 |
+| not_started | 121 |
 
 ## Package tracker
 
@@ -32,7 +32,8 @@ Tracked source packages: 154
 | `@react-spectrum/dialog` | `packages/@react-spectrum/dialog` | `@vue-spectrum/dialog` | `packages/@vue-spectrum/dialog` | in_progress | Vue dialog package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing a Vue dialog primitive. |
 | `@react-spectrum/divider` | `packages/@react-spectrum/divider` | `@vue-spectrum/divider` | `packages/@vue-spectrum/divider` | in_progress | Vue divider package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave visual primitive for section separation. |
 | `@react-spectrum/dnd` | `packages/@react-spectrum/dnd` | `@vue-spectrum/dnd` | `packages/@vue-spectrum/dnd` | in_progress | Vue dnd package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Data-heavy migration baseline for drag-and-drop interactions. |
-| `@react-spectrum/form` | `packages/@react-spectrum/form` | `@vue-spectrum/form` | `packages/@vue-spectrum/form` | in_progress | Vue form package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave form grouping migration step with a Vue form primitive. |
+| `@react-spectrum/form` | `packages/@react-spectrum/form` | `@vue-spectrum/form` | `packages/@vue-spectrum/form` | in_progress | Vue form package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave form grouping migration step with a Vue form primitive. |
+| `@react-spectrum/inlinealert` | `packages/@react-spectrum/inlinealert` | `@vue-spectrum/inlinealert` | `packages/@vue-spectrum/inlinealert` | in_progress | Vue inlinealert package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave messaging primitive for contextual inline notices. |
 | `@react-spectrum/link` | `packages/@react-spectrum/link` | `@vue-spectrum/link` | `packages/@vue-spectrum/link` | in_progress | Vue link package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave visual/content migration step with a Vue link primitive. |
 | `@react-spectrum/listbox` | `packages/@react-spectrum/listbox` | `@vue-spectrum/listbox` | `packages/@vue-spectrum/listbox` | in_progress | Vue listbox package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step with an initial Vue listbox primitive. |
 | `@react-spectrum/menu` | `packages/@react-spectrum/menu` | `@vue-spectrum/menu` | `packages/@vue-spectrum/menu` | in_progress | Vue menu package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step with an initial Vue menu primitive. |
@@ -124,7 +125,6 @@ Tracked source packages: 154
 | `@react-spectrum/icon` | `packages/@react-spectrum/icon` | `@vue-spectrum/icon` | `packages/@vue-spectrum/icon` | not_started | - | - |
 | `@react-spectrum/illustratedmessage` | `packages/@react-spectrum/illustratedmessage` | `@vue-spectrum/illustratedmessage` | `packages/@vue-spectrum/illustratedmessage` | not_started | - | - |
 | `@react-spectrum/image` | `packages/@react-spectrum/image` | `@vue-spectrum/image` | `packages/@vue-spectrum/image` | not_started | - | - |
-| `@react-spectrum/inlinealert` | `packages/@react-spectrum/inlinealert` | `@vue-spectrum/inlinealert` | `packages/@vue-spectrum/inlinealert` | not_started | - | - |
 | `@react-spectrum/label` | `packages/@react-spectrum/label` | `@vue-spectrum/label` | `packages/@vue-spectrum/label` | not_started | - | - |
 | `@react-spectrum/labeledvalue` | `packages/@react-spectrum/labeledvalue` | `@vue-spectrum/labeledvalue` | `packages/@vue-spectrum/labeledvalue` | not_started | - | - |
 | `@react-spectrum/layout` | `packages/@react-spectrum/layout` | `@vue-spectrum/layout` | `packages/@vue-spectrum/layout` | not_started | - | - |

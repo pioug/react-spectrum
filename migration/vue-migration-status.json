@@ -349,6 +349,34 @@
         {
           "name": "Vue starter production build",
           "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
+    "@react-spectrum/inlinealert": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/inlinealert",
+      "targetPath": "packages/@vue-spectrum/inlinealert",
+      "notes": "First-wave messaging primitive for contextual inline notices.",
+      "acceptanceTests": [
+        {
+          "name": "Vue inlinealert package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/inlinealert/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
         }
       ]
     },

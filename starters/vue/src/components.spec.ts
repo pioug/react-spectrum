@@ -4,6 +4,7 @@ import {Avatar} from '@vue-spectrum/avatar';
 import {Badge} from '@vue-spectrum/badge';
 import {Button} from '@vue-spectrum/button';
 import {Checkbox} from '@vue-spectrum/checkbox';
+import {InlineAlert} from '@vue-spectrum/inlinealert';
 import {Radio, RadioGroup} from '@vue-spectrum/radio';
 import {Switch} from '@vue-spectrum/switch';
 import {TextField} from '@vue-spectrum/textfield';
@@ -67,6 +68,22 @@ describe('Vue migration primitives', () => {
     expect(wrapper.classes()).toContain('vs-view--bordered');
     expect(wrapper.classes()).toContain('vs-view--padding-l');
     expect(wrapper.text()).toContain('View content');
+  });
+
+  it('renders inline alert title, content, and variant class', () => {
+    let wrapper = mount(InlineAlert, {
+      props: {
+        variant: 'notice',
+        title: 'Attention'
+      },
+      slots: {
+        default: 'Action required.'
+      }
+    });
+
+    expect(wrapper.get('.vs-inline-alert__title').text()).toBe('Attention');
+    expect(wrapper.text()).toContain('Action required.');
+    expect(wrapper.classes()).toContain('vs-inline-alert--notice');
   });
 
   it('emits click from button', async () => {

@@ -706,6 +706,49 @@
   font-size: 16px;
 }
 
+.vs-inline-alert {
+  border-radius: 10px;
+  border-style: solid;
+  border-width: 1px;
+  display: grid;
+  gap: 4px;
+  padding: 10px 12px;
+}
+
+.vs-inline-alert__title {
+  font-size: 13px;
+}
+
+.vs-inline-alert__content {
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.vs-inline-alert--neutral {
+  background: rgba(0, 0, 0, 0.03);
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+.vs-inline-alert--info {
+  background: rgba(20, 115, 230, 0.12);
+  border-color: rgba(20, 115, 230, 0.4);
+}
+
+.vs-inline-alert--positive {
+  background: rgba(45, 157, 120, 0.12);
+  border-color: rgba(45, 157, 120, 0.4);
+}
+
+.vs-inline-alert--notice {
+  background: rgba(230, 134, 25, 0.15);
+  border-color: rgba(230, 134, 25, 0.45);
+}
+
+.vs-inline-alert--negative {
+  background: rgba(211, 21, 16, 0.12);
+  border-color: rgba(211, 21, 16, 0.45);
+}
+
 .vs-radio-group {
   display: grid;
   gap: 8px;

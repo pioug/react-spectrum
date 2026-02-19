@@ -50,6 +50,10 @@
           {{ statusLabel }}
         </VueStatusLight>
 
+        <VueInlineAlert variant="info" title="Migration status">
+          Vue baseline ports are being expanded package by package.
+        </VueInlineAlert>
+
         <VueBadge variant="info">
           Vue badge port
         </VueBadge>
@@ -206,6 +210,7 @@ import {DropZone as VueDropZone} from '@vue-spectrum/dnd';
 import {Divider as VueDivider} from '@vue-spectrum/divider';
 import {Dialog as VueDialog} from '@vue-spectrum/dialog';
 import {Form as VueForm} from '@vue-spectrum/form';
+import {InlineAlert as VueInlineAlert} from '@vue-spectrum/inlinealert';
 import {Link as VueLink} from '@vue-spectrum/link';
 import {ListBox as VueListBox} from '@vue-spectrum/listbox';
 import {Menu as VueMenu} from '@vue-spectrum/menu';
