@@ -2753,7 +2753,7 @@
       ]
     },
     "@react-stately/autocomplete": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/autocomplete",
       "targetPath": "packages/@vue-stately/autocomplete",
       "notes": "State baseline for controlled/uncontrolled autocomplete input values and focused node id tracking in Vue.",
@@ -2777,7 +2777,7 @@
       ]
     },
     "@react-stately/calendar": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/calendar",
       "targetPath": "packages/@vue-stately/calendar",
       "notes": "State baseline for single-date and range-date calendar navigation and selection in Vue.",
@@ -2801,7 +2801,7 @@
       ]
     },
     "@react-stately/checkbox": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/checkbox",
       "targetPath": "packages/@vue-stately/checkbox",
       "notes": "State baseline for checkbox-group selection with required/invalid tracking in Vue.",
@@ -2825,7 +2825,7 @@
       ]
     },
     "@react-stately/combobox": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/combobox",
       "targetPath": "packages/@vue-stately/combobox",
       "notes": "State baseline for combobox filtering, selection, and menu trigger flow in Vue.",
@@ -2849,7 +2849,7 @@
       ]
     },
     "@react-stately/collections": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/collections",
       "targetPath": "packages/@vue-stately/collections",
       "notes": "State baseline for collection builders and traversal helper utilities in Vue.",
@@ -2873,7 +2873,7 @@
       ]
     },
     "@react-stately/color": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/color",
       "targetPath": "packages/@vue-stately/color",
       "notes": "State baseline for color area/slider/field/channel/picker workflows in Vue.",
@@ -2897,7 +2897,7 @@
       ]
     },
     "@react-stately/data": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/data",
       "targetPath": "packages/@vue-stately/data",
       "notes": "State baseline for mutable list/tree collections and async data loading workflows in Vue.",
@@ -2921,7 +2921,7 @@
       ]
     },
     "@react-stately/datepicker": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/datepicker",
       "targetPath": "packages/@vue-stately/datepicker",
       "notes": "State baseline for date field/time field and date picker/date-range picker workflows in Vue.",
@@ -2945,7 +2945,7 @@
       ]
     },
     "@react-stately/disclosure": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/disclosure",
       "targetPath": "packages/@vue-stately/disclosure",
       "notes": "State baseline for controlled/uncontrolled disclosure and disclosure-group expansion flows in Vue.",
@@ -2969,7 +2969,7 @@
       ]
     },
     "@react-stately/dnd": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/dnd",
       "targetPath": "packages/@vue-stately/dnd",
       "notes": "State baseline for draggable and droppable collection drag-and-drop workflows in Vue.",
@@ -2993,7 +2993,7 @@
       ]
     },
     "@react-stately/flags": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/flags",
       "targetPath": "packages/@vue-stately/flags",
       "notes": "State baseline for global feature-flag toggles used by migrated Vue stately packages.",
@@ -3017,7 +3017,7 @@
       ]
     },
     "@react-stately/form": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/form",
       "targetPath": "packages/@vue-stately/form",
       "notes": "State baseline for realtime and committed form validation state flows in Vue.",
@@ -3041,7 +3041,7 @@
       ]
     },
     "@react-stately/grid": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/grid",
       "targetPath": "packages/@vue-stately/grid",
       "notes": "State baseline for grid collections with row/cell focus and multi-selection flows in Vue.",
@@ -3065,7 +3065,7 @@
       ]
     },
     "@react-stately/layout": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/layout",
       "targetPath": "packages/@vue-stately/layout",
       "notes": "State baseline for list/grid/table/waterfall virtualized layout primitives in Vue.",
@@ -3089,7 +3089,7 @@
       ]
     },
     "@react-stately/list": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/list",
       "targetPath": "packages/@vue-stately/list",
       "notes": "State baseline for list collections, filtered views, and single/multi selection flows in Vue.",
@@ -3113,7 +3113,7 @@
       ]
     },
     "@react-stately/menu": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/menu",
       "targetPath": "packages/@vue-stately/menu",
       "notes": "State baseline for menu trigger overlays and nested submenu stack transitions in Vue.",
@@ -3137,7 +3137,7 @@
       ]
     },
     "@react-stately/numberfield": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/numberfield",
       "targetPath": "packages/@vue-stately/numberfield",
       "notes": "State baseline for number field parsing, stepping, min/max clamping, and validation flows in Vue.",
@@ -3161,7 +3161,7 @@
       ]
     },
     "@react-stately/overlays": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/overlays",
       "targetPath": "packages/@vue-stately/overlays",
       "notes": "State baseline for controlled/uncontrolled overlay trigger open, close, and toggle behavior in Vue.",
@@ -3185,7 +3185,7 @@
       ]
     },
     "@react-stately/radio": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/radio",
       "targetPath": "packages/@vue-stately/radio",
       "notes": "State baseline for radio-group selection, focus tracking, and validation state behavior in Vue.",
@@ -3209,7 +3209,7 @@
       ]
     },
     "@react-stately/searchfield": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/searchfield",
       "targetPath": "packages/@vue-stately/searchfield",
       "notes": "State baseline for controlled/uncontrolled search field value updates in Vue.",
@@ -3233,7 +3233,7 @@
       ]
     },
     "@react-stately/select": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/select",
       "targetPath": "packages/@vue-stately/select",
       "notes": "State baseline for select value, list selection, overlay trigger state, and validation wiring in Vue.",
@@ -3257,7 +3257,7 @@
       ]
     },
     "@react-stately/selection": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/selection",
       "targetPath": "packages/@vue-stately/selection",
       "notes": "State baseline for multiple-selection focus state, selection sets, and collection selection manager helpers in Vue.",
@@ -3281,7 +3281,7 @@
       ]
     },
     "@react-stately/slider": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/slider",
       "targetPath": "packages/@vue-stately/slider",
       "notes": "State baseline for slider thumb values, multi-thumb constraints, dragging lifecycle callbacks, and value label formatting in Vue.",
@@ -3305,7 +3305,7 @@
       ]
     },
     "@react-stately/steplist": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/steplist",
       "targetPath": "packages/@vue-stately/steplist",
       "notes": "State baseline for step-list completion tracking, selection progression, and selectability gating in Vue.",
@@ -3329,7 +3329,7 @@
       ]
     },
     "@react-stately/table": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/table",
       "targetPath": "packages/@vue-stately/table",
       "notes": "State baseline for table row/cell collections, row selection, sort descriptor updates, and filtered table views in Vue.",
@@ -3353,7 +3353,7 @@
       ]
     },
     "@react-stately/tabs": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/tabs",
       "targetPath": "packages/@vue-stately/tabs",
       "notes": "State baseline for tab-list single selection, disabled-tab fallback selection, and focused-tab synchronization in Vue.",
@@ -3377,7 +3377,7 @@
       ]
     },
     "@react-stately/toast": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/toast",
       "targetPath": "packages/@vue-stately/toast",
       "notes": "State baseline for toast queue ordering, visible-toast limits, close callbacks, and timeout pause/resume control in Vue.",
