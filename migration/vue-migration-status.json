@@ -696,6 +696,30 @@
         }
       ]
     },
+    "@react-aria/numberfield": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/numberfield",
+      "targetPath": "packages/@vue-aria/numberfield",
+      "notes": "Foundational React Aria number field composable for spinbutton semantics, stepper controls, input parsing, and clamped range behavior in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria numberfield source lint",
+          "command": "yarn eslint packages/@vue-aria/numberfield/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",

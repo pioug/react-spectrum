@@ -54,6 +54,7 @@ import {getItemId, listData, useListBox as useAriaListBox, useListBoxSection as 
 import {announce, clearAnnouncer, destroyAnnouncer} from '@vue-aria/live-announcer';
 import {useMenu as useAriaMenu, useMenuItem as useAriaMenuItem, useMenuSection, useMenuTrigger, useSubmenuTrigger} from '@vue-aria/menu';
 import {useMeter as useAriaMeter} from '@vue-aria/meter';
+import {useNumberField as useAriaNumberField} from '@vue-aria/numberfield';
 import {
   addWindowFocusTracking,
   setInteractionModality,
@@ -1304,6 +1305,43 @@ describe('Vue migration composition components', () => {
     });
     expect(explicitValueLabelMeter.meterProps.value['aria-label']).toBe('Storage meter');
     expect(explicitValueLabelMeter.meterProps.value['aria-valuetext']).toBe('3 of 10 GB');
+  });
+
+  it('computes vue-aria number field stepping and clamped input behavior', () => {
+    let changedValues: number[] = [];
+    let numberField = useAriaNumberField({
+      label: 'Story points',
+      maxValue: 10,
+      minValue: 0,
+      onChange: (value) => {
+        changedValues.push(value);
+      },
+      step: 2,
+      value: ref(4)
+    });
+
+    expect(numberField.inputProps.value.role).toBe('spinbutton');
+    expect(numberField.inputProps.value['aria-valuenow']).toBe(4);
+    expect(numberField.inputProps.value['aria-labelledby']).toBe(numberField.labelProps.value.id);
+
+    numberField.increment();
+    expect(numberField.numberValue.value).toBe(6);
+    numberField.decrementButtonProps.value.onClick();
+    expect(numberField.numberValue.value).toBe(4);
+
+    numberField.inputProps.value.onInput('14');
+    numberField.inputProps.value.onBlur();
+    expect(numberField.numberValue.value).toBe(10);
+
+    numberField.inputProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
+    expect(numberField.numberValue.value).toBe(8);
+
+    numberField.inputProps.value.onInput('abc');
+    expect(numberField.isInvalid.value).toBe(true);
+    numberField.commit();
+    expect(numberField.inputValue.value).toContain('8');
+    expect(numberField.isInvalid.value).toBe(false);
+    expect(changedValues).toEqual([6, 4, 10, 8]);
   });
 
   it('announces and clears live region messages with vue-aria live announcer', () => {
