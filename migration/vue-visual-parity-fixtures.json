@@ -1,0 +1,54 @@
+{
+  "baseUrl": "http://127.0.0.1:4173",
+  "startCommand": "yarn workspace vue-spectrum-starter dev --host 127.0.0.1 --port 4173",
+  "fixtures": [
+    {
+      "id": "button-default",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='button-default']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "button-disabled",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='button-disabled']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "badge-positive",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='badge-positive']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "text-detail",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='text-detail']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "view-bordered",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='view-bordered']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "icon-default",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='icon-default']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "tabs-default",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='tabs-default']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "table-default",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='table-default']",
+      "maxDiffRatio": 0
+    }
+  ]
+}

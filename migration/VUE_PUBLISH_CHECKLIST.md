@@ -8,12 +8,13 @@ This checklist defines the minimum release bar for promoting Vue migration packa
 2. `yarn vue:migration:test` passes with no skipped package acceptance checks.
 3. `yarn vue:migration:assert-complete` passes (all tracked migration entries remain `ported`).
 4. `yarn vue:parity:api:report` is current and tracked in `migration/VUE_API_PARITY_REPORT.md`.
-5. `yarn test:vue` passes for starter interaction coverage.
-6. Package has at least one interaction or behavior test in Vue test harness coverage.
-7. Migration tracker entry for the package has actionable notes and acceptance tests.
-8. Migration examples in `migration/REACT_TO_VUE_MIGRATION_GUIDE.md` are current for the package.
-9. Package versioning and changelog entry are prepared for public release.
-10. Aggregate packages (`vue-aria`, `vue-stately`) are validated for export coverage when package-level releases are prepared.
+5. `yarn vue:parity:visual:compare` is current and tracked in `migration/VUE_VISUAL_PARITY_REPORT.md`.
+6. `yarn test:vue` passes for starter interaction coverage.
+7. Package has at least one interaction or behavior test in Vue test harness coverage.
+8. Migration tracker entry for the package has actionable notes and acceptance tests.
+9. Migration examples in `migration/REACT_TO_VUE_MIGRATION_GUIDE.md` are current for the package.
+10. Package versioning and changelog entry are prepared for public release.
+11. Aggregate packages (`vue-aria`, `vue-stately`) are validated for export coverage when package-level releases are prepared.
 
 ## Publish order
 
@@ -33,5 +34,7 @@ This checklist defines the minimum release bar for promoting Vue migration packa
 ## Current baseline evidence
 
 1. On February 19, 2026, `yarn vue:migration:test` passed with all active migration acceptance checks.
-2. On February 19, 2026, `yarn test:vue` passed in `starters/vue` with 171 passing tests.
+2. On February 19, 2026, `yarn test:vue` passed in `starters/vue` with 181 passing tests.
 3. The CircleCI `vue-migration` job now enforces `yarn vue:migration:assert-complete` alongside tracker report and acceptance tests.
+4. The CircleCI `vue-parity` job now enforces `yarn vue:parity:api:report` and `yarn vue:parity:visual:compare` and stores parity report artifacts.
+5. On February 19, 2026, `yarn vue:parity:visual:compare` passed with 8/8 fixtures and 0 visual diffs.

@@ -1,0 +1,108 @@
+{
+  "generatedAt": "2026-02-19T21:16:34.998Z",
+  "mode": "compare",
+  "summary": {
+    "totalFixtures": 8,
+    "passedFixtures": 8,
+    "failedFixtures": 0,
+    "erroredFixtures": 0
+  },
+  "fixtures": [
+    {
+      "id": "button-default",
+      "maxDiffRatio": 0,
+      "status": "pass",
+      "diffRatio": 0,
+      "changedPixels": 0,
+      "totalPixels": 53760,
+      "error": null,
+      "baselinePath": "migration/visual-parity/baseline/button-default.png",
+      "candidatePath": "migration/visual-parity/current/button-default.png",
+      "diffPath": "migration/visual-parity/diff/button-default.png"
+    },
+    {
+      "id": "button-disabled",
+      "maxDiffRatio": 0,
+      "status": "pass",
+      "diffRatio": 0,
+      "changedPixels": 0,
+      "totalPixels": 53760,
+      "error": null,
+      "baselinePath": "migration/visual-parity/baseline/button-disabled.png",
+      "candidatePath": "migration/visual-parity/current/button-disabled.png",
+      "diffPath": "migration/visual-parity/diff/button-disabled.png"
+    },
+    {
+      "id": "badge-positive",
+      "maxDiffRatio": 0,
+      "status": "pass",
+      "diffRatio": 0,
+      "changedPixels": 0,
+      "totalPixels": 53760,
+      "error": null,
+      "baselinePath": "migration/visual-parity/baseline/badge-positive.png",
+      "candidatePath": "migration/visual-parity/current/badge-positive.png",
+      "diffPath": "migration/visual-parity/diff/badge-positive.png"
+    },
+    {
+      "id": "text-detail",
+      "maxDiffRatio": 0,
+      "status": "pass",
+      "diffRatio": 0,
+      "changedPixels": 0,
+      "totalPixels": 53760,
+      "error": null,
+      "baselinePath": "migration/visual-parity/baseline/text-detail.png",
+      "candidatePath": "migration/visual-parity/current/text-detail.png",
+      "diffPath": "migration/visual-parity/diff/text-detail.png"
+    },
+    {
+      "id": "view-bordered",
+      "maxDiffRatio": 0,
+      "status": "pass",
+      "diffRatio": 0,
+      "changedPixels": 0,
+      "totalPixels": 53760,
+      "error": null,
+      "baselinePath": "migration/visual-parity/baseline/view-bordered.png",
+      "candidatePath": "migration/visual-parity/current/view-bordered.png",
+      "diffPath": "migration/visual-parity/diff/view-bordered.png"
+    },
+    {
+      "id": "icon-default",
+      "maxDiffRatio": 0,
+      "status": "pass",
+      "diffRatio": 0,
+      "changedPixels": 0,
+      "totalPixels": 53760,
+      "error": null,
+      "baselinePath": "migration/visual-parity/baseline/icon-default.png",
+      "candidatePath": "migration/visual-parity/current/icon-default.png",
+      "diffPath": "migration/visual-parity/diff/icon-default.png"
+    },
+    {
+      "id": "tabs-default",
+      "maxDiffRatio": 0,
+      "status": "pass",
+      "diffRatio": 0,
+      "changedPixels": 0,
+      "totalPixels": 109440,
+      "error": null,
+      "baselinePath": "migration/visual-parity/baseline/tabs-default.png",
+      "candidatePath": "migration/visual-parity/current/tabs-default.png",
+      "diffPath": "migration/visual-parity/diff/tabs-default.png"
+    },
+    {
+      "id": "table-default",
+      "maxDiffRatio": 0,
+      "status": "pass",
+      "diffRatio": 0,
+      "changedPixels": 0,
+      "totalPixels": 148656,
+      "error": null,
+      "baselinePath": "migration/visual-parity/baseline/table-default.png",
+      "candidatePath": "migration/visual-parity/current/table-default.png",
+      "diffPath": "migration/visual-parity/diff/table-default.png"
+    }
+  ]
+}
