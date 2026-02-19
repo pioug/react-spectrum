@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T21:51:51.981Z",
+  "generatedAt": "2026-02-19T21:53:25.452Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 70,
+    "fullyMatchedPackages": 71,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 972,
-    "parityCoverage": 0.6362
+    "missingExportTotal": 968,
+    "parityCoverage": 0.6377
   },
   "packages": [
     {
@@ -1146,28 +1146,6 @@
         "VueDatePicker",
         "VueDateRangePicker",
         "VueTimeField"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/overlays",
-      "sourcePath": "packages/@react-spectrum/overlays",
-      "targetPackage": "@vue-spectrum/overlays",
-      "targetPath": "packages/@vue-spectrum/overlays",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/overlays/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/overlays/src/index.ts",
-      "sourceExportCount": 5,
-      "targetExportCount": 2,
-      "parityRatio": 0.2,
-      "missingExports": [
-        "Modal",
-        "OpenTransition",
-        "Overlay",
-        "Tray"
-      ],
-      "extraExports": [
-        "VuePopover"
       ],
       "error": null
     },
@@ -3252,6 +3230,23 @@
       "missingExports": [],
       "extraExports": [
         "VueMenu"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/overlays",
+      "sourcePath": "packages/@react-spectrum/overlays",
+      "targetPackage": "@vue-spectrum/overlays",
+      "targetPath": "packages/@vue-spectrum/overlays",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/overlays/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/overlays/src/index.ts",
+      "sourceExportCount": 5,
+      "targetExportCount": 6,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VuePopover"
       ],
       "error": null
     },

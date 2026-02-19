@@ -1,1 +1,1 @@
-export {Popover, VuePopover} from './src';
+export {Modal, OpenTransition, Overlay, Popover, Tray, VuePopover} from './src';

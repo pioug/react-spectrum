@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:51:51.981Z
+Generated: 2026-02-19T21:53:25.452Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 70
+* Fully matched packages: 71
 * Source exports inspected: 2672
-* Missing exports: 972
-* Coverage ratio: 63.62%
+* Missing exports: 968
+* Coverage ratio: 63.77%
 
 ## Package gaps
 
@@ -26,7 +26,6 @@ Generated: 2026-02-19T21:51:51.981Z
 | `@react-aria/tabs` | `@vue-aria/tabs` | missing | 11 | 4 | 63.6% |
 | `@react-spectrum/accordion` | `@vue-spectrum/accordion` | missing | 8 | 4 | 50.0% |
 | `@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | missing | 8 | 4 | 50.0% |
-| `@react-spectrum/overlays` | `@vue-spectrum/overlays` | missing | 5 | 4 | 20.0% |
 | `@react-spectrum/textfield` | `@vue-spectrum/textfield` | missing | 5 | 4 | 20.0% |
 | `@react-aria/checkbox` | `@vue-aria/checkbox` | missing | 8 | 3 | 62.5% |
 | `@react-aria/gridlist` | `@vue-aria/gridlist` | missing | 12 | 3 | 75.0% |
@@ -130,6 +129,7 @@ Generated: 2026-02-19T21:51:51.981Z
 | `@react-spectrum/label` | `@vue-spectrum/label` | ok | 3 | 0 | 100.0% |
 | `@react-spectrum/listbox` | `@vue-spectrum/listbox` | ok | 6 | 0 | 100.0% |
 | `@react-spectrum/menu` | `@vue-spectrum/menu` | ok | 12 | 0 | 100.0% |
+| `@react-spectrum/overlays` | `@vue-spectrum/overlays` | ok | 5 | 0 | 100.0% |
 | `@react-spectrum/progress` | `@vue-spectrum/progress` | ok | 5 | 0 | 100.0% |
 | `@react-spectrum/provider` | `@vue-spectrum/provider` | ok | 5 | 0 | 100.0% |
 | `@react-spectrum/story-utils` | `@vue-spectrum/story-utils` | ok | 2 | 0 | 100.0% |
@@ -243,13 +243,6 @@ Generated: 2026-02-19T21:51:51.981Z
 * Missing export count: 4
 * Missing exports: `SpectrumDateFieldProps`, `SpectrumDatePickerProps`, `SpectrumDateRangePickerProps`, `SpectrumTimeFieldProps`
 
-### @react-spectrum/overlays -> @vue-spectrum/overlays
-
-* Source entry: `packages/@react-spectrum/overlays/src/index.ts`
-* Target entry: `packages/@vue-spectrum/overlays/src/index.ts`
-* Missing export count: 4
-* Missing exports: `Modal`, `OpenTransition`, `Overlay`, `Tray`
-
 ### @react-spectrum/textfield -> @vue-spectrum/textfield
 
 * Source entry: `packages/@react-spectrum/textfield/src/index.ts`
@@ -312,4 +305,11 @@ Generated: 2026-02-19T21:51:51.981Z
 * Target entry: `packages/@vue-spectrum/combobox/src/index.ts`
 * Missing export count: 3
 * Missing exports: `Item`, `Section`, `SpectrumComboBoxProps`
+
+### @react-spectrum/layout -> @vue-spectrum/layout
+
+* Source entry: `packages/@react-spectrum/layout/src/index.ts`
+* Target entry: `packages/@vue-spectrum/layout/src/index.ts`
+* Missing export count: 3
+* Missing exports: `DimensionValue`, `FlexProps`, `GridProps`
 
