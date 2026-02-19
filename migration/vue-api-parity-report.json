@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T22:02:16.324Z",
+  "generatedAt": "2026-02-19T22:03:15.228Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 78,
+    "fullyMatchedPackages": 79,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 950,
-    "parityCoverage": 0.6445
+    "missingExportTotal": 946,
+    "parityCoverage": 0.646
   },
   "packages": [
     {
@@ -1091,31 +1091,6 @@
         "VueDisclosure",
         "VueDisclosurePanel",
         "VueDisclosureTitle"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/datepicker",
-      "sourcePath": "packages/@react-spectrum/datepicker",
-      "targetPackage": "@vue-spectrum/datepicker",
-      "targetPath": "packages/@vue-spectrum/datepicker",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/datepicker/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/datepicker/src/index.ts",
-      "sourceExportCount": 8,
-      "targetExportCount": 8,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumDateFieldProps",
-        "SpectrumDatePickerProps",
-        "SpectrumDateRangePickerProps",
-        "SpectrumTimeFieldProps"
-      ],
-      "extraExports": [
-        "VueDateField",
-        "VueDatePicker",
-        "VueDateRangePicker",
-        "VueTimeField"
       ],
       "error": null
     },
@@ -3024,6 +2999,26 @@
       "missingExports": [],
       "extraExports": [
         "VueCheckbox"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/datepicker",
+      "sourcePath": "packages/@react-spectrum/datepicker",
+      "targetPackage": "@vue-spectrum/datepicker",
+      "targetPath": "packages/@vue-spectrum/datepicker",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/datepicker/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/datepicker/src/index.ts",
+      "sourceExportCount": 8,
+      "targetExportCount": 12,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueDateField",
+        "VueDatePicker",
+        "VueDateRangePicker",
+        "VueTimeField"
       ],
       "error": null
     },

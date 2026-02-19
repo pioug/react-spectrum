@@ -6,3 +6,9 @@ export const DateRangePicker = VueDateRangePicker;
 export const TimeField = VueTimeField;
 
 export {VueDateField, VueDatePicker, VueDateRangePicker, VueTimeField};
+export type {
+  SpectrumDateFieldProps,
+  SpectrumDatePickerProps,
+  SpectrumDateRangePickerProps,
+  SpectrumTimeFieldProps
+} from '@react-types/datepicker';

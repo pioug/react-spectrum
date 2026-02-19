@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T22:02:16.324Z
+Generated: 2026-02-19T22:03:15.228Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 78
+* Fully matched packages: 79
 * Source exports inspected: 2672
-* Missing exports: 950
-* Coverage ratio: 64.45%
+* Missing exports: 946
+* Coverage ratio: 64.60%
 
 ## Package gaps
 
@@ -24,7 +24,6 @@ Generated: 2026-02-19T22:02:16.324Z
 | `@react-aria/select` | `@vue-aria/select` | missing | 8 | 4 | 50.0% |
 | `@react-aria/tabs` | `@vue-aria/tabs` | missing | 11 | 4 | 63.6% |
 | `@react-spectrum/accordion` | `@vue-spectrum/accordion` | missing | 8 | 4 | 50.0% |
-| `@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | missing | 8 | 4 | 50.0% |
 | `@react-aria/checkbox` | `@vue-aria/checkbox` | missing | 8 | 3 | 62.5% |
 | `@react-aria/gridlist` | `@vue-aria/gridlist` | missing | 12 | 3 | 75.0% |
 | `@react-aria/radio` | `@vue-aria/radio` | missing | 7 | 3 | 57.1% |
@@ -119,6 +118,7 @@ Generated: 2026-02-19T22:02:16.324Z
 | `@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/button` | `@vue-spectrum/button` | ok | 10 | 0 | 100.0% |
 | `@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | ok | 4 | 0 | 100.0% |
+| `@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | ok | 8 | 0 | 100.0% |
 | `@react-spectrum/dialog` | `@vue-spectrum/dialog` | ok | 10 | 0 | 100.0% |
 | `@react-spectrum/dnd` | `@vue-spectrum/dnd` | ok | 26 | 0 | 100.0% |
 | `@react-spectrum/form` | `@vue-spectrum/form` | ok | 3 | 0 | 100.0% |
@@ -229,13 +229,6 @@ Generated: 2026-02-19T22:02:16.324Z
 * Missing export count: 4
 * Missing exports: `SpectrumAccordionProps`, `SpectrumDisclosurePanelProps`, `SpectrumDisclosureProps`, `SpectrumDisclosureTitleProps`
 
-### @react-spectrum/datepicker -> @vue-spectrum/datepicker
-
-* Source entry: `packages/@react-spectrum/datepicker/src/index.ts`
-* Target entry: `packages/@vue-spectrum/datepicker/src/index.ts`
-* Missing export count: 4
-* Missing exports: `SpectrumDateFieldProps`, `SpectrumDatePickerProps`, `SpectrumDateRangePickerProps`, `SpectrumTimeFieldProps`
-
 ### @react-aria/checkbox -> @vue-aria/checkbox
 
 * Source entry: `packages/@react-aria/checkbox/src/index.ts`
@@ -312,4 +305,11 @@ Generated: 2026-02-19T22:02:16.324Z
 * Target entry: `packages/@vue-aria/steplist/src/index.ts`
 * Missing export count: 2
 * Missing exports: `AriaStepListItemProps`, `AriaStepListProps`
+
+### @react-aria/tag -> @vue-aria/tag
+
+* Source entry: `packages/@react-aria/tag/src/index.ts`
+* Target entry: `packages/@vue-aria/tag/src/index.ts`
+* Missing export count: 2
+* Missing exports: `AriaTagGroupProps`, `AriaTagProps`
 
