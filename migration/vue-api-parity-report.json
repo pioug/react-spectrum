@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T21:42:44.564Z",
+  "generatedAt": "2026-02-19T21:46:42.262Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 66,
+    "fullyMatchedPackages": 67,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 984,
-    "parityCoverage": 0.6317
+    "missingExportTotal": 980,
+    "parityCoverage": 0.6332
   },
   "packages": [
     {
@@ -1190,29 +1190,6 @@
       ],
       "extraExports": [
         "VueProgressBar"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/provider",
-      "sourcePath": "packages/@react-spectrum/provider",
-      "targetPackage": "@vue-spectrum/provider",
-      "targetPath": "packages/@vue-spectrum/provider",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/provider/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/provider/src/index.ts",
-      "sourceExportCount": 5,
-      "targetExportCount": 3,
-      "parityRatio": 0.2,
-      "missingExports": [
-        "ProviderContext",
-        "ProviderProps",
-        "useProvider",
-        "useProviderProps"
-      ],
-      "extraExports": [
-        "SpectrumContextValue",
-        "VueProvider"
       ],
       "error": null
     },
@@ -3303,6 +3280,24 @@
       "missingExports": [],
       "extraExports": [
         "VueMenu"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/provider",
+      "sourcePath": "packages/@react-spectrum/provider",
+      "targetPackage": "@vue-spectrum/provider",
+      "targetPath": "packages/@vue-spectrum/provider",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/provider/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/provider/src/index.ts",
+      "sourceExportCount": 5,
+      "targetExportCount": 7,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "SpectrumContextValue",
+        "VueProvider"
       ],
       "error": null
     },

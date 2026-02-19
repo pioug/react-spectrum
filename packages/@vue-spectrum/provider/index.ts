@@ -1,2 +1,2 @@
-export {Provider, VueProvider} from './src';
-export type {SpectrumContextValue} from './src';
+export {Provider, VueProvider, useProvider, useProviderProps} from './src';
+export type {ProviderContext, ProviderProps, SpectrumContextValue} from './src';

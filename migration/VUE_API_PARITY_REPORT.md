@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:42:44.564Z
+Generated: 2026-02-19T21:46:42.262Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 66
+* Fully matched packages: 67
 * Source exports inspected: 2672
-* Missing exports: 984
-* Coverage ratio: 63.17%
+* Missing exports: 980
+* Coverage ratio: 63.32%
 
 ## Package gaps
 
@@ -28,7 +28,6 @@ Generated: 2026-02-19T21:42:44.564Z
 | `@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | missing | 8 | 4 | 50.0% |
 | `@react-spectrum/overlays` | `@vue-spectrum/overlays` | missing | 5 | 4 | 20.0% |
 | `@react-spectrum/progress` | `@vue-spectrum/progress` | missing | 5 | 4 | 20.0% |
-| `@react-spectrum/provider` | `@vue-spectrum/provider` | missing | 5 | 4 | 20.0% |
 | `@react-spectrum/textfield` | `@vue-spectrum/textfield` | missing | 5 | 4 | 20.0% |
 | `@react-aria/checkbox` | `@vue-aria/checkbox` | missing | 8 | 3 | 62.5% |
 | `@react-aria/gridlist` | `@vue-aria/gridlist` | missing | 12 | 3 | 75.0% |
@@ -132,6 +131,7 @@ Generated: 2026-02-19T21:42:44.564Z
 | `@react-spectrum/icon` | `@vue-spectrum/icon` | ok | 9 | 0 | 100.0% |
 | `@react-spectrum/listbox` | `@vue-spectrum/listbox` | ok | 6 | 0 | 100.0% |
 | `@react-spectrum/menu` | `@vue-spectrum/menu` | ok | 12 | 0 | 100.0% |
+| `@react-spectrum/provider` | `@vue-spectrum/provider` | ok | 5 | 0 | 100.0% |
 | `@react-spectrum/story-utils` | `@vue-spectrum/story-utils` | ok | 2 | 0 | 100.0% |
 | `@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | ok | 6 | 0 | 100.0% |
 | `@react-spectrum/table` | `@vue-spectrum/table` | ok | 13 | 0 | 100.0% |
@@ -257,13 +257,6 @@ Generated: 2026-02-19T21:42:44.564Z
 * Missing export count: 4
 * Missing exports: `ProgressBarBase`, `ProgressCircle`, `SpectrumProgressBarProps`, `SpectrumProgressCircleProps`
 
-### @react-spectrum/provider -> @vue-spectrum/provider
-
-* Source entry: `packages/@react-spectrum/provider/src/index.ts`
-* Target entry: `packages/@vue-spectrum/provider/src/index.ts`
-* Missing export count: 4
-* Missing exports: `ProviderContext`, `ProviderProps`, `useProvider`, `useProviderProps`
-
 ### @react-spectrum/textfield -> @vue-spectrum/textfield
 
 * Source entry: `packages/@react-spectrum/textfield/src/index.ts`
@@ -312,4 +305,11 @@ Generated: 2026-02-19T21:42:44.564Z
 * Target entry: `packages/@vue-spectrum/autocomplete/src/index.ts`
 * Missing export count: 3
 * Missing exports: `Item`, `Section`, `SpectrumSearchAutocompleteProps`
+
+### @react-spectrum/checkbox -> @vue-spectrum/checkbox
+
+* Source entry: `packages/@react-spectrum/checkbox/src/index.ts`
+* Target entry: `packages/@vue-spectrum/checkbox/src/index.ts`
+* Missing export count: 3
+* Missing exports: `CheckboxGroup`, `SpectrumCheckboxGroupProps`, `SpectrumCheckboxProps`
 
