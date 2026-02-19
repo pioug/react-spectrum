@@ -2,6 +2,7 @@ import type {App, Plugin} from 'vue';
 import {VueAvatar} from './components/VueAvatar';
 import {VueBadge} from './components/VueBadge';
 import {VueButton} from './components/VueButton';
+import {VueButtonGroup} from './components/VueButtonGroup';
 import {VueCheckbox} from './components/VueCheckbox';
 import {VueComboBox} from './components/VueComboBox';
 import {VueDialog} from './components/VueDialog';
@@ -42,6 +43,7 @@ export const VueSpectrumPlugin: Plugin = {
     app.component(VueAvatar.name ?? 'VueAvatar', VueAvatar);
     app.component(VueBadge.name ?? 'VueBadge', VueBadge);
     app.component(VueButton.name ?? 'VueButton', VueButton);
+    app.component(VueButtonGroup.name ?? 'VueButtonGroup', VueButtonGroup);
     app.component(VueCheckbox.name ?? 'VueCheckbox', VueCheckbox);
     app.component(VueComboBox.name ?? 'VueComboBox', VueComboBox);
     app.component(VueDialog.name ?? 'VueDialog', VueDialog);
@@ -80,5 +82,5 @@ export const VueSpectrumPlugin: Plugin = {
   }
 };
 
-export {VueAvatar, VueBadge, VueButton, VueCheckbox, VueComboBox, VueDialog, VueDivider, VueDropZone, VueFlex, VueForm, VueGrid, VueIcon, VueIllustration, VueIllustratedMessage, VueImage, VueInlineAlert, VueLabel, VueLabeledValue, VueLink, VueListBox, VueMenu, VueMeter, VueNumberField, VuePopover, VueProgressBar, VueRadio, VueRadioGroup, VueSearchField, VueSlider, VueSpectrumProvider, VueStatusLight, VueSwitch, VueTable, VueText, VueTextField, VueTree, VueUIIcon, VueView, VueWell};
+export {VueAvatar, VueBadge, VueButton, VueButtonGroup, VueCheckbox, VueComboBox, VueDialog, VueDivider, VueDropZone, VueFlex, VueForm, VueGrid, VueIcon, VueIllustration, VueIllustratedMessage, VueImage, VueInlineAlert, VueLabel, VueLabeledValue, VueLink, VueListBox, VueMenu, VueMeter, VueNumberField, VuePopover, VueProgressBar, VueRadio, VueRadioGroup, VueSearchField, VueSlider, VueSpectrumProvider, VueStatusLight, VueSwitch, VueTable, VueText, VueTextField, VueTree, VueUIIcon, VueView, VueWell};
 export type {SpectrumContextValue} from './context';

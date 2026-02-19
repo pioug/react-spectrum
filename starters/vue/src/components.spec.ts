@@ -3,6 +3,7 @@ import {describe, expect, it} from 'vitest';
 import {Avatar} from '@vue-spectrum/avatar';
 import {Badge} from '@vue-spectrum/badge';
 import {Button} from '@vue-spectrum/button';
+import {ButtonGroup} from '@vue-spectrum/buttongroup';
 import {Checkbox} from '@vue-spectrum/checkbox';
 import {Image} from '@vue-spectrum/image';
 import {Icon, Illustration, UIIcon} from '@vue-spectrum/icon';
@@ -249,6 +250,22 @@ describe('Vue migration primitives', () => {
 
     await wrapper.trigger('click');
     expect(wrapper.emitted('click')).toHaveLength(1);
+  });
+
+  it('renders button group orientation and alignment classes', () => {
+    let wrapper = mount(ButtonGroup, {
+      props: {
+        orientation: 'vertical',
+        align: 'end'
+      },
+      slots: {
+        default: '<button type="button">First</button><button type="button">Second</button>'
+      }
+    });
+
+    expect(wrapper.classes()).toContain('vs-button-group');
+    expect(wrapper.classes()).toContain('vs-button-group--vertical');
+    expect(wrapper.classes()).toContain('vs-button-group--align-end');
   });
 
   it('updates model value from textfield input', async () => {

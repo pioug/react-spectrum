@@ -202,12 +202,14 @@
         </VueGrid>
 
         <VueFlex class="actions" gap="size-150" wrap align-items="center">
-          <VueButton variant="primary" @click="count += 1">
-            {{ ctaLabel }}
-          </VueButton>
-          <VueButton variant="secondary" @click="isPopoverOpen = !isPopoverOpen">
-            {{ isPopoverOpen ? 'Hide popover' : 'Show popover' }}
-          </VueButton>
+          <VueButtonGroup>
+            <VueButton variant="primary" @click="count += 1">
+              {{ ctaLabel }}
+            </VueButton>
+            <VueButton variant="secondary" @click="isPopoverOpen = !isPopoverOpen">
+              {{ isPopoverOpen ? 'Hide popover' : 'Show popover' }}
+            </VueButton>
+          </VueButtonGroup>
           <VueButton variant="secondary" @click="isDialogOpen = true">
             Open dialog
           </VueButton>
@@ -244,6 +246,7 @@ import {useVirtualizer} from '@vue-aria/virtualizer';
 import {Avatar as VueAvatar} from '@vue-spectrum/avatar';
 import {Badge as VueBadge} from '@vue-spectrum/badge';
 import {Button as VueButton} from '@vue-spectrum/button';
+import {ButtonGroup as VueButtonGroup} from '@vue-spectrum/buttongroup';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
 import {SearchAutocomplete as VueSearchAutocomplete} from '@vue-spectrum/autocomplete';
 import {DropZone as VueDropZone} from '@vue-spectrum/dropzone';

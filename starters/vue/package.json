@@ -18,6 +18,7 @@
     "@vue-spectrum/avatar": "workspace:*",
     "@vue-spectrum/badge": "workspace:*",
     "@vue-spectrum/button": "workspace:*",
+    "@vue-spectrum/buttongroup": "workspace:*",
     "@vue-spectrum/checkbox": "workspace:*",
     "@vue-spectrum/combobox": "workspace:*",
     "@vue-spectrum/components": "workspace:*",

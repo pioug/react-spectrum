@@ -11873,6 +11873,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/buttongroup@workspace:*, @vue-spectrum/buttongroup@workspace:packages/@vue-spectrum/buttongroup":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/buttongroup@workspace:packages/@vue-spectrum/buttongroup"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/checkbox@workspace:*, @vue-spectrum/checkbox@workspace:packages/@vue-spectrum/checkbox":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/checkbox@workspace:packages/@vue-spectrum/checkbox"
@@ -31002,6 +31012,7 @@ __metadata:
     "@vue-spectrum/avatar": "workspace:*"
     "@vue-spectrum/badge": "workspace:*"
     "@vue-spectrum/button": "workspace:*"
+    "@vue-spectrum/buttongroup": "workspace:*"
     "@vue-spectrum/checkbox": "workspace:*"
     "@vue-spectrum/combobox": "workspace:*"
     "@vue-spectrum/components": "workspace:*"

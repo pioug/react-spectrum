@@ -23,6 +23,7 @@ Phase 1 is implemented:
   * `@react-spectrum/provider` -> `@vue-spectrum/provider` is now tracked as `in_progress`.
 * Expanded first-wave ports:
   * `@react-spectrum/button` -> `@vue-spectrum/button` (`in_progress`)
+  * `@react-spectrum/buttongroup` -> `@vue-spectrum/buttongroup` (`in_progress`)
   * `@react-spectrum/avatar` -> `@vue-spectrum/avatar` (`in_progress`)
   * `@react-spectrum/badge` -> `@vue-spectrum/badge` (`in_progress`)
   * `@react-spectrum/well` -> `@vue-spectrum/well` (`in_progress`)
@@ -67,7 +68,7 @@ Phase 1 is implemented:
   * `@react-aria/virtualizer` -> `@vue-aria/virtualizer` (`in_progress`)
   * Vue starter now includes a virtualized backlog demo wired to `@vue-aria/virtualizer`.
 * Started Vue test adaptation:
-  * `starters/vue` runs Vitest + Vue Test Utils interaction tests for `button`, `textfield`, `checkbox`, `radio`, `switch`, `layout`, `labeledvalue`, `illustratedmessage`, and `icon`.
+  * `starters/vue` runs Vitest + Vue Test Utils interaction tests for `button`, `buttongroup`, `textfield`, `checkbox`, `radio`, `switch`, `layout`, `labeledvalue`, `illustratedmessage`, and `icon`.
   * Added composition coverage for `dialog`, `overlays`, `menu`, `listbox`, `list`, `combobox`, and `autocomplete`.
   * Added data-heavy and virtualization coverage for `table`, `tree`, `dnd`, `dropzone`, and `@vue-aria/virtualizer`.
 * Started API stabilization and deprecation planning:

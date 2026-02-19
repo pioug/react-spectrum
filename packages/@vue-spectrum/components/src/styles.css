@@ -79,6 +79,50 @@
   opacity: 0.5;
 }
 
+.vs-button-group {
+  display: flex;
+}
+
+.vs-button-group--horizontal {
+  flex-direction: row;
+}
+
+.vs-button-group--vertical {
+  flex-direction: column;
+}
+
+.vs-button-group--medium {
+  gap: 8px;
+}
+
+.vs-button-group--large {
+  gap: 10px;
+}
+
+.vs-button-group--horizontal.vs-button-group--align-start {
+  justify-content: flex-start;
+}
+
+.vs-button-group--horizontal.vs-button-group--align-center {
+  justify-content: center;
+}
+
+.vs-button-group--horizontal.vs-button-group--align-end {
+  justify-content: flex-end;
+}
+
+.vs-button-group--vertical.vs-button-group--align-start {
+  align-items: flex-start;
+}
+
+.vs-button-group--vertical.vs-button-group--align-center {
+  align-items: center;
+}
+
+.vs-button-group--vertical.vs-button-group--align-end {
+  align-items: flex-end;
+}
+
 .vs-text-field {
   display: grid;
   gap: 8px;

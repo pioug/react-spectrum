@@ -96,6 +96,30 @@
         }
       ]
     },
+    "@react-spectrum/buttongroup": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/buttongroup",
+      "targetPath": "packages/@vue-spectrum/buttongroup",
+      "notes": "First-wave primitive for grouped button actions and layout alignment.",
+      "acceptanceTests": [
+        {
+          "name": "Vue buttongroup package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/buttongroup/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/avatar": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/avatar",
