@@ -35,6 +35,16 @@ yarn test:vue
 
 The Vue starter test harness currently covers primitive, composition, and data-heavy migration ports.
 
+## React maintenance mode
+
+As of February 19, 2026, React package development in this repository is in maintenance mode while Vue migration ports continue.
+
+* New feature development should target Vue packages first.
+* React packages continue to accept security fixes, bug fixes, and critical compatibility updates.
+* Use `migration/REACT_TO_VUE_MIGRATION_GUIDE.md` for package replacement mappings.
+* Use `migration/REACT_DEPRECATION_PLAN.md` for phased deprecation rollout details.
+* Use `VUE_MIGRATION_TRACKER.md` for current package-by-package migration status.
+
 ### React Spectrum
 
 A React implementation of Spectrum, Adobe’s design system. Spectrum provides adaptive, accessible, and cohesive experiences for all Adobe applications.
