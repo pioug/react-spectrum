@@ -7,6 +7,7 @@ export type {
 export {useSpinButton} from './useSpinButton';
 export type {
   SpinButtonAria,
+  SpinButtonAria as SpinbuttonAria,
   SpinButtonOptions,
   SpinButtonProps,
   SpinButtonStepButtonProps

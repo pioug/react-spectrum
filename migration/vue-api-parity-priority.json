@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-02-19T22:13:47.174Z",
+  "generatedAt": "2026-02-19T22:19:28.986Z",
   "summary": {
     "trackedPackages": 154,
-    "packagesWithGaps": 51,
+    "packagesWithGaps": 25,
     "highestPriorityPackage": "react-aria-components",
     "highestPriorityScore": 1677.99
   },
@@ -206,17 +206,6 @@
       "priorityScore": 29.32
     },
     {
-      "sourcePackage": "@react-spectrum/buttongroup",
-      "targetPackage": "@vue-spectrum/buttongroup",
-      "missingExports": 1,
-      "sourceExportCount": 2,
-      "coveragePercent": 50,
-      "reverseDependents": 1,
-      "dependencyDepth": 6,
-      "criticalityWeight": 1.4,
-      "priorityScore": 27.9
-    },
-    {
       "sourcePackage": "@react-spectrum/steplist",
       "targetPackage": "@vue-spectrum/steplist",
       "missingExports": 2,
@@ -237,61 +226,6 @@
       "dependencyDepth": 4,
       "criticalityWeight": 1.9,
       "priorityScore": 26.8
-    },
-    {
-      "sourcePackage": "@react-aria/progress",
-      "targetPackage": "@vue-aria/progress",
-      "missingExports": 1,
-      "sourceExportCount": 3,
-      "coveragePercent": 66.67,
-      "reverseDependents": 3,
-      "dependencyDepth": 3,
-      "criticalityWeight": 1.9,
-      "priorityScore": 26.4
-    },
-    {
-      "sourcePackage": "@react-aria/spinbutton",
-      "targetPackage": "@vue-aria/spinbutton",
-      "missingExports": 1,
-      "sourceExportCount": 3,
-      "coveragePercent": 66.67,
-      "reverseDependents": 3,
-      "dependencyDepth": 3,
-      "criticalityWeight": 1.9,
-      "priorityScore": 26.4
-    },
-    {
-      "sourcePackage": "@react-spectrum/illustratedmessage",
-      "targetPackage": "@vue-spectrum/illustratedmessage",
-      "missingExports": 1,
-      "sourceExportCount": 2,
-      "coveragePercent": 50,
-      "reverseDependents": 0,
-      "dependencyDepth": 7,
-      "criticalityWeight": 1.4,
-      "priorityScore": 26.4
-    },
-    {
-      "sourcePackage": "@react-spectrum/inlinealert",
-      "targetPackage": "@vue-spectrum/inlinealert",
-      "missingExports": 1,
-      "sourceExportCount": 2,
-      "coveragePercent": 50,
-      "reverseDependents": 0,
-      "dependencyDepth": 7,
-      "criticalityWeight": 1.4,
-      "priorityScore": 26.4
-    },
-    {
-      "sourcePackage": "@react-spectrum/meter",
-      "targetPackage": "@vue-spectrum/meter",
-      "missingExports": 1,
-      "sourceExportCount": 2,
-      "coveragePercent": 50,
-      "reverseDependents": 0,
-      "dependencyDepth": 7,
-      "criticalityWeight": 1.4,
-      "priorityScore": 26.4
     },
     {
       "sourcePackage": "@react-stately/datepicker",
@@ -316,61 +250,6 @@
       "priorityScore": 25.3
     },
     {
-      "sourcePackage": "@react-stately/select",
-      "targetPackage": "@vue-stately/select",
-      "missingExports": 1,
-      "sourceExportCount": 4,
-      "coveragePercent": 75,
-      "reverseDependents": 3,
-      "dependencyDepth": 3,
-      "criticalityWeight": 1.9,
-      "priorityScore": 25.15
-    },
-    {
-      "sourcePackage": "@react-stately/tabs",
-      "targetPackage": "@vue-stately/tabs",
-      "missingExports": 1,
-      "sourceExportCount": 4,
-      "coveragePercent": 75,
-      "reverseDependents": 3,
-      "dependencyDepth": 3,
-      "criticalityWeight": 1.9,
-      "priorityScore": 25.15
-    },
-    {
-      "sourcePackage": "@react-aria/meter",
-      "targetPackage": "@vue-aria/meter",
-      "missingExports": 1,
-      "sourceExportCount": 3,
-      "coveragePercent": 66.67,
-      "reverseDependents": 2,
-      "dependencyDepth": 4,
-      "criticalityWeight": 1.9,
-      "priorityScore": 24.9
-    },
-    {
-      "sourcePackage": "@react-aria/switch",
-      "targetPackage": "@vue-aria/switch",
-      "missingExports": 1,
-      "sourceExportCount": 3,
-      "coveragePercent": 66.67,
-      "reverseDependents": 2,
-      "dependencyDepth": 4,
-      "criticalityWeight": 1.9,
-      "priorityScore": 24.9
-    },
-    {
-      "sourcePackage": "@react-aria/toolbar",
-      "targetPackage": "@vue-aria/toolbar",
-      "missingExports": 1,
-      "sourceExportCount": 3,
-      "coveragePercent": 66.67,
-      "reverseDependents": 2,
-      "dependencyDepth": 4,
-      "criticalityWeight": 1.9,
-      "priorityScore": 24.9
-    },
-    {
       "sourcePackage": "@react-aria/toast",
       "targetPackage": "@vue-aria/toast",
       "missingExports": 2,
@@ -393,94 +272,6 @@
       "priorityScore": 24.3
     },
     {
-      "sourcePackage": "@react-aria/separator",
-      "targetPackage": "@vue-aria/separator",
-      "missingExports": 1,
-      "sourceExportCount": 3,
-      "coveragePercent": 66.67,
-      "reverseDependents": 3,
-      "dependencyDepth": 2,
-      "criticalityWeight": 1.9,
-      "priorityScore": 23.9
-    },
-    {
-      "sourcePackage": "@react-spectrum/avatar",
-      "targetPackage": "@vue-spectrum/avatar",
-      "missingExports": 1,
-      "sourceExportCount": 2,
-      "coveragePercent": 50,
-      "reverseDependents": 0,
-      "dependencyDepth": 6,
-      "criticalityWeight": 1.4,
-      "priorityScore": 23.9
-    },
-    {
-      "sourcePackage": "@react-spectrum/image",
-      "targetPackage": "@vue-spectrum/image",
-      "missingExports": 1,
-      "sourceExportCount": 2,
-      "coveragePercent": 50,
-      "reverseDependents": 0,
-      "dependencyDepth": 6,
-      "criticalityWeight": 1.4,
-      "priorityScore": 23.9
-    },
-    {
-      "sourcePackage": "@react-spectrum/link",
-      "targetPackage": "@vue-spectrum/link",
-      "missingExports": 1,
-      "sourceExportCount": 2,
-      "coveragePercent": 50,
-      "reverseDependents": 0,
-      "dependencyDepth": 6,
-      "criticalityWeight": 1.4,
-      "priorityScore": 23.9
-    },
-    {
-      "sourcePackage": "@react-spectrum/statuslight",
-      "targetPackage": "@vue-spectrum/statuslight",
-      "missingExports": 1,
-      "sourceExportCount": 2,
-      "coveragePercent": 50,
-      "reverseDependents": 0,
-      "dependencyDepth": 6,
-      "criticalityWeight": 1.4,
-      "priorityScore": 23.9
-    },
-    {
-      "sourcePackage": "@react-spectrum/switch",
-      "targetPackage": "@vue-spectrum/switch",
-      "missingExports": 1,
-      "sourceExportCount": 2,
-      "coveragePercent": 50,
-      "reverseDependents": 0,
-      "dependencyDepth": 6,
-      "criticalityWeight": 1.4,
-      "priorityScore": 23.9
-    },
-    {
-      "sourcePackage": "@react-spectrum/divider",
-      "targetPackage": "@vue-spectrum/divider",
-      "missingExports": 1,
-      "sourceExportCount": 2,
-      "coveragePercent": 50,
-      "reverseDependents": 1,
-      "dependencyDepth": 4,
-      "criticalityWeight": 1.4,
-      "priorityScore": 22.9
-    },
-    {
-      "sourcePackage": "@react-aria/toggle",
-      "targetPackage": "@vue-aria/toggle",
-      "missingExports": 1,
-      "sourceExportCount": 3,
-      "coveragePercent": 66.67,
-      "reverseDependents": 2,
-      "dependencyDepth": 3,
-      "criticalityWeight": 1.9,
-      "priorityScore": 22.4
-    },
-    {
       "sourcePackage": "@react-stately/color",
       "targetPackage": "@vue-stately/color",
       "missingExports": 2,
@@ -490,83 +281,6 @@
       "dependencyDepth": 2,
       "criticalityWeight": 1.9,
       "priorityScore": 22
-    },
-    {
-      "sourcePackage": "@react-stately/checkbox",
-      "targetPackage": "@vue-stately/checkbox",
-      "missingExports": 1,
-      "sourceExportCount": 3,
-      "coveragePercent": 66.67,
-      "reverseDependents": 3,
-      "dependencyDepth": 1,
-      "criticalityWeight": 1.9,
-      "priorityScore": 21.4
-    },
-    {
-      "sourcePackage": "@react-stately/radio",
-      "targetPackage": "@vue-stately/radio",
-      "missingExports": 1,
-      "sourceExportCount": 3,
-      "coveragePercent": 66.67,
-      "reverseDependents": 3,
-      "dependencyDepth": 1,
-      "criticalityWeight": 1.9,
-      "priorityScore": 21.4
-    },
-    {
-      "sourcePackage": "@react-stately/searchfield",
-      "targetPackage": "@vue-stately/searchfield",
-      "missingExports": 1,
-      "sourceExportCount": 3,
-      "coveragePercent": 66.67,
-      "reverseDependents": 3,
-      "dependencyDepth": 1,
-      "criticalityWeight": 1.9,
-      "priorityScore": 21.4
-    },
-    {
-      "sourcePackage": "@react-spectrum/well",
-      "targetPackage": "@vue-spectrum/well",
-      "missingExports": 1,
-      "sourceExportCount": 2,
-      "coveragePercent": 50,
-      "reverseDependents": 0,
-      "dependencyDepth": 4,
-      "criticalityWeight": 1.4,
-      "priorityScore": 18.9
-    },
-    {
-      "sourcePackage": "@react-aria/actiongroup",
-      "targetPackage": "@vue-aria/actiongroup",
-      "missingExports": 1,
-      "sourceExportCount": 6,
-      "coveragePercent": 83.33,
-      "reverseDependents": 1,
-      "dependencyDepth": 4,
-      "criticalityWeight": 1.9,
-      "priorityScore": 18.4
-    },
-    {
-      "sourcePackage": "@react-stately/autocomplete",
-      "targetPackage": "@vue-stately/autocomplete",
-      "missingExports": 1,
-      "sourceExportCount": 4,
-      "coveragePercent": 75,
-      "reverseDependents": 2,
-      "dependencyDepth": 1,
-      "criticalityWeight": 1.9,
-      "priorityScore": 16.15
-    },
-    {
-      "sourcePackage": "@react-aria/disclosure",
-      "targetPackage": "@vue-aria/disclosure",
-      "missingExports": 1,
-      "sourceExportCount": 3,
-      "coveragePercent": 66.67,
-      "reverseDependents": 1,
-      "dependencyDepth": 2,
-      "criticalityWeight": 1.9,
-      "priorityScore": 15.9
     }
   ]
 }

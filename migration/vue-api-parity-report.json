@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T22:13:34.842Z",
+  "generatedAt": "2026-02-19T22:19:18.020Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 103,
+    "fullyMatchedPackages": 129,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 912,
-    "parityCoverage": 0.6587
+    "missingExportTotal": 886,
+    "parityCoverage": 0.6684
   },
   "packages": [
     {
@@ -1485,498 +1485,13 @@
       "sourceEntrypoint": "packages/@react-aria/actiongroup/src/index.ts",
       "targetEntrypoint": "packages/@vue-aria/actiongroup/src/index.ts",
       "sourceExportCount": 6,
-      "targetExportCount": 7,
-      "parityRatio": 0.8333,
-      "missingExports": [
-        "AriaActionGroupProps"
-      ],
+      "targetExportCount": 8,
+      "parityRatio": 1,
+      "missingExports": [],
       "extraExports": [
         "ActionGroupOptions",
         "ActionGroupSelectionMode"
       ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/disclosure",
-      "sourcePath": "packages/@react-aria/disclosure",
-      "targetPackage": "@vue-aria/disclosure",
-      "targetPath": "packages/@vue-aria/disclosure",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/disclosure/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/disclosure/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 3,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "AriaDisclosureProps"
-      ],
-      "extraExports": [
-        "AriaDisclosureOptions"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/meter",
-      "sourcePath": "packages/@react-aria/meter",
-      "targetPackage": "@vue-aria/meter",
-      "targetPath": "packages/@vue-aria/meter",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/meter/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/meter/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 4,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "AriaMeterProps"
-      ],
-      "extraExports": [
-        "AriaMeterOptions",
-        "MaybeRef"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/progress",
-      "sourcePath": "packages/@react-aria/progress",
-      "targetPackage": "@vue-aria/progress",
-      "targetPath": "packages/@vue-aria/progress",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/progress/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/progress/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 4,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "AriaProgressBarProps"
-      ],
-      "extraExports": [
-        "AriaProgressBarOptions",
-        "MaybeRef"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/separator",
-      "sourcePath": "packages/@react-aria/separator",
-      "targetPackage": "@vue-aria/separator",
-      "targetPath": "packages/@vue-aria/separator",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/separator/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/separator/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 3,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "SeparatorProps"
-      ],
-      "extraExports": [
-        "SeparatorOptions"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/spinbutton",
-      "sourcePath": "packages/@react-aria/spinbutton",
-      "targetPackage": "@vue-aria/spinbutton",
-      "targetPath": "packages/@vue-aria/spinbutton",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/spinbutton/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/spinbutton/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 9,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "SpinbuttonAria"
-      ],
-      "extraExports": [
-        "MaybeRef",
-        "SpinButtonAria",
-        "SpinButtonKeyboardEvent",
-        "SpinButtonOptions",
-        "SpinButtonPointerType",
-        "SpinButtonPressEvent",
-        "SpinButtonStepButtonProps"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/switch",
-      "sourcePath": "packages/@react-aria/switch",
-      "targetPackage": "@vue-aria/switch",
-      "targetPath": "packages/@vue-aria/switch",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/switch/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/switch/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 3,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "AriaSwitchProps"
-      ],
-      "extraExports": [
-        "AriaSwitchOptions"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/toggle",
-      "sourcePath": "packages/@react-aria/toggle",
-      "targetPackage": "@vue-aria/toggle",
-      "targetPath": "packages/@vue-aria/toggle",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/toggle/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/toggle/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 4,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "AriaToggleProps"
-      ],
-      "extraExports": [
-        "AriaToggleOptions",
-        "ToggleValidationState"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/toolbar",
-      "sourcePath": "packages/@react-aria/toolbar",
-      "targetPackage": "@vue-aria/toolbar",
-      "targetPath": "packages/@vue-aria/toolbar",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/toolbar/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/toolbar/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 4,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "AriaToolbarProps"
-      ],
-      "extraExports": [
-        "AriaToolbarOptions",
-        "ToolbarOrientation"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/avatar",
-      "sourcePath": "packages/@react-spectrum/avatar",
-      "targetPackage": "@vue-spectrum/avatar",
-      "targetPath": "packages/@vue-spectrum/avatar",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/avatar/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/avatar/src/index.ts",
-      "sourceExportCount": 2,
-      "targetExportCount": 2,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumAvatarProps"
-      ],
-      "extraExports": [
-        "VueAvatar"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/buttongroup",
-      "sourcePath": "packages/@react-spectrum/buttongroup",
-      "targetPackage": "@vue-spectrum/buttongroup",
-      "targetPath": "packages/@vue-spectrum/buttongroup",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/buttongroup/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/buttongroup/src/index.ts",
-      "sourceExportCount": 2,
-      "targetExportCount": 2,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumButtonGroupProps"
-      ],
-      "extraExports": [
-        "VueButtonGroup"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/divider",
-      "sourcePath": "packages/@react-spectrum/divider",
-      "targetPackage": "@vue-spectrum/divider",
-      "targetPath": "packages/@vue-spectrum/divider",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/divider/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/divider/src/index.ts",
-      "sourceExportCount": 2,
-      "targetExportCount": 2,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumDividerProps"
-      ],
-      "extraExports": [
-        "VueDivider"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/illustratedmessage",
-      "sourcePath": "packages/@react-spectrum/illustratedmessage",
-      "targetPackage": "@vue-spectrum/illustratedmessage",
-      "targetPath": "packages/@vue-spectrum/illustratedmessage",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/illustratedmessage/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/illustratedmessage/src/index.ts",
-      "sourceExportCount": 2,
-      "targetExportCount": 2,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumIllustratedMessageProps"
-      ],
-      "extraExports": [
-        "VueIllustratedMessage"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/image",
-      "sourcePath": "packages/@react-spectrum/image",
-      "targetPackage": "@vue-spectrum/image",
-      "targetPath": "packages/@vue-spectrum/image",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/image/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/image/src/index.ts",
-      "sourceExportCount": 2,
-      "targetExportCount": 2,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumImageProps"
-      ],
-      "extraExports": [
-        "VueImage"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/inlinealert",
-      "sourcePath": "packages/@react-spectrum/inlinealert",
-      "targetPackage": "@vue-spectrum/inlinealert",
-      "targetPath": "packages/@vue-spectrum/inlinealert",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/inlinealert/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/inlinealert/src/index.ts",
-      "sourceExportCount": 2,
-      "targetExportCount": 2,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumInlineAlertProps"
-      ],
-      "extraExports": [
-        "VueInlineAlert"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/link",
-      "sourcePath": "packages/@react-spectrum/link",
-      "targetPackage": "@vue-spectrum/link",
-      "targetPath": "packages/@vue-spectrum/link",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/link/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/link/src/index.ts",
-      "sourceExportCount": 2,
-      "targetExportCount": 2,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumLinkProps"
-      ],
-      "extraExports": [
-        "VueLink"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/meter",
-      "sourcePath": "packages/@react-spectrum/meter",
-      "targetPackage": "@vue-spectrum/meter",
-      "targetPath": "packages/@vue-spectrum/meter",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/meter/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/meter/src/index.ts",
-      "sourceExportCount": 2,
-      "targetExportCount": 2,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumMeterProps"
-      ],
-      "extraExports": [
-        "VueMeter"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/statuslight",
-      "sourcePath": "packages/@react-spectrum/statuslight",
-      "targetPackage": "@vue-spectrum/statuslight",
-      "targetPath": "packages/@vue-spectrum/statuslight",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/statuslight/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/statuslight/src/index.ts",
-      "sourceExportCount": 2,
-      "targetExportCount": 2,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumStatusLightProps"
-      ],
-      "extraExports": [
-        "VueStatusLight"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/switch",
-      "sourcePath": "packages/@react-spectrum/switch",
-      "targetPackage": "@vue-spectrum/switch",
-      "targetPath": "packages/@vue-spectrum/switch",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/switch/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/switch/src/index.ts",
-      "sourceExportCount": 2,
-      "targetExportCount": 2,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumSwitchProps"
-      ],
-      "extraExports": [
-        "VueSwitch"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/well",
-      "sourcePath": "packages/@react-spectrum/well",
-      "targetPackage": "@vue-spectrum/well",
-      "targetPath": "packages/@vue-spectrum/well",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/well/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/well/src/index.ts",
-      "sourceExportCount": 2,
-      "targetExportCount": 2,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumWellProps"
-      ],
-      "extraExports": [
-        "VueWell"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/autocomplete",
-      "sourcePath": "packages/@react-stately/autocomplete",
-      "targetPackage": "@vue-stately/autocomplete",
-      "targetPath": "packages/@vue-stately/autocomplete",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/autocomplete/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/autocomplete/src/index.ts",
-      "sourceExportCount": 4,
-      "targetExportCount": 3,
-      "parityRatio": 0.75,
-      "missingExports": [
-        "AutocompleteProps"
-      ],
-      "extraExports": [],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/checkbox",
-      "sourcePath": "packages/@react-stately/checkbox",
-      "targetPackage": "@vue-stately/checkbox",
-      "targetPath": "packages/@vue-stately/checkbox",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/checkbox/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/checkbox/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 4,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "CheckboxGroupProps"
-      ],
-      "extraExports": [
-        "CheckboxGroupStateOptions",
-        "ValidationResult"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/radio",
-      "sourcePath": "packages/@react-stately/radio",
-      "targetPackage": "@vue-stately/radio",
-      "targetPath": "packages/@vue-stately/radio",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/radio/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/radio/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 4,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "RadioGroupProps"
-      ],
-      "extraExports": [
-        "RadioGroupStateOptions",
-        "ValidationState"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/searchfield",
-      "sourcePath": "packages/@react-stately/searchfield",
-      "targetPackage": "@vue-stately/searchfield",
-      "targetPath": "packages/@vue-stately/searchfield",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/searchfield/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/searchfield/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 3,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "SearchFieldProps"
-      ],
-      "extraExports": [
-        "SearchFieldStateOptions"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/select",
-      "sourcePath": "packages/@react-stately/select",
-      "targetPackage": "@vue-stately/select",
-      "targetPath": "packages/@vue-stately/select",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/select/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/select/src/index.ts",
-      "sourceExportCount": 4,
-      "targetExportCount": 4,
-      "parityRatio": 0.75,
-      "missingExports": [
-        "SelectProps"
-      ],
-      "extraExports": [
-        "FocusStrategy"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/tabs",
-      "sourcePath": "packages/@react-stately/tabs",
-      "targetPackage": "@vue-stately/tabs",
-      "targetPath": "packages/@vue-stately/tabs",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/tabs/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/tabs/src/index.ts",
-      "sourceExportCount": 4,
-      "targetExportCount": 3,
-      "parityRatio": 0.75,
-      "missingExports": [
-        "TabListProps"
-      ],
-      "extraExports": [],
       "error": null
     },
     {
@@ -2128,6 +1643,23 @@
       "missingExports": [],
       "extraExports": [
         "AriaDialogOptions"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/disclosure",
+      "sourcePath": "packages/@react-aria/disclosure",
+      "targetPackage": "@vue-aria/disclosure",
+      "targetPath": "packages/@vue-aria/disclosure",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/disclosure/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/disclosure/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 4,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaDisclosureOptions"
       ],
       "error": null
     },
@@ -2405,6 +1937,24 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/meter",
+      "sourcePath": "packages/@react-aria/meter",
+      "targetPackage": "@vue-aria/meter",
+      "targetPath": "packages/@vue-aria/meter",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/meter/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/meter/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 5,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaMeterOptions",
+        "MaybeRef"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/numberfield",
       "sourcePath": "packages/@react-aria/numberfield",
       "targetPackage": "@vue-aria/numberfield",
@@ -2449,6 +1999,24 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/progress",
+      "sourcePath": "packages/@react-aria/progress",
+      "targetPackage": "@vue-aria/progress",
+      "targetPath": "packages/@vue-aria/progress",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/progress/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/progress/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 5,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaProgressBarOptions",
+        "MaybeRef"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/searchfield",
       "sourcePath": "packages/@react-aria/searchfield",
       "targetPackage": "@vue-aria/searchfield",
@@ -2488,6 +2056,46 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/separator",
+      "sourcePath": "packages/@react-aria/separator",
+      "targetPackage": "@vue-aria/separator",
+      "targetPath": "packages/@vue-aria/separator",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/separator/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/separator/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 4,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "SeparatorOptions"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/spinbutton",
+      "sourcePath": "packages/@react-aria/spinbutton",
+      "targetPackage": "@vue-aria/spinbutton",
+      "targetPath": "packages/@vue-aria/spinbutton",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/spinbutton/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/spinbutton/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 10,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "MaybeRef",
+        "SpinButtonAria",
+        "SpinButtonKeyboardEvent",
+        "SpinButtonOptions",
+        "SpinButtonPointerType",
+        "SpinButtonPressEvent",
+        "SpinButtonStepButtonProps"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/ssr",
       "sourcePath": "packages/@react-aria/ssr",
       "targetPackage": "@vue-aria/ssr",
@@ -2502,6 +2110,23 @@
       "extraExports": [
         "SSRContextValue",
         "SSRProviderAria"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/switch",
+      "sourcePath": "packages/@react-aria/switch",
+      "targetPackage": "@vue-aria/switch",
+      "targetPath": "packages/@vue-aria/switch",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/switch/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/switch/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 4,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaSwitchOptions"
       ],
       "error": null
     },
@@ -2535,6 +2160,42 @@
       "extraExports": [
         "FormattedTextFieldState",
         "TextFieldInputElementType"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/toggle",
+      "sourcePath": "packages/@react-aria/toggle",
+      "targetPackage": "@vue-aria/toggle",
+      "targetPath": "packages/@vue-aria/toggle",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/toggle/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/toggle/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 5,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaToggleOptions",
+        "ToggleValidationState"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/toolbar",
+      "sourcePath": "packages/@react-aria/toolbar",
+      "targetPackage": "@vue-aria/toolbar",
+      "targetPath": "packages/@vue-aria/toolbar",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/toolbar/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/toolbar/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 5,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaToolbarOptions",
+        "ToolbarOrientation"
       ],
       "error": null
     },
@@ -2645,6 +2306,23 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/avatar",
+      "sourcePath": "packages/@react-spectrum/avatar",
+      "targetPackage": "@vue-spectrum/avatar",
+      "targetPath": "packages/@vue-spectrum/avatar",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/avatar/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/avatar/src/index.ts",
+      "sourceExportCount": 2,
+      "targetExportCount": 3,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueAvatar"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/badge",
       "sourcePath": "packages/@react-spectrum/badge",
       "targetPackage": "@vue-spectrum/badge",
@@ -2692,6 +2370,23 @@
       "missingExports": [],
       "extraExports": [
         "VueButton"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/buttongroup",
+      "sourcePath": "packages/@react-spectrum/buttongroup",
+      "targetPackage": "@vue-spectrum/buttongroup",
+      "targetPath": "packages/@vue-spectrum/buttongroup",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/buttongroup/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/buttongroup/src/index.ts",
+      "sourceExportCount": 2,
+      "targetExportCount": 3,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueButtonGroup"
       ],
       "error": null
     },
@@ -2820,6 +2515,23 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/divider",
+      "sourcePath": "packages/@react-spectrum/divider",
+      "targetPackage": "@vue-spectrum/divider",
+      "targetPath": "packages/@vue-spectrum/divider",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/divider/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/divider/src/index.ts",
+      "sourceExportCount": 2,
+      "targetExportCount": 3,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueDivider"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/dnd",
       "sourcePath": "packages/@react-spectrum/dnd",
       "targetPackage": "@vue-spectrum/dnd",
@@ -2908,6 +2620,57 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/illustratedmessage",
+      "sourcePath": "packages/@react-spectrum/illustratedmessage",
+      "targetPackage": "@vue-spectrum/illustratedmessage",
+      "targetPath": "packages/@vue-spectrum/illustratedmessage",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/illustratedmessage/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/illustratedmessage/src/index.ts",
+      "sourceExportCount": 2,
+      "targetExportCount": 3,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueIllustratedMessage"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/image",
+      "sourcePath": "packages/@react-spectrum/image",
+      "targetPackage": "@vue-spectrum/image",
+      "targetPath": "packages/@vue-spectrum/image",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/image/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/image/src/index.ts",
+      "sourceExportCount": 2,
+      "targetExportCount": 3,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueImage"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/inlinealert",
+      "sourcePath": "packages/@react-spectrum/inlinealert",
+      "targetPackage": "@vue-spectrum/inlinealert",
+      "targetPath": "packages/@vue-spectrum/inlinealert",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/inlinealert/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/inlinealert/src/index.ts",
+      "sourceExportCount": 2,
+      "targetExportCount": 3,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueInlineAlert"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/label",
       "sourcePath": "packages/@react-spectrum/label",
       "targetPackage": "@vue-spectrum/label",
@@ -2960,6 +2723,23 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/link",
+      "sourcePath": "packages/@react-spectrum/link",
+      "targetPackage": "@vue-spectrum/link",
+      "targetPath": "packages/@vue-spectrum/link",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/link/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/link/src/index.ts",
+      "sourceExportCount": 2,
+      "targetExportCount": 3,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueLink"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/listbox",
       "sourcePath": "packages/@react-spectrum/listbox",
       "targetPackage": "@vue-spectrum/listbox",
@@ -2990,6 +2770,23 @@
       "missingExports": [],
       "extraExports": [
         "VueMenu"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/meter",
+      "sourcePath": "packages/@react-spectrum/meter",
+      "targetPackage": "@vue-spectrum/meter",
+      "targetPath": "packages/@vue-spectrum/meter",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/meter/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/meter/src/index.ts",
+      "sourceExportCount": 2,
+      "targetExportCount": 3,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueMeter"
       ],
       "error": null
     },
@@ -3099,6 +2896,23 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/statuslight",
+      "sourcePath": "packages/@react-spectrum/statuslight",
+      "targetPackage": "@vue-spectrum/statuslight",
+      "targetPath": "packages/@vue-spectrum/statuslight",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/statuslight/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/statuslight/src/index.ts",
+      "sourceExportCount": 2,
+      "targetExportCount": 3,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueStatusLight"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/story-utils",
       "sourcePath": "packages/@react-spectrum/story-utils",
       "targetPackage": "@vue-spectrum/story-utils",
@@ -3128,6 +2942,23 @@
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/switch",
+      "sourcePath": "packages/@react-spectrum/switch",
+      "targetPackage": "@vue-spectrum/switch",
+      "targetPath": "packages/@vue-spectrum/switch",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/switch/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/switch/src/index.ts",
+      "sourceExportCount": 2,
+      "targetExportCount": 3,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueSwitch"
+      ],
       "error": null
     },
     {
@@ -3398,6 +3229,38 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/well",
+      "sourcePath": "packages/@react-spectrum/well",
+      "targetPackage": "@vue-spectrum/well",
+      "targetPath": "packages/@vue-spectrum/well",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/well/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/well/src/index.ts",
+      "sourceExportCount": 2,
+      "targetExportCount": 3,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueWell"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/autocomplete",
+      "sourcePath": "packages/@react-stately/autocomplete",
+      "targetPackage": "@vue-stately/autocomplete",
+      "targetPath": "packages/@vue-stately/autocomplete",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/autocomplete/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/autocomplete/src/index.ts",
+      "sourceExportCount": 4,
+      "targetExportCount": 4,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-stately/calendar",
       "sourcePath": "packages/@react-stately/calendar",
       "targetPackage": "@vue-stately/calendar",
@@ -3411,6 +3274,24 @@
       "missingExports": [],
       "extraExports": [
         "DateRange"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/checkbox",
+      "sourcePath": "packages/@react-stately/checkbox",
+      "targetPackage": "@vue-stately/checkbox",
+      "targetPath": "packages/@vue-stately/checkbox",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/checkbox/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/checkbox/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 5,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "CheckboxGroupStateOptions",
+        "ValidationResult"
       ],
       "error": null
     },
@@ -3660,6 +3541,58 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-stately/radio",
+      "sourcePath": "packages/@react-stately/radio",
+      "targetPackage": "@vue-stately/radio",
+      "targetPath": "packages/@vue-stately/radio",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/radio/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/radio/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 5,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "RadioGroupStateOptions",
+        "ValidationState"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/searchfield",
+      "sourcePath": "packages/@react-stately/searchfield",
+      "targetPackage": "@vue-stately/searchfield",
+      "targetPath": "packages/@vue-stately/searchfield",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/searchfield/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/searchfield/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 4,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "SearchFieldStateOptions"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/select",
+      "sourcePath": "packages/@react-stately/select",
+      "targetPackage": "@vue-stately/select",
+      "targetPath": "packages/@vue-stately/select",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/select/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/select/src/index.ts",
+      "sourceExportCount": 4,
+      "targetExportCount": 5,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "FocusStrategy"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-stately/selection",
       "sourcePath": "packages/@react-stately/selection",
       "targetPackage": "@vue-stately/selection",
@@ -3733,6 +3666,21 @@
         "TableColumn",
         "TableRow"
       ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/tabs",
+      "sourcePath": "packages/@react-stately/tabs",
+      "targetPackage": "@vue-stately/tabs",
+      "targetPath": "packages/@vue-stately/tabs",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/tabs/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/tabs/src/index.ts",
+      "sourceExportCount": 4,
+      "targetExportCount": 4,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [],
       "error": null
     },
     {
@@ -3845,7 +3793,7 @@
       "sourceEntrypoint": "packages/react-aria/src/index.ts",
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
-      "targetExportCount": 810,
+      "targetExportCount": 814,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
@@ -3854,6 +3802,7 @@
         "ActionGroupOptions",
         "ActionGroupSelectionMode",
         "AriaActionGroupItemProps",
+        "AriaActionGroupProps",
         "AriaAutocompleteOptions",
         "AriaBreadcrumbItemOptions",
         "AriaBreadcrumbsOptions",
@@ -3916,7 +3865,9 @@
         "AriaToggleButtonGroupOptions",
         "AriaToggleButtonOptions",
         "AriaToggleOptions",
+        "AriaToggleProps",
         "AriaToolbarOptions",
+        "AriaToolbarProps",
         "AriaTooltipOptions",
         "AriaTooltipTriggerOptions",
         "AriaTreeOptions",
@@ -4062,6 +4013,7 @@
         "SpinButtonPressEvent",
         "SpinButtonProps",
         "SpinButtonStepButtonProps",
+        "SpinbuttonAria",
         "StepListAria",
         "StepListItemAria",
         "StepListState",
@@ -4252,10 +4204,11 @@
       "sourceEntrypoint": "packages/react-stately/src/index.ts",
       "targetEntrypoint": "packages/vue-stately/src/index.ts",
       "sourceExportCount": 165,
-      "targetExportCount": 269,
+      "targetExportCount": 270,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
+        "AutocompleteProps",
         "AutocompleteState",
         "AutocompleteStateOptions",
         "BaseCollection",

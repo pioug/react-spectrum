@@ -1,11 +1,11 @@
 # Vue API Parity Priority
 
-Generated: 2026-02-19T22:13:47.174Z
+Generated: 2026-02-19T22:19:28.986Z
 
 ## Summary
 
 * Tracked packages: 154
-* Packages with API gaps: 51
+* Packages with API gaps: 25
 * Highest priority package: react-aria-components
 * Highest priority score: 1677.99
 
@@ -31,39 +31,13 @@ Generated: 2026-02-19T22:13:47.174Z
 | 16 | `@react-spectrum/radio` | `@vue-spectrum/radio` | 2 | 50.00% | 0 | 8 | 30.30 |
 | 17 | `@react-aria/radio` | `@vue-aria/radio` | 3 | 57.14% | 2 | 4 | 30.13 |
 | 18 | `@react-aria/checkbox` | `@vue-aria/checkbox` | 3 | 62.50% | 2 | 4 | 29.32 |
-| 19 | `@react-spectrum/buttongroup` | `@vue-spectrum/buttongroup` | 1 | 50.00% | 1 | 6 | 27.90 |
-| 20 | `@react-spectrum/steplist` | `@vue-spectrum/steplist` | 2 | 33.33% | 0 | 6 | 27.80 |
-| 21 | `@react-aria/breadcrumbs` | `@vue-aria/breadcrumbs` | 2 | 66.67% | 2 | 4 | 26.80 |
-| 22 | `@react-aria/progress` | `@vue-aria/progress` | 1 | 66.67% | 3 | 3 | 26.40 |
-| 23 | `@react-aria/spinbutton` | `@vue-aria/spinbutton` | 1 | 66.67% | 3 | 3 | 26.40 |
-| 24 | `@react-spectrum/illustratedmessage` | `@vue-spectrum/illustratedmessage` | 1 | 50.00% | 0 | 7 | 26.40 |
-| 25 | `@react-spectrum/inlinealert` | `@vue-spectrum/inlinealert` | 1 | 50.00% | 0 | 7 | 26.40 |
-| 26 | `@react-spectrum/meter` | `@vue-spectrum/meter` | 1 | 50.00% | 0 | 7 | 26.40 |
-| 27 | `@react-stately/datepicker` | `@vue-stately/datepicker` | 3 | 80.00% | 3 | 2 | 25.70 |
-| 28 | `@react-aria/steplist` | `@vue-aria/steplist` | 2 | 66.67% | 1 | 5 | 25.30 |
-| 29 | `@react-stately/select` | `@vue-stately/select` | 1 | 75.00% | 3 | 3 | 25.15 |
-| 30 | `@react-stately/tabs` | `@vue-stately/tabs` | 1 | 75.00% | 3 | 3 | 25.15 |
-| 31 | `@react-aria/meter` | `@vue-aria/meter` | 1 | 66.67% | 2 | 4 | 24.90 |
-| 32 | `@react-aria/switch` | `@vue-aria/switch` | 1 | 66.67% | 2 | 4 | 24.90 |
-| 33 | `@react-aria/toolbar` | `@vue-aria/toolbar` | 1 | 66.67% | 2 | 4 | 24.90 |
-| 34 | `@react-aria/toast` | `@vue-aria/toast` | 2 | 66.67% | 2 | 3 | 24.30 |
-| 35 | `@react-aria/tooltip` | `@vue-aria/tooltip` | 2 | 66.67% | 2 | 3 | 24.30 |
-| 36 | `@react-aria/separator` | `@vue-aria/separator` | 1 | 66.67% | 3 | 2 | 23.90 |
-| 37 | `@react-spectrum/avatar` | `@vue-spectrum/avatar` | 1 | 50.00% | 0 | 6 | 23.90 |
-| 38 | `@react-spectrum/image` | `@vue-spectrum/image` | 1 | 50.00% | 0 | 6 | 23.90 |
-| 39 | `@react-spectrum/link` | `@vue-spectrum/link` | 1 | 50.00% | 0 | 6 | 23.90 |
-| 40 | `@react-spectrum/statuslight` | `@vue-spectrum/statuslight` | 1 | 50.00% | 0 | 6 | 23.90 |
-| 41 | `@react-spectrum/switch` | `@vue-spectrum/switch` | 1 | 50.00% | 0 | 6 | 23.90 |
-| 42 | `@react-spectrum/divider` | `@vue-spectrum/divider` | 1 | 50.00% | 1 | 4 | 22.90 |
-| 43 | `@react-aria/toggle` | `@vue-aria/toggle` | 1 | 66.67% | 2 | 3 | 22.40 |
-| 44 | `@react-stately/color` | `@vue-stately/color` | 2 | 92.00% | 3 | 2 | 22.00 |
-| 45 | `@react-stately/checkbox` | `@vue-stately/checkbox` | 1 | 66.67% | 3 | 1 | 21.40 |
-| 46 | `@react-stately/radio` | `@vue-stately/radio` | 1 | 66.67% | 3 | 1 | 21.40 |
-| 47 | `@react-stately/searchfield` | `@vue-stately/searchfield` | 1 | 66.67% | 3 | 1 | 21.40 |
-| 48 | `@react-spectrum/well` | `@vue-spectrum/well` | 1 | 50.00% | 0 | 4 | 18.90 |
-| 49 | `@react-aria/actiongroup` | `@vue-aria/actiongroup` | 1 | 83.33% | 1 | 4 | 18.40 |
-| 50 | `@react-stately/autocomplete` | `@vue-stately/autocomplete` | 1 | 75.00% | 2 | 1 | 16.15 |
-| 51 | `@react-aria/disclosure` | `@vue-aria/disclosure` | 1 | 66.67% | 1 | 2 | 15.90 |
+| 19 | `@react-spectrum/steplist` | `@vue-spectrum/steplist` | 2 | 33.33% | 0 | 6 | 27.80 |
+| 20 | `@react-aria/breadcrumbs` | `@vue-aria/breadcrumbs` | 2 | 66.67% | 2 | 4 | 26.80 |
+| 21 | `@react-stately/datepicker` | `@vue-stately/datepicker` | 3 | 80.00% | 3 | 2 | 25.70 |
+| 22 | `@react-aria/steplist` | `@vue-aria/steplist` | 2 | 66.67% | 1 | 5 | 25.30 |
+| 23 | `@react-aria/toast` | `@vue-aria/toast` | 2 | 66.67% | 2 | 3 | 24.30 |
+| 24 | `@react-aria/tooltip` | `@vue-aria/tooltip` | 2 | 66.67% | 2 | 3 | 24.30 |
+| 25 | `@react-stately/color` | `@vue-stately/color` | 2 | 92.00% | 3 | 2 | 22.00 |
 
 ## Top execution tranche
 
