@@ -1,19 +1,19 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-19T22:46:54.374Z
+Generated: 2026-02-19T22:50:21.185Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 76
+* Fully matched packages: 77
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 1818
-* Mismatched signatures: 854
+* Matched signatures: 1832
+* Mismatched signatures: 840
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 68.04%
+* Signature coverage ratio: 68.56%
 
 ## Package gaps
 
@@ -21,11 +21,10 @@ Generated: 2026-02-19T22:46:54.374Z
 | --- | --- | --- | ---: | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | mismatch | 543 | 299 | 0 | 44.9% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | mismatch | 325 | 134 | 0 | 58.8% |
-| `react-aria` | `vue-aria` | mismatch | 419 | 106 | 0 | 74.7% |
+| `react-aria` | `vue-aria` | mismatch | 419 | 104 | 0 | 75.2% |
 | `@react-aria/utils` | `@vue-aria/utils` | mismatch | 74 | 65 | 0 | 12.2% |
 | `@react-spectrum/utils` | `@vue-spectrum/utils` | mismatch | 31 | 27 | 0 | 12.9% |
 | `react-stately` | `vue-stately` | mismatch | 165 | 20 | 0 | 87.9% |
-| `@react-aria/focus` | `@vue-aria/focus` | mismatch | 26 | 12 | 0 | 53.8% |
 | `@react-aria/dnd` | `@vue-aria/dnd` | mismatch | 62 | 11 | 0 | 82.3% |
 | `@react-aria/overlays` | `@vue-aria/overlays` | mismatch | 39 | 10 | 0 | 74.4% |
 | `@react-aria/table` | `@vue-aria/table` | mismatch | 23 | 9 | 0 | 60.9% |
@@ -98,6 +97,7 @@ Generated: 2026-02-19T22:46:54.374Z
 | `@react-stately/utils` | `@vue-stately/utils` | mismatch | 4 | 1 | 0 | 75.0% |
 | `@react-stately/virtualizer` | `@vue-stately/virtualizer` | mismatch | 10 | 1 | 0 | 90.0% |
 | `@react-aria/example-theme` | `@vue-aria/example-theme` | ok | 0 | 0 | 0 | 100.0% |
+| `@react-aria/focus` | `@vue-aria/focus` | ok | 26 | 0 | 0 | 100.0% |
 | `@react-aria/label` | `@vue-aria/label` | ok | 6 | 0 | 0 | 100.0% |
 | `@react-aria/live-announcer` | `@vue-aria/live-announcer` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-aria/ssr` | `@vue-aria/ssr` | ok | 4 | 0 | 0 | 100.0% |
@@ -199,7 +199,7 @@ Generated: 2026-02-19T22:46:54.374Z
 * Source entry: `packages/react-aria/src/index.ts`
 * Target entry: `packages/vue-aria/src/index.ts`
 * Compared exports: 419
-* Mismatched signatures: 106
+* Mismatched signatures: 104
 * Missing in target: 0
 * Example mismatches: `useBreadcrumbItem [call-signatures]`, `useBreadcrumbs [call-signatures]`, `useButton [call-signatures]`, `useToggleButton [call-signatures]`, `useToggleButtonGroup [call-signatures]`, `useToggleButtonGroupItem [call-signatures]`, `useCalendar [call-signatures]`, `useCalendarCell [call-signatures]`, `useCalendarGrid [call-signatures]`, `useRangeCalendar [call-signatures]`, `useCheckbox [call-signatures]`, `useCheckboxGroup [call-signatures]`, `useCheckboxGroupItem [call-signatures]`, `useColorArea [call-signatures]`, `useColorChannelField [call-signatures]`, `useColorField [call-signatures]`, `useColorSlider [call-signatures]`, `useColorSwatch [call-signatures]`, `useColorWheel [call-signatures]`, `useComboBox [call-signatures]`, `useDateField [call-signatures]`, `useDatePicker [call-signatures]`, `useDateRangePicker [call-signatures]`, `useDateSegment [call-signatures]`, `useTimeField [call-signatures]` ...
 
@@ -229,15 +229,6 @@ Generated: 2026-02-19T22:46:54.374Z
 * Mismatched signatures: 20
 * Missing in target: 0
 * Example mismatches: `Collection [value-availability]`, `useCalendarState [call-signatures]`, `useRangeCalendarState [call-signatures]`, `useCheckboxGroupState [call-signatures]`, `parseColor [call-signatures]`, `useColorFieldState [call-signatures]`, `useColorWheelState [call-signatures]`, `useComboBoxState [call-signatures]`, `useDateFieldState [call-signatures]`, `useDatePickerState [call-signatures]`, `useDateRangePickerState [call-signatures]`, `useTimeFieldState [call-signatures]`, `useDraggableCollectionState [call-signatures]`, `useCollection [call-signatures]`, `useRadioGroupState [call-signatures]`, `useSearchFieldState [call-signatures]`, `useSelectState [call-signatures]`, `useTableState [call-signatures]`, `useTableColumnResizeState [call-signatures]`, `useTreeState [call-signatures]`
-
-### @react-aria/focus -> @vue-aria/focus
-
-* Source entry: `packages/@react-aria/focus/src/index.ts`
-* Target entry: `packages/@vue-aria/focus/src/index.ts`
-* Compared exports: 26
-* Mismatched signatures: 12
-* Missing in target: 0
-* Example mismatches: `useFocusManager [call-signatures]`, `getFocusableTreeWalker [call-signatures]`, `createFocusManager [call-signatures]`, `isElementInChildOfActiveScope [call-signatures]`, `useHasTabbableChild [call-signatures]`, `moveVirtualFocus [call-signatures]`, `dispatchVirtualBlur [call-signatures]`, `dispatchVirtualFocus [call-signatures]`, `getVirtuallyFocusedElement [call-signatures]`, `isFocusable [call-signatures]`, `useFocusable [call-signatures]`, `focusSafely [call-signatures]`
 
 ### @react-aria/dnd -> @vue-aria/dnd
 
@@ -355,4 +346,13 @@ Generated: 2026-02-19T22:46:54.374Z
 * Mismatched signatures: 5
 * Missing in target: 0
 * Example mismatches: `useButton [call-signatures]`, `useToggleButton [call-signatures]`, `useToggleButtonGroup [call-signatures]`, `useToggleButtonGroupItem [call-signatures]`, `AriaToggleButtonGroupProps [value-availability]`
+
+### @react-aria/collections -> @vue-aria/collections
+
+* Source entry: `packages/@react-aria/collections/src/index.ts`
+* Target entry: `packages/@vue-aria/collections/src/index.ts`
+* Compared exports: 17
+* Mismatched signatures: 5
+* Missing in target: 0
+* Example mismatches: `createLeafComponent [call-signatures]`, `createBranchComponent [call-signatures]`, `createHideableComponent [call-signatures]`, `useIsHidden [call-signatures]`, `useCachedChildren [call-signatures]`
 

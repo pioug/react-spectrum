@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-19T22:46:54.374Z",
+  "generatedAt": "2026-02-19T22:50:21.185Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 76,
+    "fullyMatchedPackages": 77,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 1818,
-    "mismatchedExportTotal": 854,
+    "matchedExportTotal": 1832,
+    "mismatchedExportTotal": 840,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.6804
+    "parityCoverage": 0.6856
   },
   "packages": [
     {
@@ -61,7 +61,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -100,7 +100,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -139,7 +139,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -178,7 +178,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -218,7 +218,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -257,7 +257,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -296,7 +296,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -335,7 +335,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -374,7 +374,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -413,7 +413,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -452,7 +452,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -491,7 +491,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -530,7 +530,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -569,7 +569,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -608,7 +608,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -647,7 +647,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -686,7 +686,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -725,7 +725,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -764,7 +764,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -803,7 +803,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -842,7 +842,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -877,8 +877,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -911,8 +911,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -945,8 +945,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -979,8 +979,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1013,8 +1013,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1047,8 +1047,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1081,8 +1081,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1115,8 +1115,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1149,8 +1149,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1183,8 +1183,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1217,8 +1217,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1251,8 +1251,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1285,8 +1285,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1319,8 +1319,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1353,8 +1353,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1387,8 +1387,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1421,8 +1421,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1455,8 +1455,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1489,8 +1489,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1523,8 +1523,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1557,8 +1557,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1591,8 +1591,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1625,8 +1625,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1659,8 +1659,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1693,8 +1693,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1727,8 +1727,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1761,8 +1761,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1795,8 +1795,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1829,8 +1829,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1863,8 +1863,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1897,8 +1897,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1931,8 +1931,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1965,8 +1965,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -1999,8 +1999,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2033,8 +2033,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2067,8 +2067,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2101,8 +2101,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2135,8 +2135,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2169,8 +2169,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2203,8 +2203,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2237,8 +2237,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2271,8 +2271,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2305,8 +2305,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2339,8 +2339,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2373,8 +2373,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2407,8 +2407,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2441,8 +2441,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2475,8 +2475,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2509,8 +2509,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2543,8 +2543,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2577,8 +2577,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2611,8 +2611,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2645,8 +2645,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2679,8 +2679,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2713,8 +2713,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2747,8 +2747,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2781,8 +2781,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2815,8 +2815,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2849,8 +2849,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -2907,7 +2907,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -2946,7 +2946,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -2985,7 +2985,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -3024,7 +3024,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -3063,7 +3063,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -3102,7 +3102,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -3141,7 +3141,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -3180,7 +3180,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -3219,7 +3219,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -3258,7 +3258,7 @@
               "VariableDeclaration"
             ],
             "valueType": "AnyFunction",
-            "declaredType": "AnyRecord",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [
               "(...args: unknown[]) => unknown"
             ],
@@ -3293,8 +3293,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3327,8 +3327,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3361,8 +3361,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3395,8 +3395,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3429,8 +3429,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3463,8 +3463,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3497,8 +3497,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3531,8 +3531,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3565,8 +3565,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3599,8 +3599,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3633,8 +3633,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3667,8 +3667,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3701,8 +3701,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3735,8 +3735,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3769,8 +3769,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3803,8 +3803,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3837,8 +3837,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3871,8 +3871,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3905,8 +3905,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3939,8 +3939,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -3973,8 +3973,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4007,8 +4007,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4041,8 +4041,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4075,8 +4075,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4109,8 +4109,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4143,8 +4143,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4177,8 +4177,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4211,8 +4211,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4245,8 +4245,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4279,8 +4279,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4313,8 +4313,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4347,8 +4347,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4381,8 +4381,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4415,8 +4415,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4449,8 +4449,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4483,8 +4483,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4517,8 +4517,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4551,8 +4551,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4585,8 +4585,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4619,8 +4619,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4653,8 +4653,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4687,8 +4687,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4721,8 +4721,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4755,8 +4755,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4789,8 +4789,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4823,8 +4823,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4857,8 +4857,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4891,8 +4891,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4925,8 +4925,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4959,8 +4959,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -4993,8 +4993,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5027,8 +5027,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5061,8 +5061,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5095,8 +5095,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5129,8 +5129,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5163,8 +5163,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5197,8 +5197,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5231,8 +5231,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5265,8 +5265,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5299,8 +5299,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5333,8 +5333,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5367,8 +5367,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5401,8 +5401,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5435,8 +5435,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5469,8 +5469,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5503,8 +5503,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5537,8 +5537,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5571,8 +5571,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5605,8 +5605,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5639,8 +5639,8 @@
               "TypeAliasDeclaration",
               "VariableDeclaration"
             ],
-            "valueType": "AnyRecord",
-            "declaredType": "AnyRecord",
+            "valueType": "Record<string, unknown>",
+            "declaredType": "Record<string, unknown>",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -5659,10 +5659,10 @@
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
       "comparedExportCount": 419,
-      "matchedExportCount": 313,
-      "mismatchedExportCount": 106,
+      "matchedExportCount": 315,
+      "mismatchedExportCount": 104,
       "missingInTargetCount": 0,
-      "parityRatio": 0.747,
+      "parityRatio": 0.7518,
       "missingInTargetExports": [],
       "mismatches": [
         {
@@ -7087,43 +7087,6 @@
           }
         },
         {
-          "exportName": "useFocusManager",
-          "targetExportName": "useFocusManager",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useFocusManager",
-            "resolvedName": "useFocusManager",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => FocusManager | undefined",
-            "declaredType": "",
-            "callSignatures": [
-              "() => FocusManager | undefined"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useFocusManager",
-            "resolvedName": "useFocusManager",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => FocusManager",
-            "declaredType": "",
-            "callSignatures": [
-              "() => FocusManager"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
           "exportName": "useLocalizedStringFormatter",
           "targetExportName": "useLocalizedStringFormatter",
           "differences": [
@@ -7304,43 +7267,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: InteractOutsideProps) => () => void"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useFocusable",
-          "targetExportName": "useFocusable",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useFocusable",
-            "resolvedName": "useFocusable",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends FocusableElement = FocusableElement>(props: FocusableOptions<T>, domRef: RefObject<FocusableElement | null>) => FocusableAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends FocusableElement = FocusableElement>( _: FocusableOptions<T>, _: RefObject<FocusableElement | null>) => FocusableAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useFocusable",
-            "resolvedName": "useFocusable",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props?: AnyRecord) => { focusableProps: AnyRecord;}",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AnyRecord) => { focusableProps: AnyRecord; }"
             ],
             "constructSignatures": []
           }
@@ -8639,9 +8565,83 @@
             ],
             "constructSignatures": []
           }
+        },
+        {
+          "exportName": "useTableHeaderRow",
+          "targetExportName": "useTableHeaderRow",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useTableHeaderRow",
+            "resolvedName": "useTableHeaderRow",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(props: GridRowProps<T>, state: TableState<T>, ref: RefObject<Element | null>) => TableHeaderRowAria",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: GridRowProps<T>, _: TableState<T>, _: RefObject<Element | null>) => TableHeaderRowAria"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useTableHeaderRow",
+            "resolvedName": "useTableHeaderRow",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(props: AriaTableHeaderRowProps) => TableHeaderRowAria",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: AriaTableHeaderRowProps) => TableHeaderRowAria"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "useTableRow",
+          "targetExportName": "useTableRow",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useTableRow",
+            "resolvedName": "useTableRow",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(props: GridRowProps<T>, state: TableState<T> | TreeGridState<T>, ref: RefObject<FocusableElement | null>) => GridRowAria",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: GridRowProps<T>, _: TableState<T> | TreeGridState<T>, _: RefObject<FocusableElement | null>) => GridRowAria"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useTableRow",
+            "resolvedName": "useTableRow",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(props: AriaTableRowProps) => TableRowAria",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: AriaTableRowProps) => TableRowAria"
+            ],
+            "constructSignatures": []
+          }
         }
       ],
-      "truncatedMismatchCount": 26,
+      "truncatedMismatchCount": 24,
       "error": null
     },
     {
@@ -11240,10 +11240,10 @@
             "declarationKinds": [
               "FunctionDeclaration"
             ],
-            "valueType": "(query: MaybeRef<string>, fallbackValue?: boolean) => Ref<boolean>",
+            "valueType": "(query: MaybeRef<string>, fallbackValue?: boolean) => boolean",
             "declaredType": "",
             "callSignatures": [
-              "( _: MaybeRef<string>, _: boolean) => Ref<boolean>"
+              "( _: MaybeRef<string>, _: boolean) => boolean"
             ],
             "constructSignatures": []
           }
@@ -11639,10 +11639,10 @@
             "declarationKinds": [
               "FunctionDeclaration"
             ],
-            "valueType": "(props?: AnyRecord) => { style: Record<string, unknown>; className: unknown;}",
+            "valueType": "(props?: Record<string, unknown>) => { style: Record<string, unknown>; className: unknown;}",
             "declaredType": "",
             "callSignatures": [
-              "( _: AnyRecord) => { style: Record<string, unknown>; className: unknown; }"
+              "( _: Record<string, unknown>) => { style: Record<string, unknown>; className: unknown; }"
             ],
             "constructSignatures": []
           }
@@ -11676,10 +11676,10 @@
             "declarationKinds": [
               "FunctionDeclaration"
             ],
-            "valueType": "(props?: AnyRecord) => ComputedRef<{ style: Record<string, unknown>; className: unknown;}>",
+            "valueType": "(props?: Record<string, unknown>) => ComputedRef<{ style: Record<string, unknown>; className: unknown;}>",
             "declaredType": "",
             "callSignatures": [
-              "( _: AnyRecord) => ComputedRef<{ style: Record<string, unknown>; className: unknown; }>"
+              "( _: Record<string, unknown>) => ComputedRef<{ style: Record<string, unknown>; className: unknown; }>"
             ],
             "constructSignatures": []
           }
@@ -11787,10 +11787,10 @@
             "declarationKinds": [
               "FunctionDeclaration"
             ],
-            "valueType": "(props?: AnyRecord, slotName?: string) => ComputedRef<{ slot: string;}>",
+            "valueType": "(props?: Record<string, unknown>, slotName?: string) => ComputedRef<{ slot: string;}>",
             "declaredType": "",
             "callSignatures": [
-              "( _: AnyRecord, _: string) => ComputedRef<{ slot: string; }>"
+              "( _: Record<string, unknown>, _: string) => ComputedRef<{ slot: string; }>"
             ],
             "constructSignatures": []
           }
@@ -11824,10 +11824,10 @@
             "declarationKinds": [
               "FunctionDeclaration"
             ],
-            "valueType": "(styles?: AnyRecord) => Record<string, string>",
+            "valueType": "(styles?: Record<string, unknown>) => Record<string, string>",
             "declaredType": "",
             "callSignatures": [
-              "( _: AnyRecord) => Record<string, string>"
+              "( _: Record<string, unknown>) => Record<string, string>"
             ],
             "constructSignatures": []
           }
@@ -11861,10 +11861,10 @@
             "declarationKinds": [
               "FunctionDeclaration"
             ],
-            "valueType": "(child: VNodeChild | null | undefined) => ComputedRef<boolean>",
+            "valueType": "(child: VNodeChild | null | undefined) => Computedboolean",
             "declaredType": "",
             "callSignatures": [
-              "( _: VNodeChild | null | undefined) => ComputedRef<boolean>"
+              "( _: VNodeChild | null | undefined) => Computedboolean"
             ],
             "constructSignatures": []
           }
@@ -11898,10 +11898,10 @@
             "declarationKinds": [
               "FunctionDeclaration"
             ],
-            "valueType": "(query?: string) => Ref<boolean>",
+            "valueType": "(query?: string) => boolean",
             "declaredType": "",
             "callSignatures": [
-              "( _: string) => Ref<boolean>"
+              "( _: string) => boolean"
             ],
             "constructSignatures": []
           }
@@ -12808,470 +12808,6 @@
             "declaredType": "",
             "callSignatures": [
               "<T>( _: TreeProps<T>) => TreeState<T>"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/focus",
-      "sourcePath": "packages/@react-aria/focus",
-      "targetPackage": "@vue-aria/focus",
-      "targetPath": "packages/@vue-aria/focus",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/focus/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/focus/src/index.ts",
-      "sourceExportCount": 26,
-      "comparedExportCount": 26,
-      "matchedExportCount": 14,
-      "mismatchedExportCount": 12,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.5385,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useFocusManager",
-          "targetExportName": "useFocusManager",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useFocusManager",
-            "resolvedName": "useFocusManager",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => FocusManager | undefined",
-            "declaredType": "",
-            "callSignatures": [
-              "() => FocusManager | undefined"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useFocusManager",
-            "resolvedName": "useFocusManager",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => FocusManager",
-            "declaredType": "",
-            "callSignatures": [
-              "() => FocusManager"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "getFocusableTreeWalker",
-          "targetExportName": "getFocusableTreeWalker",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "getFocusableTreeWalker",
-            "resolvedName": "getFocusableTreeWalker",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(root: Element, opts?: FocusManagerOptions, scope?: Element[]) => ShadowTreeWalker | TreeWalker",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: Element, _: FocusManagerOptions, _: Element[]) => ShadowTreeWalker | TreeWalker"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "getFocusableTreeWalker",
-            "resolvedName": "getFocusableTreeWalker",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => null",
-            "declaredType": "",
-            "callSignatures": [
-              "() => null"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "createFocusManager",
-          "targetExportName": "createFocusManager",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "createFocusManager",
-            "resolvedName": "createFocusManager",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(ref: RefObject<Element | null>, defaultOptions?: FocusManagerOptions) => FocusManager",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: RefObject<Element | null>, _: FocusManagerOptions) => FocusManager"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "createFocusManager",
-            "resolvedName": "createFocusManager",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => FocusManager",
-            "declaredType": "",
-            "callSignatures": [
-              "() => FocusManager"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "isElementInChildOfActiveScope",
-          "targetExportName": "isElementInChildOfActiveScope",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "isElementInChildOfActiveScope",
-            "resolvedName": "isElementInChildOfActiveScope",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(element: Element) => boolean",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: Element) => boolean"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "isElementInChildOfActiveScope",
-            "resolvedName": "isElementInChildOfActiveScope",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => boolean",
-            "declaredType": "",
-            "callSignatures": [
-              "() => boolean"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useHasTabbableChild",
-          "targetExportName": "useHasTabbableChild",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useHasTabbableChild",
-            "resolvedName": "useHasTabbableChild",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(ref: RefObject<Element | null>, options?: AriaHasTabbableChildOptions) => boolean",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: RefObject<Element | null>, _: AriaHasTabbableChildOptions) => boolean"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useHasTabbableChild",
-            "resolvedName": "useHasTabbableChild",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(target: MaybeElementRef, options?: AriaHasTabbableChildOptions) => Readonly<Ref<boolean>>",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: MaybeElementRef, _: AriaHasTabbableChildOptions) => Readonly<Ref<boolean>>"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "moveVirtualFocus",
-          "targetExportName": "moveVirtualFocus",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "moveVirtualFocus",
-            "resolvedName": "moveVirtualFocus",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(to: Element | null) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: Element | null) => void"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "moveVirtualFocus",
-            "resolvedName": "moveVirtualFocus",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => void",
-            "declaredType": "",
-            "callSignatures": [
-              "() => void"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "dispatchVirtualBlur",
-          "targetExportName": "dispatchVirtualBlur",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "dispatchVirtualBlur",
-            "resolvedName": "dispatchVirtualBlur",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(from: Element, to: Element | null) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: Element, _: Element | null) => void"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "dispatchVirtualBlur",
-            "resolvedName": "dispatchVirtualBlur",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => void",
-            "declaredType": "",
-            "callSignatures": [
-              "() => void"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "dispatchVirtualFocus",
-          "targetExportName": "dispatchVirtualFocus",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "dispatchVirtualFocus",
-            "resolvedName": "dispatchVirtualFocus",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(to: Element, from: Element | null) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: Element, _: Element | null) => void"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "dispatchVirtualFocus",
-            "resolvedName": "dispatchVirtualFocus",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => void",
-            "declaredType": "",
-            "callSignatures": [
-              "() => void"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "getVirtuallyFocusedElement",
-          "targetExportName": "getVirtuallyFocusedElement",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "getVirtuallyFocusedElement",
-            "resolvedName": "getVirtuallyFocusedElement",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(document: Document) => Element | null",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: Document) => Element | null"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "getVirtuallyFocusedElement",
-            "resolvedName": "getVirtuallyFocusedElement",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => AnyElement",
-            "declaredType": "",
-            "callSignatures": [
-              "() => AnyElement"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "isFocusable",
-          "targetExportName": "isFocusable",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "isFocusable",
-            "resolvedName": "isFocusable",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(element: Element) => boolean",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: Element) => boolean"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "isFocusable",
-            "resolvedName": "isFocusable",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(element: AnyElement) => boolean",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AnyElement) => boolean"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useFocusable",
-          "targetExportName": "useFocusable",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useFocusable",
-            "resolvedName": "useFocusable",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends FocusableElement = FocusableElement>(props: FocusableOptions<T>, domRef: RefObject<FocusableElement | null>) => FocusableAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends FocusableElement = FocusableElement>( _: FocusableOptions<T>, _: RefObject<FocusableElement | null>) => FocusableAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useFocusable",
-            "resolvedName": "useFocusable",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props?: AnyRecord) => { focusableProps: AnyRecord;}",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AnyRecord) => { focusableProps: AnyRecord; }"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "focusSafely",
-          "targetExportName": "focusSafely",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "focusSafely",
-            "resolvedName": "focusSafely",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(element: FocusableElement) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: FocusableElement) => void"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "focusSafely",
-            "resolvedName": "focusSafely",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(element: AnyElement) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AnyElement) => void"
             ],
             "constructSignatures": []
           }
@@ -14873,10 +14409,10 @@
             "declarationKinds": [
               "FunctionDeclaration"
             ],
-            "valueType": "(fn: FocusVisibleHandler, deps?: ReadonlyArray<unknown>, opts?: { enabled?: MaybeRef<boolean>; isTextInput?: MaybeRef<boolean>;}) => () => void",
+            "valueType": "(fn: FocusVisibleHandler, deps?: ReadonlyArray<unknown>, opts?: { enabled?: Maybeboolean; isTextInput?: Maybeboolean;}) => () => void",
             "declaredType": "",
             "callSignatures": [
-              "( _: FocusVisibleHandler, _: ReadonlyArray<unknown>, _: { enabled?: MaybeRef<boolean>; isTextInput?: MaybeRef<boolean>; }) => () => void"
+              "( _: FocusVisibleHandler, _: ReadonlyArray<unknown>, _: { enabled?: Maybeboolean; isTextInput?: Maybeboolean; }) => () => void"
             ],
             "constructSignatures": []
           }
@@ -17113,10 +16649,10 @@
             "declarationKinds": [
               "FunctionDeclaration"
             ],
-            "valueType": "<TProps, TResult>(component: (props: TProps, isHidden: ComputedRef<boolean>) => TResult) => (props: TProps) => TResult",
+            "valueType": "<TProps, TResult>(component: (props: TProps, isHidden: Computedboolean) => TResult) => (props: TProps) => TResult",
             "declaredType": "",
             "callSignatures": [
-              "<TProps, TResult>( _: ( _: TProps, _: ComputedRef<boolean>) => TResult) => ( _: TProps) => TResult"
+              "<TProps, TResult>( _: ( _: TProps, _: Computedboolean) => TResult) => ( _: TProps) => TResult"
             ],
             "constructSignatures": []
           }
@@ -17150,10 +16686,10 @@
             "declarationKinds": [
               "FunctionDeclaration"
             ],
-            "valueType": "() => ComputedRef<boolean>",
+            "valueType": "() => Computedboolean",
             "declaredType": "",
             "callSignatures": [
-              "() => ComputedRef<boolean>"
+              "() => Computedboolean"
             ],
             "constructSignatures": []
           }
@@ -21733,6 +21269,25 @@
       "sourceExportCount": 0,
       "comparedExportCount": 0,
       "matchedExportCount": 0,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/focus",
+      "sourcePath": "packages/@react-aria/focus",
+      "targetPackage": "@vue-aria/focus",
+      "targetPath": "packages/@vue-aria/focus",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/focus/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/focus/src/index.ts",
+      "sourceExportCount": 26,
+      "comparedExportCount": 26,
+      "matchedExportCount": 26,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
