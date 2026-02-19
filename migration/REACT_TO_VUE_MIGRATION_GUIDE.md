@@ -140,6 +140,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-stately/calendar` | `@vue-stately/calendar` |
 | `@react-stately/checkbox` | `@vue-stately/checkbox` |
 | `@react-stately/collections` | `@vue-stately/collections` |
+| `@react-stately/color` | `@vue-stately/color` |
 
 ## Core API conversion patterns
 

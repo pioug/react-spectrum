@@ -171,6 +171,14 @@ import {
   getNthItem as getNthStatelyItem,
   useCollection as useStatelyCollection
 } from '@vue-stately/collections';
+import {
+  parseColor as parseStatelyColor,
+  useColorAreaState as useStatelyColorAreaState,
+  useColorChannelFieldState as useStatelyColorChannelFieldState,
+  useColorFieldState as useStatelyColorFieldState,
+  useColorPickerState as useStatelyColorPickerState,
+  useColorSliderState as useStatelyColorSliderState
+} from '@vue-stately/color';
 
 function createPointerEvent(
   type: string,
@@ -692,6 +700,48 @@ describe('Vue migration composition components', () => {
       color: ref('ff00ff')
     });
     expect(swatch.swatchProps.value.style.backgroundColor).toBe('#ff00ff');
+  });
+
+  it('manages vue-stately color area/slider/field/channel/picker state baselines', () => {
+    let areaValue = ref('#000000');
+    let area = useStatelyColorAreaState({
+      value: areaValue
+    });
+    area.setColorFromPoint(1, 0);
+    expect(areaValue.value).toBe('#ffff00');
+
+    let sliderValue = ref('#000000');
+    let slider = useStatelyColorSliderState({
+      channel: 'red',
+      value: sliderValue
+    });
+    slider.increment(32);
+    expect(sliderValue.value).toBe('#200000');
+
+    let field = useStatelyColorFieldState({
+      defaultValue: '#112233'
+    });
+    field.setInputValue('#445566');
+    field.commit();
+    expect(field.colorValue.value).toBe('#445566');
+
+    let channelState = useStatelyColorChannelFieldState({
+      channel: 'green',
+      value: sliderValue
+    });
+    channelState.setInputValue('64');
+    expect(sliderValue.value).toBe('#204000');
+
+    let pickerValue = ref('#abcdef');
+    let picker = useStatelyColorPickerState({
+      value: pickerValue
+    });
+    picker.open();
+    picker.setColorValue('#123456');
+    picker.close();
+    expect(picker.isOpen.value).toBe(false);
+    expect(pickerValue.value).toBe('#123456');
+    expect(parseStatelyColor('#abc')).toBe('#aabbcc');
   });
 
   it('filters and selects options with vue-aria combobox composable state', () => {

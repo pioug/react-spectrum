@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 124 |
+| in_progress | 125 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 28 |
+| not_started | 27 |
 
 ## Package tracker
 
@@ -145,11 +145,11 @@ Tracked source packages: 154
 | `@react-stately/calendar` | `packages/@react-stately/calendar` | `@vue-stately/calendar` | `packages/@vue-stately/calendar` | in_progress | Vue stately calendar package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for single-date and range-date calendar navigation and selection in Vue. |
 | `@react-stately/checkbox` | `packages/@react-stately/checkbox` | `@vue-stately/checkbox` | `packages/@vue-stately/checkbox` | in_progress | Vue stately checkbox package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for checkbox-group selection with required/invalid tracking in Vue. |
 | `@react-stately/collections` | `packages/@react-stately/collections` | `@vue-stately/collections` | `packages/@vue-stately/collections` | in_progress | Vue stately collections package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for collection builders and traversal helper utilities in Vue. |
+| `@react-stately/color` | `packages/@react-stately/color` | `@vue-stately/color` | `packages/@vue-stately/color` | in_progress | Vue stately color package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for color area/slider/field/channel/picker workflows in Vue. |
 | `react-aria-components` | `packages/react-aria-components` | `@vue-spectrum/components` | `packages/@vue-spectrum/components` | in_progress | Vue package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Initial Vue baseline package exists, but React Aria Components parity is still in progress. |
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-stately/color` | `packages/@react-stately/color` | `@vue-stately/color` | `packages/@vue-stately/color` | not_started | - | - |
 | `@react-stately/combobox` | `packages/@react-stately/combobox` | `@vue-stately/combobox` | `packages/@vue-stately/combobox` | not_started | - | - |
 | `@react-stately/data` | `packages/@react-stately/data` | `@vue-stately/data` | `packages/@vue-stately/data` | not_started | - | - |
 | `@react-stately/datepicker` | `packages/@react-stately/datepicker` | `@vue-stately/datepicker` | `packages/@vue-stately/datepicker` | not_started | - | - |

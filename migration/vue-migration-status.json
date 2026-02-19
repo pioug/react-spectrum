@@ -2848,6 +2848,30 @@
         }
       ]
     },
+    "@react-stately/color": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/color",
+      "targetPath": "packages/@vue-stately/color",
+      "notes": "State baseline for color area/slider/field/channel/picker workflows in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately color package source lint",
+          "command": "yarn eslint packages/@vue-stately/color/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",
