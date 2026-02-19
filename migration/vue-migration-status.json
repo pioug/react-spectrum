@@ -400,6 +400,26 @@
         }
       ]
     },
+    "@react-spectrum/table": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/table",
+      "targetPath": "packages/@vue-spectrum/table",
+      "notes": "Data-heavy migration baseline for tabular collections.",
+      "acceptanceTests": [
+        {
+          "name": "Vue table package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/table/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    },
     "@react-spectrum/switch": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/switch",

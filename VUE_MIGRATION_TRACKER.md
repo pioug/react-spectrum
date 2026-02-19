@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 22 |
+| in_progress | 23 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 130 |
+| not_started | 129 |
 
 ## Package tracker
 
@@ -42,6 +42,7 @@ Tracked source packages: 154
 | `@react-spectrum/slider` | `packages/@react-spectrum/slider` | `@vue-spectrum/slider` | `packages/@vue-spectrum/slider` | in_progress | Vue slider package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for range input controls. |
 | `@react-spectrum/statuslight` | `packages/@react-spectrum/statuslight` | `@vue-spectrum/statuslight` | `packages/@vue-spectrum/statuslight` | in_progress | Vue statuslight package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for lightweight status signaling. |
 | `@react-spectrum/switch` | `packages/@react-spectrum/switch` | `@vue-spectrum/switch` | `packages/@vue-spectrum/switch` | in_progress | Vue switch package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for binary toggles. |
+| `@react-spectrum/table` | `packages/@react-spectrum/table` | `@vue-spectrum/table` | `packages/@vue-spectrum/table` | in_progress | Vue table package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Data-heavy migration baseline for tabular collections. |
 | `@react-spectrum/textfield` | `packages/@react-spectrum/textfield` | `@vue-spectrum/textfield` | `packages/@vue-spectrum/textfield` | in_progress | Vue textfield package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive aligned with existing VueTextField baseline work. |
 | `react-aria-components` | `packages/react-aria-components` | `@vue-spectrum/components` | `packages/@vue-spectrum/components` | in_progress | Vue package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Initial Vue baseline package exists, but React Aria Components parity is still in progress. |
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
@@ -130,7 +131,6 @@ Tracked source packages: 154
 | `@react-spectrum/steplist` | `packages/@react-spectrum/steplist` | `@vue-spectrum/steplist` | `packages/@vue-spectrum/steplist` | not_started | - | - |
 | `@react-spectrum/story-utils` | `packages/@react-spectrum/story-utils` | `@vue-spectrum/story-utils` | `packages/@vue-spectrum/story-utils` | not_started | - | - |
 | `@react-spectrum/style-macro-s1` | `packages/@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | `packages/@vue-spectrum/style-macro-s1` | not_started | - | - |
-| `@react-spectrum/table` | `packages/@react-spectrum/table` | `@vue-spectrum/table` | `packages/@vue-spectrum/table` | not_started | - | - |
 | `@react-spectrum/tabs` | `packages/@react-spectrum/tabs` | `@vue-spectrum/tabs` | `packages/@vue-spectrum/tabs` | not_started | - | - |
 | `@react-spectrum/tag` | `packages/@react-spectrum/tag` | `@vue-spectrum/tag` | `packages/@vue-spectrum/tag` | not_started | - | - |
 | `@react-spectrum/test-utils` | `packages/@react-spectrum/test-utils` | `@vue-spectrum/test-utils` | `packages/@vue-spectrum/test-utils` | not_started | - | - |

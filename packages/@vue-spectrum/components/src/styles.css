@@ -838,6 +838,55 @@
   box-shadow: var(--vs-focus-ring);
 }
 
+.vs-table {
+  display: grid;
+}
+
+.vs-table__table {
+  border-collapse: collapse;
+  inline-size: 100%;
+}
+
+.vs-table__caption {
+  font-size: 14px;
+  font-weight: 600;
+  margin-block-end: 8px;
+  text-align: left;
+}
+
+.vs-table__header {
+  border-bottom: 1px solid var(--vs-color-border);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 8px 10px;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.vs-table__row {
+  transition: background-color 120ms ease;
+}
+
+.vs-table__row:hover:not(.is-empty) {
+  background: var(--vs-color-secondary-hover);
+}
+
+.vs-table__row.is-selected {
+  background: rgba(20, 115, 230, 0.12);
+}
+
+.vs-table__cell {
+  border-bottom: 1px solid var(--vs-color-border);
+  font-size: 14px;
+  padding: 8px 10px;
+}
+
+.vs-table--large .vs-table__header,
+.vs-table--large .vs-table__cell {
+  padding: 10px 12px;
+}
+
 .vs-link {
   color: var(--vs-color-primary);
   text-decoration: underline;

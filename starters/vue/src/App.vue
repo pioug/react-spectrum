@@ -85,6 +85,13 @@
           label="Favorite library"
           :items="libraryOptions" />
 
+        <VueTable
+          v-model="selectedTicket"
+          caption="Open tickets"
+          :columns="ticketColumns"
+          :rows="ticketRows"
+          row-key="ticket" />
+
         <VueDivider />
 
         <p class="summary">
@@ -97,6 +104,8 @@
           Menu: <strong>{{ favoriteComponent }}</strong>
           <span> · </span>
           List: <strong>{{ favoriteLibrary }}</strong>
+          <span> · </span>
+          Ticket: <strong>{{ selectedTicket }}</strong>
           <span> · </span>
           Digest: <strong>{{ isDigestEnabled ? 'on' : 'off' }}</strong>
           <span> · </span>
@@ -163,6 +172,7 @@ import {SearchField as VueSearchField} from '@vue-spectrum/searchfield';
 import {Slider as VueSlider} from '@vue-spectrum/slider';
 import {StatusLight as VueStatusLight} from '@vue-spectrum/statuslight';
 import {Switch as VueSwitch} from '@vue-spectrum/switch';
+import {Table as VueTable} from '@vue-spectrum/table';
 import {TextField as VueTextField} from '@vue-spectrum/textfield';
 
 const count = ref(0);
@@ -176,11 +186,22 @@ const isSubscribed = ref(true);
 const favoriteFramework = ref('vue');
 const favoriteComponent = ref('Forms');
 const favoriteLibrary = ref('Vue Spectrum');
+const selectedTicket = ref('T-402');
 const isDialogOpen = ref(false);
 const isPopoverOpen = ref(false);
 const languageOptions = ['TypeScript', 'JavaScript', 'Rust', 'Go', 'Python'];
 const componentOptions = ['Forms', 'Navigation', 'Overlays', 'Data display'];
 const libraryOptions = ['Vue Spectrum', 'React Spectrum', 'Tailwind CSS'];
+const ticketColumns = [
+  {key: 'ticket', label: 'Ticket'},
+  {key: 'owner', label: 'Owner'},
+  {key: 'status', label: 'Status'}
+];
+const ticketRows = [
+  {ticket: 'T-401', owner: 'Avery', status: 'Todo'},
+  {ticket: 'T-402', owner: 'Quinn', status: 'In Progress'},
+  {ticket: 'T-403', owner: 'Riley', status: 'Review'}
+];
 
 const statusTone = computed(() => {
   if (completionProgress.value >= 80) {
@@ -223,6 +244,7 @@ function reset() {
   favoriteFramework.value = 'vue';
   favoriteComponent.value = 'Forms';
   favoriteLibrary.value = 'Vue Spectrum';
+  selectedTicket.value = 'T-402';
   isDialogOpen.value = false;
   isPopoverOpen.value = false;
 }
