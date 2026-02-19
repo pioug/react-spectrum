@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:46:42.262Z
+Generated: 2026-02-19T21:49:43.944Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 67
+* Fully matched packages: 69
 * Source exports inspected: 2672
-* Missing exports: 980
-* Coverage ratio: 63.32%
+* Missing exports: 976
+* Coverage ratio: 63.47%
 
 ## Package gaps
 
@@ -50,8 +50,6 @@ Generated: 2026-02-19T21:46:42.262Z
 | `@react-spectrum/actiongroup` | `@vue-spectrum/actiongroup` | missing | 3 | 2 | 33.3% |
 | `@react-spectrum/breadcrumbs` | `@vue-spectrum/breadcrumbs` | missing | 3 | 2 | 33.3% |
 | `@react-spectrum/calendar` | `@vue-spectrum/calendar` | missing | 4 | 2 | 50.0% |
-| `@react-spectrum/form` | `@vue-spectrum/form` | missing | 3 | 2 | 33.3% |
-| `@react-spectrum/label` | `@vue-spectrum/label` | missing | 3 | 2 | 33.3% |
 | `@react-spectrum/list` | `@vue-spectrum/list` | missing | 3 | 2 | 33.3% |
 | `@react-spectrum/radio` | `@vue-spectrum/radio` | missing | 4 | 2 | 50.0% |
 | `@react-spectrum/steplist` | `@vue-spectrum/steplist` | missing | 3 | 2 | 33.3% |
@@ -128,7 +126,9 @@ Generated: 2026-02-19T21:46:42.262Z
 | `@react-spectrum/button` | `@vue-spectrum/button` | ok | 10 | 0 | 100.0% |
 | `@react-spectrum/dialog` | `@vue-spectrum/dialog` | ok | 10 | 0 | 100.0% |
 | `@react-spectrum/dnd` | `@vue-spectrum/dnd` | ok | 26 | 0 | 100.0% |
+| `@react-spectrum/form` | `@vue-spectrum/form` | ok | 3 | 0 | 100.0% |
 | `@react-spectrum/icon` | `@vue-spectrum/icon` | ok | 9 | 0 | 100.0% |
+| `@react-spectrum/label` | `@vue-spectrum/label` | ok | 3 | 0 | 100.0% |
 | `@react-spectrum/listbox` | `@vue-spectrum/listbox` | ok | 6 | 0 | 100.0% |
 | `@react-spectrum/menu` | `@vue-spectrum/menu` | ok | 12 | 0 | 100.0% |
 | `@react-spectrum/provider` | `@vue-spectrum/provider` | ok | 5 | 0 | 100.0% |

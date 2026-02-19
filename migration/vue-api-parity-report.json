@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T21:46:42.262Z",
+  "generatedAt": "2026-02-19T21:49:43.944Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 67,
+    "fullyMatchedPackages": 69,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 980,
-    "parityCoverage": 0.6332
+    "missingExportTotal": 976,
+    "parityCoverage": 0.6347
   },
   "packages": [
     {
@@ -1681,46 +1681,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-spectrum/form",
-      "sourcePath": "packages/@react-spectrum/form",
-      "targetPackage": "@vue-spectrum/form",
-      "targetPath": "packages/@vue-spectrum/form",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/form/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/form/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 2,
-      "parityRatio": 0.3333,
-      "missingExports": [
-        "SpectrumFormProps",
-        "useFormProps"
-      ],
-      "extraExports": [
-        "VueForm"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/label",
-      "sourcePath": "packages/@react-spectrum/label",
-      "targetPackage": "@vue-spectrum/label",
-      "targetPath": "packages/@vue-spectrum/label",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/label/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/label/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 2,
-      "parityRatio": 0.3333,
-      "missingExports": [
-        "Field",
-        "HelpText"
-      ],
-      "extraExports": [
-        "VueLabel"
-      ],
-      "error": null
-    },
-    {
       "sourcePackage": "@react-spectrum/list",
       "sourcePath": "packages/@react-spectrum/list",
       "targetPackage": "@vue-spectrum/list",
@@ -3231,6 +3191,23 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/form",
+      "sourcePath": "packages/@react-spectrum/form",
+      "targetPackage": "@vue-spectrum/form",
+      "targetPath": "packages/@vue-spectrum/form",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/form/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/form/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 4,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueForm"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/icon",
       "sourcePath": "packages/@react-spectrum/icon",
       "targetPackage": "@vue-spectrum/icon",
@@ -3246,6 +3223,23 @@
         "VueIcon",
         "VueIllustration",
         "VueUIIcon"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/label",
+      "sourcePath": "packages/@react-spectrum/label",
+      "targetPackage": "@vue-spectrum/label",
+      "targetPath": "packages/@vue-spectrum/label",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/label/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/label/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 4,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueLabel"
       ],
       "error": null
     },
