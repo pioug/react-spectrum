@@ -2,6 +2,15 @@
 
 Over 50 components with built-in behavior, adaptive interactions, top-tier accessibility, and internationalization out of the box, ready for your styles.
 
+## Migration notice
+
+As of February 19, 2026, this React package is in maintenance mode while Vue migration ports continue.
+
+* Vue replacement package: `@vue-spectrum/components`.
+* Migration guide: [`migration/REACT_TO_VUE_MIGRATION_GUIDE.md`](../../migration/REACT_TO_VUE_MIGRATION_GUIDE.md).
+* Deprecation plan: [`migration/REACT_DEPRECATION_PLAN.md`](../../migration/REACT_DEPRECATION_PLAN.md).
+* Current tracker: [`VUE_MIGRATION_TRACKER.md`](../../VUE_MIGRATION_TRACKER.md).
+
 ## Features
 
 * 🎨 **Styleable** – React Aria is style-free out of the box, allowing you to build custom designs to fit your application or design system using any styling and animation solution. Each component is broken down into individual parts with built-in states, render props, and slots that make styling a breeze.

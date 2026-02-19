@@ -7,7 +7,7 @@ This plan describes how React package deprecation should proceed once Vue packag
 * [x] Phase 1.1: Vue migration availability and guidance published in root docs.
 * [x] Phase 1.2: `migration/REACT_TO_VUE_MIGRATION_GUIDE.md` is published as the replacement matrix.
 * [x] Phase 1.3: React package maintenance-mode notice is published in `README.md`.
-* [ ] Phase 1.4: package-level README migration matrix links are still being rolled out.
+* [x] Phase 1.4: migration links are published for top-level public React package READMEs (`@adobe/react-spectrum`, `react-aria`, `react-stately`, `react-aria-components`, and `tailwindcss-react-aria-components`).
 * [ ] Phase 2: soft-deprecation steps are pending.
 * [ ] Phase 3: freeze-window support dates are pending.
 * [ ] Phase 4: retirement-window planning is pending.
