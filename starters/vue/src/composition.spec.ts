@@ -80,6 +80,7 @@ import {useSlider as useAriaSlider, useSliderThumb as useAriaSliderThumb} from '
 import {useSpinButton as useAriaSpinButton} from '@vue-aria/spinbutton';
 import {SSRProvider as AriaSSRProvider, useIsSSR as useAriaIsSSR, useSSRSafeId as useAriaSSRSafeId} from '@vue-aria/ssr';
 import {useStepList as useAriaStepList, useStepListItem as useAriaStepListItem} from '@vue-aria/steplist';
+import {useSwitch as useAriaSwitch} from '@vue-aria/switch';
 import {
   addWindowFocusTracking,
   setInteractionModality,
@@ -1958,6 +1959,35 @@ describe('Vue migration composition components', () => {
     expect(reviewItem.stepProps.value.tabIndex).toBeUndefined();
     reviewItem.stepProps.value.onClick();
     expect(Array.from(selectedKeys.value)).toEqual(['details']);
+  });
+
+  it('computes vue-aria switch role and toggle behavior', () => {
+    let selected = ref(false);
+    let switchControl = useAriaSwitch({
+      ariaLabel: 'Wi-Fi',
+      isSelected: selected
+    });
+
+    expect(switchControl.inputProps.value.role).toBe('switch');
+    expect(switchControl.inputProps.value.checked).toBe(false);
+    expect(switchControl.inputProps.value['aria-label']).toBe('Wi-Fi');
+
+    switchControl.press();
+    expect(selected.value).toBe(true);
+    expect(switchControl.inputProps.value['aria-checked']).toBe(true);
+
+    switchControl.pressStart();
+    expect(switchControl.isPressed.value).toBe(true);
+    switchControl.pressEnd();
+    expect(switchControl.isPressed.value).toBe(false);
+
+    let readOnlySelected = ref(true);
+    let readOnlySwitch = useAriaSwitch({
+      isReadOnly: true,
+      isSelected: readOnlySelected
+    });
+    readOnlySwitch.press();
+    expect(readOnlySelected.value).toBe(true);
   });
 
   it('announces and clears live region messages with vue-aria live announcer', () => {

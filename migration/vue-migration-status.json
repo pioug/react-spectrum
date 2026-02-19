@@ -984,6 +984,30 @@
         }
       ]
     },
+    "@react-aria/switch": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/switch",
+      "targetPath": "packages/@vue-aria/switch",
+      "notes": "Foundational React Aria switch composable built on Vue checkbox toggle behavior with switch role semantics.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria switch source lint",
+          "command": "yarn eslint packages/@vue-aria/switch/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",
