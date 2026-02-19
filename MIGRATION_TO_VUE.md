@@ -57,6 +57,7 @@ Phase 1 is implemented:
 * Started API stabilization and deprecation planning:
   * `migration/VUE_PUBLISH_CHECKLIST.md`
   * `migration/REACT_DEPRECATION_PLAN.md`
+  * `migration/REACT_TO_VUE_MIGRATION_GUIDE.md`
 
 ## Migration phases
 

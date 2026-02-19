@@ -5,8 +5,9 @@ This plan describes how React package deprecation should proceed once Vue packag
 ## Phase 1: Notice
 
 1. Announce Vue package availability and migration guidance.
-2. Mark corresponding React packages as maintenance-only in docs.
-3. Publish migration matrix links in package READMEs.
+2. Publish and maintain `migration/REACT_TO_VUE_MIGRATION_GUIDE.md` as the primary replacement matrix.
+3. Mark corresponding React packages as maintenance-only in docs.
+4. Publish migration matrix links in package READMEs.
 
 ## Phase 2: Soft deprecation
 

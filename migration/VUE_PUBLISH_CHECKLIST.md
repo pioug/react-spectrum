@@ -9,7 +9,8 @@ This checklist defines the minimum release bar for promoting Vue migration packa
 3. `yarn test:vue` passes for starter interaction coverage.
 4. Package has at least one interaction or behavior test in Vue test harness coverage.
 5. Migration tracker entry for the package has actionable notes and acceptance tests.
-6. Package versioning and changelog entry are prepared for public release.
+6. Migration examples in `migration/REACT_TO_VUE_MIGRATION_GUIDE.md` are current for the package.
+7. Package versioning and changelog entry are prepared for public release.
 
 ## Publish order
 
