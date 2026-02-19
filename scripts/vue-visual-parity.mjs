@@ -283,6 +283,49 @@ function printSummary(report) {
   console.log(`Errors: ${report.summary.erroredFixtures}`);
 }
 
+function getInteractionTargetLocator(page, fixture, locator) {
+  if (fixture.interactionSelector) {
+    return page.locator(fixture.interactionSelector).first();
+  }
+
+  return locator.first();
+}
+
+async function applyFixtureInteraction(page, fixture, locator) {
+  let interaction = fixture.interaction ?? 'none';
+  if (interaction === 'none') {
+    return async () => {};
+  }
+
+  let target = getInteractionTargetLocator(page, fixture, locator);
+  await target.waitFor({state: 'visible', timeout: 10000});
+
+  if (interaction === 'hover') {
+    await target.hover();
+    return async () => {};
+  }
+
+  if (interaction === 'focus') {
+    await target.focus();
+    return async () => {};
+  }
+
+  if (interaction === 'active') {
+    let box = await target.boundingBox();
+    if (!box) {
+      throw new Error(`Could not compute interaction target bounds for fixture "${fixture.id}".`);
+    }
+
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+    return async () => {
+      await page.mouse.up();
+    };
+  }
+
+  throw new Error(`Unknown fixture interaction "${interaction}" for fixture "${fixture.id}".`);
+}
+
 async function runCapture(browser, config) {
   let page = await browser.newPage();
   let fixtures = [];
@@ -313,7 +356,12 @@ async function runCapture(browser, config) {
 
       let locator = page.locator(fixture.selector);
       await locator.waitFor({state: 'visible', timeout: 10000});
-      await locator.screenshot({path: currentPath, animations: 'disabled'});
+      let cleanupInteraction = await applyFixtureInteraction(page, fixture, locator);
+      try {
+        await locator.screenshot({path: currentPath, animations: 'disabled'});
+      } finally {
+        await cleanupInteraction();
+      }
       fs.copyFileSync(currentPath, baselinePath);
       result.baselinePath = path.relative(REPO_ROOT, baselinePath);
       result.candidatePath = path.relative(REPO_ROOT, currentPath);
@@ -380,7 +428,12 @@ async function runCompare(browser, config) {
 
       let locator = page.locator(fixture.selector);
       await locator.waitFor({state: 'visible', timeout: 10000});
-      await locator.screenshot({path: currentPath, animations: 'disabled'});
+      let cleanupInteraction = await applyFixtureInteraction(page, fixture, locator);
+      try {
+        await locator.screenshot({path: currentPath, animations: 'disabled'});
+      } finally {
+        await cleanupInteraction();
+      }
 
       let diffResult = await diffImages(baselinePath, currentPath, diffPath);
       result.diffRatio = diffResult.diffRatio;

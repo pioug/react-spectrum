@@ -15,6 +15,30 @@
       "maxDiffRatio": 0
     },
     {
+      "id": "button-hover",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='button-hover']",
+      "interaction": "hover",
+      "interactionSelector": "[data-parity-target='button-hover-target']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "button-active",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='button-active']",
+      "interaction": "active",
+      "interactionSelector": "[data-parity-target='button-active-target']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "button-focus",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='button-focus']",
+      "interaction": "focus",
+      "interactionSelector": "[data-parity-target='button-focus-target']",
+      "maxDiffRatio": 0
+    },
+    {
       "id": "badge-positive",
       "path": "/parity.html",
       "selector": "[data-parity-id='badge-positive']",
@@ -27,6 +51,26 @@
       "maxDiffRatio": 0
     },
     {
+      "id": "textfield-default",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='textfield-default']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "textfield-invalid",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='textfield-invalid']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "textfield-focus",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='textfield-focus']",
+      "interaction": "focus",
+      "interactionSelector": "[data-parity-target='textfield-focus-target'] .vs-text-field__input",
+      "maxDiffRatio": 0
+    },
+    {
       "id": "view-bordered",
       "path": "/parity.html",
       "selector": "[data-parity-id='view-bordered']",
@@ -36,6 +80,30 @@
       "id": "icon-default",
       "path": "/parity.html",
       "selector": "[data-parity-id='icon-default']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "switch-default",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='switch-default']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "switch-disabled",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='switch-disabled']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "card-selected",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='card-selected']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "listbox-selected",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='listbox-selected']",
       "maxDiffRatio": 0
     },
     {

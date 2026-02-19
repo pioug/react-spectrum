@@ -437,15 +437,20 @@ jobs:
           name: verify vue parity gates
           command: |
             yarn vue:parity:api:report
+            yarn vue:parity:api:signature:report
             yarn playwright install chromium
             yarn vue:parity:visual:compare
 
       - store_artifacts:
           path: migration/VUE_API_PARITY_REPORT.md
       - store_artifacts:
+          path: migration/VUE_API_SIGNATURE_PARITY_REPORT.md
+      - store_artifacts:
           path: migration/VUE_VISUAL_PARITY_REPORT.md
       - store_artifacts:
           path: migration/vue-api-parity-report.json
+      - store_artifacts:
+          path: migration/vue-api-signature-parity-report.json
       - store_artifacts:
           path: migration/vue-visual-parity-report.json
       - store_artifacts:
