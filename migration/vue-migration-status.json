@@ -3401,7 +3401,7 @@
       ]
     },
     "@react-stately/toggle": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/toggle",
       "targetPath": "packages/@vue-stately/toggle",
       "notes": "State baseline for single toggle selection and toggle-group single/multiple selection state in Vue.",
@@ -3425,7 +3425,7 @@
       ]
     },
     "@react-stately/tooltip": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/tooltip",
       "targetPath": "packages/@vue-stately/tooltip",
       "notes": "State baseline for tooltip trigger warmup delays, open/close timing, and cooldown handoff in Vue.",
@@ -3449,7 +3449,7 @@
       ]
     },
     "@react-stately/tree": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/tree",
       "targetPath": "packages/@vue-stately/tree",
       "notes": "State baseline for flattened tree collections, expanded-key state updates, and selection manager integration in Vue.",
@@ -3473,7 +3473,7 @@
       ]
     },
     "@react-stately/utils": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/utils",
       "targetPath": "packages/@vue-stately/utils",
       "notes": "State baseline for controlled/uncontrolled value utilities and numeric clamp/step helpers in Vue.",
@@ -3497,7 +3497,7 @@
       ]
     },
     "@react-stately/virtualizer": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-stately/virtualizer",
       "targetPath": "packages/@vue-stately/virtualizer",
       "notes": "State baseline for virtualizer geometry primitives, layout modeling, reusable views, and reactive virtualizer state in Vue.",

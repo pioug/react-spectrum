@@ -4,7 +4,7 @@ This guide documents the current migration path from React Spectrum packages to 
 
 ## Scope
 
-These ports are tracked as `in_progress`. API parity with React is not complete yet, but package entry points and baseline behaviors exist.
+These ports are tracked as `in_progress` or `ported`. API parity with React is not complete yet, but package entry points and baseline behaviors exist.
 
 ## Package mapping
 

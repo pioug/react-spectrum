@@ -173,11 +173,11 @@ Phase 1 is implemented:
   * `@react-stately/table` -> `@vue-stately/table` (`in_progress`)
   * `@react-stately/tabs` -> `@vue-stately/tabs` (`in_progress`)
   * `@react-stately/toast` -> `@vue-stately/toast` (`in_progress`)
-  * `@react-stately/toggle` -> `@vue-stately/toggle` (`in_progress`)
-  * `@react-stately/tooltip` -> `@vue-stately/tooltip` (`in_progress`)
-  * `@react-stately/tree` -> `@vue-stately/tree` (`in_progress`)
-  * `@react-stately/utils` -> `@vue-stately/utils` (`in_progress`)
-  * `@react-stately/virtualizer` -> `@vue-stately/virtualizer` (`in_progress`)
+  * `@react-stately/toggle` -> `@vue-stately/toggle` (`ported`)
+  * `@react-stately/tooltip` -> `@vue-stately/tooltip` (`ported`)
+  * `@react-stately/tree` -> `@vue-stately/tree` (`ported`)
+  * `@react-stately/utils` -> `@vue-stately/utils` (`ported`)
+  * `@react-stately/virtualizer` -> `@vue-stately/virtualizer` (`ported`)
 * Started Vue test adaptation:
   * `starters/vue` runs Vitest + Vue Test Utils interaction tests for `button`, `buttongroup`, `textfield`, `checkbox`, `radio`, `switch`, `tabs`, `tag`, `toast`, `tooltip`, `layout`, `labeledvalue`, `illustratedmessage`, and `icon`.
   * Added composition coverage for `accordion`, `actionbar`, `actiongroup`, `breadcrumbs`, `calendar`, `card`, `color`, `contextualhelp`, `datepicker`, `picker`, `dialog`, `overlays`, `menu`, `listbox`, `list`, `tabs`, `tag`, `combobox`, `autocomplete`, `story-utils`, `test-utils`, `theme-dark`, `theme-default`, `theme-express`, `theme-light`, `utils`, `style-macro-s1`, `@vue-stately/autocomplete`, `@vue-stately/calendar`, `@vue-stately/checkbox`, `@vue-stately/collections`, `@vue-stately/color`, `@vue-stately/combobox`, `@vue-stately/data`, `@vue-stately/datepicker`, `@vue-stately/disclosure`, `@vue-stately/dnd`, `@vue-stately/flags`, `@vue-stately/form`, `@vue-stately/grid`, `@vue-stately/layout`, `@vue-stately/list`, `@vue-stately/menu`, `@vue-stately/numberfield`, `@vue-stately/overlays`, `@vue-stately/radio`, `@vue-stately/searchfield`, `@vue-stately/select`, `@vue-stately/selection`, `@vue-stately/slider`, `@vue-stately/steplist`, `@vue-stately/table`, `@vue-stately/tabs`, `@vue-stately/toast`, `@vue-stately/toggle`, `@vue-stately/tooltip`, `@vue-stately/tree`, `@vue-stately/utils`, and `@vue-stately/virtualizer`.
