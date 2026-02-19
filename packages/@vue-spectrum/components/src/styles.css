@@ -300,6 +300,49 @@
   background: var(--vs-color-secondary-hover);
 }
 
+.vs-picker {
+  display: grid;
+  gap: 6px;
+}
+
+.vs-picker__label {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.vs-picker__select {
+  background: var(--vs-color-input-bg);
+  border: 1px solid var(--vs-color-border);
+  border-radius: 6px;
+  color: inherit;
+}
+
+.vs-picker__select:focus-visible {
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-picker__select--medium {
+  font-size: 13px;
+  min-block-size: 32px;
+  padding: 6px 10px;
+}
+
+.vs-picker__select--large {
+  font-size: 15px;
+  min-block-size: 38px;
+  padding: 8px 12px;
+}
+
+.vs-picker__description {
+  color: #707070;
+  font-size: 12px;
+}
+
+.vs-provider[data-color-scheme='dark'] .vs-picker__description {
+  color: #c2c2c2;
+}
+
 .vs-checkbox {
   align-items: center;
   cursor: pointer;

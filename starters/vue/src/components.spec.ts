@@ -17,6 +17,7 @@ import {InlineAlert} from '@vue-spectrum/inlinealert';
 import {Flex, Grid, fitContent, minmax, repeat} from '@vue-spectrum/layout';
 import {Label} from '@vue-spectrum/label';
 import {LabeledValue} from '@vue-spectrum/labeledvalue';
+import {Picker} from '@vue-spectrum/picker';
 import {Radio, RadioGroup} from '@vue-spectrum/radio';
 import {Switch} from '@vue-spectrum/switch';
 import {TextField} from '@vue-spectrum/textfield';
@@ -424,6 +425,20 @@ describe('Vue migration primitives', () => {
     await wrapper.get('input.vs-time-field__input').setValue('10:45');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['10:45']);
     expect(wrapper.emitted('change')?.[0]).toEqual(['10:45']);
+  });
+
+  it('emits model updates and change events from picker selections', async () => {
+    let wrapper = mount(Picker, {
+      props: {
+        modelValue: 'Q2',
+        label: 'Roadmap milestone',
+        items: ['Q1', 'Q2', 'Q3']
+      }
+    });
+
+    await wrapper.get('select.vs-picker__select').setValue('Q3');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Q3']);
+    expect(wrapper.emitted('change')?.[0]).toEqual(['Q3']);
   });
 
   it('updates model value from calendar date input', async () => {

@@ -12201,6 +12201,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/picker@workspace:*, @vue-spectrum/picker@workspace:packages/@vue-spectrum/picker":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/picker@workspace:packages/@vue-spectrum/picker"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/progress@workspace:*, @vue-spectrum/progress@workspace:packages/@vue-spectrum/progress":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/progress@workspace:packages/@vue-spectrum/progress"
@@ -31145,6 +31155,7 @@ __metadata:
     "@vue-spectrum/meter": "workspace:*"
     "@vue-spectrum/numberfield": "workspace:*"
     "@vue-spectrum/overlays": "workspace:*"
+    "@vue-spectrum/picker": "workspace:*"
     "@vue-spectrum/progress": "workspace:*"
     "@vue-spectrum/provider": "workspace:*"
     "@vue-spectrum/radio": "workspace:*"

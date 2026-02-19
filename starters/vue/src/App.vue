@@ -157,6 +157,12 @@
           label="Favorite component category"
           :items="componentOptions" />
 
+        <VuePicker
+          v-model="selectedPickerOption"
+          label="Roadmap milestone"
+          :items="pickerItems"
+          placeholder="Select milestone" />
+
         <VueListView
           v-model="favoriteLibrary"
           label="Favorite library"
@@ -309,6 +315,8 @@
             <span> · </span>
             Menu: <strong>{{ favoriteComponent }}</strong>
             <span> · </span>
+            Picker: <strong>{{ selectedPickerOption }}</strong>
+            <span> · </span>
             List: <strong>{{ favoriteLibrary }}</strong>
             <span> · </span>
             Ticket: <strong>{{ selectedTicket }}</strong>
@@ -431,6 +439,7 @@ import {Menu as VueMenu} from '@vue-spectrum/menu';
 import {Meter as VueMeter} from '@vue-spectrum/meter';
 import {NumberField as VueNumberField} from '@vue-spectrum/numberfield';
 import {Popover as VuePopover} from '@vue-spectrum/overlays';
+import {Picker as VuePicker} from '@vue-spectrum/picker';
 import {ProgressBar as VueProgressBar} from '@vue-spectrum/progress';
 import {Provider as VueSpectrumProvider} from '@vue-spectrum/provider';
 import {Radio as VueRadio, RadioGroup as VueRadioGroup} from '@vue-spectrum/radio';
@@ -463,6 +472,7 @@ const searchQuery = ref('');
 const isSubscribed = ref(true);
 const favoriteFramework = ref('vue');
 const favoriteComponent = ref('Forms');
+const selectedPickerOption = ref('Q2');
 const favoriteLibrary = ref('Vue Spectrum');
 const selectedActionGroupItems = ref<string[]>(['Edit']);
 const lastActionGroupAction = ref('none');
@@ -486,6 +496,7 @@ const isDialogOpen = ref(false);
 const isPopoverOpen = ref(false);
 const languageOptions = ['TypeScript', 'JavaScript', 'Rust', 'Go', 'Python'];
 const componentOptions = ['Forms', 'Navigation', 'Overlays', 'Data display'];
+const pickerItems = ['Q1', 'Q2', 'Q3', 'Q4'];
 const libraryOptions = ['Vue Spectrum', 'React Spectrum', 'Tailwind CSS'];
 const actionGroupItems = ['Edit', 'Duplicate', 'Delete'];
 const actionBarItems = ['Approve', 'Assign', 'Archive'];
@@ -602,6 +613,7 @@ function reset() {
   isSubscribed.value = true;
   favoriteFramework.value = 'vue';
   favoriteComponent.value = 'Forms';
+  selectedPickerOption.value = 'Q2';
   favoriteLibrary.value = 'Vue Spectrum';
   selectedActionGroupItems.value = ['Edit'];
   lastActionGroupAction.value = 'none';

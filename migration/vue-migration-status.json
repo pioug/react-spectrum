@@ -552,6 +552,30 @@
         }
       ]
     },
+    "@react-spectrum/picker": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/picker",
+      "targetPath": "packages/@vue-spectrum/picker",
+      "notes": "Composition-layer migration step providing a Vue single-select picker primitive and collection item helpers.",
+      "acceptanceTests": [
+        {
+          "name": "Vue picker package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/picker/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/dialog": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/dialog",

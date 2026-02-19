@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 52 |
+| in_progress | 53 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 100 |
+| not_started | 99 |
 
 ## Package tracker
 
@@ -60,6 +60,7 @@ Tracked source packages: 154
 | `@react-spectrum/meter` | `packages/@react-spectrum/meter` | `@vue-spectrum/meter` | `packages/@vue-spectrum/meter` | in_progress | Vue meter package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for bounded measurements. |
 | `@react-spectrum/numberfield` | `packages/@react-spectrum/numberfield` | `@vue-spectrum/numberfield` | `packages/@vue-spectrum/numberfield` | in_progress | Vue numberfield package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for numeric text entry. |
 | `@react-spectrum/overlays` | `packages/@react-spectrum/overlays` | `@vue-spectrum/overlays` | `packages/@vue-spectrum/overlays` | in_progress | Vue overlays package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing a Vue popover primitive. |
+| `@react-spectrum/picker` | `packages/@react-spectrum/picker` | `@vue-spectrum/picker` | `packages/@vue-spectrum/picker` | in_progress | Vue picker package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing a Vue single-select picker primitive and collection item helpers. |
 | `@react-spectrum/progress` | `packages/@react-spectrum/progress` | `@vue-spectrum/progress` | `packages/@vue-spectrum/progress` | in_progress | Vue progress package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for progress feedback UI. |
 | `@react-spectrum/provider` | `packages/@react-spectrum/provider` | `@vue-spectrum/provider` | `packages/@vue-spectrum/provider` | in_progress | Vue provider package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave target after the initial Vue baseline package, to establish theming and app-level context. |
 | `@react-spectrum/radio` | `packages/@react-spectrum/radio` | `@vue-spectrum/radio` | `packages/@vue-spectrum/radio` | in_progress | Vue radio package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave primitive for form controls. |
@@ -130,7 +131,6 @@ Tracked source packages: 154
 | `@react-aria/tree` | `packages/@react-aria/tree` | `@vue-aria/tree` | `packages/@vue-aria/tree` | not_started | - | - |
 | `@react-aria/utils` | `packages/@react-aria/utils` | `@vue-aria/utils` | `packages/@vue-aria/utils` | not_started | - | - |
 | `@react-aria/visually-hidden` | `packages/@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | `packages/@vue-aria/visually-hidden` | not_started | - | - |
-| `@react-spectrum/picker` | `packages/@react-spectrum/picker` | `@vue-spectrum/picker` | `packages/@vue-spectrum/picker` | not_started | - | - |
 | `@react-spectrum/s2` | `packages/@react-spectrum/s2` | `@vue-spectrum/s2` | `packages/@vue-spectrum/s2` | not_started | - | - |
 | `@react-spectrum/steplist` | `packages/@react-spectrum/steplist` | `@vue-spectrum/steplist` | `packages/@vue-spectrum/steplist` | not_started | - | - |
 | `@react-spectrum/story-utils` | `packages/@react-spectrum/story-utils` | `@vue-spectrum/story-utils` | `packages/@vue-spectrum/story-utils` | not_started | - | - |

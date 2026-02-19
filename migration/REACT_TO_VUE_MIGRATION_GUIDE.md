@@ -55,6 +55,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-spectrum/color` | `@vue-spectrum/color` |
 | `@react-spectrum/contextualhelp` | `@vue-spectrum/contextualhelp` |
 | `@react-spectrum/datepicker` | `@vue-spectrum/datepicker` |
+| `@react-spectrum/picker` | `@vue-spectrum/picker` |
 | `@react-spectrum/dialog` | `@vue-spectrum/dialog` |
 | `@react-spectrum/overlays` | `@vue-spectrum/overlays` |
 | `@react-spectrum/combobox` | `@vue-spectrum/combobox` |

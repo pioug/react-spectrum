@@ -51,6 +51,7 @@
     "@vue-spectrum/meter": "workspace:*",
     "@vue-spectrum/numberfield": "workspace:*",
     "@vue-spectrum/overlays": "workspace:*",
+    "@vue-spectrum/picker": "workspace:*",
     "@vue-spectrum/progress": "workspace:*",
     "@vue-spectrum/provider": "workspace:*",
     "@vue-spectrum/radio": "workspace:*",
