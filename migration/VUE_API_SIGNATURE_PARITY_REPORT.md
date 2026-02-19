@@ -1,19 +1,19 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-19T22:54:07.681Z
+Generated: 2026-02-19T22:59:34.643Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 78
+* Fully matched packages: 79
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 1841
-* Mismatched signatures: 831
+* Matched signatures: 1849
+* Mismatched signatures: 823
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 68.90%
+* Signature coverage ratio: 69.20%
 
 ## Package gaps
 
@@ -24,12 +24,11 @@ Generated: 2026-02-19T22:54:07.681Z
 | `react-aria` | `vue-aria` | mismatch | 419 | 102 | 0 | 75.7% |
 | `@react-aria/utils` | `@vue-aria/utils` | mismatch | 74 | 65 | 0 | 12.2% |
 | `@react-spectrum/utils` | `@vue-spectrum/utils` | mismatch | 31 | 27 | 0 | 12.9% |
-| `react-stately` | `vue-stately` | mismatch | 165 | 20 | 0 | 87.9% |
+| `react-stately` | `vue-stately` | mismatch | 165 | 19 | 0 | 88.5% |
 | `@react-aria/dnd` | `@vue-aria/dnd` | mismatch | 62 | 11 | 0 | 82.3% |
 | `@react-aria/overlays` | `@vue-aria/overlays` | mismatch | 39 | 10 | 0 | 74.4% |
 | `@react-aria/table` | `@vue-aria/table` | mismatch | 23 | 9 | 0 | 60.9% |
 | `@react-aria/color` | `@vue-aria/color` | mismatch | 20 | 8 | 0 | 60.0% |
-| `@react-stately/collections` | `@vue-stately/collections` | mismatch | 11 | 7 | 0 | 36.4% |
 | `@react-stately/datepicker` | `@vue-stately/datepicker` | mismatch | 15 | 7 | 0 | 53.3% |
 | `@react-aria/datepicker` | `@vue-aria/datepicker` | mismatch | 18 | 6 | 0 | 66.7% |
 | `@react-aria/grid` | `@vue-aria/grid` | mismatch | 20 | 6 | 0 | 70.0% |
@@ -157,6 +156,7 @@ Generated: 2026-02-19T22:54:07.681Z
 | `@react-spectrum/view` | `@vue-spectrum/view` | ok | 8 | 0 | 0 | 100.0% |
 | `@react-spectrum/well` | `@vue-spectrum/well` | ok | 2 | 0 | 0 | 100.0% |
 | `@react-stately/autocomplete` | `@vue-stately/autocomplete` | ok | 4 | 0 | 0 | 100.0% |
+| `@react-stately/collections` | `@vue-stately/collections` | ok | 11 | 0 | 0 | 100.0% |
 | `@react-stately/data` | `@vue-stately/data` | ok | 9 | 0 | 0 | 100.0% |
 | `@react-stately/disclosure` | `@vue-stately/disclosure` | ok | 6 | 0 | 0 | 100.0% |
 | `@react-stately/flags` | `@vue-stately/flags` | ok | 4 | 0 | 0 | 100.0% |
@@ -226,9 +226,9 @@ Generated: 2026-02-19T22:54:07.681Z
 * Source entry: `packages/react-stately/src/index.ts`
 * Target entry: `packages/vue-stately/src/index.ts`
 * Compared exports: 165
-* Mismatched signatures: 20
+* Mismatched signatures: 19
 * Missing in target: 0
-* Example mismatches: `Collection [value-availability]`, `useCalendarState [call-signatures]`, `useRangeCalendarState [call-signatures]`, `useCheckboxGroupState [call-signatures]`, `parseColor [call-signatures]`, `useColorFieldState [call-signatures]`, `useColorWheelState [call-signatures]`, `useComboBoxState [call-signatures]`, `useDateFieldState [call-signatures]`, `useDatePickerState [call-signatures]`, `useDateRangePickerState [call-signatures]`, `useTimeFieldState [call-signatures]`, `useDraggableCollectionState [call-signatures]`, `useCollection [call-signatures]`, `useRadioGroupState [call-signatures]`, `useSearchFieldState [call-signatures]`, `useSelectState [call-signatures]`, `useTableState [call-signatures]`, `useTableColumnResizeState [call-signatures]`, `useTreeState [call-signatures]`
+* Example mismatches: `Collection [value-availability]`, `useCalendarState [call-signatures]`, `useRangeCalendarState [call-signatures]`, `useCheckboxGroupState [call-signatures]`, `parseColor [call-signatures]`, `useColorFieldState [call-signatures]`, `useColorWheelState [call-signatures]`, `useComboBoxState [call-signatures]`, `useDateFieldState [call-signatures]`, `useDatePickerState [call-signatures]`, `useDateRangePickerState [call-signatures]`, `useTimeFieldState [call-signatures]`, `useDraggableCollectionState [call-signatures]`, `useRadioGroupState [call-signatures]`, `useSearchFieldState [call-signatures]`, `useSelectState [call-signatures]`, `useTableState [call-signatures]`, `useTableColumnResizeState [call-signatures]`, `useTreeState [call-signatures]`
 
 ### @react-aria/dnd -> @vue-aria/dnd
 
@@ -265,15 +265,6 @@ Generated: 2026-02-19T22:54:07.681Z
 * Mismatched signatures: 8
 * Missing in target: 0
 * Example mismatches: `useColorArea [call-signatures]`, `useColorSlider [call-signatures]`, `useColorWheel [call-signatures]`, `useColorField [call-signatures]`, `useColorSwatch [call-signatures]`, `useColorChannelField [call-signatures]`, `AriaColorSwatchProps [value-availability]`, `AriaColorChannelFieldProps [value-availability]`
-
-### @react-stately/collections -> @vue-stately/collections
-
-* Source entry: `packages/@react-stately/collections/src/index.ts`
-* Target entry: `packages/@vue-stately/collections/src/index.ts`
-* Compared exports: 11
-* Mismatched signatures: 7
-* Missing in target: 0
-* Example mismatches: `useCollection [call-signatures]`, `getItemCount [call-signatures]`, `getChildNodes [call-signatures]`, `getFirstItem [call-signatures]`, `getLastItem [call-signatures]`, `getNthItem [call-signatures]`, `compareNodeOrder [call-signatures]`
 
 ### @react-stately/datepicker -> @vue-stately/datepicker
 
@@ -355,4 +346,13 @@ Generated: 2026-02-19T22:54:07.681Z
 * Mismatched signatures: 4
 * Missing in target: 0
 * Example mismatches: `useCalendar [call-signatures]`, `useRangeCalendar [call-signatures]`, `useCalendarGrid [call-signatures]`, `useCalendarCell [call-signatures]`
+
+### @react-aria/gridlist -> @vue-aria/gridlist
+
+* Source entry: `packages/@react-aria/gridlist/src/index.ts`
+* Target entry: `packages/@vue-aria/gridlist/src/index.ts`
+* Compared exports: 12
+* Mismatched signatures: 4
+* Missing in target: 0
+* Example mismatches: `useGridList [call-signatures]`, `useGridListItem [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]`, `useGridListSection [call-signatures]`
 

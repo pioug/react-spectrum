@@ -6,7 +6,7 @@ export type {ItemProps} from './Item';
 export {Section} from './Section';
 export type {SectionProps} from './Section';
 export {useCollection} from './useCollection';
-export type {CollectionOptions} from './useCollection';
+export type {CollectionOptions, VueCollectionOptions} from './useCollection';
 export {getItemCount} from './getItemCount';
 export {compareNodeOrder, getChildNodes, getFirstItem, getLastItem, getNthItem} from './getChildNodes';
 export type {PartialNode} from './types';

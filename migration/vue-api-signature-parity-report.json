@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-19T22:54:07.681Z",
+  "generatedAt": "2026-02-19T22:59:34.643Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 78,
+    "fullyMatchedPackages": 79,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 1841,
-    "mismatchedExportTotal": 831,
+    "matchedExportTotal": 1849,
+    "mismatchedExportTotal": 823,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.689
+    "parityCoverage": 0.692
   },
   "packages": [
     {
@@ -12068,10 +12068,10 @@
       "targetEntrypoint": "packages/vue-stately/src/index.ts",
       "sourceExportCount": 165,
       "comparedExportCount": 165,
-      "matchedExportCount": 145,
-      "mismatchedExportCount": 20,
+      "matchedExportCount": 146,
+      "mismatchedExportCount": 19,
       "missingInTargetCount": 0,
-      "parityRatio": 0.8788,
+      "parityRatio": 0.8848,
       "missingInTargetExports": [],
       "mismatches": [
         {
@@ -12549,43 +12549,6 @@
             "declaredType": "",
             "callSignatures": [
               "<T = unknown>( _: DraggableCollectionStateOptions<T>) => DraggableCollectionState<T>"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useCollection",
-          "targetExportName": "useCollection",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCollection",
-            "resolvedName": "useCollection",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object, C extends Collection<Node<T>> = Collection<Node<T>>>(props: CollectionOptions<T, C>, factory: CollectionFactory<T, C>, context?: unknown) => C",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object, C extends Collection<Node<T>> = Collection<Node<T>>>( _: CollectionOptions<T, C>, _: CollectionFactory<T, C>, _: unknown) => C"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCollection",
-            "resolvedName": "useCollection",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object, C extends BaseCollection<T> = BaseCollection<T>>(options: CollectionOptions<T, C>) => ComputedRef<C>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object, C extends BaseCollection<T> = BaseCollection<T>>( _: CollectionOptions<T, C>) => ComputedRef<C>"
             ],
             "constructSignatures": []
           }
@@ -14283,285 +14246,6 @@
             "valueType": "any",
             "declaredType": "",
             "callSignatures": [],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/collections",
-      "sourcePath": "packages/@react-stately/collections",
-      "targetPackage": "@vue-stately/collections",
-      "targetPath": "packages/@vue-stately/collections",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/collections/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/collections/src/index.ts",
-      "sourceExportCount": 11,
-      "comparedExportCount": 11,
-      "matchedExportCount": 4,
-      "mismatchedExportCount": 7,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.3636,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useCollection",
-          "targetExportName": "useCollection",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCollection",
-            "resolvedName": "useCollection",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object, C extends Collection<Node<T>> = Collection<Node<T>>>(props: CollectionOptions<T, C>, factory: CollectionFactory<T, C>, context?: unknown) => C",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object, C extends Collection<Node<T>> = Collection<Node<T>>>( _: CollectionOptions<T, C>, _: CollectionFactory<T, C>, _: unknown) => C"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCollection",
-            "resolvedName": "useCollection",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object, C extends BaseCollection<T> = BaseCollection<T>>(options: CollectionOptions<T, C>) => ComputedRef<C>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object, C extends BaseCollection<T> = BaseCollection<T>>( _: CollectionOptions<T, C>) => ComputedRef<C>"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "getItemCount",
-          "targetExportName": "getItemCount",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "getItemCount",
-            "resolvedName": "getItemCount",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(collection: Collection<Node<T>>) => number",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: Collection<Node<T>>) => number"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "getItemCount",
-            "resolvedName": "getItemCount",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(collection: BaseCollection<T>, parentKey?: string | null) => number",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: BaseCollection<T>, _: string | null) => number"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "getChildNodes",
-          "targetExportName": "getChildNodes",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "getChildNodes",
-            "resolvedName": "getChildNodes",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(node: Node<T>, collection: Collection<Node<T>>) => Iterable<Node<T>>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: Node<T>, _: Collection<Node<T>>) => Iterable<Node<T>>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "getChildNodes",
-            "resolvedName": "getChildNodes",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(collection: BaseCollection<T>, parentKey?: string | null) => CollectionNode<T>[]",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: BaseCollection<T>, _: string | null) => CollectionNode<T>[]"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "getFirstItem",
-          "targetExportName": "getFirstItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "getFirstItem",
-            "resolvedName": "getFirstItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(iterable: Iterable<T>) => T | undefined",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: Iterable<T>) => T | undefined"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "getFirstItem",
-            "resolvedName": "getFirstItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(collection: BaseCollection<T>, parentKey?: string | null | null) => CollectionNode<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: BaseCollection<T>, _: string | null | null) => CollectionNode<T>"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "getLastItem",
-          "targetExportName": "getLastItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "getLastItem",
-            "resolvedName": "getLastItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(iterable: Iterable<T>) => T | undefined",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: Iterable<T>) => T | undefined"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "getLastItem",
-            "resolvedName": "getLastItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(collection: BaseCollection<T>, parentKey?: string | null | null) => CollectionNode<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: BaseCollection<T>, _: string | null | null) => CollectionNode<T>"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "getNthItem",
-          "targetExportName": "getNthItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "getNthItem",
-            "resolvedName": "getNthItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(iterable: Iterable<T>, index: number) => T | undefined",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: Iterable<T>, _: number) => T | undefined"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "getNthItem",
-            "resolvedName": "getNthItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(collection: BaseCollection<T>, index: number, parentKey?: string | null | null) => CollectionNode<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: BaseCollection<T>, _: number, _: string | null | null) => CollectionNode<T>"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "compareNodeOrder",
-          "targetExportName": "compareNodeOrder",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "compareNodeOrder",
-            "resolvedName": "compareNodeOrder",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(collection: Collection<Node<T>>, a: Node<T>, b: Node<T>) => number",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: Collection<Node<T>>, _: Node<T>, _: Node<T>) => number"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "compareNodeOrder",
-            "resolvedName": "compareNodeOrder",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(collection: BaseCollection<T>, left: NodeLike<T>, right: NodeLike<T>) => number",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: BaseCollection<T>, _: NodeLike<T>, _: NodeLike<T>) => number"
-            ],
             "constructSignatures": []
           }
         }
@@ -22149,6 +21833,25 @@
       "sourceExportCount": 4,
       "comparedExportCount": 4,
       "matchedExportCount": 4,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/collections",
+      "sourcePath": "packages/@react-stately/collections",
+      "targetPackage": "@vue-stately/collections",
+      "targetPath": "packages/@vue-stately/collections",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/collections/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/collections/src/index.ts",
+      "sourceExportCount": 11,
+      "comparedExportCount": 11,
+      "matchedExportCount": 11,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
