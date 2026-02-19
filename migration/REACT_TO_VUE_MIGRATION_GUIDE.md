@@ -157,6 +157,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-stately/radio` | `@vue-stately/radio` |
 | `@react-stately/searchfield` | `@vue-stately/searchfield` |
 | `@react-stately/select` | `@vue-stately/select` |
+| `@react-stately/selection` | `@vue-stately/selection` |
 
 ## Core API conversion patterns
 

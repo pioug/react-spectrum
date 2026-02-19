@@ -219,6 +219,11 @@ import {useNumberFieldState as useStatelyNumberFieldState} from '@vue-stately/nu
 import {useOverlayTriggerState as useStatelyOverlayTriggerState} from '@vue-stately/overlays';
 import {useRadioGroupState as useStatelyRadioGroupState} from '@vue-stately/radio';
 import {useSearchFieldState as useStatelySearchFieldState} from '@vue-stately/searchfield';
+import {
+  Selection as StatelySelection,
+  SelectionManager as StatelySelectionManager,
+  useMultipleSelectionState as useStatelyMultipleSelectionState
+} from '@vue-stately/selection';
 import {useSelectState as useStatelySelectState} from '@vue-stately/select';
 
 function createPointerEvent(
@@ -1794,6 +1799,59 @@ describe('Vue migration composition components', () => {
     controlledState.setValue('Spectrum');
     expect(controlledState.value.value).toBe('Spectrum');
     expect(controlledChanges).toEqual(['Spectrum']);
+  });
+
+  it('manages vue-stately multiple selection state and selection-manager helpers', () => {
+    let nodes: StatelyListNode<{label: string}>[] = [
+      {key: 'item-1', textValue: 'First', type: 'item', value: {label: 'First'}},
+      {key: 'item-2', textValue: 'Second', type: 'item', value: {label: 'Second'}},
+      {key: 'item-3', textValue: 'Third', type: 'item', value: {label: 'Third'}}
+    ];
+
+    let selectionChanges: Array<string[] | 'all'> = [];
+    let state = useStatelyMultipleSelectionState({
+      defaultSelectedKeys: ['item-1'],
+      onSelectionChange: (keys) => {
+        selectionChanges.push(keys === 'all' ? 'all' : Array.from(keys) as string[]);
+      },
+      selectionMode: 'multiple'
+    });
+
+    expect(state.selectionMode).toBe('multiple');
+    expect(state.selectedKeys.value).not.toBe('all');
+    if (state.selectedKeys.value === 'all') {
+      throw new Error('Expected key set selection state');
+    }
+    expect(Array.from(state.selectedKeys.value)).toEqual(['item-1']);
+
+    state.setFocused(true);
+    state.setFocusedKey('item-2', 'last');
+    expect(state.isFocused.value).toBe(true);
+    expect(state.focusedKey.value).toBe('item-2');
+    expect(state.childFocusStrategy.value).toBe('last');
+
+    let manager = new StatelySelectionManager(new StatelyListCollection(nodes), state);
+    expect(manager.firstSelectedKey).toBe('item-1');
+    manager.extendSelection('item-3');
+    expect(Array.from(manager.selectedKeys)).toEqual(['item-1', 'item-2', 'item-3']);
+
+    manager.toggleSelection('item-2');
+    expect(Array.from(manager.selectedKeys)).toEqual(['item-1', 'item-3']);
+    expect(manager.isSelectionEqual(new Set(['item-1', 'item-3']))).toBe(true);
+
+    manager.selectAll();
+    expect(state.selectedKeys.value).toBe('all');
+    expect(manager.isSelectAll).toBe(true);
+
+    manager.toggleSelectAll();
+    expect(manager.isEmpty).toBe(true);
+
+    let selection = new StatelySelection(['item-2'], 'item-2', 'item-2');
+    let selectionCopy = new StatelySelection(selection);
+    expect(Array.from(selectionCopy)).toEqual(['item-2']);
+    expect(selectionCopy.anchorKey).toBe('item-2');
+    expect(selectionCopy.currentKey).toBe('item-2');
+    expect(selectionChanges.length).toBeGreaterThan(0);
   });
 
   it('manages vue-stately select selection, trigger state, and value normalization', () => {

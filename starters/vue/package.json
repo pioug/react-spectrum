@@ -153,6 +153,7 @@
     "@vue-stately/radio": "workspace:*",
     "@vue-stately/searchfield": "workspace:*",
     "@vue-stately/select": "workspace:*",
+    "@vue-stately/selection": "workspace:*",
     "vue": "^3.5.13"
   },
   "devDependencies": {
