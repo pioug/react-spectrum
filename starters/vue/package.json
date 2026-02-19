@@ -22,6 +22,7 @@
     "@vue-aria/checkbox": "workspace:*",
     "@vue-aria/collections": "workspace:*",
     "@vue-aria/color": "workspace:*",
+    "@vue-aria/combobox": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",

@@ -264,6 +264,30 @@
         }
       ]
     },
+    "@react-aria/combobox": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/combobox",
+      "targetPath": "packages/@vue-aria/combobox",
+      "notes": "Foundational React Aria combobox composable for filtering, selection, and popup semantics in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria combobox source lint",
+          "command": "yarn eslint packages/@vue-aria/combobox/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/provider": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/provider",

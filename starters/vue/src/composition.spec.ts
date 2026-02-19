@@ -9,6 +9,7 @@ import {useButton, useToggleButton, useToggleButtonGroup, useToggleButtonGroupIt
 import {useCalendar, useCalendarCell, useCalendarGrid, useRangeCalendar} from '@vue-aria/calendar';
 import {useCheckbox, useCheckboxGroup, useCheckboxGroupItem} from '@vue-aria/checkbox';
 import {CollectionBuilder, useCachedChildren} from '@vue-aria/collections';
+import {useComboBox} from '@vue-aria/combobox';
 import {useColorArea, useColorChannelField, useColorField, useColorSlider, useColorSwatch, useColorWheel} from '@vue-aria/color';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
@@ -387,6 +388,42 @@ describe('Vue migration composition components', () => {
       color: ref('ff00ff')
     });
     expect(swatch.swatchProps.value.style.backgroundColor).toBe('#ff00ff');
+  });
+
+  it('filters and selects options with vue-aria combobox composable state', () => {
+    let inputValue = ref('');
+    let selectedKey = ref<string | null>(null);
+    let comboBox = useComboBox({
+      inputValue,
+      items: ['React', 'Vue', 'Svelte'],
+      selectedKey
+    });
+
+    comboBox.open('first');
+    expect(comboBox.isOpen.value).toBe(true);
+    expect(comboBox.focusedKey.value).toBe('React');
+
+    inputValue.value = 'vu';
+    expect(comboBox.filteredItems.value.map((item) => item.textValue)).toEqual(['Vue']);
+
+    comboBox.selectKey('Vue');
+    expect(selectedKey.value).toBe('Vue');
+    expect(inputValue.value).toBe('Vue');
+    expect(comboBox.isOpen.value).toBe(false);
+  });
+
+  it('reverts non-custom combobox input to last committed value', () => {
+    let inputValue = ref('');
+    let comboBox = useComboBox({
+      allowsCustomValue: false,
+      inputValue,
+      items: ['One', 'Two']
+    });
+
+    comboBox.selectKey('One');
+    inputValue.value = 'Custom value';
+    comboBox.commit();
+    expect(inputValue.value).toBe('One');
   });
 
   it('emits close events from dismissable dialog controls', async () => {
