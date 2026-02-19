@@ -3400,6 +3400,30 @@
         }
       ]
     },
+    "@react-stately/toggle": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/toggle",
+      "targetPath": "packages/@vue-stately/toggle",
+      "notes": "State baseline for single toggle selection and toggle-group single/multiple selection state in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately toggle package source lint",
+          "command": "yarn eslint packages/@vue-stately/toggle/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

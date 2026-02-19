@@ -238,6 +238,10 @@ import {
   useToastQueue as useStatelyToastQueue,
   useToastState as useStatelyToastState
 } from '@vue-stately/toast';
+import {
+  useToggleGroupState as useStatelyToggleGroupState,
+  useToggleState as useStatelyToggleState
+} from '@vue-stately/toggle';
 
 function createPointerEvent(
   type: string,
@@ -2123,6 +2127,58 @@ describe('Vue migration composition components', () => {
     toastState.close(firstKey);
     toastState.close(thirdKey);
     queue.close(queuedToastKey);
+  });
+
+  it('manages vue-stately toggle and toggle-group selection behavior', () => {
+    let controlledSelected = ref<boolean | undefined>(true);
+    let toggleChanges: boolean[] = [];
+    let toggleState = useStatelyToggleState({
+      isSelected: controlledSelected,
+      onChange: (isSelected) => {
+        toggleChanges.push(isSelected);
+        controlledSelected.value = isSelected;
+      }
+    });
+
+    expect(toggleState.isSelected.value).toBe(true);
+    toggleState.toggle();
+    expect(toggleState.isSelected.value).toBe(false);
+    expect(toggleChanges).toEqual([false]);
+
+    let readOnlyToggle = useStatelyToggleState({
+      defaultSelected: true,
+      isReadOnly: true
+    });
+    readOnlyToggle.toggle();
+    expect(readOnlyToggle.isSelected.value).toBe(true);
+
+    let selectedKeys = ref<Set<string | number> | undefined>(new Set(['bold']));
+    let groupSelectionChanges: string[][] = [];
+    let groupState = useStatelyToggleGroupState({
+      disallowEmptySelection: true,
+      onSelectionChange: (keys) => {
+        let values = Array.from(keys).map((key) => String(key));
+        groupSelectionChanges.push(values);
+        selectedKeys.value = new Set(values);
+      },
+      selectedKeys,
+      selectionMode: 'multiple'
+    });
+
+    groupState.toggleKey('italic');
+    expect(Array.from(groupState.selectedKeys.value)).toEqual(['bold', 'italic']);
+    groupState.toggleKey('bold');
+    expect(Array.from(groupState.selectedKeys.value)).toEqual(['italic']);
+    groupState.toggleKey('italic');
+    expect(Array.from(groupState.selectedKeys.value)).toEqual(['italic']);
+
+    let singleGroupState = useStatelyToggleGroupState({
+      defaultSelectedKeys: ['left'],
+      selectionMode: 'single'
+    });
+    singleGroupState.toggleKey('right');
+    expect(Array.from(singleGroupState.selectedKeys.value)).toEqual(['right']);
+    expect(groupSelectionChanges).toEqual([['bold', 'italic'], ['italic']]);
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {

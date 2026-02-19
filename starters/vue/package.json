@@ -159,6 +159,7 @@
     "@vue-stately/table": "workspace:*",
     "@vue-stately/tabs": "workspace:*",
     "@vue-stately/toast": "workspace:*",
+    "@vue-stately/toggle": "workspace:*",
     "vue": "^3.5.13"
   },
   "devDependencies": {
