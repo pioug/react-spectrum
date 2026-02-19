@@ -31,6 +31,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-spectrum/switch` | `@vue-spectrum/switch` |
 | `@react-spectrum/divider` | `@vue-spectrum/divider` |
 | `@react-spectrum/link` | `@vue-spectrum/link` |
+| `@react-spectrum/label` | `@vue-spectrum/label` |
 | `@react-spectrum/form` | `@vue-spectrum/form` |
 | `@react-spectrum/image` | `@vue-spectrum/image` |
 | `@react-spectrum/inlinealert` | `@vue-spectrum/inlinealert` |

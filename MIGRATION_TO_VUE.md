@@ -39,6 +39,7 @@ Phase 1 is implemented:
   * `@react-spectrum/switch` -> `@vue-spectrum/switch` (`in_progress`)
   * `@react-spectrum/divider` -> `@vue-spectrum/divider` (`in_progress`)
   * `@react-spectrum/link` -> `@vue-spectrum/link` (`in_progress`)
+  * `@react-spectrum/label` -> `@vue-spectrum/label` (`in_progress`)
   * `@react-spectrum/form` -> `@vue-spectrum/form` (`in_progress`)
   * `@react-spectrum/image` -> `@vue-spectrum/image` (`in_progress`)
   * `@react-spectrum/inlinealert` -> `@vue-spectrum/inlinealert` (`in_progress`)

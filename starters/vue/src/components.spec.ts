@@ -6,6 +6,7 @@ import {Button} from '@vue-spectrum/button';
 import {Checkbox} from '@vue-spectrum/checkbox';
 import {Image} from '@vue-spectrum/image';
 import {InlineAlert} from '@vue-spectrum/inlinealert';
+import {Label} from '@vue-spectrum/label';
 import {Radio, RadioGroup} from '@vue-spectrum/radio';
 import {Switch} from '@vue-spectrum/switch';
 import {TextField} from '@vue-spectrum/textfield';
@@ -100,6 +101,22 @@ describe('Vue migration primitives', () => {
     expect(image.attributes('src')).toBe('https://example.com/image.png');
     expect(image.attributes('alt')).toBe('Preview');
     expect(wrapper.classes()).toContain('vs-image--fit-contain');
+  });
+
+  it('renders label content and required indicator', () => {
+    let wrapper = mount(Label, {
+      props: {
+        forId: 'field-name',
+        required: true
+      },
+      slots: {
+        default: 'Name'
+      }
+    });
+
+    expect(wrapper.attributes('for')).toBe('field-name');
+    expect(wrapper.text()).toContain('Name');
+    expect(wrapper.find('.vs-label__required').exists()).toBe(true);
   });
 
   it('emits click from button', async () => {

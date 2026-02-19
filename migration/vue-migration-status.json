@@ -428,6 +428,30 @@
         }
       ]
     },
+    "@react-spectrum/label": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/label",
+      "targetPath": "packages/@vue-spectrum/label",
+      "notes": "First-wave form primitive for semantic labeling and required indicators.",
+      "acceptanceTests": [
+        {
+          "name": "Vue label package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/label/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/link": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/link",

@@ -8,6 +8,9 @@
           src="https://dummyimage.com/640x180/e5e5e5/2c2c2c.png&text=Vue+Image+Port"
           alt="Vue migration hero"
           fit="cover" />
+        <VueLabel class="helper-label" required>
+          Migration Components
+        </VueLabel>
         <p class="eyebrow">Vue Migration Baseline</p>
         <h1>Vue Spectrum Starter</h1>
         <p class="lead">
@@ -217,6 +220,7 @@ import {Dialog as VueDialog} from '@vue-spectrum/dialog';
 import {Form as VueForm} from '@vue-spectrum/form';
 import {Image as VueImage} from '@vue-spectrum/image';
 import {InlineAlert as VueInlineAlert} from '@vue-spectrum/inlinealert';
+import {Label as VueLabel} from '@vue-spectrum/label';
 import {Link as VueLink} from '@vue-spectrum/link';
 import {ListBox as VueListBox} from '@vue-spectrum/listbox';
 import {Menu as VueMenu} from '@vue-spectrum/menu';
@@ -393,6 +397,10 @@ function handleVirtualScroll(event: Event) {
 .hero-image {
   block-size: 128px;
   margin-bottom: 12px;
+}
+
+.helper-label {
+  margin-bottom: 8px;
 }
 
 .eyebrow {
