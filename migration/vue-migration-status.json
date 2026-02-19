@@ -360,6 +360,30 @@
         }
       ]
     },
+    "@react-aria/example-theme": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/example-theme",
+      "targetPath": "packages/@vue-aria/example-theme",
+      "notes": "Foundational React Aria example-theme port for migration starter color tokens and theme metadata helpers in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria example-theme source lint",
+          "command": "yarn eslint packages/@vue-aria/example-theme/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",

@@ -15,6 +15,7 @@ import {useDateField, useDatePicker, useDateRangePicker, useTimeField} from '@vu
 import {useDialog as useAriaDialog} from '@vue-aria/dialog';
 import {useDisclosure as useAriaDisclosure} from '@vue-aria/disclosure';
 import {useDrag, useDrop} from '@vue-aria/dnd';
+import {EXAMPLE_THEME_CLASS, useExampleTheme} from '@vue-aria/example-theme';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -604,6 +605,29 @@ describe('Vue migration composition components', () => {
     expect(drop.enter(fileItems)).toBe(false);
     expect(drop.drop(fileItems)).toBe('cancel');
     expect(dropEvents).toEqual(['enter', 'drop:copy']);
+  });
+
+  it('computes vue-aria example theme class and color scheme metadata', () => {
+    let colorScheme = ref<'dark' | 'light' | 'system'>('dark');
+    let theme = useExampleTheme({
+      colorScheme
+    });
+
+    expect(theme.colorScheme.value).toBe('dark');
+    expect(theme.rootProps.value.class).toBe(EXAMPLE_THEME_CLASS);
+    expect(theme.rootProps.value['data-theme']).toBe('dark');
+
+    colorScheme.value = 'light';
+    expect(theme.rootProps.value['data-theme']).toBe('light');
+  });
+
+  it('appends custom class names in vue-aria example theme root props', () => {
+    let theme = useExampleTheme({
+      rootClassName: ref('starter-shell')
+    });
+
+    expect(theme.rootProps.value.class).toBe(`${EXAMPLE_THEME_CLASS} starter-shell`);
+    expect(theme.rootProps.value['data-theme']).toBe('system');
   });
 
   it('emits close events from dismissable dialog controls', async () => {

@@ -79,6 +79,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-aria/datepicker` | `@vue-aria/datepicker` |
 | `@react-aria/dialog` | `@vue-aria/dialog` |
 | `@react-aria/dnd` | `@vue-aria/dnd` |
+| `@react-aria/example-theme` | `@vue-aria/example-theme` |
 | `@react-aria/disclosure` | `@vue-aria/disclosure` |
 | `@react-aria/color` | `@vue-aria/color` |
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` |
