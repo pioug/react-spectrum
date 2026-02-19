@@ -51,6 +51,7 @@ import {useField, useLabel} from '@vue-aria/label';
 import {UNSTABLE_createLandmarkController, useLandmark} from '@vue-aria/landmark';
 import {useLink as useAriaLink} from '@vue-aria/link';
 import {getItemId, listData, useListBox as useAriaListBox, useListBoxSection as useAriaListBoxSection, useOption as useAriaOption} from '@vue-aria/listbox';
+import {announce, clearAnnouncer, destroyAnnouncer} from '@vue-aria/live-announcer';
 import {
   addWindowFocusTracking,
   setInteractionModality,
@@ -1206,6 +1207,33 @@ describe('Vue migration composition components', () => {
     expect(section.headingProps.value.role).toBe('presentation');
     expect(section.groupProps.value.role).toBe('group');
     expect(section.groupProps.value['aria-labelledby']).toBe(section.headingProps.value.id);
+  });
+
+  it('announces and clears live region messages with vue-aria live announcer', () => {
+    destroyAnnouncer();
+
+    let label = document.createElement('span');
+    label.id = 'live-announcer-label';
+    label.textContent = 'Linked announcement';
+    document.body.append(label);
+
+    try {
+      announce('List item selected', 'polite', 500);
+      let liveRegionRoot = document.querySelector('[data-live-announcer=\"true\"]');
+      expect(liveRegionRoot).not.toBeNull();
+      expect(liveRegionRoot?.textContent).toContain('List item selected');
+
+      announce({'aria-labelledby': 'live-announcer-label'}, 'assertive', 500);
+      let imageAnnouncement = document.querySelector('[data-live-announcer=\"true\"] [role=\"img\"]');
+      expect(imageAnnouncement?.getAttribute('aria-labelledby')).toBe('live-announcer-label');
+
+      clearAnnouncer('polite');
+      let politeLog = document.querySelector('[data-live-announcer=\"true\"] [aria-live=\"polite\"]');
+      expect(politeLog?.textContent).toBe('');
+    } finally {
+      destroyAnnouncer();
+      document.body.removeChild(label);
+    }
   });
 
   it('handles vue-aria interactions focus, keyboard, and press callbacks', () => {
