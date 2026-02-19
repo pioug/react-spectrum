@@ -1104,6 +1104,30 @@
         }
       ]
     },
+    "@react-aria/utils": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/utils",
+      "targetPath": "packages/@vue-aria/utils",
+      "notes": "Foundational React Aria utils baseline for DOM prop filtering, event chaining/merging, id helpers, label helpers, and focusable-node utilities in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria utils source lint",
+          "command": "yarn eslint packages/@vue-aria/utils/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/tabs": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/tabs",

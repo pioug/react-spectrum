@@ -64,6 +64,7 @@
     "@vue-aria/toolbar": "workspace:*",
     "@vue-aria/tooltip": "workspace:*",
     "@vue-aria/tree": "workspace:*",
+    "@vue-aria/utils": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",

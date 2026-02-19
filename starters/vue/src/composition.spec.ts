@@ -91,6 +91,21 @@ import {useToolbar as useAriaToolbar} from '@vue-aria/toolbar';
 import {useTooltip as useAriaTooltip, useTooltipTrigger as useAriaTooltipTrigger} from '@vue-aria/tooltip';
 import {useTree as useAriaTree, useTreeItem as useAriaTreeItem} from '@vue-aria/tree';
 import {
+  chain as ariaChain,
+  filterDOMProps as ariaFilterDOMProps,
+  getActiveElement as ariaGetActiveElement,
+  getEventTarget as ariaGetEventTarget,
+  isFocusable as ariaIsFocusable,
+  isFocusWithin as ariaIsFocusWithin,
+  isTabbable as ariaIsTabbable,
+  mergeIds as ariaMergeIds,
+  mergeProps as ariaMergeProps,
+  nodeContains as ariaNodeContains,
+  useId as useAriaId,
+  useLabels as useAriaLabels,
+  useSlotId as useAriaSlotId
+} from '@vue-aria/utils';
+import {
   useTable as useAriaTable,
   useTableCell as useAriaTableCell,
   useTableColumnHeader as useAriaTableColumnHeader,
@@ -2282,6 +2297,96 @@ describe('Vue migration composition components', () => {
     expect(readmeTreeItem.expandButtonProps.value.disabled).toBe(true);
     readmeTreeItem.expandButtonProps.value.onPress();
     expect(expandedKeys.value.size).toBe(0);
+  });
+
+  it('applies vue-aria utility helpers for props, ids, labels, and focusable nodes', () => {
+    let callbackCalls: string[] = [];
+    let chained = ariaChain((value: string) => {
+      callbackCalls.push(`first:${value}`);
+    }, (value: string) => {
+      callbackCalls.push(`second:${value}`);
+    });
+    chained('run');
+    expect(callbackCalls).toEqual(['first:run', 'second:run']);
+
+    let mergedProps = ariaMergeProps(
+      {
+        class: 'primary',
+        id: 'trigger',
+        onClick: () => {
+          callbackCalls.push('click:first');
+        }
+      },
+      {
+        class: 'compact',
+        id: 'tooltip',
+        onClick: () => {
+          callbackCalls.push('click:second');
+        }
+      }
+    );
+    expect(mergedProps.class).toBe('primary compact');
+    expect(mergedProps.id).toBe('trigger tooltip');
+    (mergedProps.onClick as () => void)();
+    expect(callbackCalls).toContain('click:first');
+    expect(callbackCalls).toContain('click:second');
+
+    let filteredProps = ariaFilterDOMProps({
+      id: 'field-id',
+      role: 'textbox',
+      'aria-label': 'Email',
+      'data-testid': 'email-field',
+      onClick: () => {
+        callbackCalls.push('filtered-click');
+      },
+      randomProp: 'ignored'
+    }, {
+      labelable: true
+    });
+    expect(filteredProps.id).toBe('field-id');
+    expect(filteredProps['aria-label']).toBe('Email');
+    expect(filteredProps['data-testid']).toBe('email-field');
+    expect(filteredProps['randomProp']).toBeUndefined();
+
+    let container = document.createElement('div');
+    let button = document.createElement('button');
+    container.append(button);
+    document.body.append(container);
+
+    try {
+      button.focus();
+      expect(ariaNodeContains(container, button)).toBe(true);
+      expect(ariaGetActiveElement(document)).toBe(button);
+      expect(ariaIsFocusWithin(container)).toBe(true);
+      expect(ariaIsFocusable(button)).toBe(true);
+      expect(ariaIsTabbable(button)).toBe(true);
+
+      let eventTarget: EventTarget | null = null;
+      let onClick = (event: MouseEvent) => {
+        eventTarget = ariaGetEventTarget(event);
+      };
+      button.addEventListener('click', onClick);
+      button.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+      button.removeEventListener('click', onClick);
+      expect(eventTarget).toBe(button);
+    } finally {
+      document.body.removeChild(container);
+    }
+
+    expect(ariaMergeIds('label-id', 'description-id')).toBe('label-id description-id');
+    expect(useAriaId()).toContain('react-aria-');
+    expect(useAriaSlotId()).toContain('react-aria-');
+
+    let labels = useAriaLabels(
+      {
+        'aria-label': 'Expand row'
+      },
+      {
+        'aria-labelledby': 'row-label'
+      }
+    );
+    expect(labels['aria-label']).toBe('Expand row');
+    expect(labels['aria-labelledby']).toBe('row-label');
   });
 
   it('computes vue-aria tag group and tag remove behavior', () => {
