@@ -25,7 +25,7 @@
       ]
     },
     "@react-aria/virtualizer": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/virtualizer",
       "targetPath": "packages/@vue-aria/virtualizer",
       "notes": "Foundational React Aria virtualizer port to support virtualized Vue collection components, now validated by starter interaction/composable tests and wired into the Vue starter virtualized backlog demo.",
@@ -49,7 +49,7 @@
       ]
     },
     "@react-aria/actiongroup": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/actiongroup",
       "targetPath": "packages/@vue-aria/actiongroup",
       "notes": "Foundational React Aria action-group composables for selection mode and item state in Vue.",
@@ -73,7 +73,7 @@
       ]
     },
     "@react-aria/aria-modal-polyfill": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/aria-modal-polyfill",
       "targetPath": "packages/@vue-aria/aria-modal-polyfill",
       "notes": "Foundational React Aria modal-watcher utility for applying aria-hidden around active Vue modals.",
@@ -97,7 +97,7 @@
       ]
     },
     "@react-aria/autocomplete": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/autocomplete",
       "targetPath": "packages/@vue-aria/autocomplete",
       "notes": "Foundational React Aria autocomplete composables for filtering collections and handling search submit/clear behavior in Vue.",
@@ -121,7 +121,7 @@
       ]
     },
     "@react-aria/breadcrumbs": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/breadcrumbs",
       "targetPath": "packages/@vue-aria/breadcrumbs",
       "notes": "Foundational React Aria breadcrumb composables for navigation labels and per-item accessibility state in Vue.",
@@ -145,7 +145,7 @@
       ]
     },
     "@react-aria/button": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/button",
       "targetPath": "packages/@vue-aria/button",
       "notes": "Foundational React Aria button and toggle-button composables for press state and grouped selection behavior in Vue.",
@@ -169,7 +169,7 @@
       ]
     },
     "@react-aria/calendar": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/calendar",
       "targetPath": "packages/@vue-aria/calendar",
       "notes": "Foundational React Aria calendar composables for date selection, range selection, and month-grid cell semantics in Vue.",
@@ -193,7 +193,7 @@
       ]
     },
     "@react-aria/checkbox": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/checkbox",
       "targetPath": "packages/@vue-aria/checkbox",
       "notes": "Foundational React Aria checkbox and checkbox-group composables for toggle state and grouped multi-selection behavior in Vue.",
@@ -217,7 +217,7 @@
       ]
     },
     "@react-aria/collections": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/collections",
       "targetPath": "packages/@vue-aria/collections",
       "notes": "Foundational React Aria collection node/base classes, cached-children rendering, and builder helpers for Vue data-collection flows.",
@@ -241,7 +241,7 @@
       ]
     },
     "@react-aria/color": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/color",
       "targetPath": "packages/@vue-aria/color",
       "notes": "Foundational React Aria color composables for sliders, wheels, areas, swatches, and channel/text field controls in Vue.",
@@ -265,7 +265,7 @@
       ]
     },
     "@react-aria/combobox": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/combobox",
       "targetPath": "packages/@vue-aria/combobox",
       "notes": "Foundational React Aria combobox composable for filtering, selection, and popup semantics in Vue.",
@@ -289,7 +289,7 @@
       ]
     },
     "@react-aria/datepicker": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/datepicker",
       "targetPath": "packages/@vue-aria/datepicker",
       "notes": "Foundational React Aria date picker composables for date fields, time fields, single-date pickers, and range selection in Vue.",
@@ -313,7 +313,7 @@
       ]
     },
     "@react-aria/dialog": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/dialog",
       "targetPath": "packages/@vue-aria/dialog",
       "notes": "Foundational React Aria dialog composable for labeled dialog props and open/close state in Vue.",
@@ -337,7 +337,7 @@
       ]
     },
     "@react-aria/dnd": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/dnd",
       "targetPath": "packages/@vue-aria/dnd",
       "notes": "Foundational React Aria drag-and-drop composables for drag lifecycle state, accepted-type filtering, and drop operations in Vue.",
@@ -361,7 +361,7 @@
       ]
     },
     "@react-aria/example-theme": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/example-theme",
       "targetPath": "packages/@vue-aria/example-theme",
       "notes": "Foundational React Aria example-theme port for migration starter color tokens and theme metadata helpers in Vue.",
@@ -385,7 +385,7 @@
       ]
     },
     "@react-aria/focus": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/focus",
       "targetPath": "packages/@vue-aria/focus",
       "notes": "Foundational React Aria focus composables for focus-ring visibility and tabbable-child detection behavior in Vue.",
@@ -409,7 +409,7 @@
       ]
     },
     "@react-aria/form": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/form",
       "targetPath": "packages/@vue-aria/form",
       "notes": "Foundational React Aria form validation composable for native validation wiring and commit/reset handlers in Vue.",
@@ -433,7 +433,7 @@
       ]
     },
     "@react-aria/grid": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/grid",
       "targetPath": "packages/@vue-aria/grid",
       "notes": "Foundational React Aria grid composables for row/cell semantics, selection helpers, keyboard navigation, and selection announcements in Vue.",
@@ -457,7 +457,7 @@
       ]
     },
     "@react-aria/gridlist": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/gridlist",
       "targetPath": "packages/@vue-aria/gridlist",
       "notes": "Foundational React Aria gridlist composables for single-column grid semantics, item-level interactions, sections, and selection checkbox wiring in Vue.",
@@ -481,7 +481,7 @@
       ]
     },
     "@react-aria/i18n": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/i18n",
       "targetPath": "packages/@vue-aria/i18n",
       "notes": "Foundational React Aria i18n composables for locale state, RTL detection, Intl formatters, and localized string/message formatting in Vue.",
@@ -505,7 +505,7 @@
       ]
     },
     "@react-aria/interactions": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/interactions",
       "targetPath": "packages/@vue-aria/interactions",
       "notes": "Foundational React Aria interaction composables for focus, hover, press, long-press, move, keyboard, and outside-interaction behavior in Vue.",
@@ -529,7 +529,7 @@
       ]
     },
     "@react-aria/label": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/label",
       "targetPath": "packages/@vue-aria/label",
       "notes": "Foundational React Aria label composables for accessible field labeling, aria-labelledby wiring, and description/error associations in Vue.",
@@ -553,7 +553,7 @@
       ]
     },
     "@react-aria/landmark": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/landmark",
       "targetPath": "packages/@vue-aria/landmark",
       "notes": "Foundational React Aria landmark composables for region role registration and controller-driven landmark focus navigation in Vue.",
@@ -577,7 +577,7 @@
       ]
     },
     "@react-aria/link": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/link",
       "targetPath": "packages/@vue-aria/link",
       "notes": "Foundational React Aria link composable for anchor/link roles with focusable and press interaction wiring in Vue.",
@@ -601,7 +601,7 @@
       ]
     },
     "@react-aria/listbox": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/listbox",
       "targetPath": "packages/@vue-aria/listbox",
       "notes": "Foundational React Aria listbox composables for listbox container semantics, option interactions, section grouping, and option id utilities in Vue.",
@@ -625,7 +625,7 @@
       ]
     },
     "@react-aria/live-announcer": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/live-announcer",
       "targetPath": "packages/@vue-aria/live-announcer",
       "notes": "Foundational React Aria live announcer utilities for assertive/polite screen reader announcements and lifecycle cleanup in Vue.",
@@ -649,7 +649,7 @@
       ]
     },
     "@react-aria/menu": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/menu",
       "targetPath": "packages/@vue-aria/menu",
       "notes": "Foundational React Aria menu composables for menu trigger behavior, menu item selection semantics, section grouping, and submenu state in Vue.",
@@ -673,7 +673,7 @@
       ]
     },
     "@react-aria/meter": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/meter",
       "targetPath": "packages/@vue-aria/meter",
       "notes": "Foundational React Aria meter composable for range clamping, value text formatting, and label linkage semantics in Vue.",
@@ -697,7 +697,7 @@
       ]
     },
     "@react-aria/numberfield": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/numberfield",
       "targetPath": "packages/@vue-aria/numberfield",
       "notes": "Foundational React Aria number field composable for spinbutton semantics, stepper controls, input parsing, and clamped range behavior in Vue.",
@@ -721,7 +721,7 @@
       ]
     },
     "@react-aria/overlays": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/overlays",
       "targetPath": "packages/@vue-aria/overlays",
       "notes": "Foundational React Aria overlays composables for trigger wiring, overlay dismissal, modal/popover semantics, position calculation, and scroll locking in Vue.",
@@ -745,7 +745,7 @@
       ]
     },
     "@react-aria/progress": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/progress",
       "targetPath": "packages/@vue-aria/progress",
       "notes": "Foundational React Aria progress composable for progressbar range clamping, determinate/indeterminate behavior, and value text formatting in Vue.",
@@ -769,7 +769,7 @@
       ]
     },
     "@react-aria/radio": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/radio",
       "targetPath": "packages/@vue-aria/radio",
       "notes": "Foundational React Aria radio composables for radiogroup semantics, arrow-key selection movement, and per-radio selection/press behavior in Vue.",
@@ -793,7 +793,7 @@
       ]
     },
     "@react-aria/searchfield": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/searchfield",
       "targetPath": "packages/@vue-aria/searchfield",
       "notes": "Foundational React Aria search field composable for controlled input value, Enter submit behavior, Escape clear behavior, and clear-button semantics in Vue.",
@@ -817,7 +817,7 @@
       ]
     },
     "@react-aria/select": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/select",
       "targetPath": "packages/@vue-aria/select",
       "notes": "Foundational React Aria select composables for trigger/menu semantics, selected-key navigation, and hidden form-select wiring in Vue.",
@@ -841,7 +841,7 @@
       ]
     },
     "@react-aria/selection": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/selection",
       "targetPath": "packages/@vue-aria/selection",
       "notes": "Foundational React Aria selection utilities for list keyboard delegation, typeahead focus targeting, and selectable item/collection behavior in Vue.",
@@ -865,7 +865,7 @@
       ]
     },
     "@react-aria/separator": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/separator",
       "targetPath": "packages/@vue-aria/separator",
       "notes": "Foundational React Aria separator composable for role and vertical orientation semantics in Vue.",
@@ -889,7 +889,7 @@
       ]
     },
     "@react-aria/slider": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/slider",
       "targetPath": "packages/@vue-aria/slider",
       "notes": "Foundational React Aria slider composables for grouped slider semantics, track interactions, and thumb range-input behavior in Vue.",
@@ -913,7 +913,7 @@
       ]
     },
     "@react-aria/spinbutton": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/spinbutton",
       "targetPath": "packages/@vue-aria/spinbutton",
       "notes": "Foundational React Aria spinbutton composable for keyboard step actions, press-and-hold stepping behavior, and spinbutton aria semantics in Vue.",
@@ -937,7 +937,7 @@
       ]
     },
     "@react-aria/ssr": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/ssr",
       "targetPath": "packages/@vue-aria/ssr",
       "notes": "Foundational React Aria SSR utilities for scoped id generation and SSR-environment detection in Vue.",
@@ -961,7 +961,7 @@
       ]
     },
     "@react-aria/steplist": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/steplist",
       "targetPath": "packages/@vue-aria/steplist",
       "notes": "Foundational React Aria steplist composables for list semantics, selectable step links, and current-step accessibility in Vue.",
@@ -985,7 +985,7 @@
       ]
     },
     "@react-aria/switch": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/switch",
       "targetPath": "packages/@vue-aria/switch",
       "notes": "Foundational React Aria switch composable built on Vue checkbox toggle behavior with switch role semantics.",
@@ -1009,7 +1009,7 @@
       ]
     },
     "@react-aria/toggle": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/toggle",
       "targetPath": "packages/@vue-aria/toggle",
       "notes": "Foundational React Aria toggle composable for shared checkbox/switch press and selection semantics in Vue.",
@@ -1033,7 +1033,7 @@
       ]
     },
     "@react-aria/toolbar": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/toolbar",
       "targetPath": "packages/@vue-aria/toolbar",
       "notes": "Foundational React Aria toolbar composable for grouped control semantics and arrow-key focus navigation in Vue.",
@@ -1057,7 +1057,7 @@
       ]
     },
     "@react-aria/tooltip": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/tooltip",
       "targetPath": "packages/@vue-aria/tooltip",
       "notes": "Foundational React Aria tooltip composables for focus/hover trigger behavior and tooltip accessibility linking in Vue.",
@@ -1081,7 +1081,7 @@
       ]
     },
     "@react-aria/tree": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/tree",
       "targetPath": "packages/@vue-aria/tree",
       "notes": "Foundational React Aria tree composables for treegrid role semantics and expandable tree item controls in Vue.",
@@ -1105,7 +1105,7 @@
       ]
     },
     "@react-aria/utils": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/utils",
       "targetPath": "packages/@vue-aria/utils",
       "notes": "Foundational React Aria utils baseline for DOM prop filtering, event chaining/merging, id helpers, label helpers, and focusable-node utilities in Vue.",
@@ -1129,7 +1129,7 @@
       ]
     },
     "@react-aria/visually-hidden": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/visually-hidden",
       "targetPath": "packages/@vue-aria/visually-hidden",
       "notes": "Foundational React Aria visually-hidden composable for screen-reader-only content and optional focus reveal behavior in Vue.",
@@ -1153,7 +1153,7 @@
       ]
     },
     "@react-aria/tabs": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/tabs",
       "targetPath": "packages/@vue-aria/tabs",
       "notes": "Foundational React Aria tabs composables for tablist keyboard navigation, tab selection behavior, and tabpanel labeling semantics in Vue.",
@@ -1177,7 +1177,7 @@
       ]
     },
     "@react-aria/tag": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/tag",
       "targetPath": "packages/@vue-aria/tag",
       "notes": "Foundational React Aria tag composables for tag-group labeling, selectable grid-row semantics, and keyboard remove behavior in Vue.",
@@ -1201,7 +1201,7 @@
       ]
     },
     "@react-aria/test-utils": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/test-utils",
       "targetPath": "packages/@vue-aria/test-utils",
       "notes": "Foundational React Aria test-utils baseline for pointer maps, long-press helpers, and lightweight ARIA pattern tester classes in Vue test environments.",
@@ -1225,7 +1225,7 @@
       ]
     },
     "@react-aria/textfield": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/textfield",
       "targetPath": "packages/@vue-aria/textfield",
       "notes": "Foundational React Aria textfield composables for labeled input/textarea props, validation wiring, and formatted text input guards in Vue.",
@@ -1249,7 +1249,7 @@
       ]
     },
     "@react-aria/toast": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/toast",
       "targetPath": "packages/@vue-aria/toast",
       "notes": "Foundational React Aria toast composables for notification-region labeling, toast timer pause/resume behavior, and dismissable toast dialog semantics in Vue.",
@@ -1273,7 +1273,7 @@
       ]
     },
     "@react-aria/table": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/table",
       "targetPath": "packages/@vue-aria/table",
       "notes": "Foundational React Aria table wrappers around Vue grid composables for table rows/cells, header interactions, selection checkboxes, and baseline column resize controls.",
@@ -1297,7 +1297,7 @@
       ]
     },
     "@react-aria/disclosure": {
-      "status": "in_progress",
+      "status": "ported",
       "targetPackage": "@vue-aria/disclosure",
       "targetPath": "packages/@vue-aria/disclosure",
       "notes": "Foundational React Aria disclosure composable for trigger/panel semantics and expanded state in Vue.",
