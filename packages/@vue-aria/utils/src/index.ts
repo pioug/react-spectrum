@@ -4,3 +4,4 @@ export {getActiveElement, getEventTarget, isFocusable, isFocusWithin, isTabbable
 export {mergeProps} from './mergeProps';
 export {mergeIds, useId, useSlotId} from './useId';
 export {useLabels} from './useLabels';
+export * from './compat';

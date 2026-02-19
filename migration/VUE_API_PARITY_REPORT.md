@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:18:30.352Z
+Generated: 2026-02-19T21:24:36.419Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 52
+* Fully matched packages: 53
 * Source exports inspected: 2672
-* Missing exports: 1437
-* Coverage ratio: 46.22%
+* Missing exports: 1374
+* Coverage ratio: 48.58%
 
 ## Package gaps
 
@@ -18,8 +18,7 @@ Generated: 2026-02-19T21:18:30.352Z
 | --- | --- | --- | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | missing | 543 | 503 | 7.4% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | missing | 325 | 314 | 3.4% |
-| `react-aria` | `vue-aria` | missing | 419 | 156 | 62.8% |
-| `@react-aria/utils` | `@vue-aria/utils` | missing | 74 | 61 | 17.6% |
+| `react-aria` | `vue-aria` | missing | 419 | 154 | 63.2% |
 | `@react-aria/dnd` | `@vue-aria/dnd` | missing | 62 | 58 | 6.5% |
 | `@react-spectrum/dnd` | `@vue-spectrum/dnd` | missing | 26 | 26 | 0.0% |
 | `react-stately` | `vue-stately` | missing | 165 | 26 | 84.2% |
@@ -131,6 +130,7 @@ Generated: 2026-02-19T21:18:30.352Z
 | `@react-aria/selection` | `@vue-aria/selection` | ok | 15 | 0 | 100.0% |
 | `@react-aria/ssr` | `@vue-aria/ssr` | ok | 4 | 0 | 100.0% |
 | `@react-aria/test-utils` | `@vue-aria/test-utils` | ok | 17 | 0 | 100.0% |
+| `@react-aria/utils` | `@vue-aria/utils` | ok | 74 | 0 | 100.0% |
 | `@react-spectrum/button` | `@vue-spectrum/button` | ok | 10 | 0 | 100.0% |
 | `@react-spectrum/dialog` | `@vue-spectrum/dialog` | ok | 10 | 0 | 100.0% |
 | `@react-spectrum/icon` | `@vue-spectrum/icon` | ok | 9 | 0 | 100.0% |
@@ -191,15 +191,8 @@ Generated: 2026-02-19T21:18:30.352Z
 
 * Source entry: `packages/react-aria/src/index.ts`
 * Target entry: `packages/vue-aria/src/index.ts`
-* Missing export count: 156
+* Missing export count: 154
 * Missing exports: `AriaBreadcrumbItemProps`, `AriaBreadcrumbsProps`, `AriaButtonProps`, `AriaCalendarCellProps`, `AriaCalendarGridProps`, `AriaCalendarProps`, `AriaCheckboxGroupItemProps`, `AriaCheckboxGroupProps`, `AriaCheckboxProps`, `AriaColorAreaProps`, `AriaColorChannelFieldProps`, `AriaColorFieldProps`, `AriaColorSliderProps`, `AriaColorSwatchProps`, `AriaComboBoxProps`, `AriaDateFieldProps`, `AriaDatePickerProps`, `AriaDateRangePickerProps`, `AriaDialogProps`, `AriaDisclosureProps`, `AriaHiddenSelectProps`, `AriaListBoxProps`, `AriaMenuProps`, `AriaMeterProps`, `AriaModalOverlayProps`, `AriaNumberFieldProps`, `AriaOverlayProps`, `AriaPopoverProps`, `AriaPositionProps`, `AriaProgressBarProps`, `AriaRadioGroupProps`, `AriaRadioProps`, `AriaRangeCalendarProps`, `AriaSearchFieldProps`, `AriaSelectProps`, `AriaSliderProps`, `AriaSliderThumbProps`, `AriaSwitchProps`, `AriaTabListProps`, `AriaTabPanelProps` ...
-
-### @react-aria/utils -> @vue-aria/utils
-
-* Source entry: `packages/@react-aria/utils/src/index.ts`
-* Target entry: `packages/@vue-aria/utils/src/index.ts`
-* Missing export count: 61
-* Missing exports: `CLEAR_FOCUS_EVENT`, `FOCUS_EVENT`, `LoadMoreSentinelProps`, `RouterProvider`, `ShadowTreeWalker`, `UNSTABLE_useLoadMoreSentinel`, `clamp`, `createShadowTreeWalker`, `focusWithoutScrolling`, `getOffset`, `getOwnerDocument`, `getOwnerWindow`, `getScrollParent`, `getScrollParents`, `getSyntheticLinkProps`, `handleLinkClick`, `inertValue`, `isAndroid`, `isAppleDevice`, `isChrome`, `isCtrlKeyPressed`, `isFirefox`, `isIOS`, `isIPad`, `isIPhone`, `isMac`, `isScrollable`, `isShadowRoot`, `isVirtualClick`, `isVirtualPointerEvent`, `isWebKit`, `mergeRefs`, `openLink`, `runAfterTransition`, `scrollIntoView`, `scrollIntoViewport`, `shouldClientNavigate`, `snapValueToStep`, `useDeepMemo`, `useDescription` ...
 
 ### @react-aria/dnd -> @vue-aria/dnd
 
@@ -312,4 +305,11 @@ Generated: 2026-02-19T21:18:30.352Z
 * Target entry: `packages/@vue-aria/button/src/index.ts`
 * Missing export count: 4
 * Missing exports: `AriaButtonProps`, `AriaToggleButtonGroupItemProps`, `AriaToggleButtonGroupProps`, `AriaToggleButtonProps`
+
+### @react-aria/select -> @vue-aria/select
+
+* Source entry: `packages/@react-aria/select/src/index.ts`
+* Target entry: `packages/@vue-aria/select/src/index.ts`
+* Missing export count: 4
+* Missing exports: `AriaHiddenSelectProps`, `AriaSelectProps`, `HiddenSelect`, `HiddenSelectProps`
 
