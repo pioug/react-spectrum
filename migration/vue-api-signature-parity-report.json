@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-19T22:50:21.185Z",
+  "generatedAt": "2026-02-19T22:54:07.681Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 77,
+    "fullyMatchedPackages": 78,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 1832,
-    "mismatchedExportTotal": 840,
+    "matchedExportTotal": 1841,
+    "mismatchedExportTotal": 831,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.6856
+    "parityCoverage": 0.689
   },
   "packages": [
     {
@@ -5659,10 +5659,10 @@
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
       "comparedExportCount": 419,
-      "matchedExportCount": 315,
-      "mismatchedExportCount": 104,
+      "matchedExportCount": 317,
+      "mismatchedExportCount": 102,
       "missingInTargetCount": 0,
-      "parityRatio": 0.7518,
+      "parityRatio": 0.7566,
       "missingInTargetExports": [],
       "mismatches": [
         {
@@ -7198,80 +7198,6 @@
           }
         },
         {
-          "exportName": "useFocus",
-          "targetExportName": "useFocus",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useFocus",
-            "resolvedName": "useFocus",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<Target extends FocusableElement = FocusableElement>(props: FocusProps<Target>) => FocusResult<Target>",
-            "declaredType": "",
-            "callSignatures": [
-              "<Target extends FocusableElement = FocusableElement>( _: FocusProps<Target>) => FocusResult<Target>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useFocus",
-            "resolvedName": "useFocus",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props?: FocusProps) => FocusResult",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: FocusProps) => FocusResult"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useInteractOutside",
-          "targetExportName": "useInteractOutside",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useInteractOutside",
-            "resolvedName": "useInteractOutside",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: InteractOutsideProps) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: InteractOutsideProps) => void"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useInteractOutside",
-            "resolvedName": "useInteractOutside",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: InteractOutsideProps) => () => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: InteractOutsideProps) => () => void"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
           "exportName": "useGridList",
           "targetExportName": "useGridList",
           "differences": [
@@ -8639,9 +8565,83 @@
             ],
             "constructSignatures": []
           }
+        },
+        {
+          "exportName": "useTableRowGroup",
+          "targetExportName": "useTableRowGroup",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useTableRowGroup",
+            "resolvedName": "useTableRowGroup",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "() => GridRowGroupAria",
+            "declaredType": "",
+            "callSignatures": [
+              "() => GridRowGroupAria"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useTableRowGroup",
+            "resolvedName": "useTableRowGroup",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "() => TableRowGroupAria",
+            "declaredType": "",
+            "callSignatures": [
+              "() => TableRowGroupAria"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "useTableSelectAllCheckbox",
+          "targetExportName": "useTableSelectAllCheckbox",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useTableSelectAllCheckbox",
+            "resolvedName": "useTableSelectAllCheckbox",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(state: TableState<T>) => TableSelectAllCheckboxAria",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: TableState<T>) => TableSelectAllCheckboxAria"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useTableSelectAllCheckbox",
+            "resolvedName": "useTableSelectAllCheckbox",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(options: AriaTableSelectAllCheckboxOptions) => TableSelectAllCheckboxAria",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: AriaTableSelectAllCheckboxOptions) => TableSelectAllCheckboxAria"
+            ],
+            "constructSignatures": []
+          }
         }
       ],
-      "truncatedMismatchCount": 24,
+      "truncatedMismatchCount": 22,
       "error": null
     },
     {
@@ -14283,285 +14283,6 @@
             "valueType": "any",
             "declaredType": "",
             "callSignatures": [],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/interactions",
-      "sourcePath": "packages/@react-aria/interactions",
-      "targetPackage": "@vue-aria/interactions",
-      "targetPath": "packages/@vue-aria/interactions",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/interactions/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/interactions/src/index.ts",
-      "sourceExportCount": 60,
-      "comparedExportCount": 60,
-      "matchedExportCount": 53,
-      "mismatchedExportCount": 7,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.8833,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useFocus",
-          "targetExportName": "useFocus",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useFocus",
-            "resolvedName": "useFocus",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<Target extends FocusableElement = FocusableElement>(props: FocusProps<Target>) => FocusResult<Target>",
-            "declaredType": "",
-            "callSignatures": [
-              "<Target extends FocusableElement = FocusableElement>( _: FocusProps<Target>) => FocusResult<Target>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useFocus",
-            "resolvedName": "useFocus",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props?: FocusProps) => FocusResult",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: FocusProps) => FocusResult"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useInteractionModality",
-          "targetExportName": "useInteractionModality",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useInteractionModality",
-            "resolvedName": "useInteractionModality",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => Modality | null",
-            "declaredType": "",
-            "callSignatures": [
-              "() => Modality | null"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useInteractionModality",
-            "resolvedName": "useInteractionModality",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => Ref<Modality | null>",
-            "declaredType": "",
-            "callSignatures": [
-              "() => Ref<Modality | null>"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useFocusVisibleListener",
-          "targetExportName": "useFocusVisibleListener",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useFocusVisibleListener",
-            "resolvedName": "useFocusVisibleListener",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(fn: FocusVisibleHandler, deps: ReadonlyArray<any>, opts?: { enabled?: boolean; isTextInput?: boolean;}) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: FocusVisibleHandler, _: ReadonlyArray<any>, _: { enabled?: boolean; isTextInput?: boolean; }) => void"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useFocusVisibleListener",
-            "resolvedName": "useFocusVisibleListener",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(fn: FocusVisibleHandler, deps?: ReadonlyArray<unknown>, opts?: { enabled?: Maybeboolean; isTextInput?: Maybeboolean;}) => () => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: FocusVisibleHandler, _: ReadonlyArray<unknown>, _: { enabled?: Maybeboolean; isTextInput?: Maybeboolean; }) => () => void"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useInteractOutside",
-          "targetExportName": "useInteractOutside",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useInteractOutside",
-            "resolvedName": "useInteractOutside",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: InteractOutsideProps) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: InteractOutsideProps) => void"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useInteractOutside",
-            "resolvedName": "useInteractOutside",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: InteractOutsideProps) => () => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: InteractOutsideProps) => () => void"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useScrollWheel",
-          "targetExportName": "useScrollWheel",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useScrollWheel",
-            "resolvedName": "useScrollWheel",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: ScrollWheelProps, ref: RefObject<HTMLElement | null>) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: ScrollWheelProps, _: RefObject<HTMLElement | null>) => void"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useScrollWheel",
-            "resolvedName": "useScrollWheel",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: ScrollWheelProps, ref: MaybeRef<HTMLElement | null>) => () => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: ScrollWheelProps, _: MaybeRef<HTMLElement | null>) => () => void"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useFocusable",
-          "targetExportName": "useFocusable",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useFocusable",
-            "resolvedName": "useFocusable",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends FocusableElement = FocusableElement>(props: FocusableOptions<T>, domRef: RefObject<FocusableElement | null>) => FocusableAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends FocusableElement = FocusableElement>( _: FocusableOptions<T>, _: RefObject<FocusableElement | null>) => FocusableAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useFocusable",
-            "resolvedName": "useFocusable",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props?: FocusableOptions, domRef?: MaybeRef<FocusableElement | null>) => FocusableAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: FocusableOptions, _: MaybeRef<FocusableElement | null>) => FocusableAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "focusSafely",
-          "targetExportName": "focusSafely",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "focusSafely",
-            "resolvedName": "focusSafely",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(element: FocusableElement) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: FocusableElement) => void"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "focusSafely",
-            "resolvedName": "focusSafely",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(element: FocusableElement | null | undefined) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: FocusableElement | null | undefined) => void"
-            ],
             "constructSignatures": []
           }
         }
@@ -21288,6 +21009,25 @@
       "sourceExportCount": 26,
       "comparedExportCount": 26,
       "matchedExportCount": 26,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/interactions",
+      "sourcePath": "packages/@react-aria/interactions",
+      "targetPackage": "@vue-aria/interactions",
+      "targetPath": "packages/@vue-aria/interactions",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/interactions/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/interactions/src/index.ts",
+      "sourceExportCount": 60,
+      "comparedExportCount": 60,
+      "matchedExportCount": 60,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,

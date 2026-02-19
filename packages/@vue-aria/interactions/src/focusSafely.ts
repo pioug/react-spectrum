@@ -1,6 +1,7 @@
 import type {FocusableElement} from './types';
 import {getInteractionModality} from './useFocusVisible';
 
+export function focusSafely(element: FocusableElement): void;
 export function focusSafely(element: FocusableElement | null | undefined): void {
   if (!element) {
     return;

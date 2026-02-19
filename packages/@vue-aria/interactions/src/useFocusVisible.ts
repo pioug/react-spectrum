@@ -239,8 +239,14 @@ export function getPointerType(): PointerType {
   return currentPointerType;
 }
 
-export function useInteractionModality(): Ref<Modality | null> {
+export function useInteractionModality(): Modality | null;
+export function useInteractionModality(options: {reactive: true}): Ref<Modality | null>;
+export function useInteractionModality(options?: {reactive?: boolean}): Modality | null | Ref<Modality | null> {
   addWindowFocusTracking();
+
+  if (!options?.reactive) {
+    return currentModality;
+  }
 
   let modality = ref<Modality | null>(currentModality);
   let handler: Handler = (nextModality) => {
@@ -268,6 +274,11 @@ export function useFocusVisible(props: FocusVisibleProps = {}): FocusVisibleResu
   };
 }
 
+export function useFocusVisibleListener(
+  fn: FocusVisibleHandler,
+  deps?: ReadonlyArray<any>,
+  opts?: {enabled?: boolean, isTextInput?: boolean}
+): void;
 export function useFocusVisibleListener(
   fn: FocusVisibleHandler,
   deps: ReadonlyArray<unknown> = [],

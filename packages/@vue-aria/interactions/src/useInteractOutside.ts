@@ -30,6 +30,8 @@ function isValidEvent(event: MouseEvent | PointerEvent, refValue: Element | null
   return !event.composedPath().includes(refValue);
 }
 
+export function useInteractOutside(props: InteractOutsideProps): void;
+export function useInteractOutside(props: InteractOutsideProps): () => void;
 export function useInteractOutside(props: InteractOutsideProps): () => void {
   let isDisabled = computed(() => Boolean(unref(props.isDisabled)));
   let isPointerDown = false;

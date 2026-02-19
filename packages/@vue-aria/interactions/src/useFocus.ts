@@ -1,12 +1,13 @@
 import {computed, type ComputedRef, unref} from 'vue';
 import {getEventTarget} from './utils';
-import type {MaybeRef} from './types';
+import type {FocusableElement, MaybeRef} from './types';
 
-export interface FocusProps {
+export interface FocusProps<Target extends FocusableElement = FocusableElement> {
   isDisabled?: MaybeRef<boolean>,
   onBlur?: (event: FocusEvent) => void,
   onFocus?: (event: FocusEvent) => void,
-  onFocusChange?: (isFocused: boolean) => void
+  onFocusChange?: (isFocused: boolean) => void,
+  target?: Target
 }
 
 export interface FocusDOMProps {
@@ -14,11 +15,12 @@ export interface FocusDOMProps {
   onFocus?: (event: FocusEvent) => void
 }
 
-export interface FocusResult {
+export interface FocusResult<Target extends FocusableElement = FocusableElement> {
   focusProps: ComputedRef<FocusDOMProps>
+  target?: Target
 }
 
-export function useFocus(props: FocusProps = {}): FocusResult {
+export function useFocus<Target extends FocusableElement = FocusableElement>(props: FocusProps<Target> = {}): FocusResult<Target> {
   let isDisabled = computed(() => Boolean(unref(props.isDisabled)));
 
   let onFocus = (event: FocusEvent) => {

@@ -11,6 +11,10 @@ export interface ScrollWheelProps {
   onScroll?: (event: ScrollWheelEvent) => void
 }
 
+type RefObject<T> = {current: T};
+
+export function useScrollWheel(props: ScrollWheelProps, ref: RefObject<HTMLElement | null>): void;
+export function useScrollWheel(props: ScrollWheelProps, ref: MaybeRef<HTMLElement | null>): () => void;
 export function useScrollWheel(props: ScrollWheelProps, ref: MaybeRef<HTMLElement | null>): () => void {
   let isDisabled = computed(() => Boolean(unref(props.isDisabled)));
   let removeListener = () => {};

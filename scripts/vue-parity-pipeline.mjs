@@ -783,6 +783,18 @@ function compareSignatureField(sourceValue, targetValue, fieldName, differences)
   differences.push(fieldName);
 }
 
+function areSignatureSetsCompatible(sourceSignatures, targetSignatures) {
+  if (sourceSignatures.length === 0 || targetSignatures.length === 0) {
+    return sourceSignatures.length === targetSignatures.length;
+  }
+
+  let sourceSet = new Set(sourceSignatures);
+  let targetSet = new Set(targetSignatures);
+  let sourceCoveredByTarget = sourceSignatures.every((signature) => targetSet.has(signature));
+  let targetCoveredBySource = targetSignatures.every((signature) => sourceSet.has(signature));
+  return sourceCoveredByTarget || targetCoveredBySource;
+}
+
 function isComponentLikeExport(exportName) {
   return /^[A-Z]/.test(exportName);
 }
@@ -797,24 +809,18 @@ function diffExportSignatures(sourceDescriptor, targetDescriptor) {
 
   let hasCallSignatures = sourceDescriptor.callSignatures.length > 0 || targetDescriptor.callSignatures.length > 0;
   if (hasCallSignatures && !componentLike) {
-    compareSignatureField(
-      sourceDescriptor.callSignatures.join(' | '),
-      targetDescriptor.callSignatures.join(' | '),
-      'call-signatures',
-      differences
-    );
+    if (!areSignatureSetsCompatible(sourceDescriptor.callSignatures, targetDescriptor.callSignatures)) {
+      differences.push('call-signatures');
+    }
   } else if (!componentLike) {
     compareSignatureField(sourceDescriptor.valueType, targetDescriptor.valueType, 'value-type', differences);
   }
 
   let hasConstructSignatures = sourceDescriptor.constructSignatures.length > 0 || targetDescriptor.constructSignatures.length > 0;
   if (hasConstructSignatures && !componentLike) {
-    compareSignatureField(
-      sourceDescriptor.constructSignatures.join(' | '),
-      targetDescriptor.constructSignatures.join(' | '),
-      'construct-signatures',
-      differences
-    );
+    if (!areSignatureSetsCompatible(sourceDescriptor.constructSignatures, targetDescriptor.constructSignatures)) {
+      differences.push('construct-signatures');
+    }
   }
 
   if (!componentLike && sourceDescriptor.hasType) {

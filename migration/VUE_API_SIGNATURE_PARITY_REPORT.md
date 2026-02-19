@@ -1,19 +1,19 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-19T22:50:21.185Z
+Generated: 2026-02-19T22:54:07.681Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 77
+* Fully matched packages: 78
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 1832
-* Mismatched signatures: 840
+* Matched signatures: 1841
+* Mismatched signatures: 831
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 68.56%
+* Signature coverage ratio: 68.90%
 
 ## Package gaps
 
@@ -21,7 +21,7 @@ Generated: 2026-02-19T22:50:21.185Z
 | --- | --- | --- | ---: | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | mismatch | 543 | 299 | 0 | 44.9% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | mismatch | 325 | 134 | 0 | 58.8% |
-| `react-aria` | `vue-aria` | mismatch | 419 | 104 | 0 | 75.2% |
+| `react-aria` | `vue-aria` | mismatch | 419 | 102 | 0 | 75.7% |
 | `@react-aria/utils` | `@vue-aria/utils` | mismatch | 74 | 65 | 0 | 12.2% |
 | `@react-spectrum/utils` | `@vue-spectrum/utils` | mismatch | 31 | 27 | 0 | 12.9% |
 | `react-stately` | `vue-stately` | mismatch | 165 | 20 | 0 | 87.9% |
@@ -29,7 +29,6 @@ Generated: 2026-02-19T22:50:21.185Z
 | `@react-aria/overlays` | `@vue-aria/overlays` | mismatch | 39 | 10 | 0 | 74.4% |
 | `@react-aria/table` | `@vue-aria/table` | mismatch | 23 | 9 | 0 | 60.9% |
 | `@react-aria/color` | `@vue-aria/color` | mismatch | 20 | 8 | 0 | 60.0% |
-| `@react-aria/interactions` | `@vue-aria/interactions` | mismatch | 60 | 7 | 0 | 88.3% |
 | `@react-stately/collections` | `@vue-stately/collections` | mismatch | 11 | 7 | 0 | 36.4% |
 | `@react-stately/datepicker` | `@vue-stately/datepicker` | mismatch | 15 | 7 | 0 | 53.3% |
 | `@react-aria/datepicker` | `@vue-aria/datepicker` | mismatch | 18 | 6 | 0 | 66.7% |
@@ -98,6 +97,7 @@ Generated: 2026-02-19T22:50:21.185Z
 | `@react-stately/virtualizer` | `@vue-stately/virtualizer` | mismatch | 10 | 1 | 0 | 90.0% |
 | `@react-aria/example-theme` | `@vue-aria/example-theme` | ok | 0 | 0 | 0 | 100.0% |
 | `@react-aria/focus` | `@vue-aria/focus` | ok | 26 | 0 | 0 | 100.0% |
+| `@react-aria/interactions` | `@vue-aria/interactions` | ok | 60 | 0 | 0 | 100.0% |
 | `@react-aria/label` | `@vue-aria/label` | ok | 6 | 0 | 0 | 100.0% |
 | `@react-aria/live-announcer` | `@vue-aria/live-announcer` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-aria/ssr` | `@vue-aria/ssr` | ok | 4 | 0 | 0 | 100.0% |
@@ -199,7 +199,7 @@ Generated: 2026-02-19T22:50:21.185Z
 * Source entry: `packages/react-aria/src/index.ts`
 * Target entry: `packages/vue-aria/src/index.ts`
 * Compared exports: 419
-* Mismatched signatures: 104
+* Mismatched signatures: 102
 * Missing in target: 0
 * Example mismatches: `useBreadcrumbItem [call-signatures]`, `useBreadcrumbs [call-signatures]`, `useButton [call-signatures]`, `useToggleButton [call-signatures]`, `useToggleButtonGroup [call-signatures]`, `useToggleButtonGroupItem [call-signatures]`, `useCalendar [call-signatures]`, `useCalendarCell [call-signatures]`, `useCalendarGrid [call-signatures]`, `useRangeCalendar [call-signatures]`, `useCheckbox [call-signatures]`, `useCheckboxGroup [call-signatures]`, `useCheckboxGroupItem [call-signatures]`, `useColorArea [call-signatures]`, `useColorChannelField [call-signatures]`, `useColorField [call-signatures]`, `useColorSlider [call-signatures]`, `useColorSwatch [call-signatures]`, `useColorWheel [call-signatures]`, `useComboBox [call-signatures]`, `useDateField [call-signatures]`, `useDatePicker [call-signatures]`, `useDateRangePicker [call-signatures]`, `useDateSegment [call-signatures]`, `useTimeField [call-signatures]` ...
 
@@ -265,15 +265,6 @@ Generated: 2026-02-19T22:50:21.185Z
 * Mismatched signatures: 8
 * Missing in target: 0
 * Example mismatches: `useColorArea [call-signatures]`, `useColorSlider [call-signatures]`, `useColorWheel [call-signatures]`, `useColorField [call-signatures]`, `useColorSwatch [call-signatures]`, `useColorChannelField [call-signatures]`, `AriaColorSwatchProps [value-availability]`, `AriaColorChannelFieldProps [value-availability]`
-
-### @react-aria/interactions -> @vue-aria/interactions
-
-* Source entry: `packages/@react-aria/interactions/src/index.ts`
-* Target entry: `packages/@vue-aria/interactions/src/index.ts`
-* Compared exports: 60
-* Mismatched signatures: 7
-* Missing in target: 0
-* Example mismatches: `useFocus [call-signatures]`, `useInteractionModality [call-signatures]`, `useFocusVisibleListener [call-signatures]`, `useInteractOutside [call-signatures]`, `useScrollWheel [call-signatures]`, `useFocusable [call-signatures]`, `focusSafely [call-signatures]`
 
 ### @react-stately/collections -> @vue-stately/collections
 
@@ -355,4 +346,13 @@ Generated: 2026-02-19T22:50:21.185Z
 * Mismatched signatures: 5
 * Missing in target: 0
 * Example mismatches: `createLeafComponent [call-signatures]`, `createBranchComponent [call-signatures]`, `createHideableComponent [call-signatures]`, `useIsHidden [call-signatures]`, `useCachedChildren [call-signatures]`
+
+### @react-aria/calendar -> @vue-aria/calendar
+
+* Source entry: `packages/@react-aria/calendar/src/index.ts`
+* Target entry: `packages/@vue-aria/calendar/src/index.ts`
+* Compared exports: 14
+* Mismatched signatures: 4
+* Missing in target: 0
+* Example mismatches: `useCalendar [call-signatures]`, `useRangeCalendar [call-signatures]`, `useCalendarGrid [call-signatures]`, `useCalendarCell [call-signatures]`
 

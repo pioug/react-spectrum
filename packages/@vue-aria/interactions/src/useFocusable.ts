@@ -5,7 +5,7 @@ import {type FocusProps, useFocus} from './useFocus';
 import {focusSafely} from './focusSafely';
 import {type KeyboardProps, useKeyboard} from './useKeyboard';
 
-export interface FocusableOptions extends FocusProps, KeyboardProps {
+export interface FocusableOptions<T extends FocusableElement = FocusableElement> extends FocusProps<T>, KeyboardProps {
   autoFocus?: MaybeRef<boolean>,
   excludeFromTabOrder?: MaybeRef<boolean>,
   isDisabled?: MaybeRef<boolean>
@@ -26,6 +26,8 @@ export interface FocusableAria {
   focusableProps: ComputedRef<FocusableDOMProps>
 }
 
+type RefObject<T> = {current: T};
+
 interface FocusableContextValue extends FocusableProviderProps {
   ref?: FocusableElement | null
 }
@@ -43,15 +45,38 @@ export function FocusableProvider(props: FocusableProviderProps = {}): () => voi
   };
 }
 
-export function useFocusable(
-  props: FocusableOptions = {},
+function resolveFocusableElement(
+  domRef: MaybeRef<FocusableElement | null> | RefObject<FocusableElement | null> | undefined
+): FocusableElement | null {
+  if (!domRef) {
+    return null;
+  }
+
+  let maybeRefObject = domRef as RefObject<FocusableElement | null>;
+  if (typeof maybeRefObject === 'object' && maybeRefObject !== null && 'current' in maybeRefObject) {
+    return maybeRefObject.current ?? null;
+  }
+
+  return (unref(domRef as MaybeRef<FocusableElement | null>) ?? null) as FocusableElement | null;
+}
+
+export function useFocusable<T extends FocusableElement = FocusableElement>(
+  props: FocusableOptions<T>,
+  domRef: RefObject<FocusableElement | null>
+): FocusableAria;
+export function useFocusable<T extends FocusableElement = FocusableElement>(
+  props?: FocusableOptions<T>,
   domRef?: MaybeRef<FocusableElement | null>
+): FocusableAria;
+export function useFocusable<T extends FocusableElement = FocusableElement>(
+  props: FocusableOptions<T> = {},
+  domRef?: MaybeRef<FocusableElement | null> | RefObject<FocusableElement | null>
 ): FocusableAria {
   let {focusProps} = useFocus(props);
   let {keyboardProps} = useKeyboard(props);
 
   if (unref(props.autoFocus) === true) {
-    let element = unref(domRef ?? null);
+    let element = resolveFocusableElement(domRef);
     if (element) {
       focusSafely(element);
     }
