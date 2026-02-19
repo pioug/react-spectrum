@@ -56,6 +56,15 @@ import {useMenu as useAriaMenu, useMenuItem as useAriaMenuItem, useMenuSection, 
 import {useMeter as useAriaMeter} from '@vue-aria/meter';
 import {useNumberField as useAriaNumberField} from '@vue-aria/numberfield';
 import {
+  ariaHideOutside as ariaHideOutsideOverlays,
+  useModalOverlay as useAriaModalOverlay,
+  useOverlay as useAriaOverlay,
+  useOverlayPosition as useAriaOverlayPosition,
+  useOverlayTrigger as useAriaOverlayTrigger,
+  usePopover as useAriaPopover,
+  usePreventScroll as useAriaPreventScroll
+} from '@vue-aria/overlays';
+import {
   addWindowFocusTracking,
   setInteractionModality,
   useFocus,
@@ -99,6 +108,20 @@ function createPointerEvent(
   Object.defineProperty(event, 'pointerId', {value: init.pointerId ?? 1});
   Object.defineProperty(event, 'pointerType', {value: init.pointerType ?? 'mouse'});
   return event;
+}
+
+function createDOMRect(left: number, top: number, width: number, height: number): DOMRect {
+  return {
+    x: left,
+    y: top,
+    width,
+    height,
+    top,
+    left,
+    right: left + width,
+    bottom: top + height,
+    toJSON: () => ({})
+  } as DOMRect;
 }
 
 describe('Vue migration composition components', () => {
@@ -1342,6 +1365,103 @@ describe('Vue migration composition components', () => {
     expect(numberField.inputValue.value).toContain('8');
     expect(numberField.isInvalid.value).toBe(false);
     expect(changedValues).toEqual([6, 4, 10, 8]);
+  });
+
+  it('computes vue-aria overlay trigger, popover, modal, and scroll lock semantics', () => {
+    let previousMarkup = document.body.innerHTML;
+    let previousOverflow = document.documentElement.style.overflow;
+    let previousPaddingRight = document.documentElement.style.paddingRight;
+    document.body.innerHTML = '<main data-testid=\"app-shell\"></main><button data-testid=\"trigger\"></button><div data-testid=\"popover\"></div><div data-testid=\"modal\"></div>';
+
+    let appShell = document.querySelector('[data-testid=\"app-shell\"]');
+    let triggerElement = document.querySelector('[data-testid=\"trigger\"]');
+    let popoverElement = document.querySelector('[data-testid=\"popover\"]');
+    let modalElement = document.querySelector('[data-testid=\"modal\"]');
+
+    if (
+      !(appShell instanceof HTMLElement) ||
+      !(triggerElement instanceof HTMLElement) ||
+      !(popoverElement instanceof HTMLElement) ||
+      !(modalElement instanceof HTMLElement)
+    ) {
+      throw new Error('Expected overlay test nodes to exist');
+    }
+
+    triggerElement.getBoundingClientRect = () => createDOMRect(100, 120, 48, 20);
+    popoverElement.getBoundingClientRect = () => createDOMRect(0, 0, 180, 120);
+    modalElement.getBoundingClientRect = () => createDOMRect(20, 20, 280, 200);
+
+    let triggerRef = ref<HTMLElement | null>(triggerElement);
+    let popoverRef = ref<HTMLElement | null>(popoverElement);
+    let modalRef = ref<HTMLElement | null>(modalElement);
+
+    let overlayTrigger = useAriaOverlayTrigger({
+      type: 'menu'
+    });
+    let overlay = useAriaOverlay({
+      isDismissable: true,
+      isOpen: overlayTrigger.isOpen,
+      onClose: overlayTrigger.close,
+      overlayRef: popoverRef
+    });
+    let overlayPosition = useAriaOverlayPosition({
+      isOpen: overlayTrigger.isOpen,
+      overlayRef: popoverRef,
+      placement: 'bottom start',
+      targetRef: triggerRef
+    });
+
+    overlayTrigger.triggerProps.value.onClick();
+    expect(overlayTrigger.isOpen.value).toBe(true);
+    overlayPosition.updatePosition();
+    expect(overlayPosition.overlayProps.value.style.position).toBe('absolute');
+    expect(overlayPosition.triggerAnchorPoint.value).not.toBeNull();
+
+    overlay.overlayProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
+    expect(overlayTrigger.isOpen.value).toBe(false);
+
+    let popoverOpen = ref(true);
+    let popover = useAriaPopover({
+      isOpen: popoverOpen,
+      onClose: () => {
+        popoverOpen.value = false;
+      },
+      placement: 'bottom',
+      popoverRef,
+      triggerRef
+    });
+    expect(popover.popoverProps.value.role).toBe('dialog');
+    expect(popover.placement.value).toBe('bottom');
+
+    let modalOpen = ref(true);
+    let modalOverlay = useAriaModalOverlay({
+      isDismissable: true,
+      isOpen: modalOpen,
+      modalRef,
+      onClose: () => {
+        modalOpen.value = false;
+      }
+    });
+    expect(modalOverlay.modalProps.value['data-ismodal']).toBe(true);
+    expect(modalOverlay.modalProps.value.role).toBe('dialog');
+
+    let scrollLock = useAriaPreventScroll();
+    expect(scrollLock.isPreventingScroll.value).toBe(true);
+
+    scrollLock.dispose();
+    modalOverlay.dispose();
+    popover.dispose();
+    overlayPosition.dispose();
+    overlay.dispose();
+
+    let restoreHidden = ariaHideOutsideOverlays([modalElement]);
+    expect(appShell.getAttribute('aria-hidden')).toBe('true');
+    restoreHidden();
+    expect(appShell.getAttribute('aria-hidden')).toBeNull();
+
+    document.documentElement.style.overflow = previousOverflow;
+    document.documentElement.style.paddingRight = previousPaddingRight;
+    document.body.innerHTML = previousMarkup;
   });
 
   it('announces and clears live region messages with vue-aria live announcer', () => {

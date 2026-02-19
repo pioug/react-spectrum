@@ -720,6 +720,30 @@
         }
       ]
     },
+    "@react-aria/overlays": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/overlays",
+      "targetPath": "packages/@vue-aria/overlays",
+      "notes": "Foundational React Aria overlays composables for trigger wiring, overlay dismissal, modal/popover semantics, position calculation, and scroll locking in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria overlays source lint",
+          "command": "yarn eslint packages/@vue-aria/overlays/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",
