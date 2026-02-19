@@ -121,6 +121,10 @@
           </div>
         </section>
 
+        <VueWell variant="notice">
+          Well port baseline: migration notes and rollout context live here.
+        </VueWell>
+
         <VueDropZone
           label="Drop design assets"
           @files-drop="handleFilesDrop" />
@@ -216,6 +220,7 @@ import {Switch as VueSwitch} from '@vue-spectrum/switch';
 import {Table as VueTable} from '@vue-spectrum/table';
 import {TextField as VueTextField} from '@vue-spectrum/textfield';
 import {Tree as VueTree} from '@vue-spectrum/tree';
+import {Well as VueWell} from '@vue-spectrum/well';
 
 const count = ref(0);
 const name = ref('');

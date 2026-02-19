@@ -638,6 +638,41 @@
   line-height: 1;
 }
 
+.vs-well {
+  border: 1px solid var(--vs-color-border);
+  border-radius: 10px;
+  color: inherit;
+}
+
+.vs-well--medium {
+  font-size: 14px;
+  padding: 12px;
+}
+
+.vs-well--large {
+  font-size: 16px;
+  padding: 16px;
+}
+
+.vs-well--default {
+  background: var(--vs-color-secondary-bg);
+}
+
+.vs-well--positive {
+  background: rgba(45, 157, 120, 0.1);
+  border-color: rgba(45, 157, 120, 0.45);
+}
+
+.vs-well--notice {
+  background: rgba(230, 134, 25, 0.12);
+  border-color: rgba(230, 134, 25, 0.5);
+}
+
+.vs-well--negative {
+  background: rgba(211, 21, 16, 0.1);
+  border-color: rgba(211, 21, 16, 0.45);
+}
+
 .vs-radio-group {
   display: grid;
   gap: 8px;

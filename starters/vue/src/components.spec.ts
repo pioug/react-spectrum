@@ -7,6 +7,7 @@ import {Checkbox} from '@vue-spectrum/checkbox';
 import {Radio, RadioGroup} from '@vue-spectrum/radio';
 import {Switch} from '@vue-spectrum/switch';
 import {TextField} from '@vue-spectrum/textfield';
+import {Well} from '@vue-spectrum/well';
 
 describe('Vue migration primitives', () => {
   it('renders avatar fallback initials', () => {
@@ -33,6 +34,20 @@ describe('Vue migration primitives', () => {
 
     expect(wrapper.text()).toContain('Ready for review');
     expect(wrapper.classes()).toContain('vs-badge--positive');
+  });
+
+  it('renders well variants and slot content', () => {
+    let wrapper = mount(Well, {
+      props: {
+        variant: 'notice'
+      },
+      slots: {
+        default: 'Migration block'
+      }
+    });
+
+    expect(wrapper.text()).toContain('Migration block');
+    expect(wrapper.classes()).toContain('vs-well--notice');
   });
 
   it('emits click from button', async () => {

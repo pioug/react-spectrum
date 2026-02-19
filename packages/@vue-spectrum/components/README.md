@@ -30,6 +30,7 @@ Vue-native Spectrum-inspired primitives for incremental migration from React pac
 * `VueSwitch`
 * `VueTable`
 * `VueTree`
+* `VueWell`
 
 ## Quick start
 

@@ -144,6 +144,30 @@
         }
       ]
     },
+    "@react-spectrum/well": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/well",
+      "targetPath": "packages/@vue-spectrum/well",
+      "notes": "First-wave content container primitive for grouped inline context.",
+      "acceptanceTests": [
+        {
+          "name": "Vue well package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/well/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/textfield": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/textfield",
