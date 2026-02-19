@@ -217,6 +217,7 @@ import {
 import {useMenuTriggerState as useStatelyMenuTriggerState, useSubmenuTriggerState as useStatelySubmenuTriggerState} from '@vue-stately/menu';
 import {useNumberFieldState as useStatelyNumberFieldState} from '@vue-stately/numberfield';
 import {useOverlayTriggerState as useStatelyOverlayTriggerState} from '@vue-stately/overlays';
+import {useRadioGroupState as useStatelyRadioGroupState} from '@vue-stately/radio';
 
 function createPointerEvent(
   type: string,
@@ -1722,6 +1723,45 @@ describe('Vue migration composition components', () => {
     expect(uncontrolledOverlayState.isOpen.value).toBe(true);
     uncontrolledOverlayState.close();
     expect(uncontrolledOverlayState.isOpen.value).toBe(false);
+  });
+
+  it('manages vue-stately radio group selection, focus tracking, and required validation', () => {
+    let selectedValue = ref<string | null>('react');
+    let changedValues: string[] = [];
+    let radioGroup = useStatelyRadioGroupState({
+      isRequired: true,
+      onChange: (value) => {
+        changedValues.push(value);
+        selectedValue.value = value;
+      },
+      value: selectedValue
+    });
+
+    expect(radioGroup.selectedValue.value).toBe('react');
+    expect(radioGroup.defaultSelectedValue).toBe('react');
+
+    radioGroup.setLastFocusedValue('vue');
+    expect(radioGroup.lastFocusedValue.value).toBe('vue');
+
+    radioGroup.setSelectedValue('vue');
+    expect(selectedValue.value).toBe('vue');
+    expect(changedValues).toEqual(['vue']);
+    expect(radioGroup.validationState.value).toBeNull();
+
+    let disabledGroup = useStatelyRadioGroupState({
+      defaultValue: 'react',
+      isDisabled: true
+    });
+    disabledGroup.setSelectedValue('vue');
+    expect(disabledGroup.selectedValue.value).toBe('react');
+
+    let requiredGroup = useStatelyRadioGroupState({
+      defaultValue: null,
+      isRequired: true
+    });
+    requiredGroup.commitValidation();
+    expect(requiredGroup.isInvalid.value).toBe(true);
+    expect(requiredGroup.validationState.value).toBe('invalid');
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {

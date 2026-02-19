@@ -3184,6 +3184,30 @@
         }
       ]
     },
+    "@react-stately/radio": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/radio",
+      "targetPath": "packages/@vue-stately/radio",
+      "notes": "State baseline for radio-group selection, focus tracking, and validation state behavior in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately radio package source lint",
+          "command": "yarn eslint packages/@vue-stately/radio/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",
