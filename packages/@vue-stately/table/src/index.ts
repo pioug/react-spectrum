@@ -14,12 +14,15 @@ export type {
 } from './useTableState';
 export {Section} from '@vue-stately/collections';
 
-export type TableColumnResizeStateProps = Record<string, unknown>;
-export interface TableColumnResizeState {
+export type TableColumnResizeStateProps<T = unknown> = Record<string, unknown> & {
+  _tableType?: T
+};
+export interface TableColumnResizeState<T = unknown> {
   columnWidths: Map<string | number, number>,
   startResize: (columnKey: string | number, width: number) => void,
   updateResize: (columnKey: string | number, width: number) => void,
   endResize: (columnKey: string | number) => void
+  _tableType?: T
 }
 
 export type TableHeaderProps<T = unknown> = {
@@ -44,7 +47,10 @@ export const Column = {name: 'VueStatelyTableColumn'};
 export const Row = {name: 'VueStatelyTableRow'};
 export const Cell = {name: 'VueStatelyTableCell'};
 
-export function useTableColumnResizeState(): TableColumnResizeState {
+export function useTableColumnResizeState<T>(
+  _props?: TableColumnResizeStateProps<T>,
+  _state?: TableState<T>
+): TableColumnResizeState<T> {
   let columnWidths = new Map<string | number, number>();
   return {
     columnWidths,

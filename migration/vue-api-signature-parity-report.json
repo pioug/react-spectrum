@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-19T23:34:44.475Z",
+  "generatedAt": "2026-02-19T23:41:32.294Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 86,
+    "fullyMatchedPackages": 87,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 2036,
-    "mismatchedExportTotal": 636,
+    "matchedExportTotal": 2052,
+    "mismatchedExportTotal": 620,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.762
+    "parityCoverage": 0.768
   },
   "packages": [
     {
@@ -7897,579 +7897,6 @@
       "error": null
     },
     {
-      "sourcePackage": "react-stately",
-      "sourcePath": "packages/react-stately",
-      "targetPackage": "vue-stately",
-      "targetPath": "packages/vue-stately",
-      "status": "ported",
-      "sourceEntrypoint": "packages/react-stately/src/index.ts",
-      "targetEntrypoint": "packages/vue-stately/src/index.ts",
-      "sourceExportCount": 165,
-      "comparedExportCount": 165,
-      "matchedExportCount": 150,
-      "mismatchedExportCount": 15,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.9091,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "Collection",
-          "targetExportName": "Collection",
-          "differences": [
-            "value-availability"
-          ],
-          "source": {
-            "name": "Collection",
-            "resolvedName": "Collection",
-            "hasType": true,
-            "hasValue": false,
-            "declarationKinds": [
-              "InterfaceDeclaration"
-            ],
-            "valueType": "any",
-            "declaredType": "Collection<T>",
-            "callSignatures": [],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "Collection",
-            "resolvedName": "Collection",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: CollectionProps<T>) => BaseCollection<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: CollectionProps<T>) => BaseCollection<T>"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useCalendarState",
-          "targetExportName": "useCalendarState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCalendarState",
-            "resolvedName": "useCalendarState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends DateValue = DateValue>(props: CalendarStateOptions<T>) => CalendarState",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends DateValue = DateValue>( _: CalendarStateOptions<T>) => CalendarState"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCalendarState",
-            "resolvedName": "useCalendarState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: CalendarStateOptions) => CalendarState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: CalendarStateOptions) => CalendarState"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useRangeCalendarState",
-          "targetExportName": "useRangeCalendarState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useRangeCalendarState",
-            "resolvedName": "useRangeCalendarState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends DateValue = DateValue>(props: RangeCalendarStateOptions<T>) => RangeCalendarState<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends DateValue = DateValue>( _: RangeCalendarStateOptions<T>) => RangeCalendarState<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useRangeCalendarState",
-            "resolvedName": "useRangeCalendarState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: RangeCalendarStateOptions) => RangeCalendarState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: RangeCalendarStateOptions) => RangeCalendarState"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useCheckboxGroupState",
-          "targetExportName": "useCheckboxGroupState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCheckboxGroupState",
-            "resolvedName": "useCheckboxGroupState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props?: CheckboxGroupProps) => CheckboxGroupState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: CheckboxGroupProps) => CheckboxGroupState"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCheckboxGroupState",
-            "resolvedName": "useCheckboxGroupState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: CheckboxGroupStateOptions) => CheckboxGroupState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: CheckboxGroupStateOptions) => CheckboxGroupState"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "parseColor",
-          "targetExportName": "parseColor",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "parseColor",
-            "resolvedName": "parseColor",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(value: string) => IColor",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: string) => IColor"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "parseColor",
-            "resolvedName": "parseColor",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(value: string) => Color",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: string) => Color"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useColorFieldState",
-          "targetExportName": "useColorFieldState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useColorFieldState",
-            "resolvedName": "useColorFieldState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: ColorFieldProps) => ColorFieldState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: ColorFieldProps) => ColorFieldState"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useColorFieldState",
-            "resolvedName": "useColorFieldState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props?: ColorFieldStateOptions) => ColorFieldState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: ColorFieldStateOptions) => ColorFieldState"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useColorWheelState",
-          "targetExportName": "useColorWheelState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useColorWheelState",
-            "resolvedName": "useColorWheelState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: ColorWheelProps) => ColorWheelState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: ColorWheelProps) => ColorWheelState"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useColorWheelState",
-            "resolvedName": "useColorWheelState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: ColorWheelStateOptions) => ColorWheelState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: ColorWheelStateOptions) => ColorWheelState"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useComboBoxState",
-          "targetExportName": "useComboBoxState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useComboBoxState",
-            "resolvedName": "useComboBoxState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object, M extends SelectionMode = \"single\">(props: ComboBoxStateOptions<T, M>) => ComboBoxState<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object, M extends SelectionMode = \"single\">( _: ComboBoxStateOptions<T, M>) => ComboBoxState<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useComboBoxState",
-            "resolvedName": "useComboBoxState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: ComboBoxStateOptions) => StatelyComboBoxState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: ComboBoxStateOptions) => StatelyComboBoxState"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useDraggableCollectionState",
-          "targetExportName": "useDraggableCollectionState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDraggableCollectionState",
-            "resolvedName": "useDraggableCollectionState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T = object>(props: DraggableCollectionStateOptions<T>) => DraggableCollectionState",
-            "declaredType": "",
-            "callSignatures": [
-              "<T = object>( _: DraggableCollectionStateOptions<T>) => DraggableCollectionState"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDraggableCollectionState",
-            "resolvedName": "useDraggableCollectionState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T = unknown>(options: DraggableCollectionStateOptions<T>) => DraggableCollectionState<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T = unknown>( _: DraggableCollectionStateOptions<T>) => DraggableCollectionState<T>"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useRadioGroupState",
-          "targetExportName": "useRadioGroupState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useRadioGroupState",
-            "resolvedName": "useRadioGroupState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: RadioGroupProps) => RadioGroupState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: RadioGroupProps) => RadioGroupState"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useRadioGroupState",
-            "resolvedName": "useRadioGroupState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: RadioGroupStateOptions) => RadioGroupState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: RadioGroupStateOptions) => RadioGroupState"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useSearchFieldState",
-          "targetExportName": "useSearchFieldState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSearchFieldState",
-            "resolvedName": "useSearchFieldState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: SearchFieldProps) => SearchFieldState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: SearchFieldProps) => SearchFieldState"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSearchFieldState",
-            "resolvedName": "useSearchFieldState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: SearchFieldStateOptions) => SearchFieldState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: SearchFieldStateOptions) => SearchFieldState"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useSelectState",
-          "targetExportName": "useSelectState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSelectState",
-            "resolvedName": "useSelectState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object, M extends SelectionMode = \"single\">(props: SelectStateOptions<T, M>) => SelectState<T, M>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object, M extends SelectionMode = \"single\">( _: SelectStateOptions<T, M>) => SelectState<T, M>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSelectState",
-            "resolvedName": "useSelectState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object, M extends SelectSelectionMode = \"single\">(options: SelectStateOptions<T, M>) => SelectState<T, M>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object, M extends SelectSelectionMode = \"single\">( _: SelectStateOptions<T, M>) => SelectState<T, M>"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTableState",
-          "targetExportName": "useTableState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableState",
-            "resolvedName": "useTableState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object>(props: TableStateProps<T>) => TableState<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object>( _: TableStateProps<T>) => TableState<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableState",
-            "resolvedName": "useTableState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: TableStateProps<T>) => TableState<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: TableStateProps<T>) => TableState<T>"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTableColumnResizeState",
-          "targetExportName": "useTableColumnResizeState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableColumnResizeState",
-            "resolvedName": "useTableColumnResizeState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: TableColumnResizeStateProps<T>, state: TableState<T>) => TableColumnResizeState<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: TableColumnResizeStateProps<T>, _: TableState<T>) => TableColumnResizeState<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableColumnResizeState",
-            "resolvedName": "useTableColumnResizeState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => TableColumnResizeState",
-            "declaredType": "",
-            "callSignatures": [
-              "() => TableColumnResizeState"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTreeState",
-          "targetExportName": "useTreeState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTreeState",
-            "resolvedName": "useTreeState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object>(props: TreeProps<T>) => TreeState<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object>( _: TreeProps<T>) => TreeState<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTreeState",
-            "resolvedName": "useTreeState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: TreeProps<T>) => TreeState<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: TreeProps<T>) => TreeState<T>"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/grid",
       "sourcePath": "packages/@react-aria/grid",
       "targetPackage": "@vue-aria/grid",
@@ -10915,137 +10342,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-stately/table",
-      "sourcePath": "packages/@react-stately/table",
-      "targetPackage": "@vue-stately/table",
-      "targetPath": "packages/@vue-stately/table",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/table/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/table/src/index.ts",
-      "sourceExportCount": 25,
-      "comparedExportCount": 25,
-      "matchedExportCount": 22,
-      "mismatchedExportCount": 3,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.88,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useTableColumnResizeState",
-          "targetExportName": "useTableColumnResizeState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableColumnResizeState",
-            "resolvedName": "useTableColumnResizeState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: TableColumnResizeStateProps<T>, state: TableState<T>) => TableColumnResizeState<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: TableColumnResizeStateProps<T>, _: TableState<T>) => TableColumnResizeState<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableColumnResizeState",
-            "resolvedName": "useTableColumnResizeState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => TableColumnResizeState",
-            "declaredType": "",
-            "callSignatures": [
-              "() => TableColumnResizeState"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTableState",
-          "targetExportName": "useTableState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableState",
-            "resolvedName": "useTableState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object>(props: TableStateProps<T>) => TableState<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object>( _: TableStateProps<T>) => TableState<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableState",
-            "resolvedName": "useTableState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: TableStateProps<T>) => TableState<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: TableStateProps<T>) => TableState<T>"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "buildHeaderRows",
-          "targetExportName": "buildHeaderRows",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "buildHeaderRows",
-            "resolvedName": "buildHeaderRows",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(keyMap: Map<Key, GridNode<T>>, columnNodes: GridNode<T>[]) => GridNode<T>[]",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: Map<Key, GridNode<T>>, _: GridNode<T>[]) => GridNode<T>[]"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "buildHeaderRows",
-            "resolvedName": "buildHeaderRows",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(columns: TableColumn[]) => Array<TableRow<T>>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: TableColumn[]) => Array<TableRow<T>>"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/actiongroup",
       "sourcePath": "packages/@react-aria/actiongroup",
       "targetPackage": "@vue-aria/actiongroup",
@@ -12529,6 +11825,100 @@
             "declaredType": "",
             "callSignatures": [
               "( _: RangeCalendarStateOptions) => RangeCalendarState"
+            ],
+            "constructSignatures": []
+          }
+        }
+      ],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/table",
+      "sourcePath": "packages/@react-stately/table",
+      "targetPackage": "@vue-stately/table",
+      "targetPath": "packages/@vue-stately/table",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/table/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/table/src/index.ts",
+      "sourceExportCount": 25,
+      "comparedExportCount": 25,
+      "matchedExportCount": 23,
+      "mismatchedExportCount": 2,
+      "missingInTargetCount": 0,
+      "parityRatio": 0.92,
+      "missingInTargetExports": [],
+      "mismatches": [
+        {
+          "exportName": "useTableState",
+          "targetExportName": "useTableState",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useTableState",
+            "resolvedName": "useTableState",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T extends object>(props: TableStateProps<T>) => TableState<T>",
+            "declaredType": "",
+            "callSignatures": [
+              "<T extends object>( _: TableStateProps<T>) => TableState<T>"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useTableState",
+            "resolvedName": "useTableState",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(props: TableStateProps<T>) => TableState<T>",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: TableStateProps<T>) => TableState<T>"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "buildHeaderRows",
+          "targetExportName": "buildHeaderRows",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "buildHeaderRows",
+            "resolvedName": "buildHeaderRows",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(keyMap: Map<Key, GridNode<T>>, columnNodes: GridNode<T>[]) => GridNode<T>[]",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: Map<Key, GridNode<T>>, _: GridNode<T>[]) => GridNode<T>[]"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "buildHeaderRows",
+            "resolvedName": "buildHeaderRows",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(columns: TableColumn[]) => Array<TableRow<T>>",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: TableColumn[]) => Array<TableRow<T>>"
             ],
             "constructSignatures": []
           }
@@ -16079,6 +15469,25 @@
       "sourceExportCount": 3,
       "comparedExportCount": 3,
       "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "react-stately",
+      "sourcePath": "packages/react-stately",
+      "targetPackage": "vue-stately",
+      "targetPath": "packages/vue-stately",
+      "status": "ported",
+      "sourceEntrypoint": "packages/react-stately/src/index.ts",
+      "targetEntrypoint": "packages/vue-stately/src/index.ts",
+      "sourceExportCount": 165,
+      "comparedExportCount": 165,
+      "matchedExportCount": 165,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,

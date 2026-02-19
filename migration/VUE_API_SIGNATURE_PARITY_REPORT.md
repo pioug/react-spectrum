@@ -1,19 +1,19 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-19T23:34:44.475Z
+Generated: 2026-02-19T23:41:32.294Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 86
+* Fully matched packages: 87
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 2036
-* Mismatched signatures: 636
+* Matched signatures: 2052
+* Mismatched signatures: 620
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 76.20%
+* Signature coverage ratio: 76.80%
 
 ## Package gaps
 
@@ -22,7 +22,6 @@ Generated: 2026-02-19T23:34:44.475Z
 | `react-aria-components` | `@vue-spectrum/components` | mismatch | 543 | 299 | 0 | 44.9% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | mismatch | 325 | 134 | 0 | 58.8% |
 | `react-aria` | `vue-aria` | mismatch | 419 | 60 | 0 | 85.7% |
-| `react-stately` | `vue-stately` | mismatch | 165 | 15 | 0 | 90.9% |
 | `@react-aria/grid` | `@vue-aria/grid` | mismatch | 20 | 6 | 0 | 70.0% |
 | `@react-aria/i18n` | `@vue-aria/i18n` | mismatch | 19 | 6 | 0 | 68.4% |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` | mismatch | 11 | 6 | 0 | 45.5% |
@@ -36,7 +35,6 @@ Generated: 2026-02-19T23:34:44.475Z
 | `@react-aria/checkbox` | `@vue-aria/checkbox` | mismatch | 8 | 3 | 0 | 62.5% |
 | `@react-aria/tabs` | `@vue-aria/tabs` | mismatch | 11 | 3 | 0 | 72.7% |
 | `@react-stately/color` | `@vue-stately/color` | mismatch | 25 | 3 | 0 | 88.0% |
-| `@react-stately/table` | `@vue-stately/table` | mismatch | 25 | 3 | 0 | 88.0% |
 | `@react-aria/actiongroup` | `@vue-aria/actiongroup` | mismatch | 6 | 2 | 0 | 66.7% |
 | `@react-aria/autocomplete` | `@vue-aria/autocomplete` | mismatch | 10 | 2 | 0 | 80.0% |
 | `@react-aria/breadcrumbs` | `@vue-aria/breadcrumbs` | mismatch | 6 | 2 | 0 | 66.7% |
@@ -53,6 +51,7 @@ Generated: 2026-02-19T23:34:44.475Z
 | `@react-aria/tree` | `@vue-aria/tree` | mismatch | 8 | 2 | 0 | 75.0% |
 | `@react-spectrum/test-utils` | `@vue-spectrum/test-utils` | mismatch | 19 | 2 | 0 | 89.5% |
 | `@react-stately/calendar` | `@vue-stately/calendar` | mismatch | 6 | 2 | 0 | 66.7% |
+| `@react-stately/table` | `@vue-stately/table` | mismatch | 25 | 2 | 0 | 92.0% |
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` | mismatch | 1 | 1 | 0 | 0.0% |
 | `@react-aria/combobox` | `@vue-aria/combobox` | mismatch | 4 | 1 | 0 | 75.0% |
 | `@react-aria/dialog` | `@vue-aria/dialog` | mismatch | 3 | 1 | 0 | 66.7% |
@@ -172,6 +171,7 @@ Generated: 2026-02-19T23:34:44.475Z
 | `@react-stately/toast` | `@vue-stately/toast` | ok | 7 | 0 | 0 | 100.0% |
 | `@react-stately/toggle` | `@vue-stately/toggle` | ok | 7 | 0 | 0 | 100.0% |
 | `@react-stately/tooltip` | `@vue-stately/tooltip` | ok | 3 | 0 | 0 | 100.0% |
+| `react-stately` | `vue-stately` | ok | 165 | 0 | 0 | 100.0% |
 | `tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | ok | 0 | 0 | 0 | 100.0% |
 
 ## Largest signature gaps
@@ -202,15 +202,6 @@ Generated: 2026-02-19T23:34:44.475Z
 * Mismatched signatures: 60
 * Missing in target: 0
 * Example mismatches: `useBreadcrumbItem [call-signatures]`, `useBreadcrumbs [call-signatures]`, `useButton [call-signatures]`, `useToggleButton [call-signatures]`, `useToggleButtonGroup [call-signatures]`, `useToggleButtonGroupItem [call-signatures]`, `useCalendar [call-signatures]`, `useCalendarCell [call-signatures]`, `useCalendarGrid [call-signatures]`, `useRangeCalendar [call-signatures]`, `useCheckbox [call-signatures]`, `useCheckboxGroup [call-signatures]`, `useCheckboxGroupItem [call-signatures]`, `useComboBox [call-signatures]`, `useDateField [call-signatures]`, `useTimeField [call-signatures]`, `useDialog [call-signatures]`, `useDisclosure [call-signatures]`, `useLocalizedStringFormatter [call-signatures]`, `useNumberFormatter [call-signatures]`, `useListFormatter [call-signatures]`, `useGridList [call-signatures]`, `useGridListItem [call-signatures]`, `useGridListSection [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]` ...
-
-### react-stately -> vue-stately
-
-* Source entry: `packages/react-stately/src/index.ts`
-* Target entry: `packages/vue-stately/src/index.ts`
-* Compared exports: 165
-* Mismatched signatures: 15
-* Missing in target: 0
-* Example mismatches: `Collection [value-availability]`, `useCalendarState [call-signatures]`, `useRangeCalendarState [call-signatures]`, `useCheckboxGroupState [call-signatures]`, `parseColor [call-signatures]`, `useColorFieldState [call-signatures]`, `useColorWheelState [call-signatures]`, `useComboBoxState [call-signatures]`, `useDraggableCollectionState [call-signatures]`, `useRadioGroupState [call-signatures]`, `useSearchFieldState [call-signatures]`, `useSelectState [call-signatures]`, `useTableState [call-signatures]`, `useTableColumnResizeState [call-signatures]`, `useTreeState [call-signatures]`
 
 ### @react-aria/grid -> @vue-aria/grid
 
@@ -329,15 +320,6 @@ Generated: 2026-02-19T23:34:44.475Z
 * Missing in target: 0
 * Example mismatches: `parseColor [call-signatures]`, `useColorWheelState [call-signatures]`, `useColorFieldState [call-signatures]`
 
-### @react-stately/table -> @vue-stately/table
-
-* Source entry: `packages/@react-stately/table/src/index.ts`
-* Target entry: `packages/@vue-stately/table/src/index.ts`
-* Compared exports: 25
-* Mismatched signatures: 3
-* Missing in target: 0
-* Example mismatches: `useTableColumnResizeState [call-signatures]`, `useTableState [call-signatures]`, `buildHeaderRows [call-signatures]`
-
 ### @react-aria/actiongroup -> @vue-aria/actiongroup
 
 * Source entry: `packages/@react-aria/actiongroup/src/index.ts`
@@ -355,4 +337,22 @@ Generated: 2026-02-19T23:34:44.475Z
 * Mismatched signatures: 2
 * Missing in target: 0
 * Example mismatches: `useSearchAutocomplete [call-signatures]`, `useAutocomplete [call-signatures]`
+
+### @react-aria/breadcrumbs -> @vue-aria/breadcrumbs
+
+* Source entry: `packages/@react-aria/breadcrumbs/src/index.ts`
+* Target entry: `packages/@vue-aria/breadcrumbs/src/index.ts`
+* Compared exports: 6
+* Mismatched signatures: 2
+* Missing in target: 0
+* Example mismatches: `useBreadcrumbItem [call-signatures]`, `useBreadcrumbs [call-signatures]`
+
+### @react-aria/datepicker -> @vue-aria/datepicker
+
+* Source entry: `packages/@react-aria/datepicker/src/index.ts`
+* Target entry: `packages/@vue-aria/datepicker/src/index.ts`
+* Compared exports: 18
+* Mismatched signatures: 2
+* Missing in target: 0
+* Example mismatches: `useDateField [call-signatures]`, `useTimeField [call-signatures]`
 
