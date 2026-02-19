@@ -1,11 +1,11 @@
 # Vue API Parity Priority
 
-Generated: 2026-02-19T21:38:10.306Z
+Generated: 2026-02-19T21:39:22.105Z
 
 ## Summary
 
 * Tracked packages: 154
-* Packages with API gaps: 92
+* Packages with API gaps: 91
 * Highest priority package: react-aria-components
 * Highest priority score: 1677.99
 
@@ -34,77 +34,76 @@ Generated: 2026-02-19T21:38:10.306Z
 | 19 | `@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | 4 | 50.00% | 0 | 13 | 45.60 |
 | 20 | `@react-spectrum/autocomplete` | `@vue-spectrum/autocomplete` | 3 | 25.00% | 0 | 12 | 45.45 |
 | 21 | `@react-spectrum/combobox` | `@vue-spectrum/combobox` | 3 | 25.00% | 0 | 12 | 45.45 |
-| 22 | `@react-aria/datepicker` | `@vue-aria/datepicker` | 10 | 44.44% | 2 | 4 | 45.33 |
-| 23 | `@react-spectrum/breadcrumbs` | `@vue-spectrum/breadcrumbs` | 2 | 33.33% | 0 | 13 | 45.30 |
-| 24 | `@react-spectrum/calendar` | `@vue-spectrum/calendar` | 2 | 50.00% | 1 | 12 | 44.30 |
-| 25 | `@react-spectrum/picker` | `@vue-spectrum/picker` | 1 | 75.00% | 2 | 12 | 43.15 |
-| 26 | `@react-spectrum/tag` | `@vue-spectrum/tag` | 2 | 33.33% | 0 | 12 | 42.80 |
-| 27 | `@react-spectrum/contextualhelp` | `@vue-spectrum/contextualhelp` | 1 | 50.00% | 0 | 13 | 41.40 |
-| 28 | `@react-aria/gridlist` | `@vue-aria/gridlist` | 3 | 75.00% | 4 | 6 | 40.45 |
-| 29 | `@react-aria/calendar` | `@vue-aria/calendar` | 7 | 50.00% | 3 | 3 | 40.30 |
-| 30 | `@react-spectrum/list` | `@vue-spectrum/list` | 2 | 33.33% | 0 | 11 | 40.30 |
-| 31 | `@react-aria/autocomplete` | `@vue-aria/autocomplete` | 4 | 60.00% | 2 | 7 | 39.10 |
-| 32 | `@react-spectrum/searchfield` | `@vue-spectrum/searchfield` | 1 | 50.00% | 0 | 12 | 38.90 |
-| 33 | `@react-stately/toggle` | `@vue-stately/toggle` | 1 | 85.71% | 8 | 1 | 38.54 |
-| 34 | `@react-aria/select` | `@vue-aria/select` | 4 | 50.00% | 2 | 6 | 38.10 |
-| 35 | `@react-spectrum/accordion` | `@vue-spectrum/accordion` | 4 | 50.00% | 0 | 10 | 38.10 |
-| 36 | `@react-spectrum/badge` | `@vue-spectrum/badge` | 1 | 50.00% | 0 | 11 | 36.40 |
-| 37 | `@react-aria/color` | `@vue-aria/color` | 5 | 75.00% | 2 | 6 | 36.25 |
-| 38 | `@react-spectrum/tooltip` | `@vue-spectrum/tooltip` | 2 | 50.00% | 2 | 7 | 35.80 |
-| 39 | `@react-aria/table` | `@vue-aria/table` | 5 | 78.26% | 2 | 6 | 35.76 |
-| 40 | `@react-aria/listbox` | `@vue-aria/listbox` | 1 | 91.67% | 5 | 5 | 35.65 |
-| 41 | `@react-aria/dialog` | `@vue-aria/dialog` | 1 | 66.67% | 4 | 5 | 35.40 |
-| 42 | `@react-spectrum/toast` | `@vue-spectrum/toast` | 1 | 75.00% | 0 | 12 | 35.15 |
-| 43 | `@react-aria/tag` | `@vue-aria/tag` | 2 | 66.67% | 2 | 7 | 34.30 |
-| 44 | `@react-spectrum/dropzone` | `@vue-spectrum/dropzone` | 1 | 50.00% | 0 | 10 | 33.90 |
-| 45 | `@react-spectrum/filetrigger` | `@vue-spectrum/filetrigger` | 1 | 50.00% | 0 | 10 | 33.90 |
-| 46 | `@react-aria/tabs` | `@vue-aria/tabs` | 4 | 63.64% | 2 | 5 | 33.55 |
-| 47 | `@react-aria/tree` | `@vue-aria/tree` | 2 | 75.00% | 2 | 7 | 33.05 |
-| 48 | `@react-aria/combobox` | `@vue-aria/combobox` | 1 | 75.00% | 3 | 6 | 32.65 |
-| 49 | `@react-aria/numberfield` | `@vue-aria/numberfield` | 1 | 66.67% | 3 | 5 | 31.40 |
-| 50 | `@react-aria/searchfield` | `@vue-aria/searchfield` | 1 | 66.67% | 3 | 5 | 31.40 |
-| 51 | `@react-spectrum/numberfield` | `@vue-spectrum/numberfield` | 1 | 50.00% | 0 | 9 | 31.40 |
-| 52 | `@react-aria/menu` | `@vue-aria/menu` | 1 | 93.75% | 4 | 5 | 31.34 |
-| 53 | `@react-aria/slider` | `@vue-aria/slider` | 3 | 62.50% | 3 | 3 | 30.82 |
-| 54 | `@react-spectrum/card` | `@vue-spectrum/card` | 1 | 88.89% | 0 | 11 | 30.57 |
-| 55 | `@react-spectrum/slider` | `@vue-spectrum/slider` | 3 | 25.00% | 0 | 6 | 30.45 |
-| 56 | `@react-spectrum/radio` | `@vue-spectrum/radio` | 2 | 50.00% | 0 | 8 | 30.30 |
-| 57 | `@react-aria/radio` | `@vue-aria/radio` | 3 | 57.14% | 2 | 4 | 30.13 |
-| 58 | `@react-aria/checkbox` | `@vue-aria/checkbox` | 3 | 62.50% | 2 | 4 | 29.32 |
-| 59 | `@react-spectrum/labeledvalue` | `@vue-spectrum/labeledvalue` | 1 | 50.00% | 0 | 8 | 28.90 |
-| 60 | `@react-spectrum/buttongroup` | `@vue-spectrum/buttongroup` | 1 | 50.00% | 1 | 6 | 27.90 |
-| 61 | `@react-spectrum/steplist` | `@vue-spectrum/steplist` | 2 | 33.33% | 0 | 6 | 27.80 |
-| 62 | `@react-aria/breadcrumbs` | `@vue-aria/breadcrumbs` | 2 | 66.67% | 2 | 4 | 26.80 |
-| 63 | `@react-aria/progress` | `@vue-aria/progress` | 1 | 66.67% | 3 | 3 | 26.40 |
-| 64 | `@react-aria/spinbutton` | `@vue-aria/spinbutton` | 1 | 66.67% | 3 | 3 | 26.40 |
-| 65 | `@react-spectrum/illustratedmessage` | `@vue-spectrum/illustratedmessage` | 1 | 50.00% | 0 | 7 | 26.40 |
-| 66 | `@react-spectrum/inlinealert` | `@vue-spectrum/inlinealert` | 1 | 50.00% | 0 | 7 | 26.40 |
-| 67 | `@react-spectrum/meter` | `@vue-spectrum/meter` | 1 | 50.00% | 0 | 7 | 26.40 |
-| 68 | `@react-stately/datepicker` | `@vue-stately/datepicker` | 3 | 80.00% | 3 | 2 | 25.70 |
-| 69 | `@react-aria/steplist` | `@vue-aria/steplist` | 2 | 66.67% | 1 | 5 | 25.30 |
-| 70 | `@react-stately/select` | `@vue-stately/select` | 1 | 75.00% | 3 | 3 | 25.15 |
-| 71 | `@react-stately/tabs` | `@vue-stately/tabs` | 1 | 75.00% | 3 | 3 | 25.15 |
-| 72 | `@react-aria/meter` | `@vue-aria/meter` | 1 | 66.67% | 2 | 4 | 24.90 |
-| 73 | `@react-aria/switch` | `@vue-aria/switch` | 1 | 66.67% | 2 | 4 | 24.90 |
-| 74 | `@react-aria/toolbar` | `@vue-aria/toolbar` | 1 | 66.67% | 2 | 4 | 24.90 |
-| 75 | `@react-aria/toast` | `@vue-aria/toast` | 2 | 66.67% | 2 | 3 | 24.30 |
-| 76 | `@react-aria/tooltip` | `@vue-aria/tooltip` | 2 | 66.67% | 2 | 3 | 24.30 |
-| 77 | `@react-aria/separator` | `@vue-aria/separator` | 1 | 66.67% | 3 | 2 | 23.90 |
-| 78 | `@react-spectrum/avatar` | `@vue-spectrum/avatar` | 1 | 50.00% | 0 | 6 | 23.90 |
-| 79 | `@react-spectrum/image` | `@vue-spectrum/image` | 1 | 50.00% | 0 | 6 | 23.90 |
-| 80 | `@react-spectrum/link` | `@vue-spectrum/link` | 1 | 50.00% | 0 | 6 | 23.90 |
-| 81 | `@react-spectrum/statuslight` | `@vue-spectrum/statuslight` | 1 | 50.00% | 0 | 6 | 23.90 |
-| 82 | `@react-spectrum/switch` | `@vue-spectrum/switch` | 1 | 50.00% | 0 | 6 | 23.90 |
-| 83 | `@react-spectrum/divider` | `@vue-spectrum/divider` | 1 | 50.00% | 1 | 4 | 22.90 |
-| 84 | `@react-aria/toggle` | `@vue-aria/toggle` | 1 | 66.67% | 2 | 3 | 22.40 |
-| 85 | `@react-stately/color` | `@vue-stately/color` | 2 | 92.00% | 3 | 2 | 22.00 |
-| 86 | `@react-stately/checkbox` | `@vue-stately/checkbox` | 1 | 66.67% | 3 | 1 | 21.40 |
-| 87 | `@react-stately/radio` | `@vue-stately/radio` | 1 | 66.67% | 3 | 1 | 21.40 |
-| 88 | `@react-stately/searchfield` | `@vue-stately/searchfield` | 1 | 66.67% | 3 | 1 | 21.40 |
-| 89 | `@react-spectrum/well` | `@vue-spectrum/well` | 1 | 50.00% | 0 | 4 | 18.90 |
-| 90 | `@react-aria/actiongroup` | `@vue-aria/actiongroup` | 1 | 83.33% | 1 | 4 | 18.40 |
-| 91 | `@react-stately/autocomplete` | `@vue-stately/autocomplete` | 1 | 75.00% | 2 | 1 | 16.15 |
-| 92 | `@react-aria/disclosure` | `@vue-aria/disclosure` | 1 | 66.67% | 1 | 2 | 15.90 |
+| 22 | `@react-spectrum/breadcrumbs` | `@vue-spectrum/breadcrumbs` | 2 | 33.33% | 0 | 13 | 45.30 |
+| 23 | `@react-spectrum/calendar` | `@vue-spectrum/calendar` | 2 | 50.00% | 1 | 12 | 44.30 |
+| 24 | `@react-spectrum/picker` | `@vue-spectrum/picker` | 1 | 75.00% | 2 | 12 | 43.15 |
+| 25 | `@react-spectrum/tag` | `@vue-spectrum/tag` | 2 | 33.33% | 0 | 12 | 42.80 |
+| 26 | `@react-spectrum/contextualhelp` | `@vue-spectrum/contextualhelp` | 1 | 50.00% | 0 | 13 | 41.40 |
+| 27 | `@react-aria/gridlist` | `@vue-aria/gridlist` | 3 | 75.00% | 4 | 6 | 40.45 |
+| 28 | `@react-aria/calendar` | `@vue-aria/calendar` | 7 | 50.00% | 3 | 3 | 40.30 |
+| 29 | `@react-spectrum/list` | `@vue-spectrum/list` | 2 | 33.33% | 0 | 11 | 40.30 |
+| 30 | `@react-aria/autocomplete` | `@vue-aria/autocomplete` | 4 | 60.00% | 2 | 7 | 39.10 |
+| 31 | `@react-spectrum/searchfield` | `@vue-spectrum/searchfield` | 1 | 50.00% | 0 | 12 | 38.90 |
+| 32 | `@react-stately/toggle` | `@vue-stately/toggle` | 1 | 85.71% | 8 | 1 | 38.54 |
+| 33 | `@react-aria/select` | `@vue-aria/select` | 4 | 50.00% | 2 | 6 | 38.10 |
+| 34 | `@react-spectrum/accordion` | `@vue-spectrum/accordion` | 4 | 50.00% | 0 | 10 | 38.10 |
+| 35 | `@react-spectrum/badge` | `@vue-spectrum/badge` | 1 | 50.00% | 0 | 11 | 36.40 |
+| 36 | `@react-aria/color` | `@vue-aria/color` | 5 | 75.00% | 2 | 6 | 36.25 |
+| 37 | `@react-spectrum/tooltip` | `@vue-spectrum/tooltip` | 2 | 50.00% | 2 | 7 | 35.80 |
+| 38 | `@react-aria/table` | `@vue-aria/table` | 5 | 78.26% | 2 | 6 | 35.76 |
+| 39 | `@react-aria/listbox` | `@vue-aria/listbox` | 1 | 91.67% | 5 | 5 | 35.65 |
+| 40 | `@react-aria/dialog` | `@vue-aria/dialog` | 1 | 66.67% | 4 | 5 | 35.40 |
+| 41 | `@react-spectrum/toast` | `@vue-spectrum/toast` | 1 | 75.00% | 0 | 12 | 35.15 |
+| 42 | `@react-aria/tag` | `@vue-aria/tag` | 2 | 66.67% | 2 | 7 | 34.30 |
+| 43 | `@react-spectrum/dropzone` | `@vue-spectrum/dropzone` | 1 | 50.00% | 0 | 10 | 33.90 |
+| 44 | `@react-spectrum/filetrigger` | `@vue-spectrum/filetrigger` | 1 | 50.00% | 0 | 10 | 33.90 |
+| 45 | `@react-aria/tabs` | `@vue-aria/tabs` | 4 | 63.64% | 2 | 5 | 33.55 |
+| 46 | `@react-aria/tree` | `@vue-aria/tree` | 2 | 75.00% | 2 | 7 | 33.05 |
+| 47 | `@react-aria/combobox` | `@vue-aria/combobox` | 1 | 75.00% | 3 | 6 | 32.65 |
+| 48 | `@react-aria/numberfield` | `@vue-aria/numberfield` | 1 | 66.67% | 3 | 5 | 31.40 |
+| 49 | `@react-aria/searchfield` | `@vue-aria/searchfield` | 1 | 66.67% | 3 | 5 | 31.40 |
+| 50 | `@react-spectrum/numberfield` | `@vue-spectrum/numberfield` | 1 | 50.00% | 0 | 9 | 31.40 |
+| 51 | `@react-aria/menu` | `@vue-aria/menu` | 1 | 93.75% | 4 | 5 | 31.34 |
+| 52 | `@react-aria/slider` | `@vue-aria/slider` | 3 | 62.50% | 3 | 3 | 30.82 |
+| 53 | `@react-spectrum/card` | `@vue-spectrum/card` | 1 | 88.89% | 0 | 11 | 30.57 |
+| 54 | `@react-spectrum/slider` | `@vue-spectrum/slider` | 3 | 25.00% | 0 | 6 | 30.45 |
+| 55 | `@react-spectrum/radio` | `@vue-spectrum/radio` | 2 | 50.00% | 0 | 8 | 30.30 |
+| 56 | `@react-aria/radio` | `@vue-aria/radio` | 3 | 57.14% | 2 | 4 | 30.13 |
+| 57 | `@react-aria/checkbox` | `@vue-aria/checkbox` | 3 | 62.50% | 2 | 4 | 29.32 |
+| 58 | `@react-spectrum/labeledvalue` | `@vue-spectrum/labeledvalue` | 1 | 50.00% | 0 | 8 | 28.90 |
+| 59 | `@react-spectrum/buttongroup` | `@vue-spectrum/buttongroup` | 1 | 50.00% | 1 | 6 | 27.90 |
+| 60 | `@react-spectrum/steplist` | `@vue-spectrum/steplist` | 2 | 33.33% | 0 | 6 | 27.80 |
+| 61 | `@react-aria/breadcrumbs` | `@vue-aria/breadcrumbs` | 2 | 66.67% | 2 | 4 | 26.80 |
+| 62 | `@react-aria/progress` | `@vue-aria/progress` | 1 | 66.67% | 3 | 3 | 26.40 |
+| 63 | `@react-aria/spinbutton` | `@vue-aria/spinbutton` | 1 | 66.67% | 3 | 3 | 26.40 |
+| 64 | `@react-spectrum/illustratedmessage` | `@vue-spectrum/illustratedmessage` | 1 | 50.00% | 0 | 7 | 26.40 |
+| 65 | `@react-spectrum/inlinealert` | `@vue-spectrum/inlinealert` | 1 | 50.00% | 0 | 7 | 26.40 |
+| 66 | `@react-spectrum/meter` | `@vue-spectrum/meter` | 1 | 50.00% | 0 | 7 | 26.40 |
+| 67 | `@react-stately/datepicker` | `@vue-stately/datepicker` | 3 | 80.00% | 3 | 2 | 25.70 |
+| 68 | `@react-aria/steplist` | `@vue-aria/steplist` | 2 | 66.67% | 1 | 5 | 25.30 |
+| 69 | `@react-stately/select` | `@vue-stately/select` | 1 | 75.00% | 3 | 3 | 25.15 |
+| 70 | `@react-stately/tabs` | `@vue-stately/tabs` | 1 | 75.00% | 3 | 3 | 25.15 |
+| 71 | `@react-aria/meter` | `@vue-aria/meter` | 1 | 66.67% | 2 | 4 | 24.90 |
+| 72 | `@react-aria/switch` | `@vue-aria/switch` | 1 | 66.67% | 2 | 4 | 24.90 |
+| 73 | `@react-aria/toolbar` | `@vue-aria/toolbar` | 1 | 66.67% | 2 | 4 | 24.90 |
+| 74 | `@react-aria/toast` | `@vue-aria/toast` | 2 | 66.67% | 2 | 3 | 24.30 |
+| 75 | `@react-aria/tooltip` | `@vue-aria/tooltip` | 2 | 66.67% | 2 | 3 | 24.30 |
+| 76 | `@react-aria/separator` | `@vue-aria/separator` | 1 | 66.67% | 3 | 2 | 23.90 |
+| 77 | `@react-spectrum/avatar` | `@vue-spectrum/avatar` | 1 | 50.00% | 0 | 6 | 23.90 |
+| 78 | `@react-spectrum/image` | `@vue-spectrum/image` | 1 | 50.00% | 0 | 6 | 23.90 |
+| 79 | `@react-spectrum/link` | `@vue-spectrum/link` | 1 | 50.00% | 0 | 6 | 23.90 |
+| 80 | `@react-spectrum/statuslight` | `@vue-spectrum/statuslight` | 1 | 50.00% | 0 | 6 | 23.90 |
+| 81 | `@react-spectrum/switch` | `@vue-spectrum/switch` | 1 | 50.00% | 0 | 6 | 23.90 |
+| 82 | `@react-spectrum/divider` | `@vue-spectrum/divider` | 1 | 50.00% | 1 | 4 | 22.90 |
+| 83 | `@react-aria/toggle` | `@vue-aria/toggle` | 1 | 66.67% | 2 | 3 | 22.40 |
+| 84 | `@react-stately/color` | `@vue-stately/color` | 2 | 92.00% | 3 | 2 | 22.00 |
+| 85 | `@react-stately/checkbox` | `@vue-stately/checkbox` | 1 | 66.67% | 3 | 1 | 21.40 |
+| 86 | `@react-stately/radio` | `@vue-stately/radio` | 1 | 66.67% | 3 | 1 | 21.40 |
+| 87 | `@react-stately/searchfield` | `@vue-stately/searchfield` | 1 | 66.67% | 3 | 1 | 21.40 |
+| 88 | `@react-spectrum/well` | `@vue-spectrum/well` | 1 | 50.00% | 0 | 4 | 18.90 |
+| 89 | `@react-aria/actiongroup` | `@vue-aria/actiongroup` | 1 | 83.33% | 1 | 4 | 18.40 |
+| 90 | `@react-stately/autocomplete` | `@vue-stately/autocomplete` | 1 | 75.00% | 2 | 1 | 16.15 |
+| 91 | `@react-aria/disclosure` | `@vue-aria/disclosure` | 1 | 66.67% | 1 | 2 | 15.90 |
 
 ## Top execution tranche
 

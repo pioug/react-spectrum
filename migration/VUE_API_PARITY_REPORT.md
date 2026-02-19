@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:38:04.976Z
+Generated: 2026-02-19T21:39:21.411Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 62
+* Fully matched packages: 63
 * Source exports inspected: 2672
-* Missing exports: 1011
-* Coverage ratio: 62.16%
+* Missing exports: 1001
+* Coverage ratio: 62.54%
 
 ## Package gaps
 
@@ -18,7 +18,6 @@ Generated: 2026-02-19T21:38:04.976Z
 | --- | --- | --- | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | missing | 543 | 503 | 7.4% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | missing | 325 | 314 | 3.4% |
-| `@react-aria/datepicker` | `@vue-aria/datepicker` | missing | 18 | 10 | 44.4% |
 | `@react-spectrum/color` | `@vue-spectrum/color` | missing | 21 | 8 | 61.9% |
 | `@react-aria/calendar` | `@vue-aria/calendar` | missing | 14 | 7 | 50.0% |
 | `@react-aria/color` | `@vue-aria/color` | missing | 20 | 5 | 75.0% |
@@ -110,6 +109,7 @@ Generated: 2026-02-19T21:38:04.976Z
 | `@react-stately/toggle` | `@vue-stately/toggle` | missing | 7 | 1 | 85.7% |
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` | ok | 1 | 0 | 100.0% |
 | `@react-aria/collections` | `@vue-aria/collections` | ok | 17 | 0 | 100.0% |
+| `@react-aria/datepicker` | `@vue-aria/datepicker` | ok | 18 | 0 | 100.0% |
 | `@react-aria/dnd` | `@vue-aria/dnd` | ok | 62 | 0 | 100.0% |
 | `@react-aria/example-theme` | `@vue-aria/example-theme` | ok | 0 | 0 | 100.0% |
 | `@react-aria/focus` | `@vue-aria/focus` | ok | 26 | 0 | 100.0% |
@@ -186,13 +186,6 @@ Generated: 2026-02-19T21:38:04.976Z
 * Target entry: `packages/@vue-spectrum/s2/src/index.ts`
 * Missing export count: 314
 * Missing exports: `Accordion`, `AccordionContext`, `AccordionItem`, `AccordionItemHeader`, `AccordionItemHeaderProps`, `AccordionItemPanel`, `AccordionItemPanelProps`, `AccordionItemProps`, `AccordionItemRenderProps`, `AccordionItemState`, `AccordionItemTitle`, `AccordionItemTitleProps`, `AccordionProps`, `ActionBar`, `ActionBarContext`, `ActionBarProps`, `ActionButton`, `ActionButtonContext`, `ActionButtonGroup`, `ActionButtonGroupContext`, `ActionButtonGroupProps`, `ActionButtonProps`, `ActionMenu`, `ActionMenuContext`, `ActionMenuProps`, `AlertDialog`, `AlertDialogProps`, `AssetCard`, `AssetCardProps`, `AsyncListData`, `Autocomplete`, `AutocompleteProps`, `Avatar`, `AvatarContext`, `AvatarGroup`, `AvatarGroupContext`, `AvatarGroupProps`, `AvatarProps`, `Badge`, `BadgeContext` ...
-
-### @react-aria/datepicker -> @vue-aria/datepicker
-
-* Source entry: `packages/@react-aria/datepicker/src/index.ts`
-* Target entry: `packages/@vue-aria/datepicker/src/index.ts`
-* Missing export count: 10
-* Missing exports: `AriaDateFieldProps`, `AriaDatePickerProps`, `AriaDateRangePickerProps`, `AriaTimeFieldProps`, `DateRange`, `DateSegmentAria`, `DateValue`, `TimeValue`, `useDateSegment`, `useDisplayNames`
 
 ### @react-spectrum/color -> @vue-spectrum/color
 
@@ -312,4 +305,11 @@ Generated: 2026-02-19T21:38:04.976Z
 * Target entry: `packages/@vue-aria/gridlist/src/index.ts`
 * Missing export count: 3
 * Missing exports: `AriaGridSelectionCheckboxProps`, `GridListProps`, `GridSelectionCheckboxAria`
+
+### @react-aria/radio -> @vue-aria/radio
+
+* Source entry: `packages/@react-aria/radio/src/index.ts`
+* Target entry: `packages/@vue-aria/radio/src/index.ts`
+* Missing export count: 3
+* Missing exports: `AriaRadioGroupProps`, `AriaRadioProps`, `Orientation`
 

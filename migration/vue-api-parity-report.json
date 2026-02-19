@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T21:38:04.976Z",
+  "generatedAt": "2026-02-19T21:39:21.411Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 62,
+    "fullyMatchedPackages": 63,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 1011,
-    "parityCoverage": 0.6216
+    "missingExportTotal": 1001,
+    "parityCoverage": 0.6254
   },
   "packages": [
     {
@@ -928,37 +928,6 @@
       ],
       "extraExports": [
         "Spectrum2Plugin"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/datepicker",
-      "sourcePath": "packages/@react-aria/datepicker",
-      "targetPackage": "@vue-aria/datepicker",
-      "targetPath": "packages/@vue-aria/datepicker",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/datepicker/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/datepicker/src/index.ts",
-      "sourceExportCount": 18,
-      "targetExportCount": 12,
-      "parityRatio": 0.4444,
-      "missingExports": [
-        "AriaDateFieldProps",
-        "AriaDatePickerProps",
-        "AriaDateRangePickerProps",
-        "AriaTimeFieldProps",
-        "DateRange",
-        "DateSegmentAria",
-        "DateValue",
-        "TimeValue",
-        "useDateSegment",
-        "useDisplayNames"
-      ],
-      "extraExports": [
-        "AriaDatePickerOptions",
-        "AriaDateRangePickerOptions",
-        "AriaTimeFieldOptions",
-        "DateRangeValue"
       ],
       "error": null
     },
@@ -2916,6 +2885,26 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/datepicker",
+      "sourcePath": "packages/@react-aria/datepicker",
+      "targetPackage": "@vue-aria/datepicker",
+      "targetPath": "packages/@vue-aria/datepicker",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/datepicker/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/datepicker/src/index.ts",
+      "sourceExportCount": 18,
+      "targetExportCount": 22,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaDatePickerOptions",
+        "AriaDateRangePickerOptions",
+        "AriaTimeFieldOptions",
+        "DateRangeValue"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/dnd",
       "sourcePath": "packages/@react-aria/dnd",
       "targetPackage": "@vue-aria/dnd",
@@ -3985,7 +3974,7 @@
       "sourceEntrypoint": "packages/react-aria/src/index.ts",
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
-      "targetExportCount": 808,
+      "targetExportCount": 809,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
@@ -4324,6 +4313,7 @@
         "useDeepMemo",
         "useDefaultLocale",
         "useDescription",
+        "useDisplayNames",
         "useDrag1D",
         "useEffectEvent",
         "useEnterAnimation",
