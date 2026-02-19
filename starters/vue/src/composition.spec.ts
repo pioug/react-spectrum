@@ -28,6 +28,12 @@ import {
   useGridSelectionCheckbox,
   useHighlightSelectionDescription
 } from '@vue-aria/grid';
+import {
+  useGridList,
+  useGridListItem,
+  useGridListSection,
+  useGridListSelectionCheckbox
+} from '@vue-aria/gridlist';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -860,6 +866,58 @@ describe('Vue migration composition components', () => {
     expect(keyboardDelegate.getKeyRightOf('row-1')).toBe('row-1-cell-1');
     expect(keyboardDelegate.getKeyBelow('row-1-cell-1')).toBe('row-2-cell-1');
     expect(keyboardDelegate.getKeyForSearch('de')).toBe('row-2-cell-1');
+  });
+
+  it('computes vue-aria gridlist semantics, item state, and section props', () => {
+    let actions: string[] = [];
+    let selectedKeys = ref(new Set<string>());
+    let collection = {
+      items: [
+        {key: 'story-1', index: 0, textValue: 'Story 1', description: 'First story'},
+        {key: 'story-2', index: 1, textValue: 'Story 2'}
+      ]
+    };
+
+    let gridList = useGridList({
+      ariaLabel: 'Stories',
+      collection,
+      isVirtualized: true,
+      onAction: (key) => {
+        actions.push(key);
+      },
+      selectedKeys,
+      selectionMode: 'multiple'
+    });
+
+    expect(gridList.gridProps.value.role).toBe('grid');
+    expect(gridList.gridProps.value['aria-rowcount']).toBe(2);
+
+    let item = useGridListItem({
+      gridList,
+      isVirtualized: true,
+      item: collection.items[0]
+    });
+    item.press();
+    expect(actions).toEqual(['story-1']);
+    expect(item.rowProps.value.id).toContain('story-1');
+    expect(item.rowProps.value['aria-selected']).toBe(true);
+    expect(item.gridCellProps.value.role).toBe('gridcell');
+
+    let selectionCheckbox = useGridListSelectionCheckbox({
+      gridList,
+      key: 'story-1'
+    });
+    selectionCheckbox.toggleSelection();
+    expect(selectedKeys.value.size).toBe(0);
+    expect(selectionCheckbox.checkboxProps.value['aria-labelledby']).toContain('story-1');
+
+    let section = useGridListSection({
+      ariaLabel: 'Open stories'
+    });
+    expect(section.rowProps.value.role).toBe('row');
+    expect(section.rowHeaderProps.value.role).toBe('rowheader');
+    expect(section.rowGroupProps.value.role).toBe('rowgroup');
+    expect(section.rowGroupProps.value['aria-label']).toBe('Open stories');
   });
 
   it('emits close events from dismissable dialog controls', async () => {
