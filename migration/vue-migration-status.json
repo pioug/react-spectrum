@@ -3472,6 +3472,30 @@
         }
       ]
     },
+    "@react-stately/utils": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/utils",
+      "targetPath": "packages/@vue-stately/utils",
+      "notes": "State baseline for controlled/uncontrolled value utilities and numeric clamp/step helpers in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately utils package source lint",
+          "command": "yarn eslint packages/@vue-stately/utils/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

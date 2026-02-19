@@ -244,6 +244,13 @@ import {
 } from '@vue-stately/toggle';
 import {useTooltipTriggerState as useStatelyTooltipTriggerState} from '@vue-stately/tooltip';
 import {useTreeState as useStatelyTreeState} from '@vue-stately/tree';
+import {
+  clamp as clampStatelyNumber,
+  roundToStepPrecision as roundStatelyStepPrecision,
+  snapValueToStep as snapStatelyValueToStep,
+  toFixedNumber as toStatelyFixedNumber,
+  useControlledState as useStatelyControlledState
+} from '@vue-stately/utils';
 
 function createPointerEvent(
   type: string,
@@ -2286,6 +2293,34 @@ describe('Vue migration composition components', () => {
       'birds',
       'plants'
     ]);
+  });
+
+  it('manages vue-stately utility state and numeric helper behavior', () => {
+    let controlledValue = ref<string | undefined>('alpha');
+    let changeEvents: string[] = [];
+    let [controlledState, setControlledState] = useStatelyControlledState(
+      controlledValue,
+      'default',
+      (nextValue) => {
+        changeEvents.push(nextValue);
+        controlledValue.value = nextValue;
+      }
+    );
+
+    expect(controlledState.value).toBe('alpha');
+    setControlledState((currentValue) => `${currentValue}-next`);
+    expect(controlledState.value).toBe('alpha-next');
+    setControlledState('alpha-next');
+    expect(changeEvents).toEqual(['alpha-next']);
+
+    let [uncontrolledState, setUncontrolledState] = useStatelyControlledState<number>(undefined, 2);
+    setUncontrolledState((currentValue) => currentValue + 3);
+    expect(uncontrolledState.value).toBe(5);
+
+    expect(clampStatelyNumber(8, 0, 5)).toBe(5);
+    expect(roundStatelyStepPrecision(0.123456789, 1e-7)).toBe(0.12345679);
+    expect(snapStatelyValueToStep(2, -0.5, 100, 3)).toBe(2.5);
+    expect(toStatelyFixedNumber(Math.PI, 2)).toBe(3.14);
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {

@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 150 |
+| in_progress | 151 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 2 |
+| not_started | 1 |
 
 ## Package tracker
 
@@ -171,9 +171,9 @@ Tracked source packages: 154
 | `@react-stately/toggle` | `packages/@react-stately/toggle` | `@vue-stately/toggle` | `packages/@vue-stately/toggle` | in_progress | Vue stately toggle package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for single toggle selection and toggle-group single/multiple selection state in Vue. |
 | `@react-stately/tooltip` | `packages/@react-stately/tooltip` | `@vue-stately/tooltip` | `packages/@vue-stately/tooltip` | in_progress | Vue stately tooltip package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for tooltip trigger warmup delays, open/close timing, and cooldown handoff in Vue. |
 | `@react-stately/tree` | `packages/@react-stately/tree` | `@vue-stately/tree` | `packages/@vue-stately/tree` | in_progress | Vue stately tree package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for flattened tree collections, expanded-key state updates, and selection manager integration in Vue. |
+| `@react-stately/utils` | `packages/@react-stately/utils` | `@vue-stately/utils` | `packages/@vue-stately/utils` | in_progress | Vue stately utils package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for controlled/uncontrolled value utilities and numeric clamp/step helpers in Vue. |
 | `react-aria-components` | `packages/react-aria-components` | `@vue-spectrum/components` | `packages/@vue-spectrum/components` | in_progress | Vue package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Initial Vue baseline package exists, but React Aria Components parity is still in progress. |
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-stately/utils` | `packages/@react-stately/utils` | `@vue-stately/utils` | `packages/@vue-stately/utils` | not_started | - | - |
 | `@react-stately/virtualizer` | `packages/@react-stately/virtualizer` | `@vue-stately/virtualizer` | `packages/@vue-stately/virtualizer` | not_started | - | - |

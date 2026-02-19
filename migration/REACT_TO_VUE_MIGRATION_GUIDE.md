@@ -166,6 +166,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-stately/toggle` | `@vue-stately/toggle` |
 | `@react-stately/tooltip` | `@vue-stately/tooltip` |
 | `@react-stately/tree` | `@vue-stately/tree` |
+| `@react-stately/utils` | `@vue-stately/utils` |
 
 ## Core API conversion patterns
 
