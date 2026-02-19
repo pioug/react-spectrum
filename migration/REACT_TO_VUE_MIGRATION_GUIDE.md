@@ -136,6 +136,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-aria/color` | `@vue-aria/color` |
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` |
+| `@react-stately/autocomplete` | `@vue-stately/autocomplete` |
 
 ## Core API conversion patterns
 

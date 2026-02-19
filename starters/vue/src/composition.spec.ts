@@ -159,6 +159,7 @@ import {
   useIsMobileDevice as useSpectrumIsMobileDevice,
   useMediaQuery as useSpectrumMediaQuery
 } from '@vue-spectrum/utils';
+import {useAutocompleteState as useStatelyAutocompleteState} from '@vue-stately/autocomplete';
 
 function createPointerEvent(
   type: string,
@@ -289,6 +290,38 @@ describe('Vue migration composition components', () => {
     expect(inputValue.value).toBe('');
     expect(clearCount).toBe(1);
     expect(autocomplete.clearButtonProps.value.disabled).toBe(true);
+  });
+
+  it('manages vue-stately autocomplete input and focused node state', () => {
+    let uncontrolledChanges: string[] = [];
+    let uncontrolledState = useStatelyAutocompleteState({
+      defaultInputValue: 'Vue',
+      onInputChange: (value) => {
+        uncontrolledChanges.push(value);
+      }
+    });
+
+    expect(uncontrolledState.inputValue.value).toBe('Vue');
+    uncontrolledState.setInputValue('Vue Spectrum');
+    uncontrolledState.setFocusedNodeId('option-vue');
+    expect(uncontrolledState.inputValue.value).toBe('Vue Spectrum');
+    expect(uncontrolledChanges).toEqual(['Vue Spectrum']);
+    expect(uncontrolledState.focusedNodeId.value).toBe('option-vue');
+
+    let controlledInput = ref('React');
+    let controlledChanges: string[] = [];
+    let controlledState = useStatelyAutocompleteState({
+      inputValue: controlledInput,
+      onInputChange: (value) => {
+        controlledChanges.push(value);
+        controlledInput.value = value;
+      }
+    });
+
+    expect(controlledState.inputValue.value).toBe('React');
+    controlledState.setInputValue('Vue');
+    expect(controlledChanges).toEqual(['Vue']);
+    expect(controlledState.inputValue.value).toBe('Vue');
   });
 
   it('provides breadcrumb nav props with default and custom labels', () => {
