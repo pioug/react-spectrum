@@ -168,6 +168,30 @@
         }
       ]
     },
+    "@react-aria/calendar": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/calendar",
+      "targetPath": "packages/@vue-aria/calendar",
+      "notes": "Foundational React Aria calendar composables for date selection, range selection, and month-grid cell semantics in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria calendar source lint",
+          "command": "yarn eslint packages/@vue-aria/calendar/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/provider": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/provider",

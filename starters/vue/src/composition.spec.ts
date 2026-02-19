@@ -6,6 +6,7 @@ import {useAutocomplete, useSearchAutocomplete} from '@vue-aria/autocomplete';
 import {watchModals} from '@vue-aria/aria-modal-polyfill';
 import {useBreadcrumbItem, useBreadcrumbs} from '@vue-aria/breadcrumbs';
 import {useButton, useToggleButton, useToggleButtonGroup, useToggleButtonGroupItem} from '@vue-aria/button';
+import {useCalendar, useCalendarCell, useCalendarGrid, useRangeCalendar} from '@vue-aria/calendar';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -204,6 +205,57 @@ describe('Vue migration composition components', () => {
     expect(italicItem.buttonProps.value['aria-checked']).toBe(false);
     italicItem.press();
     expect(Array.from(selectedKeys.value)).toEqual(['italic']);
+  });
+
+  it('manages vue-aria calendar navigation and date selection', () => {
+    let selectedDate = ref<Date | null>(new Date(2025, 0, 15));
+    let visibleDate = ref(new Date(2025, 0, 1));
+    let calendar = useCalendar({
+      value: selectedDate,
+      visibleDate
+    });
+
+    expect(calendar.visibleRangeLabel.value).toContain('2025');
+    calendar.nextPage();
+    expect(calendar.visibleDate.value.getMonth()).toBe(1);
+
+    calendar.selectDate(new Date(2025, 1, 10));
+    expect(selectedDate.value?.getMonth()).toBe(1);
+    expect(selectedDate.value?.getDate()).toBe(10);
+  });
+
+  it('builds calendar grid and cell selection for date and range flows', () => {
+    let visibleDate = ref(new Date(2025, 0, 1));
+    let calendar = useCalendar({visibleDate});
+    let grid = useCalendarGrid({visibleDate});
+
+    expect(grid.weekDays.value).toHaveLength(7);
+    expect(grid.weeks.value).toHaveLength(6);
+
+    let cellDate = grid.weeks.value[2][3];
+    let cell = useCalendarCell({
+      calendar,
+      date: cellDate
+    });
+    cell.press();
+    expect(calendar.selectedDate.value?.getDate()).toBe(cellDate.getDate());
+
+    let rangeValue = ref({
+      start: null as Date | null,
+      end: null as Date | null
+    });
+    let rangeCalendar = useRangeCalendar({
+      visibleDate: ref(new Date(2025, 0, 1)),
+      value: rangeValue
+    });
+    rangeCalendar.selectDate(new Date(2025, 0, 5));
+    rangeCalendar.selectDate(new Date(2025, 0, 8));
+
+    let rangeCell = useCalendarCell({
+      calendar: rangeCalendar,
+      date: new Date(2025, 0, 6)
+    });
+    expect(rangeCell.isSelected.value).toBe(true);
   });
 
   it('emits close events from dismissable dialog controls', async () => {
