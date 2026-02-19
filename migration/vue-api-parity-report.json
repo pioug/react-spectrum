@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T22:04:47.547Z",
+  "generatedAt": "2026-02-19T22:06:10.979Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 81,
+    "fullyMatchedPackages": 83,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 941,
-    "parityCoverage": 0.6478
+    "missingExportTotal": 935,
+    "parityCoverage": 0.6501
   },
   "packages": [
     {
@@ -1189,49 +1189,6 @@
         "SliderDirection",
         "SliderOrientation",
         "SliderState"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/autocomplete",
-      "sourcePath": "packages/@react-spectrum/autocomplete",
-      "targetPackage": "@vue-spectrum/autocomplete",
-      "targetPath": "packages/@vue-spectrum/autocomplete",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/autocomplete/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/autocomplete/src/index.ts",
-      "sourceExportCount": 4,
-      "targetExportCount": 3,
-      "parityRatio": 0.25,
-      "missingExports": [
-        "Item",
-        "Section",
-        "SpectrumSearchAutocompleteProps"
-      ],
-      "extraExports": [
-        "Autocomplete",
-        "VueSearchAutocomplete"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/combobox",
-      "sourcePath": "packages/@react-spectrum/combobox",
-      "targetPackage": "@vue-spectrum/combobox",
-      "targetPath": "packages/@vue-spectrum/combobox",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/combobox/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/combobox/src/index.ts",
-      "sourceExportCount": 4,
-      "targetExportCount": 2,
-      "parityRatio": 0.25,
-      "missingExports": [
-        "Item",
-        "Section",
-        "SpectrumComboBoxProps"
-      ],
-      "extraExports": [
-        "VueComboBox"
       ],
       "error": null
     },
@@ -2962,6 +2919,24 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/autocomplete",
+      "sourcePath": "packages/@react-spectrum/autocomplete",
+      "targetPackage": "@vue-spectrum/autocomplete",
+      "targetPath": "packages/@vue-spectrum/autocomplete",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/autocomplete/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/autocomplete/src/index.ts",
+      "sourceExportCount": 4,
+      "targetExportCount": 6,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "Autocomplete",
+        "VueSearchAutocomplete"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/button",
       "sourcePath": "packages/@react-spectrum/button",
       "targetPackage": "@vue-spectrum/button",
@@ -2992,6 +2967,23 @@
       "missingExports": [],
       "extraExports": [
         "VueCheckbox"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/combobox",
+      "sourcePath": "packages/@react-spectrum/combobox",
+      "targetPackage": "@vue-spectrum/combobox",
+      "targetPath": "packages/@vue-spectrum/combobox",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/combobox/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/combobox/src/index.ts",
+      "sourceExportCount": 4,
+      "targetExportCount": 5,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueComboBox"
       ],
       "error": null
     },

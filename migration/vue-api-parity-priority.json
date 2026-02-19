@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-02-19T22:04:58.260Z",
+  "generatedAt": "2026-02-19T22:06:21.234Z",
   "summary": {
     "trackedPackages": 154,
-    "packagesWithGaps": 73,
+    "packagesWithGaps": 71,
     "highestPriorityPackage": "react-aria-components",
     "highestPriorityScore": 1677.99
   },
@@ -39,28 +39,6 @@
       "dependencyDepth": 13,
       "criticalityWeight": 1.4,
       "priorityScore": 49.42
-    },
-    {
-      "sourcePackage": "@react-spectrum/autocomplete",
-      "targetPackage": "@vue-spectrum/autocomplete",
-      "missingExports": 3,
-      "sourceExportCount": 4,
-      "coveragePercent": 25,
-      "reverseDependents": 0,
-      "dependencyDepth": 12,
-      "criticalityWeight": 1.4,
-      "priorityScore": 45.45
-    },
-    {
-      "sourcePackage": "@react-spectrum/combobox",
-      "targetPackage": "@vue-spectrum/combobox",
-      "missingExports": 3,
-      "sourceExportCount": 4,
-      "coveragePercent": 25,
-      "reverseDependents": 0,
-      "dependencyDepth": 12,
-      "criticalityWeight": 1.4,
-      "priorityScore": 45.45
     },
     {
       "sourcePackage": "@react-spectrum/breadcrumbs",
