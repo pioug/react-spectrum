@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T22:00:07.019Z
+Generated: 2026-02-19T22:01:05.035Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 76
+* Fully matched packages: 77
 * Source exports inspected: 2672
-* Missing exports: 952
-* Coverage ratio: 64.37%
+* Missing exports: 951
+* Coverage ratio: 64.41%
 
 ## Package gaps
 
@@ -62,7 +62,6 @@ Generated: 2026-02-19T22:00:07.019Z
 | `@react-aria/separator` | `@vue-aria/separator` | missing | 3 | 1 | 66.7% |
 | `@react-aria/spinbutton` | `@vue-aria/spinbutton` | missing | 3 | 1 | 66.7% |
 | `@react-aria/switch` | `@vue-aria/switch` | missing | 3 | 1 | 66.7% |
-| `@react-aria/textfield` | `@vue-aria/textfield` | missing | 5 | 1 | 80.0% |
 | `@react-aria/toggle` | `@vue-aria/toggle` | missing | 3 | 1 | 66.7% |
 | `@react-aria/toolbar` | `@vue-aria/toolbar` | missing | 3 | 1 | 66.7% |
 | `@react-spectrum/avatar` | `@vue-spectrum/avatar` | missing | 2 | 1 | 50.0% |
@@ -115,6 +114,7 @@ Generated: 2026-02-19T22:00:07.019Z
 | `@react-aria/selection` | `@vue-aria/selection` | ok | 15 | 0 | 100.0% |
 | `@react-aria/ssr` | `@vue-aria/ssr` | ok | 4 | 0 | 100.0% |
 | `@react-aria/test-utils` | `@vue-aria/test-utils` | ok | 17 | 0 | 100.0% |
+| `@react-aria/textfield` | `@vue-aria/textfield` | ok | 5 | 0 | 100.0% |
 | `@react-aria/utils` | `@vue-aria/utils` | ok | 74 | 0 | 100.0% |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` | ok | 11 | 0 | 100.0% |
 | `@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | ok | 4 | 0 | 100.0% |

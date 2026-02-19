@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T22:00:07.019Z",
+  "generatedAt": "2026-02-19T22:01:05.035Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 76,
+    "fullyMatchedPackages": 77,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 952,
-    "parityCoverage": 0.6437
+    "missingExportTotal": 951,
+    "parityCoverage": 0.6441
   },
   "packages": [
     {
@@ -1911,26 +1911,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-aria/textfield",
-      "sourcePath": "packages/@react-aria/textfield",
-      "targetPackage": "@vue-aria/textfield",
-      "targetPath": "packages/@vue-aria/textfield",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/textfield/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/textfield/src/index.ts",
-      "sourceExportCount": 5,
-      "targetExportCount": 6,
-      "parityRatio": 0.8,
-      "missingExports": [
-        "AriaTextFieldProps"
-      ],
-      "extraExports": [
-        "FormattedTextFieldState",
-        "TextFieldInputElementType"
-      ],
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/toggle",
       "sourcePath": "packages/@react-aria/toggle",
       "targetPackage": "@vue-aria/toggle",
@@ -2966,6 +2946,24 @@
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/textfield",
+      "sourcePath": "packages/@react-aria/textfield",
+      "targetPackage": "@vue-aria/textfield",
+      "targetPath": "packages/@vue-aria/textfield",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/textfield/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/textfield/src/index.ts",
+      "sourceExportCount": 5,
+      "targetExportCount": 7,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "FormattedTextFieldState",
+        "TextFieldInputElementType"
+      ],
       "error": null
     },
     {
