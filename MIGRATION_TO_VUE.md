@@ -59,6 +59,7 @@ Phase 1 is implemented:
   * `migration/VUE_PUBLISH_CHECKLIST.md`
   * `migration/REACT_DEPRECATION_PLAN.md`
   * `migration/REACT_TO_VUE_MIGRATION_GUIDE.md`
+  * `migration/VUE_PACKAGE_ARCHITECTURE.md`
 
 ## Migration phases
 
