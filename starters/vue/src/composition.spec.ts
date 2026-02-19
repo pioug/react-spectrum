@@ -214,6 +214,7 @@ import {
   useListState as useStatelyListState,
   useSingleSelectListState as useStatelySingleSelectListState
 } from '@vue-stately/list';
+import {useMenuTriggerState as useStatelyMenuTriggerState, useSubmenuTriggerState as useStatelySubmenuTriggerState} from '@vue-stately/menu';
 
 function createPointerEvent(
   type: string,
@@ -1596,6 +1597,61 @@ describe('Vue migration composition components', () => {
     expect(selectedKey.value).toBe('details');
     expect(listState.selectedItem.value?.key).toBe('details');
     expect(selectionChanges[selectionChanges.length - 1]).toBe('details');
+  });
+
+  it('manages vue-stately menu trigger open state and submenu stack', () => {
+    let openChanges: boolean[] = [];
+    let isOpen = ref(false);
+    let state = useStatelyMenuTriggerState({
+      isOpen,
+      onOpenChange: (nextOpen) => {
+        openChanges.push(nextOpen);
+      }
+    });
+
+    expect(state.isOpen.value).toBe(false);
+    state.open('first');
+    expect(state.isOpen.value).toBe(true);
+    expect(state.focusStrategy.value).toBe('first');
+
+    state.openSubmenu('workspace', 0);
+    state.openSubmenu('roadmap', 1);
+    expect(state.expandedKeysStack.value).toEqual(['workspace', 'roadmap']);
+
+    state.closeSubmenu('roadmap', 1);
+    expect(state.expandedKeysStack.value).toEqual(['workspace']);
+
+    state.toggle('last');
+    expect(state.isOpen.value).toBe(false);
+    expect(state.expandedKeysStack.value).toEqual([]);
+    expect(openChanges).toEqual([true, false]);
+  });
+
+  it('manages vue-stately submenu trigger level, focus strategy, and close-all behavior', () => {
+    let root = useStatelyMenuTriggerState();
+    let submenu = useStatelySubmenuTriggerState({
+      triggerKey: 'settings'
+    }, root);
+
+    expect(submenu.submenuLevel).toBe(0);
+    expect(submenu.isOpen.value).toBe(false);
+
+    root.open();
+    submenu.open('last');
+    expect(submenu.isOpen.value).toBe(true);
+    expect(submenu.focusStrategy.value).toBe('last');
+    expect(root.expandedKeysStack.value).toEqual(['settings']);
+
+    submenu.toggle();
+    expect(submenu.isOpen.value).toBe(false);
+
+    submenu.setOpen(true, 'first');
+    expect(submenu.isOpen.value).toBe(true);
+    expect(submenu.focusStrategy.value).toBe('first');
+
+    submenu.closeAll();
+    expect(root.isOpen.value).toBe(false);
+    expect(root.expandedKeysStack.value).toEqual([]);
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {

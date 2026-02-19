@@ -3112,6 +3112,30 @@
         }
       ]
     },
+    "@react-stately/menu": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/menu",
+      "targetPath": "packages/@vue-stately/menu",
+      "notes": "State baseline for menu trigger overlays and nested submenu stack transitions in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately menu package source lint",
+          "command": "yarn eslint packages/@vue-stately/menu/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

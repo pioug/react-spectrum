@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 135 |
+| in_progress | 136 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 17 |
+| not_started | 16 |
 
 ## Package tracker
 
@@ -156,11 +156,11 @@ Tracked source packages: 154
 | `@react-stately/grid` | `packages/@react-stately/grid` | `@vue-stately/grid` | `packages/@vue-stately/grid` | in_progress | Vue stately grid package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for grid collections with row/cell focus and multi-selection flows in Vue. |
 | `@react-stately/layout` | `packages/@react-stately/layout` | `@vue-stately/layout` | `packages/@vue-stately/layout` | in_progress | Vue stately layout package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for list/grid/table/waterfall virtualized layout primitives in Vue. |
 | `@react-stately/list` | `packages/@react-stately/list` | `@vue-stately/list` | `packages/@vue-stately/list` | in_progress | Vue stately list package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for list collections, filtered views, and single/multi selection flows in Vue. |
+| `@react-stately/menu` | `packages/@react-stately/menu` | `@vue-stately/menu` | `packages/@vue-stately/menu` | in_progress | Vue stately menu package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for menu trigger overlays and nested submenu stack transitions in Vue. |
 | `react-aria-components` | `packages/react-aria-components` | `@vue-spectrum/components` | `packages/@vue-spectrum/components` | in_progress | Vue package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Initial Vue baseline package exists, but React Aria Components parity is still in progress. |
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-stately/menu` | `packages/@react-stately/menu` | `@vue-stately/menu` | `packages/@vue-stately/menu` | not_started | - | - |
 | `@react-stately/numberfield` | `packages/@react-stately/numberfield` | `@vue-stately/numberfield` | `packages/@vue-stately/numberfield` | not_started | - | - |
 | `@react-stately/overlays` | `packages/@react-stately/overlays` | `@vue-stately/overlays` | `packages/@vue-stately/overlays` | not_started | - | - |
 | `@react-stately/radio` | `packages/@react-stately/radio` | `@vue-stately/radio` | `packages/@vue-stately/radio` | not_started | - | - |
