@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T21:33:03.133Z",
+  "generatedAt": "2026-02-19T21:34:15.992Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 58,
+    "fullyMatchedPackages": 59,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 1093,
-    "parityCoverage": 0.5909
+    "missingExportTotal": 1067,
+    "parityCoverage": 0.6007
   },
   "packages": [
     {
@@ -928,51 +928,6 @@
       ],
       "extraExports": [
         "Spectrum2Plugin"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/dnd",
-      "sourcePath": "packages/@react-spectrum/dnd",
-      "targetPackage": "@vue-spectrum/dnd",
-      "targetPath": "packages/@vue-spectrum/dnd",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/dnd/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/dnd/src/index.ts",
-      "sourceExportCount": 26,
-      "targetExportCount": 2,
-      "parityRatio": 0,
-      "missingExports": [
-        "DIRECTORY_DRAG_TYPE",
-        "DirectoryDropItem",
-        "DragAndDropHooks",
-        "DragAndDropOptions",
-        "DragPreviewRenderer",
-        "DragTypes",
-        "DraggableCollectionEndEvent",
-        "DraggableCollectionMoveEvent",
-        "DraggableCollectionStartEvent",
-        "DropItem",
-        "DropOperation",
-        "DropPosition",
-        "DropTarget",
-        "DroppableCollectionDropEvent",
-        "DroppableCollectionEnterEvent",
-        "DroppableCollectionExitEvent",
-        "DroppableCollectionInsertDropEvent",
-        "DroppableCollectionMoveEvent",
-        "DroppableCollectionOnItemDropEvent",
-        "DroppableCollectionReorderEvent",
-        "DroppableCollectionRootDropEvent",
-        "FileDropItem",
-        "ItemDropTarget",
-        "RootDropTarget",
-        "TextDropItem",
-        "useDragAndDrop"
-      ],
-      "extraExports": [
-        "DropZone",
-        "VueDropZone"
       ],
       "error": null
     },
@@ -3367,6 +3322,24 @@
       "missingExports": [],
       "extraExports": [
         "VueDialog"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/dnd",
+      "sourcePath": "packages/@react-spectrum/dnd",
+      "targetPackage": "@vue-spectrum/dnd",
+      "targetPath": "packages/@vue-spectrum/dnd",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/dnd/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/dnd/src/index.ts",
+      "sourceExportCount": 26,
+      "targetExportCount": 28,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "DropZone",
+        "VueDropZone"
       ],
       "error": null
     },

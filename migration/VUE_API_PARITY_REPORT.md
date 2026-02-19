@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:33:03.133Z
+Generated: 2026-02-19T21:34:15.992Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 58
+* Fully matched packages: 59
 * Source exports inspected: 2672
-* Missing exports: 1093
-* Coverage ratio: 59.09%
+* Missing exports: 1067
+* Coverage ratio: 60.07%
 
 ## Package gaps
 
@@ -18,7 +18,6 @@ Generated: 2026-02-19T21:33:03.133Z
 | --- | --- | --- | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | missing | 543 | 503 | 7.4% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | missing | 325 | 314 | 3.4% |
-| `@react-spectrum/dnd` | `@vue-spectrum/dnd` | missing | 26 | 26 | 0.0% |
 | `@react-aria/overlays` | `@vue-aria/overlays` | missing | 39 | 24 | 38.5% |
 | `@react-aria/focus` | `@vue-aria/focus` | missing | 26 | 21 | 19.2% |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` | missing | 11 | 11 | 0.0% |
@@ -129,6 +128,7 @@ Generated: 2026-02-19T21:33:03.133Z
 | `@react-aria/utils` | `@vue-aria/utils` | ok | 74 | 0 | 100.0% |
 | `@react-spectrum/button` | `@vue-spectrum/button` | ok | 10 | 0 | 100.0% |
 | `@react-spectrum/dialog` | `@vue-spectrum/dialog` | ok | 10 | 0 | 100.0% |
+| `@react-spectrum/dnd` | `@vue-spectrum/dnd` | ok | 26 | 0 | 100.0% |
 | `@react-spectrum/icon` | `@vue-spectrum/icon` | ok | 9 | 0 | 100.0% |
 | `@react-spectrum/listbox` | `@vue-spectrum/listbox` | ok | 6 | 0 | 100.0% |
 | `@react-spectrum/menu` | `@vue-spectrum/menu` | ok | 12 | 0 | 100.0% |
@@ -186,13 +186,6 @@ Generated: 2026-02-19T21:33:03.133Z
 * Target entry: `packages/@vue-spectrum/s2/src/index.ts`
 * Missing export count: 314
 * Missing exports: `Accordion`, `AccordionContext`, `AccordionItem`, `AccordionItemHeader`, `AccordionItemHeaderProps`, `AccordionItemPanel`, `AccordionItemPanelProps`, `AccordionItemProps`, `AccordionItemRenderProps`, `AccordionItemState`, `AccordionItemTitle`, `AccordionItemTitleProps`, `AccordionProps`, `ActionBar`, `ActionBarContext`, `ActionBarProps`, `ActionButton`, `ActionButtonContext`, `ActionButtonGroup`, `ActionButtonGroupContext`, `ActionButtonGroupProps`, `ActionButtonProps`, `ActionMenu`, `ActionMenuContext`, `ActionMenuProps`, `AlertDialog`, `AlertDialogProps`, `AssetCard`, `AssetCardProps`, `AsyncListData`, `Autocomplete`, `AutocompleteProps`, `Avatar`, `AvatarContext`, `AvatarGroup`, `AvatarGroupContext`, `AvatarGroupProps`, `AvatarProps`, `Badge`, `BadgeContext` ...
-
-### @react-spectrum/dnd -> @vue-spectrum/dnd
-
-* Source entry: `packages/@react-spectrum/dnd/src/index.ts`
-* Target entry: `packages/@vue-spectrum/dnd/src/index.ts`
-* Missing export count: 26
-* Missing exports: `DIRECTORY_DRAG_TYPE`, `DirectoryDropItem`, `DragAndDropHooks`, `DragAndDropOptions`, `DragPreviewRenderer`, `DragTypes`, `DraggableCollectionEndEvent`, `DraggableCollectionMoveEvent`, `DraggableCollectionStartEvent`, `DropItem`, `DropOperation`, `DropPosition`, `DropTarget`, `DroppableCollectionDropEvent`, `DroppableCollectionEnterEvent`, `DroppableCollectionExitEvent`, `DroppableCollectionInsertDropEvent`, `DroppableCollectionMoveEvent`, `DroppableCollectionOnItemDropEvent`, `DroppableCollectionReorderEvent`, `DroppableCollectionRootDropEvent`, `FileDropItem`, `ItemDropTarget`, `RootDropTarget`, `TextDropItem`, `useDragAndDrop`
 
 ### @react-aria/overlays -> @vue-aria/overlays
 
@@ -312,4 +305,11 @@ Generated: 2026-02-19T21:33:03.133Z
 * Target entry: `packages/@vue-spectrum/progress/src/index.ts`
 * Missing export count: 4
 * Missing exports: `ProgressBarBase`, `ProgressCircle`, `SpectrumProgressBarProps`, `SpectrumProgressCircleProps`
+
+### @react-spectrum/provider -> @vue-spectrum/provider
+
+* Source entry: `packages/@react-spectrum/provider/src/index.ts`
+* Target entry: `packages/@vue-spectrum/provider/src/index.ts`
+* Missing export count: 4
+* Missing exports: `ProviderContext`, `ProviderProps`, `useProvider`, `useProviderProps`
 
