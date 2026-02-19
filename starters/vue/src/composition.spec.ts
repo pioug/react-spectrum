@@ -75,6 +75,7 @@ import {
   useSelectableList as useAriaSelectableList,
   useTypeSelect as useAriaTypeSelect
 } from '@vue-aria/selection';
+import {useSeparator as useAriaSeparator} from '@vue-aria/separator';
 import {
   addWindowFocusTracking,
   setInteractionModality,
@@ -1669,6 +1670,19 @@ describe('Vue migration composition components', () => {
     typeSelect.typeSelectProps.value.onKeyDownCapture(new KeyboardEvent('keydown', {key: 'r'}));
     expect(selectableList.selectionManager.focusedKey.value).toBe('react');
     expect(typeSelectEvents).toEqual(['react']);
+  });
+
+  it('computes vue-aria separator role and orientation semantics', () => {
+    let verticalSeparator = useAriaSeparator({
+      orientation: 'vertical'
+    });
+    expect(verticalSeparator.separatorProps.value.role).toBe('separator');
+    expect(verticalSeparator.separatorProps.value['aria-orientation']).toBe('vertical');
+
+    let hrSeparator = useAriaSeparator({
+      elementType: 'hr'
+    });
+    expect(hrSeparator.separatorProps.value.role).toBeUndefined();
   });
 
   it('announces and clears live region messages with vue-aria live announcer', () => {

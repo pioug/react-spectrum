@@ -864,6 +864,30 @@
         }
       ]
     },
+    "@react-aria/separator": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/separator",
+      "targetPath": "packages/@vue-aria/separator",
+      "notes": "Foundational React Aria separator composable for role and vertical orientation semantics in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria separator source lint",
+          "command": "yarn eslint packages/@vue-aria/separator/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",
