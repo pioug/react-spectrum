@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:31:31.843Z
+Generated: 2026-02-19T21:33:03.133Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 57
+* Fully matched packages: 58
 * Source exports inspected: 2672
-* Missing exports: 1151
-* Coverage ratio: 56.92%
+* Missing exports: 1093
+* Coverage ratio: 59.09%
 
 ## Package gaps
 
@@ -18,7 +18,6 @@ Generated: 2026-02-19T21:31:31.843Z
 | --- | --- | --- | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | missing | 543 | 503 | 7.4% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | missing | 325 | 314 | 3.4% |
-| `@react-aria/dnd` | `@vue-aria/dnd` | missing | 62 | 58 | 6.5% |
 | `@react-spectrum/dnd` | `@vue-spectrum/dnd` | missing | 26 | 26 | 0.0% |
 | `@react-aria/overlays` | `@vue-aria/overlays` | missing | 39 | 24 | 38.5% |
 | `@react-aria/focus` | `@vue-aria/focus` | missing | 26 | 21 | 19.2% |
@@ -115,6 +114,7 @@ Generated: 2026-02-19T21:31:31.843Z
 | `@react-stately/toggle` | `@vue-stately/toggle` | missing | 7 | 1 | 85.7% |
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` | ok | 1 | 0 | 100.0% |
 | `@react-aria/collections` | `@vue-aria/collections` | ok | 17 | 0 | 100.0% |
+| `@react-aria/dnd` | `@vue-aria/dnd` | ok | 62 | 0 | 100.0% |
 | `@react-aria/example-theme` | `@vue-aria/example-theme` | ok | 0 | 0 | 100.0% |
 | `@react-aria/form` | `@vue-aria/form` | ok | 1 | 0 | 100.0% |
 | `@react-aria/grid` | `@vue-aria/grid` | ok | 20 | 0 | 100.0% |
@@ -186,13 +186,6 @@ Generated: 2026-02-19T21:31:31.843Z
 * Target entry: `packages/@vue-spectrum/s2/src/index.ts`
 * Missing export count: 314
 * Missing exports: `Accordion`, `AccordionContext`, `AccordionItem`, `AccordionItemHeader`, `AccordionItemHeaderProps`, `AccordionItemPanel`, `AccordionItemPanelProps`, `AccordionItemProps`, `AccordionItemRenderProps`, `AccordionItemState`, `AccordionItemTitle`, `AccordionItemTitleProps`, `AccordionProps`, `ActionBar`, `ActionBarContext`, `ActionBarProps`, `ActionButton`, `ActionButtonContext`, `ActionButtonGroup`, `ActionButtonGroupContext`, `ActionButtonGroupProps`, `ActionButtonProps`, `ActionMenu`, `ActionMenuContext`, `ActionMenuProps`, `AlertDialog`, `AlertDialogProps`, `AssetCard`, `AssetCardProps`, `AsyncListData`, `Autocomplete`, `AutocompleteProps`, `Avatar`, `AvatarContext`, `AvatarGroup`, `AvatarGroupContext`, `AvatarGroupProps`, `AvatarProps`, `Badge`, `BadgeContext` ...
-
-### @react-aria/dnd -> @vue-aria/dnd
-
-* Source entry: `packages/@react-aria/dnd/src/index.ts`
-* Target entry: `packages/@vue-aria/dnd/src/index.ts`
-* Missing export count: 58
-* Missing exports: `ClipboardProps`, `ClipboardResult`, `DIRECTORY_DRAG_TYPE`, `DirectoryDropItem`, `DragEndEvent`, `DragMoveEvent`, `DragOptions`, `DragPreview`, `DragPreviewProps`, `DragPreviewRenderer`, `DragResult`, `DragStartEvent`, `DragTypes`, `DraggableCollectionEndEvent`, `DraggableCollectionMoveEvent`, `DraggableCollectionOptions`, `DraggableCollectionStartEvent`, `DraggableItemProps`, `DraggableItemResult`, `DropEnterEvent`, `DropEvent`, `DropExitEvent`, `DropIndicatorAria`, `DropIndicatorProps`, `DropItem`, `DropMoveEvent`, `DropOptions`, `DropPosition`, `DropResult`, `DropTarget`, `DropTargetDelegate`, `DroppableCollectionDropEvent`, `DroppableCollectionEnterEvent`, `DroppableCollectionExitEvent`, `DroppableCollectionInsertDropEvent`, `DroppableCollectionMoveEvent`, `DroppableCollectionOnItemDropEvent`, `DroppableCollectionOptions`, `DroppableCollectionReorderEvent`, `DroppableCollectionResult` ...
 
 ### @react-spectrum/dnd -> @vue-spectrum/dnd
 
@@ -312,4 +305,11 @@ Generated: 2026-02-19T21:31:31.843Z
 * Target entry: `packages/@vue-spectrum/overlays/src/index.ts`
 * Missing export count: 4
 * Missing exports: `Modal`, `OpenTransition`, `Overlay`, `Tray`
+
+### @react-spectrum/progress -> @vue-spectrum/progress
+
+* Source entry: `packages/@react-spectrum/progress/src/index.ts`
+* Target entry: `packages/@vue-spectrum/progress/src/index.ts`
+* Missing export count: 4
+* Missing exports: `ProgressBarBase`, `ProgressCircle`, `SpectrumProgressBarProps`, `SpectrumProgressCircleProps`
 

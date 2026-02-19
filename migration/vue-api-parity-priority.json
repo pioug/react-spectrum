@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-02-19T21:31:52.021Z",
+  "generatedAt": "2026-02-19T21:33:08.810Z",
   "summary": {
     "trackedPackages": 154,
-    "packagesWithGaps": 97,
+    "packagesWithGaps": 96,
     "highestPriorityPackage": "react-aria-components",
     "highestPriorityScore": 1677.99
   },
@@ -61,17 +61,6 @@
       "dependencyDepth": 3,
       "criticalityWeight": 1.9,
       "priorityScore": 231.52
-    },
-    {
-      "sourcePackage": "@react-aria/dnd",
-      "targetPackage": "@vue-aria/dnd",
-      "missingExports": 58,
-      "sourceExportCount": 62,
-      "coveragePercent": 6.45,
-      "reverseDependents": 3,
-      "dependencyDepth": 5,
-      "criticalityWeight": 1.9,
-      "priorityScore": 148.73
     },
     {
       "sourcePackage": "@react-aria/overlays",
