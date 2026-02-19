@@ -3232,6 +3232,30 @@
         }
       ]
     },
+    "@react-stately/select": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/select",
+      "targetPath": "packages/@vue-stately/select",
+      "notes": "State baseline for select value, list selection, overlay trigger state, and validation wiring in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately select package source lint",
+          "command": "yarn eslint packages/@vue-stately/select/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

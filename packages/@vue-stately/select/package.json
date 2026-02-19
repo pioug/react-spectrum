@@ -1,0 +1,36 @@
+{
+  "name": "@vue-stately/select",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Select state management in Vue",
+  "license": "Apache-2.0",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "source": "src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "files": [
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adobe/react-spectrum"
+  },
+  "dependencies": {
+    "@vue-stately/form": "workspace:*",
+    "@vue-stately/list": "workspace:*",
+    "@vue-stately/overlays": "workspace:*"
+  },
+  "peerDependencies": {
+    "vue": "^3.4.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

@@ -219,6 +219,7 @@ import {useNumberFieldState as useStatelyNumberFieldState} from '@vue-stately/nu
 import {useOverlayTriggerState as useStatelyOverlayTriggerState} from '@vue-stately/overlays';
 import {useRadioGroupState as useStatelyRadioGroupState} from '@vue-stately/radio';
 import {useSearchFieldState as useStatelySearchFieldState} from '@vue-stately/searchfield';
+import {useSelectState as useStatelySelectState} from '@vue-stately/select';
 
 function createPointerEvent(
   type: string,
@@ -1793,6 +1794,61 @@ describe('Vue migration composition components', () => {
     controlledState.setValue('Spectrum');
     expect(controlledState.value.value).toBe('Spectrum');
     expect(controlledChanges).toEqual(['Spectrum']);
+  });
+
+  it('manages vue-stately select selection, trigger state, and value normalization', () => {
+    let nodes: StatelyListNode<{label: string}>[] = [
+      {key: 'vue', textValue: 'Vue', type: 'item', value: {label: 'Vue'}},
+      {key: 'react', textValue: 'React', type: 'item', value: {label: 'React'}},
+      {key: 'svelte', textValue: 'Svelte', type: 'item', value: {label: 'Svelte'}}
+    ];
+
+    let selectedValue = ref<string | null | undefined>('react');
+    let changedValues: Array<string | null> = [];
+    let selectionChanges: Array<string | null> = [];
+    let singleState = useStatelySelectState({
+      collection: new StatelyListCollection(nodes),
+      onChange: (nextValue) => {
+        selectedValue.value = nextValue as string | null;
+        changedValues.push(nextValue as string | null);
+      },
+      onSelectionChange: (key) => {
+        selectionChanges.push(key as string | null);
+      },
+      value: selectedValue
+    });
+
+    expect(singleState.value.value).toBe('react');
+    expect(singleState.selectedItem.value?.textValue).toBe('React');
+
+    singleState.open('first');
+    expect(singleState.isOpen.value).toBe(true);
+    expect(singleState.focusStrategy.value).toBe('first');
+
+    singleState.selectionManager.replaceSelection('vue');
+    expect(singleState.value.value).toBe('vue');
+    expect(singleState.isOpen.value).toBe(false);
+    expect(selectionChanges).toEqual(['vue']);
+
+    singleState.setSelectedKey('svelte');
+    expect(selectedValue.value).toBe('svelte');
+    expect(selectionChanges).toEqual(['vue', 'svelte']);
+    expect(changedValues).toEqual(['vue', 'svelte']);
+
+    let multiValue = ref<readonly string[] | undefined>(undefined);
+    let multiState = useStatelySelectState({
+      collection: new StatelyListCollection(nodes),
+      onChange: (nextValue) => {
+        multiValue.value = nextValue as readonly string[];
+      },
+      selectionMode: 'multiple',
+      value: multiValue
+    });
+
+    expect(multiState.value.value).toEqual([]);
+    multiState.setValue(['react', 'svelte']);
+    expect(multiState.value.value).toEqual(['react', 'svelte']);
+    expect(Array.from(multiState.selectionManager.selectedKeys.value)).toEqual(['react', 'svelte']);
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {

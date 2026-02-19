@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 140 |
+| in_progress | 141 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 12 |
+| not_started | 11 |
 
 ## Package tracker
 
@@ -161,11 +161,11 @@ Tracked source packages: 154
 | `@react-stately/overlays` | `packages/@react-stately/overlays` | `@vue-stately/overlays` | `packages/@vue-stately/overlays` | in_progress | Vue stately overlays package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for controlled/uncontrolled overlay trigger open, close, and toggle behavior in Vue. |
 | `@react-stately/radio` | `packages/@react-stately/radio` | `@vue-stately/radio` | `packages/@vue-stately/radio` | in_progress | Vue stately radio package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for radio-group selection, focus tracking, and validation state behavior in Vue. |
 | `@react-stately/searchfield` | `packages/@react-stately/searchfield` | `@vue-stately/searchfield` | `packages/@vue-stately/searchfield` | in_progress | Vue stately searchfield package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for controlled/uncontrolled search field value updates in Vue. |
+| `@react-stately/select` | `packages/@react-stately/select` | `@vue-stately/select` | `packages/@vue-stately/select` | in_progress | Vue stately select package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for select value, list selection, overlay trigger state, and validation wiring in Vue. |
 | `react-aria-components` | `packages/react-aria-components` | `@vue-spectrum/components` | `packages/@vue-spectrum/components` | in_progress | Vue package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Initial Vue baseline package exists, but React Aria Components parity is still in progress. |
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-stately/select` | `packages/@react-stately/select` | `@vue-stately/select` | `packages/@vue-stately/select` | not_started | - | - |
 | `@react-stately/selection` | `packages/@react-stately/selection` | `@vue-stately/selection` | `packages/@vue-stately/selection` | not_started | - | - |
 | `@react-stately/slider` | `packages/@react-stately/slider` | `@vue-stately/slider` | `packages/@vue-stately/slider` | not_started | - | - |
 | `@react-stately/steplist` | `packages/@react-stately/steplist` | `@vue-stately/steplist` | `packages/@vue-stately/steplist` | not_started | - | - |
