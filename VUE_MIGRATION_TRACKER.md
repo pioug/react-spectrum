@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 24 |
+| in_progress | 25 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 128 |
+| not_started | 127 |
 
 ## Package tracker
 
@@ -28,6 +28,7 @@ Tracked source packages: 154
 | `@react-spectrum/combobox` | `packages/@react-spectrum/combobox` | `@vue-spectrum/combobox` | `packages/@vue-spectrum/combobox` | in_progress | Vue combobox package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step with an initial Vue combobox primitive. |
 | `@react-spectrum/dialog` | `packages/@react-spectrum/dialog` | `@vue-spectrum/dialog` | `packages/@vue-spectrum/dialog` | in_progress | Vue dialog package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step providing a Vue dialog primitive. |
 | `@react-spectrum/divider` | `packages/@react-spectrum/divider` | `@vue-spectrum/divider` | `packages/@vue-spectrum/divider` | in_progress | Vue divider package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave visual primitive for section separation. |
+| `@react-spectrum/dnd` | `packages/@react-spectrum/dnd` | `@vue-spectrum/dnd` | `packages/@vue-spectrum/dnd` | in_progress | Vue dnd package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Data-heavy migration baseline for drag-and-drop interactions. |
 | `@react-spectrum/form` | `packages/@react-spectrum/form` | `@vue-spectrum/form` | `packages/@vue-spectrum/form` | in_progress | Vue form package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave form grouping migration step with a Vue form primitive. |
 | `@react-spectrum/link` | `packages/@react-spectrum/link` | `@vue-spectrum/link` | `packages/@vue-spectrum/link` | in_progress | Vue link package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave visual/content migration step with a Vue link primitive. |
 | `@react-spectrum/listbox` | `packages/@react-spectrum/listbox` | `@vue-spectrum/listbox` | `packages/@vue-spectrum/listbox` | in_progress | Vue listbox package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step with an initial Vue listbox primitive. |
@@ -116,7 +117,6 @@ Tracked source packages: 154
 | `@react-spectrum/color` | `packages/@react-spectrum/color` | `@vue-spectrum/color` | `packages/@vue-spectrum/color` | not_started | - | - |
 | `@react-spectrum/contextualhelp` | `packages/@react-spectrum/contextualhelp` | `@vue-spectrum/contextualhelp` | `packages/@vue-spectrum/contextualhelp` | not_started | - | - |
 | `@react-spectrum/datepicker` | `packages/@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | `packages/@vue-spectrum/datepicker` | not_started | - | - |
-| `@react-spectrum/dnd` | `packages/@react-spectrum/dnd` | `@vue-spectrum/dnd` | `packages/@vue-spectrum/dnd` | not_started | - | - |
 | `@react-spectrum/dropzone` | `packages/@react-spectrum/dropzone` | `@vue-spectrum/dropzone` | `packages/@vue-spectrum/dropzone` | not_started | - | - |
 | `@react-spectrum/filetrigger` | `packages/@react-spectrum/filetrigger` | `@vue-spectrum/filetrigger` | `packages/@vue-spectrum/filetrigger` | not_started | - | - |
 | `@react-spectrum/icon` | `packages/@react-spectrum/icon` | `@vue-spectrum/icon` | `packages/@vue-spectrum/icon` | not_started | - | - |

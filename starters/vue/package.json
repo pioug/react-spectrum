@@ -17,6 +17,7 @@
     "@vue-spectrum/components": "workspace:*",
     "@vue-spectrum/dialog": "workspace:*",
     "@vue-spectrum/divider": "workspace:*",
+    "@vue-spectrum/dnd": "workspace:*",
     "@vue-spectrum/form": "workspace:*",
     "@vue-spectrum/link": "workspace:*",
     "@vue-spectrum/listbox": "workspace:*",

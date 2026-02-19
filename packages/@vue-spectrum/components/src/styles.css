@@ -956,3 +956,49 @@
   display: grid;
   gap: 16px;
 }
+
+.vs-drop-zone {
+  align-items: center;
+  border: 1px dashed var(--vs-color-border);
+  border-radius: 10px;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  padding: 14px;
+  transition: border-color 120ms ease, background-color 120ms ease;
+}
+
+.vs-drop-zone.is-over {
+  background: rgba(20, 115, 230, 0.1);
+  border-color: var(--vs-color-primary);
+}
+
+.vs-drop-zone.is-disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.vs-drop-zone__label {
+  font-size: 13px;
+  margin: 0;
+  text-align: center;
+}
+
+.vs-drop-zone__browse {
+  background: var(--vs-color-secondary-bg);
+  border: 1px solid var(--vs-color-border);
+  border-radius: 6px;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  min-height: 30px;
+  padding: 4px 10px;
+}
+
+.vs-drop-zone__browse:hover:not(:disabled) {
+  background: var(--vs-color-secondary-hover);
+}
+
+.vs-drop-zone__input {
+  display: none;
+}

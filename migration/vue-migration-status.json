@@ -160,6 +160,26 @@
         }
       ]
     },
+    "@react-spectrum/dnd": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/dnd",
+      "targetPath": "packages/@vue-spectrum/dnd",
+      "notes": "Data-heavy migration baseline for drag-and-drop interactions.",
+      "acceptanceTests": [
+        {
+          "name": "Vue dnd package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/dnd/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    },
     "@react-spectrum/form": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/form",

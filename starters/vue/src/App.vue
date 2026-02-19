@@ -96,6 +96,10 @@
           v-model="selectedTreeNode"
           :items="treeItems" />
 
+        <VueDropZone
+          label="Drop design assets"
+          @files-drop="handleFilesDrop" />
+
         <VueDivider />
 
         <p class="summary">
@@ -112,6 +116,8 @@
           Ticket: <strong>{{ selectedTicket }}</strong>
           <span> · </span>
           Tree: <strong>{{ selectedTreeNode }}</strong>
+          <span> · </span>
+          Files: <strong>{{ droppedFiles.length > 0 ? droppedFiles.length : 'none' }}</strong>
           <span> · </span>
           Digest: <strong>{{ isDigestEnabled ? 'on' : 'off' }}</strong>
           <span> · </span>
@@ -162,6 +168,7 @@ import {computed, ref} from 'vue';
 import {Button as VueButton} from '@vue-spectrum/button';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
 import {ComboBox as VueComboBox} from '@vue-spectrum/combobox';
+import {DropZone as VueDropZone} from '@vue-spectrum/dnd';
 import {Divider as VueDivider} from '@vue-spectrum/divider';
 import {Dialog as VueDialog} from '@vue-spectrum/dialog';
 import {Form as VueForm} from '@vue-spectrum/form';
@@ -195,6 +202,7 @@ const favoriteComponent = ref('Forms');
 const favoriteLibrary = ref('Vue Spectrum');
 const selectedTicket = ref('T-402');
 const selectedTreeNode = ref('project-alpha');
+const droppedFiles = ref<string[]>([]);
 const isDialogOpen = ref(false);
 const isPopoverOpen = ref(false);
 const languageOptions = ['TypeScript', 'JavaScript', 'Rust', 'Go', 'Python'];
@@ -272,8 +280,13 @@ function reset() {
   favoriteLibrary.value = 'Vue Spectrum';
   selectedTicket.value = 'T-402';
   selectedTreeNode.value = 'project-alpha';
+  droppedFiles.value = [];
   isDialogOpen.value = false;
   isPopoverOpen.value = false;
+}
+
+function handleFilesDrop(files: File[]) {
+  droppedFiles.value = files.map((file) => file.name);
 }
 </script>
 

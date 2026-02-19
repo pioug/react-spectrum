@@ -47,6 +47,7 @@ Phase 1 is implemented:
 * Started data-heavy migration:
   * `@react-spectrum/table` -> `@vue-spectrum/table` (`in_progress`)
   * `@react-spectrum/tree` -> `@vue-spectrum/tree` (`in_progress`)
+  * `@react-spectrum/dnd` -> `@vue-spectrum/dnd` (`in_progress`)
 
 ## Migration phases
 
