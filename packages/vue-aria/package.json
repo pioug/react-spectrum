@@ -1,0 +1,87 @@
+{
+  "name": "vue-aria",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Vue Aria aggregate package",
+  "license": "Apache-2.0",
+  "main": "src/index.ts",
+  "module": "src/index.ts",
+  "types": "src/index.ts",
+  "source": "src/index.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "files": [
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adobe/react-spectrum"
+  },
+  "peerDependencies": {
+    "vue": "^3.4.0"
+  },
+  "dependencies": {
+    "@vue-aria/actiongroup": "workspace:*",
+    "@vue-aria/aria-modal-polyfill": "workspace:*",
+    "@vue-aria/autocomplete": "workspace:*",
+    "@vue-aria/breadcrumbs": "workspace:*",
+    "@vue-aria/button": "workspace:*",
+    "@vue-aria/calendar": "workspace:*",
+    "@vue-aria/checkbox": "workspace:*",
+    "@vue-aria/collections": "workspace:*",
+    "@vue-aria/color": "workspace:*",
+    "@vue-aria/combobox": "workspace:*",
+    "@vue-aria/datepicker": "workspace:*",
+    "@vue-aria/dialog": "workspace:*",
+    "@vue-aria/disclosure": "workspace:*",
+    "@vue-aria/dnd": "workspace:*",
+    "@vue-aria/example-theme": "workspace:*",
+    "@vue-aria/focus": "workspace:*",
+    "@vue-aria/form": "workspace:*",
+    "@vue-aria/grid": "workspace:*",
+    "@vue-aria/gridlist": "workspace:*",
+    "@vue-aria/i18n": "workspace:*",
+    "@vue-aria/interactions": "workspace:*",
+    "@vue-aria/label": "workspace:*",
+    "@vue-aria/landmark": "workspace:*",
+    "@vue-aria/link": "workspace:*",
+    "@vue-aria/listbox": "workspace:*",
+    "@vue-aria/live-announcer": "workspace:*",
+    "@vue-aria/menu": "workspace:*",
+    "@vue-aria/meter": "workspace:*",
+    "@vue-aria/numberfield": "workspace:*",
+    "@vue-aria/overlays": "workspace:*",
+    "@vue-aria/progress": "workspace:*",
+    "@vue-aria/radio": "workspace:*",
+    "@vue-aria/searchfield": "workspace:*",
+    "@vue-aria/select": "workspace:*",
+    "@vue-aria/selection": "workspace:*",
+    "@vue-aria/separator": "workspace:*",
+    "@vue-aria/slider": "workspace:*",
+    "@vue-aria/spinbutton": "workspace:*",
+    "@vue-aria/ssr": "workspace:*",
+    "@vue-aria/steplist": "workspace:*",
+    "@vue-aria/switch": "workspace:*",
+    "@vue-aria/table": "workspace:*",
+    "@vue-aria/tabs": "workspace:*",
+    "@vue-aria/tag": "workspace:*",
+    "@vue-aria/test-utils": "workspace:*",
+    "@vue-aria/textfield": "workspace:*",
+    "@vue-aria/toast": "workspace:*",
+    "@vue-aria/toggle": "workspace:*",
+    "@vue-aria/toolbar": "workspace:*",
+    "@vue-aria/tooltip": "workspace:*",
+    "@vue-aria/tree": "workspace:*",
+    "@vue-aria/utils": "workspace:*",
+    "@vue-aria/virtualizer": "workspace:*",
+    "@vue-aria/visually-hidden": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

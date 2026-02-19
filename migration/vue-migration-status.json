@@ -3609,12 +3609,52 @@
       ]
     },
     "react-aria": {
-      "status": "blocked",
-      "notes": "Meta-package migration depends on a critical mass of @vue-aria package ports."
+      "status": "ported",
+      "targetPackage": "vue-aria",
+      "targetPath": "packages/vue-aria",
+      "notes": "Meta-package aggregation for Vue Aria composables, re-exporting the tracked @vue-aria package set.",
+      "acceptanceTests": [
+        {
+          "name": "Vue aria meta package source lint",
+          "command": "yarn eslint packages/vue-aria/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
     },
     "react-stately": {
-      "status": "blocked",
-      "notes": "Meta-package migration depends on foundational @vue-stately package ports."
+      "status": "ported",
+      "targetPackage": "vue-stately",
+      "targetPath": "packages/vue-stately",
+      "notes": "Meta-package aggregation for Vue Stately state helpers, re-exporting the tracked @vue-stately package set.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately meta package source lint",
+          "command": "yarn eslint packages/vue-stately/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
     }
   }
 }

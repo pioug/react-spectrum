@@ -21,6 +21,9 @@ Phase 1 is implemented:
   * CircleCI `vue-migration` job runs `yarn vue:migration:report` and `yarn vue:migration:test`.
 * Ported foundational component package:
   * `react-aria-components` -> `@vue-spectrum/components` (`ported`)
+* Ported meta-package aggregators:
+  * `react-aria` -> `vue-aria` (`ported`)
+  * `react-stately` -> `vue-stately` (`ported`)
 * Started first package-level port:
   * `@react-spectrum/provider` -> `@vue-spectrum/provider` is now tracked as `ported`.
 * Expanded first-wave ports:
@@ -195,7 +198,8 @@ Phase 1 is implemented:
   * On February 19, 2026, all tracked `@react-stately/*` packages were promoted to `ported` in the migration tracker.
   * On February 19, 2026, all tracked `@react-aria/*` packages were promoted to `ported` in the migration tracker.
   * On February 19, 2026, all tracked `@react-spectrum/*` packages were promoted to `ported` in the migration tracker.
-  * On February 19, 2026, the remaining integration ports (`react-aria-components` and `tailwindcss-react-aria-components`) were promoted to `ported`, leaving only meta-package entries as `blocked`.
+  * On February 19, 2026, the remaining integration ports (`react-aria-components` and `tailwindcss-react-aria-components`) were promoted to `ported`.
+  * On February 19, 2026, meta-package aggregators (`react-aria` and `react-stately`) were promoted to `ported` via new `vue-aria` and `vue-stately` packages.
 
 ## Migration phases
 

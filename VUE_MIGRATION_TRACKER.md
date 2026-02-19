@@ -14,9 +14,9 @@ Tracked source packages: 154
 | Status | Count |
 | --- | ---: |
 | in_progress | 0 |
-| ported | 152 |
+| ported | 154 |
 | planned | 0 |
-| blocked | 2 |
+| blocked | 0 |
 | not_started | 0 |
 
 ## Package tracker
@@ -173,7 +173,7 @@ Tracked source packages: 154
 | `@react-stately/tree` | `packages/@react-stately/tree` | `@vue-stately/tree` | `packages/@vue-stately/tree` | ported | Vue stately tree package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for flattened tree collections, expanded-key state updates, and selection manager integration in Vue. |
 | `@react-stately/utils` | `packages/@react-stately/utils` | `@vue-stately/utils` | `packages/@vue-stately/utils` | ported | Vue stately utils package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for controlled/uncontrolled value utilities and numeric clamp/step helpers in Vue. |
 | `@react-stately/virtualizer` | `packages/@react-stately/virtualizer` | `@vue-stately/virtualizer` | `packages/@vue-stately/virtualizer` | ported | Vue stately virtualizer package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for virtualizer geometry primitives, layout modeling, reusable views, and reactive virtualizer state in Vue. |
+| `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | ported | Vue aria meta package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Meta-package aggregation for Vue Aria composables, re-exporting the tracked @vue-aria package set. |
 | `react-aria-components` | `packages/react-aria-components` | `@vue-spectrum/components` | `packages/@vue-spectrum/components` | ported | Vue package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Vue baseline component package is tracked as ported and validated by lint/typecheck/build/interaction tests; API parity expansion continues incrementally. |
+| `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | ported | Vue stately meta package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Meta-package aggregation for Vue Stately state helpers, re-exporting the tracked @vue-stately package set. |
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | ported | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants is tracked as ported and validated by source lint and module-load checks. |
-| `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
-| `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
