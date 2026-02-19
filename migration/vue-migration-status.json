@@ -1080,6 +1080,30 @@
         }
       ]
     },
+    "@react-aria/tree": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/tree",
+      "targetPath": "packages/@vue-aria/tree",
+      "notes": "Foundational React Aria tree composables for treegrid role semantics and expandable tree item controls in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria tree source lint",
+          "command": "yarn eslint packages/@vue-aria/tree/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/tabs": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/tabs",

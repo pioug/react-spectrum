@@ -12238,6 +12238,18 @@ __metadata:
   resolution: "@vue-aria/tooltip@workspace:packages/@vue-aria/tooltip"
   dependencies:
     "@vue-aria/interactions": "workspace:*"
+    "@vue-aria/ssr": "workspace:*"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
+"@vue-aria/tree@workspace:*, @vue-aria/tree@workspace:packages/@vue-aria/tree":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/tree@workspace:packages/@vue-aria/tree"
+  dependencies:
+    "@vue-aria/gridlist": "workspace:*"
+    "@vue-aria/i18n": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -31585,6 +31597,7 @@ __metadata:
     "@vue-aria/toggle": "workspace:*"
     "@vue-aria/toolbar": "workspace:*"
     "@vue-aria/tooltip": "workspace:*"
+    "@vue-aria/tree": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"

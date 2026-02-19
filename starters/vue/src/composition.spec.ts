@@ -89,6 +89,7 @@ import {useToast as useAriaToast, useToastRegion as useAriaToastRegion} from '@v
 import {useToggle as useAriaToggle} from '@vue-aria/toggle';
 import {useToolbar as useAriaToolbar} from '@vue-aria/toolbar';
 import {useTooltip as useAriaTooltip, useTooltipTrigger as useAriaTooltipTrigger} from '@vue-aria/tooltip';
+import {useTree as useAriaTree, useTreeItem as useAriaTreeItem} from '@vue-aria/tree';
 import {
   useTable as useAriaTable,
   useTableCell as useAriaTableCell,
@@ -2226,6 +2227,61 @@ describe('Vue migration composition components', () => {
       document.body.removeChild(triggerElement);
       document.body.removeChild(tooltipElement);
     }
+  });
+
+  it('computes vue-aria treegrid semantics and expandable tree item behavior', () => {
+    let selectedKeys = ref(new Set<string>());
+    let expandedKeys = ref(new Set<string>());
+    let tree = useAriaTree({
+      ariaLabel: 'Project files',
+      collection: {
+        items: [
+          {
+            key: 'src',
+            index: 0,
+            textValue: 'src',
+            hasChildItems: true
+          },
+          {
+            key: 'README.md',
+            index: 1,
+            textValue: 'README.md'
+          }
+        ]
+      },
+      selectedKeys,
+      selectionMode: 'multiple'
+    });
+
+    expect(tree.gridProps.value.role).toBe('treegrid');
+    expect(tree.gridProps.value['aria-multiselectable']).toBe('true');
+
+    let srcTreeItem = useAriaTreeItem({
+      tree,
+      item: computed(() => tree.collection.value.items[0]),
+      expandedKeys
+    });
+    expect(srcTreeItem.expandButtonProps.value['aria-label']).toBe('Expand');
+    expect(srcTreeItem.expandButtonProps.value.disabled).toBe(false);
+
+    srcTreeItem.expandButtonProps.value.onPress();
+    expect(expandedKeys.value.has('src')).toBe(true);
+    expect(srcTreeItem.isExpanded.value).toBe(true);
+    expect(srcTreeItem.expandButtonProps.value['aria-label']).toBe('Collapse');
+    expect(srcTreeItem.expandButtonProps.value['data-expanded']).toBe(true);
+    expect(srcTreeItem.rowProps.value.role).toBe('row');
+
+    srcTreeItem.expandButtonProps.value.onPress();
+    expect(expandedKeys.value.has('src')).toBe(false);
+
+    let readmeTreeItem = useAriaTreeItem({
+      tree,
+      item: computed(() => tree.collection.value.items[1]),
+      expandedKeys
+    });
+    expect(readmeTreeItem.expandButtonProps.value.disabled).toBe(true);
+    readmeTreeItem.expandButtonProps.value.onPress();
+    expect(expandedKeys.value.size).toBe(0);
   });
 
   it('computes vue-aria tag group and tag remove behavior', () => {
