@@ -24,6 +24,26 @@
         }
       ]
     },
+    "@react-aria/virtualizer": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/virtualizer",
+      "targetPath": "packages/@vue-aria/virtualizer",
+      "notes": "Foundational React Aria virtualizer port to support virtualized Vue collection components.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria virtualizer source lint",
+          "command": "yarn eslint packages/@vue-aria/virtualizer/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    },
     "@react-spectrum/provider": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/provider",

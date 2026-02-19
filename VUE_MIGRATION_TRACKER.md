@@ -13,16 +13,17 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 25 |
+| in_progress | 26 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 127 |
+| not_started | 126 |
 
 ## Package tracker
 
 | Source package | Source path | Target package | Target path | Status | Acceptance tests | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
+| `@react-aria/virtualizer` | `packages/@react-aria/virtualizer` | `@vue-aria/virtualizer` | `packages/@vue-aria/virtualizer` | in_progress | Vue Aria virtualizer source lint<br/>Vue starter typecheck<br/>Vue starter production build | Foundational React Aria virtualizer port to support virtualized Vue collection components. |
 | `@react-spectrum/button` | `packages/@react-spectrum/button` | `@vue-spectrum/button` | `packages/@vue-spectrum/button` | in_progress | Vue button package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive aligned with existing VueButton baseline work. |
 | `@react-spectrum/checkbox` | `packages/@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | `packages/@vue-spectrum/checkbox` | in_progress | Vue checkbox package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for form controls. |
 | `@react-spectrum/combobox` | `packages/@react-spectrum/combobox` | `@vue-spectrum/combobox` | `packages/@vue-spectrum/combobox` | in_progress | Vue combobox package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step with an initial Vue combobox primitive. |
@@ -102,7 +103,6 @@ Tracked source packages: 154
 | `@react-aria/tooltip` | `packages/@react-aria/tooltip` | `@vue-aria/tooltip` | `packages/@vue-aria/tooltip` | not_started | - | - |
 | `@react-aria/tree` | `packages/@react-aria/tree` | `@vue-aria/tree` | `packages/@vue-aria/tree` | not_started | - | - |
 | `@react-aria/utils` | `packages/@react-aria/utils` | `@vue-aria/utils` | `packages/@vue-aria/utils` | not_started | - | - |
-| `@react-aria/virtualizer` | `packages/@react-aria/virtualizer` | `@vue-aria/virtualizer` | `packages/@vue-aria/virtualizer` | not_started | - | - |
 | `@react-aria/visually-hidden` | `packages/@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | `packages/@vue-aria/visually-hidden` | not_started | - | - |
 | `@react-spectrum/accordion` | `packages/@react-spectrum/accordion` | `@vue-spectrum/accordion` | `packages/@vue-spectrum/accordion` | not_started | - | - |
 | `@react-spectrum/actionbar` | `packages/@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | `packages/@vue-spectrum/actionbar` | not_started | - | - |
