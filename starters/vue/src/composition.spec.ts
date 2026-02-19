@@ -50,6 +50,7 @@ import {
 import {useField, useLabel} from '@vue-aria/label';
 import {UNSTABLE_createLandmarkController, useLandmark} from '@vue-aria/landmark';
 import {useLink as useAriaLink} from '@vue-aria/link';
+import {getItemId, listData, useListBox as useAriaListBox, useListBoxSection as useAriaListBoxSection, useOption as useAriaOption} from '@vue-aria/listbox';
 import {
   addWindowFocusTracking,
   setInteractionModality,
@@ -1157,6 +1158,54 @@ describe('Vue migration composition components', () => {
     expect(disabledLink.linkProps.value['aria-disabled']).toBe(true);
     expect(disabledLink.linkProps.value.href).toBeUndefined();
     expect(disabledClickEvent.defaultPrevented).toBe(true);
+  });
+
+  it('computes vue-aria listbox options, sections, and list data ids', () => {
+    let actionEvents: Array<string> = [];
+    let selectedKeys = ref(new Set<string>());
+
+    let listBox = useAriaListBox({
+      isVirtualized: true,
+      label: 'Frameworks',
+      onAction: (key) => {
+        actionEvents.push(String(key));
+      },
+      selectionMode: 'multiple',
+      shouldFocusOnHover: true,
+      shouldSelectOnPressUp: true
+    }, {
+      items: [
+        {key: 'react', index: 0, textValue: 'React'},
+        {key: 'vue', index: 1, textValue: 'Vue', description: 'Current migration target'}
+      ]
+    }, selectedKeys);
+
+    expect(listBox.listBoxProps.value.role).toBe('listbox');
+    expect(listBox.listBoxProps.value['aria-multiselectable']).toBe('true');
+    expect(listData.get(listBox as unknown as object)?.id).toBe(listBox.listBoxProps.value.id);
+
+    let option = useAriaOption({
+      key: 'vue'
+    }, listBox);
+
+    option.optionProps.value.onMouseEnter();
+    expect(listBox.focusedKey.value).toBe('vue');
+    option.optionProps.value.onMouseDown();
+    option.optionProps.value.onMouseUp();
+    expect(selectedKeys.value.has('vue')).toBe(true);
+    expect(actionEvents).toEqual(['vue']);
+    expect(option.optionProps.value.id).toBe(getItemId(listBox as unknown as object, 'vue'));
+    expect(option.optionProps.value['aria-posinset']).toBe(2);
+    expect(option.optionProps.value['aria-setsize']).toBe(2);
+
+    let section = useAriaListBoxSection({
+      'aria-label': 'Primary options',
+      heading: 'Core frameworks'
+    });
+    expect(section.itemProps.value.role).toBe('presentation');
+    expect(section.headingProps.value.role).toBe('presentation');
+    expect(section.groupProps.value.role).toBe('group');
+    expect(section.groupProps.value['aria-labelledby']).toBe(section.headingProps.value.id);
   });
 
   it('handles vue-aria interactions focus, keyboard, and press callbacks', () => {

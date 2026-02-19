@@ -37,6 +37,7 @@
     "@vue-aria/label": "workspace:*",
     "@vue-aria/landmark": "workspace:*",
     "@vue-aria/link": "workspace:*",
+    "@vue-aria/listbox": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",
