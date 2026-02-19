@@ -2,6 +2,16 @@
 
 This plan describes how React package deprecation should proceed once Vue package ports are publish-ready.
 
+## Current execution status (as of February 19, 2026)
+
+* [x] Phase 1.1: Vue migration availability and guidance published in root docs.
+* [x] Phase 1.2: `migration/REACT_TO_VUE_MIGRATION_GUIDE.md` is published as the replacement matrix.
+* [x] Phase 1.3: React package maintenance-mode notice is published in `README.md`.
+* [ ] Phase 1.4: package-level README migration matrix links are still being rolled out.
+* [ ] Phase 2: soft-deprecation steps are pending.
+* [ ] Phase 3: freeze-window support dates are pending.
+* [ ] Phase 4: retirement-window planning is pending.
+
 ## Phase 1: Notice
 
 1. Announce Vue package availability and migration guidance.
