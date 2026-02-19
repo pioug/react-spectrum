@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-02-19T22:11:16.941Z",
+  "generatedAt": "2026-02-19T22:13:47.174Z",
   "summary": {
     "trackedPackages": 154,
-    "packagesWithGaps": 58,
+    "packagesWithGaps": 51,
     "highestPriorityPackage": "react-aria-components",
     "highestPriorityScore": 1677.99
   },
@@ -151,61 +151,6 @@
       "priorityScore": 33.05
     },
     {
-      "sourcePackage": "@react-aria/combobox",
-      "targetPackage": "@vue-aria/combobox",
-      "missingExports": 1,
-      "sourceExportCount": 4,
-      "coveragePercent": 75,
-      "reverseDependents": 3,
-      "dependencyDepth": 6,
-      "criticalityWeight": 1.9,
-      "priorityScore": 32.65
-    },
-    {
-      "sourcePackage": "@react-aria/numberfield",
-      "targetPackage": "@vue-aria/numberfield",
-      "missingExports": 1,
-      "sourceExportCount": 3,
-      "coveragePercent": 66.67,
-      "reverseDependents": 3,
-      "dependencyDepth": 5,
-      "criticalityWeight": 1.9,
-      "priorityScore": 31.4
-    },
-    {
-      "sourcePackage": "@react-aria/searchfield",
-      "targetPackage": "@vue-aria/searchfield",
-      "missingExports": 1,
-      "sourceExportCount": 3,
-      "coveragePercent": 66.67,
-      "reverseDependents": 3,
-      "dependencyDepth": 5,
-      "criticalityWeight": 1.9,
-      "priorityScore": 31.4
-    },
-    {
-      "sourcePackage": "@react-spectrum/numberfield",
-      "targetPackage": "@vue-spectrum/numberfield",
-      "missingExports": 1,
-      "sourceExportCount": 2,
-      "coveragePercent": 50,
-      "reverseDependents": 0,
-      "dependencyDepth": 9,
-      "criticalityWeight": 1.4,
-      "priorityScore": 31.4
-    },
-    {
-      "sourcePackage": "@react-aria/menu",
-      "targetPackage": "@vue-aria/menu",
-      "missingExports": 1,
-      "sourceExportCount": 16,
-      "coveragePercent": 93.75,
-      "reverseDependents": 4,
-      "dependencyDepth": 5,
-      "criticalityWeight": 1.9,
-      "priorityScore": 31.34
-    },
-    {
       "sourcePackage": "@react-aria/slider",
       "targetPackage": "@vue-aria/slider",
       "missingExports": 3,
@@ -215,17 +160,6 @@
       "dependencyDepth": 3,
       "criticalityWeight": 1.9,
       "priorityScore": 30.82
-    },
-    {
-      "sourcePackage": "@react-spectrum/card",
-      "targetPackage": "@vue-spectrum/card",
-      "missingExports": 1,
-      "sourceExportCount": 9,
-      "coveragePercent": 88.89,
-      "reverseDependents": 0,
-      "dependencyDepth": 11,
-      "criticalityWeight": 1.4,
-      "priorityScore": 30.57
     },
     {
       "sourcePackage": "@react-spectrum/slider",
@@ -270,17 +204,6 @@
       "dependencyDepth": 4,
       "criticalityWeight": 1.9,
       "priorityScore": 29.32
-    },
-    {
-      "sourcePackage": "@react-spectrum/labeledvalue",
-      "targetPackage": "@vue-spectrum/labeledvalue",
-      "missingExports": 1,
-      "sourceExportCount": 2,
-      "coveragePercent": 50,
-      "reverseDependents": 0,
-      "dependencyDepth": 8,
-      "criticalityWeight": 1.4,
-      "priorityScore": 28.9
     },
     {
       "sourcePackage": "@react-spectrum/buttongroup",

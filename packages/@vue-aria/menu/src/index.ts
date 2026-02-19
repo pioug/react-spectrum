@@ -9,3 +9,4 @@ export type {AriaMenuSectionProps, MenuSectionAria} from './useMenuSection';
 export {useSubmenuTrigger} from './useSubmenuTrigger';
 export type {AriaSubmenuTriggerProps, SubmenuTriggerAria} from './useSubmenuTrigger';
 export type {MenuKey, MaybeRef, SelectionMode} from './types';
+export type {AriaMenuProps} from '@react-types/menu';

@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T22:11:08.531Z",
+  "generatedAt": "2026-02-19T22:13:34.842Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 96,
+    "fullyMatchedPackages": 103,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 919,
-    "parityCoverage": 0.6561
+    "missingExportTotal": 912,
+    "parityCoverage": 0.6587
   },
   "packages": [
     {
@@ -1497,25 +1497,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-aria/combobox",
-      "sourcePath": "packages/@react-aria/combobox",
-      "targetPackage": "@vue-aria/combobox",
-      "targetPath": "packages/@vue-aria/combobox",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/combobox/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/combobox/src/index.ts",
-      "sourceExportCount": 4,
-      "targetExportCount": 4,
-      "parityRatio": 0.75,
-      "missingExports": [
-        "AriaComboBoxProps"
-      ],
-      "extraExports": [
-        "ComboBoxItem"
-      ],
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/disclosure",
       "sourcePath": "packages/@react-aria/disclosure",
       "targetPackage": "@vue-aria/disclosure",
@@ -1531,27 +1512,6 @@
       ],
       "extraExports": [
         "AriaDisclosureOptions"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/menu",
-      "sourcePath": "packages/@react-aria/menu",
-      "targetPackage": "@vue-aria/menu",
-      "targetPath": "packages/@vue-aria/menu",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/menu/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/menu/src/index.ts",
-      "sourceExportCount": 16,
-      "targetExportCount": 18,
-      "parityRatio": 0.9375,
-      "missingExports": [
-        "AriaMenuProps"
-      ],
-      "extraExports": [
-        "MaybeRef",
-        "MenuKey",
-        "SelectionMode"
       ],
       "error": null
     },
@@ -1576,26 +1536,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-aria/numberfield",
-      "sourcePath": "packages/@react-aria/numberfield",
-      "targetPackage": "@vue-aria/numberfield",
-      "targetPath": "packages/@vue-aria/numberfield",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/numberfield/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/numberfield/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 4,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "AriaNumberFieldProps"
-      ],
-      "extraExports": [
-        "AriaNumberFieldOptions",
-        "MaybeRef"
-      ],
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/progress",
       "sourcePath": "packages/@react-aria/progress",
       "targetPackage": "@vue-aria/progress",
@@ -1611,26 +1551,6 @@
       ],
       "extraExports": [
         "AriaProgressBarOptions",
-        "MaybeRef"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/searchfield",
-      "sourcePath": "packages/@react-aria/searchfield",
-      "targetPackage": "@vue-aria/searchfield",
-      "targetPath": "packages/@vue-aria/searchfield",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/searchfield/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/searchfield/src/index.ts",
-      "sourceExportCount": 3,
-      "targetExportCount": 4,
-      "parityRatio": 0.6667,
-      "missingExports": [
-        "AriaSearchFieldProps"
-      ],
-      "extraExports": [
-        "AriaSearchFieldOptions",
         "MaybeRef"
       ],
       "error": null
@@ -1777,26 +1697,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-spectrum/card",
-      "sourcePath": "packages/@react-spectrum/card",
-      "targetPackage": "@vue-spectrum/card",
-      "targetPath": "packages/@vue-spectrum/card",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/card/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/card/src/index.ts",
-      "sourceExportCount": 9,
-      "targetExportCount": 10,
-      "parityRatio": 0.8889,
-      "missingExports": [
-        "SpectrumCardViewProps"
-      ],
-      "extraExports": [
-        "VueCard",
-        "VueCardView"
-      ],
-      "error": null
-    },
-    {
       "sourcePackage": "@react-spectrum/divider",
       "sourcePath": "packages/@react-spectrum/divider",
       "targetPackage": "@vue-spectrum/divider",
@@ -1873,25 +1773,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-spectrum/labeledvalue",
-      "sourcePath": "packages/@react-spectrum/labeledvalue",
-      "targetPackage": "@vue-spectrum/labeledvalue",
-      "targetPath": "packages/@vue-spectrum/labeledvalue",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/labeledvalue/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/labeledvalue/src/index.ts",
-      "sourceExportCount": 2,
-      "targetExportCount": 2,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumLabeledValueProps"
-      ],
-      "extraExports": [
-        "VueLabeledValue"
-      ],
-      "error": null
-    },
-    {
       "sourcePackage": "@react-spectrum/link",
       "sourcePath": "packages/@react-spectrum/link",
       "targetPackage": "@vue-spectrum/link",
@@ -1926,25 +1807,6 @@
       ],
       "extraExports": [
         "VueMeter"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/numberfield",
-      "sourcePath": "packages/@react-spectrum/numberfield",
-      "targetPackage": "@vue-spectrum/numberfield",
-      "targetPath": "packages/@vue-spectrum/numberfield",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/numberfield/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/numberfield/src/index.ts",
-      "sourceExportCount": 2,
-      "targetExportCount": 2,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "SpectrumNumberFieldProps"
-      ],
-      "extraExports": [
-        "VueNumberField"
       ],
       "error": null
     },
@@ -2212,6 +2074,23 @@
         "AriaColorChannelFieldOptions",
         "AriaColorFieldOptions",
         "AriaColorSwatchOptions"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/combobox",
+      "sourcePath": "packages/@react-aria/combobox",
+      "targetPackage": "@vue-aria/combobox",
+      "targetPath": "packages/@vue-aria/combobox",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/combobox/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/combobox/src/index.ts",
+      "sourceExportCount": 4,
+      "targetExportCount": 5,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "ComboBoxItem"
       ],
       "error": null
     },
@@ -2507,6 +2386,43 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/menu",
+      "sourcePath": "packages/@react-aria/menu",
+      "targetPackage": "@vue-aria/menu",
+      "targetPath": "packages/@vue-aria/menu",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/menu/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/menu/src/index.ts",
+      "sourceExportCount": 16,
+      "targetExportCount": 19,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "MaybeRef",
+        "MenuKey",
+        "SelectionMode"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/numberfield",
+      "sourcePath": "packages/@react-aria/numberfield",
+      "targetPackage": "@vue-aria/numberfield",
+      "targetPath": "packages/@vue-aria/numberfield",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/numberfield/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/numberfield/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 5,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaNumberFieldOptions",
+        "MaybeRef"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/overlays",
       "sourcePath": "packages/@react-aria/overlays",
       "targetPackage": "@vue-aria/overlays",
@@ -2529,6 +2445,24 @@
         "OverlayTriggerType",
         "PreventScrollAria",
         "PreventScrollOptions"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/searchfield",
+      "sourcePath": "packages/@react-aria/searchfield",
+      "targetPackage": "@vue-aria/searchfield",
+      "targetPath": "packages/@vue-aria/searchfield",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/searchfield/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/searchfield/src/index.ts",
+      "sourceExportCount": 3,
+      "targetExportCount": 5,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaSearchFieldOptions",
+        "MaybeRef"
       ],
       "error": null
     },
@@ -2780,6 +2714,24 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/card",
+      "sourcePath": "packages/@react-spectrum/card",
+      "targetPackage": "@vue-spectrum/card",
+      "targetPath": "packages/@vue-spectrum/card",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/card/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/card/src/index.ts",
+      "sourceExportCount": 9,
+      "targetExportCount": 11,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueCard",
+        "VueCardView"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/checkbox",
       "sourcePath": "packages/@react-spectrum/checkbox",
       "targetPackage": "@vue-spectrum/checkbox",
@@ -2973,6 +2925,23 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/labeledvalue",
+      "sourcePath": "packages/@react-spectrum/labeledvalue",
+      "targetPackage": "@vue-spectrum/labeledvalue",
+      "targetPath": "packages/@vue-spectrum/labeledvalue",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/labeledvalue/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/labeledvalue/src/index.ts",
+      "sourceExportCount": 2,
+      "targetExportCount": 3,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueLabeledValue"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/layout",
       "sourcePath": "packages/@react-spectrum/layout",
       "targetPackage": "@vue-spectrum/layout",
@@ -3021,6 +2990,23 @@
       "missingExports": [],
       "extraExports": [
         "VueMenu"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/numberfield",
+      "sourcePath": "packages/@react-spectrum/numberfield",
+      "targetPackage": "@vue-spectrum/numberfield",
+      "targetPath": "packages/@vue-spectrum/numberfield",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/numberfield/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/numberfield/src/index.ts",
+      "sourceExportCount": 2,
+      "targetExportCount": 3,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueNumberField"
       ],
       "error": null
     },

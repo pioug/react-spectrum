@@ -21,3 +21,4 @@ export const GalleryLayout = (options: GalleryLayoutOptions = {}) => options;
 export const GridLayout = (options: GridLayoutOptions = {}) => options;
 export const WaterfallLayout = (options: WaterfallLayoutOptions = {}) => options;
 export {VueCard, VueCardView};
+export type {SpectrumCardViewProps} from '@react-types/card';

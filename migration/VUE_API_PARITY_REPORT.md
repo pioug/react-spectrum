@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T22:11:08.531Z
+Generated: 2026-02-19T22:13:34.842Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 96
+* Fully matched packages: 103
 * Source exports inspected: 2672
-* Missing exports: 919
-* Coverage ratio: 65.61%
+* Missing exports: 912
+* Coverage ratio: 65.87%
 
 ## Package gaps
 
@@ -42,13 +42,9 @@ Generated: 2026-02-19T22:11:08.531Z
 | `@react-spectrum/tooltip` | `@vue-spectrum/tooltip` | missing | 4 | 2 | 50.0% |
 | `@react-stately/color` | `@vue-stately/color` | missing | 25 | 2 | 92.0% |
 | `@react-aria/actiongroup` | `@vue-aria/actiongroup` | missing | 6 | 1 | 83.3% |
-| `@react-aria/combobox` | `@vue-aria/combobox` | missing | 4 | 1 | 75.0% |
 | `@react-aria/disclosure` | `@vue-aria/disclosure` | missing | 3 | 1 | 66.7% |
-| `@react-aria/menu` | `@vue-aria/menu` | missing | 16 | 1 | 93.8% |
 | `@react-aria/meter` | `@vue-aria/meter` | missing | 3 | 1 | 66.7% |
-| `@react-aria/numberfield` | `@vue-aria/numberfield` | missing | 3 | 1 | 66.7% |
 | `@react-aria/progress` | `@vue-aria/progress` | missing | 3 | 1 | 66.7% |
-| `@react-aria/searchfield` | `@vue-aria/searchfield` | missing | 3 | 1 | 66.7% |
 | `@react-aria/separator` | `@vue-aria/separator` | missing | 3 | 1 | 66.7% |
 | `@react-aria/spinbutton` | `@vue-aria/spinbutton` | missing | 3 | 1 | 66.7% |
 | `@react-aria/switch` | `@vue-aria/switch` | missing | 3 | 1 | 66.7% |
@@ -56,15 +52,12 @@ Generated: 2026-02-19T22:11:08.531Z
 | `@react-aria/toolbar` | `@vue-aria/toolbar` | missing | 3 | 1 | 66.7% |
 | `@react-spectrum/avatar` | `@vue-spectrum/avatar` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/buttongroup` | `@vue-spectrum/buttongroup` | missing | 2 | 1 | 50.0% |
-| `@react-spectrum/card` | `@vue-spectrum/card` | missing | 9 | 1 | 88.9% |
 | `@react-spectrum/divider` | `@vue-spectrum/divider` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/illustratedmessage` | `@vue-spectrum/illustratedmessage` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/image` | `@vue-spectrum/image` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/inlinealert` | `@vue-spectrum/inlinealert` | missing | 2 | 1 | 50.0% |
-| `@react-spectrum/labeledvalue` | `@vue-spectrum/labeledvalue` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/link` | `@vue-spectrum/link` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/meter` | `@vue-spectrum/meter` | missing | 2 | 1 | 50.0% |
-| `@react-spectrum/numberfield` | `@vue-spectrum/numberfield` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/statuslight` | `@vue-spectrum/statuslight` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/switch` | `@vue-spectrum/switch` | missing | 2 | 1 | 50.0% |
 | `@react-spectrum/well` | `@vue-spectrum/well` | missing | 2 | 1 | 50.0% |
@@ -79,6 +72,7 @@ Generated: 2026-02-19T22:11:08.531Z
 | `@react-aria/calendar` | `@vue-aria/calendar` | ok | 14 | 0 | 100.0% |
 | `@react-aria/collections` | `@vue-aria/collections` | ok | 17 | 0 | 100.0% |
 | `@react-aria/color` | `@vue-aria/color` | ok | 20 | 0 | 100.0% |
+| `@react-aria/combobox` | `@vue-aria/combobox` | ok | 4 | 0 | 100.0% |
 | `@react-aria/datepicker` | `@vue-aria/datepicker` | ok | 18 | 0 | 100.0% |
 | `@react-aria/dialog` | `@vue-aria/dialog` | ok | 3 | 0 | 100.0% |
 | `@react-aria/dnd` | `@vue-aria/dnd` | ok | 62 | 0 | 100.0% |
@@ -93,7 +87,10 @@ Generated: 2026-02-19T22:11:08.531Z
 | `@react-aria/link` | `@vue-aria/link` | ok | 3 | 0 | 100.0% |
 | `@react-aria/listbox` | `@vue-aria/listbox` | ok | 12 | 0 | 100.0% |
 | `@react-aria/live-announcer` | `@vue-aria/live-announcer` | ok | 3 | 0 | 100.0% |
+| `@react-aria/menu` | `@vue-aria/menu` | ok | 16 | 0 | 100.0% |
+| `@react-aria/numberfield` | `@vue-aria/numberfield` | ok | 3 | 0 | 100.0% |
 | `@react-aria/overlays` | `@vue-aria/overlays` | ok | 39 | 0 | 100.0% |
+| `@react-aria/searchfield` | `@vue-aria/searchfield` | ok | 3 | 0 | 100.0% |
 | `@react-aria/selection` | `@vue-aria/selection` | ok | 15 | 0 | 100.0% |
 | `@react-aria/ssr` | `@vue-aria/ssr` | ok | 4 | 0 | 100.0% |
 | `@react-aria/test-utils` | `@vue-aria/test-utils` | ok | 17 | 0 | 100.0% |
@@ -108,6 +105,7 @@ Generated: 2026-02-19T22:11:08.531Z
 | `@react-spectrum/breadcrumbs` | `@vue-spectrum/breadcrumbs` | ok | 3 | 0 | 100.0% |
 | `@react-spectrum/button` | `@vue-spectrum/button` | ok | 10 | 0 | 100.0% |
 | `@react-spectrum/calendar` | `@vue-spectrum/calendar` | ok | 4 | 0 | 100.0% |
+| `@react-spectrum/card` | `@vue-spectrum/card` | ok | 9 | 0 | 100.0% |
 | `@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/combobox` | `@vue-spectrum/combobox` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/contextualhelp` | `@vue-spectrum/contextualhelp` | ok | 2 | 0 | 100.0% |
@@ -119,9 +117,11 @@ Generated: 2026-02-19T22:11:08.531Z
 | `@react-spectrum/form` | `@vue-spectrum/form` | ok | 3 | 0 | 100.0% |
 | `@react-spectrum/icon` | `@vue-spectrum/icon` | ok | 9 | 0 | 100.0% |
 | `@react-spectrum/label` | `@vue-spectrum/label` | ok | 3 | 0 | 100.0% |
+| `@react-spectrum/labeledvalue` | `@vue-spectrum/labeledvalue` | ok | 2 | 0 | 100.0% |
 | `@react-spectrum/layout` | `@vue-spectrum/layout` | ok | 8 | 0 | 100.0% |
 | `@react-spectrum/listbox` | `@vue-spectrum/listbox` | ok | 6 | 0 | 100.0% |
 | `@react-spectrum/menu` | `@vue-spectrum/menu` | ok | 12 | 0 | 100.0% |
+| `@react-spectrum/numberfield` | `@vue-spectrum/numberfield` | ok | 2 | 0 | 100.0% |
 | `@react-spectrum/overlays` | `@vue-spectrum/overlays` | ok | 5 | 0 | 100.0% |
 | `@react-spectrum/picker` | `@vue-spectrum/picker` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/progress` | `@vue-spectrum/progress` | ok | 5 | 0 | 100.0% |
