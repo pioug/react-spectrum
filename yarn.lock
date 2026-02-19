@@ -11833,6 +11833,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/avatar@workspace:*, @vue-spectrum/avatar@workspace:packages/@vue-spectrum/avatar":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/avatar@workspace:packages/@vue-spectrum/avatar"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/badge@workspace:*, @vue-spectrum/badge@workspace:packages/@vue-spectrum/badge":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/badge@workspace:packages/@vue-spectrum/badge"
@@ -30858,6 +30868,7 @@ __metadata:
   dependencies:
     "@vitejs/plugin-vue": "npm:^5.2.1"
     "@vue-aria/virtualizer": "workspace:*"
+    "@vue-spectrum/avatar": "workspace:*"
     "@vue-spectrum/badge": "workspace:*"
     "@vue-spectrum/button": "workspace:*"
     "@vue-spectrum/checkbox": "workspace:*"

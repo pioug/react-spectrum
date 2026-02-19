@@ -2,6 +2,7 @@
   <VueSpectrumProvider class="app-root" color-scheme="light" scale="medium">
     <main class="app-shell">
       <header class="app-header">
+        <VueAvatar class="header-avatar" label="VS" size="l" />
         <p class="eyebrow">Vue Migration Baseline</p>
         <h1>Vue Spectrum Starter</h1>
         <p class="lead">
@@ -190,6 +191,7 @@
 <script setup lang="ts">
 import {computed, ref} from 'vue';
 import {useVirtualizer} from '@vue-aria/virtualizer';
+import {Avatar as VueAvatar} from '@vue-spectrum/avatar';
 import {Badge as VueBadge} from '@vue-spectrum/badge';
 import {Button as VueButton} from '@vue-spectrum/button';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
@@ -363,6 +365,10 @@ function handleVirtualScroll(event: Event) {
 
 .app-header {
   margin-bottom: 24px;
+}
+
+.header-avatar {
+  margin-bottom: 12px;
 }
 
 .eyebrow {

@@ -1,5 +1,6 @@
 import {mount} from '@vue/test-utils';
 import {describe, expect, it} from 'vitest';
+import {Avatar} from '@vue-spectrum/avatar';
 import {Badge} from '@vue-spectrum/badge';
 import {Button} from '@vue-spectrum/button';
 import {Checkbox} from '@vue-spectrum/checkbox';
@@ -8,6 +9,18 @@ import {Switch} from '@vue-spectrum/switch';
 import {TextField} from '@vue-spectrum/textfield';
 
 describe('Vue migration primitives', () => {
+  it('renders avatar fallback initials', () => {
+    let wrapper = mount(Avatar, {
+      props: {
+        label: 'Vue Spectrum',
+        size: 'l'
+      }
+    });
+
+    expect(wrapper.text()).toContain('VU');
+    expect(wrapper.classes()).toContain('vs-avatar--l');
+  });
+
   it('renders badge variants and slot content', () => {
     let wrapper = mount(Badge, {
       props: {

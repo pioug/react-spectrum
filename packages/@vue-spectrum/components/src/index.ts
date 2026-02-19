@@ -1,4 +1,5 @@
 import type {App, Plugin} from 'vue';
+import {VueAvatar} from './components/VueAvatar';
 import {VueBadge} from './components/VueBadge';
 import {VueButton} from './components/VueButton';
 import {VueCheckbox} from './components/VueCheckbox';
@@ -27,6 +28,7 @@ import {VueTree} from './components/VueTree';
 export const VueSpectrumPlugin: Plugin = {
   install(app: App) {
     app.component(VueSpectrumProvider.name ?? 'VueSpectrumProvider', VueSpectrumProvider);
+    app.component(VueAvatar.name ?? 'VueAvatar', VueAvatar);
     app.component(VueBadge.name ?? 'VueBadge', VueBadge);
     app.component(VueButton.name ?? 'VueButton', VueButton);
     app.component(VueCheckbox.name ?? 'VueCheckbox', VueCheckbox);
@@ -54,5 +56,5 @@ export const VueSpectrumPlugin: Plugin = {
   }
 };
 
-export {VueBadge, VueButton, VueCheckbox, VueComboBox, VueDialog, VueDivider, VueDropZone, VueForm, VueLink, VueListBox, VueMenu, VueMeter, VueNumberField, VuePopover, VueProgressBar, VueRadio, VueRadioGroup, VueSearchField, VueSlider, VueSpectrumProvider, VueStatusLight, VueSwitch, VueTable, VueTextField, VueTree};
+export {VueAvatar, VueBadge, VueButton, VueCheckbox, VueComboBox, VueDialog, VueDivider, VueDropZone, VueForm, VueLink, VueListBox, VueMenu, VueMeter, VueNumberField, VuePopover, VueProgressBar, VueRadio, VueRadioGroup, VueSearchField, VueSlider, VueSpectrumProvider, VueStatusLight, VueSwitch, VueTable, VueTextField, VueTree};
 export type {SpectrumContextValue} from './context';

@@ -592,6 +592,52 @@
   color: #b11410;
 }
 
+.vs-avatar {
+  align-items: center;
+  background: #d8d8d8;
+  color: #2c2c2c;
+  display: inline-flex;
+  font-weight: 700;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.vs-avatar--circle {
+  border-radius: 50%;
+}
+
+.vs-avatar--square {
+  border-radius: 8px;
+}
+
+.vs-avatar--s {
+  block-size: 24px;
+  font-size: 10px;
+  inline-size: 24px;
+}
+
+.vs-avatar--m {
+  block-size: 32px;
+  font-size: 12px;
+  inline-size: 32px;
+}
+
+.vs-avatar--l {
+  block-size: 40px;
+  font-size: 14px;
+  inline-size: 40px;
+}
+
+.vs-avatar__image {
+  block-size: 100%;
+  inline-size: 100%;
+  object-fit: cover;
+}
+
+.vs-avatar__fallback {
+  line-height: 1;
+}
+
 .vs-radio-group {
   display: grid;
   gap: 8px;

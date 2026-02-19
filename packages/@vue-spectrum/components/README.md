@@ -5,6 +5,7 @@ Vue-native Spectrum-inspired primitives for incremental migration from React pac
 ## Included components
 
 * `VueSpectrumProvider`
+* `VueAvatar`
 * `VueBadge`
 * `VueButton`
 * `VueTextField`

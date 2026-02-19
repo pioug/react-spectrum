@@ -23,6 +23,7 @@ Phase 1 is implemented:
   * `@react-spectrum/provider` -> `@vue-spectrum/provider` is now tracked as `in_progress`.
 * Expanded first-wave ports:
   * `@react-spectrum/button` -> `@vue-spectrum/button` (`in_progress`)
+  * `@react-spectrum/avatar` -> `@vue-spectrum/avatar` (`in_progress`)
   * `@react-spectrum/badge` -> `@vue-spectrum/badge` (`in_progress`)
   * `@react-spectrum/textfield` -> `@vue-spectrum/textfield` (`in_progress`)
   * `@react-spectrum/searchfield` -> `@vue-spectrum/searchfield` (`in_progress`)

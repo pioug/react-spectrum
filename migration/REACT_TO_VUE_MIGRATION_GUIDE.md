@@ -15,6 +15,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `react-aria-components` | `@vue-spectrum/components` |
 | `@react-spectrum/provider` | `@vue-spectrum/provider` |
 | `@react-spectrum/button` | `@vue-spectrum/button` |
+| `@react-spectrum/avatar` | `@vue-spectrum/avatar` |
 | `@react-spectrum/badge` | `@vue-spectrum/badge` |
 | `@react-spectrum/textfield` | `@vue-spectrum/textfield` |
 | `@react-spectrum/searchfield` | `@vue-spectrum/searchfield` |
