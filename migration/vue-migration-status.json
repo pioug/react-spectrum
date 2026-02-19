@@ -28,7 +28,7 @@
       "status": "in_progress",
       "targetPackage": "@vue-aria/virtualizer",
       "targetPath": "packages/@vue-aria/virtualizer",
-      "notes": "Foundational React Aria virtualizer port to support virtualized Vue collection components.",
+      "notes": "Foundational React Aria virtualizer port to support virtualized Vue collection components, now validated by starter interaction and composable tests.",
       "acceptanceTests": [
         {
           "name": "Vue Aria virtualizer source lint",
@@ -41,6 +41,10 @@
         {
           "name": "Vue starter production build",
           "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
         }
       ]
     },
