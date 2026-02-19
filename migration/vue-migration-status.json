@@ -744,6 +744,30 @@
         }
       ]
     },
+    "@react-aria/progress": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/progress",
+      "targetPath": "packages/@vue-aria/progress",
+      "notes": "Foundational React Aria progress composable for progressbar range clamping, determinate/indeterminate behavior, and value text formatting in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria progress source lint",
+          "command": "yarn eslint packages/@vue-aria/progress/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",

@@ -64,6 +64,7 @@ import {
   usePopover as useAriaPopover,
   usePreventScroll as useAriaPreventScroll
 } from '@vue-aria/overlays';
+import {useProgressBar as useAriaProgressBar} from '@vue-aria/progress';
 import {
   addWindowFocusTracking,
   setInteractionModality,
@@ -1462,6 +1463,32 @@ describe('Vue migration composition components', () => {
     document.documentElement.style.overflow = previousOverflow;
     document.documentElement.style.paddingRight = previousPaddingRight;
     document.body.innerHTML = previousMarkup;
+  });
+
+  it('computes vue-aria progress semantics for determinate and indeterminate bars', () => {
+    let progressBar = useAriaProgressBar({
+      label: 'Upload progress',
+      maxValue: 80,
+      minValue: 0,
+      value: 40
+    });
+
+    expect(progressBar.progressBarProps.value.role).toBe('progressbar');
+    expect(progressBar.progressBarProps.value['aria-valuemin']).toBe(0);
+    expect(progressBar.progressBarProps.value['aria-valuemax']).toBe(80);
+    expect(progressBar.progressBarProps.value['aria-valuenow']).toBe(40);
+    expect(progressBar.percentage.value).toBe(0.5);
+    expect(progressBar.progressBarProps.value['aria-valuetext']).toContain('50');
+    expect(progressBar.progressBarProps.value['aria-labelledby']).toBe(progressBar.labelProps.value.id);
+
+    let indeterminateProgressBar = useAriaProgressBar({
+      ariaLabel: 'Loading',
+      isIndeterminate: true,
+      value: 10
+    });
+    expect(indeterminateProgressBar.progressBarProps.value['aria-label']).toBe('Loading');
+    expect(indeterminateProgressBar.progressBarProps.value['aria-valuenow']).toBeUndefined();
+    expect(indeterminateProgressBar.progressBarProps.value['aria-valuetext']).toBeUndefined();
   });
 
   it('announces and clears live region messages with vue-aria live announcer', () => {

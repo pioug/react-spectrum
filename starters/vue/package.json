@@ -43,6 +43,7 @@
     "@vue-aria/meter": "workspace:*",
     "@vue-aria/numberfield": "workspace:*",
     "@vue-aria/overlays": "workspace:*",
+    "@vue-aria/progress": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",

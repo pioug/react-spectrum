@@ -12067,6 +12067,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/progress@workspace:*, @vue-aria/progress@workspace:packages/@vue-aria/progress":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/progress@workspace:packages/@vue-aria/progress"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31389,6 +31397,7 @@ __metadata:
     "@vue-aria/meter": "workspace:*"
     "@vue-aria/numberfield": "workspace:*"
     "@vue-aria/overlays": "workspace:*"
+    "@vue-aria/progress": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"

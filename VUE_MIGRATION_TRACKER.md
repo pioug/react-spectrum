@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 83 |
+| in_progress | 84 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 69 |
+| not_started | 68 |
 
 ## Package tracker
 
@@ -53,6 +53,7 @@ Tracked source packages: 154
 | `@react-aria/meter` | `packages/@react-aria/meter` | `@vue-aria/meter` | `packages/@vue-aria/meter` | in_progress | Vue Aria meter source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria meter composable for range clamping, value text formatting, and label linkage semantics in Vue. |
 | `@react-aria/numberfield` | `packages/@react-aria/numberfield` | `@vue-aria/numberfield` | `packages/@vue-aria/numberfield` | in_progress | Vue Aria numberfield source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria number field composable for spinbutton semantics, stepper controls, input parsing, and clamped range behavior in Vue. |
 | `@react-aria/overlays` | `packages/@react-aria/overlays` | `@vue-aria/overlays` | `packages/@vue-aria/overlays` | in_progress | Vue Aria overlays source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria overlays composables for trigger wiring, overlay dismissal, modal/popover semantics, position calculation, and scroll locking in Vue. |
+| `@react-aria/progress` | `packages/@react-aria/progress` | `@vue-aria/progress` | `packages/@vue-aria/progress` | in_progress | Vue Aria progress source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria progress composable for progressbar range clamping, determinate/indeterminate behavior, and value text formatting in Vue. |
 | `@react-aria/virtualizer` | `packages/@react-aria/virtualizer` | `@vue-aria/virtualizer` | `packages/@vue-aria/virtualizer` | in_progress | Vue Aria virtualizer source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria virtualizer port to support virtualized Vue collection components, now validated by starter interaction/composable tests and wired into the Vue starter virtualized backlog demo. |
 | `@react-spectrum/accordion` | `packages/@react-spectrum/accordion` | `@vue-spectrum/accordion` | `packages/@vue-spectrum/accordion` | in_progress | Vue accordion package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue accordion and disclosure primitives. |
 | `@react-spectrum/actionbar` | `packages/@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | `packages/@vue-spectrum/actionbar` | in_progress | Vue actionbar package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue action bar and container primitives for bulk action workflows. |
@@ -108,7 +109,6 @@ Tracked source packages: 154
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-aria/progress` | `packages/@react-aria/progress` | `@vue-aria/progress` | `packages/@vue-aria/progress` | not_started | - | - |
 | `@react-aria/radio` | `packages/@react-aria/radio` | `@vue-aria/radio` | `packages/@vue-aria/radio` | not_started | - | - |
 | `@react-aria/searchfield` | `packages/@react-aria/searchfield` | `@vue-aria/searchfield` | `packages/@vue-aria/searchfield` | not_started | - | - |
 | `@react-aria/select` | `packages/@react-aria/select` | `@vue-aria/select` | `packages/@vue-aria/select` | not_started | - | - |
