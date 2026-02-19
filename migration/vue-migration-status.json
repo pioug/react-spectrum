@@ -1056,6 +1056,30 @@
         }
       ]
     },
+    "@react-aria/test-utils": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/test-utils",
+      "targetPath": "packages/@vue-aria/test-utils",
+      "notes": "Foundational React Aria test-utils baseline for pointer maps, long-press helpers, and lightweight ARIA pattern tester classes in Vue test environments.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria test-utils source lint",
+          "command": "yarn eslint packages/@vue-aria/test-utils/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/table": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/table",

@@ -83,6 +83,7 @@ import {useStepList as useAriaStepList, useStepListItem as useAriaStepListItem} 
 import {useSwitch as useAriaSwitch} from '@vue-aria/switch';
 import {useTag as useAriaTag, useTagGroup as useAriaTagGroup} from '@vue-aria/tag';
 import {useTab as useAriaTab, useTabList as useAriaTabList, useTabPanel as useAriaTabPanel} from '@vue-aria/tabs';
+import {pointerMap as vueAriaPointerMap, triggerLongPress as triggerVueAriaLongPress, User as VueAriaUser} from '@vue-aria/test-utils';
 import {
   useTable as useAriaTable,
   useTableCell as useAriaTableCell,
@@ -2136,6 +2137,56 @@ describe('Vue migration composition components', () => {
     expect(tabPanel.tabPanelProps.value['aria-labelledby']).toBe(tabList.state.getTabId('details'));
     expect(tabPanel.tabPanelProps.value.tabIndex).toBe(0);
     expect(tabPanel.tabPanelProps.value['aria-describedby']).toBe('project-tabs-help');
+  });
+
+  it('runs vue-aria test-utils long press and tester baselines', async () => {
+    let previousMarkup = document.body.innerHTML;
+    document.body.innerHTML = `
+      <div role="tablist">
+        <button role="tab">Overview</button>
+        <button role="tab">Details</button>
+      </div>
+      <button data-testid="long-press-target">Hold</button>
+    `;
+
+    try {
+      let tabList = document.querySelector('[role="tablist"]');
+      let tabs = Array.from(document.querySelectorAll('[role="tab"]'));
+      let longPressTarget = document.querySelector('[data-testid="long-press-target"]');
+      if (!(tabList instanceof HTMLElement) || !(longPressTarget instanceof HTMLElement) || tabs.length < 2) {
+        throw new Error('Expected test-utils target elements');
+      }
+
+      let events: string[] = [];
+      tabs[1]?.addEventListener('click', () => {
+        events.push('tab-click');
+      });
+      longPressTarget.addEventListener('pointerdown', () => {
+        events.push('pointerdown');
+      });
+      longPressTarget.addEventListener('click', () => {
+        events.push('longpress-click');
+      });
+
+      let user = new VueAriaUser({
+        advanceTimer: async () => {}
+      });
+      let tabsTester = user.createTester('Tabs', {
+        root: tabList
+      });
+
+      await tabsTester.triggerTab({tab: 1});
+      await triggerVueAriaLongPress({
+        element: longPressTarget,
+        advanceTimer: async () => {}
+      });
+
+      expect(vueAriaPointerMap.some((entry) => entry.name === 'MouseLeft')).toBe(true);
+      expect(tabsTester.tabs).toHaveLength(2);
+      expect(events).toEqual(['tab-click', 'pointerdown', 'longpress-click']);
+    } finally {
+      document.body.innerHTML = previousMarkup;
+    }
   });
 
   it('computes vue-aria table wrappers and selection helpers', () => {

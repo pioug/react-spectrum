@@ -12188,6 +12188,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/test-utils@workspace:*, @vue-aria/test-utils@workspace:packages/@vue-aria/test-utils":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/test-utils@workspace:packages/@vue-aria/test-utils"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31524,6 +31532,7 @@ __metadata:
     "@vue-aria/table": "workspace:*"
     "@vue-aria/tabs": "workspace:*"
     "@vue-aria/tag": "workspace:*"
+    "@vue-aria/test-utils": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"
