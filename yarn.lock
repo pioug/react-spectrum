@@ -12732,6 +12732,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/steplist@workspace:*, @vue-spectrum/steplist@workspace:packages/@vue-spectrum/steplist":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/steplist@workspace:packages/@vue-spectrum/steplist"
+  dependencies:
+    "@vue-aria/selection": "workspace:*"
+    "@vue-aria/steplist": "workspace:*"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/switch@workspace:*, @vue-spectrum/switch@workspace:packages/@vue-spectrum/switch":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/switch@workspace:packages/@vue-spectrum/switch"
@@ -31677,6 +31688,7 @@ __metadata:
     "@vue-spectrum/searchfield": "workspace:*"
     "@vue-spectrum/slider": "workspace:*"
     "@vue-spectrum/statuslight": "workspace:*"
+    "@vue-spectrum/steplist": "workspace:*"
     "@vue-spectrum/switch": "workspace:*"
     "@vue-spectrum/table": "workspace:*"
     "@vue-spectrum/text": "workspace:*"

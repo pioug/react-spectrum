@@ -112,6 +112,7 @@
     "@vue-spectrum/searchfield": "workspace:*",
     "@vue-spectrum/slider": "workspace:*",
     "@vue-spectrum/statuslight": "workspace:*",
+    "@vue-spectrum/steplist": "workspace:*",
     "@vue-spectrum/switch": "workspace:*",
     "@vue-spectrum/table": "workspace:*",
     "@vue-spectrum/text": "workspace:*",

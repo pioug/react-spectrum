@@ -19,6 +19,7 @@ import {Label} from '@vue-spectrum/label';
 import {LabeledValue} from '@vue-spectrum/labeledvalue';
 import {Picker} from '@vue-spectrum/picker';
 import {Radio, RadioGroup} from '@vue-spectrum/radio';
+import {StepList} from '@vue-spectrum/steplist';
 import {Switch} from '@vue-spectrum/switch';
 import {TextField} from '@vue-spectrum/textfield';
 import {Text} from '@vue-spectrum/text';
@@ -307,6 +308,31 @@ describe('Vue migration primitives', () => {
     await wrapper.get('input').setValue(true);
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([true]);
     expect(wrapper.emitted('change')?.[0]).toEqual([true]);
+  });
+
+  it('emits model updates and applies aria semantics for step list interactions', async () => {
+    let wrapper = mount(StepList, {
+      props: {
+        ariaLabel: 'Checkout steps',
+        modelValue: 'shipping',
+        items: [
+          {key: 'shipping', label: 'Shipping'},
+          {key: 'payment', label: 'Payment'},
+          {key: 'review', label: 'Review', disabled: true}
+        ]
+      }
+    });
+
+    let links = wrapper.findAll('a.vs-steplist__link');
+    expect(wrapper.attributes('role')).toBe('list');
+    expect(wrapper.attributes('aria-label')).toBe('Checkout steps');
+    expect(links).toHaveLength(3);
+    expect(links[0].attributes('aria-current')).toBe('step');
+    expect(links[2].attributes('aria-disabled')).toBe('true');
+
+    await links[1].trigger('click');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['payment']);
+    expect(wrapper.emitted('change')?.[0]).toEqual(['payment']);
   });
 
   it('emits press events from standalone cards', async () => {

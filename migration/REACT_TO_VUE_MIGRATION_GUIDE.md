@@ -69,6 +69,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-spectrum/dropzone` | `@vue-spectrum/dropzone` |
 | `@react-spectrum/filetrigger` | `@vue-spectrum/filetrigger` |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` |
+| `@react-spectrum/steplist` | `@vue-spectrum/steplist` |
 | `@react-aria/actiongroup` | `@vue-aria/actiongroup` |
 | `@react-aria/autocomplete` | `@vue-aria/autocomplete` |
 | `@react-aria/breadcrumbs` | `@vue-aria/breadcrumbs` |

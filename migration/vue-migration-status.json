@@ -2512,6 +2512,30 @@
         }
       ]
     },
+    "@react-spectrum/steplist": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/steplist",
+      "targetPath": "packages/@vue-spectrum/steplist",
+      "notes": "Data-heavy migration baseline for workflow step navigation and progress indicators.",
+      "acceptanceTests": [
+        {
+          "name": "Vue steplist package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/steplist/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "tailwindcss-react-aria-components": {
       "status": "in_progress",
       "targetPackage": "tailwindcss-vue-aria-components",
