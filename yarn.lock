@@ -11881,6 +11881,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/collections@workspace:*, @vue-aria/collections@workspace:packages/@vue-aria/collections":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/collections@workspace:packages/@vue-aria/collections"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31180,6 +31188,7 @@ __metadata:
     "@vue-aria/button": "workspace:*"
     "@vue-aria/calendar": "workspace:*"
     "@vue-aria/checkbox": "workspace:*"
+    "@vue-aria/collections": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"

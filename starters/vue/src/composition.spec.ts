@@ -8,6 +8,7 @@ import {useBreadcrumbItem, useBreadcrumbs} from '@vue-aria/breadcrumbs';
 import {useButton, useToggleButton, useToggleButtonGroup, useToggleButtonGroupItem} from '@vue-aria/button';
 import {useCalendar, useCalendarCell, useCalendarGrid, useRangeCalendar} from '@vue-aria/calendar';
 import {useCheckbox, useCheckboxGroup, useCheckboxGroupItem} from '@vue-aria/checkbox';
+import {CollectionBuilder, useCachedChildren} from '@vue-aria/collections';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -290,6 +291,47 @@ describe('Vue migration composition components', () => {
 
     testsItem.press();
     expect(Array.from(selectedValues.value)).toEqual(['Docs']);
+  });
+
+  it('builds and filters vue-aria collections with key navigation', () => {
+    let builder = new CollectionBuilder<{id: string, label: string}>();
+    let collection = builder.build({
+      getKey: (item) => item.id,
+      getTextValue: (item) => item.label,
+      items: [
+        {id: 'alpha', label: 'Alpha'},
+        {id: 'beta', label: 'Beta'}
+      ]
+    });
+
+    expect(collection.getFirstKey()).toBe('alpha');
+    expect(collection.getKeyAfter('alpha')).toBe('beta');
+
+    let filtered = collection.filter((textValue) => textValue.startsWith('A'));
+    expect(filtered.getFirstKey()).toBe('alpha');
+    expect(filtered.getLastKey()).toBe('alpha');
+  });
+
+  it('caches vue-aria collection children by item identity', () => {
+    let alpha = {id: 'alpha', label: 'Alpha'};
+    let beta = {id: 'beta', label: 'Beta'};
+    let items = ref([alpha, beta]);
+
+    let cachedChildren = useCachedChildren({
+      addIdAndValue: true,
+      children: (item: {id: string, label: string}) => item.label,
+      getKey: (item: {id: string, label: string}) => item.id,
+      idScope: 'starter',
+      items
+    });
+
+    let firstPass = cachedChildren.value as Array<{key: string, rendered: unknown}>;
+    expect(firstPass[0].key).toBe('starter:alpha');
+    expect(firstPass[0].rendered).toBe('Alpha');
+
+    items.value = [alpha, beta];
+    let secondPass = cachedChildren.value as Array<{key: string, rendered: unknown}>;
+    expect(secondPass[0]).toBe(firstPass[0]);
   });
 
   it('emits close events from dismissable dialog controls', async () => {

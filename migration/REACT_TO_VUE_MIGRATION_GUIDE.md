@@ -74,6 +74,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-aria/button` | `@vue-aria/button` |
 | `@react-aria/calendar` | `@vue-aria/calendar` |
 | `@react-aria/checkbox` | `@vue-aria/checkbox` |
+| `@react-aria/collections` | `@vue-aria/collections` |
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` |
 

@@ -216,6 +216,30 @@
         }
       ]
     },
+    "@react-aria/collections": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/collections",
+      "targetPath": "packages/@vue-aria/collections",
+      "notes": "Foundational React Aria collection node/base classes, cached-children rendering, and builder helpers for Vue data-collection flows.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria collections source lint",
+          "command": "yarn eslint packages/@vue-aria/collections/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/provider": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/provider",
