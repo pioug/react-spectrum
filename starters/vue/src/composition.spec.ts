@@ -87,6 +87,7 @@ import {pointerMap as vueAriaPointerMap, triggerLongPress as triggerVueAriaLongP
 import {useFormattedTextField as useAriaFormattedTextField, useTextField as useAriaTextField} from '@vue-aria/textfield';
 import {useToast as useAriaToast, useToastRegion as useAriaToastRegion} from '@vue-aria/toast';
 import {useToggle as useAriaToggle} from '@vue-aria/toggle';
+import {useToolbar as useAriaToolbar} from '@vue-aria/toolbar';
 import {
   useTable as useAriaTable,
   useTableCell as useAriaTableCell,
@@ -2065,6 +2066,90 @@ describe('Vue migration composition components', () => {
       validationState: 'invalid'
     });
     expect(invalidToggle.inputProps.value['aria-invalid']).toBe(true);
+  });
+
+  it('computes vue-aria toolbar roles and keyboard focus navigation', () => {
+    let toolbarElement = document.createElement('div');
+    let firstButton = document.createElement('button');
+    firstButton.textContent = 'First';
+    let secondButton = document.createElement('button');
+    secondButton.textContent = 'Second';
+    let thirdButton = document.createElement('button');
+    thirdButton.textContent = 'Third';
+    toolbarElement.append(firstButton, secondButton, thirdButton);
+    document.body.append(toolbarElement);
+
+    let verticalToolbarElement = document.createElement('div');
+    let topButton = document.createElement('button');
+    topButton.textContent = 'Top';
+    let bottomButton = document.createElement('button');
+    bottomButton.textContent = 'Bottom';
+    verticalToolbarElement.append(topButton, bottomButton);
+    document.body.append(verticalToolbarElement);
+
+    let outerToolbar = document.createElement('div');
+    outerToolbar.setAttribute('role', 'toolbar');
+    let nestedToolbarElement = document.createElement('div');
+    outerToolbar.append(nestedToolbarElement);
+    document.body.append(outerToolbar);
+
+    try {
+      let toolbar = useAriaToolbar({
+        ariaLabel: 'Formatting controls'
+      }, ref<HTMLElement | null>(toolbarElement));
+      let toolbarKeyDown = toolbar.toolbarProps.value.onKeyDownCapture;
+
+      expect(toolbar.isInToolbar.value).toBe(false);
+      expect(toolbar.toolbarProps.value.role).toBe('toolbar');
+      expect(toolbar.toolbarProps.value['aria-orientation']).toBe('horizontal');
+      expect(toolbar.toolbarProps.value['aria-label']).toBe('Formatting controls');
+
+      if (!toolbarKeyDown) {
+        throw new Error('Expected toolbar keydown handler');
+      }
+
+      toolbarElement.addEventListener('keydown', toolbarKeyDown as EventListener, true);
+
+      firstButton.focus();
+      firstButton.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, cancelable: true, key: 'ArrowRight'}));
+      expect(document.activeElement).toBe(secondButton);
+
+      secondButton.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, cancelable: true, key: 'ArrowLeft'}));
+      expect(document.activeElement).toBe(firstButton);
+
+      secondButton.focus();
+      secondButton.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, cancelable: true, key: 'Tab'}));
+      expect(document.activeElement).toBe(thirdButton);
+
+      thirdButton.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, cancelable: true, key: 'Tab', shiftKey: true}));
+      expect(document.activeElement).toBe(firstButton);
+
+      let verticalToolbar = useAriaToolbar({
+        ariaLabel: 'Vertical controls',
+        orientation: 'vertical'
+      }, ref<HTMLElement | null>(verticalToolbarElement));
+      let verticalKeyDown = verticalToolbar.toolbarProps.value.onKeyDownCapture;
+
+      if (!verticalKeyDown) {
+        throw new Error('Expected vertical toolbar keydown handler');
+      }
+
+      verticalToolbarElement.addEventListener('keydown', verticalKeyDown as EventListener, true);
+      topButton.focus();
+      topButton.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, cancelable: true, key: 'ArrowDown'}));
+      expect(document.activeElement).toBe(bottomButton);
+
+      let nestedToolbar = useAriaToolbar({
+        ariaLabel: 'Nested controls'
+      }, ref<HTMLElement | null>(nestedToolbarElement));
+      expect(nestedToolbar.isInToolbar.value).toBe(true);
+      expect(nestedToolbar.toolbarProps.value.role).toBe('group');
+      expect(nestedToolbar.toolbarProps.value.onKeyDownCapture).toBeUndefined();
+    } finally {
+      document.body.removeChild(toolbarElement);
+      document.body.removeChild(verticalToolbarElement);
+      document.body.removeChild(outerToolbar);
+    }
   });
 
   it('computes vue-aria tag group and tag remove behavior', () => {

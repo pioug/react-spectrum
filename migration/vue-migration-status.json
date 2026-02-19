@@ -1032,6 +1032,30 @@
         }
       ]
     },
+    "@react-aria/toolbar": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/toolbar",
+      "targetPath": "packages/@vue-aria/toolbar",
+      "notes": "Foundational React Aria toolbar composable for grouped control semantics and arrow-key focus navigation in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria toolbar source lint",
+          "command": "yarn eslint packages/@vue-aria/toolbar/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/tabs": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/tabs",

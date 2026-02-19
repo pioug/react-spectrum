@@ -61,6 +61,7 @@
     "@vue-aria/textfield": "workspace:*",
     "@vue-aria/toast": "workspace:*",
     "@vue-aria/toggle": "workspace:*",
+    "@vue-aria/toolbar": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",
