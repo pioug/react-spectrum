@@ -1008,6 +1008,30 @@
         }
       ]
     },
+    "@react-aria/toggle": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/toggle",
+      "targetPath": "packages/@vue-aria/toggle",
+      "notes": "Foundational React Aria toggle composable for shared checkbox/switch press and selection semantics in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria toggle source lint",
+          "command": "yarn eslint packages/@vue-aria/toggle/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/tabs": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/tabs",

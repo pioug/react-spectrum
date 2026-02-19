@@ -86,6 +86,7 @@ import {useTab as useAriaTab, useTabList as useAriaTabList, useTabPanel as useAr
 import {pointerMap as vueAriaPointerMap, triggerLongPress as triggerVueAriaLongPress, User as VueAriaUser} from '@vue-aria/test-utils';
 import {useFormattedTextField as useAriaFormattedTextField, useTextField as useAriaTextField} from '@vue-aria/textfield';
 import {useToast as useAriaToast, useToastRegion as useAriaToastRegion} from '@vue-aria/toast';
+import {useToggle as useAriaToggle} from '@vue-aria/toggle';
 import {
   useTable as useAriaTable,
   useTableCell as useAriaTableCell,
@@ -2004,6 +2005,66 @@ describe('Vue migration composition components', () => {
     });
     readOnlySwitch.press();
     expect(readOnlySelected.value).toBe(true);
+  });
+
+  it('computes vue-aria toggle press behavior and accessibility props', () => {
+    let selected = ref(false);
+    let pressChanges: boolean[] = [];
+    let changeEvents: boolean[] = [];
+    let pressCount = 0;
+
+    let toggle = useAriaToggle({
+      'aria-label': 'Email notifications',
+      isSelected: selected,
+      onChange: (isSelected) => {
+        changeEvents.push(isSelected);
+      },
+      onPress: () => {
+        pressCount += 1;
+      },
+      onPressChange: (isPressed) => {
+        pressChanges.push(isPressed);
+      }
+    });
+
+    expect(toggle.inputProps.value.type).toBe('checkbox');
+    expect(toggle.inputProps.value.checked).toBe(false);
+    expect(toggle.isInvalid.value).toBe(false);
+
+    toggle.press();
+    expect(selected.value).toBe(true);
+    expect(changeEvents).toEqual([true]);
+    expect(pressChanges).toEqual([true, false]);
+    expect(pressCount).toBe(1);
+
+    toggle.inputProps.value.onChange(false);
+    expect(selected.value).toBe(false);
+    expect(changeEvents).toEqual([true, false]);
+
+    toggle.inputProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Enter'}));
+    expect(selected.value).toBe(true);
+
+    let preventDefault = vi.fn();
+    toggle.labelProps.value.onClick({
+      preventDefault
+    } as unknown as MouseEvent);
+    expect(preventDefault).toHaveBeenCalledTimes(1);
+    expect(selected.value).toBe(false);
+
+    let readOnlySelected = ref(true);
+    let readOnlyToggle = useAriaToggle({
+      'aria-label': 'Read only toggle',
+      isReadOnly: true,
+      isSelected: readOnlySelected
+    });
+    readOnlyToggle.press();
+    expect(readOnlySelected.value).toBe(true);
+
+    let invalidToggle = useAriaToggle({
+      'aria-label': 'Invalid toggle',
+      validationState: 'invalid'
+    });
+    expect(invalidToggle.inputProps.value['aria-invalid']).toBe(true);
   });
 
   it('computes vue-aria tag group and tag remove behavior', () => {

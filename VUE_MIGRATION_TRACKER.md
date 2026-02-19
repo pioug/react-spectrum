@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 100 |
+| in_progress | 101 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 52 |
+| not_started | 51 |
 
 ## Package tracker
 
@@ -70,6 +70,7 @@ Tracked source packages: 154
 | `@react-aria/test-utils` | `packages/@react-aria/test-utils` | `@vue-aria/test-utils` | `packages/@vue-aria/test-utils` | in_progress | Vue Aria test-utils source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria test-utils baseline for pointer maps, long-press helpers, and lightweight ARIA pattern tester classes in Vue test environments. |
 | `@react-aria/textfield` | `packages/@react-aria/textfield` | `@vue-aria/textfield` | `packages/@vue-aria/textfield` | in_progress | Vue Aria textfield source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria textfield composables for labeled input/textarea props, validation wiring, and formatted text input guards in Vue. |
 | `@react-aria/toast` | `packages/@react-aria/toast` | `@vue-aria/toast` | `packages/@vue-aria/toast` | in_progress | Vue Aria toast source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria toast composables for notification-region labeling, toast timer pause/resume behavior, and dismissable toast dialog semantics in Vue. |
+| `@react-aria/toggle` | `packages/@react-aria/toggle` | `@vue-aria/toggle` | `packages/@vue-aria/toggle` | in_progress | Vue Aria toggle source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria toggle composable for shared checkbox/switch press and selection semantics in Vue. |
 | `@react-aria/virtualizer` | `packages/@react-aria/virtualizer` | `@vue-aria/virtualizer` | `packages/@vue-aria/virtualizer` | in_progress | Vue Aria virtualizer source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria virtualizer port to support virtualized Vue collection components, now validated by starter interaction/composable tests and wired into the Vue starter virtualized backlog demo. |
 | `@react-spectrum/accordion` | `packages/@react-spectrum/accordion` | `@vue-spectrum/accordion` | `packages/@vue-spectrum/accordion` | in_progress | Vue accordion package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue accordion and disclosure primitives. |
 | `@react-spectrum/actionbar` | `packages/@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | `packages/@vue-spectrum/actionbar` | in_progress | Vue actionbar package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue action bar and container primitives for bulk action workflows. |
@@ -125,7 +126,6 @@ Tracked source packages: 154
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-aria/toggle` | `packages/@react-aria/toggle` | `@vue-aria/toggle` | `packages/@vue-aria/toggle` | not_started | - | - |
 | `@react-aria/toolbar` | `packages/@react-aria/toolbar` | `@vue-aria/toolbar` | `packages/@vue-aria/toolbar` | not_started | - | - |
 | `@react-aria/tooltip` | `packages/@react-aria/tooltip` | `@vue-aria/tooltip` | `packages/@vue-aria/tooltip` | not_started | - | - |
 | `@react-aria/tree` | `packages/@react-aria/tree` | `@vue-aria/tree` | `packages/@vue-aria/tree` | not_started | - | - |
