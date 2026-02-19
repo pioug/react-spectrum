@@ -96,6 +96,26 @@
           v-model="selectedTreeNode"
           :items="treeItems" />
 
+        <section class="virtual-list-demo">
+          <p class="eyebrow">Virtualized Collection</p>
+          <p class="summary">
+            Rendering <strong>{{ virtualVisibleRows.length }}</strong>
+            of <strong>{{ virtualBacklog.length }}</strong>
+            items ({{ virtualRangeLabel }}).
+          </p>
+          <div class="virtual-list-viewport" @scroll="handleVirtualScroll">
+            <div class="virtual-list-content" :style="{height: virtualTotalHeight}">
+              <div
+                v-for="row in virtualVisibleRows"
+                :key="row.index"
+                class="virtual-list-row"
+                :style="{top: `${row.offsetTop}px`}">
+                {{ row.label }}
+              </div>
+            </div>
+          </div>
+        </section>
+
         <VueDropZone
           label="Drop design assets"
           @files-drop="handleFilesDrop" />
@@ -165,6 +185,7 @@
 
 <script setup lang="ts">
 import {computed, ref} from 'vue';
+import {useVirtualizer} from '@vue-aria/virtualizer';
 import {Button as VueButton} from '@vue-spectrum/button';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
 import {ComboBox as VueComboBox} from '@vue-spectrum/combobox';
@@ -236,6 +257,31 @@ const treeItems = [
     ]
   }
 ];
+const virtualRowHeight = 36;
+const virtualBacklog = Array.from({length: 240}, (_value, index) => `Backlog item ${index + 1}`);
+const virtualScrollTop = ref(0);
+const virtualizer = useVirtualizer({
+  itemCount: virtualBacklog.length,
+  itemHeight: virtualRowHeight,
+  viewportHeight: 240,
+  scrollTop: virtualScrollTop,
+  overscan: 3
+});
+const virtualTotalHeight = computed(() => `${virtualizer.totalHeight.value}px`);
+const virtualVisibleRows = computed(() => virtualizer.visibleIndexes.value.map((index) => ({
+  index,
+  label: virtualBacklog[index],
+  offsetTop: index * virtualRowHeight
+})));
+const virtualRangeLabel = computed(() => {
+  if (virtualizer.visibleCount.value === 0) {
+    return 'none';
+  }
+
+  let start = virtualizer.startIndex.value + 1;
+  let end = virtualizer.endIndex.value;
+  return `${start}-${end}`;
+});
 
 const statusTone = computed(() => {
   if (completionProgress.value >= 80) {
@@ -287,6 +333,15 @@ function reset() {
 
 function handleFilesDrop(files: File[]) {
   droppedFiles.value = files.map((file) => file.name);
+}
+
+function handleVirtualScroll(event: Event) {
+  let target = event.currentTarget;
+  if (!(target instanceof HTMLElement)) {
+    return;
+  }
+
+  virtualScrollTop.value = target.scrollTop;
 }
 </script>
 
@@ -341,6 +396,33 @@ h1 {
 
 .summary {
   margin: 0;
+}
+
+.virtual-list-demo {
+  display: grid;
+  gap: 8px;
+}
+
+.virtual-list-viewport {
+  border: 1px solid rgba(0, 0, 0, 0.14);
+  border-radius: 8px;
+  height: 240px;
+  overflow: auto;
+}
+
+.virtual-list-content {
+  position: relative;
+}
+
+.virtual-list-row {
+  align-items: center;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  display: flex;
+  height: 36px;
+  left: 0;
+  padding: 0 12px;
+  position: absolute;
+  right: 0;
 }
 
 code {

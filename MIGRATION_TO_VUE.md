@@ -50,6 +50,7 @@ Phase 1 is implemented:
   * `@react-spectrum/dnd` -> `@vue-spectrum/dnd` (`in_progress`)
 * Started React Aria package migration:
   * `@react-aria/virtualizer` -> `@vue-aria/virtualizer` (`in_progress`)
+  * Vue starter now includes a virtualized backlog demo wired to `@vue-aria/virtualizer`.
 * Started Vue test adaptation:
   * `starters/vue` runs Vitest + Vue Test Utils interaction tests for `button`, `textfield`, `checkbox`, `radio`, and `switch`.
   * Added data-heavy and virtualization coverage for `table`, `tree`, `dnd`, and `@vue-aria/virtualizer`.
