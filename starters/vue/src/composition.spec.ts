@@ -52,6 +52,7 @@ import {UNSTABLE_createLandmarkController, useLandmark} from '@vue-aria/landmark
 import {useLink as useAriaLink} from '@vue-aria/link';
 import {getItemId, listData, useListBox as useAriaListBox, useListBoxSection as useAriaListBoxSection, useOption as useAriaOption} from '@vue-aria/listbox';
 import {announce, clearAnnouncer, destroyAnnouncer} from '@vue-aria/live-announcer';
+import {useMenu as useAriaMenu, useMenuItem as useAriaMenuItem, useMenuSection, useMenuTrigger, useSubmenuTrigger} from '@vue-aria/menu';
 import {
   addWindowFocusTracking,
   setInteractionModality,
@@ -1207,6 +1208,66 @@ describe('Vue migration composition components', () => {
     expect(section.headingProps.value.role).toBe('presentation');
     expect(section.groupProps.value.role).toBe('group');
     expect(section.groupProps.value['aria-labelledby']).toBe(section.headingProps.value.id);
+  });
+
+  it('computes vue-aria menu trigger and item selection semantics', () => {
+    let openChanges: boolean[] = [];
+    let menuTrigger = useMenuTrigger({
+      onOpenChange: (isOpen) => {
+        openChanges.push(isOpen);
+      }
+    });
+    expect(menuTrigger.isOpen.value).toBe(false);
+    menuTrigger.menuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
+    expect(menuTrigger.isOpen.value).toBe(true);
+    menuTrigger.close();
+    expect(menuTrigger.isOpen.value).toBe(false);
+    expect(openChanges).toEqual([true, false]);
+
+    let actionEvents: string[] = [];
+    let selectedKeys = ref(new Set<string>());
+    let menu = useAriaMenu({
+      ariaLabel: 'Item actions',
+      onAction: (key) => {
+        actionEvents.push(String(key));
+      },
+      selectedKeys,
+      selectionMode: 'multiple'
+    });
+
+    let item = useAriaMenuItem({
+      key: 'duplicate',
+      onAction: (key) => {
+        actionEvents.push(`item:${String(key)}`);
+      }
+    }, menu);
+
+    expect(menu.menuProps.value.role).toBe('menu');
+    expect(menu.menuProps.value['aria-label']).toBe('Item actions');
+    expect(item.menuItemProps.value.role).toBe('menuitemcheckbox');
+
+    item.menuItemProps.value.onFocus();
+    expect(item.isFocused.value).toBe(true);
+    item.menuItemProps.value.onMouseDown();
+    expect(item.isPressed.value).toBe(true);
+    item.menuItemProps.value.onMouseUp();
+    expect(item.isPressed.value).toBe(false);
+    item.menuItemProps.value.onClick();
+    expect(selectedKeys.value.has('duplicate')).toBe(true);
+    expect(actionEvents).toEqual(['item:duplicate', 'duplicate']);
+
+    let section = useMenuSection({
+      heading: 'Edit options'
+    });
+    expect(section.groupProps.value.role).toBe('group');
+    expect(section.groupProps.value['aria-labelledby']).toBe(section.headingProps.value.id);
+
+    let submenuTrigger = useSubmenuTrigger();
+    expect(submenuTrigger.submenuTriggerProps.value['aria-haspopup']).toBe('menu');
+    submenuTrigger.submenuTriggerProps.value.onMouseEnter();
+    expect(submenuTrigger.isOpen.value).toBe(true);
+    submenuTrigger.submenuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
+    expect(submenuTrigger.isOpen.value).toBe(false);
   });
 
   it('announces and clears live region messages with vue-aria live announcer', () => {

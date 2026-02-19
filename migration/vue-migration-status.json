@@ -648,6 +648,30 @@
         }
       ]
     },
+    "@react-aria/menu": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/menu",
+      "targetPath": "packages/@vue-aria/menu",
+      "notes": "Foundational React Aria menu composables for menu trigger behavior, menu item selection semantics, section grouping, and submenu state in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria menu source lint",
+          "command": "yarn eslint packages/@vue-aria/menu/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",
