@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:27:04.552Z
+Generated: 2026-02-19T21:29:43.981Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 55
+* Fully matched packages: 56
 * Source exports inspected: 2672
-* Missing exports: 1328
-* Coverage ratio: 50.30%
+* Missing exports: 1174
+* Coverage ratio: 56.06%
 
 ## Package gaps
 
@@ -18,7 +18,6 @@ Generated: 2026-02-19T21:27:04.552Z
 | --- | --- | --- | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | missing | 543 | 503 | 7.4% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | missing | 325 | 314 | 3.4% |
-| `react-aria` | `vue-aria` | missing | 419 | 154 | 63.2% |
 | `@react-aria/dnd` | `@vue-aria/dnd` | missing | 62 | 58 | 6.5% |
 | `@react-spectrum/dnd` | `@vue-spectrum/dnd` | missing | 26 | 26 | 0.0% |
 | `@react-aria/overlays` | `@vue-aria/overlays` | missing | 39 | 24 | 38.5% |
@@ -168,6 +167,7 @@ Generated: 2026-02-19T21:27:04.552Z
 | `@react-stately/tree` | `@vue-stately/tree` | ok | 4 | 0 | 100.0% |
 | `@react-stately/utils` | `@vue-stately/utils` | ok | 4 | 0 | 100.0% |
 | `@react-stately/virtualizer` | `@vue-stately/virtualizer` | ok | 10 | 0 | 100.0% |
+| `react-aria` | `vue-aria` | ok | 419 | 0 | 100.0% |
 | `react-stately` | `vue-stately` | ok | 165 | 0 | 100.0% |
 | `tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | ok | 0 | 0 | 100.0% |
 
@@ -186,13 +186,6 @@ Generated: 2026-02-19T21:27:04.552Z
 * Target entry: `packages/@vue-spectrum/s2/src/index.ts`
 * Missing export count: 314
 * Missing exports: `Accordion`, `AccordionContext`, `AccordionItem`, `AccordionItemHeader`, `AccordionItemHeaderProps`, `AccordionItemPanel`, `AccordionItemPanelProps`, `AccordionItemProps`, `AccordionItemRenderProps`, `AccordionItemState`, `AccordionItemTitle`, `AccordionItemTitleProps`, `AccordionProps`, `ActionBar`, `ActionBarContext`, `ActionBarProps`, `ActionButton`, `ActionButtonContext`, `ActionButtonGroup`, `ActionButtonGroupContext`, `ActionButtonGroupProps`, `ActionButtonProps`, `ActionMenu`, `ActionMenuContext`, `ActionMenuProps`, `AlertDialog`, `AlertDialogProps`, `AssetCard`, `AssetCardProps`, `AsyncListData`, `Autocomplete`, `AutocompleteProps`, `Avatar`, `AvatarContext`, `AvatarGroup`, `AvatarGroupContext`, `AvatarGroupProps`, `AvatarProps`, `Badge`, `BadgeContext` ...
-
-### react-aria -> vue-aria
-
-* Source entry: `packages/react-aria/src/index.ts`
-* Target entry: `packages/vue-aria/src/index.ts`
-* Missing export count: 154
-* Missing exports: `AriaBreadcrumbItemProps`, `AriaBreadcrumbsProps`, `AriaButtonProps`, `AriaCalendarCellProps`, `AriaCalendarGridProps`, `AriaCalendarProps`, `AriaCheckboxGroupItemProps`, `AriaCheckboxGroupProps`, `AriaCheckboxProps`, `AriaColorAreaProps`, `AriaColorChannelFieldProps`, `AriaColorFieldProps`, `AriaColorSliderProps`, `AriaColorSwatchProps`, `AriaComboBoxProps`, `AriaDateFieldProps`, `AriaDatePickerProps`, `AriaDateRangePickerProps`, `AriaDialogProps`, `AriaDisclosureProps`, `AriaHiddenSelectProps`, `AriaListBoxProps`, `AriaMenuProps`, `AriaMeterProps`, `AriaModalOverlayProps`, `AriaNumberFieldProps`, `AriaOverlayProps`, `AriaPopoverProps`, `AriaPositionProps`, `AriaProgressBarProps`, `AriaRadioGroupProps`, `AriaRadioProps`, `AriaRangeCalendarProps`, `AriaSearchFieldProps`, `AriaSelectProps`, `AriaSliderProps`, `AriaSliderThumbProps`, `AriaSwitchProps`, `AriaTabListProps`, `AriaTabPanelProps` ...
 
 ### @react-aria/dnd -> @vue-aria/dnd
 
@@ -312,4 +305,11 @@ Generated: 2026-02-19T21:27:04.552Z
 * Target entry: `packages/@vue-spectrum/accordion/src/index.ts`
 * Missing export count: 4
 * Missing exports: `SpectrumAccordionProps`, `SpectrumDisclosurePanelProps`, `SpectrumDisclosureProps`, `SpectrumDisclosureTitleProps`
+
+### @react-spectrum/datepicker -> @vue-spectrum/datepicker
+
+* Source entry: `packages/@react-spectrum/datepicker/src/index.ts`
+* Target entry: `packages/@vue-spectrum/datepicker/src/index.ts`
+* Missing export count: 4
+* Missing exports: `SpectrumDateFieldProps`, `SpectrumDatePickerProps`, `SpectrumDateRangePickerProps`, `SpectrumTimeFieldProps`
 

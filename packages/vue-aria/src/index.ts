@@ -64,3 +64,4 @@ export * from '@vue-aria/tree';
 export * from '@vue-aria/utils';
 export * from '@vue-aria/virtualizer';
 export * from '@vue-aria/visually-hidden';
+export * from './compat';
