@@ -2824,6 +2824,30 @@
         }
       ]
     },
+    "@react-stately/combobox": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/combobox",
+      "targetPath": "packages/@vue-stately/combobox",
+      "notes": "State baseline for combobox filtering, selection, and menu trigger flow in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately combobox package source lint",
+          "command": "yarn eslint packages/@vue-stately/combobox/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-stately/collections": {
       "status": "in_progress",
       "targetPackage": "@vue-stately/collections",

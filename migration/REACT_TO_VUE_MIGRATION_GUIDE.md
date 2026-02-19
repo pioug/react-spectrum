@@ -139,6 +139,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-stately/autocomplete` | `@vue-stately/autocomplete` |
 | `@react-stately/calendar` | `@vue-stately/calendar` |
 | `@react-stately/checkbox` | `@vue-stately/checkbox` |
+| `@react-stately/combobox` | `@vue-stately/combobox` |
 | `@react-stately/collections` | `@vue-stately/collections` |
 | `@react-stately/color` | `@vue-stately/color` |
 

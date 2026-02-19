@@ -12969,6 +12969,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-stately/combobox@workspace:*, @vue-stately/combobox@workspace:packages/@vue-stately/combobox":
+  version: 0.0.0-use.local
+  resolution: "@vue-stately/combobox@workspace:packages/@vue-stately/combobox"
+  dependencies:
+    "@vue-aria/combobox": "workspace:*"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue/compiler-core@npm:3.5.28":
   version: 3.5.28
   resolution: "@vue/compiler-core@npm:3.5.28"
@@ -31869,6 +31879,7 @@ __metadata:
     "@vue-stately/checkbox": "workspace:*"
     "@vue-stately/collections": "workspace:*"
     "@vue-stately/color": "workspace:*"
+    "@vue-stately/combobox": "workspace:*"
     "@vue/test-utils": "npm:^2.4.6"
     jsdom: "npm:^26.0.0"
     typescript: "npm:^5.8.2"

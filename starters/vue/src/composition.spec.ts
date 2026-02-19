@@ -162,6 +162,7 @@ import {
 import {useAutocompleteState as useStatelyAutocompleteState} from '@vue-stately/autocomplete';
 import {useCalendarState as useStatelyCalendarState, useRangeCalendarState as useStatelyRangeCalendarState} from '@vue-stately/calendar';
 import {useCheckboxGroupState as useStatelyCheckboxGroupState} from '@vue-stately/checkbox';
+import {useComboBoxState as useStatelyComboBoxState} from '@vue-stately/combobox';
 import {
   compareNodeOrder as compareStatelyNodeOrder,
   getChildNodes as getStatelyChildNodes,
@@ -778,6 +779,33 @@ describe('Vue migration composition components', () => {
     inputValue.value = 'Custom value';
     comboBox.commit();
     expect(inputValue.value).toBe('One');
+  });
+
+  it('manages vue-stately combobox state for filtering, selection, and revert', () => {
+    let inputValue = ref('');
+    let selectedKey = ref<string | null>(null);
+    let state = useStatelyComboBoxState({
+      inputValue,
+      items: ['React', 'Vue', 'Svelte'],
+      selectedKey
+    });
+
+    state.open('first');
+    state.setFocused(true);
+    expect(state.isOpen.value).toBe(true);
+    expect(state.focusedKey.value).toBe('React');
+
+    state.setInputValue('vu');
+    expect(state.filteredCollection.value.map((item) => item.textValue)).toEqual(['Vue']);
+
+    state.setValue('Vue');
+    expect(selectedKey.value).toBe('Vue');
+    expect(state.selectedItem.value?.textValue).toBe('Vue');
+
+    state.setInputValue('temporary');
+    state.revert();
+    expect(inputValue.value).toBe('Vue');
+    expect(state.isFocused.value).toBe(true);
   });
 
   it('clamps vue-aria date field and time field values within min/max bounds', () => {
