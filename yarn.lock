@@ -12043,6 +12043,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/meter@workspace:*, @vue-aria/meter@workspace:packages/@vue-aria/meter":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/meter@workspace:packages/@vue-aria/meter"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31362,6 +31370,7 @@ __metadata:
     "@vue-aria/listbox": "workspace:*"
     "@vue-aria/live-announcer": "workspace:*"
     "@vue-aria/menu": "workspace:*"
+    "@vue-aria/meter": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"

@@ -53,6 +53,7 @@ import {useLink as useAriaLink} from '@vue-aria/link';
 import {getItemId, listData, useListBox as useAriaListBox, useListBoxSection as useAriaListBoxSection, useOption as useAriaOption} from '@vue-aria/listbox';
 import {announce, clearAnnouncer, destroyAnnouncer} from '@vue-aria/live-announcer';
 import {useMenu as useAriaMenu, useMenuItem as useAriaMenuItem, useMenuSection, useMenuTrigger, useSubmenuTrigger} from '@vue-aria/menu';
+import {useMeter as useAriaMeter} from '@vue-aria/meter';
 import {
   addWindowFocusTracking,
   setInteractionModality,
@@ -1268,6 +1269,41 @@ describe('Vue migration composition components', () => {
     expect(submenuTrigger.isOpen.value).toBe(true);
     submenuTrigger.submenuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
     expect(submenuTrigger.isOpen.value).toBe(false);
+  });
+
+  it('computes vue-aria meter range, labels, and value text', () => {
+    let meter = useAriaMeter({
+      label: 'Upload progress',
+      maxValue: 80,
+      minValue: 0,
+      value: 40
+    });
+
+    expect(meter.meterProps.value.role).toBe('meter progressbar');
+    expect(meter.meterProps.value['aria-valuemin']).toBe(0);
+    expect(meter.meterProps.value['aria-valuemax']).toBe(80);
+    expect(meter.meterProps.value['aria-valuenow']).toBe(40);
+    expect(meter.percentage.value).toBe(0.5);
+    expect(meter.meterProps.value['aria-valuetext']).toContain('50');
+    expect(meter.meterProps.value['aria-labelledby']).toBe(meter.labelProps.value.id);
+
+    let clampedMeter = useAriaMeter({
+      maxValue: 10,
+      minValue: 2,
+      value: 40
+    });
+    expect(clampedMeter.value.value).toBe(10);
+    expect(clampedMeter.meterProps.value['aria-valuenow']).toBe(10);
+
+    let explicitValueLabelMeter = useAriaMeter({
+      'aria-label': 'Storage meter',
+      maxValue: 10,
+      minValue: 0,
+      value: 3,
+      valueLabel: '3 of 10 GB'
+    });
+    expect(explicitValueLabelMeter.meterProps.value['aria-label']).toBe('Storage meter');
+    expect(explicitValueLabelMeter.meterProps.value['aria-valuetext']).toBe('3 of 10 GB');
   });
 
   it('announces and clears live region messages with vue-aria live announcer', () => {
