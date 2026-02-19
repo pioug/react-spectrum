@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T20:58:29.622Z",
+  "generatedAt": "2026-02-19T21:02:08.235Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 42,
+    "fullyMatchedPackages": 52,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 1515,
-    "parityCoverage": 0.433
+    "missingExportTotal": 1437,
+    "parityCoverage": 0.4622
   },
   "packages": [
     {
@@ -1945,38 +1945,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-spectrum/table",
-      "sourcePath": "packages/@react-spectrum/table",
-      "targetPackage": "@vue-spectrum/table",
-      "targetPath": "packages/@vue-spectrum/table",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/table/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/table/src/index.ts",
-      "sourceExportCount": 13,
-      "targetExportCount": 2,
-      "parityRatio": 0,
-      "missingExports": [
-        "Cell",
-        "CellProps",
-        "Column",
-        "Row",
-        "RowProps",
-        "Section",
-        "SpectrumColumnProps",
-        "SpectrumTableProps",
-        "TableBody",
-        "TableBodyProps",
-        "TableHeader",
-        "TableHeaderProps",
-        "TableView"
-      ],
-      "extraExports": [
-        "Table",
-        "VueTable"
-      ],
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/virtualizer",
       "sourcePath": "packages/@react-aria/virtualizer",
       "targetPackage": "@vue-aria/virtualizer",
@@ -2008,35 +1976,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-spectrum/menu",
-      "sourcePath": "packages/@react-spectrum/menu",
-      "targetPackage": "@vue-spectrum/menu",
-      "targetPath": "packages/@vue-spectrum/menu",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/menu/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/menu/src/index.ts",
-      "sourceExportCount": 12,
-      "targetExportCount": 2,
-      "parityRatio": 0.0833,
-      "missingExports": [
-        "ActionMenu",
-        "ContextualHelpTrigger",
-        "Item",
-        "MenuTrigger",
-        "Section",
-        "SpectrumActionMenuProps",
-        "SpectrumMenuDialogTriggerProps",
-        "SpectrumMenuProps",
-        "SpectrumMenuTriggerProps",
-        "SpectrumSubmenuTriggerProps",
-        "SubmenuTrigger"
-      ],
-      "extraExports": [
-        "VueMenu"
-      ],
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/datepicker",
       "sourcePath": "packages/@react-aria/datepicker",
       "targetPackage": "@vue-aria/datepicker",
@@ -2064,60 +2003,6 @@
         "AriaDateRangePickerOptions",
         "AriaTimeFieldOptions",
         "DateRangeValue"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/button",
-      "sourcePath": "packages/@react-spectrum/button",
-      "targetPackage": "@vue-spectrum/button",
-      "targetPath": "packages/@vue-spectrum/button",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/button/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/button/src/index.ts",
-      "sourceExportCount": 10,
-      "targetExportCount": 2,
-      "parityRatio": 0.1,
-      "missingExports": [
-        "ActionButton",
-        "ClearButton",
-        "FieldButton",
-        "LogicButton",
-        "SpectrumActionButtonProps",
-        "SpectrumButtonProps",
-        "SpectrumLogicButtonProps",
-        "SpectrumToggleButtonProps",
-        "ToggleButton"
-      ],
-      "extraExports": [
-        "VueButton"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/dialog",
-      "sourcePath": "packages/@react-spectrum/dialog",
-      "targetPackage": "@vue-spectrum/dialog",
-      "targetPath": "packages/@vue-spectrum/dialog",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/dialog/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/dialog/src/index.ts",
-      "sourceExportCount": 10,
-      "targetExportCount": 2,
-      "parityRatio": 0.1,
-      "missingExports": [
-        "AlertDialog",
-        "DialogContainer",
-        "DialogContainerValue",
-        "DialogTrigger",
-        "SpectrumAlertDialogProps",
-        "SpectrumDialogContainerProps",
-        "SpectrumDialogProps",
-        "SpectrumDialogTriggerProps",
-        "useDialogContainer"
-      ],
-      "extraExports": [
-        "VueDialog"
       ],
       "error": null
     },
@@ -2182,109 +2067,6 @@
         "AriaRangeCalendarOptions",
         "DateRange",
         "RangeCalendarAria"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/tree",
-      "sourcePath": "packages/@react-spectrum/tree",
-      "targetPackage": "@vue-spectrum/tree",
-      "targetPath": "packages/@vue-spectrum/tree",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/tree/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/tree/src/index.ts",
-      "sourceExportCount": 7,
-      "targetExportCount": 2,
-      "parityRatio": 0,
-      "missingExports": [
-        "Collection",
-        "SpectrumTreeViewItemContentProps",
-        "SpectrumTreeViewItemProps",
-        "SpectrumTreeViewProps",
-        "TreeView",
-        "TreeViewItem",
-        "TreeViewItemContent"
-      ],
-      "extraExports": [
-        "Tree",
-        "VueTree"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/view",
-      "sourcePath": "packages/@react-spectrum/view",
-      "targetPackage": "@vue-spectrum/view",
-      "targetPath": "packages/@vue-spectrum/view",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/view/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/view/src/index.ts",
-      "sourceExportCount": 8,
-      "targetExportCount": 2,
-      "parityRatio": 0.125,
-      "missingExports": [
-        "Content",
-        "ContentProps",
-        "Footer",
-        "FooterProps",
-        "Header",
-        "HeaderProps",
-        "ViewProps"
-      ],
-      "extraExports": [
-        "VueView"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/icon",
-      "sourcePath": "packages/@react-spectrum/icon",
-      "targetPackage": "@vue-spectrum/icon",
-      "targetPath": "packages/@vue-spectrum/icon",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/icon/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/icon/src/index.ts",
-      "sourceExportCount": 9,
-      "targetExportCount": 6,
-      "parityRatio": 0.3333,
-      "missingExports": [
-        "IconProps",
-        "IconPropsWithoutChildren",
-        "IllustrationProps",
-        "IllustrationPropsWithoutChildren",
-        "UIIconProps",
-        "UIIconPropsWithoutChildren"
-      ],
-      "extraExports": [
-        "VueIcon",
-        "VueIllustration",
-        "VueUIIcon"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/tabs",
-      "sourcePath": "packages/@react-spectrum/tabs",
-      "targetPackage": "@vue-spectrum/tabs",
-      "targetPath": "packages/@vue-spectrum/tabs",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/tabs/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/tabs/src/index.ts",
-      "sourceExportCount": 7,
-      "targetExportCount": 4,
-      "parityRatio": 0.1429,
-      "missingExports": [
-        "Item",
-        "SpectrumTabListProps",
-        "SpectrumTabPanelsProps",
-        "SpectrumTabsProps",
-        "TabList",
-        "TabPanels"
-      ],
-      "extraExports": [
-        "TabItemData",
-        "TabsValue",
-        "VueTabs"
       ],
       "error": null
     },
@@ -2378,52 +2160,6 @@
         "TableRowAria",
         "TableRowGroupAria",
         "TableSortDirection"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/listbox",
-      "sourcePath": "packages/@react-spectrum/listbox",
-      "targetPackage": "@vue-spectrum/listbox",
-      "targetPath": "packages/@vue-spectrum/listbox",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/listbox/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/listbox/src/index.ts",
-      "sourceExportCount": 6,
-      "targetExportCount": 2,
-      "parityRatio": 0.1667,
-      "missingExports": [
-        "Item",
-        "ListBoxBase",
-        "Section",
-        "SpectrumListBoxProps",
-        "useListBoxLayout"
-      ],
-      "extraExports": [
-        "VueListBox"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/text",
-      "sourcePath": "packages/@react-spectrum/text",
-      "targetPackage": "@vue-spectrum/text",
-      "targetPath": "packages/@vue-spectrum/text",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/text/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/text/src/index.ts",
-      "sourceExportCount": 6,
-      "targetExportCount": 2,
-      "parityRatio": 0.1667,
-      "missingExports": [
-        "Heading",
-        "HeadingProps",
-        "Keyboard",
-        "KeyboardProps",
-        "TextProps"
-      ],
-      "extraExports": [
-        "VueText"
       ],
       "error": null
     },
@@ -4443,6 +4179,93 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/button",
+      "sourcePath": "packages/@react-spectrum/button",
+      "targetPackage": "@vue-spectrum/button",
+      "targetPath": "packages/@vue-spectrum/button",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/button/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/button/src/index.ts",
+      "sourceExportCount": 10,
+      "targetExportCount": 11,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueButton"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/dialog",
+      "sourcePath": "packages/@react-spectrum/dialog",
+      "targetPackage": "@vue-spectrum/dialog",
+      "targetPath": "packages/@vue-spectrum/dialog",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/dialog/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/dialog/src/index.ts",
+      "sourceExportCount": 10,
+      "targetExportCount": 11,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueDialog"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/icon",
+      "sourcePath": "packages/@react-spectrum/icon",
+      "targetPackage": "@vue-spectrum/icon",
+      "targetPath": "packages/@vue-spectrum/icon",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/icon/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/icon/src/index.ts",
+      "sourceExportCount": 9,
+      "targetExportCount": 12,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueIcon",
+        "VueIllustration",
+        "VueUIIcon"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/listbox",
+      "sourcePath": "packages/@react-spectrum/listbox",
+      "targetPackage": "@vue-spectrum/listbox",
+      "targetPath": "packages/@vue-spectrum/listbox",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/listbox/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/listbox/src/index.ts",
+      "sourceExportCount": 6,
+      "targetExportCount": 7,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueListBox"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/menu",
+      "sourcePath": "packages/@react-spectrum/menu",
+      "targetPackage": "@vue-spectrum/menu",
+      "targetPath": "packages/@vue-spectrum/menu",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/menu/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/menu/src/index.ts",
+      "sourceExportCount": 12,
+      "targetExportCount": 13,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueMenu"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/story-utils",
       "sourcePath": "packages/@react-spectrum/story-utils",
       "targetPackage": "@vue-spectrum/story-utils",
@@ -4475,6 +4298,43 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/table",
+      "sourcePath": "packages/@react-spectrum/table",
+      "targetPackage": "@vue-spectrum/table",
+      "targetPath": "packages/@vue-spectrum/table",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/table/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/table/src/index.ts",
+      "sourceExportCount": 13,
+      "targetExportCount": 15,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "Table",
+        "VueTable"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/tabs",
+      "sourcePath": "packages/@react-spectrum/tabs",
+      "targetPackage": "@vue-spectrum/tabs",
+      "targetPath": "packages/@vue-spectrum/tabs",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/tabs/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/tabs/src/index.ts",
+      "sourceExportCount": 7,
+      "targetExportCount": 10,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "TabItemData",
+        "TabsValue",
+        "VueTabs"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/test-utils",
       "sourcePath": "packages/@react-spectrum/test-utils",
       "targetPackage": "@vue-spectrum/test-utils",
@@ -4487,6 +4347,23 @@
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/text",
+      "sourcePath": "packages/@react-spectrum/text",
+      "targetPackage": "@vue-spectrum/text",
+      "targetPath": "packages/@vue-spectrum/text",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/text/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/text/src/index.ts",
+      "sourceExportCount": 6,
+      "targetExportCount": 7,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueText"
+      ],
       "error": null
     },
     {
@@ -4557,6 +4434,41 @@
       "extraExports": [
         "SpectrumTheme",
         "SpectrumThemeSection"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/tree",
+      "sourcePath": "packages/@react-spectrum/tree",
+      "targetPackage": "@vue-spectrum/tree",
+      "targetPath": "packages/@vue-spectrum/tree",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/tree/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/tree/src/index.ts",
+      "sourceExportCount": 7,
+      "targetExportCount": 9,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "Tree",
+        "VueTree"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/view",
+      "sourcePath": "packages/@react-spectrum/view",
+      "targetPackage": "@vue-spectrum/view",
+      "targetPath": "packages/@vue-spectrum/view",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/view/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/view/src/index.ts",
+      "sourceExportCount": 8,
+      "targetExportCount": 9,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueView"
       ],
       "error": null
     },

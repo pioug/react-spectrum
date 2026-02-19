@@ -28,7 +28,7 @@ This roadmap tracks the work needed to reach:
 
 ### Phase 2: Baseline measurement
 
-1. [ ] Generate initial API parity baseline report.
+1. [x] Generate initial API parity baseline report.
 2. [ ] Generate initial visual parity baseline report.
 3. [ ] Rank gaps by severity and package dependency depth.
 
@@ -53,4 +53,7 @@ This roadmap tracks the work needed to reach:
 ## Current status
 
 * API parity infrastructure is implemented.
+* API baseline is generated and continuously updated by `yarn vue:parity:api:report`.
+* Current API coverage: `46.22%` (`2672` source exports, `1437` missing exports, `52` fully matched packages).
+* Vue migration test suite is passing (`181` tests via `yarn test:vue`).
 * API parity closure and visual parity closure are still in progress.

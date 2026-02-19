@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T20:58:29.622Z
+Generated: 2026-02-19T21:02:08.235Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 42
+* Fully matched packages: 52
 * Source exports inspected: 2672
-* Missing exports: 1515
-* Coverage ratio: 43.30%
+* Missing exports: 1437
+* Coverage ratio: 46.22%
 
 ## Package gaps
 
@@ -27,23 +27,13 @@ Generated: 2026-02-19T20:58:29.622Z
 | `@react-spectrum/utils` | `@vue-spectrum/utils` | missing | 31 | 23 | 25.8% |
 | `@react-aria/focus` | `@vue-aria/focus` | missing | 26 | 21 | 19.2% |
 | `@react-stately/table` | `@vue-stately/table` | missing | 25 | 20 | 20.0% |
-| `@react-spectrum/table` | `@vue-spectrum/table` | missing | 13 | 13 | 0.0% |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` | missing | 11 | 11 | 0.0% |
-| `@react-spectrum/menu` | `@vue-spectrum/menu` | missing | 12 | 11 | 8.3% |
 | `@react-aria/datepicker` | `@vue-aria/datepicker` | missing | 18 | 10 | 44.4% |
-| `@react-spectrum/button` | `@vue-spectrum/button` | missing | 10 | 9 | 10.0% |
-| `@react-spectrum/dialog` | `@vue-spectrum/dialog` | missing | 10 | 9 | 10.0% |
 | `@react-spectrum/color` | `@vue-spectrum/color` | missing | 21 | 8 | 61.9% |
 | `@react-aria/calendar` | `@vue-aria/calendar` | missing | 14 | 7 | 50.0% |
-| `@react-spectrum/tree` | `@vue-spectrum/tree` | missing | 7 | 7 | 0.0% |
-| `@react-spectrum/view` | `@vue-spectrum/view` | missing | 8 | 7 | 12.5% |
-| `@react-spectrum/icon` | `@vue-spectrum/icon` | missing | 9 | 6 | 33.3% |
-| `@react-spectrum/tabs` | `@vue-spectrum/tabs` | missing | 7 | 6 | 14.3% |
 | `@react-aria/color` | `@vue-aria/color` | missing | 20 | 5 | 75.0% |
 | `@react-aria/interactions` | `@vue-aria/interactions` | missing | 60 | 5 | 91.7% |
 | `@react-aria/table` | `@vue-aria/table` | missing | 23 | 5 | 78.3% |
-| `@react-spectrum/listbox` | `@vue-spectrum/listbox` | missing | 6 | 5 | 16.7% |
-| `@react-spectrum/text` | `@vue-spectrum/text` | missing | 6 | 5 | 16.7% |
 | `@react-aria/autocomplete` | `@vue-aria/autocomplete` | missing | 10 | 4 | 60.0% |
 | `@react-aria/button` | `@vue-aria/button` | missing | 11 | 4 | 63.6% |
 | `@react-aria/select` | `@vue-aria/select` | missing | 8 | 4 | 50.0% |
@@ -141,13 +131,23 @@ Generated: 2026-02-19T20:58:29.622Z
 | `@react-aria/selection` | `@vue-aria/selection` | ok | 15 | 0 | 100.0% |
 | `@react-aria/ssr` | `@vue-aria/ssr` | ok | 4 | 0 | 100.0% |
 | `@react-aria/test-utils` | `@vue-aria/test-utils` | ok | 17 | 0 | 100.0% |
+| `@react-spectrum/button` | `@vue-spectrum/button` | ok | 10 | 0 | 100.0% |
+| `@react-spectrum/dialog` | `@vue-spectrum/dialog` | ok | 10 | 0 | 100.0% |
+| `@react-spectrum/icon` | `@vue-spectrum/icon` | ok | 9 | 0 | 100.0% |
+| `@react-spectrum/listbox` | `@vue-spectrum/listbox` | ok | 6 | 0 | 100.0% |
+| `@react-spectrum/menu` | `@vue-spectrum/menu` | ok | 12 | 0 | 100.0% |
 | `@react-spectrum/story-utils` | `@vue-spectrum/story-utils` | ok | 2 | 0 | 100.0% |
 | `@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | ok | 6 | 0 | 100.0% |
+| `@react-spectrum/table` | `@vue-spectrum/table` | ok | 13 | 0 | 100.0% |
+| `@react-spectrum/tabs` | `@vue-spectrum/tabs` | ok | 7 | 0 | 100.0% |
 | `@react-spectrum/test-utils` | `@vue-spectrum/test-utils` | ok | 19 | 0 | 100.0% |
+| `@react-spectrum/text` | `@vue-spectrum/text` | ok | 6 | 0 | 100.0% |
 | `@react-spectrum/theme-dark` | `@vue-spectrum/theme-dark` | ok | 1 | 0 | 100.0% |
 | `@react-spectrum/theme-default` | `@vue-spectrum/theme-default` | ok | 1 | 0 | 100.0% |
 | `@react-spectrum/theme-express` | `@vue-spectrum/theme-express` | ok | 1 | 0 | 100.0% |
 | `@react-spectrum/theme-light` | `@vue-spectrum/theme-light` | ok | 1 | 0 | 100.0% |
+| `@react-spectrum/tree` | `@vue-spectrum/tree` | ok | 7 | 0 | 100.0% |
+| `@react-spectrum/view` | `@vue-spectrum/view` | ok | 8 | 0 | 100.0% |
 | `@react-stately/calendar` | `@vue-stately/calendar` | ok | 6 | 0 | 100.0% |
 | `@react-stately/collections` | `@vue-stately/collections` | ok | 11 | 0 | 100.0% |
 | `@react-stately/combobox` | `@vue-stately/combobox` | ok | 3 | 0 | 100.0% |
@@ -250,13 +250,6 @@ Generated: 2026-02-19T20:58:29.622Z
 * Missing export count: 20
 * Missing exports: `Cell`, `CellProps`, `CollectionBuilderContext`, `Column`, `ColumnProps`, `Row`, `RowProps`, `Section`, `TableBody`, `TableBodyProps`, `TableColumnLayout`, `TableColumnResizeState`, `TableColumnResizeStateProps`, `TableHeader`, `TableHeaderProps`, `TreeGridState`, `TreeGridStateProps`, `UNSTABLE_useTreeGridState`, `buildHeaderRows`, `useTableColumnResizeState`
 
-### @react-spectrum/table -> @vue-spectrum/table
-
-* Source entry: `packages/@react-spectrum/table/src/index.ts`
-* Target entry: `packages/@vue-spectrum/table/src/index.ts`
-* Missing export count: 13
-* Missing exports: `Cell`, `CellProps`, `Column`, `Row`, `RowProps`, `Section`, `SpectrumColumnProps`, `SpectrumTableProps`, `TableBody`, `TableBodyProps`, `TableHeader`, `TableHeaderProps`, `TableView`
-
 ### @react-aria/virtualizer -> @vue-aria/virtualizer
 
 * Source entry: `packages/@react-aria/virtualizer/src/index.ts`
@@ -264,33 +257,12 @@ Generated: 2026-02-19T20:58:29.622Z
 * Missing export count: 11
 * Missing exports: `RTLOffsetType`, `ScrollView`, `Virtualizer`, `VirtualizerItem`, `VirtualizerItemOptions`, `getRTLOffsetType`, `getScrollLeft`, `layoutInfoToStyle`, `setScrollLeft`, `useScrollView`, `useVirtualizerItem`
 
-### @react-spectrum/menu -> @vue-spectrum/menu
-
-* Source entry: `packages/@react-spectrum/menu/src/index.ts`
-* Target entry: `packages/@vue-spectrum/menu/src/index.ts`
-* Missing export count: 11
-* Missing exports: `ActionMenu`, `ContextualHelpTrigger`, `Item`, `MenuTrigger`, `Section`, `SpectrumActionMenuProps`, `SpectrumMenuDialogTriggerProps`, `SpectrumMenuProps`, `SpectrumMenuTriggerProps`, `SpectrumSubmenuTriggerProps`, `SubmenuTrigger`
-
 ### @react-aria/datepicker -> @vue-aria/datepicker
 
 * Source entry: `packages/@react-aria/datepicker/src/index.ts`
 * Target entry: `packages/@vue-aria/datepicker/src/index.ts`
 * Missing export count: 10
 * Missing exports: `AriaDateFieldProps`, `AriaDatePickerProps`, `AriaDateRangePickerProps`, `AriaTimeFieldProps`, `DateRange`, `DateSegmentAria`, `DateValue`, `TimeValue`, `useDateSegment`, `useDisplayNames`
-
-### @react-spectrum/button -> @vue-spectrum/button
-
-* Source entry: `packages/@react-spectrum/button/src/index.ts`
-* Target entry: `packages/@vue-spectrum/button/src/index.ts`
-* Missing export count: 9
-* Missing exports: `ActionButton`, `ClearButton`, `FieldButton`, `LogicButton`, `SpectrumActionButtonProps`, `SpectrumButtonProps`, `SpectrumLogicButtonProps`, `SpectrumToggleButtonProps`, `ToggleButton`
-
-### @react-spectrum/dialog -> @vue-spectrum/dialog
-
-* Source entry: `packages/@react-spectrum/dialog/src/index.ts`
-* Target entry: `packages/@vue-spectrum/dialog/src/index.ts`
-* Missing export count: 9
-* Missing exports: `AlertDialog`, `DialogContainer`, `DialogContainerValue`, `DialogTrigger`, `SpectrumAlertDialogProps`, `SpectrumDialogContainerProps`, `SpectrumDialogProps`, `SpectrumDialogTriggerProps`, `useDialogContainer`
 
 ### @react-spectrum/color -> @vue-spectrum/color
 
@@ -306,10 +278,38 @@ Generated: 2026-02-19T20:58:29.622Z
 * Missing export count: 7
 * Missing exports: `AriaCalendarCellProps`, `AriaCalendarGridProps`, `AriaCalendarProps`, `AriaRangeCalendarProps`, `CalendarProps`, `DateValue`, `RangeCalendarProps`
 
-### @react-spectrum/tree -> @vue-spectrum/tree
+### @react-aria/color -> @vue-aria/color
 
-* Source entry: `packages/@react-spectrum/tree/src/index.ts`
-* Target entry: `packages/@vue-spectrum/tree/src/index.ts`
-* Missing export count: 7
-* Missing exports: `Collection`, `SpectrumTreeViewItemContentProps`, `SpectrumTreeViewItemProps`, `SpectrumTreeViewProps`, `TreeView`, `TreeViewItem`, `TreeViewItemContent`
+* Source entry: `packages/@react-aria/color/src/index.ts`
+* Target entry: `packages/@vue-aria/color/src/index.ts`
+* Missing export count: 5
+* Missing exports: `AriaColorAreaProps`, `AriaColorChannelFieldProps`, `AriaColorFieldProps`, `AriaColorSliderProps`, `AriaColorSwatchProps`
+
+### @react-aria/interactions -> @vue-aria/interactions
+
+* Source entry: `packages/@react-aria/interactions/src/index.ts`
+* Target entry: `packages/@vue-aria/interactions/src/index.ts`
+* Missing export count: 5
+* Missing exports: `FocusEvents`, `HoverEvents`, `KeyboardEvents`, `MoveEvent`, `PressEvents`
+
+### @react-aria/table -> @vue-aria/table
+
+* Source entry: `packages/@react-aria/table/src/index.ts`
+* Target entry: `packages/@vue-aria/table/src/index.ts`
+* Missing export count: 5
+* Missing exports: `AriaTableProps`, `AriaTableSelectionCheckboxProps`, `GridAria`, `GridRowAria`, `GridRowProps`
+
+### @react-aria/autocomplete -> @vue-aria/autocomplete
+
+* Source entry: `packages/@react-aria/autocomplete/src/index.ts`
+* Target entry: `packages/@vue-aria/autocomplete/src/index.ts`
+* Missing export count: 4
+* Missing exports: `AriaAutocompleteProps`, `AriaSearchAutocompleteProps`, `CollectionOptions`, `InputProps`
+
+### @react-aria/button -> @vue-aria/button
+
+* Source entry: `packages/@react-aria/button/src/index.ts`
+* Target entry: `packages/@vue-aria/button/src/index.ts`
+* Missing export count: 4
+* Missing exports: `AriaButtonProps`, `AriaToggleButtonGroupItemProps`, `AriaToggleButtonGroupProps`, `AriaToggleButtonProps`
 
