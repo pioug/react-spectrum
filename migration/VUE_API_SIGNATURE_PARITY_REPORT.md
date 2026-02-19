@@ -1,19 +1,19 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-19T23:41:32.294Z
+Generated: 2026-02-19T23:46:14.294Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 87
+* Fully matched packages: 88
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 2052
-* Mismatched signatures: 620
+* Matched signatures: 2058
+* Mismatched signatures: 614
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 76.80%
+* Signature coverage ratio: 77.02%
 
 ## Package gaps
 
@@ -22,7 +22,6 @@ Generated: 2026-02-19T23:41:32.294Z
 | `react-aria-components` | `@vue-spectrum/components` | mismatch | 543 | 299 | 0 | 44.9% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | mismatch | 325 | 134 | 0 | 58.8% |
 | `react-aria` | `vue-aria` | mismatch | 419 | 60 | 0 | 85.7% |
-| `@react-aria/grid` | `@vue-aria/grid` | mismatch | 20 | 6 | 0 | 70.0% |
 | `@react-aria/i18n` | `@vue-aria/i18n` | mismatch | 19 | 6 | 0 | 68.4% |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` | mismatch | 11 | 6 | 0 | 45.5% |
 | `@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | mismatch | 6 | 6 | 0 | 0.0% |
@@ -90,6 +89,7 @@ Generated: 2026-02-19T23:41:32.294Z
 | `@react-aria/dnd` | `@vue-aria/dnd` | ok | 62 | 0 | 0 | 100.0% |
 | `@react-aria/example-theme` | `@vue-aria/example-theme` | ok | 0 | 0 | 0 | 100.0% |
 | `@react-aria/focus` | `@vue-aria/focus` | ok | 26 | 0 | 0 | 100.0% |
+| `@react-aria/grid` | `@vue-aria/grid` | ok | 20 | 0 | 0 | 100.0% |
 | `@react-aria/interactions` | `@vue-aria/interactions` | ok | 60 | 0 | 0 | 100.0% |
 | `@react-aria/label` | `@vue-aria/label` | ok | 6 | 0 | 0 | 100.0% |
 | `@react-aria/live-announcer` | `@vue-aria/live-announcer` | ok | 3 | 0 | 0 | 100.0% |
@@ -202,15 +202,6 @@ Generated: 2026-02-19T23:41:32.294Z
 * Mismatched signatures: 60
 * Missing in target: 0
 * Example mismatches: `useBreadcrumbItem [call-signatures]`, `useBreadcrumbs [call-signatures]`, `useButton [call-signatures]`, `useToggleButton [call-signatures]`, `useToggleButtonGroup [call-signatures]`, `useToggleButtonGroupItem [call-signatures]`, `useCalendar [call-signatures]`, `useCalendarCell [call-signatures]`, `useCalendarGrid [call-signatures]`, `useRangeCalendar [call-signatures]`, `useCheckbox [call-signatures]`, `useCheckboxGroup [call-signatures]`, `useCheckboxGroupItem [call-signatures]`, `useComboBox [call-signatures]`, `useDateField [call-signatures]`, `useTimeField [call-signatures]`, `useDialog [call-signatures]`, `useDisclosure [call-signatures]`, `useLocalizedStringFormatter [call-signatures]`, `useNumberFormatter [call-signatures]`, `useListFormatter [call-signatures]`, `useGridList [call-signatures]`, `useGridListItem [call-signatures]`, `useGridListSection [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]` ...
-
-### @react-aria/grid -> @vue-aria/grid
-
-* Source entry: `packages/@react-aria/grid/src/index.ts`
-* Target entry: `packages/@vue-aria/grid/src/index.ts`
-* Compared exports: 20
-* Mismatched signatures: 6
-* Missing in target: 0
-* Example mismatches: `useGrid [call-signatures]`, `useGridRow [call-signatures]`, `useGridCell [call-signatures]`, `useGridSelectionCheckbox [call-signatures]`, `useHighlightSelectionDescription [call-signatures]`, `useGridSelectionAnnouncement [call-signatures]`
 
 ### @react-aria/i18n -> @vue-aria/i18n
 
@@ -355,4 +346,13 @@ Generated: 2026-02-19T23:41:32.294Z
 * Mismatched signatures: 2
 * Missing in target: 0
 * Example mismatches: `useDateField [call-signatures]`, `useTimeField [call-signatures]`
+
+### @react-aria/radio -> @vue-aria/radio
+
+* Source entry: `packages/@react-aria/radio/src/index.ts`
+* Target entry: `packages/@vue-aria/radio/src/index.ts`
+* Compared exports: 7
+* Mismatched signatures: 2
+* Missing in target: 0
+* Example mismatches: `useRadio [call-signatures]`, `useRadioGroup [call-signatures]`
 

@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-19T23:41:32.294Z",
+  "generatedAt": "2026-02-19T23:46:14.294Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 87,
+    "fullyMatchedPackages": 88,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 2052,
-    "mismatchedExportTotal": 620,
+    "matchedExportTotal": 2058,
+    "mismatchedExportTotal": 614,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.768
+    "parityCoverage": 0.7702
   },
   "packages": [
     {
@@ -7897,248 +7897,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-aria/grid",
-      "sourcePath": "packages/@react-aria/grid",
-      "targetPackage": "@vue-aria/grid",
-      "targetPath": "packages/@vue-aria/grid",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/grid/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/grid/src/index.ts",
-      "sourceExportCount": 20,
-      "comparedExportCount": 20,
-      "matchedExportCount": 14,
-      "mismatchedExportCount": 6,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.7,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useGrid",
-          "targetExportName": "useGrid",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useGrid",
-            "resolvedName": "useGrid",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: GridProps, state: GridState<T, GridCollection<T>>, ref: RefObject<HTMLElement | null>) => GridAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: GridProps, _: GridState<T, GridCollection<T>>, _: RefObject<HTMLElement | null>) => GridAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useGrid",
-            "resolvedName": "useGrid",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaGridOptions) => GridAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaGridOptions) => GridAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useGridRow",
-          "targetExportName": "useGridRow",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useGridRow",
-            "resolvedName": "useGridRow",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T, C extends GridCollection<T>, S extends GridState<T, C>>(props: GridRowProps<T>, state: S, ref: RefObject<FocusableElement | null>) => GridRowAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T, C extends GridCollection<T>, S extends GridState<T, C>>( _: GridRowProps<T>, _: S, _: RefObject<FocusableElement | null>) => GridRowAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useGridRow",
-            "resolvedName": "useGridRow",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: GridRowProps) => GridRowAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: GridRowProps) => GridRowAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useGridCell",
-          "targetExportName": "useGridCell",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useGridCell",
-            "resolvedName": "useGridCell",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T, C extends GridCollection<T>>(props: GridCellProps, state: GridState<T, C>, ref: RefObject<FocusableElement | null>) => GridCellAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T, C extends GridCollection<T>>( _: GridCellProps, _: GridState<T, C>, _: RefObject<FocusableElement | null>) => GridCellAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useGridCell",
-            "resolvedName": "useGridCell",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: GridCellProps) => GridCellAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: GridCellProps) => GridCellAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useGridSelectionCheckbox",
-          "targetExportName": "useGridSelectionCheckbox",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useGridSelectionCheckbox",
-            "resolvedName": "useGridSelectionCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T, C extends GridCollection<T>>(props: AriaGridSelectionCheckboxProps, state: GridState<T, C>) => GridSelectionCheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T, C extends GridCollection<T>>( _: AriaGridSelectionCheckboxProps, _: GridState<T, C>) => GridSelectionCheckboxAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useGridSelectionCheckbox",
-            "resolvedName": "useGridSelectionCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaGridSelectionCheckboxProps) => GridSelectionCheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaGridSelectionCheckboxProps) => GridSelectionCheckboxAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useHighlightSelectionDescription",
-          "targetExportName": "useHighlightSelectionDescription",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useHighlightSelectionDescription",
-            "resolvedName": "useHighlightSelectionDescription",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: HighlightSelectionDescriptionProps) => AriaLabelingProps",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: HighlightSelectionDescriptionProps) => AriaLabelingProps"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useHighlightSelectionDescription",
-            "resolvedName": "useHighlightSelectionDescription",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props?: HighlightSelectionDescriptionProps) => HighlightSelectionDescriptionAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: HighlightSelectionDescriptionProps) => HighlightSelectionDescriptionAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useGridSelectionAnnouncement",
-          "targetExportName": "useGridSelectionAnnouncement",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useGridSelectionAnnouncement",
-            "resolvedName": "useGridSelectionAnnouncement",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: GridSelectionAnnouncementProps, state: GridSelectionState<T>) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: GridSelectionAnnouncementProps, _: GridSelectionState<T>) => void"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useGridSelectionAnnouncement",
-            "resolvedName": "useGridSelectionAnnouncement",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: GridSelectionAnnouncementProps, state: GridSelectionAnnouncementState) => GridSelectionAnnouncementAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: GridSelectionAnnouncementProps, _: GridSelectionAnnouncementState) => GridSelectionAnnouncementAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/i18n",
       "sourcePath": "packages/@react-aria/i18n",
       "targetPackage": "@vue-aria/i18n",
@@ -13930,6 +13688,25 @@
       "sourceExportCount": 26,
       "comparedExportCount": 26,
       "matchedExportCount": 26,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/grid",
+      "sourcePath": "packages/@react-aria/grid",
+      "targetPackage": "@vue-aria/grid",
+      "targetPath": "packages/@vue-aria/grid",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/grid/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/grid/src/index.ts",
+      "sourceExportCount": 20,
+      "comparedExportCount": 20,
+      "matchedExportCount": 20,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,

@@ -1,17 +1,118 @@
-export {GridKeyboardDelegate} from './GridKeyboardDelegate';
+import {GridKeyboardDelegate} from './GridKeyboardDelegate';
+import {useGrid as useGridInternal, type AriaGridOptions, type GridAria, type GridElementProps, type GridProps} from './useGrid';
+import {useGridCell as useGridCellInternal, type GridCellAria, type GridCellProps} from './useGridCell';
+import {useGridRow as useGridRowInternal, type GridRowAria, type GridRowProps} from './useGridRow';
+import {useGridRowGroup, type GridRowGroupAria} from './useGridRowGroup';
+import {
+  useGridSelectionAnnouncement as useGridSelectionAnnouncementInternal,
+  type GridSelectionAnnouncementAria,
+  type GridSelectionAnnouncementProps,
+  type GridSelectionAnnouncementState
+} from './useGridSelectionAnnouncement';
+import {useGridSelectionCheckbox as useGridSelectionCheckboxInternal, type AriaGridSelectionCheckboxProps, type GridSelectionCheckboxAria} from './useGridSelectionCheckbox';
+import {useHighlightSelectionDescription as useHighlightSelectionDescriptionInternal, type HighlightSelectionDescriptionAria, type HighlightSelectionDescriptionProps} from './useHighlightSelectionDescription';
+import type {GridCellNode, GridCollection as VueGridCollection, GridKey, GridRowNode, GridSelectionBehavior, GridSelectionMode, MaybeRef} from './types';
+import type {GridState} from '@vue-stately/grid';
+
+type RefObject<T> = {
+  current: T
+};
+
+type FocusableElement = Element;
+type AriaLabelingProps = Record<string, unknown>;
+type GridCollection<T> = VueGridCollection & {
+  _itemType?: T
+};
+type GridSelectionState<T> = GridSelectionAnnouncementState & {
+  selectedKeys?: Set<GridKey>,
+  _itemType?: T
+};
+
+export {GridKeyboardDelegate};
 export type {GridKeyboardDelegateOptions} from './GridKeyboardDelegate';
-export {useGrid} from './useGrid';
-export type {AriaGridOptions, GridAria, GridElementProps, GridProps} from './useGrid';
-export {useGridCell} from './useGridCell';
-export type {GridCellAria, GridCellProps} from './useGridCell';
-export {useGridRow} from './useGridRow';
-export type {GridRowAria, GridRowProps} from './useGridRow';
-export {useGridRowGroup} from './useGridRowGroup';
-export type {GridRowGroupAria} from './useGridRowGroup';
-export {useGridSelectionAnnouncement} from './useGridSelectionAnnouncement';
-export type {GridSelectionAnnouncementAria, GridSelectionAnnouncementProps, GridSelectionAnnouncementState} from './useGridSelectionAnnouncement';
-export {useGridSelectionCheckbox} from './useGridSelectionCheckbox';
-export type {AriaGridSelectionCheckboxProps, GridSelectionCheckboxAria} from './useGridSelectionCheckbox';
-export {useHighlightSelectionDescription} from './useHighlightSelectionDescription';
-export type {HighlightSelectionDescriptionAria, HighlightSelectionDescriptionProps} from './useHighlightSelectionDescription';
-export type {GridCellNode, GridCollection, GridKey, GridRowNode, GridSelectionBehavior, GridSelectionMode, MaybeRef} from './types';
+export {useGridRowGroup};
+export type {
+  AriaGridOptions,
+  GridAria,
+  GridElementProps,
+  GridProps,
+  GridCellAria,
+  GridCellProps,
+  GridRowAria,
+  GridRowProps,
+  GridRowGroupAria,
+  GridSelectionAnnouncementAria,
+  GridSelectionAnnouncementProps,
+  GridSelectionAnnouncementState,
+  AriaGridSelectionCheckboxProps,
+  GridSelectionCheckboxAria,
+  HighlightSelectionDescriptionAria,
+  HighlightSelectionDescriptionProps,
+  GridCellNode,
+  VueGridCollection as GridCollection,
+  GridKey,
+  GridRowNode,
+  GridSelectionBehavior,
+  GridSelectionMode,
+  MaybeRef
+};
+
+export function useGrid<T>(
+  props: GridProps,
+  state: GridState<T, GridCollection<T>>,
+  ref: RefObject<HTMLElement | null>
+): GridAria;
+export function useGrid(options: AriaGridOptions): GridAria;
+export function useGrid(options: AriaGridOptions): GridAria {
+  return useGridInternal(options);
+}
+
+export function useGridRow<T, C extends GridCollection<T>, S extends GridState<T, C>>(
+  props: GridRowProps<T>,
+  state: S,
+  ref: RefObject<FocusableElement | null>
+): GridRowAria;
+export function useGridRow(props: GridRowProps): GridRowAria;
+export function useGridRow(props: GridRowProps): GridRowAria {
+  return useGridRowInternal(props);
+}
+
+export function useGridCell<T, C extends GridCollection<T>>(
+  props: GridCellProps,
+  state: GridState<T, C>,
+  ref: RefObject<FocusableElement | null>
+): GridCellAria;
+export function useGridCell(props: GridCellProps): GridCellAria;
+export function useGridCell(props: GridCellProps): GridCellAria {
+  return useGridCellInternal(props);
+}
+
+export function useGridSelectionCheckbox<T, C extends GridCollection<T>>(
+  props: AriaGridSelectionCheckboxProps,
+  state: GridState<T, C>
+): GridSelectionCheckboxAria;
+export function useGridSelectionCheckbox(props: AriaGridSelectionCheckboxProps): GridSelectionCheckboxAria;
+export function useGridSelectionCheckbox(props: AriaGridSelectionCheckboxProps): GridSelectionCheckboxAria {
+  return useGridSelectionCheckboxInternal(props);
+}
+
+export function useHighlightSelectionDescription(props: HighlightSelectionDescriptionProps): AriaLabelingProps;
+export function useHighlightSelectionDescription(props: HighlightSelectionDescriptionProps): HighlightSelectionDescriptionAria;
+export function useHighlightSelectionDescription(props: HighlightSelectionDescriptionProps): HighlightSelectionDescriptionAria {
+  return useHighlightSelectionDescriptionInternal(props);
+}
+
+export function useGridSelectionAnnouncement<T>(
+  props: GridSelectionAnnouncementProps,
+  state: GridSelectionState<T>
+): void;
+export function useGridSelectionAnnouncement(
+  props: GridSelectionAnnouncementProps,
+  state: GridSelectionAnnouncementState
+): GridSelectionAnnouncementAria;
+export function useGridSelectionAnnouncement(
+  props: GridSelectionAnnouncementProps,
+  state: GridSelectionAnnouncementState
+): GridSelectionAnnouncementAria {
+  return useGridSelectionAnnouncementInternal(props, state);
+}
