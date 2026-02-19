@@ -46,6 +46,7 @@ Phase 1 is implemented:
   * `@react-spectrum/listbox` -> `@vue-spectrum/listbox` (`in_progress`)
 * Started data-heavy migration:
   * `@react-spectrum/table` -> `@vue-spectrum/table` (`in_progress`)
+  * `@react-spectrum/tree` -> `@vue-spectrum/tree` (`in_progress`)
 
 ## Migration phases
 

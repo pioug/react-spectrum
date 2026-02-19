@@ -20,6 +20,7 @@ import {VueStatusLight} from './components/VueStatusLight';
 import {VueSwitch} from './components/VueSwitch';
 import {VueTable} from './components/VueTable';
 import {VueTextField} from './components/VueTextField';
+import {VueTree} from './components/VueTree';
 
 export const VueSpectrumPlugin: Plugin = {
   install(app: App) {
@@ -45,8 +46,9 @@ export const VueSpectrumPlugin: Plugin = {
     app.component(VueSwitch.name ?? 'VueSwitch', VueSwitch);
     app.component(VueTable.name ?? 'VueTable', VueTable);
     app.component(VueTextField.name ?? 'VueTextField', VueTextField);
+    app.component(VueTree.name ?? 'VueTree', VueTree);
   }
 };
 
-export {VueButton, VueCheckbox, VueComboBox, VueDialog, VueDivider, VueForm, VueLink, VueListBox, VueMenu, VueMeter, VueNumberField, VuePopover, VueProgressBar, VueRadio, VueRadioGroup, VueSearchField, VueSlider, VueSpectrumProvider, VueStatusLight, VueSwitch, VueTable, VueTextField};
+export {VueButton, VueCheckbox, VueComboBox, VueDialog, VueDivider, VueForm, VueLink, VueListBox, VueMenu, VueMeter, VueNumberField, VuePopover, VueProgressBar, VueRadio, VueRadioGroup, VueSearchField, VueSlider, VueSpectrumProvider, VueStatusLight, VueSwitch, VueTable, VueTextField, VueTree};
 export type {SpectrumContextValue} from './context';

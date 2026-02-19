@@ -11916,6 +11916,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/tree@workspace:*, @vue-spectrum/tree@workspace:packages/@vue-spectrum/tree":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/tree@workspace:packages/@vue-spectrum/tree"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue/compiler-core@npm:3.5.28":
   version: 3.5.28
   resolution: "@vue/compiler-core@npm:3.5.28"
@@ -30309,6 +30319,7 @@ __metadata:
     "@vue-spectrum/switch": "workspace:*"
     "@vue-spectrum/table": "workspace:*"
     "@vue-spectrum/textfield": "workspace:*"
+    "@vue-spectrum/tree": "workspace:*"
     typescript: "npm:^5.8.2"
     vite: "npm:^5.4.19"
     vue: "npm:^3.5.13"

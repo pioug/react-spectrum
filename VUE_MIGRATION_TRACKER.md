@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 23 |
+| in_progress | 24 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 129 |
+| not_started | 128 |
 
 ## Package tracker
 
@@ -44,6 +44,7 @@ Tracked source packages: 154
 | `@react-spectrum/switch` | `packages/@react-spectrum/switch` | `@vue-spectrum/switch` | `packages/@vue-spectrum/switch` | in_progress | Vue switch package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for binary toggles. |
 | `@react-spectrum/table` | `packages/@react-spectrum/table` | `@vue-spectrum/table` | `packages/@vue-spectrum/table` | in_progress | Vue table package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Data-heavy migration baseline for tabular collections. |
 | `@react-spectrum/textfield` | `packages/@react-spectrum/textfield` | `@vue-spectrum/textfield` | `packages/@vue-spectrum/textfield` | in_progress | Vue textfield package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive aligned with existing VueTextField baseline work. |
+| `@react-spectrum/tree` | `packages/@react-spectrum/tree` | `@vue-spectrum/tree` | `packages/@vue-spectrum/tree` | in_progress | Vue tree package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Data-heavy migration baseline for hierarchical collections. |
 | `react-aria-components` | `packages/react-aria-components` | `@vue-spectrum/components` | `packages/@vue-spectrum/components` | in_progress | Vue package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Initial Vue baseline package exists, but React Aria Components parity is still in progress. |
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
@@ -141,7 +142,6 @@ Tracked source packages: 154
 | `@react-spectrum/theme-light` | `packages/@react-spectrum/theme-light` | `@vue-spectrum/theme-light` | `packages/@vue-spectrum/theme-light` | not_started | - | - |
 | `@react-spectrum/toast` | `packages/@react-spectrum/toast` | `@vue-spectrum/toast` | `packages/@vue-spectrum/toast` | not_started | - | - |
 | `@react-spectrum/tooltip` | `packages/@react-spectrum/tooltip` | `@vue-spectrum/tooltip` | `packages/@vue-spectrum/tooltip` | not_started | - | - |
-| `@react-spectrum/tree` | `packages/@react-spectrum/tree` | `@vue-spectrum/tree` | `packages/@vue-spectrum/tree` | not_started | - | - |
 | `@react-spectrum/utils` | `packages/@react-spectrum/utils` | `@vue-spectrum/utils` | `packages/@vue-spectrum/utils` | not_started | - | - |
 | `@react-spectrum/view` | `packages/@react-spectrum/view` | `@vue-spectrum/view` | `packages/@vue-spectrum/view` | not_started | - | - |
 | `@react-spectrum/well` | `packages/@react-spectrum/well` | `@vue-spectrum/well` | `packages/@vue-spectrum/well` | not_started | - | - |

@@ -420,6 +420,26 @@
         }
       ]
     },
+    "@react-spectrum/tree": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/tree",
+      "targetPath": "packages/@vue-spectrum/tree",
+      "notes": "Data-heavy migration baseline for hierarchical collections.",
+      "acceptanceTests": [
+        {
+          "name": "Vue tree package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/tree/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    },
     "@react-spectrum/switch": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/switch",

@@ -92,6 +92,10 @@
           :rows="ticketRows"
           row-key="ticket" />
 
+        <VueTree
+          v-model="selectedTreeNode"
+          :items="treeItems" />
+
         <VueDivider />
 
         <p class="summary">
@@ -106,6 +110,8 @@
           List: <strong>{{ favoriteLibrary }}</strong>
           <span> · </span>
           Ticket: <strong>{{ selectedTicket }}</strong>
+          <span> · </span>
+          Tree: <strong>{{ selectedTreeNode }}</strong>
           <span> · </span>
           Digest: <strong>{{ isDigestEnabled ? 'on' : 'off' }}</strong>
           <span> · </span>
@@ -174,6 +180,7 @@ import {StatusLight as VueStatusLight} from '@vue-spectrum/statuslight';
 import {Switch as VueSwitch} from '@vue-spectrum/switch';
 import {Table as VueTable} from '@vue-spectrum/table';
 import {TextField as VueTextField} from '@vue-spectrum/textfield';
+import {Tree as VueTree} from '@vue-spectrum/tree';
 
 const count = ref(0);
 const name = ref('');
@@ -187,6 +194,7 @@ const favoriteFramework = ref('vue');
 const favoriteComponent = ref('Forms');
 const favoriteLibrary = ref('Vue Spectrum');
 const selectedTicket = ref('T-402');
+const selectedTreeNode = ref('project-alpha');
 const isDialogOpen = ref(false);
 const isPopoverOpen = ref(false);
 const languageOptions = ['TypeScript', 'JavaScript', 'Rust', 'Go', 'Python'];
@@ -201,6 +209,24 @@ const ticketRows = [
   {ticket: 'T-401', owner: 'Avery', status: 'Todo'},
   {ticket: 'T-402', owner: 'Quinn', status: 'In Progress'},
   {ticket: 'T-403', owner: 'Riley', status: 'Review'}
+];
+const treeItems = [
+  {
+    id: 'project-alpha',
+    label: 'Project Alpha',
+    children: [
+      {id: 'alpha-ui', label: 'UI'},
+      {id: 'alpha-data', label: 'Data'}
+    ]
+  },
+  {
+    id: 'project-beta',
+    label: 'Project Beta',
+    children: [
+      {id: 'beta-api', label: 'API'},
+      {id: 'beta-qa', label: 'QA'}
+    ]
+  }
 ];
 
 const statusTone = computed(() => {
@@ -245,6 +271,7 @@ function reset() {
   favoriteComponent.value = 'Forms';
   favoriteLibrary.value = 'Vue Spectrum';
   selectedTicket.value = 'T-402';
+  selectedTreeNode.value = 'project-alpha';
   isDialogOpen.value = false;
   isPopoverOpen.value = false;
 }
