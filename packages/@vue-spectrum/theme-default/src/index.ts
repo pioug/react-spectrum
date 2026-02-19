@@ -1,18 +1,21 @@
-export interface SpectrumThemeSection {
+export interface ThemeSection {
   className: string,
   colorScheme?: 'dark' | 'light',
   scale?: 'large' | 'medium'
 }
 
-export interface SpectrumTheme {
-  dark: SpectrumThemeSection,
-  global: SpectrumThemeSection,
-  large: SpectrumThemeSection,
-  light: SpectrumThemeSection,
-  medium: SpectrumThemeSection
+export interface Theme {
+  dark: ThemeSection,
+  global: ThemeSection,
+  large: ThemeSection,
+  light: ThemeSection,
+  medium: ThemeSection
 }
 
-export const theme: SpectrumTheme = {
+export type SpectrumThemeSection = ThemeSection;
+export type SpectrumTheme = Theme;
+
+export const theme: Theme = {
   global: {
     className: 'spectrum-default-global'
   },

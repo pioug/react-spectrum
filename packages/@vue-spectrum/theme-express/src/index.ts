@@ -1,12 +1,14 @@
-import {theme as defaultTheme, type SpectrumTheme} from '@vue-spectrum/theme-default';
+import {theme as defaultTheme, type Theme} from '@vue-spectrum/theme-default';
 
-export interface SpectrumExpressTheme extends SpectrumTheme {
-  global: SpectrumTheme['global'] & {express: string},
-  large: SpectrumTheme['large'] & {express: string},
-  medium: SpectrumTheme['medium'] & {express: string}
+export interface ExpressTheme extends Theme {
+  global: Theme['global'] & {express: string},
+  large: Theme['large'] & {express: string},
+  medium: Theme['medium'] & {express: string}
 }
 
-export const theme: SpectrumExpressTheme = {
+export type SpectrumExpressTheme = ExpressTheme;
+
+export const theme: Theme = {
   ...defaultTheme,
   global: {
     ...defaultTheme.global,

@@ -665,6 +665,11 @@ function normalizeSignatureText(text) {
   return normalized;
 }
 
+function normalizeFunctionSignatureText(text) {
+  return normalizeSignatureText(text)
+    .replace(/(\(|,)\s*([A-Za-z_$][A-Za-z0-9_$]*)\??\s*:/g, '$1 _:');
+}
+
 function collectModuleExports(checker, sourceFile) {
   let byName = new Map();
   let byNormalizedName = new Map();
@@ -734,10 +739,10 @@ function buildExportSignatureDescriptor(checker, exportSymbol, fallbackNode) {
     let symbolType = checker.getTypeOfSymbolAtLocation(resolved, location);
     valueType = normalizeSignatureText(checker.typeToString(symbolType, location, TYPE_FORMAT_FLAGS));
     callSignatures = toSortedUnique(symbolType.getCallSignatures().map((signature) => {
-      return normalizeSignatureText(checker.signatureToString(signature, location, SIGNATURE_FORMAT_FLAGS));
+      return normalizeFunctionSignatureText(checker.signatureToString(signature, location, SIGNATURE_FORMAT_FLAGS));
     }));
     constructSignatures = toSortedUnique(symbolType.getConstructSignatures().map((signature) => {
-      return normalizeSignatureText(checker.signatureToString(signature, location, SIGNATURE_FORMAT_FLAGS));
+      return normalizeFunctionSignatureText(checker.signatureToString(signature, location, SIGNATURE_FORMAT_FLAGS));
     }));
   } catch {
     // Best effort only.
