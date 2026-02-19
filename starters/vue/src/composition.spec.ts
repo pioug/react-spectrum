@@ -162,6 +162,15 @@ import {
 import {useAutocompleteState as useStatelyAutocompleteState} from '@vue-stately/autocomplete';
 import {useCalendarState as useStatelyCalendarState, useRangeCalendarState as useStatelyRangeCalendarState} from '@vue-stately/calendar';
 import {useCheckboxGroupState as useStatelyCheckboxGroupState} from '@vue-stately/checkbox';
+import {
+  compareNodeOrder as compareStatelyNodeOrder,
+  getChildNodes as getStatelyChildNodes,
+  getFirstItem as getFirstStatelyItem,
+  getItemCount as getStatelyItemCount,
+  getLastItem as getLastStatelyItem,
+  getNthItem as getNthStatelyItem,
+  useCollection as useStatelyCollection
+} from '@vue-stately/collections';
 
 function createPointerEvent(
   type: string,
@@ -588,6 +597,25 @@ describe('Vue migration composition components', () => {
     let filtered = collection.filter((textValue) => textValue.startsWith('A'));
     expect(filtered.getFirstKey()).toBe('alpha');
     expect(filtered.getLastKey()).toBe('alpha');
+  });
+
+  it('builds vue-stately collections and traverses nodes with helper utilities', () => {
+    let collection = useStatelyCollection({
+      getKey: (item) => item.id,
+      getTextValue: (item) => item.label,
+      items: [
+        {id: 'alpha', label: 'Alpha'},
+        {id: 'beta', label: 'Beta'}
+      ]
+    });
+
+    expect(collection.value.getFirstKey()).toBe('alpha');
+    expect(getStatelyItemCount(collection.value)).toBe(2);
+    expect(getFirstStatelyItem(collection.value)?.key).toBe('alpha');
+    expect(getLastStatelyItem(collection.value)?.key).toBe('beta');
+    expect(getNthStatelyItem(collection.value, 1)?.key).toBe('beta');
+    expect(getStatelyChildNodes(collection.value).map((node) => node.key)).toEqual(['alpha', 'beta']);
+    expect(compareStatelyNodeOrder(collection.value, 'alpha', 'beta')).toBe(-1);
   });
 
   it('caches vue-aria collection children by item identity', () => {
