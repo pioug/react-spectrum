@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:24:36.419Z
+Generated: 2026-02-19T21:27:04.552Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 53
+* Fully matched packages: 55
 * Source exports inspected: 2672
-* Missing exports: 1374
-* Coverage ratio: 48.58%
+* Missing exports: 1328
+* Coverage ratio: 50.30%
 
 ## Package gaps
 
@@ -21,11 +21,9 @@ Generated: 2026-02-19T21:24:36.419Z
 | `react-aria` | `vue-aria` | missing | 419 | 154 | 63.2% |
 | `@react-aria/dnd` | `@vue-aria/dnd` | missing | 62 | 58 | 6.5% |
 | `@react-spectrum/dnd` | `@vue-spectrum/dnd` | missing | 26 | 26 | 0.0% |
-| `react-stately` | `vue-stately` | missing | 165 | 26 | 84.2% |
 | `@react-aria/overlays` | `@vue-aria/overlays` | missing | 39 | 24 | 38.5% |
 | `@react-spectrum/utils` | `@vue-spectrum/utils` | missing | 31 | 23 | 25.8% |
 | `@react-aria/focus` | `@vue-aria/focus` | missing | 26 | 21 | 19.2% |
-| `@react-stately/table` | `@vue-stately/table` | missing | 25 | 20 | 20.0% |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` | missing | 11 | 11 | 0.0% |
 | `@react-aria/datepicker` | `@vue-aria/datepicker` | missing | 18 | 10 | 44.4% |
 | `@react-spectrum/color` | `@vue-spectrum/color` | missing | 21 | 8 | 61.9% |
@@ -164,11 +162,13 @@ Generated: 2026-02-19T21:24:36.419Z
 | `@react-stately/overlays` | `@vue-stately/overlays` | ok | 3 | 0 | 100.0% |
 | `@react-stately/slider` | `@vue-stately/slider` | ok | 3 | 0 | 100.0% |
 | `@react-stately/steplist` | `@vue-stately/steplist` | ok | 3 | 0 | 100.0% |
+| `@react-stately/table` | `@vue-stately/table` | ok | 25 | 0 | 100.0% |
 | `@react-stately/toast` | `@vue-stately/toast` | ok | 7 | 0 | 100.0% |
 | `@react-stately/tooltip` | `@vue-stately/tooltip` | ok | 3 | 0 | 100.0% |
 | `@react-stately/tree` | `@vue-stately/tree` | ok | 4 | 0 | 100.0% |
 | `@react-stately/utils` | `@vue-stately/utils` | ok | 4 | 0 | 100.0% |
 | `@react-stately/virtualizer` | `@vue-stately/virtualizer` | ok | 10 | 0 | 100.0% |
+| `react-stately` | `vue-stately` | ok | 165 | 0 | 100.0% |
 | `tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | ok | 0 | 0 | 100.0% |
 
 ## Largest gaps
@@ -208,13 +208,6 @@ Generated: 2026-02-19T21:24:36.419Z
 * Missing export count: 26
 * Missing exports: `DIRECTORY_DRAG_TYPE`, `DirectoryDropItem`, `DragAndDropHooks`, `DragAndDropOptions`, `DragPreviewRenderer`, `DragTypes`, `DraggableCollectionEndEvent`, `DraggableCollectionMoveEvent`, `DraggableCollectionStartEvent`, `DropItem`, `DropOperation`, `DropPosition`, `DropTarget`, `DroppableCollectionDropEvent`, `DroppableCollectionEnterEvent`, `DroppableCollectionExitEvent`, `DroppableCollectionInsertDropEvent`, `DroppableCollectionMoveEvent`, `DroppableCollectionOnItemDropEvent`, `DroppableCollectionReorderEvent`, `DroppableCollectionRootDropEvent`, `FileDropItem`, `ItemDropTarget`, `RootDropTarget`, `TextDropItem`, `useDragAndDrop`
 
-### react-stately -> vue-stately
-
-* Source entry: `packages/react-stately/src/index.ts`
-* Target entry: `packages/vue-stately/src/index.ts`
-* Missing export count: 26
-* Missing exports: `Cell`, `CellProps`, `CheckboxGroupProps`, `ColorFieldProps`, `ColorWheelProps`, `Column`, `ColumnProps`, `DateSegment`, `DateSegmentType`, `Node`, `Orientation`, `RadioGroupProps`, `Row`, `RowProps`, `SearchFieldProps`, `SelectProps`, `SingleSelectionState`, `TabListProps`, `TableBody`, `TableBodyProps`, `TableColumnResizeState`, `TableColumnResizeStateProps`, `TableHeader`, `TableHeaderProps`, `ToggleProps`, `useTableColumnResizeState`
-
 ### @react-aria/overlays -> @vue-aria/overlays
 
 * Source entry: `packages/@react-aria/overlays/src/index.ts`
@@ -235,13 +228,6 @@ Generated: 2026-02-19T21:24:36.419Z
 * Target entry: `packages/@vue-aria/focus/src/index.ts`
 * Missing export count: 21
 * Missing exports: `FocusManager`, `FocusManagerOptions`, `FocusRing`, `FocusScope`, `FocusScopeProps`, `Focusable`, `FocusableAria`, `FocusableOptions`, `FocusableProvider`, `FocusableProviderProps`, `createFocusManager`, `dispatchVirtualBlur`, `dispatchVirtualFocus`, `focusSafely`, `getFocusableTreeWalker`, `getVirtuallyFocusedElement`, `isElementInChildOfActiveScope`, `isFocusable`, `moveVirtualFocus`, `useFocusManager`, `useFocusable`
-
-### @react-stately/table -> @vue-stately/table
-
-* Source entry: `packages/@react-stately/table/src/index.ts`
-* Target entry: `packages/@vue-stately/table/src/index.ts`
-* Missing export count: 20
-* Missing exports: `Cell`, `CellProps`, `CollectionBuilderContext`, `Column`, `ColumnProps`, `Row`, `RowProps`, `Section`, `TableBody`, `TableBodyProps`, `TableColumnLayout`, `TableColumnResizeState`, `TableColumnResizeStateProps`, `TableHeader`, `TableHeaderProps`, `TreeGridState`, `TreeGridStateProps`, `UNSTABLE_useTreeGridState`, `buildHeaderRows`, `useTableColumnResizeState`
 
 ### @react-aria/virtualizer -> @vue-aria/virtualizer
 
@@ -312,4 +298,18 @@ Generated: 2026-02-19T21:24:36.419Z
 * Target entry: `packages/@vue-aria/select/src/index.ts`
 * Missing export count: 4
 * Missing exports: `AriaHiddenSelectProps`, `AriaSelectProps`, `HiddenSelect`, `HiddenSelectProps`
+
+### @react-aria/tabs -> @vue-aria/tabs
+
+* Source entry: `packages/@react-aria/tabs/src/index.ts`
+* Target entry: `packages/@vue-aria/tabs/src/index.ts`
+* Missing export count: 4
+* Missing exports: `AriaTabListProps`, `AriaTabPanelProps`, `AriaTabProps`, `Orientation`
+
+### @react-spectrum/accordion -> @vue-spectrum/accordion
+
+* Source entry: `packages/@react-spectrum/accordion/src/index.ts`
+* Target entry: `packages/@vue-spectrum/accordion/src/index.ts`
+* Missing export count: 4
+* Missing exports: `SpectrumAccordionProps`, `SpectrumDisclosurePanelProps`, `SpectrumDisclosureProps`, `SpectrumDisclosureTitleProps`
 

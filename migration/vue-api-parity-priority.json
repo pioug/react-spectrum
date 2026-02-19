@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-02-19T21:24:41.614Z",
+  "generatedAt": "2026-02-19T21:27:11.816Z",
   "summary": {
     "trackedPackages": 154,
-    "packagesWithGaps": 101,
+    "packagesWithGaps": 99,
     "highestPriorityPackage": "react-aria-components",
     "highestPriorityScore": 1677.99
   },
@@ -107,17 +107,6 @@
       "priorityScore": 124.83
     },
     {
-      "sourcePackage": "react-stately",
-      "targetPackage": "vue-stately",
-      "missingExports": 26,
-      "sourceExportCount": 165,
-      "coveragePercent": 84.24,
-      "reverseDependents": 2,
-      "dependencyDepth": 4,
-      "criticalityWeight": 2.6,
-      "priorityScore": 87.96
-    },
-    {
       "sourcePackage": "@react-spectrum/label",
       "targetPackage": "@vue-spectrum/label",
       "missingExports": 2,
@@ -127,17 +116,6 @@
       "dependencyDepth": 7,
       "criticalityWeight": 1.4,
       "priorityScore": 78.3
-    },
-    {
-      "sourcePackage": "@react-stately/table",
-      "targetPackage": "@vue-stately/table",
-      "missingExports": 20,
-      "sourceExportCount": 25,
-      "coveragePercent": 20,
-      "reverseDependents": 5,
-      "dependencyDepth": 3,
-      "criticalityWeight": 1.9,
-      "priorityScore": 77.5
     },
     {
       "sourcePackage": "@react-spectrum/form",

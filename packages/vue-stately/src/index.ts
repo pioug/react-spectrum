@@ -42,3 +42,26 @@ export * from '@vue-stately/tooltip';
 export * from '@vue-stately/tree';
 export * from '@vue-stately/utils';
 export * from '@vue-stately/virtualizer';
+
+export type {CheckboxGroupStateOptions as CheckboxGroupProps} from '@vue-stately/checkbox';
+export type {ColorFieldStateOptions as ColorFieldProps, ColorWheelStateOptions as ColorWheelProps} from '@vue-stately/color';
+export type {RadioGroupStateOptions as RadioGroupProps} from '@vue-stately/radio';
+export type {SearchFieldStateOptions as SearchFieldProps} from '@vue-stately/searchfield';
+export type {SelectStateOptions as SelectProps} from '@vue-stately/select';
+export type {TabListStateOptions as TabListProps} from '@vue-stately/tabs';
+export type {ToggleStateOptions as ToggleProps} from '@vue-stately/toggle';
+export type {SingleSelectListState as SingleSelectionState} from '@vue-stately/list';
+
+export type DateSegmentType = string;
+export interface DateSegment {
+  type: DateSegmentType,
+  text: string,
+  isPlaceholder?: boolean
+}
+
+export type Orientation = 'horizontal' | 'vertical';
+export interface Node<T = unknown> {
+  key: string | number,
+  value?: T,
+  type?: string
+}
