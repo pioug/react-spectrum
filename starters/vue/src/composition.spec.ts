@@ -187,6 +187,7 @@ import {
   useDateRangePickerState as useStatelyDateRangePickerState,
   useTimeFieldState as useStatelyTimeFieldState
 } from '@vue-stately/datepicker';
+import {useDisclosureGroupState as useStatelyDisclosureGroupState, useDisclosureState as useStatelyDisclosureState} from '@vue-stately/disclosure';
 
 function createPointerEvent(
   type: string,
@@ -1130,6 +1131,45 @@ describe('Vue migration composition components', () => {
     expect(expanded.value).toBe(true);
     expect(disclosure.buttonProps.value.disabled).toBe(true);
     expect(changes).toEqual([]);
+  });
+
+  it('manages vue-stately disclosure expansion state transitions', () => {
+    let expanded = ref(false);
+    let changes: boolean[] = [];
+    let disclosure = useStatelyDisclosureState({
+      isExpanded: expanded,
+      onExpandedChange: (isExpanded) => {
+        changes.push(isExpanded);
+      }
+    });
+
+    expect(disclosure.isExpanded.value).toBe(false);
+    disclosure.expand();
+    expect(expanded.value).toBe(true);
+    disclosure.toggle();
+    expect(expanded.value).toBe(false);
+    disclosure.collapse();
+    expect(expanded.value).toBe(false);
+    expect(changes).toEqual([true, false, false]);
+  });
+
+  it('manages vue-stately disclosure group expanded keys for single and multiple modes', () => {
+    let singleGroup = useStatelyDisclosureGroupState();
+    singleGroup.toggleKey('alpha');
+    expect(Array.from(singleGroup.expandedKeys.value)).toEqual(['alpha']);
+    singleGroup.toggleKey('beta');
+    expect(Array.from(singleGroup.expandedKeys.value)).toEqual(['beta']);
+    singleGroup.toggleKey('beta');
+    expect(Array.from(singleGroup.expandedKeys.value)).toEqual([]);
+
+    let multipleGroup = useStatelyDisclosureGroupState({
+      allowsMultipleExpanded: true,
+      defaultExpandedKeys: ['one']
+    });
+    multipleGroup.toggleKey('two');
+    expect(Array.from(multipleGroup.expandedKeys.value)).toEqual(['one', 'two']);
+    multipleGroup.toggleKey('one');
+    expect(Array.from(multipleGroup.expandedKeys.value)).toEqual(['two']);
   });
 
   it('tracks vue-aria dnd drag lifecycle callbacks and operation state', () => {

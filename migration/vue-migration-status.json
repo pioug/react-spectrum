@@ -2944,6 +2944,30 @@
         }
       ]
     },
+    "@react-stately/disclosure": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/disclosure",
+      "targetPath": "packages/@vue-stately/disclosure",
+      "notes": "State baseline for controlled/uncontrolled disclosure and disclosure-group expansion flows in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately disclosure package source lint",
+          "command": "yarn eslint packages/@vue-stately/disclosure/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",
