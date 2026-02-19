@@ -12083,6 +12083,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/searchfield@workspace:*, @vue-aria/searchfield@workspace:packages/@vue-aria/searchfield":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/searchfield@workspace:packages/@vue-aria/searchfield"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31407,6 +31415,7 @@ __metadata:
     "@vue-aria/overlays": "workspace:*"
     "@vue-aria/progress": "workspace:*"
     "@vue-aria/radio": "workspace:*"
+    "@vue-aria/searchfield": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"

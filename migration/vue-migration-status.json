@@ -792,6 +792,30 @@
         }
       ]
     },
+    "@react-aria/searchfield": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/searchfield",
+      "targetPath": "packages/@vue-aria/searchfield",
+      "notes": "Foundational React Aria search field composable for controlled input value, Enter submit behavior, Escape clear behavior, and clear-button semantics in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria searchfield source lint",
+          "command": "yarn eslint packages/@vue-aria/searchfield/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",

@@ -66,6 +66,7 @@ import {
 } from '@vue-aria/overlays';
 import {useProgressBar as useAriaProgressBar} from '@vue-aria/progress';
 import {useRadio as useAriaRadio, useRadioGroup as useAriaRadioGroup} from '@vue-aria/radio';
+import {useSearchField as useAriaSearchField} from '@vue-aria/searchfield';
 import {
   addWindowFocusTracking,
   setInteractionModality,
@@ -1540,6 +1541,42 @@ describe('Vue migration composition components', () => {
     reactRadio.dispose();
     vueRadio.dispose();
     disabledRadio.dispose();
+  });
+
+  it('computes vue-aria search field submit and clear behavior', () => {
+    let inputValue = ref('vue');
+    let submitValues: string[] = [];
+    let clearCount = 0;
+    let searchField = useAriaSearchField({
+      inputValue,
+      label: 'Search docs',
+      onClear: () => {
+        clearCount += 1;
+      },
+      onSubmit: (value) => {
+        submitValues.push(value);
+      }
+    });
+
+    expect(searchField.inputProps.value.type).toBe('search');
+    searchField.inputProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Enter'}));
+    expect(submitValues).toEqual(['vue']);
+
+    searchField.inputProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
+    expect(inputValue.value).toBe('');
+    expect(clearCount).toBe(1);
+    expect(searchField.clearButtonProps.value.disabled).toBe(true);
+
+    searchField.inputProps.value.onInput('react');
+    expect(inputValue.value).toBe('react');
+    searchField.clearButtonProps.value.onClick();
+    expect(inputValue.value).toBe('');
+
+    let requiredSearchField = useAriaSearchField({
+      inputValue: ref(''),
+      isRequired: true
+    });
+    expect(requiredSearchField.isInvalid.value).toBe(true);
   });
 
   it('announces and clears live region messages with vue-aria live announcer', () => {
