@@ -5,6 +5,7 @@ import {Badge} from '@vue-spectrum/badge';
 import {Button} from '@vue-spectrum/button';
 import {Checkbox} from '@vue-spectrum/checkbox';
 import {Image} from '@vue-spectrum/image';
+import {Icon, Illustration, UIIcon} from '@vue-spectrum/icon';
 import {IllustratedMessage} from '@vue-spectrum/illustratedmessage';
 import {InlineAlert} from '@vue-spectrum/inlinealert';
 import {Flex, Grid, fitContent, minmax, repeat} from '@vue-spectrum/layout';
@@ -146,6 +147,35 @@ describe('Vue migration primitives', () => {
     expect(wrapper.classes()).toContain('vs-illustrated-message--info');
     expect(wrapper.get('.vs-illustrated-message__heading').text()).toBe('Empty state');
     expect(wrapper.get('.vs-illustrated-message__description').text()).toBe('No migration tasks found.');
+  });
+
+  it('renders icon variants with expected accessibility and classes', () => {
+    let wrapper = mount(Icon, {
+      props: {
+        label: 'Direction',
+        size: 'l'
+      },
+      slots: {
+        default: '<svg viewBox="0 0 24 24"><path d="M5 12h14" /></svg>'
+      }
+    });
+
+    expect(wrapper.classes()).toContain('vs-icon--l');
+    expect(wrapper.attributes('aria-label')).toBe('Direction');
+
+    let uiIcon = mount(UIIcon, {
+      slots: {
+        default: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" /></svg>'
+      }
+    });
+    expect(uiIcon.classes()).toContain('vs-ui-icon');
+
+    let illustration = mount(Illustration, {
+      slots: {
+        default: '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" /></svg>'
+      }
+    });
+    expect(illustration.classes()).toContain('vs-illustration');
   });
 
   it('renders image src/alt and fit class', () => {

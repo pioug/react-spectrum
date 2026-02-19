@@ -3,6 +3,13 @@
     <main class="app-shell">
       <header class="app-header">
         <VueAvatar class="header-avatar" label="VS" size="l" />
+        <VueIcon class="header-icon" label="Migration symbol" size="l">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14" />
+            <path d="m13 6 6 6-6 6" />
+            <path d="M5 6v12" />
+          </svg>
+        </VueIcon>
         <VueImage
           class="hero-image"
           src="https://dummyimage.com/640x180/e5e5e5/2c2c2c.png&text=Vue+Image+Port"
@@ -243,6 +250,7 @@ import {DropZone as VueDropZone} from '@vue-spectrum/dropzone';
 import {Divider as VueDivider} from '@vue-spectrum/divider';
 import {Dialog as VueDialog} from '@vue-spectrum/dialog';
 import {Form as VueForm} from '@vue-spectrum/form';
+import {Icon as VueIcon} from '@vue-spectrum/icon';
 import {Image as VueImage} from '@vue-spectrum/image';
 import {IllustratedMessage as VueIllustratedMessage} from '@vue-spectrum/illustratedmessage';
 import {InlineAlert as VueInlineAlert} from '@vue-spectrum/inlinealert';
@@ -421,6 +429,10 @@ function handleVirtualScroll(event: Event) {
 }
 
 .header-avatar {
+  margin-bottom: 12px;
+}
+
+.header-icon {
   margin-bottom: 12px;
 }
 

@@ -815,6 +815,61 @@
   background: rgba(211, 21, 16, 0.08);
 }
 
+.vs-icon {
+  align-items: center;
+  color: currentColor;
+  display: inline-flex;
+  justify-content: center;
+  line-height: 1;
+}
+
+.vs-icon svg {
+  block-size: 1em;
+  inline-size: 1em;
+}
+
+.vs-icon--xxs {
+  font-size: 10px;
+}
+
+.vs-icon--xs {
+  font-size: 12px;
+}
+
+.vs-icon--s {
+  font-size: 14px;
+}
+
+.vs-icon--m {
+  font-size: 16px;
+}
+
+.vs-icon--l {
+  font-size: 20px;
+}
+
+.vs-icon--xl {
+  font-size: 24px;
+}
+
+.vs-icon--xxl {
+  font-size: 32px;
+}
+
+.vs-ui-icon {
+  vertical-align: middle;
+}
+
+.vs-illustration {
+  display: inline-flex;
+}
+
+.vs-illustration svg {
+  block-size: auto;
+  inline-size: 100%;
+  max-inline-size: 220px;
+}
+
 .vs-image {
   display: block;
   inline-size: 100%;

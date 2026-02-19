@@ -404,6 +404,30 @@
         }
       ]
     },
+    "@react-spectrum/icon": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/icon",
+      "targetPath": "packages/@vue-spectrum/icon",
+      "notes": "First-wave visual primitive for icon, UI icon, and illustration rendering.",
+      "acceptanceTests": [
+        {
+          "name": "Vue icon package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/icon/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/image": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/image",
