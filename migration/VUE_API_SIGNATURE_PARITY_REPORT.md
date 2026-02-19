@@ -1,19 +1,19 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-19T23:51:53.094Z
+Generated: 2026-02-19T23:56:24.620Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 90
+* Fully matched packages: 91
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 2075
-* Mismatched signatures: 597
+* Matched signatures: 2085
+* Mismatched signatures: 587
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 77.66%
+* Signature coverage ratio: 78.03%
 
 ## Package gaps
 
@@ -21,9 +21,8 @@ Generated: 2026-02-19T23:51:53.094Z
 | --- | --- | --- | ---: | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | mismatch | 543 | 299 | 0 | 44.9% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | mismatch | 325 | 134 | 0 | 58.8% |
-| `react-aria` | `vue-aria` | mismatch | 419 | 55 | 0 | 86.9% |
+| `react-aria` | `vue-aria` | mismatch | 419 | 50 | 0 | 88.1% |
 | `@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | mismatch | 6 | 6 | 0 | 0.0% |
-| `@react-aria/button` | `@vue-aria/button` | mismatch | 11 | 5 | 0 | 54.5% |
 | `@react-aria/collections` | `@vue-aria/collections` | mismatch | 17 | 5 | 0 | 70.6% |
 | `@react-aria/calendar` | `@vue-aria/calendar` | mismatch | 14 | 4 | 0 | 71.4% |
 | `@react-aria/gridlist` | `@vue-aria/gridlist` | mismatch | 12 | 4 | 0 | 66.7% |
@@ -83,6 +82,7 @@ Generated: 2026-02-19T23:51:53.094Z
 | `@react-stately/tree` | `@vue-stately/tree` | mismatch | 4 | 1 | 0 | 75.0% |
 | `@react-stately/utils` | `@vue-stately/utils` | mismatch | 4 | 1 | 0 | 75.0% |
 | `@react-stately/virtualizer` | `@vue-stately/virtualizer` | mismatch | 10 | 1 | 0 | 90.0% |
+| `@react-aria/button` | `@vue-aria/button` | ok | 11 | 0 | 0 | 100.0% |
 | `@react-aria/color` | `@vue-aria/color` | ok | 20 | 0 | 0 | 100.0% |
 | `@react-aria/dnd` | `@vue-aria/dnd` | ok | 62 | 0 | 0 | 100.0% |
 | `@react-aria/example-theme` | `@vue-aria/example-theme` | ok | 0 | 0 | 0 | 100.0% |
@@ -199,9 +199,9 @@ Generated: 2026-02-19T23:51:53.094Z
 * Source entry: `packages/react-aria/src/index.ts`
 * Target entry: `packages/vue-aria/src/index.ts`
 * Compared exports: 419
-* Mismatched signatures: 55
+* Mismatched signatures: 50
 * Missing in target: 0
-* Example mismatches: `useBreadcrumbItem [call-signatures]`, `useBreadcrumbs [call-signatures]`, `useButton [call-signatures]`, `useToggleButton [call-signatures]`, `useToggleButtonGroup [call-signatures]`, `useToggleButtonGroupItem [call-signatures]`, `useCalendar [call-signatures]`, `useCalendarCell [call-signatures]`, `useCalendarGrid [call-signatures]`, `useRangeCalendar [call-signatures]`, `useCheckbox [call-signatures]`, `useCheckboxGroup [call-signatures]`, `useCheckboxGroupItem [call-signatures]`, `useComboBox [call-signatures]`, `useDateField [call-signatures]`, `useTimeField [call-signatures]`, `useDialog [call-signatures]`, `useDisclosure [call-signatures]`, `useGridList [call-signatures]`, `useGridListItem [call-signatures]`, `useGridListSection [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]`, `useLandmark [call-signatures]`, `useLink [call-signatures]`, `useListBox [call-signatures]` ...
+* Example mismatches: `useBreadcrumbItem [call-signatures]`, `useBreadcrumbs [call-signatures]`, `useCalendar [call-signatures]`, `useCalendarCell [call-signatures]`, `useCalendarGrid [call-signatures]`, `useRangeCalendar [call-signatures]`, `useCheckbox [call-signatures]`, `useCheckboxGroup [call-signatures]`, `useCheckboxGroupItem [call-signatures]`, `useComboBox [call-signatures]`, `useDateField [call-signatures]`, `useTimeField [call-signatures]`, `useDialog [call-signatures]`, `useDisclosure [call-signatures]`, `useGridList [call-signatures]`, `useGridListItem [call-signatures]`, `useGridListSection [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]`, `useLandmark [call-signatures]`, `useLink [call-signatures]`, `useListBox [call-signatures]`, `useOption [call-signatures]`, `useMenu [call-signatures]`, `useMenuItem [call-signatures]`, `useMenuTrigger [call-signatures]` ...
 
 ### @react-spectrum/style-macro-s1 -> @vue-spectrum/style-macro-s1
 
@@ -211,15 +211,6 @@ Generated: 2026-02-19T23:51:53.094Z
 * Mismatched signatures: 6
 * Missing in target: 0
 * Example mismatches: `style [call-signatures]`, `baseColor [call-signatures]`, `lightDark [call-signatures]`, `focusRing [call-signatures]`, `raw [call-signatures]`, `keyframes [call-signatures]`
-
-### @react-aria/button -> @vue-aria/button
-
-* Source entry: `packages/@react-aria/button/src/index.ts`
-* Target entry: `packages/@vue-aria/button/src/index.ts`
-* Compared exports: 11
-* Mismatched signatures: 5
-* Missing in target: 0
-* Example mismatches: `useButton [call-signatures]`, `useToggleButton [call-signatures]`, `useToggleButtonGroup [call-signatures]`, `useToggleButtonGroupItem [call-signatures]`, `AriaToggleButtonGroupProps [value-availability]`
 
 ### @react-aria/collections -> @vue-aria/collections
 
@@ -355,4 +346,13 @@ Generated: 2026-02-19T23:51:53.094Z
 * Mismatched signatures: 2
 * Missing in target: 0
 * Example mismatches: `useStepList [call-signatures]`, `useStepListItem [call-signatures]`
+
+### @react-aria/tag -> @vue-aria/tag
+
+* Source entry: `packages/@react-aria/tag/src/index.ts`
+* Target entry: `packages/@vue-aria/tag/src/index.ts`
+* Compared exports: 6
+* Mismatched signatures: 2
+* Missing in target: 0
+* Example mismatches: `useTag [call-signatures]`, `useTagGroup [call-signatures]`
 

@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-19T23:51:53.094Z",
+  "generatedAt": "2026-02-19T23:56:24.620Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 90,
+    "fullyMatchedPackages": 91,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 2075,
-    "mismatchedExportTotal": 597,
+    "matchedExportTotal": 2085,
+    "mismatchedExportTotal": 587,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.7766
+    "parityCoverage": 0.7803
   },
   "packages": [
     {
@@ -5659,10 +5659,10 @@
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
       "comparedExportCount": 419,
-      "matchedExportCount": 364,
-      "mismatchedExportCount": 55,
+      "matchedExportCount": 369,
+      "mismatchedExportCount": 50,
       "missingInTargetCount": 0,
-      "parityRatio": 0.8687,
+      "parityRatio": 0.8807,
       "missingInTargetExports": [],
       "mismatches": [
         {
@@ -5735,169 +5735,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: AriaBreadcrumbsOptions) => BreadcrumbsAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useButton",
-          "targetExportName": "useButton",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useButton",
-            "resolvedName": "useButton",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "null>): ButtonAria<AnchorHTMLAttributes<HTMLAnchorElement>>; (props: AriaButtonOptions<\"div\">, ref: RefObject<HTMLDivElement | null>): ButtonAria<ButtonHTMLAttributes<HTMLButtonElement>>; (props: AriaButtonOptions<\"a\">, ref: RefObject<HTMLAnchorElement | null>): ButtonAria<DOMAttributes>;} | null>): ButtonAria<HTMLAttributes<HTMLDivElement>>; (props: AriaButtonOptions<\"input\">, ref: RefObject<HTMLInputElement | null>): ButtonAria<HTMLAttributes<HTMLSpanElement>>; (props: AriaButtonOptions<ElementType>, ref: RefObject<Element | null>): ButtonAria<InputHTMLAttributes<HTMLInputElement>>; (props: AriaButtonOptions<\"span\">, ref: RefObject<HTMLSpanElement | { (props: AriaButtonOptions<\"button\">, ref: RefObject<HTMLButtonElement",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaButtonOptions<\"a\">, _: RefObject<HTMLAnchorElement | null>) => ButtonAria<AnchorHTMLAttributes<HTMLAnchorElement>>",
-              "( _: AriaButtonOptions<\"button\">, _: RefObject<HTMLButtonElement | null>) => ButtonAria<ButtonHTMLAttributes<HTMLButtonElement>>",
-              "( _: AriaButtonOptions<\"div\">, _: RefObject<HTMLDivElement | null>) => ButtonAria<HTMLAttributes<HTMLDivElement>>",
-              "( _: AriaButtonOptions<\"input\">, _: RefObject<HTMLInputElement | null>) => ButtonAria<InputHTMLAttributes<HTMLInputElement>>",
-              "( _: AriaButtonOptions<\"span\">, _: RefObject<HTMLSpanElement | null>) => ButtonAria<HTMLAttributes<HTMLSpanElement>>",
-              "( _: AriaButtonOptions<ElementType>, _: RefObject<Element | null>) => ButtonAria<DOMAttributes>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useButton",
-            "resolvedName": "useButton",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaButtonOptions) => ButtonAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaButtonOptions) => ButtonAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useToggleButton",
-          "targetExportName": "useToggleButton",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useToggleButton",
-            "resolvedName": "useToggleButton",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "null>): ToggleButtonAria<AnchorHTMLAttributes<HTMLAnchorElement>>; (props: AriaToggleButtonOptions<\"div\">, state: ToggleState, ref: RefObject<HTMLDivElement | null>): ToggleButtonAria<ButtonHTMLAttributes<HTMLButtonElement>>; (props: AriaToggleButtonOptions<\"a\">, state: ToggleState, ref: RefObject<HTMLAnchorElement | null>): ToggleButtonAria<DOMAttributes>;} | null>): ToggleButtonAria<HTMLAttributes<HTMLDivElement>>; (props: AriaToggleButtonOptions<\"input\">, state: ToggleState, ref: RefObject<HTMLInputElement | null>): ToggleButtonAria<HTMLAttributes<HTMLSpanElement>>; (props: AriaToggleButtonOptions<ElementType>, state: ToggleState, ref: RefObject<Element | null>): ToggleButtonAria<InputHTMLAttributes<HTMLInputElement>>; (props: AriaToggleButtonOptions<\"span\">, state: ToggleState, ref: RefObject<HTMLSpanElement | { (props: AriaToggleButtonOptions<\"button\">, state: ToggleState, ref: RefObject<HTMLButtonElement",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaToggleButtonOptions<\"a\">, _: ToggleState, _: RefObject<HTMLAnchorElement | null>) => ToggleButtonAria<AnchorHTMLAttributes<HTMLAnchorElement>>",
-              "( _: AriaToggleButtonOptions<\"button\">, _: ToggleState, _: RefObject<HTMLButtonElement | null>) => ToggleButtonAria<ButtonHTMLAttributes<HTMLButtonElement>>",
-              "( _: AriaToggleButtonOptions<\"div\">, _: ToggleState, _: RefObject<HTMLDivElement | null>) => ToggleButtonAria<HTMLAttributes<HTMLDivElement>>",
-              "( _: AriaToggleButtonOptions<\"input\">, _: ToggleState, _: RefObject<HTMLInputElement | null>) => ToggleButtonAria<InputHTMLAttributes<HTMLInputElement>>",
-              "( _: AriaToggleButtonOptions<\"span\">, _: ToggleState, _: RefObject<HTMLSpanElement | null>) => ToggleButtonAria<HTMLAttributes<HTMLSpanElement>>",
-              "( _: AriaToggleButtonOptions<ElementType>, _: ToggleState, _: RefObject<Element | null>) => ToggleButtonAria<DOMAttributes>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useToggleButton",
-            "resolvedName": "useToggleButton",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaToggleButtonOptions) => ToggleButtonAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaToggleButtonOptions) => ToggleButtonAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useToggleButtonGroup",
-          "targetExportName": "useToggleButtonGroup",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useToggleButtonGroup",
-            "resolvedName": "useToggleButtonGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaToggleButtonGroupProps, state: ToggleGroupState, ref: RefObject<HTMLElement | null>) => ToggleButtonGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaToggleButtonGroupProps, _: ToggleGroupState, _: RefObject<HTMLElement | null>) => ToggleButtonGroupAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useToggleButtonGroup",
-            "resolvedName": "useToggleButtonGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaToggleButtonGroupOptions) => ToggleButtonGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaToggleButtonGroupOptions) => ToggleButtonGroupAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useToggleButtonGroupItem",
-          "targetExportName": "useToggleButtonGroupItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useToggleButtonGroupItem",
-            "resolvedName": "useToggleButtonGroupItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "null>): ToggleButtonAria<AnchorHTMLAttributes<HTMLAnchorElement>>; (props: AriaToggleButtonGroupItemOptions<\"div\">, state: ToggleGroupState, ref: RefObject<HTMLDivElement | null>): ToggleButtonAria<ButtonHTMLAttributes<HTMLButtonElement>>; (props: AriaToggleButtonGroupItemOptions<\"a\">, state: ToggleGroupState, ref: RefObject<HTMLAnchorElement | null>): ToggleButtonAria<DOMAttributes>;} | null>): ToggleButtonAria<HTMLAttributes<HTMLDivElement>>; (props: AriaToggleButtonGroupItemOptions<\"input\">, state: ToggleGroupState, ref: RefObject<HTMLInputElement | null>): ToggleButtonAria<HTMLAttributes<HTMLSpanElement>>; (props: AriaToggleButtonGroupItemOptions<ElementType>, state: ToggleGroupState, ref: RefObject<Element | null>): ToggleButtonAria<InputHTMLAttributes<HTMLInputElement>>; (props: AriaToggleButtonGroupItemOptions<\"span\">, state: ToggleGroupState, ref: RefObject<HTMLSpanElement | { (props: AriaToggleButtonGroupItemOptions<\"button\">, state: ToggleGroupState, ref: RefObject<HTMLButtonElement",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaToggleButtonGroupItemOptions<\"a\">, _: ToggleGroupState, _: RefObject<HTMLAnchorElement | null>) => ToggleButtonAria<AnchorHTMLAttributes<HTMLAnchorElement>>",
-              "( _: AriaToggleButtonGroupItemOptions<\"button\">, _: ToggleGroupState, _: RefObject<HTMLButtonElement | null>) => ToggleButtonAria<ButtonHTMLAttributes<HTMLButtonElement>>",
-              "( _: AriaToggleButtonGroupItemOptions<\"div\">, _: ToggleGroupState, _: RefObject<HTMLDivElement | null>) => ToggleButtonAria<HTMLAttributes<HTMLDivElement>>",
-              "( _: AriaToggleButtonGroupItemOptions<\"input\">, _: ToggleGroupState, _: RefObject<HTMLInputElement | null>) => ToggleButtonAria<InputHTMLAttributes<HTMLInputElement>>",
-              "( _: AriaToggleButtonGroupItemOptions<\"span\">, _: ToggleGroupState, _: RefObject<HTMLSpanElement | null>) => ToggleButtonAria<HTMLAttributes<HTMLSpanElement>>",
-              "( _: AriaToggleButtonGroupItemOptions<ElementType>, _: ToggleGroupState, _: RefObject<Element | null>) => ToggleButtonAria<DOMAttributes>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useToggleButtonGroupItem",
-            "resolvedName": "useToggleButtonGroupItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaToggleButtonGroupItemOptions) => ToggleButtonGroupItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaToggleButtonGroupItemOptions) => ToggleButtonGroupItemAria"
             ],
             "constructSignatures": []
           }
@@ -7679,37 +7516,6 @@
             ],
             "constructSignatures": []
           }
-        },
-        {
-          "exportName": "AriaToggleButtonGroupProps",
-          "targetExportName": "AriaToggleButtonGroupProps",
-          "differences": [
-            "value-availability"
-          ],
-          "source": {
-            "name": "AriaToggleButtonGroupProps",
-            "resolvedName": "AriaToggleButtonGroupProps",
-            "hasType": true,
-            "hasValue": false,
-            "declarationKinds": [
-              "InterfaceDeclaration"
-            ],
-            "valueType": "any",
-            "declaredType": "AriaToggleButtonGroupProps",
-            "callSignatures": [],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "AriaToggleButtonGroupProps",
-            "resolvedName": "unknown",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [],
-            "valueType": "any",
-            "declaredType": "",
-            "callSignatures": [],
-            "constructSignatures": []
-          }
         }
       ],
       "truncatedMismatchCount": 0,
@@ -7950,220 +7756,6 @@
             "callSignatures": [
               "( _: Record<string, unknown> | string) => string"
             ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/button",
-      "sourcePath": "packages/@react-aria/button",
-      "targetPackage": "@vue-aria/button",
-      "targetPath": "packages/@vue-aria/button",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/button/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/button/src/index.ts",
-      "sourceExportCount": 11,
-      "comparedExportCount": 11,
-      "matchedExportCount": 6,
-      "mismatchedExportCount": 5,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.5455,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useButton",
-          "targetExportName": "useButton",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useButton",
-            "resolvedName": "useButton",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "null>): ButtonAria<AnchorHTMLAttributes<HTMLAnchorElement>>; (props: AriaButtonOptions<\"div\">, ref: RefObject<HTMLDivElement | null>): ButtonAria<ButtonHTMLAttributes<HTMLButtonElement>>; (props: AriaButtonOptions<\"a\">, ref: RefObject<HTMLAnchorElement | null>): ButtonAria<DOMAttributes>;} | null>): ButtonAria<HTMLAttributes<HTMLDivElement>>; (props: AriaButtonOptions<\"input\">, ref: RefObject<HTMLInputElement | null>): ButtonAria<HTMLAttributes<HTMLSpanElement>>; (props: AriaButtonOptions<ElementType>, ref: RefObject<Element | null>): ButtonAria<InputHTMLAttributes<HTMLInputElement>>; (props: AriaButtonOptions<\"span\">, ref: RefObject<HTMLSpanElement | { (props: AriaButtonOptions<\"button\">, ref: RefObject<HTMLButtonElement",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaButtonOptions<\"a\">, _: RefObject<HTMLAnchorElement | null>) => ButtonAria<AnchorHTMLAttributes<HTMLAnchorElement>>",
-              "( _: AriaButtonOptions<\"button\">, _: RefObject<HTMLButtonElement | null>) => ButtonAria<ButtonHTMLAttributes<HTMLButtonElement>>",
-              "( _: AriaButtonOptions<\"div\">, _: RefObject<HTMLDivElement | null>) => ButtonAria<HTMLAttributes<HTMLDivElement>>",
-              "( _: AriaButtonOptions<\"input\">, _: RefObject<HTMLInputElement | null>) => ButtonAria<InputHTMLAttributes<HTMLInputElement>>",
-              "( _: AriaButtonOptions<\"span\">, _: RefObject<HTMLSpanElement | null>) => ButtonAria<HTMLAttributes<HTMLSpanElement>>",
-              "( _: AriaButtonOptions<ElementType>, _: RefObject<Element | null>) => ButtonAria<DOMAttributes>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useButton",
-            "resolvedName": "useButton",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaButtonOptions) => ButtonAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaButtonOptions) => ButtonAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useToggleButton",
-          "targetExportName": "useToggleButton",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useToggleButton",
-            "resolvedName": "useToggleButton",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "null>): ToggleButtonAria<AnchorHTMLAttributes<HTMLAnchorElement>>; (props: AriaToggleButtonOptions<\"div\">, state: ToggleState, ref: RefObject<HTMLDivElement | null>): ToggleButtonAria<ButtonHTMLAttributes<HTMLButtonElement>>; (props: AriaToggleButtonOptions<\"a\">, state: ToggleState, ref: RefObject<HTMLAnchorElement | null>): ToggleButtonAria<DOMAttributes>;} | null>): ToggleButtonAria<HTMLAttributes<HTMLDivElement>>; (props: AriaToggleButtonOptions<\"input\">, state: ToggleState, ref: RefObject<HTMLInputElement | null>): ToggleButtonAria<HTMLAttributes<HTMLSpanElement>>; (props: AriaToggleButtonOptions<ElementType>, state: ToggleState, ref: RefObject<Element | null>): ToggleButtonAria<InputHTMLAttributes<HTMLInputElement>>; (props: AriaToggleButtonOptions<\"span\">, state: ToggleState, ref: RefObject<HTMLSpanElement | { (props: AriaToggleButtonOptions<\"button\">, state: ToggleState, ref: RefObject<HTMLButtonElement",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaToggleButtonOptions<\"a\">, _: ToggleState, _: RefObject<HTMLAnchorElement | null>) => ToggleButtonAria<AnchorHTMLAttributes<HTMLAnchorElement>>",
-              "( _: AriaToggleButtonOptions<\"button\">, _: ToggleState, _: RefObject<HTMLButtonElement | null>) => ToggleButtonAria<ButtonHTMLAttributes<HTMLButtonElement>>",
-              "( _: AriaToggleButtonOptions<\"div\">, _: ToggleState, _: RefObject<HTMLDivElement | null>) => ToggleButtonAria<HTMLAttributes<HTMLDivElement>>",
-              "( _: AriaToggleButtonOptions<\"input\">, _: ToggleState, _: RefObject<HTMLInputElement | null>) => ToggleButtonAria<InputHTMLAttributes<HTMLInputElement>>",
-              "( _: AriaToggleButtonOptions<\"span\">, _: ToggleState, _: RefObject<HTMLSpanElement | null>) => ToggleButtonAria<HTMLAttributes<HTMLSpanElement>>",
-              "( _: AriaToggleButtonOptions<ElementType>, _: ToggleState, _: RefObject<Element | null>) => ToggleButtonAria<DOMAttributes>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useToggleButton",
-            "resolvedName": "useToggleButton",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaToggleButtonOptions) => ToggleButtonAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaToggleButtonOptions) => ToggleButtonAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useToggleButtonGroup",
-          "targetExportName": "useToggleButtonGroup",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useToggleButtonGroup",
-            "resolvedName": "useToggleButtonGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaToggleButtonGroupProps, state: ToggleGroupState, ref: RefObject<HTMLElement | null>) => ToggleButtonGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaToggleButtonGroupProps, _: ToggleGroupState, _: RefObject<HTMLElement | null>) => ToggleButtonGroupAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useToggleButtonGroup",
-            "resolvedName": "useToggleButtonGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaToggleButtonGroupOptions) => ToggleButtonGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaToggleButtonGroupOptions) => ToggleButtonGroupAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useToggleButtonGroupItem",
-          "targetExportName": "useToggleButtonGroupItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useToggleButtonGroupItem",
-            "resolvedName": "useToggleButtonGroupItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "null>): ToggleButtonAria<AnchorHTMLAttributes<HTMLAnchorElement>>; (props: AriaToggleButtonGroupItemOptions<\"div\">, state: ToggleGroupState, ref: RefObject<HTMLDivElement | null>): ToggleButtonAria<ButtonHTMLAttributes<HTMLButtonElement>>; (props: AriaToggleButtonGroupItemOptions<\"a\">, state: ToggleGroupState, ref: RefObject<HTMLAnchorElement | null>): ToggleButtonAria<DOMAttributes>;} | null>): ToggleButtonAria<HTMLAttributes<HTMLDivElement>>; (props: AriaToggleButtonGroupItemOptions<\"input\">, state: ToggleGroupState, ref: RefObject<HTMLInputElement | null>): ToggleButtonAria<HTMLAttributes<HTMLSpanElement>>; (props: AriaToggleButtonGroupItemOptions<ElementType>, state: ToggleGroupState, ref: RefObject<Element | null>): ToggleButtonAria<InputHTMLAttributes<HTMLInputElement>>; (props: AriaToggleButtonGroupItemOptions<\"span\">, state: ToggleGroupState, ref: RefObject<HTMLSpanElement | { (props: AriaToggleButtonGroupItemOptions<\"button\">, state: ToggleGroupState, ref: RefObject<HTMLButtonElement",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaToggleButtonGroupItemOptions<\"a\">, _: ToggleGroupState, _: RefObject<HTMLAnchorElement | null>) => ToggleButtonAria<AnchorHTMLAttributes<HTMLAnchorElement>>",
-              "( _: AriaToggleButtonGroupItemOptions<\"button\">, _: ToggleGroupState, _: RefObject<HTMLButtonElement | null>) => ToggleButtonAria<ButtonHTMLAttributes<HTMLButtonElement>>",
-              "( _: AriaToggleButtonGroupItemOptions<\"div\">, _: ToggleGroupState, _: RefObject<HTMLDivElement | null>) => ToggleButtonAria<HTMLAttributes<HTMLDivElement>>",
-              "( _: AriaToggleButtonGroupItemOptions<\"input\">, _: ToggleGroupState, _: RefObject<HTMLInputElement | null>) => ToggleButtonAria<InputHTMLAttributes<HTMLInputElement>>",
-              "( _: AriaToggleButtonGroupItemOptions<\"span\">, _: ToggleGroupState, _: RefObject<HTMLSpanElement | null>) => ToggleButtonAria<HTMLAttributes<HTMLSpanElement>>",
-              "( _: AriaToggleButtonGroupItemOptions<ElementType>, _: ToggleGroupState, _: RefObject<Element | null>) => ToggleButtonAria<DOMAttributes>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useToggleButtonGroupItem",
-            "resolvedName": "useToggleButtonGroupItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaToggleButtonGroupItemOptions) => ToggleButtonGroupItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaToggleButtonGroupItemOptions) => ToggleButtonGroupItemAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "AriaToggleButtonGroupProps",
-          "targetExportName": "AriaToggleButtonGroupProps",
-          "differences": [
-            "value-availability"
-          ],
-          "source": {
-            "name": "AriaToggleButtonGroupProps",
-            "resolvedName": "AriaToggleButtonGroupProps",
-            "hasType": true,
-            "hasValue": false,
-            "declarationKinds": [
-              "InterfaceDeclaration"
-            ],
-            "valueType": "any",
-            "declaredType": "AriaToggleButtonGroupProps",
-            "callSignatures": [],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "AriaToggleButtonGroupProps",
-            "resolvedName": "unknown",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [],
-            "valueType": "any",
-            "declaredType": "",
-            "callSignatures": [],
             "constructSignatures": []
           }
         }
@@ -12956,6 +12548,25 @@
           }
         }
       ],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/button",
+      "sourcePath": "packages/@react-aria/button",
+      "targetPackage": "@vue-aria/button",
+      "targetPath": "packages/@vue-aria/button",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/button/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/button/src/index.ts",
+      "sourceExportCount": 11,
+      "comparedExportCount": 11,
+      "matchedExportCount": 11,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
       "truncatedMismatchCount": 0,
       "error": null
     },
