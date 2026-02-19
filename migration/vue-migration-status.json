@@ -1008,6 +1008,30 @@
         }
       ]
     },
+    "@react-aria/table": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/table",
+      "targetPath": "packages/@vue-aria/table",
+      "notes": "Foundational React Aria table wrappers around Vue grid composables for table rows/cells, header interactions, selection checkboxes, and baseline column resize controls.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria table source lint",
+          "command": "yarn eslint packages/@vue-aria/table/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",

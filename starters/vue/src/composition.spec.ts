@@ -82,6 +82,17 @@ import {SSRProvider as AriaSSRProvider, useIsSSR as useAriaIsSSR, useSSRSafeId a
 import {useStepList as useAriaStepList, useStepListItem as useAriaStepListItem} from '@vue-aria/steplist';
 import {useSwitch as useAriaSwitch} from '@vue-aria/switch';
 import {
+  useTable as useAriaTable,
+  useTableCell as useAriaTableCell,
+  useTableColumnHeader as useAriaTableColumnHeader,
+  useTableColumnResize as useAriaTableColumnResize,
+  useTableHeaderRow as useAriaTableHeaderRow,
+  useTableRow as useAriaTableRow,
+  useTableRowGroup as useAriaTableRowGroup,
+  useTableSelectAllCheckbox as useAriaTableSelectAllCheckbox,
+  useTableSelectionCheckbox as useAriaTableSelectionCheckbox
+} from '@vue-aria/table';
+import {
   addWindowFocusTracking,
   setInteractionModality,
   useFocus,
@@ -1988,6 +1999,115 @@ describe('Vue migration composition components', () => {
     });
     readOnlySwitch.press();
     expect(readOnlySelected.value).toBe(true);
+  });
+
+  it('computes vue-aria table wrappers and selection helpers', () => {
+    let selectedKeys = ref(new Set<string>());
+    let collection = {
+      columnCount: 2,
+      rows: [
+        {
+          key: 'row-1',
+          index: 0,
+          textValue: 'Backlog',
+          cells: [
+            {key: 'row-1-cell-1', colIndex: 0, textValue: 'Backlog'},
+            {key: 'row-1-cell-2', colIndex: 1, textValue: 'Open'}
+          ]
+        },
+        {
+          key: 'row-2',
+          index: 1,
+          textValue: 'Done',
+          cells: [
+            {key: 'row-2-cell-1', colIndex: 0, textValue: 'Done'},
+            {key: 'row-2-cell-2', colIndex: 1, textValue: 'Closed'}
+          ]
+        }
+      ]
+    };
+
+    let table = useAriaTable({
+      ariaLabel: 'Tickets table',
+      collection,
+      selectedKeys,
+      selectionMode: 'multiple'
+    });
+    expect(table.gridProps.value.role).toBe('grid');
+    expect(table.gridProps.value['aria-label']).toBe('Tickets table');
+
+    let rowGroup = useAriaTableRowGroup();
+    expect(rowGroup.rowGroupProps.value.role).toBe('rowgroup');
+
+    let headerRow = useAriaTableHeaderRow({
+      isVirtualized: true,
+      row: collection.rows[0]
+    });
+    expect(headerRow.rowProps.value['aria-rowindex']).toBe(1);
+
+    let row = useAriaTableRow({
+      grid: table,
+      row: collection.rows[0]
+    });
+    row.press();
+    expect(Array.from(selectedKeys.value)).toEqual(['row-1']);
+
+    let cell = useAriaTableCell({
+      cell: collection.rows[0].cells[0],
+      grid: table,
+      row: collection.rows[0]
+    });
+    cell.focus();
+    expect(table.focusedKey.value).toBe('row-1-cell-1');
+
+    let sortedColumns: string[] = [];
+    let columnHeader = useAriaTableColumnHeader({
+      allowsSorting: true,
+      columnKey: 'row-1-cell-1',
+      onSort: (columnKey) => {
+        sortedColumns.push(String(columnKey));
+      },
+      table
+    });
+    columnHeader.press();
+    expect(sortedColumns).toEqual(['row-1-cell-1']);
+    expect(columnHeader.columnHeaderProps.value.role).toBe('columnheader');
+    expect(columnHeader.columnHeaderProps.value['aria-sort']).toBe('none');
+
+    let rowSelectionCheckbox = useAriaTableSelectionCheckbox({
+      grid: table,
+      key: 'row-1'
+    });
+    rowSelectionCheckbox.toggleSelection();
+    expect(table.isSelected('row-1')).toBe(false);
+
+    let selectAllCheckbox = useAriaTableSelectAllCheckbox({
+      keys: collection.rows.map((rowItem) => rowItem.key),
+      selectedKeys,
+      selectionMode: 'multiple'
+    });
+    selectAllCheckbox.toggleSelectAll();
+    expect(Array.from(selectedKeys.value).sort()).toEqual(['row-1', 'row-2']);
+    expect(selectAllCheckbox.checkboxProps.value.checked).toBe(true);
+
+    let columnWidth = ref(240);
+    let resizeUpdates: number[] = [];
+    let columnResize = useAriaTableColumnResize({
+      ariaLabel: 'Resize status column',
+      maxWidth: 400,
+      minWidth: 120,
+      onResize: (nextWidth) => {
+        resizeUpdates.push(nextWidth);
+      },
+      width: columnWidth
+    });
+    columnResize.resizerProps.value.onPointerDown();
+    expect(columnResize.isResizing.value).toBe(true);
+    columnResize.inputProps.value.onChange('500');
+    expect(columnWidth.value).toBe(400);
+    expect(resizeUpdates).toEqual([400]);
+    columnResize.resizerProps.value.onPointerUp();
+    expect(columnResize.isResizing.value).toBe(false);
   });
 
   it('announces and clears live region messages with vue-aria live announcer', () => {
