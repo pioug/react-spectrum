@@ -106,6 +106,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-aria/ssr` | `@vue-aria/ssr` |
 | `@react-aria/steplist` | `@vue-aria/steplist` |
 | `@react-aria/switch` | `@vue-aria/switch` |
+| `@react-aria/tag` | `@vue-aria/tag` |
 | `@react-aria/tabs` | `@vue-aria/tabs` |
 | `@react-aria/table` | `@vue-aria/table` |
 | `@react-aria/disclosure` | `@vue-aria/disclosure` |

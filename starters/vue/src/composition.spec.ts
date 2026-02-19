@@ -81,6 +81,7 @@ import {useSpinButton as useAriaSpinButton} from '@vue-aria/spinbutton';
 import {SSRProvider as AriaSSRProvider, useIsSSR as useAriaIsSSR, useSSRSafeId as useAriaSSRSafeId} from '@vue-aria/ssr';
 import {useStepList as useAriaStepList, useStepListItem as useAriaStepListItem} from '@vue-aria/steplist';
 import {useSwitch as useAriaSwitch} from '@vue-aria/switch';
+import {useTag as useAriaTag, useTagGroup as useAriaTagGroup} from '@vue-aria/tag';
 import {useTab as useAriaTab, useTabList as useAriaTabList, useTabPanel as useAriaTabPanel} from '@vue-aria/tabs';
 import {
   useTable as useAriaTable,
@@ -2000,6 +2001,79 @@ describe('Vue migration composition components', () => {
     });
     readOnlySwitch.press();
     expect(readOnlySelected.value).toBe(true);
+  });
+
+  it('computes vue-aria tag group and tag remove behavior', () => {
+    let selectedKeys = ref(new Set<string>(['react']));
+    let removedKeys: string[][] = [];
+    let tagGroup = useAriaTagGroup({
+      ariaLabel: 'Framework tags',
+      description: 'Use delete to remove tags',
+      errorMessage: 'At least one tag is required',
+      isInvalid: true,
+      items: [
+        {key: 'react', textValue: 'React'},
+        {key: 'vue', textValue: 'Vue'},
+        {key: 'svelte', textValue: 'Svelte', isDisabled: true}
+      ],
+      onRemove: (keys) => {
+        removedKeys.push(Array.from(keys).sort());
+      },
+      selectedKeys,
+      selectionMode: 'multiple'
+    });
+
+    expect(tagGroup.gridProps.value.role).toBe('grid');
+    expect(tagGroup.gridProps.value['aria-live']).toBe('off');
+    expect(tagGroup.gridProps.value['aria-describedby']).toContain(tagGroup.descriptionProps.value.id);
+    expect(tagGroup.gridProps.value['aria-describedby']).toContain(tagGroup.errorMessageProps.value.id);
+
+    tagGroup.gridProps.value.onFocusin();
+    expect(tagGroup.gridProps.value['aria-live']).toBe('polite');
+    tagGroup.gridProps.value.onFocusout();
+    expect(tagGroup.gridProps.value['aria-live']).toBe('off');
+
+    let reactTag = useAriaTag({
+      item: tagGroup.collection.value.items[0],
+      tagGroup
+    });
+    let vueTag = useAriaTag({
+      item: tagGroup.collection.value.items[1],
+      tagGroup
+    });
+    let svelteTag = useAriaTag({
+      item: tagGroup.collection.value.items[2],
+      tagGroup
+    });
+
+    expect(reactTag.allowsRemoving.value).toBe(true);
+    expect(reactTag.rowProps.value.role).toBe('row');
+    expect(reactTag.gridCellProps.value.role).toBe('gridcell');
+    expect(reactTag.rowProps.value.tabIndex).toBe(0);
+    expect(svelteTag.isDisabled.value).toBe(true);
+    expect(svelteTag.rowProps.value.tabIndex).toBe(-1);
+
+    let preventDeleteDefault = vi.fn();
+    reactTag.rowProps.value.onKeyDown?.({
+      key: 'Delete',
+      preventDefault: preventDeleteDefault
+    } as unknown as KeyboardEvent);
+    expect(preventDeleteDefault).toHaveBeenCalledTimes(1);
+    expect(removedKeys).toEqual([['react']]);
+
+    selectedKeys.value = new Set(['react', 'vue']);
+    reactTag.rowProps.value.onKeyDown?.({
+      key: 'Backspace',
+      preventDefault: vi.fn()
+    } as unknown as KeyboardEvent);
+    expect(removedKeys).toEqual([['react'], ['react', 'vue']]);
+
+    selectedKeys.value = new Set();
+    vueTag.removeButtonProps.value.onPress();
+    expect(removedKeys).toEqual([['react'], ['react', 'vue'], ['vue']]);
+
+    svelteTag.removeButtonProps.value.onPress();
+    expect(removedKeys).toEqual([['react'], ['react', 'vue'], ['vue']]);
   });
 
   it('computes vue-aria tabs semantics and manual activation behavior', () => {

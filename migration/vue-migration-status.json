@@ -1032,6 +1032,30 @@
         }
       ]
     },
+    "@react-aria/tag": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/tag",
+      "targetPath": "packages/@vue-aria/tag",
+      "notes": "Foundational React Aria tag composables for tag-group labeling, selectable grid-row semantics, and keyboard remove behavior in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria tag source lint",
+          "command": "yarn eslint packages/@vue-aria/tag/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/table": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/table",

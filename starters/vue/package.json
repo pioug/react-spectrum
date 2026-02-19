@@ -56,6 +56,7 @@
     "@vue-aria/switch": "workspace:*",
     "@vue-aria/table": "workspace:*",
     "@vue-aria/tabs": "workspace:*",
+    "@vue-aria/tag": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",
