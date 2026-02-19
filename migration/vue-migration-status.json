@@ -288,6 +288,30 @@
         }
       ]
     },
+    "@react-spectrum/autocomplete": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/autocomplete",
+      "targetPath": "packages/@vue-spectrum/autocomplete",
+      "notes": "Composition-layer migration step providing a Vue search autocomplete package wrapper.",
+      "acceptanceTests": [
+        {
+          "name": "Vue autocomplete package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/autocomplete/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/dialog": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/dialog",

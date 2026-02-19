@@ -13,17 +13,18 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 39 |
+| in_progress | 40 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 113 |
+| not_started | 112 |
 
 ## Package tracker
 
 | Source package | Source path | Target package | Target path | Status | Acceptance tests | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | `@react-aria/virtualizer` | `packages/@react-aria/virtualizer` | `@vue-aria/virtualizer` | `packages/@vue-aria/virtualizer` | in_progress | Vue Aria virtualizer source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria virtualizer port to support virtualized Vue collection components, now validated by starter interaction/composable tests and wired into the Vue starter virtualized backlog demo. |
+| `@react-spectrum/autocomplete` | `packages/@react-spectrum/autocomplete` | `@vue-spectrum/autocomplete` | `packages/@vue-spectrum/autocomplete` | in_progress | Vue autocomplete package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing a Vue search autocomplete package wrapper. |
 | `@react-spectrum/avatar` | `packages/@react-spectrum/avatar` | `@vue-spectrum/avatar` | `packages/@vue-spectrum/avatar` | in_progress | Vue avatar package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave visual primitive for identity and user representation. |
 | `@react-spectrum/badge` | `packages/@react-spectrum/badge` | `@vue-spectrum/badge` | `packages/@vue-spectrum/badge` | in_progress | Vue badge package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave visual primitive for compact labels and status context. |
 | `@react-spectrum/button` | `packages/@react-spectrum/button` | `@vue-spectrum/button` | `packages/@vue-spectrum/button` | in_progress | Vue button package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave primitive aligned with existing VueButton baseline work. |
@@ -120,7 +121,6 @@ Tracked source packages: 154
 | `@react-spectrum/accordion` | `packages/@react-spectrum/accordion` | `@vue-spectrum/accordion` | `packages/@vue-spectrum/accordion` | not_started | - | - |
 | `@react-spectrum/actionbar` | `packages/@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | `packages/@vue-spectrum/actionbar` | not_started | - | - |
 | `@react-spectrum/actiongroup` | `packages/@react-spectrum/actiongroup` | `@vue-spectrum/actiongroup` | `packages/@vue-spectrum/actiongroup` | not_started | - | - |
-| `@react-spectrum/autocomplete` | `packages/@react-spectrum/autocomplete` | `@vue-spectrum/autocomplete` | `packages/@vue-spectrum/autocomplete` | not_started | - | - |
 | `@react-spectrum/breadcrumbs` | `packages/@react-spectrum/breadcrumbs` | `@vue-spectrum/breadcrumbs` | `packages/@vue-spectrum/breadcrumbs` | not_started | - | - |
 | `@react-spectrum/buttongroup` | `packages/@react-spectrum/buttongroup` | `@vue-spectrum/buttongroup` | `packages/@vue-spectrum/buttongroup` | not_started | - | - |
 | `@react-spectrum/calendar` | `packages/@react-spectrum/calendar` | `@vue-spectrum/calendar` | `packages/@vue-spectrum/calendar` | not_started | - | - |

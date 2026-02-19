@@ -54,6 +54,7 @@ Phase 1 is implemented:
   * `@react-spectrum/dialog` -> `@vue-spectrum/dialog` (`in_progress`)
   * `@react-spectrum/overlays` -> `@vue-spectrum/overlays` (`in_progress`)
   * `@react-spectrum/combobox` -> `@vue-spectrum/combobox` (`in_progress`)
+  * `@react-spectrum/autocomplete` -> `@vue-spectrum/autocomplete` (`in_progress`)
   * `@react-spectrum/menu` -> `@vue-spectrum/menu` (`in_progress`)
   * `@react-spectrum/listbox` -> `@vue-spectrum/listbox` (`in_progress`)
 * Started data-heavy migration:
@@ -66,7 +67,7 @@ Phase 1 is implemented:
   * Vue starter now includes a virtualized backlog demo wired to `@vue-aria/virtualizer`.
 * Started Vue test adaptation:
   * `starters/vue` runs Vitest + Vue Test Utils interaction tests for `button`, `textfield`, `checkbox`, `radio`, `switch`, `layout`, `labeledvalue`, `illustratedmessage`, and `icon`.
-  * Added composition coverage for `dialog`, `overlays`, `menu`, `listbox`, and `combobox`.
+  * Added composition coverage for `dialog`, `overlays`, `menu`, `listbox`, `combobox`, and `autocomplete`.
   * Added data-heavy and virtualization coverage for `table`, `tree`, `dnd`, `dropzone`, and `@vue-aria/virtualizer`.
 * Started API stabilization and deprecation planning:
   * `migration/VUE_PUBLISH_CHECKLIST.md`

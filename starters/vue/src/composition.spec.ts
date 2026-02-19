@@ -1,6 +1,6 @@
 import {mount} from '@vue/test-utils';
 import {describe, expect, it} from 'vitest';
-import {ComboBox} from '@vue-spectrum/combobox';
+import {SearchAutocomplete} from '@vue-spectrum/autocomplete';
 import {Dialog} from '@vue-spectrum/dialog';
 import {ListBox} from '@vue-spectrum/listbox';
 import {Menu} from '@vue-spectrum/menu';
@@ -67,8 +67,8 @@ describe('Vue migration composition components', () => {
     expect(wrapper.emitted('select')?.[0]).toEqual(['Tailwind CSS']);
   });
 
-  it('emits model updates and change events from combobox input', async () => {
-    let wrapper = mount(ComboBox, {
+  it('emits model updates and change events from search autocomplete input', async () => {
+    let wrapper = mount(SearchAutocomplete, {
       props: {
         modelValue: '',
         label: 'Language',

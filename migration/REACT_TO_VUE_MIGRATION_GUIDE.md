@@ -48,6 +48,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-spectrum/dialog` | `@vue-spectrum/dialog` |
 | `@react-spectrum/overlays` | `@vue-spectrum/overlays` |
 | `@react-spectrum/combobox` | `@vue-spectrum/combobox` |
+| `@react-spectrum/autocomplete` | `@vue-spectrum/autocomplete` |
 | `@react-spectrum/menu` | `@vue-spectrum/menu` |
 | `@react-spectrum/listbox` | `@vue-spectrum/listbox` |
 | `@react-spectrum/table` | `@vue-spectrum/table` |

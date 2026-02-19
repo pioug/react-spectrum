@@ -85,7 +85,7 @@
           label="Primary migration libraries"
           :value="libraryOptions.slice(0, 2)" />
 
-        <VueComboBox
+        <VueSearchAutocomplete
           v-model="favoriteLanguage"
           label="Favorite language"
           :options="languageOptions"
@@ -245,7 +245,7 @@ import {Avatar as VueAvatar} from '@vue-spectrum/avatar';
 import {Badge as VueBadge} from '@vue-spectrum/badge';
 import {Button as VueButton} from '@vue-spectrum/button';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
-import {ComboBox as VueComboBox} from '@vue-spectrum/combobox';
+import {SearchAutocomplete as VueSearchAutocomplete} from '@vue-spectrum/autocomplete';
 import {DropZone as VueDropZone} from '@vue-spectrum/dropzone';
 import {Divider as VueDivider} from '@vue-spectrum/divider';
 import {Dialog as VueDialog} from '@vue-spectrum/dialog';
