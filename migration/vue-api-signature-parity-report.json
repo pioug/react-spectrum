@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-19T23:01:41.638Z",
+  "generatedAt": "2026-02-19T23:04:45.658Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 80,
+    "fullyMatchedPackages": 81,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 1871,
-    "mismatchedExportTotal": 801,
+    "matchedExportTotal": 1889,
+    "mismatchedExportTotal": 783,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.7002
+    "parityCoverage": 0.707
   },
   "packages": [
     {
@@ -5659,10 +5659,10 @@
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
       "comparedExportCount": 419,
-      "matchedExportCount": 328,
-      "mismatchedExportCount": 91,
+      "matchedExportCount": 336,
+      "mismatchedExportCount": 83,
       "missingInTargetCount": 0,
-      "parityRatio": 0.7828,
+      "parityRatio": 0.8019,
       "missingInTargetExports": [],
       "mismatches": [
         {
@@ -7309,302 +7309,6 @@
           }
         },
         {
-          "exportName": "useModalOverlay",
-          "targetExportName": "useModalOverlay",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useModalOverlay",
-            "resolvedName": "useModalOverlay",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaModalOverlayProps, state: OverlayTriggerState, ref: RefObject<HTMLElement | null>) => ModalOverlayAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaModalOverlayProps, _: OverlayTriggerState, _: RefObject<HTMLElement | null>) => ModalOverlayAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useModalOverlay",
-            "resolvedName": "useModalOverlay",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaModalOverlayOptions) => ModalOverlayAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaModalOverlayOptions) => ModalOverlayAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useModalProvider",
-          "targetExportName": "useModalProvider",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useModalProvider",
-            "resolvedName": "useModalProvider",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => ModalProviderAria",
-            "declaredType": "",
-            "callSignatures": [
-              "() => ModalProviderAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useModalProvider",
-            "resolvedName": "useModalProvider",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => { modalProviderProps: {}; parent: Ref<unknown, unknown>;}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => { modalProviderProps: {}; parent: Ref<unknown, unknown>; }"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useOverlay",
-          "targetExportName": "useOverlay",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useOverlay",
-            "resolvedName": "useOverlay",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaOverlayProps, ref: RefObject<Element | null>) => OverlayAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaOverlayProps, _: RefObject<Element | null>) => OverlayAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useOverlay",
-            "resolvedName": "useOverlay",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaOverlayOptions) => OverlayAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaOverlayOptions) => OverlayAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useOverlayPosition",
-          "targetExportName": "useOverlayPosition",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useOverlayPosition",
-            "resolvedName": "useOverlayPosition",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaPositionProps) => PositionAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaPositionProps) => PositionAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useOverlayPosition",
-            "resolvedName": "useOverlayPosition",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaOverlayPositionOptions) => PositionAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaOverlayPositionOptions) => PositionAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useOverlayTrigger",
-          "targetExportName": "useOverlayTrigger",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useOverlayTrigger",
-            "resolvedName": "useOverlayTrigger",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: OverlayTriggerProps, state: OverlayTriggerState, ref?: RefObject<Element | null>) => OverlayTriggerAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: OverlayTriggerProps, _: OverlayTriggerState, _: RefObject<Element | null>) => OverlayTriggerAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useOverlayTrigger",
-            "resolvedName": "useOverlayTrigger",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: OverlayTriggerOptions) => OverlayTriggerAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: OverlayTriggerOptions) => OverlayTriggerAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "usePopover",
-          "targetExportName": "usePopover",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "usePopover",
-            "resolvedName": "usePopover",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaPopoverProps, state: OverlayTriggerState) => PopoverAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaPopoverProps, _: OverlayTriggerState) => PopoverAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "usePopover",
-            "resolvedName": "usePopover",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaPopoverOptions) => PopoverAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaPopoverOptions) => PopoverAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "usePreventScroll",
-          "targetExportName": "usePreventScroll",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "usePreventScroll",
-            "resolvedName": "usePreventScroll",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: PreventScrollOptions) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: PreventScrollOptions) => void"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "usePreventScroll",
-            "resolvedName": "usePreventScroll",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: PreventScrollOptions) => PreventScrollAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: PreventScrollOptions) => PreventScrollAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useUNSAFE_PortalContext",
-          "targetExportName": "useUNSAFE_PortalContext",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useUNSAFE_PortalContext",
-            "resolvedName": "useUNSAFE_PortalContext",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => PortalProviderContextValue",
-            "declaredType": "",
-            "callSignatures": [
-              "() => PortalProviderContextValue"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useUNSAFE_PortalContext",
-            "resolvedName": "useUNSAFE_PortalContext",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => { getContainer: () => any;}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => { getContainer: () => any; }"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
           "exportName": "useProgressBar",
           "targetExportName": "useProgressBar",
           "differences": [
@@ -8639,9 +8343,293 @@
             ],
             "constructSignatures": []
           }
+        },
+        {
+          "exportName": "useTree",
+          "targetExportName": "useTree",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useTree",
+            "resolvedName": "useTree",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(props: AriaTreeOptions<T>, state: TreeState<T>, ref: RefObject<HTMLElement | null>) => TreeAria",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: AriaTreeOptions<T>, _: TreeState<T>, _: RefObject<HTMLElement | null>) => TreeAria"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useTree",
+            "resolvedName": "useTree",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(options: AriaTreeOptions) => TreeAria",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: AriaTreeOptions) => TreeAria"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "useTreeItem",
+          "targetExportName": "useTreeItem",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useTreeItem",
+            "resolvedName": "useTreeItem",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(props: AriaTreeItemOptions, state: TreeState<T>, ref: RefObject<FocusableElement | null>) => TreeItemAria",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: AriaTreeItemOptions, _: TreeState<T>, _: RefObject<FocusableElement | null>) => TreeItemAria"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useTreeItem",
+            "resolvedName": "useTreeItem",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(options: AriaTreeItemOptions) => TreeItemAria",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: AriaTreeItemOptions) => TreeItemAria"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "chain",
+          "targetExportName": "chain",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "chain",
+            "resolvedName": "chain",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(...callbacks: any[]) => (...args: any[]) => void",
+            "declaredType": "",
+            "callSignatures": [
+              "(...callbacks: any[]) => (...args: any[]) => void"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "chain",
+            "resolvedName": "chain",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<Args extends unknown[]>(...callbacks: Array<((...args: Args) => void) | undefined>) => (...args: Args) => void",
+            "declaredType": "",
+            "callSignatures": [
+              "<Args extends unknown[]>(...callbacks: Array<((...args: Args) => void) | undefined>) => (...args: Args) => void"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "mergeProps",
+          "targetExportName": "mergeProps",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "mergeProps",
+            "resolvedName": "mergeProps",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T extends PropsArg[]>(...args: T) => UnionToIntersection<TupleTypes<T>>",
+            "declaredType": "",
+            "callSignatures": [
+              "<T extends PropsArg[]>(...args: T) => UnionToIntersection<TupleTypes<T>>"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "mergeProps",
+            "resolvedName": "mergeProps",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(...props: Array<PropRecord | undefined>) => PropRecord",
+            "declaredType": "",
+            "callSignatures": [
+              "(...props: Array<PropRecord | undefined>) => PropRecord"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "useObjectRef",
+          "targetExportName": "useObjectRef",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useObjectRef",
+            "resolvedName": "useObjectRef",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(ref?: ((instance: T | MutableRefObject<T | null) => (() => void) | null) => MutableRefObject<T | null> | void)",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: (( _: T | MutableRefObject<T | null) => (() => void) | null) => MutableRefObject<T | null> | void)"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useObjectRef",
+            "resolvedName": "useObjectRef",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(value: Ref<T> | T) => Ref<T>",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: Ref<T> | T) => Ref<T>"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "useVisuallyHidden",
+          "targetExportName": "useVisuallyHidden",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useVisuallyHidden",
+            "resolvedName": "useVisuallyHidden",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(props?: VisuallyHiddenProps) => VisuallyHiddenAria",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: VisuallyHiddenProps) => VisuallyHiddenAria"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useVisuallyHidden",
+            "resolvedName": "useVisuallyHidden",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "(options?: AriaVisuallyHiddenOptions) => VisuallyHiddenAria",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: AriaVisuallyHiddenOptions) => VisuallyHiddenAria"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "AriaToggleButtonGroupProps",
+          "targetExportName": "AriaToggleButtonGroupProps",
+          "differences": [
+            "value-availability"
+          ],
+          "source": {
+            "name": "AriaToggleButtonGroupProps",
+            "resolvedName": "AriaToggleButtonGroupProps",
+            "hasType": true,
+            "hasValue": false,
+            "declarationKinds": [
+              "InterfaceDeclaration"
+            ],
+            "valueType": "any",
+            "declaredType": "AriaToggleButtonGroupProps",
+            "callSignatures": [],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "AriaToggleButtonGroupProps",
+            "resolvedName": "unknown",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [],
+            "valueType": "any",
+            "declaredType": "",
+            "callSignatures": [],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "AriaColorChannelFieldProps",
+          "targetExportName": "AriaColorChannelFieldProps",
+          "differences": [
+            "value-availability"
+          ],
+          "source": {
+            "name": "AriaColorChannelFieldProps",
+            "resolvedName": "AriaColorChannelFieldProps",
+            "hasType": true,
+            "hasValue": false,
+            "declarationKinds": [
+              "InterfaceDeclaration"
+            ],
+            "valueType": "any",
+            "declaredType": "AriaColorChannelFieldProps",
+            "callSignatures": [],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "AriaColorChannelFieldProps",
+            "resolvedName": "unknown",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [],
+            "valueType": "any",
+            "declaredType": "",
+            "callSignatures": [],
+            "constructSignatures": []
+          }
         }
       ],
-      "truncatedMismatchCount": 11,
+      "truncatedMismatchCount": 3,
       "error": null
     },
     {
@@ -12771,396 +12759,6 @@
             "declaredType": "",
             "callSignatures": [
               "<T>( _: TreeProps<T>) => TreeState<T>"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/overlays",
-      "sourcePath": "packages/@react-aria/overlays",
-      "targetPackage": "@vue-aria/overlays",
-      "targetPath": "packages/@vue-aria/overlays",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/overlays/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/overlays/src/index.ts",
-      "sourceExportCount": 39,
-      "comparedExportCount": 39,
-      "matchedExportCount": 29,
-      "mismatchedExportCount": 10,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.7436,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useOverlayPosition",
-          "targetExportName": "useOverlayPosition",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useOverlayPosition",
-            "resolvedName": "useOverlayPosition",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaPositionProps) => PositionAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaPositionProps) => PositionAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useOverlayPosition",
-            "resolvedName": "useOverlayPosition",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaOverlayPositionOptions) => PositionAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaOverlayPositionOptions) => PositionAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useOverlay",
-          "targetExportName": "useOverlay",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useOverlay",
-            "resolvedName": "useOverlay",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaOverlayProps, ref: RefObject<Element | null>) => OverlayAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaOverlayProps, _: RefObject<Element | null>) => OverlayAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useOverlay",
-            "resolvedName": "useOverlay",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaOverlayOptions) => OverlayAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaOverlayOptions) => OverlayAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useOverlayTrigger",
-          "targetExportName": "useOverlayTrigger",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useOverlayTrigger",
-            "resolvedName": "useOverlayTrigger",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: OverlayTriggerProps, state: OverlayTriggerState, ref?: RefObject<Element | null>) => OverlayTriggerAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: OverlayTriggerProps, _: OverlayTriggerState, _: RefObject<Element | null>) => OverlayTriggerAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useOverlayTrigger",
-            "resolvedName": "useOverlayTrigger",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: OverlayTriggerOptions) => OverlayTriggerAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: OverlayTriggerOptions) => OverlayTriggerAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "usePreventScroll",
-          "targetExportName": "usePreventScroll",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "usePreventScroll",
-            "resolvedName": "usePreventScroll",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: PreventScrollOptions) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: PreventScrollOptions) => void"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "usePreventScroll",
-            "resolvedName": "usePreventScroll",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: PreventScrollOptions) => PreventScrollAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: PreventScrollOptions) => PreventScrollAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useModalProvider",
-          "targetExportName": "useModalProvider",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useModalProvider",
-            "resolvedName": "useModalProvider",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => ModalProviderAria",
-            "declaredType": "",
-            "callSignatures": [
-              "() => ModalProviderAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useModalProvider",
-            "resolvedName": "useModalProvider",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => { modalProviderProps: {}; parent: Ref<unknown, unknown>;}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => { modalProviderProps: {}; parent: Ref<unknown, unknown>; }"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "ariaHideOutside",
-          "targetExportName": "ariaHideOutside",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "ariaHideOutside",
-            "resolvedName": "ariaHideOutside",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(targets: Element[], options?: AriaHideOutsideOptions | Element) => () => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: Element[], _: AriaHideOutsideOptions | Element) => () => void"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "ariaHideOutside",
-            "resolvedName": "ariaHideOutside",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(elements: Array<Element | null | undefined>) => () => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: Array<Element | null | undefined>) => () => void"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "usePopover",
-          "targetExportName": "usePopover",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "usePopover",
-            "resolvedName": "usePopover",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaPopoverProps, state: OverlayTriggerState) => PopoverAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaPopoverProps, _: OverlayTriggerState) => PopoverAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "usePopover",
-            "resolvedName": "usePopover",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaPopoverOptions) => PopoverAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaPopoverOptions) => PopoverAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useModalOverlay",
-          "targetExportName": "useModalOverlay",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useModalOverlay",
-            "resolvedName": "useModalOverlay",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaModalOverlayProps, state: OverlayTriggerState, ref: RefObject<HTMLElement | null>) => ModalOverlayAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaModalOverlayProps, _: OverlayTriggerState, _: RefObject<HTMLElement | null>) => ModalOverlayAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useModalOverlay",
-            "resolvedName": "useModalOverlay",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaModalOverlayOptions) => ModalOverlayAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaModalOverlayOptions) => ModalOverlayAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useOverlayFocusContain",
-          "targetExportName": "useOverlayFocusContain",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useOverlayFocusContain",
-            "resolvedName": "useOverlayFocusContain",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => void",
-            "declaredType": "",
-            "callSignatures": [
-              "() => void"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useOverlayFocusContain",
-            "resolvedName": "useOverlayFocusContain",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => {}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => {}"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useUNSAFE_PortalContext",
-          "targetExportName": "useUNSAFE_PortalContext",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useUNSAFE_PortalContext",
-            "resolvedName": "useUNSAFE_PortalContext",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => PortalProviderContextValue",
-            "declaredType": "",
-            "callSignatures": [
-              "() => PortalProviderContextValue"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useUNSAFE_PortalContext",
-            "resolvedName": "useUNSAFE_PortalContext",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => { getContainer: () => any;}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => { getContainer: () => any; }"
             ],
             "constructSignatures": []
           }
@@ -20342,6 +19940,25 @@
       "sourceExportCount": 3,
       "comparedExportCount": 3,
       "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/overlays",
+      "sourcePath": "packages/@react-aria/overlays",
+      "targetPackage": "@vue-aria/overlays",
+      "targetPath": "packages/@vue-aria/overlays",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/overlays/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/overlays/src/index.ts",
+      "sourceExportCount": 39,
+      "comparedExportCount": 39,
+      "matchedExportCount": 39,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,

@@ -1,39 +1,96 @@
-import {defineComponent, ref} from 'vue';
+import {defineComponent, ref, type Ref} from 'vue';
+import {ariaHideOutside as ariaHideOutsideInternal} from './ariaHideOutside';
+import {useModal} from './useModal';
+import {useModalOverlay as useModalOverlayInternal, type AriaModalOverlayOptions, type ModalOverlayAria} from './useModalOverlay';
+import {useOverlay as useOverlayInternal, type AriaOverlayOptions, type OverlayAria} from './useOverlay';
+import {useOverlayPosition as useOverlayPositionInternal, type AriaOverlayPositionOptions, type OverlayPlacement, type PositionAria} from './useOverlayPosition';
+import {useOverlayTrigger as useOverlayTriggerInternal, type OverlayTriggerAria, type OverlayTriggerOptions, type OverlayTriggerType} from './useOverlayTrigger';
+import {usePopover as usePopoverInternal, type AriaPopoverOptions, type PopoverAria} from './usePopover';
+import {usePreventScroll as usePreventScrollInternal, type PreventScrollAria, type PreventScrollOptions} from './usePreventScroll';
+import type {AriaModalOptions, ModalAria} from './useModal';
+import type {MaybeRef} from './types';
 
-export {ariaHideOutside} from './ariaHideOutside';
-export {useModal} from './useModal';
-export type {AriaModalOptions, ModalAria} from './useModal';
-export {useModalOverlay} from './useModalOverlay';
-export type {AriaModalOverlayOptions, ModalOverlayAria} from './useModalOverlay';
-export {useOverlay} from './useOverlay';
-export type {AriaOverlayOptions, OverlayAria} from './useOverlay';
-export {useOverlayPosition} from './useOverlayPosition';
-export type {AriaOverlayPositionOptions, OverlayPlacement, PositionAria} from './useOverlayPosition';
-export {useOverlayTrigger} from './useOverlayTrigger';
-export type {OverlayTriggerAria, OverlayTriggerOptions, OverlayTriggerType} from './useOverlayTrigger';
-export {usePopover} from './usePopover';
-export type {AriaPopoverOptions, PopoverAria} from './usePopover';
-export {usePreventScroll} from './usePreventScroll';
-export type {PreventScrollAria, PreventScrollOptions} from './usePreventScroll';
-export type {MaybeRef} from './types';
+export {useModal};
+export type {AriaModalOptions, ModalAria, AriaModalOverlayOptions, ModalOverlayAria, AriaOverlayOptions, OverlayAria, AriaOverlayPositionOptions, OverlayPlacement, PositionAria, OverlayTriggerAria, OverlayTriggerOptions, OverlayTriggerType, AriaPopoverOptions, PopoverAria, PreventScrollAria, PreventScrollOptions, MaybeRef};
 
 type AnyRecord = Record<string, unknown>;
+type RefObject<T> = {current: T};
+export type OverlayTriggerState = AnyRecord;
+export type AriaHideOutsideOptions = AnyRecord;
 
-export type AriaModalOverlayProps = AnyRecord;
-export type AriaOverlayProps = AnyRecord;
-export type AriaPopoverProps = AnyRecord;
-export type AriaPositionProps = AnyRecord;
+export type AriaModalOverlayProps = AriaModalOverlayOptions;
+export type AriaOverlayProps = AriaOverlayOptions;
+export type AriaPopoverProps = AriaPopoverOptions;
+export type AriaPositionProps = AriaOverlayPositionOptions;
 export type DismissButtonProps = AnyRecord;
-export type ModalProviderAria = AnyRecord;
+export type ModalProviderAria = {
+  modalProviderProps: AnyRecord,
+  parent: Ref<unknown>
+};
 export type ModalProviderProps = AnyRecord;
 export type OverlayContainerProps = AnyRecord;
 export type OverlayProps = AnyRecord;
-export type OverlayTriggerProps = AnyRecord;
-export type PositionProps = AnyRecord;
+export type OverlayTriggerProps = OverlayTriggerOptions;
+export type PositionProps = AriaOverlayPositionOptions;
 export type PortalProviderProps = AnyRecord;
-export type PortalProviderContextValue = AnyRecord;
+export type PortalProviderContextValue = {
+  getContainer: () => Element | null
+};
 export type Placement = string;
 export type PlacementAxis = 'main' | 'cross';
+
+export function ariaHideOutside(targets: Element[], options?: AriaHideOutsideOptions | Element): () => void;
+export function ariaHideOutside(targets: Array<Element | null | undefined>): () => void;
+export function ariaHideOutside(
+  targets: Array<Element | null | undefined>,
+  _options?: AriaHideOutsideOptions | Element
+): () => void {
+  return ariaHideOutsideInternal(targets);
+}
+
+export function useOverlayPosition(props: AriaPositionProps): PositionAria;
+export function useOverlayPosition(options: AriaOverlayPositionOptions): PositionAria;
+export function useOverlayPosition(options: AriaOverlayPositionOptions): PositionAria {
+  return useOverlayPositionInternal(options);
+}
+
+export function useOverlay(props: AriaOverlayProps, ref: RefObject<Element | null>): OverlayAria;
+export function useOverlay(options: AriaOverlayOptions): OverlayAria;
+export function useOverlay(options: AriaOverlayOptions): OverlayAria {
+  return useOverlayInternal(options);
+}
+
+export function useOverlayTrigger(
+  props: OverlayTriggerProps,
+  state: OverlayTriggerState,
+  ref: RefObject<Element | null>
+): OverlayTriggerAria;
+export function useOverlayTrigger(options: OverlayTriggerOptions): OverlayTriggerAria;
+export function useOverlayTrigger(options: OverlayTriggerOptions): OverlayTriggerAria {
+  return useOverlayTriggerInternal(options);
+}
+
+export function usePopover(props: AriaPopoverProps, state: OverlayTriggerState): PopoverAria;
+export function usePopover(options: AriaPopoverOptions): PopoverAria;
+export function usePopover(options: AriaPopoverOptions): PopoverAria {
+  return usePopoverInternal(options);
+}
+
+export function useModalOverlay(
+  props: AriaModalOverlayProps,
+  state: OverlayTriggerState,
+  ref: RefObject<HTMLElement | null>
+): ModalOverlayAria;
+export function useModalOverlay(options: AriaModalOverlayOptions): ModalOverlayAria;
+export function useModalOverlay(options: AriaModalOverlayOptions): ModalOverlayAria {
+  return useModalOverlayInternal(options);
+}
+
+export function usePreventScroll(options: PreventScrollOptions): void;
+export function usePreventScroll(options?: PreventScrollOptions): PreventScrollAria;
+export function usePreventScroll(options: PreventScrollOptions = {}): PreventScrollAria {
+  return usePreventScrollInternal(options);
+}
 
 export const DismissButton = defineComponent({
   name: 'VueAriaDismissButton',
@@ -77,18 +134,18 @@ export const UNSAFE_PortalProvider = defineComponent({
   }
 });
 
-export function useModalProvider() {
+export function useModalProvider(): ModalProviderAria {
   return {
     modalProviderProps: {},
     parent: ref<unknown>(null)
   };
 }
 
-export function useOverlayFocusContain() {
-  return {};
+export function useOverlayFocusContain(): void {
+  // Compatibility no-op.
 }
 
-export function useUNSAFE_PortalContext() {
+export function useUNSAFE_PortalContext(): PortalProviderContextValue {
   return {
     getContainer: () => null
   };
