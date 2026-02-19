@@ -127,6 +127,7 @@
     "@vue-spectrum/theme-express": "workspace:*",
     "@vue-spectrum/theme-light": "workspace:*",
     "@vue-spectrum/toast": "workspace:*",
+    "@vue-spectrum/tooltip": "workspace:*",
     "@vue-spectrum/tree": "workspace:*",
     "@vue-spectrum/view": "workspace:*",
     "@vue-spectrum/well": "workspace:*",

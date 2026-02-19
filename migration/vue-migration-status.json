@@ -2704,6 +2704,30 @@
         }
       ]
     },
+    "@react-spectrum/tooltip": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/tooltip",
+      "targetPath": "packages/@vue-spectrum/tooltip",
+      "notes": "Tooltip and tooltip-trigger baseline components with Vue Aria trigger semantics and accessibility props.",
+      "acceptanceTests": [
+        {
+          "name": "Vue tooltip package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/tooltip/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

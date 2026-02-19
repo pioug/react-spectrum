@@ -12875,6 +12875,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/tooltip@workspace:*, @vue-spectrum/tooltip@workspace:packages/@vue-spectrum/tooltip":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/tooltip@workspace:packages/@vue-spectrum/tooltip"
+  dependencies:
+    "@vue-aria/tooltip": "workspace:*"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/tree@workspace:*, @vue-spectrum/tree@workspace:packages/@vue-spectrum/tree":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/tree@workspace:packages/@vue-spectrum/tree"
@@ -31795,6 +31805,7 @@ __metadata:
     "@vue-spectrum/theme-express": "workspace:*"
     "@vue-spectrum/theme-light": "workspace:*"
     "@vue-spectrum/toast": "workspace:*"
+    "@vue-spectrum/tooltip": "workspace:*"
     "@vue-spectrum/tree": "workspace:*"
     "@vue-spectrum/view": "workspace:*"
     "@vue-spectrum/well": "workspace:*"

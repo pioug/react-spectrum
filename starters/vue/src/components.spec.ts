@@ -27,6 +27,7 @@ import {Tabs} from '@vue-spectrum/tabs';
 import {TextField} from '@vue-spectrum/textfield';
 import {Text} from '@vue-spectrum/text';
 import {createToastQueue, ToastContainer} from '@vue-spectrum/toast';
+import {Tooltip, TooltipTrigger} from '@vue-spectrum/tooltip';
 import {View} from '@vue-spectrum/view';
 import {Well} from '@vue-spectrum/well';
 
@@ -423,6 +424,47 @@ describe('Vue migration primitives', () => {
     await nextTick();
     expect(queue.visibleToasts.value).toHaveLength(0);
     expect(wrapper.find('.vs-toast-region').exists()).toBe(false);
+  });
+
+  it('renders tooltip content with variant, placement, and icon styling', () => {
+    let wrapper = mount(Tooltip, {
+      props: {
+        isOpen: true,
+        placement: 'right',
+        showIcon: true,
+        variant: 'info'
+      },
+      slots: {
+        default: 'Migration tip'
+      }
+    });
+
+    expect(wrapper.classes()).toContain('vs-tooltip--info');
+    expect(wrapper.classes()).toContain('vs-tooltip--right');
+    expect(wrapper.text()).toContain('Migration tip');
+    expect(wrapper.find('.vs-tooltip__icon').exists()).toBe(true);
+  });
+
+  it('emits close updates from tooltip trigger keyboard interactions', async () => {
+    let wrapper = mount(TooltipTrigger, {
+      props: {
+        content: 'Tooltip details',
+        modelValue: true
+      },
+      slots: {
+        default: '<button type=\"button\">Trigger</button>'
+      }
+    });
+
+    expect(wrapper.find('.vs-tooltip').exists()).toBe(true);
+
+    await wrapper.get('.vs-tooltip-trigger__target').trigger('keydown', {key: 'Escape'});
+    await nextTick();
+
+    let modelUpdates = wrapper.emitted('update:modelValue') ?? [];
+    let changeEvents = wrapper.emitted('change') ?? [];
+    expect(modelUpdates[modelUpdates.length - 1]).toEqual([false]);
+    expect(changeEvents[changeEvents.length - 1]).toEqual([false]);
   });
 
   it('emits press events from standalone cards', async () => {
