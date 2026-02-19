@@ -1,6 +1,6 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-19T23:56:24.620Z
+Generated: 2026-02-19T23:58:46.721Z
 
 ## Summary
 
@@ -10,10 +10,10 @@ Generated: 2026-02-19T23:56:24.620Z
 * Fully matched packages: 91
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 2085
-* Mismatched signatures: 587
+* Matched signatures: 2087
+* Mismatched signatures: 585
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 78.03%
+* Signature coverage ratio: 78.11%
 
 ## Package gaps
 
@@ -23,12 +23,12 @@ Generated: 2026-02-19T23:56:24.620Z
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | mismatch | 325 | 134 | 0 | 58.8% |
 | `react-aria` | `vue-aria` | mismatch | 419 | 50 | 0 | 88.1% |
 | `@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | mismatch | 6 | 6 | 0 | 0.0% |
-| `@react-aria/collections` | `@vue-aria/collections` | mismatch | 17 | 5 | 0 | 70.6% |
 | `@react-aria/calendar` | `@vue-aria/calendar` | mismatch | 14 | 4 | 0 | 71.4% |
 | `@react-aria/gridlist` | `@vue-aria/gridlist` | mismatch | 12 | 4 | 0 | 66.7% |
 | `@react-aria/listbox` | `@vue-aria/listbox` | mismatch | 12 | 4 | 0 | 66.7% |
 | `@react-aria/menu` | `@vue-aria/menu` | mismatch | 16 | 4 | 0 | 75.0% |
 | `@react-aria/checkbox` | `@vue-aria/checkbox` | mismatch | 8 | 3 | 0 | 62.5% |
+| `@react-aria/collections` | `@vue-aria/collections` | mismatch | 17 | 3 | 0 | 82.3% |
 | `@react-aria/tabs` | `@vue-aria/tabs` | mismatch | 11 | 3 | 0 | 72.7% |
 | `@react-stately/color` | `@vue-stately/color` | mismatch | 25 | 3 | 0 | 88.0% |
 | `@react-aria/actiongroup` | `@vue-aria/actiongroup` | mismatch | 6 | 2 | 0 | 66.7% |
@@ -212,15 +212,6 @@ Generated: 2026-02-19T23:56:24.620Z
 * Missing in target: 0
 * Example mismatches: `style [call-signatures]`, `baseColor [call-signatures]`, `lightDark [call-signatures]`, `focusRing [call-signatures]`, `raw [call-signatures]`, `keyframes [call-signatures]`
 
-### @react-aria/collections -> @vue-aria/collections
-
-* Source entry: `packages/@react-aria/collections/src/index.ts`
-* Target entry: `packages/@vue-aria/collections/src/index.ts`
-* Compared exports: 17
-* Mismatched signatures: 5
-* Missing in target: 0
-* Example mismatches: `createLeafComponent [call-signatures]`, `createBranchComponent [call-signatures]`, `createHideableComponent [call-signatures]`, `useIsHidden [call-signatures]`, `useCachedChildren [call-signatures]`
-
 ### @react-aria/calendar -> @vue-aria/calendar
 
 * Source entry: `packages/@react-aria/calendar/src/index.ts`
@@ -265,6 +256,15 @@ Generated: 2026-02-19T23:56:24.620Z
 * Mismatched signatures: 3
 * Missing in target: 0
 * Example mismatches: `useCheckbox [call-signatures]`, `useCheckboxGroup [call-signatures]`, `useCheckboxGroupItem [call-signatures]`
+
+### @react-aria/collections -> @vue-aria/collections
+
+* Source entry: `packages/@react-aria/collections/src/index.ts`
+* Target entry: `packages/@vue-aria/collections/src/index.ts`
+* Compared exports: 17
+* Mismatched signatures: 3
+* Missing in target: 0
+* Example mismatches: `createLeafComponent [call-signatures]`, `createBranchComponent [call-signatures]`, `createHideableComponent [call-signatures]`
 
 ### @react-aria/tabs -> @vue-aria/tabs
 

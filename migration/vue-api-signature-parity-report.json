@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-19T23:56:24.620Z",
+  "generatedAt": "2026-02-19T23:58:46.721Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
@@ -7,10 +7,10 @@
     "fullyMatchedPackages": 91,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 2085,
-    "mismatchedExportTotal": 587,
+    "matchedExportTotal": 2087,
+    "mismatchedExportTotal": 585,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.7803
+    "parityCoverage": 0.7811
   },
   "packages": [
     {
@@ -7764,212 +7764,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-aria/collections",
-      "sourcePath": "packages/@react-aria/collections",
-      "targetPackage": "@vue-aria/collections",
-      "targetPath": "packages/@vue-aria/collections",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/collections/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/collections/src/index.ts",
-      "sourceExportCount": 17,
-      "comparedExportCount": 17,
-      "matchedExportCount": 12,
-      "mismatchedExportCount": 5,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.7059,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "createLeafComponent",
-          "targetExportName": "createLeafComponent",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "createLeafComponent",
-            "resolvedName": "createLeafComponent",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "null): (props: P & React.RefAttributes<E>) => ReactElement | null; <T extends object, P extends object, E extends Element>(CollectionNodeClass: CollectionNodeClass<any> | null;} | string, render: (props: P, ref: ForwardedRef<E>) => ReactElement | string, render: (props: P, ref: ForwardedRef<E>, node: Node<T>) => ReactElement | { <T extends object, P extends object, E extends Element>(CollectionNodeClass: CollectionNodeClass<any>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object, P extends object, E extends Element>( _: CollectionNodeClass<any> | null | null) => ( _: P & React.RefAttributes<E>) => ReactElement | string, _: ( _: P, _: ForwardedRef<E>) => ReactElement",
-              "<T extends object, P extends object, E extends Element>( _: CollectionNodeClass<any> | null | null) => ( _: P & React.RefAttributes<E>) => ReactElement | string, _: ( _: P, _: ForwardedRef<E>, _: Node<T>) => ReactElement"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "createLeafComponent",
-            "resolvedName": "createLeafComponent",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T, TComponent>(component: (item: T, index: number) => TComponent) => (item: T, index: number) => TComponent",
-            "declaredType": "",
-            "callSignatures": [
-              "<T, TComponent>( _: ( _: T, _: number) => TComponent) => ( _: T, _: number) => TComponent"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "createBranchComponent",
-          "targetExportName": "createBranchComponent",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "createBranchComponent",
-            "resolvedName": "createBranchComponent",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object, P extends { children?: any;}, E extends Element>(CollectionNodeClass: CollectionNodeClass<any> | null | null, useChildren?: (props: P) => ReactNode) => (props: P & React.RefAttributes<E>) => ReactElement | string, render: (props: P, ref: ForwardedRef<E>, node: Node<T>) => ReactElement",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object, P extends { children?: any; }, E extends Element>( _: CollectionNodeClass<any> | null | null, _: ( _: P) => ReactNode) => ( _: P & React.RefAttributes<E>) => ReactElement | string, _: ( _: P, _: ForwardedRef<E>, _: Node<T>) => ReactElement"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "createBranchComponent",
-            "resolvedName": "createBranchComponent",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T, TComponent>(component: (item: T, index: number, children: TComponent[]) => TComponent) => (item: T, index: number, children: TComponent[]) => TComponent",
-            "declaredType": "",
-            "callSignatures": [
-              "<T, TComponent>( _: ( _: T, _: number, _: TComponent[]) => TComponent) => ( _: T, _: number, _: TComponent[]) => TComponent"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "createHideableComponent",
-          "targetExportName": "createHideableComponent",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "createHideableComponent",
-            "resolvedName": "createHideableComponent",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T, P = {}>(fn: (props: P, ref: React.Ref<T>) => ReactElement | null | null) => (props: P & React.RefAttributes<T>) => ReactElement",
-            "declaredType": "",
-            "callSignatures": [
-              "<T, P = {}>( _: ( _: P, _: React.Ref<T>) => ReactElement | null | null) => ( _: P & React.RefAttributes<T>) => ReactElement"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "createHideableComponent",
-            "resolvedName": "createHideableComponent",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<TProps, TResult>(component: (props: TProps, isHidden: Computedboolean) => TResult) => (props: TProps) => TResult",
-            "declaredType": "",
-            "callSignatures": [
-              "<TProps, TResult>( _: ( _: TProps, _: Computedboolean) => TResult) => ( _: TProps) => TResult"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useIsHidden",
-          "targetExportName": "useIsHidden",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useIsHidden",
-            "resolvedName": "useIsHidden",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => boolean",
-            "declaredType": "",
-            "callSignatures": [
-              "() => boolean"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useIsHidden",
-            "resolvedName": "useIsHidden",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => Computedboolean",
-            "declaredType": "",
-            "callSignatures": [
-              "() => Computedboolean"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useCachedChildren",
-          "targetExportName": "useCachedChildren",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCachedChildren",
-            "resolvedName": "useCachedChildren",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object>(props: CachedChildrenOptions<T>) => ReactNode",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object>( _: CachedChildrenOptions<T>) => ReactNode"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCachedChildren",
-            "resolvedName": "useCachedChildren",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object>(options: CachedChildrenOptions<T>) => ComputedRef<Array<CachedChild<T>> | undefined> | unknown",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object>( _: CachedChildrenOptions<T>) => ComputedRef<Array<CachedChild<T>> | undefined> | unknown"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/calendar",
       "sourcePath": "packages/@react-aria/calendar",
       "targetPackage": "@vue-aria/calendar",
@@ -8760,6 +8554,142 @@
             "declaredType": "",
             "callSignatures": [
               "( _: AriaCheckboxGroupItemOptions) => CheckboxAria"
+            ],
+            "constructSignatures": []
+          }
+        }
+      ],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/collections",
+      "sourcePath": "packages/@react-aria/collections",
+      "targetPackage": "@vue-aria/collections",
+      "targetPath": "packages/@vue-aria/collections",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/collections/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/collections/src/index.ts",
+      "sourceExportCount": 17,
+      "comparedExportCount": 17,
+      "matchedExportCount": 14,
+      "mismatchedExportCount": 3,
+      "missingInTargetCount": 0,
+      "parityRatio": 0.8235,
+      "missingInTargetExports": [],
+      "mismatches": [
+        {
+          "exportName": "createLeafComponent",
+          "targetExportName": "createLeafComponent",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "createLeafComponent",
+            "resolvedName": "createLeafComponent",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "null): (props: P & React.RefAttributes<E>) => ReactElement | null; <T extends object, P extends object, E extends Element>(CollectionNodeClass: CollectionNodeClass<any> | null;} | string, render: (props: P, ref: ForwardedRef<E>) => ReactElement | string, render: (props: P, ref: ForwardedRef<E>, node: Node<T>) => ReactElement | { <T extends object, P extends object, E extends Element>(CollectionNodeClass: CollectionNodeClass<any>",
+            "declaredType": "",
+            "callSignatures": [
+              "<T extends object, P extends object, E extends Element>( _: CollectionNodeClass<any> | null | null) => ( _: P & React.RefAttributes<E>) => ReactElement | string, _: ( _: P, _: ForwardedRef<E>) => ReactElement",
+              "<T extends object, P extends object, E extends Element>( _: CollectionNodeClass<any> | null | null) => ( _: P & React.RefAttributes<E>) => ReactElement | string, _: ( _: P, _: ForwardedRef<E>, _: Node<T>) => ReactElement"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "createLeafComponent",
+            "resolvedName": "createLeafComponent",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "null, render: (props: P, ref: ForwardedRef<E>) => ReactElement): (props: P & RefAttributes<E>) => ReactElement; <T extends object, P extends object, E extends Element>(collectionNodeClass: CollectionNodeClass<any> | null, render: (props: P, ref: ForwardedRef<E>, node: Node<T>) => ReactElement): (props: P & RefAttributes<E>) => ReactElement; <T, TComponent>(component: (item: T, index: number) => TComponent): (item: T, index: number) => TComponent;} | { <T extends object, P extends object, E extends Element>(collectionNodeClass: CollectionNodeClass<any>",
+            "declaredType": "",
+            "callSignatures": [
+              "<T extends object, P extends object, E extends Element>( _: CollectionNodeClass<any> | null, _: ( _: P, _: ForwardedRef<E>) => ReactElement) => ( _: P & RefAttributes<E>) => ReactElement",
+              "<T extends object, P extends object, E extends Element>( _: CollectionNodeClass<any> | null, _: ( _: P, _: ForwardedRef<E>, _: Node<T>) => ReactElement) => ( _: P & RefAttributes<E>) => ReactElement",
+              "<T, TComponent>( _: ( _: T, _: number) => TComponent) => ( _: T, _: number) => TComponent"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "createBranchComponent",
+          "targetExportName": "createBranchComponent",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "createBranchComponent",
+            "resolvedName": "createBranchComponent",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T extends object, P extends { children?: any;}, E extends Element>(CollectionNodeClass: CollectionNodeClass<any> | null | null, useChildren?: (props: P) => ReactNode) => (props: P & React.RefAttributes<E>) => ReactElement | string, render: (props: P, ref: ForwardedRef<E>, node: Node<T>) => ReactElement",
+            "declaredType": "",
+            "callSignatures": [
+              "<T extends object, P extends { children?: any; }, E extends Element>( _: CollectionNodeClass<any> | null | null, _: ( _: P) => ReactNode) => ( _: P & React.RefAttributes<E>) => ReactElement | string, _: ( _: P, _: ForwardedRef<E>, _: Node<T>) => ReactElement"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "createBranchComponent",
+            "resolvedName": "createBranchComponent",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "null, useChildren: (props: P) => ReactNode, render: (props: P, ref: ForwardedRef<E>, node: Node<T>) => ReactElement): (props: P & RefAttributes<E>) => ReactElement; <T, TComponent>(component: (item: T, index: number, children: TComponent[]) => TComponent): (item: T, index: number, children: TComponent[]) => TComponent;} | { <T extends object, P extends { children?: any; }, E extends Element>(collectionNodeClass: CollectionNodeClass<any>",
+            "declaredType": "",
+            "callSignatures": [
+              "<T extends object, P extends { children?: any; }, E extends Element>( _: CollectionNodeClass<any> | null, _: ( _: P) => ReactNode, _: ( _: P, _: ForwardedRef<E>, _: Node<T>) => ReactElement) => ( _: P & RefAttributes<E>) => ReactElement",
+              "<T, TComponent>( _: ( _: T, _: number, _: TComponent[]) => TComponent) => ( _: T, _: number, _: TComponent[]) => TComponent"
+            ],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "createHideableComponent",
+          "targetExportName": "createHideableComponent",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "createHideableComponent",
+            "resolvedName": "createHideableComponent",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T, P = {}>(fn: (props: P, ref: React.Ref<T>) => ReactElement | null | null) => (props: P & React.RefAttributes<T>) => ReactElement",
+            "declaredType": "",
+            "callSignatures": [
+              "<T, P = {}>( _: ( _: P, _: React.Ref<T>) => ReactElement | null | null) => ( _: P & React.RefAttributes<T>) => ReactElement"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "createHideableComponent",
+            "resolvedName": "createHideableComponent",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "{ <T, P = {}>(component: (props: P, ref: ForwardedRef<T>) => ReactElement): (props: P & RefAttributes<T>) => ReactElement; <TProps, TResult>(component: (props: TProps, isHidden: Computedboolean) => TResult): (props: TProps) => TResult;}",
+            "declaredType": "",
+            "callSignatures": [
+              "<T, P = {}>( _: ( _: P, _: ForwardedRef<T>) => ReactElement) => ( _: P & RefAttributes<T>) => ReactElement",
+              "<TProps, TResult>( _: ( _: TProps, _: Computedboolean) => TResult) => ( _: TProps) => TResult"
             ],
             "constructSignatures": []
           }
