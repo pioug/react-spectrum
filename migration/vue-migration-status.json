@@ -3328,6 +3328,30 @@
         }
       ]
     },
+    "@react-stately/table": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/table",
+      "targetPath": "packages/@vue-stately/table",
+      "notes": "State baseline for table row/cell collections, row selection, sort descriptor updates, and filtered table views in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately table package source lint",
+          "command": "yarn eslint packages/@vue-stately/table/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

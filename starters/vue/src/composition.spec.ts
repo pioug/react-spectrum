@@ -227,6 +227,11 @@ import {
 import {useSelectState as useStatelySelectState} from '@vue-stately/select';
 import {useSliderState as useStatelySliderState} from '@vue-stately/slider';
 import {useStepListState as useStatelyStepListState} from '@vue-stately/steplist';
+import {
+  TableCollection as StatelyTableCollection,
+  UNSTABLE_useFilteredTableState as useStatelyFilteredTableState,
+  useTableState as useStatelyTableState
+} from '@vue-stately/table';
 
 function createPointerEvent(
   type: string,
@@ -1989,6 +1994,54 @@ describe('Vue migration composition components', () => {
     });
     expect(readOnlyStepList.isSelectable('setup')).toBe(false);
     expect(completedChanges).toContain('details');
+  });
+
+  it('manages vue-stately table collection filtering, row selection, and sort descriptor state', () => {
+    let tableState = useStatelyTableState({
+      collection: new StatelyTableCollection({
+        columns: [
+          {key: 'title', title: 'Title'},
+          {key: 'status', title: 'Status'}
+        ],
+        rows: [
+          {
+            key: 'row-1',
+            textValue: 'Backlog item',
+            cells: [
+              {textValue: 'Backlog item', value: 'Backlog item'},
+              {textValue: 'Open', value: 'Open'}
+            ]
+          },
+          {
+            key: 'row-2',
+            textValue: 'Done item',
+            cells: [
+              {textValue: 'Done item', value: 'Done item'},
+              {textValue: 'Closed', value: 'Closed'}
+            ]
+          }
+        ]
+      }),
+      selectionMode: 'multiple',
+      showSelectionCheckboxes: true
+    });
+
+    expect(tableState.collection.size).toBe(2);
+    expect(tableState.showSelectionCheckboxes).toBe(true);
+
+    tableState.selectionManager.toggleSelection('row-1');
+    expect(Array.from(tableState.selectionManager.selectedKeys.value)).toEqual(['row-1']);
+
+    tableState.sort('status');
+    expect(tableState.sortDescriptor.value).toEqual({column: 'status', direction: 'ascending'});
+    tableState.sort('status');
+    expect(tableState.sortDescriptor.value).toEqual({column: 'status', direction: 'descending'});
+
+    let filteredState = useStatelyFilteredTableState(tableState, (textValue) => {
+      return textValue.toLowerCase().includes('done');
+    });
+    expect(filteredState.collection.size).toBe(1);
+    expect(filteredState.collection.getFirstKey()).toBe('row-2');
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {
