@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-19T23:46:14.294Z",
+  "generatedAt": "2026-02-19T23:50:08.887Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 88,
+    "fullyMatchedPackages": 89,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 2058,
-    "mismatchedExportTotal": 614,
+    "matchedExportTotal": 2069,
+    "mismatchedExportTotal": 603,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.7702
+    "parityCoverage": 0.7743
   },
   "packages": [
     {
@@ -5659,10 +5659,10 @@
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
       "comparedExportCount": 419,
-      "matchedExportCount": 359,
-      "mismatchedExportCount": 60,
+      "matchedExportCount": 364,
+      "mismatchedExportCount": 55,
       "missingInTargetCount": 0,
-      "parityRatio": 0.8568,
+      "parityRatio": 0.8687,
       "missingInTargetExports": [],
       "mismatches": [
         {
@@ -6344,117 +6344,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: AriaDisclosureOptions) => DisclosureAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useLocalizedStringFormatter",
-          "targetExportName": "useLocalizedStringFormatter",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useLocalizedStringFormatter",
-            "resolvedName": "useLocalizedStringFormatter",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<K extends string = string, T extends LocalizedString = string>(strings: LocalizedStrings<K, T>, packageName?: string) => LocalizedStringFormatter<K, T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<K extends string = string, T extends LocalizedString = string>( _: LocalizedStrings<K, T>, _: string) => LocalizedStringFormatter<K, T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useLocalizedStringFormatter",
-            "resolvedName": "useLocalizedStringFormatter",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(strings: LocalizedStrings, packageName?: string) => LocalizedStringFormatter",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: LocalizedStrings, _: string) => LocalizedStringFormatter"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useNumberFormatter",
-          "targetExportName": "useNumberFormatter",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useNumberFormatter",
-            "resolvedName": "useNumberFormatter",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: NumberFormatOptions) => Intl.NumberFormat",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: NumberFormatOptions) => Intl.NumberFormat"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useNumberFormatter",
-            "resolvedName": "useNumberFormatter",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: NumberFormatOptions) => NumberFormatter",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: NumberFormatOptions) => NumberFormatter"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useListFormatter",
-          "targetExportName": "useListFormatter",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useListFormatter",
-            "resolvedName": "useListFormatter",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: Intl.ListFormatOptions) => Intl.ListFormat",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: Intl.ListFormatOptions) => Intl.ListFormat"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useListFormatter",
-            "resolvedName": "useListFormatter",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: ListFormatOptions) => ListFormat",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: ListFormatOptions) => ListFormat"
             ],
             "constructSignatures": []
           }
@@ -7818,314 +7707,6 @@
             "declarationKinds": [],
             "valueType": "any",
             "declaredType": "",
-            "callSignatures": [],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "DateFormatter",
-          "targetExportName": "DateFormatter",
-          "differences": [
-            "value-availability"
-          ],
-          "source": {
-            "name": "DateFormatter",
-            "resolvedName": "DateFormatter",
-            "hasType": true,
-            "hasValue": true,
-            "declarationKinds": [
-              "ClassDeclaration"
-            ],
-            "valueType": "typeof DateFormatter",
-            "declaredType": "DateFormatter",
-            "callSignatures": [],
-            "constructSignatures": [
-              "( _: string, _: Intl.DateTimeFormatOptions) => DateFormatter"
-            ]
-          },
-          "target": {
-            "name": "DateFormatter",
-            "resolvedName": "DateFormatter",
-            "hasType": true,
-            "hasValue": false,
-            "declarationKinds": [
-              "TypeAliasDeclaration"
-            ],
-            "valueType": "any",
-            "declaredType": "Intl.DateTimeFormat",
-            "callSignatures": [],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "LocalizedStringFormatter",
-          "targetExportName": "LocalizedStringFormatter",
-          "differences": [
-            "value-availability"
-          ],
-          "source": {
-            "name": "LocalizedStringFormatter",
-            "resolvedName": "LocalizedStringFormatter",
-            "hasType": true,
-            "hasValue": true,
-            "declarationKinds": [
-              "ClassDeclaration"
-            ],
-            "valueType": "typeof LocalizedStringFormatter",
-            "declaredType": "LocalizedStringFormatter<K, T>",
-            "callSignatures": [],
-            "constructSignatures": [
-              "<K extends string = string, T extends LocalizedString = string>( _: string, _: LocalizedStringDictionary<K, T>) => LocalizedStringFormatter<K, T>"
-            ]
-          },
-          "target": {
-            "name": "LocalizedStringFormatter",
-            "resolvedName": "LocalizedStringFormatter",
-            "hasType": true,
-            "hasValue": false,
-            "declarationKinds": [
-              "InterfaceDeclaration"
-            ],
-            "valueType": "any",
-            "declaredType": "LocalizedStringFormatter",
-            "callSignatures": [],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/i18n",
-      "sourcePath": "packages/@react-aria/i18n",
-      "targetPackage": "@vue-aria/i18n",
-      "targetPath": "packages/@vue-aria/i18n",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/i18n/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/i18n/src/index.ts",
-      "sourceExportCount": 19,
-      "comparedExportCount": 19,
-      "matchedExportCount": 13,
-      "mismatchedExportCount": 6,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6842,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useLocalizedStringFormatter",
-          "targetExportName": "useLocalizedStringFormatter",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useLocalizedStringFormatter",
-            "resolvedName": "useLocalizedStringFormatter",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<K extends string = string, T extends LocalizedString = string>(strings: LocalizedStrings<K, T>, packageName?: string) => LocalizedStringFormatter<K, T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<K extends string = string, T extends LocalizedString = string>( _: LocalizedStrings<K, T>, _: string) => LocalizedStringFormatter<K, T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useLocalizedStringFormatter",
-            "resolvedName": "useLocalizedStringFormatter",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(strings: LocalizedStrings, packageName?: string) => LocalizedStringFormatter",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: LocalizedStrings, _: string) => LocalizedStringFormatter"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useLocalizedStringDictionary",
-          "targetExportName": "useLocalizedStringDictionary",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useLocalizedStringDictionary",
-            "resolvedName": "useLocalizedStringDictionary",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<K extends string = string, T extends LocalizedString = string>(strings: LocalizedStrings<K, T>, packageName?: string) => LocalizedStringDictionary<K, T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<K extends string = string, T extends LocalizedString = string>( _: LocalizedStrings<K, T>, _: string) => LocalizedStringDictionary<K, T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useLocalizedStringDictionary",
-            "resolvedName": "useLocalizedStringDictionary",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(strings: LocalizedStrings, packageName?: string) => LocalizedStringDictionary",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: LocalizedStrings, _: string) => LocalizedStringDictionary"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useListFormatter",
-          "targetExportName": "useListFormatter",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useListFormatter",
-            "resolvedName": "useListFormatter",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: Intl.ListFormatOptions) => Intl.ListFormat",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: Intl.ListFormatOptions) => Intl.ListFormat"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useListFormatter",
-            "resolvedName": "useListFormatter",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: ListFormatOptions) => ListFormat",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: ListFormatOptions) => ListFormat"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useNumberFormatter",
-          "targetExportName": "useNumberFormatter",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useNumberFormatter",
-            "resolvedName": "useNumberFormatter",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: NumberFormatOptions) => Intl.NumberFormat",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: NumberFormatOptions) => Intl.NumberFormat"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useNumberFormatter",
-            "resolvedName": "useNumberFormatter",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: NumberFormatOptions) => NumberFormatter",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: NumberFormatOptions) => NumberFormatter"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "LocalizedStringFormatter",
-          "targetExportName": "LocalizedStringFormatter",
-          "differences": [
-            "value-availability"
-          ],
-          "source": {
-            "name": "LocalizedStringFormatter",
-            "resolvedName": "LocalizedStringFormatter",
-            "hasType": true,
-            "hasValue": true,
-            "declarationKinds": [
-              "ClassDeclaration"
-            ],
-            "valueType": "typeof LocalizedStringFormatter",
-            "declaredType": "LocalizedStringFormatter<K, T>",
-            "callSignatures": [],
-            "constructSignatures": [
-              "<K extends string = string, T extends LocalizedString = string>( _: string, _: LocalizedStringDictionary<K, T>) => LocalizedStringFormatter<K, T>"
-            ]
-          },
-          "target": {
-            "name": "LocalizedStringFormatter",
-            "resolvedName": "LocalizedStringFormatter",
-            "hasType": true,
-            "hasValue": false,
-            "declarationKinds": [
-              "InterfaceDeclaration"
-            ],
-            "valueType": "any",
-            "declaredType": "LocalizedStringFormatter",
-            "callSignatures": [],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "DateFormatter",
-          "targetExportName": "DateFormatter",
-          "differences": [
-            "value-availability"
-          ],
-          "source": {
-            "name": "DateFormatter",
-            "resolvedName": "DateFormatter",
-            "hasType": true,
-            "hasValue": true,
-            "declarationKinds": [
-              "ClassDeclaration"
-            ],
-            "valueType": "typeof DateFormatter",
-            "declaredType": "DateFormatter",
-            "callSignatures": [],
-            "constructSignatures": [
-              "( _: string, _: Intl.DateTimeFormatOptions) => DateFormatter"
-            ]
-          },
-          "target": {
-            "name": "DateFormatter",
-            "resolvedName": "DateFormatter",
-            "hasType": true,
-            "hasValue": false,
-            "declarationKinds": [
-              "TypeAliasDeclaration"
-            ],
-            "valueType": "any",
-            "declaredType": "Intl.DateTimeFormat",
             "callSignatures": [],
             "constructSignatures": []
           }
@@ -13707,6 +13288,25 @@
       "sourceExportCount": 20,
       "comparedExportCount": 20,
       "matchedExportCount": 20,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/i18n",
+      "sourcePath": "packages/@react-aria/i18n",
+      "targetPackage": "@vue-aria/i18n",
+      "targetPath": "packages/@vue-aria/i18n",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/i18n/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/i18n/src/index.ts",
+      "sourceExportCount": 19,
+      "comparedExportCount": 19,
+      "matchedExportCount": 19,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
