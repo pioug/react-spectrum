@@ -1,1 +1,2 @@
-export {Checkbox, VueCheckbox} from './src';
+export {Checkbox, CheckboxGroup, VueCheckbox} from './src';
+export type {SpectrumCheckboxGroupProps, SpectrumCheckboxProps} from './src';

@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T21:58:33.551Z",
+  "generatedAt": "2026-02-19T22:00:07.019Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 75,
+    "fullyMatchedPackages": 76,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 955,
-    "parityCoverage": 0.6426
+    "missingExportTotal": 952,
+    "parityCoverage": 0.6437
   },
   "packages": [
     {
@@ -1258,27 +1258,6 @@
       "extraExports": [
         "Autocomplete",
         "VueSearchAutocomplete"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/checkbox",
-      "sourcePath": "packages/@react-spectrum/checkbox",
-      "targetPackage": "@vue-spectrum/checkbox",
-      "targetPath": "packages/@vue-spectrum/checkbox",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/checkbox/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/checkbox/src/index.ts",
-      "sourceExportCount": 4,
-      "targetExportCount": 2,
-      "parityRatio": 0.25,
-      "missingExports": [
-        "CheckboxGroup",
-        "SpectrumCheckboxGroupProps",
-        "SpectrumCheckboxProps"
-      ],
-      "extraExports": [
-        "VueCheckbox"
       ],
       "error": null
     },
@@ -3056,6 +3035,23 @@
       "missingExports": [],
       "extraExports": [
         "VueButton"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/checkbox",
+      "sourcePath": "packages/@react-spectrum/checkbox",
+      "targetPackage": "@vue-spectrum/checkbox",
+      "targetPath": "packages/@vue-spectrum/checkbox",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/checkbox/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/checkbox/src/index.ts",
+      "sourceExportCount": 4,
+      "targetExportCount": 5,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueCheckbox"
       ],
       "error": null
     },

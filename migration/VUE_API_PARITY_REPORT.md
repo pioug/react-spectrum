@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:58:33.551Z
+Generated: 2026-02-19T22:00:07.019Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 75
+* Fully matched packages: 76
 * Source exports inspected: 2672
-* Missing exports: 955
-* Coverage ratio: 64.26%
+* Missing exports: 952
+* Coverage ratio: 64.37%
 
 ## Package gaps
 
@@ -31,7 +31,6 @@ Generated: 2026-02-19T21:58:33.551Z
 | `@react-aria/slider` | `@vue-aria/slider` | missing | 8 | 3 | 62.5% |
 | `@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | missing | 5 | 3 | 40.0% |
 | `@react-spectrum/autocomplete` | `@vue-spectrum/autocomplete` | missing | 4 | 3 | 25.0% |
-| `@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | missing | 4 | 3 | 25.0% |
 | `@react-spectrum/combobox` | `@vue-spectrum/combobox` | missing | 4 | 3 | 25.0% |
 | `@react-spectrum/slider` | `@vue-spectrum/slider` | missing | 4 | 3 | 25.0% |
 | `@react-stately/datepicker` | `@vue-stately/datepicker` | missing | 15 | 3 | 80.0% |
@@ -120,6 +119,7 @@ Generated: 2026-02-19T21:58:33.551Z
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` | ok | 11 | 0 | 100.0% |
 | `@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/button` | `@vue-spectrum/button` | ok | 10 | 0 | 100.0% |
+| `@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/dialog` | `@vue-spectrum/dialog` | ok | 10 | 0 | 100.0% |
 | `@react-spectrum/dnd` | `@vue-spectrum/dnd` | ok | 26 | 0 | 100.0% |
 | `@react-spectrum/form` | `@vue-spectrum/form` | ok | 3 | 0 | 100.0% |
@@ -278,13 +278,6 @@ Generated: 2026-02-19T21:58:33.551Z
 * Missing export count: 3
 * Missing exports: `Item`, `Section`, `SpectrumSearchAutocompleteProps`
 
-### @react-spectrum/checkbox -> @vue-spectrum/checkbox
-
-* Source entry: `packages/@react-spectrum/checkbox/src/index.ts`
-* Target entry: `packages/@vue-spectrum/checkbox/src/index.ts`
-* Missing export count: 3
-* Missing exports: `CheckboxGroup`, `SpectrumCheckboxGroupProps`, `SpectrumCheckboxProps`
-
 ### @react-spectrum/combobox -> @vue-spectrum/combobox
 
 * Source entry: `packages/@react-spectrum/combobox/src/index.ts`
@@ -312,4 +305,11 @@ Generated: 2026-02-19T21:58:33.551Z
 * Target entry: `packages/@vue-aria/breadcrumbs/src/index.ts`
 * Missing export count: 2
 * Missing exports: `AriaBreadcrumbItemProps`, `AriaBreadcrumbsProps`
+
+### @react-aria/steplist -> @vue-aria/steplist
+
+* Source entry: `packages/@react-aria/steplist/src/index.ts`
+* Target entry: `packages/@vue-aria/steplist/src/index.ts`
+* Missing export count: 2
+* Missing exports: `AriaStepListItemProps`, `AriaStepListProps`
 

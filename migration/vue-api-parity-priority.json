@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-02-19T21:58:43.606Z",
+  "generatedAt": "2026-02-19T22:00:14.508Z",
   "summary": {
     "trackedPackages": 154,
-    "packagesWithGaps": 79,
+    "packagesWithGaps": 78,
     "highestPriorityPackage": "react-aria-components",
     "highestPriorityScore": 1677.99
   },
@@ -28,17 +28,6 @@
       "dependencyDepth": 10,
       "criticalityWeight": 1.4,
       "priorityScore": 479.09
-    },
-    {
-      "sourcePackage": "@react-spectrum/checkbox",
-      "targetPackage": "@vue-spectrum/checkbox",
-      "missingExports": 3,
-      "sourceExportCount": 4,
-      "coveragePercent": 25,
-      "reverseDependents": 4,
-      "dependencyDepth": 10,
-      "criticalityWeight": 1.4,
-      "priorityScore": 56.45
     },
     {
       "sourcePackage": "@react-spectrum/color",
