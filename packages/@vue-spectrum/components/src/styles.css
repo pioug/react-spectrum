@@ -782,6 +782,37 @@
   color: var(--vs-color-danger);
 }
 
+.vs-text {
+  margin: 0;
+}
+
+.vs-text--body {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.vs-text--detail {
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: 0.8;
+}
+
+.vs-text--heading {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.vs-text.is-truncated {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vs-text.is-emphasized {
+  font-weight: 700;
+}
+
 .vs-radio-group {
   display: grid;
   gap: 8px;

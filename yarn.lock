@@ -12101,6 +12101,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/text@workspace:*, @vue-spectrum/text@workspace:packages/@vue-spectrum/text":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/text@workspace:packages/@vue-spectrum/text"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/textfield@workspace:*, @vue-spectrum/textfield@workspace:packages/@vue-spectrum/textfield":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/textfield@workspace:packages/@vue-spectrum/textfield"
@@ -30945,6 +30955,7 @@ __metadata:
     "@vue-spectrum/statuslight": "workspace:*"
     "@vue-spectrum/switch": "workspace:*"
     "@vue-spectrum/table": "workspace:*"
+    "@vue-spectrum/text": "workspace:*"
     "@vue-spectrum/textfield": "workspace:*"
     "@vue-spectrum/tree": "workspace:*"
     "@vue-spectrum/view": "workspace:*"

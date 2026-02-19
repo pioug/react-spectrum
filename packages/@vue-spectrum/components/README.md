@@ -32,6 +32,7 @@ Vue-native Spectrum-inspired primitives for incremental migration from React pac
 * `VueStatusLight`
 * `VueSwitch`
 * `VueTable`
+* `VueText`
 * `VueTree`
 * `VueView`
 * `VueWell`

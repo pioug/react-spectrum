@@ -27,6 +27,7 @@ Phase 1 is implemented:
   * `@react-spectrum/badge` -> `@vue-spectrum/badge` (`in_progress`)
   * `@react-spectrum/well` -> `@vue-spectrum/well` (`in_progress`)
   * `@react-spectrum/view` -> `@vue-spectrum/view` (`in_progress`)
+  * `@react-spectrum/text` -> `@vue-spectrum/text` (`in_progress`)
   * `@react-spectrum/textfield` -> `@vue-spectrum/textfield` (`in_progress`)
   * `@react-spectrum/searchfield` -> `@vue-spectrum/searchfield` (`in_progress`)
   * `@react-spectrum/numberfield` -> `@vue-spectrum/numberfield` (`in_progress`)

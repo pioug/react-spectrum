@@ -192,6 +192,30 @@
         }
       ]
     },
+    "@react-spectrum/text": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/text",
+      "targetPath": "packages/@vue-spectrum/text",
+      "notes": "First-wave typography primitive for semantic text and emphasis variants.",
+      "acceptanceTests": [
+        {
+          "name": "Vue text package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/text/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/textfield": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/textfield",

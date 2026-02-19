@@ -16,6 +16,9 @@
         <p class="lead">
           This starter uses <code>@vue-spectrum/components</code> from this monorepo.
         </p>
+        <VueText variant="detail">
+          Typography baseline is now provided by <code>@vue-spectrum/text</code>.
+        </VueText>
         <VueLink href="https://react-spectrum.adobe.com/" target="_blank" rel="noreferrer">
           React Spectrum docs
         </VueLink>
@@ -235,6 +238,7 @@ import {Slider as VueSlider} from '@vue-spectrum/slider';
 import {StatusLight as VueStatusLight} from '@vue-spectrum/statuslight';
 import {Switch as VueSwitch} from '@vue-spectrum/switch';
 import {Table as VueTable} from '@vue-spectrum/table';
+import {Text as VueText} from '@vue-spectrum/text';
 import {TextField as VueTextField} from '@vue-spectrum/textfield';
 import {Tree as VueTree} from '@vue-spectrum/tree';
 import {View as VueView} from '@vue-spectrum/view';

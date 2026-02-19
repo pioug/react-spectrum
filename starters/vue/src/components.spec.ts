@@ -10,6 +10,7 @@ import {Label} from '@vue-spectrum/label';
 import {Radio, RadioGroup} from '@vue-spectrum/radio';
 import {Switch} from '@vue-spectrum/switch';
 import {TextField} from '@vue-spectrum/textfield';
+import {Text} from '@vue-spectrum/text';
 import {View} from '@vue-spectrum/view';
 import {Well} from '@vue-spectrum/well';
 
@@ -117,6 +118,24 @@ describe('Vue migration primitives', () => {
     expect(wrapper.attributes('for')).toBe('field-name');
     expect(wrapper.text()).toContain('Name');
     expect(wrapper.find('.vs-label__required').exists()).toBe(true);
+  });
+
+  it('renders text element, variant, and emphasis classes', () => {
+    let wrapper = mount(Text, {
+      props: {
+        elementType: 'span',
+        variant: 'detail',
+        emphasized: true
+      },
+      slots: {
+        default: 'Detail copy'
+      }
+    });
+
+    expect(wrapper.element.tagName).toBe('SPAN');
+    expect(wrapper.classes()).toContain('vs-text--detail');
+    expect(wrapper.classes()).toContain('is-emphasized');
+    expect(wrapper.text()).toContain('Detail copy');
   });
 
   it('emits click from button', async () => {

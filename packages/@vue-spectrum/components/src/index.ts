@@ -25,6 +25,7 @@ import {VueSpectrumProvider} from './components/VueSpectrumProvider';
 import {VueStatusLight} from './components/VueStatusLight';
 import {VueSwitch} from './components/VueSwitch';
 import {VueTable} from './components/VueTable';
+import {VueText} from './components/VueText';
 import {VueTextField} from './components/VueTextField';
 import {VueTree} from './components/VueTree';
 import {VueView} from './components/VueView';
@@ -59,6 +60,7 @@ export const VueSpectrumPlugin: Plugin = {
     app.component(VueStatusLight.name ?? 'VueStatusLight', VueStatusLight);
     app.component(VueSwitch.name ?? 'VueSwitch', VueSwitch);
     app.component(VueTable.name ?? 'VueTable', VueTable);
+    app.component(VueText.name ?? 'VueText', VueText);
     app.component(VueTextField.name ?? 'VueTextField', VueTextField);
     app.component(VueTree.name ?? 'VueTree', VueTree);
     app.component(VueView.name ?? 'VueView', VueView);
@@ -66,5 +68,5 @@ export const VueSpectrumPlugin: Plugin = {
   }
 };
 
-export {VueAvatar, VueBadge, VueButton, VueCheckbox, VueComboBox, VueDialog, VueDivider, VueDropZone, VueForm, VueImage, VueInlineAlert, VueLabel, VueLink, VueListBox, VueMenu, VueMeter, VueNumberField, VuePopover, VueProgressBar, VueRadio, VueRadioGroup, VueSearchField, VueSlider, VueSpectrumProvider, VueStatusLight, VueSwitch, VueTable, VueTextField, VueTree, VueView, VueWell};
+export {VueAvatar, VueBadge, VueButton, VueCheckbox, VueComboBox, VueDialog, VueDivider, VueDropZone, VueForm, VueImage, VueInlineAlert, VueLabel, VueLink, VueListBox, VueMenu, VueMeter, VueNumberField, VuePopover, VueProgressBar, VueRadio, VueRadioGroup, VueSearchField, VueSlider, VueSpectrumProvider, VueStatusLight, VueSwitch, VueTable, VueText, VueTextField, VueTree, VueView, VueWell};
 export type {SpectrumContextValue} from './context';

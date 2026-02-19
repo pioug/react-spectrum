@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 33 |
+| in_progress | 34 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 119 |
+| not_started | 118 |
 
 ## Package tracker
 
@@ -50,6 +50,7 @@ Tracked source packages: 154
 | `@react-spectrum/statuslight` | `packages/@react-spectrum/statuslight` | `@vue-spectrum/statuslight` | `packages/@vue-spectrum/statuslight` | in_progress | Vue statuslight package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for lightweight status signaling. |
 | `@react-spectrum/switch` | `packages/@react-spectrum/switch` | `@vue-spectrum/switch` | `packages/@vue-spectrum/switch` | in_progress | Vue switch package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave primitive for binary toggles. |
 | `@react-spectrum/table` | `packages/@react-spectrum/table` | `@vue-spectrum/table` | `packages/@vue-spectrum/table` | in_progress | Vue table package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Data-heavy migration baseline for tabular collections. |
+| `@react-spectrum/text` | `packages/@react-spectrum/text` | `@vue-spectrum/text` | `packages/@vue-spectrum/text` | in_progress | Vue text package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave typography primitive for semantic text and emphasis variants. |
 | `@react-spectrum/textfield` | `packages/@react-spectrum/textfield` | `@vue-spectrum/textfield` | `packages/@vue-spectrum/textfield` | in_progress | Vue textfield package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave primitive aligned with existing VueTextField baseline work. |
 | `@react-spectrum/tree` | `packages/@react-spectrum/tree` | `@vue-spectrum/tree` | `packages/@vue-spectrum/tree` | in_progress | Vue tree package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Data-heavy migration baseline for hierarchical collections. |
 | `@react-spectrum/view` | `packages/@react-spectrum/view` | `@vue-spectrum/view` | `packages/@vue-spectrum/view` | in_progress | Vue view package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave layout primitive for semantic container structure and spacing. |
@@ -137,7 +138,6 @@ Tracked source packages: 154
 | `@react-spectrum/tabs` | `packages/@react-spectrum/tabs` | `@vue-spectrum/tabs` | `packages/@vue-spectrum/tabs` | not_started | - | - |
 | `@react-spectrum/tag` | `packages/@react-spectrum/tag` | `@vue-spectrum/tag` | `packages/@vue-spectrum/tag` | not_started | - | - |
 | `@react-spectrum/test-utils` | `packages/@react-spectrum/test-utils` | `@vue-spectrum/test-utils` | `packages/@vue-spectrum/test-utils` | not_started | - | - |
-| `@react-spectrum/text` | `packages/@react-spectrum/text` | `@vue-spectrum/text` | `packages/@vue-spectrum/text` | not_started | - | - |
 | `@react-spectrum/theme-dark` | `packages/@react-spectrum/theme-dark` | `@vue-spectrum/theme-dark` | `packages/@vue-spectrum/theme-dark` | not_started | - | - |
 | `@react-spectrum/theme-default` | `packages/@react-spectrum/theme-default` | `@vue-spectrum/theme-default` | `packages/@vue-spectrum/theme-default` | not_started | - | - |
 | `@react-spectrum/theme-express` | `packages/@react-spectrum/theme-express` | `@vue-spectrum/theme-express` | `packages/@vue-spectrum/theme-express` | not_started | - | - |
