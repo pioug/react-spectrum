@@ -3352,6 +3352,30 @@
         }
       ]
     },
+    "@react-stately/tabs": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/tabs",
+      "targetPath": "packages/@vue-stately/tabs",
+      "notes": "State baseline for tab-list single selection, disabled-tab fallback selection, and focused-tab synchronization in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately tabs package source lint",
+          "command": "yarn eslint packages/@vue-stately/tabs/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

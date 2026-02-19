@@ -232,6 +232,7 @@ import {
   UNSTABLE_useFilteredTableState as useStatelyFilteredTableState,
   useTableState as useStatelyTableState
 } from '@vue-stately/table';
+import {useTabListState as useStatelyTabListState} from '@vue-stately/tabs';
 
 function createPointerEvent(
   type: string,
@@ -2042,6 +2043,43 @@ describe('Vue migration composition components', () => {
     });
     expect(filteredState.collection.size).toBe(1);
     expect(filteredState.collection.getFirstKey()).toBe('row-2');
+  });
+
+  it('manages vue-stately tab list selection and focused-tab synchronization', async () => {
+    let nodes: StatelyListNode<{label: string}>[] = [
+      {key: 'vue', textValue: 'Vue', type: 'item', value: {label: 'Vue'}},
+      {key: 'react', textValue: 'React', type: 'item', value: {label: 'React'}},
+      {key: 'svelte', textValue: 'Svelte', type: 'item', value: {label: 'Svelte'}}
+    ];
+
+    let selectionChanges: string[] = [];
+    let tabListState = useStatelyTabListState({
+      collection: new StatelyListCollection(nodes),
+      defaultSelectedKey: 'react',
+      disabledKeys: ['svelte'],
+      onSelectionChange: (key) => {
+        selectionChanges.push(String(key));
+      }
+    });
+
+    expect(tabListState.selectedKey.value).toBe('react');
+    expect(tabListState.isDisabled).toBe(false);
+
+    tabListState.setSelectedKey('vue');
+    expect(tabListState.selectedKey.value).toBe('vue');
+
+    tabListState.selectionManager.setFocused(false);
+    tabListState.selectionManager.setFocusedKey(null);
+    tabListState.setSelectedKey('react');
+    await nextTick();
+    expect(tabListState.selectionManager.focusedKey.value).toBe('react');
+    expect(selectionChanges).toEqual(['vue', 'react']);
+
+    let fallbackTabListState = useStatelyTabListState({
+      collection: new StatelyListCollection(nodes),
+      disabledKeys: ['vue', 'react']
+    });
+    expect(fallbackTabListState.selectedKey.value).toBe('svelte');
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {

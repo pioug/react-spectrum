@@ -13149,6 +13149,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-stately/tabs@workspace:*, @vue-stately/tabs@workspace:packages/@vue-stately/tabs":
+  version: 0.0.0-use.local
+  resolution: "@vue-stately/tabs@workspace:packages/@vue-stately/tabs"
+  dependencies:
+    "@vue-stately/list": "workspace:*"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue/compiler-core@npm:3.5.28":
   version: 3.5.28
   resolution: "@vue/compiler-core@npm:3.5.28"
@@ -32069,6 +32079,7 @@ __metadata:
     "@vue-stately/slider": "workspace:*"
     "@vue-stately/steplist": "workspace:*"
     "@vue-stately/table": "workspace:*"
+    "@vue-stately/tabs": "workspace:*"
     "@vue/test-utils": "npm:^2.4.6"
     jsdom: "npm:^26.0.0"
     typescript: "npm:^5.8.2"

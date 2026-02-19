@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 145 |
+| in_progress | 146 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 7 |
+| not_started | 6 |
 
 ## Package tracker
 
@@ -166,11 +166,11 @@ Tracked source packages: 154
 | `@react-stately/slider` | `packages/@react-stately/slider` | `@vue-stately/slider` | `packages/@vue-stately/slider` | in_progress | Vue stately slider package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for slider thumb values, multi-thumb constraints, dragging lifecycle callbacks, and value label formatting in Vue. |
 | `@react-stately/steplist` | `packages/@react-stately/steplist` | `@vue-stately/steplist` | `packages/@vue-stately/steplist` | in_progress | Vue stately steplist package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for step-list completion tracking, selection progression, and selectability gating in Vue. |
 | `@react-stately/table` | `packages/@react-stately/table` | `@vue-stately/table` | `packages/@vue-stately/table` | in_progress | Vue stately table package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for table row/cell collections, row selection, sort descriptor updates, and filtered table views in Vue. |
+| `@react-stately/tabs` | `packages/@react-stately/tabs` | `@vue-stately/tabs` | `packages/@vue-stately/tabs` | in_progress | Vue stately tabs package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | State baseline for tab-list single selection, disabled-tab fallback selection, and focused-tab synchronization in Vue. |
 | `react-aria-components` | `packages/react-aria-components` | `@vue-spectrum/components` | `packages/@vue-spectrum/components` | in_progress | Vue package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Initial Vue baseline package exists, but React Aria Components parity is still in progress. |
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-stately/tabs` | `packages/@react-stately/tabs` | `@vue-stately/tabs` | `packages/@vue-stately/tabs` | not_started | - | - |
 | `@react-stately/toast` | `packages/@react-stately/toast` | `@vue-stately/toast` | `packages/@vue-stately/toast` | not_started | - | - |
 | `@react-stately/toggle` | `packages/@react-stately/toggle` | `@vue-stately/toggle` | `packages/@vue-stately/toggle` | not_started | - | - |
 | `@react-stately/tooltip` | `packages/@react-stately/tooltip` | `@vue-stately/tooltip` | `packages/@vue-stately/tooltip` | not_started | - | - |

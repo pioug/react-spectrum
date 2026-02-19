@@ -161,6 +161,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-stately/slider` | `@vue-stately/slider` |
 | `@react-stately/steplist` | `@vue-stately/steplist` |
 | `@react-stately/table` | `@vue-stately/table` |
+| `@react-stately/tabs` | `@vue-stately/tabs` |
 
 ## Core API conversion patterns
 
