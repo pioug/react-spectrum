@@ -215,6 +215,7 @@ import {
   useSingleSelectListState as useStatelySingleSelectListState
 } from '@vue-stately/list';
 import {useMenuTriggerState as useStatelyMenuTriggerState, useSubmenuTriggerState as useStatelySubmenuTriggerState} from '@vue-stately/menu';
+import {useNumberFieldState as useStatelyNumberFieldState} from '@vue-stately/numberfield';
 
 function createPointerEvent(
   type: string,
@@ -1652,6 +1653,47 @@ describe('Vue migration composition components', () => {
     submenu.closeAll();
     expect(root.isOpen.value).toBe(false);
     expect(root.expandedKeysStack.value).toEqual([]);
+  });
+
+  it('manages vue-stately number field parsing, stepping, and clamped min/max helpers', () => {
+    let value = ref(4);
+    let changedValues: number[] = [];
+    let numberField = useStatelyNumberFieldState({
+      maxValue: 10,
+      minValue: 0,
+      onChange: (nextValue) => {
+        changedValues.push(nextValue);
+        value.value = nextValue;
+      },
+      step: 2,
+      value
+    });
+
+    expect(numberField.numberValue.value).toBe(4);
+    expect(numberField.canIncrement.value).toBe(true);
+    expect(numberField.canDecrement.value).toBe(true);
+
+    numberField.increment();
+    expect(value.value).toBe(6);
+    numberField.decrement();
+    expect(value.value).toBe(4);
+
+    numberField.setInputValue('11');
+    expect(numberField.numberValue.value).toBe(11);
+    numberField.commit();
+    expect(value.value).toBe(10);
+
+    numberField.decrementToMin();
+    expect(value.value).toBe(0);
+    numberField.incrementToMax();
+    expect(value.value).toBe(10);
+    expect(numberField.canIncrement.value).toBe(false);
+
+    numberField.setInputValue('abc');
+    expect(numberField.validate(numberField.inputValue.value)).toBe(false);
+    numberField.commit();
+    expect(numberField.inputValue.value).toContain('10');
+    expect(changedValues).toEqual([6, 4, 10, 0, 10]);
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {

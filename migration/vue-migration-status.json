@@ -3136,6 +3136,30 @@
         }
       ]
     },
+    "@react-stately/numberfield": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/numberfield",
+      "targetPath": "packages/@vue-stately/numberfield",
+      "notes": "State baseline for number field parsing, stepping, min/max clamping, and validation flows in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately numberfield package source lint",
+          "command": "yarn eslint packages/@vue-stately/numberfield/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",
