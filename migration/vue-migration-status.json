@@ -356,6 +356,30 @@
         }
       ]
     },
+    "@react-spectrum/dropzone": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/dropzone",
+      "targetPath": "packages/@vue-spectrum/dropzone",
+      "notes": "Data-heavy migration package exposing Vue drop zone primitives for file and text drop interactions.",
+      "acceptanceTests": [
+        {
+          "name": "Vue dropzone package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/dropzone/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/form": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/form",

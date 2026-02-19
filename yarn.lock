@@ -11921,6 +11921,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/dropzone@workspace:*, @vue-spectrum/dropzone@workspace:packages/@vue-spectrum/dropzone":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/dropzone@workspace:packages/@vue-spectrum/dropzone"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/form@workspace:*, @vue-spectrum/form@workspace:packages/@vue-spectrum/form":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/form@workspace:packages/@vue-spectrum/form"
@@ -30937,6 +30947,7 @@ __metadata:
     "@vue-spectrum/dialog": "workspace:*"
     "@vue-spectrum/divider": "workspace:*"
     "@vue-spectrum/dnd": "workspace:*"
+    "@vue-spectrum/dropzone": "workspace:*"
     "@vue-spectrum/form": "workspace:*"
     "@vue-spectrum/image": "workspace:*"
     "@vue-spectrum/inlinealert": "workspace:*"

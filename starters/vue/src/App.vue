@@ -217,7 +217,7 @@ import {Badge as VueBadge} from '@vue-spectrum/badge';
 import {Button as VueButton} from '@vue-spectrum/button';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
 import {ComboBox as VueComboBox} from '@vue-spectrum/combobox';
-import {DropZone as VueDropZone} from '@vue-spectrum/dnd';
+import {DropZone as VueDropZone} from '@vue-spectrum/dropzone';
 import {Divider as VueDivider} from '@vue-spectrum/divider';
 import {Dialog as VueDialog} from '@vue-spectrum/dialog';
 import {Form as VueForm} from '@vue-spectrum/form';

@@ -2,7 +2,7 @@ import {mount} from '@vue/test-utils';
 import {describe, expect, it} from 'vitest';
 import {ref} from 'vue';
 import {useVirtualizer} from '@vue-aria/virtualizer';
-import {DropZone} from '@vue-spectrum/dnd';
+import {DropZone} from '@vue-spectrum/dropzone';
 import {Table} from '@vue-spectrum/table';
 import {Tree} from '@vue-spectrum/tree';
 

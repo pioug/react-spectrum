@@ -23,6 +23,7 @@
     "@vue-spectrum/dialog": "workspace:*",
     "@vue-spectrum/divider": "workspace:*",
     "@vue-spectrum/dnd": "workspace:*",
+    "@vue-spectrum/dropzone": "workspace:*",
     "@vue-spectrum/form": "workspace:*",
     "@vue-spectrum/image": "workspace:*",
     "@vue-spectrum/inlinealert": "workspace:*",

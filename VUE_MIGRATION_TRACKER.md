@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 34 |
+| in_progress | 35 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 118 |
+| not_started | 117 |
 
 ## Package tracker
 
@@ -32,6 +32,7 @@ Tracked source packages: 154
 | `@react-spectrum/dialog` | `packages/@react-spectrum/dialog` | `@vue-spectrum/dialog` | `packages/@vue-spectrum/dialog` | in_progress | Vue dialog package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing a Vue dialog primitive. |
 | `@react-spectrum/divider` | `packages/@react-spectrum/divider` | `@vue-spectrum/divider` | `packages/@vue-spectrum/divider` | in_progress | Vue divider package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave visual primitive for section separation. |
 | `@react-spectrum/dnd` | `packages/@react-spectrum/dnd` | `@vue-spectrum/dnd` | `packages/@vue-spectrum/dnd` | in_progress | Vue dnd package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Data-heavy migration baseline for drag-and-drop interactions. |
+| `@react-spectrum/dropzone` | `packages/@react-spectrum/dropzone` | `@vue-spectrum/dropzone` | `packages/@vue-spectrum/dropzone` | in_progress | Vue dropzone package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Data-heavy migration package exposing Vue drop zone primitives for file and text drop interactions. |
 | `@react-spectrum/form` | `packages/@react-spectrum/form` | `@vue-spectrum/form` | `packages/@vue-spectrum/form` | in_progress | Vue form package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave form grouping migration step with a Vue form primitive. |
 | `@react-spectrum/image` | `packages/@react-spectrum/image` | `@vue-spectrum/image` | `packages/@vue-spectrum/image` | in_progress | Vue image package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave media primitive for image rendering and object-fit behavior. |
 | `@react-spectrum/inlinealert` | `packages/@react-spectrum/inlinealert` | `@vue-spectrum/inlinealert` | `packages/@vue-spectrum/inlinealert` | in_progress | Vue inlinealert package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave messaging primitive for contextual inline notices. |
@@ -123,7 +124,6 @@ Tracked source packages: 154
 | `@react-spectrum/color` | `packages/@react-spectrum/color` | `@vue-spectrum/color` | `packages/@vue-spectrum/color` | not_started | - | - |
 | `@react-spectrum/contextualhelp` | `packages/@react-spectrum/contextualhelp` | `@vue-spectrum/contextualhelp` | `packages/@vue-spectrum/contextualhelp` | not_started | - | - |
 | `@react-spectrum/datepicker` | `packages/@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | `packages/@vue-spectrum/datepicker` | not_started | - | - |
-| `@react-spectrum/dropzone` | `packages/@react-spectrum/dropzone` | `@vue-spectrum/dropzone` | `packages/@vue-spectrum/dropzone` | not_started | - | - |
 | `@react-spectrum/filetrigger` | `packages/@react-spectrum/filetrigger` | `@vue-spectrum/filetrigger` | `packages/@vue-spectrum/filetrigger` | not_started | - | - |
 | `@react-spectrum/icon` | `packages/@react-spectrum/icon` | `@vue-spectrum/icon` | `packages/@vue-spectrum/icon` | not_started | - | - |
 | `@react-spectrum/illustratedmessage` | `packages/@react-spectrum/illustratedmessage` | `@vue-spectrum/illustratedmessage` | `packages/@vue-spectrum/illustratedmessage` | not_started | - | - |

@@ -56,13 +56,14 @@ Phase 1 is implemented:
   * `@react-spectrum/table` -> `@vue-spectrum/table` (`in_progress`)
   * `@react-spectrum/tree` -> `@vue-spectrum/tree` (`in_progress`)
   * `@react-spectrum/dnd` -> `@vue-spectrum/dnd` (`in_progress`)
+  * `@react-spectrum/dropzone` -> `@vue-spectrum/dropzone` (`in_progress`)
 * Started React Aria package migration:
   * `@react-aria/virtualizer` -> `@vue-aria/virtualizer` (`in_progress`)
   * Vue starter now includes a virtualized backlog demo wired to `@vue-aria/virtualizer`.
 * Started Vue test adaptation:
   * `starters/vue` runs Vitest + Vue Test Utils interaction tests for `button`, `textfield`, `checkbox`, `radio`, and `switch`.
   * Added composition coverage for `dialog`, `overlays`, `menu`, `listbox`, and `combobox`.
-  * Added data-heavy and virtualization coverage for `table`, `tree`, `dnd`, and `@vue-aria/virtualizer`.
+  * Added data-heavy and virtualization coverage for `table`, `tree`, `dnd`, `dropzone`, and `@vue-aria/virtualizer`.
 * Started API stabilization and deprecation planning:
   * `migration/VUE_PUBLISH_CHECKLIST.md`
   * `migration/REACT_DEPRECATION_PLAN.md`
