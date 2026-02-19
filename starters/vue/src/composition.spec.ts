@@ -188,6 +188,7 @@ import {
   useTimeFieldState as useStatelyTimeFieldState
 } from '@vue-stately/datepicker';
 import {useDisclosureGroupState as useStatelyDisclosureGroupState, useDisclosureState as useStatelyDisclosureState} from '@vue-stately/disclosure';
+import {useDraggableCollectionState as useStatelyDraggableCollectionState, useDroppableCollectionState as useStatelyDroppableCollectionState} from '@vue-stately/dnd';
 
 function createPointerEvent(
   type: string,
@@ -1217,6 +1218,61 @@ describe('Vue migration composition components', () => {
     expect(drop.enter(fileItems)).toBe(false);
     expect(drop.drop(fileItems)).toBe('cancel');
     expect(dropEvents).toEqual(['enter', 'drop:copy']);
+  });
+
+  it('manages vue-stately draggable collection keys and drag lifecycle', () => {
+    let dragEvents: Array<string> = [];
+    let selectedKeys = ref(new Set<string>(['alpha', 'beta']));
+    let draggable = useStatelyDraggableCollectionState({
+      collection: [
+        {key: 'alpha', value: {id: 1, label: 'Alpha'}},
+        {key: 'beta', value: {id: 2, label: 'Beta'}},
+        {key: 'beta-child', parentKey: 'beta', value: {id: 3, label: 'Beta child'}}
+      ],
+      onDragEnd: (event) => {
+        dragEvents.push(`end:${event.operation}:${Array.from(event.keys).join(',')}`);
+      },
+      onDragStart: (event) => {
+        dragEvents.push(`start:${Array.from(event.keys).join(',')}`);
+      },
+      selectedKeys
+    });
+
+    expect(Array.from(draggable.getKeysForDrag('beta'))).toEqual(['alpha', 'beta']);
+    draggable.startDrag('beta');
+    expect(draggable.isDragging('alpha')).toBe(true);
+    expect(draggable.draggedKey.value).toBe('beta');
+
+    draggable.endDrag('move');
+    expect(draggable.draggingKeys.value.size).toBe(0);
+    expect(draggable.draggedKey.value).toBeNull();
+    expect(dragEvents).toEqual(['start:alpha,beta', 'end:move:alpha,beta']);
+  });
+
+  it('manages vue-stately droppable collection target and operation resolution', () => {
+    let dropEvents: Array<string> = [];
+    let droppable = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['ticket'],
+      getDropOperation: ({target}) => {
+        return target?.type === 'item' ? 'move' : 'copy';
+      },
+      onDrop: (event) => {
+        dropEvents.push(`drop:${event.operation}`);
+      }
+    });
+
+    let dropTarget = {
+      type: 'item' as const,
+      key: 'ticket-1',
+      dropPosition: 'on' as const
+    };
+    droppable.setTarget(dropTarget);
+    expect(droppable.isDropTarget(dropTarget)).toBe(true);
+
+    let items = [{id: 'ticket-1', type: 'ticket', value: {id: 1}}];
+    expect(droppable.enter(items)).toBe(true);
+    expect(droppable.drop(items)).toBe('move');
+    expect(dropEvents).toEqual(['drop:move']);
   });
 
   it('computes vue-aria example theme class and color scheme metadata', () => {

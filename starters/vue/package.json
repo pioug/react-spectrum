@@ -141,6 +141,7 @@
     "@vue-stately/data": "workspace:*",
     "@vue-stately/datepicker": "workspace:*",
     "@vue-stately/disclosure": "workspace:*",
+    "@vue-stately/dnd": "workspace:*",
     "vue": "^3.5.13"
   },
   "devDependencies": {
