@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:39:21.411Z
+Generated: 2026-02-19T21:40:24.175Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 63
+* Fully matched packages: 64
 * Source exports inspected: 2672
-* Missing exports: 1001
-* Coverage ratio: 62.54%
+* Missing exports: 994
+* Coverage ratio: 62.80%
 
 ## Package gaps
 
@@ -19,7 +19,6 @@ Generated: 2026-02-19T21:39:21.411Z
 | `react-aria-components` | `@vue-spectrum/components` | missing | 543 | 503 | 7.4% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | missing | 325 | 314 | 3.4% |
 | `@react-spectrum/color` | `@vue-spectrum/color` | missing | 21 | 8 | 61.9% |
-| `@react-aria/calendar` | `@vue-aria/calendar` | missing | 14 | 7 | 50.0% |
 | `@react-aria/color` | `@vue-aria/color` | missing | 20 | 5 | 75.0% |
 | `@react-aria/interactions` | `@vue-aria/interactions` | missing | 60 | 5 | 91.7% |
 | `@react-aria/table` | `@vue-aria/table` | missing | 23 | 5 | 78.3% |
@@ -108,6 +107,7 @@ Generated: 2026-02-19T21:39:21.411Z
 | `@react-stately/tabs` | `@vue-stately/tabs` | missing | 4 | 1 | 75.0% |
 | `@react-stately/toggle` | `@vue-stately/toggle` | missing | 7 | 1 | 85.7% |
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` | ok | 1 | 0 | 100.0% |
+| `@react-aria/calendar` | `@vue-aria/calendar` | ok | 14 | 0 | 100.0% |
 | `@react-aria/collections` | `@vue-aria/collections` | ok | 17 | 0 | 100.0% |
 | `@react-aria/datepicker` | `@vue-aria/datepicker` | ok | 18 | 0 | 100.0% |
 | `@react-aria/dnd` | `@vue-aria/dnd` | ok | 62 | 0 | 100.0% |
@@ -193,13 +193,6 @@ Generated: 2026-02-19T21:39:21.411Z
 * Target entry: `packages/@vue-spectrum/color/src/index.ts`
 * Missing export count: 8
 * Missing exports: `SpectrumColorAreaProps`, `SpectrumColorEditorProps`, `SpectrumColorFieldProps`, `SpectrumColorPickerProps`, `SpectrumColorSliderProps`, `SpectrumColorSwatchPickerProps`, `SpectrumColorSwatchProps`, `SpectrumColorWheelProps`
-
-### @react-aria/calendar -> @vue-aria/calendar
-
-* Source entry: `packages/@react-aria/calendar/src/index.ts`
-* Target entry: `packages/@vue-aria/calendar/src/index.ts`
-* Missing export count: 7
-* Missing exports: `AriaCalendarCellProps`, `AriaCalendarGridProps`, `AriaCalendarProps`, `AriaRangeCalendarProps`, `CalendarProps`, `DateValue`, `RangeCalendarProps`
 
 ### @react-aria/color -> @vue-aria/color
 
@@ -312,4 +305,11 @@ Generated: 2026-02-19T21:39:21.411Z
 * Target entry: `packages/@vue-aria/radio/src/index.ts`
 * Missing export count: 3
 * Missing exports: `AriaRadioGroupProps`, `AriaRadioProps`, `Orientation`
+
+### @react-aria/slider -> @vue-aria/slider
+
+* Source entry: `packages/@react-aria/slider/src/index.ts`
+* Target entry: `packages/@vue-aria/slider/src/index.ts`
+* Missing export count: 3
+* Missing exports: `AriaSliderProps`, `AriaSliderThumbProps`, `Orientation`
 

@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T21:39:21.411Z",
+  "generatedAt": "2026-02-19T21:40:24.175Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 63,
+    "fullyMatchedPackages": 64,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 1001,
-    "parityCoverage": 0.6254
+    "missingExportTotal": 994,
+    "parityCoverage": 0.628
   },
   "packages": [
     {
@@ -962,36 +962,6 @@
         "VueColorSwatch",
         "VueColorSwatchPicker",
         "VueColorWheel"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/calendar",
-      "sourcePath": "packages/@react-aria/calendar",
-      "targetPackage": "@vue-aria/calendar",
-      "targetPath": "packages/@vue-aria/calendar",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/calendar/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/calendar/src/index.ts",
-      "sourceExportCount": 14,
-      "targetExportCount": 13,
-      "parityRatio": 0.5,
-      "missingExports": [
-        "AriaCalendarCellProps",
-        "AriaCalendarGridProps",
-        "AriaCalendarProps",
-        "AriaRangeCalendarProps",
-        "CalendarProps",
-        "DateValue",
-        "RangeCalendarProps"
-      ],
-      "extraExports": [
-        "AriaCalendarCellOptions",
-        "AriaCalendarGridOptions",
-        "AriaCalendarOptions",
-        "AriaRangeCalendarOptions",
-        "DateRange",
-        "RangeCalendarAria"
       ],
       "error": null
     },
@@ -2865,6 +2835,28 @@
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/calendar",
+      "sourcePath": "packages/@react-aria/calendar",
+      "targetPackage": "@vue-aria/calendar",
+      "targetPath": "packages/@vue-aria/calendar",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/calendar/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/calendar/src/index.ts",
+      "sourceExportCount": 14,
+      "targetExportCount": 20,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaCalendarCellOptions",
+        "AriaCalendarGridOptions",
+        "AriaCalendarOptions",
+        "AriaRangeCalendarOptions",
+        "DateRange",
+        "RangeCalendarAria"
+      ],
       "error": null
     },
     {
