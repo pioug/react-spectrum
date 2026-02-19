@@ -11931,6 +11931,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/image@workspace:*, @vue-spectrum/image@workspace:packages/@vue-spectrum/image":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/image@workspace:packages/@vue-spectrum/image"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/inlinealert@workspace:*, @vue-spectrum/inlinealert@workspace:packages/@vue-spectrum/inlinealert":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/inlinealert@workspace:packages/@vue-spectrum/inlinealert"
@@ -30908,6 +30918,7 @@ __metadata:
     "@vue-spectrum/divider": "workspace:*"
     "@vue-spectrum/dnd": "workspace:*"
     "@vue-spectrum/form": "workspace:*"
+    "@vue-spectrum/image": "workspace:*"
     "@vue-spectrum/inlinealert": "workspace:*"
     "@vue-spectrum/link": "workspace:*"
     "@vue-spectrum/listbox": "workspace:*"

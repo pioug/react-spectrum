@@ -4,6 +4,7 @@ import {Avatar} from '@vue-spectrum/avatar';
 import {Badge} from '@vue-spectrum/badge';
 import {Button} from '@vue-spectrum/button';
 import {Checkbox} from '@vue-spectrum/checkbox';
+import {Image} from '@vue-spectrum/image';
 import {InlineAlert} from '@vue-spectrum/inlinealert';
 import {Radio, RadioGroup} from '@vue-spectrum/radio';
 import {Switch} from '@vue-spectrum/switch';
@@ -84,6 +85,21 @@ describe('Vue migration primitives', () => {
     expect(wrapper.get('.vs-inline-alert__title').text()).toBe('Attention');
     expect(wrapper.text()).toContain('Action required.');
     expect(wrapper.classes()).toContain('vs-inline-alert--notice');
+  });
+
+  it('renders image src/alt and fit class', () => {
+    let wrapper = mount(Image, {
+      props: {
+        src: 'https://example.com/image.png',
+        alt: 'Preview',
+        fit: 'contain'
+      }
+    });
+
+    let image = wrapper.get('img');
+    expect(image.attributes('src')).toBe('https://example.com/image.png');
+    expect(image.attributes('alt')).toBe('Preview');
+    expect(wrapper.classes()).toContain('vs-image--fit-contain');
   });
 
   it('emits click from button', async () => {

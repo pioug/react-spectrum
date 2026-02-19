@@ -18,6 +18,7 @@ Vue-native Spectrum-inspired primitives for incremental migration from React pac
 * `VueDropZone`
 * `VuePopover`
 * `VueInlineAlert`
+* `VueImage`
 * `VueComboBox`
 * `VueMenu`
 * `VueListBox`

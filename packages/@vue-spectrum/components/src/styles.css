@@ -749,6 +749,27 @@
   border-color: rgba(211, 21, 16, 0.45);
 }
 
+.vs-image {
+  display: block;
+  inline-size: 100%;
+}
+
+.vs-image--fit-cover {
+  object-fit: cover;
+}
+
+.vs-image--fit-contain {
+  object-fit: contain;
+}
+
+.vs-image--fit-fill {
+  object-fit: fill;
+}
+
+.vs-image--fit-none {
+  object-fit: none;
+}
+
 .vs-radio-group {
   display: grid;
   gap: 8px;

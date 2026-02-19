@@ -356,6 +356,30 @@
         }
       ]
     },
+    "@react-spectrum/image": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/image",
+      "targetPath": "packages/@vue-spectrum/image",
+      "notes": "First-wave media primitive for image rendering and object-fit behavior.",
+      "acceptanceTests": [
+        {
+          "name": "Vue image package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/image/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/inlinealert": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/inlinealert",

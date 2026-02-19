@@ -3,6 +3,11 @@
     <main class="app-shell">
       <header class="app-header">
         <VueAvatar class="header-avatar" label="VS" size="l" />
+        <VueImage
+          class="hero-image"
+          src="https://dummyimage.com/640x180/e5e5e5/2c2c2c.png&text=Vue+Image+Port"
+          alt="Vue migration hero"
+          fit="cover" />
         <p class="eyebrow">Vue Migration Baseline</p>
         <h1>Vue Spectrum Starter</h1>
         <p class="lead">
@@ -210,6 +215,7 @@ import {DropZone as VueDropZone} from '@vue-spectrum/dnd';
 import {Divider as VueDivider} from '@vue-spectrum/divider';
 import {Dialog as VueDialog} from '@vue-spectrum/dialog';
 import {Form as VueForm} from '@vue-spectrum/form';
+import {Image as VueImage} from '@vue-spectrum/image';
 import {InlineAlert as VueInlineAlert} from '@vue-spectrum/inlinealert';
 import {Link as VueLink} from '@vue-spectrum/link';
 import {ListBox as VueListBox} from '@vue-spectrum/listbox';
@@ -381,6 +387,11 @@ function handleVirtualScroll(event: Event) {
 }
 
 .header-avatar {
+  margin-bottom: 12px;
+}
+
+.hero-image {
+  block-size: 128px;
   margin-bottom: 12px;
 }
 
