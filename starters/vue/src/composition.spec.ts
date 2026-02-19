@@ -161,6 +161,7 @@ import {
 } from '@vue-spectrum/utils';
 import {useAutocompleteState as useStatelyAutocompleteState} from '@vue-stately/autocomplete';
 import {useCalendarState as useStatelyCalendarState, useRangeCalendarState as useStatelyRangeCalendarState} from '@vue-stately/calendar';
+import {useCheckboxGroupState as useStatelyCheckboxGroupState} from '@vue-stately/checkbox';
 
 function createPointerEvent(
   type: string,
@@ -542,6 +543,32 @@ describe('Vue migration composition components', () => {
 
     testsItem.press();
     expect(Array.from(selectedValues.value)).toEqual(['Docs']);
+  });
+
+  it('manages vue-stately checkbox-group values and invalid flags', () => {
+    let selectedValues = ref(['Docs']);
+    let changes: string[][] = [];
+    let state = useStatelyCheckboxGroupState({
+      isRequired: true,
+      onChange: (value) => {
+        changes.push([...value]);
+      },
+      value: selectedValues
+    });
+
+    expect(state.isSelected('Docs')).toBe(true);
+    state.toggleValue('Tests');
+    expect(selectedValues.value).toEqual(['Docs', 'Tests']);
+
+    state.removeValue('Docs');
+    expect(selectedValues.value).toEqual(['Tests']);
+    expect(state.isRequired.value).toBe(false);
+
+    state.setInvalid('Tests', {isInvalid: true});
+    expect(state.isInvalid.value).toBe(true);
+    state.setInvalid('Tests', {isInvalid: false});
+    expect(state.isInvalid.value).toBe(false);
+    expect(changes).toContainEqual(['Docs', 'Tests']);
   });
 
   it('builds and filters vue-aria collections with key navigation', () => {

@@ -138,6 +138,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` |
 | `@react-stately/autocomplete` | `@vue-stately/autocomplete` |
 | `@react-stately/calendar` | `@vue-stately/calendar` |
+| `@react-stately/checkbox` | `@vue-stately/checkbox` |
 
 ## Core API conversion patterns
 
