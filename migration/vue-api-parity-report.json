@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T21:36:50.997Z",
+  "generatedAt": "2026-02-19T21:38:04.976Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 61,
+    "fullyMatchedPackages": 62,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 1022,
-    "parityCoverage": 0.6175
+    "missingExportTotal": 1011,
+    "parityCoverage": 0.6216
   },
   "packages": [
     {
@@ -928,37 +928,6 @@
       ],
       "extraExports": [
         "Spectrum2Plugin"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/virtualizer",
-      "sourcePath": "packages/@react-aria/virtualizer",
-      "targetPackage": "@vue-aria/virtualizer",
-      "targetPath": "packages/@vue-aria/virtualizer",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/virtualizer/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/virtualizer/src/index.ts",
-      "sourceExportCount": 11,
-      "targetExportCount": 3,
-      "parityRatio": 0,
-      "missingExports": [
-        "RTLOffsetType",
-        "ScrollView",
-        "Virtualizer",
-        "VirtualizerItem",
-        "VirtualizerItemOptions",
-        "getRTLOffsetType",
-        "getScrollLeft",
-        "layoutInfoToStyle",
-        "setScrollLeft",
-        "useScrollView",
-        "useVirtualizerItem"
-      ],
-      "extraExports": [
-        "VirtualizerOptions",
-        "VirtualizerState",
-        "useVirtualizer"
       ],
       "error": null
     },
@@ -3245,6 +3214,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/virtualizer",
+      "sourcePath": "packages/@react-aria/virtualizer",
+      "targetPackage": "@vue-aria/virtualizer",
+      "targetPath": "packages/@vue-aria/virtualizer",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/virtualizer/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/virtualizer/src/index.ts",
+      "sourceExportCount": 11,
+      "targetExportCount": 14,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VirtualizerOptions",
+        "VirtualizerState",
+        "useVirtualizer"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/button",
       "sourcePath": "packages/@react-spectrum/button",
       "targetPackage": "@vue-spectrum/button",
@@ -3997,7 +3985,7 @@
       "sourceEntrypoint": "packages/react-aria/src/index.ts",
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
-      "targetExportCount": 797,
+      "targetExportCount": 808,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
@@ -4180,10 +4168,12 @@
         "PreventScrollAria",
         "PreventScrollOptions",
         "QueuedToast",
+        "RTLOffsetType",
         "RadioGroupTester",
         "RangeCalendarAria",
         "SSRContextValue",
         "SSRProviderAria",
+        "ScrollView",
         "ScrollWheelEvent",
         "SearchAutocompleteAria",
         "SectionNode",
@@ -4247,6 +4237,9 @@
         "UserOpts",
         "VISUALLY_HIDDEN_STYLES",
         "ValidatableElement",
+        "Virtualizer",
+        "VirtualizerItem",
+        "VirtualizerItemOptions",
         "VirtualizerOptions",
         "VirtualizerState",
         "addWindowFocusTracking",
@@ -4277,6 +4270,8 @@
         "getOwnerDocument",
         "getOwnerWindow",
         "getPointerType",
+        "getRTLOffsetType",
+        "getScrollLeft",
         "getScrollParent",
         "getScrollParents",
         "getSyntheticLinkProps",
@@ -4305,6 +4300,7 @@
         "isVirtualDragging",
         "isVirtualPointerEvent",
         "isWebKit",
+        "layoutInfoToStyle",
         "listData",
         "mergeIds",
         "mergeRefs",
@@ -4317,6 +4313,7 @@
         "scrollIntoView",
         "scrollIntoViewport",
         "setInteractionModality",
+        "setScrollLeft",
         "shouldClientNavigate",
         "snapValueToStep",
         "triggerLongPress",
@@ -4358,6 +4355,7 @@
         "useResizeObserver",
         "useRouter",
         "useSSRSafeId",
+        "useScrollView",
         "useScrollWheel",
         "useSearchAutocomplete",
         "useSelectableCollection",
@@ -4377,6 +4375,7 @@
         "useValueEffect",
         "useViewportSize",
         "useVirtualizer",
+        "useVirtualizerItem",
         "watchModals",
         "willOpenKeyboard"
       ],

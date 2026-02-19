@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, type Ref, unref} from 'vue';
+import {computed, defineComponent, ref, type ComputedRef, type Ref, unref} from 'vue';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
 
@@ -58,5 +58,62 @@ export function useVirtualizer(options: VirtualizerOptions): VirtualizerState {
     visibleIndexes,
     totalHeight,
     offsetTop
+  };
+}
+
+export type RTLOffsetType = 'negative' | 'positive-descending' | 'positive-ascending';
+export type VirtualizerItemOptions = Record<string, unknown>;
+
+export const Virtualizer = defineComponent({
+  name: 'VueAriaVirtualizer',
+  setup(_, {slots}) {
+    return () => slots.default ? slots.default() : null;
+  }
+});
+
+export const VirtualizerItem = defineComponent({
+  name: 'VueAriaVirtualizerItem',
+  setup(_, {slots}) {
+    return () => slots.default ? slots.default() : null;
+  }
+});
+
+export const ScrollView = defineComponent({
+  name: 'VueAriaScrollView',
+  setup(_, {slots}) {
+    return () => slots.default ? slots.default() : null;
+  }
+});
+
+export function layoutInfoToStyle(layoutInfo: Record<string, unknown> = {}): Record<string, unknown> {
+  return {...layoutInfo};
+}
+
+export function getRTLOffsetType(): RTLOffsetType {
+  return 'negative';
+}
+
+export function getScrollLeft(element: HTMLElement | null | undefined): number {
+  return element?.scrollLeft ?? 0;
+}
+
+export function setScrollLeft(element: HTMLElement | null | undefined, scrollLeft: number): void {
+  if (!element) {
+    return;
+  }
+
+  element.scrollLeft = scrollLeft;
+}
+
+export function useScrollView() {
+  return {
+    scrollViewProps: {},
+    scrollRef: ref<HTMLElement | null>(null)
+  };
+}
+
+export function useVirtualizerItem(_options: VirtualizerItemOptions = {}) {
+  return {
+    virtualizerItemProps: {}
   };
 }

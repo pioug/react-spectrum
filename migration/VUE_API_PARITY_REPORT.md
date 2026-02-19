@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:36:50.997Z
+Generated: 2026-02-19T21:38:04.976Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 61
+* Fully matched packages: 62
 * Source exports inspected: 2672
-* Missing exports: 1022
-* Coverage ratio: 61.75%
+* Missing exports: 1011
+* Coverage ratio: 62.16%
 
 ## Package gaps
 
@@ -18,7 +18,6 @@ Generated: 2026-02-19T21:36:50.997Z
 | --- | --- | --- | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | missing | 543 | 503 | 7.4% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | missing | 325 | 314 | 3.4% |
-| `@react-aria/virtualizer` | `@vue-aria/virtualizer` | missing | 11 | 11 | 0.0% |
 | `@react-aria/datepicker` | `@vue-aria/datepicker` | missing | 18 | 10 | 44.4% |
 | `@react-spectrum/color` | `@vue-spectrum/color` | missing | 21 | 8 | 61.9% |
 | `@react-aria/calendar` | `@vue-aria/calendar` | missing | 14 | 7 | 50.0% |
@@ -126,6 +125,7 @@ Generated: 2026-02-19T21:36:50.997Z
 | `@react-aria/ssr` | `@vue-aria/ssr` | ok | 4 | 0 | 100.0% |
 | `@react-aria/test-utils` | `@vue-aria/test-utils` | ok | 17 | 0 | 100.0% |
 | `@react-aria/utils` | `@vue-aria/utils` | ok | 74 | 0 | 100.0% |
+| `@react-aria/virtualizer` | `@vue-aria/virtualizer` | ok | 11 | 0 | 100.0% |
 | `@react-spectrum/button` | `@vue-spectrum/button` | ok | 10 | 0 | 100.0% |
 | `@react-spectrum/dialog` | `@vue-spectrum/dialog` | ok | 10 | 0 | 100.0% |
 | `@react-spectrum/dnd` | `@vue-spectrum/dnd` | ok | 26 | 0 | 100.0% |
@@ -186,13 +186,6 @@ Generated: 2026-02-19T21:36:50.997Z
 * Target entry: `packages/@vue-spectrum/s2/src/index.ts`
 * Missing export count: 314
 * Missing exports: `Accordion`, `AccordionContext`, `AccordionItem`, `AccordionItemHeader`, `AccordionItemHeaderProps`, `AccordionItemPanel`, `AccordionItemPanelProps`, `AccordionItemProps`, `AccordionItemRenderProps`, `AccordionItemState`, `AccordionItemTitle`, `AccordionItemTitleProps`, `AccordionProps`, `ActionBar`, `ActionBarContext`, `ActionBarProps`, `ActionButton`, `ActionButtonContext`, `ActionButtonGroup`, `ActionButtonGroupContext`, `ActionButtonGroupProps`, `ActionButtonProps`, `ActionMenu`, `ActionMenuContext`, `ActionMenuProps`, `AlertDialog`, `AlertDialogProps`, `AssetCard`, `AssetCardProps`, `AsyncListData`, `Autocomplete`, `AutocompleteProps`, `Avatar`, `AvatarContext`, `AvatarGroup`, `AvatarGroupContext`, `AvatarGroupProps`, `AvatarProps`, `Badge`, `BadgeContext` ...
-
-### @react-aria/virtualizer -> @vue-aria/virtualizer
-
-* Source entry: `packages/@react-aria/virtualizer/src/index.ts`
-* Target entry: `packages/@vue-aria/virtualizer/src/index.ts`
-* Missing export count: 11
-* Missing exports: `RTLOffsetType`, `ScrollView`, `Virtualizer`, `VirtualizerItem`, `VirtualizerItemOptions`, `getRTLOffsetType`, `getScrollLeft`, `layoutInfoToStyle`, `setScrollLeft`, `useScrollView`, `useVirtualizerItem`
 
 ### @react-aria/datepicker -> @vue-aria/datepicker
 
@@ -312,4 +305,11 @@ Generated: 2026-02-19T21:36:50.997Z
 * Target entry: `packages/@vue-aria/checkbox/src/index.ts`
 * Missing export count: 3
 * Missing exports: `AriaCheckboxGroupItemProps`, `AriaCheckboxGroupProps`, `AriaCheckboxProps`
+
+### @react-aria/gridlist -> @vue-aria/gridlist
+
+* Source entry: `packages/@react-aria/gridlist/src/index.ts`
+* Target entry: `packages/@vue-aria/gridlist/src/index.ts`
+* Missing export count: 3
+* Missing exports: `AriaGridSelectionCheckboxProps`, `GridListProps`, `GridSelectionCheckboxAria`
 
