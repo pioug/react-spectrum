@@ -11873,6 +11873,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/checkbox@workspace:*, @vue-aria/checkbox@workspace:packages/@vue-aria/checkbox":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/checkbox@workspace:packages/@vue-aria/checkbox"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31171,6 +31179,7 @@ __metadata:
     "@vue-aria/breadcrumbs": "workspace:*"
     "@vue-aria/button": "workspace:*"
     "@vue-aria/calendar": "workspace:*"
+    "@vue-aria/checkbox": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"

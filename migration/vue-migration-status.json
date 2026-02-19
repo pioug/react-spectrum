@@ -192,6 +192,30 @@
         }
       ]
     },
+    "@react-aria/checkbox": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/checkbox",
+      "targetPath": "packages/@vue-aria/checkbox",
+      "notes": "Foundational React Aria checkbox and checkbox-group composables for toggle state and grouped multi-selection behavior in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria checkbox source lint",
+          "command": "yarn eslint packages/@vue-aria/checkbox/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/provider": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/provider",

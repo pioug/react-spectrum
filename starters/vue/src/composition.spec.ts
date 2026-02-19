@@ -7,6 +7,7 @@ import {watchModals} from '@vue-aria/aria-modal-polyfill';
 import {useBreadcrumbItem, useBreadcrumbs} from '@vue-aria/breadcrumbs';
 import {useButton, useToggleButton, useToggleButtonGroup, useToggleButtonGroupItem} from '@vue-aria/button';
 import {useCalendar, useCalendarCell, useCalendarGrid, useRangeCalendar} from '@vue-aria/calendar';
+import {useCheckbox, useCheckboxGroup, useCheckboxGroupItem} from '@vue-aria/checkbox';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -256,6 +257,39 @@ describe('Vue migration composition components', () => {
       date: new Date(2025, 0, 6)
     });
     expect(rangeCell.isSelected.value).toBe(true);
+  });
+
+  it('toggles vue-aria checkbox selection and mixed state flags', () => {
+    let isSelected = ref(false);
+    let checkbox = useCheckbox({
+      isIndeterminate: true,
+      isSelected
+    });
+
+    expect(checkbox.inputProps.value['aria-checked']).toBe('mixed');
+    checkbox.press();
+    expect(isSelected.value).toBe(true);
+    expect(checkbox.isPressed.value).toBe(false);
+  });
+
+  it('updates checkbox group selections through group item composables', () => {
+    let selectedValues = ref<Iterable<string>>(['Docs']);
+    let group = useCheckboxGroup({
+      name: 'features',
+      selectedValues
+    });
+
+    let testsItem = useCheckboxGroupItem({
+      group,
+      value: 'Tests'
+    });
+
+    expect(testsItem.inputProps.value.name).toBe('features');
+    testsItem.press();
+    expect(Array.from(selectedValues.value)).toEqual(['Docs', 'Tests']);
+
+    testsItem.press();
+    expect(Array.from(selectedValues.value)).toEqual(['Docs']);
   });
 
   it('emits close events from dismissable dialog controls', async () => {

@@ -19,6 +19,7 @@
     "@vue-aria/breadcrumbs": "workspace:*",
     "@vue-aria/button": "workspace:*",
     "@vue-aria/calendar": "workspace:*",
+    "@vue-aria/checkbox": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",
