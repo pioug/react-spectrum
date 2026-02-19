@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-19T23:07:39.564Z",
+  "generatedAt": "2026-02-19T23:09:42.370Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 82,
+    "fullyMatchedPackages": 83,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 1907,
-    "mismatchedExportTotal": 765,
+    "matchedExportTotal": 1923,
+    "mismatchedExportTotal": 749,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.7137
+    "parityCoverage": 0.7197
   },
   "packages": [
     {
@@ -5659,10 +5659,10 @@
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
       "comparedExportCount": 419,
-      "matchedExportCount": 345,
-      "mismatchedExportCount": 74,
+      "matchedExportCount": 353,
+      "mismatchedExportCount": 66,
       "missingInTargetCount": 0,
-      "parityRatio": 0.8234,
+      "parityRatio": 0.8425,
       "missingInTargetExports": [],
       "mismatches": [
         {
@@ -6157,228 +6157,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: AriaCheckboxGroupItemOptions) => CheckboxAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useColorArea",
-          "targetExportName": "useColorArea",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useColorArea",
-            "resolvedName": "useColorArea",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaColorAreaOptions, state: ColorAreaState) => ColorAreaAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorAreaOptions, _: ColorAreaState) => ColorAreaAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useColorArea",
-            "resolvedName": "useColorArea",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaColorAreaOptions) => ColorAreaAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorAreaOptions) => ColorAreaAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useColorChannelField",
-          "targetExportName": "useColorChannelField",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useColorChannelField",
-            "resolvedName": "useColorChannelField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaColorChannelFieldProps, state: ColorChannelFieldState, inputRef: RefObject<HTMLInputElement | null>) => ColorChannelFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorChannelFieldProps, _: ColorChannelFieldState, _: RefObject<HTMLInputElement | null>) => ColorChannelFieldAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useColorChannelField",
-            "resolvedName": "useColorChannelField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaColorChannelFieldOptions) => ColorChannelFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorChannelFieldOptions) => ColorChannelFieldAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useColorField",
-          "targetExportName": "useColorField",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useColorField",
-            "resolvedName": "useColorField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaColorFieldProps, state: ColorFieldState, ref: RefObject<HTMLInputElement | null>) => ColorFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorFieldProps, _: ColorFieldState, _: RefObject<HTMLInputElement | null>) => ColorFieldAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useColorField",
-            "resolvedName": "useColorField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaColorFieldOptions) => ColorFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorFieldOptions) => ColorFieldAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useColorSlider",
-          "targetExportName": "useColorSlider",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useColorSlider",
-            "resolvedName": "useColorSlider",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaColorSliderOptions, state: ColorSliderState) => ColorSliderAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorSliderOptions, _: ColorSliderState) => ColorSliderAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useColorSlider",
-            "resolvedName": "useColorSlider",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaColorSliderOptions) => ColorSliderAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorSliderOptions) => ColorSliderAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useColorSwatch",
-          "targetExportName": "useColorSwatch",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useColorSwatch",
-            "resolvedName": "useColorSwatch",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaColorSwatchProps) => ColorSwatchAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorSwatchProps) => ColorSwatchAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useColorSwatch",
-            "resolvedName": "useColorSwatch",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaColorSwatchOptions) => ColorSwatchAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorSwatchOptions) => ColorSwatchAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useColorWheel",
-          "targetExportName": "useColorWheel",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useColorWheel",
-            "resolvedName": "useColorWheel",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaColorWheelOptions, state: ColorWheelState, inputRef: RefObject<HTMLInputElement | null>) => ColorWheelAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorWheelOptions, _: ColorWheelState, _: RefObject<HTMLInputElement | null>) => ColorWheelAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useColorWheel",
-            "resolvedName": "useColorWheel",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaColorWheelOptions) => ColorWheelAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorWheelOptions) => ColorWheelAria"
             ],
             "constructSignatures": []
           }
@@ -8254,68 +8032,6 @@
           },
           "target": {
             "name": "AriaToggleButtonGroupProps",
-            "resolvedName": "unknown",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [],
-            "valueType": "any",
-            "declaredType": "",
-            "callSignatures": [],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "AriaColorChannelFieldProps",
-          "targetExportName": "AriaColorChannelFieldProps",
-          "differences": [
-            "value-availability"
-          ],
-          "source": {
-            "name": "AriaColorChannelFieldProps",
-            "resolvedName": "AriaColorChannelFieldProps",
-            "hasType": true,
-            "hasValue": false,
-            "declarationKinds": [
-              "InterfaceDeclaration"
-            ],
-            "valueType": "any",
-            "declaredType": "AriaColorChannelFieldProps",
-            "callSignatures": [],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "AriaColorChannelFieldProps",
-            "resolvedName": "unknown",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [],
-            "valueType": "any",
-            "declaredType": "",
-            "callSignatures": [],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "AriaColorSwatchProps",
-          "targetExportName": "AriaColorSwatchProps",
-          "differences": [
-            "value-availability"
-          ],
-          "source": {
-            "name": "AriaColorSwatchProps",
-            "resolvedName": "AriaColorSwatchProps",
-            "hasType": true,
-            "hasValue": false,
-            "declarationKinds": [
-              "InterfaceDeclaration"
-            ],
-            "valueType": "any",
-            "declaredType": "AriaColorSwatchProps",
-            "callSignatures": [],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "AriaColorSwatchProps",
             "resolvedName": "unknown",
             "hasType": false,
             "hasValue": true,
@@ -12528,310 +12244,6 @@
             "callSignatures": [
               "<T>( _: TreeProps<T>) => TreeState<T>"
             ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/color",
-      "sourcePath": "packages/@react-aria/color",
-      "targetPackage": "@vue-aria/color",
-      "targetPath": "packages/@vue-aria/color",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/color/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/color/src/index.ts",
-      "sourceExportCount": 20,
-      "comparedExportCount": 20,
-      "matchedExportCount": 12,
-      "mismatchedExportCount": 8,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useColorArea",
-          "targetExportName": "useColorArea",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useColorArea",
-            "resolvedName": "useColorArea",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaColorAreaOptions, state: ColorAreaState) => ColorAreaAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorAreaOptions, _: ColorAreaState) => ColorAreaAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useColorArea",
-            "resolvedName": "useColorArea",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaColorAreaOptions) => ColorAreaAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorAreaOptions) => ColorAreaAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useColorSlider",
-          "targetExportName": "useColorSlider",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useColorSlider",
-            "resolvedName": "useColorSlider",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaColorSliderOptions, state: ColorSliderState) => ColorSliderAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorSliderOptions, _: ColorSliderState) => ColorSliderAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useColorSlider",
-            "resolvedName": "useColorSlider",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaColorSliderOptions) => ColorSliderAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorSliderOptions) => ColorSliderAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useColorWheel",
-          "targetExportName": "useColorWheel",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useColorWheel",
-            "resolvedName": "useColorWheel",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaColorWheelOptions, state: ColorWheelState, inputRef: RefObject<HTMLInputElement | null>) => ColorWheelAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorWheelOptions, _: ColorWheelState, _: RefObject<HTMLInputElement | null>) => ColorWheelAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useColorWheel",
-            "resolvedName": "useColorWheel",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaColorWheelOptions) => ColorWheelAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorWheelOptions) => ColorWheelAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useColorField",
-          "targetExportName": "useColorField",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useColorField",
-            "resolvedName": "useColorField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaColorFieldProps, state: ColorFieldState, ref: RefObject<HTMLInputElement | null>) => ColorFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorFieldProps, _: ColorFieldState, _: RefObject<HTMLInputElement | null>) => ColorFieldAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useColorField",
-            "resolvedName": "useColorField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaColorFieldOptions) => ColorFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorFieldOptions) => ColorFieldAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useColorSwatch",
-          "targetExportName": "useColorSwatch",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useColorSwatch",
-            "resolvedName": "useColorSwatch",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaColorSwatchProps) => ColorSwatchAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorSwatchProps) => ColorSwatchAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useColorSwatch",
-            "resolvedName": "useColorSwatch",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaColorSwatchOptions) => ColorSwatchAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorSwatchOptions) => ColorSwatchAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useColorChannelField",
-          "targetExportName": "useColorChannelField",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useColorChannelField",
-            "resolvedName": "useColorChannelField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaColorChannelFieldProps, state: ColorChannelFieldState, inputRef: RefObject<HTMLInputElement | null>) => ColorChannelFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorChannelFieldProps, _: ColorChannelFieldState, _: RefObject<HTMLInputElement | null>) => ColorChannelFieldAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useColorChannelField",
-            "resolvedName": "useColorChannelField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaColorChannelFieldOptions) => ColorChannelFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaColorChannelFieldOptions) => ColorChannelFieldAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "AriaColorSwatchProps",
-          "targetExportName": "AriaColorSwatchProps",
-          "differences": [
-            "value-availability"
-          ],
-          "source": {
-            "name": "AriaColorSwatchProps",
-            "resolvedName": "AriaColorSwatchProps",
-            "hasType": true,
-            "hasValue": false,
-            "declarationKinds": [
-              "InterfaceDeclaration"
-            ],
-            "valueType": "any",
-            "declaredType": "AriaColorSwatchProps",
-            "callSignatures": [],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "AriaColorSwatchProps",
-            "resolvedName": "unknown",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [],
-            "valueType": "any",
-            "declaredType": "",
-            "callSignatures": [],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "AriaColorChannelFieldProps",
-          "targetExportName": "AriaColorChannelFieldProps",
-          "differences": [
-            "value-availability"
-          ],
-          "source": {
-            "name": "AriaColorChannelFieldProps",
-            "resolvedName": "AriaColorChannelFieldProps",
-            "hasType": true,
-            "hasValue": false,
-            "declarationKinds": [
-              "InterfaceDeclaration"
-            ],
-            "valueType": "any",
-            "declaredType": "AriaColorChannelFieldProps",
-            "callSignatures": [],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "AriaColorChannelFieldProps",
-            "resolvedName": "unknown",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [],
-            "valueType": "any",
-            "declaredType": "",
-            "callSignatures": [],
             "constructSignatures": []
           }
         }
@@ -19246,6 +18658,25 @@
           }
         }
       ],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/color",
+      "sourcePath": "packages/@react-aria/color",
+      "targetPackage": "@vue-aria/color",
+      "targetPath": "packages/@vue-aria/color",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/color/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/color/src/index.ts",
+      "sourceExportCount": 20,
+      "comparedExportCount": 20,
+      "matchedExportCount": 20,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
       "truncatedMismatchCount": 0,
       "error": null
     },
