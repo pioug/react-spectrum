@@ -48,6 +48,7 @@ import {
   useNumberFormatter
 } from '@vue-aria/i18n';
 import {useField, useLabel} from '@vue-aria/label';
+import {UNSTABLE_createLandmarkController, useLandmark} from '@vue-aria/landmark';
 import {
   addWindowFocusTracking,
   setInteractionModality,
@@ -1051,6 +1052,58 @@ describe('Vue migration composition components', () => {
     expect(describedBy).toContain(field.errorMessageProps.value.id);
     expect(describedBy).toContain('legacy-help');
     expect(field.fieldProps.value['aria-labelledby']).toContain(field.labelProps.value.id as string);
+  });
+
+  it('navigates vue-aria landmarks with the landmark controller', () => {
+    let main = document.createElement('main');
+    let navigation = document.createElement('nav');
+    main.tabIndex = -1;
+    navigation.tabIndex = -1;
+    document.body.append(main, navigation);
+
+    let mainFocused = 0;
+    let navigationFocused = 0;
+
+    let mainRef = ref<Element | null>(main);
+    let navigationRef = ref<Element | null>(navigation);
+
+    let mainLandmark = useLandmark({
+      'aria-label': 'Main content',
+      focus: () => {
+        mainFocused += 1;
+      },
+      role: 'main'
+    }, mainRef);
+
+    let navigationLandmark = useLandmark({
+      'aria-label': 'Primary navigation',
+      focus: () => {
+        navigationFocused += 1;
+      },
+      role: 'navigation'
+    }, navigationRef);
+
+    let controller = UNSTABLE_createLandmarkController();
+
+    try {
+      expect(mainLandmark.landmarkProps.value.role).toBe('main');
+      expect(navigationLandmark.landmarkProps.value.role).toBe('navigation');
+      expect(controller.focusMain()).toBe(true);
+      expect(mainFocused).toBe(1);
+      expect(document.activeElement).toBe(main);
+
+      expect(controller.focusNext({from: main})).toBe(true);
+      expect(navigationFocused).toBe(1);
+      expect(document.activeElement).toBe(navigation);
+
+      expect(controller.focusPrevious({from: navigation})).toBe(true);
+      expect(mainFocused).toBe(2);
+      expect(document.activeElement).toBe(main);
+    } finally {
+      controller.dispose();
+      document.body.removeChild(main);
+      document.body.removeChild(navigation);
+    }
   });
 
   it('handles vue-aria interactions focus, keyboard, and press callbacks', () => {

@@ -552,6 +552,30 @@
         }
       ]
     },
+    "@react-aria/landmark": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/landmark",
+      "targetPath": "packages/@vue-aria/landmark",
+      "notes": "Foundational React Aria landmark composables for region role registration and controller-driven landmark focus navigation in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria landmark source lint",
+          "command": "yarn eslint packages/@vue-aria/landmark/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",

@@ -35,6 +35,7 @@
     "@vue-aria/i18n": "workspace:*",
     "@vue-aria/interactions": "workspace:*",
     "@vue-aria/label": "workspace:*",
+    "@vue-aria/landmark": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",
