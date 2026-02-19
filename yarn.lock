@@ -12131,6 +12131,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/ssr@workspace:*, @vue-aria/ssr@workspace:packages/@vue-aria/ssr":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/ssr@workspace:packages/@vue-aria/ssr"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31461,6 +31469,7 @@ __metadata:
     "@vue-aria/separator": "workspace:*"
     "@vue-aria/slider": "workspace:*"
     "@vue-aria/spinbutton": "workspace:*"
+    "@vue-aria/ssr": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"

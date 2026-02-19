@@ -936,6 +936,30 @@
         }
       ]
     },
+    "@react-aria/ssr": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/ssr",
+      "targetPath": "packages/@vue-aria/ssr",
+      "notes": "Foundational React Aria SSR utilities for scoped id generation and SSR-environment detection in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria ssr source lint",
+          "command": "yarn eslint packages/@vue-aria/ssr/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",

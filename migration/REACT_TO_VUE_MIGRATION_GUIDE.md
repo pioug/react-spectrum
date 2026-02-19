@@ -103,6 +103,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-aria/separator` | `@vue-aria/separator` |
 | `@react-aria/slider` | `@vue-aria/slider` |
 | `@react-aria/spinbutton` | `@vue-aria/spinbutton` |
+| `@react-aria/ssr` | `@vue-aria/ssr` |
 | `@react-aria/disclosure` | `@vue-aria/disclosure` |
 | `@react-aria/color` | `@vue-aria/color` |
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` |

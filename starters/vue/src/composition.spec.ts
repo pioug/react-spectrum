@@ -78,6 +78,7 @@ import {
 import {useSeparator as useAriaSeparator} from '@vue-aria/separator';
 import {useSlider as useAriaSlider, useSliderThumb as useAriaSliderThumb} from '@vue-aria/slider';
 import {useSpinButton as useAriaSpinButton} from '@vue-aria/spinbutton';
+import {SSRProvider as AriaSSRProvider, useIsSSR as useAriaIsSSR, useSSRSafeId as useAriaSSRSafeId} from '@vue-aria/ssr';
 import {
   addWindowFocusTracking,
   setInteractionModality,
@@ -1891,6 +1892,27 @@ describe('Vue migration composition components', () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+
+  it('computes vue-aria ssr provider scopes and safe ids', () => {
+    let rootProvider = AriaSSRProvider();
+    let firstId = useAriaSSRSafeId();
+    let secondId = useAriaSSRSafeId();
+
+    expect(firstId).toBe('react-aria-1');
+    expect(secondId).toBe('react-aria-2');
+
+    let nestedProvider = AriaSSRProvider();
+    let nestedId = useAriaSSRSafeId();
+    nestedProvider.dispose();
+
+    let afterNestedId = useAriaSSRSafeId();
+    expect(nestedId).toBe('react-aria-3-1');
+    expect(afterNestedId).toBe('react-aria-4');
+    expect(useAriaSSRSafeId('custom-id')).toBe('custom-id');
+    expect(useAriaIsSSR()).toBe(false);
+
+    rootProvider.dispose();
   });
 
   it('announces and clears live region messages with vue-aria live announcer', () => {
