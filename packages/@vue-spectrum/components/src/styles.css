@@ -1313,6 +1313,119 @@
   padding: 8px 12px;
 }
 
+.vs-card {
+  background: var(--vs-color-secondary-bg);
+  border: 1px solid var(--vs-color-border);
+  border-radius: 8px;
+  color: inherit;
+  cursor: pointer;
+  display: grid;
+  gap: 6px;
+  text-align: left;
+  transition: border-color 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+}
+
+.vs-card--medium {
+  padding: 10px 12px;
+}
+
+.vs-card--large {
+  padding: 12px 14px;
+}
+
+.vs-card:hover:not(:disabled) {
+  background: var(--vs-color-secondary-hover);
+}
+
+.vs-card:focus-visible {
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-card.is-selected {
+  border-color: var(--vs-color-primary);
+  box-shadow: var(--vs-focus-ring);
+}
+
+.vs-card.is-quiet {
+  background: transparent;
+}
+
+.vs-card__title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.vs-card__description {
+  color: #707070;
+  font-size: 12px;
+}
+
+.vs-provider[data-color-scheme='dark'] .vs-card__description {
+  color: #c2c2c2;
+}
+
+.vs-card__content {
+  font-size: 13px;
+}
+
+.vs-card:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.vs-card-view {
+  display: grid;
+  gap: 10px;
+}
+
+.vs-card-view__item {
+  background: var(--vs-color-secondary-bg);
+  border: 1px solid var(--vs-color-border);
+  border-radius: 8px;
+  color: inherit;
+  cursor: pointer;
+  display: grid;
+  gap: 4px;
+  min-height: 74px;
+  padding: 10px;
+  text-align: left;
+  transition: border-color 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+}
+
+.vs-card-view__item:hover:not(:disabled) {
+  background: var(--vs-color-secondary-hover);
+}
+
+.vs-card-view__item:focus-visible {
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-card-view__item.is-selected {
+  border-color: var(--vs-color-primary);
+  box-shadow: var(--vs-focus-ring);
+}
+
+.vs-card-view__title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.vs-card-view__description {
+  color: #707070;
+  font-size: 12px;
+}
+
+.vs-provider[data-color-scheme='dark'] .vs-card-view__description {
+  color: #c2c2c2;
+}
+
+.vs-card-view__item:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .vs-action-bar-container {
   display: grid;
   gap: 8px;

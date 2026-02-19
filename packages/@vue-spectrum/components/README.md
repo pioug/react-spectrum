@@ -15,6 +15,8 @@ Vue-native Spectrum-inspired primitives for incremental migration from React pac
 * `VueButton`
 * `VueButtonGroup`
 * `VueCalendar`
+* `VueCard`
+* `VueCardView`
 * `VueTextField`
 * `VueNumberField`
 * `VueCheckbox`

@@ -5,6 +5,7 @@ import {Badge} from '@vue-spectrum/badge';
 import {Button} from '@vue-spectrum/button';
 import {ButtonGroup} from '@vue-spectrum/buttongroup';
 import {Calendar, RangeCalendar} from '@vue-spectrum/calendar';
+import {Card, CardView} from '@vue-spectrum/card';
 import {Checkbox} from '@vue-spectrum/checkbox';
 import {FileTrigger} from '@vue-spectrum/filetrigger';
 import {Image} from '@vue-spectrum/image';
@@ -303,6 +304,33 @@ describe('Vue migration primitives', () => {
     await wrapper.get('input').setValue(true);
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([true]);
     expect(wrapper.emitted('change')?.[0]).toEqual([true]);
+  });
+
+  it('emits press events from standalone cards', async () => {
+    let wrapper = mount(Card, {
+      props: {
+        title: 'Snapshot'
+      }
+    });
+
+    await wrapper.trigger('click');
+    expect(wrapper.emitted('press')).toHaveLength(1);
+  });
+
+  it('emits selection and action from card view items', async () => {
+    let wrapper = mount(CardView, {
+      props: {
+        modelValue: 'overview',
+        items: [
+          {id: 'overview', title: 'Overview'},
+          {id: 'quality', title: 'Quality'}
+        ]
+      }
+    });
+
+    await wrapper.findAll('button.vs-card-view__item')[1].trigger('click');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['quality']);
+    expect(wrapper.emitted('action')?.[0]).toEqual([{id: 'quality', title: 'Quality'}]);
   });
 
   it('updates model value from calendar date input', async () => {

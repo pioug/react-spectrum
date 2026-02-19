@@ -11933,6 +11933,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/card@workspace:*, @vue-spectrum/card@workspace:packages/@vue-spectrum/card":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/card@workspace:packages/@vue-spectrum/card"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/checkbox@workspace:*, @vue-spectrum/checkbox@workspace:packages/@vue-spectrum/checkbox":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/checkbox@workspace:packages/@vue-spectrum/checkbox"
@@ -31078,6 +31088,7 @@ __metadata:
     "@vue-spectrum/button": "workspace:*"
     "@vue-spectrum/buttongroup": "workspace:*"
     "@vue-spectrum/calendar": "workspace:*"
+    "@vue-spectrum/card": "workspace:*"
     "@vue-spectrum/checkbox": "workspace:*"
     "@vue-spectrum/combobox": "workspace:*"
     "@vue-spectrum/components": "workspace:*"

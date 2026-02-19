@@ -139,6 +139,19 @@
           selection-mode="multiple"
           @action="handleActionGroupAction" />
 
+        <VueCard
+          title="Migration snapshot"
+          description="Standalone card primitive"
+          :selected="selectedCard === 'snapshot'"
+          @press="selectedCard = 'snapshot'">
+          Click to set card focus.
+        </VueCard>
+
+        <VueCardView
+          v-model="selectedCard"
+          :items="cardItems"
+          :columns="3" />
+
         <VueAccordion v-model="expandedSections">
           <VueDisclosure id="foundation">
             <VueDisclosureTitle>
@@ -263,6 +276,8 @@
             Action group: <strong>{{ selectedActionGroupItems.length > 0 ? selectedActionGroupItems.join(', ') : 'none' }}</strong>
             <span> · </span>
             Last group action: <strong>{{ lastActionGroupAction }}</strong>
+            <span> · </span>
+            Card: <strong>{{ selectedCard }}</strong>
           </p>
         </VueView>
 
@@ -330,6 +345,7 @@ import {Breadcrumbs as VueBreadcrumbs} from '@vue-spectrum/breadcrumbs';
 import {Button as VueButton} from '@vue-spectrum/button';
 import {ButtonGroup as VueButtonGroup} from '@vue-spectrum/buttongroup';
 import {Calendar as VueCalendar, RangeCalendar as VueRangeCalendar} from '@vue-spectrum/calendar';
+import {Card as VueCard, CardView as VueCardView} from '@vue-spectrum/card';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
 import {SearchAutocomplete as VueSearchAutocomplete} from '@vue-spectrum/autocomplete';
 import {DropZone as VueDropZone} from '@vue-spectrum/dropzone';
@@ -384,6 +400,7 @@ const favoriteComponent = ref('Forms');
 const favoriteLibrary = ref('Vue Spectrum');
 const selectedActionGroupItems = ref<string[]>(['Edit']);
 const lastActionGroupAction = ref('none');
+const selectedCard = ref('overview');
 const expandedSections = ref<string[]>(['foundation']);
 const selectedActionItems = ref(2);
 const lastBulkAction = ref('none');
@@ -398,6 +415,11 @@ const componentOptions = ['Forms', 'Navigation', 'Overlays', 'Data display'];
 const libraryOptions = ['Vue Spectrum', 'React Spectrum', 'Tailwind CSS'];
 const actionGroupItems = ['Edit', 'Duplicate', 'Delete'];
 const actionBarItems = ['Approve', 'Assign', 'Archive'];
+const cardItems = [
+  {id: 'overview', title: 'Overview', description: 'Migration baseline summary'},
+  {id: 'delivery', title: 'Delivery', description: 'Current milestone tracking'},
+  {id: 'quality', title: 'Quality', description: 'Validation and test readiness'}
+];
 const acceptedFileTypes = ['image/png', 'image/jpeg', 'application/pdf'];
 const ticketColumns = [
   {key: 'ticket', label: 'Ticket'},
@@ -503,6 +525,7 @@ function reset() {
   favoriteLibrary.value = 'Vue Spectrum';
   selectedActionGroupItems.value = ['Edit'];
   lastActionGroupAction.value = 'none';
+  selectedCard.value = 'overview';
   expandedSections.value = ['foundation'];
   selectedActionItems.value = 2;
   lastBulkAction.value = 'none';

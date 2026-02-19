@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 48 |
+| in_progress | 49 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 104 |
+| not_started | 103 |
 
 ## Package tracker
 
@@ -34,6 +34,7 @@ Tracked source packages: 154
 | `@react-spectrum/button` | `packages/@react-spectrum/button` | `@vue-spectrum/button` | `packages/@vue-spectrum/button` | in_progress | Vue button package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave primitive aligned with existing VueButton baseline work. |
 | `@react-spectrum/buttongroup` | `packages/@react-spectrum/buttongroup` | `@vue-spectrum/buttongroup` | `packages/@vue-spectrum/buttongroup` | in_progress | Vue buttongroup package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave primitive for grouped button actions and layout alignment. |
 | `@react-spectrum/calendar` | `packages/@react-spectrum/calendar` | `@vue-spectrum/calendar` | `packages/@vue-spectrum/calendar` | in_progress | Vue calendar package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue calendar and range calendar primitives. |
+| `@react-spectrum/card` | `packages/@react-spectrum/card` | `@vue-spectrum/card` | `packages/@vue-spectrum/card` | in_progress | Vue card package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue card and card view primitives. |
 | `@react-spectrum/checkbox` | `packages/@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | `packages/@vue-spectrum/checkbox` | in_progress | Vue checkbox package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave primitive for form controls. |
 | `@react-spectrum/combobox` | `packages/@react-spectrum/combobox` | `@vue-spectrum/combobox` | `packages/@vue-spectrum/combobox` | in_progress | Vue combobox package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step with an initial Vue combobox primitive. |
 | `@react-spectrum/dialog` | `packages/@react-spectrum/dialog` | `@vue-spectrum/dialog` | `packages/@vue-spectrum/dialog` | in_progress | Vue dialog package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing a Vue dialog primitive. |
@@ -126,7 +127,6 @@ Tracked source packages: 154
 | `@react-aria/tree` | `packages/@react-aria/tree` | `@vue-aria/tree` | `packages/@vue-aria/tree` | not_started | - | - |
 | `@react-aria/utils` | `packages/@react-aria/utils` | `@vue-aria/utils` | `packages/@vue-aria/utils` | not_started | - | - |
 | `@react-aria/visually-hidden` | `packages/@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | `packages/@vue-aria/visually-hidden` | not_started | - | - |
-| `@react-spectrum/card` | `packages/@react-spectrum/card` | `@vue-spectrum/card` | `packages/@vue-spectrum/card` | not_started | - | - |
 | `@react-spectrum/color` | `packages/@react-spectrum/color` | `@vue-spectrum/color` | `packages/@vue-spectrum/color` | not_started | - | - |
 | `@react-spectrum/contextualhelp` | `packages/@react-spectrum/contextualhelp` | `@vue-spectrum/contextualhelp` | `packages/@vue-spectrum/contextualhelp` | not_started | - | - |
 | `@react-spectrum/datepicker` | `packages/@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | `packages/@vue-spectrum/datepicker` | not_started | - | - |

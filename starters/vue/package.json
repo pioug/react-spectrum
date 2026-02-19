@@ -24,6 +24,7 @@
     "@vue-spectrum/button": "workspace:*",
     "@vue-spectrum/buttongroup": "workspace:*",
     "@vue-spectrum/calendar": "workspace:*",
+    "@vue-spectrum/card": "workspace:*",
     "@vue-spectrum/checkbox": "workspace:*",
     "@vue-spectrum/combobox": "workspace:*",
     "@vue-spectrum/components": "workspace:*",

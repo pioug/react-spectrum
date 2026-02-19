@@ -57,6 +57,7 @@ Phase 1 is implemented:
   * `@react-spectrum/actiongroup` -> `@vue-spectrum/actiongroup` (`in_progress`)
   * `@react-spectrum/breadcrumbs` -> `@vue-spectrum/breadcrumbs` (`in_progress`)
   * `@react-spectrum/calendar` -> `@vue-spectrum/calendar` (`in_progress`)
+  * `@react-spectrum/card` -> `@vue-spectrum/card` (`in_progress`)
   * `@react-spectrum/dialog` -> `@vue-spectrum/dialog` (`in_progress`)
   * `@react-spectrum/overlays` -> `@vue-spectrum/overlays` (`in_progress`)
   * `@react-spectrum/combobox` -> `@vue-spectrum/combobox` (`in_progress`)
@@ -75,7 +76,7 @@ Phase 1 is implemented:
   * Vue starter now includes a virtualized backlog demo wired to `@vue-aria/virtualizer`.
 * Started Vue test adaptation:
   * `starters/vue` runs Vitest + Vue Test Utils interaction tests for `button`, `buttongroup`, `textfield`, `checkbox`, `radio`, `switch`, `layout`, `labeledvalue`, `illustratedmessage`, and `icon`.
-  * Added composition coverage for `accordion`, `actionbar`, `actiongroup`, `breadcrumbs`, `calendar`, `dialog`, `overlays`, `menu`, `listbox`, `list`, `combobox`, and `autocomplete`.
+  * Added composition coverage for `accordion`, `actionbar`, `actiongroup`, `breadcrumbs`, `calendar`, `card`, `dialog`, `overlays`, `menu`, `listbox`, `list`, `combobox`, and `autocomplete`.
   * Added data-heavy and virtualization coverage for `table`, `tree`, `dnd`, `dropzone`, `filetrigger`, and `@vue-aria/virtualizer`.
 * Started API stabilization and deprecation planning:
   * `migration/VUE_PUBLISH_CHECKLIST.md`
