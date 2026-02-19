@@ -33,6 +33,7 @@
     "@vue-aria/grid": "workspace:*",
     "@vue-aria/gridlist": "workspace:*",
     "@vue-aria/i18n": "workspace:*",
+    "@vue-aria/interactions": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",

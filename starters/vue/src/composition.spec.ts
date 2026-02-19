@@ -1,6 +1,6 @@
 import {mount} from '@vue/test-utils';
 import {ref} from 'vue';
-import {describe, expect, it} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import {useActionGroup, useActionGroupItem} from '@vue-aria/actiongroup';
 import {useAutocomplete, useSearchAutocomplete} from '@vue-aria/autocomplete';
 import {watchModals} from '@vue-aria/aria-modal-polyfill';
@@ -47,6 +47,19 @@ import {
   useMessageFormatter,
   useNumberFormatter
 } from '@vue-aria/i18n';
+import {
+  addWindowFocusTracking,
+  setInteractionModality,
+  useFocus,
+  useFocusVisible,
+  useFocusWithin,
+  useHover,
+  useInteractOutside,
+  useKeyboard,
+  useLongPress,
+  useMove,
+  usePress
+} from '@vue-aria/interactions';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -57,6 +70,28 @@ import {Dialog} from '@vue-spectrum/dialog';
 import {ListView} from '@vue-spectrum/list';
 import {Menu} from '@vue-spectrum/menu';
 import {Popover} from '@vue-spectrum/overlays';
+
+function createPointerEvent(
+  type: string,
+  init: {button?: number, pointerId?: number, pointerType?: 'mouse' | 'pen' | 'touch'} = {}
+): PointerEvent {
+  if (typeof PointerEvent !== 'undefined') {
+    return new PointerEvent(type, {
+      bubbles: true,
+      button: init.button ?? 0,
+      pointerId: init.pointerId ?? 1,
+      pointerType: init.pointerType ?? 'mouse'
+    });
+  }
+
+  let event = new MouseEvent(type, {
+    bubbles: true,
+    button: init.button ?? 0
+  }) as unknown as PointerEvent;
+  Object.defineProperty(event, 'pointerId', {value: init.pointerId ?? 1});
+  Object.defineProperty(event, 'pointerType', {value: init.pointerType ?? 'mouse'});
+  return event;
+}
 
 describe('Vue migration composition components', () => {
   it('computes next selection state for vue-aria action group composables', () => {
@@ -985,6 +1020,248 @@ describe('Vue migration composition components', () => {
     expect(localizedFormatter.format('greeting', {name: 'Vue'})).toBe('Bonjour Vue');
 
     provider.clear();
+  });
+
+  it('handles vue-aria interactions focus, keyboard, and press callbacks', () => {
+    let focusChanges: boolean[] = [];
+    let focusEvents: string[] = [];
+    let keyboardEvents: string[] = [];
+    let pressEvents: string[] = [];
+    let pressChanges: boolean[] = [];
+
+    let focus = useFocus({
+      onBlur: () => {
+        focusEvents.push('blur');
+      },
+      onFocus: () => {
+        focusEvents.push('focus');
+      },
+      onFocusChange: (isFocused) => {
+        focusChanges.push(isFocused);
+      }
+    });
+
+    let keyboard = useKeyboard({
+      onKeyDown: (event) => {
+        keyboardEvents.push(`down:${event.key}`);
+      },
+      onKeyUp: (event) => {
+        keyboardEvents.push(`up:${event.key}`);
+      }
+    });
+
+    let press = usePress({
+      onPress: () => {
+        pressEvents.push('press');
+      },
+      onPressChange: (isPressed) => {
+        pressChanges.push(isPressed);
+      },
+      onPressEnd: () => {
+        pressEvents.push('end');
+      },
+      onPressStart: () => {
+        pressEvents.push('start');
+      },
+      onPressUp: () => {
+        pressEvents.push('up');
+      }
+    });
+
+    let button = document.createElement('button');
+    document.body.append(button);
+
+    try {
+      if (focus.focusProps.value.onFocus) {
+        button.addEventListener('focus', focus.focusProps.value.onFocus as EventListener);
+      }
+      if (focus.focusProps.value.onBlur) {
+        button.addEventListener('blur', focus.focusProps.value.onBlur as EventListener);
+      }
+      if (keyboard.keyboardProps.value.onKeyDown) {
+        button.addEventListener('keydown', keyboard.keyboardProps.value.onKeyDown as EventListener);
+      }
+      if (keyboard.keyboardProps.value.onKeyUp) {
+        button.addEventListener('keyup', keyboard.keyboardProps.value.onKeyUp as EventListener);
+      }
+      if (press.pressProps.value.onKeyDown) {
+        button.addEventListener('keydown', press.pressProps.value.onKeyDown as EventListener);
+      }
+      if (press.pressProps.value.onKeyUp) {
+        button.addEventListener('keyup', press.pressProps.value.onKeyUp as EventListener);
+      }
+      if (press.pressProps.value.onClick) {
+        button.addEventListener('click', press.pressProps.value.onClick as EventListener);
+      }
+      if (press.pressProps.value.onBlur) {
+        button.addEventListener('blur', press.pressProps.value.onBlur as EventListener);
+      }
+
+      button.dispatchEvent(new FocusEvent('focus', {bubbles: true}));
+      button.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'Enter'}));
+      button.dispatchEvent(new KeyboardEvent('keyup', {bubbles: true, key: 'Enter'}));
+      button.dispatchEvent(new FocusEvent('blur', {bubbles: true}));
+
+      expect(focusEvents).toEqual(['focus', 'blur']);
+      expect(focusChanges).toEqual([true, false]);
+      expect(keyboardEvents).toEqual(['down:Enter', 'up:Enter']);
+      expect(pressEvents).toEqual(['start', 'up', 'end', 'press']);
+      expect(pressChanges).toEqual([true, false]);
+      expect(press.isPressed.value).toBe(false);
+    } finally {
+      document.body.removeChild(button);
+    }
+  });
+
+  it('tracks vue-aria hover/focus-within and global focus-visible state', () => {
+    let hoverChanges: boolean[] = [];
+    let focusWithinChanges: boolean[] = [];
+
+    let hover = useHover({
+      onHoverChange: (isHovered) => {
+        hoverChanges.push(isHovered);
+      }
+    });
+
+    let focusWithin = useFocusWithin({
+      onFocusWithinChange: (isFocused) => {
+        focusWithinChanges.push(isFocused);
+      }
+    });
+
+    let focusVisible = useFocusVisible();
+    let container = document.createElement('div');
+    let child = document.createElement('button');
+    let outside = document.createElement('button');
+    container.append(child);
+    document.body.append(container, outside);
+
+    let stopWindowTracking = addWindowFocusTracking(container);
+
+    try {
+      if (hover.hoverProps.value.onPointerEnter) {
+        container.addEventListener('pointerenter', hover.hoverProps.value.onPointerEnter as EventListener);
+      }
+      if (hover.hoverProps.value.onPointerLeave) {
+        container.addEventListener('pointerleave', hover.hoverProps.value.onPointerLeave as EventListener);
+      }
+      if (focusWithin.focusWithinProps.value.onFocusin) {
+        container.addEventListener('focusin', focusWithin.focusWithinProps.value.onFocusin as EventListener);
+      }
+      if (focusWithin.focusWithinProps.value.onFocusout) {
+        container.addEventListener('focusout', focusWithin.focusWithinProps.value.onFocusout as EventListener);
+      }
+
+      container.dispatchEvent(createPointerEvent('pointerenter'));
+      container.dispatchEvent(createPointerEvent('pointerleave'));
+
+      child.dispatchEvent(new FocusEvent('focusin', {bubbles: true, relatedTarget: null}));
+      child.dispatchEvent(new FocusEvent('focusout', {bubbles: true, relatedTarget: outside}));
+
+      setInteractionModality('pointer');
+      expect(focusVisible.isFocusVisible.value).toBe(false);
+      setInteractionModality('keyboard');
+      expect(focusVisible.isFocusVisible.value).toBe(true);
+
+      expect(hoverChanges).toEqual([true, false]);
+      expect(focusWithinChanges).toEqual([true, false]);
+    } finally {
+      stopWindowTracking();
+      document.body.removeChild(container);
+      document.body.removeChild(outside);
+    }
+  });
+
+  it('fires vue-aria interact-outside and keyboard move events', () => {
+    let outsideEvents: string[] = [];
+    let moveEvents: Array<{type: string, x?: number, y?: number}> = [];
+    let container = document.createElement('div');
+    let inside = document.createElement('button');
+    let outside = document.createElement('button');
+    container.append(inside);
+    document.body.append(container, outside);
+
+    let stopInteractOutside = useInteractOutside({
+      onInteractOutside: () => {
+        outsideEvents.push('outside');
+      },
+      onInteractOutsideStart: () => {
+        outsideEvents.push('start');
+      },
+      ref: ref(container)
+    });
+
+    let move = useMove({
+      onMove: (event) => {
+        moveEvents.push({
+          type: event.type,
+          x: event.deltaX,
+          y: event.deltaY
+        });
+      },
+      onMoveEnd: (event) => {
+        moveEvents.push({type: event.type});
+      },
+      onMoveStart: (event) => {
+        moveEvents.push({type: event.type});
+      }
+    });
+
+    try {
+      if (move.moveProps.value.onKeyDown) {
+        container.addEventListener('keydown', move.moveProps.value.onKeyDown as EventListener);
+      }
+
+      outside.dispatchEvent(createPointerEvent('pointerdown'));
+      outside.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+      container.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'ArrowRight'}));
+
+      expect(outsideEvents).toEqual(['start', 'outside']);
+      expect(moveEvents).toEqual([
+        {type: 'movestart'},
+        {type: 'move', x: 1, y: 0},
+        {type: 'moveend'}
+      ]);
+    } finally {
+      stopInteractOutside();
+      document.body.removeChild(container);
+      document.body.removeChild(outside);
+    }
+  });
+
+  it('triggers vue-aria long press callbacks after threshold', () => {
+    vi.useFakeTimers();
+    let longPressEvents: string[] = [];
+    let button = document.createElement('button');
+    document.body.append(button);
+
+    let longPress = useLongPress({
+      onLongPress: () => {
+        longPressEvents.push('press');
+      },
+      onLongPressEnd: () => {
+        longPressEvents.push('end');
+      },
+      onLongPressStart: () => {
+        longPressEvents.push('start');
+      },
+      threshold: 25
+    });
+
+    try {
+      if (longPress.longPressProps.value.onPointerDown) {
+        button.addEventListener('pointerdown', longPress.longPressProps.value.onPointerDown as EventListener);
+      }
+
+      button.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 7, pointerType: 'touch'}));
+      vi.advanceTimersByTime(40);
+      window.dispatchEvent(createPointerEvent('pointerup', {pointerId: 7, pointerType: 'touch'}));
+
+      expect(longPressEvents).toEqual(['start', 'press', 'end']);
+    } finally {
+      vi.useRealTimers();
+      document.body.removeChild(button);
+    }
   });
 
   it('emits close events from dismissable dialog controls', async () => {

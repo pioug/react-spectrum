@@ -504,6 +504,30 @@
         }
       ]
     },
+    "@react-aria/interactions": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/interactions",
+      "targetPath": "packages/@vue-aria/interactions",
+      "notes": "Foundational React Aria interaction composables for focus, hover, press, long-press, move, keyboard, and outside-interaction behavior in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria interactions source lint",
+          "command": "yarn eslint packages/@vue-aria/interactions/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",
