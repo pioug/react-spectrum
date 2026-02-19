@@ -1,6 +1,7 @@
 import {mount} from '@vue/test-utils';
 import {describe, expect, it} from 'vitest';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
+import {ActionBar} from '@vue-spectrum/actionbar';
 import {SearchAutocomplete} from '@vue-spectrum/autocomplete';
 import {Dialog} from '@vue-spectrum/dialog';
 import {ListView} from '@vue-spectrum/list';
@@ -81,6 +82,20 @@ describe('Vue migration composition components', () => {
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Rust']);
     expect(wrapper.emitted('change')?.[0]).toEqual(['Rust']);
     expect(wrapper.findAll('datalist option')).toHaveLength(3);
+  });
+
+  it('emits action and clear selection events from action bar controls', async () => {
+    let wrapper = mount(ActionBar, {
+      props: {
+        selectedItemCount: 2,
+        items: ['Approve', 'Archive']
+      }
+    });
+
+    await wrapper.findAll('button.vs-action-bar__action')[1].trigger('click');
+    await wrapper.get('button.vs-action-bar__clear').trigger('click');
+    expect(wrapper.emitted('action')?.[0]).toEqual(['Archive']);
+    expect(wrapper.emitted('clearSelection')).toHaveLength(1);
   });
 
   it('propagates disclosure toggles through accordion v-model', async () => {

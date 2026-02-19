@@ -151,6 +151,22 @@
           v-model="selectedTreeNode"
           :items="treeItems" />
 
+        <VueActionBarContainer>
+          <VueActionBar
+            :selected-item-count="selectedActionItems"
+            :items="actionBarItems"
+            @action="handleActionBarAction"
+            @clear-selection="selectedActionItems = 0" />
+          <VueFlex gap="size-100" wrap>
+            <VueButton variant="secondary" @click="selectedActionItems = Math.min(selectedActionItems + 1, 5)">
+              Add selection
+            </VueButton>
+            <VueButton variant="secondary" @click="selectedActionItems = selectedActionItems === 0 ? 2 : 0">
+              {{ selectedActionItems === 0 ? 'Restore selection' : 'Clear selection' }}
+            </VueButton>
+          </VueFlex>
+        </VueActionBarContainer>
+
         <section class="virtual-list-demo">
           <p class="eyebrow">Virtualized Collection</p>
           <p class="summary">
@@ -215,6 +231,10 @@
             Subscribed: <strong>{{ isSubscribed ? 'yes' : 'no' }}</strong>
             <span> · </span>
             Sections open: <strong>{{ expandedSections.length }}</strong>
+            <span> · </span>
+            Action count: <strong>{{ selectedActionItems }}</strong>
+            <span> · </span>
+            Last bulk action: <strong>{{ lastBulkAction }}</strong>
           </p>
         </VueView>
 
@@ -273,6 +293,7 @@
 <script setup lang="ts">
 import {computed, ref} from 'vue';
 import {useVirtualizer} from '@vue-aria/virtualizer';
+import {ActionBar as VueActionBar, ActionBarContainer as VueActionBarContainer} from '@vue-spectrum/actionbar';
 import {Accordion as VueAccordion, Disclosure as VueDisclosure, DisclosurePanel as VueDisclosurePanel, DisclosureTitle as VueDisclosureTitle} from '@vue-spectrum/accordion';
 import {Avatar as VueAvatar} from '@vue-spectrum/avatar';
 import {Badge as VueBadge} from '@vue-spectrum/badge';
@@ -324,6 +345,8 @@ const favoriteFramework = ref('vue');
 const favoriteComponent = ref('Forms');
 const favoriteLibrary = ref('Vue Spectrum');
 const expandedSections = ref<string[]>(['foundation']);
+const selectedActionItems = ref(2);
+const lastBulkAction = ref('none');
 const selectedTicket = ref('T-402');
 const selectedTreeNode = ref('project-alpha');
 const droppedFiles = ref<string[]>([]);
@@ -333,6 +356,7 @@ const isPopoverOpen = ref(false);
 const languageOptions = ['TypeScript', 'JavaScript', 'Rust', 'Go', 'Python'];
 const componentOptions = ['Forms', 'Navigation', 'Overlays', 'Data display'];
 const libraryOptions = ['Vue Spectrum', 'React Spectrum', 'Tailwind CSS'];
+const actionBarItems = ['Approve', 'Assign', 'Archive'];
 const acceptedFileTypes = ['image/png', 'image/jpeg', 'application/pdf'];
 const ticketColumns = [
   {key: 'ticket', label: 'Ticket'},
@@ -431,6 +455,8 @@ function reset() {
   favoriteComponent.value = 'Forms';
   favoriteLibrary.value = 'Vue Spectrum';
   expandedSections.value = ['foundation'];
+  selectedActionItems.value = 2;
+  lastBulkAction.value = 'none';
   selectedTicket.value = 'T-402';
   selectedTreeNode.value = 'project-alpha';
   droppedFiles.value = [];
@@ -445,6 +471,10 @@ function handleFilesDrop(files: File[]) {
 
 function handleFileSelect(files: File[]) {
   selectedFiles.value = files.map((file) => file.name);
+}
+
+function handleActionBarAction(action: string) {
+  lastBulkAction.value = action;
 }
 
 function handleVirtualScroll(event: Event) {

@@ -120,6 +120,30 @@
         }
       ]
     },
+    "@react-spectrum/actionbar": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/actionbar",
+      "targetPath": "packages/@vue-spectrum/actionbar",
+      "notes": "Composition-layer migration step providing Vue action bar and container primitives for bulk action workflows.",
+      "acceptanceTests": [
+        {
+          "name": "Vue actionbar package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/actionbar/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/buttongroup": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/buttongroup",
