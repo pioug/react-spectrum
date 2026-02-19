@@ -32,6 +32,8 @@ yarn vue:migration:test
 yarn test:vue
 ```
 
+The Vue starter test harness currently covers primitive, composition, and data-heavy migration ports.
+
 ### React Spectrum
 
 A React implementation of Spectrum, Adobe’s design system. Spectrum provides adaptive, accessible, and cohesive experiences for all Adobe applications.
