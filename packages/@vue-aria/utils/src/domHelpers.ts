@@ -10,27 +10,38 @@ const FOCUSABLE_SELECTOR = [
   '[contenteditable]:not([contenteditable="false"])'
 ].join(',');
 
-export function getActiveElement(documentObject: Document | null | undefined): Element | null {
+type SyntheticEvent<T = EventTarget> = {
+  nativeEvent?: Event,
+  target: T
+};
+
+type EventTargetType<T> = T extends SyntheticEvent<infer E> ? E : EventTarget;
+
+export function getActiveElement(documentObject?: Document): Element | null {
   if (!documentObject) {
-    return null;
+    return typeof document !== 'undefined' ? document.activeElement : null;
   }
 
   return documentObject.activeElement;
 }
 
-export function getEventTarget(event: Event): EventTarget | null {
-  if (typeof event.composedPath === 'function') {
-    let composedPath = event.composedPath();
+export function getEventTarget<T extends Event | SyntheticEvent>(event: T): EventTargetType<T> {
+  let eventWithPath = event as Event & {composedPath?: () => EventTarget[]};
+  if (typeof eventWithPath.composedPath === 'function') {
+    let composedPath = eventWithPath.composedPath();
     if (composedPath.length > 0) {
-      return composedPath[0] ?? null;
+      return (composedPath[0] ?? null) as EventTargetType<T>;
     }
   }
 
-  let typedEvent = event as Event & {srcElement?: EventTarget | null};
-  return typedEvent.srcElement ?? null;
+  let typedEvent = event as Event & {srcElement?: EventTarget | null, target?: EventTarget | null};
+  return (typedEvent.target ?? typedEvent.srcElement ?? null) as EventTargetType<T>;
 }
 
-export function nodeContains(target: EventTarget | null | undefined, node: EventTarget | null | undefined): boolean {
+export function nodeContains(
+  target: Node | Element | null | undefined,
+  node: Node | Element | null | undefined
+): boolean {
   if (!(target instanceof Node) || !(node instanceof Node)) {
     return false;
   }
@@ -54,6 +65,8 @@ function isHiddenElement(element: Element): boolean {
   return Boolean(element.closest('[aria-hidden="true"]'));
 }
 
+export function isFocusable(element: Element): boolean;
+export function isFocusable(element: Element | null): boolean;
 export function isFocusable(element: Element | null): boolean {
   if (!(element instanceof HTMLElement) || isHiddenElement(element)) {
     return false;
@@ -80,6 +93,8 @@ export function isFocusable(element: Element | null): boolean {
   return false;
 }
 
+export function isTabbable(element: Element): boolean;
+export function isTabbable(element: Element | null): boolean;
 export function isTabbable(element: Element | null): boolean {
   if (!isFocusable(element)) {
     return false;
@@ -92,8 +107,8 @@ export function isTabbable(element: Element | null): boolean {
   return element.tabIndex >= 0;
 }
 
-export function isFocusWithin(target: EventTarget | null | undefined): boolean {
-  if (!(target instanceof Node) || typeof document === 'undefined') {
+export function isFocusWithin(target: Element | null | undefined): boolean {
+  if (!(target instanceof Element) || typeof document === 'undefined') {
     return false;
   }
 

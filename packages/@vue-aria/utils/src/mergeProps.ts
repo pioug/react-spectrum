@@ -1,6 +1,11 @@
 import {chain} from './chain';
 
 type PropRecord = Record<string, unknown>;
+type TupleTypes<T extends unknown[]> = T[number];
+type UnionToIntersection<U> = (
+  U extends unknown ? (arg: U) => void : never
+) extends ((arg: infer I) => void) ? I : never;
+type PropsArg = PropRecord | undefined;
 
 function isEventHandler(key: string, value: unknown): value is (...args: unknown[]) => void {
   if (typeof value !== 'function') {
@@ -44,10 +49,10 @@ function mergeStyles(left: unknown, right: unknown): Record<string, unknown> | u
   return mergedStyle;
 }
 
-export function mergeProps(...props: Array<PropRecord | undefined>): PropRecord {
+export function mergeProps<T extends PropsArg[]>(...args: T): UnionToIntersection<TupleTypes<T>> {
   let merged: PropRecord = {};
 
-  for (let prop of props) {
+  for (let prop of args) {
     if (!prop) {
       continue;
     }
@@ -79,5 +84,5 @@ export function mergeProps(...props: Array<PropRecord | undefined>): PropRecord 
     }
   }
 
-  return merged;
+  return merged as UnionToIntersection<TupleTypes<T>>;
 }

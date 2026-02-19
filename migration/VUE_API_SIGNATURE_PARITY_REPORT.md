@@ -1,19 +1,19 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-19T23:13:44.241Z
+Generated: 2026-02-19T23:27:56.761Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 84
+* Fully matched packages: 85
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 1941
-* Mismatched signatures: 731
+* Matched signatures: 2009
+* Mismatched signatures: 663
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 72.64%
+* Signature coverage ratio: 75.19%
 
 ## Package gaps
 
@@ -21,8 +21,7 @@ Generated: 2026-02-19T23:13:44.241Z
 | --- | --- | --- | ---: | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | mismatch | 543 | 299 | 0 | 44.9% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | mismatch | 325 | 134 | 0 | 58.8% |
-| `@react-aria/utils` | `@vue-aria/utils` | mismatch | 74 | 65 | 0 | 12.2% |
-| `react-aria` | `vue-aria` | mismatch | 419 | 63 | 0 | 85.0% |
+| `react-aria` | `vue-aria` | mismatch | 419 | 60 | 0 | 85.7% |
 | `@react-spectrum/utils` | `@vue-spectrum/utils` | mismatch | 31 | 27 | 0 | 12.9% |
 | `react-stately` | `vue-stately` | mismatch | 165 | 15 | 0 | 90.9% |
 | `@react-aria/grid` | `@vue-aria/grid` | mismatch | 20 | 6 | 0 | 70.0% |
@@ -99,6 +98,7 @@ Generated: 2026-02-19T23:13:44.241Z
 | `@react-aria/overlays` | `@vue-aria/overlays` | ok | 39 | 0 | 0 | 100.0% |
 | `@react-aria/ssr` | `@vue-aria/ssr` | ok | 4 | 0 | 0 | 100.0% |
 | `@react-aria/table` | `@vue-aria/table` | ok | 23 | 0 | 0 | 100.0% |
+| `@react-aria/utils` | `@vue-aria/utils` | ok | 74 | 0 | 0 | 100.0% |
 | `@react-spectrum/accordion` | `@vue-spectrum/accordion` | ok | 8 | 0 | 0 | 100.0% |
 | `@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | ok | 5 | 0 | 0 | 100.0% |
 | `@react-spectrum/actiongroup` | `@vue-spectrum/actiongroup` | ok | 3 | 0 | 0 | 100.0% |
@@ -194,21 +194,12 @@ Generated: 2026-02-19T23:13:44.241Z
 * Missing in target: 0
 * Example mismatches: `useDialogContainer [type-availability, call-signatures]`, `createIcon [type-availability, call-signatures]`, `createIllustration [type-availability, call-signatures]`, `useIsSkeleton [type-availability, call-signatures]`, `pressScale [type-availability, call-signatures]`, `parseColor [type-availability, call-signatures]`, `useLocale [type-availability, call-signatures]`, `useListData [type-availability, call-signatures]`, `useTreeData [type-availability, call-signatures]`, `useAsyncList [type-availability, call-signatures]`, `AccordionProps [value-availability]`, `AccordionItemProps [value-availability]`, `AccordionItemHeaderProps [value-availability]`, `AccordionItemTitleProps [value-availability]`, `AccordionItemPanelProps [value-availability]`, `AccordionItemState [value-availability]`, `AccordionItemRenderProps [value-availability]`, `ActionBarProps [value-availability]`, `ActionButtonProps [value-availability]`, `ActionButtonGroupProps [value-availability]`, `ActionMenuProps [value-availability]`, `AlertDialogProps [value-availability]`, `AvatarProps [value-availability]`, `AvatarGroupProps [value-availability]`, `BreadcrumbsProps [value-availability]` ...
 
-### @react-aria/utils -> @vue-aria/utils
-
-* Source entry: `packages/@react-aria/utils/src/index.ts`
-* Target entry: `packages/@vue-aria/utils/src/index.ts`
-* Compared exports: 74
-* Mismatched signatures: 65
-* Missing in target: 0
-* Example mismatches: `mergeIds [call-signatures]`, `useSlotId [call-signatures]`, `chain [call-signatures]`, `createShadowTreeWalker [call-signatures]`, `getActiveElement [call-signatures]`, `getEventTarget [call-signatures]`, `nodeContains [call-signatures]`, `isFocusWithin [call-signatures]`, `getOwnerDocument [call-signatures]`, `getOwnerWindow [call-signatures]`, `isShadowRoot [call-signatures]`, `mergeProps [call-signatures]`, `mergeRefs [call-signatures]`, `filterDOMProps [call-signatures]`, `focusWithoutScrolling [call-signatures]`, `getOffset [call-signatures]`, `openLink [call-signatures]`, `getSyntheticLinkProps [call-signatures]`, `useSyntheticLinkProps [call-signatures]`, `shouldClientNavigate [call-signatures]`, `useRouter [call-signatures]`, `useLinkProps [call-signatures]`, `handleLinkClick [call-signatures]`, `runAfterTransition [call-signatures]`, `useDrag1D [call-signatures]` ...
-
 ### react-aria -> vue-aria
 
 * Source entry: `packages/react-aria/src/index.ts`
 * Target entry: `packages/vue-aria/src/index.ts`
 * Compared exports: 419
-* Mismatched signatures: 63
+* Mismatched signatures: 60
 * Missing in target: 0
 * Example mismatches: `useBreadcrumbItem [call-signatures]`, `useBreadcrumbs [call-signatures]`, `useButton [call-signatures]`, `useToggleButton [call-signatures]`, `useToggleButtonGroup [call-signatures]`, `useToggleButtonGroupItem [call-signatures]`, `useCalendar [call-signatures]`, `useCalendarCell [call-signatures]`, `useCalendarGrid [call-signatures]`, `useRangeCalendar [call-signatures]`, `useCheckbox [call-signatures]`, `useCheckboxGroup [call-signatures]`, `useCheckboxGroupItem [call-signatures]`, `useComboBox [call-signatures]`, `useDateField [call-signatures]`, `useTimeField [call-signatures]`, `useDialog [call-signatures]`, `useDisclosure [call-signatures]`, `useLocalizedStringFormatter [call-signatures]`, `useNumberFormatter [call-signatures]`, `useListFormatter [call-signatures]`, `useGridList [call-signatures]`, `useGridListItem [call-signatures]`, `useGridListSection [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]` ...
 
@@ -355,4 +346,13 @@ Generated: 2026-02-19T23:13:44.241Z
 * Mismatched signatures: 3
 * Missing in target: 0
 * Example mismatches: `useTableColumnResizeState [call-signatures]`, `useTableState [call-signatures]`, `buildHeaderRows [call-signatures]`
+
+### @react-aria/actiongroup -> @vue-aria/actiongroup
+
+* Source entry: `packages/@react-aria/actiongroup/src/index.ts`
+* Target entry: `packages/@vue-aria/actiongroup/src/index.ts`
+* Compared exports: 6
+* Mismatched signatures: 2
+* Missing in target: 0
+* Example mismatches: `useActionGroup [call-signatures]`, `useActionGroupItem [call-signatures]`
 

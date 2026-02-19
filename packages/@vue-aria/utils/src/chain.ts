@@ -1,9 +1,9 @@
-export function chain<Args extends unknown[]>(
-  ...callbacks: Array<((...args: Args) => void) | undefined>
-): (...args: Args) => void {
-  return (...args: Args) => {
+export function chain(...callbacks: any[]): (...args: any[]) => void {
+  return (...args: any[]) => {
     for (let callback of callbacks) {
-      callback?.(...args);
+      if (typeof callback === 'function') {
+        callback(...args);
+      }
     }
   };
 }

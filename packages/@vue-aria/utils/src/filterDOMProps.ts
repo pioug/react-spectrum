@@ -1,5 +1,14 @@
-interface FilterDOMPropsOptions {
-  labelable?: boolean
+type DOMProps = Record<string, unknown>;
+type AriaLabelingProps = Record<string, unknown>;
+type LinkDOMProps = Record<string, unknown>;
+type GlobalDOMAttributes = Record<string, unknown>;
+
+interface Options {
+  labelable?: boolean,
+  isLink?: boolean,
+  global?: boolean,
+  events?: boolean,
+  propNames?: Set<string>
 }
 
 const DOM_PROPS = new Set([
@@ -14,10 +23,7 @@ const DOM_PROPS = new Set([
   'slot',
   'lang',
   'dir',
-  'hidden',
-  'target',
-  'rel',
-  'href'
+  'hidden'
 ]);
 
 const LABELABLE_PROPS = new Set([
@@ -26,6 +32,21 @@ const LABELABLE_PROPS = new Set([
   'aria-describedby',
   'aria-details',
   'aria-errormessage'
+]);
+
+const LINK_PROPS = new Set([
+  'href',
+  'hrefLang',
+  'target',
+  'rel',
+  'download',
+  'ping',
+  'referrerPolicy'
+]);
+
+const GLOBAL_PROPS = new Set([
+  'inert',
+  'translate'
 ]);
 
 function shouldIncludeAriaProp(key: string, labelable: boolean): boolean {
@@ -40,23 +61,29 @@ function shouldIncludeAriaProp(key: string, labelable: boolean): boolean {
   return true;
 }
 
-export function filterDOMProps<T extends Record<string, unknown>>(
-  props: T,
-  options: FilterDOMPropsOptions = {}
-): Record<string, unknown> {
+export function filterDOMProps(
+  props: DOMProps & AriaLabelingProps & LinkDOMProps & GlobalDOMAttributes,
+  options: Options = {}
+): DOMProps & AriaLabelingProps & GlobalDOMAttributes {
   let labelable = Boolean(options.labelable);
+  let includeLinkProps = Boolean(options.isLink);
+  let includeGlobalProps = Boolean(options.global);
+  let includeEvents = options.events ?? includeGlobalProps;
   let filteredProps: Record<string, unknown> = {};
 
   for (let [key, value] of Object.entries(props)) {
     if (
       key.startsWith('data-')
-      || key.startsWith('on')
+      || (includeEvents && key.startsWith('on'))
       || DOM_PROPS.has(key)
+      || (includeLinkProps && LINK_PROPS.has(key))
+      || (includeGlobalProps && GLOBAL_PROPS.has(key))
+      || options.propNames?.has(key)
       || shouldIncludeAriaProp(key, labelable)
     ) {
       filteredProps[key] = value;
     }
   }
 
-  return filteredProps;
+  return filteredProps as DOMProps & AriaLabelingProps & GlobalDOMAttributes;
 }
