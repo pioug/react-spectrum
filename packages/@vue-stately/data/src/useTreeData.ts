@@ -1,4 +1,4 @@
-import {computed, shallowRef, type Ref} from 'vue';
+import {computed, type Ref, shallowRef} from 'vue';
 import {type Key} from './types';
 
 export interface TreeOptions<T extends object> {
