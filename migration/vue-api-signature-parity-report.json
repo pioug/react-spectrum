@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-19T23:50:08.887Z",
+  "generatedAt": "2026-02-19T23:51:53.094Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 89,
+    "fullyMatchedPackages": 90,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 2069,
-    "mismatchedExportTotal": 603,
+    "matchedExportTotal": 2075,
+    "mismatchedExportTotal": 597,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.7743
+    "parityCoverage": 0.7766
   },
   "packages": [
     {
@@ -7716,248 +7716,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-aria/virtualizer",
-      "sourcePath": "packages/@react-aria/virtualizer",
-      "targetPackage": "@vue-aria/virtualizer",
-      "targetPath": "packages/@vue-aria/virtualizer",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/virtualizer/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/virtualizer/src/index.ts",
-      "sourceExportCount": 11,
-      "comparedExportCount": 11,
-      "matchedExportCount": 5,
-      "mismatchedExportCount": 6,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.4545,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useVirtualizerItem",
-          "targetExportName": "useVirtualizerItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useVirtualizerItem",
-            "resolvedName": "useVirtualizerItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: VirtualizerItemOptions) => { updateSize: () => void;}",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: VirtualizerItemOptions) => { updateSize: () => void; }"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useVirtualizerItem",
-            "resolvedName": "useVirtualizerItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(_options?: VirtualizerItemOptions) => { virtualizerItemProps: {};}",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: VirtualizerItemOptions) => { virtualizerItemProps: {}; }"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "layoutInfoToStyle",
-          "targetExportName": "layoutInfoToStyle",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "layoutInfoToStyle",
-            "resolvedName": "layoutInfoToStyle",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(layoutInfo: LayoutInfo, dir: Direction, parent?: LayoutInfo | null) => CSSProperties",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: LayoutInfo, _: Direction, _: LayoutInfo | null) => CSSProperties"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "layoutInfoToStyle",
-            "resolvedName": "layoutInfoToStyle",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(layoutInfo?: Record<string, unknown>) => Record<string, unknown>",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: Record<string, unknown>) => Record<string, unknown>"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useScrollView",
-          "targetExportName": "useScrollView",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useScrollView",
-            "resolvedName": "useScrollView",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: ScrollViewProps, ref: RefObject<HTMLElement | null>) => ScrollViewAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: ScrollViewProps, _: RefObject<HTMLElement | null>) => ScrollViewAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useScrollView",
-            "resolvedName": "useScrollView",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => { scrollViewProps: {}; scrollRef: Ref<HTMLElement, HTMLElement>;}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => { scrollViewProps: {}; scrollRef: Ref<HTMLElement, HTMLElement>; }"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "getRTLOffsetType",
-          "targetExportName": "getRTLOffsetType",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "getRTLOffsetType",
-            "resolvedName": "getRTLOffsetType",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(recalculate?: boolean) => RTLOffsetType",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: boolean) => RTLOffsetType"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "getRTLOffsetType",
-            "resolvedName": "getRTLOffsetType",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => RTLOffsetType",
-            "declaredType": "",
-            "callSignatures": [
-              "() => RTLOffsetType"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "getScrollLeft",
-          "targetExportName": "getScrollLeft",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "getScrollLeft",
-            "resolvedName": "getScrollLeft",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(node: Element, direction: Direction) => number",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: Element, _: Direction) => number"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "getScrollLeft",
-            "resolvedName": "getScrollLeft",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(element: HTMLElement | null | undefined) => number",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: HTMLElement | null | undefined) => number"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "setScrollLeft",
-          "targetExportName": "setScrollLeft",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "setScrollLeft",
-            "resolvedName": "setScrollLeft",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(node: Element, direction: Direction, scrollLeft: number) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: Element, _: Direction, _: number) => void"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "setScrollLeft",
-            "resolvedName": "setScrollLeft",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(element: HTMLElement | null | undefined, scrollLeft: number) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: HTMLElement | null | undefined, _: number) => void"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
       "sourcePackage": "@react-spectrum/style-macro-s1",
       "sourcePath": "packages/@react-spectrum/style-macro-s1",
       "targetPackage": "@vue-spectrum/style-macro-s1",
@@ -13440,6 +13198,25 @@
       "sourceExportCount": 74,
       "comparedExportCount": 74,
       "matchedExportCount": 74,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/virtualizer",
+      "sourcePath": "packages/@react-aria/virtualizer",
+      "targetPackage": "@vue-aria/virtualizer",
+      "targetPath": "packages/@vue-aria/virtualizer",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/virtualizer/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/virtualizer/src/index.ts",
+      "sourceExportCount": 11,
+      "comparedExportCount": 11,
+      "matchedExportCount": 11,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,

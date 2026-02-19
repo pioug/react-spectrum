@@ -1,6 +1,14 @@
 import {computed, defineComponent, ref, type ComputedRef, type Ref, unref} from 'vue';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
+type Direction = 'ltr' | 'rtl';
+type LayoutInfo = Record<string, unknown>;
+type CSSProperties = Record<string, unknown>;
+type RefObject<T> = {current: T};
+type ScrollViewProps = Record<string, unknown>;
+type ScrollViewAria = {
+  scrollViewProps: Record<string, unknown>
+};
 
 export interface VirtualizerOptions {
   itemCount: MaybeRef<number>,
@@ -85,35 +93,51 @@ export const ScrollView = defineComponent({
   }
 });
 
-export function layoutInfoToStyle(layoutInfo: Record<string, unknown> = {}): Record<string, unknown> {
+export function layoutInfoToStyle(
+  layoutInfo: LayoutInfo,
+  _direction: Direction,
+  _parent: LayoutInfo | null
+): CSSProperties {
   return {...layoutInfo};
 }
 
-export function getRTLOffsetType(): RTLOffsetType {
+export function getRTLOffsetType(_recalculate: boolean = false): RTLOffsetType {
   return 'negative';
 }
 
-export function getScrollLeft(element: HTMLElement | null | undefined): number {
-  return element?.scrollLeft ?? 0;
+export function getScrollLeft(element: Element, direction: Direction): number {
+  if (!(element instanceof HTMLElement)) {
+    return 0;
+  }
+
+  if (direction === 'rtl') {
+    return Math.abs(element.scrollLeft);
+  }
+
+  return element.scrollLeft;
 }
 
-export function setScrollLeft(element: HTMLElement | null | undefined, scrollLeft: number): void {
-  if (!element) {
+export function setScrollLeft(element: Element, direction: Direction, scrollLeft: number): void {
+  if (!(element instanceof HTMLElement)) {
     return;
   }
 
-  element.scrollLeft = scrollLeft;
+  element.scrollLeft = direction === 'rtl' ? -Math.abs(scrollLeft) : scrollLeft;
 }
 
+export function useScrollView(props: ScrollViewProps, ref: RefObject<HTMLElement | null>): ScrollViewAria;
 export function useScrollView() {
+  let scrollRef = ref<HTMLElement | null>(null);
   return {
     scrollViewProps: {},
-    scrollRef: ref<HTMLElement | null>(null)
+    scrollRef
   };
 }
 
+export function useVirtualizerItem(_options: VirtualizerItemOptions): {updateSize: () => void};
 export function useVirtualizerItem(_options: VirtualizerItemOptions = {}) {
   return {
+    updateSize: () => {},
     virtualizerItemProps: {}
   };
 }

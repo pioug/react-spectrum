@@ -38,5 +38,5 @@ This checklist defines the minimum release bar for promoting Vue migration packa
 2. On February 19, 2026, `yarn test:vue` passed in `starters/vue` with 181 passing tests.
 3. The CircleCI `vue-migration` job now enforces `yarn vue:migration:assert-complete` alongside tracker report and acceptance tests.
 4. The CircleCI `vue-parity` job now runs `yarn vue:parity:api:report`, `yarn vue:parity:api:signature:report`, and `yarn vue:parity:visual:compare` and stores all parity report artifacts.
-5. On February 19, 2026, `yarn vue:parity:api:signature:report` reported 154 compared packages with 77.43% signature coverage (603 mismatches remaining).
+5. On February 19, 2026, `yarn vue:parity:api:signature:report` reported 154 compared packages with 77.66% signature coverage (597 mismatches remaining).
 6. On February 19, 2026, `yarn vue:parity:visual:compare` passed with 18/18 fixtures and 0 visual diffs.
