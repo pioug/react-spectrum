@@ -2512,6 +2512,30 @@
         }
       ]
     },
+    "@react-spectrum/tabs": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/tabs",
+      "targetPath": "packages/@vue-spectrum/tabs",
+      "notes": "Composition-layer migration baseline for tablist navigation, keyboard interaction, and tabpanel rendering in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue tabs package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/tabs/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

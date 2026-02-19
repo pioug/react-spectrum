@@ -117,6 +117,7 @@
     "@vue-spectrum/style-macro-s1": "workspace:*",
     "@vue-spectrum/switch": "workspace:*",
     "@vue-spectrum/table": "workspace:*",
+    "@vue-spectrum/tabs": "workspace:*",
     "@vue-spectrum/text": "workspace:*",
     "@vue-spectrum/textfield": "workspace:*",
     "@vue-spectrum/tree": "workspace:*",

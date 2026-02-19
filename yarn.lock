@@ -12781,6 +12781,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/tabs@workspace:*, @vue-spectrum/tabs@workspace:packages/@vue-spectrum/tabs":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/tabs@workspace:packages/@vue-spectrum/tabs"
+  dependencies:
+    "@vue-aria/tabs": "workspace:*"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/text@workspace:*, @vue-spectrum/text@workspace:packages/@vue-spectrum/text":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/text@workspace:packages/@vue-spectrum/text"
@@ -31711,6 +31721,7 @@ __metadata:
     "@vue-spectrum/style-macro-s1": "workspace:*"
     "@vue-spectrum/switch": "workspace:*"
     "@vue-spectrum/table": "workspace:*"
+    "@vue-spectrum/tabs": "workspace:*"
     "@vue-spectrum/text": "workspace:*"
     "@vue-spectrum/textfield": "workspace:*"
     "@vue-spectrum/tree": "workspace:*"

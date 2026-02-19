@@ -21,6 +21,7 @@ import {Picker} from '@vue-spectrum/picker';
 import {Radio, RadioGroup} from '@vue-spectrum/radio';
 import {StepList} from '@vue-spectrum/steplist';
 import {Switch} from '@vue-spectrum/switch';
+import {Tabs} from '@vue-spectrum/tabs';
 import {TextField} from '@vue-spectrum/textfield';
 import {Text} from '@vue-spectrum/text';
 import {View} from '@vue-spectrum/view';
@@ -333,6 +334,29 @@ describe('Vue migration primitives', () => {
     await links[1].trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['payment']);
     expect(wrapper.emitted('change')?.[0]).toEqual(['payment']);
+  });
+
+  it('updates tab selection and panel content from tab interactions', async () => {
+    let wrapper = mount(Tabs, {
+      props: {
+        modelValue: 'overview',
+        items: [
+          {key: 'overview', label: 'Overview', content: 'Overview panel'},
+          {key: 'details', label: 'Details', content: 'Details panel'},
+          {key: 'history', label: 'History', content: 'History panel', disabled: true}
+        ]
+      }
+    });
+
+    let tabButtons = wrapper.findAll('button.vs-tabs__tab');
+    expect(wrapper.find('[role=\"tablist\"]').exists()).toBe(true);
+    expect(wrapper.get('[role=\"tabpanel\"]').text()).toContain('Overview panel');
+    expect(tabButtons[2].attributes('aria-disabled')).toBe('true');
+
+    await tabButtons[1].trigger('click');
+    expect(wrapper.get('[role=\"tabpanel\"]').text()).toContain('Details panel');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['details']);
+    expect(wrapper.emitted('change')?.[0]).toEqual(['details']);
   });
 
   it('emits press events from standalone cards', async () => {
