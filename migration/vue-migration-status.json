@@ -452,6 +452,30 @@
         }
       ]
     },
+    "@react-spectrum/illustratedmessage": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/illustratedmessage",
+      "targetPath": "packages/@vue-spectrum/illustratedmessage",
+      "notes": "First-wave content primitive for empty-state and contextual illustrated messaging.",
+      "acceptanceTests": [
+        {
+          "name": "Vue illustratedmessage package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/illustratedmessage/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/listbox": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/listbox",

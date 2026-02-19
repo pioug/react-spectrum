@@ -46,6 +46,7 @@ Phase 1 is implemented:
   * `@react-spectrum/form` -> `@vue-spectrum/form` (`in_progress`)
   * `@react-spectrum/image` -> `@vue-spectrum/image` (`in_progress`)
   * `@react-spectrum/inlinealert` -> `@vue-spectrum/inlinealert` (`in_progress`)
+  * `@react-spectrum/illustratedmessage` -> `@vue-spectrum/illustratedmessage` (`in_progress`)
 * Started Tailwind plugin migration:
   * `tailwindcss-react-aria-components` -> `tailwindcss-vue-aria-components` (`in_progress`)
 * Started composition-component migration:
@@ -63,7 +64,7 @@ Phase 1 is implemented:
   * `@react-aria/virtualizer` -> `@vue-aria/virtualizer` (`in_progress`)
   * Vue starter now includes a virtualized backlog demo wired to `@vue-aria/virtualizer`.
 * Started Vue test adaptation:
-  * `starters/vue` runs Vitest + Vue Test Utils interaction tests for `button`, `textfield`, `checkbox`, `radio`, `switch`, `layout`, and `labeledvalue`.
+  * `starters/vue` runs Vitest + Vue Test Utils interaction tests for `button`, `textfield`, `checkbox`, `radio`, `switch`, `layout`, `labeledvalue`, and `illustratedmessage`.
   * Added composition coverage for `dialog`, `overlays`, `menu`, `listbox`, and `combobox`.
   * Added data-heavy and virtualization coverage for `table`, `tree`, `dnd`, `dropzone`, and `@vue-aria/virtualizer`.
 * Started API stabilization and deprecation planning:

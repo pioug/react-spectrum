@@ -11941,6 +11941,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/illustratedmessage@workspace:*, @vue-spectrum/illustratedmessage@workspace:packages/@vue-spectrum/illustratedmessage":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/illustratedmessage@workspace:packages/@vue-spectrum/illustratedmessage"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/image@workspace:*, @vue-spectrum/image@workspace:packages/@vue-spectrum/image":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/image@workspace:packages/@vue-spectrum/image"
@@ -30969,6 +30979,7 @@ __metadata:
     "@vue-spectrum/dnd": "workspace:*"
     "@vue-spectrum/dropzone": "workspace:*"
     "@vue-spectrum/form": "workspace:*"
+    "@vue-spectrum/illustratedmessage": "workspace:*"
     "@vue-spectrum/image": "workspace:*"
     "@vue-spectrum/inlinealert": "workspace:*"
     "@vue-spectrum/label": "workspace:*"

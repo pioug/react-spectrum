@@ -757,6 +757,64 @@
   border-color: rgba(211, 21, 16, 0.45);
 }
 
+.vs-illustrated-message {
+  border: 1px dashed var(--vs-color-border);
+  border-radius: 12px;
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  text-align: center;
+}
+
+.vs-illustrated-message--medium {
+  padding: 16px;
+}
+
+.vs-illustrated-message--large {
+  padding: 20px;
+}
+
+.vs-illustrated-message__illustration {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.vs-illustrated-message__glyph {
+  display: inline-flex;
+  font-size: 22px;
+  letter-spacing: 0.1em;
+}
+
+.vs-illustrated-message__heading {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.vs-illustrated-message__description {
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.vs-illustrated-message--info {
+  background: rgba(20, 115, 230, 0.08);
+}
+
+.vs-illustrated-message--positive {
+  background: rgba(45, 157, 120, 0.08);
+}
+
+.vs-illustrated-message--notice {
+  background: rgba(230, 134, 25, 0.1);
+}
+
+.vs-illustrated-message--negative {
+  background: rgba(211, 21, 16, 0.08);
+}
+
 .vs-image {
   display: block;
   inline-size: 100%;

@@ -5,6 +5,7 @@ import {Badge} from '@vue-spectrum/badge';
 import {Button} from '@vue-spectrum/button';
 import {Checkbox} from '@vue-spectrum/checkbox';
 import {Image} from '@vue-spectrum/image';
+import {IllustratedMessage} from '@vue-spectrum/illustratedmessage';
 import {InlineAlert} from '@vue-spectrum/inlinealert';
 import {Flex, Grid, fitContent, minmax, repeat} from '@vue-spectrum/layout';
 import {Label} from '@vue-spectrum/label';
@@ -130,6 +131,21 @@ describe('Vue migration primitives', () => {
     expect(wrapper.get('.vs-inline-alert__title').text()).toBe('Attention');
     expect(wrapper.text()).toContain('Action required.');
     expect(wrapper.classes()).toContain('vs-inline-alert--notice');
+  });
+
+  it('renders illustrated message title, description, and variant class', () => {
+    let wrapper = mount(IllustratedMessage, {
+      props: {
+        title: 'Empty state',
+        description: 'No migration tasks found.',
+        variant: 'info'
+      }
+    });
+
+    expect(wrapper.classes()).toContain('vs-illustrated-message');
+    expect(wrapper.classes()).toContain('vs-illustrated-message--info');
+    expect(wrapper.get('.vs-illustrated-message__heading').text()).toBe('Empty state');
+    expect(wrapper.get('.vs-illustrated-message__description').text()).toBe('No migration tasks found.');
   });
 
   it('renders image src/alt and fit class', () => {

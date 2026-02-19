@@ -65,6 +65,11 @@
           Vue baseline ports are being expanded package by package.
         </VueInlineAlert>
 
+        <VueIllustratedMessage
+          title="Incremental migration in progress"
+          description="New package-level Vue ports are shipped one checkpoint at a time."
+          variant="info" />
+
         <VueBadge variant="info">
           Vue badge port
         </VueBadge>
@@ -239,6 +244,7 @@ import {Divider as VueDivider} from '@vue-spectrum/divider';
 import {Dialog as VueDialog} from '@vue-spectrum/dialog';
 import {Form as VueForm} from '@vue-spectrum/form';
 import {Image as VueImage} from '@vue-spectrum/image';
+import {IllustratedMessage as VueIllustratedMessage} from '@vue-spectrum/illustratedmessage';
 import {InlineAlert as VueInlineAlert} from '@vue-spectrum/inlinealert';
 import {Flex as VueFlex, Grid as VueGrid, minmax, repeat} from '@vue-spectrum/layout';
 import {Label as VueLabel} from '@vue-spectrum/label';

@@ -25,6 +25,7 @@
     "@vue-spectrum/dnd": "workspace:*",
     "@vue-spectrum/dropzone": "workspace:*",
     "@vue-spectrum/form": "workspace:*",
+    "@vue-spectrum/illustratedmessage": "workspace:*",
     "@vue-spectrum/image": "workspace:*",
     "@vue-spectrum/inlinealert": "workspace:*",
     "@vue-spectrum/label": "workspace:*",
