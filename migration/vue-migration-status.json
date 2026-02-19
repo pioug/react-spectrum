@@ -2560,6 +2560,30 @@
         }
       ]
     },
+    "@react-spectrum/style-macro-s1": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/style-macro-s1",
+      "targetPath": "packages/@vue-spectrum/style-macro-s1",
+      "notes": "Style macro baseline for Spectrum 1 token-style generation with runtime helper parity for Vue migration stories.",
+      "acceptanceTests": [
+        {
+          "name": "Vue style-macro-s1 package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/style-macro-s1/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "tailwindcss-react-aria-components": {
       "status": "in_progress",
       "targetPackage": "tailwindcss-vue-aria-components",

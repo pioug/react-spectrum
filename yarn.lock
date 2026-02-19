@@ -12753,6 +12753,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/style-macro-s1@workspace:*, @vue-spectrum/style-macro-s1@workspace:packages/@vue-spectrum/style-macro-s1":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/style-macro-s1@workspace:packages/@vue-spectrum/style-macro-s1"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/switch@workspace:*, @vue-spectrum/switch@workspace:packages/@vue-spectrum/switch":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/switch@workspace:packages/@vue-spectrum/switch"
@@ -31700,6 +31708,7 @@ __metadata:
     "@vue-spectrum/statuslight": "workspace:*"
     "@vue-spectrum/steplist": "workspace:*"
     "@vue-spectrum/story-utils": "workspace:*"
+    "@vue-spectrum/style-macro-s1": "workspace:*"
     "@vue-spectrum/switch": "workspace:*"
     "@vue-spectrum/table": "workspace:*"
     "@vue-spectrum/text": "workspace:*"

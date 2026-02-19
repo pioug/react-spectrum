@@ -142,6 +142,7 @@ import {Menu} from '@vue-spectrum/menu';
 import {Popover} from '@vue-spectrum/overlays';
 import {VueButton, VueSpectrumPlugin, VueSpectrumProvider, VueTextField, VueTree} from '@vue-spectrum/components';
 import {Button as S2Button, Provider as S2Provider, Spectrum2Plugin, TextField as S2TextField, TreeView as S2TreeView} from '@vue-spectrum/s2';
+import {baseColor as baseS1Color, focusRing as s1FocusRing, keyframes as s1Keyframes, lightDark as s1LightDark, raw as s1Raw, style as s1Style} from '@vue-spectrum/style-macro-s1';
 import {ErrorBoundary as StoryUtilsErrorBoundary, generatePowerset as generateStoryPowerset} from '@vue-spectrum/story-utils';
 
 function createPointerEvent(
@@ -2472,6 +2473,33 @@ describe('Vue migration composition components', () => {
 
     await nextTick();
     expect(wrapper.text()).toContain('Story fallback');
+  });
+
+  it('exposes vue-spectrum style-macro-s1 runtime helpers', () => {
+    let buttonStyles = s1Style({
+      backgroundColor: {
+        default: 'gray-500',
+        isPressed: 'gray-600'
+      },
+      size: {
+        default: 'm',
+        density: {
+          compact: 's'
+        }
+      }
+    });
+
+    expect(buttonStyles({})).toContain('s1-backgroundcolor-gray-500');
+    expect(buttonStyles({isPressed: true})).toContain('s1-backgroundcolor-gray-600');
+    expect(buttonStyles({density: 'compact'})).toContain('s1-size-s');
+    expect(s1Raw('var(--accent-color)')).toBe('[var(--accent-color)]');
+    expect(s1Keyframes({from: {opacity: 0}, to: {opacity: 1}})).toContain('s1-keyframes-');
+
+    let scaledColor = baseS1Color('blue-500');
+    expect(scaledColor.default).toBe('blue-500');
+    expect(scaledColor.isHovered).toBe('blue-600');
+    expect(s1LightDark('gray-100', 'gray-900')).toBe('[light-dark(gray-100, gray-900)]');
+    expect(s1FocusRing({isFocusVisible: true})).toContain('s1-outlinecolor-highlight');
   });
 
   it('computes vue-aria tag group and tag remove behavior', () => {

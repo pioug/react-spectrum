@@ -114,6 +114,7 @@
     "@vue-spectrum/statuslight": "workspace:*",
     "@vue-spectrum/steplist": "workspace:*",
     "@vue-spectrum/story-utils": "workspace:*",
+    "@vue-spectrum/style-macro-s1": "workspace:*",
     "@vue-spectrum/switch": "workspace:*",
     "@vue-spectrum/table": "workspace:*",
     "@vue-spectrum/text": "workspace:*",
