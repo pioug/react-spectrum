@@ -1008,6 +1008,30 @@
         }
       ]
     },
+    "@react-aria/tabs": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/tabs",
+      "targetPath": "packages/@vue-aria/tabs",
+      "notes": "Foundational React Aria tabs composables for tablist keyboard navigation, tab selection behavior, and tabpanel labeling semantics in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria tabs source lint",
+          "command": "yarn eslint packages/@vue-aria/tabs/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/table": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/table",

@@ -81,6 +81,7 @@ import {useSpinButton as useAriaSpinButton} from '@vue-aria/spinbutton';
 import {SSRProvider as AriaSSRProvider, useIsSSR as useAriaIsSSR, useSSRSafeId as useAriaSSRSafeId} from '@vue-aria/ssr';
 import {useStepList as useAriaStepList, useStepListItem as useAriaStepListItem} from '@vue-aria/steplist';
 import {useSwitch as useAriaSwitch} from '@vue-aria/switch';
+import {useTab as useAriaTab, useTabList as useAriaTabList, useTabPanel as useAriaTabPanel} from '@vue-aria/tabs';
 import {
   useTable as useAriaTable,
   useTableCell as useAriaTableCell,
@@ -1999,6 +2000,68 @@ describe('Vue migration composition components', () => {
     });
     readOnlySwitch.press();
     expect(readOnlySelected.value).toBe(true);
+  });
+
+  it('computes vue-aria tabs semantics and manual activation behavior', () => {
+    let selectedKey = ref<string | null>('overview');
+    let focusedKey = ref<string | null>('overview');
+    let tabList = useAriaTabList({
+      ariaLabel: 'Project sections',
+      focusedKey,
+      keyboardActivation: 'manual',
+      selectedKey,
+      tabs: ['overview', 'details', 'history'],
+      disabledKeys: ['history']
+    });
+
+    expect(tabList.tabListProps.value.role).toBe('tablist');
+    expect(tabList.tabListProps.value['aria-label']).toBe('Project sections');
+    expect(tabList.tabListProps.value['aria-orientation']).toBe('horizontal');
+
+    let overviewTab = useAriaTab({
+      key: 'overview'
+    }, tabList.state);
+    let detailsTab = useAriaTab({
+      key: 'details'
+    }, tabList.state);
+    let historyTab = useAriaTab({
+      key: 'history'
+    }, tabList.state);
+
+    expect(overviewTab.isSelected.value).toBe(true);
+    expect(detailsTab.isSelected.value).toBe(false);
+    expect(historyTab.isDisabled.value).toBe(true);
+
+    let preventArrowDefault = vi.fn();
+    tabList.tabListProps.value.onKeyDown({
+      key: 'ArrowRight',
+      preventDefault: preventArrowDefault
+    } as unknown as KeyboardEvent);
+    expect(preventArrowDefault).toHaveBeenCalledTimes(1);
+    expect(focusedKey.value).toBe('details');
+    expect(selectedKey.value).toBe('overview');
+
+    let preventEnterDefault = vi.fn();
+    tabList.tabListProps.value.onKeyDown({
+      key: 'Enter',
+      preventDefault: preventEnterDefault
+    } as unknown as KeyboardEvent);
+    expect(preventEnterDefault).toHaveBeenCalledTimes(1);
+    expect(selectedKey.value).toBe('details');
+    expect(detailsTab.isSelected.value).toBe(true);
+    expect(detailsTab.tabProps.value['aria-controls']).toBe(tabList.state.getTabPanelId('details'));
+
+    historyTab.press();
+    expect(selectedKey.value).toBe('details');
+
+    let tabPanel = useAriaTabPanel({
+      'aria-describedby': 'project-tabs-help'
+    }, tabList.state);
+    expect(tabPanel.tabPanelProps.value.role).toBe('tabpanel');
+    expect(tabPanel.tabPanelProps.value.id).toBe(tabList.state.getTabPanelId('details'));
+    expect(tabPanel.tabPanelProps.value['aria-labelledby']).toBe(tabList.state.getTabId('details'));
+    expect(tabPanel.tabPanelProps.value.tabIndex).toBe(0);
+    expect(tabPanel.tabPanelProps.value['aria-describedby']).toBe('project-tabs-help');
   });
 
   it('computes vue-aria table wrappers and selection helpers', () => {

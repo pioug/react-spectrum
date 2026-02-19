@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 95 |
+| in_progress | 96 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 57 |
+| not_started | 56 |
 
 ## Package tracker
 
@@ -65,6 +65,7 @@ Tracked source packages: 154
 | `@react-aria/steplist` | `packages/@react-aria/steplist` | `@vue-aria/steplist` | `packages/@vue-aria/steplist` | in_progress | Vue Aria steplist source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria steplist composables for list semantics, selectable step links, and current-step accessibility in Vue. |
 | `@react-aria/switch` | `packages/@react-aria/switch` | `@vue-aria/switch` | `packages/@vue-aria/switch` | in_progress | Vue Aria switch source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria switch composable built on Vue checkbox toggle behavior with switch role semantics. |
 | `@react-aria/table` | `packages/@react-aria/table` | `@vue-aria/table` | `packages/@vue-aria/table` | in_progress | Vue Aria table source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria table wrappers around Vue grid composables for table rows/cells, header interactions, selection checkboxes, and baseline column resize controls. |
+| `@react-aria/tabs` | `packages/@react-aria/tabs` | `@vue-aria/tabs` | `packages/@vue-aria/tabs` | in_progress | Vue Aria tabs source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria tabs composables for tablist keyboard navigation, tab selection behavior, and tabpanel labeling semantics in Vue. |
 | `@react-aria/virtualizer` | `packages/@react-aria/virtualizer` | `@vue-aria/virtualizer` | `packages/@vue-aria/virtualizer` | in_progress | Vue Aria virtualizer source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria virtualizer port to support virtualized Vue collection components, now validated by starter interaction/composable tests and wired into the Vue starter virtualized backlog demo. |
 | `@react-spectrum/accordion` | `packages/@react-spectrum/accordion` | `@vue-spectrum/accordion` | `packages/@vue-spectrum/accordion` | in_progress | Vue accordion package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue accordion and disclosure primitives. |
 | `@react-spectrum/actionbar` | `packages/@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | `packages/@vue-spectrum/actionbar` | in_progress | Vue actionbar package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue action bar and container primitives for bulk action workflows. |
@@ -120,7 +121,6 @@ Tracked source packages: 154
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-aria/tabs` | `packages/@react-aria/tabs` | `@vue-aria/tabs` | `packages/@vue-aria/tabs` | not_started | - | - |
 | `@react-aria/tag` | `packages/@react-aria/tag` | `@vue-aria/tag` | `packages/@vue-aria/tag` | not_started | - | - |
 | `@react-aria/test-utils` | `packages/@react-aria/test-utils` | `@vue-aria/test-utils` | `packages/@vue-aria/test-utils` | not_started | - | - |
 | `@react-aria/textfield` | `packages/@react-aria/textfield` | `@vue-aria/textfield` | `packages/@vue-aria/textfield` | not_started | - | - |
