@@ -116,7 +116,7 @@
           label="Favorite component category"
           :items="componentOptions" />
 
-        <VueListBox
+        <VueListView
           v-model="favoriteLibrary"
           label="Favorite library"
           :items="libraryOptions" />
@@ -258,7 +258,7 @@ import {Flex as VueFlex, Grid as VueGrid, minmax, repeat} from '@vue-spectrum/la
 import {Label as VueLabel} from '@vue-spectrum/label';
 import {LabeledValue as VueLabeledValue} from '@vue-spectrum/labeledvalue';
 import {Link as VueLink} from '@vue-spectrum/link';
-import {ListBox as VueListBox} from '@vue-spectrum/listbox';
+import {ListView as VueListView} from '@vue-spectrum/list';
 import {Menu as VueMenu} from '@vue-spectrum/menu';
 import {Meter as VueMeter} from '@vue-spectrum/meter';
 import {NumberField as VueNumberField} from '@vue-spectrum/numberfield';

@@ -12031,6 +12031,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/list@workspace:*, @vue-spectrum/list@workspace:packages/@vue-spectrum/list":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/list@workspace:packages/@vue-spectrum/list"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/listbox@workspace:*, @vue-spectrum/listbox@workspace:packages/@vue-spectrum/listbox":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/listbox@workspace:packages/@vue-spectrum/listbox"
@@ -31008,6 +31018,7 @@ __metadata:
     "@vue-spectrum/labeledvalue": "workspace:*"
     "@vue-spectrum/layout": "workspace:*"
     "@vue-spectrum/link": "workspace:*"
+    "@vue-spectrum/list": "workspace:*"
     "@vue-spectrum/listbox": "workspace:*"
     "@vue-spectrum/menu": "workspace:*"
     "@vue-spectrum/meter": "workspace:*"

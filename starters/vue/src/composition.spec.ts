@@ -2,7 +2,7 @@ import {mount} from '@vue/test-utils';
 import {describe, expect, it} from 'vitest';
 import {SearchAutocomplete} from '@vue-spectrum/autocomplete';
 import {Dialog} from '@vue-spectrum/dialog';
-import {ListBox} from '@vue-spectrum/listbox';
+import {ListView} from '@vue-spectrum/list';
 import {Menu} from '@vue-spectrum/menu';
 import {Popover} from '@vue-spectrum/overlays';
 
@@ -53,8 +53,8 @@ describe('Vue migration composition components', () => {
     expect(wrapper.emitted('select')?.[0]).toEqual(['Navigation']);
   });
 
-  it('emits selection updates from listbox item clicks', async () => {
-    let wrapper = mount(ListBox, {
+  it('emits selection updates from list view item clicks', async () => {
+    let wrapper = mount(ListView, {
       props: {
         modelValue: 'Vue Spectrum',
         label: 'Library',

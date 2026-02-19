@@ -548,6 +548,30 @@
         }
       ]
     },
+    "@react-spectrum/list": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/list",
+      "targetPath": "packages/@vue-spectrum/list",
+      "notes": "Composition-layer migration step providing a Vue list view package wrapper.",
+      "acceptanceTests": [
+        {
+          "name": "Vue list package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/list/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/label": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/label",

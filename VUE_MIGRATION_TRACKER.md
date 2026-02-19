@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 40 |
+| in_progress | 41 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 112 |
+| not_started | 111 |
 
 ## Package tracker
 
@@ -43,6 +43,7 @@ Tracked source packages: 154
 | `@react-spectrum/labeledvalue` | `packages/@react-spectrum/labeledvalue` | `@vue-spectrum/labeledvalue` | `packages/@vue-spectrum/labeledvalue` | in_progress | Vue labeledvalue package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave content primitive for locale-aware read-only label/value presentation. |
 | `@react-spectrum/layout` | `packages/@react-spectrum/layout` | `@vue-spectrum/layout` | `packages/@vue-spectrum/layout` | in_progress | Vue layout package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave layout migration package providing baseline Vue Flex and Grid primitives. |
 | `@react-spectrum/link` | `packages/@react-spectrum/link` | `@vue-spectrum/link` | `packages/@vue-spectrum/link` | in_progress | Vue link package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave visual/content migration step with a Vue link primitive. |
+| `@react-spectrum/list` | `packages/@react-spectrum/list` | `@vue-spectrum/list` | `packages/@vue-spectrum/list` | in_progress | Vue list package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing a Vue list view package wrapper. |
 | `@react-spectrum/listbox` | `packages/@react-spectrum/listbox` | `@vue-spectrum/listbox` | `packages/@vue-spectrum/listbox` | in_progress | Vue listbox package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step with an initial Vue listbox primitive. |
 | `@react-spectrum/menu` | `packages/@react-spectrum/menu` | `@vue-spectrum/menu` | `packages/@vue-spectrum/menu` | in_progress | Vue menu package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step with an initial Vue menu primitive. |
 | `@react-spectrum/meter` | `packages/@react-spectrum/meter` | `@vue-spectrum/meter` | `packages/@vue-spectrum/meter` | in_progress | Vue meter package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for bounded measurements. |
@@ -129,7 +130,6 @@ Tracked source packages: 154
 | `@react-spectrum/contextualhelp` | `packages/@react-spectrum/contextualhelp` | `@vue-spectrum/contextualhelp` | `packages/@vue-spectrum/contextualhelp` | not_started | - | - |
 | `@react-spectrum/datepicker` | `packages/@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | `packages/@vue-spectrum/datepicker` | not_started | - | - |
 | `@react-spectrum/filetrigger` | `packages/@react-spectrum/filetrigger` | `@vue-spectrum/filetrigger` | `packages/@vue-spectrum/filetrigger` | not_started | - | - |
-| `@react-spectrum/list` | `packages/@react-spectrum/list` | `@vue-spectrum/list` | `packages/@vue-spectrum/list` | not_started | - | - |
 | `@react-spectrum/picker` | `packages/@react-spectrum/picker` | `@vue-spectrum/picker` | `packages/@vue-spectrum/picker` | not_started | - | - |
 | `@react-spectrum/s2` | `packages/@react-spectrum/s2` | `@vue-spectrum/s2` | `packages/@vue-spectrum/s2` | not_started | - | - |
 | `@react-spectrum/steplist` | `packages/@react-spectrum/steplist` | `@vue-spectrum/steplist` | `packages/@vue-spectrum/steplist` | not_started | - | - |

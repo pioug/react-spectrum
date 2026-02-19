@@ -34,6 +34,7 @@
     "@vue-spectrum/labeledvalue": "workspace:*",
     "@vue-spectrum/layout": "workspace:*",
     "@vue-spectrum/link": "workspace:*",
+    "@vue-spectrum/list": "workspace:*",
     "@vue-spectrum/listbox": "workspace:*",
     "@vue-spectrum/menu": "workspace:*",
     "@vue-spectrum/meter": "workspace:*",
