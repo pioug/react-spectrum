@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T21:35:38.767Z",
+  "generatedAt": "2026-02-19T21:36:50.997Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 60,
+    "fullyMatchedPackages": 61,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 1046,
-    "parityCoverage": 0.6085
+    "missingExportTotal": 1022,
+    "parityCoverage": 0.6175
   },
   "packages": [
     {
@@ -928,57 +928,6 @@
       ],
       "extraExports": [
         "Spectrum2Plugin"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/overlays",
-      "sourcePath": "packages/@react-aria/overlays",
-      "targetPackage": "@vue-aria/overlays",
-      "targetPath": "packages/@vue-aria/overlays",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/overlays/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/overlays/src/index.ts",
-      "sourceExportCount": 39,
-      "targetExportCount": 25,
-      "parityRatio": 0.3846,
-      "missingExports": [
-        "AriaModalOverlayProps",
-        "AriaOverlayProps",
-        "AriaPopoverProps",
-        "AriaPositionProps",
-        "DismissButton",
-        "DismissButtonProps",
-        "ModalProvider",
-        "ModalProviderAria",
-        "ModalProviderProps",
-        "Overlay",
-        "OverlayContainer",
-        "OverlayContainerProps",
-        "OverlayProps",
-        "OverlayProvider",
-        "OverlayTriggerProps",
-        "Placement",
-        "PlacementAxis",
-        "PortalProviderContextValue",
-        "PortalProviderProps",
-        "PositionProps",
-        "UNSAFE_PortalProvider",
-        "useModalProvider",
-        "useOverlayFocusContain",
-        "useUNSAFE_PortalContext"
-      ],
-      "extraExports": [
-        "AriaModalOverlayOptions",
-        "AriaOverlayOptions",
-        "AriaOverlayPositionOptions",
-        "AriaPopoverOptions",
-        "MaybeRef",
-        "OverlayPlacement",
-        "OverlayTriggerOptions",
-        "OverlayTriggerType",
-        "PreventScrollAria",
-        "PreventScrollOptions"
       ],
       "error": null
     },
@@ -3201,6 +3150,32 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/overlays",
+      "sourcePath": "packages/@react-aria/overlays",
+      "targetPackage": "@vue-aria/overlays",
+      "targetPath": "packages/@vue-aria/overlays",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/overlays/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/overlays/src/index.ts",
+      "sourceExportCount": 39,
+      "targetExportCount": 49,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaModalOverlayOptions",
+        "AriaOverlayOptions",
+        "AriaOverlayPositionOptions",
+        "AriaPopoverOptions",
+        "MaybeRef",
+        "OverlayPlacement",
+        "OverlayTriggerOptions",
+        "OverlayTriggerType",
+        "PreventScrollAria",
+        "PreventScrollOptions"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/selection",
       "sourcePath": "packages/@react-aria/selection",
       "targetPackage": "@vue-aria/selection",
@@ -4022,7 +3997,7 @@
       "sourceEntrypoint": "packages/react-aria/src/index.ts",
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
-      "targetExportCount": 794,
+      "targetExportCount": 797,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
@@ -4197,6 +4172,8 @@
         "OverlayTriggerOptions",
         "OverlayTriggerType",
         "PointerType",
+        "PortalProviderContextValue",
+        "PortalProviderProps",
         "PressDOMProps",
         "PressEventType",
         "PressResponder",
@@ -4377,6 +4354,7 @@
         "useLoadMore",
         "useLoadMoreSentinel",
         "useLocalizedStringDictionary",
+        "useOverlayFocusContain",
         "useResizeObserver",
         "useRouter",
         "useSSRSafeId",

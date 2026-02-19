@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:35:38.767Z
+Generated: 2026-02-19T21:36:50.997Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 60
+* Fully matched packages: 61
 * Source exports inspected: 2672
-* Missing exports: 1046
-* Coverage ratio: 60.85%
+* Missing exports: 1022
+* Coverage ratio: 61.75%
 
 ## Package gaps
 
@@ -18,7 +18,6 @@ Generated: 2026-02-19T21:35:38.767Z
 | --- | --- | --- | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | missing | 543 | 503 | 7.4% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | missing | 325 | 314 | 3.4% |
-| `@react-aria/overlays` | `@vue-aria/overlays` | missing | 39 | 24 | 38.5% |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` | missing | 11 | 11 | 0.0% |
 | `@react-aria/datepicker` | `@vue-aria/datepicker` | missing | 18 | 10 | 44.4% |
 | `@react-spectrum/color` | `@vue-spectrum/color` | missing | 21 | 8 | 61.9% |
@@ -122,6 +121,7 @@ Generated: 2026-02-19T21:35:38.767Z
 | `@react-aria/landmark` | `@vue-aria/landmark` | ok | 6 | 0 | 100.0% |
 | `@react-aria/link` | `@vue-aria/link` | ok | 3 | 0 | 100.0% |
 | `@react-aria/live-announcer` | `@vue-aria/live-announcer` | ok | 3 | 0 | 100.0% |
+| `@react-aria/overlays` | `@vue-aria/overlays` | ok | 39 | 0 | 100.0% |
 | `@react-aria/selection` | `@vue-aria/selection` | ok | 15 | 0 | 100.0% |
 | `@react-aria/ssr` | `@vue-aria/ssr` | ok | 4 | 0 | 100.0% |
 | `@react-aria/test-utils` | `@vue-aria/test-utils` | ok | 17 | 0 | 100.0% |
@@ -186,13 +186,6 @@ Generated: 2026-02-19T21:35:38.767Z
 * Target entry: `packages/@vue-spectrum/s2/src/index.ts`
 * Missing export count: 314
 * Missing exports: `Accordion`, `AccordionContext`, `AccordionItem`, `AccordionItemHeader`, `AccordionItemHeaderProps`, `AccordionItemPanel`, `AccordionItemPanelProps`, `AccordionItemProps`, `AccordionItemRenderProps`, `AccordionItemState`, `AccordionItemTitle`, `AccordionItemTitleProps`, `AccordionProps`, `ActionBar`, `ActionBarContext`, `ActionBarProps`, `ActionButton`, `ActionButtonContext`, `ActionButtonGroup`, `ActionButtonGroupContext`, `ActionButtonGroupProps`, `ActionButtonProps`, `ActionMenu`, `ActionMenuContext`, `ActionMenuProps`, `AlertDialog`, `AlertDialogProps`, `AssetCard`, `AssetCardProps`, `AsyncListData`, `Autocomplete`, `AutocompleteProps`, `Avatar`, `AvatarContext`, `AvatarGroup`, `AvatarGroupContext`, `AvatarGroupProps`, `AvatarProps`, `Badge`, `BadgeContext` ...
-
-### @react-aria/overlays -> @vue-aria/overlays
-
-* Source entry: `packages/@react-aria/overlays/src/index.ts`
-* Target entry: `packages/@vue-aria/overlays/src/index.ts`
-* Missing export count: 24
-* Missing exports: `AriaModalOverlayProps`, `AriaOverlayProps`, `AriaPopoverProps`, `AriaPositionProps`, `DismissButton`, `DismissButtonProps`, `ModalProvider`, `ModalProviderAria`, `ModalProviderProps`, `Overlay`, `OverlayContainer`, `OverlayContainerProps`, `OverlayProps`, `OverlayProvider`, `OverlayTriggerProps`, `Placement`, `PlacementAxis`, `PortalProviderContextValue`, `PortalProviderProps`, `PositionProps`, `UNSAFE_PortalProvider`, `useModalProvider`, `useOverlayFocusContain`, `useUNSAFE_PortalContext`
 
 ### @react-aria/virtualizer -> @vue-aria/virtualizer
 
@@ -312,4 +305,11 @@ Generated: 2026-02-19T21:35:38.767Z
 * Target entry: `packages/@vue-spectrum/textfield/src/index.ts`
 * Missing export count: 4
 * Missing exports: `SpectrumTextAreaProps`, `SpectrumTextFieldProps`, `TextArea`, `TextFieldBase`
+
+### @react-aria/checkbox -> @vue-aria/checkbox
+
+* Source entry: `packages/@react-aria/checkbox/src/index.ts`
+* Target entry: `packages/@vue-aria/checkbox/src/index.ts`
+* Missing export count: 3
+* Missing exports: `AriaCheckboxGroupItemProps`, `AriaCheckboxGroupProps`, `AriaCheckboxProps`
 
