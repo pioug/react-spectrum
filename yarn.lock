@@ -11971,6 +11971,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/labeledvalue@workspace:*, @vue-spectrum/labeledvalue@workspace:packages/@vue-spectrum/labeledvalue":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/labeledvalue@workspace:packages/@vue-spectrum/labeledvalue"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/layout@workspace:*, @vue-spectrum/layout@workspace:packages/@vue-spectrum/layout":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/layout@workspace:packages/@vue-spectrum/layout"
@@ -30962,6 +30972,7 @@ __metadata:
     "@vue-spectrum/image": "workspace:*"
     "@vue-spectrum/inlinealert": "workspace:*"
     "@vue-spectrum/label": "workspace:*"
+    "@vue-spectrum/labeledvalue": "workspace:*"
     "@vue-spectrum/layout": "workspace:*"
     "@vue-spectrum/link": "workspace:*"
     "@vue-spectrum/listbox": "workspace:*"

@@ -20,6 +20,7 @@ Vue-native Spectrum-inspired primitives for incremental migration from React pac
 * `VuePopover`
 * `VueGrid`
 * `VueInlineAlert`
+* `VueLabeledValue`
 * `VueImage`
 * `VueLabel`
 * `VueComboBox`

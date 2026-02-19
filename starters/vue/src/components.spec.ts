@@ -8,6 +8,7 @@ import {Image} from '@vue-spectrum/image';
 import {InlineAlert} from '@vue-spectrum/inlinealert';
 import {Flex, Grid, fitContent, minmax, repeat} from '@vue-spectrum/layout';
 import {Label} from '@vue-spectrum/label';
+import {LabeledValue} from '@vue-spectrum/labeledvalue';
 import {Radio, RadioGroup} from '@vue-spectrum/radio';
 import {Switch} from '@vue-spectrum/switch';
 import {TextField} from '@vue-spectrum/textfield';
@@ -160,6 +161,21 @@ describe('Vue migration primitives', () => {
     expect(wrapper.attributes('for')).toBe('field-name');
     expect(wrapper.text()).toContain('Name');
     expect(wrapper.find('.vs-label__required').exists()).toBe(true);
+  });
+
+  it('renders labeled value with list-formatted content', () => {
+    let wrapper = mount(LabeledValue, {
+      props: {
+        label: 'Libraries',
+        value: ['Vue Spectrum', 'React Spectrum']
+      }
+    });
+
+    expect(wrapper.classes()).toContain('vs-labeled-value');
+    expect(wrapper.get('.vs-labeled-value__label').text()).toBe('Libraries');
+    let value = wrapper.get('.vs-labeled-value__value').text();
+    expect(value).toContain('Vue Spectrum');
+    expect(value).toContain('React Spectrum');
   });
 
   it('renders text element, variant, and emphasis classes', () => {

@@ -500,6 +500,30 @@
         }
       ]
     },
+    "@react-spectrum/labeledvalue": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/labeledvalue",
+      "targetPath": "packages/@vue-spectrum/labeledvalue",
+      "notes": "First-wave content primitive for locale-aware read-only label/value presentation.",
+      "acceptanceTests": [
+        {
+          "name": "Vue labeledvalue package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/labeledvalue/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/layout": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/layout",

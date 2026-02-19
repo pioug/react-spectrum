@@ -69,6 +69,10 @@
           Vue badge port
         </VueBadge>
 
+        <VueLabeledValue
+          label="Primary migration libraries"
+          :value="libraryOptions.slice(0, 2)" />
+
         <VueComboBox
           v-model="favoriteLanguage"
           label="Favorite language"
@@ -238,6 +242,7 @@ import {Image as VueImage} from '@vue-spectrum/image';
 import {InlineAlert as VueInlineAlert} from '@vue-spectrum/inlinealert';
 import {Flex as VueFlex, Grid as VueGrid, minmax, repeat} from '@vue-spectrum/layout';
 import {Label as VueLabel} from '@vue-spectrum/label';
+import {LabeledValue as VueLabeledValue} from '@vue-spectrum/labeledvalue';
 import {Link as VueLink} from '@vue-spectrum/link';
 import {ListBox as VueListBox} from '@vue-spectrum/listbox';
 import {Menu as VueMenu} from '@vue-spectrum/menu';

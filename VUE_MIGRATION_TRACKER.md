@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 36 |
+| in_progress | 37 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 116 |
+| not_started | 115 |
 
 ## Package tracker
 
@@ -37,6 +37,7 @@ Tracked source packages: 154
 | `@react-spectrum/image` | `packages/@react-spectrum/image` | `@vue-spectrum/image` | `packages/@vue-spectrum/image` | in_progress | Vue image package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave media primitive for image rendering and object-fit behavior. |
 | `@react-spectrum/inlinealert` | `packages/@react-spectrum/inlinealert` | `@vue-spectrum/inlinealert` | `packages/@vue-spectrum/inlinealert` | in_progress | Vue inlinealert package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave messaging primitive for contextual inline notices. |
 | `@react-spectrum/label` | `packages/@react-spectrum/label` | `@vue-spectrum/label` | `packages/@vue-spectrum/label` | in_progress | Vue label package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave form primitive for semantic labeling and required indicators. |
+| `@react-spectrum/labeledvalue` | `packages/@react-spectrum/labeledvalue` | `@vue-spectrum/labeledvalue` | `packages/@vue-spectrum/labeledvalue` | in_progress | Vue labeledvalue package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave content primitive for locale-aware read-only label/value presentation. |
 | `@react-spectrum/layout` | `packages/@react-spectrum/layout` | `@vue-spectrum/layout` | `packages/@vue-spectrum/layout` | in_progress | Vue layout package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave layout migration package providing baseline Vue Flex and Grid primitives. |
 | `@react-spectrum/link` | `packages/@react-spectrum/link` | `@vue-spectrum/link` | `packages/@vue-spectrum/link` | in_progress | Vue link package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave visual/content migration step with a Vue link primitive. |
 | `@react-spectrum/listbox` | `packages/@react-spectrum/listbox` | `@vue-spectrum/listbox` | `packages/@vue-spectrum/listbox` | in_progress | Vue listbox package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step with an initial Vue listbox primitive. |
@@ -128,7 +129,6 @@ Tracked source packages: 154
 | `@react-spectrum/filetrigger` | `packages/@react-spectrum/filetrigger` | `@vue-spectrum/filetrigger` | `packages/@vue-spectrum/filetrigger` | not_started | - | - |
 | `@react-spectrum/icon` | `packages/@react-spectrum/icon` | `@vue-spectrum/icon` | `packages/@vue-spectrum/icon` | not_started | - | - |
 | `@react-spectrum/illustratedmessage` | `packages/@react-spectrum/illustratedmessage` | `@vue-spectrum/illustratedmessage` | `packages/@vue-spectrum/illustratedmessage` | not_started | - | - |
-| `@react-spectrum/labeledvalue` | `packages/@react-spectrum/labeledvalue` | `@vue-spectrum/labeledvalue` | `packages/@vue-spectrum/labeledvalue` | not_started | - | - |
 | `@react-spectrum/list` | `packages/@react-spectrum/list` | `@vue-spectrum/list` | `packages/@vue-spectrum/list` | not_started | - | - |
 | `@react-spectrum/picker` | `packages/@react-spectrum/picker` | `@vue-spectrum/picker` | `packages/@vue-spectrum/picker` | not_started | - | - |
 | `@react-spectrum/s2` | `packages/@react-spectrum/s2` | `@vue-spectrum/s2` | `packages/@vue-spectrum/s2` | not_started | - | - |

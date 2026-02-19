@@ -790,6 +790,33 @@
   color: var(--vs-color-danger);
 }
 
+.vs-labeled-value {
+  display: grid;
+  gap: 4px;
+}
+
+.vs-labeled-value--horizontal {
+  align-items: baseline;
+  column-gap: 10px;
+  grid-template-columns: auto 1fr;
+  row-gap: 0;
+}
+
+.vs-labeled-value__label {
+  font-size: 12px;
+  font-weight: 600;
+  opacity: 0.85;
+}
+
+.vs-labeled-value__value {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.vs-labeled-value--large .vs-labeled-value__value {
+  font-size: 16px;
+}
+
 .vs-text {
   margin: 0;
 }
