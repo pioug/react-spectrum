@@ -816,6 +816,30 @@
         }
       ]
     },
+    "@react-aria/select": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/select",
+      "targetPath": "packages/@vue-aria/select",
+      "notes": "Foundational React Aria select composables for trigger/menu semantics, selected-key navigation, and hidden form-select wiring in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria select source lint",
+          "command": "yarn eslint packages/@vue-aria/select/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",

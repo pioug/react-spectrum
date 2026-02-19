@@ -67,6 +67,7 @@ import {
 import {useProgressBar as useAriaProgressBar} from '@vue-aria/progress';
 import {useRadio as useAriaRadio, useRadioGroup as useAriaRadioGroup} from '@vue-aria/radio';
 import {useSearchField as useAriaSearchField} from '@vue-aria/searchfield';
+import {useHiddenSelect as useAriaHiddenSelect, useSelect as useAriaSelect} from '@vue-aria/select';
 import {
   addWindowFocusTracking,
   setInteractionModality,
@@ -1577,6 +1578,41 @@ describe('Vue migration composition components', () => {
       isRequired: true
     });
     expect(requiredSearchField.isInvalid.value).toBe(true);
+  });
+
+  it('computes vue-aria select trigger, menu selection, and hidden select wiring', () => {
+    let selectedKey = ref<string | null>(null);
+    let options = [
+      {key: 'react', textValue: 'React'},
+      {key: 'vue', textValue: 'Vue'}
+    ];
+    let select = useAriaSelect({
+      label: 'Framework',
+      options,
+      selectedKey
+    });
+
+    expect(select.triggerProps.value['aria-haspopup']).toBe('listbox');
+    select.triggerProps.value.onClick();
+    expect(select.isOpen.value).toBe(true);
+
+    select.menuProps.value.onSelect('vue');
+    expect(selectedKey.value).toBe('vue');
+    expect(select.isOpen.value).toBe(false);
+    expect(select.selectedItem.value?.textValue).toBe('Vue');
+
+    select.triggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowUp'}));
+    expect(selectedKey.value).toBe('react');
+
+    let hiddenSelect = useAriaHiddenSelect({
+      name: 'framework',
+      options: ref(options),
+      selectedKey
+    });
+    expect(hiddenSelect.selectProps.value.name).toBe('framework');
+    expect(hiddenSelect.selectProps.value.value).toBe('react');
+    hiddenSelect.selectProps.value.onChange('vue');
+    expect(selectedKey.value).toBe('vue');
   });
 
   it('announces and clears live region messages with vue-aria live announcer', () => {

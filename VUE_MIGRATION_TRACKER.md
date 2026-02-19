@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 86 |
+| in_progress | 87 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 66 |
+| not_started | 65 |
 
 ## Package tracker
 
@@ -56,6 +56,7 @@ Tracked source packages: 154
 | `@react-aria/progress` | `packages/@react-aria/progress` | `@vue-aria/progress` | `packages/@vue-aria/progress` | in_progress | Vue Aria progress source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria progress composable for progressbar range clamping, determinate/indeterminate behavior, and value text formatting in Vue. |
 | `@react-aria/radio` | `packages/@react-aria/radio` | `@vue-aria/radio` | `packages/@vue-aria/radio` | in_progress | Vue Aria radio source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria radio composables for radiogroup semantics, arrow-key selection movement, and per-radio selection/press behavior in Vue. |
 | `@react-aria/searchfield` | `packages/@react-aria/searchfield` | `@vue-aria/searchfield` | `packages/@vue-aria/searchfield` | in_progress | Vue Aria searchfield source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria search field composable for controlled input value, Enter submit behavior, Escape clear behavior, and clear-button semantics in Vue. |
+| `@react-aria/select` | `packages/@react-aria/select` | `@vue-aria/select` | `packages/@vue-aria/select` | in_progress | Vue Aria select source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria select composables for trigger/menu semantics, selected-key navigation, and hidden form-select wiring in Vue. |
 | `@react-aria/virtualizer` | `packages/@react-aria/virtualizer` | `@vue-aria/virtualizer` | `packages/@vue-aria/virtualizer` | in_progress | Vue Aria virtualizer source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria virtualizer port to support virtualized Vue collection components, now validated by starter interaction/composable tests and wired into the Vue starter virtualized backlog demo. |
 | `@react-spectrum/accordion` | `packages/@react-spectrum/accordion` | `@vue-spectrum/accordion` | `packages/@vue-spectrum/accordion` | in_progress | Vue accordion package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue accordion and disclosure primitives. |
 | `@react-spectrum/actionbar` | `packages/@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | `packages/@vue-spectrum/actionbar` | in_progress | Vue actionbar package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue action bar and container primitives for bulk action workflows. |
@@ -111,7 +112,6 @@ Tracked source packages: 154
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-aria/select` | `packages/@react-aria/select` | `@vue-aria/select` | `packages/@vue-aria/select` | not_started | - | - |
 | `@react-aria/selection` | `packages/@react-aria/selection` | `@vue-aria/selection` | `packages/@vue-aria/selection` | not_started | - | - |
 | `@react-aria/separator` | `packages/@react-aria/separator` | `@vue-aria/separator` | `packages/@vue-aria/separator` | not_started | - | - |
 | `@react-aria/slider` | `packages/@react-aria/slider` | `@vue-aria/slider` | `packages/@vue-aria/slider` | not_started | - | - |
