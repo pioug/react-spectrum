@@ -1,23 +1,21 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T22:25:44.986Z
+Generated: 2026-02-19T22:27:51.687Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 152
+* Fully matched packages: 154
 * Source exports inspected: 2672
-* Missing exports: 817
-* Coverage ratio: 69.42%
+* Missing exports: 0
+* Coverage ratio: 100.00%
 
 ## Package gaps
 
 | Source | Target | Status | Source exports | Missing | Coverage |
 | --- | --- | --- | ---: | ---: | ---: |
-| `react-aria-components` | `@vue-spectrum/components` | missing | 543 | 503 | 7.4% |
-| `@react-spectrum/s2` | `@vue-spectrum/s2` | missing | 325 | 314 | 3.4% |
 | `@react-aria/actiongroup` | `@vue-aria/actiongroup` | ok | 6 | 0 | 100.0% |
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` | ok | 1 | 0 | 100.0% |
 | `@react-aria/autocomplete` | `@vue-aria/autocomplete` | ok | 10 | 0 | 100.0% |
@@ -112,6 +110,7 @@ Generated: 2026-02-19T22:25:44.986Z
 | `@react-spectrum/progress` | `@vue-spectrum/progress` | ok | 5 | 0 | 100.0% |
 | `@react-spectrum/provider` | `@vue-spectrum/provider` | ok | 5 | 0 | 100.0% |
 | `@react-spectrum/radio` | `@vue-spectrum/radio` | ok | 4 | 0 | 100.0% |
+| `@react-spectrum/s2` | `@vue-spectrum/s2` | ok | 325 | 0 | 100.0% |
 | `@react-spectrum/searchfield` | `@vue-spectrum/searchfield` | ok | 2 | 0 | 100.0% |
 | `@react-spectrum/slider` | `@vue-spectrum/slider` | ok | 4 | 0 | 100.0% |
 | `@react-spectrum/statuslight` | `@vue-spectrum/statuslight` | ok | 2 | 0 | 100.0% |
@@ -168,22 +167,9 @@ Generated: 2026-02-19T22:25:44.986Z
 | `@react-stately/utils` | `@vue-stately/utils` | ok | 4 | 0 | 100.0% |
 | `@react-stately/virtualizer` | `@vue-stately/virtualizer` | ok | 10 | 0 | 100.0% |
 | `react-aria` | `vue-aria` | ok | 419 | 0 | 100.0% |
+| `react-aria-components` | `@vue-spectrum/components` | ok | 543 | 0 | 100.0% |
 | `react-stately` | `vue-stately` | ok | 165 | 0 | 100.0% |
 | `tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | ok | 0 | 0 | 100.0% |
 
 ## Largest gaps
-
-### react-aria-components -> @vue-spectrum/components
-
-* Source entry: `packages/react-aria-components/src/index.ts`
-* Target entry: `packages/@vue-spectrum/components/src/index.ts`
-* Missing export count: 503
-* Missing exports: `AsyncListData`, `Autocomplete`, `AutocompleteContext`, `AutocompleteProps`, `AutocompleteState`, `AutocompleteStateContext`, `Breadcrumb`, `BreadcrumbProps`, `BreadcrumbRenderProps`, `BreadcrumbsContext`, `BreadcrumbsProps`, `ButtonContext`, `ButtonProps`, `ButtonRenderProps`, `CalendarCell`, `CalendarCellProps`, `CalendarCellRenderProps`, `CalendarContext`, `CalendarGrid`, `CalendarGridBody`, `CalendarGridBodyProps`, `CalendarGridHeader`, `CalendarGridHeaderProps`, `CalendarGridProps`, `CalendarHeaderCell`, `CalendarHeaderCellProps`, `CalendarProps`, `CalendarRenderProps`, `CalendarState`, `CalendarStateContext`, `Cell`, `CellProps`, `CellRenderProps`, `CheckboxContext`, `CheckboxGroup`, `CheckboxGroupContext`, `CheckboxGroupProps`, `CheckboxGroupRenderProps`, `CheckboxGroupState`, `CheckboxGroupStateContext` ...
-
-### @react-spectrum/s2 -> @vue-spectrum/s2
-
-* Source entry: `packages/@react-spectrum/s2/src/index.ts`
-* Target entry: `packages/@vue-spectrum/s2/src/index.ts`
-* Missing export count: 314
-* Missing exports: `Accordion`, `AccordionContext`, `AccordionItem`, `AccordionItemHeader`, `AccordionItemHeaderProps`, `AccordionItemPanel`, `AccordionItemPanelProps`, `AccordionItemProps`, `AccordionItemRenderProps`, `AccordionItemState`, `AccordionItemTitle`, `AccordionItemTitleProps`, `AccordionProps`, `ActionBar`, `ActionBarContext`, `ActionBarProps`, `ActionButton`, `ActionButtonContext`, `ActionButtonGroup`, `ActionButtonGroupContext`, `ActionButtonGroupProps`, `ActionButtonProps`, `ActionMenu`, `ActionMenuContext`, `ActionMenuProps`, `AlertDialog`, `AlertDialogProps`, `AssetCard`, `AssetCardProps`, `AsyncListData`, `Autocomplete`, `AutocompleteProps`, `Avatar`, `AvatarContext`, `AvatarGroup`, `AvatarGroupContext`, `AvatarGroupProps`, `AvatarProps`, `Badge`, `BadgeContext` ...
 

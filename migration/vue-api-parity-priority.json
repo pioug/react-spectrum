@@ -1,33 +1,10 @@
 {
-  "generatedAt": "2026-02-19T22:25:52.841Z",
+  "generatedAt": "2026-02-19T22:28:00.947Z",
   "summary": {
     "trackedPackages": 154,
-    "packagesWithGaps": 2,
-    "highestPriorityPackage": "react-aria-components",
-    "highestPriorityScore": 1677.99
+    "packagesWithGaps": 0,
+    "highestPriorityPackage": null,
+    "highestPriorityScore": 0
   },
-  "packages": [
-    {
-      "sourcePackage": "react-aria-components",
-      "targetPackage": "@vue-spectrum/components",
-      "missingExports": 503,
-      "sourceExportCount": 543,
-      "coveragePercent": 7.37,
-      "reverseDependents": 8,
-      "dependencyDepth": 9,
-      "criticalityWeight": 3.2,
-      "priorityScore": 1677.99
-    },
-    {
-      "sourcePackage": "@react-spectrum/s2",
-      "targetPackage": "@vue-spectrum/s2",
-      "missingExports": 314,
-      "sourceExportCount": 325,
-      "coveragePercent": 3.38,
-      "reverseDependents": 0,
-      "dependencyDepth": 10,
-      "criticalityWeight": 1.4,
-      "priorityScore": 479.09
-    }
-  ]
+  "packages": []
 }

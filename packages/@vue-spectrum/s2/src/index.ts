@@ -12,3 +12,4 @@ export {
   VueTextField as TextField,
   VueTree as TreeView
 } from '@vue-spectrum/components';
+export * from './compat';
