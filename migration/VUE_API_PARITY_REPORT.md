@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:55:51.751Z
+Generated: 2026-02-19T21:57:17.819Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 73
+* Fully matched packages: 74
 * Source exports inspected: 2672
-* Missing exports: 963
-* Coverage ratio: 63.96%
+* Missing exports: 959
+* Coverage ratio: 64.11%
 
 ## Package gaps
 
@@ -26,7 +26,6 @@ Generated: 2026-02-19T21:55:51.751Z
 | `@react-aria/tabs` | `@vue-aria/tabs` | missing | 11 | 4 | 63.6% |
 | `@react-spectrum/accordion` | `@vue-spectrum/accordion` | missing | 8 | 4 | 50.0% |
 | `@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | missing | 8 | 4 | 50.0% |
-| `@react-spectrum/textfield` | `@vue-spectrum/textfield` | missing | 5 | 4 | 20.0% |
 | `@react-aria/checkbox` | `@vue-aria/checkbox` | missing | 8 | 3 | 62.5% |
 | `@react-aria/gridlist` | `@vue-aria/gridlist` | missing | 12 | 3 | 75.0% |
 | `@react-aria/radio` | `@vue-aria/radio` | missing | 7 | 3 | 57.1% |
@@ -138,6 +137,7 @@ Generated: 2026-02-19T21:55:51.751Z
 | `@react-spectrum/tabs` | `@vue-spectrum/tabs` | ok | 7 | 0 | 100.0% |
 | `@react-spectrum/test-utils` | `@vue-spectrum/test-utils` | ok | 19 | 0 | 100.0% |
 | `@react-spectrum/text` | `@vue-spectrum/text` | ok | 6 | 0 | 100.0% |
+| `@react-spectrum/textfield` | `@vue-spectrum/textfield` | ok | 5 | 0 | 100.0% |
 | `@react-spectrum/theme-dark` | `@vue-spectrum/theme-dark` | ok | 1 | 0 | 100.0% |
 | `@react-spectrum/theme-default` | `@vue-spectrum/theme-default` | ok | 1 | 0 | 100.0% |
 | `@react-spectrum/theme-express` | `@vue-spectrum/theme-express` | ok | 1 | 0 | 100.0% |
@@ -243,13 +243,6 @@ Generated: 2026-02-19T21:55:51.751Z
 * Missing export count: 4
 * Missing exports: `SpectrumDateFieldProps`, `SpectrumDatePickerProps`, `SpectrumDateRangePickerProps`, `SpectrumTimeFieldProps`
 
-### @react-spectrum/textfield -> @vue-spectrum/textfield
-
-* Source entry: `packages/@react-spectrum/textfield/src/index.ts`
-* Target entry: `packages/@vue-spectrum/textfield/src/index.ts`
-* Missing export count: 4
-* Missing exports: `SpectrumTextAreaProps`, `SpectrumTextFieldProps`, `TextArea`, `TextFieldBase`
-
 ### @react-aria/checkbox -> @vue-aria/checkbox
 
 * Source entry: `packages/@react-aria/checkbox/src/index.ts`
@@ -312,4 +305,11 @@ Generated: 2026-02-19T21:55:51.751Z
 * Target entry: `packages/@vue-spectrum/slider/src/index.ts`
 * Missing export count: 3
 * Missing exports: `RangeSlider`, `SpectrumRangeSliderProps`, `SpectrumSliderProps`
+
+### @react-stately/datepicker -> @vue-stately/datepicker
+
+* Source entry: `packages/@react-stately/datepicker/src/index.ts`
+* Target entry: `packages/@vue-stately/datepicker/src/index.ts`
+* Missing export count: 3
+* Missing exports: `DateSegment`, `FormatterOptions`, `SegmentType`
 

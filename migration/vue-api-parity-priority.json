@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-02-19T21:55:59.845Z",
+  "generatedAt": "2026-02-19T21:57:26.863Z",
   "summary": {
     "trackedPackages": 154,
-    "packagesWithGaps": 81,
+    "packagesWithGaps": 80,
     "highestPriorityPackage": "react-aria-components",
     "highestPriorityScore": 1677.99
   },
@@ -28,17 +28,6 @@
       "dependencyDepth": 10,
       "criticalityWeight": 1.4,
       "priorityScore": 479.09
-    },
-    {
-      "sourcePackage": "@react-spectrum/textfield",
-      "targetPackage": "@vue-spectrum/textfield",
-      "missingExports": 4,
-      "sourceExportCount": 5,
-      "coveragePercent": 20,
-      "reverseDependents": 5,
-      "dependencyDepth": 8,
-      "criticalityWeight": 1.4,
-      "priorityScore": 57.6
     },
     {
       "sourcePackage": "@react-aria/button",

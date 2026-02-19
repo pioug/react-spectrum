@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T21:55:51.751Z",
+  "generatedAt": "2026-02-19T21:57:17.819Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 73,
+    "fullyMatchedPackages": 74,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 963,
-    "parityCoverage": 0.6396
+    "missingExportTotal": 959,
+    "parityCoverage": 0.6411
   },
   "packages": [
     {
@@ -1146,28 +1146,6 @@
         "VueDatePicker",
         "VueDateRangePicker",
         "VueTimeField"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/textfield",
-      "sourcePath": "packages/@react-spectrum/textfield",
-      "targetPackage": "@vue-spectrum/textfield",
-      "targetPath": "packages/@vue-spectrum/textfield",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/textfield/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/textfield/src/index.ts",
-      "sourceExportCount": 5,
-      "targetExportCount": 2,
-      "parityRatio": 0.2,
-      "missingExports": [
-        "SpectrumTextAreaProps",
-        "SpectrumTextFieldProps",
-        "TextArea",
-        "TextFieldBase"
-      ],
-      "extraExports": [
-        "VueTextField"
       ],
       "error": null
     },
@@ -3376,6 +3354,23 @@
       "missingExports": [],
       "extraExports": [
         "VueText"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/textfield",
+      "sourcePath": "packages/@react-spectrum/textfield",
+      "targetPackage": "@vue-spectrum/textfield",
+      "targetPath": "packages/@vue-spectrum/textfield",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/textfield/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/textfield/src/index.ts",
+      "sourceExportCount": 5,
+      "targetExportCount": 6,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueTextField"
       ],
       "error": null
     },
