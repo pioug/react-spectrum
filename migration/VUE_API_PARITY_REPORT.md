@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:40:24.175Z
+Generated: 2026-02-19T21:42:44.564Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 64
+* Fully matched packages: 66
 * Source exports inspected: 2672
-* Missing exports: 994
-* Coverage ratio: 62.80%
+* Missing exports: 984
+* Coverage ratio: 63.17%
 
 ## Package gaps
 
@@ -19,8 +19,6 @@ Generated: 2026-02-19T21:40:24.175Z
 | `react-aria-components` | `@vue-spectrum/components` | missing | 543 | 503 | 7.4% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | missing | 325 | 314 | 3.4% |
 | `@react-spectrum/color` | `@vue-spectrum/color` | missing | 21 | 8 | 61.9% |
-| `@react-aria/color` | `@vue-aria/color` | missing | 20 | 5 | 75.0% |
-| `@react-aria/interactions` | `@vue-aria/interactions` | missing | 60 | 5 | 91.7% |
 | `@react-aria/table` | `@vue-aria/table` | missing | 23 | 5 | 78.3% |
 | `@react-aria/autocomplete` | `@vue-aria/autocomplete` | missing | 10 | 4 | 60.0% |
 | `@react-aria/button` | `@vue-aria/button` | missing | 11 | 4 | 63.6% |
@@ -109,6 +107,7 @@ Generated: 2026-02-19T21:40:24.175Z
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` | ok | 1 | 0 | 100.0% |
 | `@react-aria/calendar` | `@vue-aria/calendar` | ok | 14 | 0 | 100.0% |
 | `@react-aria/collections` | `@vue-aria/collections` | ok | 17 | 0 | 100.0% |
+| `@react-aria/color` | `@vue-aria/color` | ok | 20 | 0 | 100.0% |
 | `@react-aria/datepicker` | `@vue-aria/datepicker` | ok | 18 | 0 | 100.0% |
 | `@react-aria/dnd` | `@vue-aria/dnd` | ok | 62 | 0 | 100.0% |
 | `@react-aria/example-theme` | `@vue-aria/example-theme` | ok | 0 | 0 | 100.0% |
@@ -116,6 +115,7 @@ Generated: 2026-02-19T21:40:24.175Z
 | `@react-aria/form` | `@vue-aria/form` | ok | 1 | 0 | 100.0% |
 | `@react-aria/grid` | `@vue-aria/grid` | ok | 20 | 0 | 100.0% |
 | `@react-aria/i18n` | `@vue-aria/i18n` | ok | 19 | 0 | 100.0% |
+| `@react-aria/interactions` | `@vue-aria/interactions` | ok | 60 | 0 | 100.0% |
 | `@react-aria/label` | `@vue-aria/label` | ok | 6 | 0 | 100.0% |
 | `@react-aria/landmark` | `@vue-aria/landmark` | ok | 6 | 0 | 100.0% |
 | `@react-aria/link` | `@vue-aria/link` | ok | 3 | 0 | 100.0% |
@@ -193,20 +193,6 @@ Generated: 2026-02-19T21:40:24.175Z
 * Target entry: `packages/@vue-spectrum/color/src/index.ts`
 * Missing export count: 8
 * Missing exports: `SpectrumColorAreaProps`, `SpectrumColorEditorProps`, `SpectrumColorFieldProps`, `SpectrumColorPickerProps`, `SpectrumColorSliderProps`, `SpectrumColorSwatchPickerProps`, `SpectrumColorSwatchProps`, `SpectrumColorWheelProps`
-
-### @react-aria/color -> @vue-aria/color
-
-* Source entry: `packages/@react-aria/color/src/index.ts`
-* Target entry: `packages/@vue-aria/color/src/index.ts`
-* Missing export count: 5
-* Missing exports: `AriaColorAreaProps`, `AriaColorChannelFieldProps`, `AriaColorFieldProps`, `AriaColorSliderProps`, `AriaColorSwatchProps`
-
-### @react-aria/interactions -> @vue-aria/interactions
-
-* Source entry: `packages/@react-aria/interactions/src/index.ts`
-* Target entry: `packages/@vue-aria/interactions/src/index.ts`
-* Missing export count: 5
-* Missing exports: `FocusEvents`, `HoverEvents`, `KeyboardEvents`, `MoveEvent`, `PressEvents`
 
 ### @react-aria/table -> @vue-aria/table
 
@@ -312,4 +298,18 @@ Generated: 2026-02-19T21:40:24.175Z
 * Target entry: `packages/@vue-aria/slider/src/index.ts`
 * Missing export count: 3
 * Missing exports: `AriaSliderProps`, `AriaSliderThumbProps`, `Orientation`
+
+### @react-spectrum/actionbar -> @vue-spectrum/actionbar
+
+* Source entry: `packages/@react-spectrum/actionbar/src/index.ts`
+* Target entry: `packages/@vue-spectrum/actionbar/src/index.ts`
+* Missing export count: 3
+* Missing exports: `Item`, `SpectrumActionBarContainerProps`, `SpectrumActionBarProps`
+
+### @react-spectrum/autocomplete -> @vue-spectrum/autocomplete
+
+* Source entry: `packages/@react-spectrum/autocomplete/src/index.ts`
+* Target entry: `packages/@vue-spectrum/autocomplete/src/index.ts`
+* Missing export count: 3
+* Missing exports: `Item`, `Section`, `SpectrumSearchAutocompleteProps`
 

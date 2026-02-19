@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-02-19T21:40:24.861Z",
+  "generatedAt": "2026-02-19T21:42:57.189Z",
   "summary": {
     "trackedPackages": 154,
-    "packagesWithGaps": 90,
+    "packagesWithGaps": 88,
     "highestPriorityPackage": "react-aria-components",
     "highestPriorityScore": 1677.99
   },
@@ -28,17 +28,6 @@
       "dependencyDepth": 10,
       "criticalityWeight": 1.4,
       "priorityScore": 479.09
-    },
-    {
-      "sourcePackage": "@react-aria/interactions",
-      "targetPackage": "@vue-aria/interactions",
-      "missingExports": 5,
-      "sourceExportCount": 60,
-      "coveragePercent": 91.67,
-      "reverseDependents": 61,
-      "dependencyDepth": 2,
-      "criticalityWeight": 1.9,
-      "priorityScore": 259.75
     },
     {
       "sourcePackage": "@react-spectrum/provider",
@@ -380,17 +369,6 @@
       "dependencyDepth": 11,
       "criticalityWeight": 1.4,
       "priorityScore": 36.4
-    },
-    {
-      "sourcePackage": "@react-aria/color",
-      "targetPackage": "@vue-aria/color",
-      "missingExports": 5,
-      "sourceExportCount": 20,
-      "coveragePercent": 75,
-      "reverseDependents": 2,
-      "dependencyDepth": 6,
-      "criticalityWeight": 1.9,
-      "priorityScore": 36.25
     },
     {
       "sourcePackage": "@react-spectrum/tooltip",

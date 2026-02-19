@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T21:40:24.175Z",
+  "generatedAt": "2026-02-19T21:42:44.564Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 64,
+    "fullyMatchedPackages": 66,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 994,
-    "parityCoverage": 0.628
+    "missingExportTotal": 984,
+    "parityCoverage": 0.6317
   },
   "packages": [
     {
@@ -962,69 +962,6 @@
         "VueColorSwatch",
         "VueColorSwatchPicker",
         "VueColorWheel"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/color",
-      "sourcePath": "packages/@react-aria/color",
-      "targetPackage": "@vue-aria/color",
-      "targetPath": "packages/@vue-aria/color",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/color/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/color/src/index.ts",
-      "sourceExportCount": 20,
-      "targetExportCount": 18,
-      "parityRatio": 0.75,
-      "missingExports": [
-        "AriaColorAreaProps",
-        "AriaColorChannelFieldProps",
-        "AriaColorFieldProps",
-        "AriaColorSliderProps",
-        "AriaColorSwatchProps"
-      ],
-      "extraExports": [
-        "AriaColorChannelFieldOptions",
-        "AriaColorFieldOptions",
-        "AriaColorSwatchOptions"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/interactions",
-      "sourcePath": "packages/@react-aria/interactions",
-      "targetPackage": "@vue-aria/interactions",
-      "targetPath": "packages/@vue-aria/interactions",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/interactions/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/interactions/src/index.ts",
-      "sourceExportCount": 60,
-      "targetExportCount": 71,
-      "parityRatio": 0.9167,
-      "missingExports": [
-        "FocusEvents",
-        "HoverEvents",
-        "KeyboardEvents",
-        "MoveEvent",
-        "PressEvents"
-      ],
-      "extraExports": [
-        "FocusDOMProps",
-        "FocusWithinDOMProps",
-        "FocusableComponentProps",
-        "FocusableDOMProps",
-        "FocusableElement",
-        "KeyboardDOMProps",
-        "LongPressDOMProps",
-        "MaybeRef",
-        "MoveDOMProps",
-        "PointerType",
-        "PressDOMProps",
-        "PressEventType",
-        "ScrollWheelEvent",
-        "createEventHandler",
-        "disableTextSelection",
-        "restoreTextSelection"
       ],
       "error": null
     },
@@ -2877,6 +2814,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/color",
+      "sourcePath": "packages/@react-aria/color",
+      "targetPackage": "@vue-aria/color",
+      "targetPath": "packages/@vue-aria/color",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/color/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/color/src/index.ts",
+      "sourceExportCount": 20,
+      "targetExportCount": 23,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaColorChannelFieldOptions",
+        "AriaColorFieldOptions",
+        "AriaColorSwatchOptions"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/datepicker",
       "sourcePath": "packages/@react-aria/datepicker",
       "targetPackage": "@vue-aria/datepicker",
@@ -3024,6 +2980,38 @@
         "NumberFormatter",
         "getDefaultLocale",
         "useDefaultLocale"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/interactions",
+      "sourcePath": "packages/@react-aria/interactions",
+      "targetPackage": "@vue-aria/interactions",
+      "targetPath": "packages/@vue-aria/interactions",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/interactions/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/interactions/src/index.ts",
+      "sourceExportCount": 60,
+      "targetExportCount": 76,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "FocusDOMProps",
+        "FocusWithinDOMProps",
+        "FocusableComponentProps",
+        "FocusableDOMProps",
+        "FocusableElement",
+        "KeyboardDOMProps",
+        "LongPressDOMProps",
+        "MaybeRef",
+        "MoveDOMProps",
+        "PointerType",
+        "PressDOMProps",
+        "PressEventType",
+        "ScrollWheelEvent",
+        "createEventHandler",
+        "disableTextSelection",
+        "restoreTextSelection"
       ],
       "error": null
     },

@@ -40,4 +40,5 @@ export type {
   FocusableOptions,
   FocusableProviderProps
 } from './useFocusable';
+export type {FocusEvents, HoverEvents, KeyboardEvents, MoveEvent, PressEvents} from '@react-types/shared';
 export type {FocusableElement, MaybeRef, PointerType} from './types';
