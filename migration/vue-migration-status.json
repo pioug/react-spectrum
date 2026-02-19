@@ -1080,6 +1080,30 @@
         }
       ]
     },
+    "@react-aria/textfield": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/textfield",
+      "targetPath": "packages/@vue-aria/textfield",
+      "notes": "Foundational React Aria textfield composables for labeled input/textarea props, validation wiring, and formatted text input guards in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria textfield source lint",
+          "command": "yarn eslint packages/@vue-aria/textfield/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/table": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/table",

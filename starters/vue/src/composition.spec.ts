@@ -84,6 +84,7 @@ import {useSwitch as useAriaSwitch} from '@vue-aria/switch';
 import {useTag as useAriaTag, useTagGroup as useAriaTagGroup} from '@vue-aria/tag';
 import {useTab as useAriaTab, useTabList as useAriaTabList, useTabPanel as useAriaTabPanel} from '@vue-aria/tabs';
 import {pointerMap as vueAriaPointerMap, triggerLongPress as triggerVueAriaLongPress, User as VueAriaUser} from '@vue-aria/test-utils';
+import {useFormattedTextField as useAriaFormattedTextField, useTextField as useAriaTextField} from '@vue-aria/textfield';
 import {
   useTable as useAriaTable,
   useTableCell as useAriaTableCell,
@@ -2187,6 +2188,56 @@ describe('Vue migration composition components', () => {
     } finally {
       document.body.innerHTML = previousMarkup;
     }
+  });
+
+  it('computes vue-aria textfield validation and formatted input guards', () => {
+    let inputValue = ref('Roadmap');
+    let inputChanges: string[] = [];
+    let textField = useAriaTextField({
+      inputValue,
+      isRequired: true,
+      label: 'Project name',
+      onInputChange: (value) => {
+        inputChanges.push(value);
+      },
+      placeholder: 'Enter name',
+      validationBehavior: 'aria'
+    });
+
+    expect(textField.inputProps.value.type).toBe('text');
+    expect(textField.inputProps.value['aria-required']).toBe(true);
+    expect(textField.labelProps.value.id).toBeDefined();
+    expect(textField.inputProps.value.placeholder).toBe('Enter name');
+
+    textField.inputProps.value.onInput('Vue migration');
+    expect(inputValue.value).toBe('Vue migration');
+    expect(inputChanges).toEqual(['Vue migration']);
+    expect(textField.isInvalid.value).toBe(false);
+
+    textField.inputProps.value.onInput('');
+    expect(textField.isInvalid.value).toBe(true);
+    expect(textField.validationErrors.value).toEqual(['Value is required.']);
+
+    let formattedValue = ref('123');
+    let formattedInputRef = ref<HTMLInputElement | null>(document.createElement('input'));
+    let formattedChanges: string[] = [];
+    let formattedField = useAriaFormattedTextField({
+      ariaLabel: 'Ticket number',
+      inputValue: formattedValue
+    }, {
+      validate: (value) => /^\d*$/.test(value),
+      setInputValue: (value) => {
+        formattedChanges.push(value);
+      }
+    }, formattedInputRef);
+
+    formattedField.inputProps.value.onInput('1234');
+    expect(formattedValue.value).toBe('1234');
+    expect(formattedChanges).toEqual(['1234']);
+
+    formattedField.inputProps.value.onInput('1234a');
+    expect(formattedValue.value).toBe('1234');
+    expect(formattedChanges).toEqual(['1234']);
   });
 
   it('computes vue-aria table wrappers and selection helpers', () => {
