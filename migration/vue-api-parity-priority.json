@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-02-19T21:57:26.863Z",
+  "generatedAt": "2026-02-19T21:58:43.606Z",
   "summary": {
     "trackedPackages": 154,
-    "packagesWithGaps": 80,
+    "packagesWithGaps": 79,
     "highestPriorityPackage": "react-aria-components",
     "highestPriorityScore": 1677.99
   },
@@ -28,17 +28,6 @@
       "dependencyDepth": 10,
       "criticalityWeight": 1.4,
       "priorityScore": 479.09
-    },
-    {
-      "sourcePackage": "@react-aria/button",
-      "targetPackage": "@vue-aria/button",
-      "missingExports": 4,
-      "sourceExportCount": 11,
-      "coveragePercent": 63.64,
-      "reverseDependents": 8,
-      "dependencyDepth": 5,
-      "criticalityWeight": 1.9,
-      "priorityScore": 57.55
     },
     {
       "sourcePackage": "@react-spectrum/checkbox",

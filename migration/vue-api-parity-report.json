@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T21:57:17.819Z",
+  "generatedAt": "2026-02-19T21:58:33.551Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 74,
+    "fullyMatchedPackages": 75,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 959,
-    "parityCoverage": 0.6411
+    "missingExportTotal": 955,
+    "parityCoverage": 0.6426
   },
   "packages": [
     {
@@ -1015,36 +1015,6 @@
       "extraExports": [
         "AutocompleteItem",
         "AutocompleteItemInput"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/button",
-      "sourcePath": "packages/@react-aria/button",
-      "targetPackage": "@vue-aria/button",
-      "targetPath": "packages/@vue-aria/button",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/button/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/button/src/index.ts",
-      "sourceExportCount": 11,
-      "targetExportCount": 16,
-      "parityRatio": 0.6364,
-      "missingExports": [
-        "AriaButtonProps",
-        "AriaToggleButtonGroupItemProps",
-        "AriaToggleButtonGroupProps",
-        "AriaToggleButtonProps"
-      ],
-      "extraExports": [
-        "AriaHasPopup",
-        "AriaToggleButtonGroupItemOptions",
-        "AriaToggleButtonGroupOptions",
-        "AriaToggleButtonOptions",
-        "ButtonProps",
-        "ToggleButtonAria",
-        "ToggleButtonGroupItemAria",
-        "ToggleButtonGroupOrientation",
-        "ToggleButtonGroupSelectionMode"
       ],
       "error": null
     },
@@ -2602,6 +2572,31 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/button",
+      "sourcePath": "packages/@react-aria/button",
+      "targetPackage": "@vue-aria/button",
+      "targetPath": "packages/@vue-aria/button",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/button/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/button/src/index.ts",
+      "sourceExportCount": 11,
+      "targetExportCount": 20,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "AriaHasPopup",
+        "AriaToggleButtonGroupItemOptions",
+        "AriaToggleButtonGroupOptions",
+        "AriaToggleButtonOptions",
+        "ButtonProps",
+        "ToggleButtonAria",
+        "ToggleButtonGroupItemAria",
+        "ToggleButtonGroupOrientation",
+        "ToggleButtonGroupSelectionMode"
+      ],
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/calendar",
       "sourcePath": "packages/@react-aria/calendar",
       "targetPackage": "@vue-aria/calendar",
@@ -3921,7 +3916,7 @@
       "sourceEntrypoint": "packages/react-aria/src/index.ts",
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
-      "targetExportCount": 809,
+      "targetExportCount": 810,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
@@ -3988,6 +3983,7 @@
         "AriaToastOptions",
         "AriaToastRegionOptions",
         "AriaToggleButtonGroupItemOptions",
+        "AriaToggleButtonGroupItemProps",
         "AriaToggleButtonGroupOptions",
         "AriaToggleButtonOptions",
         "AriaToggleOptions",

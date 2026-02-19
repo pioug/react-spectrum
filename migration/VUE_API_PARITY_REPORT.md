@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:57:17.819Z
+Generated: 2026-02-19T21:58:33.551Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 74
+* Fully matched packages: 75
 * Source exports inspected: 2672
-* Missing exports: 959
-* Coverage ratio: 64.11%
+* Missing exports: 955
+* Coverage ratio: 64.26%
 
 ## Package gaps
 
@@ -21,7 +21,6 @@ Generated: 2026-02-19T21:57:17.819Z
 | `@react-spectrum/color` | `@vue-spectrum/color` | missing | 21 | 8 | 61.9% |
 | `@react-aria/table` | `@vue-aria/table` | missing | 23 | 5 | 78.3% |
 | `@react-aria/autocomplete` | `@vue-aria/autocomplete` | missing | 10 | 4 | 60.0% |
-| `@react-aria/button` | `@vue-aria/button` | missing | 11 | 4 | 63.6% |
 | `@react-aria/select` | `@vue-aria/select` | missing | 8 | 4 | 50.0% |
 | `@react-aria/tabs` | `@vue-aria/tabs` | missing | 11 | 4 | 63.6% |
 | `@react-spectrum/accordion` | `@vue-spectrum/accordion` | missing | 8 | 4 | 50.0% |
@@ -97,6 +96,7 @@ Generated: 2026-02-19T21:57:17.819Z
 | `@react-stately/tabs` | `@vue-stately/tabs` | missing | 4 | 1 | 75.0% |
 | `@react-stately/toggle` | `@vue-stately/toggle` | missing | 7 | 1 | 85.7% |
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` | ok | 1 | 0 | 100.0% |
+| `@react-aria/button` | `@vue-aria/button` | ok | 11 | 0 | 100.0% |
 | `@react-aria/calendar` | `@vue-aria/calendar` | ok | 14 | 0 | 100.0% |
 | `@react-aria/collections` | `@vue-aria/collections` | ok | 17 | 0 | 100.0% |
 | `@react-aria/color` | `@vue-aria/color` | ok | 20 | 0 | 100.0% |
@@ -208,13 +208,6 @@ Generated: 2026-02-19T21:57:17.819Z
 * Missing export count: 4
 * Missing exports: `AriaAutocompleteProps`, `AriaSearchAutocompleteProps`, `CollectionOptions`, `InputProps`
 
-### @react-aria/button -> @vue-aria/button
-
-* Source entry: `packages/@react-aria/button/src/index.ts`
-* Target entry: `packages/@vue-aria/button/src/index.ts`
-* Missing export count: 4
-* Missing exports: `AriaButtonProps`, `AriaToggleButtonGroupItemProps`, `AriaToggleButtonGroupProps`, `AriaToggleButtonProps`
-
 ### @react-aria/select -> @vue-aria/select
 
 * Source entry: `packages/@react-aria/select/src/index.ts`
@@ -312,4 +305,11 @@ Generated: 2026-02-19T21:57:17.819Z
 * Target entry: `packages/@vue-stately/datepicker/src/index.ts`
 * Missing export count: 3
 * Missing exports: `DateSegment`, `FormatterOptions`, `SegmentType`
+
+### @react-aria/breadcrumbs -> @vue-aria/breadcrumbs
+
+* Source entry: `packages/@react-aria/breadcrumbs/src/index.ts`
+* Target entry: `packages/@vue-aria/breadcrumbs/src/index.ts`
+* Missing export count: 2
+* Missing exports: `AriaBreadcrumbItemProps`, `AriaBreadcrumbsProps`
 
