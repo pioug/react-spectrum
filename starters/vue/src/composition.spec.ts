@@ -1,5 +1,5 @@
 import {mount} from '@vue/test-utils';
-import {computed, ref} from 'vue';
+import {computed, defineComponent, h, nextTick, ref} from 'vue';
 import {describe, expect, it, vi} from 'vitest';
 import {useActionGroup, useActionGroupItem} from '@vue-aria/actiongroup';
 import {useAutocomplete, useSearchAutocomplete} from '@vue-aria/autocomplete';
@@ -142,6 +142,7 @@ import {Menu} from '@vue-spectrum/menu';
 import {Popover} from '@vue-spectrum/overlays';
 import {VueButton, VueSpectrumPlugin, VueSpectrumProvider, VueTextField, VueTree} from '@vue-spectrum/components';
 import {Button as S2Button, Provider as S2Provider, Spectrum2Plugin, TextField as S2TextField, TreeView as S2TreeView} from '@vue-spectrum/s2';
+import {ErrorBoundary as StoryUtilsErrorBoundary, generatePowerset as generateStoryPowerset} from '@vue-spectrum/story-utils';
 
 function createPointerEvent(
   type: string,
@@ -2439,6 +2440,38 @@ describe('Vue migration composition components', () => {
     expect(S2Button).toBe(VueButton);
     expect(S2TextField).toBe(VueTextField);
     expect(S2TreeView).toBe(VueTree);
+  });
+
+  it('exposes vue-spectrum story utilities for powerset generation and error boundaries', async () => {
+    let combinations = generateStoryPowerset([
+      {size: ['m', 'l']},
+      {isDisabled: [true, false]}
+    ], (merged) => merged.size === 'm' && merged.isDisabled === true);
+
+    expect(combinations).toContainEqual({});
+    expect(combinations).toContainEqual({size: 'l'});
+    expect(combinations).toContainEqual({isDisabled: false});
+    expect(combinations).not.toContainEqual({size: 'm', isDisabled: true});
+
+    let BrokenStory = defineComponent({
+      name: 'BrokenStory',
+      setup() {
+        return () => {
+          throw new Error('story failed');
+        };
+      }
+    });
+    let wrapper = mount(StoryUtilsErrorBoundary, {
+      props: {
+        message: 'Story fallback'
+      },
+      slots: {
+        default: () => h(BrokenStory)
+      }
+    });
+
+    await nextTick();
+    expect(wrapper.text()).toContain('Story fallback');
   });
 
   it('computes vue-aria tag group and tag remove behavior', () => {

@@ -2536,6 +2536,30 @@
         }
       ]
     },
+    "@react-spectrum/story-utils": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/story-utils",
+      "targetPath": "packages/@vue-spectrum/story-utils",
+      "notes": "Story migration utilities baseline with a Vue error boundary and powerset helper for demo and visual test scenarios.",
+      "acceptanceTests": [
+        {
+          "name": "Vue story-utils package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/story-utils/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "tailwindcss-react-aria-components": {
       "status": "in_progress",
       "targetPackage": "tailwindcss-vue-aria-components",

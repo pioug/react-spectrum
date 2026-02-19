@@ -12743,6 +12743,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/story-utils@workspace:*, @vue-spectrum/story-utils@workspace:packages/@vue-spectrum/story-utils":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/story-utils@workspace:packages/@vue-spectrum/story-utils"
+  dependencies:
+    "@vue-aria/utils": "workspace:*"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/switch@workspace:*, @vue-spectrum/switch@workspace:packages/@vue-spectrum/switch":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/switch@workspace:packages/@vue-spectrum/switch"
@@ -31689,6 +31699,7 @@ __metadata:
     "@vue-spectrum/slider": "workspace:*"
     "@vue-spectrum/statuslight": "workspace:*"
     "@vue-spectrum/steplist": "workspace:*"
+    "@vue-spectrum/story-utils": "workspace:*"
     "@vue-spectrum/switch": "workspace:*"
     "@vue-spectrum/table": "workspace:*"
     "@vue-spectrum/text": "workspace:*"
