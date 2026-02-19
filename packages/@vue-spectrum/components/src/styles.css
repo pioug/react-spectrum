@@ -472,6 +472,48 @@
   transition: inline-size 160ms ease;
 }
 
+.vs-meter {
+  display: grid;
+  gap: 8px;
+}
+
+.vs-meter__header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.vs-meter__label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.vs-meter__value {
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.vs-meter__track {
+  background: var(--vs-color-secondary-bg);
+  border: 1px solid var(--vs-color-border);
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.vs-meter--medium .vs-meter__track {
+  block-size: 10px;
+}
+
+.vs-meter--large .vs-meter__track {
+  block-size: 14px;
+}
+
+.vs-meter__fill {
+  background: #2d9d78;
+  block-size: 100%;
+  inline-size: 0;
+  transition: inline-size 160ms ease;
+}
+
 .vs-radio-group {
   display: grid;
   gap: 8px;

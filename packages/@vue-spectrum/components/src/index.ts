@@ -7,6 +7,7 @@ import {VueForm} from './components/VueForm';
 import {VueLink} from './components/VueLink';
 import {VueListBox} from './components/VueListBox';
 import {VueMenu} from './components/VueMenu';
+import {VueMeter} from './components/VueMeter';
 import {VueNumberField} from './components/VueNumberField';
 import {VuePopover} from './components/VuePopover';
 import {VueProgressBar} from './components/VueProgressBar';
@@ -27,6 +28,7 @@ export const VueSpectrumPlugin: Plugin = {
     app.component(VueForm.name ?? 'VueForm', VueForm);
     app.component(VueLink.name ?? 'VueLink', VueLink);
     app.component(VueListBox.name ?? 'VueListBox', VueListBox);
+    app.component(VueMeter.name ?? 'VueMeter', VueMeter);
     app.component(VueMenu.name ?? 'VueMenu', VueMenu);
     app.component(VueNumberField.name ?? 'VueNumberField', VueNumberField);
     app.component(VuePopover.name ?? 'VuePopover', VuePopover);
@@ -40,5 +42,5 @@ export const VueSpectrumPlugin: Plugin = {
   }
 };
 
-export {VueButton, VueCheckbox, VueComboBox, VueDialog, VueForm, VueLink, VueListBox, VueMenu, VueNumberField, VuePopover, VueProgressBar, VueRadio, VueRadioGroup, VueSearchField, VueSlider, VueSpectrumProvider, VueSwitch, VueTextField};
+export {VueButton, VueCheckbox, VueComboBox, VueDialog, VueForm, VueLink, VueListBox, VueMenu, VueMeter, VueNumberField, VuePopover, VueProgressBar, VueRadio, VueRadioGroup, VueSearchField, VueSlider, VueSpectrumProvider, VueSwitch, VueTextField};
 export type {SpectrumContextValue} from './context';

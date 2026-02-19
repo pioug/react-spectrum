@@ -11786,6 +11786,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/meter@workspace:*, @vue-spectrum/meter@workspace:packages/@vue-spectrum/meter":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/meter@workspace:packages/@vue-spectrum/meter"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/numberfield@workspace:*, @vue-spectrum/numberfield@workspace:packages/@vue-spectrum/numberfield":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/numberfield@workspace:packages/@vue-spectrum/numberfield"
@@ -30256,6 +30266,7 @@ __metadata:
     "@vue-spectrum/link": "workspace:*"
     "@vue-spectrum/listbox": "workspace:*"
     "@vue-spectrum/menu": "workspace:*"
+    "@vue-spectrum/meter": "workspace:*"
     "@vue-spectrum/numberfield": "workspace:*"
     "@vue-spectrum/overlays": "workspace:*"
     "@vue-spectrum/progress": "workspace:*"

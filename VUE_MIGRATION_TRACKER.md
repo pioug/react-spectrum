@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 19 |
+| in_progress | 20 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 133 |
+| not_started | 132 |
 
 ## Package tracker
 
@@ -31,6 +31,7 @@ Tracked source packages: 154
 | `@react-spectrum/link` | `packages/@react-spectrum/link` | `@vue-spectrum/link` | `packages/@vue-spectrum/link` | in_progress | Vue link package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave visual/content migration step with a Vue link primitive. |
 | `@react-spectrum/listbox` | `packages/@react-spectrum/listbox` | `@vue-spectrum/listbox` | `packages/@vue-spectrum/listbox` | in_progress | Vue listbox package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step with an initial Vue listbox primitive. |
 | `@react-spectrum/menu` | `packages/@react-spectrum/menu` | `@vue-spectrum/menu` | `packages/@vue-spectrum/menu` | in_progress | Vue menu package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step with an initial Vue menu primitive. |
+| `@react-spectrum/meter` | `packages/@react-spectrum/meter` | `@vue-spectrum/meter` | `packages/@vue-spectrum/meter` | in_progress | Vue meter package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for bounded measurements. |
 | `@react-spectrum/numberfield` | `packages/@react-spectrum/numberfield` | `@vue-spectrum/numberfield` | `packages/@vue-spectrum/numberfield` | in_progress | Vue numberfield package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for numeric text entry. |
 | `@react-spectrum/overlays` | `packages/@react-spectrum/overlays` | `@vue-spectrum/overlays` | `packages/@vue-spectrum/overlays` | in_progress | Vue overlays package source lint<br/>Vue starter typecheck<br/>Vue starter production build | Composition-layer migration step providing a Vue popover primitive. |
 | `@react-spectrum/progress` | `packages/@react-spectrum/progress` | `@vue-spectrum/progress` | `packages/@vue-spectrum/progress` | in_progress | Vue progress package source lint<br/>Vue starter typecheck<br/>Vue starter production build | First-wave primitive for progress feedback UI. |
@@ -123,7 +124,6 @@ Tracked source packages: 154
 | `@react-spectrum/labeledvalue` | `packages/@react-spectrum/labeledvalue` | `@vue-spectrum/labeledvalue` | `packages/@vue-spectrum/labeledvalue` | not_started | - | - |
 | `@react-spectrum/layout` | `packages/@react-spectrum/layout` | `@vue-spectrum/layout` | `packages/@vue-spectrum/layout` | not_started | - | - |
 | `@react-spectrum/list` | `packages/@react-spectrum/list` | `@vue-spectrum/list` | `packages/@vue-spectrum/list` | not_started | - | - |
-| `@react-spectrum/meter` | `packages/@react-spectrum/meter` | `@vue-spectrum/meter` | `packages/@vue-spectrum/meter` | not_started | - | - |
 | `@react-spectrum/picker` | `packages/@react-spectrum/picker` | `@vue-spectrum/picker` | `packages/@vue-spectrum/picker` | not_started | - | - |
 | `@react-spectrum/s2` | `packages/@react-spectrum/s2` | `@vue-spectrum/s2` | `packages/@vue-spectrum/s2` | not_started | - | - |
 | `@react-spectrum/statuslight` | `packages/@react-spectrum/statuslight` | `@vue-spectrum/statuslight` | `packages/@vue-spectrum/statuslight` | not_started | - | - |

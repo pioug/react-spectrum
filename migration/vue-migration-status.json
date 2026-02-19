@@ -340,6 +340,26 @@
         }
       ]
     },
+    "@react-spectrum/meter": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/meter",
+      "targetPath": "packages/@vue-spectrum/meter",
+      "notes": "First-wave primitive for bounded measurements.",
+      "acceptanceTests": [
+        {
+          "name": "Vue meter package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/meter/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    },
     "@react-spectrum/switch": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/switch",

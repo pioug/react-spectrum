@@ -38,6 +38,13 @@
           label="Overall progress"
           :value="completionProgress" />
 
+        <VueMeter
+          label="Quality signal"
+          :value="completionProgress"
+          :low="30"
+          :high="75"
+          :optimum="90" />
+
         <VueComboBox
           v-model="favoriteLanguage"
           label="Favorite language"
@@ -139,6 +146,7 @@ import {Form as VueForm} from '@vue-spectrum/form';
 import {Link as VueLink} from '@vue-spectrum/link';
 import {ListBox as VueListBox} from '@vue-spectrum/listbox';
 import {Menu as VueMenu} from '@vue-spectrum/menu';
+import {Meter as VueMeter} from '@vue-spectrum/meter';
 import {NumberField as VueNumberField} from '@vue-spectrum/numberfield';
 import {Popover as VuePopover} from '@vue-spectrum/overlays';
 import {ProgressBar as VueProgressBar} from '@vue-spectrum/progress';

@@ -20,6 +20,7 @@
     "@vue-spectrum/link": "workspace:*",
     "@vue-spectrum/listbox": "workspace:*",
     "@vue-spectrum/menu": "workspace:*",
+    "@vue-spectrum/meter": "workspace:*",
     "@vue-spectrum/numberfield": "workspace:*",
     "@vue-spectrum/overlays": "workspace:*",
     "@vue-spectrum/progress": "workspace:*",
