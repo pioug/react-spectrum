@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:29:43.981Z
+Generated: 2026-02-19T21:31:31.843Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 56
+* Fully matched packages: 57
 * Source exports inspected: 2672
-* Missing exports: 1174
-* Coverage ratio: 56.06%
+* Missing exports: 1151
+* Coverage ratio: 56.92%
 
 ## Package gaps
 
@@ -21,7 +21,6 @@ Generated: 2026-02-19T21:29:43.981Z
 | `@react-aria/dnd` | `@vue-aria/dnd` | missing | 62 | 58 | 6.5% |
 | `@react-spectrum/dnd` | `@vue-spectrum/dnd` | missing | 26 | 26 | 0.0% |
 | `@react-aria/overlays` | `@vue-aria/overlays` | missing | 39 | 24 | 38.5% |
-| `@react-spectrum/utils` | `@vue-spectrum/utils` | missing | 31 | 23 | 25.8% |
 | `@react-aria/focus` | `@vue-aria/focus` | missing | 26 | 21 | 19.2% |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` | missing | 11 | 11 | 0.0% |
 | `@react-aria/datepicker` | `@vue-aria/datepicker` | missing | 18 | 10 | 44.4% |
@@ -144,6 +143,7 @@ Generated: 2026-02-19T21:29:43.981Z
 | `@react-spectrum/theme-express` | `@vue-spectrum/theme-express` | ok | 1 | 0 | 100.0% |
 | `@react-spectrum/theme-light` | `@vue-spectrum/theme-light` | ok | 1 | 0 | 100.0% |
 | `@react-spectrum/tree` | `@vue-spectrum/tree` | ok | 7 | 0 | 100.0% |
+| `@react-spectrum/utils` | `@vue-spectrum/utils` | ok | 31 | 0 | 100.0% |
 | `@react-spectrum/view` | `@vue-spectrum/view` | ok | 8 | 0 | 100.0% |
 | `@react-stately/calendar` | `@vue-stately/calendar` | ok | 6 | 0 | 100.0% |
 | `@react-stately/collections` | `@vue-stately/collections` | ok | 11 | 0 | 100.0% |
@@ -207,13 +207,6 @@ Generated: 2026-02-19T21:29:43.981Z
 * Target entry: `packages/@vue-aria/overlays/src/index.ts`
 * Missing export count: 24
 * Missing exports: `AriaModalOverlayProps`, `AriaOverlayProps`, `AriaPopoverProps`, `AriaPositionProps`, `DismissButton`, `DismissButtonProps`, `ModalProvider`, `ModalProviderAria`, `ModalProviderProps`, `Overlay`, `OverlayContainer`, `OverlayContainerProps`, `OverlayProps`, `OverlayProvider`, `OverlayTriggerProps`, `Placement`, `PlacementAxis`, `PortalProviderContextValue`, `PortalProviderProps`, `PositionProps`, `UNSAFE_PortalProvider`, `useModalProvider`, `useOverlayFocusContain`, `useUNSAFE_PortalContext`
-
-### @react-spectrum/utils -> @vue-spectrum/utils
-
-* Source entry: `packages/@react-spectrum/utils/src/index.ts`
-* Target entry: `packages/@vue-spectrum/utils/src/index.ts`
-* Missing export count: 23
-* Missing exports: `BreakpointProvider`, `ClearSlots`, `SlotProvider`, `StyleHandlers`, `baseStyleProps`, `convertStyleProps`, `createFocusableRef`, `cssModuleToSlots`, `dimensionValue`, `getResponsiveProp`, `getWrappedElement`, `passthroughStyle`, `responsiveDimensionValue`, `useBreakpoint`, `useFocusableRef`, `useHasChild`, `useMatchedBreakpoints`, `useResizeObserver`, `useSlotProps`, `useStyleProps`, `useUnwrapDOMRef`, `useValueEffect`, `viewStyleProps`
 
 ### @react-aria/focus -> @vue-aria/focus
 
@@ -312,4 +305,11 @@ Generated: 2026-02-19T21:29:43.981Z
 * Target entry: `packages/@vue-spectrum/datepicker/src/index.ts`
 * Missing export count: 4
 * Missing exports: `SpectrumDateFieldProps`, `SpectrumDatePickerProps`, `SpectrumDateRangePickerProps`, `SpectrumTimeFieldProps`
+
+### @react-spectrum/overlays -> @vue-spectrum/overlays
+
+* Source entry: `packages/@react-spectrum/overlays/src/index.ts`
+* Target entry: `packages/@vue-spectrum/overlays/src/index.ts`
+* Missing export count: 4
+* Missing exports: `Modal`, `OpenTransition`, `Overlay`, `Tray`
 

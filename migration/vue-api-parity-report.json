@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T21:29:43.981Z",
+  "generatedAt": "2026-02-19T21:31:31.843Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 56,
+    "fullyMatchedPackages": 57,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 1174,
-    "parityCoverage": 0.5606
+    "missingExportTotal": 1151,
+    "parityCoverage": 0.5692
   },
   "packages": [
     {
@@ -1103,62 +1103,6 @@
         "OverlayTriggerType",
         "PreventScrollAria",
         "PreventScrollOptions"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/utils",
-      "sourcePath": "packages/@react-spectrum/utils",
-      "targetPackage": "@vue-spectrum/utils",
-      "targetPath": "packages/@vue-spectrum/utils",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/utils/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/utils/src/index.ts",
-      "sourceExportCount": 31,
-      "targetExportCount": 24,
-      "parityRatio": 0.2581,
-      "missingExports": [
-        "BreakpointProvider",
-        "ClearSlots",
-        "SlotProvider",
-        "StyleHandlers",
-        "baseStyleProps",
-        "convertStyleProps",
-        "createFocusableRef",
-        "cssModuleToSlots",
-        "dimensionValue",
-        "getResponsiveProp",
-        "getWrappedElement",
-        "passthroughStyle",
-        "responsiveDimensionValue",
-        "useBreakpoint",
-        "useFocusableRef",
-        "useHasChild",
-        "useMatchedBreakpoints",
-        "useResizeObserver",
-        "useSlotProps",
-        "useStyleProps",
-        "useUnwrapDOMRef",
-        "useValueEffect",
-        "viewStyleProps"
-      ],
-      "extraExports": [
-        "ClassNameRecord",
-        "ClassNameValue",
-        "DOMRef",
-        "chain",
-        "filterDOMProps",
-        "getActiveElement",
-        "getEventTarget",
-        "isFocusWithin",
-        "isFocusable",
-        "isTabbable",
-        "mergeIds",
-        "mergeProps",
-        "nodeContains",
-        "useId",
-        "useLabels",
-        "useSlotId"
       ],
       "error": null
     },
@@ -3725,6 +3669,38 @@
       "extraExports": [
         "Tree",
         "VueTree"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/utils",
+      "sourcePath": "packages/@react-spectrum/utils",
+      "targetPackage": "@vue-spectrum/utils",
+      "targetPath": "packages/@vue-spectrum/utils",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/utils/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/utils/src/index.ts",
+      "sourceExportCount": 31,
+      "targetExportCount": 47,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "ClassNameRecord",
+        "ClassNameValue",
+        "DOMRef",
+        "chain",
+        "filterDOMProps",
+        "getActiveElement",
+        "getEventTarget",
+        "isFocusWithin",
+        "isFocusable",
+        "isTabbable",
+        "mergeIds",
+        "mergeProps",
+        "nodeContains",
+        "useId",
+        "useLabels",
+        "useSlotId"
       ],
       "error": null
     },

@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-02-19T21:29:49.539Z",
+  "generatedAt": "2026-02-19T21:31:52.021Z",
   "summary": {
     "trackedPackages": 154,
-    "packagesWithGaps": 98,
+    "packagesWithGaps": 97,
     "highestPriorityPackage": "react-aria-components",
     "highestPriorityScore": 1677.99
   },
@@ -28,17 +28,6 @@
       "dependencyDepth": 10,
       "criticalityWeight": 1.4,
       "priorityScore": 479.09
-    },
-    {
-      "sourcePackage": "@react-spectrum/utils",
-      "targetPackage": "@vue-spectrum/utils",
-      "missingExports": 23,
-      "sourceExportCount": 31,
-      "coveragePercent": 25.81,
-      "reverseDependents": 54,
-      "dependencyDepth": 3,
-      "criticalityWeight": 1.4,
-      "priorityScore": 266.83
     },
     {
       "sourcePackage": "@react-aria/interactions",

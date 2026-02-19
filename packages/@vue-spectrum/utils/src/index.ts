@@ -5,3 +5,4 @@ export {createDOMRef, unwrapDOMRef, useDOMRef} from './useDOMRef';
 export type {DOMRef} from './useDOMRef';
 export {useIsMobileDevice} from './useIsMobileDevice';
 export {useMediaQuery} from './useMediaQuery';
+export * from './compat';
