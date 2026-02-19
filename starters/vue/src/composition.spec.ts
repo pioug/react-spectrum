@@ -242,6 +242,7 @@ import {
   useToggleGroupState as useStatelyToggleGroupState,
   useToggleState as useStatelyToggleState
 } from '@vue-stately/toggle';
+import {useTooltipTriggerState as useStatelyTooltipTriggerState} from '@vue-stately/tooltip';
 
 function createPointerEvent(
   type: string,
@@ -2179,6 +2180,51 @@ describe('Vue migration composition components', () => {
     singleGroupState.toggleKey('right');
     expect(Array.from(singleGroupState.selectedKeys.value)).toEqual(['right']);
     expect(groupSelectionChanges).toEqual([['bold', 'italic'], ['italic']]);
+  });
+
+  it('manages vue-stately tooltip trigger warmup and close delay behavior', () => {
+    vi.useFakeTimers();
+
+    try {
+      let isOpen = ref(false);
+      let openChanges: boolean[] = [];
+      let tooltipState = useStatelyTooltipTriggerState({
+        delay: 100,
+        closeDelay: 60,
+        isOpen,
+        onOpenChange: (nextOpen) => {
+          openChanges.push(nextOpen);
+          isOpen.value = nextOpen;
+        }
+      });
+
+      tooltipState.open();
+      expect(tooltipState.isOpen.value).toBe(false);
+      vi.advanceTimersByTime(99);
+      expect(tooltipState.isOpen.value).toBe(false);
+      vi.advanceTimersByTime(1);
+      expect(tooltipState.isOpen.value).toBe(true);
+
+      tooltipState.close();
+      expect(tooltipState.isOpen.value).toBe(true);
+      vi.advanceTimersByTime(59);
+      expect(tooltipState.isOpen.value).toBe(true);
+      vi.advanceTimersByTime(1);
+      expect(tooltipState.isOpen.value).toBe(false);
+
+      let immediateTooltipState = useStatelyTooltipTriggerState({
+        closeDelay: 0,
+        delay: 250
+      });
+      immediateTooltipState.open(true);
+      expect(immediateTooltipState.isOpen.value).toBe(true);
+      immediateTooltipState.close();
+      expect(immediateTooltipState.isOpen.value).toBe(false);
+
+      expect(openChanges).toEqual([true, false]);
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {

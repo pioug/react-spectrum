@@ -3424,6 +3424,30 @@
         }
       ]
     },
+    "@react-stately/tooltip": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/tooltip",
+      "targetPath": "packages/@vue-stately/tooltip",
+      "notes": "State baseline for tooltip trigger warmup delays, open/close timing, and cooldown handoff in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately tooltip package source lint",
+          "command": "yarn eslint packages/@vue-stately/tooltip/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

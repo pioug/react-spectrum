@@ -164,6 +164,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-stately/tabs` | `@vue-stately/tabs` |
 | `@react-stately/toast` | `@vue-stately/toast` |
 | `@react-stately/toggle` | `@vue-stately/toggle` |
+| `@react-stately/tooltip` | `@vue-stately/tooltip` |
 
 ## Core API conversion patterns
 
