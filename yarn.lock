@@ -11825,9 +11825,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
+"@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
+"@vue-spectrum/badge@workspace:*, @vue-spectrum/badge@workspace:packages/@vue-spectrum/badge":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/badge@workspace:packages/@vue-spectrum/badge"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -30847,6 +30857,8 @@ __metadata:
   resolution: "vue-spectrum-starter@workspace:starters/vue"
   dependencies:
     "@vitejs/plugin-vue": "npm:^5.2.1"
+    "@vue-aria/virtualizer": "workspace:*"
+    "@vue-spectrum/badge": "workspace:*"
     "@vue-spectrum/button": "workspace:*"
     "@vue-spectrum/checkbox": "workspace:*"
     "@vue-spectrum/combobox": "workspace:*"

@@ -551,6 +551,47 @@
   background: #d31510;
 }
 
+.vs-badge {
+  border-radius: 999px;
+  display: inline-flex;
+  font-weight: 600;
+  line-height: 1;
+  padding: 4px 10px;
+}
+
+.vs-badge--medium {
+  font-size: 12px;
+}
+
+.vs-badge--large {
+  font-size: 14px;
+}
+
+.vs-badge--neutral {
+  background: #e6e6e6;
+  color: #2c2c2c;
+}
+
+.vs-badge--info {
+  background: rgba(20, 115, 230, 0.16);
+  color: #0d66d0;
+}
+
+.vs-badge--positive {
+  background: rgba(45, 157, 120, 0.16);
+  color: #216e5b;
+}
+
+.vs-badge--notice {
+  background: rgba(230, 134, 25, 0.2);
+  color: #995a17;
+}
+
+.vs-badge--negative {
+  background: rgba(211, 21, 16, 0.16);
+  color: #b11410;
+}
+
 .vs-radio-group {
   display: grid;
   gap: 8px;

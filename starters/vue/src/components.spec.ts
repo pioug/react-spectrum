@@ -1,5 +1,6 @@
 import {mount} from '@vue/test-utils';
 import {describe, expect, it} from 'vitest';
+import {Badge} from '@vue-spectrum/badge';
 import {Button} from '@vue-spectrum/button';
 import {Checkbox} from '@vue-spectrum/checkbox';
 import {Radio, RadioGroup} from '@vue-spectrum/radio';
@@ -7,6 +8,20 @@ import {Switch} from '@vue-spectrum/switch';
 import {TextField} from '@vue-spectrum/textfield';
 
 describe('Vue migration primitives', () => {
+  it('renders badge variants and slot content', () => {
+    let wrapper = mount(Badge, {
+      props: {
+        variant: 'positive'
+      },
+      slots: {
+        default: 'Ready for review'
+      }
+    });
+
+    expect(wrapper.text()).toContain('Ready for review');
+    expect(wrapper.classes()).toContain('vs-badge--positive');
+  });
+
   it('emits click from button', async () => {
     let wrapper = mount(Button, {
       slots: {default: 'Press me'}

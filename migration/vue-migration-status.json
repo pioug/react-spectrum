@@ -96,6 +96,30 @@
         }
       ]
     },
+    "@react-spectrum/badge": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/badge",
+      "targetPath": "packages/@vue-spectrum/badge",
+      "notes": "First-wave visual primitive for compact labels and status context.",
+      "acceptanceTests": [
+        {
+          "name": "Vue badge package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/badge/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/textfield": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/textfield",

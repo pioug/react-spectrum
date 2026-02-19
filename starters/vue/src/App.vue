@@ -49,6 +49,10 @@
           {{ statusLabel }}
         </VueStatusLight>
 
+        <VueBadge variant="info">
+          Vue badge port
+        </VueBadge>
+
         <VueComboBox
           v-model="favoriteLanguage"
           label="Favorite language"
@@ -186,6 +190,7 @@
 <script setup lang="ts">
 import {computed, ref} from 'vue';
 import {useVirtualizer} from '@vue-aria/virtualizer';
+import {Badge as VueBadge} from '@vue-spectrum/badge';
 import {Button as VueButton} from '@vue-spectrum/button';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
 import {ComboBox as VueComboBox} from '@vue-spectrum/combobox';
