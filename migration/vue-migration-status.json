@@ -3208,6 +3208,30 @@
         }
       ]
     },
+    "@react-stately/searchfield": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/searchfield",
+      "targetPath": "packages/@vue-stately/searchfield",
+      "notes": "State baseline for controlled/uncontrolled search field value updates in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately searchfield package source lint",
+          "command": "yarn eslint packages/@vue-stately/searchfield/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

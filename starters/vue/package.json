@@ -151,6 +151,7 @@
     "@vue-stately/numberfield": "workspace:*",
     "@vue-stately/overlays": "workspace:*",
     "@vue-stately/radio": "workspace:*",
+    "@vue-stately/searchfield": "workspace:*",
     "vue": "^3.5.13"
   },
   "devDependencies": {

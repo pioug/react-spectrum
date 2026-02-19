@@ -13086,7 +13086,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-stately/radio@workspace:packages/@vue-stately/radio"
   dependencies:
+    "@vue-aria/utils": "workspace:*"
     "@vue-stately/form": "workspace:*"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
+"@vue-stately/searchfield@workspace:*, @vue-stately/searchfield@workspace:packages/@vue-stately/searchfield":
+  version: 0.0.0-use.local
+  resolution: "@vue-stately/searchfield@workspace:packages/@vue-stately/searchfield"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -32006,6 +32015,7 @@ __metadata:
     "@vue-stately/numberfield": "workspace:*"
     "@vue-stately/overlays": "workspace:*"
     "@vue-stately/radio": "workspace:*"
+    "@vue-stately/searchfield": "workspace:*"
     "@vue/test-utils": "npm:^2.4.6"
     jsdom: "npm:^26.0.0"
     typescript: "npm:^5.8.2"

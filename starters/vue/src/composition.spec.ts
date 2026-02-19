@@ -218,6 +218,7 @@ import {useMenuTriggerState as useStatelyMenuTriggerState, useSubmenuTriggerStat
 import {useNumberFieldState as useStatelyNumberFieldState} from '@vue-stately/numberfield';
 import {useOverlayTriggerState as useStatelyOverlayTriggerState} from '@vue-stately/overlays';
 import {useRadioGroupState as useStatelyRadioGroupState} from '@vue-stately/radio';
+import {useSearchFieldState as useStatelySearchFieldState} from '@vue-stately/searchfield';
 
 function createPointerEvent(
   type: string,
@@ -1762,6 +1763,36 @@ describe('Vue migration composition components', () => {
     requiredGroup.commitValidation();
     expect(requiredGroup.isInvalid.value).toBe(true);
     expect(requiredGroup.validationState.value).toBe('invalid');
+  });
+
+  it('manages vue-stately search field controlled and uncontrolled value state', () => {
+    let uncontrolledChanges: string[] = [];
+    let uncontrolledState = useStatelySearchFieldState({
+      defaultValue: 'Roadmap',
+      onChange: (value) => {
+        uncontrolledChanges.push(value);
+      }
+    });
+
+    expect(uncontrolledState.value.value).toBe('Roadmap');
+    uncontrolledState.setValue('Vue');
+    expect(uncontrolledState.value.value).toBe('Vue');
+    expect(uncontrolledChanges).toEqual(['Vue']);
+
+    let controlledValue = ref('React');
+    let controlledChanges: string[] = [];
+    let controlledState = useStatelySearchFieldState({
+      value: controlledValue,
+      onChange: (value) => {
+        controlledChanges.push(value);
+        controlledValue.value = value;
+      }
+    });
+
+    expect(controlledState.value.value).toBe('React');
+    controlledState.setValue('Spectrum');
+    expect(controlledState.value.value).toBe('Spectrum');
+    expect(controlledChanges).toEqual(['Spectrum']);
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {
