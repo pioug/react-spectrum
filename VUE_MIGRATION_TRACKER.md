@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 119 |
+| in_progress | 120 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 33 |
+| not_started | 32 |
 
 ## Package tracker
 
@@ -138,13 +138,13 @@ Tracked source packages: 154
 | `@react-spectrum/toast` | `packages/@react-spectrum/toast` | `@vue-spectrum/toast` | `packages/@vue-spectrum/toast` | in_progress | Vue toast package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Toast container baseline with queue helpers and Vue Aria toast-region semantics. |
 | `@react-spectrum/tooltip` | `packages/@react-spectrum/tooltip` | `@vue-spectrum/tooltip` | `packages/@vue-spectrum/tooltip` | in_progress | Vue tooltip package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Tooltip and tooltip-trigger baseline components with Vue Aria trigger semantics and accessibility props. |
 | `@react-spectrum/tree` | `packages/@react-spectrum/tree` | `@vue-spectrum/tree` | `packages/@vue-spectrum/tree` | in_progress | Vue tree package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Data-heavy migration baseline for hierarchical collections. |
+| `@react-spectrum/utils` | `packages/@react-spectrum/utils` | `@vue-spectrum/utils` | `packages/@vue-spectrum/utils` | in_progress | Vue utils package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Utility baseline for Spectrum class-name composition, media-query state, and DOM-ref wrappers in Vue package ports. |
 | `@react-spectrum/view` | `packages/@react-spectrum/view` | `@vue-spectrum/view` | `packages/@vue-spectrum/view` | in_progress | Vue view package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave layout primitive for semantic container structure and spacing. |
 | `@react-spectrum/well` | `packages/@react-spectrum/well` | `@vue-spectrum/well` | `packages/@vue-spectrum/well` | in_progress | Vue well package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave content container primitive for grouped inline context. |
 | `react-aria-components` | `packages/react-aria-components` | `@vue-spectrum/components` | `packages/@vue-spectrum/components` | in_progress | Vue package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Initial Vue baseline package exists, but React Aria Components parity is still in progress. |
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-spectrum/utils` | `packages/@react-spectrum/utils` | `@vue-spectrum/utils` | `packages/@vue-spectrum/utils` | not_started | - | - |
 | `@react-stately/autocomplete` | `packages/@react-stately/autocomplete` | `@vue-stately/autocomplete` | `packages/@vue-stately/autocomplete` | not_started | - | - |
 | `@react-stately/calendar` | `packages/@react-stately/calendar` | `@vue-stately/calendar` | `packages/@vue-stately/calendar` | not_started | - | - |
 | `@react-stately/checkbox` | `packages/@react-stately/checkbox` | `@vue-stately/checkbox` | `packages/@vue-stately/checkbox` | not_started | - | - |

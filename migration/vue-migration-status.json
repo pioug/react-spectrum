@@ -2728,6 +2728,30 @@
         }
       ]
     },
+    "@react-spectrum/utils": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/utils",
+      "targetPath": "packages/@vue-spectrum/utils",
+      "notes": "Utility baseline for Spectrum class-name composition, media-query state, and DOM-ref wrappers in Vue package ports.",
+      "acceptanceTests": [
+        {
+          "name": "Vue utils package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/utils/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

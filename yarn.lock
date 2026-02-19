@@ -12895,6 +12895,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/utils@workspace:*, @vue-spectrum/utils@workspace:packages/@vue-spectrum/utils":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/utils@workspace:packages/@vue-spectrum/utils"
+  dependencies:
+    "@vue-aria/utils": "workspace:*"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/view@workspace:*, @vue-spectrum/view@workspace:packages/@vue-spectrum/view":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/view@workspace:packages/@vue-spectrum/view"
@@ -31807,6 +31817,7 @@ __metadata:
     "@vue-spectrum/toast": "workspace:*"
     "@vue-spectrum/tooltip": "workspace:*"
     "@vue-spectrum/tree": "workspace:*"
+    "@vue-spectrum/utils": "workspace:*"
     "@vue-spectrum/view": "workspace:*"
     "@vue-spectrum/well": "workspace:*"
     "@vue/test-utils": "npm:^2.4.6"

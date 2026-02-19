@@ -149,6 +149,16 @@ import {theme as darkTheme} from '@vue-spectrum/theme-dark';
 import {theme as defaultTheme} from '@vue-spectrum/theme-default';
 import {theme as expressTheme} from '@vue-spectrum/theme-express';
 import {theme as lightTheme} from '@vue-spectrum/theme-light';
+import {
+  classNames as spectrumClassNames,
+  createDOMRef as createSpectrumDOMRef,
+  keepSpectrumClassNames as keepSpectrumClasses,
+  shouldKeepSpectrumClassNames as shouldKeepSpectrumClasses,
+  unwrapDOMRef as unwrapSpectrumDOMRef,
+  useDOMRef as useSpectrumDOMRef,
+  useIsMobileDevice as useSpectrumIsMobileDevice,
+  useMediaQuery as useSpectrumMediaQuery
+} from '@vue-spectrum/utils';
 
 function createPointerEvent(
   type: string,
@@ -2744,6 +2754,43 @@ describe('Vue migration composition components', () => {
       if (previousWidthDescriptor) {
         Object.defineProperty(window.screen, 'width', previousWidthDescriptor);
       }
+    }
+  });
+
+  it('exposes vue-spectrum utils helpers for classes, media query state, and dom refs', () => {
+    let originalMatchMedia = window.matchMedia;
+
+    try {
+      window.matchMedia = ((query: string) => ({
+        matches: query === '(max-width: 700px)',
+        media: query,
+        onchange: null,
+        addEventListener: () => {},
+        removeEventListener: () => {},
+        addListener: () => {},
+        removeListener: () => {},
+        dispatchEvent: () => true
+      })) as typeof window.matchMedia;
+
+      expect(spectrumClassNames('base', ['nested', {active: true, disabled: false}], {ready: true})).toBe('base nested active ready');
+      expect(shouldKeepSpectrumClasses('spectrum-Button')).toBe(true);
+      expect(keepSpectrumClasses('foo spectrum-Button spectrum-Alert')).toBe('spectrum-Button spectrum-Alert');
+
+      let mediaMatches = useSpectrumMediaQuery('(max-width: 700px)');
+      let isMobile = useSpectrumIsMobileDevice();
+      expect(mediaMatches.value).toBe(true);
+      expect(isMobile.value).toBe(true);
+
+      let element = document.createElement('div');
+      let domRef = useSpectrumDOMRef<HTMLDivElement>(null);
+      domRef.value = element;
+      expect(unwrapSpectrumDOMRef(domRef)).toBe(element);
+
+      let createdRef = createSpectrumDOMRef(element);
+      expect(createdRef.current).toBe(element);
+      expect(unwrapSpectrumDOMRef(createdRef)).toBe(element);
+    } finally {
+      window.matchMedia = originalMatchMedia;
     }
   });
 
