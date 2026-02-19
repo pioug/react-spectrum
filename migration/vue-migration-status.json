@@ -408,6 +408,30 @@
         }
       ]
     },
+    "@react-aria/form": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/form",
+      "targetPath": "packages/@vue-aria/form",
+      "notes": "Foundational React Aria form validation composable for native validation wiring and commit/reset handlers in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria form source lint",
+          "command": "yarn eslint packages/@vue-aria/form/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",

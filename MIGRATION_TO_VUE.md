@@ -89,15 +89,16 @@ Phase 1 is implemented:
   * `@react-aria/dnd` -> `@vue-aria/dnd` (`in_progress`)
   * `@react-aria/example-theme` -> `@vue-aria/example-theme` (`in_progress`)
   * `@react-aria/focus` -> `@vue-aria/focus` (`in_progress`)
+  * `@react-aria/form` -> `@vue-aria/form` (`in_progress`)
   * `@react-aria/disclosure` -> `@vue-aria/disclosure` (`in_progress`)
   * `@react-aria/color` -> `@vue-aria/color` (`in_progress`)
   * `@react-aria/aria-modal-polyfill` -> `@vue-aria/aria-modal-polyfill` (`in_progress`)
   * `@react-aria/virtualizer` -> `@vue-aria/virtualizer` (`in_progress`)
-  * Vue starter now includes composable coverage for `@vue-aria/actiongroup`, `@vue-aria/autocomplete`, `@vue-aria/breadcrumbs`, `@vue-aria/button`, `@vue-aria/calendar`, `@vue-aria/checkbox`, `@vue-aria/collections`, `@vue-aria/combobox`, `@vue-aria/datepicker`, `@vue-aria/dialog`, `@vue-aria/dnd`, `@vue-aria/example-theme`, `@vue-aria/focus`, `@vue-aria/disclosure`, `@vue-aria/color`, and `@vue-aria/aria-modal-polyfill`, plus a virtualized backlog demo wired to `@vue-aria/virtualizer`.
+  * Vue starter now includes composable coverage for `@vue-aria/actiongroup`, `@vue-aria/autocomplete`, `@vue-aria/breadcrumbs`, `@vue-aria/button`, `@vue-aria/calendar`, `@vue-aria/checkbox`, `@vue-aria/collections`, `@vue-aria/combobox`, `@vue-aria/datepicker`, `@vue-aria/dialog`, `@vue-aria/dnd`, `@vue-aria/example-theme`, `@vue-aria/focus`, `@vue-aria/form`, `@vue-aria/disclosure`, `@vue-aria/color`, and `@vue-aria/aria-modal-polyfill`, plus a virtualized backlog demo wired to `@vue-aria/virtualizer`.
 * Started Vue test adaptation:
   * `starters/vue` runs Vitest + Vue Test Utils interaction tests for `button`, `buttongroup`, `textfield`, `checkbox`, `radio`, `switch`, `layout`, `labeledvalue`, `illustratedmessage`, and `icon`.
   * Added composition coverage for `accordion`, `actionbar`, `actiongroup`, `breadcrumbs`, `calendar`, `card`, `color`, `contextualhelp`, `datepicker`, `picker`, `dialog`, `overlays`, `menu`, `listbox`, `list`, `combobox`, and `autocomplete`.
-  * Added data-heavy and virtualization coverage for `table`, `tree`, `dnd`, `dropzone`, `filetrigger`, and `@vue-aria/virtualizer`, plus composable coverage for `@vue-aria/actiongroup`, `@vue-aria/autocomplete`, `@vue-aria/breadcrumbs`, `@vue-aria/button`, `@vue-aria/calendar`, `@vue-aria/checkbox`, `@vue-aria/collections`, `@vue-aria/combobox`, `@vue-aria/datepicker`, `@vue-aria/dialog`, `@vue-aria/dnd`, `@vue-aria/example-theme`, `@vue-aria/focus`, `@vue-aria/disclosure`, `@vue-aria/color`, and `@vue-aria/aria-modal-polyfill`.
+  * Added data-heavy and virtualization coverage for `table`, `tree`, `dnd`, `dropzone`, `filetrigger`, and `@vue-aria/virtualizer`, plus composable coverage for `@vue-aria/actiongroup`, `@vue-aria/autocomplete`, `@vue-aria/breadcrumbs`, `@vue-aria/button`, `@vue-aria/calendar`, `@vue-aria/checkbox`, `@vue-aria/collections`, `@vue-aria/combobox`, `@vue-aria/datepicker`, `@vue-aria/dialog`, `@vue-aria/dnd`, `@vue-aria/example-theme`, `@vue-aria/focus`, `@vue-aria/form`, `@vue-aria/disclosure`, `@vue-aria/color`, and `@vue-aria/aria-modal-polyfill`.
 * Started API stabilization and deprecation planning:
   * `migration/VUE_PUBLISH_CHECKLIST.md`
   * `migration/REACT_DEPRECATION_PLAN.md`

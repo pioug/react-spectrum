@@ -17,6 +17,7 @@ import {useDisclosure as useAriaDisclosure} from '@vue-aria/disclosure';
 import {useDrag, useDrop} from '@vue-aria/dnd';
 import {EXAMPLE_THEME_CLASS, useExampleTheme} from '@vue-aria/example-theme';
 import {useFocusRing, useHasTabbableChild} from '@vue-aria/focus';
+import {useFormValidation} from '@vue-aria/form';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -668,6 +669,50 @@ describe('Vue migration composition components', () => {
 
     let disabledResult = useHasTabbableChild(containerRef, {isDisabled: true});
     expect(disabledResult.value).toBe(false);
+  });
+
+  it('applies vue-aria form validation handlers for native validation flows', () => {
+    let commitCount = 0;
+    let resetCount = 0;
+    let focusCount = 0;
+    let validation = useFormValidation({
+      focus: () => {
+        focusCount += 1;
+      },
+      isInvalid: true,
+      onCommitValidation: () => {
+        commitCount += 1;
+      },
+      onResetValidation: () => {
+        resetCount += 1;
+      },
+      validationBehavior: 'native',
+      validationErrors: ['Value is required']
+    });
+
+    let form = document.createElement('form');
+    let input = document.createElement('input');
+    form.append(input);
+    document.body.append(form);
+
+    try {
+      let detach = validation.attach(input);
+      expect(input.validationMessage).toBe('Value is required');
+
+      input.dispatchEvent(new Event('change', {bubbles: true}));
+      expect(commitCount).toBe(1);
+
+      input.dispatchEvent(new Event('invalid', {cancelable: true}));
+      expect(commitCount).toBe(2);
+      expect(focusCount).toBe(1);
+
+      form.dispatchEvent(new Event('reset'));
+      expect(resetCount).toBe(1);
+
+      detach();
+    } finally {
+      document.body.removeChild(form);
+    }
   });
 
   it('emits close events from dismissable dialog controls', async () => {

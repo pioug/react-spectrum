@@ -11953,6 +11953,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/form@workspace:*, @vue-aria/form@workspace:packages/@vue-aria/form":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/form@workspace:packages/@vue-aria/form"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31261,6 +31269,7 @@ __metadata:
     "@vue-aria/dnd": "workspace:*"
     "@vue-aria/example-theme": "workspace:*"
     "@vue-aria/focus": "workspace:*"
+    "@vue-aria/form": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"
