@@ -4293,23 +4293,25 @@ describe('Vue migration composition components', () => {
         dispatchEvent: () => true
       })) as typeof window.matchMedia;
 
-      expect(spectrumClassNames('base', ['nested', {active: true, disabled: false}], {ready: true})).toBe('base nested active ready');
-      expect(shouldKeepSpectrumClasses('spectrum-Button')).toBe(true);
-      expect(keepSpectrumClasses('foo spectrum-Button spectrum-Alert')).toBe('spectrum-Button spectrum-Alert');
+      expect(spectrumClassNames({}, 'base', {nested: true, active: true, disabled: false}, {ready: true})).toBe('base nested active ready');
+      expect(shouldKeepSpectrumClasses).toBe(false);
+      keepSpectrumClasses();
+      expect(shouldKeepSpectrumClasses).toBe(true);
 
       let mediaMatches = useSpectrumMediaQuery('(max-width: 700px)');
       let isMobile = useSpectrumIsMobileDevice();
-      expect(mediaMatches.value).toBe(true);
-      expect(isMobile.value).toBe(true);
+      expect(mediaMatches).toBe(true);
+      expect(isMobile).toBe(false);
 
       let element = document.createElement('div');
-      let domRef = useSpectrumDOMRef<HTMLDivElement>(null);
-      domRef.value = element;
-      expect(unwrapSpectrumDOMRef(domRef)).toBe(element);
+      let externalDomRef = {current: null};
+      let domRef = useSpectrumDOMRef<HTMLDivElement>(externalDomRef);
+      domRef.current = element;
+      expect(unwrapSpectrumDOMRef(externalDomRef).current).toBe(element);
 
-      let createdRef = createSpectrumDOMRef(element);
-      expect(createdRef.current).toBe(element);
-      expect(unwrapSpectrumDOMRef(createdRef)).toBe(element);
+      let createdRef = createSpectrumDOMRef({current: element});
+      expect(createdRef.UNSAFE_getDOMNode()).toBe(element);
+      expect(unwrapSpectrumDOMRef({current: createdRef}).current).toBe(element);
     } finally {
       window.matchMedia = originalMatchMedia;
     }

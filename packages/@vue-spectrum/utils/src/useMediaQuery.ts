@@ -1,18 +1,7 @@
-import {type ComputedRef, type Ref, ref, unref, watch} from 'vue';
+export function useMediaQuery(query: string): boolean {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+    return false;
+  }
 
-type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
-
-export function useMediaQuery(query: MaybeRef<string>, fallbackValue = false): Ref<boolean> {
-  let matches = ref(fallbackValue);
-
-  watch(() => unref(query), (nextQuery) => {
-    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
-      matches.value = fallbackValue;
-      return;
-    }
-
-    matches.value = window.matchMedia(nextQuery).matches;
-  }, {immediate: true});
-
-  return matches;
+  return window.matchMedia(query).matches;
 }

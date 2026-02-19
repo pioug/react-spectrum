@@ -2,54 +2,71 @@ export interface ClassNameRecord {
   [className: string]: boolean | null | undefined
 }
 
-export type ClassNameValue = ClassNameRecord | ClassNameValue[] | number | string | false | null | undefined;
+type ClassMap = {[key: string]: string};
+type ClassNameInput = string | ClassNameRecord | undefined;
 
-function appendClassNames(bucket: string[], value: ClassNameValue): void {
-  if (!value && value !== 0) {
-    return;
-  }
+export let shouldKeepSpectrumClassNames = false;
 
-  if (Array.isArray(value)) {
-    for (let nestedValue of value) {
-      appendClassNames(bucket, nestedValue);
+export function keepSpectrumClassNames(): void {
+  shouldKeepSpectrumClassNames = true;
+}
+
+function normalizeClassValue(
+  cssModule: ClassMap,
+  value: ClassNameInput
+): Array<string | ClassNameRecord | undefined> {
+  if (typeof value === 'string') {
+    let mapped: string[] = [];
+    if (cssModule[value]) {
+      mapped.push(cssModule[value]);
     }
-    return;
+    if (shouldKeepSpectrumClassNames || !cssModule[value]) {
+      mapped.push(value);
+    }
+    return mapped;
   }
 
-  if (typeof value === 'object') {
-    for (let [className, enabled] of Object.entries(value)) {
-      if (enabled) {
-        bucket.push(className);
+  if (value && typeof value === 'object') {
+    let mapped: ClassNameRecord = {};
+    for (let key in value) {
+      if (cssModule[key]) {
+        mapped[cssModule[key]] = value[key];
+      }
+      if (shouldKeepSpectrumClassNames || !cssModule[key]) {
+        mapped[key] = value[key];
       }
     }
-    return;
+    return [mapped];
   }
 
-  bucket.push(String(value));
+  return [value];
 }
 
-export function classNames(...values: ClassNameValue[]): string {
-  let bucket: string[] = [];
+function stringifyClassValue(value: string | ClassNameRecord | undefined): string[] {
+  if (typeof value === 'string') {
+    return value.split(/\s+/).filter(Boolean);
+  }
 
+  if (value && typeof value === 'object') {
+    let classes: string[] = [];
+    for (let [key, enabled] of Object.entries(value)) {
+      if (enabled) {
+        classes.push(key);
+      }
+    }
+    return classes;
+  }
+
+  return [];
+}
+
+export function classNames(cssModule: {[key: string]: string}, ...values: Array<string | Object | undefined>): string {
+  let normalized: Array<string | ClassNameRecord | undefined> = [];
   for (let value of values) {
-    appendClassNames(bucket, value);
+    normalized.push(...normalizeClassValue(cssModule, value as ClassNameInput));
   }
 
-  return bucket.join(' ');
-}
-
-export function shouldKeepSpectrumClassNames(className: string): boolean {
-  return className.startsWith('spectrum-');
-}
-
-export function keepSpectrumClassNames(className: string | undefined): string {
-  if (!className) {
-    return '';
-  }
-
-  return className
-    .split(/\s+/)
-    .filter((entry) => entry.length > 0)
-    .filter((entry) => shouldKeepSpectrumClassNames(entry))
+  return normalized
+    .flatMap((value) => stringifyClassValue(value))
     .join(' ');
 }

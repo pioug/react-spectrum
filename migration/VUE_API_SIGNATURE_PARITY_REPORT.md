@@ -1,19 +1,19 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-19T23:27:56.761Z
+Generated: 2026-02-19T23:34:44.475Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 85
+* Fully matched packages: 86
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 2009
-* Mismatched signatures: 663
+* Matched signatures: 2036
+* Mismatched signatures: 636
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 75.19%
+* Signature coverage ratio: 76.20%
 
 ## Package gaps
 
@@ -22,7 +22,6 @@ Generated: 2026-02-19T23:27:56.761Z
 | `react-aria-components` | `@vue-spectrum/components` | mismatch | 543 | 299 | 0 | 44.9% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | mismatch | 325 | 134 | 0 | 58.8% |
 | `react-aria` | `vue-aria` | mismatch | 419 | 60 | 0 | 85.7% |
-| `@react-spectrum/utils` | `@vue-spectrum/utils` | mismatch | 31 | 27 | 0 | 12.9% |
 | `react-stately` | `vue-stately` | mismatch | 165 | 15 | 0 | 90.9% |
 | `@react-aria/grid` | `@vue-aria/grid` | mismatch | 20 | 6 | 0 | 70.0% |
 | `@react-aria/i18n` | `@vue-aria/i18n` | mismatch | 19 | 6 | 0 | 68.4% |
@@ -152,6 +151,7 @@ Generated: 2026-02-19T23:27:56.761Z
 | `@react-spectrum/toast` | `@vue-spectrum/toast` | ok | 4 | 0 | 0 | 100.0% |
 | `@react-spectrum/tooltip` | `@vue-spectrum/tooltip` | ok | 4 | 0 | 0 | 100.0% |
 | `@react-spectrum/tree` | `@vue-spectrum/tree` | ok | 7 | 0 | 0 | 100.0% |
+| `@react-spectrum/utils` | `@vue-spectrum/utils` | ok | 31 | 0 | 0 | 100.0% |
 | `@react-spectrum/view` | `@vue-spectrum/view` | ok | 8 | 0 | 0 | 100.0% |
 | `@react-spectrum/well` | `@vue-spectrum/well` | ok | 2 | 0 | 0 | 100.0% |
 | `@react-stately/autocomplete` | `@vue-stately/autocomplete` | ok | 4 | 0 | 0 | 100.0% |
@@ -202,15 +202,6 @@ Generated: 2026-02-19T23:27:56.761Z
 * Mismatched signatures: 60
 * Missing in target: 0
 * Example mismatches: `useBreadcrumbItem [call-signatures]`, `useBreadcrumbs [call-signatures]`, `useButton [call-signatures]`, `useToggleButton [call-signatures]`, `useToggleButtonGroup [call-signatures]`, `useToggleButtonGroupItem [call-signatures]`, `useCalendar [call-signatures]`, `useCalendarCell [call-signatures]`, `useCalendarGrid [call-signatures]`, `useRangeCalendar [call-signatures]`, `useCheckbox [call-signatures]`, `useCheckboxGroup [call-signatures]`, `useCheckboxGroupItem [call-signatures]`, `useComboBox [call-signatures]`, `useDateField [call-signatures]`, `useTimeField [call-signatures]`, `useDialog [call-signatures]`, `useDisclosure [call-signatures]`, `useLocalizedStringFormatter [call-signatures]`, `useNumberFormatter [call-signatures]`, `useListFormatter [call-signatures]`, `useGridList [call-signatures]`, `useGridListItem [call-signatures]`, `useGridListSection [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]` ...
-
-### @react-spectrum/utils -> @vue-spectrum/utils
-
-* Source entry: `packages/@react-spectrum/utils/src/index.ts`
-* Target entry: `packages/@vue-spectrum/utils/src/index.ts`
-* Compared exports: 31
-* Mismatched signatures: 27
-* Missing in target: 0
-* Example mismatches: `shouldKeepSpectrumClassNames [call-signatures]`, `keepSpectrumClassNames [call-signatures]`, `classNames [call-signatures]`, `getWrappedElement [call-signatures]`, `useMediaQuery [call-signatures]`, `createDOMRef [call-signatures]`, `createFocusableRef [call-signatures]`, `useDOMRef [call-signatures]`, `useFocusableRef [call-signatures]`, `unwrapDOMRef [call-signatures]`, `useUnwrapDOMRef [call-signatures]`, `baseStyleProps [value-type]`, `viewStyleProps [value-type]`, `dimensionValue [call-signatures]`, `responsiveDimensionValue [call-signatures]`, `convertStyleProps [call-signatures]`, `useStyleProps [call-signatures]`, `passthroughStyle [call-signatures]`, `getResponsiveProp [call-signatures]`, `useSlotProps [call-signatures]`, `cssModuleToSlots [call-signatures]`, `useHasChild [call-signatures]`, `useIsMobileDevice [call-signatures]`, `useValueEffect [call-signatures]`, `useMatchedBreakpoints [call-signatures]` ...
 
 ### react-stately -> vue-stately
 
@@ -355,4 +346,13 @@ Generated: 2026-02-19T23:27:56.761Z
 * Mismatched signatures: 2
 * Missing in target: 0
 * Example mismatches: `useActionGroup [call-signatures]`, `useActionGroupItem [call-signatures]`
+
+### @react-aria/autocomplete -> @vue-aria/autocomplete
+
+* Source entry: `packages/@react-aria/autocomplete/src/index.ts`
+* Target entry: `packages/@vue-aria/autocomplete/src/index.ts`
+* Compared exports: 10
+* Mismatched signatures: 2
+* Missing in target: 0
+* Example mismatches: `useSearchAutocomplete [call-signatures]`, `useAutocomplete [call-signatures]`
 

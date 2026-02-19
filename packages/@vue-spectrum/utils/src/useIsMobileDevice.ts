@@ -1,8 +1,9 @@
-import {type Ref} from 'vue';
-import {useMediaQuery} from './useMediaQuery';
+const MOBILE_SCREEN_WIDTH = 700;
 
-const DEFAULT_MOBILE_QUERY = '(max-width: 700px)';
+export function useIsMobileDevice(): boolean {
+  if (typeof window === 'undefined') {
+    return false;
+  }
 
-export function useIsMobileDevice(query: string = DEFAULT_MOBILE_QUERY): Ref<boolean> {
-  return useMediaQuery(query);
+  return window.screen.width <= MOBILE_SCREEN_WIDTH;
 }

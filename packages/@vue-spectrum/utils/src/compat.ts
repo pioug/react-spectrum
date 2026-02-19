@@ -1,97 +1,231 @@
-import {computed, defineComponent, ref, type Ref, type VNodeChild} from 'vue';
+import {defineComponent} from 'vue';
 import {useResizeObserver as useAriaResizeObserver, useValueEffect as useAriaValueEffect} from '@vue-aria/utils';
-import {createDOMRef, type DOMRef, unwrapDOMRef, useDOMRef} from './useDOMRef';
+import {
+  createFocusableRef as createFocusableRefInternal,
+  type DOMRefValue,
+  type FocusableElement,
+  type FocusableRef,
+  type FocusableRefValue,
+  type RefObject,
+  type DOMRef,
+  unwrapDOMRef as unwrapDOMRefInternal,
+  useFocusableRef as useFocusableRefInternal,
+  useUnwrapDOMRef as useUnwrapDOMRefInternal
+} from './useDOMRef';
 
 type AnyRecord = Record<string, unknown>;
+type Direction = 'ltr' | 'rtl';
+type Breakpoint = 'base' | 'S' | 'M' | 'L' | string;
+type Responsive<T> = T | Record<string, T | undefined>;
+type DimensionValue = number | string | null | undefined;
+type CSSProperties = Record<string, unknown>;
+type HTMLAttributes<T extends HTMLElement = HTMLElement> = Record<string, unknown>;
+type ViewStyleProps<C extends ColorVersion = ColorVersion> = AnyRecord & {
+  UNSAFE_className?: string,
+  UNSAFE_style?: Record<string, unknown>,
+  colorVersion?: C,
+  isHidden?: Responsive<boolean>
+};
+type ColorVersion = number;
+type ReactNode = unknown;
+type ReactElement<P = any, T = any> = {
+  props?: P,
+  type?: T
+};
+type JSXElementConstructor<P> = (props: P) => unknown;
+type SlotProps = {
+  slot?: string
+};
+type Breakpoints = {
+  [custom: string]: number | undefined
+};
+type BreakpointContext = {
+  matchedBreakpoints: string[]
+};
+type SetValueAction<S> = (prev: S) => Generator<S, void, unknown>;
+type Dispatch<T> = (value: T) => void;
+type useResizeObserverOptionsType<T extends Element> = {
+  ref: RefObject<T | undefined | null> | undefined,
+  box?: ResizeObserverBoxOptions,
+  onResize: () => void
+};
 
-export type StyleHandlers = Record<string, (value: unknown) => string | number | null | undefined>;
-
-export const baseStyleProps = ['UNSAFE_className', 'UNSAFE_style', 'id'];
-export const viewStyleProps = ['backgroundColor', 'borderColor', 'padding', 'margin'];
-
-export function getWrappedElement(element: unknown): unknown {
-  return element;
+type StyleName = string | string[] | ((dir: Direction) => string);
+type StyleHandler = (value: any, colorVersion?: number) => string | undefined;
+export interface StyleHandlers {
+  [key: string]: [StyleName, StyleHandler]
 }
 
-export function createFocusableRef<T extends Element = Element>(element: T | null = null): DOMRef<T> {
-  return createDOMRef(element);
+export const baseStyleProps: StyleHandlers = {
+  margin: ['margin', dimensionValue]
+};
+
+export const viewStyleProps: StyleHandlers = {
+  ...baseStyleProps,
+  backgroundColor: ['backgroundColor', passthroughStyle],
+  borderColor: ['borderColor', passthroughStyle],
+  padding: ['padding', dimensionValue]
+};
+
+export function getWrappedElement(children: string | ReactElement | ReactNode): ReactElement<any, JSXElementConstructor<any>> {
+  if (typeof children === 'string') {
+    return {
+      type: ((props: {children?: ReactNode}) => props.children) as JSXElementConstructor<any>,
+      props: {
+        children
+      }
+    };
+  }
+
+  return children as ReactElement<any, JSXElementConstructor<any>>;
 }
 
-export function useFocusableRef<T extends Element = Element>(initialValue: T | null = null): Ref<T | null> {
-  return useDOMRef(initialValue);
+export function createFocusableRef<T extends HTMLElement = HTMLElement>(
+  domRef: RefObject<T | null>,
+  focusableRef: RefObject<FocusableElement | null> = domRef as unknown as RefObject<FocusableElement | null>
+): FocusableRefValue<T> {
+  return createFocusableRefInternal(domRef, focusableRef);
 }
 
-export function useUnwrapDOMRef<T extends Element = Element>(value: DOMRef<T> | Ref<T | null> | T | null) {
-  return computed(() => unwrapDOMRef(value as DOMRef<T> | Ref<T | null> | T | null));
+export function useFocusableRef<T extends HTMLElement = HTMLElement>(
+  ref: FocusableRef<T>,
+  focusableRef?: RefObject<FocusableElement | null>
+): RefObject<T | null> {
+  return useFocusableRefInternal(ref, focusableRef);
 }
 
-export function dimensionValue(value: unknown): string | number | undefined {
+export function useUnwrapDOMRef<T extends HTMLElement>(
+  ref: RefObject<DOMRefValue<T> | null>
+): RefObject<T | null> {
+  return useUnwrapDOMRefInternal(ref);
+}
+
+export function dimensionValue(value: DimensionValue): string | undefined {
   if (typeof value === 'number') {
     return `${value}px`;
   }
 
-  if (typeof value === 'string') {
-    return value;
+  if (!value) {
+    return undefined;
   }
 
-  return undefined;
+  return String(value);
 }
 
-export function responsiveDimensionValue(value: unknown): string | number | undefined {
-  if (Array.isArray(value)) {
-    return dimensionValue(value[0]);
+export function responsiveDimensionValue(value: Responsive<DimensionValue>, matchedBreakpoints: Breakpoint[]): string | undefined {
+  let responsiveValue = getResponsiveProp(value, matchedBreakpoints);
+  if (responsiveValue != null) {
+    return dimensionValue(responsiveValue);
+  }
+}
+
+export function convertStyleProps<C extends ColorVersion>(
+  props: ViewStyleProps<C>,
+  handlers: StyleHandlers,
+  direction: Direction,
+  matchedBreakpoints: Breakpoint[]
+): CSSProperties {
+  let style: CSSProperties = {};
+  for (let key in props) {
+    let styleProp = handlers[key];
+    if (!styleProp || props[key] == null) {
+      continue;
+    }
+
+    let [name, convert] = styleProp;
+    if (typeof name === 'function') {
+      name = name(direction);
+    }
+
+    let value = convert(getResponsiveProp(props[key], matchedBreakpoints), props.colorVersion);
+    if (Array.isArray(name)) {
+      for (let namePart of name) {
+        style[namePart] = value;
+      }
+    } else {
+      style[name] = value;
+    }
   }
 
-  if (value && typeof value === 'object') {
-    let first = Object.values(value as Record<string, unknown>)[0];
-    return dimensionValue(first);
-  }
-
-  return dimensionValue(value);
+  return style;
 }
 
-export function passthroughStyle(style: unknown): Record<string, unknown> {
-  return style && typeof style === 'object' ? style as Record<string, unknown> : {};
-}
+type StylePropsOptions = {
+  matchedBreakpoints?: Breakpoint[]
+};
 
-export function getResponsiveProp<T>(value: T | Record<string, T>, breakpoint: string = 'base'): T | undefined {
-  if (value && typeof value === 'object' && !Array.isArray(value)) {
-    let recordValue = value as Record<string, T>;
-    return recordValue[breakpoint] ?? Object.values(recordValue)[0];
-  }
+type StyleProps = {
+  UNSAFE_className?: string,
+  UNSAFE_style?: AnyRecord,
+  isHidden?: Responsive<boolean>,
+  [key: string]: unknown
+};
 
-  return value as T;
-}
+export function useStyleProps<T extends StyleProps>(
+  props: T,
+  handlers: StyleHandlers = baseStyleProps,
+  options: StylePropsOptions = {}
+): {styleProps: HTMLAttributes<HTMLElement>} {
+  let matchedBreakpoints = options.matchedBreakpoints ?? ['base'];
+  let style = {
+    ...(props.UNSAFE_style ?? {}),
+    ...convertStyleProps(props as ViewStyleProps, handlers, 'ltr', matchedBreakpoints)
+  };
 
-export function convertStyleProps(props: AnyRecord = {}) {
-  return {
-    style: passthroughStyle(props.UNSAFE_style),
+  let styleProps: HTMLAttributes<HTMLElement> = {
+    style,
     className: props.UNSAFE_className
+  };
+
+  if (getResponsiveProp(props.isHidden, matchedBreakpoints)) {
+    styleProps.hidden = true;
+  }
+
+  return {
+    styleProps
   };
 }
 
-export function useStyleProps(props: AnyRecord = {}) {
-  return computed(() => convertStyleProps(props));
+export function passthroughStyle<T>(value: T): T {
+  return value;
 }
 
-export function cssModuleToSlots(styles: AnyRecord = {}): Record<string, string> {
-  let slots: Record<string, string> = {};
-  for (let [key, value] of Object.entries(styles)) {
-    slots[key] = typeof value === 'string' ? value : '';
+export function getResponsiveProp<T>(prop: Responsive<T>, matchedBreakpoints: Breakpoint[]): T | undefined {
+  if (prop && typeof prop === 'object' && !Array.isArray(prop)) {
+    let responsiveValue = prop as Record<string, T | undefined>;
+    for (let breakpoint of matchedBreakpoints) {
+      if (responsiveValue[breakpoint] != null) {
+        return responsiveValue[breakpoint];
+      }
+    }
+
+    return responsiveValue.base;
+  }
+
+  return prop as T;
+}
+
+export function useSlotProps<T>(props: T & {id?: string}, defaultSlot?: string): T {
+  let slot = (props as T & SlotProps).slot ?? defaultSlot;
+  return {
+    ...props,
+    slot
+  } as T;
+}
+
+export function cssModuleToSlots(cssModule: {[cssmodule: string]: string}): {[slot: string]: {UNSAFE_className: string}} {
+  let slots: {[slot: string]: {UNSAFE_className: string}} = {};
+  for (let [slot, className] of Object.entries(cssModule)) {
+    slots[slot] = {
+      UNSAFE_className: className
+    };
   }
 
   return slots;
 }
 
-export function useSlotProps(props: AnyRecord = {}, slotName: string = 'default') {
-  return computed(() => ({
-    ...props,
-    slot: slotName
-  }));
-}
-
-export function useHasChild(child: VNodeChild | null | undefined) {
-  return computed(() => child != null);
+export function useHasChild(query: string, ref: RefObject<HTMLElement | null>): boolean {
+  return Boolean(ref.current?.querySelector(query));
 }
 
 export const SlotProvider = defineComponent({
@@ -115,18 +249,23 @@ export const BreakpointProvider = defineComponent({
   }
 });
 
-export function useMatchedBreakpoints() {
-  return ref(['base']);
+export function useMatchedBreakpoints(_breakpoints: Breakpoints): string[] {
+  return ['base'];
 }
 
-export function useBreakpoint() {
-  return computed(() => 'base');
+export function useBreakpoint(): BreakpointContext | null {
+  return {
+    matchedBreakpoints: ['base']
+  };
 }
 
-export function useResizeObserver(...args: Parameters<typeof useAriaResizeObserver>) {
-  return useAriaResizeObserver(...args);
+export function useResizeObserver<T extends Element>(options: useResizeObserverOptionsType<T>): void {
+  useAriaResizeObserver(options);
 }
 
-export function useValueEffect<T>(initialValue: T) {
-  return useAriaValueEffect(initialValue);
+export function useValueEffect<S>(defaultValue: S | (() => S)): [S, Dispatch<SetValueAction<S>>] {
+  return useAriaValueEffect(defaultValue);
 }
+
+export const unwrapDOMRef = unwrapDOMRefInternal;
+export type {DOMRef};
