@@ -48,6 +48,8 @@ Phase 1 is implemented:
   * `@react-spectrum/table` -> `@vue-spectrum/table` (`in_progress`)
   * `@react-spectrum/tree` -> `@vue-spectrum/tree` (`in_progress`)
   * `@react-spectrum/dnd` -> `@vue-spectrum/dnd` (`in_progress`)
+* Started Vue test adaptation:
+  * `starters/vue` runs Vitest + Vue Test Utils interaction tests for `button`, `textfield`, `checkbox`, `radio`, and `switch`.
 
 ## Migration phases
 

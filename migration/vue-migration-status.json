@@ -17,6 +17,10 @@
         {
           "name": "Vue starter production build",
           "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
         }
       ]
     },

@@ -9,13 +9,16 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "types": [
-      "vite/client"
+      "vite/client",
+      "vitest/globals"
     ]
   },
   "include": [
     "src/**/*.ts",
+    "src/**/*.spec.ts",
     "src/**/*.d.ts",
     "src/**/*.vue",
-    "vite.config.ts"
+    "vite.config.ts",
+    "vitest.config.ts"
   ]
 }

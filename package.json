@@ -22,6 +22,7 @@
     "start:vue": "yarn workspace vue-spectrum-starter dev",
     "build:vue": "yarn workspace vue-spectrum-starter build",
     "typecheck:vue": "yarn workspace vue-spectrum-starter typecheck",
+    "test:vue": "yarn workspace vue-spectrum-starter test",
     "vue:migration:report": "node scripts/vue-migration-tracker.mjs report --write",
     "vue:migration:test": "node scripts/vue-migration-tracker.mjs verify",
     "build:storybook": "storybook build -c .storybook -o dist/$(git rev-parse HEAD)/storybook",

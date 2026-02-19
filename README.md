@@ -26,6 +26,7 @@ Regenerate and validate the migration tracker:
 ```sh
 yarn vue:migration:report
 yarn vue:migration:test
+yarn test:vue
 ```
 
 ### React Spectrum
