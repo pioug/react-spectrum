@@ -1,16 +1,16 @@
 # Vue API Parity Report
 
-Generated: 2026-02-19T21:53:25.452Z
+Generated: 2026-02-19T21:54:26.231Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 71
+* Fully matched packages: 72
 * Source exports inspected: 2672
-* Missing exports: 968
-* Coverage ratio: 63.77%
+* Missing exports: 965
+* Coverage ratio: 63.88%
 
 ## Package gaps
 
@@ -35,7 +35,6 @@ Generated: 2026-02-19T21:53:25.452Z
 | `@react-spectrum/autocomplete` | `@vue-spectrum/autocomplete` | missing | 4 | 3 | 25.0% |
 | `@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | missing | 4 | 3 | 25.0% |
 | `@react-spectrum/combobox` | `@vue-spectrum/combobox` | missing | 4 | 3 | 25.0% |
-| `@react-spectrum/layout` | `@vue-spectrum/layout` | missing | 8 | 3 | 62.5% |
 | `@react-spectrum/slider` | `@vue-spectrum/slider` | missing | 4 | 3 | 25.0% |
 | `@react-stately/datepicker` | `@vue-stately/datepicker` | missing | 15 | 3 | 80.0% |
 | `@react-aria/breadcrumbs` | `@vue-aria/breadcrumbs` | missing | 6 | 2 | 66.7% |
@@ -127,6 +126,7 @@ Generated: 2026-02-19T21:53:25.452Z
 | `@react-spectrum/form` | `@vue-spectrum/form` | ok | 3 | 0 | 100.0% |
 | `@react-spectrum/icon` | `@vue-spectrum/icon` | ok | 9 | 0 | 100.0% |
 | `@react-spectrum/label` | `@vue-spectrum/label` | ok | 3 | 0 | 100.0% |
+| `@react-spectrum/layout` | `@vue-spectrum/layout` | ok | 8 | 0 | 100.0% |
 | `@react-spectrum/listbox` | `@vue-spectrum/listbox` | ok | 6 | 0 | 100.0% |
 | `@react-spectrum/menu` | `@vue-spectrum/menu` | ok | 12 | 0 | 100.0% |
 | `@react-spectrum/overlays` | `@vue-spectrum/overlays` | ok | 5 | 0 | 100.0% |
@@ -306,10 +306,10 @@ Generated: 2026-02-19T21:53:25.452Z
 * Missing export count: 3
 * Missing exports: `Item`, `Section`, `SpectrumComboBoxProps`
 
-### @react-spectrum/layout -> @vue-spectrum/layout
+### @react-spectrum/slider -> @vue-spectrum/slider
 
-* Source entry: `packages/@react-spectrum/layout/src/index.ts`
-* Target entry: `packages/@vue-spectrum/layout/src/index.ts`
+* Source entry: `packages/@react-spectrum/slider/src/index.ts`
+* Target entry: `packages/@vue-spectrum/slider/src/index.ts`
 * Missing export count: 3
-* Missing exports: `DimensionValue`, `FlexProps`, `GridProps`
+* Missing exports: `RangeSlider`, `SpectrumRangeSliderProps`, `SpectrumSliderProps`
 

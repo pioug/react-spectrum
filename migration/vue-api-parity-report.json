@@ -1,13 +1,13 @@
 {
-  "generatedAt": "2026-02-19T21:53:25.452Z",
+  "generatedAt": "2026-02-19T21:54:26.231Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 71,
+    "fullyMatchedPackages": 72,
     "sourceExportTotal": 2672,
-    "missingExportTotal": 968,
-    "parityCoverage": 0.6377
+    "missingExportTotal": 965,
+    "parityCoverage": 0.6388
   },
   "packages": [
     {
@@ -1352,28 +1352,6 @@
       ],
       "extraExports": [
         "VueComboBox"
-      ],
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/layout",
-      "sourcePath": "packages/@react-spectrum/layout",
-      "targetPackage": "@vue-spectrum/layout",
-      "targetPath": "packages/@vue-spectrum/layout",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/layout/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/layout/src/index.ts",
-      "sourceExportCount": 8,
-      "targetExportCount": 7,
-      "parityRatio": 0.625,
-      "missingExports": [
-        "DimensionValue",
-        "FlexProps",
-        "GridProps"
-      ],
-      "extraExports": [
-        "VueFlex",
-        "VueGrid"
       ],
       "error": null
     },
@@ -3196,6 +3174,24 @@
       "missingExports": [],
       "extraExports": [
         "VueLabel"
+      ],
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/layout",
+      "sourcePath": "packages/@react-spectrum/layout",
+      "targetPackage": "@vue-spectrum/layout",
+      "targetPath": "packages/@vue-spectrum/layout",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/layout/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/layout/src/index.ts",
+      "sourceExportCount": 8,
+      "targetExportCount": 10,
+      "parityRatio": 1,
+      "missingExports": [],
+      "extraExports": [
+        "VueFlex",
+        "VueGrid"
       ],
       "error": null
     },

@@ -16,3 +16,5 @@ export function fitContent(value: string | number): string {
 }
 
 export {VueFlex, VueGrid};
+export type {DimensionValue} from '@react-types/shared';
+export type {FlexProps, GridProps} from '@react-types/layout';
