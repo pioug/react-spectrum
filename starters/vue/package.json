@@ -28,6 +28,7 @@
     "@vue-aria/disclosure": "workspace:*",
     "@vue-aria/dnd": "workspace:*",
     "@vue-aria/example-theme": "workspace:*",
+    "@vue-aria/focus": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",

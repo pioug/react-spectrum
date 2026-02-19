@@ -11945,6 +11945,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/focus@workspace:*, @vue-aria/focus@workspace:packages/@vue-aria/focus":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/focus@workspace:packages/@vue-aria/focus"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31252,6 +31260,7 @@ __metadata:
     "@vue-aria/disclosure": "workspace:*"
     "@vue-aria/dnd": "workspace:*"
     "@vue-aria/example-theme": "workspace:*"
+    "@vue-aria/focus": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"

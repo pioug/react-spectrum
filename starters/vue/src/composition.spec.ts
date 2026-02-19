@@ -16,6 +16,7 @@ import {useDialog as useAriaDialog} from '@vue-aria/dialog';
 import {useDisclosure as useAriaDisclosure} from '@vue-aria/disclosure';
 import {useDrag, useDrop} from '@vue-aria/dnd';
 import {EXAMPLE_THEME_CLASS, useExampleTheme} from '@vue-aria/example-theme';
+import {useFocusRing, useHasTabbableChild} from '@vue-aria/focus';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -628,6 +629,45 @@ describe('Vue migration composition components', () => {
 
     expect(theme.rootProps.value.class).toBe(`${EXAMPLE_THEME_CLASS} starter-shell`);
     expect(theme.rootProps.value['data-theme']).toBe('system');
+  });
+
+  it('tracks vue-aria focus ring modality for direct and within focus flows', () => {
+    let focusRing = useFocusRing();
+    window.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+    focusRing.focusProps.value.onFocus?.(new FocusEvent('focus'));
+    expect(focusRing.isFocused.value).toBe(true);
+    expect(focusRing.isFocusVisible.value).toBe(false);
+
+    window.dispatchEvent(new KeyboardEvent('keydown', {key: 'Tab'}));
+    focusRing.focusProps.value.onBlur?.(new FocusEvent('blur'));
+    focusRing.focusProps.value.onFocus?.(new FocusEvent('focus'));
+    expect(focusRing.isFocusVisible.value).toBe(true);
+
+    let withinFocusRing = useFocusRing({within: true});
+    withinFocusRing.focusProps.value.onFocusin?.(new FocusEvent('focusin'));
+    expect(withinFocusRing.isFocused.value).toBe(true);
+    withinFocusRing.focusProps.value.onFocusout?.(new FocusEvent('focusout'));
+    expect(withinFocusRing.isFocused.value).toBe(false);
+  });
+
+  it('detects vue-aria tabbable child state and updates after mutations', async () => {
+    let container = document.createElement('div');
+    let containerRef = ref<Element | null>(container);
+    let hasTabbableChild = useHasTabbableChild(containerRef);
+
+    expect(hasTabbableChild.value).toBe(false);
+
+    let childButton = document.createElement('button');
+    container.append(childButton);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(hasTabbableChild.value).toBe(true);
+
+    childButton.setAttribute('disabled', 'true');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(hasTabbableChild.value).toBe(false);
+
+    let disabledResult = useHasTabbableChild(containerRef, {isDisabled: true});
+    expect(disabledResult.value).toBe(false);
   });
 
   it('emits close events from dismissable dialog controls', async () => {

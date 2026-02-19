@@ -384,6 +384,30 @@
         }
       ]
     },
+    "@react-aria/focus": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/focus",
+      "targetPath": "packages/@vue-aria/focus",
+      "notes": "Foundational React Aria focus composables for focus-ring visibility and tabbable-child detection behavior in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria focus source lint",
+          "command": "yarn eslint packages/@vue-aria/focus/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",
