@@ -9,6 +9,7 @@ import {useButton, useToggleButton, useToggleButtonGroup, useToggleButtonGroupIt
 import {useCalendar, useCalendarCell, useCalendarGrid, useRangeCalendar} from '@vue-aria/calendar';
 import {useCheckbox, useCheckboxGroup, useCheckboxGroupItem} from '@vue-aria/checkbox';
 import {CollectionBuilder, useCachedChildren} from '@vue-aria/collections';
+import {useColorArea, useColorChannelField, useColorField, useColorSlider, useColorSwatch, useColorWheel} from '@vue-aria/color';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -332,6 +333,60 @@ describe('Vue migration composition components', () => {
     items.value = [alpha, beta];
     let secondPass = cachedChildren.value as Array<{key: string, rendered: unknown}>;
     expect(secondPass[0]).toBe(firstPass[0]);
+  });
+
+  it('updates vue-aria color slider, channel field, and text field values', () => {
+    let channelValue = ref(40);
+    let slider = useColorSlider({
+      channel: 'hue',
+      value: channelValue
+    });
+
+    slider.increment();
+    expect(channelValue.value).toBe(41);
+    slider.setValue(720);
+    expect(channelValue.value).toBe(360);
+
+    let channelField = useColorChannelField({
+      channel: 'hue',
+      value: channelValue
+    });
+    channelField.decrement();
+    expect(channelValue.value).toBe(359);
+
+    let colorText = ref('#ff0000');
+    let colorField = useColorField({
+      value: colorText
+    });
+    colorField.setValue('00ff00');
+    expect(colorText.value).toBe('#00ff00');
+  });
+
+  it('updates vue-aria color area, wheel, and swatch props', () => {
+    let x = ref(0);
+    let y = ref(0);
+    let area = useColorArea({
+      x,
+      y
+    });
+    area.setValue(0.25, 0.75);
+    expect(x.value).toBeCloseTo(0.25);
+    expect(y.value).toBeCloseTo(0.75);
+
+    let angle = ref(0);
+    let radius = ref(0);
+    let wheel = useColorWheel({
+      angle,
+      radius
+    });
+    wheel.setValue(420, 0.5);
+    expect(angle.value).toBe(60);
+    expect(radius.value).toBe(0.5);
+
+    let swatch = useColorSwatch({
+      color: ref('ff00ff')
+    });
+    expect(swatch.swatchProps.value.style.backgroundColor).toBe('#ff00ff');
   });
 
   it('emits close events from dismissable dialog controls', async () => {

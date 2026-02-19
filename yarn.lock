@@ -11889,6 +11889,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/color@workspace:*, @vue-aria/color@workspace:packages/@vue-aria/color":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/color@workspace:packages/@vue-aria/color"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31189,6 +31197,7 @@ __metadata:
     "@vue-aria/calendar": "workspace:*"
     "@vue-aria/checkbox": "workspace:*"
     "@vue-aria/collections": "workspace:*"
+    "@vue-aria/color": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"

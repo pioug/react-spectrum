@@ -240,6 +240,30 @@
         }
       ]
     },
+    "@react-aria/color": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/color",
+      "targetPath": "packages/@vue-aria/color",
+      "notes": "Foundational React Aria color composables for sliders, wheels, areas, swatches, and channel/text field controls in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria color source lint",
+          "command": "yarn eslint packages/@vue-aria/color/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/provider": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/provider",
