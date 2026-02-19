@@ -27,7 +27,7 @@ Roadmap baseline coverage is complete across all migration phases for tracked pa
 * Ported meta-package aggregators:
   * `react-aria` -> `vue-aria` (`ported`)
   * `react-stately` -> `vue-stately` (`ported`)
-* Started first package-level port:
+* Completed first package-level port baseline:
   * `@react-spectrum/provider` -> `@vue-spectrum/provider` is now tracked as `ported`.
 * Expanded first-wave ports:
   * `@react-spectrum/button` -> `@vue-spectrum/button` (`ported`)
@@ -57,9 +57,9 @@ Roadmap baseline coverage is complete across all migration phases for tracked pa
   * `@react-spectrum/image` -> `@vue-spectrum/image` (`ported`)
   * `@react-spectrum/inlinealert` -> `@vue-spectrum/inlinealert` (`ported`)
   * `@react-spectrum/illustratedmessage` -> `@vue-spectrum/illustratedmessage` (`ported`)
-* Started Tailwind plugin migration:
+* Completed Tailwind plugin migration baseline:
   * `tailwindcss-react-aria-components` -> `tailwindcss-vue-aria-components` (`ported`)
-* Started composition-component migration:
+* Completed composition-component migration baseline:
   * `@react-spectrum/accordion` -> `@vue-spectrum/accordion` (`ported`)
   * `@react-spectrum/actionbar` -> `@vue-spectrum/actionbar` (`ported`)
   * `@react-spectrum/actiongroup` -> `@vue-spectrum/actiongroup` (`ported`)
@@ -89,7 +89,7 @@ Roadmap baseline coverage is complete across all migration phases for tracked pa
   * `@react-spectrum/theme-light` -> `@vue-spectrum/theme-light` (`ported`)
   * `@react-spectrum/story-utils` -> `@vue-spectrum/story-utils` (`ported`)
   * `@react-spectrum/style-macro-s1` -> `@vue-spectrum/style-macro-s1` (`ported`)
-* Started data-heavy migration:
+* Completed data-heavy migration baseline:
   * `@react-spectrum/table` -> `@vue-spectrum/table` (`ported`)
   * `@react-spectrum/tree` -> `@vue-spectrum/tree` (`ported`)
   * `@react-spectrum/dnd` -> `@vue-spectrum/dnd` (`ported`)
@@ -97,7 +97,7 @@ Roadmap baseline coverage is complete across all migration phases for tracked pa
   * `@react-spectrum/filetrigger` -> `@vue-spectrum/filetrigger` (`ported`)
   * `@react-spectrum/s2` -> `@vue-spectrum/s2` (`ported`)
   * `@react-spectrum/steplist` -> `@vue-spectrum/steplist` (`ported`)
-* Started React Aria package migration:
+* Completed React Aria package migration baseline:
   * `@react-aria/actiongroup` -> `@vue-aria/actiongroup` (`ported`)
   * `@react-aria/autocomplete` -> `@vue-aria/autocomplete` (`ported`)
   * `@react-aria/breadcrumbs` -> `@vue-aria/breadcrumbs` (`ported`)
@@ -153,7 +153,7 @@ Roadmap baseline coverage is complete across all migration phases for tracked pa
   * `@react-aria/aria-modal-polyfill` -> `@vue-aria/aria-modal-polyfill` (`ported`)
   * `@react-aria/virtualizer` -> `@vue-aria/virtualizer` (`ported`)
   * Vue starter now includes composable coverage for `@vue-aria/actiongroup`, `@vue-aria/autocomplete`, `@vue-aria/breadcrumbs`, `@vue-aria/button`, `@vue-aria/calendar`, `@vue-aria/checkbox`, `@vue-aria/collections`, `@vue-aria/combobox`, `@vue-aria/datepicker`, `@vue-aria/dialog`, `@vue-aria/dnd`, `@vue-aria/example-theme`, `@vue-aria/focus`, `@vue-aria/form`, `@vue-aria/grid`, `@vue-aria/gridlist`, `@vue-aria/i18n`, `@vue-aria/interactions`, `@vue-aria/label`, `@vue-aria/landmark`, `@vue-aria/link`, `@vue-aria/listbox`, `@vue-aria/live-announcer`, `@vue-aria/menu`, `@vue-aria/meter`, `@vue-aria/numberfield`, `@vue-aria/overlays`, `@vue-aria/progress`, `@vue-aria/radio`, `@vue-aria/searchfield`, `@vue-aria/select`, `@vue-aria/selection`, `@vue-aria/separator`, `@vue-aria/slider`, `@vue-aria/spinbutton`, `@vue-aria/ssr`, `@vue-aria/steplist`, `@vue-aria/switch`, `@vue-aria/toggle`, `@vue-aria/toolbar`, `@vue-aria/tooltip`, `@vue-aria/tree`, `@vue-aria/utils`, `@vue-aria/visually-hidden`, `@vue-aria/tag`, `@vue-aria/tabs`, `@vue-aria/table`, `@vue-aria/test-utils`, `@vue-aria/textfield`, `@vue-aria/toast`, `@vue-aria/disclosure`, `@vue-aria/color`, and `@vue-aria/aria-modal-polyfill`, plus a virtualized backlog demo wired to `@vue-aria/virtualizer`.
-* Started React Stately package migration:
+* Completed React Stately package migration baseline:
   * `@react-stately/autocomplete` -> `@vue-stately/autocomplete` (`ported`)
   * `@react-stately/calendar` -> `@vue-stately/calendar` (`ported`)
   * `@react-stately/checkbox` -> `@vue-stately/checkbox` (`ported`)
@@ -186,11 +186,11 @@ Roadmap baseline coverage is complete across all migration phases for tracked pa
   * `@react-stately/tree` -> `@vue-stately/tree` (`ported`)
   * `@react-stately/utils` -> `@vue-stately/utils` (`ported`)
   * `@react-stately/virtualizer` -> `@vue-stately/virtualizer` (`ported`)
-* Started Vue test adaptation:
+* Completed baseline Vue test adaptation:
   * `starters/vue` runs Vitest + Vue Test Utils interaction tests for `button`, `buttongroup`, `textfield`, `checkbox`, `radio`, `switch`, `tabs`, `tag`, `toast`, `tooltip`, `layout`, `labeledvalue`, `illustratedmessage`, and `icon`.
   * Added composition coverage for `accordion`, `actionbar`, `actiongroup`, `breadcrumbs`, `calendar`, `card`, `color`, `contextualhelp`, `datepicker`, `picker`, `dialog`, `overlays`, `menu`, `listbox`, `list`, `tabs`, `tag`, `combobox`, `autocomplete`, `story-utils`, `test-utils`, `theme-dark`, `theme-default`, `theme-express`, `theme-light`, `utils`, `style-macro-s1`, `@vue-stately/autocomplete`, `@vue-stately/calendar`, `@vue-stately/checkbox`, `@vue-stately/collections`, `@vue-stately/color`, `@vue-stately/combobox`, `@vue-stately/data`, `@vue-stately/datepicker`, `@vue-stately/disclosure`, `@vue-stately/dnd`, `@vue-stately/flags`, `@vue-stately/form`, `@vue-stately/grid`, `@vue-stately/layout`, `@vue-stately/list`, `@vue-stately/menu`, `@vue-stately/numberfield`, `@vue-stately/overlays`, `@vue-stately/radio`, `@vue-stately/searchfield`, `@vue-stately/select`, `@vue-stately/selection`, `@vue-stately/slider`, `@vue-stately/steplist`, `@vue-stately/table`, `@vue-stately/tabs`, `@vue-stately/toast`, `@vue-stately/toggle`, `@vue-stately/tooltip`, `@vue-stately/tree`, `@vue-stately/utils`, and `@vue-stately/virtualizer`.
   * Added data-heavy and virtualization coverage for `table`, `tree`, `steplist`, `dnd`, `dropzone`, `filetrigger`, and `@vue-aria/virtualizer`, plus composable coverage for `@vue-aria/actiongroup`, `@vue-aria/autocomplete`, `@vue-aria/breadcrumbs`, `@vue-aria/button`, `@vue-aria/calendar`, `@vue-aria/checkbox`, `@vue-aria/collections`, `@vue-aria/combobox`, `@vue-aria/datepicker`, `@vue-aria/dialog`, `@vue-aria/dnd`, `@vue-aria/example-theme`, `@vue-aria/focus`, `@vue-aria/form`, `@vue-aria/grid`, `@vue-aria/gridlist`, `@vue-aria/i18n`, `@vue-aria/interactions`, `@vue-aria/label`, `@vue-aria/landmark`, `@vue-aria/link`, `@vue-aria/listbox`, `@vue-aria/live-announcer`, `@vue-aria/menu`, `@vue-aria/meter`, `@vue-aria/numberfield`, `@vue-aria/overlays`, `@vue-aria/progress`, `@vue-aria/radio`, `@vue-aria/searchfield`, `@vue-aria/select`, `@vue-aria/selection`, `@vue-aria/separator`, `@vue-aria/slider`, `@vue-aria/spinbutton`, `@vue-aria/ssr`, `@vue-aria/steplist`, `@vue-aria/switch`, `@vue-aria/toggle`, `@vue-aria/toolbar`, `@vue-aria/tooltip`, `@vue-aria/tree`, `@vue-aria/utils`, `@vue-aria/visually-hidden`, `@vue-aria/tag`, `@vue-aria/tabs`, `@vue-aria/table`, `@vue-aria/test-utils`, `@vue-aria/textfield`, `@vue-aria/toast`, `@vue-aria/disclosure`, `@vue-aria/color`, and `@vue-aria/aria-modal-polyfill`.
-* Started API stabilization and deprecation planning:
+* Added API stabilization and deprecation planning baseline artifacts:
   * `migration/VUE_PUBLISH_CHECKLIST.md`
   * `migration/REACT_DEPRECATION_PLAN.md`
   * `migration/REACT_TO_VUE_MIGRATION_GUIDE.md`
