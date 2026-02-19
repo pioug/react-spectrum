@@ -2776,6 +2776,30 @@
         }
       ]
     },
+    "@react-stately/calendar": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/calendar",
+      "targetPath": "packages/@vue-stately/calendar",
+      "notes": "State baseline for single-date and range-date calendar navigation and selection in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately calendar package source lint",
+          "command": "yarn eslint packages/@vue-stately/calendar/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

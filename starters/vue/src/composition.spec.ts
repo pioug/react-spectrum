@@ -160,6 +160,7 @@ import {
   useMediaQuery as useSpectrumMediaQuery
 } from '@vue-spectrum/utils';
 import {useAutocompleteState as useStatelyAutocompleteState} from '@vue-stately/autocomplete';
+import {useCalendarState as useStatelyCalendarState, useRangeCalendarState as useStatelyRangeCalendarState} from '@vue-stately/calendar';
 
 function createPointerEvent(
   type: string,
@@ -467,6 +468,47 @@ describe('Vue migration composition components', () => {
       date: new Date(2025, 0, 6)
     });
     expect(rangeCell.isSelected.value).toBe(true);
+  });
+
+  it('manages vue-stately calendar and range-calendar state transitions', () => {
+    let selectedDate = ref<Date | null>(new Date(2025, 0, 15));
+    let dateChanges: Array<Date | null> = [];
+    let calendarState = useStatelyCalendarState({
+      value: selectedDate,
+      onChange: (value) => {
+        dateChanges.push(value ? new Date(value) : null);
+      }
+    });
+
+    expect(calendarState.isSelected(new Date(2025, 0, 15))).toBe(true);
+    calendarState.focusNextDay();
+    calendarState.selectFocusedDate();
+    expect(selectedDate.value?.getDate()).toBe(16);
+    expect(dateChanges[dateChanges.length - 1]?.getDate()).toBe(16);
+    calendarState.focusNextPage();
+    expect(calendarState.visibleRange.value.start.getMonth()).toBe(1);
+
+    let selectedRange = ref({
+      start: null as Date | null,
+      end: null as Date | null
+    });
+    let rangeChanges: Array<{end: Date | null, start: Date | null}> = [];
+    let rangeState = useStatelyRangeCalendarState({
+      value: selectedRange,
+      onChange: (value) => {
+        rangeChanges.push({
+          start: value.start ? new Date(value.start) : null,
+          end: value.end ? new Date(value.end) : null
+        });
+      }
+    });
+
+    rangeState.selectDate(new Date(2025, 0, 5));
+    rangeState.selectDate(new Date(2025, 0, 8));
+    expect(selectedRange.value.start?.getDate()).toBe(5);
+    expect(selectedRange.value.end?.getDate()).toBe(8);
+    expect(rangeState.isSelected(new Date(2025, 0, 6))).toBe(true);
+    expect(rangeChanges.length).toBeGreaterThan(0);
   });
 
   it('toggles vue-aria checkbox selection and mixed state flags', () => {

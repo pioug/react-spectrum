@@ -12933,6 +12933,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-stately/calendar@workspace:*, @vue-stately/calendar@workspace:packages/@vue-stately/calendar":
+  version: 0.0.0-use.local
+  resolution: "@vue-stately/calendar@workspace:packages/@vue-stately/calendar"
+  dependencies:
+    "@vue-aria/calendar": "workspace:*"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue/compiler-core@npm:3.5.28":
   version: 3.5.28
   resolution: "@vue/compiler-core@npm:3.5.28"
@@ -31829,6 +31839,7 @@ __metadata:
     "@vue-spectrum/view": "workspace:*"
     "@vue-spectrum/well": "workspace:*"
     "@vue-stately/autocomplete": "workspace:*"
+    "@vue-stately/calendar": "workspace:*"
     "@vue/test-utils": "npm:^2.4.6"
     jsdom: "npm:^26.0.0"
     typescript: "npm:^5.8.2"
