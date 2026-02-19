@@ -12091,6 +12091,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/view@workspace:*, @vue-spectrum/view@workspace:packages/@vue-spectrum/view":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/view@workspace:packages/@vue-spectrum/view"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/well@workspace:*, @vue-spectrum/well@workspace:packages/@vue-spectrum/well":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/well@workspace:packages/@vue-spectrum/well"
@@ -30904,6 +30914,7 @@ __metadata:
     "@vue-spectrum/table": "workspace:*"
     "@vue-spectrum/textfield": "workspace:*"
     "@vue-spectrum/tree": "workspace:*"
+    "@vue-spectrum/view": "workspace:*"
     "@vue-spectrum/well": "workspace:*"
     "@vue/test-utils": "npm:^2.4.6"
     jsdom: "npm:^26.0.0"

@@ -673,6 +673,39 @@
   border-color: rgba(211, 21, 16, 0.45);
 }
 
+.vs-view {
+  display: block;
+}
+
+.vs-view--bordered {
+  border: 1px solid var(--vs-color-border);
+  border-radius: 10px;
+}
+
+.vs-view--padding-none {
+  padding: 0;
+}
+
+.vs-view--padding-s {
+  padding: 8px;
+}
+
+.vs-view--padding-m {
+  padding: 12px;
+}
+
+.vs-view--padding-l {
+  padding: 16px;
+}
+
+.vs-view--medium {
+  font-size: 14px;
+}
+
+.vs-view--large {
+  font-size: 16px;
+}
+
 .vs-radio-group {
   display: grid;
   gap: 8px;

@@ -7,6 +7,7 @@ import {Checkbox} from '@vue-spectrum/checkbox';
 import {Radio, RadioGroup} from '@vue-spectrum/radio';
 import {Switch} from '@vue-spectrum/switch';
 import {TextField} from '@vue-spectrum/textfield';
+import {View} from '@vue-spectrum/view';
 import {Well} from '@vue-spectrum/well';
 
 describe('Vue migration primitives', () => {
@@ -48,6 +49,24 @@ describe('Vue migration primitives', () => {
 
     expect(wrapper.text()).toContain('Migration block');
     expect(wrapper.classes()).toContain('vs-well--notice');
+  });
+
+  it('renders view with dynamic element type and classes', () => {
+    let wrapper = mount(View, {
+      props: {
+        elementType: 'section',
+        border: true,
+        padding: 'l'
+      },
+      slots: {
+        default: 'View content'
+      }
+    });
+
+    expect(wrapper.element.tagName).toBe('SECTION');
+    expect(wrapper.classes()).toContain('vs-view--bordered');
+    expect(wrapper.classes()).toContain('vs-view--padding-l');
+    expect(wrapper.text()).toContain('View content');
   });
 
   it('emits click from button', async () => {

@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 29 |
+| in_progress | 30 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 123 |
+| not_started | 122 |
 
 ## Package tracker
 
@@ -49,6 +49,7 @@ Tracked source packages: 154
 | `@react-spectrum/table` | `packages/@react-spectrum/table` | `@vue-spectrum/table` | `packages/@vue-spectrum/table` | in_progress | Vue table package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Data-heavy migration baseline for tabular collections. |
 | `@react-spectrum/textfield` | `packages/@react-spectrum/textfield` | `@vue-spectrum/textfield` | `packages/@vue-spectrum/textfield` | in_progress | Vue textfield package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave primitive aligned with existing VueTextField baseline work. |
 | `@react-spectrum/tree` | `packages/@react-spectrum/tree` | `@vue-spectrum/tree` | `packages/@vue-spectrum/tree` | in_progress | Vue tree package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Data-heavy migration baseline for hierarchical collections. |
+| `@react-spectrum/view` | `packages/@react-spectrum/view` | `@vue-spectrum/view` | `packages/@vue-spectrum/view` | in_progress | Vue view package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave layout primitive for semantic container structure and spacing. |
 | `@react-spectrum/well` | `packages/@react-spectrum/well` | `@vue-spectrum/well` | `packages/@vue-spectrum/well` | in_progress | Vue well package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave content container primitive for grouped inline context. |
 | `react-aria-components` | `packages/react-aria-components` | `@vue-spectrum/components` | `packages/@vue-spectrum/components` | in_progress | Vue package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Initial Vue baseline package exists, but React Aria Components parity is still in progress. |
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
@@ -144,7 +145,6 @@ Tracked source packages: 154
 | `@react-spectrum/toast` | `packages/@react-spectrum/toast` | `@vue-spectrum/toast` | `packages/@vue-spectrum/toast` | not_started | - | - |
 | `@react-spectrum/tooltip` | `packages/@react-spectrum/tooltip` | `@vue-spectrum/tooltip` | `packages/@vue-spectrum/tooltip` | not_started | - | - |
 | `@react-spectrum/utils` | `packages/@react-spectrum/utils` | `@vue-spectrum/utils` | `packages/@vue-spectrum/utils` | not_started | - | - |
-| `@react-spectrum/view` | `packages/@react-spectrum/view` | `@vue-spectrum/view` | `packages/@vue-spectrum/view` | not_started | - | - |
 | `@react-stately/autocomplete` | `packages/@react-stately/autocomplete` | `@vue-stately/autocomplete` | `packages/@vue-stately/autocomplete` | not_started | - | - |
 | `@react-stately/calendar` | `packages/@react-stately/calendar` | `@vue-stately/calendar` | `packages/@vue-stately/calendar` | not_started | - | - |
 | `@react-stately/checkbox` | `packages/@react-stately/checkbox` | `@vue-stately/checkbox` | `packages/@vue-stately/checkbox` | not_started | - | - |

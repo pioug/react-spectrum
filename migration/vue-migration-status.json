@@ -168,6 +168,30 @@
         }
       ]
     },
+    "@react-spectrum/view": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/view",
+      "targetPath": "packages/@vue-spectrum/view",
+      "notes": "First-wave layout primitive for semantic container structure and spacing.",
+      "acceptanceTests": [
+        {
+          "name": "Vue view package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/view/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/textfield": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/textfield",

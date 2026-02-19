@@ -131,29 +131,31 @@
 
         <VueDivider />
 
-        <p class="summary">
-          Selected: <strong>{{ favoriteFramework }}</strong>
-          <span> · </span>
-          Seats: <strong>{{ seatCount ?? 'none' }}</strong>
-          <span> · </span>
-          Progress: <strong>{{ completionProgress }}%</strong>
-          <span> · </span>
-          Menu: <strong>{{ favoriteComponent }}</strong>
-          <span> · </span>
-          List: <strong>{{ favoriteLibrary }}</strong>
-          <span> · </span>
-          Ticket: <strong>{{ selectedTicket }}</strong>
-          <span> · </span>
-          Tree: <strong>{{ selectedTreeNode }}</strong>
-          <span> · </span>
-          Files: <strong>{{ droppedFiles.length > 0 ? droppedFiles.length : 'none' }}</strong>
-          <span> · </span>
-          Digest: <strong>{{ isDigestEnabled ? 'on' : 'off' }}</strong>
-          <span> · </span>
-          Search: <strong>{{ searchQuery || 'none' }}</strong>
-          <span> · </span>
-          Subscribed: <strong>{{ isSubscribed ? 'yes' : 'no' }}</strong>
-        </p>
+        <VueView border padding="s">
+          <p class="summary">
+            Selected: <strong>{{ favoriteFramework }}</strong>
+            <span> · </span>
+            Seats: <strong>{{ seatCount ?? 'none' }}</strong>
+            <span> · </span>
+            Progress: <strong>{{ completionProgress }}%</strong>
+            <span> · </span>
+            Menu: <strong>{{ favoriteComponent }}</strong>
+            <span> · </span>
+            List: <strong>{{ favoriteLibrary }}</strong>
+            <span> · </span>
+            Ticket: <strong>{{ selectedTicket }}</strong>
+            <span> · </span>
+            Tree: <strong>{{ selectedTreeNode }}</strong>
+            <span> · </span>
+            Files: <strong>{{ droppedFiles.length > 0 ? droppedFiles.length : 'none' }}</strong>
+            <span> · </span>
+            Digest: <strong>{{ isDigestEnabled ? 'on' : 'off' }}</strong>
+            <span> · </span>
+            Search: <strong>{{ searchQuery || 'none' }}</strong>
+            <span> · </span>
+            Subscribed: <strong>{{ isSubscribed ? 'yes' : 'no' }}</strong>
+          </p>
+        </VueView>
 
         <div class="actions">
           <VueButton variant="primary" @click="count += 1">
@@ -220,6 +222,7 @@ import {Switch as VueSwitch} from '@vue-spectrum/switch';
 import {Table as VueTable} from '@vue-spectrum/table';
 import {TextField as VueTextField} from '@vue-spectrum/textfield';
 import {Tree as VueTree} from '@vue-spectrum/tree';
+import {View as VueView} from '@vue-spectrum/view';
 import {Well as VueWell} from '@vue-spectrum/well';
 
 const count = ref(0);

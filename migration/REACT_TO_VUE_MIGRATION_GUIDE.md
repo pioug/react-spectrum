@@ -18,6 +18,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-spectrum/avatar` | `@vue-spectrum/avatar` |
 | `@react-spectrum/badge` | `@vue-spectrum/badge` |
 | `@react-spectrum/well` | `@vue-spectrum/well` |
+| `@react-spectrum/view` | `@vue-spectrum/view` |
 | `@react-spectrum/textfield` | `@vue-spectrum/textfield` |
 | `@react-spectrum/searchfield` | `@vue-spectrum/searchfield` |
 | `@react-spectrum/numberfield` | `@vue-spectrum/numberfield` |
