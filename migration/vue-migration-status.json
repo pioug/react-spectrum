@@ -2536,6 +2536,30 @@
         }
       ]
     },
+    "@react-spectrum/tag": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/tag",
+      "targetPath": "packages/@vue-spectrum/tag",
+      "notes": "Composition-layer migration baseline for tag-group selection and removable tag interactions in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue tag package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/tag/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

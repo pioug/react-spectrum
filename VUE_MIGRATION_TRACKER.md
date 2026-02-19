@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 111 |
+| in_progress | 112 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 41 |
+| not_started | 40 |
 
 ## Package tracker
 
@@ -127,6 +127,7 @@ Tracked source packages: 154
 | `@react-spectrum/switch` | `packages/@react-spectrum/switch` | `@vue-spectrum/switch` | `packages/@vue-spectrum/switch` | in_progress | Vue switch package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave primitive for binary toggles. |
 | `@react-spectrum/table` | `packages/@react-spectrum/table` | `@vue-spectrum/table` | `packages/@vue-spectrum/table` | in_progress | Vue table package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Data-heavy migration baseline for tabular collections. |
 | `@react-spectrum/tabs` | `packages/@react-spectrum/tabs` | `@vue-spectrum/tabs` | `packages/@vue-spectrum/tabs` | in_progress | Vue tabs package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration baseline for tablist navigation, keyboard interaction, and tabpanel rendering in Vue. |
+| `@react-spectrum/tag` | `packages/@react-spectrum/tag` | `@vue-spectrum/tag` | `packages/@vue-spectrum/tag` | in_progress | Vue tag package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration baseline for tag-group selection and removable tag interactions in Vue. |
 | `@react-spectrum/text` | `packages/@react-spectrum/text` | `@vue-spectrum/text` | `packages/@vue-spectrum/text` | in_progress | Vue text package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave typography primitive for semantic text and emphasis variants. |
 | `@react-spectrum/textfield` | `packages/@react-spectrum/textfield` | `@vue-spectrum/textfield` | `packages/@vue-spectrum/textfield` | in_progress | Vue textfield package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave primitive aligned with existing VueTextField baseline work. |
 | `@react-spectrum/tree` | `packages/@react-spectrum/tree` | `@vue-spectrum/tree` | `packages/@vue-spectrum/tree` | in_progress | Vue tree package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Data-heavy migration baseline for hierarchical collections. |
@@ -136,7 +137,6 @@ Tracked source packages: 154
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-spectrum/tag` | `packages/@react-spectrum/tag` | `@vue-spectrum/tag` | `packages/@vue-spectrum/tag` | not_started | - | - |
 | `@react-spectrum/test-utils` | `packages/@react-spectrum/test-utils` | `@vue-spectrum/test-utils` | `packages/@vue-spectrum/test-utils` | not_started | - | - |
 | `@react-spectrum/theme-dark` | `packages/@react-spectrum/theme-dark` | `@vue-spectrum/theme-dark` | `packages/@vue-spectrum/theme-dark` | not_started | - | - |
 | `@react-spectrum/theme-default` | `packages/@react-spectrum/theme-default` | `@vue-spectrum/theme-default` | `packages/@vue-spectrum/theme-default` | not_started | - | - |

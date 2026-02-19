@@ -12791,6 +12791,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/tag@workspace:*, @vue-spectrum/tag@workspace:packages/@vue-spectrum/tag":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/tag@workspace:packages/@vue-spectrum/tag"
+  dependencies:
+    "@vue-aria/tag": "workspace:*"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/text@workspace:*, @vue-spectrum/text@workspace:packages/@vue-spectrum/text":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/text@workspace:packages/@vue-spectrum/text"
@@ -31722,6 +31732,7 @@ __metadata:
     "@vue-spectrum/switch": "workspace:*"
     "@vue-spectrum/table": "workspace:*"
     "@vue-spectrum/tabs": "workspace:*"
+    "@vue-spectrum/tag": "workspace:*"
     "@vue-spectrum/text": "workspace:*"
     "@vue-spectrum/textfield": "workspace:*"
     "@vue-spectrum/tree": "workspace:*"

@@ -21,6 +21,7 @@ import {Picker} from '@vue-spectrum/picker';
 import {Radio, RadioGroup} from '@vue-spectrum/radio';
 import {StepList} from '@vue-spectrum/steplist';
 import {Switch} from '@vue-spectrum/switch';
+import {TagGroup} from '@vue-spectrum/tag';
 import {Tabs} from '@vue-spectrum/tabs';
 import {TextField} from '@vue-spectrum/textfield';
 import {Text} from '@vue-spectrum/text';
@@ -357,6 +358,33 @@ describe('Vue migration primitives', () => {
     expect(wrapper.get('[role=\"tabpanel\"]').text()).toContain('Details panel');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['details']);
     expect(wrapper.emitted('change')?.[0]).toEqual(['details']);
+  });
+
+  it('selects and removes tags within tag group interactions', async () => {
+    let wrapper = mount(TagGroup, {
+      props: {
+        label: 'Framework tags',
+        selectionMode: 'single',
+        modelValue: ['react'],
+        items: [
+          {key: 'react', label: 'React'},
+          {key: 'vue', label: 'Vue'},
+          {key: 'svelte', label: 'Svelte', disabled: true}
+        ]
+      }
+    });
+
+    let tags = wrapper.findAll('.vs-tag-group__tag');
+    expect(wrapper.text()).toContain('Framework tags');
+    expect(tags).toHaveLength(3);
+    expect(tags[0].classes()).toContain('is-selected');
+    expect(tags[2].classes()).toContain('is-disabled');
+
+    await tags[1].trigger('click');
+    expect(wrapper.findAll('button.vs-tag-group__remove')).toHaveLength(3);
+
+    await wrapper.findAll('button.vs-tag-group__remove')[0].trigger('click');
+    expect(wrapper.emitted('remove')?.[0]).toEqual([['react']]);
   });
 
   it('emits press events from standalone cards', async () => {
