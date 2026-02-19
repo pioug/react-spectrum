@@ -1,5 +1,5 @@
 import {mount} from '@vue/test-utils';
-import {ref} from 'vue';
+import {computed, ref} from 'vue';
 import {describe, expect, it, vi} from 'vitest';
 import {useActionGroup, useActionGroupItem} from '@vue-aria/actiongroup';
 import {useAutocomplete, useSearchAutocomplete} from '@vue-aria/autocomplete';
@@ -79,6 +79,7 @@ import {useSeparator as useAriaSeparator} from '@vue-aria/separator';
 import {useSlider as useAriaSlider, useSliderThumb as useAriaSliderThumb} from '@vue-aria/slider';
 import {useSpinButton as useAriaSpinButton} from '@vue-aria/spinbutton';
 import {SSRProvider as AriaSSRProvider, useIsSSR as useAriaIsSSR, useSSRSafeId as useAriaSSRSafeId} from '@vue-aria/ssr';
+import {useStepList as useAriaStepList, useStepListItem as useAriaStepListItem} from '@vue-aria/steplist';
 import {
   addWindowFocusTracking,
   setInteractionModality,
@@ -1913,6 +1914,50 @@ describe('Vue migration composition components', () => {
     expect(useAriaIsSSR()).toBe(false);
 
     rootProvider.dispose();
+  });
+
+  it('computes vue-aria steplist list and step item semantics', () => {
+    let selectedKeys = ref<Set<string | number>>(new Set(['setup']));
+    let selectableList = useAriaSelectableList({
+      selectedKeys,
+      selectionMode: 'single'
+    });
+    let selectedKey = computed(() => Array.from(selectedKeys.value)[0] ?? null);
+
+    let stepListState = {
+      selectedKey,
+      selectionManager: selectableList.selectionManager,
+      isSelectable: (key: string | number) => key !== 'review'
+    };
+
+    let stepList = useAriaStepList(stepListState);
+    expect(stepList.listProps.value.role).toBe('list');
+    expect(stepList.listProps.value['aria-label']).toBe('Step list');
+
+    let setupItem = useAriaStepListItem({key: 'setup'}, stepListState);
+    expect(setupItem.stepProps.value['aria-current']).toBe('step');
+
+    let detailsItem = useAriaStepListItem({key: 'details'}, stepListState);
+    expect(detailsItem.stepProps.value['aria-current']).toBeUndefined();
+    detailsItem.stepProps.value.onClick();
+    expect(Array.from(selectedKeys.value)).toEqual(['details']);
+    expect(detailsItem.stepProps.value['aria-current']).toBe('step');
+
+    let preventDefault = vi.fn();
+    let stopPropagation = vi.fn();
+    detailsItem.stepProps.value.onKeyDown({
+      key: 'ArrowDown',
+      preventDefault,
+      stopPropagation
+    } as unknown as KeyboardEvent);
+    expect(preventDefault).toHaveBeenCalledTimes(1);
+    expect(stopPropagation).toHaveBeenCalledTimes(1);
+
+    let reviewItem = useAriaStepListItem({key: 'review'}, stepListState);
+    expect(reviewItem.stepProps.value['aria-disabled']).toBe(true);
+    expect(reviewItem.stepProps.value.tabIndex).toBeUndefined();
+    reviewItem.stepProps.value.onClick();
+    expect(Array.from(selectedKeys.value)).toEqual(['details']);
   });
 
   it('announces and clears live region messages with vue-aria live announcer', () => {

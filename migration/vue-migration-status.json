@@ -960,6 +960,30 @@
         }
       ]
     },
+    "@react-aria/steplist": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/steplist",
+      "targetPath": "packages/@vue-aria/steplist",
+      "notes": "Foundational React Aria steplist composables for list semantics, selectable step links, and current-step accessibility in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria steplist source lint",
+          "command": "yarn eslint packages/@vue-aria/steplist/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",

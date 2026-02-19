@@ -52,6 +52,7 @@
     "@vue-aria/slider": "workspace:*",
     "@vue-aria/spinbutton": "workspace:*",
     "@vue-aria/ssr": "workspace:*",
+    "@vue-aria/steplist": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",

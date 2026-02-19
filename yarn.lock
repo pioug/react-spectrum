@@ -12139,6 +12139,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/steplist@workspace:*, @vue-aria/steplist@workspace:packages/@vue-aria/steplist":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/steplist@workspace:packages/@vue-aria/steplist"
+  dependencies:
+    "@vue-aria/selection": "workspace:*"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31470,6 +31480,7 @@ __metadata:
     "@vue-aria/slider": "workspace:*"
     "@vue-aria/spinbutton": "workspace:*"
     "@vue-aria/ssr": "workspace:*"
+    "@vue-aria/steplist": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"
