@@ -28,6 +28,7 @@
     "@vue-spectrum/image": "workspace:*",
     "@vue-spectrum/inlinealert": "workspace:*",
     "@vue-spectrum/label": "workspace:*",
+    "@vue-spectrum/layout": "workspace:*",
     "@vue-spectrum/link": "workspace:*",
     "@vue-spectrum/listbox": "workspace:*",
     "@vue-spectrum/menu": "workspace:*",

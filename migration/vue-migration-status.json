@@ -500,6 +500,30 @@
         }
       ]
     },
+    "@react-spectrum/layout": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/layout",
+      "targetPath": "packages/@vue-spectrum/layout",
+      "notes": "First-wave layout migration package providing baseline Vue Flex and Grid primitives.",
+      "acceptanceTests": [
+        {
+          "name": "Vue layout package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/layout/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/link": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/link",

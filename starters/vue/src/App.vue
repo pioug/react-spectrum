@@ -172,7 +172,20 @@
           </p>
         </VueView>
 
-        <div class="actions">
+        <VueGrid class="layout-preview" :columns="layoutColumns" gap="size-100">
+          <VueView border padding="s">
+            <VueText variant="detail">
+              Layout card: sprint milestones
+            </VueText>
+          </VueView>
+          <VueView border padding="s">
+            <VueText variant="detail">
+              Layout card: release readiness
+            </VueText>
+          </VueView>
+        </VueGrid>
+
+        <VueFlex class="actions" gap="size-150" wrap align-items="center">
           <VueButton variant="primary" @click="count += 1">
             {{ ctaLabel }}
           </VueButton>
@@ -188,7 +201,7 @@
           <VueButton variant="secondary" type="submit">
             Submit form
           </VueButton>
-        </div>
+        </VueFlex>
       </VueForm>
 
       <VueDialog
@@ -223,6 +236,7 @@ import {Dialog as VueDialog} from '@vue-spectrum/dialog';
 import {Form as VueForm} from '@vue-spectrum/form';
 import {Image as VueImage} from '@vue-spectrum/image';
 import {InlineAlert as VueInlineAlert} from '@vue-spectrum/inlinealert';
+import {Flex as VueFlex, Grid as VueGrid, minmax, repeat} from '@vue-spectrum/layout';
 import {Label as VueLabel} from '@vue-spectrum/label';
 import {Link as VueLink} from '@vue-spectrum/link';
 import {ListBox as VueListBox} from '@vue-spectrum/listbox';
@@ -291,6 +305,7 @@ const treeItems = [
     ]
   }
 ];
+const layoutColumns = repeat(2, minmax(0, '1fr'));
 const virtualRowHeight = 36;
 const virtualBacklog = Array.from({length: 240}, (_value, index) => `Backlog item ${index + 1}`);
 const virtualScrollTop = ref(0);
@@ -436,9 +451,8 @@ h1 {
   padding: 20px;
 }
 
-.actions {
-  display: flex;
-  gap: 12px;
+.layout-preview {
+  margin-top: 4px;
 }
 
 .summary {
@@ -478,9 +492,4 @@ code {
   padding: 2px 6px;
 }
 
-@media (max-width: 640px) {
-  .actions {
-    flex-direction: column;
-  }
-}
 </style>

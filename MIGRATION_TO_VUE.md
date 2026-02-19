@@ -41,6 +41,7 @@ Phase 1 is implemented:
   * `@react-spectrum/divider` -> `@vue-spectrum/divider` (`in_progress`)
   * `@react-spectrum/link` -> `@vue-spectrum/link` (`in_progress`)
   * `@react-spectrum/label` -> `@vue-spectrum/label` (`in_progress`)
+  * `@react-spectrum/layout` -> `@vue-spectrum/layout` (`in_progress`)
   * `@react-spectrum/form` -> `@vue-spectrum/form` (`in_progress`)
   * `@react-spectrum/image` -> `@vue-spectrum/image` (`in_progress`)
   * `@react-spectrum/inlinealert` -> `@vue-spectrum/inlinealert` (`in_progress`)
@@ -61,7 +62,7 @@ Phase 1 is implemented:
   * `@react-aria/virtualizer` -> `@vue-aria/virtualizer` (`in_progress`)
   * Vue starter now includes a virtualized backlog demo wired to `@vue-aria/virtualizer`.
 * Started Vue test adaptation:
-  * `starters/vue` runs Vitest + Vue Test Utils interaction tests for `button`, `textfield`, `checkbox`, `radio`, and `switch`.
+  * `starters/vue` runs Vitest + Vue Test Utils interaction tests for `button`, `textfield`, `checkbox`, `radio`, `switch`, and `layout`.
   * Added composition coverage for `dialog`, `overlays`, `menu`, `listbox`, and `combobox`.
   * Added data-heavy and virtualization coverage for `table`, `tree`, `dnd`, `dropzone`, and `@vue-aria/virtualizer`.
 * Started API stabilization and deprecation planning:

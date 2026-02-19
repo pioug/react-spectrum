@@ -706,6 +706,14 @@
   font-size: 16px;
 }
 
+.vs-flex {
+  min-inline-size: 0;
+}
+
+.vs-grid {
+  min-inline-size: 0;
+}
+
 .vs-inline-alert {
   border-radius: 10px;
   border-style: solid;

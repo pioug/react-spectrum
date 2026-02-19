@@ -6,6 +6,7 @@ import {Button} from '@vue-spectrum/button';
 import {Checkbox} from '@vue-spectrum/checkbox';
 import {Image} from '@vue-spectrum/image';
 import {InlineAlert} from '@vue-spectrum/inlinealert';
+import {Flex, Grid, fitContent, minmax, repeat} from '@vue-spectrum/layout';
 import {Label} from '@vue-spectrum/label';
 import {Radio, RadioGroup} from '@vue-spectrum/radio';
 import {Switch} from '@vue-spectrum/switch';
@@ -71,6 +72,47 @@ describe('Vue migration primitives', () => {
     expect(wrapper.classes()).toContain('vs-view--bordered');
     expect(wrapper.classes()).toContain('vs-view--padding-l');
     expect(wrapper.text()).toContain('View content');
+  });
+
+  it('renders flex layout styles from props', () => {
+    let wrapper = mount(Flex, {
+      props: {
+        direction: 'column',
+        gap: 'size-200',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        wrap: true
+      },
+      slots: {
+        default: 'Flex content'
+      }
+    });
+
+    let element = wrapper.element as HTMLElement;
+    expect(wrapper.classes()).toContain('vs-flex');
+    expect(element.style.display).toBe('flex');
+    expect(element.style.flexDirection).toBe('column');
+    expect(element.style.gap).toBe('16px');
+    expect(element.style.justifyContent).toBe('space-between');
+    expect(element.style.alignItems).toBe('center');
+    expect(element.style.flexWrap).toBe('wrap');
+  });
+
+  it('renders grid layout styles and helper expressions', () => {
+    let columns = repeat(2, minmax(0, '1fr'));
+    let wrapper = mount(Grid, {
+      props: {
+        columns,
+        gap: 'size-100'
+      }
+    });
+
+    let element = wrapper.element as HTMLElement;
+    expect(wrapper.classes()).toContain('vs-grid');
+    expect(element.style.display).toBe('grid');
+    expect(element.style.gridTemplateColumns).toContain('minmax(0, 1fr)');
+    expect(element.style.gap).toBe('8px');
+    expect(fitContent('240px')).toBe('fit-content(240px)');
   });
 
   it('renders inline alert title, content, and variant class', () => {

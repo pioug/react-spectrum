@@ -7,7 +7,9 @@ import {VueComboBox} from './components/VueComboBox';
 import {VueDialog} from './components/VueDialog';
 import {VueDivider} from './components/VueDivider';
 import {VueDropZone} from './components/VueDropZone';
+import {VueFlex} from './components/VueFlex';
 import {VueForm} from './components/VueForm';
+import {VueGrid} from './components/VueGrid';
 import {VueImage} from './components/VueImage';
 import {VueInlineAlert} from './components/VueInlineAlert';
 import {VueLabel} from './components/VueLabel';
@@ -42,7 +44,9 @@ export const VueSpectrumPlugin: Plugin = {
     app.component(VueDialog.name ?? 'VueDialog', VueDialog);
     app.component(VueDivider.name ?? 'VueDivider', VueDivider);
     app.component(VueDropZone.name ?? 'VueDropZone', VueDropZone);
+    app.component(VueFlex.name ?? 'VueFlex', VueFlex);
     app.component(VueForm.name ?? 'VueForm', VueForm);
+    app.component(VueGrid.name ?? 'VueGrid', VueGrid);
     app.component(VueImage.name ?? 'VueImage', VueImage);
     app.component(VueInlineAlert.name ?? 'VueInlineAlert', VueInlineAlert);
     app.component(VueLabel.name ?? 'VueLabel', VueLabel);
@@ -68,5 +72,5 @@ export const VueSpectrumPlugin: Plugin = {
   }
 };
 
-export {VueAvatar, VueBadge, VueButton, VueCheckbox, VueComboBox, VueDialog, VueDivider, VueDropZone, VueForm, VueImage, VueInlineAlert, VueLabel, VueLink, VueListBox, VueMenu, VueMeter, VueNumberField, VuePopover, VueProgressBar, VueRadio, VueRadioGroup, VueSearchField, VueSlider, VueSpectrumProvider, VueStatusLight, VueSwitch, VueTable, VueText, VueTextField, VueTree, VueView, VueWell};
+export {VueAvatar, VueBadge, VueButton, VueCheckbox, VueComboBox, VueDialog, VueDivider, VueDropZone, VueFlex, VueForm, VueGrid, VueImage, VueInlineAlert, VueLabel, VueLink, VueListBox, VueMenu, VueMeter, VueNumberField, VuePopover, VueProgressBar, VueRadio, VueRadioGroup, VueSearchField, VueSlider, VueSpectrumProvider, VueStatusLight, VueSwitch, VueTable, VueText, VueTextField, VueTree, VueView, VueWell};
 export type {SpectrumContextValue} from './context';
