@@ -123,6 +123,7 @@
     "@vue-spectrum/text": "workspace:*",
     "@vue-spectrum/textfield": "workspace:*",
     "@vue-spectrum/theme-dark": "workspace:*",
+    "@vue-spectrum/theme-default": "workspace:*",
     "@vue-spectrum/tree": "workspace:*",
     "@vue-spectrum/view": "workspace:*",
     "@vue-spectrum/well": "workspace:*",

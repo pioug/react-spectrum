@@ -146,6 +146,7 @@ import {baseColor as baseS1Color, focusRing as s1FocusRing, keyframes as s1Keyfr
 import {ErrorBoundary as StoryUtilsErrorBoundary, generatePowerset as generateStoryPowerset} from '@vue-spectrum/story-utils';
 import {pointerMap as spectrumPointerMap, simulateDesktop as simulateSpectrumDesktop, simulateMobile as simulateSpectrumMobile} from '@vue-spectrum/test-utils';
 import {theme as darkTheme} from '@vue-spectrum/theme-dark';
+import {theme as defaultTheme} from '@vue-spectrum/theme-default';
 
 function createPointerEvent(
   type: string,
@@ -2510,6 +2511,14 @@ describe('Vue migration composition components', () => {
     expect(darkTheme.dark.className).toBe('spectrum-darkest');
     expect(darkTheme.medium.scale).toBe('medium');
     expect(darkTheme.large.scale).toBe('large');
+  });
+
+  it('exposes vue-spectrum default theme token sections', () => {
+    expect(defaultTheme.global.className).toBe('spectrum-default-global');
+    expect(defaultTheme.light.colorScheme).toBe('light');
+    expect(defaultTheme.dark.className).toBe('spectrum-darkest');
+    expect(defaultTheme.medium.scale).toBe('medium');
+    expect(defaultTheme.large.scale).toBe('large');
   });
 
   it('computes vue-aria tag group and tag remove behavior', () => {

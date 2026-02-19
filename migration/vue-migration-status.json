@@ -2608,6 +2608,30 @@
         }
       ]
     },
+    "@react-spectrum/theme-default": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/theme-default",
+      "targetPath": "packages/@vue-spectrum/theme-default",
+      "notes": "Theme token baseline for the default Spectrum color-scheme pairing and scale classes in Vue package ports.",
+      "acceptanceTests": [
+        {
+          "name": "Vue theme-default package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/theme-default/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",
