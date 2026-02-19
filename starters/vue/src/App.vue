@@ -34,6 +34,10 @@
           :max="100"
           :step="5" />
 
+        <VueProgressBar
+          label="Overall progress"
+          :value="completionProgress" />
+
         <VueComboBox
           v-model="favoriteLanguage"
           label="Favorite language"
@@ -137,6 +141,7 @@ import {ListBox as VueListBox} from '@vue-spectrum/listbox';
 import {Menu as VueMenu} from '@vue-spectrum/menu';
 import {NumberField as VueNumberField} from '@vue-spectrum/numberfield';
 import {Popover as VuePopover} from '@vue-spectrum/overlays';
+import {ProgressBar as VueProgressBar} from '@vue-spectrum/progress';
 import {Provider as VueSpectrumProvider} from '@vue-spectrum/provider';
 import {Radio as VueRadio, RadioGroup as VueRadioGroup} from '@vue-spectrum/radio';
 import {SearchField as VueSearchField} from '@vue-spectrum/searchfield';

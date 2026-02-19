@@ -22,6 +22,7 @@
     "@vue-spectrum/menu": "workspace:*",
     "@vue-spectrum/numberfield": "workspace:*",
     "@vue-spectrum/overlays": "workspace:*",
+    "@vue-spectrum/progress": "workspace:*",
     "@vue-spectrum/provider": "workspace:*",
     "@vue-spectrum/radio": "workspace:*",
     "@vue-spectrum/searchfield": "workspace:*",

@@ -320,6 +320,26 @@
         }
       ]
     },
+    "@react-spectrum/progress": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/progress",
+      "targetPath": "packages/@vue-spectrum/progress",
+      "notes": "First-wave primitive for progress feedback UI.",
+      "acceptanceTests": [
+        {
+          "name": "Vue progress package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/progress/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        }
+      ]
+    },
     "@react-spectrum/switch": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/switch",

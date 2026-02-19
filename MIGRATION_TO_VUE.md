@@ -27,6 +27,7 @@ Phase 1 is implemented:
   * `@react-spectrum/searchfield` -> `@vue-spectrum/searchfield` (`in_progress`)
   * `@react-spectrum/numberfield` -> `@vue-spectrum/numberfield` (`in_progress`)
   * `@react-spectrum/slider` -> `@vue-spectrum/slider` (`in_progress`)
+  * `@react-spectrum/progress` -> `@vue-spectrum/progress` (`in_progress`)
   * `@react-spectrum/checkbox` -> `@vue-spectrum/checkbox` (`in_progress`)
   * `@react-spectrum/radio` -> `@vue-spectrum/radio` (`in_progress`)
   * `@react-spectrum/switch` -> `@vue-spectrum/switch` (`in_progress`)
