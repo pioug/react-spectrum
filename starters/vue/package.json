@@ -24,6 +24,7 @@
     "@vue-aria/color": "workspace:*",
     "@vue-aria/combobox": "workspace:*",
     "@vue-aria/datepicker": "workspace:*",
+    "@vue-aria/dialog": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",

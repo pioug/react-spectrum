@@ -12,6 +12,7 @@ import {CollectionBuilder, useCachedChildren} from '@vue-aria/collections';
 import {useComboBox} from '@vue-aria/combobox';
 import {useColorArea, useColorChannelField, useColorField, useColorSlider, useColorSwatch, useColorWheel} from '@vue-aria/color';
 import {useDateField, useDatePicker, useDateRangePicker, useTimeField} from '@vue-aria/datepicker';
+import {useDialog as useAriaDialog} from '@vue-aria/dialog';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -488,6 +489,41 @@ describe('Vue migration composition components', () => {
       end: '2026-02-25'
     });
     expect(rangePicker.isInvalid.value).toBe(false);
+  });
+
+  it('manages vue-aria dialog labeling and open state', () => {
+    let openChanges: boolean[] = [];
+    let dialog = useAriaDialog({
+      ariaDescribedby: 'starter-dialog-description',
+      onOpenChange: (isOpen) => {
+        openChanges.push(isOpen);
+      }
+    });
+
+    expect(dialog.dialogProps.value.role).toBe('dialog');
+    expect(dialog.dialogProps.value.hidden).toBe(true);
+    expect(dialog.dialogProps.value['aria-labelledby']).toBe(dialog.titleProps.value.id);
+
+    dialog.open();
+    expect(dialog.isOpen.value).toBe(true);
+    expect(dialog.dialogProps.value.hidden).toBe(false);
+    dialog.toggle();
+    expect(dialog.isOpen.value).toBe(false);
+    expect(openChanges).toEqual([true, false]);
+  });
+
+  it('keeps non-dismissable vue-aria dialog open when close is requested', () => {
+    let dialog = useAriaDialog({
+      ariaLabel: 'Critical alert',
+      defaultOpen: true,
+      isDismissable: false,
+      role: 'alertdialog'
+    });
+
+    dialog.close();
+    expect(dialog.isOpen.value).toBe(true);
+    expect(dialog.dialogProps.value.role).toBe('alertdialog');
+    expect(dialog.dialogProps.value['aria-label']).toBe('Critical alert');
   });
 
   it('emits close events from dismissable dialog controls', async () => {
