@@ -432,6 +432,30 @@
         }
       ]
     },
+    "@react-aria/grid": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/grid",
+      "targetPath": "packages/@vue-aria/grid",
+      "notes": "Foundational React Aria grid composables for row/cell semantics, selection helpers, keyboard navigation, and selection announcements in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria grid source lint",
+          "command": "yarn eslint packages/@vue-aria/grid/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/disclosure": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/disclosure",

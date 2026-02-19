@@ -18,6 +18,16 @@ import {useDrag, useDrop} from '@vue-aria/dnd';
 import {EXAMPLE_THEME_CLASS, useExampleTheme} from '@vue-aria/example-theme';
 import {useFocusRing, useHasTabbableChild} from '@vue-aria/focus';
 import {useFormValidation} from '@vue-aria/form';
+import {
+  GridKeyboardDelegate,
+  useGrid,
+  useGridCell,
+  useGridRow,
+  useGridRowGroup,
+  useGridSelectionAnnouncement,
+  useGridSelectionCheckbox,
+  useHighlightSelectionDescription
+} from '@vue-aria/grid';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -713,6 +723,143 @@ describe('Vue migration composition components', () => {
     } finally {
       document.body.removeChild(form);
     }
+  });
+
+  it('computes vue-aria grid semantics plus row and cell selection behavior', () => {
+    let rowActions: string[] = [];
+    let cellActions: string[] = [];
+    let selectedKeys = ref(new Set<string>());
+    let collection = {
+      columnCount: 2,
+      rows: [
+        {
+          key: 'row-1',
+          index: 0,
+          textValue: 'Backlog',
+          cells: [
+            {key: 'row-1-cell-1', colIndex: 0, textValue: 'Backlog'},
+            {key: 'row-1-cell-2', colIndex: 1, textValue: 'Open'}
+          ]
+        },
+        {
+          key: 'row-2',
+          index: 1,
+          textValue: 'Done',
+          cells: [
+            {key: 'row-2-cell-1', colIndex: 0, textValue: 'Done'},
+            {key: 'row-2-cell-2', colIndex: 1, textValue: 'Closed'}
+          ]
+        }
+      ]
+    };
+
+    let grid = useGrid({
+      ariaLabel: 'Tickets',
+      collection,
+      isVirtualized: true,
+      onCellAction: (key) => {
+        cellActions.push(key);
+      },
+      onRowAction: (key) => {
+        rowActions.push(key);
+      },
+      selectedKeys,
+      selectionMode: 'multiple'
+    });
+
+    expect(grid.gridProps.value.role).toBe('grid');
+    expect(grid.gridProps.value['aria-multiselectable']).toBe('true');
+    expect(grid.gridProps.value['aria-rowcount']).toBe(2);
+    expect(grid.keyboardDelegate.value.getKeyBelow('row-1')).toBe('row-2');
+
+    let row = useGridRow({
+      grid,
+      isVirtualized: true,
+      row: collection.rows[0]
+    });
+    row.press();
+    expect(row.rowProps.value['aria-rowindex']).toBe(1);
+    expect(Array.from(selectedKeys.value)).toEqual(['row-1']);
+    expect(rowActions).toEqual(['row-1']);
+
+    let cell = useGridCell({
+      cell: collection.rows[0].cells[0],
+      grid,
+      isVirtualized: true,
+      row: collection.rows[0]
+    });
+    cell.focus();
+    expect(grid.focusedKey.value).toBe('row-1-cell-1');
+    cell.press();
+    expect(cellActions).toEqual(['row-1-cell-1']);
+
+    let checkbox = useGridSelectionCheckbox({
+      grid,
+      key: 'row-1'
+    });
+    checkbox.toggleSelection();
+    expect(selectedKeys.value.size).toBe(1);
+
+    let rowGroup = useGridRowGroup();
+    expect(rowGroup.rowGroupProps.value.role).toBe('rowgroup');
+  });
+
+  it('builds vue-aria grid descriptions, announcements, and keyboard navigation', () => {
+    let collection = {
+      columnCount: 2,
+      rows: [
+        {
+          key: 'row-1',
+          index: 0,
+          textValue: 'Alpha',
+          cells: [
+            {key: 'row-1-cell-1', colIndex: 0, textValue: 'Alpha'},
+            {key: 'row-1-cell-2', colIndex: 1, textValue: 'Open'}
+          ]
+        },
+        {
+          key: 'row-2',
+          index: 1,
+          textValue: 'Delta',
+          cells: [
+            {key: 'row-2-cell-1', colIndex: 0, textValue: 'Delta'},
+            {key: 'row-2-cell-2', colIndex: 1, textValue: 'Closed'}
+          ]
+        }
+      ]
+    };
+
+    let description = useHighlightSelectionDescription({
+      hasItemActions: true,
+      interactionModality: 'pointer',
+      selectionBehavior: 'replace',
+      selectionMode: 'multiple'
+    });
+    expect(description.descriptionProps.value['aria-description']).toBe('Long press to select items.');
+
+    let selectedKeys = ref(new Set<string>());
+    let announcement = useGridSelectionAnnouncement({}, {
+      collection,
+      isFocused: true,
+      selectedKeys,
+      selectionMode: 'multiple'
+    });
+
+    selectedKeys.value = new Set(['row-1']);
+    announcement.syncAnnouncement();
+    expect(announcement.announcement.value).toContain('Alpha selected.');
+
+    selectedKeys.value = new Set(['row-1', 'row-2']);
+    announcement.syncAnnouncement();
+    expect(announcement.announcement.value).toContain('2 items selected.');
+
+    let keyboardDelegate = new GridKeyboardDelegate({
+      collection,
+      focusMode: 'cell'
+    });
+    expect(keyboardDelegate.getKeyRightOf('row-1')).toBe('row-1-cell-1');
+    expect(keyboardDelegate.getKeyBelow('row-1-cell-1')).toBe('row-2-cell-1');
+    expect(keyboardDelegate.getKeyForSearch('de')).toBe('row-2-cell-1');
   });
 
   it('emits close events from dismissable dialog controls', async () => {

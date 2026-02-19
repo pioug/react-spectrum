@@ -30,6 +30,7 @@
     "@vue-aria/example-theme": "workspace:*",
     "@vue-aria/focus": "workspace:*",
     "@vue-aria/form": "workspace:*",
+    "@vue-aria/grid": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",
