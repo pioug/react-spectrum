@@ -144,6 +144,30 @@
         }
       ]
     },
+    "@react-spectrum/actiongroup": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/actiongroup",
+      "targetPath": "packages/@vue-spectrum/actiongroup",
+      "notes": "Composition-layer migration step providing Vue action group primitives for grouped action buttons and selection.",
+      "acceptanceTests": [
+        {
+          "name": "Vue actiongroup package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/actiongroup/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/buttongroup": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/buttongroup",

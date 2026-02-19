@@ -2,6 +2,7 @@ import {mount} from '@vue/test-utils';
 import {describe, expect, it} from 'vitest';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
+import {ActionGroup} from '@vue-spectrum/actiongroup';
 import {SearchAutocomplete} from '@vue-spectrum/autocomplete';
 import {Dialog} from '@vue-spectrum/dialog';
 import {ListView} from '@vue-spectrum/list';
@@ -96,6 +97,20 @@ describe('Vue migration composition components', () => {
     await wrapper.get('button.vs-action-bar__clear').trigger('click');
     expect(wrapper.emitted('action')?.[0]).toEqual(['Archive']);
     expect(wrapper.emitted('clearSelection')).toHaveLength(1);
+  });
+
+  it('emits action and selection updates from action group', async () => {
+    let wrapper = mount(ActionGroup, {
+      props: {
+        modelValue: ['Edit'],
+        items: ['Edit', 'Delete'],
+        selectionMode: 'multiple'
+      }
+    });
+
+    await wrapper.findAll('button.vs-action-group__item')[1].trigger('click');
+    expect(wrapper.emitted('action')?.[0]).toEqual(['Delete']);
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['Edit', 'Delete']]);
   });
 
   it('propagates disclosure toggles through accordion v-model', async () => {

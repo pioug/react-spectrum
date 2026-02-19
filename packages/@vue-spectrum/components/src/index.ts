@@ -1,6 +1,7 @@
 import type {App, Plugin} from 'vue';
 import {VueAccordion, VueDisclosure, VueDisclosurePanel, VueDisclosureTitle} from './components/VueAccordion';
 import {VueActionBar, VueActionBarContainer} from './components/VueActionBar';
+import {VueActionGroup} from './components/VueActionGroup';
 import {VueAvatar} from './components/VueAvatar';
 import {VueBadge} from './components/VueBadge';
 import {VueButton} from './components/VueButton';
@@ -46,6 +47,7 @@ export const VueSpectrumPlugin: Plugin = {
     app.component(VueAccordion.name ?? 'VueAccordion', VueAccordion);
     app.component(VueActionBar.name ?? 'VueActionBar', VueActionBar);
     app.component(VueActionBarContainer.name ?? 'VueActionBarContainer', VueActionBarContainer);
+    app.component(VueActionGroup.name ?? 'VueActionGroup', VueActionGroup);
     app.component(VueAvatar.name ?? 'VueAvatar', VueAvatar);
     app.component(VueBadge.name ?? 'VueBadge', VueBadge);
     app.component(VueButton.name ?? 'VueButton', VueButton);
@@ -92,5 +94,5 @@ export const VueSpectrumPlugin: Plugin = {
   }
 };
 
-export {VueAccordion, VueActionBar, VueActionBarContainer, VueAvatar, VueBadge, VueButton, VueButtonGroup, VueCheckbox, VueComboBox, VueDisclosure, VueDisclosurePanel, VueDisclosureTitle, VueDialog, VueDivider, VueDropZone, VueFileTrigger, VueFlex, VueForm, VueGrid, VueIcon, VueIllustration, VueIllustratedMessage, VueImage, VueInlineAlert, VueLabel, VueLabeledValue, VueLink, VueListBox, VueMenu, VueMeter, VueNumberField, VuePopover, VueProgressBar, VueRadio, VueRadioGroup, VueSearchField, VueSlider, VueSpectrumProvider, VueStatusLight, VueSwitch, VueTable, VueText, VueTextField, VueTree, VueUIIcon, VueView, VueWell};
+export {VueAccordion, VueActionBar, VueActionBarContainer, VueActionGroup, VueAvatar, VueBadge, VueButton, VueButtonGroup, VueCheckbox, VueComboBox, VueDisclosure, VueDisclosurePanel, VueDisclosureTitle, VueDialog, VueDivider, VueDropZone, VueFileTrigger, VueFlex, VueForm, VueGrid, VueIcon, VueIllustration, VueIllustratedMessage, VueImage, VueInlineAlert, VueLabel, VueLabeledValue, VueLink, VueListBox, VueMenu, VueMeter, VueNumberField, VuePopover, VueProgressBar, VueRadio, VueRadioGroup, VueSearchField, VueSlider, VueSpectrumProvider, VueStatusLight, VueSwitch, VueTable, VueText, VueTextField, VueTree, VueUIIcon, VueView, VueWell};
 export type {SpectrumContextValue} from './context';

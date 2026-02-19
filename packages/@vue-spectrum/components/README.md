@@ -8,6 +8,7 @@ Vue-native Spectrum-inspired primitives for incremental migration from React pac
 * `VueAccordion`
 * `VueActionBar`
 * `VueActionBarContainer`
+* `VueActionGroup`
 * `VueAvatar`
 * `VueBadge`
 * `VueButton`

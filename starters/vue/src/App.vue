@@ -121,6 +121,12 @@
           label="Favorite library"
           :items="libraryOptions" />
 
+        <VueActionGroup
+          v-model="selectedActionGroupItems"
+          :items="actionGroupItems"
+          selection-mode="multiple"
+          @action="handleActionGroupAction" />
+
         <VueAccordion v-model="expandedSections">
           <VueDisclosure id="foundation">
             <VueDisclosureTitle>
@@ -235,6 +241,10 @@
             Action count: <strong>{{ selectedActionItems }}</strong>
             <span> · </span>
             Last bulk action: <strong>{{ lastBulkAction }}</strong>
+            <span> · </span>
+            Action group: <strong>{{ selectedActionGroupItems.length > 0 ? selectedActionGroupItems.join(', ') : 'none' }}</strong>
+            <span> · </span>
+            Last group action: <strong>{{ lastActionGroupAction }}</strong>
           </p>
         </VueView>
 
@@ -294,6 +304,7 @@
 import {computed, ref} from 'vue';
 import {useVirtualizer} from '@vue-aria/virtualizer';
 import {ActionBar as VueActionBar, ActionBarContainer as VueActionBarContainer} from '@vue-spectrum/actionbar';
+import {ActionGroup as VueActionGroup} from '@vue-spectrum/actiongroup';
 import {Accordion as VueAccordion, Disclosure as VueDisclosure, DisclosurePanel as VueDisclosurePanel, DisclosureTitle as VueDisclosureTitle} from '@vue-spectrum/accordion';
 import {Avatar as VueAvatar} from '@vue-spectrum/avatar';
 import {Badge as VueBadge} from '@vue-spectrum/badge';
@@ -344,6 +355,8 @@ const isSubscribed = ref(true);
 const favoriteFramework = ref('vue');
 const favoriteComponent = ref('Forms');
 const favoriteLibrary = ref('Vue Spectrum');
+const selectedActionGroupItems = ref<string[]>(['Edit']);
+const lastActionGroupAction = ref('none');
 const expandedSections = ref<string[]>(['foundation']);
 const selectedActionItems = ref(2);
 const lastBulkAction = ref('none');
@@ -356,6 +369,7 @@ const isPopoverOpen = ref(false);
 const languageOptions = ['TypeScript', 'JavaScript', 'Rust', 'Go', 'Python'];
 const componentOptions = ['Forms', 'Navigation', 'Overlays', 'Data display'];
 const libraryOptions = ['Vue Spectrum', 'React Spectrum', 'Tailwind CSS'];
+const actionGroupItems = ['Edit', 'Duplicate', 'Delete'];
 const actionBarItems = ['Approve', 'Assign', 'Archive'];
 const acceptedFileTypes = ['image/png', 'image/jpeg', 'application/pdf'];
 const ticketColumns = [
@@ -454,6 +468,8 @@ function reset() {
   favoriteFramework.value = 'vue';
   favoriteComponent.value = 'Forms';
   favoriteLibrary.value = 'Vue Spectrum';
+  selectedActionGroupItems.value = ['Edit'];
+  lastActionGroupAction.value = 'none';
   expandedSections.value = ['foundation'];
   selectedActionItems.value = 2;
   lastBulkAction.value = 'none';
@@ -475,6 +491,10 @@ function handleFileSelect(files: File[]) {
 
 function handleActionBarAction(action: string) {
   lastBulkAction.value = action;
+}
+
+function handleActionGroupAction(action: string) {
+  lastActionGroupAction.value = action;
 }
 
 function handleVirtualScroll(event: Event) {

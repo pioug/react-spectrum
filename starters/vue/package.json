@@ -16,6 +16,7 @@
     "@vue-aria/virtualizer": "workspace:*",
     "@vue-spectrum/accordion": "workspace:*",
     "@vue-spectrum/actionbar": "workspace:*",
+    "@vue-spectrum/actiongroup": "workspace:*",
     "@vue-spectrum/autocomplete": "workspace:*",
     "@vue-spectrum/avatar": "workspace:*",
     "@vue-spectrum/badge": "workspace:*",

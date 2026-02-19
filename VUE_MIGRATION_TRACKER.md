@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 45 |
+| in_progress | 46 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 107 |
+| not_started | 106 |
 
 ## Package tracker
 
@@ -26,6 +26,7 @@ Tracked source packages: 154
 | `@react-aria/virtualizer` | `packages/@react-aria/virtualizer` | `@vue-aria/virtualizer` | `packages/@vue-aria/virtualizer` | in_progress | Vue Aria virtualizer source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria virtualizer port to support virtualized Vue collection components, now validated by starter interaction/composable tests and wired into the Vue starter virtualized backlog demo. |
 | `@react-spectrum/accordion` | `packages/@react-spectrum/accordion` | `@vue-spectrum/accordion` | `packages/@vue-spectrum/accordion` | in_progress | Vue accordion package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue accordion and disclosure primitives. |
 | `@react-spectrum/actionbar` | `packages/@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | `packages/@vue-spectrum/actionbar` | in_progress | Vue actionbar package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue action bar and container primitives for bulk action workflows. |
+| `@react-spectrum/actiongroup` | `packages/@react-spectrum/actiongroup` | `@vue-spectrum/actiongroup` | `packages/@vue-spectrum/actiongroup` | in_progress | Vue actiongroup package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue action group primitives for grouped action buttons and selection. |
 | `@react-spectrum/autocomplete` | `packages/@react-spectrum/autocomplete` | `@vue-spectrum/autocomplete` | `packages/@vue-spectrum/autocomplete` | in_progress | Vue autocomplete package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing a Vue search autocomplete package wrapper. |
 | `@react-spectrum/avatar` | `packages/@react-spectrum/avatar` | `@vue-spectrum/avatar` | `packages/@vue-spectrum/avatar` | in_progress | Vue avatar package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave visual primitive for identity and user representation. |
 | `@react-spectrum/badge` | `packages/@react-spectrum/badge` | `@vue-spectrum/badge` | `packages/@vue-spectrum/badge` | in_progress | Vue badge package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave visual primitive for compact labels and status context. |
@@ -123,7 +124,6 @@ Tracked source packages: 154
 | `@react-aria/tree` | `packages/@react-aria/tree` | `@vue-aria/tree` | `packages/@vue-aria/tree` | not_started | - | - |
 | `@react-aria/utils` | `packages/@react-aria/utils` | `@vue-aria/utils` | `packages/@vue-aria/utils` | not_started | - | - |
 | `@react-aria/visually-hidden` | `packages/@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | `packages/@vue-aria/visually-hidden` | not_started | - | - |
-| `@react-spectrum/actiongroup` | `packages/@react-spectrum/actiongroup` | `@vue-spectrum/actiongroup` | `packages/@vue-spectrum/actiongroup` | not_started | - | - |
 | `@react-spectrum/breadcrumbs` | `packages/@react-spectrum/breadcrumbs` | `@vue-spectrum/breadcrumbs` | `packages/@vue-spectrum/breadcrumbs` | not_started | - | - |
 | `@react-spectrum/calendar` | `packages/@react-spectrum/calendar` | `@vue-spectrum/calendar` | `packages/@vue-spectrum/calendar` | not_started | - | - |
 | `@react-spectrum/card` | `packages/@react-spectrum/card` | `@vue-spectrum/card` | `packages/@vue-spectrum/card` | not_started | - | - |

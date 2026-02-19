@@ -1315,6 +1315,68 @@
   opacity: 0.6;
 }
 
+.vs-action-group {
+  display: flex;
+  gap: 6px;
+}
+
+.vs-action-group--horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.vs-action-group--vertical {
+  flex-direction: column;
+}
+
+.vs-action-group__item {
+  background: var(--vs-color-secondary-bg);
+  border: 1px solid var(--vs-color-border);
+  border-radius: 6px;
+  color: inherit;
+  cursor: pointer;
+  font: inherit;
+  transition: background-color 120ms ease, border-color 120ms ease, box-shadow 120ms ease;
+}
+
+.vs-action-group--medium .vs-action-group__item {
+  min-height: 30px;
+  padding: 4px 10px;
+}
+
+.vs-action-group--large .vs-action-group__item {
+  min-height: 34px;
+  padding: 6px 12px;
+}
+
+.vs-action-group__item:hover:not(:disabled) {
+  background: var(--vs-color-secondary-hover);
+}
+
+.vs-action-group__item:focus-visible {
+  box-shadow: var(--vs-focus-ring);
+  outline: none;
+}
+
+.vs-action-group__item.is-selected {
+  border-color: var(--vs-color-primary);
+  box-shadow: var(--vs-focus-ring);
+}
+
+.vs-action-group.is-emphasized .vs-action-group__item {
+  border-color: var(--vs-color-primary);
+}
+
+.vs-action-group.is-quiet .vs-action-group__item {
+  background: transparent;
+  border-color: transparent;
+}
+
+.vs-action-group__item:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .vs-accordion {
   display: grid;
   gap: 8px;

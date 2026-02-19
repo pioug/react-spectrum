@@ -11853,6 +11853,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/actiongroup@workspace:*, @vue-spectrum/actiongroup@workspace:packages/@vue-spectrum/actiongroup":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/actiongroup@workspace:packages/@vue-spectrum/actiongroup"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/autocomplete@workspace:*, @vue-spectrum/autocomplete@workspace:packages/@vue-spectrum/autocomplete":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/autocomplete@workspace:packages/@vue-spectrum/autocomplete"
@@ -31040,6 +31050,7 @@ __metadata:
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"
+    "@vue-spectrum/actiongroup": "workspace:*"
     "@vue-spectrum/autocomplete": "workspace:*"
     "@vue-spectrum/avatar": "workspace:*"
     "@vue-spectrum/badge": "workspace:*"
