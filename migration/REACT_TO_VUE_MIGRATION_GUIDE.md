@@ -159,6 +159,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-stately/select` | `@vue-stately/select` |
 | `@react-stately/selection` | `@vue-stately/selection` |
 | `@react-stately/slider` | `@vue-stately/slider` |
+| `@react-stately/steplist` | `@vue-stately/steplist` |
 
 ## Core API conversion patterns
 

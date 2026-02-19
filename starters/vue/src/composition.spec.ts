@@ -226,6 +226,7 @@ import {
 } from '@vue-stately/selection';
 import {useSelectState as useStatelySelectState} from '@vue-stately/select';
 import {useSliderState as useStatelySliderState} from '@vue-stately/slider';
+import {useStepListState as useStatelyStepListState} from '@vue-stately/steplist';
 
 function createPointerEvent(
   type: string,
@@ -1951,6 +1952,43 @@ describe('Vue migration composition components', () => {
     expect(changeValues[changeValues.length - 1]).toEqual([70, 100]);
     expect(changeEndValues[changeEndValues.length - 1]).toEqual([70, 100]);
     expect(slider.decrementThumb).toBeTypeOf('function');
+  });
+
+  it('manages vue-stately step list completion and selection eligibility', () => {
+    let nodes: StatelyListNode<{label: string}>[] = [
+      {key: 'setup', textValue: 'Setup', type: 'item', value: {label: 'Setup'}},
+      {key: 'details', textValue: 'Details', type: 'item', value: {label: 'Details'}},
+      {key: 'review', textValue: 'Review', type: 'item', value: {label: 'Review'}}
+    ];
+
+    let completedChanges: Array<string | null> = [];
+    let stepList = useStatelyStepListState({
+      collection: new StatelyListCollection(nodes),
+      defaultLastCompletedStep: 'setup',
+      defaultSelectedKey: 'details',
+      onLastCompletedStepChange: (key) => {
+        completedChanges.push(key as string | null);
+      }
+    });
+
+    expect(stepList.lastCompletedStep.value).toBe('setup');
+    expect(stepList.isCompleted('setup')).toBe(true);
+    expect(stepList.isSelectable('details')).toBe(true);
+    expect(stepList.isSelectable('review')).toBe(false);
+
+    stepList.setSelectedKey('review');
+    expect(stepList.selectedKey.value).toBe('review');
+    expect(stepList.lastCompletedStep.value).toBe('details');
+    expect(stepList.isCompleted('details')).toBe(true);
+    expect(stepList.isSelectable('review')).toBe(true);
+
+    let readOnlyStepList = useStatelyStepListState({
+      collection: new StatelyListCollection(nodes),
+      defaultSelectedKey: 'setup',
+      isReadOnly: true
+    });
+    expect(readOnlyStepList.isSelectable('setup')).toBe(false);
+    expect(completedChanges).toContain('details');
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {

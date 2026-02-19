@@ -3304,6 +3304,30 @@
         }
       ]
     },
+    "@react-stately/steplist": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/steplist",
+      "targetPath": "packages/@vue-stately/steplist",
+      "notes": "State baseline for step-list completion tracking, selection progression, and selectability gating in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately steplist package source lint",
+          "command": "yarn eslint packages/@vue-stately/steplist/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",
