@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 102 |
+| in_progress | 103 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 50 |
+| not_started | 49 |
 
 ## Package tracker
 
@@ -72,6 +72,7 @@ Tracked source packages: 154
 | `@react-aria/toast` | `packages/@react-aria/toast` | `@vue-aria/toast` | `packages/@vue-aria/toast` | in_progress | Vue Aria toast source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria toast composables for notification-region labeling, toast timer pause/resume behavior, and dismissable toast dialog semantics in Vue. |
 | `@react-aria/toggle` | `packages/@react-aria/toggle` | `@vue-aria/toggle` | `packages/@vue-aria/toggle` | in_progress | Vue Aria toggle source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria toggle composable for shared checkbox/switch press and selection semantics in Vue. |
 | `@react-aria/toolbar` | `packages/@react-aria/toolbar` | `@vue-aria/toolbar` | `packages/@vue-aria/toolbar` | in_progress | Vue Aria toolbar source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria toolbar composable for grouped control semantics and arrow-key focus navigation in Vue. |
+| `@react-aria/tooltip` | `packages/@react-aria/tooltip` | `@vue-aria/tooltip` | `packages/@vue-aria/tooltip` | in_progress | Vue Aria tooltip source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria tooltip composables for focus/hover trigger behavior and tooltip accessibility linking in Vue. |
 | `@react-aria/virtualizer` | `packages/@react-aria/virtualizer` | `@vue-aria/virtualizer` | `packages/@vue-aria/virtualizer` | in_progress | Vue Aria virtualizer source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Foundational React Aria virtualizer port to support virtualized Vue collection components, now validated by starter interaction/composable tests and wired into the Vue starter virtualized backlog demo. |
 | `@react-spectrum/accordion` | `packages/@react-spectrum/accordion` | `@vue-spectrum/accordion` | `packages/@vue-spectrum/accordion` | in_progress | Vue accordion package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue accordion and disclosure primitives. |
 | `@react-spectrum/actionbar` | `packages/@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | `packages/@vue-spectrum/actionbar` | in_progress | Vue actionbar package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue action bar and container primitives for bulk action workflows. |
@@ -127,7 +128,6 @@ Tracked source packages: 154
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-aria/tooltip` | `packages/@react-aria/tooltip` | `@vue-aria/tooltip` | `packages/@vue-aria/tooltip` | not_started | - | - |
 | `@react-aria/tree` | `packages/@react-aria/tree` | `@vue-aria/tree` | `packages/@vue-aria/tree` | not_started | - | - |
 | `@react-aria/utils` | `packages/@react-aria/utils` | `@vue-aria/utils` | `packages/@vue-aria/utils` | not_started | - | - |
 | `@react-aria/visually-hidden` | `packages/@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | `packages/@vue-aria/visually-hidden` | not_started | - | - |

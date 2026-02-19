@@ -12226,6 +12226,18 @@ __metadata:
 "@vue-aria/toolbar@workspace:*, @vue-aria/toolbar@workspace:packages/@vue-aria/toolbar":
   version: 0.0.0-use.local
   resolution: "@vue-aria/toolbar@workspace:packages/@vue-aria/toolbar"
+  dependencies:
+    "@vue-aria/i18n": "workspace:*"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
+"@vue-aria/tooltip@workspace:*, @vue-aria/tooltip@workspace:packages/@vue-aria/tooltip":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/tooltip@workspace:packages/@vue-aria/tooltip"
+  dependencies:
+    "@vue-aria/interactions": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -31572,6 +31584,7 @@ __metadata:
     "@vue-aria/toast": "workspace:*"
     "@vue-aria/toggle": "workspace:*"
     "@vue-aria/toolbar": "workspace:*"
+    "@vue-aria/tooltip": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"

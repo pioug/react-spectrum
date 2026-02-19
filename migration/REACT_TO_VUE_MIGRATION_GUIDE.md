@@ -108,6 +108,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-aria/switch` | `@vue-aria/switch` |
 | `@react-aria/toggle` | `@vue-aria/toggle` |
 | `@react-aria/toolbar` | `@vue-aria/toolbar` |
+| `@react-aria/tooltip` | `@vue-aria/tooltip` |
 | `@react-aria/tag` | `@vue-aria/tag` |
 | `@react-aria/test-utils` | `@vue-aria/test-utils` |
 | `@react-aria/textfield` | `@vue-aria/textfield` |

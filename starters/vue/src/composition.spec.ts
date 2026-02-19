@@ -88,6 +88,7 @@ import {useFormattedTextField as useAriaFormattedTextField, useTextField as useA
 import {useToast as useAriaToast, useToastRegion as useAriaToastRegion} from '@vue-aria/toast';
 import {useToggle as useAriaToggle} from '@vue-aria/toggle';
 import {useToolbar as useAriaToolbar} from '@vue-aria/toolbar';
+import {useTooltip as useAriaTooltip, useTooltipTrigger as useAriaTooltipTrigger} from '@vue-aria/tooltip';
 import {
   useTable as useAriaTable,
   useTableCell as useAriaTableCell,
@@ -2149,6 +2150,81 @@ describe('Vue migration composition components', () => {
       document.body.removeChild(toolbarElement);
       document.body.removeChild(verticalToolbarElement);
       document.body.removeChild(outerToolbar);
+    }
+  });
+
+  it('computes vue-aria tooltip trigger and tooltip hover/focus linkage', () => {
+    let triggerElement = document.createElement('button');
+    triggerElement.textContent = 'Details';
+    document.body.append(triggerElement);
+
+    let tooltipElement = document.createElement('div');
+    document.body.append(tooltipElement);
+
+    try {
+      let trigger = useAriaTooltipTrigger({
+        trigger: 'focus hover',
+        triggerRef: ref<HTMLElement | null>(triggerElement)
+      });
+      let tooltip = useAriaTooltip({
+        id: computed(() => trigger.tooltipProps.value.id)
+      }, trigger);
+
+      let triggerProps = trigger.triggerProps.value;
+      if (triggerProps.onFocus) {
+        triggerElement.addEventListener('focus', triggerProps.onFocus as EventListener);
+      }
+      if (triggerProps.onBlur) {
+        triggerElement.addEventListener('blur', triggerProps.onBlur as EventListener);
+      }
+      if (triggerProps.onKeyDown) {
+        triggerElement.addEventListener('keydown', triggerProps.onKeyDown as EventListener);
+      }
+      if (triggerProps.onKeyUp) {
+        triggerElement.addEventListener('keyup', triggerProps.onKeyUp as EventListener);
+      }
+      if (triggerProps.onPointerEnter) {
+        triggerElement.addEventListener('pointerenter', triggerProps.onPointerEnter as EventListener);
+      }
+      if (triggerProps.onPointerLeave) {
+        triggerElement.addEventListener('pointerleave', triggerProps.onPointerLeave as EventListener);
+      }
+      triggerElement.addEventListener('pointerdown', triggerProps.onPointerDown as EventListener);
+
+      let tooltipProps = tooltip.tooltipProps.value;
+      if (tooltipProps.onPointerEnter) {
+        tooltipElement.addEventListener('pointerenter', tooltipProps.onPointerEnter as EventListener);
+      }
+      if (tooltipProps.onPointerLeave) {
+        tooltipElement.addEventListener('pointerleave', tooltipProps.onPointerLeave as EventListener);
+      }
+
+      expect(tooltip.tooltipProps.value.role).toBe('tooltip');
+      expect(trigger.tooltipProps.value.id).toContain('react-aria-');
+
+      setInteractionModality('keyboard');
+      triggerElement.dispatchEvent(new FocusEvent('focus', {bubbles: true}));
+      expect(trigger.isOpen.value).toBe(true);
+      expect(trigger.triggerProps.value['aria-describedby']).toBe(trigger.tooltipProps.value.id);
+
+      triggerElement.dispatchEvent(createPointerEvent('pointerdown', {button: 0, pointerId: 1, pointerType: 'mouse'}));
+      expect(trigger.isOpen.value).toBe(false);
+
+      setInteractionModality('pointer');
+      triggerElement.dispatchEvent(createPointerEvent('pointerenter', {pointerType: 'mouse'}));
+      expect(trigger.isOpen.value).toBe(true);
+      triggerElement.dispatchEvent(createPointerEvent('pointerleave', {pointerType: 'mouse'}));
+      expect(trigger.isOpen.value).toBe(false);
+
+      trigger.open();
+      expect(trigger.isOpen.value).toBe(true);
+      tooltipElement.dispatchEvent(createPointerEvent('pointerenter', {pointerType: 'mouse'}));
+      expect(trigger.isOpen.value).toBe(true);
+      tooltipElement.dispatchEvent(createPointerEvent('pointerleave', {pointerType: 'mouse'}));
+      expect(trigger.isOpen.value).toBe(false);
+    } finally {
+      document.body.removeChild(triggerElement);
+      document.body.removeChild(tooltipElement);
     }
   });
 

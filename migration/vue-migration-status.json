@@ -1056,6 +1056,30 @@
         }
       ]
     },
+    "@react-aria/tooltip": {
+      "status": "in_progress",
+      "targetPackage": "@vue-aria/tooltip",
+      "targetPath": "packages/@vue-aria/tooltip",
+      "notes": "Foundational React Aria tooltip composables for focus/hover trigger behavior and tooltip accessibility linking in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue Aria tooltip source lint",
+          "command": "yarn eslint packages/@vue-aria/tooltip/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-aria/tabs": {
       "status": "in_progress",
       "targetPackage": "@vue-aria/tabs",
