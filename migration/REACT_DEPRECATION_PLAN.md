@@ -20,6 +20,7 @@ This plan describes how React package deprecation should proceed once Vue packag
 1. Stop feature development on deprecated React packages.
 2. Keep limited support window with defined end-of-support date.
 3. Provide final migration guide updates and archived API references.
+4. Keep migration completion guard enabled in CI (`yarn vue:migration:assert-complete`).
 
 ## Phase 4: Retirement
 

@@ -425,6 +425,7 @@ jobs:
           command: |
             yarn vue:migration:report
             yarn vue:migration:test
+            yarn vue:migration:assert-complete
 
   ts-build-branch:
     executor: rsp-large

@@ -25,6 +25,7 @@
     "test:vue": "yarn workspace vue-spectrum-starter test",
     "vue:migration:report": "node scripts/vue-migration-tracker.mjs report --write",
     "vue:migration:test": "node scripts/vue-migration-tracker.mjs verify",
+    "vue:migration:assert-complete": "node scripts/vue-migration-tracker.mjs assert-complete",
     "build:storybook": "storybook build -c .storybook -o dist/$(git rev-parse HEAD)/storybook",
     "start:chromatic": "CHROMATIC=1 NODE_ENV=storybook storybook dev -p 9004 --ci -c '.chromatic'",
     "build:chromatic": "CHROMATIC=1 storybook build -c .chromatic -o dist/$(git rev-parse HEAD)/chromatic",

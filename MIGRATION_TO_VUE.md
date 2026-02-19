@@ -15,13 +15,15 @@ Roadmap baseline coverage is complete across all migration phases for tracked pa
   * `yarn start:vue`
   * `yarn build:vue`
   * `yarn typecheck:vue`
+  * `yarn vue:migration:assert-complete`
 * Added a package-by-package tracker:
   * `VUE_MIGRATION_TRACKER.md` (generated snapshot)
   * `migration/vue-migration-status.json` (status and acceptance test definitions)
   * `yarn vue:migration:report` (regenerates tracker)
   * `yarn vue:migration:test` (runs acceptance tests for active ports)
+  * `yarn vue:migration:assert-complete` (fails if any tracked package is not `ported`)
 * Added CI enforcement:
-  * CircleCI `vue-migration` job runs `yarn vue:migration:report` and `yarn vue:migration:test`.
+  * CircleCI `vue-migration` job runs `yarn vue:migration:report`, `yarn vue:migration:test`, and `yarn vue:migration:assert-complete`.
 * Ported foundational component package:
   * `react-aria-components` -> `@vue-spectrum/components` (`ported`)
 * Ported meta-package aggregators:

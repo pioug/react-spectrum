@@ -8,6 +8,7 @@ Tracked source packages: 154
 
 * `yarn vue:migration:report` regenerates this file.
 * `yarn vue:migration:test` runs acceptance tests for all `in_progress` and `ported` packages.
+* `yarn vue:migration:assert-complete` fails if any tracked package status is not `ported`.
 
 ## Status summary
 

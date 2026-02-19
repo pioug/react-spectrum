@@ -6,12 +6,13 @@ This checklist defines the minimum release bar for promoting Vue migration packa
 
 1. Package API is documented in package README with examples and known limitations.
 2. `yarn vue:migration:test` passes with no skipped package acceptance checks.
-3. `yarn test:vue` passes for starter interaction coverage.
-4. Package has at least one interaction or behavior test in Vue test harness coverage.
-5. Migration tracker entry for the package has actionable notes and acceptance tests.
-6. Migration examples in `migration/REACT_TO_VUE_MIGRATION_GUIDE.md` are current for the package.
-7. Package versioning and changelog entry are prepared for public release.
-8. Aggregate packages (`vue-aria`, `vue-stately`) are validated for export coverage when package-level releases are prepared.
+3. `yarn vue:migration:assert-complete` passes (all tracked migration entries remain `ported`).
+4. `yarn test:vue` passes for starter interaction coverage.
+5. Package has at least one interaction or behavior test in Vue test harness coverage.
+6. Migration tracker entry for the package has actionable notes and acceptance tests.
+7. Migration examples in `migration/REACT_TO_VUE_MIGRATION_GUIDE.md` are current for the package.
+8. Package versioning and changelog entry are prepared for public release.
+9. Aggregate packages (`vue-aria`, `vue-stately`) are validated for export coverage when package-level releases are prepared.
 
 ## Publish order
 
@@ -32,3 +33,4 @@ This checklist defines the minimum release bar for promoting Vue migration packa
 
 1. On February 19, 2026, `yarn vue:migration:test` passed with all active migration acceptance checks.
 2. On February 19, 2026, `yarn test:vue` passed in `starters/vue` with 171 passing tests.
+3. The CircleCI `vue-migration` job now enforces `yarn vue:migration:assert-complete` alongside tracker report and acceptance tests.

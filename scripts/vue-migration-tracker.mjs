@@ -209,6 +209,7 @@ function buildMarkdown(entries) {
   lines.push('');
   lines.push('* `yarn vue:migration:report` regenerates this file.');
   lines.push('* `yarn vue:migration:test` runs acceptance tests for all `in_progress` and `ported` packages.');
+  lines.push('* `yarn vue:migration:assert-complete` fails if any tracked package status is not `ported`.');
   lines.push('');
   lines.push('## Status summary');
   lines.push('');
@@ -297,6 +298,34 @@ function runAcceptanceTests(entries) {
   console.log('\nAll active migration acceptance tests passed.');
 }
 
+function assertComplete(entries) {
+  let nonPortedEntries = entries.filter(entry => entry.status !== 'ported');
+  if (nonPortedEntries.length > 0) {
+    console.error('Vue migration completion check failed. Non-ported packages:');
+    for (let entry of nonPortedEntries) {
+      console.error(`- ${entry.sourcePackage}: ${entry.status}`);
+    }
+    process.exitCode = 1;
+    return;
+  }
+
+  let missingTargetEntries = entries.filter((entry) => {
+    let packageJsonPath = path.join(REPO_ROOT, entry.targetPath, 'package.json');
+    return !fs.existsSync(packageJsonPath);
+  });
+
+  if (missingTargetEntries.length > 0) {
+    console.error('Vue migration completion check failed. Missing target packages:');
+    for (let entry of missingTargetEntries) {
+      console.error(`- ${entry.sourcePackage}: missing ${entry.targetPath}/package.json`);
+    }
+    process.exitCode = 1;
+    return;
+  }
+
+  console.log(`Vue migration completion check passed (${entries.length} tracked packages are ported).`);
+}
+
 function main() {
   let {command, write} = parseArgs(process.argv.slice(2));
   let statusConfig = readJson(STATUS_FILE);
@@ -319,8 +348,13 @@ function main() {
     return;
   }
 
+  if (command === 'assert-complete') {
+    assertComplete(entries);
+    return;
+  }
+
   console.error(`Unknown command: ${command}`);
-  console.error('Usage: node scripts/vue-migration-tracker.mjs [report|verify] [--write]');
+  console.error('Usage: node scripts/vue-migration-tracker.mjs [report|verify|assert-complete] [--write]');
   process.exitCode = 1;
 }
 
