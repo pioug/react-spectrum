@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-19T23:04:45.658Z",
+  "generatedAt": "2026-02-19T23:07:39.564Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 81,
+    "fullyMatchedPackages": 82,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 1889,
-    "mismatchedExportTotal": 783,
+    "matchedExportTotal": 1907,
+    "mismatchedExportTotal": 765,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.707
+    "parityCoverage": 0.7137
   },
   "packages": [
     {
@@ -5659,10 +5659,10 @@
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
       "comparedExportCount": 419,
-      "matchedExportCount": 336,
-      "mismatchedExportCount": 83,
+      "matchedExportCount": 345,
+      "mismatchedExportCount": 74,
       "missingInTargetCount": 0,
-      "parityRatio": 0.8019,
+      "parityRatio": 0.8234,
       "missingInTargetExports": [],
       "mismatches": [
         {
@@ -7642,339 +7642,6 @@
           }
         },
         {
-          "exportName": "useTable",
-          "targetExportName": "useTable",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTable",
-            "resolvedName": "useTable",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTableProps, state: TableState<T> | TreeGridState<T>, ref: RefObject<HTMLElement | null>) => GridAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTableProps, _: TableState<T> | TreeGridState<T>, _: RefObject<HTMLElement | null>) => GridAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTable",
-            "resolvedName": "useTable",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTableOptions) => GridAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTableOptions) => GridAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTableCell",
-          "targetExportName": "useTableCell",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableCell",
-            "resolvedName": "useTableCell",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTableCellProps, state: TableState<T>, ref: RefObject<FocusableElement | null>) => TableCellAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTableCellProps, _: TableState<T>, _: RefObject<FocusableElement | null>) => TableCellAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableCell",
-            "resolvedName": "useTableCell",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaTableCellProps) => TableCellAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTableCellProps) => TableCellAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTableColumnHeader",
-          "targetExportName": "useTableColumnHeader",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableColumnHeader",
-            "resolvedName": "useTableColumnHeader",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTableColumnHeaderProps<T>, state: TableState<T>, ref: RefObject<FocusableElement | null>) => TableColumnHeaderAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTableColumnHeaderProps<T>, _: TableState<T>, _: RefObject<FocusableElement | null>) => TableColumnHeaderAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableColumnHeader",
-            "resolvedName": "useTableColumnHeader",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaTableColumnHeaderProps) => TableColumnHeaderAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTableColumnHeaderProps) => TableColumnHeaderAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTableColumnResize",
-          "targetExportName": "useTableColumnResize",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableColumnResize",
-            "resolvedName": "useTableColumnResize",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTableColumnResizeProps<T>, state: TableColumnResizeState<T>, ref: RefObject<HTMLInputElement | null>) => TableColumnResizeAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTableColumnResizeProps<T>, _: TableColumnResizeState<T>, _: RefObject<HTMLInputElement | null>) => TableColumnResizeAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableColumnResize",
-            "resolvedName": "useTableColumnResize",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaTableColumnResizeProps) => TableColumnResizeAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTableColumnResizeProps) => TableColumnResizeAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTableHeaderRow",
-          "targetExportName": "useTableHeaderRow",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableHeaderRow",
-            "resolvedName": "useTableHeaderRow",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: GridRowProps<T>, state: TableState<T>, ref: RefObject<Element | null>) => TableHeaderRowAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: GridRowProps<T>, _: TableState<T>, _: RefObject<Element | null>) => TableHeaderRowAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableHeaderRow",
-            "resolvedName": "useTableHeaderRow",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaTableHeaderRowProps) => TableHeaderRowAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTableHeaderRowProps) => TableHeaderRowAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTableRow",
-          "targetExportName": "useTableRow",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableRow",
-            "resolvedName": "useTableRow",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: GridRowProps<T>, state: TableState<T> | TreeGridState<T>, ref: RefObject<FocusableElement | null>) => GridRowAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: GridRowProps<T>, _: TableState<T> | TreeGridState<T>, _: RefObject<FocusableElement | null>) => GridRowAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableRow",
-            "resolvedName": "useTableRow",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaTableRowProps) => TableRowAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTableRowProps) => TableRowAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTableRowGroup",
-          "targetExportName": "useTableRowGroup",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableRowGroup",
-            "resolvedName": "useTableRowGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => GridRowGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "() => GridRowGroupAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableRowGroup",
-            "resolvedName": "useTableRowGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => TableRowGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "() => TableRowGroupAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTableSelectAllCheckbox",
-          "targetExportName": "useTableSelectAllCheckbox",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableSelectAllCheckbox",
-            "resolvedName": "useTableSelectAllCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(state: TableState<T>) => TableSelectAllCheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: TableState<T>) => TableSelectAllCheckboxAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableSelectAllCheckbox",
-            "resolvedName": "useTableSelectAllCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTableSelectAllCheckboxOptions) => TableSelectAllCheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTableSelectAllCheckboxOptions) => TableSelectAllCheckboxAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTableSelectionCheckbox",
-          "targetExportName": "useTableSelectionCheckbox",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableSelectionCheckbox",
-            "resolvedName": "useTableSelectionCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTableSelectionCheckboxProps, state: TableState<T>) => TableSelectionCheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTableSelectionCheckboxProps, _: TableState<T>) => TableSelectionCheckboxAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableSelectionCheckbox",
-            "resolvedName": "useTableSelectionCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTableSelectionCheckboxOptions) => TableSelectionCheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTableSelectionCheckboxOptions) => TableSelectionCheckboxAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
           "exportName": "useTab",
           "targetExportName": "useTab",
           "differences": [
@@ -8627,9 +8294,110 @@
             "callSignatures": [],
             "constructSignatures": []
           }
+        },
+        {
+          "exportName": "AriaColorSwatchProps",
+          "targetExportName": "AriaColorSwatchProps",
+          "differences": [
+            "value-availability"
+          ],
+          "source": {
+            "name": "AriaColorSwatchProps",
+            "resolvedName": "AriaColorSwatchProps",
+            "hasType": true,
+            "hasValue": false,
+            "declarationKinds": [
+              "InterfaceDeclaration"
+            ],
+            "valueType": "any",
+            "declaredType": "AriaColorSwatchProps",
+            "callSignatures": [],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "AriaColorSwatchProps",
+            "resolvedName": "unknown",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [],
+            "valueType": "any",
+            "declaredType": "",
+            "callSignatures": [],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "DateFormatter",
+          "targetExportName": "DateFormatter",
+          "differences": [
+            "value-availability"
+          ],
+          "source": {
+            "name": "DateFormatter",
+            "resolvedName": "DateFormatter",
+            "hasType": true,
+            "hasValue": true,
+            "declarationKinds": [
+              "ClassDeclaration"
+            ],
+            "valueType": "typeof DateFormatter",
+            "declaredType": "DateFormatter",
+            "callSignatures": [],
+            "constructSignatures": [
+              "( _: string, _: Intl.DateTimeFormatOptions) => DateFormatter"
+            ]
+          },
+          "target": {
+            "name": "DateFormatter",
+            "resolvedName": "DateFormatter",
+            "hasType": true,
+            "hasValue": false,
+            "declarationKinds": [
+              "TypeAliasDeclaration"
+            ],
+            "valueType": "any",
+            "declaredType": "Intl.DateTimeFormat",
+            "callSignatures": [],
+            "constructSignatures": []
+          }
+        },
+        {
+          "exportName": "LocalizedStringFormatter",
+          "targetExportName": "LocalizedStringFormatter",
+          "differences": [
+            "value-availability"
+          ],
+          "source": {
+            "name": "LocalizedStringFormatter",
+            "resolvedName": "LocalizedStringFormatter",
+            "hasType": true,
+            "hasValue": true,
+            "declarationKinds": [
+              "ClassDeclaration"
+            ],
+            "valueType": "typeof LocalizedStringFormatter",
+            "declaredType": "LocalizedStringFormatter<K, T>",
+            "callSignatures": [],
+            "constructSignatures": [
+              "<K extends string = string, T extends LocalizedString = string>( _: string, _: LocalizedStringDictionary<K, T>) => LocalizedStringFormatter<K, T>"
+            ]
+          },
+          "target": {
+            "name": "LocalizedStringFormatter",
+            "resolvedName": "LocalizedStringFormatter",
+            "hasType": true,
+            "hasValue": false,
+            "declarationKinds": [
+              "InterfaceDeclaration"
+            ],
+            "valueType": "any",
+            "declaredType": "LocalizedStringFormatter",
+            "callSignatures": [],
+            "constructSignatures": []
+          }
         }
       ],
-      "truncatedMismatchCount": 3,
+      "truncatedMismatchCount": 0,
       "error": null
     },
     {
@@ -12759,359 +12527,6 @@
             "declaredType": "",
             "callSignatures": [
               "<T>( _: TreeProps<T>) => TreeState<T>"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/table",
-      "sourcePath": "packages/@react-aria/table",
-      "targetPackage": "@vue-aria/table",
-      "targetPath": "packages/@vue-aria/table",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/table/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/table/src/index.ts",
-      "sourceExportCount": 23,
-      "comparedExportCount": 23,
-      "matchedExportCount": 14,
-      "mismatchedExportCount": 9,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6087,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useTableRowGroup",
-          "targetExportName": "useTableRowGroup",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableRowGroup",
-            "resolvedName": "useTableRowGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => GridRowGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "() => GridRowGroupAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableRowGroup",
-            "resolvedName": "useTableRowGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => TableRowGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "() => TableRowGroupAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTable",
-          "targetExportName": "useTable",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTable",
-            "resolvedName": "useTable",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTableProps, state: TableState<T> | TreeGridState<T>, ref: RefObject<HTMLElement | null>) => GridAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTableProps, _: TableState<T> | TreeGridState<T>, _: RefObject<HTMLElement | null>) => GridAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTable",
-            "resolvedName": "useTable",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTableOptions) => GridAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTableOptions) => GridAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTableColumnHeader",
-          "targetExportName": "useTableColumnHeader",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableColumnHeader",
-            "resolvedName": "useTableColumnHeader",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTableColumnHeaderProps<T>, state: TableState<T>, ref: RefObject<FocusableElement | null>) => TableColumnHeaderAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTableColumnHeaderProps<T>, _: TableState<T>, _: RefObject<FocusableElement | null>) => TableColumnHeaderAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableColumnHeader",
-            "resolvedName": "useTableColumnHeader",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaTableColumnHeaderProps) => TableColumnHeaderAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTableColumnHeaderProps) => TableColumnHeaderAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTableRow",
-          "targetExportName": "useTableRow",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableRow",
-            "resolvedName": "useTableRow",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: GridRowProps<T>, state: TableState<T> | TreeGridState<T>, ref: RefObject<FocusableElement | null>) => GridRowAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: GridRowProps<T>, _: TableState<T> | TreeGridState<T>, _: RefObject<FocusableElement | null>) => GridRowAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableRow",
-            "resolvedName": "useTableRow",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaTableRowProps) => TableRowAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTableRowProps) => TableRowAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTableHeaderRow",
-          "targetExportName": "useTableHeaderRow",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableHeaderRow",
-            "resolvedName": "useTableHeaderRow",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: GridRowProps<T>, state: TableState<T>, ref: RefObject<Element | null>) => TableHeaderRowAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: GridRowProps<T>, _: TableState<T>, _: RefObject<Element | null>) => TableHeaderRowAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableHeaderRow",
-            "resolvedName": "useTableHeaderRow",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaTableHeaderRowProps) => TableHeaderRowAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTableHeaderRowProps) => TableHeaderRowAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTableCell",
-          "targetExportName": "useTableCell",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableCell",
-            "resolvedName": "useTableCell",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTableCellProps, state: TableState<T>, ref: RefObject<FocusableElement | null>) => TableCellAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTableCellProps, _: TableState<T>, _: RefObject<FocusableElement | null>) => TableCellAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableCell",
-            "resolvedName": "useTableCell",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaTableCellProps) => TableCellAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTableCellProps) => TableCellAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTableSelectionCheckbox",
-          "targetExportName": "useTableSelectionCheckbox",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableSelectionCheckbox",
-            "resolvedName": "useTableSelectionCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTableSelectionCheckboxProps, state: TableState<T>) => TableSelectionCheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTableSelectionCheckboxProps, _: TableState<T>) => TableSelectionCheckboxAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableSelectionCheckbox",
-            "resolvedName": "useTableSelectionCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTableSelectionCheckboxOptions) => TableSelectionCheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTableSelectionCheckboxOptions) => TableSelectionCheckboxAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTableSelectAllCheckbox",
-          "targetExportName": "useTableSelectAllCheckbox",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableSelectAllCheckbox",
-            "resolvedName": "useTableSelectAllCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(state: TableState<T>) => TableSelectAllCheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: TableState<T>) => TableSelectAllCheckboxAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableSelectAllCheckbox",
-            "resolvedName": "useTableSelectAllCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTableSelectAllCheckboxOptions) => TableSelectAllCheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTableSelectAllCheckboxOptions) => TableSelectAllCheckboxAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTableColumnResize",
-          "targetExportName": "useTableColumnResize",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableColumnResize",
-            "resolvedName": "useTableColumnResize",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTableColumnResizeProps<T>, state: TableColumnResizeState<T>, ref: RefObject<HTMLInputElement | null>) => TableColumnResizeAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTableColumnResizeProps<T>, _: TableColumnResizeState<T>, _: RefObject<HTMLInputElement | null>) => TableColumnResizeAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableColumnResize",
-            "resolvedName": "useTableColumnResize",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaTableColumnResizeProps) => TableColumnResizeAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTableColumnResizeProps) => TableColumnResizeAria"
             ],
             "constructSignatures": []
           }
@@ -19978,6 +19393,25 @@
       "sourceExportCount": 4,
       "comparedExportCount": 4,
       "matchedExportCount": 4,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/table",
+      "sourcePath": "packages/@react-aria/table",
+      "targetPackage": "@vue-aria/table",
+      "targetPath": "packages/@vue-aria/table",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/table/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/table/src/index.ts",
+      "sourceExportCount": 23,
+      "comparedExportCount": 23,
+      "matchedExportCount": 23,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
