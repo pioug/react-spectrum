@@ -20,6 +20,7 @@
     "@vue-spectrum/autocomplete": "workspace:*",
     "@vue-spectrum/avatar": "workspace:*",
     "@vue-spectrum/badge": "workspace:*",
+    "@vue-spectrum/breadcrumbs": "workspace:*",
     "@vue-spectrum/button": "workspace:*",
     "@vue-spectrum/buttongroup": "workspace:*",
     "@vue-spectrum/checkbox": "workspace:*",

@@ -18,6 +18,10 @@
         <VueLabel class="helper-label" required>
           Migration Components
         </VueLabel>
+        <VueBreadcrumbs
+          :items="breadcrumbItems"
+          :current="currentBreadcrumb"
+          @action="handleBreadcrumbAction" />
         <p class="eyebrow">Vue Migration Baseline</p>
         <h1>Vue Spectrum Starter</h1>
         <p class="lead">
@@ -214,6 +218,8 @@
           <p class="summary">
             Selected: <strong>{{ favoriteFramework }}</strong>
             <span> · </span>
+            Breadcrumb: <strong>{{ currentBreadcrumb }}</strong>
+            <span> · </span>
             Seats: <strong>{{ seatCount ?? 'none' }}</strong>
             <span> · </span>
             Progress: <strong>{{ completionProgress }}%</strong>
@@ -308,6 +314,7 @@ import {ActionGroup as VueActionGroup} from '@vue-spectrum/actiongroup';
 import {Accordion as VueAccordion, Disclosure as VueDisclosure, DisclosurePanel as VueDisclosurePanel, DisclosureTitle as VueDisclosureTitle} from '@vue-spectrum/accordion';
 import {Avatar as VueAvatar} from '@vue-spectrum/avatar';
 import {Badge as VueBadge} from '@vue-spectrum/badge';
+import {Breadcrumbs as VueBreadcrumbs} from '@vue-spectrum/breadcrumbs';
 import {Button as VueButton} from '@vue-spectrum/button';
 import {ButtonGroup as VueButtonGroup} from '@vue-spectrum/buttongroup';
 import {Checkbox as VueCheckbox} from '@vue-spectrum/checkbox';
@@ -348,6 +355,8 @@ const count = ref(0);
 const name = ref('');
 const seatCount = ref<number | null>(2);
 const completionProgress = ref(40);
+const breadcrumbItems = ['Home', 'Migration', 'Starter'];
+const currentBreadcrumb = ref('Starter');
 const favoriteLanguage = ref('TypeScript');
 const isDigestEnabled = ref(false);
 const searchQuery = ref('');
@@ -461,6 +470,7 @@ function reset() {
   name.value = '';
   seatCount.value = 2;
   completionProgress.value = 40;
+  currentBreadcrumb.value = 'Starter';
   favoriteLanguage.value = 'TypeScript';
   isDigestEnabled.value = false;
   searchQuery.value = '';
@@ -495,6 +505,10 @@ function handleActionBarAction(action: string) {
 
 function handleActionGroupAction(action: string) {
   lastActionGroupAction.value = action;
+}
+
+function handleBreadcrumbAction(item: string) {
+  currentBreadcrumb.value = item;
 }
 
 function handleVirtualScroll(event: Event) {

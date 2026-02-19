@@ -11893,6 +11893,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-spectrum/breadcrumbs@workspace:*, @vue-spectrum/breadcrumbs@workspace:packages/@vue-spectrum/breadcrumbs":
+  version: 0.0.0-use.local
+  resolution: "@vue-spectrum/breadcrumbs@workspace:packages/@vue-spectrum/breadcrumbs"
+  dependencies:
+    "@vue-spectrum/components": "npm:^0.1.0"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-spectrum/button@workspace:*, @vue-spectrum/button@workspace:packages/@vue-spectrum/button":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/button@workspace:packages/@vue-spectrum/button"
@@ -31054,6 +31064,7 @@ __metadata:
     "@vue-spectrum/autocomplete": "workspace:*"
     "@vue-spectrum/avatar": "workspace:*"
     "@vue-spectrum/badge": "workspace:*"
+    "@vue-spectrum/breadcrumbs": "workspace:*"
     "@vue-spectrum/button": "workspace:*"
     "@vue-spectrum/buttongroup": "workspace:*"
     "@vue-spectrum/checkbox": "workspace:*"

@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 46 |
+| in_progress | 47 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 106 |
+| not_started | 105 |
 
 ## Package tracker
 
@@ -30,6 +30,7 @@ Tracked source packages: 154
 | `@react-spectrum/autocomplete` | `packages/@react-spectrum/autocomplete` | `@vue-spectrum/autocomplete` | `packages/@vue-spectrum/autocomplete` | in_progress | Vue autocomplete package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing a Vue search autocomplete package wrapper. |
 | `@react-spectrum/avatar` | `packages/@react-spectrum/avatar` | `@vue-spectrum/avatar` | `packages/@vue-spectrum/avatar` | in_progress | Vue avatar package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave visual primitive for identity and user representation. |
 | `@react-spectrum/badge` | `packages/@react-spectrum/badge` | `@vue-spectrum/badge` | `packages/@vue-spectrum/badge` | in_progress | Vue badge package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave visual primitive for compact labels and status context. |
+| `@react-spectrum/breadcrumbs` | `packages/@react-spectrum/breadcrumbs` | `@vue-spectrum/breadcrumbs` | `packages/@vue-spectrum/breadcrumbs` | in_progress | Vue breadcrumbs package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Composition-layer migration step providing Vue breadcrumbs for hierarchy and navigation context trails. |
 | `@react-spectrum/button` | `packages/@react-spectrum/button` | `@vue-spectrum/button` | `packages/@vue-spectrum/button` | in_progress | Vue button package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave primitive aligned with existing VueButton baseline work. |
 | `@react-spectrum/buttongroup` | `packages/@react-spectrum/buttongroup` | `@vue-spectrum/buttongroup` | `packages/@vue-spectrum/buttongroup` | in_progress | Vue buttongroup package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave primitive for grouped button actions and layout alignment. |
 | `@react-spectrum/checkbox` | `packages/@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | `packages/@vue-spectrum/checkbox` | in_progress | Vue checkbox package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave primitive for form controls. |
@@ -124,7 +125,6 @@ Tracked source packages: 154
 | `@react-aria/tree` | `packages/@react-aria/tree` | `@vue-aria/tree` | `packages/@vue-aria/tree` | not_started | - | - |
 | `@react-aria/utils` | `packages/@react-aria/utils` | `@vue-aria/utils` | `packages/@vue-aria/utils` | not_started | - | - |
 | `@react-aria/visually-hidden` | `packages/@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | `packages/@vue-aria/visually-hidden` | not_started | - | - |
-| `@react-spectrum/breadcrumbs` | `packages/@react-spectrum/breadcrumbs` | `@vue-spectrum/breadcrumbs` | `packages/@vue-spectrum/breadcrumbs` | not_started | - | - |
 | `@react-spectrum/calendar` | `packages/@react-spectrum/calendar` | `@vue-spectrum/calendar` | `packages/@vue-spectrum/calendar` | not_started | - | - |
 | `@react-spectrum/card` | `packages/@react-spectrum/card` | `@vue-spectrum/card` | `packages/@vue-spectrum/card` | not_started | - | - |
 | `@react-spectrum/color` | `packages/@react-spectrum/color` | `@vue-spectrum/color` | `packages/@vue-spectrum/color` | not_started | - | - |

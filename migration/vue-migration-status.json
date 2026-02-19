@@ -168,6 +168,30 @@
         }
       ]
     },
+    "@react-spectrum/breadcrumbs": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/breadcrumbs",
+      "targetPath": "packages/@vue-spectrum/breadcrumbs",
+      "notes": "Composition-layer migration step providing Vue breadcrumbs for hierarchy and navigation context trails.",
+      "acceptanceTests": [
+        {
+          "name": "Vue breadcrumbs package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/breadcrumbs/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/buttongroup": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/buttongroup",

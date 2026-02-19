@@ -4,6 +4,7 @@ import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spec
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
 import {SearchAutocomplete} from '@vue-spectrum/autocomplete';
+import {Breadcrumbs} from '@vue-spectrum/breadcrumbs';
 import {Dialog} from '@vue-spectrum/dialog';
 import {ListView} from '@vue-spectrum/list';
 import {Menu} from '@vue-spectrum/menu';
@@ -111,6 +112,19 @@ describe('Vue migration composition components', () => {
     await wrapper.findAll('button.vs-action-group__item')[1].trigger('click');
     expect(wrapper.emitted('action')?.[0]).toEqual(['Delete']);
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['Edit', 'Delete']]);
+  });
+
+  it('emits action when breadcrumb links are activated', async () => {
+    let wrapper = mount(Breadcrumbs, {
+      props: {
+        items: ['Home', 'Migration', 'Starter'],
+        current: 'Starter'
+      }
+    });
+
+    await wrapper.findAll('button.vs-breadcrumbs__link')[0].trigger('click');
+    expect(wrapper.emitted('action')?.[0]).toEqual(['Home']);
+    expect(wrapper.get('.vs-breadcrumbs__current').text()).toBe('Starter');
   });
 
   it('propagates disclosure toggles through accordion v-model', async () => {
