@@ -1,5 +1,6 @@
 import {mount} from '@vue/test-utils';
 import {describe, expect, it} from 'vitest';
+import {nextTick} from 'vue';
 import {Avatar} from '@vue-spectrum/avatar';
 import {Badge} from '@vue-spectrum/badge';
 import {Button} from '@vue-spectrum/button';
@@ -25,6 +26,7 @@ import {TagGroup} from '@vue-spectrum/tag';
 import {Tabs} from '@vue-spectrum/tabs';
 import {TextField} from '@vue-spectrum/textfield';
 import {Text} from '@vue-spectrum/text';
+import {createToastQueue, ToastContainer} from '@vue-spectrum/toast';
 import {View} from '@vue-spectrum/view';
 import {Well} from '@vue-spectrum/well';
 
@@ -385,6 +387,42 @@ describe('Vue migration primitives', () => {
 
     await wrapper.findAll('button.vs-tag-group__remove')[0].trigger('click');
     expect(wrapper.emitted('remove')?.[0]).toEqual([['react']]);
+  });
+
+  it('renders queued toasts and supports action + dismiss interactions', async () => {
+    let queue = createToastQueue();
+    let actions: string[] = [];
+
+    queue.positive('Saved changes', {
+      actionLabel: 'Undo',
+      onAction: () => {
+        actions.push('undo');
+      },
+      shouldCloseOnAction: true
+    });
+    queue.info('Build complete');
+
+    let wrapper = mount(ToastContainer, {
+      props: {
+        ariaLabel: 'Notifications',
+        placement: 'top end',
+        queue
+      }
+    });
+
+    expect(wrapper.attributes('aria-label')).toBe('Notifications');
+    expect(wrapper.classes()).toContain('vs-toast-region--top-end');
+    expect(wrapper.findAll('.vs-toast')).toHaveLength(2);
+
+    await wrapper.get('.vs-toast__action').trigger('click');
+    await nextTick();
+    expect(actions).toEqual(['undo']);
+    expect(queue.visibleToasts.value).toHaveLength(1);
+
+    await wrapper.get('.vs-toast__close').trigger('click');
+    await nextTick();
+    expect(queue.visibleToasts.value).toHaveLength(0);
+    expect(wrapper.find('.vs-toast-region').exists()).toBe(false);
   });
 
   it('emits press events from standalone cards', async () => {

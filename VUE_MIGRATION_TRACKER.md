@@ -13,11 +13,11 @@ Tracked source packages: 154
 
 | Status | Count |
 | --- | ---: |
-| in_progress | 117 |
+| in_progress | 118 |
 | ported | 0 |
 | planned | 0 |
 | blocked | 2 |
-| not_started | 35 |
+| not_started | 34 |
 
 ## Package tracker
 
@@ -135,6 +135,7 @@ Tracked source packages: 154
 | `@react-spectrum/theme-default` | `packages/@react-spectrum/theme-default` | `@vue-spectrum/theme-default` | `packages/@vue-spectrum/theme-default` | in_progress | Vue theme-default package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Theme token baseline for the default Spectrum color-scheme pairing and scale classes in Vue package ports. |
 | `@react-spectrum/theme-express` | `packages/@react-spectrum/theme-express` | `@vue-spectrum/theme-express` | `packages/@vue-spectrum/theme-express` | in_progress | Vue theme-express package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Theme token baseline for Spectrum express variants layered on the default Vue theme package. |
 | `@react-spectrum/theme-light` | `packages/@react-spectrum/theme-light` | `@vue-spectrum/theme-light` | `packages/@vue-spectrum/theme-light` | in_progress | Vue theme-light package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Theme token baseline for lightest Spectrum variants and scale classes in Vue package ports. |
+| `@react-spectrum/toast` | `packages/@react-spectrum/toast` | `@vue-spectrum/toast` | `packages/@vue-spectrum/toast` | in_progress | Vue toast package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Toast container baseline with queue helpers and Vue Aria toast-region semantics. |
 | `@react-spectrum/tree` | `packages/@react-spectrum/tree` | `@vue-spectrum/tree` | `packages/@vue-spectrum/tree` | in_progress | Vue tree package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | Data-heavy migration baseline for hierarchical collections. |
 | `@react-spectrum/view` | `packages/@react-spectrum/view` | `@vue-spectrum/view` | `packages/@vue-spectrum/view` | in_progress | Vue view package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave layout primitive for semantic container structure and spacing. |
 | `@react-spectrum/well` | `packages/@react-spectrum/well` | `@vue-spectrum/well` | `packages/@vue-spectrum/well` | in_progress | Vue well package source lint<br/>Vue starter typecheck<br/>Vue starter production build<br/>Vue starter interaction tests | First-wave content container primitive for grouped inline context. |
@@ -142,7 +143,6 @@ Tracked source packages: 154
 | `tailwindcss-react-aria-components` | `packages/tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | `packages/tailwindcss-vue-aria-components` | in_progress | Vue Tailwind plugin source lint<br/>Vue Tailwind plugin module load | Tailwind plugin baseline for Vue Aria-style data attribute variants. |
 | `react-aria` | `packages/react-aria` | `vue-aria` | `packages/vue-aria` | blocked | - | Meta-package migration depends on a critical mass of @vue-aria package ports. |
 | `react-stately` | `packages/react-stately` | `vue-stately` | `packages/vue-stately` | blocked | - | Meta-package migration depends on foundational @vue-stately package ports. |
-| `@react-spectrum/toast` | `packages/@react-spectrum/toast` | `@vue-spectrum/toast` | `packages/@vue-spectrum/toast` | not_started | - | - |
 | `@react-spectrum/tooltip` | `packages/@react-spectrum/tooltip` | `@vue-spectrum/tooltip` | `packages/@vue-spectrum/tooltip` | not_started | - | - |
 | `@react-spectrum/utils` | `packages/@react-spectrum/utils` | `@vue-spectrum/utils` | `packages/@vue-spectrum/utils` | not_started | - | - |
 | `@react-stately/autocomplete` | `packages/@react-stately/autocomplete` | `@vue-stately/autocomplete` | `packages/@vue-stately/autocomplete` | not_started | - | - |

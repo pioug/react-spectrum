@@ -65,6 +65,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-spectrum/list` | `@vue-spectrum/list` |
 | `@react-spectrum/tabs` | `@vue-spectrum/tabs` |
 | `@react-spectrum/tag` | `@vue-spectrum/tag` |
+| `@react-spectrum/toast` | `@vue-spectrum/toast` |
 | `@react-spectrum/test-utils` | `@vue-spectrum/test-utils` |
 | `@react-spectrum/theme-dark` | `@vue-spectrum/theme-dark` |
 | `@react-spectrum/theme-default` | `@vue-spectrum/theme-default` |

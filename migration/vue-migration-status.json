@@ -2680,6 +2680,30 @@
         }
       ]
     },
+    "@react-spectrum/toast": {
+      "status": "in_progress",
+      "targetPackage": "@vue-spectrum/toast",
+      "targetPath": "packages/@vue-spectrum/toast",
+      "notes": "Toast container baseline with queue helpers and Vue Aria toast-region semantics.",
+      "acceptanceTests": [
+        {
+          "name": "Vue toast package source lint",
+          "command": "yarn eslint packages/@vue-spectrum/toast/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",
