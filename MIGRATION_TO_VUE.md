@@ -188,6 +188,7 @@ Phase 1 is implemented:
   * `migration/REACT_TO_VUE_MIGRATION_GUIDE.md`
   * `migration/VUE_PACKAGE_ARCHITECTURE.md`
   * Expanded package-level usage and limitations docs for `@vue-stately/toggle`, `@vue-stately/tooltip`, `@vue-stately/tree`, `@vue-stately/utils`, and `@vue-stately/virtualizer`.
+  * Added concrete conversion examples for `@vue-stately/toggle`, `@vue-stately/tooltip`, `@vue-stately/tree`, `@vue-stately/utils`, and `@vue-stately/virtualizer` in `migration/REACT_TO_VUE_MIGRATION_GUIDE.md`.
 
 ## Migration phases
 

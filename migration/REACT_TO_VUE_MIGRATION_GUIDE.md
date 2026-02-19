@@ -268,6 +268,100 @@ const virtualizer = useVirtualizer({
 });
 ```
 
+### Stately Toggle State
+
+```ts
+import {ref} from 'vue';
+import {useToggleGroupState, useToggleState} from '@vue-stately/toggle';
+
+let selected = ref<boolean | undefined>(false);
+let toggle = useToggleState({
+  isSelected: selected,
+  onChange: (nextSelected) => {
+    selected.value = nextSelected;
+  }
+});
+
+let selectedKeys = ref(new Set(['bold']));
+let toggleGroup = useToggleGroupState({
+  selectedKeys,
+  selectionMode: 'multiple'
+});
+```
+
+### Stately Tooltip Trigger State
+
+```ts
+import {useTooltipTriggerState} from '@vue-stately/tooltip';
+
+let tooltip = useTooltipTriggerState({
+  delay: 500,
+  closeDelay: 150
+});
+
+tooltip.open();
+tooltip.close();
+```
+
+### Stately Tree State
+
+```ts
+import {useTreeState} from '@vue-stately/tree';
+
+let tree = useTreeState({
+  items: [
+    {key: 'animals', childNodes: [{key: 'birds'}, {key: 'mammals'}]},
+    {key: 'plants'}
+  ],
+  selectionMode: 'multiple'
+});
+
+tree.toggleKey('animals');
+tree.selectionManager.toggleSelection('birds');
+```
+
+### Stately Utils
+
+```ts
+import {clamp, useControlledState} from '@vue-stately/utils';
+import {ref} from 'vue';
+
+let external = ref<number | undefined>(3);
+let [value, setValue] = useControlledState(external, 0);
+setValue((current) => clamp(current + 2, 0, 10));
+```
+
+### Stately Virtualizer State
+
+```ts
+import {
+  Layout,
+  LayoutInfo,
+  Rect,
+  Size,
+  useVirtualizerState
+} from '@vue-stately/virtualizer';
+
+class RowLayout extends Layout<{id: string}> {
+  getVisibleLayoutInfos(rect: Rect) {
+    return [new LayoutInfo('item', 'row-1', new Rect(0, 0, 320, 40))]
+      .filter((info) => info.rect.intersects(rect));
+  }
+  getLayoutInfo() {
+    return new LayoutInfo('item', 'row-1', new Rect(0, 0, 320, 40));
+  }
+  getContentSize() {
+    return new Size(320, 40);
+  }
+}
+
+let state = useVirtualizerState({
+  collection: {getItem: () => ({id: 'row-1'})},
+  layout: new RowLayout(),
+  renderView: (_type, content) => content?.id ?? ''
+});
+```
+
 ## Validation checklist
 
 1. Run `yarn workspace vue-spectrum-starter typecheck`.
