@@ -3064,6 +3064,30 @@
         }
       ]
     },
+    "@react-stately/layout": {
+      "status": "in_progress",
+      "targetPackage": "@vue-stately/layout",
+      "targetPath": "packages/@vue-stately/layout",
+      "notes": "State baseline for list/grid/table/waterfall virtualized layout primitives in Vue.",
+      "acceptanceTests": [
+        {
+          "name": "Vue stately layout package source lint",
+          "command": "yarn eslint packages/@vue-stately/layout/src"
+        },
+        {
+          "name": "Vue starter typecheck",
+          "command": "yarn workspace vue-spectrum-starter typecheck"
+        },
+        {
+          "name": "Vue starter production build",
+          "command": "yarn workspace vue-spectrum-starter build"
+        },
+        {
+          "name": "Vue starter interaction tests",
+          "command": "yarn test:vue"
+        }
+      ]
+    },
     "@react-spectrum/steplist": {
       "status": "in_progress",
       "targetPackage": "@vue-spectrum/steplist",

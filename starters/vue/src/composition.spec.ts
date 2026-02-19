@@ -201,6 +201,12 @@ import {
   useFormValidationState as useStatelyFormValidationState
 } from '@vue-stately/form';
 import {GridCollection as StatelyGridCollection, useGridState as useStatelyGridState} from '@vue-stately/grid';
+import {
+  GridLayout as StatelyGridLayout,
+  ListLayout as StatelyListLayout,
+  TableLayout as StatelyTableLayout,
+  WaterfallLayout as StatelyWaterfallLayout
+} from '@vue-stately/layout';
 
 function createPointerEvent(
   type: string,
@@ -1484,6 +1490,36 @@ describe('Vue migration composition components', () => {
     expect(Array.from(gridState.selectionManager.selectedKeys.value)).toEqual(['row-1']);
     gridState.selectionManager.toggleSelection('row-2');
     expect(Array.from(gridState.selectionManager.selectedKeys.value)).toEqual(['row-1']);
+  });
+
+  it('computes vue-stately list/grid/table/waterfall layout baselines', () => {
+    let items = [
+      {key: 'item-1', index: 0, type: 'item'},
+      {key: 'item-2', index: 1, type: 'item'},
+      {key: 'item-3', index: 2, type: 'loader'}
+    ];
+
+    let listLayout = new StatelyListLayout({gap: 4, rowHeight: 40});
+    listLayout.update(items, 320);
+    expect(listLayout.getLayoutInfo('item-1')?.rect.height).toBe(40);
+    expect(listLayout.getVisibleLayoutInfos({x: 0, y: 0, width: 320, height: 120})).toHaveLength(3);
+
+    let gridLayout = new StatelyGridLayout({gap: 8, minColumnWidth: 100, rowHeight: 50});
+    gridLayout.update(items, 360);
+    expect(gridLayout.getLayoutInfo('item-1')?.rect.width).toBeGreaterThan(0);
+    expect(gridLayout.getContentSize().height).toBeGreaterThan(0);
+
+    let tableLayout = new StatelyTableLayout({
+      columnWidths: new Map([
+        ['status', 180]
+      ])
+    });
+    expect(tableLayout.getColumnWidth('status', 120)).toBe(180);
+    expect(tableLayout.getColumnWidth('summary', 120)).toBe(120);
+
+    let waterfallLayout = new StatelyWaterfallLayout({gap: 12, minColumnWidth: 120, rowHeight: 60});
+    waterfallLayout.update(items, 420);
+    expect(waterfallLayout.getLayoutInfo('item-2')).not.toBeNull();
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {

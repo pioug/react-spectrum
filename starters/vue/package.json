@@ -145,6 +145,7 @@
     "@vue-stately/flags": "workspace:*",
     "@vue-stately/form": "workspace:*",
     "@vue-stately/grid": "workspace:*",
+    "@vue-stately/layout": "workspace:*",
     "vue": "^3.5.13"
   },
   "devDependencies": {
