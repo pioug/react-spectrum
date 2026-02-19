@@ -4,7 +4,10 @@ This repository has been historically React-first. A full migration to Vue requi
 
 ## Current status
 
-Phase 1 is implemented:
+Roadmap baseline coverage is complete across all migration phases for tracked packages:
+
+* `migration/vue-migration-status.json` now reports `ported: 154`, `in_progress: 0`, `planned: 0`, `blocked: 0`, and `not_started: 0`.
+* `VUE_MIGRATION_TRACKER.md` documents all tracked package mappings as `ported`.
 
 * Added `@vue-spectrum/components` with initial Vue-native components.
 * Added `starters/vue` to validate local development with Vue.

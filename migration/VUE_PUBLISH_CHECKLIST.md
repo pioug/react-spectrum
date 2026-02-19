@@ -11,13 +11,16 @@ This checklist defines the minimum release bar for promoting Vue migration packa
 5. Migration tracker entry for the package has actionable notes and acceptance tests.
 6. Migration examples in `migration/REACT_TO_VUE_MIGRATION_GUIDE.md` are current for the package.
 7. Package versioning and changelog entry are prepared for public release.
+8. Aggregate packages (`vue-aria`, `vue-stately`) are validated for export coverage when package-level releases are prepared.
 
 ## Publish order
 
 1. `@vue-aria/*` foundational utilities (for example virtualizer).
-2. `@vue-spectrum/*` primitives (`provider`, form controls, base display primitives).
-3. Composition packages (`dialog`, `overlays`, `menu`, `listbox`, `combobox`).
-4. Data-heavy packages (`table`, `tree`, `dnd`).
+2. `@vue-stately/*` state packages that back migrated Vue components.
+3. Aggregate exports (`vue-aria`, `vue-stately`) once package-level exports are stable.
+4. `@vue-spectrum/*` primitives (`provider`, form controls, base display primitives).
+5. Composition packages (`dialog`, `overlays`, `menu`, `listbox`, `combobox`).
+6. Data-heavy packages (`table`, `tree`, `dnd`).
 
 ## Post-publish validation
 

@@ -4,9 +4,16 @@ This guide documents the current migration path from React Spectrum packages to 
 
 ## Scope
 
-These ports are tracked as `in_progress` or `ported`. API parity with React is not complete yet, but package entry points and baseline behaviors exist.
+These ports are tracked as `ported`. API parity with React is not complete yet, but package entry points and baseline behaviors exist.
 
 ## Package mapping
+
+### Meta packages
+
+| React package | Vue package |
+| --- | --- |
+| `react-aria` | `vue-aria` |
+| `react-stately` | `vue-stately` |
 
 ### Foundation and primitives
 
@@ -173,6 +180,7 @@ These ports are tracked as `in_progress` or `ported`. API parity with React is n
 
 | React pattern | Vue pattern |
 | --- | --- |
+| `react-aria` / `react-stately` imports | `vue-aria` / `vue-stately` aggregate imports |
 | JSX children | Vue default slot |
 | `className` | `class` |
 | `value` + `onChange` | `v-model` + `@update:modelValue` |
@@ -266,6 +274,32 @@ const virtualizer = useVirtualizer({
   scrollTop,
   overscan: 3
 });
+```
+
+### Aria Meta Package Imports
+
+```ts
+// React
+import {useButton} from '@react-aria/button';
+import {useFocusRing} from '@react-aria/focus';
+```
+
+```ts
+// Vue
+import {useButton, useFocusRing} from 'vue-aria';
+```
+
+### Stately Meta Package Imports
+
+```ts
+// React
+import {useToggleState} from '@react-stately/toggle';
+import {useTooltipTriggerState} from '@react-stately/tooltip';
+```
+
+```ts
+// Vue
+import {useToggleState, useTooltipTriggerState} from 'vue-stately';
 ```
 
 ### Stately Toggle State
