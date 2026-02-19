@@ -200,6 +200,7 @@ import {
   mergeValidation as mergeStatelyValidation,
   useFormValidationState as useStatelyFormValidationState
 } from '@vue-stately/form';
+import {GridCollection as StatelyGridCollection, useGridState as useStatelyGridState} from '@vue-stately/grid';
 
 function createPointerEvent(
   type: string,
@@ -1437,6 +1438,52 @@ describe('Vue migration composition components', () => {
     );
     expect(mergedValidation.isInvalid).toBe(true);
     expect(mergedValidation.validationErrors).toEqual(['Server error']);
+  });
+
+  it('manages vue-stately grid collection and row/cell focus-selection state', () => {
+    let collection = new StatelyGridCollection({
+      columnCount: 2,
+      items: [
+        {
+          key: 'row-1',
+          textValue: 'Backlog',
+          childNodes: [
+            {key: 'row-1-cell-1', textValue: 'Backlog'},
+            {key: 'row-1-cell-2', textValue: 'Open'}
+          ]
+        },
+        {
+          key: 'row-2',
+          textValue: 'Done',
+          childNodes: [
+            {key: 'row-2-cell-1', textValue: 'Done'},
+            {key: 'row-2-cell-2', textValue: 'Closed'}
+          ]
+        }
+      ]
+    });
+
+    let selectedKeys = ref(new Set<string>());
+    let gridState = useStatelyGridState({
+      collection,
+      disabledKeys: ['row-2'],
+      focusMode: 'cell',
+      selectedKeys,
+      selectionMode: 'multiple'
+    });
+
+    expect(collection.getFirstKey()).toBe('row-1');
+    expect(collection.getKeyAfter('row-1')).toBe('row-2');
+    expect(collection.getItem('row-1-cell-1')?.parentKey).toBe('row-1');
+
+    gridState.selectionManager.setFocusedKey('row-1', 'last');
+    expect(gridState.selectionManager.focusedKey.value).toBe('row-1-cell-2');
+    expect(gridState.selectionManager.isDisabled('row-2')).toBe(true);
+
+    gridState.selectionManager.toggleSelection('row-1');
+    expect(Array.from(gridState.selectionManager.selectedKeys.value)).toEqual(['row-1']);
+    gridState.selectionManager.toggleSelection('row-2');
+    expect(Array.from(gridState.selectionManager.selectedKeys.value)).toEqual(['row-1']);
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {

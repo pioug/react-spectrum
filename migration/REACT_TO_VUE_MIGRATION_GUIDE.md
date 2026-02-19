@@ -148,6 +148,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-stately/dnd` | `@vue-stately/dnd` |
 | `@react-stately/flags` | `@vue-stately/flags` |
 | `@react-stately/form` | `@vue-stately/form` |
+| `@react-stately/grid` | `@vue-stately/grid` |
 
 ## Core API conversion patterns
 
