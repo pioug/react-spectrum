@@ -12207,6 +12207,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@vue-aria/toast@workspace:*, @vue-aria/toast@workspace:packages/@vue-aria/toast":
+  version: 0.0.0-use.local
+  resolution: "@vue-aria/toast@workspace:packages/@vue-aria/toast"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@vue-aria/virtualizer@workspace:*, @vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer":
   version: 0.0.0-use.local
   resolution: "@vue-aria/virtualizer@workspace:packages/@vue-aria/virtualizer"
@@ -31545,6 +31553,7 @@ __metadata:
     "@vue-aria/tag": "workspace:*"
     "@vue-aria/test-utils": "workspace:*"
     "@vue-aria/textfield": "workspace:*"
+    "@vue-aria/toast": "workspace:*"
     "@vue-aria/virtualizer": "workspace:*"
     "@vue-spectrum/accordion": "workspace:*"
     "@vue-spectrum/actionbar": "workspace:*"

@@ -85,6 +85,7 @@ import {useTag as useAriaTag, useTagGroup as useAriaTagGroup} from '@vue-aria/ta
 import {useTab as useAriaTab, useTabList as useAriaTabList, useTabPanel as useAriaTabPanel} from '@vue-aria/tabs';
 import {pointerMap as vueAriaPointerMap, triggerLongPress as triggerVueAriaLongPress, User as VueAriaUser} from '@vue-aria/test-utils';
 import {useFormattedTextField as useAriaFormattedTextField, useTextField as useAriaTextField} from '@vue-aria/textfield';
+import {useToast as useAriaToast, useToastRegion as useAriaToastRegion} from '@vue-aria/toast';
 import {
   useTable as useAriaTable,
   useTableCell as useAriaTableCell,
@@ -2238,6 +2239,56 @@ describe('Vue migration composition components', () => {
     formattedField.inputProps.value.onInput('1234a');
     expect(formattedValue.value).toBe('1234');
     expect(formattedChanges).toEqual(['1234']);
+  });
+
+  it('computes vue-aria toast region and toast item semantics', () => {
+    let pausedCount = 0;
+    let resumedCount = 0;
+    let closedKeys: Array<string | number> = [];
+    let timerResets: number[] = [];
+
+    let toastState = {
+      visibleToasts: [
+        {
+          key: 'build-complete',
+          timeout: 4000,
+          timer: {
+            pause: () => {},
+            reset: (timeout: number) => {
+              timerResets.push(timeout);
+            }
+          }
+        }
+      ],
+      pauseAll: () => {
+        pausedCount += 1;
+      },
+      resumeAll: () => {
+        resumedCount += 1;
+      },
+      close: (key: string | number) => {
+        closedKeys.push(key);
+      }
+    };
+
+    let toastRegion = useAriaToastRegion({}, toastState);
+    expect(toastRegion.regionProps.value.role).toBe('region');
+    expect(toastRegion.regionProps.value['aria-label']).toBe('Notifications (1)');
+    toastRegion.regionProps.value.onPointerEnter();
+    expect(pausedCount).toBe(1);
+    toastRegion.regionProps.value.onPointerLeave();
+    expect(resumedCount).toBe(1);
+
+    let toast = useAriaToast({
+      toast: toastState.visibleToasts[0]
+    }, toastState);
+    expect(timerResets).toEqual([4000]);
+    expect(toast.toastProps.value.role).toBe('alertdialog');
+    expect(toast.contentProps.value.role).toBe('alert');
+    expect(toast.closeButtonProps.value['aria-label']).toBe('Close');
+
+    toast.closeButtonProps.value.onPress();
+    expect(closedKeys).toEqual(['build-complete']);
   });
 
   it('computes vue-aria table wrappers and selection helpers', () => {

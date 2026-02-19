@@ -109,6 +109,7 @@ These ports are tracked as `in_progress`. API parity with React is not complete 
 | `@react-aria/tag` | `@vue-aria/tag` |
 | `@react-aria/test-utils` | `@vue-aria/test-utils` |
 | `@react-aria/textfield` | `@vue-aria/textfield` |
+| `@react-aria/toast` | `@vue-aria/toast` |
 | `@react-aria/tabs` | `@vue-aria/tabs` |
 | `@react-aria/table` | `@vue-aria/table` |
 | `@react-aria/disclosure` | `@vue-aria/disclosure` |
