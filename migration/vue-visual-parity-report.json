@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-20T07:38:15.424Z",
+  "generatedAt": "2026-02-20T07:44:14.227Z",
   "mode": "compare",
   "referenceTarget": "react",
   "candidateTarget": "vue",
@@ -998,8 +998,8 @@
       "id": "forced-colors-cluster",
       "maxDiffRatio": 0,
       "status": "fail",
-      "diffRatio": 0.17872964707827094,
-      "changedPixels": 43249,
+      "diffRatio": 0.16626993966443507,
+      "changedPixels": 40234,
       "totalPixels": 241980,
       "error": null,
       "referencePath": "migration/visual-parity/react-reference/forced-colors-cluster.png",

@@ -1,6 +1,6 @@
 # Vue Visual Parity Report
 
-Generated: 2026-02-20T07:38:15.424Z
+Generated: 2026-02-20T07:44:14.227Z
 
 ## Summary
 
@@ -98,6 +98,6 @@ Generated: 2026-02-20T07:38:15.424Z
 | `virtualized-collection-cluster` | fail | 18.2741% | 0.0000% | 149549 |
 | `dnd-state-cluster` | fail | 4.9801% | 0.0000% | 27372 |
 | `rtl-cluster` | fail | 6.6447% | 0.0000% | 20475 |
-| `forced-colors-cluster` | fail | 17.8730% | 0.0000% | 43249 |
+| `forced-colors-cluster` | fail | 16.6270% | 0.0000% | 40234 |
 | `overlay-placement-matrix` | fail | 15.1279% | 0.0000% | 38156 |
 
