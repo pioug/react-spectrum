@@ -436,8 +436,8 @@ jobs:
       - run:
           name: verify vue parity gates
           command: |
-            yarn vue:parity:api:report
-            yarn vue:parity:api:signature:report
+            yarn vue:parity:api:assert
+            yarn vue:parity:api:signature:assert
             yarn playwright install chromium
             yarn vue:parity:visual:compare
 

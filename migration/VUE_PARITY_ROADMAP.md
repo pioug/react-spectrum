@@ -42,7 +42,7 @@ This roadmap tracks the work needed to reach:
 
 1. [ ] Close token/theme/style mismatches by component cluster.
 2. [x] Add state-matrix visual fixtures (default, hover, focus-visible, active, disabled, invalid, selected).
-3. [ ] Enforce strict thresholds in CI.
+3. [x] Enforce strict thresholds in CI.
 
 ### Phase 5: Stabilization
 
@@ -64,4 +64,5 @@ This roadmap tracks the work needed to reach:
 * Current visual fixture baseline: `18` fixtures, `0` failures, `0` errors.
 * Vue migration test suite is passing (`181` tests via `yarn test:vue`).
 * API export + signature parity closure is complete for all tracked packages; remaining API work is expanded edge-case behavior fixtures.
-* Visual parity fixture baseline is green; remaining visual work is expanded theme/density/state coverage and stricter CI gating.
+* Visual parity fixture baseline is green and CI now enforces strict API/signature parity asserts plus visual diff thresholds.
+* Remaining visual work is expanded theme/density/state coverage beyond the current fixture matrix.
