@@ -10,7 +10,6 @@ const FIXTURE_CONFIG_PATH = path.join(REPO_ROOT, 'migration', 'vue-visual-parity
 
 const EXCLUDED_PACKAGES = new Set([
   'components',
-  's2',
   'story-utils',
   'style-macro-s1',
   'test-utils',
@@ -58,6 +57,7 @@ const PACKAGE_FIXTURE_MAP = {
   progress: ['pkg-progress'],
   provider: ['theme-default-cluster', 'theme-light-cluster', 'theme-dark-cluster', 'theme-express-cluster'],
   radio: ['pkg-radio'],
+  s2: ['pkg-s2'],
   searchfield: ['pkg-searchfield'],
   slider: ['pkg-slider'],
   statuslight: ['pkg-statuslight'],
@@ -77,6 +77,30 @@ const PACKAGE_FIXTURE_MAP = {
   tree: ['pkg-tree'],
   view: ['view-bordered'],
   well: ['pkg-well']
+};
+
+const REQUIRED_SCENARIO_FIXTURES = {
+  s2: ['pkg-s2'],
+  stateMatrix: [
+    'state-textfield-disabled',
+    'state-searchfield-invalid',
+    'state-searchfield-focus',
+    'state-numberfield-invalid',
+    'state-slider-disabled',
+    'state-radio-disabled',
+    'state-tabs-disabled',
+    'state-picker-disabled',
+    'state-dropzone-over',
+    'state-tree-selection'
+  ],
+  rtl: ['rtl-cluster'],
+  forcedColors: ['forced-colors-cluster'],
+  overlayPlacements: ['overlay-placement-matrix'],
+  asyncVirtualDnd: [
+    'async-collection-cluster',
+    'virtualized-collection-cluster',
+    'dnd-state-cluster'
+  ]
 };
 
 function readJson(filePath) {
@@ -118,6 +142,7 @@ function assertCoverage() {
   let packagesMissingMap = [];
   let fixtureIdsMissing = [];
   let staleMappings = [];
+  let missingScenarioFixtures = [];
   let coveredPackages = 0;
 
   for (let packageName of trackedPackages) {
@@ -171,7 +196,21 @@ function assertCoverage() {
     }
   }
 
-  if (packagesMissingMap.length > 0 || fixtureIdsMissing.length > 0 || staleMappings.length > 0) {
+  for (let [scenario, requiredFixtureIds] of Object.entries(REQUIRED_SCENARIO_FIXTURES)) {
+    let missingIds = requiredFixtureIds.filter((fixtureId) => !fixtureIds.has(fixtureId));
+    if (missingIds.length > 0) {
+      missingScenarioFixtures.push({scenario, missingIds});
+    }
+  }
+
+  if (missingScenarioFixtures.length > 0) {
+    console.error('\nMissing required scenario fixtures:');
+    for (let entry of missingScenarioFixtures) {
+      console.error(`- ${entry.scenario}: ${entry.missingIds.join(', ')}`);
+    }
+  }
+
+  if (packagesMissingMap.length > 0 || fixtureIdsMissing.length > 0 || staleMappings.length > 0 || missingScenarioFixtures.length > 0) {
     process.exitCode = 1;
     return;
   }

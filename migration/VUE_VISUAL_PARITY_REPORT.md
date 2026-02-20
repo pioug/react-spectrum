@@ -1,12 +1,12 @@
 # Vue Visual Parity Report
 
-Generated: 2026-02-20T02:34:40.346Z
+Generated: 2026-02-20T02:50:02.559Z
 
 ## Summary
 
 * Mode: compare
-* Fixtures: 67
-* Passed: 67
+* Fixtures: 84
+* Passed: 84
 * Failed: 0
 * Errors: 0
 
@@ -81,4 +81,21 @@ Generated: 2026-02-20T02:34:40.346Z
 | `pkg-contextualhelp` | pass | 0.0000% | 0.0000% | 0 |
 | `pkg-dialog` | pass | 0.0000% | 0.0000% | 0 |
 | `pkg-overlays` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-s2` | pass | 0.0000% | 0.0000% | 0 |
+| `state-textfield-disabled` | pass | 0.0000% | 0.0000% | 0 |
+| `state-searchfield-invalid` | pass | 0.0000% | 0.0000% | 0 |
+| `state-searchfield-focus` | pass | 0.0000% | 0.0000% | 0 |
+| `state-numberfield-invalid` | pass | 0.0000% | 0.0000% | 0 |
+| `state-slider-disabled` | pass | 0.0000% | 0.0000% | 0 |
+| `state-radio-disabled` | pass | 0.0000% | 0.0000% | 0 |
+| `state-tabs-disabled` | pass | 0.0000% | 0.0000% | 0 |
+| `state-picker-disabled` | pass | 0.0000% | 0.0000% | 0 |
+| `state-dropzone-over` | pass | 0.0000% | 0.0000% | 0 |
+| `state-tree-selection` | pass | 0.0000% | 0.0000% | 0 |
+| `async-collection-cluster` | pass | 0.0000% | 0.0000% | 0 |
+| `virtualized-collection-cluster` | pass | 0.0000% | 0.0000% | 0 |
+| `dnd-state-cluster` | pass | 0.0000% | 0.0000% | 0 |
+| `rtl-cluster` | pass | 0.0000% | 0.0000% | 0 |
+| `forced-colors-cluster` | pass | 0.0000% | 0.0000% | 0 |
+| `overlay-placement-matrix` | pass | 0.0000% | 0.0000% | 0 |
 

@@ -291,6 +291,15 @@ function getInteractionTargetLocator(page, fixture, locator) {
   return locator.first();
 }
 
+async function applyFixtureMedia(page, fixture) {
+  let media = fixture.media ?? {};
+  await page.emulateMedia({
+    colorScheme: media.colorScheme ?? null,
+    forcedColors: media.forcedColors ?? null,
+    reducedMotion: media.reducedMotion ?? null
+  });
+}
+
 async function applyFixtureInteraction(page, fixture, locator) {
   let interaction = fixture.interaction ?? 'none';
   if (interaction === 'none') {
@@ -348,6 +357,7 @@ async function runCapture(browser, config) {
       let url = fixtureUrl(config.baseUrl, fixture);
       let viewport = fixture.viewport ?? {width: 1280, height: 720};
       await page.setViewportSize(viewport);
+      await applyFixtureMedia(page, fixture);
       await page.goto(url, {waitUntil: 'networkidle'});
 
       if (fixture.waitForSelector) {
@@ -420,6 +430,7 @@ async function runCompare(browser, config) {
       let url = fixtureUrl(config.baseUrl, fixture);
       let viewport = fixture.viewport ?? {width: 1280, height: 720};
       await page.setViewportSize(viewport);
+      await applyFixtureMedia(page, fixture);
       await page.goto(url, {waitUntil: 'networkidle'});
 
       if (fixture.waitForSelector) {

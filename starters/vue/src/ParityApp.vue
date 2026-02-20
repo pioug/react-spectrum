@@ -348,6 +348,88 @@
       <section data-parity-id="pkg-well" class="parity-card">
         <Well variant="notice">Well package parity fixture</Well>
       </section>
+
+      <section data-parity-id="pkg-s2" class="parity-card parity-card--wide parity-card--stack">
+        <S2Provider color-scheme="light" scale="medium">
+          <div class="parity-theme-cluster">
+            <S2Button variant="primary">S2 action</S2Button>
+            <S2TextField label="S2 owner" model-value="Avery" />
+            <S2Switch :model-value="true" label="S2 alerts" />
+            <S2TableView :columns="columns" :rows="rows" row-key="ticket" caption="S2 table" />
+            <S2TreeView :items="treeItems" model-value="project-beta" />
+          </div>
+        </S2Provider>
+      </section>
+
+      <section data-parity-id="state-textfield-disabled" class="parity-card parity-card--input">
+        <TextField label="Locked ticket" model-value="T-100" :disabled="true" />
+      </section>
+
+      <section data-parity-id="state-searchfield-invalid" class="parity-card parity-card--input">
+        <SearchField v-model="searchInvalidValue" label="Search query" :invalid="true" description="No matching issues found" />
+      </section>
+
+      <section data-parity-id="state-searchfield-focus" class="parity-card parity-card--input">
+        <SearchField data-parity-target="searchfield-focus-target" v-model="searchFocusValue" label="Focused search" />
+      </section>
+
+      <section data-parity-id="state-numberfield-invalid" class="parity-card parity-card--input">
+        <NumberField :model-value="999" label="Estimate" :invalid="true" description="Estimate exceeds limit" />
+      </section>
+
+      <section data-parity-id="state-slider-disabled" class="parity-card parity-card--stack">
+        <Slider :model-value="42" label="Disabled slider" :disabled="true" />
+      </section>
+
+      <section data-parity-id="state-radio-disabled" class="parity-card parity-card--stack">
+        <RadioGroup v-model="radioValue" label="Disabled radio group" :disabled="true" orientation="horizontal">
+          <Radio value="Vue">Vue</Radio>
+          <Radio value="React">React</Radio>
+          <Radio value="Svelte">Svelte</Radio>
+        </RadioGroup>
+      </section>
+
+      <section data-parity-id="state-tabs-disabled" class="parity-card parity-card--wide">
+        <Tabs v-model="disabledTabValue" :items="disabledTabs" aria-label="Disabled tabs fixture" />
+      </section>
+
+      <section data-parity-id="state-picker-disabled" class="parity-card parity-card--input">
+        <Picker v-model="disabledPickerValue" label="Disabled picker" :items="pickerItems" :disabled="true" />
+      </section>
+
+      <section data-parity-id="state-dropzone-over" class="parity-card">
+        <DropZone class="is-over" label="Hovering drop target" />
+      </section>
+
+      <section data-parity-id="state-tree-selection" class="parity-card parity-card--wide">
+        <Tree :items="treeItems" model-value="beta-qa" />
+      </section>
+
+      <section data-parity-id="async-collection-cluster" class="parity-card parity-card--wide parity-card--stack">
+        <Text variant="detail">Async loading snapshot</Text>
+        <ProgressBar label="Loading backlog" :value="35" />
+        <Table :columns="columns" :rows="asyncRows" row-key="ticket" caption="No rows yet" />
+      </section>
+
+      <section data-parity-id="virtualized-collection-cluster" class="parity-card parity-card--wide parity-card--stack">
+        <div class="parity-scroll-frame">
+          <ListView label="Scrollable list viewport" :items="virtualListItems" model-value="Item 8" />
+        </div>
+        <div class="parity-scroll-frame">
+          <Table :columns="columns" :rows="virtualRows" row-key="ticket" caption="Large table viewport" />
+        </div>
+        <div class="parity-scroll-frame">
+          <Tree :items="virtualTreeItems" model-value="node-7" />
+        </div>
+      </section>
+
+      <section data-parity-id="dnd-state-cluster" class="parity-card parity-card--wide">
+        <div class="parity-dnd-cluster">
+          <DropZone class="is-over" label="Drop target (over)" />
+          <DropZone :disabled="true" label="Drop target (disabled)" />
+          <DndDropZone label="Dnd drop target" />
+        </div>
+      </section>
     </main>
   </Provider>
 </template>
@@ -402,6 +484,14 @@ import {Provider} from '@vue-spectrum/provider';
 import {Radio, RadioGroup} from '@vue-spectrum/radio';
 import {SearchField} from '@vue-spectrum/searchfield';
 import {Slider} from '@vue-spectrum/slider';
+import {
+  Button as S2Button,
+  Provider as S2Provider,
+  Switch as S2Switch,
+  TableView as S2TableView,
+  TextField as S2TextField,
+  TreeView as S2TreeView
+} from '@vue-spectrum/s2';
 import {StatusLight} from '@vue-spectrum/statuslight';
 import {StepList} from '@vue-spectrum/steplist';
 import {Switch} from '@vue-spectrum/switch';
@@ -422,11 +512,19 @@ import {theme as lightTheme} from '@vue-spectrum/theme-light';
 
 const selectedTab = ref('overview');
 const selectedRow = ref('T-100');
+const disabledTabValue = ref('summary');
+const disabledPickerValue = ref('Q3');
 const listItems = ['React', 'Vue', 'Svelte'];
 
 const tabs: TabItemData[] = [
   {key: 'overview', label: 'Overview', content: 'Overview content'},
   {key: 'details', label: 'Details', content: 'Details content'}
+];
+
+const disabledTabs: TabItemData[] = [
+  {key: 'summary', label: 'Summary', content: 'Summary tab'},
+  {key: 'history', label: 'History', content: 'History tab', disabled: true},
+  {key: 'activity', label: 'Activity', content: 'Activity tab'}
 ];
 
 const columns = [
@@ -473,6 +571,8 @@ const pickerItems = ['Q1', 'Q2', 'Q3', 'Q4'];
 const pickerValue = ref('Q2');
 const radioValue = ref('Vue');
 const searchValue = ref('Vue');
+const searchInvalidValue = ref('react');
+const searchFocusValue = ref('focus me');
 const sliderValue = ref(64);
 const stepItems = [
   {key: 'plan', label: 'Plan'},
@@ -504,6 +604,31 @@ const treeItems = [
 ];
 
 const frameworkOptions = ['React', 'Vue', 'Svelte', 'Solid'];
+const asyncRows: typeof rows = [];
+const virtualListItems = Array.from({length: 18}, (_, index) => `Item ${index + 1}`);
+const virtualRows = Array.from({length: 14}, (_, index) => ({
+  ticket: `T-${200 + index}`,
+  owner: index % 2 === 0 ? 'Avery' : 'Quinn'
+}));
+const virtualTreeItems = [
+  {
+    id: 'node-1',
+    label: 'Node 1',
+    children: [
+      {id: 'node-2', label: 'Node 2'},
+      {id: 'node-3', label: 'Node 3'}
+    ]
+  },
+  {
+    id: 'node-4',
+    label: 'Node 4',
+    children: [
+      {id: 'node-5', label: 'Node 5'},
+      {id: 'node-6', label: 'Node 6'},
+      {id: 'node-7', label: 'Node 7'}
+    ]
+  }
+];
 const colorPresetItems = [
   {id: 'azure', label: 'Azure', color: '#0ea5e9'},
   {id: 'violet', label: 'Violet', color: '#8b5cf6'},
@@ -587,6 +712,20 @@ const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
   inline-size: 100%;
   min-height: 32px;
   padding: 4px 10px;
+}
+
+.parity-scroll-frame {
+  border: 1px solid #d8d8d8;
+  border-radius: 6px;
+  max-height: 220px;
+  overflow: auto;
+  padding: 8px;
+}
+
+.parity-dnd-cluster {
+  display: grid;
+  gap: 12px;
+  inline-size: 100%;
 }
 
 @media (max-width: 1024px) {

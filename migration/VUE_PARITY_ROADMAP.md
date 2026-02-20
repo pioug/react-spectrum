@@ -61,10 +61,11 @@ This roadmap tracks the work needed to reach:
 * CircleCI runs `vue-parity` to enforce API parity asserts, visual fixture coverage asserts, and visual parity reports with artifact publication.
 * Current API coverage: `100.00%` (`2672` source exports, `0` missing exports, `154` fully matched packages).
 * Current API signature coverage: `100.00%` (`2672` compared exports, `0` mismatches, `154` fully matched packages).
-* Current visual fixture baseline: `67` fixtures, `0` failures, `0` errors.
+* Current visual fixture baseline: `84` fixtures, `0` failures, `0` errors.
 * Vue migration test suite is passing (`182` tests via `yarn test:vue`).
 * API export + signature parity closure is complete for all tracked packages, with edge-case behavior fixtures covered in the Vue composition suite.
 * Visual parity fixture baseline is green and CI now enforces strict API/signature parity asserts plus visual diff thresholds.
+* Visual parity backlog buckets are tracked in `migration/VUE_VISUAL_PARITY_BACKLOG.md` and enforced by `yarn vue:parity:visual:coverage:assert`.
 * Theme-token visual parity now covers `default`, `dark`, `express`, and `light` clusters, plus scale snapshots in fixtures.
 * Nightly publish workflows now require `vue-parity`, so parity regressions block nightly release publishing.
 * All roadmap phases are now marked complete.

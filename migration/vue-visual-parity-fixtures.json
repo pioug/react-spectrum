@@ -411,6 +411,113 @@
       "path": "/parity-popover.html",
       "selector": ".vs-popover",
       "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-s2",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-s2']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "state-textfield-disabled",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='state-textfield-disabled']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "state-searchfield-invalid",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='state-searchfield-invalid']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "state-searchfield-focus",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='state-searchfield-focus']",
+      "interaction": "focus",
+      "interactionSelector": "[data-parity-target='searchfield-focus-target'] .vs-search-field__input",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "state-numberfield-invalid",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='state-numberfield-invalid']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "state-slider-disabled",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='state-slider-disabled']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "state-radio-disabled",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='state-radio-disabled']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "state-tabs-disabled",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='state-tabs-disabled']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "state-picker-disabled",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='state-picker-disabled']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "state-dropzone-over",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='state-dropzone-over']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "state-tree-selection",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='state-tree-selection']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "async-collection-cluster",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='async-collection-cluster']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "virtualized-collection-cluster",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='virtualized-collection-cluster']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "dnd-state-cluster",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='dnd-state-cluster']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "rtl-cluster",
+      "path": "/parity-rtl.html",
+      "selector": "[data-parity-id='rtl-cluster']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "forced-colors-cluster",
+      "path": "/parity-forced-colors.html",
+      "selector": "[data-parity-id='forced-colors-cluster']",
+      "media": {
+        "forcedColors": "active"
+      },
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "overlay-placement-matrix",
+      "path": "/parity-overlay-placement.html",
+      "selector": "[data-parity-id='overlay-placement-matrix']",
+      "maxDiffRatio": 0
     }
   ]
 }

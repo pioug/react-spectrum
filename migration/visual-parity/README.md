@@ -24,3 +24,4 @@ This folder stores baseline screenshot fixtures used by:
 
 The fixture matrix is configured in `migration/vue-visual-parity-fixtures.json` and rendered from `starters/vue/parity.html`.
 Package-level coverage assertions are defined in `scripts/vue-visual-coverage-assert.mjs`.
+Extended scenario buckets (state matrix, RTL, forced-colors, overlay placements, async/virtualized/dnd, and s2) are tracked in `migration/VUE_VISUAL_PARITY_BACKLOG.md`.
