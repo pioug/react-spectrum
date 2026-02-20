@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-20T00:08:18.715Z",
+  "generatedAt": "2026-02-20T00:10:18.121Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 93,
+    "fullyMatchedPackages": 94,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 2107,
-    "mismatchedExportTotal": 565,
+    "matchedExportTotal": 2115,
+    "mismatchedExportTotal": 557,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.7885
+    "parityCoverage": 0.7915
   },
   "packages": [
     {
@@ -5659,10 +5659,10 @@
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
       "comparedExportCount": 419,
-      "matchedExportCount": 378,
-      "mismatchedExportCount": 41,
+      "matchedExportCount": 382,
+      "mismatchedExportCount": 37,
       "missingInTargetCount": 0,
-      "parityRatio": 0.9021,
+      "parityRatio": 0.9117,
       "missingInTargetExports": [],
       "mismatches": [
         {
@@ -6145,154 +6145,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: AriaLinkOptions) => LinkAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useMenu",
-          "targetExportName": "useMenu",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useMenu",
-            "resolvedName": "useMenu",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaMenuOptions<T>, state: TreeState<T>, ref: RefObject<HTMLElement | null>) => MenuAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaMenuOptions<T>, _: TreeState<T>, _: RefObject<HTMLElement | null>) => MenuAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useMenu",
-            "resolvedName": "useMenu",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaMenuOptions) => MenuAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaMenuOptions) => MenuAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useMenuItem",
-          "targetExportName": "useMenuItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useMenuItem",
-            "resolvedName": "useMenuItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaMenuItemProps, state: TreeState<T>, ref: RefObject<FocusableElement | null>) => MenuItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaMenuItemProps, _: TreeState<T>, _: RefObject<FocusableElement | null>) => MenuItemAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useMenuItem",
-            "resolvedName": "useMenuItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaMenuItemProps, menu: MenuAria) => MenuItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaMenuItemProps, _: MenuAria) => MenuItemAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useMenuTrigger",
-          "targetExportName": "useMenuTrigger",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useMenuTrigger",
-            "resolvedName": "useMenuTrigger",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaMenuTriggerProps, state: MenuTriggerState, ref: RefObject<Element | null>) => MenuTriggerAria<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaMenuTriggerProps, _: MenuTriggerState, _: RefObject<Element | null>) => MenuTriggerAria<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useMenuTrigger",
-            "resolvedName": "useMenuTrigger",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props?: AriaMenuTriggerProps) => MenuTriggerAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaMenuTriggerProps) => MenuTriggerAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useSubmenuTrigger",
-          "targetExportName": "useSubmenuTrigger",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSubmenuTrigger",
-            "resolvedName": "useSubmenuTrigger",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaSubmenuTriggerProps, state: SubmenuTriggerState, ref: RefObject<FocusableElement | null>) => SubmenuTriggerAria<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaSubmenuTriggerProps, _: SubmenuTriggerState, _: RefObject<FocusableElement | null>) => SubmenuTriggerAria<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSubmenuTrigger",
-            "resolvedName": "useSubmenuTrigger",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props?: AriaSubmenuTriggerProps) => SubmenuTriggerAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaSubmenuTriggerProps) => SubmenuTriggerAria"
             ],
             "constructSignatures": []
           }
@@ -7423,174 +7275,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: Record<string, unknown> | string) => string"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/menu",
-      "sourcePath": "packages/@react-aria/menu",
-      "targetPackage": "@vue-aria/menu",
-      "targetPath": "packages/@vue-aria/menu",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/menu/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/menu/src/index.ts",
-      "sourceExportCount": 16,
-      "comparedExportCount": 16,
-      "matchedExportCount": 12,
-      "mismatchedExportCount": 4,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.75,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useMenuTrigger",
-          "targetExportName": "useMenuTrigger",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useMenuTrigger",
-            "resolvedName": "useMenuTrigger",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaMenuTriggerProps, state: MenuTriggerState, ref: RefObject<Element | null>) => MenuTriggerAria<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaMenuTriggerProps, _: MenuTriggerState, _: RefObject<Element | null>) => MenuTriggerAria<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useMenuTrigger",
-            "resolvedName": "useMenuTrigger",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props?: AriaMenuTriggerProps) => MenuTriggerAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaMenuTriggerProps) => MenuTriggerAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useMenu",
-          "targetExportName": "useMenu",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useMenu",
-            "resolvedName": "useMenu",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaMenuOptions<T>, state: TreeState<T>, ref: RefObject<HTMLElement | null>) => MenuAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaMenuOptions<T>, _: TreeState<T>, _: RefObject<HTMLElement | null>) => MenuAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useMenu",
-            "resolvedName": "useMenu",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaMenuOptions) => MenuAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaMenuOptions) => MenuAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useMenuItem",
-          "targetExportName": "useMenuItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useMenuItem",
-            "resolvedName": "useMenuItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaMenuItemProps, state: TreeState<T>, ref: RefObject<FocusableElement | null>) => MenuItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaMenuItemProps, _: TreeState<T>, _: RefObject<FocusableElement | null>) => MenuItemAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useMenuItem",
-            "resolvedName": "useMenuItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaMenuItemProps, menu: MenuAria) => MenuItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaMenuItemProps, _: MenuAria) => MenuItemAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useSubmenuTrigger",
-          "targetExportName": "useSubmenuTrigger",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSubmenuTrigger",
-            "resolvedName": "useSubmenuTrigger",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaSubmenuTriggerProps, state: SubmenuTriggerState, ref: RefObject<FocusableElement | null>) => SubmenuTriggerAria<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaSubmenuTriggerProps, _: SubmenuTriggerState, _: RefObject<FocusableElement | null>) => SubmenuTriggerAria<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSubmenuTrigger",
-            "resolvedName": "useSubmenuTrigger",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props?: AriaSubmenuTriggerProps) => SubmenuTriggerAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaSubmenuTriggerProps) => SubmenuTriggerAria"
             ],
             "constructSignatures": []
           }
@@ -11927,6 +11611,25 @@
       "sourceExportCount": 3,
       "comparedExportCount": 3,
       "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/menu",
+      "sourcePath": "packages/@react-aria/menu",
+      "targetPackage": "@vue-aria/menu",
+      "targetPath": "packages/@vue-aria/menu",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/menu/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/menu/src/index.ts",
+      "sourceExportCount": 16,
+      "comparedExportCount": 16,
+      "matchedExportCount": 16,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,

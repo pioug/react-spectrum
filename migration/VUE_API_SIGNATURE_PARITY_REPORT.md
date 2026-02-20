@@ -1,19 +1,19 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-20T00:08:18.715Z
+Generated: 2026-02-20T00:10:18.121Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 93
+* Fully matched packages: 94
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 2107
-* Mismatched signatures: 565
+* Matched signatures: 2115
+* Mismatched signatures: 557
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 78.85%
+* Signature coverage ratio: 79.15%
 
 ## Package gaps
 
@@ -21,9 +21,8 @@ Generated: 2026-02-20T00:08:18.715Z
 | --- | --- | --- | ---: | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | mismatch | 543 | 299 | 0 | 44.9% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | mismatch | 325 | 134 | 0 | 58.8% |
-| `react-aria` | `vue-aria` | mismatch | 419 | 41 | 0 | 90.2% |
+| `react-aria` | `vue-aria` | mismatch | 419 | 37 | 0 | 91.2% |
 | `@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | mismatch | 6 | 6 | 0 | 0.0% |
-| `@react-aria/menu` | `@vue-aria/menu` | mismatch | 16 | 4 | 0 | 75.0% |
 | `@react-aria/checkbox` | `@vue-aria/checkbox` | mismatch | 8 | 3 | 0 | 62.5% |
 | `@react-aria/collections` | `@vue-aria/collections` | mismatch | 17 | 3 | 0 | 82.3% |
 | `@react-aria/tabs` | `@vue-aria/tabs` | mismatch | 11 | 3 | 0 | 72.7% |
@@ -92,6 +91,7 @@ Generated: 2026-02-20T00:08:18.715Z
 | `@react-aria/label` | `@vue-aria/label` | ok | 6 | 0 | 0 | 100.0% |
 | `@react-aria/listbox` | `@vue-aria/listbox` | ok | 12 | 0 | 0 | 100.0% |
 | `@react-aria/live-announcer` | `@vue-aria/live-announcer` | ok | 3 | 0 | 0 | 100.0% |
+| `@react-aria/menu` | `@vue-aria/menu` | ok | 16 | 0 | 0 | 100.0% |
 | `@react-aria/overlays` | `@vue-aria/overlays` | ok | 39 | 0 | 0 | 100.0% |
 | `@react-aria/ssr` | `@vue-aria/ssr` | ok | 4 | 0 | 0 | 100.0% |
 | `@react-aria/table` | `@vue-aria/table` | ok | 23 | 0 | 0 | 100.0% |
@@ -199,9 +199,9 @@ Generated: 2026-02-20T00:08:18.715Z
 * Source entry: `packages/react-aria/src/index.ts`
 * Target entry: `packages/vue-aria/src/index.ts`
 * Compared exports: 419
-* Mismatched signatures: 41
+* Mismatched signatures: 37
 * Missing in target: 0
-* Example mismatches: `useBreadcrumbItem [call-signatures]`, `useBreadcrumbs [call-signatures]`, `useCheckbox [call-signatures]`, `useCheckboxGroup [call-signatures]`, `useCheckboxGroupItem [call-signatures]`, `useComboBox [call-signatures]`, `useDateField [call-signatures]`, `useTimeField [call-signatures]`, `useDialog [call-signatures]`, `useDisclosure [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]`, `useLandmark [call-signatures]`, `useLink [call-signatures]`, `useMenu [call-signatures]`, `useMenuItem [call-signatures]`, `useMenuTrigger [call-signatures]`, `useSubmenuTrigger [call-signatures]`, `useMeter [call-signatures]`, `useNumberField [call-signatures]`, `useProgressBar [call-signatures]`, `useRadio [call-signatures]`, `useRadioGroup [call-signatures]`, `useSearchField [call-signatures]`, `useHiddenSelect [call-signatures]`, `useSelect [call-signatures]` ...
+* Example mismatches: `useBreadcrumbItem [call-signatures]`, `useBreadcrumbs [call-signatures]`, `useCheckbox [call-signatures]`, `useCheckboxGroup [call-signatures]`, `useCheckboxGroupItem [call-signatures]`, `useComboBox [call-signatures]`, `useDateField [call-signatures]`, `useTimeField [call-signatures]`, `useDialog [call-signatures]`, `useDisclosure [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]`, `useLandmark [call-signatures]`, `useLink [call-signatures]`, `useMeter [call-signatures]`, `useNumberField [call-signatures]`, `useProgressBar [call-signatures]`, `useRadio [call-signatures]`, `useRadioGroup [call-signatures]`, `useSearchField [call-signatures]`, `useHiddenSelect [call-signatures]`, `useSelect [call-signatures]`, `useSeparator [call-signatures]`, `useSlider [call-signatures]`, `useSwitch [call-signatures]`, `useTab [call-signatures]` ...
 
 ### @react-spectrum/style-macro-s1 -> @vue-spectrum/style-macro-s1
 
@@ -211,15 +211,6 @@ Generated: 2026-02-20T00:08:18.715Z
 * Mismatched signatures: 6
 * Missing in target: 0
 * Example mismatches: `style [call-signatures]`, `baseColor [call-signatures]`, `lightDark [call-signatures]`, `focusRing [call-signatures]`, `raw [call-signatures]`, `keyframes [call-signatures]`
-
-### @react-aria/menu -> @vue-aria/menu
-
-* Source entry: `packages/@react-aria/menu/src/index.ts`
-* Target entry: `packages/@vue-aria/menu/src/index.ts`
-* Compared exports: 16
-* Mismatched signatures: 4
-* Missing in target: 0
-* Example mismatches: `useMenuTrigger [call-signatures]`, `useMenu [call-signatures]`, `useMenuItem [call-signatures]`, `useSubmenuTrigger [call-signatures]`
 
 ### @react-aria/checkbox -> @vue-aria/checkbox
 
@@ -355,4 +346,13 @@ Generated: 2026-02-20T00:08:18.715Z
 * Mismatched signatures: 2
 * Missing in target: 0
 * Example mismatches: `useToast [call-signatures]`, `useToastRegion [call-signatures]`
+
+### @react-aria/toolbar -> @vue-aria/toolbar
+
+* Source entry: `packages/@react-aria/toolbar/src/index.ts`
+* Target entry: `packages/@vue-aria/toolbar/src/index.ts`
+* Compared exports: 3
+* Mismatched signatures: 2
+* Missing in target: 0
+* Example mismatches: `useToolbar [call-signatures]`, `AriaToolbarProps [value-availability]`
 
