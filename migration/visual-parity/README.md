@@ -2,6 +2,7 @@
 
 This folder stores baseline screenshot fixtures used by:
 
+- `yarn vue:parity:visual:coverage:assert`
 - `yarn vue:parity:visual:capture`
 - `yarn vue:parity:visual:compare`
 
@@ -14,10 +15,12 @@ This folder stores baseline screenshot fixtures used by:
 ## Updating baseline intentionally
 
 1. Make visual changes intentionally.
-2. Run `yarn vue:parity:visual:capture`.
-3. Verify `migration/VUE_VISUAL_PARITY_REPORT.md` and changed baseline images.
-4. Commit updated `baseline/*.png` files with the related visual change.
+2. Run `yarn vue:parity:visual:coverage:assert` to confirm all Vue UI packages remain covered by fixtures.
+3. Run `yarn vue:parity:visual:capture`.
+4. Verify `migration/VUE_VISUAL_PARITY_REPORT.md` and changed baseline images.
+5. Commit updated `baseline/*.png` files with the related visual change.
 
 ## Fixture source
 
 The fixture matrix is configured in `migration/vue-visual-parity-fixtures.json` and rendered from `starters/vue/parity.html`.
+Package-level coverage assertions are defined in `scripts/vue-visual-coverage-assert.mjs`.
