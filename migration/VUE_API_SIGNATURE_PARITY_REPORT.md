@@ -1,19 +1,19 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-20T00:15:31.821Z
+Generated: 2026-02-20T00:16:58.592Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 97
+* Fully matched packages: 98
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 2130
-* Mismatched signatures: 542
+* Matched signatures: 2133
+* Mismatched signatures: 539
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 79.72%
+* Signature coverage ratio: 79.83%
 
 ## Package gaps
 
@@ -23,7 +23,6 @@ Generated: 2026-02-20T00:15:31.821Z
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | mismatch | 325 | 134 | 0 | 58.8% |
 | `react-aria` | `vue-aria` | mismatch | 419 | 31 | 0 | 92.6% |
 | `@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | mismatch | 6 | 6 | 0 | 0.0% |
-| `@react-stately/color` | `@vue-stately/color` | mismatch | 25 | 3 | 0 | 88.0% |
 | `@react-aria/actiongroup` | `@vue-aria/actiongroup` | mismatch | 6 | 2 | 0 | 66.7% |
 | `@react-aria/autocomplete` | `@vue-aria/autocomplete` | mismatch | 10 | 2 | 0 | 80.0% |
 | `@react-aria/breadcrumbs` | `@vue-aria/breadcrumbs` | mismatch | 6 | 2 | 0 | 66.7% |
@@ -155,6 +154,7 @@ Generated: 2026-02-20T00:15:31.821Z
 | `@react-spectrum/well` | `@vue-spectrum/well` | ok | 2 | 0 | 0 | 100.0% |
 | `@react-stately/autocomplete` | `@vue-stately/autocomplete` | ok | 4 | 0 | 0 | 100.0% |
 | `@react-stately/collections` | `@vue-stately/collections` | ok | 11 | 0 | 0 | 100.0% |
+| `@react-stately/color` | `@vue-stately/color` | ok | 25 | 0 | 0 | 100.0% |
 | `@react-stately/data` | `@vue-stately/data` | ok | 9 | 0 | 0 | 100.0% |
 | `@react-stately/datepicker` | `@vue-stately/datepicker` | ok | 15 | 0 | 0 | 100.0% |
 | `@react-stately/disclosure` | `@vue-stately/disclosure` | ok | 6 | 0 | 0 | 100.0% |
@@ -211,15 +211,6 @@ Generated: 2026-02-20T00:15:31.821Z
 * Mismatched signatures: 6
 * Missing in target: 0
 * Example mismatches: `style [call-signatures]`, `baseColor [call-signatures]`, `lightDark [call-signatures]`, `focusRing [call-signatures]`, `raw [call-signatures]`, `keyframes [call-signatures]`
-
-### @react-stately/color -> @vue-stately/color
-
-* Source entry: `packages/@react-stately/color/src/index.ts`
-* Target entry: `packages/@vue-stately/color/src/index.ts`
-* Compared exports: 25
-* Mismatched signatures: 3
-* Missing in target: 0
-* Example mismatches: `parseColor [call-signatures]`, `useColorWheelState [call-signatures]`, `useColorFieldState [call-signatures]`
 
 ### @react-aria/actiongroup -> @vue-aria/actiongroup
 
@@ -355,4 +346,13 @@ Generated: 2026-02-20T00:15:31.821Z
 * Mismatched signatures: 2
 * Missing in target: 0
 * Example mismatches: `triggerLongPress [call-signatures]`, `pointerMap [value-type]`
+
+### @react-stately/calendar -> @vue-stately/calendar
+
+* Source entry: `packages/@react-stately/calendar/src/index.ts`
+* Target entry: `packages/@vue-stately/calendar/src/index.ts`
+* Compared exports: 6
+* Mismatched signatures: 2
+* Missing in target: 0
+* Example mismatches: `useCalendarState [call-signatures]`, `useRangeCalendarState [call-signatures]`
 

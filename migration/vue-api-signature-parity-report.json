@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-20T00:15:31.821Z",
+  "generatedAt": "2026-02-20T00:16:58.592Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 97,
+    "fullyMatchedPackages": 98,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 2130,
-    "mismatchedExportTotal": 542,
+    "matchedExportTotal": 2133,
+    "mismatchedExportTotal": 539,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.7972
+    "parityCoverage": 0.7983
   },
   "packages": [
     {
@@ -7062,137 +7062,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-stately/color",
-      "sourcePath": "packages/@react-stately/color",
-      "targetPackage": "@vue-stately/color",
-      "targetPath": "packages/@vue-stately/color",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/color/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/color/src/index.ts",
-      "sourceExportCount": 25,
-      "comparedExportCount": 25,
-      "matchedExportCount": 22,
-      "mismatchedExportCount": 3,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.88,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "parseColor",
-          "targetExportName": "parseColor",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "parseColor",
-            "resolvedName": "parseColor",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(value: string) => IColor",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: string) => IColor"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "parseColor",
-            "resolvedName": "parseColor",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(value: string) => Color",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: string) => Color"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useColorWheelState",
-          "targetExportName": "useColorWheelState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useColorWheelState",
-            "resolvedName": "useColorWheelState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: ColorWheelProps) => ColorWheelState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: ColorWheelProps) => ColorWheelState"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useColorWheelState",
-            "resolvedName": "useColorWheelState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: ColorWheelStateOptions) => ColorWheelState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: ColorWheelStateOptions) => ColorWheelState"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useColorFieldState",
-          "targetExportName": "useColorFieldState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useColorFieldState",
-            "resolvedName": "useColorFieldState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: ColorFieldProps) => ColorFieldState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: ColorFieldProps) => ColorFieldState"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useColorFieldState",
-            "resolvedName": "useColorFieldState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props?: ColorFieldStateOptions) => ColorFieldState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: ColorFieldStateOptions) => ColorFieldState"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/actiongroup",
       "sourcePath": "packages/@react-aria/actiongroup",
       "targetPackage": "@vue-aria/actiongroup",
@@ -12264,6 +12133,25 @@
       "sourceExportCount": 11,
       "comparedExportCount": 11,
       "matchedExportCount": 11,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/color",
+      "sourcePath": "packages/@react-stately/color",
+      "targetPackage": "@vue-stately/color",
+      "targetPath": "packages/@vue-stately/color",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/color/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/color/src/index.ts",
+      "sourceExportCount": 25,
+      "comparedExportCount": 25,
+      "matchedExportCount": 25,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
