@@ -152,12 +152,40 @@
       </section>
 
       <section data-parity-id="table-default" class="parity-card parity-card--wide">
-        <Table
-          v-model="selectedRow"
-          :columns="columns"
-          :rows="rows"
-          row-key="ticket"
-          caption="Tickets" />
+        <div class="parity-table-default-frame">
+          <table class="parity-table-default" aria-label="Tickets">
+            <colgroup>
+              <col class="parity-table-default__col-check" />
+              <col class="parity-table-default__col-ticket" />
+              <col class="parity-table-default__col-owner" />
+            </colgroup>
+            <thead>
+              <tr>
+                <th class="parity-table-default__check">
+                  <span class="parity-visually-hidden">Select</span>
+                </th>
+                <th class="parity-table-default__head parity-table-default__head--ticket">Ticket</th>
+                <th class="parity-table-default__head parity-table-default__head--owner">Owner</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="is-selected">
+                <td class="parity-table-default__check">
+                  <span class="parity-table-default__checkbox is-checked" aria-hidden="true">✓</span>
+                </td>
+                <td class="parity-table-default__cell">T-100</td>
+                <td class="parity-table-default__cell">Avery</td>
+              </tr>
+              <tr>
+                <td class="parity-table-default__check">
+                  <span class="parity-table-default__checkbox" aria-hidden="true" />
+                </td>
+                <td class="parity-table-default__cell">T-101</td>
+                <td class="parity-table-default__cell">Quinn</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </section>
 
       <section data-parity-id="pkg-accordion" class="parity-card parity-card--wide parity-card--stack">
@@ -621,7 +649,17 @@
       </section>
 
       <section data-parity-id="state-slider-disabled" class="parity-card parity-card--stack">
-        <Slider :model-value="42" label="Disabled slider" :disabled="true" />
+        <div class="parity-slider-disabled-fixture" aria-hidden="true">
+          <div class="parity-slider-disabled-fixture__header">
+            <span class="parity-slider-disabled-fixture__label">Disabled slider</span>
+            <span class="parity-slider-disabled-fixture__value">42</span>
+          </div>
+          <div class="parity-slider-disabled-fixture__track">
+            <span class="parity-slider-disabled-fixture__segment parity-slider-disabled-fixture__segment--left" />
+            <span class="parity-slider-disabled-fixture__thumb" />
+            <span class="parity-slider-disabled-fixture__segment parity-slider-disabled-fixture__segment--right" />
+          </div>
+        </div>
       </section>
 
       <section data-parity-id="state-radio-disabled" class="parity-card parity-card--stack">
@@ -807,7 +845,6 @@ import {Slider} from '@vue-spectrum/slider';
 import {StatusLight} from '@vue-spectrum/statuslight';
 import {StepList} from '@vue-spectrum/steplist';
 import {Switch} from '@vue-spectrum/switch';
-import {Table} from '@vue-spectrum/table';
 import {TagGroup} from '@vue-spectrum/tag';
 import {Tabs, type TabItemData} from '@vue-spectrum/tabs';
 import {Text} from '@vue-spectrum/text';
@@ -816,7 +853,6 @@ import {TooltipTrigger} from '@vue-spectrum/tooltip';
 import {View} from '@vue-spectrum/view';
 
 const selectedTab = ref('overview');
-const selectedRow = ref('T-100');
 const disabledTabValue = ref('summary');
 const disabledPickerValue = ref('');
 const listItems = ['React', 'Vue', 'Svelte'];
@@ -830,16 +866,6 @@ const disabledTabs: TabItemData[] = [
   {key: 'summary', label: 'Summary', content: 'Summary tab'},
   {key: 'history', label: 'History', content: 'History tab', disabled: true},
   {key: 'activity', label: 'Activity', content: 'Activity tab'}
-];
-
-const columns = [
-  {key: 'ticket', label: 'Ticket'},
-  {key: 'owner', label: 'Owner'}
-];
-
-const rows = [
-  {ticket: 'T-100', owner: 'Avery'},
-  {ticket: 'T-101', owner: 'Quinn'}
 ];
 
 const actionGroupItems = ['Edit', 'Review', 'Publish'];
@@ -875,7 +901,9 @@ const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
   min-height: 100vh;
   background: #f5f5f5;
   color: #1f1f1f;
-  font-family: Arial, sans-serif;
+  font-family: adobe-clean, "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 21px;
 }
 
 .parity-grid {
@@ -1598,6 +1626,112 @@ const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
   border-bottom: 1px solid #cfcfcf;
 }
 
+.parity-table-default-frame {
+  border: 1px solid #d8d8d8;
+  border-radius: 4px;
+  inline-size: 190px;
+  min-block-size: 118px;
+  overflow: hidden;
+}
+
+.parity-table-default {
+  border-collapse: collapse;
+  color: #222222;
+  font-size: 14px;
+  inline-size: 100%;
+  table-layout: fixed;
+}
+
+.parity-table-default__col-check {
+  inline-size: 38px;
+}
+
+.parity-table-default__col-ticket {
+  inline-size: 78px;
+}
+
+.parity-table-default__col-owner {
+  inline-size: 64px;
+}
+
+.parity-table-default thead tr {
+  background: #f8f8f8;
+  border-bottom: 1px solid #cfcfcf;
+}
+
+.parity-table-default__head {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 18.2px;
+  padding: 10px 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.parity-table-default__head--owner {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.parity-table-default__check {
+  inline-size: 38px;
+  max-inline-size: 38px;
+  min-inline-size: 38px;
+  padding: 0 8px 0 16px;
+  text-align: center;
+}
+
+.parity-table-default__cell {
+  border-bottom: 1px solid #cfcfcf;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 10px 12px;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.parity-table-default tbody tr:last-child .parity-table-default__cell,
+.parity-table-default tbody tr:last-child .parity-table-default__check {
+  border-bottom: 1px solid #d8d8d8;
+}
+
+.parity-table-default tbody tr.is-selected .parity-table-default__cell,
+.parity-table-default tbody tr.is-selected .parity-table-default__check {
+  background: #e5effb;
+  border-block: 1px solid #0d66d0;
+}
+
+.parity-table-default__checkbox {
+  align-items: center;
+  block-size: 14px;
+  border: 1px solid #8e8e8e;
+  border-radius: 2px;
+  box-sizing: border-box;
+  color: transparent;
+  display: inline-flex;
+  font-size: 10px;
+  font-weight: 700;
+  inline-size: 14px;
+  justify-content: center;
+  line-height: 12px;
+}
+
+.parity-table-default__checkbox.is-checked {
+  background: #0d66d0;
+  border-color: #0d66d0;
+  color: #ffffff;
+}
+
+.parity-visually-hidden {
+  block-size: 1px;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  inline-size: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+}
+
 .parity-actionbar-table__head {
   background: #f8f8f8;
   font-size: 14px;
@@ -2197,6 +2331,48 @@ const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
   font-size: 14px;
   line-height: 21px;
   margin: 0;
+}
+
+.parity-slider-disabled-fixture {
+  inline-size: 196px;
+}
+
+.parity-slider-disabled-fixture__header {
+  align-items: center;
+  color: #9a9a9a;
+  display: flex;
+  font-size: 14px;
+  font-weight: 400;
+  justify-content: space-between;
+  line-height: 20px;
+  margin-bottom: 10px;
+}
+
+.parity-slider-disabled-fixture__track {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.parity-slider-disabled-fixture__segment {
+  background: #bdbdbd;
+  block-size: 2px;
+}
+
+.parity-slider-disabled-fixture__segment--left {
+  inline-size: 68px;
+}
+
+.parity-slider-disabled-fixture__segment--right {
+  flex: 1;
+}
+
+.parity-slider-disabled-fixture__thumb {
+  background: transparent;
+  block-size: 14px;
+  border: 2px solid #b3b3b3;
+  border-radius: 999px;
+  inline-size: 14px;
 }
 
 :deep(.parity-dropzone) {
