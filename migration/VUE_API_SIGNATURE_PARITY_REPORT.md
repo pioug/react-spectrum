@@ -1,19 +1,19 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-20T00:12:04.875Z
+Generated: 2026-02-20T00:13:33.507Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 95
+* Fully matched packages: 96
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 2121
-* Mismatched signatures: 551
+* Matched signatures: 2127
+* Mismatched signatures: 545
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 79.38%
+* Signature coverage ratio: 79.60%
 
 ## Package gaps
 
@@ -21,10 +21,9 @@ Generated: 2026-02-20T00:12:04.875Z
 | --- | --- | --- | ---: | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | mismatch | 543 | 299 | 0 | 44.9% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | mismatch | 325 | 134 | 0 | 58.8% |
-| `react-aria` | `vue-aria` | mismatch | 419 | 34 | 0 | 91.9% |
+| `react-aria` | `vue-aria` | mismatch | 419 | 31 | 0 | 92.6% |
 | `@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | mismatch | 6 | 6 | 0 | 0.0% |
 | `@react-aria/collections` | `@vue-aria/collections` | mismatch | 17 | 3 | 0 | 82.3% |
-| `@react-aria/tabs` | `@vue-aria/tabs` | mismatch | 11 | 3 | 0 | 72.7% |
 | `@react-stately/color` | `@vue-stately/color` | mismatch | 25 | 3 | 0 | 88.0% |
 | `@react-aria/actiongroup` | `@vue-aria/actiongroup` | mismatch | 6 | 2 | 0 | 66.7% |
 | `@react-aria/autocomplete` | `@vue-aria/autocomplete` | mismatch | 10 | 2 | 0 | 80.0% |
@@ -95,6 +94,7 @@ Generated: 2026-02-20T00:12:04.875Z
 | `@react-aria/overlays` | `@vue-aria/overlays` | ok | 39 | 0 | 0 | 100.0% |
 | `@react-aria/ssr` | `@vue-aria/ssr` | ok | 4 | 0 | 0 | 100.0% |
 | `@react-aria/table` | `@vue-aria/table` | ok | 23 | 0 | 0 | 100.0% |
+| `@react-aria/tabs` | `@vue-aria/tabs` | ok | 11 | 0 | 0 | 100.0% |
 | `@react-aria/utils` | `@vue-aria/utils` | ok | 74 | 0 | 0 | 100.0% |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` | ok | 11 | 0 | 0 | 100.0% |
 | `@react-spectrum/accordion` | `@vue-spectrum/accordion` | ok | 8 | 0 | 0 | 100.0% |
@@ -199,9 +199,9 @@ Generated: 2026-02-20T00:12:04.875Z
 * Source entry: `packages/react-aria/src/index.ts`
 * Target entry: `packages/vue-aria/src/index.ts`
 * Compared exports: 419
-* Mismatched signatures: 34
+* Mismatched signatures: 31
 * Missing in target: 0
-* Example mismatches: `useBreadcrumbItem [call-signatures]`, `useBreadcrumbs [call-signatures]`, `useComboBox [call-signatures]`, `useDateField [call-signatures]`, `useTimeField [call-signatures]`, `useDialog [call-signatures]`, `useDisclosure [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]`, `useLandmark [call-signatures]`, `useLink [call-signatures]`, `useMeter [call-signatures]`, `useNumberField [call-signatures]`, `useProgressBar [call-signatures]`, `useRadio [call-signatures]`, `useRadioGroup [call-signatures]`, `useSearchField [call-signatures]`, `useHiddenSelect [call-signatures]`, `useSelect [call-signatures]`, `useSeparator [call-signatures]`, `useSlider [call-signatures]`, `useSwitch [call-signatures]`, `useTab [call-signatures]`, `useTabList [call-signatures]`, `useTabPanel [call-signatures]`, `useTag [call-signatures]` ...
+* Example mismatches: `useBreadcrumbItem [call-signatures]`, `useBreadcrumbs [call-signatures]`, `useComboBox [call-signatures]`, `useDateField [call-signatures]`, `useTimeField [call-signatures]`, `useDialog [call-signatures]`, `useDisclosure [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]`, `useLandmark [call-signatures]`, `useLink [call-signatures]`, `useMeter [call-signatures]`, `useNumberField [call-signatures]`, `useProgressBar [call-signatures]`, `useRadio [call-signatures]`, `useRadioGroup [call-signatures]`, `useSearchField [call-signatures]`, `useHiddenSelect [call-signatures]`, `useSelect [call-signatures]`, `useSeparator [call-signatures]`, `useSlider [call-signatures]`, `useSwitch [call-signatures]`, `useTag [call-signatures]`, `useTagGroup [call-signatures]`, `useTextField [call-signatures]`, `useToast [call-signatures]` ...
 
 ### @react-spectrum/style-macro-s1 -> @vue-spectrum/style-macro-s1
 
@@ -220,15 +220,6 @@ Generated: 2026-02-20T00:12:04.875Z
 * Mismatched signatures: 3
 * Missing in target: 0
 * Example mismatches: `createLeafComponent [call-signatures]`, `createBranchComponent [call-signatures]`, `createHideableComponent [call-signatures]`
-
-### @react-aria/tabs -> @vue-aria/tabs
-
-* Source entry: `packages/@react-aria/tabs/src/index.ts`
-* Target entry: `packages/@vue-aria/tabs/src/index.ts`
-* Compared exports: 11
-* Mismatched signatures: 3
-* Missing in target: 0
-* Example mismatches: `useTab [call-signatures]`, `useTabPanel [call-signatures]`, `useTabList [call-signatures]`
 
 ### @react-stately/color -> @vue-stately/color
 
@@ -355,4 +346,13 @@ Generated: 2026-02-20T00:12:04.875Z
 * Mismatched signatures: 2
 * Missing in target: 0
 * Example mismatches: `useTooltip [call-signatures]`, `useTooltipTrigger [call-signatures]`
+
+### @react-aria/tree -> @vue-aria/tree
+
+* Source entry: `packages/@react-aria/tree/src/index.ts`
+* Target entry: `packages/@vue-aria/tree/src/index.ts`
+* Compared exports: 8
+* Mismatched signatures: 2
+* Missing in target: 0
+* Example mismatches: `useTree [call-signatures]`, `useTreeItem [call-signatures]`
 

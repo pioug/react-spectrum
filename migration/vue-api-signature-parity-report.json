@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-20T00:12:04.875Z",
+  "generatedAt": "2026-02-20T00:13:33.507Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 95,
+    "fullyMatchedPackages": 96,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 2121,
-    "mismatchedExportTotal": 551,
+    "matchedExportTotal": 2127,
+    "mismatchedExportTotal": 545,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.7938
+    "parityCoverage": 0.796
   },
   "packages": [
     {
@@ -5659,10 +5659,10 @@
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
       "comparedExportCount": 419,
-      "matchedExportCount": 385,
-      "mismatchedExportCount": 34,
+      "matchedExportCount": 388,
+      "mismatchedExportCount": 31,
       "missingInTargetCount": 0,
-      "parityRatio": 0.9189,
+      "parityRatio": 0.926,
       "missingInTargetExports": [],
       "mismatches": [
         {
@@ -6446,117 +6446,6 @@
           }
         },
         {
-          "exportName": "useTab",
-          "targetExportName": "useTab",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTab",
-            "resolvedName": "useTab",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTabProps, state: TabListState<T>, ref: RefObject<FocusableElement | null>) => TabAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTabProps, _: TabListState<T>, _: RefObject<FocusableElement | null>) => TabAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTab",
-            "resolvedName": "useTab",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTabOptions, state: TabListState) => TabAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTabOptions, _: TabListState) => TabAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTabList",
-          "targetExportName": "useTabList",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTabList",
-            "resolvedName": "useTabList",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTabListOptions<T>, state: TabListState<T>, ref: RefObject<HTMLElement | null>) => TabListAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTabListOptions<T>, _: TabListState<T>, _: RefObject<HTMLElement | null>) => TabListAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTabList",
-            "resolvedName": "useTabList",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTabListOptions) => TabListAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTabListOptions) => TabListAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTabPanel",
-          "targetExportName": "useTabPanel",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTabPanel",
-            "resolvedName": "useTabPanel",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTabPanelProps, state: TabListState<T> | null, ref: RefObject<Element | null>) => TabPanelAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTabPanelProps, _: TabListState<T> | null, _: RefObject<Element | null>) => TabPanelAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTabPanel",
-            "resolvedName": "useTabPanel",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTabPanelOptions, state: TabListState | null) => TabPanelAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTabPanelOptions, _: TabListState | null) => TabPanelAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
           "exportName": "useTag",
           "targetExportName": "useTag",
           "differences": [
@@ -7300,137 +7189,6 @@
             "callSignatures": [
               "<T, P = {}>( _: ( _: P, _: ForwardedRef<T>) => ReactElement) => ( _: P & RefAttributes<T>) => ReactElement",
               "<TProps, TResult>( _: ( _: TProps, _: Computedboolean) => TResult) => ( _: TProps) => TResult"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/tabs",
-      "sourcePath": "packages/@react-aria/tabs",
-      "targetPackage": "@vue-aria/tabs",
-      "targetPath": "packages/@vue-aria/tabs",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/tabs/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/tabs/src/index.ts",
-      "sourceExportCount": 11,
-      "comparedExportCount": 11,
-      "matchedExportCount": 8,
-      "mismatchedExportCount": 3,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.7273,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useTab",
-          "targetExportName": "useTab",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTab",
-            "resolvedName": "useTab",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTabProps, state: TabListState<T>, ref: RefObject<FocusableElement | null>) => TabAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTabProps, _: TabListState<T>, _: RefObject<FocusableElement | null>) => TabAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTab",
-            "resolvedName": "useTab",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTabOptions, state: TabListState) => TabAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTabOptions, _: TabListState) => TabAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTabPanel",
-          "targetExportName": "useTabPanel",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTabPanel",
-            "resolvedName": "useTabPanel",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTabPanelProps, state: TabListState<T> | null, ref: RefObject<Element | null>) => TabPanelAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTabPanelProps, _: TabListState<T> | null, _: RefObject<Element | null>) => TabPanelAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTabPanel",
-            "resolvedName": "useTabPanel",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTabPanelOptions, state: TabListState | null) => TabPanelAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTabPanelOptions, _: TabListState | null) => TabPanelAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTabList",
-          "targetExportName": "useTabList",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTabList",
-            "resolvedName": "useTabList",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTabListOptions<T>, state: TabListState<T>, ref: RefObject<HTMLElement | null>) => TabListAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTabListOptions<T>, _: TabListState<T>, _: RefObject<HTMLElement | null>) => TabListAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTabList",
-            "resolvedName": "useTabList",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTabListOptions) => TabListAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTabListOptions) => TabListAria"
             ],
             "constructSignatures": []
           }
@@ -11464,6 +11222,25 @@
       "sourceExportCount": 23,
       "comparedExportCount": 23,
       "matchedExportCount": 23,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/tabs",
+      "sourcePath": "packages/@react-aria/tabs",
+      "targetPackage": "@vue-aria/tabs",
+      "targetPath": "packages/@vue-aria/tabs",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/tabs/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/tabs/src/index.ts",
+      "sourceExportCount": 11,
+      "comparedExportCount": 11,
+      "matchedExportCount": 11,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
