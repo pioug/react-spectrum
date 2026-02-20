@@ -1,7 +1,7 @@
 <template>
   <Provider color-scheme="light" scale="medium" class="fixture-root">
     <section data-parity-id="forced-colors-cluster" class="fixture-card">
-      <Text variant="heading">Forced Colors Cluster</Text>
+      <Text>Forced Colors Cluster</Text>
       <Button variant="primary">Primary action</Button>
       <TextField label="Owner" model-value="" :invalid="true" description="Required in forced colors" />
       <Switch :model-value="true" label="Alerts" />
@@ -27,6 +27,8 @@ import {TextField} from '@vue-spectrum/textfield';
 .fixture-root {
   min-height: 100vh;
   background: #f5f5f5;
+  color: #1f1f1f;
+  font-family: Arial, sans-serif;
   padding: 24px;
 }
 

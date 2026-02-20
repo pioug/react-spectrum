@@ -1,6 +1,6 @@
 # Vue Visual Parity Report
 
-Generated: 2026-02-20T03:44:31.423Z
+Generated: 2026-02-20T04:52:30.513Z
 
 ## Summary
 
@@ -41,24 +41,24 @@ Generated: 2026-02-20T03:44:31.423Z
 | `tabs-default` | fail | 5.7335% | 0.0000% | 8436 |
 | `table-default` | fail | 11.8517% | 0.0000% | 23491 |
 | `pkg-accordion` | fail | 21.8767% | 0.0000% | 51608 |
-| `pkg-actionbar` | fail | 83.8906% | 0.0000% | 268289 |
+| `pkg-actionbar` | fail | 46.6058% | 0.0000% | 149049 |
 | `pkg-actiongroup` | fail | 7.8118% | 0.0000% | 11494 |
-| `pkg-autocomplete` | fail | 8.0490% | 0.0000% | 3847 |
+| `pkg-autocomplete` | fail | 8.0469% | 0.0000% | 3846 |
 | `pkg-avatar` | fail | 6.9831% | 0.0000% | 3346 |
 | `pkg-breadcrumbs` | fail | 4.4088% | 0.0000% | 6487 |
 | `pkg-buttongroup` | fail | 5.6247% | 0.0000% | 8276 |
 | `pkg-calendar` | fail | 63.3087% | 0.0000% | 398004 |
-| `pkg-checkbox` | fail | 33.6630% | 0.0000% | 82687 |
-| `pkg-color` | fail | 88.6862% | 0.0000% | 1082738 |
+| `pkg-checkbox` | fail | 33.6621% | 0.0000% | 82685 |
+| `pkg-color` | fail | 3.2820% | 0.0000% | 4829 |
 | `pkg-combobox` | fail | 6.0801% | 0.0000% | 2906 |
-| `pkg-datepicker` | fail | 32.0133% | 0.0000% | 158827 |
-| `pkg-divider` | fail | 46.3434% | 0.0000% | 38808 |
-| `pkg-dnd` | fail | 46.7934% | 0.0000% | 39284 |
-| `pkg-dropzone` | fail | 46.5070% | 0.0000% | 38945 |
+| `pkg-datepicker` | fail | 31.9508% | 0.0000% | 158517 |
+| `pkg-divider` | fail | 44.7911% | 0.0000% | 63693 |
+| `pkg-dnd` | fail | 45.3977% | 0.0000% | 64719 |
+| `pkg-dropzone` | fail | 44.5408% | 0.0000% | 63337 |
 | `pkg-filetrigger` | fail | 6.6450% | 0.0000% | 3176 |
 | `pkg-form` | fail | 19.4389% | 0.0000% | 47039 |
 | `pkg-illustratedmessage` | fail | 37.7243% | 0.0000% | 26971 |
-| `pkg-image` | fail | 2.8113% | 0.0000% | 2015 |
+| `pkg-image` | fail | 0.6711% | 0.0000% | 481 |
 | `pkg-inlinealert` | fail | 31.3980% | 0.0000% | 22448 |
 | `pkg-label` | fail | 21.3700% | 0.0000% | 13337 |
 | `pkg-labeledvalue` | fail | 18.5782% | 0.0000% | 11624 |
@@ -80,10 +80,10 @@ Generated: 2026-02-20T03:44:31.423Z
 | `pkg-tooltip` | fail | 5.8939% | 0.0000% | 8672 |
 | `pkg-tree` | fail | 30.7721% | 0.0000% | 77457 |
 | `pkg-well` | fail | 22.6969% | 0.0000% | 10848 |
-| `pkg-contextualhelp` | fail | 66.4275% | 0.0000% | 43878 |
-| `pkg-dialog` | fail | 93.2540% | 0.0000% | 71966 |
-| `pkg-overlays` | fail | 75.0664% | 0.0000% | 37311 |
-| `pkg-s2` | fail | 95.2514% | 0.0000% | 620826 |
+| `pkg-contextualhelp` | fail | 54.7047% | 0.0000% | 31034 |
+| `pkg-dialog` | fail | 99.9658% | 0.0000% | 81892 |
+| `pkg-overlays` | fail | 62.2336% | 0.0000% | 26519 |
+| `pkg-s2` | fail | 4.0160% | 0.0000% | 5909 |
 | `state-textfield-disabled` | fail | 21.1343% | 0.0000% | 10769 |
 | `state-searchfield-invalid` | fail | 13.1509% | 0.0000% | 6718 |
 | `state-searchfield-focus` | fail | 13.8102% | 0.0000% | 7037 |
@@ -91,13 +91,13 @@ Generated: 2026-02-20T03:44:31.423Z
 | `state-slider-disabled` | fail | 15.8586% | 0.0000% | 8478 |
 | `state-radio-disabled` | fail | 14.6067% | 0.0000% | 7789 |
 | `state-tabs-disabled` | fail | 6.4648% | 0.0000% | 9512 |
-| `state-picker-disabled` | fail | 50.6090% | 0.0000% | 42380 |
-| `state-dropzone-over` | fail | 55.1708% | 0.0000% | 46317 |
+| `state-picker-disabled` | fail | 47.3031% | 0.0000% | 67265 |
+| `state-dropzone-over` | fail | 44.1169% | 0.0000% | 62893 |
 | `state-tree-selection` | fail | 31.2250% | 0.0000% | 78597 |
-| `async-collection-cluster` | fail | 28.4515% | 0.0000% | 70578 |
+| `async-collection-cluster` | fail | 11.5877% | 0.0000% | 22686 |
 | `virtualized-collection-cluster` | fail | 28.4804% | 0.0000% | 259395 |
-| `dnd-state-cluster` | fail | 50.5265% | 0.0000% | 277710 |
-| `rtl-cluster` | fail | 39.1926% | 0.0000% | 143753 |
-| `forced-colors-cluster` | fail | 16.8241% | 0.0000% | 40711 |
-| `overlay-placement-matrix` | fail | 15.1347% | 0.0000% | 38519 |
+| `dnd-state-cluster` | fail | 42.4154% | 0.0000% | 383218 |
+| `rtl-cluster` | fail | 38.2393% | 0.0000% | 138356 |
+| `forced-colors-cluster` | fail | 17.8730% | 0.0000% | 43249 |
+| `overlay-placement-matrix` | fail | 15.1279% | 0.0000% | 38156 |
 

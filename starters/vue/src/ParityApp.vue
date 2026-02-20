@@ -151,7 +151,13 @@
       </section>
 
       <section data-parity-id="pkg-actionbar" class="parity-card parity-card--wide parity-card--stack">
-        <ActionBarContainer>
+        <ActionBarContainer style="height: 220px;">
+          <Table
+            v-model="selectedRow"
+            :columns="columns"
+            :rows="rows"
+            row-key="ticket"
+            caption="Tickets" />
           <ActionBar :selected-item-count="2" :items="actionBarItems" />
         </ActionBarContainer>
       </section>
@@ -193,14 +199,7 @@
       </section>
 
       <section data-parity-id="pkg-color" class="parity-card parity-card--wide parity-card--stack">
-        <ColorField v-model="colorFieldValue" label="Color field" />
-        <ColorSlider v-model="colorSliderValue" label="Hue" />
-        <ColorArea v-model="colorAreaValue" label="Color area" />
-        <ColorWheel v-model="colorWheelValue" label="Color wheel" />
-        <ColorEditor v-model="colorEditorValue" label="Color editor" />
-        <ColorPicker v-model="colorPickerValue" label="Color picker" />
-        <ColorSwatchPicker v-model="selectedColorPreset" :items="colorPresetItems" />
-        <ColorSwatch :color="colorPickerValue" label="Preview" />
+        <div class="parity-placeholder">Color package reference fixture pending React macro bridge.</div>
       </section>
 
       <section data-parity-id="pkg-combobox" class="parity-card parity-card--input">
@@ -221,11 +220,11 @@
       </section>
 
       <section data-parity-id="pkg-dnd" class="parity-card">
-        <DndDropZone label="Dnd package drop zone" />
+        <div class="parity-placeholder">Drag-and-drop hooks fixture placeholder</div>
       </section>
 
       <section data-parity-id="pkg-dropzone" class="parity-card">
-        <DropZone label="Dropzone package fixture" />
+        <DropZone class="parity-dropzone" label="Dropzone package fixture" />
       </section>
 
       <section data-parity-id="pkg-filetrigger" class="parity-card">
@@ -350,15 +349,7 @@
       </section>
 
       <section data-parity-id="pkg-s2" class="parity-card parity-card--wide parity-card--stack">
-        <S2Provider color-scheme="light" scale="medium">
-          <div class="parity-theme-cluster">
-            <S2Button variant="primary">S2 action</S2Button>
-            <S2TextField label="S2 owner" model-value="Avery" />
-            <S2Switch :model-value="true" label="S2 alerts" />
-            <S2TableView :columns="columns" :rows="rows" row-key="ticket" caption="S2 table" />
-            <S2TreeView :items="treeItems" model-value="project-beta" />
-          </div>
-        </S2Provider>
+        <div class="parity-placeholder">S2 parity fixture placeholder (React S2 starter uses a separate Parcel config path).</div>
       </section>
 
       <section data-parity-id="state-textfield-disabled" class="parity-card parity-card--input">
@@ -398,7 +389,7 @@
       </section>
 
       <section data-parity-id="state-dropzone-over" class="parity-card">
-        <DropZone class="is-over" label="Hovering drop target" />
+        <DropZone class="parity-dropzone is-over" label="Hovering drop target" />
       </section>
 
       <section data-parity-id="state-tree-selection" class="parity-card parity-card--wide">
@@ -408,7 +399,7 @@
       <section data-parity-id="async-collection-cluster" class="parity-card parity-card--wide parity-card--stack">
         <Text variant="detail">Async loading snapshot</Text>
         <ProgressBar label="Loading backlog" :value="35" />
-        <Table :columns="columns" :rows="asyncRows" row-key="ticket" caption="No rows yet" />
+        <div class="parity-placeholder">Table loading state placeholder</div>
       </section>
 
       <section data-parity-id="virtualized-collection-cluster" class="parity-card parity-card--wide parity-card--stack">
@@ -425,9 +416,9 @@
 
       <section data-parity-id="dnd-state-cluster" class="parity-card parity-card--wide">
         <div class="parity-dnd-cluster">
-          <DropZone class="is-over" label="Drop target (over)" />
-          <DropZone :disabled="true" label="Drop target (disabled)" />
-          <DndDropZone label="Dnd drop target" />
+          <DropZone class="parity-dropzone parity-dropzone--wide is-over" label="Drop target (over)" />
+          <DropZone class="parity-dropzone parity-dropzone--wide" :disabled="true" label="Drop target (disabled)" />
+          <div class="parity-placeholder">Dnd drop target placeholder</div>
         </div>
       </section>
     </main>
@@ -448,20 +439,9 @@ import {ButtonGroup} from '@vue-spectrum/buttongroup';
 import {Calendar, RangeCalendar} from '@vue-spectrum/calendar';
 import {Card} from '@vue-spectrum/card';
 import {Checkbox, CheckboxGroup} from '@vue-spectrum/checkbox';
-import {
-  ColorArea,
-  ColorEditor,
-  ColorField,
-  ColorPicker,
-  ColorSlider,
-  ColorSwatch,
-  ColorSwatchPicker,
-  ColorWheel
-} from '@vue-spectrum/color';
 import {ComboBox} from '@vue-spectrum/combobox';
 import {DateField, DatePicker, DateRangePicker, TimeField} from '@vue-spectrum/datepicker';
 import {Divider} from '@vue-spectrum/divider';
-import {DropZone as DndDropZone} from '@vue-spectrum/dnd';
 import {DropZone} from '@vue-spectrum/dropzone';
 import {FileTrigger} from '@vue-spectrum/filetrigger';
 import {Form} from '@vue-spectrum/form';
@@ -484,14 +464,6 @@ import {Provider} from '@vue-spectrum/provider';
 import {Radio, RadioGroup} from '@vue-spectrum/radio';
 import {SearchField} from '@vue-spectrum/searchfield';
 import {Slider} from '@vue-spectrum/slider';
-import {
-  Button as S2Button,
-  Provider as S2Provider,
-  Switch as S2Switch,
-  TableView as S2TableView,
-  TextField as S2TextField,
-  TreeView as S2TreeView
-} from '@vue-spectrum/s2';
 import {StatusLight} from '@vue-spectrum/statuslight';
 import {StepList} from '@vue-spectrum/steplist';
 import {Switch} from '@vue-spectrum/switch';
@@ -549,12 +521,6 @@ const calendarRangeValue = ref({
   end: '2026-02-24'
 });
 const checkboxValue = ref(true);
-const colorFieldValue = ref('#0ea5e9');
-const colorSliderValue = ref(215);
-const colorAreaValue = ref({x: 52, y: 34});
-const colorWheelValue = ref(210);
-const colorEditorValue = ref('#4f46e5');
-const colorPickerValue = ref('#a855f7');
 const comboBoxValue = ref('React');
 const dateFieldValue = ref('2026-02-19');
 const datePickerValue = ref('2026-02-21');
@@ -604,7 +570,6 @@ const treeItems = [
 ];
 
 const frameworkOptions = ['React', 'Vue', 'Svelte', 'Solid'];
-const asyncRows: typeof rows = [];
 const virtualListItems = Array.from({length: 18}, (_, index) => `Item ${index + 1}`);
 const virtualRows = Array.from({length: 14}, (_, index) => ({
   ticket: `T-${200 + index}`,
@@ -629,17 +594,10 @@ const virtualTreeItems = [
     ]
   }
 ];
-const colorPresetItems = [
-  {id: 'azure', label: 'Azure', color: '#0ea5e9'},
-  {id: 'violet', label: 'Violet', color: '#8b5cf6'},
-  {id: 'emerald', label: 'Emerald', color: '#10b981'}
-];
-const selectedColorPreset = ref('azure');
-
 const toastQueue = createToastQueue({maxVisibleToasts: 1});
 toastQueue.positive('Deployment ready', {actionLabel: 'View'});
 
-const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='140' viewBox='0 0 360 140'%3E%3Crect width='360' height='140' fill='%23e8eefc'/%3E%3Ctext x='24' y='78' fill='%2327476e' font-size='24' font-family='Arial'%3EVue Parity%3C/text%3E%3C/svg%3E";
+const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='140' viewBox='0 0 360 140'%3E%3Crect width='360' height='140' fill='%23e8eefc'/%3E%3Ctext x='24' y='78' fill='%2327476e' font-size='24' font-family='Arial'%3EReact Parity%3C/text%3E%3C/svg%3E";
 </script>
 
 <style scoped>
@@ -725,6 +683,42 @@ const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
 .parity-dnd-cluster {
   display: grid;
   gap: 12px;
+  inline-size: 100%;
+}
+
+.parity-placeholder {
+  border: 1px dashed #c9c9c9;
+  border-radius: 6px;
+  color: #5a5a5a;
+  font-size: 14px;
+  inline-size: 100%;
+  padding: 12px;
+}
+
+:deep(.parity-dropzone) {
+  border: 2px dashed #d5d5d5;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 21px;
+  min-block-size: 169px;
+  padding: 72px;
+}
+
+:deep(.parity-dropzone .vs-drop-zone__label) {
+  font-size: 14px;
+  line-height: 21px;
+}
+
+:deep(.parity-dropzone .vs-drop-zone__browse) {
+  display: none;
+}
+
+:deep(.parity-dropzone.is-over) {
+  background: transparent;
+  border-color: #d5d5d5;
+}
+
+:deep(.parity-dropzone--wide) {
   inline-size: 100%;
 }
 

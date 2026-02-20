@@ -1,7 +1,7 @@
 <template>
   <Provider dir="rtl" locale="ar-EG" color-scheme="light" scale="medium" class="fixture-root">
     <section data-parity-id="rtl-cluster" class="fixture-card">
-      <Text variant="heading">واجهة RTL</Text>
+      <Text>واجهة RTL</Text>
       <ButtonGroup>
         <Button variant="primary">حفظ</Button>
         <Button variant="secondary">إلغاء</Button>
@@ -45,6 +45,8 @@ const rows = [
 .fixture-root {
   min-height: 100vh;
   background: #f5f5f5;
+  color: #1f1f1f;
+  font-family: Arial, sans-serif;
   padding: 24px;
 }
 

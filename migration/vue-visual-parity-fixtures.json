@@ -406,21 +406,21 @@
       "id": "pkg-contextualhelp",
       "path": "/parity-contextual-help.html",
       "selector": ".vs-contextual-help__dialog",
-      "referenceSelector": "[data-parity-id='pkg-contextualhelp']",
+      "referenceSelector": "[class*='react-spectrum-ContextualHelp-dialog']",
       "maxDiffRatio": 0
     },
     {
       "id": "pkg-dialog",
       "path": "/parity-dialog.html",
       "selector": ".vs-dialog",
-      "referenceSelector": "[data-parity-id='pkg-dialog']",
+      "referenceSelector": "[class*='spectrum-Dialog'][role='dialog']",
       "maxDiffRatio": 0
     },
     {
       "id": "pkg-overlays",
       "path": "/parity-popover.html",
       "selector": ".vs-popover",
-      "referenceSelector": "[data-parity-id='pkg-overlays']",
+      "referenceSelector": "div[class*='spectrum-Popover'][role='presentation']",
       "maxDiffRatio": 0
     },
     {
