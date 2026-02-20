@@ -1,6 +1,6 @@
 # Vue Visual Parity Report
 
-Generated: 2026-02-20T07:44:14.227Z
+Generated: 2026-02-20T08:10:10.952Z
 
 ## Summary
 
@@ -8,8 +8,8 @@ Generated: 2026-02-20T07:44:14.227Z
 * Reference: react
 * Candidate: vue
 * Fixtures: 84
-* Passed: 0
-* Failed: 84
+* Passed: 1
+* Failed: 83
 * Errors: 0
 
 ## Fixtures
@@ -29,7 +29,7 @@ Generated: 2026-02-20T07:44:14.227Z
 | `theme-express-cluster` | fail | 13.2631% | 0.0000% | 9559 |
 | `badge-positive` | fail | 4.2412% | 0.0000% | 3049 |
 | `text-detail` | fail | 11.0826% | 0.0000% | 5866 |
-| `textfield-default` | fail | 20.3026% | 0.0000% | 10291 |
+| `textfield-default` | fail | 18.6336% | 0.0000% | 9445 |
 | `textfield-invalid` | fail | 10.6971% | 0.0000% | 5662 |
 | `textfield-focus` | fail | 9.4843% | 0.0000% | 4533 |
 | `view-bordered` | fail | 7.4255% | 0.0000% | 3558 |
@@ -60,8 +60,8 @@ Generated: 2026-02-20T07:44:14.227Z
 | `pkg-illustratedmessage` | fail | 2.8819% | 0.0000% | 2049 |
 | `pkg-image` | fail | 4.6871% | 0.0000% | 3341 |
 | `pkg-inlinealert` | fail | 7.3572% | 0.0000% | 5231 |
-| `pkg-label` | fail | 19.6811% | 0.0000% | 12283 |
-| `pkg-labeledvalue` | fail | 17.3092% | 0.0000% | 10830 |
+| `pkg-label` | fail | 8.1634% | 0.0000% | 5127 |
+| `pkg-labeledvalue` | fail | 5.8128% | 0.0000% | 3660 |
 | `pkg-layout` | fail | 15.2546% | 0.0000% | 24300 |
 | `pkg-link` | fail | 5.7914% | 0.0000% | 2768 |
 | `pkg-list` | fail | 8.5836% | 0.0000% | 18266 |
@@ -73,7 +73,7 @@ Generated: 2026-02-20T07:44:14.227Z
 | `pkg-radio` | fail | 11.2525% | 0.0000% | 5570 |
 | `pkg-searchfield` | fail | 9.7215% | 0.0000% | 4800 |
 | `pkg-slider` | fail | 11.3694% | 0.0000% | 5434 |
-| `pkg-statuslight` | fail | 5.4303% | 0.0000% | 2602 |
+| `pkg-statuslight` | fail | 5.4345% | 0.0000% | 2604 |
 | `pkg-steplist` | fail | 10.0660% | 0.0000% | 15790 |
 | `pkg-tag` | fail | 8.8690% | 0.0000% | 13373 |
 | `pkg-toast` | fail | 4.1052% | 0.0000% | 6140 |
@@ -84,19 +84,19 @@ Generated: 2026-02-20T07:44:14.227Z
 | `pkg-dialog` | fail | 6.6296% | 0.0000% | 5431 |
 | `pkg-overlays` | fail | 7.1318% | 0.0000% | 3039 |
 | `pkg-s2` | fail | 8.8843% | 0.0000% | 13072 |
-| `state-textfield-disabled` | fail | 13.4943% | 0.0000% | 6876 |
-| `state-searchfield-invalid` | fail | 16.8311% | 0.0000% | 8598 |
-| `state-searchfield-focus` | fail | 16.6166% | 0.0000% | 8467 |
+| `state-textfield-disabled` | fail | 10.3896% | 0.0000% | 5294 |
+| `state-searchfield-invalid` | fail | 12.5617% | 0.0000% | 6417 |
+| `state-searchfield-focus` | fail | 11.6358% | 0.0000% | 5929 |
 | `state-numberfield-invalid` | fail | 14.1022% | 0.0000% | 7520 |
 | `state-slider-disabled` | fail | 14.2424% | 0.0000% | 7614 |
 | `state-radio-disabled` | fail | 13.3933% | 0.0000% | 7142 |
 | `state-tabs-disabled` | fail | 3.1236% | 0.0000% | 4596 |
 | `state-picker-disabled` | fail | 10.2066% | 0.0000% | 8547 |
-| `state-dropzone-over` | fail | 0.0095% | 0.0000% | 8 |
+| `state-dropzone-over` | pass | 0.0000% | 0.0000% | 0 |
 | `state-tree-selection` | fail | 5.4017% | 0.0000% | 9787 |
 | `async-collection-cluster` | fail | 10.3664% | 0.0000% | 20295 |
 | `virtualized-collection-cluster` | fail | 18.2741% | 0.0000% | 149549 |
-| `dnd-state-cluster` | fail | 4.9801% | 0.0000% | 27372 |
+| `dnd-state-cluster` | fail | 4.9793% | 0.0000% | 27368 |
 | `rtl-cluster` | fail | 6.6447% | 0.0000% | 20475 |
 | `forced-colors-cluster` | fail | 16.6270% | 0.0000% | 40234 |
 | `overlay-placement-matrix` | fail | 15.1279% | 0.0000% | 38156 |

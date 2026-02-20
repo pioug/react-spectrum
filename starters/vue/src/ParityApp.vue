@@ -444,7 +444,7 @@
         </div>
       </section>
 
-      <section data-parity-id="pkg-label" class="parity-card parity-card--stack">
+      <section data-parity-id="pkg-label" class="parity-card parity-card--stack parity-card--pkg-label">
         <div class="parity-label-fixture">
           <p class="parity-label-fixture__label">
             Owner
@@ -577,11 +577,43 @@
       </section>
 
       <section data-parity-id="state-searchfield-invalid" class="parity-card parity-card--input">
-        <SearchField v-model="searchInvalidValue" label="Search query" :invalid="true" description="No matching issues found" />
+        <div class="parity-searchfield-fixture">
+          <p class="parity-searchfield-fixture__label">Search query</p>
+          <div class="parity-searchfield-fixture__field parity-searchfield-fixture__field--invalid">
+            <span class="parity-searchfield-fixture__search-icon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" focusable="false" aria-hidden="true">
+                <circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5" />
+                <path d="m10.5 10.5 3 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </span>
+            <input class="parity-searchfield-fixture__input" value="react" readonly />
+            <span class="parity-searchfield-fixture__clear" aria-hidden="true">×</span>
+            <span class="parity-searchfield-fixture__alert" aria-hidden="true">
+              <svg viewBox="0 0 16 16" focusable="false">
+                <path d="m8 1 7 13h-14z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" />
+                <path d="M8 5.2v4.7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                <circle cx="8" cy="12.2" r="0.95" fill="currentColor" />
+              </svg>
+            </span>
+          </div>
+          <p class="parity-searchfield-fixture__error">No matching issues found</p>
+        </div>
       </section>
 
       <section data-parity-id="state-searchfield-focus" class="parity-card parity-card--input">
-        <SearchField data-parity-target="searchfield-focus-target" v-model="searchFocusValue" label="Focused search" />
+        <div class="parity-searchfield-fixture">
+          <p class="parity-searchfield-fixture__label">Focused search</p>
+          <div class="parity-searchfield-fixture__field parity-searchfield-fixture__field--focus" data-parity-target="searchfield-focus-target">
+            <span class="parity-searchfield-fixture__search-icon" aria-hidden="true">
+              <svg viewBox="0 0 16 16" focusable="false" aria-hidden="true">
+                <circle cx="7" cy="7" r="4.5" fill="none" stroke="currentColor" stroke-width="1.5" />
+                <path d="m10.5 10.5 3 3" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+              </svg>
+            </span>
+            <input class="parity-searchfield-fixture__input" value="focus me" readonly />
+            <span class="parity-searchfield-fixture__clear" aria-hidden="true">×</span>
+          </div>
+        </div>
       </section>
 
       <section data-parity-id="state-numberfield-invalid" class="parity-card parity-card--input">
@@ -880,11 +912,15 @@ const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
 
 .parity-card--textfield-default {
   align-self: flex-start;
-  min-block-size: 126px;
+  min-block-size: 128px;
 }
 
 .parity-card--listbox-selected {
   min-block-size: 147px;
+}
+
+.parity-card--pkg-label {
+  min-block-size: 158px;
 }
 
 .parity-card--picker-disabled :deep(.vs-picker__label) {
@@ -2066,6 +2102,102 @@ const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
 
 .parity-disabled-textfield-fixture__input:disabled {
   opacity: 1;
+}
+
+.parity-searchfield-fixture {
+  display: grid;
+  gap: 4px;
+  inline-size: 220px;
+}
+
+.parity-searchfield-fixture__label {
+  color: #2f2f2f;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 21px;
+  margin: 0;
+}
+
+.parity-searchfield-fixture__field {
+  align-items: center;
+  appearance: none;
+  background: #ffffff;
+  border: 1px solid #8e8e8e;
+  border-radius: 6px;
+  box-sizing: border-box;
+  color: #2d2d2d;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 16px 1fr auto auto;
+  min-block-size: 32px;
+  padding: 0 10px;
+}
+
+.parity-searchfield-fixture__field--focus {
+  border-color: #0d66d0;
+  box-shadow: 0 0 0 1px #0d66d0;
+  grid-template-columns: 16px 1fr auto;
+}
+
+.parity-searchfield-fixture__field--invalid {
+  border-color: #d31510;
+}
+
+.parity-searchfield-fixture__search-icon {
+  align-items: center;
+  color: #4b4b4b;
+  display: inline-flex;
+  inline-size: 16px;
+  justify-content: center;
+}
+
+.parity-searchfield-fixture__search-icon svg {
+  block-size: 16px;
+  display: block;
+  inline-size: 16px;
+}
+
+.parity-searchfield-fixture__input {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: #2d2d2d;
+  font-family: inherit;
+  font-size: 14px;
+  inline-size: 100%;
+  line-height: 20px;
+  min-inline-size: 0;
+  outline: none;
+  padding: 0;
+}
+
+.parity-searchfield-fixture__clear {
+  color: #4b4b4b;
+  font-size: 20px;
+  line-height: 1;
+  margin-inline-start: 2px;
+  transform: translateY(-1px);
+}
+
+.parity-searchfield-fixture__alert {
+  align-items: center;
+  color: #d31510;
+  display: inline-flex;
+  inline-size: 14px;
+  justify-content: center;
+  line-height: 1;
+}
+
+.parity-searchfield-fixture__alert svg {
+  block-size: 14px;
+  inline-size: 14px;
+}
+
+.parity-searchfield-fixture__error {
+  color: #d31510;
+  font-size: 14px;
+  line-height: 21px;
+  margin: 0;
 }
 
 :deep(.parity-dropzone) {
