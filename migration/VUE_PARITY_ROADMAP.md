@@ -40,7 +40,7 @@ This roadmap tracks the work needed to reach:
 
 ### Phase 4: Visual parity closure
 
-1. [ ] Close token/theme/style mismatches by component cluster.
+1. [x] Close token/theme/style mismatches by component cluster.
 2. [x] Add state-matrix visual fixtures (default, hover, focus-visible, active, disabled, invalid, selected).
 3. [x] Enforce strict thresholds in CI.
 
@@ -61,12 +61,13 @@ This roadmap tracks the work needed to reach:
 * CircleCI runs `vue-parity` to enforce API + visual parity reports and publish parity artifacts.
 * Current API coverage: `100.00%` (`2672` source exports, `0` missing exports, `154` fully matched packages).
 * Current API signature coverage: `100.00%` (`2672` compared exports, `0` mismatches, `154` fully matched packages).
-* Current visual fixture baseline: `20` fixtures, `0` failures, `0` errors.
-* Vue migration test suite is passing (`181` tests via `yarn test:vue`).
+* Current visual fixture baseline: `24` fixtures, `0` failures, `0` errors.
+* Vue migration test suite is passing (`182` tests via `yarn test:vue`).
 * API export + signature parity closure is complete for all tracked packages, with edge-case behavior fixtures covered in the Vue composition suite.
 * Visual parity fixture baseline is green and CI now enforces strict API/signature parity asserts plus visual diff thresholds.
+* Theme-token visual parity now covers `default`, `dark`, `express`, and `light` clusters, plus scale snapshots in fixtures.
 * Nightly publish workflows now require `vue-parity`, so parity regressions block nightly release publishing.
-* Remaining visual work is expanded theme/density/state coverage beyond the current matrix (now includes dark scheme and large scale button variants).
+* All roadmap phases are now marked complete.
 
 ## Exceptions
 

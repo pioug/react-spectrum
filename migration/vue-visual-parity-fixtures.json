@@ -51,6 +51,30 @@
       "maxDiffRatio": 0
     },
     {
+      "id": "theme-default-cluster",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='theme-default-cluster']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "theme-light-cluster",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='theme-light-cluster']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "theme-dark-cluster",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='theme-dark-cluster']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "theme-express-cluster",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='theme-express-cluster']",
+      "maxDiffRatio": 0
+    },
+    {
       "id": "badge-positive",
       "path": "/parity.html",
       "selector": "[data-parity-id='badge-positive']",

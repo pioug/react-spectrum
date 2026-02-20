@@ -33,6 +33,46 @@
         </Provider>
       </section>
 
+      <section data-parity-id="theme-default-cluster" class="parity-card parity-card--cluster">
+        <Provider :theme="defaultTheme">
+          <div class="parity-theme-cluster">
+            <Button variant="primary">Default theme</Button>
+            <TextField label="Owner" model-value="Avery" />
+            <Switch :model-value="true" label="Alerts" />
+          </div>
+        </Provider>
+      </section>
+
+      <section data-parity-id="theme-light-cluster" class="parity-card parity-card--cluster">
+        <Provider :theme="lightTheme">
+          <div class="parity-theme-cluster">
+            <Button variant="primary">Light theme</Button>
+            <TextField label="Owner" model-value="Avery" />
+            <Switch :model-value="true" label="Alerts" />
+          </div>
+        </Provider>
+      </section>
+
+      <section data-parity-id="theme-dark-cluster" class="parity-card parity-card--cluster">
+        <Provider :theme="darkTheme" color-scheme="dark">
+          <div class="parity-theme-cluster">
+            <Button variant="primary">Dark theme</Button>
+            <TextField label="Owner" model-value="Avery" />
+            <Switch :model-value="true" label="Alerts" />
+          </div>
+        </Provider>
+      </section>
+
+      <section data-parity-id="theme-express-cluster" class="parity-card parity-card--cluster">
+        <Provider :theme="expressTheme">
+          <div class="parity-theme-cluster">
+            <Button variant="primary">Express theme</Button>
+            <TextField label="Owner" model-value="Avery" />
+            <Switch :model-value="true" label="Alerts" />
+          </div>
+        </Provider>
+      </section>
+
       <section data-parity-id="badge-positive" class="parity-card">
         <Badge variant="positive">Ready</Badge>
       </section>
@@ -114,6 +154,10 @@ import {Tabs, type TabItemData} from '@vue-spectrum/tabs';
 import {TextField} from '@vue-spectrum/textfield';
 import {Text} from '@vue-spectrum/text';
 import {View} from '@vue-spectrum/view';
+import {theme as darkTheme} from '@vue-spectrum/theme-dark';
+import {theme as defaultTheme} from '@vue-spectrum/theme-default';
+import {theme as expressTheme} from '@vue-spectrum/theme-express';
+import {theme as lightTheme} from '@vue-spectrum/theme-light';
 
 const selectedTab = ref('overview');
 const selectedRow = ref('T-100');
@@ -175,9 +219,22 @@ const listItems = ['React', 'Vue', 'Svelte'];
   grid-column: span 3;
 }
 
+.parity-card--cluster {
+  align-items: stretch;
+  padding: 0;
+}
+
 .parity-card--dark {
   background: #2a2a2a;
   border-color: #444444;
+}
+
+.parity-theme-cluster {
+  box-sizing: border-box;
+  display: grid;
+  gap: 12px;
+  inline-size: 100%;
+  padding: 16px;
 }
 
 @media (max-width: 1024px) {

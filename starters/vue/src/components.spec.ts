@@ -19,6 +19,7 @@ import {Flex, Grid, fitContent, minmax, repeat} from '@vue-spectrum/layout';
 import {Label} from '@vue-spectrum/label';
 import {LabeledValue} from '@vue-spectrum/labeledvalue';
 import {Picker} from '@vue-spectrum/picker';
+import {Provider} from '@vue-spectrum/provider';
 import {Radio, RadioGroup} from '@vue-spectrum/radio';
 import {StepList} from '@vue-spectrum/steplist';
 import {Switch} from '@vue-spectrum/switch';
@@ -30,6 +31,9 @@ import {createToastQueue, ToastContainer} from '@vue-spectrum/toast';
 import {Tooltip, TooltipTrigger} from '@vue-spectrum/tooltip';
 import {View} from '@vue-spectrum/view';
 import {Well} from '@vue-spectrum/well';
+import {theme as darkTheme} from '@vue-spectrum/theme-dark';
+import {theme as expressTheme} from '@vue-spectrum/theme-express';
+import {theme as lightTheme} from '@vue-spectrum/theme-light';
 
 describe('Vue migration primitives', () => {
   it('renders avatar fallback initials', () => {
@@ -56,6 +60,49 @@ describe('Vue migration primitives', () => {
 
     expect(wrapper.text()).toContain('Ready for review');
     expect(wrapper.classes()).toContain('vs-badge--positive');
+  });
+
+  it('applies provider theme classes and metadata for token variants', () => {
+    let expressWrapper = mount(Provider, {
+      props: {
+        theme: expressTheme,
+        scale: 'large'
+      },
+      slots: {
+        default: () => 'Express shell'
+      }
+    });
+
+    let expressRoot = expressWrapper.get('.vs-provider');
+    expect(expressRoot.attributes('data-theme')).toBe('express');
+    expect(expressRoot.classes()).toContain('spectrum-default-global');
+    expect(expressRoot.classes()).toContain('spectrum-express-global');
+    expect(expressRoot.classes()).toContain('spectrum-express-large');
+
+    let lightWrapper = mount(Provider, {
+      props: {
+        theme: lightTheme
+      },
+      slots: {
+        default: () => 'Light shell'
+      }
+    });
+
+    expect(lightWrapper.get('.vs-provider').attributes('data-theme')).toBe('light');
+
+    let darkWrapper = mount(Provider, {
+      props: {
+        theme: darkTheme,
+        colorScheme: 'dark'
+      },
+      slots: {
+        default: () => 'Dark shell'
+      }
+    });
+
+    let darkRoot = darkWrapper.get('.vs-provider');
+    expect(darkRoot.attributes('data-theme')).toBe('dark');
+    expect(darkRoot.attributes('data-color-scheme')).toBe('dark');
   });
 
   it('renders well variants and slot content', () => {

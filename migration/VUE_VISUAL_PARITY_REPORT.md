@@ -1,12 +1,12 @@
 # Vue Visual Parity Report
 
-Generated: 2026-02-20T01:34:29.188Z
+Generated: 2026-02-20T01:48:37.677Z
 
 ## Summary
 
 * Mode: compare
-* Fixtures: 20
-* Passed: 20
+* Fixtures: 24
+* Passed: 24
 * Failed: 0
 * Errors: 0
 
@@ -21,6 +21,10 @@ Generated: 2026-02-20T01:34:29.188Z
 | `button-focus` | pass | 0.0000% | 0.0000% | 0 |
 | `button-dark` | pass | 0.0000% | 0.0000% | 0 |
 | `button-large-scale` | pass | 0.0000% | 0.0000% | 0 |
+| `theme-default-cluster` | pass | 0.0000% | 0.0000% | 0 |
+| `theme-light-cluster` | pass | 0.0000% | 0.0000% | 0 |
+| `theme-dark-cluster` | pass | 0.0000% | 0.0000% | 0 |
+| `theme-express-cluster` | pass | 0.0000% | 0.0000% | 0 |
 | `badge-positive` | pass | 0.0000% | 0.0000% | 0 |
 | `text-detail` | pass | 0.0000% | 0.0000% | 0 |
 | `textfield-default` | pass | 0.0000% | 0.0000% | 0 |

@@ -23,6 +23,10 @@ export const Provider = defineComponent({
   name: 'VueProvider',
   inheritAttrs: false,
   props: {
+    theme: {
+      type: Object as PropType<ProviderContextCompat['theme'] | undefined>,
+      default: undefined
+    },
     scale: {
       type: String as PropType<SpectrumContextValue['scale'] | undefined>,
       default: undefined
@@ -51,6 +55,7 @@ export const Provider = defineComponent({
       let locale = props.locale ?? parent.locale;
       return {
         ...parent,
+        theme: props.theme ?? parent.theme,
         colorScheme: props.colorScheme ?? parent.colorScheme,
         scale: props.scale ?? parent.scale,
         locale,
@@ -62,10 +67,11 @@ export const Provider = defineComponent({
 
     return () => h(VueSpectrumProvider, {
       ...attrs,
+      theme: context.value.theme,
       scale: context.value.scale,
       colorScheme: context.value.colorScheme,
       locale: context.value.locale,
-      dir: props.dir
+      dir: context.value.dir
     }, slots);
   }
 });
