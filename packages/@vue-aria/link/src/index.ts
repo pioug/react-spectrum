@@ -1,2 +1,14 @@
-export {useLink} from './useLink';
-export type {AriaLinkOptions, LinkAria, LinkDOMProps} from './useLink';
+import {useLink as useLinkInternal, type AriaLinkOptions, type LinkAria, type LinkDOMProps} from './useLink';
+
+type RefObject<T> = {
+  current: T
+};
+type FocusableElement = Element;
+
+export type {AriaLinkOptions, LinkAria, LinkDOMProps};
+
+export function useLink(props: AriaLinkOptions, ref: RefObject<FocusableElement | null>): LinkAria;
+export function useLink(options: AriaLinkOptions = {}, refObject?: RefObject<FocusableElement | null>): LinkAria {
+  void refObject;
+  return useLinkInternal(options);
+}

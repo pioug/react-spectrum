@@ -52,7 +52,7 @@ export const DEFAULT_VALIDATION_RESULT: ValidationResult = {
 
 export const FormValidationContext = Symbol('VueFormValidationContext');
 
-export const privateValidationStateProp = '__vueFormValidationState';
+export const privateValidationStateProp: string = '__formValidationState' + Date.now();
 
 export interface FormValidationProps<T> {
   builtinValidation?: ValidationResult,

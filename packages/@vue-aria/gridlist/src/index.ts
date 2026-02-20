@@ -26,6 +26,8 @@ type RefObject<T> = {
 type FocusableElement = Element;
 type ListState<T> = VueListState<T>;
 type TreeState<T> = VueTreeState<T>;
+type AriaGridSelectionCheckboxProps = ReactAriaGridSelectionCheckboxProps;
+type GridSelectionCheckboxAria = ReactGridSelectionCheckboxAria;
 
 export type AriaGridListProps<T = unknown> = VueAriaGridListProps;
 export type AriaGridListOptions<T = unknown> = VueAriaGridListOptions;
@@ -44,8 +46,8 @@ export type {
   MaybeRef
 };
 export type {
-  ReactAriaGridSelectionCheckboxProps as AriaGridSelectionCheckboxProps,
-  ReactGridSelectionCheckboxAria as GridSelectionCheckboxAria
+  AriaGridSelectionCheckboxProps,
+  GridSelectionCheckboxAria
 };
 
 export function useGridList<T>(
@@ -69,14 +71,13 @@ export function useGridListItem(options: AriaGridListItemOptions): GridListItemA
 }
 
 export function useGridListSelectionCheckbox<T>(
-  props: ReactAriaGridSelectionCheckboxProps,
+  props: AriaGridSelectionCheckboxProps,
   state: ListState<T>
-): ReactGridSelectionCheckboxAria;
-export function useGridListSelectionCheckbox(props: AriaGridListSelectionCheckboxProps): GridListSelectionCheckboxAria;
+): GridSelectionCheckboxAria;
 export function useGridListSelectionCheckbox(
-  props: AriaGridListSelectionCheckboxProps | ReactAriaGridSelectionCheckboxProps,
+  props: AriaGridSelectionCheckboxProps | AriaGridListSelectionCheckboxProps,
   state?: ListState<unknown>
-): GridListSelectionCheckboxAria | ReactGridSelectionCheckboxAria {
+): GridSelectionCheckboxAria {
   if (state) {
     let key = (props as ReactAriaGridSelectionCheckboxProps).key;
 
@@ -92,7 +93,7 @@ export function useGridListSelectionCheckbox(
     };
   }
 
-  return useGridListSelectionCheckboxInternal(props as AriaGridListSelectionCheckboxProps);
+  return useGridListSelectionCheckboxInternal(props as AriaGridListSelectionCheckboxProps) as unknown as GridSelectionCheckboxAria;
 }
 
 export function useGridListSection<T>(

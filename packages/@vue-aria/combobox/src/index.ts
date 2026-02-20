@@ -1,3 +1,35 @@
-export type {AriaComboBoxOptions, ComboBoxAria, ComboBoxItem} from './useComboBox';
-export {useComboBox} from './useComboBox';
+import {
+  useComboBox as useComboBoxInternal,
+  type AriaComboBoxOptions as VueAriaComboBoxOptions,
+  type ComboBoxAria as VueComboBoxAria,
+  type ComboBoxItem
+} from './useComboBox';
+import type {ComboBoxState as VueComboBoxState} from '@vue-stately/combobox';
+
+type SelectionMode = 'multiple' | 'single';
+type ComboBoxState<T, M extends SelectionMode = 'single'> = VueComboBoxState & {
+  _itemType?: T,
+  _selectionMode?: M
+};
+
+export type AriaComboBoxOptions<T = unknown, M extends SelectionMode = 'single'> = VueAriaComboBoxOptions & {
+  _itemType?: T,
+  _selectionMode?: M
+};
+export type ComboBoxAria<T = unknown> = VueComboBoxAria & {
+  _itemType?: T
+};
+export type {ComboBoxItem};
 export type {AriaComboBoxProps} from '@react-types/combobox';
+
+export function useComboBox<T, M extends SelectionMode = 'single'>(
+  props: AriaComboBoxOptions<T, M>,
+  state: ComboBoxState<T, M>
+): ComboBoxAria<T>;
+export function useComboBox(
+  options: VueAriaComboBoxOptions,
+  state?: ComboBoxState<unknown, SelectionMode>
+): VueComboBoxAria {
+  void state;
+  return useComboBoxInternal(options);
+}

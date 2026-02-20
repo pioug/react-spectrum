@@ -1,19 +1,19 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-20T00:33:58.385Z
+Generated: 2026-02-20T00:46:44.616Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 120
+* Fully matched packages: 151
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 2189
-* Mismatched signatures: 483
+* Matched signatures: 2233
+* Mismatched signatures: 439
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 81.92%
+* Signature coverage ratio: 83.57%
 
 ## Package gaps
 
@@ -21,39 +21,9 @@ Generated: 2026-02-20T00:33:58.385Z
 | --- | --- | --- | ---: | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | mismatch | 543 | 299 | 0 | 44.9% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | mismatch | 325 | 134 | 0 | 58.8% |
-| `react-aria` | `vue-aria` | mismatch | 419 | 14 | 0 | 96.7% |
 | `@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | mismatch | 6 | 6 | 0 | 0.0% |
-| `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` | mismatch | 1 | 1 | 0 | 0.0% |
-| `@react-aria/combobox` | `@vue-aria/combobox` | mismatch | 4 | 1 | 0 | 75.0% |
-| `@react-aria/dialog` | `@vue-aria/dialog` | mismatch | 3 | 1 | 0 | 66.7% |
-| `@react-aria/disclosure` | `@vue-aria/disclosure` | mismatch | 3 | 1 | 0 | 66.7% |
-| `@react-aria/form` | `@vue-aria/form` | mismatch | 1 | 1 | 0 | 0.0% |
-| `@react-aria/gridlist` | `@vue-aria/gridlist` | mismatch | 12 | 1 | 0 | 91.7% |
-| `@react-aria/landmark` | `@vue-aria/landmark` | mismatch | 6 | 1 | 0 | 83.3% |
-| `@react-aria/link` | `@vue-aria/link` | mismatch | 3 | 1 | 0 | 66.7% |
-| `@react-aria/meter` | `@vue-aria/meter` | mismatch | 3 | 1 | 0 | 66.7% |
-| `@react-aria/numberfield` | `@vue-aria/numberfield` | mismatch | 3 | 1 | 0 | 66.7% |
-| `@react-aria/progress` | `@vue-aria/progress` | mismatch | 3 | 1 | 0 | 66.7% |
-| `@react-aria/searchfield` | `@vue-aria/searchfield` | mismatch | 3 | 1 | 0 | 66.7% |
-| `@react-aria/selection` | `@vue-aria/selection` | mismatch | 15 | 1 | 0 | 93.3% |
-| `@react-aria/separator` | `@vue-aria/separator` | mismatch | 3 | 1 | 0 | 66.7% |
-| `@react-aria/slider` | `@vue-aria/slider` | mismatch | 8 | 1 | 0 | 87.5% |
-| `@react-aria/spinbutton` | `@vue-aria/spinbutton` | mismatch | 3 | 1 | 0 | 66.7% |
-| `@react-aria/switch` | `@vue-aria/switch` | mismatch | 3 | 1 | 0 | 66.7% |
-| `@react-aria/toggle` | `@vue-aria/toggle` | mismatch | 3 | 1 | 0 | 66.7% |
-| `@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | mismatch | 4 | 1 | 0 | 75.0% |
-| `@react-stately/checkbox` | `@vue-stately/checkbox` | mismatch | 3 | 1 | 0 | 66.7% |
-| `@react-stately/combobox` | `@vue-stately/combobox` | mismatch | 3 | 1 | 0 | 66.7% |
-| `@react-stately/dnd` | `@vue-stately/dnd` | mismatch | 6 | 1 | 0 | 83.3% |
-| `@react-stately/form` | `@vue-stately/form` | mismatch | 7 | 1 | 0 | 85.7% |
-| `@react-stately/grid` | `@vue-stately/grid` | mismatch | 4 | 1 | 0 | 75.0% |
-| `@react-stately/radio` | `@vue-stately/radio` | mismatch | 3 | 1 | 0 | 66.7% |
-| `@react-stately/searchfield` | `@vue-stately/searchfield` | mismatch | 3 | 1 | 0 | 66.7% |
-| `@react-stately/select` | `@vue-stately/select` | mismatch | 4 | 1 | 0 | 75.0% |
-| `@react-stately/tree` | `@vue-stately/tree` | mismatch | 4 | 1 | 0 | 75.0% |
-| `@react-stately/utils` | `@vue-stately/utils` | mismatch | 4 | 1 | 0 | 75.0% |
-| `@react-stately/virtualizer` | `@vue-stately/virtualizer` | mismatch | 10 | 1 | 0 | 90.0% |
 | `@react-aria/actiongroup` | `@vue-aria/actiongroup` | ok | 6 | 0 | 0 | 100.0% |
+| `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` | ok | 1 | 0 | 0 | 100.0% |
 | `@react-aria/autocomplete` | `@vue-aria/autocomplete` | ok | 10 | 0 | 0 | 100.0% |
 | `@react-aria/breadcrumbs` | `@vue-aria/breadcrumbs` | ok | 6 | 0 | 0 | 100.0% |
 | `@react-aria/button` | `@vue-aria/button` | ok | 11 | 0 | 0 | 100.0% |
@@ -61,33 +31,51 @@ Generated: 2026-02-20T00:33:58.385Z
 | `@react-aria/checkbox` | `@vue-aria/checkbox` | ok | 8 | 0 | 0 | 100.0% |
 | `@react-aria/collections` | `@vue-aria/collections` | ok | 17 | 0 | 0 | 100.0% |
 | `@react-aria/color` | `@vue-aria/color` | ok | 20 | 0 | 0 | 100.0% |
+| `@react-aria/combobox` | `@vue-aria/combobox` | ok | 4 | 0 | 0 | 100.0% |
 | `@react-aria/datepicker` | `@vue-aria/datepicker` | ok | 18 | 0 | 0 | 100.0% |
+| `@react-aria/dialog` | `@vue-aria/dialog` | ok | 3 | 0 | 0 | 100.0% |
+| `@react-aria/disclosure` | `@vue-aria/disclosure` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-aria/dnd` | `@vue-aria/dnd` | ok | 62 | 0 | 0 | 100.0% |
 | `@react-aria/example-theme` | `@vue-aria/example-theme` | ok | 0 | 0 | 0 | 100.0% |
 | `@react-aria/focus` | `@vue-aria/focus` | ok | 26 | 0 | 0 | 100.0% |
+| `@react-aria/form` | `@vue-aria/form` | ok | 1 | 0 | 0 | 100.0% |
 | `@react-aria/grid` | `@vue-aria/grid` | ok | 20 | 0 | 0 | 100.0% |
+| `@react-aria/gridlist` | `@vue-aria/gridlist` | ok | 12 | 0 | 0 | 100.0% |
 | `@react-aria/i18n` | `@vue-aria/i18n` | ok | 19 | 0 | 0 | 100.0% |
 | `@react-aria/interactions` | `@vue-aria/interactions` | ok | 60 | 0 | 0 | 100.0% |
 | `@react-aria/label` | `@vue-aria/label` | ok | 6 | 0 | 0 | 100.0% |
+| `@react-aria/landmark` | `@vue-aria/landmark` | ok | 6 | 0 | 0 | 100.0% |
+| `@react-aria/link` | `@vue-aria/link` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-aria/listbox` | `@vue-aria/listbox` | ok | 12 | 0 | 0 | 100.0% |
 | `@react-aria/live-announcer` | `@vue-aria/live-announcer` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-aria/menu` | `@vue-aria/menu` | ok | 16 | 0 | 0 | 100.0% |
+| `@react-aria/meter` | `@vue-aria/meter` | ok | 3 | 0 | 0 | 100.0% |
+| `@react-aria/numberfield` | `@vue-aria/numberfield` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-aria/overlays` | `@vue-aria/overlays` | ok | 39 | 0 | 0 | 100.0% |
+| `@react-aria/progress` | `@vue-aria/progress` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-aria/radio` | `@vue-aria/radio` | ok | 7 | 0 | 0 | 100.0% |
+| `@react-aria/searchfield` | `@vue-aria/searchfield` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-aria/select` | `@vue-aria/select` | ok | 8 | 0 | 0 | 100.0% |
+| `@react-aria/selection` | `@vue-aria/selection` | ok | 15 | 0 | 0 | 100.0% |
+| `@react-aria/separator` | `@vue-aria/separator` | ok | 3 | 0 | 0 | 100.0% |
+| `@react-aria/slider` | `@vue-aria/slider` | ok | 8 | 0 | 0 | 100.0% |
+| `@react-aria/spinbutton` | `@vue-aria/spinbutton` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-aria/ssr` | `@vue-aria/ssr` | ok | 4 | 0 | 0 | 100.0% |
 | `@react-aria/steplist` | `@vue-aria/steplist` | ok | 6 | 0 | 0 | 100.0% |
+| `@react-aria/switch` | `@vue-aria/switch` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-aria/table` | `@vue-aria/table` | ok | 23 | 0 | 0 | 100.0% |
 | `@react-aria/tabs` | `@vue-aria/tabs` | ok | 11 | 0 | 0 | 100.0% |
 | `@react-aria/tag` | `@vue-aria/tag` | ok | 6 | 0 | 0 | 100.0% |
 | `@react-aria/test-utils` | `@vue-aria/test-utils` | ok | 17 | 0 | 0 | 100.0% |
 | `@react-aria/textfield` | `@vue-aria/textfield` | ok | 5 | 0 | 0 | 100.0% |
 | `@react-aria/toast` | `@vue-aria/toast` | ok | 6 | 0 | 0 | 100.0% |
+| `@react-aria/toggle` | `@vue-aria/toggle` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-aria/toolbar` | `@vue-aria/toolbar` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-aria/tooltip` | `@vue-aria/tooltip` | ok | 6 | 0 | 0 | 100.0% |
 | `@react-aria/tree` | `@vue-aria/tree` | ok | 8 | 0 | 0 | 100.0% |
 | `@react-aria/utils` | `@vue-aria/utils` | ok | 74 | 0 | 0 | 100.0% |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` | ok | 11 | 0 | 0 | 100.0% |
+| `@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | ok | 4 | 0 | 0 | 100.0% |
 | `@react-spectrum/accordion` | `@vue-spectrum/accordion` | ok | 8 | 0 | 0 | 100.0% |
 | `@react-spectrum/actionbar` | `@vue-spectrum/actionbar` | ok | 5 | 0 | 0 | 100.0% |
 | `@react-spectrum/actiongroup` | `@vue-spectrum/actiongroup` | ok | 3 | 0 | 0 | 100.0% |
@@ -152,17 +140,25 @@ Generated: 2026-02-20T00:33:58.385Z
 | `@react-spectrum/well` | `@vue-spectrum/well` | ok | 2 | 0 | 0 | 100.0% |
 | `@react-stately/autocomplete` | `@vue-stately/autocomplete` | ok | 4 | 0 | 0 | 100.0% |
 | `@react-stately/calendar` | `@vue-stately/calendar` | ok | 6 | 0 | 0 | 100.0% |
+| `@react-stately/checkbox` | `@vue-stately/checkbox` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-stately/collections` | `@vue-stately/collections` | ok | 11 | 0 | 0 | 100.0% |
 | `@react-stately/color` | `@vue-stately/color` | ok | 25 | 0 | 0 | 100.0% |
+| `@react-stately/combobox` | `@vue-stately/combobox` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-stately/data` | `@vue-stately/data` | ok | 9 | 0 | 0 | 100.0% |
 | `@react-stately/datepicker` | `@vue-stately/datepicker` | ok | 15 | 0 | 0 | 100.0% |
 | `@react-stately/disclosure` | `@vue-stately/disclosure` | ok | 6 | 0 | 0 | 100.0% |
+| `@react-stately/dnd` | `@vue-stately/dnd` | ok | 6 | 0 | 0 | 100.0% |
 | `@react-stately/flags` | `@vue-stately/flags` | ok | 4 | 0 | 0 | 100.0% |
+| `@react-stately/form` | `@vue-stately/form` | ok | 7 | 0 | 0 | 100.0% |
+| `@react-stately/grid` | `@vue-stately/grid` | ok | 4 | 0 | 0 | 100.0% |
 | `@react-stately/layout` | `@vue-stately/layout` | ok | 9 | 0 | 0 | 100.0% |
 | `@react-stately/list` | `@vue-stately/list` | ok | 8 | 0 | 0 | 100.0% |
 | `@react-stately/menu` | `@vue-stately/menu` | ok | 7 | 0 | 0 | 100.0% |
 | `@react-stately/numberfield` | `@vue-stately/numberfield` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-stately/overlays` | `@vue-stately/overlays` | ok | 3 | 0 | 0 | 100.0% |
+| `@react-stately/radio` | `@vue-stately/radio` | ok | 3 | 0 | 0 | 100.0% |
+| `@react-stately/searchfield` | `@vue-stately/searchfield` | ok | 3 | 0 | 0 | 100.0% |
+| `@react-stately/select` | `@vue-stately/select` | ok | 4 | 0 | 0 | 100.0% |
 | `@react-stately/selection` | `@vue-stately/selection` | ok | 7 | 0 | 0 | 100.0% |
 | `@react-stately/slider` | `@vue-stately/slider` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-stately/steplist` | `@vue-stately/steplist` | ok | 3 | 0 | 0 | 100.0% |
@@ -171,6 +167,10 @@ Generated: 2026-02-20T00:33:58.385Z
 | `@react-stately/toast` | `@vue-stately/toast` | ok | 7 | 0 | 0 | 100.0% |
 | `@react-stately/toggle` | `@vue-stately/toggle` | ok | 7 | 0 | 0 | 100.0% |
 | `@react-stately/tooltip` | `@vue-stately/tooltip` | ok | 3 | 0 | 0 | 100.0% |
+| `@react-stately/tree` | `@vue-stately/tree` | ok | 4 | 0 | 0 | 100.0% |
+| `@react-stately/utils` | `@vue-stately/utils` | ok | 4 | 0 | 0 | 100.0% |
+| `@react-stately/virtualizer` | `@vue-stately/virtualizer` | ok | 10 | 0 | 0 | 100.0% |
+| `react-aria` | `vue-aria` | ok | 419 | 0 | 0 | 100.0% |
 | `react-stately` | `vue-stately` | ok | 165 | 0 | 0 | 100.0% |
 | `tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | ok | 0 | 0 | 0 | 100.0% |
 
@@ -194,15 +194,6 @@ Generated: 2026-02-20T00:33:58.385Z
 * Missing in target: 0
 * Example mismatches: `useDialogContainer [type-availability, call-signatures]`, `createIcon [type-availability, call-signatures]`, `createIllustration [type-availability, call-signatures]`, `useIsSkeleton [type-availability, call-signatures]`, `pressScale [type-availability, call-signatures]`, `parseColor [type-availability, call-signatures]`, `useLocale [type-availability, call-signatures]`, `useListData [type-availability, call-signatures]`, `useTreeData [type-availability, call-signatures]`, `useAsyncList [type-availability, call-signatures]`, `AccordionProps [value-availability]`, `AccordionItemProps [value-availability]`, `AccordionItemHeaderProps [value-availability]`, `AccordionItemTitleProps [value-availability]`, `AccordionItemPanelProps [value-availability]`, `AccordionItemState [value-availability]`, `AccordionItemRenderProps [value-availability]`, `ActionBarProps [value-availability]`, `ActionButtonProps [value-availability]`, `ActionButtonGroupProps [value-availability]`, `ActionMenuProps [value-availability]`, `AlertDialogProps [value-availability]`, `AvatarProps [value-availability]`, `AvatarGroupProps [value-availability]`, `BreadcrumbsProps [value-availability]` ...
 
-### react-aria -> vue-aria
-
-* Source entry: `packages/react-aria/src/index.ts`
-* Target entry: `packages/vue-aria/src/index.ts`
-* Compared exports: 419
-* Mismatched signatures: 14
-* Missing in target: 0
-* Example mismatches: `useComboBox [call-signatures]`, `useDialog [call-signatures]`, `useDisclosure [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]`, `useLandmark [call-signatures]`, `useLink [call-signatures]`, `useMeter [call-signatures]`, `useNumberField [call-signatures]`, `useProgressBar [call-signatures]`, `useSearchField [call-signatures]`, `useSeparator [call-signatures]`, `useSlider [call-signatures]`, `useSwitch [call-signatures]`, `useVisuallyHidden [call-signatures]`
-
 ### @react-spectrum/style-macro-s1 -> @vue-spectrum/style-macro-s1
 
 * Source entry: `packages/@react-spectrum/style-macro-s1/src/index.ts`
@@ -211,148 +202,4 @@ Generated: 2026-02-20T00:33:58.385Z
 * Mismatched signatures: 6
 * Missing in target: 0
 * Example mismatches: `style [call-signatures]`, `baseColor [call-signatures]`, `lightDark [call-signatures]`, `focusRing [call-signatures]`, `raw [call-signatures]`, `keyframes [call-signatures]`
-
-### @react-aria/aria-modal-polyfill -> @vue-aria/aria-modal-polyfill
-
-* Source entry: `packages/@react-aria/aria-modal-polyfill/src/index.ts`
-* Target entry: `packages/@vue-aria/aria-modal-polyfill/src/index.ts`
-* Compared exports: 1
-* Mismatched signatures: 1
-* Missing in target: 0
-* Example mismatches: `watchModals [call-signatures]`
-
-### @react-aria/combobox -> @vue-aria/combobox
-
-* Source entry: `packages/@react-aria/combobox/src/index.ts`
-* Target entry: `packages/@vue-aria/combobox/src/index.ts`
-* Compared exports: 4
-* Mismatched signatures: 1
-* Missing in target: 0
-* Example mismatches: `useComboBox [call-signatures]`
-
-### @react-aria/dialog -> @vue-aria/dialog
-
-* Source entry: `packages/@react-aria/dialog/src/index.ts`
-* Target entry: `packages/@vue-aria/dialog/src/index.ts`
-* Compared exports: 3
-* Mismatched signatures: 1
-* Missing in target: 0
-* Example mismatches: `useDialog [call-signatures]`
-
-### @react-aria/disclosure -> @vue-aria/disclosure
-
-* Source entry: `packages/@react-aria/disclosure/src/index.ts`
-* Target entry: `packages/@vue-aria/disclosure/src/index.ts`
-* Compared exports: 3
-* Mismatched signatures: 1
-* Missing in target: 0
-* Example mismatches: `useDisclosure [call-signatures]`
-
-### @react-aria/form -> @vue-aria/form
-
-* Source entry: `packages/@react-aria/form/src/index.ts`
-* Target entry: `packages/@vue-aria/form/src/index.ts`
-* Compared exports: 1
-* Mismatched signatures: 1
-* Missing in target: 0
-* Example mismatches: `useFormValidation [call-signatures]`
-
-### @react-aria/gridlist -> @vue-aria/gridlist
-
-* Source entry: `packages/@react-aria/gridlist/src/index.ts`
-* Target entry: `packages/@vue-aria/gridlist/src/index.ts`
-* Compared exports: 12
-* Mismatched signatures: 1
-* Missing in target: 0
-* Example mismatches: `useGridListSelectionCheckbox [call-signatures]`
-
-### @react-aria/landmark -> @vue-aria/landmark
-
-* Source entry: `packages/@react-aria/landmark/src/index.ts`
-* Target entry: `packages/@vue-aria/landmark/src/index.ts`
-* Compared exports: 6
-* Mismatched signatures: 1
-* Missing in target: 0
-* Example mismatches: `useLandmark [call-signatures]`
-
-### @react-aria/link -> @vue-aria/link
-
-* Source entry: `packages/@react-aria/link/src/index.ts`
-* Target entry: `packages/@vue-aria/link/src/index.ts`
-* Compared exports: 3
-* Mismatched signatures: 1
-* Missing in target: 0
-* Example mismatches: `useLink [call-signatures]`
-
-### @react-aria/meter -> @vue-aria/meter
-
-* Source entry: `packages/@react-aria/meter/src/index.ts`
-* Target entry: `packages/@vue-aria/meter/src/index.ts`
-* Compared exports: 3
-* Mismatched signatures: 1
-* Missing in target: 0
-* Example mismatches: `useMeter [call-signatures]`
-
-### @react-aria/numberfield -> @vue-aria/numberfield
-
-* Source entry: `packages/@react-aria/numberfield/src/index.ts`
-* Target entry: `packages/@vue-aria/numberfield/src/index.ts`
-* Compared exports: 3
-* Mismatched signatures: 1
-* Missing in target: 0
-* Example mismatches: `useNumberField [call-signatures]`
-
-### @react-aria/progress -> @vue-aria/progress
-
-* Source entry: `packages/@react-aria/progress/src/index.ts`
-* Target entry: `packages/@vue-aria/progress/src/index.ts`
-* Compared exports: 3
-* Mismatched signatures: 1
-* Missing in target: 0
-* Example mismatches: `useProgressBar [call-signatures]`
-
-### @react-aria/searchfield -> @vue-aria/searchfield
-
-* Source entry: `packages/@react-aria/searchfield/src/index.ts`
-* Target entry: `packages/@vue-aria/searchfield/src/index.ts`
-* Compared exports: 3
-* Mismatched signatures: 1
-* Missing in target: 0
-* Example mismatches: `useSearchField [call-signatures]`
-
-### @react-aria/selection -> @vue-aria/selection
-
-* Source entry: `packages/@react-aria/selection/src/index.ts`
-* Target entry: `packages/@vue-aria/selection/src/index.ts`
-* Compared exports: 15
-* Mismatched signatures: 1
-* Missing in target: 0
-* Example mismatches: `useSelectableItem [call-signatures]`
-
-### @react-aria/separator -> @vue-aria/separator
-
-* Source entry: `packages/@react-aria/separator/src/index.ts`
-* Target entry: `packages/@vue-aria/separator/src/index.ts`
-* Compared exports: 3
-* Mismatched signatures: 1
-* Missing in target: 0
-* Example mismatches: `useSeparator [call-signatures]`
-
-### @react-aria/slider -> @vue-aria/slider
-
-* Source entry: `packages/@react-aria/slider/src/index.ts`
-* Target entry: `packages/@vue-aria/slider/src/index.ts`
-* Compared exports: 8
-* Mismatched signatures: 1
-* Missing in target: 0
-* Example mismatches: `useSlider [call-signatures]`
-
-### @react-aria/spinbutton -> @vue-aria/spinbutton
-
-* Source entry: `packages/@react-aria/spinbutton/src/index.ts`
-* Target entry: `packages/@vue-aria/spinbutton/src/index.ts`
-* Compared exports: 3
-* Mismatched signatures: 1
-* Missing in target: 0
-* Example mismatches: `useSpinButton [call-signatures]`
 

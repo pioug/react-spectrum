@@ -28,8 +28,8 @@ export interface VirtualizerState<T extends object, V> {
 /**
  * Provides reactive virtualizer state around a Virtualizer instance.
  */
-export function useVirtualizerState<T extends object, V, O = unknown>(
-  options: VirtualizerProps<T, V, O>
+export function useVirtualizerState<T extends object, V, O = any>(
+  opts: VirtualizerProps<T, V, O>
 ): VirtualizerState<T, V> {
   let visibleRect = shallowRef(new Rect(0, 0, 0, 0));
   let isScrolling = ref(false);
@@ -38,13 +38,13 @@ export function useVirtualizerState<T extends object, V, O = unknown>(
   let contentSize = shallowRef(new Size());
 
   let virtualizer = new Virtualizer<T, V>({
-    collection: options.collection,
-    layout: options.layout,
+    collection: opts.collection,
+    layout: opts.layout,
     delegate: {
       setVisibleRect: (rect) => {
         visibleRect.value = rect;
       },
-      renderView: options.renderView,
+      renderView: opts.renderView,
       invalidate: (context) => {
         invalidationContext.value = context as InvalidationContext<O>;
         render();
@@ -54,12 +54,12 @@ export function useVirtualizerState<T extends object, V, O = unknown>(
 
   let render = (): void => {
     visibleViews.value = virtualizer.render<O>({
-      collection: options.collection,
+      collection: opts.collection,
       invalidationContext: invalidationContext.value,
       isScrolling: isScrolling.value,
-      layout: options.layout,
-      layoutOptions: options.layoutOptions,
-      persistedKeys: options.persistedKeys,
+      layout: opts.layout,
+      layoutOptions: opts.layoutOptions,
+      persistedKeys: opts.persistedKeys,
       visibleRect: visibleRect.value
     });
     contentSize.value = virtualizer.contentSize.copy();
@@ -68,7 +68,7 @@ export function useVirtualizerState<T extends object, V, O = unknown>(
   let setVisibleRect = (rect: Rect): void => {
     visibleRect.value = rect;
     render();
-    options.onVisibleRectChange?.(rect);
+    opts.onVisibleRectChange?.(rect);
   };
 
   let startScrolling = (): void => {

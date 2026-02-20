@@ -1,9 +1,5 @@
 type Revert = () => void;
 
-type WatchModalOptions = {
-  document?: Document
-};
-
 const MODAL_SELECTOR = '[aria-modal="true"], [data-ismodal="true"]';
 const currentDocument = typeof document !== 'undefined' ? document : undefined;
 
@@ -65,13 +61,15 @@ function findLiveAnnouncer(document: Document): HTMLElement | null {
 /**
  * Watches for modal containers and hides non-modal regions using `aria-hidden`.
  */
-export function watchModals(selector: string = 'body', options: WatchModalOptions = {}): Revert {
-  let providedDocument = options.document ?? currentDocument;
-  if (!providedDocument) {
+export function watchModals(
+  selector: string = 'body',
+  {document = currentDocument}: {document?: Document} = {}
+): Revert {
+  if (!document) {
     return () => {};
   }
 
-  let target = providedDocument.querySelector(selector);
+  let target = document.querySelector(selector);
   if (!target) {
     return () => {};
   }
@@ -95,9 +93,9 @@ export function watchModals(selector: string = 'body', options: WatchModalOption
       return;
     }
 
-    let liveAnnouncer = findLiveAnnouncer(providedDocument);
+    let liveAnnouncer = findLiveAnnouncer(document);
     let visibleRoots = liveAnnouncer ? [activeModal, liveAnnouncer] : [activeModal];
-    undo = createAriaHiddenReverter(visibleRoots, providedDocument);
+    undo = createAriaHiddenReverter(visibleRoots, document);
   };
 
   let observer = new MutationObserver((mutations) => {

@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-20T00:33:58.385Z",
+  "generatedAt": "2026-02-20T00:46:44.616Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 120,
+    "fullyMatchedPackages": 151,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 2189,
-    "mismatchedExportTotal": 483,
+    "matchedExportTotal": 2233,
+    "mismatchedExportTotal": 439,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.8192
+    "parityCoverage": 0.8357
   },
   "packages": [
     {
@@ -5650,545 +5650,6 @@
       "error": null
     },
     {
-      "sourcePackage": "react-aria",
-      "sourcePath": "packages/react-aria",
-      "targetPackage": "vue-aria",
-      "targetPath": "packages/vue-aria",
-      "status": "ported",
-      "sourceEntrypoint": "packages/react-aria/src/index.ts",
-      "targetEntrypoint": "packages/vue-aria/src/index.ts",
-      "sourceExportCount": 419,
-      "comparedExportCount": 419,
-      "matchedExportCount": 405,
-      "mismatchedExportCount": 14,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.9666,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useComboBox",
-          "targetExportName": "useComboBox",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useComboBox",
-            "resolvedName": "useComboBox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T, M extends SelectionMode = \"single\">(props: AriaComboBoxOptions<T, M>, state: ComboBoxState<T, M>) => ComboBoxAria<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T, M extends SelectionMode = \"single\">( _: AriaComboBoxOptions<T, M>, _: ComboBoxState<T, M>) => ComboBoxAria<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useComboBox",
-            "resolvedName": "useComboBox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaComboBoxOptions) => ComboBoxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaComboBoxOptions) => ComboBoxAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useDialog",
-          "targetExportName": "useDialog",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDialog",
-            "resolvedName": "useDialog",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaDialogProps, ref: RefObject<FocusableElement | null>) => DialogAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaDialogProps, _: RefObject<FocusableElement | null>) => DialogAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDialog",
-            "resolvedName": "useDialog",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaDialogOptions) => DialogAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaDialogOptions) => DialogAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useDisclosure",
-          "targetExportName": "useDisclosure",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDisclosure",
-            "resolvedName": "useDisclosure",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaDisclosureProps, state: DisclosureState, ref: RefObject<HTMLElement | null>) => DisclosureAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaDisclosureProps, _: DisclosureState, _: RefObject<HTMLElement | null>) => DisclosureAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDisclosure",
-            "resolvedName": "useDisclosure",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaDisclosureOptions) => DisclosureAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaDisclosureOptions) => DisclosureAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useGridListSelectionCheckbox",
-          "targetExportName": "useGridListSelectionCheckbox",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useGridListSelectionCheckbox",
-            "resolvedName": "useGridListSelectionCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaGridSelectionCheckboxProps, state: ListState<T>) => GridSelectionCheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaGridSelectionCheckboxProps, _: ListState<T>) => GridSelectionCheckboxAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useGridListSelectionCheckbox",
-            "resolvedName": "useGridListSelectionCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "{ <T>(props: ReactAriaGridSelectionCheckboxProps, state: ListState<T>): ReactGridSelectionCheckboxAria; (props: AriaGridListSelectionCheckboxProps): GridListSelectionCheckboxAria;}",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaGridListSelectionCheckboxProps) => GridListSelectionCheckboxAria",
-              "<T>( _: ReactAriaGridSelectionCheckboxProps, _: ListState<T>) => ReactGridSelectionCheckboxAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useLandmark",
-          "targetExportName": "useLandmark",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useLandmark",
-            "resolvedName": "useLandmark",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaLandmarkProps, ref: RefObject<FocusableElement | null>) => LandmarkAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaLandmarkProps, _: RefObject<FocusableElement | null>) => LandmarkAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useLandmark",
-            "resolvedName": "useLandmark",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaLandmarkProps, refObject: MaybeRef<Element | null>) => LandmarkAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaLandmarkProps, _: MaybeRef<Element | null>) => LandmarkAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useLink",
-          "targetExportName": "useLink",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useLink",
-            "resolvedName": "useLink",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaLinkOptions, ref: RefObject<FocusableElement | null>) => LinkAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaLinkOptions, _: RefObject<FocusableElement | null>) => LinkAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useLink",
-            "resolvedName": "useLink",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaLinkOptions) => LinkAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaLinkOptions) => LinkAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useMeter",
-          "targetExportName": "useMeter",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useMeter",
-            "resolvedName": "useMeter",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaMeterProps) => MeterAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaMeterProps) => MeterAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useMeter",
-            "resolvedName": "useMeter",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaMeterOptions) => MeterAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaMeterOptions) => MeterAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useNumberField",
-          "targetExportName": "useNumberField",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useNumberField",
-            "resolvedName": "useNumberField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaNumberFieldProps, state: NumberFieldState, inputRef: RefObject<HTMLInputElement | null>) => NumberFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaNumberFieldProps, _: NumberFieldState, _: RefObject<HTMLInputElement | null>) => NumberFieldAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useNumberField",
-            "resolvedName": "useNumberField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaNumberFieldOptions) => NumberFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaNumberFieldOptions) => NumberFieldAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useProgressBar",
-          "targetExportName": "useProgressBar",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useProgressBar",
-            "resolvedName": "useProgressBar",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaProgressBarProps) => ProgressBarAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaProgressBarProps) => ProgressBarAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useProgressBar",
-            "resolvedName": "useProgressBar",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaProgressBarOptions) => ProgressBarAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaProgressBarOptions) => ProgressBarAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useSearchField",
-          "targetExportName": "useSearchField",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSearchField",
-            "resolvedName": "useSearchField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaSearchFieldProps, state: SearchFieldState, inputRef: RefObject<HTMLInputElement | null>) => SearchFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaSearchFieldProps, _: SearchFieldState, _: RefObject<HTMLInputElement | null>) => SearchFieldAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSearchField",
-            "resolvedName": "useSearchField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaSearchFieldOptions) => SearchFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaSearchFieldOptions) => SearchFieldAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useSeparator",
-          "targetExportName": "useSeparator",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSeparator",
-            "resolvedName": "useSeparator",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: SeparatorProps) => SeparatorAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: SeparatorProps) => SeparatorAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSeparator",
-            "resolvedName": "useSeparator",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: SeparatorOptions) => SeparatorAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: SeparatorOptions) => SeparatorAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useSlider",
-          "targetExportName": "useSlider",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSlider",
-            "resolvedName": "useSlider",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends number | null>) => SliderAria | number[]>(props: AriaSliderProps<T>, state: SliderState, trackRef: RefObject<Element",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends number | null>) => SliderAria | number[]>( _: AriaSliderProps<T>, _: SliderState, _: RefObject<Element"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSlider",
-            "resolvedName": "useSlider",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaSliderOptions, state: SliderState, trackRef: SliderTrackRef) => SliderAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaSliderOptions, _: SliderState, _: SliderTrackRef) => SliderAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useSwitch",
-          "targetExportName": "useSwitch",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSwitch",
-            "resolvedName": "useSwitch",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaSwitchProps, state: ToggleState, ref: RefObject<HTMLInputElement | null>) => SwitchAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaSwitchProps, _: ToggleState, _: RefObject<HTMLInputElement | null>) => SwitchAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSwitch",
-            "resolvedName": "useSwitch",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaSwitchOptions) => SwitchAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaSwitchOptions) => SwitchAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useVisuallyHidden",
-          "targetExportName": "useVisuallyHidden",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useVisuallyHidden",
-            "resolvedName": "useVisuallyHidden",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props?: VisuallyHiddenProps) => VisuallyHiddenAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: VisuallyHiddenProps) => VisuallyHiddenAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useVisuallyHidden",
-            "resolvedName": "useVisuallyHidden",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaVisuallyHiddenOptions) => VisuallyHiddenAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaVisuallyHiddenOptions) => VisuallyHiddenAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
       "sourcePackage": "@react-spectrum/style-macro-s1",
       "sourcePath": "packages/@react-spectrum/style-macro-s1",
       "targetPackage": "@vue-spectrum/style-macro-s1",
@@ -6431,1714 +5892,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-aria/aria-modal-polyfill",
-      "sourcePath": "packages/@react-aria/aria-modal-polyfill",
-      "targetPackage": "@vue-aria/aria-modal-polyfill",
-      "targetPath": "packages/@vue-aria/aria-modal-polyfill",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/aria-modal-polyfill/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/aria-modal-polyfill/src/index.ts",
-      "sourceExportCount": 1,
-      "comparedExportCount": 1,
-      "matchedExportCount": 0,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "watchModals",
-          "targetExportName": "watchModals",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "watchModals",
-            "resolvedName": "watchModals",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(selector?: string, { document }?: { document?: Document;}) => Revert",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: string, { document }?: { document?: Document; }) => Revert"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "watchModals",
-            "resolvedName": "watchModals",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(selector?: string, options?: WatchModalOptions) => Revert",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: string, _: WatchModalOptions) => Revert"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/combobox",
-      "sourcePath": "packages/@react-aria/combobox",
-      "targetPackage": "@vue-aria/combobox",
-      "targetPath": "packages/@vue-aria/combobox",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/combobox/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/combobox/src/index.ts",
-      "sourceExportCount": 4,
-      "comparedExportCount": 4,
-      "matchedExportCount": 3,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.75,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useComboBox",
-          "targetExportName": "useComboBox",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useComboBox",
-            "resolvedName": "useComboBox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T, M extends SelectionMode = \"single\">(props: AriaComboBoxOptions<T, M>, state: ComboBoxState<T, M>) => ComboBoxAria<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T, M extends SelectionMode = \"single\">( _: AriaComboBoxOptions<T, M>, _: ComboBoxState<T, M>) => ComboBoxAria<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useComboBox",
-            "resolvedName": "useComboBox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaComboBoxOptions) => ComboBoxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaComboBoxOptions) => ComboBoxAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/dialog",
-      "sourcePath": "packages/@react-aria/dialog",
-      "targetPackage": "@vue-aria/dialog",
-      "targetPath": "packages/@vue-aria/dialog",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/dialog/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/dialog/src/index.ts",
-      "sourceExportCount": 3,
-      "comparedExportCount": 3,
-      "matchedExportCount": 2,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useDialog",
-          "targetExportName": "useDialog",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDialog",
-            "resolvedName": "useDialog",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaDialogProps, ref: RefObject<FocusableElement | null>) => DialogAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaDialogProps, _: RefObject<FocusableElement | null>) => DialogAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDialog",
-            "resolvedName": "useDialog",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaDialogOptions) => DialogAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaDialogOptions) => DialogAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/disclosure",
-      "sourcePath": "packages/@react-aria/disclosure",
-      "targetPackage": "@vue-aria/disclosure",
-      "targetPath": "packages/@vue-aria/disclosure",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/disclosure/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/disclosure/src/index.ts",
-      "sourceExportCount": 3,
-      "comparedExportCount": 3,
-      "matchedExportCount": 2,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useDisclosure",
-          "targetExportName": "useDisclosure",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDisclosure",
-            "resolvedName": "useDisclosure",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaDisclosureProps, state: DisclosureState, ref: RefObject<HTMLElement | null>) => DisclosureAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaDisclosureProps, _: DisclosureState, _: RefObject<HTMLElement | null>) => DisclosureAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDisclosure",
-            "resolvedName": "useDisclosure",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaDisclosureOptions) => DisclosureAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaDisclosureOptions) => DisclosureAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/form",
-      "sourcePath": "packages/@react-aria/form",
-      "targetPackage": "@vue-aria/form",
-      "targetPath": "packages/@vue-aria/form",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/form/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/form/src/index.ts",
-      "sourceExportCount": 1,
-      "comparedExportCount": 1,
-      "matchedExportCount": 0,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useFormValidation",
-          "targetExportName": "useFormValidation",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useFormValidation",
-            "resolvedName": "useFormValidation",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: FormValidationProps<T>, state: FormValidationState, ref: RefObject<ValidatableElement | null> | undefined) => void",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: FormValidationProps<T>, _: FormValidationState, _: RefObject<ValidatableElement | null> | undefined) => void"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useFormValidation",
-            "resolvedName": "useFormValidation",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaFormValidationOptions) => FormValidationAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaFormValidationOptions) => FormValidationAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/gridlist",
-      "sourcePath": "packages/@react-aria/gridlist",
-      "targetPackage": "@vue-aria/gridlist",
-      "targetPath": "packages/@vue-aria/gridlist",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/gridlist/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/gridlist/src/index.ts",
-      "sourceExportCount": 12,
-      "comparedExportCount": 12,
-      "matchedExportCount": 11,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.9167,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useGridListSelectionCheckbox",
-          "targetExportName": "useGridListSelectionCheckbox",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useGridListSelectionCheckbox",
-            "resolvedName": "useGridListSelectionCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaGridSelectionCheckboxProps, state: ListState<T>) => GridSelectionCheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaGridSelectionCheckboxProps, _: ListState<T>) => GridSelectionCheckboxAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useGridListSelectionCheckbox",
-            "resolvedName": "useGridListSelectionCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "{ <T>(props: ReactAriaGridSelectionCheckboxProps, state: ListState<T>): ReactGridSelectionCheckboxAria; (props: AriaGridListSelectionCheckboxProps): GridListSelectionCheckboxAria;}",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaGridListSelectionCheckboxProps) => GridListSelectionCheckboxAria",
-              "<T>( _: ReactAriaGridSelectionCheckboxProps, _: ListState<T>) => ReactGridSelectionCheckboxAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/landmark",
-      "sourcePath": "packages/@react-aria/landmark",
-      "targetPackage": "@vue-aria/landmark",
-      "targetPath": "packages/@vue-aria/landmark",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/landmark/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/landmark/src/index.ts",
-      "sourceExportCount": 6,
-      "comparedExportCount": 6,
-      "matchedExportCount": 5,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.8333,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useLandmark",
-          "targetExportName": "useLandmark",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useLandmark",
-            "resolvedName": "useLandmark",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaLandmarkProps, ref: RefObject<FocusableElement | null>) => LandmarkAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaLandmarkProps, _: RefObject<FocusableElement | null>) => LandmarkAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useLandmark",
-            "resolvedName": "useLandmark",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaLandmarkProps, refObject: MaybeRef<Element | null>) => LandmarkAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaLandmarkProps, _: MaybeRef<Element | null>) => LandmarkAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/link",
-      "sourcePath": "packages/@react-aria/link",
-      "targetPackage": "@vue-aria/link",
-      "targetPath": "packages/@vue-aria/link",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/link/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/link/src/index.ts",
-      "sourceExportCount": 3,
-      "comparedExportCount": 3,
-      "matchedExportCount": 2,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useLink",
-          "targetExportName": "useLink",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useLink",
-            "resolvedName": "useLink",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaLinkOptions, ref: RefObject<FocusableElement | null>) => LinkAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaLinkOptions, _: RefObject<FocusableElement | null>) => LinkAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useLink",
-            "resolvedName": "useLink",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaLinkOptions) => LinkAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaLinkOptions) => LinkAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/meter",
-      "sourcePath": "packages/@react-aria/meter",
-      "targetPackage": "@vue-aria/meter",
-      "targetPath": "packages/@vue-aria/meter",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/meter/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/meter/src/index.ts",
-      "sourceExportCount": 3,
-      "comparedExportCount": 3,
-      "matchedExportCount": 2,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useMeter",
-          "targetExportName": "useMeter",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useMeter",
-            "resolvedName": "useMeter",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaMeterProps) => MeterAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaMeterProps) => MeterAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useMeter",
-            "resolvedName": "useMeter",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaMeterOptions) => MeterAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaMeterOptions) => MeterAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/numberfield",
-      "sourcePath": "packages/@react-aria/numberfield",
-      "targetPackage": "@vue-aria/numberfield",
-      "targetPath": "packages/@vue-aria/numberfield",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/numberfield/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/numberfield/src/index.ts",
-      "sourceExportCount": 3,
-      "comparedExportCount": 3,
-      "matchedExportCount": 2,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useNumberField",
-          "targetExportName": "useNumberField",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useNumberField",
-            "resolvedName": "useNumberField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaNumberFieldProps, state: NumberFieldState, inputRef: RefObject<HTMLInputElement | null>) => NumberFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaNumberFieldProps, _: NumberFieldState, _: RefObject<HTMLInputElement | null>) => NumberFieldAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useNumberField",
-            "resolvedName": "useNumberField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaNumberFieldOptions) => NumberFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaNumberFieldOptions) => NumberFieldAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/progress",
-      "sourcePath": "packages/@react-aria/progress",
-      "targetPackage": "@vue-aria/progress",
-      "targetPath": "packages/@vue-aria/progress",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/progress/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/progress/src/index.ts",
-      "sourceExportCount": 3,
-      "comparedExportCount": 3,
-      "matchedExportCount": 2,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useProgressBar",
-          "targetExportName": "useProgressBar",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useProgressBar",
-            "resolvedName": "useProgressBar",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaProgressBarProps) => ProgressBarAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaProgressBarProps) => ProgressBarAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useProgressBar",
-            "resolvedName": "useProgressBar",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaProgressBarOptions) => ProgressBarAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaProgressBarOptions) => ProgressBarAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/searchfield",
-      "sourcePath": "packages/@react-aria/searchfield",
-      "targetPackage": "@vue-aria/searchfield",
-      "targetPath": "packages/@vue-aria/searchfield",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/searchfield/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/searchfield/src/index.ts",
-      "sourceExportCount": 3,
-      "comparedExportCount": 3,
-      "matchedExportCount": 2,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useSearchField",
-          "targetExportName": "useSearchField",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSearchField",
-            "resolvedName": "useSearchField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaSearchFieldProps, state: SearchFieldState, inputRef: RefObject<HTMLInputElement | null>) => SearchFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaSearchFieldProps, _: SearchFieldState, _: RefObject<HTMLInputElement | null>) => SearchFieldAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSearchField",
-            "resolvedName": "useSearchField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaSearchFieldOptions) => SearchFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaSearchFieldOptions) => SearchFieldAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/selection",
-      "sourcePath": "packages/@react-aria/selection",
-      "targetPackage": "@vue-aria/selection",
-      "targetPath": "packages/@vue-aria/selection",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/selection/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/selection/src/index.ts",
-      "sourceExportCount": 15,
-      "comparedExportCount": 15,
-      "matchedExportCount": 14,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.9333,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useSelectableItem",
-          "targetExportName": "useSelectableItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSelectableItem",
-            "resolvedName": "useSelectableItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: SelectableItemOptions) => SelectableItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: SelectableItemOptions) => SelectableItemAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSelectableItem",
-            "resolvedName": "useSelectableItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: SelectableItemOptions, selectionManager: SelectionManager, states?: SelectableItemStates) => SelectableItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: SelectableItemOptions, _: SelectionManager, _: SelectableItemStates) => SelectableItemAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/separator",
-      "sourcePath": "packages/@react-aria/separator",
-      "targetPackage": "@vue-aria/separator",
-      "targetPath": "packages/@vue-aria/separator",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/separator/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/separator/src/index.ts",
-      "sourceExportCount": 3,
-      "comparedExportCount": 3,
-      "matchedExportCount": 2,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useSeparator",
-          "targetExportName": "useSeparator",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSeparator",
-            "resolvedName": "useSeparator",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: SeparatorProps) => SeparatorAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: SeparatorProps) => SeparatorAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSeparator",
-            "resolvedName": "useSeparator",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: SeparatorOptions) => SeparatorAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: SeparatorOptions) => SeparatorAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/slider",
-      "sourcePath": "packages/@react-aria/slider",
-      "targetPackage": "@vue-aria/slider",
-      "targetPath": "packages/@vue-aria/slider",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/slider/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/slider/src/index.ts",
-      "sourceExportCount": 8,
-      "comparedExportCount": 8,
-      "matchedExportCount": 7,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.875,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useSlider",
-          "targetExportName": "useSlider",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSlider",
-            "resolvedName": "useSlider",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends number | null>) => SliderAria | number[]>(props: AriaSliderProps<T>, state: SliderState, trackRef: RefObject<Element",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends number | null>) => SliderAria | number[]>( _: AriaSliderProps<T>, _: SliderState, _: RefObject<Element"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSlider",
-            "resolvedName": "useSlider",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaSliderOptions, state: SliderState, trackRef: SliderTrackRef) => SliderAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaSliderOptions, _: SliderState, _: SliderTrackRef) => SliderAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/spinbutton",
-      "sourcePath": "packages/@react-aria/spinbutton",
-      "targetPackage": "@vue-aria/spinbutton",
-      "targetPath": "packages/@vue-aria/spinbutton",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/spinbutton/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/spinbutton/src/index.ts",
-      "sourceExportCount": 3,
-      "comparedExportCount": 3,
-      "matchedExportCount": 2,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useSpinButton",
-          "targetExportName": "useSpinButton",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSpinButton",
-            "resolvedName": "useSpinButton",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: SpinButtonProps) => SpinbuttonAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: SpinButtonProps) => SpinbuttonAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSpinButton",
-            "resolvedName": "useSpinButton",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: SpinButtonOptions) => SpinButtonAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: SpinButtonOptions) => SpinButtonAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/switch",
-      "sourcePath": "packages/@react-aria/switch",
-      "targetPackage": "@vue-aria/switch",
-      "targetPath": "packages/@vue-aria/switch",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/switch/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/switch/src/index.ts",
-      "sourceExportCount": 3,
-      "comparedExportCount": 3,
-      "matchedExportCount": 2,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useSwitch",
-          "targetExportName": "useSwitch",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSwitch",
-            "resolvedName": "useSwitch",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaSwitchProps, state: ToggleState, ref: RefObject<HTMLInputElement | null>) => SwitchAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaSwitchProps, _: ToggleState, _: RefObject<HTMLInputElement | null>) => SwitchAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSwitch",
-            "resolvedName": "useSwitch",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaSwitchOptions) => SwitchAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaSwitchOptions) => SwitchAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/toggle",
-      "sourcePath": "packages/@react-aria/toggle",
-      "targetPackage": "@vue-aria/toggle",
-      "targetPath": "packages/@vue-aria/toggle",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/toggle/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/toggle/src/index.ts",
-      "sourceExportCount": 3,
-      "comparedExportCount": 3,
-      "matchedExportCount": 2,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useToggle",
-          "targetExportName": "useToggle",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useToggle",
-            "resolvedName": "useToggle",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaToggleProps, state: ToggleState, ref: RefObject<HTMLInputElement | null>) => ToggleAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaToggleProps, _: ToggleState, _: RefObject<HTMLInputElement | null>) => ToggleAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useToggle",
-            "resolvedName": "useToggle",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaToggleOptions) => ToggleAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaToggleOptions) => ToggleAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/visually-hidden",
-      "sourcePath": "packages/@react-aria/visually-hidden",
-      "targetPackage": "@vue-aria/visually-hidden",
-      "targetPath": "packages/@vue-aria/visually-hidden",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/visually-hidden/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/visually-hidden/src/index.ts",
-      "sourceExportCount": 4,
-      "comparedExportCount": 4,
-      "matchedExportCount": 3,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.75,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useVisuallyHidden",
-          "targetExportName": "useVisuallyHidden",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useVisuallyHidden",
-            "resolvedName": "useVisuallyHidden",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props?: VisuallyHiddenProps) => VisuallyHiddenAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: VisuallyHiddenProps) => VisuallyHiddenAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useVisuallyHidden",
-            "resolvedName": "useVisuallyHidden",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaVisuallyHiddenOptions) => VisuallyHiddenAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaVisuallyHiddenOptions) => VisuallyHiddenAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/checkbox",
-      "sourcePath": "packages/@react-stately/checkbox",
-      "targetPackage": "@vue-stately/checkbox",
-      "targetPath": "packages/@vue-stately/checkbox",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/checkbox/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/checkbox/src/index.ts",
-      "sourceExportCount": 3,
-      "comparedExportCount": 3,
-      "matchedExportCount": 2,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useCheckboxGroupState",
-          "targetExportName": "useCheckboxGroupState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCheckboxGroupState",
-            "resolvedName": "useCheckboxGroupState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props?: CheckboxGroupProps) => CheckboxGroupState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: CheckboxGroupProps) => CheckboxGroupState"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCheckboxGroupState",
-            "resolvedName": "useCheckboxGroupState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: CheckboxGroupStateOptions) => CheckboxGroupState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: CheckboxGroupStateOptions) => CheckboxGroupState"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/combobox",
-      "sourcePath": "packages/@react-stately/combobox",
-      "targetPackage": "@vue-stately/combobox",
-      "targetPath": "packages/@vue-stately/combobox",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/combobox/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/combobox/src/index.ts",
-      "sourceExportCount": 3,
-      "comparedExportCount": 3,
-      "matchedExportCount": 2,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useComboBoxState",
-          "targetExportName": "useComboBoxState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useComboBoxState",
-            "resolvedName": "useComboBoxState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object, M extends SelectionMode = \"single\">(props: ComboBoxStateOptions<T, M>) => ComboBoxState<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object, M extends SelectionMode = \"single\">( _: ComboBoxStateOptions<T, M>) => ComboBoxState<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useComboBoxState",
-            "resolvedName": "useComboBoxState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: ComboBoxStateOptions) => StatelyComboBoxState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: ComboBoxStateOptions) => StatelyComboBoxState"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/dnd",
-      "sourcePath": "packages/@react-stately/dnd",
-      "targetPackage": "@vue-stately/dnd",
-      "targetPath": "packages/@vue-stately/dnd",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/dnd/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/dnd/src/index.ts",
-      "sourceExportCount": 6,
-      "comparedExportCount": 6,
-      "matchedExportCount": 5,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.8333,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useDraggableCollectionState",
-          "targetExportName": "useDraggableCollectionState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDraggableCollectionState",
-            "resolvedName": "useDraggableCollectionState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T = object>(props: DraggableCollectionStateOptions<T>) => DraggableCollectionState",
-            "declaredType": "",
-            "callSignatures": [
-              "<T = object>( _: DraggableCollectionStateOptions<T>) => DraggableCollectionState"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDraggableCollectionState",
-            "resolvedName": "useDraggableCollectionState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T = unknown>(options: DraggableCollectionStateOptions<T>) => DraggableCollectionState<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T = unknown>( _: DraggableCollectionStateOptions<T>) => DraggableCollectionState<T>"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/form",
-      "sourcePath": "packages/@react-stately/form",
-      "targetPackage": "@vue-stately/form",
-      "targetPath": "packages/@vue-stately/form",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/form/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/form/src/index.ts",
-      "sourceExportCount": 7,
-      "comparedExportCount": 7,
-      "matchedExportCount": 6,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.8571,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "privateValidationStateProp",
-          "targetExportName": "privateValidationStateProp",
-          "differences": [
-            "value-type"
-          ],
-          "source": {
-            "name": "privateValidationStateProp",
-            "resolvedName": "privateValidationStateProp",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "VariableDeclaration"
-            ],
-            "valueType": "string",
-            "declaredType": "",
-            "callSignatures": [],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "privateValidationStateProp",
-            "resolvedName": "privateValidationStateProp",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "VariableDeclaration"
-            ],
-            "valueType": "\"__vueFormValidationState\"",
-            "declaredType": "",
-            "callSignatures": [],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/grid",
-      "sourcePath": "packages/@react-stately/grid",
-      "targetPackage": "@vue-stately/grid",
-      "targetPath": "packages/@vue-stately/grid",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/grid/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/grid/src/index.ts",
-      "sourceExportCount": 4,
-      "comparedExportCount": 4,
-      "matchedExportCount": 3,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.75,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useGridState",
-          "targetExportName": "useGridState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useGridState",
-            "resolvedName": "useGridState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object, C extends GridCollection<T>>(props: GridStateOptions<T, C>) => GridState<T, C>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object, C extends GridCollection<T>>( _: GridStateOptions<T, C>) => GridState<T, C>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useGridState",
-            "resolvedName": "useGridState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T, C extends GridCollection<T>>(options: GridStateOptions<T, C>) => GridState<T, C>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T, C extends GridCollection<T>>( _: GridStateOptions<T, C>) => GridState<T, C>"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/radio",
-      "sourcePath": "packages/@react-stately/radio",
-      "targetPackage": "@vue-stately/radio",
-      "targetPath": "packages/@vue-stately/radio",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/radio/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/radio/src/index.ts",
-      "sourceExportCount": 3,
-      "comparedExportCount": 3,
-      "matchedExportCount": 2,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useRadioGroupState",
-          "targetExportName": "useRadioGroupState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useRadioGroupState",
-            "resolvedName": "useRadioGroupState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: RadioGroupProps) => RadioGroupState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: RadioGroupProps) => RadioGroupState"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useRadioGroupState",
-            "resolvedName": "useRadioGroupState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: RadioGroupStateOptions) => RadioGroupState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: RadioGroupStateOptions) => RadioGroupState"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/searchfield",
-      "sourcePath": "packages/@react-stately/searchfield",
-      "targetPackage": "@vue-stately/searchfield",
-      "targetPath": "packages/@vue-stately/searchfield",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/searchfield/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/searchfield/src/index.ts",
-      "sourceExportCount": 3,
-      "comparedExportCount": 3,
-      "matchedExportCount": 2,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useSearchFieldState",
-          "targetExportName": "useSearchFieldState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSearchFieldState",
-            "resolvedName": "useSearchFieldState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: SearchFieldProps) => SearchFieldState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: SearchFieldProps) => SearchFieldState"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSearchFieldState",
-            "resolvedName": "useSearchFieldState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: SearchFieldStateOptions) => SearchFieldState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: SearchFieldStateOptions) => SearchFieldState"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/select",
-      "sourcePath": "packages/@react-stately/select",
-      "targetPackage": "@vue-stately/select",
-      "targetPath": "packages/@vue-stately/select",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/select/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/select/src/index.ts",
-      "sourceExportCount": 4,
-      "comparedExportCount": 4,
-      "matchedExportCount": 3,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.75,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useSelectState",
-          "targetExportName": "useSelectState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSelectState",
-            "resolvedName": "useSelectState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object, M extends SelectionMode = \"single\">(props: SelectStateOptions<T, M>) => SelectState<T, M>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object, M extends SelectionMode = \"single\">( _: SelectStateOptions<T, M>) => SelectState<T, M>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSelectState",
-            "resolvedName": "useSelectState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object, M extends SelectSelectionMode = \"single\">(options: SelectStateOptions<T, M>) => SelectState<T, M>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object, M extends SelectSelectionMode = \"single\">( _: SelectStateOptions<T, M>) => SelectState<T, M>"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/tree",
-      "sourcePath": "packages/@react-stately/tree",
-      "targetPackage": "@vue-stately/tree",
-      "targetPath": "packages/@vue-stately/tree",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/tree/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/tree/src/index.ts",
-      "sourceExportCount": 4,
-      "comparedExportCount": 4,
-      "matchedExportCount": 3,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.75,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useTreeState",
-          "targetExportName": "useTreeState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTreeState",
-            "resolvedName": "useTreeState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object>(props: TreeProps<T>) => TreeState<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object>( _: TreeProps<T>) => TreeState<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTreeState",
-            "resolvedName": "useTreeState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: TreeProps<T>) => TreeState<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: TreeProps<T>) => TreeState<T>"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/utils",
-      "sourcePath": "packages/@react-stately/utils",
-      "targetPackage": "@vue-stately/utils",
-      "targetPath": "packages/@vue-stately/utils",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/utils/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/utils/src/index.ts",
-      "sourceExportCount": 4,
-      "comparedExportCount": 4,
-      "matchedExportCount": 3,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.75,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useControlledState",
-          "targetExportName": "useControlledState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useControlledState",
-            "resolvedName": "useControlledState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "undefined, defaultValue: Exclude<T, undefined>, onChange?: (v: C, ...args: any[]) => void): [T, (value: SetStateAction<T>, ...args: any[]) => void];} | undefined, onChange?: (v: C, ...args: any[]) => void): [T, (value: SetStateAction<T>, ...args: any[]) => void]; <T, C = T>(value: Exclude<T, undefined> | { <T, C = T>(value: Exclude<T, undefined>, defaultValue: Exclude<T, undefined>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T, C = T>( _: Exclude<T, undefined> | undefined, _: Exclude<T, undefined>, _: ( _: C, ...args: any[]) => void) => [T, ( _: SetStateAction<T>, ...args: any[]) => void]",
-              "<T, C = T>( _: Exclude<T, undefined>, _: Exclude<T, undefined> | undefined, _: ( _: C, ...args: any[]) => void) => [T, ( _: SetStateAction<T>, ...args: any[]) => void]"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useControlledState",
-            "resolvedName": "useControlledState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T, C = T>(value: Ref<T | undefined, defaultValue: T, onChange?: (nextValue: C, ...args: unknown[]) => void) => [WritableComputedRef<T>, (nextValue: SetValueAction<T>, ...args: unknown[]) => void] | undefined>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T, C = T>( _: Ref<T | undefined, _: T, _: ( _: C, ...args: unknown[]) => void) => [WritableComputedRef<T>, ( _: SetValueAction<T>, ...args: unknown[]) => void] | undefined>"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/virtualizer",
-      "sourcePath": "packages/@react-stately/virtualizer",
-      "targetPackage": "@vue-stately/virtualizer",
-      "targetPath": "packages/@vue-stately/virtualizer",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/virtualizer/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/virtualizer/src/index.ts",
-      "sourceExportCount": 10,
-      "comparedExportCount": 10,
-      "matchedExportCount": 9,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.9,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useVirtualizerState",
-          "targetExportName": "useVirtualizerState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useVirtualizerState",
-            "resolvedName": "useVirtualizerState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object, V, O = any>(opts: VirtualizerProps<T, V, O>) => VirtualizerState<T, V>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object, V, O = any>( _: VirtualizerProps<T, V, O>) => VirtualizerState<T, V>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useVirtualizerState",
-            "resolvedName": "useVirtualizerState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object, V, O = unknown>(options: VirtualizerProps<T, V, O>) => VirtualizerState<T, V>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object, V, O = unknown>( _: VirtualizerProps<T, V, O>) => VirtualizerState<T, V>"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/actiongroup",
       "sourcePath": "packages/@react-aria/actiongroup",
       "targetPackage": "@vue-aria/actiongroup",
@@ -8149,6 +5902,25 @@
       "sourceExportCount": 6,
       "comparedExportCount": 6,
       "matchedExportCount": 6,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/aria-modal-polyfill",
+      "sourcePath": "packages/@react-aria/aria-modal-polyfill",
+      "targetPackage": "@vue-aria/aria-modal-polyfill",
+      "targetPath": "packages/@vue-aria/aria-modal-polyfill",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/aria-modal-polyfill/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/aria-modal-polyfill/src/index.ts",
+      "sourceExportCount": 1,
+      "comparedExportCount": 1,
+      "matchedExportCount": 1,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
@@ -8291,6 +6063,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/combobox",
+      "sourcePath": "packages/@react-aria/combobox",
+      "targetPackage": "@vue-aria/combobox",
+      "targetPath": "packages/@vue-aria/combobox",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/combobox/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/combobox/src/index.ts",
+      "sourceExportCount": 4,
+      "comparedExportCount": 4,
+      "matchedExportCount": 4,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/datepicker",
       "sourcePath": "packages/@react-aria/datepicker",
       "targetPackage": "@vue-aria/datepicker",
@@ -8301,6 +6092,44 @@
       "sourceExportCount": 18,
       "comparedExportCount": 18,
       "matchedExportCount": 18,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/dialog",
+      "sourcePath": "packages/@react-aria/dialog",
+      "targetPackage": "@vue-aria/dialog",
+      "targetPath": "packages/@vue-aria/dialog",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/dialog/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/dialog/src/index.ts",
+      "sourceExportCount": 3,
+      "comparedExportCount": 3,
+      "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/disclosure",
+      "sourcePath": "packages/@react-aria/disclosure",
+      "targetPackage": "@vue-aria/disclosure",
+      "targetPath": "packages/@vue-aria/disclosure",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/disclosure/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/disclosure/src/index.ts",
+      "sourceExportCount": 3,
+      "comparedExportCount": 3,
+      "matchedExportCount": 3,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
@@ -8367,6 +6196,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/form",
+      "sourcePath": "packages/@react-aria/form",
+      "targetPackage": "@vue-aria/form",
+      "targetPath": "packages/@vue-aria/form",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/form/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/form/src/index.ts",
+      "sourceExportCount": 1,
+      "comparedExportCount": 1,
+      "matchedExportCount": 1,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/grid",
       "sourcePath": "packages/@react-aria/grid",
       "targetPackage": "@vue-aria/grid",
@@ -8377,6 +6225,25 @@
       "sourceExportCount": 20,
       "comparedExportCount": 20,
       "matchedExportCount": 20,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/gridlist",
+      "sourcePath": "packages/@react-aria/gridlist",
+      "targetPackage": "@vue-aria/gridlist",
+      "targetPath": "packages/@vue-aria/gridlist",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/gridlist/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/gridlist/src/index.ts",
+      "sourceExportCount": 12,
+      "comparedExportCount": 12,
+      "matchedExportCount": 12,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
@@ -8443,6 +6310,44 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/landmark",
+      "sourcePath": "packages/@react-aria/landmark",
+      "targetPackage": "@vue-aria/landmark",
+      "targetPath": "packages/@vue-aria/landmark",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/landmark/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/landmark/src/index.ts",
+      "sourceExportCount": 6,
+      "comparedExportCount": 6,
+      "matchedExportCount": 6,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/link",
+      "sourcePath": "packages/@react-aria/link",
+      "targetPackage": "@vue-aria/link",
+      "targetPath": "packages/@vue-aria/link",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/link/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/link/src/index.ts",
+      "sourceExportCount": 3,
+      "comparedExportCount": 3,
+      "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/listbox",
       "sourcePath": "packages/@react-aria/listbox",
       "targetPackage": "@vue-aria/listbox",
@@ -8500,6 +6405,44 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/meter",
+      "sourcePath": "packages/@react-aria/meter",
+      "targetPackage": "@vue-aria/meter",
+      "targetPath": "packages/@vue-aria/meter",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/meter/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/meter/src/index.ts",
+      "sourceExportCount": 3,
+      "comparedExportCount": 3,
+      "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/numberfield",
+      "sourcePath": "packages/@react-aria/numberfield",
+      "targetPackage": "@vue-aria/numberfield",
+      "targetPath": "packages/@vue-aria/numberfield",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/numberfield/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/numberfield/src/index.ts",
+      "sourceExportCount": 3,
+      "comparedExportCount": 3,
+      "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/overlays",
       "sourcePath": "packages/@react-aria/overlays",
       "targetPackage": "@vue-aria/overlays",
@@ -8510,6 +6453,25 @@
       "sourceExportCount": 39,
       "comparedExportCount": 39,
       "matchedExportCount": 39,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/progress",
+      "sourcePath": "packages/@react-aria/progress",
+      "targetPackage": "@vue-aria/progress",
+      "targetPath": "packages/@vue-aria/progress",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/progress/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/progress/src/index.ts",
+      "sourceExportCount": 3,
+      "comparedExportCount": 3,
+      "matchedExportCount": 3,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
@@ -8538,6 +6500,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/searchfield",
+      "sourcePath": "packages/@react-aria/searchfield",
+      "targetPackage": "@vue-aria/searchfield",
+      "targetPath": "packages/@vue-aria/searchfield",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/searchfield/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/searchfield/src/index.ts",
+      "sourceExportCount": 3,
+      "comparedExportCount": 3,
+      "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/select",
       "sourcePath": "packages/@react-aria/select",
       "targetPackage": "@vue-aria/select",
@@ -8548,6 +6529,82 @@
       "sourceExportCount": 8,
       "comparedExportCount": 8,
       "matchedExportCount": 8,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/selection",
+      "sourcePath": "packages/@react-aria/selection",
+      "targetPackage": "@vue-aria/selection",
+      "targetPath": "packages/@vue-aria/selection",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/selection/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/selection/src/index.ts",
+      "sourceExportCount": 15,
+      "comparedExportCount": 15,
+      "matchedExportCount": 15,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/separator",
+      "sourcePath": "packages/@react-aria/separator",
+      "targetPackage": "@vue-aria/separator",
+      "targetPath": "packages/@vue-aria/separator",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/separator/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/separator/src/index.ts",
+      "sourceExportCount": 3,
+      "comparedExportCount": 3,
+      "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/slider",
+      "sourcePath": "packages/@react-aria/slider",
+      "targetPackage": "@vue-aria/slider",
+      "targetPath": "packages/@vue-aria/slider",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/slider/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/slider/src/index.ts",
+      "sourceExportCount": 8,
+      "comparedExportCount": 8,
+      "matchedExportCount": 8,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/spinbutton",
+      "sourcePath": "packages/@react-aria/spinbutton",
+      "targetPackage": "@vue-aria/spinbutton",
+      "targetPath": "packages/@vue-aria/spinbutton",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/spinbutton/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/spinbutton/src/index.ts",
+      "sourceExportCount": 3,
+      "comparedExportCount": 3,
+      "matchedExportCount": 3,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
@@ -8586,6 +6643,25 @@
       "sourceExportCount": 6,
       "comparedExportCount": 6,
       "matchedExportCount": 6,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/switch",
+      "sourcePath": "packages/@react-aria/switch",
+      "targetPackage": "@vue-aria/switch",
+      "targetPath": "packages/@vue-aria/switch",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/switch/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/switch/src/index.ts",
+      "sourceExportCount": 3,
+      "comparedExportCount": 3,
+      "matchedExportCount": 3,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
@@ -8709,6 +6785,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/toggle",
+      "sourcePath": "packages/@react-aria/toggle",
+      "targetPackage": "@vue-aria/toggle",
+      "targetPath": "packages/@vue-aria/toggle",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/toggle/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/toggle/src/index.ts",
+      "sourceExportCount": 3,
+      "comparedExportCount": 3,
+      "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/toolbar",
       "sourcePath": "packages/@react-aria/toolbar",
       "targetPackage": "@vue-aria/toolbar",
@@ -8795,6 +6890,25 @@
       "sourceExportCount": 11,
       "comparedExportCount": 11,
       "matchedExportCount": 11,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/visually-hidden",
+      "sourcePath": "packages/@react-aria/visually-hidden",
+      "targetPackage": "@vue-aria/visually-hidden",
+      "targetPath": "packages/@vue-aria/visually-hidden",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/visually-hidden/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/visually-hidden/src/index.ts",
+      "sourceExportCount": 4,
+      "comparedExportCount": 4,
+      "matchedExportCount": 4,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
@@ -10020,6 +8134,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-stately/checkbox",
+      "sourcePath": "packages/@react-stately/checkbox",
+      "targetPackage": "@vue-stately/checkbox",
+      "targetPath": "packages/@vue-stately/checkbox",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/checkbox/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/checkbox/src/index.ts",
+      "sourceExportCount": 3,
+      "comparedExportCount": 3,
+      "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-stately/collections",
       "sourcePath": "packages/@react-stately/collections",
       "targetPackage": "@vue-stately/collections",
@@ -10049,6 +8182,25 @@
       "sourceExportCount": 25,
       "comparedExportCount": 25,
       "matchedExportCount": 25,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/combobox",
+      "sourcePath": "packages/@react-stately/combobox",
+      "targetPackage": "@vue-stately/combobox",
+      "targetPath": "packages/@vue-stately/combobox",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/combobox/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/combobox/src/index.ts",
+      "sourceExportCount": 3,
+      "comparedExportCount": 3,
+      "matchedExportCount": 3,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
@@ -10115,6 +8267,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-stately/dnd",
+      "sourcePath": "packages/@react-stately/dnd",
+      "targetPackage": "@vue-stately/dnd",
+      "targetPath": "packages/@vue-stately/dnd",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/dnd/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/dnd/src/index.ts",
+      "sourceExportCount": 6,
+      "comparedExportCount": 6,
+      "matchedExportCount": 6,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-stately/flags",
       "sourcePath": "packages/@react-stately/flags",
       "targetPackage": "@vue-stately/flags",
@@ -10122,6 +8293,44 @@
       "status": "ported",
       "sourceEntrypoint": "packages/@react-stately/flags/src/index.ts",
       "targetEntrypoint": "packages/@vue-stately/flags/src/index.ts",
+      "sourceExportCount": 4,
+      "comparedExportCount": 4,
+      "matchedExportCount": 4,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/form",
+      "sourcePath": "packages/@react-stately/form",
+      "targetPackage": "@vue-stately/form",
+      "targetPath": "packages/@vue-stately/form",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/form/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/form/src/index.ts",
+      "sourceExportCount": 7,
+      "comparedExportCount": 7,
+      "matchedExportCount": 7,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/grid",
+      "sourcePath": "packages/@react-stately/grid",
+      "targetPackage": "@vue-stately/grid",
+      "targetPath": "packages/@vue-stately/grid",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/grid/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/grid/src/index.ts",
       "sourceExportCount": 4,
       "comparedExportCount": 4,
       "matchedExportCount": 4,
@@ -10220,6 +8429,63 @@
       "sourceExportCount": 3,
       "comparedExportCount": 3,
       "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/radio",
+      "sourcePath": "packages/@react-stately/radio",
+      "targetPackage": "@vue-stately/radio",
+      "targetPath": "packages/@vue-stately/radio",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/radio/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/radio/src/index.ts",
+      "sourceExportCount": 3,
+      "comparedExportCount": 3,
+      "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/searchfield",
+      "sourcePath": "packages/@react-stately/searchfield",
+      "targetPackage": "@vue-stately/searchfield",
+      "targetPath": "packages/@vue-stately/searchfield",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/searchfield/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/searchfield/src/index.ts",
+      "sourceExportCount": 3,
+      "comparedExportCount": 3,
+      "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/select",
+      "sourcePath": "packages/@react-stately/select",
+      "targetPackage": "@vue-stately/select",
+      "targetPath": "packages/@vue-stately/select",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/select/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/select/src/index.ts",
+      "sourceExportCount": 4,
+      "comparedExportCount": 4,
+      "matchedExportCount": 4,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
@@ -10372,6 +8638,82 @@
       "sourceExportCount": 3,
       "comparedExportCount": 3,
       "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/tree",
+      "sourcePath": "packages/@react-stately/tree",
+      "targetPackage": "@vue-stately/tree",
+      "targetPath": "packages/@vue-stately/tree",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/tree/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/tree/src/index.ts",
+      "sourceExportCount": 4,
+      "comparedExportCount": 4,
+      "matchedExportCount": 4,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/utils",
+      "sourcePath": "packages/@react-stately/utils",
+      "targetPackage": "@vue-stately/utils",
+      "targetPath": "packages/@vue-stately/utils",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/utils/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/utils/src/index.ts",
+      "sourceExportCount": 4,
+      "comparedExportCount": 4,
+      "matchedExportCount": 4,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/virtualizer",
+      "sourcePath": "packages/@react-stately/virtualizer",
+      "targetPackage": "@vue-stately/virtualizer",
+      "targetPath": "packages/@vue-stately/virtualizer",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/virtualizer/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/virtualizer/src/index.ts",
+      "sourceExportCount": 10,
+      "comparedExportCount": 10,
+      "matchedExportCount": 10,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "react-aria",
+      "sourcePath": "packages/react-aria",
+      "targetPackage": "vue-aria",
+      "targetPath": "packages/vue-aria",
+      "status": "ported",
+      "sourceEntrypoint": "packages/react-aria/src/index.ts",
+      "targetEntrypoint": "packages/vue-aria/src/index.ts",
+      "sourceExportCount": 419,
+      "comparedExportCount": 419,
+      "matchedExportCount": 419,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
