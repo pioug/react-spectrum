@@ -1,6 +1,6 @@
 # Vue Visual Parity Report
 
-Generated: 2026-02-19T22:42:46.228Z
+Generated: 2026-02-20T01:15:26.038Z
 
 ## Summary
 

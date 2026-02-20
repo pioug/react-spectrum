@@ -1,945 +1,640 @@
-type AnyRecord = Record<string, unknown>;
-type AnyFunction = (...args: unknown[]) => unknown;
+import type * as ReactSpectrumS2 from '../../../@react-spectrum/s2/src/index';
+import type {Color as IColor} from '@react-types/color';
+import type {CSSProperties, RefObject} from 'react';
 
-export type Accordion = AnyRecord;
-export const Accordion: AnyRecord = {};
+const compatPlaceholder: any = new Proxy(function compatPlaceholder() {}, {
+  apply: () => compatPlaceholder,
+  get: () => compatPlaceholder
+});
 
-export type AccordionContext = AnyRecord;
-export const AccordionContext: AnyRecord = {};
+export const Accordion: ReactSpectrumS2.Accordion = compatPlaceholder as ReactSpectrumS2.Accordion;
 
-export type AccordionItem = AnyRecord;
-export const AccordionItem: AnyRecord = {};
+export const AccordionContext: ReactSpectrumS2.AccordionContext = compatPlaceholder as ReactSpectrumS2.AccordionContext;
 
-export type AccordionItemHeader = AnyRecord;
-export const AccordionItemHeader: AnyRecord = {};
+export const AccordionItem: ReactSpectrumS2.AccordionItem = compatPlaceholder as ReactSpectrumS2.AccordionItem;
 
-export type AccordionItemHeaderProps = AnyRecord;
-export const AccordionItemHeaderProps: AnyRecord = {};
+export const AccordionItemHeader: ReactSpectrumS2.AccordionItemHeader = compatPlaceholder as ReactSpectrumS2.AccordionItemHeader;
 
-export type AccordionItemPanel = AnyRecord;
-export const AccordionItemPanel: AnyRecord = {};
+export type AccordionItemHeaderProps = ReactSpectrumS2.AccordionItemHeaderProps;
 
-export type AccordionItemPanelProps = AnyRecord;
-export const AccordionItemPanelProps: AnyRecord = {};
+export const AccordionItemPanel: ReactSpectrumS2.AccordionItemPanel = compatPlaceholder as ReactSpectrumS2.AccordionItemPanel;
 
-export type AccordionItemProps = AnyRecord;
-export const AccordionItemProps: AnyRecord = {};
+export type AccordionItemPanelProps = ReactSpectrumS2.AccordionItemPanelProps;
 
-export type AccordionItemRenderProps = AnyRecord;
-export const AccordionItemRenderProps: AnyRecord = {};
+export type AccordionItemProps = ReactSpectrumS2.AccordionItemProps;
 
-export type AccordionItemState = AnyRecord;
-export const AccordionItemState: AnyRecord = {};
+export type AccordionItemRenderProps = ReactSpectrumS2.AccordionItemRenderProps;
 
-export type AccordionItemTitle = AnyRecord;
-export const AccordionItemTitle: AnyRecord = {};
+export type AccordionItemState = ReactSpectrumS2.AccordionItemState;
 
-export type AccordionItemTitleProps = AnyRecord;
-export const AccordionItemTitleProps: AnyRecord = {};
+export const AccordionItemTitle: ReactSpectrumS2.AccordionItemTitle = compatPlaceholder as ReactSpectrumS2.AccordionItemTitle;
 
-export type AccordionProps = AnyRecord;
-export const AccordionProps: AnyRecord = {};
+export type AccordionItemTitleProps = ReactSpectrumS2.AccordionItemTitleProps;
 
-export type ActionBar = AnyRecord;
-export const ActionBar: AnyRecord = {};
+export type AccordionProps = ReactSpectrumS2.AccordionProps;
 
-export type ActionBarContext = AnyRecord;
-export const ActionBarContext: AnyRecord = {};
+export const ActionBar: ReactSpectrumS2.ActionBar = compatPlaceholder as ReactSpectrumS2.ActionBar;
 
-export type ActionBarProps = AnyRecord;
-export const ActionBarProps: AnyRecord = {};
+export const ActionBarContext: ReactSpectrumS2.ActionBarContext = compatPlaceholder as ReactSpectrumS2.ActionBarContext;
 
-export type ActionButton = AnyRecord;
-export const ActionButton: AnyRecord = {};
+export type ActionBarProps = ReactSpectrumS2.ActionBarProps;
 
-export type ActionButtonContext = AnyRecord;
-export const ActionButtonContext: AnyRecord = {};
+export const ActionButton: ReactSpectrumS2.ActionButton = compatPlaceholder as ReactSpectrumS2.ActionButton;
 
-export type ActionButtonGroup = AnyRecord;
-export const ActionButtonGroup: AnyRecord = {};
+export const ActionButtonContext: ReactSpectrumS2.ActionButtonContext = compatPlaceholder as ReactSpectrumS2.ActionButtonContext;
 
-export type ActionButtonGroupContext = AnyRecord;
-export const ActionButtonGroupContext: AnyRecord = {};
+export const ActionButtonGroup: ReactSpectrumS2.ActionButtonGroup = compatPlaceholder as ReactSpectrumS2.ActionButtonGroup;
 
-export type ActionButtonGroupProps = AnyRecord;
-export const ActionButtonGroupProps: AnyRecord = {};
+export const ActionButtonGroupContext: ReactSpectrumS2.ActionButtonGroupContext = compatPlaceholder as ReactSpectrumS2.ActionButtonGroupContext;
 
-export type ActionButtonProps = AnyRecord;
-export const ActionButtonProps: AnyRecord = {};
+export type ActionButtonGroupProps = ReactSpectrumS2.ActionButtonGroupProps;
 
-export type ActionMenu = AnyRecord;
-export const ActionMenu: AnyRecord = {};
+export type ActionButtonProps = ReactSpectrumS2.ActionButtonProps;
 
-export type ActionMenuContext = AnyRecord;
-export const ActionMenuContext: AnyRecord = {};
+export const ActionMenu: ReactSpectrumS2.ActionMenu = compatPlaceholder as ReactSpectrumS2.ActionMenu;
 
-export type ActionMenuProps = AnyRecord;
-export const ActionMenuProps: AnyRecord = {};
+export const ActionMenuContext: ReactSpectrumS2.ActionMenuContext = compatPlaceholder as ReactSpectrumS2.ActionMenuContext;
 
-export type AlertDialog = AnyRecord;
-export const AlertDialog: AnyRecord = {};
+export type ActionMenuProps = ReactSpectrumS2.ActionMenuProps;
 
-export type AlertDialogProps = AnyRecord;
-export const AlertDialogProps: AnyRecord = {};
+export const AlertDialog: ReactSpectrumS2.AlertDialog = compatPlaceholder as ReactSpectrumS2.AlertDialog;
 
-export type AssetCard = AnyRecord;
-export const AssetCard: AnyRecord = {};
+export type AlertDialogProps = ReactSpectrumS2.AlertDialogProps;
 
-export type AssetCardProps = AnyRecord;
-export const AssetCardProps: AnyRecord = {};
+export const AssetCard: ReactSpectrumS2.AssetCard = compatPlaceholder as ReactSpectrumS2.AssetCard;
 
-export type AsyncListData = AnyRecord;
-export const AsyncListData: AnyRecord = {};
+export type AssetCardProps = ReactSpectrumS2.AssetCardProps;
 
-export type Autocomplete = AnyRecord;
-export const Autocomplete: AnyRecord = {};
+export type AsyncListData = ReactSpectrumS2.AsyncListData;
 
-export type AutocompleteProps = AnyRecord;
-export const AutocompleteProps: AnyRecord = {};
+export const Autocomplete: ReactSpectrumS2.Autocomplete = compatPlaceholder as ReactSpectrumS2.Autocomplete;
 
-export type Avatar = AnyRecord;
-export const Avatar: AnyRecord = {};
+export type AutocompleteProps = ReactSpectrumS2.AutocompleteProps;
 
-export type AvatarContext = AnyRecord;
-export const AvatarContext: AnyRecord = {};
+export const Avatar: ReactSpectrumS2.Avatar = compatPlaceholder as ReactSpectrumS2.Avatar;
 
-export type AvatarGroup = AnyRecord;
-export const AvatarGroup: AnyRecord = {};
+export const AvatarContext: ReactSpectrumS2.AvatarContext = compatPlaceholder as ReactSpectrumS2.AvatarContext;
 
-export type AvatarGroupContext = AnyRecord;
-export const AvatarGroupContext: AnyRecord = {};
+export const AvatarGroup: ReactSpectrumS2.AvatarGroup = compatPlaceholder as ReactSpectrumS2.AvatarGroup;
 
-export type AvatarGroupProps = AnyRecord;
-export const AvatarGroupProps: AnyRecord = {};
+export const AvatarGroupContext: ReactSpectrumS2.AvatarGroupContext = compatPlaceholder as ReactSpectrumS2.AvatarGroupContext;
 
-export type AvatarProps = AnyRecord;
-export const AvatarProps: AnyRecord = {};
+export type AvatarGroupProps = ReactSpectrumS2.AvatarGroupProps;
 
-export type Badge = AnyRecord;
-export const Badge: AnyRecord = {};
+export type AvatarProps = ReactSpectrumS2.AvatarProps;
 
-export type BadgeContext = AnyRecord;
-export const BadgeContext: AnyRecord = {};
+export const Badge: ReactSpectrumS2.Badge = compatPlaceholder as ReactSpectrumS2.Badge;
 
-export type BadgeProps = AnyRecord;
-export const BadgeProps: AnyRecord = {};
+export const BadgeContext: ReactSpectrumS2.BadgeContext = compatPlaceholder as ReactSpectrumS2.BadgeContext;
 
-export type Breadcrumb = AnyRecord;
-export const Breadcrumb: AnyRecord = {};
+export type BadgeProps = ReactSpectrumS2.BadgeProps;
 
-export type BreadcrumbProps = AnyRecord;
-export const BreadcrumbProps: AnyRecord = {};
+export const Breadcrumb: ReactSpectrumS2.Breadcrumb = compatPlaceholder as ReactSpectrumS2.Breadcrumb;
 
-export type Breadcrumbs = AnyRecord;
-export const Breadcrumbs: AnyRecord = {};
+export type BreadcrumbProps = ReactSpectrumS2.BreadcrumbProps;
 
-export type BreadcrumbsContext = AnyRecord;
-export const BreadcrumbsContext: AnyRecord = {};
+export const Breadcrumbs: ReactSpectrumS2.Breadcrumbs = compatPlaceholder as ReactSpectrumS2.Breadcrumbs;
 
-export type BreadcrumbsProps = AnyRecord;
-export const BreadcrumbsProps: AnyRecord = {};
+export const BreadcrumbsContext: ReactSpectrumS2.BreadcrumbsContext = compatPlaceholder as ReactSpectrumS2.BreadcrumbsContext;
 
-export type ButtonContext = AnyRecord;
-export const ButtonContext: AnyRecord = {};
+export type BreadcrumbsProps = ReactSpectrumS2.BreadcrumbsProps;
 
-export type ButtonGroup = AnyRecord;
-export const ButtonGroup: AnyRecord = {};
+export const ButtonContext: ReactSpectrumS2.ButtonContext = compatPlaceholder as ReactSpectrumS2.ButtonContext;
 
-export type ButtonGroupContext = AnyRecord;
-export const ButtonGroupContext: AnyRecord = {};
+export const ButtonGroup: ReactSpectrumS2.ButtonGroup = compatPlaceholder as ReactSpectrumS2.ButtonGroup;
 
-export type ButtonGroupProps = AnyRecord;
-export const ButtonGroupProps: AnyRecord = {};
+export const ButtonGroupContext: ReactSpectrumS2.ButtonGroupContext = compatPlaceholder as ReactSpectrumS2.ButtonGroupContext;
 
-export type ButtonProps = AnyRecord;
-export const ButtonProps: AnyRecord = {};
+export type ButtonGroupProps = ReactSpectrumS2.ButtonGroupProps;
 
-export type Calendar = AnyRecord;
-export const Calendar: AnyRecord = {};
+export type ButtonProps = ReactSpectrumS2.ButtonProps;
 
-export type CalendarContext = AnyRecord;
-export const CalendarContext: AnyRecord = {};
+export const Calendar: ReactSpectrumS2.Calendar = compatPlaceholder as ReactSpectrumS2.Calendar;
 
-export type CalendarProps = AnyRecord;
-export const CalendarProps: AnyRecord = {};
+export const CalendarContext: ReactSpectrumS2.CalendarContext = compatPlaceholder as ReactSpectrumS2.CalendarContext;
 
-export type Card = AnyRecord;
-export const Card: AnyRecord = {};
+export type CalendarProps = ReactSpectrumS2.CalendarProps;
 
-export type CardContext = AnyRecord;
-export const CardContext: AnyRecord = {};
+export const Card: ReactSpectrumS2.Card = compatPlaceholder as ReactSpectrumS2.Card;
 
-export type CardPreview = AnyRecord;
-export const CardPreview: AnyRecord = {};
+export const CardContext: ReactSpectrumS2.CardContext = compatPlaceholder as ReactSpectrumS2.CardContext;
 
-export type CardPreviewProps = AnyRecord;
-export const CardPreviewProps: AnyRecord = {};
+export const CardPreview: ReactSpectrumS2.CardPreview = compatPlaceholder as ReactSpectrumS2.CardPreview;
 
-export type CardProps = AnyRecord;
-export const CardProps: AnyRecord = {};
+export type CardPreviewProps = ReactSpectrumS2.CardPreviewProps;
 
-export type CardView = AnyRecord;
-export const CardView: AnyRecord = {};
+export type CardProps = ReactSpectrumS2.CardProps;
 
-export type CardViewContext = AnyRecord;
-export const CardViewContext: AnyRecord = {};
+export const CardView: ReactSpectrumS2.CardView = compatPlaceholder as ReactSpectrumS2.CardView;
 
-export type CardViewProps = AnyRecord;
-export const CardViewProps: AnyRecord = {};
+export const CardViewContext: ReactSpectrumS2.CardViewContext = compatPlaceholder as ReactSpectrumS2.CardViewContext;
 
-export type Cell = AnyRecord;
-export const Cell: AnyRecord = {};
+export type CardViewProps = ReactSpectrumS2.CardViewProps;
 
-export type CellProps = AnyRecord;
-export const CellProps: AnyRecord = {};
+export const Cell: ReactSpectrumS2.Cell = compatPlaceholder as ReactSpectrumS2.Cell;
 
-export type CheckboxContext = AnyRecord;
-export const CheckboxContext: AnyRecord = {};
+export type CellProps = ReactSpectrumS2.CellProps;
 
-export type CheckboxGroup = AnyRecord;
-export const CheckboxGroup: AnyRecord = {};
+export const CheckboxContext: ReactSpectrumS2.CheckboxContext = compatPlaceholder as ReactSpectrumS2.CheckboxContext;
 
-export type CheckboxGroupContext = AnyRecord;
-export const CheckboxGroupContext: AnyRecord = {};
+export const CheckboxGroup: ReactSpectrumS2.CheckboxGroup = compatPlaceholder as ReactSpectrumS2.CheckboxGroup;
 
-export type CheckboxGroupProps = AnyRecord;
-export const CheckboxGroupProps: AnyRecord = {};
+export const CheckboxGroupContext: ReactSpectrumS2.CheckboxGroupContext = compatPlaceholder as ReactSpectrumS2.CheckboxGroupContext;
 
-export type CheckboxProps = AnyRecord;
-export const CheckboxProps: AnyRecord = {};
+export type CheckboxGroupProps = ReactSpectrumS2.CheckboxGroupProps;
 
-export type CloseButton = AnyRecord;
-export const CloseButton: AnyRecord = {};
+export type CheckboxProps = ReactSpectrumS2.CheckboxProps;
 
-export type CloseButtonProps = AnyRecord;
-export const CloseButtonProps: AnyRecord = {};
+export const CloseButton: ReactSpectrumS2.CloseButton = compatPlaceholder as ReactSpectrumS2.CloseButton;
 
-export type Collection = AnyRecord;
-export const Collection: AnyRecord = {};
+export type CloseButtonProps = ReactSpectrumS2.CloseButtonProps;
 
-export type CollectionCardPreview = AnyRecord;
-export const CollectionCardPreview: AnyRecord = {};
+export const Collection: ReactSpectrumS2.Collection = compatPlaceholder as ReactSpectrumS2.Collection;
 
-export type Color = AnyRecord;
-export const Color: AnyRecord = {};
+export const CollectionCardPreview: ReactSpectrumS2.CollectionCardPreview = compatPlaceholder as ReactSpectrumS2.CollectionCardPreview;
 
-export type ColorArea = AnyRecord;
-export const ColorArea: AnyRecord = {};
+export type Color = ReactSpectrumS2.Color;
 
-export type ColorAreaContext = AnyRecord;
-export const ColorAreaContext: AnyRecord = {};
+export const ColorArea: ReactSpectrumS2.ColorArea = compatPlaceholder as ReactSpectrumS2.ColorArea;
 
-export type ColorAreaProps = AnyRecord;
-export const ColorAreaProps: AnyRecord = {};
+export const ColorAreaContext: ReactSpectrumS2.ColorAreaContext = compatPlaceholder as ReactSpectrumS2.ColorAreaContext;
 
-export type ColorField = AnyRecord;
-export const ColorField: AnyRecord = {};
+export type ColorAreaProps = ReactSpectrumS2.ColorAreaProps;
 
-export type ColorFieldContext = AnyRecord;
-export const ColorFieldContext: AnyRecord = {};
+export const ColorField: ReactSpectrumS2.ColorField = compatPlaceholder as ReactSpectrumS2.ColorField;
 
-export type ColorFieldProps = AnyRecord;
-export const ColorFieldProps: AnyRecord = {};
+export const ColorFieldContext: ReactSpectrumS2.ColorFieldContext = compatPlaceholder as ReactSpectrumS2.ColorFieldContext;
 
-export type ColorSchemeContext = AnyRecord;
-export const ColorSchemeContext: AnyRecord = {};
+export type ColorFieldProps = ReactSpectrumS2.ColorFieldProps;
 
-export type ColorSlider = AnyRecord;
-export const ColorSlider: AnyRecord = {};
+export const ColorSchemeContext: ReactSpectrumS2.ColorSchemeContext = compatPlaceholder as ReactSpectrumS2.ColorSchemeContext;
 
-export type ColorSliderContext = AnyRecord;
-export const ColorSliderContext: AnyRecord = {};
+export const ColorSlider: ReactSpectrumS2.ColorSlider = compatPlaceholder as ReactSpectrumS2.ColorSlider;
 
-export type ColorSliderProps = AnyRecord;
-export const ColorSliderProps: AnyRecord = {};
+export const ColorSliderContext: ReactSpectrumS2.ColorSliderContext = compatPlaceholder as ReactSpectrumS2.ColorSliderContext;
 
-export type ColorSwatch = AnyRecord;
-export const ColorSwatch: AnyRecord = {};
+export type ColorSliderProps = ReactSpectrumS2.ColorSliderProps;
 
-export type ColorSwatchContext = AnyRecord;
-export const ColorSwatchContext: AnyRecord = {};
+export const ColorSwatch: ReactSpectrumS2.ColorSwatch = compatPlaceholder as ReactSpectrumS2.ColorSwatch;
 
-export type ColorSwatchPicker = AnyRecord;
-export const ColorSwatchPicker: AnyRecord = {};
+export const ColorSwatchContext: ReactSpectrumS2.ColorSwatchContext = compatPlaceholder as ReactSpectrumS2.ColorSwatchContext;
 
-export type ColorSwatchPickerContext = AnyRecord;
-export const ColorSwatchPickerContext: AnyRecord = {};
+export const ColorSwatchPicker: ReactSpectrumS2.ColorSwatchPicker = compatPlaceholder as ReactSpectrumS2.ColorSwatchPicker;
 
-export type ColorSwatchPickerProps = AnyRecord;
-export const ColorSwatchPickerProps: AnyRecord = {};
+export const ColorSwatchPickerContext: ReactSpectrumS2.ColorSwatchPickerContext = compatPlaceholder as ReactSpectrumS2.ColorSwatchPickerContext;
 
-export type ColorSwatchProps = AnyRecord;
-export const ColorSwatchProps: AnyRecord = {};
+export type ColorSwatchPickerProps = ReactSpectrumS2.ColorSwatchPickerProps;
 
-export type ColorWheel = AnyRecord;
-export const ColorWheel: AnyRecord = {};
+export type ColorSwatchProps = ReactSpectrumS2.ColorSwatchProps;
 
-export type ColorWheelContext = AnyRecord;
-export const ColorWheelContext: AnyRecord = {};
+export const ColorWheel: ReactSpectrumS2.ColorWheel = compatPlaceholder as ReactSpectrumS2.ColorWheel;
 
-export type ColorWheelProps = AnyRecord;
-export const ColorWheelProps: AnyRecord = {};
+export const ColorWheelContext: ReactSpectrumS2.ColorWheelContext = compatPlaceholder as ReactSpectrumS2.ColorWheelContext;
 
-export type Column = AnyRecord;
-export const Column: AnyRecord = {};
+export type ColorWheelProps = ReactSpectrumS2.ColorWheelProps;
 
-export type ColumnProps = AnyRecord;
-export const ColumnProps: AnyRecord = {};
+export const Column: ReactSpectrumS2.Column = compatPlaceholder as ReactSpectrumS2.Column;
 
-export type ComboBox = AnyRecord;
-export const ComboBox: AnyRecord = {};
+export type ColumnProps = ReactSpectrumS2.ColumnProps;
 
-export type ComboBoxContext = AnyRecord;
-export const ComboBoxContext: AnyRecord = {};
+export const ComboBox: ReactSpectrumS2.ComboBox = compatPlaceholder as ReactSpectrumS2.ComboBox;
 
-export type ComboBoxItem = AnyRecord;
-export const ComboBoxItem: AnyRecord = {};
+export const ComboBoxContext: ReactSpectrumS2.ComboBoxContext = compatPlaceholder as ReactSpectrumS2.ComboBoxContext;
 
-export type ComboBoxItemProps = AnyRecord;
-export const ComboBoxItemProps: AnyRecord = {};
+export const ComboBoxItem: ReactSpectrumS2.ComboBoxItem = compatPlaceholder as ReactSpectrumS2.ComboBoxItem;
 
-export type ComboBoxProps = AnyRecord;
-export const ComboBoxProps: AnyRecord = {};
+export type ComboBoxItemProps = ReactSpectrumS2.ComboBoxItemProps;
 
-export type ComboBoxSection = AnyRecord;
-export const ComboBoxSection: AnyRecord = {};
+export type ComboBoxProps = ReactSpectrumS2.ComboBoxProps;
 
-export type ComboBoxSectionProps = AnyRecord;
-export const ComboBoxSectionProps: AnyRecord = {};
+export const ComboBoxSection: ReactSpectrumS2.ComboBoxSection = compatPlaceholder as ReactSpectrumS2.ComboBoxSection;
 
-export type Content = AnyRecord;
-export const Content: AnyRecord = {};
+export type ComboBoxSectionProps = ReactSpectrumS2.ComboBoxSectionProps;
 
-export type ContentContext = AnyRecord;
-export const ContentContext: AnyRecord = {};
+export const Content: ReactSpectrumS2.Content = compatPlaceholder as ReactSpectrumS2.Content;
 
-export type ContextualHelp = AnyRecord;
-export const ContextualHelp: AnyRecord = {};
+export const ContentContext: ReactSpectrumS2.ContentContext = compatPlaceholder as ReactSpectrumS2.ContentContext;
 
-export type ContextualHelpContext = AnyRecord;
-export const ContextualHelpContext: AnyRecord = {};
+export const ContextualHelp: ReactSpectrumS2.ContextualHelp = compatPlaceholder as ReactSpectrumS2.ContextualHelp;
 
-export type CustomDialog = AnyRecord;
-export const CustomDialog: AnyRecord = {};
+export const ContextualHelpContext: ReactSpectrumS2.ContextualHelpContext = compatPlaceholder as ReactSpectrumS2.ContextualHelpContext;
 
-export type CustomDialogProps = AnyRecord;
-export const CustomDialogProps: AnyRecord = {};
+export const createIcon: (Component: ComponentType<SVGProps<SVGSVGElement>>, context?: Context<ContextValue<IconContextValue, SVGElement>>) => FunctionComponent<IconProps> = compatPlaceholder as (Component: ComponentType<SVGProps<SVGSVGElement>>, context?: Context<ContextValue<IconContextValue, SVGElement>>) => FunctionComponent<IconProps>;
 
-export type DateField = AnyRecord;
-export const DateField: AnyRecord = {};
+export const createIllustration: (Component: ComponentType<SVGProps<SVGSVGElement>>) => FunctionComponent<IllustrationProps> = compatPlaceholder as (Component: ComponentType<SVGProps<SVGSVGElement>>) => FunctionComponent<IllustrationProps>;
 
-export type DateFieldContext = AnyRecord;
-export const DateFieldContext: AnyRecord = {};
+export const CustomDialog: ReactSpectrumS2.CustomDialog = compatPlaceholder as ReactSpectrumS2.CustomDialog;
 
-export type DateFieldProps = AnyRecord;
-export const DateFieldProps: AnyRecord = {};
+export type CustomDialogProps = ReactSpectrumS2.CustomDialogProps;
 
-export type DatePicker = AnyRecord;
-export const DatePicker: AnyRecord = {};
+export const DateField: ReactSpectrumS2.DateField = compatPlaceholder as ReactSpectrumS2.DateField;
 
-export type DatePickerContext = AnyRecord;
-export const DatePickerContext: AnyRecord = {};
+export const DateFieldContext: ReactSpectrumS2.DateFieldContext = compatPlaceholder as ReactSpectrumS2.DateFieldContext;
 
-export type DatePickerProps = AnyRecord;
-export const DatePickerProps: AnyRecord = {};
+export type DateFieldProps = ReactSpectrumS2.DateFieldProps;
 
-export type DateRangePicker = AnyRecord;
-export const DateRangePicker: AnyRecord = {};
+export const DatePicker: ReactSpectrumS2.DatePicker = compatPlaceholder as ReactSpectrumS2.DatePicker;
 
-export type DateRangePickerContext = AnyRecord;
-export const DateRangePickerContext: AnyRecord = {};
+export const DatePickerContext: ReactSpectrumS2.DatePickerContext = compatPlaceholder as ReactSpectrumS2.DatePickerContext;
 
-export type DateRangePickerProps = AnyRecord;
-export const DateRangePickerProps: AnyRecord = {};
+export type DatePickerProps = ReactSpectrumS2.DatePickerProps;
 
-export type DialogContainer = AnyRecord;
-export const DialogContainer: AnyRecord = {};
+export const DateRangePicker: ReactSpectrumS2.DateRangePicker = compatPlaceholder as ReactSpectrumS2.DateRangePicker;
 
-export type DialogContainerProps = AnyRecord;
-export const DialogContainerProps: AnyRecord = {};
+export const DateRangePickerContext: ReactSpectrumS2.DateRangePickerContext = compatPlaceholder as ReactSpectrumS2.DateRangePickerContext;
 
-export type DialogContainerValue = AnyRecord;
-export const DialogContainerValue: AnyRecord = {};
+export type DateRangePickerProps = ReactSpectrumS2.DateRangePickerProps;
 
-export type DialogProps = AnyRecord;
-export const DialogProps: AnyRecord = {};
+export const DialogContainer: ReactSpectrumS2.DialogContainer = compatPlaceholder as ReactSpectrumS2.DialogContainer;
 
-export type DialogTrigger = AnyRecord;
-export const DialogTrigger: AnyRecord = {};
+export type DialogContainerProps = ReactSpectrumS2.DialogContainerProps;
 
-export type DialogTriggerProps = AnyRecord;
-export const DialogTriggerProps: AnyRecord = {};
+export type DialogContainerValue = ReactSpectrumS2.DialogContainerValue;
 
-export type Disclosure = AnyRecord;
-export const Disclosure: AnyRecord = {};
+export type DialogProps = ReactSpectrumS2.DialogProps;
 
-export type DisclosureContext = AnyRecord;
-export const DisclosureContext: AnyRecord = {};
+export const DialogTrigger: ReactSpectrumS2.DialogTrigger = compatPlaceholder as ReactSpectrumS2.DialogTrigger;
 
-export type DisclosureHeader = AnyRecord;
-export const DisclosureHeader: AnyRecord = {};
+export type DialogTriggerProps = ReactSpectrumS2.DialogTriggerProps;
 
-export type DisclosurePanel = AnyRecord;
-export const DisclosurePanel: AnyRecord = {};
+export const Disclosure: ReactSpectrumS2.Disclosure = compatPlaceholder as ReactSpectrumS2.Disclosure;
 
-export type DisclosurePanelProps = AnyRecord;
-export const DisclosurePanelProps: AnyRecord = {};
+export const DisclosureContext: ReactSpectrumS2.DisclosureContext = compatPlaceholder as ReactSpectrumS2.DisclosureContext;
 
-export type DisclosureProps = AnyRecord;
-export const DisclosureProps: AnyRecord = {};
+export const DisclosureHeader: ReactSpectrumS2.DisclosureHeader = compatPlaceholder as ReactSpectrumS2.DisclosureHeader;
 
-export type DisclosureTitle = AnyRecord;
-export const DisclosureTitle: AnyRecord = {};
+export const DisclosurePanel: ReactSpectrumS2.DisclosurePanel = compatPlaceholder as ReactSpectrumS2.DisclosurePanel;
 
-export type Divider = AnyRecord;
-export const Divider: AnyRecord = {};
+export type DisclosurePanelProps = ReactSpectrumS2.DisclosurePanelProps;
 
-export type DividerContext = AnyRecord;
-export const DividerContext: AnyRecord = {};
+export type DisclosureProps = ReactSpectrumS2.DisclosureProps;
 
-export type DividerProps = AnyRecord;
-export const DividerProps: AnyRecord = {};
+export const DisclosureTitle: ReactSpectrumS2.DisclosureTitle = compatPlaceholder as ReactSpectrumS2.DisclosureTitle;
 
-export type DropZone = AnyRecord;
-export const DropZone: AnyRecord = {};
+export const Divider: ReactSpectrumS2.Divider = compatPlaceholder as ReactSpectrumS2.Divider;
 
-export type DropZoneContext = AnyRecord;
-export const DropZoneContext: AnyRecord = {};
+export const DividerContext: ReactSpectrumS2.DividerContext = compatPlaceholder as ReactSpectrumS2.DividerContext;
 
-export type DropZoneProps = AnyRecord;
-export const DropZoneProps: AnyRecord = {};
+export type DividerProps = ReactSpectrumS2.DividerProps;
 
-export type EditableCell = AnyRecord;
-export const EditableCell: AnyRecord = {};
+export const DropZone: ReactSpectrumS2.DropZone = compatPlaceholder as ReactSpectrumS2.DropZone;
 
-export type FileTrigger = AnyRecord;
-export const FileTrigger: AnyRecord = {};
+export const DropZoneContext: ReactSpectrumS2.DropZoneContext = compatPlaceholder as ReactSpectrumS2.DropZoneContext;
 
-export type FileTriggerProps = AnyRecord;
-export const FileTriggerProps: AnyRecord = {};
+export type DropZoneProps = ReactSpectrumS2.DropZoneProps;
 
-export type Footer = AnyRecord;
-export const Footer: AnyRecord = {};
+export const EditableCell: ReactSpectrumS2.EditableCell = compatPlaceholder as ReactSpectrumS2.EditableCell;
 
-export type FooterContext = AnyRecord;
-export const FooterContext: AnyRecord = {};
+export const FileTrigger: ReactSpectrumS2.FileTrigger = compatPlaceholder as ReactSpectrumS2.FileTrigger;
 
-export type Form = AnyRecord;
-export const Form: AnyRecord = {};
+export type FileTriggerProps = ReactSpectrumS2.FileTriggerProps;
 
-export type FormProps = AnyRecord;
-export const FormProps: AnyRecord = {};
+export const Footer: ReactSpectrumS2.Footer = compatPlaceholder as ReactSpectrumS2.Footer;
 
-export type FullscreenDialog = AnyRecord;
-export const FullscreenDialog: AnyRecord = {};
+export const FooterContext: ReactSpectrumS2.FooterContext = compatPlaceholder as ReactSpectrumS2.FooterContext;
 
-export type FullscreenDialogProps = AnyRecord;
-export const FullscreenDialogProps: AnyRecord = {};
+export const Form: ReactSpectrumS2.Form = compatPlaceholder as ReactSpectrumS2.Form;
 
-export type Header = AnyRecord;
-export const Header: AnyRecord = {};
+export type FormProps = ReactSpectrumS2.FormProps;
 
-export type HeaderContext = AnyRecord;
-export const HeaderContext: AnyRecord = {};
+export const FullscreenDialog: ReactSpectrumS2.FullscreenDialog = compatPlaceholder as ReactSpectrumS2.FullscreenDialog;
 
-export type Heading = AnyRecord;
-export const Heading: AnyRecord = {};
+export type FullscreenDialogProps = ReactSpectrumS2.FullscreenDialogProps;
 
-export type HeadingContext = AnyRecord;
-export const HeadingContext: AnyRecord = {};
+export const Header: ReactSpectrumS2.Header = compatPlaceholder as ReactSpectrumS2.Header;
 
-export type IconContext = AnyRecord;
-export const IconContext: AnyRecord = {};
+export const HeaderContext: ReactSpectrumS2.HeaderContext = compatPlaceholder as ReactSpectrumS2.HeaderContext;
 
-export type IconContextValue = AnyRecord;
-export const IconContextValue: AnyRecord = {};
+export const Heading: ReactSpectrumS2.Heading = compatPlaceholder as ReactSpectrumS2.Heading;
 
-export type IconProps = AnyRecord;
-export const IconProps: AnyRecord = {};
+export const HeadingContext: ReactSpectrumS2.HeadingContext = compatPlaceholder as ReactSpectrumS2.HeadingContext;
 
-export type IllustratedMessage = AnyRecord;
-export const IllustratedMessage: AnyRecord = {};
+export const IconContext: ReactSpectrumS2.IconContext = compatPlaceholder as ReactSpectrumS2.IconContext;
 
-export type IllustratedMessageContext = AnyRecord;
-export const IllustratedMessageContext: AnyRecord = {};
+export type IconContextValue = ReactSpectrumS2.IconContextValue;
 
-export type IllustrationContext = AnyRecord;
-export const IllustrationContext: AnyRecord = {};
+export type IconProps = ReactSpectrumS2.IconProps;
 
-export type IllustrationContextValue = AnyRecord;
-export const IllustrationContextValue: AnyRecord = {};
+export const IllustratedMessage: ReactSpectrumS2.IllustratedMessage = compatPlaceholder as ReactSpectrumS2.IllustratedMessage;
 
-export type IllustrationProps = AnyRecord;
-export const IllustrationProps: AnyRecord = {};
+export const IllustratedMessageContext: ReactSpectrumS2.IllustratedMessageContext = compatPlaceholder as ReactSpectrumS2.IllustratedMessageContext;
 
-export type Image = AnyRecord;
-export const Image: AnyRecord = {};
+export const IllustrationContext: ReactSpectrumS2.IllustrationContext = compatPlaceholder as ReactSpectrumS2.IllustrationContext;
 
-export type ImageContext = AnyRecord;
-export const ImageContext: AnyRecord = {};
+export type IllustrationContextValue = ReactSpectrumS2.IllustrationContextValue;
 
-export type ImageCoordinator = AnyRecord;
-export const ImageCoordinator: AnyRecord = {};
+export type IllustrationProps = ReactSpectrumS2.IllustrationProps;
 
-export type ImageCoordinatorProps = AnyRecord;
-export const ImageCoordinatorProps: AnyRecord = {};
+export const Image: ReactSpectrumS2.Image = compatPlaceholder as ReactSpectrumS2.Image;
 
-export type ImageProps = AnyRecord;
-export const ImageProps: AnyRecord = {};
+export const ImageContext: ReactSpectrumS2.ImageContext = compatPlaceholder as ReactSpectrumS2.ImageContext;
 
-export type InlineAlert = AnyRecord;
-export const InlineAlert: AnyRecord = {};
+export const ImageCoordinator: ReactSpectrumS2.ImageCoordinator = compatPlaceholder as ReactSpectrumS2.ImageCoordinator;
 
-export type InlineAlertContext = AnyRecord;
-export const InlineAlertContext: AnyRecord = {};
+export type ImageCoordinatorProps = ReactSpectrumS2.ImageCoordinatorProps;
 
-export type InlineAlertProps = AnyRecord;
-export const InlineAlertProps: AnyRecord = {};
+export type ImageProps = ReactSpectrumS2.ImageProps;
 
-export type Key = AnyRecord;
-export const Key: AnyRecord = {};
+export const InlineAlert: ReactSpectrumS2.InlineAlert = compatPlaceholder as ReactSpectrumS2.InlineAlert;
 
-export type Keyboard = AnyRecord;
-export const Keyboard: AnyRecord = {};
+export const InlineAlertContext: ReactSpectrumS2.InlineAlertContext = compatPlaceholder as ReactSpectrumS2.InlineAlertContext;
 
-export type KeyboardContext = AnyRecord;
-export const KeyboardContext: AnyRecord = {};
+export type InlineAlertProps = ReactSpectrumS2.InlineAlertProps;
 
-export type Link = AnyRecord;
-export const Link: AnyRecord = {};
+export type Key = ReactSpectrumS2.Key;
 
-export type LinkButton = AnyRecord;
-export const LinkButton: AnyRecord = {};
+export const Keyboard: ReactSpectrumS2.Keyboard = compatPlaceholder as ReactSpectrumS2.Keyboard;
 
-export type LinkButtonContext = AnyRecord;
-export const LinkButtonContext: AnyRecord = {};
+export const KeyboardContext: ReactSpectrumS2.KeyboardContext = compatPlaceholder as ReactSpectrumS2.KeyboardContext;
 
-export type LinkButtonProps = AnyRecord;
-export const LinkButtonProps: AnyRecord = {};
+export const Link: ReactSpectrumS2.Link = compatPlaceholder as ReactSpectrumS2.Link;
 
-export type LinkContext = AnyRecord;
-export const LinkContext: AnyRecord = {};
+export const LinkButton: ReactSpectrumS2.LinkButton = compatPlaceholder as ReactSpectrumS2.LinkButton;
 
-export type LinkProps = AnyRecord;
-export const LinkProps: AnyRecord = {};
+export const LinkButtonContext: ReactSpectrumS2.LinkButtonContext = compatPlaceholder as ReactSpectrumS2.LinkButtonContext;
 
-export type ListData = AnyRecord;
-export const ListData: AnyRecord = {};
+export type LinkButtonProps = ReactSpectrumS2.LinkButtonProps;
 
-export type Menu = AnyRecord;
-export const Menu: AnyRecord = {};
+export const LinkContext: ReactSpectrumS2.LinkContext = compatPlaceholder as ReactSpectrumS2.LinkContext;
 
-export type MenuContext = AnyRecord;
-export const MenuContext: AnyRecord = {};
+export type LinkProps = ReactSpectrumS2.LinkProps;
 
-export type MenuItem = AnyRecord;
-export const MenuItem: AnyRecord = {};
+export type ListData = ReactSpectrumS2.ListData;
 
-export type MenuItemProps = AnyRecord;
-export const MenuItemProps: AnyRecord = {};
+export const Menu: ReactSpectrumS2.Menu = compatPlaceholder as ReactSpectrumS2.Menu;
 
-export type MenuProps = AnyRecord;
-export const MenuProps: AnyRecord = {};
+export const MenuContext: ReactSpectrumS2.MenuContext = compatPlaceholder as ReactSpectrumS2.MenuContext;
 
-export type MenuSection = AnyRecord;
-export const MenuSection: AnyRecord = {};
+export const MenuItem: ReactSpectrumS2.MenuItem = compatPlaceholder as ReactSpectrumS2.MenuItem;
 
-export type MenuSectionProps = AnyRecord;
-export const MenuSectionProps: AnyRecord = {};
+export type MenuItemProps = ReactSpectrumS2.MenuItemProps;
 
-export type MenuTrigger = AnyRecord;
-export const MenuTrigger: AnyRecord = {};
+export type MenuProps = ReactSpectrumS2.MenuProps;
 
-export type MenuTriggerProps = AnyRecord;
-export const MenuTriggerProps: AnyRecord = {};
+export const MenuSection: ReactSpectrumS2.MenuSection = compatPlaceholder as ReactSpectrumS2.MenuSection;
 
-export type Meter = AnyRecord;
-export const Meter: AnyRecord = {};
+export type MenuSectionProps = ReactSpectrumS2.MenuSectionProps;
 
-export type MeterContext = AnyRecord;
-export const MeterContext: AnyRecord = {};
+export const MenuTrigger: ReactSpectrumS2.MenuTrigger = compatPlaceholder as ReactSpectrumS2.MenuTrigger;
 
-export type MeterProps = AnyRecord;
-export const MeterProps: AnyRecord = {};
+export type MenuTriggerProps = ReactSpectrumS2.MenuTriggerProps;
 
-export type NotificationBadge = AnyRecord;
-export const NotificationBadge: AnyRecord = {};
+export const Meter: ReactSpectrumS2.Meter = compatPlaceholder as ReactSpectrumS2.Meter;
 
-export type NotificationBadgeContext = AnyRecord;
-export const NotificationBadgeContext: AnyRecord = {};
+export const MeterContext: ReactSpectrumS2.MeterContext = compatPlaceholder as ReactSpectrumS2.MeterContext;
 
-export type NotificationBadgeProps = AnyRecord;
-export const NotificationBadgeProps: AnyRecord = {};
+export type MeterProps = ReactSpectrumS2.MeterProps;
 
-export type NumberField = AnyRecord;
-export const NumberField: AnyRecord = {};
+export const NotificationBadge: ReactSpectrumS2.NotificationBadge = compatPlaceholder as ReactSpectrumS2.NotificationBadge;
 
-export type NumberFieldContext = AnyRecord;
-export const NumberFieldContext: AnyRecord = {};
+export const NotificationBadgeContext: ReactSpectrumS2.NotificationBadgeContext = compatPlaceholder as ReactSpectrumS2.NotificationBadgeContext;
 
-export type Picker = AnyRecord;
-export const Picker: AnyRecord = {};
+export type NotificationBadgeProps = ReactSpectrumS2.NotificationBadgeProps;
 
-export type PickerContext = AnyRecord;
-export const PickerContext: AnyRecord = {};
+export const NumberField: ReactSpectrumS2.NumberField = compatPlaceholder as ReactSpectrumS2.NumberField;
 
-export type PickerItem = AnyRecord;
-export const PickerItem: AnyRecord = {};
+export const NumberFieldContext: ReactSpectrumS2.NumberFieldContext = compatPlaceholder as ReactSpectrumS2.NumberFieldContext;
 
-export type PickerItemProps = AnyRecord;
-export const PickerItemProps: AnyRecord = {};
+export function parseColor(value: string): IColor {
+  return compatPlaceholder(value);
+}
 
-export type PickerProps = AnyRecord;
-export const PickerProps: AnyRecord = {};
+export const Picker: ReactSpectrumS2.Picker = compatPlaceholder as ReactSpectrumS2.Picker;
 
-export type PickerSection = AnyRecord;
-export const PickerSection: AnyRecord = {};
+export const PickerContext: ReactSpectrumS2.PickerContext = compatPlaceholder as ReactSpectrumS2.PickerContext;
 
-export type PickerSectionProps = AnyRecord;
-export const PickerSectionProps: AnyRecord = {};
+export const PickerItem: ReactSpectrumS2.PickerItem = compatPlaceholder as ReactSpectrumS2.PickerItem;
 
-export type PopoverProps = AnyRecord;
-export const PopoverProps: AnyRecord = {};
+export type PickerItemProps = ReactSpectrumS2.PickerItemProps;
 
-export type ProductCard = AnyRecord;
-export const ProductCard: AnyRecord = {};
+export type PickerProps = ReactSpectrumS2.PickerProps;
 
-export type ProductCardProps = AnyRecord;
-export const ProductCardProps: AnyRecord = {};
+export const PickerSection: ReactSpectrumS2.PickerSection = compatPlaceholder as ReactSpectrumS2.PickerSection;
 
-export type ProgressBar = AnyRecord;
-export const ProgressBar: AnyRecord = {};
+export type PickerSectionProps = ReactSpectrumS2.PickerSectionProps;
 
-export type ProgressBarContext = AnyRecord;
-export const ProgressBarContext: AnyRecord = {};
+export type PopoverProps = ReactSpectrumS2.PopoverProps;
 
-export type ProgressBarProps = AnyRecord;
-export const ProgressBarProps: AnyRecord = {};
+export function pressScale<R extends {isPressed: boolean}>(ref: RefObject<HTMLElement | null>, style?: CSSProperties | ((renderProps: R) => CSSProperties)): (renderProps: R) => CSSProperties {
+  return compatPlaceholder(ref, style);
+}
 
-export type ProgressCircle = AnyRecord;
-export const ProgressCircle: AnyRecord = {};
+export const ProductCard: ReactSpectrumS2.ProductCard = compatPlaceholder as ReactSpectrumS2.ProductCard;
 
-export type ProgressCircleContext = AnyRecord;
-export const ProgressCircleContext: AnyRecord = {};
+export type ProductCardProps = ReactSpectrumS2.ProductCardProps;
 
-export type ProgressCircleProps = AnyRecord;
-export const ProgressCircleProps: AnyRecord = {};
+export const ProgressBar: ReactSpectrumS2.ProgressBar = compatPlaceholder as ReactSpectrumS2.ProgressBar;
 
-export type ProviderProps = AnyRecord;
-export const ProviderProps: AnyRecord = {};
+export const ProgressBarContext: ReactSpectrumS2.ProgressBarContext = compatPlaceholder as ReactSpectrumS2.ProgressBarContext;
 
-export type RadioGroupContext = AnyRecord;
-export const RadioGroupContext: AnyRecord = {};
+export type ProgressBarProps = ReactSpectrumS2.ProgressBarProps;
 
-export type RadioGroupProps = AnyRecord;
-export const RadioGroupProps: AnyRecord = {};
+export const ProgressCircle: ReactSpectrumS2.ProgressCircle = compatPlaceholder as ReactSpectrumS2.ProgressCircle;
 
-export type RadioProps = AnyRecord;
-export const RadioProps: AnyRecord = {};
+export const ProgressCircleContext: ReactSpectrumS2.ProgressCircleContext = compatPlaceholder as ReactSpectrumS2.ProgressCircleContext;
 
-export type RangeCalendar = AnyRecord;
-export const RangeCalendar: AnyRecord = {};
+export type ProgressCircleProps = ReactSpectrumS2.ProgressCircleProps;
 
-export type RangeCalendarContext = AnyRecord;
-export const RangeCalendarContext: AnyRecord = {};
+export type ProviderProps = ReactSpectrumS2.ProviderProps;
 
-export type RangeCalendarProps = AnyRecord;
-export const RangeCalendarProps: AnyRecord = {};
+export const RadioGroupContext: ReactSpectrumS2.RadioGroupContext = compatPlaceholder as ReactSpectrumS2.RadioGroupContext;
 
-export type RangeSlider = AnyRecord;
-export const RangeSlider: AnyRecord = {};
+export type RadioGroupProps = ReactSpectrumS2.RadioGroupProps;
 
-export type RangeSliderContext = AnyRecord;
-export const RangeSliderContext: AnyRecord = {};
+export type RadioProps = ReactSpectrumS2.RadioProps;
 
-export type RangeSliderProps = AnyRecord;
-export const RangeSliderProps: AnyRecord = {};
+export const RangeCalendar: ReactSpectrumS2.RangeCalendar = compatPlaceholder as ReactSpectrumS2.RangeCalendar;
 
-export type RouterConfig = AnyRecord;
-export const RouterConfig: AnyRecord = {};
+export const RangeCalendarContext: ReactSpectrumS2.RangeCalendarContext = compatPlaceholder as ReactSpectrumS2.RangeCalendarContext;
 
-export type Row = AnyRecord;
-export const Row: AnyRecord = {};
+export type RangeCalendarProps = ReactSpectrumS2.RangeCalendarProps;
 
-export type RowProps = AnyRecord;
-export const RowProps: AnyRecord = {};
+export const RangeSlider: ReactSpectrumS2.RangeSlider = compatPlaceholder as ReactSpectrumS2.RangeSlider;
 
-export type SearchField = AnyRecord;
-export const SearchField: AnyRecord = {};
+export const RangeSliderContext: ReactSpectrumS2.RangeSliderContext = compatPlaceholder as ReactSpectrumS2.RangeSliderContext;
 
-export type SearchFieldContext = AnyRecord;
-export const SearchFieldContext: AnyRecord = {};
+export type RangeSliderProps = ReactSpectrumS2.RangeSliderProps;
 
-export type SearchFieldProps = AnyRecord;
-export const SearchFieldProps: AnyRecord = {};
+export type RouterConfig = ReactSpectrumS2.RouterConfig;
 
-export type SegmentedControl = AnyRecord;
-export const SegmentedControl: AnyRecord = {};
+export const Row: ReactSpectrumS2.Row = compatPlaceholder as ReactSpectrumS2.Row;
 
-export type SegmentedControlContext = AnyRecord;
-export const SegmentedControlContext: AnyRecord = {};
+export type RowProps = ReactSpectrumS2.RowProps;
 
-export type SegmentedControlItem = AnyRecord;
-export const SegmentedControlItem: AnyRecord = {};
+export const SearchField: ReactSpectrumS2.SearchField = compatPlaceholder as ReactSpectrumS2.SearchField;
 
-export type SegmentedControlItemProps = AnyRecord;
-export const SegmentedControlItemProps: AnyRecord = {};
+export const SearchFieldContext: ReactSpectrumS2.SearchFieldContext = compatPlaceholder as ReactSpectrumS2.SearchFieldContext;
 
-export type SegmentedControlProps = AnyRecord;
-export const SegmentedControlProps: AnyRecord = {};
+export type SearchFieldProps = ReactSpectrumS2.SearchFieldProps;
 
-export type SelectBox = AnyRecord;
-export const SelectBox: AnyRecord = {};
+export const SegmentedControl: ReactSpectrumS2.SegmentedControl = compatPlaceholder as ReactSpectrumS2.SegmentedControl;
 
-export type SelectBoxGroup = AnyRecord;
-export const SelectBoxGroup: AnyRecord = {};
+export const SegmentedControlContext: ReactSpectrumS2.SegmentedControlContext = compatPlaceholder as ReactSpectrumS2.SegmentedControlContext;
 
-export type SelectBoxGroupContext = AnyRecord;
-export const SelectBoxGroupContext: AnyRecord = {};
+export const SegmentedControlItem: ReactSpectrumS2.SegmentedControlItem = compatPlaceholder as ReactSpectrumS2.SegmentedControlItem;
 
-export type SelectBoxGroupProps = AnyRecord;
-export const SelectBoxGroupProps: AnyRecord = {};
+export type SegmentedControlItemProps = ReactSpectrumS2.SegmentedControlItemProps;
 
-export type SelectBoxProps = AnyRecord;
-export const SelectBoxProps: AnyRecord = {};
+export type SegmentedControlProps = ReactSpectrumS2.SegmentedControlProps;
 
-export type Selection = AnyRecord;
-export const Selection: AnyRecord = {};
+export const SelectBox: ReactSpectrumS2.SelectBox = compatPlaceholder as ReactSpectrumS2.SelectBox;
 
-export type Skeleton = AnyRecord;
-export const Skeleton: AnyRecord = {};
+export const SelectBoxGroup: ReactSpectrumS2.SelectBoxGroup = compatPlaceholder as ReactSpectrumS2.SelectBoxGroup;
 
-export type SkeletonCollection = AnyRecord;
-export const SkeletonCollection: AnyRecord = {};
+export const SelectBoxGroupContext: ReactSpectrumS2.SelectBoxGroupContext = compatPlaceholder as ReactSpectrumS2.SelectBoxGroupContext;
 
-export type SkeletonCollectionProps = AnyRecord;
-export const SkeletonCollectionProps: AnyRecord = {};
+export type SelectBoxGroupProps = ReactSpectrumS2.SelectBoxGroupProps;
 
-export type SkeletonProps = AnyRecord;
-export const SkeletonProps: AnyRecord = {};
+export type SelectBoxProps = ReactSpectrumS2.SelectBoxProps;
 
-export type Slider = AnyRecord;
-export const Slider: AnyRecord = {};
+export type Selection = ReactSpectrumS2.Selection;
 
-export type SliderContext = AnyRecord;
-export const SliderContext: AnyRecord = {};
+export const Skeleton: ReactSpectrumS2.Skeleton = compatPlaceholder as ReactSpectrumS2.Skeleton;
 
-export type SliderProps = AnyRecord;
-export const SliderProps: AnyRecord = {};
+export const SkeletonCollection: ReactSpectrumS2.SkeletonCollection = compatPlaceholder as ReactSpectrumS2.SkeletonCollection;
 
-export type SortDescriptor = AnyRecord;
-export const SortDescriptor: AnyRecord = {};
+export type SkeletonCollectionProps = ReactSpectrumS2.SkeletonCollectionProps;
 
-export type StatusLight = AnyRecord;
-export const StatusLight: AnyRecord = {};
+export type SkeletonProps = ReactSpectrumS2.SkeletonProps;
 
-export type StatusLightContext = AnyRecord;
-export const StatusLightContext: AnyRecord = {};
+export const Slider: ReactSpectrumS2.Slider = compatPlaceholder as ReactSpectrumS2.Slider;
 
-export type StatusLightProps = AnyRecord;
-export const StatusLightProps: AnyRecord = {};
+export const SliderContext: ReactSpectrumS2.SliderContext = compatPlaceholder as ReactSpectrumS2.SliderContext;
 
-export type SubmenuTrigger = AnyRecord;
-export const SubmenuTrigger: AnyRecord = {};
+export type SliderProps = ReactSpectrumS2.SliderProps;
 
-export type SubmenuTriggerProps = AnyRecord;
-export const SubmenuTriggerProps: AnyRecord = {};
+export type SortDescriptor = ReactSpectrumS2.SortDescriptor;
 
-export type SwitchContext = AnyRecord;
-export const SwitchContext: AnyRecord = {};
+export const StatusLight: ReactSpectrumS2.StatusLight = compatPlaceholder as ReactSpectrumS2.StatusLight;
 
-export type SwitchProps = AnyRecord;
-export const SwitchProps: AnyRecord = {};
+export const StatusLightContext: ReactSpectrumS2.StatusLightContext = compatPlaceholder as ReactSpectrumS2.StatusLightContext;
 
-export type Tab = AnyRecord;
-export const Tab: AnyRecord = {};
+export type StatusLightProps = ReactSpectrumS2.StatusLightProps;
 
-export type TabList = AnyRecord;
-export const TabList: AnyRecord = {};
+export const SubmenuTrigger: ReactSpectrumS2.SubmenuTrigger = compatPlaceholder as ReactSpectrumS2.SubmenuTrigger;
 
-export type TabListProps = AnyRecord;
-export const TabListProps: AnyRecord = {};
+export type SubmenuTriggerProps = ReactSpectrumS2.SubmenuTriggerProps;
 
-export type TabPanel = AnyRecord;
-export const TabPanel: AnyRecord = {};
+export const SwitchContext: ReactSpectrumS2.SwitchContext = compatPlaceholder as ReactSpectrumS2.SwitchContext;
 
-export type TabPanelProps = AnyRecord;
-export const TabPanelProps: AnyRecord = {};
+export type SwitchProps = ReactSpectrumS2.SwitchProps;
 
-export type TabProps = AnyRecord;
-export const TabProps: AnyRecord = {};
+export const Tab: ReactSpectrumS2.Tab = compatPlaceholder as ReactSpectrumS2.Tab;
 
-export type TableBody = AnyRecord;
-export const TableBody: AnyRecord = {};
+export const TableBody: ReactSpectrumS2.TableBody = compatPlaceholder as ReactSpectrumS2.TableBody;
 
-export type TableBodyProps = AnyRecord;
-export const TableBodyProps: AnyRecord = {};
+export type TableBodyProps = ReactSpectrumS2.TableBodyProps;
 
-export type TableContext = AnyRecord;
-export const TableContext: AnyRecord = {};
+export const TableContext: ReactSpectrumS2.TableContext = compatPlaceholder as ReactSpectrumS2.TableContext;
 
-export type TableHeader = AnyRecord;
-export const TableHeader: AnyRecord = {};
+export const TableHeader: ReactSpectrumS2.TableHeader = compatPlaceholder as ReactSpectrumS2.TableHeader;
 
-export type TableHeaderProps = AnyRecord;
-export const TableHeaderProps: AnyRecord = {};
+export type TableHeaderProps = ReactSpectrumS2.TableHeaderProps;
 
-export type TableViewProps = AnyRecord;
-export const TableViewProps: AnyRecord = {};
+export type TableViewProps = ReactSpectrumS2.TableViewProps;
 
-export type Tabs = AnyRecord;
-export const Tabs: AnyRecord = {};
+export const TabList: ReactSpectrumS2.TabList = compatPlaceholder as ReactSpectrumS2.TabList;
 
-export type TabsContext = AnyRecord;
-export const TabsContext: AnyRecord = {};
+export type TabListProps = ReactSpectrumS2.TabListProps;
 
-export type TabsProps = AnyRecord;
-export const TabsProps: AnyRecord = {};
+export const TabPanel: ReactSpectrumS2.TabPanel = compatPlaceholder as ReactSpectrumS2.TabPanel;
 
-export type Tag = AnyRecord;
-export const Tag: AnyRecord = {};
+export type TabPanelProps = ReactSpectrumS2.TabPanelProps;
 
-export type TagGroup = AnyRecord;
-export const TagGroup: AnyRecord = {};
+export type TabProps = ReactSpectrumS2.TabProps;
 
-export type TagGroupContext = AnyRecord;
-export const TagGroupContext: AnyRecord = {};
+export const Tabs: ReactSpectrumS2.Tabs = compatPlaceholder as ReactSpectrumS2.Tabs;
 
-export type TagGroupProps = AnyRecord;
-export const TagGroupProps: AnyRecord = {};
+export const TabsContext: ReactSpectrumS2.TabsContext = compatPlaceholder as ReactSpectrumS2.TabsContext;
 
-export type TagProps = AnyRecord;
-export const TagProps: AnyRecord = {};
+export type TabsProps = ReactSpectrumS2.TabsProps;
 
-export type Text = AnyRecord;
-export const Text: AnyRecord = {};
+export const Tag: ReactSpectrumS2.Tag = compatPlaceholder as ReactSpectrumS2.Tag;
 
-export type TextArea = AnyRecord;
-export const TextArea: AnyRecord = {};
+export const TagGroup: ReactSpectrumS2.TagGroup = compatPlaceholder as ReactSpectrumS2.TagGroup;
 
-export type TextAreaContext = AnyRecord;
-export const TextAreaContext: AnyRecord = {};
+export const TagGroupContext: ReactSpectrumS2.TagGroupContext = compatPlaceholder as ReactSpectrumS2.TagGroupContext;
 
-export type TextAreaProps = AnyRecord;
-export const TextAreaProps: AnyRecord = {};
+export type TagGroupProps = ReactSpectrumS2.TagGroupProps;
 
-export type TextContext = AnyRecord;
-export const TextContext: AnyRecord = {};
+export type TagProps = ReactSpectrumS2.TagProps;
 
-export type TextFieldContext = AnyRecord;
-export const TextFieldContext: AnyRecord = {};
+export const Text: ReactSpectrumS2.Text = compatPlaceholder as ReactSpectrumS2.Text;
 
-export type TextFieldProps = AnyRecord;
-export const TextFieldProps: AnyRecord = {};
+export const TextArea: ReactSpectrumS2.TextArea = compatPlaceholder as ReactSpectrumS2.TextArea;
 
-export type TimeField = AnyRecord;
-export const TimeField: AnyRecord = {};
+export const TextAreaContext: ReactSpectrumS2.TextAreaContext = compatPlaceholder as ReactSpectrumS2.TextAreaContext;
 
-export type TimeFieldContext = AnyRecord;
-export const TimeFieldContext: AnyRecord = {};
+export type TextAreaProps = ReactSpectrumS2.TextAreaProps;
 
-export type TimeFieldProps = AnyRecord;
-export const TimeFieldProps: AnyRecord = {};
+export const TextContext: ReactSpectrumS2.TextContext = compatPlaceholder as ReactSpectrumS2.TextContext;
 
-export type ToastContainer = AnyRecord;
-export const ToastContainer: AnyRecord = {};
+export const TextFieldContext: ReactSpectrumS2.TextFieldContext = compatPlaceholder as ReactSpectrumS2.TextFieldContext;
 
-export type ToastContainerProps = AnyRecord;
-export const ToastContainerProps: AnyRecord = {};
+export type TextFieldProps = ReactSpectrumS2.TextFieldProps;
 
-export type ToastOptions = AnyRecord;
-export const ToastOptions: AnyRecord = {};
+export const TimeField: ReactSpectrumS2.TimeField = compatPlaceholder as ReactSpectrumS2.TimeField;
 
-export type ToastQueue = AnyRecord;
-export const ToastQueue: AnyRecord = {};
+export const TimeFieldContext: ReactSpectrumS2.TimeFieldContext = compatPlaceholder as ReactSpectrumS2.TimeFieldContext;
 
-export type ToggleButton = AnyRecord;
-export const ToggleButton: AnyRecord = {};
+export type TimeFieldProps = ReactSpectrumS2.TimeFieldProps;
 
-export type ToggleButtonContext = AnyRecord;
-export const ToggleButtonContext: AnyRecord = {};
+export const ToastContainer: ReactSpectrumS2.ToastContainer = compatPlaceholder as ReactSpectrumS2.ToastContainer;
 
-export type ToggleButtonGroup = AnyRecord;
-export const ToggleButtonGroup: AnyRecord = {};
+export type ToastContainerProps = ReactSpectrumS2.ToastContainerProps;
 
-export type ToggleButtonGroupContext = AnyRecord;
-export const ToggleButtonGroupContext: AnyRecord = {};
+export type ToastOptions = ReactSpectrumS2.ToastOptions;
 
-export type ToggleButtonGroupProps = AnyRecord;
-export const ToggleButtonGroupProps: AnyRecord = {};
+export const ToastQueue: ReactSpectrumS2.ToastQueue = compatPlaceholder as ReactSpectrumS2.ToastQueue;
 
-export type ToggleButtonProps = AnyRecord;
-export const ToggleButtonProps: AnyRecord = {};
+export const ToggleButton: ReactSpectrumS2.ToggleButton = compatPlaceholder as ReactSpectrumS2.ToggleButton;
 
-export type Tooltip = AnyRecord;
-export const Tooltip: AnyRecord = {};
+export const ToggleButtonContext: ReactSpectrumS2.ToggleButtonContext = compatPlaceholder as ReactSpectrumS2.ToggleButtonContext;
 
-export type TooltipProps = AnyRecord;
-export const TooltipProps: AnyRecord = {};
+export const ToggleButtonGroup: ReactSpectrumS2.ToggleButtonGroup = compatPlaceholder as ReactSpectrumS2.ToggleButtonGroup;
 
-export type TooltipTrigger = AnyRecord;
-export const TooltipTrigger: AnyRecord = {};
+export const ToggleButtonGroupContext: ReactSpectrumS2.ToggleButtonGroupContext = compatPlaceholder as ReactSpectrumS2.ToggleButtonGroupContext;
 
-export type TooltipTriggerProps = AnyRecord;
-export const TooltipTriggerProps: AnyRecord = {};
+export type ToggleButtonGroupProps = ReactSpectrumS2.ToggleButtonGroupProps;
 
-export type TreeData = AnyRecord;
-export const TreeData: AnyRecord = {};
+export type ToggleButtonProps = ReactSpectrumS2.ToggleButtonProps;
 
-export type TreeViewItem = AnyRecord;
-export const TreeViewItem: AnyRecord = {};
+export const Tooltip: ReactSpectrumS2.Tooltip = compatPlaceholder as ReactSpectrumS2.Tooltip;
 
-export type TreeViewItemContent = AnyRecord;
-export const TreeViewItemContent: AnyRecord = {};
+export type TooltipProps = ReactSpectrumS2.TooltipProps;
 
-export type TreeViewItemContentProps = AnyRecord;
-export const TreeViewItemContentProps: AnyRecord = {};
+export const TooltipTrigger: ReactSpectrumS2.TooltipTrigger = compatPlaceholder as ReactSpectrumS2.TooltipTrigger;
 
-export type TreeViewItemProps = AnyRecord;
-export const TreeViewItemProps: AnyRecord = {};
+export type TooltipTriggerProps = ReactSpectrumS2.TooltipTriggerProps;
 
-export type TreeViewLoadMoreItem = AnyRecord;
-export const TreeViewLoadMoreItem: AnyRecord = {};
+export type TreeData = ReactSpectrumS2.TreeData;
 
-export type TreeViewLoadMoreItemProps = AnyRecord;
-export const TreeViewLoadMoreItemProps: AnyRecord = {};
+export const TreeViewItem: ReactSpectrumS2.TreeViewItem = compatPlaceholder as ReactSpectrumS2.TreeViewItem;
 
-export type TreeViewProps = AnyRecord;
-export const TreeViewProps: AnyRecord = {};
+export const TreeViewItemContent: ReactSpectrumS2.TreeViewItemContent = compatPlaceholder as ReactSpectrumS2.TreeViewItemContent;
 
-export type UserCard = AnyRecord;
-export const UserCard: AnyRecord = {};
+export type TreeViewItemContentProps = ReactSpectrumS2.TreeViewItemContentProps;
 
-export type UserCardProps = AnyRecord;
-export const UserCardProps: AnyRecord = {};
+export type TreeViewItemProps = ReactSpectrumS2.TreeViewItemProps;
 
-export type createIcon = AnyRecord;
-export const createIcon: AnyFunction = () => undefined;
+export const TreeViewLoadMoreItem: ReactSpectrumS2.TreeViewLoadMoreItem = compatPlaceholder as ReactSpectrumS2.TreeViewLoadMoreItem;
 
-export type createIllustration = AnyRecord;
-export const createIllustration: AnyFunction = () => undefined;
+export type TreeViewLoadMoreItemProps = ReactSpectrumS2.TreeViewLoadMoreItemProps;
 
-export type parseColor = AnyRecord;
-export const parseColor: AnyFunction = () => undefined;
+export type TreeViewProps = ReactSpectrumS2.TreeViewProps;
 
-export type pressScale = AnyRecord;
-export const pressScale: AnyFunction = () => undefined;
+export const useAsyncList: <T, C = string>(options: AsyncListOptions<T, C>) => AsyncListData<T> = compatPlaceholder as <T, C = string>(options: AsyncListOptions<T, C>) => AsyncListData<T>;
 
-export type useAsyncList = AnyRecord;
-export const useAsyncList: AnyFunction = () => undefined;
+export const useDialogContainer: () => DialogContainerValue = compatPlaceholder as () => DialogContainerValue;
 
-export type useDialogContainer = AnyRecord;
-export const useDialogContainer: AnyFunction = () => undefined;
+export const useIsSkeleton: () => boolean = compatPlaceholder as () => boolean;
 
-export type useIsSkeleton = AnyRecord;
-export const useIsSkeleton: AnyFunction = () => undefined;
+export const useListData: <T>(options: ListOptions<T>) => ListData<T> = compatPlaceholder as <T>(options: ListOptions<T>) => ListData<T>;
 
-export type useListData = AnyRecord;
-export const useListData: AnyFunction = () => undefined;
+export const useLocale: () => Locale = compatPlaceholder as () => Locale;
 
-export type useLocale = AnyRecord;
-export const useLocale: AnyFunction = () => undefined;
+export const UserCard: ReactSpectrumS2.UserCard = compatPlaceholder as ReactSpectrumS2.UserCard;
 
-export type useTreeData = AnyRecord;
-export const useTreeData: AnyFunction = () => undefined;
+export type UserCardProps = ReactSpectrumS2.UserCardProps;
 
+export const useTreeData: <T extends object>(options: TreeOptions<T>) => TreeData<T> = compatPlaceholder as <T extends object>(options: TreeOptions<T>) => TreeData<T>;

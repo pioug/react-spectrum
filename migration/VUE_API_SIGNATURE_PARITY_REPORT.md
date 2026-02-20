@@ -1,27 +1,24 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-20T00:46:44.616Z
+Generated: 2026-02-20T01:15:05.684Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 151
+* Fully matched packages: 154
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 2233
-* Mismatched signatures: 439
+* Matched signatures: 2672
+* Mismatched signatures: 0
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 83.57%
+* Signature coverage ratio: 100.00%
 
 ## Package gaps
 
 | Source | Target | Status | Compared exports | Mismatched | Missing in target | Coverage |
 | --- | --- | --- | ---: | ---: | ---: | ---: |
-| `react-aria-components` | `@vue-spectrum/components` | mismatch | 543 | 299 | 0 | 44.9% |
-| `@react-spectrum/s2` | `@vue-spectrum/s2` | mismatch | 325 | 134 | 0 | 58.8% |
-| `@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | mismatch | 6 | 6 | 0 | 0.0% |
 | `@react-aria/actiongroup` | `@vue-aria/actiongroup` | ok | 6 | 0 | 0 | 100.0% |
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` | ok | 1 | 0 | 0 | 100.0% |
 | `@react-aria/autocomplete` | `@vue-aria/autocomplete` | ok | 10 | 0 | 0 | 100.0% |
@@ -116,11 +113,13 @@ Generated: 2026-02-20T00:46:44.616Z
 | `@react-spectrum/progress` | `@vue-spectrum/progress` | ok | 5 | 0 | 0 | 100.0% |
 | `@react-spectrum/provider` | `@vue-spectrum/provider` | ok | 5 | 0 | 0 | 100.0% |
 | `@react-spectrum/radio` | `@vue-spectrum/radio` | ok | 4 | 0 | 0 | 100.0% |
+| `@react-spectrum/s2` | `@vue-spectrum/s2` | ok | 325 | 0 | 0 | 100.0% |
 | `@react-spectrum/searchfield` | `@vue-spectrum/searchfield` | ok | 2 | 0 | 0 | 100.0% |
 | `@react-spectrum/slider` | `@vue-spectrum/slider` | ok | 4 | 0 | 0 | 100.0% |
 | `@react-spectrum/statuslight` | `@vue-spectrum/statuslight` | ok | 2 | 0 | 0 | 100.0% |
 | `@react-spectrum/steplist` | `@vue-spectrum/steplist` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-spectrum/story-utils` | `@vue-spectrum/story-utils` | ok | 2 | 0 | 0 | 100.0% |
+| `@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | ok | 6 | 0 | 0 | 100.0% |
 | `@react-spectrum/switch` | `@vue-spectrum/switch` | ok | 2 | 0 | 0 | 100.0% |
 | `@react-spectrum/table` | `@vue-spectrum/table` | ok | 13 | 0 | 0 | 100.0% |
 | `@react-spectrum/tabs` | `@vue-spectrum/tabs` | ok | 7 | 0 | 0 | 100.0% |
@@ -171,35 +170,9 @@ Generated: 2026-02-20T00:46:44.616Z
 | `@react-stately/utils` | `@vue-stately/utils` | ok | 4 | 0 | 0 | 100.0% |
 | `@react-stately/virtualizer` | `@vue-stately/virtualizer` | ok | 10 | 0 | 0 | 100.0% |
 | `react-aria` | `vue-aria` | ok | 419 | 0 | 0 | 100.0% |
+| `react-aria-components` | `@vue-spectrum/components` | ok | 543 | 0 | 0 | 100.0% |
 | `react-stately` | `vue-stately` | ok | 165 | 0 | 0 | 100.0% |
 | `tailwindcss-react-aria-components` | `tailwindcss-vue-aria-components` | ok | 0 | 0 | 0 | 100.0% |
 
 ## Largest signature gaps
-
-### react-aria-components -> @vue-spectrum/components
-
-* Source entry: `packages/react-aria-components/src/index.ts`
-* Target entry: `packages/@vue-spectrum/components/src/index.ts`
-* Compared exports: 543
-* Mismatched signatures: 299
-* Missing in target: 0
-* Example mismatches: `composeRenderProps [type-availability, call-signatures]`, `useContextProps [type-availability, call-signatures]`, `useRenderProps [type-availability, call-signatures]`, `useSlottedContext [type-availability, call-signatures]`, `createLeafComponent [type-availability, call-signatures]`, `createBranchComponent [type-availability, call-signatures]`, `useTableOptions [type-availability, call-signatures]`, `useDrag [type-availability, call-signatures]`, `useDrop [type-availability, call-signatures]`, `useDragAndDrop [type-availability, call-signatures]`, `isDirectoryDropItem [type-availability, call-signatures]`, `isFileDropItem [type-availability, call-signatures]`, `isTextDropItem [type-availability, call-signatures]`, `isRTL [type-availability, call-signatures]`, `useLocale [type-availability, call-signatures]`, `useFilter [type-availability, call-signatures]`, `parseColor [type-availability, call-signatures]`, `getColorChannels [type-availability, call-signatures]`, `useListData [type-availability, call-signatures]`, `useTreeData [type-availability, call-signatures]`, `useAsyncList [type-availability, call-signatures]`, `AutocompleteProps [value-availability]`, `BreadcrumbsProps [value-availability]`, `BreadcrumbProps [value-availability]`, `BreadcrumbRenderProps [value-availability]` ...
-
-### @react-spectrum/s2 -> @vue-spectrum/s2
-
-* Source entry: `packages/@react-spectrum/s2/src/index.ts`
-* Target entry: `packages/@vue-spectrum/s2/src/index.ts`
-* Compared exports: 325
-* Mismatched signatures: 134
-* Missing in target: 0
-* Example mismatches: `useDialogContainer [type-availability, call-signatures]`, `createIcon [type-availability, call-signatures]`, `createIllustration [type-availability, call-signatures]`, `useIsSkeleton [type-availability, call-signatures]`, `pressScale [type-availability, call-signatures]`, `parseColor [type-availability, call-signatures]`, `useLocale [type-availability, call-signatures]`, `useListData [type-availability, call-signatures]`, `useTreeData [type-availability, call-signatures]`, `useAsyncList [type-availability, call-signatures]`, `AccordionProps [value-availability]`, `AccordionItemProps [value-availability]`, `AccordionItemHeaderProps [value-availability]`, `AccordionItemTitleProps [value-availability]`, `AccordionItemPanelProps [value-availability]`, `AccordionItemState [value-availability]`, `AccordionItemRenderProps [value-availability]`, `ActionBarProps [value-availability]`, `ActionButtonProps [value-availability]`, `ActionButtonGroupProps [value-availability]`, `ActionMenuProps [value-availability]`, `AlertDialogProps [value-availability]`, `AvatarProps [value-availability]`, `AvatarGroupProps [value-availability]`, `BreadcrumbsProps [value-availability]` ...
-
-### @react-spectrum/style-macro-s1 -> @vue-spectrum/style-macro-s1
-
-* Source entry: `packages/@react-spectrum/style-macro-s1/src/index.ts`
-* Target entry: `packages/@vue-spectrum/style-macro-s1/src/index.ts`
-* Compared exports: 6
-* Mismatched signatures: 6
-* Missing in target: 0
-* Example mismatches: `style [call-signatures]`, `baseColor [call-signatures]`, `lightDark [call-signatures]`, `focusRing [call-signatures]`, `raw [call-signatures]`, `keyframes [call-signatures]`
 

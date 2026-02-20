@@ -1,1512 +1,1120 @@
-type AnyRecord = Record<string, unknown>;
-type AnyFunction = (...args: unknown[]) => unknown;
+import type * as ReactAriaComponents from '../../../react-aria-components/src/index';
+import type {Color as IColor} from '@react-types/color';
+import type * as React from 'react';
+import type {Context, ForwardedRef, ReactElement, ReactNode} from 'react';
 
-export type AsyncListData = AnyRecord;
-export const AsyncListData: AnyRecord = {};
+type CollectionNodeClass<T> = ReactAriaComponents.CollectionNodeClass<T>;
+type Node<T> = ReactAriaComponents.Node<T>;
+type SlottedContextValue<T> = ReactAriaComponents.SlottedContextValue<T>;
 
-export type Autocomplete = AnyRecord;
-export const Autocomplete: AnyRecord = {};
+const compatPlaceholder: any = new Proxy(function compatPlaceholder() {}, {
+  apply: () => compatPlaceholder,
+  get: () => compatPlaceholder
+});
 
-export type AutocompleteContext = AnyRecord;
-export const AutocompleteContext: AnyRecord = {};
+export type AsyncListData = ReactAriaComponents.AsyncListData;
 
-export type AutocompleteProps = AnyRecord;
-export const AutocompleteProps: AnyRecord = {};
+export const Autocomplete: ReactAriaComponents.Autocomplete = compatPlaceholder as ReactAriaComponents.Autocomplete;
 
-export type AutocompleteState = AnyRecord;
-export const AutocompleteState: AnyRecord = {};
+export const AutocompleteContext: ReactAriaComponents.AutocompleteContext = compatPlaceholder as ReactAriaComponents.AutocompleteContext;
 
-export type AutocompleteStateContext = AnyRecord;
-export const AutocompleteStateContext: AnyRecord = {};
+export type AutocompleteProps = ReactAriaComponents.AutocompleteProps;
 
-export type Breadcrumb = AnyRecord;
-export const Breadcrumb: AnyRecord = {};
+export type AutocompleteState = ReactAriaComponents.AutocompleteState;
 
-export type BreadcrumbProps = AnyRecord;
-export const BreadcrumbProps: AnyRecord = {};
+export const AutocompleteStateContext: ReactAriaComponents.AutocompleteStateContext = compatPlaceholder as ReactAriaComponents.AutocompleteStateContext;
 
-export type BreadcrumbRenderProps = AnyRecord;
-export const BreadcrumbRenderProps: AnyRecord = {};
+export const Breadcrumb: ReactAriaComponents.Breadcrumb = compatPlaceholder as ReactAriaComponents.Breadcrumb;
 
-export type BreadcrumbsContext = AnyRecord;
-export const BreadcrumbsContext: AnyRecord = {};
+export type BreadcrumbProps = ReactAriaComponents.BreadcrumbProps;
 
-export type BreadcrumbsProps = AnyRecord;
-export const BreadcrumbsProps: AnyRecord = {};
+export type BreadcrumbRenderProps = ReactAriaComponents.BreadcrumbRenderProps;
 
-export type ButtonContext = AnyRecord;
-export const ButtonContext: AnyRecord = {};
+export const Breadcrumbs: ReactAriaComponents.Breadcrumbs = compatPlaceholder as ReactAriaComponents.Breadcrumbs;
 
-export type ButtonProps = AnyRecord;
-export const ButtonProps: AnyRecord = {};
+export const BreadcrumbsContext: ReactAriaComponents.BreadcrumbsContext = compatPlaceholder as ReactAriaComponents.BreadcrumbsContext;
 
-export type ButtonRenderProps = AnyRecord;
-export const ButtonRenderProps: AnyRecord = {};
+export type BreadcrumbsProps = ReactAriaComponents.BreadcrumbsProps;
 
-export type CalendarCell = AnyRecord;
-export const CalendarCell: AnyRecord = {};
+export const Button: ReactAriaComponents.Button = compatPlaceholder as ReactAriaComponents.Button;
 
-export type CalendarCellProps = AnyRecord;
-export const CalendarCellProps: AnyRecord = {};
+export const ButtonContext: ReactAriaComponents.ButtonContext = compatPlaceholder as ReactAriaComponents.ButtonContext;
 
-export type CalendarCellRenderProps = AnyRecord;
-export const CalendarCellRenderProps: AnyRecord = {};
+export type ButtonProps = ReactAriaComponents.ButtonProps;
 
-export type CalendarContext = AnyRecord;
-export const CalendarContext: AnyRecord = {};
+export type ButtonRenderProps = ReactAriaComponents.ButtonRenderProps;
 
-export type CalendarGrid = AnyRecord;
-export const CalendarGrid: AnyRecord = {};
+export const Calendar: ReactAriaComponents.Calendar = compatPlaceholder as ReactAriaComponents.Calendar;
 
-export type CalendarGridBody = AnyRecord;
-export const CalendarGridBody: AnyRecord = {};
+export const CalendarCell: ReactAriaComponents.CalendarCell = compatPlaceholder as ReactAriaComponents.CalendarCell;
 
-export type CalendarGridBodyProps = AnyRecord;
-export const CalendarGridBodyProps: AnyRecord = {};
+export type CalendarCellProps = ReactAriaComponents.CalendarCellProps;
 
-export type CalendarGridHeader = AnyRecord;
-export const CalendarGridHeader: AnyRecord = {};
+export type CalendarCellRenderProps = ReactAriaComponents.CalendarCellRenderProps;
 
-export type CalendarGridHeaderProps = AnyRecord;
-export const CalendarGridHeaderProps: AnyRecord = {};
+export const CalendarContext: ReactAriaComponents.CalendarContext = compatPlaceholder as ReactAriaComponents.CalendarContext;
 
-export type CalendarGridProps = AnyRecord;
-export const CalendarGridProps: AnyRecord = {};
+export const CalendarGrid: ReactAriaComponents.CalendarGrid = compatPlaceholder as ReactAriaComponents.CalendarGrid;
 
-export type CalendarHeaderCell = AnyRecord;
-export const CalendarHeaderCell: AnyRecord = {};
+export const CalendarGridBody: ReactAriaComponents.CalendarGridBody = compatPlaceholder as ReactAriaComponents.CalendarGridBody;
 
-export type CalendarHeaderCellProps = AnyRecord;
-export const CalendarHeaderCellProps: AnyRecord = {};
+export type CalendarGridBodyProps = ReactAriaComponents.CalendarGridBodyProps;
 
-export type CalendarProps = AnyRecord;
-export const CalendarProps: AnyRecord = {};
+export const CalendarGridHeader: ReactAriaComponents.CalendarGridHeader = compatPlaceholder as ReactAriaComponents.CalendarGridHeader;
 
-export type CalendarRenderProps = AnyRecord;
-export const CalendarRenderProps: AnyRecord = {};
+export type CalendarGridHeaderProps = ReactAriaComponents.CalendarGridHeaderProps;
 
-export type CalendarState = AnyRecord;
-export const CalendarState: AnyRecord = {};
+export type CalendarGridProps = ReactAriaComponents.CalendarGridProps;
 
-export type CalendarStateContext = AnyRecord;
-export const CalendarStateContext: AnyRecord = {};
+export const CalendarHeaderCell: ReactAriaComponents.CalendarHeaderCell = compatPlaceholder as ReactAriaComponents.CalendarHeaderCell;
 
-export type Cell = AnyRecord;
-export const Cell: AnyRecord = {};
+export type CalendarHeaderCellProps = ReactAriaComponents.CalendarHeaderCellProps;
 
-export type CellProps = AnyRecord;
-export const CellProps: AnyRecord = {};
+export type CalendarProps = ReactAriaComponents.CalendarProps;
 
-export type CellRenderProps = AnyRecord;
-export const CellRenderProps: AnyRecord = {};
+export type CalendarRenderProps = ReactAriaComponents.CalendarRenderProps;
 
-export type CheckboxContext = AnyRecord;
-export const CheckboxContext: AnyRecord = {};
+export type CalendarState = ReactAriaComponents.CalendarState;
 
-export type CheckboxGroup = AnyRecord;
-export const CheckboxGroup: AnyRecord = {};
+export const CalendarStateContext: ReactAriaComponents.CalendarStateContext = compatPlaceholder as ReactAriaComponents.CalendarStateContext;
 
-export type CheckboxGroupContext = AnyRecord;
-export const CheckboxGroupContext: AnyRecord = {};
+export const Cell: ReactAriaComponents.Cell = compatPlaceholder as ReactAriaComponents.Cell;
 
-export type CheckboxGroupProps = AnyRecord;
-export const CheckboxGroupProps: AnyRecord = {};
+export type CellProps = ReactAriaComponents.CellProps;
 
-export type CheckboxGroupRenderProps = AnyRecord;
-export const CheckboxGroupRenderProps: AnyRecord = {};
+export type CellRenderProps = ReactAriaComponents.CellRenderProps;
 
-export type CheckboxGroupState = AnyRecord;
-export const CheckboxGroupState: AnyRecord = {};
+export const Checkbox: ReactAriaComponents.Checkbox = compatPlaceholder as ReactAriaComponents.Checkbox;
 
-export type CheckboxGroupStateContext = AnyRecord;
-export const CheckboxGroupStateContext: AnyRecord = {};
+export const CheckboxContext: ReactAriaComponents.CheckboxContext = compatPlaceholder as ReactAriaComponents.CheckboxContext;
 
-export type CheckboxProps = AnyRecord;
-export const CheckboxProps: AnyRecord = {};
+export const CheckboxGroup: ReactAriaComponents.CheckboxGroup = compatPlaceholder as ReactAriaComponents.CheckboxGroup;
 
-export type CheckboxRenderProps = AnyRecord;
-export const CheckboxRenderProps: AnyRecord = {};
+export const CheckboxGroupContext: ReactAriaComponents.CheckboxGroupContext = compatPlaceholder as ReactAriaComponents.CheckboxGroupContext;
 
-export type Collection = AnyRecord;
-export const Collection: AnyRecord = {};
+export type CheckboxGroupProps = ReactAriaComponents.CheckboxGroupProps;
 
-export type CollectionBuilder = AnyRecord;
-export const CollectionBuilder: AnyRecord = {};
+export type CheckboxGroupRenderProps = ReactAriaComponents.CheckboxGroupRenderProps;
 
-export type CollectionRenderer = AnyRecord;
-export const CollectionRenderer: AnyRecord = {};
+export type CheckboxGroupState = ReactAriaComponents.CheckboxGroupState;
 
-export type CollectionRendererContext = AnyRecord;
-export const CollectionRendererContext: AnyRecord = {};
+export const CheckboxGroupStateContext: ReactAriaComponents.CheckboxGroupStateContext = compatPlaceholder as ReactAriaComponents.CheckboxGroupStateContext;
 
-export type Color = AnyRecord;
-export const Color: AnyRecord = {};
+export type CheckboxProps = ReactAriaComponents.CheckboxProps;
 
-export type ColorAreaContext = AnyRecord;
-export const ColorAreaContext: AnyRecord = {};
+export type CheckboxRenderProps = ReactAriaComponents.CheckboxRenderProps;
 
-export type ColorAreaProps = AnyRecord;
-export const ColorAreaProps: AnyRecord = {};
+export const Collection: ReactAriaComponents.Collection = compatPlaceholder as ReactAriaComponents.Collection;
 
-export type ColorAreaRenderProps = AnyRecord;
-export const ColorAreaRenderProps: AnyRecord = {};
+export const CollectionBuilder: ReactAriaComponents.CollectionBuilder = compatPlaceholder as ReactAriaComponents.CollectionBuilder;
 
-export type ColorAreaState = AnyRecord;
-export const ColorAreaState: AnyRecord = {};
+export type CollectionRenderer = ReactAriaComponents.CollectionRenderer;
 
-export type ColorAreaStateContext = AnyRecord;
-export const ColorAreaStateContext: AnyRecord = {};
+export const CollectionRendererContext: ReactAriaComponents.CollectionRendererContext = compatPlaceholder as ReactAriaComponents.CollectionRendererContext;
 
-export type ColorFieldContext = AnyRecord;
-export const ColorFieldContext: AnyRecord = {};
+export type Color = ReactAriaComponents.Color;
 
-export type ColorFieldProps = AnyRecord;
-export const ColorFieldProps: AnyRecord = {};
+export const ColorArea: ReactAriaComponents.ColorArea = compatPlaceholder as ReactAriaComponents.ColorArea;
 
-export type ColorFieldRenderProps = AnyRecord;
-export const ColorFieldRenderProps: AnyRecord = {};
+export const ColorAreaContext: ReactAriaComponents.ColorAreaContext = compatPlaceholder as ReactAriaComponents.ColorAreaContext;
 
-export type ColorFieldState = AnyRecord;
-export const ColorFieldState: AnyRecord = {};
+export type ColorAreaProps = ReactAriaComponents.ColorAreaProps;
 
-export type ColorFieldStateContext = AnyRecord;
-export const ColorFieldStateContext: AnyRecord = {};
+export type ColorAreaRenderProps = ReactAriaComponents.ColorAreaRenderProps;
 
-export type ColorFormat = AnyRecord;
-export const ColorFormat: AnyRecord = {};
+export type ColorAreaState = ReactAriaComponents.ColorAreaState;
 
-export type ColorPickerContext = AnyRecord;
-export const ColorPickerContext: AnyRecord = {};
+export const ColorAreaStateContext: ReactAriaComponents.ColorAreaStateContext = compatPlaceholder as ReactAriaComponents.ColorAreaStateContext;
 
-export type ColorPickerProps = AnyRecord;
-export const ColorPickerProps: AnyRecord = {};
+export const ColorField: ReactAriaComponents.ColorField = compatPlaceholder as ReactAriaComponents.ColorField;
 
-export type ColorPickerRenderProps = AnyRecord;
-export const ColorPickerRenderProps: AnyRecord = {};
+export const ColorFieldContext: ReactAriaComponents.ColorFieldContext = compatPlaceholder as ReactAriaComponents.ColorFieldContext;
 
-export type ColorPickerState = AnyRecord;
-export const ColorPickerState: AnyRecord = {};
+export type ColorFieldProps = ReactAriaComponents.ColorFieldProps;
 
-export type ColorPickerStateContext = AnyRecord;
-export const ColorPickerStateContext: AnyRecord = {};
+export type ColorFieldRenderProps = ReactAriaComponents.ColorFieldRenderProps;
 
-export type ColorSliderContext = AnyRecord;
-export const ColorSliderContext: AnyRecord = {};
+export type ColorFieldState = ReactAriaComponents.ColorFieldState;
 
-export type ColorSliderProps = AnyRecord;
-export const ColorSliderProps: AnyRecord = {};
+export const ColorFieldStateContext: ReactAriaComponents.ColorFieldStateContext = compatPlaceholder as ReactAriaComponents.ColorFieldStateContext;
 
-export type ColorSliderRenderProps = AnyRecord;
-export const ColorSliderRenderProps: AnyRecord = {};
+export type ColorFormat = ReactAriaComponents.ColorFormat;
 
-export type ColorSliderState = AnyRecord;
-export const ColorSliderState: AnyRecord = {};
+export const ColorPicker: ReactAriaComponents.ColorPicker = compatPlaceholder as ReactAriaComponents.ColorPicker;
 
-export type ColorSliderStateContext = AnyRecord;
-export const ColorSliderStateContext: AnyRecord = {};
+export const ColorPickerContext: ReactAriaComponents.ColorPickerContext = compatPlaceholder as ReactAriaComponents.ColorPickerContext;
 
-export type ColorSpace = AnyRecord;
-export const ColorSpace: AnyRecord = {};
+export type ColorPickerProps = ReactAriaComponents.ColorPickerProps;
 
-export type ColorSwatchContext = AnyRecord;
-export const ColorSwatchContext: AnyRecord = {};
+export type ColorPickerRenderProps = ReactAriaComponents.ColorPickerRenderProps;
 
-export type ColorSwatchPickerContext = AnyRecord;
-export const ColorSwatchPickerContext: AnyRecord = {};
+export type ColorPickerState = ReactAriaComponents.ColorPickerState;
 
-export type ColorSwatchPickerItem = AnyRecord;
-export const ColorSwatchPickerItem: AnyRecord = {};
+export const ColorPickerStateContext: ReactAriaComponents.ColorPickerStateContext = compatPlaceholder as ReactAriaComponents.ColorPickerStateContext;
 
-export type ColorSwatchPickerItemProps = AnyRecord;
-export const ColorSwatchPickerItemProps: AnyRecord = {};
+export const ColorSlider: ReactAriaComponents.ColorSlider = compatPlaceholder as ReactAriaComponents.ColorSlider;
 
-export type ColorSwatchPickerItemRenderProps = AnyRecord;
-export const ColorSwatchPickerItemRenderProps: AnyRecord = {};
+export const ColorSliderContext: ReactAriaComponents.ColorSliderContext = compatPlaceholder as ReactAriaComponents.ColorSliderContext;
 
-export type ColorSwatchPickerProps = AnyRecord;
-export const ColorSwatchPickerProps: AnyRecord = {};
+export type ColorSliderProps = ReactAriaComponents.ColorSliderProps;
 
-export type ColorSwatchPickerRenderProps = AnyRecord;
-export const ColorSwatchPickerRenderProps: AnyRecord = {};
+export type ColorSliderRenderProps = ReactAriaComponents.ColorSliderRenderProps;
 
-export type ColorSwatchProps = AnyRecord;
-export const ColorSwatchProps: AnyRecord = {};
+export type ColorSliderState = ReactAriaComponents.ColorSliderState;
 
-export type ColorSwatchRenderProps = AnyRecord;
-export const ColorSwatchRenderProps: AnyRecord = {};
+export const ColorSliderStateContext: ReactAriaComponents.ColorSliderStateContext = compatPlaceholder as ReactAriaComponents.ColorSliderStateContext;
 
-export type ColorThumb = AnyRecord;
-export const ColorThumb: AnyRecord = {};
+export type ColorSpace = ReactAriaComponents.ColorSpace;
 
-export type ColorThumbProps = AnyRecord;
-export const ColorThumbProps: AnyRecord = {};
+export const ColorSwatch: ReactAriaComponents.ColorSwatch = compatPlaceholder as ReactAriaComponents.ColorSwatch;
 
-export type ColorThumbRenderProps = AnyRecord;
-export const ColorThumbRenderProps: AnyRecord = {};
+export const ColorSwatchContext: ReactAriaComponents.ColorSwatchContext = compatPlaceholder as ReactAriaComponents.ColorSwatchContext;
 
-export type ColorWheelContext = AnyRecord;
-export const ColorWheelContext: AnyRecord = {};
+export const ColorSwatchPicker: ReactAriaComponents.ColorSwatchPicker = compatPlaceholder as ReactAriaComponents.ColorSwatchPicker;
 
-export type ColorWheelProps = AnyRecord;
-export const ColorWheelProps: AnyRecord = {};
+export const ColorSwatchPickerContext: ReactAriaComponents.ColorSwatchPickerContext = compatPlaceholder as ReactAriaComponents.ColorSwatchPickerContext;
 
-export type ColorWheelRenderProps = AnyRecord;
-export const ColorWheelRenderProps: AnyRecord = {};
+export const ColorSwatchPickerItem: ReactAriaComponents.ColorSwatchPickerItem = compatPlaceholder as ReactAriaComponents.ColorSwatchPickerItem;
 
-export type ColorWheelState = AnyRecord;
-export const ColorWheelState: AnyRecord = {};
+export type ColorSwatchPickerItemProps = ReactAriaComponents.ColorSwatchPickerItemProps;
 
-export type ColorWheelStateContext = AnyRecord;
-export const ColorWheelStateContext: AnyRecord = {};
+export type ColorSwatchPickerItemRenderProps = ReactAriaComponents.ColorSwatchPickerItemRenderProps;
 
-export type ColorWheelTrack = AnyRecord;
-export const ColorWheelTrack: AnyRecord = {};
+export type ColorSwatchPickerProps = ReactAriaComponents.ColorSwatchPickerProps;
 
-export type ColorWheelTrackContext = AnyRecord;
-export const ColorWheelTrackContext: AnyRecord = {};
+export type ColorSwatchPickerRenderProps = ReactAriaComponents.ColorSwatchPickerRenderProps;
 
-export type ColorWheelTrackProps = AnyRecord;
-export const ColorWheelTrackProps: AnyRecord = {};
+export type ColorSwatchProps = ReactAriaComponents.ColorSwatchProps;
 
-export type ColorWheelTrackRenderProps = AnyRecord;
-export const ColorWheelTrackRenderProps: AnyRecord = {};
+export type ColorSwatchRenderProps = ReactAriaComponents.ColorSwatchRenderProps;
 
-export type Column = AnyRecord;
-export const Column: AnyRecord = {};
+export const ColorThumb: ReactAriaComponents.ColorThumb = compatPlaceholder as ReactAriaComponents.ColorThumb;
 
-export type ColumnProps = AnyRecord;
-export const ColumnProps: AnyRecord = {};
+export type ColorThumbProps = ReactAriaComponents.ColorThumbProps;
 
-export type ColumnRenderProps = AnyRecord;
-export const ColumnRenderProps: AnyRecord = {};
+export type ColorThumbRenderProps = ReactAriaComponents.ColorThumbRenderProps;
 
-export type ColumnResizer = AnyRecord;
-export const ColumnResizer: AnyRecord = {};
+export const ColorWheel: ReactAriaComponents.ColorWheel = compatPlaceholder as ReactAriaComponents.ColorWheel;
 
-export type ColumnResizerProps = AnyRecord;
-export const ColumnResizerProps: AnyRecord = {};
+export const ColorWheelContext: ReactAriaComponents.ColorWheelContext = compatPlaceholder as ReactAriaComponents.ColorWheelContext;
 
-export type ColumnResizerRenderProps = AnyRecord;
-export const ColumnResizerRenderProps: AnyRecord = {};
+export type ColorWheelProps = ReactAriaComponents.ColorWheelProps;
 
-export type ComboBoxContext = AnyRecord;
-export const ComboBoxContext: AnyRecord = {};
+export type ColorWheelRenderProps = ReactAriaComponents.ColorWheelRenderProps;
 
-export type ComboBoxProps = AnyRecord;
-export const ComboBoxProps: AnyRecord = {};
+export type ColorWheelState = ReactAriaComponents.ColorWheelState;
 
-export type ComboBoxRenderProps = AnyRecord;
-export const ComboBoxRenderProps: AnyRecord = {};
+export const ColorWheelStateContext: ReactAriaComponents.ColorWheelStateContext = compatPlaceholder as ReactAriaComponents.ColorWheelStateContext;
 
-export type ComboBoxState = AnyRecord;
-export const ComboBoxState: AnyRecord = {};
+export const ColorWheelTrack: ReactAriaComponents.ColorWheelTrack = compatPlaceholder as ReactAriaComponents.ColorWheelTrack;
 
-export type ComboBoxStateContext = AnyRecord;
-export const ComboBoxStateContext: AnyRecord = {};
+export const ColorWheelTrackContext: ReactAriaComponents.ColorWheelTrackContext = compatPlaceholder as ReactAriaComponents.ColorWheelTrackContext;
 
-export type ComboBoxValue = AnyRecord;
-export const ComboBoxValue: AnyRecord = {};
+export type ColorWheelTrackProps = ReactAriaComponents.ColorWheelTrackProps;
 
-export type ComboBoxValueContext = AnyRecord;
-export const ComboBoxValueContext: AnyRecord = {};
+export type ColorWheelTrackRenderProps = ReactAriaComponents.ColorWheelTrackRenderProps;
 
-export type ComboBoxValueProps = AnyRecord;
-export const ComboBoxValueProps: AnyRecord = {};
+export const Column: ReactAriaComponents.Column = compatPlaceholder as ReactAriaComponents.Column;
 
-export type ComboBoxValueRenderProps = AnyRecord;
-export const ComboBoxValueRenderProps: AnyRecord = {};
+export type ColumnProps = ReactAriaComponents.ColumnProps;
 
-export type ContextValue = AnyRecord;
-export const ContextValue: AnyRecord = {};
+export type ColumnRenderProps = ReactAriaComponents.ColumnRenderProps;
 
-export type DEFAULT_SLOT = AnyRecord;
-export const DEFAULT_SLOT: AnyRecord = {};
+export const ColumnResizer: ReactAriaComponents.ColumnResizer = compatPlaceholder as ReactAriaComponents.ColumnResizer;
 
-export type DIRECTORY_DRAG_TYPE = AnyRecord;
-export const DIRECTORY_DRAG_TYPE: AnyRecord = {};
+export type ColumnResizerProps = ReactAriaComponents.ColumnResizerProps;
 
-export type DateFieldContext = AnyRecord;
-export const DateFieldContext: AnyRecord = {};
+export type ColumnResizerRenderProps = ReactAriaComponents.ColumnResizerRenderProps;
 
-export type DateFieldProps = AnyRecord;
-export const DateFieldProps: AnyRecord = {};
+export const ComboBox: ReactAriaComponents.ComboBox = compatPlaceholder as ReactAriaComponents.ComboBox;
 
-export type DateFieldRenderProps = AnyRecord;
-export const DateFieldRenderProps: AnyRecord = {};
+export const ComboBoxContext: ReactAriaComponents.ComboBoxContext = compatPlaceholder as ReactAriaComponents.ComboBoxContext;
 
-export type DateFieldState = AnyRecord;
-export const DateFieldState: AnyRecord = {};
+export type ComboBoxProps = ReactAriaComponents.ComboBoxProps;
 
-export type DateFieldStateContext = AnyRecord;
-export const DateFieldStateContext: AnyRecord = {};
+export type ComboBoxRenderProps = ReactAriaComponents.ComboBoxRenderProps;
 
-export type DateInput = AnyRecord;
-export const DateInput: AnyRecord = {};
+export type ComboBoxState = ReactAriaComponents.ComboBoxState;
 
-export type DateInputProps = AnyRecord;
-export const DateInputProps: AnyRecord = {};
+export const ComboBoxStateContext: ReactAriaComponents.ComboBoxStateContext = compatPlaceholder as ReactAriaComponents.ComboBoxStateContext;
 
-export type DateInputRenderProps = AnyRecord;
-export const DateInputRenderProps: AnyRecord = {};
+export const ComboBoxValue: ReactAriaComponents.ComboBoxValue = compatPlaceholder as ReactAriaComponents.ComboBoxValue;
 
-export type DatePickerContext = AnyRecord;
-export const DatePickerContext: AnyRecord = {};
+export const ComboBoxValueContext: ReactAriaComponents.ComboBoxValueContext = compatPlaceholder as ReactAriaComponents.ComboBoxValueContext;
 
-export type DatePickerProps = AnyRecord;
-export const DatePickerProps: AnyRecord = {};
+export type ComboBoxValueProps = ReactAriaComponents.ComboBoxValueProps;
 
-export type DatePickerRenderProps = AnyRecord;
-export const DatePickerRenderProps: AnyRecord = {};
+export type ComboBoxValueRenderProps = ReactAriaComponents.ComboBoxValueRenderProps;
 
-export type DatePickerState = AnyRecord;
-export const DatePickerState: AnyRecord = {};
+export const composeRenderProps: typeof ReactAriaComponents.composeRenderProps = compatPlaceholder as typeof ReactAriaComponents.composeRenderProps;
 
-export type DatePickerStateContext = AnyRecord;
-export const DatePickerStateContext: AnyRecord = {};
+export type ContextValue = ReactAriaComponents.ContextValue;
 
-export type DateRange = AnyRecord;
-export const DateRange: AnyRecord = {};
+export function createBranchComponent<T extends object, P extends {children?: any}, E extends Element>(CollectionNodeClass: CollectionNodeClass<any> | string, render: (props: P, ref: ForwardedRef<E>, node: Node<T>) => ReactElement | null, useChildren?: (props: P) => ReactNode): (props: P & React.RefAttributes<E>) => ReactElement | null {
+  return compatPlaceholder(CollectionNodeClass, render, useChildren);
+}
 
-export type DateRangePickerContext = AnyRecord;
-export const DateRangePickerContext: AnyRecord = {};
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function createLeafComponent<T extends object, P extends object, E extends Element>(CollectionNodeClass: CollectionNodeClass<any> | string, render: (props: P, ref: ForwardedRef<E>) => ReactElement | null): (props: P & React.RefAttributes<E>) => ReactElement | null;
+export function createLeafComponent<T extends object, P extends object, E extends Element>(CollectionNodeClass: CollectionNodeClass<any> | string, render: (props: P, ref: ForwardedRef<E>, node: Node<T>) => ReactElement | null): (props: P & React.RefAttributes<E>) => ReactElement | null;
+export function createLeafComponent(...args: any[]): any {
+  return compatPlaceholder(...args);
+}
 
-export type DateRangePickerProps = AnyRecord;
-export const DateRangePickerProps: AnyRecord = {};
+export const DateField: ReactAriaComponents.DateField = compatPlaceholder as ReactAriaComponents.DateField;
 
-export type DateRangePickerRenderProps = AnyRecord;
-export const DateRangePickerRenderProps: AnyRecord = {};
+export const DateFieldContext: ReactAriaComponents.DateFieldContext = compatPlaceholder as ReactAriaComponents.DateFieldContext;
 
-export type DateRangePickerState = AnyRecord;
-export const DateRangePickerState: AnyRecord = {};
+export type DateFieldProps = ReactAriaComponents.DateFieldProps;
 
-export type DateRangePickerStateContext = AnyRecord;
-export const DateRangePickerStateContext: AnyRecord = {};
+export type DateFieldRenderProps = ReactAriaComponents.DateFieldRenderProps;
 
-export type DateSegment = AnyRecord;
-export const DateSegment: AnyRecord = {};
+export type DateFieldState = ReactAriaComponents.DateFieldState;
 
-export type DateSegmentProps = AnyRecord;
-export const DateSegmentProps: AnyRecord = {};
+export const DateFieldStateContext: ReactAriaComponents.DateFieldStateContext = compatPlaceholder as ReactAriaComponents.DateFieldStateContext;
 
-export type DateSegmentRenderProps = AnyRecord;
-export const DateSegmentRenderProps: AnyRecord = {};
+export const DateInput: ReactAriaComponents.DateInput = compatPlaceholder as ReactAriaComponents.DateInput;
 
-export type DateValue = AnyRecord;
-export const DateValue: AnyRecord = {};
+export type DateInputProps = ReactAriaComponents.DateInputProps;
 
-export type DefaultCollectionRenderer = AnyRecord;
-export const DefaultCollectionRenderer: AnyRecord = {};
+export type DateInputRenderProps = ReactAriaComponents.DateInputRenderProps;
 
-export type DialogContext = AnyRecord;
-export const DialogContext: AnyRecord = {};
+export const DatePicker: ReactAriaComponents.DatePicker = compatPlaceholder as ReactAriaComponents.DatePicker;
 
-export type DialogProps = AnyRecord;
-export const DialogProps: AnyRecord = {};
+export const DatePickerContext: ReactAriaComponents.DatePickerContext = compatPlaceholder as ReactAriaComponents.DatePickerContext;
 
-export type DialogRenderProps = AnyRecord;
-export const DialogRenderProps: AnyRecord = {};
+export type DatePickerProps = ReactAriaComponents.DatePickerProps;
 
-export type DialogTrigger = AnyRecord;
-export const DialogTrigger: AnyRecord = {};
+export type DatePickerRenderProps = ReactAriaComponents.DatePickerRenderProps;
 
-export type DialogTriggerProps = AnyRecord;
-export const DialogTriggerProps: AnyRecord = {};
+export type DatePickerState = ReactAriaComponents.DatePickerState;
 
-export type DirectoryDropItem = AnyRecord;
-export const DirectoryDropItem: AnyRecord = {};
+export const DatePickerStateContext: ReactAriaComponents.DatePickerStateContext = compatPlaceholder as ReactAriaComponents.DatePickerStateContext;
 
-export type DisclosureContext = AnyRecord;
-export const DisclosureContext: AnyRecord = {};
+export type DateRange = ReactAriaComponents.DateRange;
 
-export type DisclosureGroup = AnyRecord;
-export const DisclosureGroup: AnyRecord = {};
+export const DateRangePicker: ReactAriaComponents.DateRangePicker = compatPlaceholder as ReactAriaComponents.DateRangePicker;
 
-export type DisclosureGroupProps = AnyRecord;
-export const DisclosureGroupProps: AnyRecord = {};
+export const DateRangePickerContext: ReactAriaComponents.DateRangePickerContext = compatPlaceholder as ReactAriaComponents.DateRangePickerContext;
 
-export type DisclosureGroupRenderProps = AnyRecord;
-export const DisclosureGroupRenderProps: AnyRecord = {};
+export type DateRangePickerProps = ReactAriaComponents.DateRangePickerProps;
 
-export type DisclosureGroupState = AnyRecord;
-export const DisclosureGroupState: AnyRecord = {};
+export type DateRangePickerRenderProps = ReactAriaComponents.DateRangePickerRenderProps;
 
-export type DisclosureGroupStateContext = AnyRecord;
-export const DisclosureGroupStateContext: AnyRecord = {};
+export type DateRangePickerState = ReactAriaComponents.DateRangePickerState;
 
-export type DisclosurePanelProps = AnyRecord;
-export const DisclosurePanelProps: AnyRecord = {};
+export const DateRangePickerStateContext: ReactAriaComponents.DateRangePickerStateContext = compatPlaceholder as ReactAriaComponents.DateRangePickerStateContext;
 
-export type DisclosurePanelRenderProps = AnyRecord;
-export const DisclosurePanelRenderProps: AnyRecord = {};
+export const DateSegment: ReactAriaComponents.DateSegment = compatPlaceholder as ReactAriaComponents.DateSegment;
 
-export type DisclosureProps = AnyRecord;
-export const DisclosureProps: AnyRecord = {};
+export type DateSegmentProps = ReactAriaComponents.DateSegmentProps;
 
-export type DisclosureRenderProps = AnyRecord;
-export const DisclosureRenderProps: AnyRecord = {};
+export type DateSegmentRenderProps = ReactAriaComponents.DateSegmentRenderProps;
 
-export type DisclosureState = AnyRecord;
-export const DisclosureState: AnyRecord = {};
+export type DateValue = ReactAriaComponents.DateValue;
 
-export type DisclosureStateContext = AnyRecord;
-export const DisclosureStateContext: AnyRecord = {};
+export const DEFAULT_SLOT: ReactAriaComponents.DEFAULT_SLOT = compatPlaceholder as ReactAriaComponents.DEFAULT_SLOT;
 
-export type DragAndDropContext = AnyRecord;
-export const DragAndDropContext: AnyRecord = {};
+export const DefaultCollectionRenderer: ReactAriaComponents.DefaultCollectionRenderer = compatPlaceholder as ReactAriaComponents.DefaultCollectionRenderer;
 
-export type DragAndDropHooks = AnyRecord;
-export const DragAndDropHooks: AnyRecord = {};
+export const Dialog: ReactAriaComponents.Dialog = compatPlaceholder as ReactAriaComponents.Dialog;
 
-export type DragAndDropOptions = AnyRecord;
-export const DragAndDropOptions: AnyRecord = {};
+export const DialogContext: ReactAriaComponents.DialogContext = compatPlaceholder as ReactAriaComponents.DialogContext;
 
-export type DragOptions = AnyRecord;
-export const DragOptions: AnyRecord = {};
+export type DialogProps = ReactAriaComponents.DialogProps;
 
-export type DragPreviewRenderer = AnyRecord;
-export const DragPreviewRenderer: AnyRecord = {};
+export type DialogRenderProps = ReactAriaComponents.DialogRenderProps;
 
-export type DragResult = AnyRecord;
-export const DragResult: AnyRecord = {};
+export const DialogTrigger: ReactAriaComponents.DialogTrigger = compatPlaceholder as ReactAriaComponents.DialogTrigger;
 
-export type DragTypes = AnyRecord;
-export const DragTypes: AnyRecord = {};
+export type DialogTriggerProps = ReactAriaComponents.DialogTriggerProps;
 
-export type DraggableCollectionEndEvent = AnyRecord;
-export const DraggableCollectionEndEvent: AnyRecord = {};
+export const DIRECTORY_DRAG_TYPE: ReactAriaComponents.DIRECTORY_DRAG_TYPE = compatPlaceholder as ReactAriaComponents.DIRECTORY_DRAG_TYPE;
 
-export type DraggableCollectionMoveEvent = AnyRecord;
-export const DraggableCollectionMoveEvent: AnyRecord = {};
+export type DirectoryDropItem = ReactAriaComponents.DirectoryDropItem;
 
-export type DraggableCollectionStartEvent = AnyRecord;
-export const DraggableCollectionStartEvent: AnyRecord = {};
+export const Disclosure: ReactAriaComponents.Disclosure = compatPlaceholder as ReactAriaComponents.Disclosure;
 
-export type DropIndicator = AnyRecord;
-export const DropIndicator: AnyRecord = {};
+export const DisclosureContext: ReactAriaComponents.DisclosureContext = compatPlaceholder as ReactAriaComponents.DisclosureContext;
 
-export type DropIndicatorContext = AnyRecord;
-export const DropIndicatorContext: AnyRecord = {};
+export const DisclosureGroup: ReactAriaComponents.DisclosureGroup = compatPlaceholder as ReactAriaComponents.DisclosureGroup;
 
-export type DropIndicatorProps = AnyRecord;
-export const DropIndicatorProps: AnyRecord = {};
+export type DisclosureGroupProps = ReactAriaComponents.DisclosureGroupProps;
 
-export type DropIndicatorRenderProps = AnyRecord;
-export const DropIndicatorRenderProps: AnyRecord = {};
+export type DisclosureGroupRenderProps = ReactAriaComponents.DisclosureGroupRenderProps;
 
-export type DropItem = AnyRecord;
-export const DropItem: AnyRecord = {};
+export type DisclosureGroupState = ReactAriaComponents.DisclosureGroupState;
 
-export type DropOperation = AnyRecord;
-export const DropOperation: AnyRecord = {};
+export const DisclosureGroupStateContext: ReactAriaComponents.DisclosureGroupStateContext = compatPlaceholder as ReactAriaComponents.DisclosureGroupStateContext;
 
-export type DropPosition = AnyRecord;
-export const DropPosition: AnyRecord = {};
+export const DisclosurePanel: ReactAriaComponents.DisclosurePanel = compatPlaceholder as ReactAriaComponents.DisclosurePanel;
 
-export type DropTarget = AnyRecord;
-export const DropTarget: AnyRecord = {};
+export type DisclosurePanelProps = ReactAriaComponents.DisclosurePanelProps;
 
-export type DropZoneContext = AnyRecord;
-export const DropZoneContext: AnyRecord = {};
+export type DisclosurePanelRenderProps = ReactAriaComponents.DisclosurePanelRenderProps;
 
-export type DropZoneProps = AnyRecord;
-export const DropZoneProps: AnyRecord = {};
+export type DisclosureProps = ReactAriaComponents.DisclosureProps;
 
-export type DropZoneRenderProps = AnyRecord;
-export const DropZoneRenderProps: AnyRecord = {};
+export type DisclosureRenderProps = ReactAriaComponents.DisclosureRenderProps;
 
-export type DroppableCollectionDropEvent = AnyRecord;
-export const DroppableCollectionDropEvent: AnyRecord = {};
+export type DisclosureState = ReactAriaComponents.DisclosureState;
 
-export type DroppableCollectionEnterEvent = AnyRecord;
-export const DroppableCollectionEnterEvent: AnyRecord = {};
+export const DisclosureStateContext: ReactAriaComponents.DisclosureStateContext = compatPlaceholder as ReactAriaComponents.DisclosureStateContext;
 
-export type DroppableCollectionExitEvent = AnyRecord;
-export const DroppableCollectionExitEvent: AnyRecord = {};
+export const DragAndDropContext: ReactAriaComponents.DragAndDropContext = compatPlaceholder as ReactAriaComponents.DragAndDropContext;
 
-export type DroppableCollectionInsertDropEvent = AnyRecord;
-export const DroppableCollectionInsertDropEvent: AnyRecord = {};
+export type DragAndDropHooks = ReactAriaComponents.DragAndDropHooks;
 
-export type DroppableCollectionMoveEvent = AnyRecord;
-export const DroppableCollectionMoveEvent: AnyRecord = {};
+export type DragAndDropOptions = ReactAriaComponents.DragAndDropOptions;
 
-export type DroppableCollectionOnItemDropEvent = AnyRecord;
-export const DroppableCollectionOnItemDropEvent: AnyRecord = {};
+export type DraggableCollectionEndEvent = ReactAriaComponents.DraggableCollectionEndEvent;
 
-export type DroppableCollectionReorderEvent = AnyRecord;
-export const DroppableCollectionReorderEvent: AnyRecord = {};
+export type DraggableCollectionMoveEvent = ReactAriaComponents.DraggableCollectionMoveEvent;
 
-export type DroppableCollectionRootDropEvent = AnyRecord;
-export const DroppableCollectionRootDropEvent: AnyRecord = {};
+export type DraggableCollectionStartEvent = ReactAriaComponents.DraggableCollectionStartEvent;
 
-export type FieldError = AnyRecord;
-export const FieldError: AnyRecord = {};
+export type DragOptions = ReactAriaComponents.DragOptions;
 
-export type FieldErrorContext = AnyRecord;
-export const FieldErrorContext: AnyRecord = {};
+export type DragPreviewRenderer = ReactAriaComponents.DragPreviewRenderer;
 
-export type FieldErrorProps = AnyRecord;
-export const FieldErrorProps: AnyRecord = {};
+export type DragResult = ReactAriaComponents.DragResult;
 
-export type FieldErrorRenderProps = AnyRecord;
-export const FieldErrorRenderProps: AnyRecord = {};
+export type DragTypes = ReactAriaComponents.DragTypes;
 
-export type FieldInputContext = AnyRecord;
-export const FieldInputContext: AnyRecord = {};
+export const DropIndicator: ReactAriaComponents.DropIndicator = compatPlaceholder as ReactAriaComponents.DropIndicator;
 
-export type FileDropItem = AnyRecord;
-export const FileDropItem: AnyRecord = {};
+export const DropIndicatorContext: ReactAriaComponents.DropIndicatorContext = compatPlaceholder as ReactAriaComponents.DropIndicatorContext;
 
-export type FileTriggerProps = AnyRecord;
-export const FileTriggerProps: AnyRecord = {};
+export type DropIndicatorProps = ReactAriaComponents.DropIndicatorProps;
 
-export type Focusable = AnyRecord;
-export const Focusable: AnyRecord = {};
+export type DropIndicatorRenderProps = ReactAriaComponents.DropIndicatorRenderProps;
 
-export type FormContext = AnyRecord;
-export const FormContext: AnyRecord = {};
+export type DropItem = ReactAriaComponents.DropItem;
 
-export type FormProps = AnyRecord;
-export const FormProps: AnyRecord = {};
+export type DropOperation = ReactAriaComponents.DropOperation;
 
-export type FormValidationContext = AnyRecord;
-export const FormValidationContext: AnyRecord = {};
+export type DroppableCollectionDropEvent = ReactAriaComponents.DroppableCollectionDropEvent;
 
-export type GridLayout = AnyRecord;
-export const GridLayout: AnyRecord = {};
+export type DroppableCollectionEnterEvent = ReactAriaComponents.DroppableCollectionEnterEvent;
 
-export type GridLayoutOptions = AnyRecord;
-export const GridLayoutOptions: AnyRecord = {};
+export type DroppableCollectionExitEvent = ReactAriaComponents.DroppableCollectionExitEvent;
 
-export type GridList = AnyRecord;
-export const GridList: AnyRecord = {};
+export type DroppableCollectionInsertDropEvent = ReactAriaComponents.DroppableCollectionInsertDropEvent;
 
-export type GridListContext = AnyRecord;
-export const GridListContext: AnyRecord = {};
+export type DroppableCollectionMoveEvent = ReactAriaComponents.DroppableCollectionMoveEvent;
 
-export type GridListHeader = AnyRecord;
-export const GridListHeader: AnyRecord = {};
+export type DroppableCollectionOnItemDropEvent = ReactAriaComponents.DroppableCollectionOnItemDropEvent;
 
-export type GridListHeaderContext = AnyRecord;
-export const GridListHeaderContext: AnyRecord = {};
+export type DroppableCollectionReorderEvent = ReactAriaComponents.DroppableCollectionReorderEvent;
 
-export type GridListItem = AnyRecord;
-export const GridListItem: AnyRecord = {};
+export type DroppableCollectionRootDropEvent = ReactAriaComponents.DroppableCollectionRootDropEvent;
 
-export type GridListItemProps = AnyRecord;
-export const GridListItemProps: AnyRecord = {};
+export type DropPosition = ReactAriaComponents.DropPosition;
 
-export type GridListItemRenderProps = AnyRecord;
-export const GridListItemRenderProps: AnyRecord = {};
+export type DropTarget = ReactAriaComponents.DropTarget;
 
-export type GridListLoadMoreItem = AnyRecord;
-export const GridListLoadMoreItem: AnyRecord = {};
+export const DropZone: ReactAriaComponents.DropZone = compatPlaceholder as ReactAriaComponents.DropZone;
 
-export type GridListLoadMoreItemProps = AnyRecord;
-export const GridListLoadMoreItemProps: AnyRecord = {};
+export const DropZoneContext: ReactAriaComponents.DropZoneContext = compatPlaceholder as ReactAriaComponents.DropZoneContext;
 
-export type GridListProps = AnyRecord;
-export const GridListProps: AnyRecord = {};
+export type DropZoneProps = ReactAriaComponents.DropZoneProps;
 
-export type GridListRenderProps = AnyRecord;
-export const GridListRenderProps: AnyRecord = {};
+export type DropZoneRenderProps = ReactAriaComponents.DropZoneRenderProps;
 
-export type GridListSection = AnyRecord;
-export const GridListSection: AnyRecord = {};
+export const FieldError: ReactAriaComponents.FieldError = compatPlaceholder as ReactAriaComponents.FieldError;
 
-export type GridListSectionProps = AnyRecord;
-export const GridListSectionProps: AnyRecord = {};
+export const FieldErrorContext: ReactAriaComponents.FieldErrorContext = compatPlaceholder as ReactAriaComponents.FieldErrorContext;
 
-export type Group = AnyRecord;
-export const Group: AnyRecord = {};
+export type FieldErrorProps = ReactAriaComponents.FieldErrorProps;
 
-export type GroupContext = AnyRecord;
-export const GroupContext: AnyRecord = {};
+export type FieldErrorRenderProps = ReactAriaComponents.FieldErrorRenderProps;
 
-export type GroupProps = AnyRecord;
-export const GroupProps: AnyRecord = {};
+export const FieldInputContext: ReactAriaComponents.FieldInputContext = compatPlaceholder as ReactAriaComponents.FieldInputContext;
 
-export type GroupRenderProps = AnyRecord;
-export const GroupRenderProps: AnyRecord = {};
+export type FileDropItem = ReactAriaComponents.FileDropItem;
 
-export type Header = AnyRecord;
-export const Header: AnyRecord = {};
+export const FileTrigger: ReactAriaComponents.FileTrigger = compatPlaceholder as ReactAriaComponents.FileTrigger;
 
-export type HeaderContext = AnyRecord;
-export const HeaderContext: AnyRecord = {};
+export type FileTriggerProps = ReactAriaComponents.FileTriggerProps;
 
-export type HeaderProps = AnyRecord;
-export const HeaderProps: AnyRecord = {};
+export const Focusable: ReactAriaComponents.Focusable = compatPlaceholder as ReactAriaComponents.Focusable;
 
-export type Heading = AnyRecord;
-export const Heading: AnyRecord = {};
+export const Form: ReactAriaComponents.Form = compatPlaceholder as ReactAriaComponents.Form;
 
-export type HeadingContext = AnyRecord;
-export const HeadingContext: AnyRecord = {};
+export const FormContext: ReactAriaComponents.FormContext = compatPlaceholder as ReactAriaComponents.FormContext;
 
-export type HeadingProps = AnyRecord;
-export const HeadingProps: AnyRecord = {};
+export type FormProps = ReactAriaComponents.FormProps;
 
-export type I18nProvider = AnyRecord;
-export const I18nProvider: AnyRecord = {};
+export const FormValidationContext: ReactAriaComponents.FormValidationContext = compatPlaceholder as ReactAriaComponents.FormValidationContext;
 
-export type Input = AnyRecord;
-export const Input: AnyRecord = {};
+export const getColorChannels: (colorSpace: ColorSpace) => [ColorChannel, ColorChannel, ColorChannel] = compatPlaceholder as (colorSpace: ColorSpace) => [ColorChannel, ColorChannel, ColorChannel];
 
-export type InputContext = AnyRecord;
-export const InputContext: AnyRecord = {};
+export type GridLayout = ReactAriaComponents.GridLayout;
+export const GridLayout: ReactAriaComponents.GridLayout = compatPlaceholder as ReactAriaComponents.GridLayout;
 
-export type InputProps = AnyRecord;
-export const InputProps: AnyRecord = {};
+export type GridLayoutOptions = ReactAriaComponents.GridLayoutOptions;
 
-export type InputRenderProps = AnyRecord;
-export const InputRenderProps: AnyRecord = {};
+export const GridList: ReactAriaComponents.GridList = compatPlaceholder as ReactAriaComponents.GridList;
 
-export type ItemDropTarget = AnyRecord;
-export const ItemDropTarget: AnyRecord = {};
+export const GridListContext: ReactAriaComponents.GridListContext = compatPlaceholder as ReactAriaComponents.GridListContext;
 
-export type Key = AnyRecord;
-export const Key: AnyRecord = {};
+export const GridListHeader: ReactAriaComponents.GridListHeader = compatPlaceholder as ReactAriaComponents.GridListHeader;
 
-export type Keyboard = AnyRecord;
-export const Keyboard: AnyRecord = {};
+export const GridListHeaderContext: ReactAriaComponents.GridListHeaderContext = compatPlaceholder as ReactAriaComponents.GridListHeaderContext;
 
-export type KeyboardContext = AnyRecord;
-export const KeyboardContext: AnyRecord = {};
+export const GridListItem: ReactAriaComponents.GridListItem = compatPlaceholder as ReactAriaComponents.GridListItem;
 
-export type LabelContext = AnyRecord;
-export const LabelContext: AnyRecord = {};
+export type GridListItemProps = ReactAriaComponents.GridListItemProps;
 
-export type LabelProps = AnyRecord;
-export const LabelProps: AnyRecord = {};
+export type GridListItemRenderProps = ReactAriaComponents.GridListItemRenderProps;
 
-export type Layout = AnyRecord;
-export const Layout: AnyRecord = {};
+export const GridListLoadMoreItem: ReactAriaComponents.GridListLoadMoreItem = compatPlaceholder as ReactAriaComponents.GridListLoadMoreItem;
 
-export type LayoutInfo = AnyRecord;
-export const LayoutInfo: AnyRecord = {};
+export type GridListLoadMoreItemProps = ReactAriaComponents.GridListLoadMoreItemProps;
 
-export type LinkContext = AnyRecord;
-export const LinkContext: AnyRecord = {};
+export type GridListProps = ReactAriaComponents.GridListProps;
 
-export type LinkProps = AnyRecord;
-export const LinkProps: AnyRecord = {};
+export type GridListRenderProps = ReactAriaComponents.GridListRenderProps;
 
-export type LinkRenderProps = AnyRecord;
-export const LinkRenderProps: AnyRecord = {};
+export const GridListSection: ReactAriaComponents.GridListSection = compatPlaceholder as ReactAriaComponents.GridListSection;
 
-export type ListBoxContext = AnyRecord;
-export const ListBoxContext: AnyRecord = {};
+export type GridListSectionProps = ReactAriaComponents.GridListSectionProps;
 
-export type ListBoxItem = AnyRecord;
-export const ListBoxItem: AnyRecord = {};
+export const Group: ReactAriaComponents.Group = compatPlaceholder as ReactAriaComponents.Group;
 
-export type ListBoxItemProps = AnyRecord;
-export const ListBoxItemProps: AnyRecord = {};
+export const GroupContext: ReactAriaComponents.GroupContext = compatPlaceholder as ReactAriaComponents.GroupContext;
 
-export type ListBoxItemRenderProps = AnyRecord;
-export const ListBoxItemRenderProps: AnyRecord = {};
+export type GroupProps = ReactAriaComponents.GroupProps;
 
-export type ListBoxLoadMoreItem = AnyRecord;
-export const ListBoxLoadMoreItem: AnyRecord = {};
+export type GroupRenderProps = ReactAriaComponents.GroupRenderProps;
 
-export type ListBoxLoadMoreItemProps = AnyRecord;
-export const ListBoxLoadMoreItemProps: AnyRecord = {};
+export const Header: ReactAriaComponents.Header = compatPlaceholder as ReactAriaComponents.Header;
 
-export type ListBoxProps = AnyRecord;
-export const ListBoxProps: AnyRecord = {};
+export const HeaderContext: ReactAriaComponents.HeaderContext = compatPlaceholder as ReactAriaComponents.HeaderContext;
 
-export type ListBoxRenderProps = AnyRecord;
-export const ListBoxRenderProps: AnyRecord = {};
+export type HeaderProps = ReactAriaComponents.HeaderProps;
 
-export type ListBoxSection = AnyRecord;
-export const ListBoxSection: AnyRecord = {};
+export const Heading: ReactAriaComponents.Heading = compatPlaceholder as ReactAriaComponents.Heading;
 
-export type ListBoxSectionProps = AnyRecord;
-export const ListBoxSectionProps: AnyRecord = {};
+export const HeadingContext: ReactAriaComponents.HeadingContext = compatPlaceholder as ReactAriaComponents.HeadingContext;
 
-export type ListData = AnyRecord;
-export const ListData: AnyRecord = {};
+export type HeadingProps = ReactAriaComponents.HeadingProps;
 
-export type ListLayout = AnyRecord;
-export const ListLayout: AnyRecord = {};
+export const I18nProvider: ReactAriaComponents.I18nProvider = compatPlaceholder as ReactAriaComponents.I18nProvider;
 
-export type ListLayoutOptions = AnyRecord;
-export const ListLayoutOptions: AnyRecord = {};
+export const Input: ReactAriaComponents.Input = compatPlaceholder as ReactAriaComponents.Input;
 
-export type ListState = AnyRecord;
-export const ListState: AnyRecord = {};
+export const InputContext: ReactAriaComponents.InputContext = compatPlaceholder as ReactAriaComponents.InputContext;
 
-export type ListStateContext = AnyRecord;
-export const ListStateContext: AnyRecord = {};
+export type InputProps = ReactAriaComponents.InputProps;
 
-export type MenuContext = AnyRecord;
-export const MenuContext: AnyRecord = {};
+export type InputRenderProps = ReactAriaComponents.InputRenderProps;
 
-export type MenuItem = AnyRecord;
-export const MenuItem: AnyRecord = {};
+export const isDirectoryDropItem: (dropItem: DropItem) => dropItem is DirectoryDropItem = compatPlaceholder as (dropItem: DropItem) => dropItem is DirectoryDropItem;
 
-export type MenuItemProps = AnyRecord;
-export const MenuItemProps: AnyRecord = {};
+export const isFileDropItem: (dropItem: DropItem) => dropItem is FileDropItem = compatPlaceholder as (dropItem: DropItem) => dropItem is FileDropItem;
 
-export type MenuItemRenderProps = AnyRecord;
-export const MenuItemRenderProps: AnyRecord = {};
+export const isRTL: (localeString: string) => boolean = compatPlaceholder as (localeString: string) => boolean;
 
-export type MenuProps = AnyRecord;
-export const MenuProps: AnyRecord = {};
+export const isTextDropItem: (dropItem: DropItem) => dropItem is TextDropItem = compatPlaceholder as (dropItem: DropItem) => dropItem is TextDropItem;
 
-export type MenuSection = AnyRecord;
-export const MenuSection: AnyRecord = {};
+export type ItemDropTarget = ReactAriaComponents.ItemDropTarget;
 
-export type MenuSectionProps = AnyRecord;
-export const MenuSectionProps: AnyRecord = {};
+export type Key = ReactAriaComponents.Key;
 
-export type MenuStateContext = AnyRecord;
-export const MenuStateContext: AnyRecord = {};
+export const Keyboard: ReactAriaComponents.Keyboard = compatPlaceholder as ReactAriaComponents.Keyboard;
 
-export type MenuTrigger = AnyRecord;
-export const MenuTrigger: AnyRecord = {};
+export const KeyboardContext: ReactAriaComponents.KeyboardContext = compatPlaceholder as ReactAriaComponents.KeyboardContext;
 
-export type MenuTriggerProps = AnyRecord;
-export const MenuTriggerProps: AnyRecord = {};
+export const Label: ReactAriaComponents.Label = compatPlaceholder as ReactAriaComponents.Label;
 
-export type MeterContext = AnyRecord;
-export const MeterContext: AnyRecord = {};
+export const LabelContext: ReactAriaComponents.LabelContext = compatPlaceholder as ReactAriaComponents.LabelContext;
 
-export type MeterProps = AnyRecord;
-export const MeterProps: AnyRecord = {};
+export type LabelProps = ReactAriaComponents.LabelProps;
 
-export type MeterRenderProps = AnyRecord;
-export const MeterRenderProps: AnyRecord = {};
+export type Layout = ReactAriaComponents.Layout;
+export const Layout: ReactAriaComponents.Layout = compatPlaceholder as ReactAriaComponents.Layout;
 
-export type Modal = AnyRecord;
-export const Modal: AnyRecord = {};
+export type LayoutInfo = ReactAriaComponents.LayoutInfo;
+export const LayoutInfo: ReactAriaComponents.LayoutInfo = compatPlaceholder as ReactAriaComponents.LayoutInfo;
 
-export type ModalContext = AnyRecord;
-export const ModalContext: AnyRecord = {};
+export const Link: ReactAriaComponents.Link = compatPlaceholder as ReactAriaComponents.Link;
 
-export type ModalOverlay = AnyRecord;
-export const ModalOverlay: AnyRecord = {};
+export const LinkContext: ReactAriaComponents.LinkContext = compatPlaceholder as ReactAriaComponents.LinkContext;
 
-export type ModalOverlayProps = AnyRecord;
-export const ModalOverlayProps: AnyRecord = {};
+export type LinkProps = ReactAriaComponents.LinkProps;
 
-export type ModalRenderProps = AnyRecord;
-export const ModalRenderProps: AnyRecord = {};
+export type LinkRenderProps = ReactAriaComponents.LinkRenderProps;
 
-export type NumberFieldContext = AnyRecord;
-export const NumberFieldContext: AnyRecord = {};
+export const ListBox: ReactAriaComponents.ListBox = compatPlaceholder as ReactAriaComponents.ListBox;
 
-export type NumberFieldProps = AnyRecord;
-export const NumberFieldProps: AnyRecord = {};
+export const ListBoxContext: ReactAriaComponents.ListBoxContext = compatPlaceholder as ReactAriaComponents.ListBoxContext;
 
-export type NumberFieldRenderProps = AnyRecord;
-export const NumberFieldRenderProps: AnyRecord = {};
+export const ListBoxItem: ReactAriaComponents.ListBoxItem = compatPlaceholder as ReactAriaComponents.ListBoxItem;
 
-export type NumberFieldState = AnyRecord;
-export const NumberFieldState: AnyRecord = {};
+export type ListBoxItemProps = ReactAriaComponents.ListBoxItemProps;
 
-export type NumberFieldStateContext = AnyRecord;
-export const NumberFieldStateContext: AnyRecord = {};
+export type ListBoxItemRenderProps = ReactAriaComponents.ListBoxItemRenderProps;
 
-export type OverlayArrow = AnyRecord;
-export const OverlayArrow: AnyRecord = {};
+export const ListBoxLoadMoreItem: ReactAriaComponents.ListBoxLoadMoreItem = compatPlaceholder as ReactAriaComponents.ListBoxLoadMoreItem;
 
-export type OverlayArrowProps = AnyRecord;
-export const OverlayArrowProps: AnyRecord = {};
+export type ListBoxLoadMoreItemProps = ReactAriaComponents.ListBoxLoadMoreItemProps;
 
-export type OverlayArrowRenderProps = AnyRecord;
-export const OverlayArrowRenderProps: AnyRecord = {};
+export type ListBoxProps = ReactAriaComponents.ListBoxProps;
 
-export type OverlayTriggerState = AnyRecord;
-export const OverlayTriggerState: AnyRecord = {};
+export type ListBoxRenderProps = ReactAriaComponents.ListBoxRenderProps;
 
-export type OverlayTriggerStateContext = AnyRecord;
-export const OverlayTriggerStateContext: AnyRecord = {};
+export const ListBoxSection: ReactAriaComponents.ListBoxSection = compatPlaceholder as ReactAriaComponents.ListBoxSection;
 
-export type Point = AnyRecord;
-export const Point: AnyRecord = {};
+export type ListBoxSectionProps = ReactAriaComponents.ListBoxSectionProps;
 
-export type PopoverContext = AnyRecord;
-export const PopoverContext: AnyRecord = {};
+export type ListData = ReactAriaComponents.ListData;
 
-export type PopoverProps = AnyRecord;
-export const PopoverProps: AnyRecord = {};
+export type ListLayout = ReactAriaComponents.ListLayout;
+export const ListLayout: ReactAriaComponents.ListLayout = compatPlaceholder as ReactAriaComponents.ListLayout;
 
-export type PopoverRenderProps = AnyRecord;
-export const PopoverRenderProps: AnyRecord = {};
+export type ListLayoutOptions = ReactAriaComponents.ListLayoutOptions;
 
-export type PressEvent = AnyRecord;
-export const PressEvent: AnyRecord = {};
+export type ListState = ReactAriaComponents.ListState;
 
-export type Pressable = AnyRecord;
-export const Pressable: AnyRecord = {};
+export const ListStateContext: ReactAriaComponents.ListStateContext = compatPlaceholder as ReactAriaComponents.ListStateContext;
 
-export type ProgressBarContext = AnyRecord;
-export const ProgressBarContext: AnyRecord = {};
+export const Menu: ReactAriaComponents.Menu = compatPlaceholder as ReactAriaComponents.Menu;
 
-export type ProgressBarProps = AnyRecord;
-export const ProgressBarProps: AnyRecord = {};
+export const MenuContext: ReactAriaComponents.MenuContext = compatPlaceholder as ReactAriaComponents.MenuContext;
 
-export type ProgressBarRenderProps = AnyRecord;
-export const ProgressBarRenderProps: AnyRecord = {};
+export const MenuItem: ReactAriaComponents.MenuItem = compatPlaceholder as ReactAriaComponents.MenuItem;
 
-export type Provider = AnyRecord;
-export const Provider: AnyRecord = {};
+export type MenuItemProps = ReactAriaComponents.MenuItemProps;
 
-export type QueuedToast = AnyRecord;
-export const QueuedToast: AnyRecord = {};
+export type MenuItemRenderProps = ReactAriaComponents.MenuItemRenderProps;
 
-export type RadioContext = AnyRecord;
-export const RadioContext: AnyRecord = {};
+export type MenuProps = ReactAriaComponents.MenuProps;
 
-export type RadioGroupContext = AnyRecord;
-export const RadioGroupContext: AnyRecord = {};
+export const MenuSection: ReactAriaComponents.MenuSection = compatPlaceholder as ReactAriaComponents.MenuSection;
 
-export type RadioGroupProps = AnyRecord;
-export const RadioGroupProps: AnyRecord = {};
+export type MenuSectionProps = ReactAriaComponents.MenuSectionProps;
 
-export type RadioGroupRenderProps = AnyRecord;
-export const RadioGroupRenderProps: AnyRecord = {};
+export const MenuStateContext: ReactAriaComponents.MenuStateContext = compatPlaceholder as ReactAriaComponents.MenuStateContext;
 
-export type RadioGroupState = AnyRecord;
-export const RadioGroupState: AnyRecord = {};
+export const MenuTrigger: ReactAriaComponents.MenuTrigger = compatPlaceholder as ReactAriaComponents.MenuTrigger;
 
-export type RadioGroupStateContext = AnyRecord;
-export const RadioGroupStateContext: AnyRecord = {};
+export type MenuTriggerProps = ReactAriaComponents.MenuTriggerProps;
 
-export type RadioProps = AnyRecord;
-export const RadioProps: AnyRecord = {};
+export const Meter: ReactAriaComponents.Meter = compatPlaceholder as ReactAriaComponents.Meter;
 
-export type RadioRenderProps = AnyRecord;
-export const RadioRenderProps: AnyRecord = {};
+export const MeterContext: ReactAriaComponents.MeterContext = compatPlaceholder as ReactAriaComponents.MeterContext;
 
-export type RangeCalendarContext = AnyRecord;
-export const RangeCalendarContext: AnyRecord = {};
+export type MeterProps = ReactAriaComponents.MeterProps;
 
-export type RangeCalendarProps = AnyRecord;
-export const RangeCalendarProps: AnyRecord = {};
+export type MeterRenderProps = ReactAriaComponents.MeterRenderProps;
 
-export type RangeCalendarRenderProps = AnyRecord;
-export const RangeCalendarRenderProps: AnyRecord = {};
+export const Modal: ReactAriaComponents.Modal = compatPlaceholder as ReactAriaComponents.Modal;
 
-export type RangeCalendarState = AnyRecord;
-export const RangeCalendarState: AnyRecord = {};
+export const ModalContext: ReactAriaComponents.ModalContext = compatPlaceholder as ReactAriaComponents.ModalContext;
 
-export type RangeCalendarStateContext = AnyRecord;
-export const RangeCalendarStateContext: AnyRecord = {};
+export const ModalOverlay: ReactAriaComponents.ModalOverlay = compatPlaceholder as ReactAriaComponents.ModalOverlay;
 
-export type RangeValue = AnyRecord;
-export const RangeValue: AnyRecord = {};
+export type ModalOverlayProps = ReactAriaComponents.ModalOverlayProps;
 
-export type Rect = AnyRecord;
-export const Rect: AnyRecord = {};
+export type ModalRenderProps = ReactAriaComponents.ModalRenderProps;
 
-export type RenderProps = AnyRecord;
-export const RenderProps: AnyRecord = {};
+export const NumberField: ReactAriaComponents.NumberField = compatPlaceholder as ReactAriaComponents.NumberField;
 
-export type ResizableTableContainer = AnyRecord;
-export const ResizableTableContainer: AnyRecord = {};
+export const NumberFieldContext: ReactAriaComponents.NumberFieldContext = compatPlaceholder as ReactAriaComponents.NumberFieldContext;
 
-export type ResizableTableContainerProps = AnyRecord;
-export const ResizableTableContainerProps: AnyRecord = {};
+export type NumberFieldProps = ReactAriaComponents.NumberFieldProps;
 
-export type RootDropTarget = AnyRecord;
-export const RootDropTarget: AnyRecord = {};
+export type NumberFieldRenderProps = ReactAriaComponents.NumberFieldRenderProps;
 
-export type RootMenuTriggerState = AnyRecord;
-export const RootMenuTriggerState: AnyRecord = {};
+export type NumberFieldState = ReactAriaComponents.NumberFieldState;
 
-export type RootMenuTriggerStateContext = AnyRecord;
-export const RootMenuTriggerStateContext: AnyRecord = {};
+export const NumberFieldStateContext: ReactAriaComponents.NumberFieldStateContext = compatPlaceholder as ReactAriaComponents.NumberFieldStateContext;
 
-export type RouterConfig = AnyRecord;
-export const RouterConfig: AnyRecord = {};
+export const OverlayArrow: ReactAriaComponents.OverlayArrow = compatPlaceholder as ReactAriaComponents.OverlayArrow;
 
-export type RouterProvider = AnyRecord;
-export const RouterProvider: AnyRecord = {};
+export type OverlayArrowProps = ReactAriaComponents.OverlayArrowProps;
 
-export type Row = AnyRecord;
-export const Row: AnyRecord = {};
+export type OverlayArrowRenderProps = ReactAriaComponents.OverlayArrowRenderProps;
 
-export type RowProps = AnyRecord;
-export const RowProps: AnyRecord = {};
+export type OverlayTriggerState = ReactAriaComponents.OverlayTriggerState;
 
-export type RowRenderProps = AnyRecord;
-export const RowRenderProps: AnyRecord = {};
+export const OverlayTriggerStateContext: ReactAriaComponents.OverlayTriggerStateContext = compatPlaceholder as ReactAriaComponents.OverlayTriggerStateContext;
 
-export type SSRProvider = AnyRecord;
-export const SSRProvider: AnyRecord = {};
+export function parseColor(value: string): IColor {
+  return compatPlaceholder(value);
+}
 
-export type SearchFieldContext = AnyRecord;
-export const SearchFieldContext: AnyRecord = {};
+export type Point = ReactAriaComponents.Point;
+export const Point: ReactAriaComponents.Point = compatPlaceholder as ReactAriaComponents.Point;
 
-export type SearchFieldProps = AnyRecord;
-export const SearchFieldProps: AnyRecord = {};
+export const Popover: ReactAriaComponents.Popover = compatPlaceholder as ReactAriaComponents.Popover;
 
-export type SearchFieldRenderProps = AnyRecord;
-export const SearchFieldRenderProps: AnyRecord = {};
+export const PopoverContext: ReactAriaComponents.PopoverContext = compatPlaceholder as ReactAriaComponents.PopoverContext;
 
-export type SearchFieldState = AnyRecord;
-export const SearchFieldState: AnyRecord = {};
+export type PopoverProps = ReactAriaComponents.PopoverProps;
 
-export type Section = AnyRecord;
-export const Section: AnyRecord = {};
+export type PopoverRenderProps = ReactAriaComponents.PopoverRenderProps;
 
-export type SectionProps = AnyRecord;
-export const SectionProps: AnyRecord = {};
+export const Pressable: ReactAriaComponents.Pressable = compatPlaceholder as ReactAriaComponents.Pressable;
 
-export type Select = AnyRecord;
-export const Select: AnyRecord = {};
+export type PressEvent = ReactAriaComponents.PressEvent;
 
-export type SelectContext = AnyRecord;
-export const SelectContext: AnyRecord = {};
+export const ProgressBar: ReactAriaComponents.ProgressBar = compatPlaceholder as ReactAriaComponents.ProgressBar;
 
-export type SelectProps = AnyRecord;
-export const SelectProps: AnyRecord = {};
+export const ProgressBarContext: ReactAriaComponents.ProgressBarContext = compatPlaceholder as ReactAriaComponents.ProgressBarContext;
 
-export type SelectRenderProps = AnyRecord;
-export const SelectRenderProps: AnyRecord = {};
+export type ProgressBarProps = ReactAriaComponents.ProgressBarProps;
 
-export type SelectState = AnyRecord;
-export const SelectState: AnyRecord = {};
+export type ProgressBarRenderProps = ReactAriaComponents.ProgressBarRenderProps;
 
-export type SelectStateContext = AnyRecord;
-export const SelectStateContext: AnyRecord = {};
+export const Provider: ReactAriaComponents.Provider = compatPlaceholder as ReactAriaComponents.Provider;
 
-export type SelectValue = AnyRecord;
-export const SelectValue: AnyRecord = {};
+export type QueuedToast = ReactAriaComponents.QueuedToast;
 
-export type SelectValueContext = AnyRecord;
-export const SelectValueContext: AnyRecord = {};
+export const Radio: ReactAriaComponents.Radio = compatPlaceholder as ReactAriaComponents.Radio;
 
-export type SelectValueProps = AnyRecord;
-export const SelectValueProps: AnyRecord = {};
+export const RadioContext: ReactAriaComponents.RadioContext = compatPlaceholder as ReactAriaComponents.RadioContext;
 
-export type SelectValueRenderProps = AnyRecord;
-export const SelectValueRenderProps: AnyRecord = {};
+export const RadioGroup: ReactAriaComponents.RadioGroup = compatPlaceholder as ReactAriaComponents.RadioGroup;
 
-export type SelectableCollectionContext = AnyRecord;
-export const SelectableCollectionContext: AnyRecord = {};
+export const RadioGroupContext: ReactAriaComponents.RadioGroupContext = compatPlaceholder as ReactAriaComponents.RadioGroupContext;
 
-export type SelectableCollectionContextValue = AnyRecord;
-export const SelectableCollectionContextValue: AnyRecord = {};
+export type RadioGroupProps = ReactAriaComponents.RadioGroupProps;
 
-export type Selection = AnyRecord;
-export const Selection: AnyRecord = {};
+export type RadioGroupRenderProps = ReactAriaComponents.RadioGroupRenderProps;
 
-export type SelectionIndicator = AnyRecord;
-export const SelectionIndicator: AnyRecord = {};
+export type RadioGroupState = ReactAriaComponents.RadioGroupState;
 
-export type SelectionIndicatorContext = AnyRecord;
-export const SelectionIndicatorContext: AnyRecord = {};
+export const RadioGroupStateContext: ReactAriaComponents.RadioGroupStateContext = compatPlaceholder as ReactAriaComponents.RadioGroupStateContext;
 
-export type SelectionIndicatorProps = AnyRecord;
-export const SelectionIndicatorProps: AnyRecord = {};
+export type RadioProps = ReactAriaComponents.RadioProps;
 
-export type SelectionMode = AnyRecord;
-export const SelectionMode: AnyRecord = {};
+export type RadioRenderProps = ReactAriaComponents.RadioRenderProps;
 
-export type Separator = AnyRecord;
-export const Separator: AnyRecord = {};
+export const RangeCalendar: ReactAriaComponents.RangeCalendar = compatPlaceholder as ReactAriaComponents.RangeCalendar;
 
-export type SeparatorContext = AnyRecord;
-export const SeparatorContext: AnyRecord = {};
+export const RangeCalendarContext: ReactAriaComponents.RangeCalendarContext = compatPlaceholder as ReactAriaComponents.RangeCalendarContext;
 
-export type SeparatorProps = AnyRecord;
-export const SeparatorProps: AnyRecord = {};
+export type RangeCalendarProps = ReactAriaComponents.RangeCalendarProps;
 
-export type SharedElement = AnyRecord;
-export const SharedElement: AnyRecord = {};
+export type RangeCalendarRenderProps = ReactAriaComponents.RangeCalendarRenderProps;
 
-export type SharedElementProps = AnyRecord;
-export const SharedElementProps: AnyRecord = {};
+export type RangeCalendarState = ReactAriaComponents.RangeCalendarState;
 
-export type SharedElementRenderProps = AnyRecord;
-export const SharedElementRenderProps: AnyRecord = {};
+export const RangeCalendarStateContext: ReactAriaComponents.RangeCalendarStateContext = compatPlaceholder as ReactAriaComponents.RangeCalendarStateContext;
 
-export type SharedElementTransition = AnyRecord;
-export const SharedElementTransition: AnyRecord = {};
+export type RangeValue = ReactAriaComponents.RangeValue;
 
-export type SharedElementTransitionProps = AnyRecord;
-export const SharedElementTransitionProps: AnyRecord = {};
+export type Rect = ReactAriaComponents.Rect;
+export const Rect: ReactAriaComponents.Rect = compatPlaceholder as ReactAriaComponents.Rect;
 
-export type Size = AnyRecord;
-export const Size: AnyRecord = {};
+export type RenderProps = ReactAriaComponents.RenderProps;
 
-export type SliderContext = AnyRecord;
-export const SliderContext: AnyRecord = {};
+export const ResizableTableContainer: ReactAriaComponents.ResizableTableContainer = compatPlaceholder as ReactAriaComponents.ResizableTableContainer;
 
-export type SliderOutput = AnyRecord;
-export const SliderOutput: AnyRecord = {};
+export type ResizableTableContainerProps = ReactAriaComponents.ResizableTableContainerProps;
 
-export type SliderOutputContext = AnyRecord;
-export const SliderOutputContext: AnyRecord = {};
+export type RootDropTarget = ReactAriaComponents.RootDropTarget;
 
-export type SliderOutputProps = AnyRecord;
-export const SliderOutputProps: AnyRecord = {};
+export type RootMenuTriggerState = ReactAriaComponents.RootMenuTriggerState;
 
-export type SliderProps = AnyRecord;
-export const SliderProps: AnyRecord = {};
+export const RootMenuTriggerStateContext: ReactAriaComponents.RootMenuTriggerStateContext = compatPlaceholder as ReactAriaComponents.RootMenuTriggerStateContext;
 
-export type SliderRenderProps = AnyRecord;
-export const SliderRenderProps: AnyRecord = {};
+export type RouterConfig = ReactAriaComponents.RouterConfig;
 
-export type SliderState = AnyRecord;
-export const SliderState: AnyRecord = {};
+export const RouterProvider: ReactAriaComponents.RouterProvider = compatPlaceholder as ReactAriaComponents.RouterProvider;
 
-export type SliderStateContext = AnyRecord;
-export const SliderStateContext: AnyRecord = {};
+export const Row: ReactAriaComponents.Row = compatPlaceholder as ReactAriaComponents.Row;
 
-export type SliderThumb = AnyRecord;
-export const SliderThumb: AnyRecord = {};
+export type RowProps = ReactAriaComponents.RowProps;
 
-export type SliderThumbProps = AnyRecord;
-export const SliderThumbProps: AnyRecord = {};
+export type RowRenderProps = ReactAriaComponents.RowRenderProps;
 
-export type SliderThumbRenderProps = AnyRecord;
-export const SliderThumbRenderProps: AnyRecord = {};
+export const SearchField: ReactAriaComponents.SearchField = compatPlaceholder as ReactAriaComponents.SearchField;
 
-export type SliderTrack = AnyRecord;
-export const SliderTrack: AnyRecord = {};
+export const SearchFieldContext: ReactAriaComponents.SearchFieldContext = compatPlaceholder as ReactAriaComponents.SearchFieldContext;
 
-export type SliderTrackContext = AnyRecord;
-export const SliderTrackContext: AnyRecord = {};
+export type SearchFieldProps = ReactAriaComponents.SearchFieldProps;
 
-export type SliderTrackProps = AnyRecord;
-export const SliderTrackProps: AnyRecord = {};
+export type SearchFieldRenderProps = ReactAriaComponents.SearchFieldRenderProps;
 
-export type SliderTrackRenderProps = AnyRecord;
-export const SliderTrackRenderProps: AnyRecord = {};
+export type SearchFieldState = ReactAriaComponents.SearchFieldState;
 
-export type SlotProps = AnyRecord;
-export const SlotProps: AnyRecord = {};
+export const Section: ReactAriaComponents.Section = compatPlaceholder as ReactAriaComponents.Section;
 
-export type SortDescriptor = AnyRecord;
-export const SortDescriptor: AnyRecord = {};
+export type SectionProps = ReactAriaComponents.SectionProps;
 
-export type SortDirection = AnyRecord;
-export const SortDirection: AnyRecord = {};
+export const Select: ReactAriaComponents.Select = compatPlaceholder as ReactAriaComponents.Select;
 
-export type StyleRenderProps = AnyRecord;
-export const StyleRenderProps: AnyRecord = {};
+export const SelectableCollectionContext: ReactAriaComponents.SelectableCollectionContext = compatPlaceholder as ReactAriaComponents.SelectableCollectionContext;
 
-export type SubmenuTrigger = AnyRecord;
-export const SubmenuTrigger: AnyRecord = {};
+export type SelectableCollectionContextValue = ReactAriaComponents.SelectableCollectionContextValue;
 
-export type SubmenuTriggerProps = AnyRecord;
-export const SubmenuTriggerProps: AnyRecord = {};
+export const SelectContext: ReactAriaComponents.SelectContext = compatPlaceholder as ReactAriaComponents.SelectContext;
 
-export type SwitchContext = AnyRecord;
-export const SwitchContext: AnyRecord = {};
+export type Selection = ReactAriaComponents.Selection;
 
-export type SwitchProps = AnyRecord;
-export const SwitchProps: AnyRecord = {};
+export const SelectionIndicator: ReactAriaComponents.SelectionIndicator = compatPlaceholder as ReactAriaComponents.SelectionIndicator;
 
-export type SwitchRenderProps = AnyRecord;
-export const SwitchRenderProps: AnyRecord = {};
+export const SelectionIndicatorContext: ReactAriaComponents.SelectionIndicatorContext = compatPlaceholder as ReactAriaComponents.SelectionIndicatorContext;
 
-export type Tab = AnyRecord;
-export const Tab: AnyRecord = {};
+export type SelectionIndicatorProps = ReactAriaComponents.SelectionIndicatorProps;
 
-export type TabList = AnyRecord;
-export const TabList: AnyRecord = {};
+export type SelectionMode = ReactAriaComponents.SelectionMode;
 
-export type TabListProps = AnyRecord;
-export const TabListProps: AnyRecord = {};
+export type SelectProps = ReactAriaComponents.SelectProps;
 
-export type TabListRenderProps = AnyRecord;
-export const TabListRenderProps: AnyRecord = {};
+export type SelectRenderProps = ReactAriaComponents.SelectRenderProps;
 
-export type TabListState = AnyRecord;
-export const TabListState: AnyRecord = {};
+export type SelectState = ReactAriaComponents.SelectState;
 
-export type TabListStateContext = AnyRecord;
-export const TabListStateContext: AnyRecord = {};
+export const SelectStateContext: ReactAriaComponents.SelectStateContext = compatPlaceholder as ReactAriaComponents.SelectStateContext;
 
-export type TabPanel = AnyRecord;
-export const TabPanel: AnyRecord = {};
+export const SelectValue: ReactAriaComponents.SelectValue = compatPlaceholder as ReactAriaComponents.SelectValue;
 
-export type TabPanelProps = AnyRecord;
-export const TabPanelProps: AnyRecord = {};
+export const SelectValueContext: ReactAriaComponents.SelectValueContext = compatPlaceholder as ReactAriaComponents.SelectValueContext;
 
-export type TabPanelRenderProps = AnyRecord;
-export const TabPanelRenderProps: AnyRecord = {};
+export type SelectValueProps = ReactAriaComponents.SelectValueProps;
 
-export type TabPanels = AnyRecord;
-export const TabPanels: AnyRecord = {};
+export type SelectValueRenderProps = ReactAriaComponents.SelectValueRenderProps;
 
-export type TabPanelsProps = AnyRecord;
-export const TabPanelsProps: AnyRecord = {};
+export const Separator: ReactAriaComponents.Separator = compatPlaceholder as ReactAriaComponents.Separator;
 
-export type TabProps = AnyRecord;
-export const TabProps: AnyRecord = {};
+export const SeparatorContext: ReactAriaComponents.SeparatorContext = compatPlaceholder as ReactAriaComponents.SeparatorContext;
 
-export type TabRenderProps = AnyRecord;
-export const TabRenderProps: AnyRecord = {};
+export type SeparatorProps = ReactAriaComponents.SeparatorProps;
 
-export type TableBody = AnyRecord;
-export const TableBody: AnyRecord = {};
+export const SharedElement: ReactAriaComponents.SharedElement = compatPlaceholder as ReactAriaComponents.SharedElement;
 
-export type TableBodyProps = AnyRecord;
-export const TableBodyProps: AnyRecord = {};
+export type SharedElementProps = ReactAriaComponents.SharedElementProps;
 
-export type TableBodyRenderProps = AnyRecord;
-export const TableBodyRenderProps: AnyRecord = {};
+export type SharedElementRenderProps = ReactAriaComponents.SharedElementRenderProps;
 
-export type TableColumnResizeStateContext = AnyRecord;
-export const TableColumnResizeStateContext: AnyRecord = {};
+export const SharedElementTransition: ReactAriaComponents.SharedElementTransition = compatPlaceholder as ReactAriaComponents.SharedElementTransition;
 
-export type TableContext = AnyRecord;
-export const TableContext: AnyRecord = {};
+export type SharedElementTransitionProps = ReactAriaComponents.SharedElementTransitionProps;
 
-export type TableHeader = AnyRecord;
-export const TableHeader: AnyRecord = {};
+export type Size = ReactAriaComponents.Size;
+export const Size: ReactAriaComponents.Size = compatPlaceholder as ReactAriaComponents.Size;
 
-export type TableHeaderProps = AnyRecord;
-export const TableHeaderProps: AnyRecord = {};
+export const Slider: ReactAriaComponents.Slider = compatPlaceholder as ReactAriaComponents.Slider;
 
-export type TableLayout = AnyRecord;
-export const TableLayout: AnyRecord = {};
+export const SliderContext: ReactAriaComponents.SliderContext = compatPlaceholder as ReactAriaComponents.SliderContext;
 
-export type TableLoadMoreItem = AnyRecord;
-export const TableLoadMoreItem: AnyRecord = {};
+export const SliderOutput: ReactAriaComponents.SliderOutput = compatPlaceholder as ReactAriaComponents.SliderOutput;
 
-export type TableLoadMoreItemProps = AnyRecord;
-export const TableLoadMoreItemProps: AnyRecord = {};
+export const SliderOutputContext: ReactAriaComponents.SliderOutputContext = compatPlaceholder as ReactAriaComponents.SliderOutputContext;
 
-export type TableProps = AnyRecord;
-export const TableProps: AnyRecord = {};
+export type SliderOutputProps = ReactAriaComponents.SliderOutputProps;
 
-export type TableRenderProps = AnyRecord;
-export const TableRenderProps: AnyRecord = {};
+export type SliderProps = ReactAriaComponents.SliderProps;
 
-export type TableState = AnyRecord;
-export const TableState: AnyRecord = {};
+export type SliderRenderProps = ReactAriaComponents.SliderRenderProps;
 
-export type TableStateContext = AnyRecord;
-export const TableStateContext: AnyRecord = {};
+export type SliderState = ReactAriaComponents.SliderState;
 
-export type Tabs = AnyRecord;
-export const Tabs: AnyRecord = {};
+export const SliderStateContext: ReactAriaComponents.SliderStateContext = compatPlaceholder as ReactAriaComponents.SliderStateContext;
 
-export type TabsContext = AnyRecord;
-export const TabsContext: AnyRecord = {};
+export const SliderThumb: ReactAriaComponents.SliderThumb = compatPlaceholder as ReactAriaComponents.SliderThumb;
 
-export type TabsProps = AnyRecord;
-export const TabsProps: AnyRecord = {};
+export type SliderThumbProps = ReactAriaComponents.SliderThumbProps;
 
-export type TabsRenderProps = AnyRecord;
-export const TabsRenderProps: AnyRecord = {};
+export type SliderThumbRenderProps = ReactAriaComponents.SliderThumbRenderProps;
 
-export type Tag = AnyRecord;
-export const Tag: AnyRecord = {};
+export const SliderTrack: ReactAriaComponents.SliderTrack = compatPlaceholder as ReactAriaComponents.SliderTrack;
 
-export type TagGroup = AnyRecord;
-export const TagGroup: AnyRecord = {};
+export const SliderTrackContext: ReactAriaComponents.SliderTrackContext = compatPlaceholder as ReactAriaComponents.SliderTrackContext;
 
-export type TagGroupContext = AnyRecord;
-export const TagGroupContext: AnyRecord = {};
+export type SliderTrackProps = ReactAriaComponents.SliderTrackProps;
 
-export type TagGroupProps = AnyRecord;
-export const TagGroupProps: AnyRecord = {};
+export type SliderTrackRenderProps = ReactAriaComponents.SliderTrackRenderProps;
 
-export type TagList = AnyRecord;
-export const TagList: AnyRecord = {};
+export type SlotProps = ReactAriaComponents.SlotProps;
 
-export type TagListContext = AnyRecord;
-export const TagListContext: AnyRecord = {};
+export type SortDescriptor = ReactAriaComponents.SortDescriptor;
 
-export type TagListProps = AnyRecord;
-export const TagListProps: AnyRecord = {};
+export type SortDirection = ReactAriaComponents.SortDirection;
 
-export type TagListRenderProps = AnyRecord;
-export const TagListRenderProps: AnyRecord = {};
+export const SSRProvider: ReactAriaComponents.SSRProvider = compatPlaceholder as ReactAriaComponents.SSRProvider;
 
-export type TagProps = AnyRecord;
-export const TagProps: AnyRecord = {};
+export type StyleRenderProps = ReactAriaComponents.StyleRenderProps;
 
-export type TagRenderProps = AnyRecord;
-export const TagRenderProps: AnyRecord = {};
+export const SubmenuTrigger: ReactAriaComponents.SubmenuTrigger = compatPlaceholder as ReactAriaComponents.SubmenuTrigger;
 
-export type TextArea = AnyRecord;
-export const TextArea: AnyRecord = {};
+export type SubmenuTriggerProps = ReactAriaComponents.SubmenuTriggerProps;
 
-export type TextAreaContext = AnyRecord;
-export const TextAreaContext: AnyRecord = {};
+export const Switch: ReactAriaComponents.Switch = compatPlaceholder as ReactAriaComponents.Switch;
 
-export type TextAreaProps = AnyRecord;
-export const TextAreaProps: AnyRecord = {};
+export const SwitchContext: ReactAriaComponents.SwitchContext = compatPlaceholder as ReactAriaComponents.SwitchContext;
 
-export type TextContext = AnyRecord;
-export const TextContext: AnyRecord = {};
+export type SwitchProps = ReactAriaComponents.SwitchProps;
 
-export type TextDropItem = AnyRecord;
-export const TextDropItem: AnyRecord = {};
+export type SwitchRenderProps = ReactAriaComponents.SwitchRenderProps;
 
-export type TextFieldContext = AnyRecord;
-export const TextFieldContext: AnyRecord = {};
+export const Tab: ReactAriaComponents.Tab = compatPlaceholder as ReactAriaComponents.Tab;
 
-export type TextFieldProps = AnyRecord;
-export const TextFieldProps: AnyRecord = {};
+export const Table: ReactAriaComponents.Table = compatPlaceholder as ReactAriaComponents.Table;
 
-export type TextFieldRenderProps = AnyRecord;
-export const TextFieldRenderProps: AnyRecord = {};
+export const TableBody: ReactAriaComponents.TableBody = compatPlaceholder as ReactAriaComponents.TableBody;
 
-export type TextProps = AnyRecord;
-export const TextProps: AnyRecord = {};
+export type TableBodyProps = ReactAriaComponents.TableBodyProps;
 
-export type TimeFieldContext = AnyRecord;
-export const TimeFieldContext: AnyRecord = {};
+export type TableBodyRenderProps = ReactAriaComponents.TableBodyRenderProps;
 
-export type TimeFieldProps = AnyRecord;
-export const TimeFieldProps: AnyRecord = {};
+export const TableColumnResizeStateContext: ReactAriaComponents.TableColumnResizeStateContext = compatPlaceholder as ReactAriaComponents.TableColumnResizeStateContext;
 
-export type TimeFieldState = AnyRecord;
-export const TimeFieldState: AnyRecord = {};
+export const TableContext: ReactAriaComponents.TableContext = compatPlaceholder as ReactAriaComponents.TableContext;
 
-export type TimeFieldStateContext = AnyRecord;
-export const TimeFieldStateContext: AnyRecord = {};
+export const TableHeader: ReactAriaComponents.TableHeader = compatPlaceholder as ReactAriaComponents.TableHeader;
 
-export type TimeValue = AnyRecord;
-export const TimeValue: AnyRecord = {};
+export type TableHeaderProps = ReactAriaComponents.TableHeaderProps;
 
-export type ToastListProps = AnyRecord;
-export const ToastListProps: AnyRecord = {};
+export type TableLayout = ReactAriaComponents.TableLayout;
+export const TableLayout: ReactAriaComponents.TableLayout = compatPlaceholder as ReactAriaComponents.TableLayout;
 
-export type ToastOptions = AnyRecord;
-export const ToastOptions: AnyRecord = {};
+export const TableLoadMoreItem: ReactAriaComponents.TableLoadMoreItem = compatPlaceholder as ReactAriaComponents.TableLoadMoreItem;
 
-export type ToastProps = AnyRecord;
-export const ToastProps: AnyRecord = {};
+export type TableLoadMoreItemProps = ReactAriaComponents.TableLoadMoreItemProps;
 
-export type ToastRegionProps = AnyRecord;
-export const ToastRegionProps: AnyRecord = {};
+export type TableProps = ReactAriaComponents.TableProps;
 
-export type ToastRegionRenderProps = AnyRecord;
-export const ToastRegionRenderProps: AnyRecord = {};
+export type TableRenderProps = ReactAriaComponents.TableRenderProps;
 
-export type ToastRenderProps = AnyRecord;
-export const ToastRenderProps: AnyRecord = {};
+export type TableState = ReactAriaComponents.TableState;
 
-export type ToastState = AnyRecord;
-export const ToastState: AnyRecord = {};
+export const TableStateContext: ReactAriaComponents.TableStateContext = compatPlaceholder as ReactAriaComponents.TableStateContext;
 
-export type ToggleButton = AnyRecord;
-export const ToggleButton: AnyRecord = {};
+export const TabList: ReactAriaComponents.TabList = compatPlaceholder as ReactAriaComponents.TabList;
 
-export type ToggleButtonContext = AnyRecord;
-export const ToggleButtonContext: AnyRecord = {};
+export type TabListProps = ReactAriaComponents.TabListProps;
 
-export type ToggleButtonGroup = AnyRecord;
-export const ToggleButtonGroup: AnyRecord = {};
+export type TabListRenderProps = ReactAriaComponents.TabListRenderProps;
 
-export type ToggleButtonGroupContext = AnyRecord;
-export const ToggleButtonGroupContext: AnyRecord = {};
+export type TabListState = ReactAriaComponents.TabListState;
 
-export type ToggleButtonGroupProps = AnyRecord;
-export const ToggleButtonGroupProps: AnyRecord = {};
+export const TabListStateContext: ReactAriaComponents.TabListStateContext = compatPlaceholder as ReactAriaComponents.TabListStateContext;
 
-export type ToggleButtonGroupRenderProps = AnyRecord;
-export const ToggleButtonGroupRenderProps: AnyRecord = {};
+export const TabPanel: ReactAriaComponents.TabPanel = compatPlaceholder as ReactAriaComponents.TabPanel;
 
-export type ToggleButtonProps = AnyRecord;
-export const ToggleButtonProps: AnyRecord = {};
+export type TabPanelProps = ReactAriaComponents.TabPanelProps;
 
-export type ToggleButtonRenderProps = AnyRecord;
-export const ToggleButtonRenderProps: AnyRecord = {};
+export type TabPanelRenderProps = ReactAriaComponents.TabPanelRenderProps;
 
-export type ToggleGroupState = AnyRecord;
-export const ToggleGroupState: AnyRecord = {};
+export const TabPanels: ReactAriaComponents.TabPanels = compatPlaceholder as ReactAriaComponents.TabPanels;
 
-export type ToggleGroupStateContext = AnyRecord;
-export const ToggleGroupStateContext: AnyRecord = {};
+export type TabPanelsProps = ReactAriaComponents.TabPanelsProps;
 
-export type ToggleState = AnyRecord;
-export const ToggleState: AnyRecord = {};
+export type TabProps = ReactAriaComponents.TabProps;
 
-export type Toolbar = AnyRecord;
-export const Toolbar: AnyRecord = {};
+export type TabRenderProps = ReactAriaComponents.TabRenderProps;
 
-export type ToolbarContext = AnyRecord;
-export const ToolbarContext: AnyRecord = {};
+export const Tabs: ReactAriaComponents.Tabs = compatPlaceholder as ReactAriaComponents.Tabs;
 
-export type ToolbarProps = AnyRecord;
-export const ToolbarProps: AnyRecord = {};
+export const TabsContext: ReactAriaComponents.TabsContext = compatPlaceholder as ReactAriaComponents.TabsContext;
 
-export type ToolbarRenderProps = AnyRecord;
-export const ToolbarRenderProps: AnyRecord = {};
+export type TabsProps = ReactAriaComponents.TabsProps;
 
-export type Tooltip = AnyRecord;
-export const Tooltip: AnyRecord = {};
+export type TabsRenderProps = ReactAriaComponents.TabsRenderProps;
 
-export type TooltipContext = AnyRecord;
-export const TooltipContext: AnyRecord = {};
+export const Tag: ReactAriaComponents.Tag = compatPlaceholder as ReactAriaComponents.Tag;
 
-export type TooltipProps = AnyRecord;
-export const TooltipProps: AnyRecord = {};
+export const TagGroup: ReactAriaComponents.TagGroup = compatPlaceholder as ReactAriaComponents.TagGroup;
 
-export type TooltipRenderProps = AnyRecord;
-export const TooltipRenderProps: AnyRecord = {};
+export const TagGroupContext: ReactAriaComponents.TagGroupContext = compatPlaceholder as ReactAriaComponents.TagGroupContext;
 
-export type TooltipTrigger = AnyRecord;
-export const TooltipTrigger: AnyRecord = {};
+export type TagGroupProps = ReactAriaComponents.TagGroupProps;
 
-export type TooltipTriggerComponentProps = AnyRecord;
-export const TooltipTriggerComponentProps: AnyRecord = {};
+export const TagList: ReactAriaComponents.TagList = compatPlaceholder as ReactAriaComponents.TagList;
 
-export type TooltipTriggerState = AnyRecord;
-export const TooltipTriggerState: AnyRecord = {};
+export const TagListContext: ReactAriaComponents.TagListContext = compatPlaceholder as ReactAriaComponents.TagListContext;
 
-export type TooltipTriggerStateContext = AnyRecord;
-export const TooltipTriggerStateContext: AnyRecord = {};
+export type TagListProps = ReactAriaComponents.TagListProps;
 
-export type TreeContext = AnyRecord;
-export const TreeContext: AnyRecord = {};
+export type TagListRenderProps = ReactAriaComponents.TagListRenderProps;
 
-export type TreeData = AnyRecord;
-export const TreeData: AnyRecord = {};
+export type TagProps = ReactAriaComponents.TagProps;
 
-export type TreeHeader = AnyRecord;
-export const TreeHeader: AnyRecord = {};
+export type TagRenderProps = ReactAriaComponents.TagRenderProps;
 
-export type TreeItem = AnyRecord;
-export const TreeItem: AnyRecord = {};
+export const Text: ReactAriaComponents.Text = compatPlaceholder as ReactAriaComponents.Text;
 
-export type TreeItemContent = AnyRecord;
-export const TreeItemContent: AnyRecord = {};
+export const TextArea: ReactAriaComponents.TextArea = compatPlaceholder as ReactAriaComponents.TextArea;
 
-export type TreeItemContentProps = AnyRecord;
-export const TreeItemContentProps: AnyRecord = {};
+export const TextAreaContext: ReactAriaComponents.TextAreaContext = compatPlaceholder as ReactAriaComponents.TextAreaContext;
 
-export type TreeItemContentRenderProps = AnyRecord;
-export const TreeItemContentRenderProps: AnyRecord = {};
+export type TextAreaProps = ReactAriaComponents.TextAreaProps;
 
-export type TreeItemProps = AnyRecord;
-export const TreeItemProps: AnyRecord = {};
+export const TextContext: ReactAriaComponents.TextContext = compatPlaceholder as ReactAriaComponents.TextContext;
 
-export type TreeItemRenderProps = AnyRecord;
-export const TreeItemRenderProps: AnyRecord = {};
+export type TextDropItem = ReactAriaComponents.TextDropItem;
 
-export type TreeLoadMoreItem = AnyRecord;
-export const TreeLoadMoreItem: AnyRecord = {};
+export const TextField: ReactAriaComponents.TextField = compatPlaceholder as ReactAriaComponents.TextField;
 
-export type TreeLoadMoreItemProps = AnyRecord;
-export const TreeLoadMoreItemProps: AnyRecord = {};
+export const TextFieldContext: ReactAriaComponents.TextFieldContext = compatPlaceholder as ReactAriaComponents.TextFieldContext;
 
-export type TreeLoadMoreItemRenderProps = AnyRecord;
-export const TreeLoadMoreItemRenderProps: AnyRecord = {};
+export type TextFieldProps = ReactAriaComponents.TextFieldProps;
 
-export type TreeProps = AnyRecord;
-export const TreeProps: AnyRecord = {};
+export type TextFieldRenderProps = ReactAriaComponents.TextFieldRenderProps;
 
-export type TreeRenderProps = AnyRecord;
-export const TreeRenderProps: AnyRecord = {};
+export type TextProps = ReactAriaComponents.TextProps;
 
-export type TreeSection = AnyRecord;
-export const TreeSection: AnyRecord = {};
+export const TimeField: ReactAriaComponents.TimeField = compatPlaceholder as ReactAriaComponents.TimeField;
 
-export type TreeState = AnyRecord;
-export const TreeState: AnyRecord = {};
+export const TimeFieldContext: ReactAriaComponents.TimeFieldContext = compatPlaceholder as ReactAriaComponents.TimeFieldContext;
 
-export type TreeStateContext = AnyRecord;
-export const TreeStateContext: AnyRecord = {};
+export type TimeFieldProps = ReactAriaComponents.TimeFieldProps;
 
-export type UNSTABLE_Toast = AnyRecord;
-export const UNSTABLE_Toast: AnyRecord = {};
+export type TimeFieldState = ReactAriaComponents.TimeFieldState;
 
-export type UNSTABLE_ToastContent = AnyRecord;
-export const UNSTABLE_ToastContent: AnyRecord = {};
+export const TimeFieldStateContext: ReactAriaComponents.TimeFieldStateContext = compatPlaceholder as ReactAriaComponents.TimeFieldStateContext;
 
-export type UNSTABLE_ToastList = AnyRecord;
-export const UNSTABLE_ToastList: AnyRecord = {};
+export type TimeValue = ReactAriaComponents.TimeValue;
 
-export type UNSTABLE_ToastQueue = AnyRecord;
-export const UNSTABLE_ToastQueue: AnyRecord = {};
+export type ToastListProps = ReactAriaComponents.ToastListProps;
 
-export type UNSTABLE_ToastRegion = AnyRecord;
-export const UNSTABLE_ToastRegion: AnyRecord = {};
+export type ToastOptions = ReactAriaComponents.ToastOptions;
 
-export type UNSTABLE_ToastStateContext = AnyRecord;
-export const UNSTABLE_ToastStateContext: AnyRecord = {};
+export type ToastProps = ReactAriaComponents.ToastProps;
 
-export type ValidationResult = AnyRecord;
-export const ValidationResult: AnyRecord = {};
+export type ToastRegionProps = ReactAriaComponents.ToastRegionProps;
 
-export type Virtualizer = AnyRecord;
-export const Virtualizer: AnyRecord = {};
+export type ToastRegionRenderProps = ReactAriaComponents.ToastRegionRenderProps;
 
-export type VirtualizerProps = AnyRecord;
-export const VirtualizerProps: AnyRecord = {};
+export type ToastRenderProps = ReactAriaComponents.ToastRenderProps;
 
-export type VisuallyHidden = AnyRecord;
-export const VisuallyHidden: AnyRecord = {};
+export type ToastState = ReactAriaComponents.ToastState;
 
-export type WaterfallLayout = AnyRecord;
-export const WaterfallLayout: AnyRecord = {};
+export const ToggleButton: ReactAriaComponents.ToggleButton = compatPlaceholder as ReactAriaComponents.ToggleButton;
 
-export type WaterfallLayoutOptions = AnyRecord;
-export const WaterfallLayoutOptions: AnyRecord = {};
+export const ToggleButtonContext: ReactAriaComponents.ToggleButtonContext = compatPlaceholder as ReactAriaComponents.ToggleButtonContext;
 
-export type composeRenderProps = AnyRecord;
-export const composeRenderProps: AnyFunction = () => undefined;
+export const ToggleButtonGroup: ReactAriaComponents.ToggleButtonGroup = compatPlaceholder as ReactAriaComponents.ToggleButtonGroup;
 
-export type createBranchComponent = AnyRecord;
-export const createBranchComponent: AnyFunction = () => undefined;
+export const ToggleButtonGroupContext: ReactAriaComponents.ToggleButtonGroupContext = compatPlaceholder as ReactAriaComponents.ToggleButtonGroupContext;
 
-export type createLeafComponent = AnyRecord;
-export const createLeafComponent: AnyFunction = () => undefined;
+export type ToggleButtonGroupProps = ReactAriaComponents.ToggleButtonGroupProps;
 
-export type getColorChannels = AnyRecord;
-export const getColorChannels: AnyFunction = () => undefined;
+export type ToggleButtonGroupRenderProps = ReactAriaComponents.ToggleButtonGroupRenderProps;
 
-export type isDirectoryDropItem = AnyRecord;
-export const isDirectoryDropItem: AnyFunction = () => undefined;
+export type ToggleButtonProps = ReactAriaComponents.ToggleButtonProps;
 
-export type isFileDropItem = AnyRecord;
-export const isFileDropItem: AnyFunction = () => undefined;
+export type ToggleButtonRenderProps = ReactAriaComponents.ToggleButtonRenderProps;
 
-export type isRTL = AnyRecord;
-export const isRTL: AnyFunction = () => undefined;
+export type ToggleGroupState = ReactAriaComponents.ToggleGroupState;
 
-export type isTextDropItem = AnyRecord;
-export const isTextDropItem: AnyFunction = () => undefined;
+export const ToggleGroupStateContext: ReactAriaComponents.ToggleGroupStateContext = compatPlaceholder as ReactAriaComponents.ToggleGroupStateContext;
 
-export type parseColor = AnyRecord;
-export const parseColor: AnyFunction = () => undefined;
+export type ToggleState = ReactAriaComponents.ToggleState;
 
-export type useAsyncList = AnyRecord;
-export const useAsyncList: AnyFunction = () => undefined;
+export const Toolbar: ReactAriaComponents.Toolbar = compatPlaceholder as ReactAriaComponents.Toolbar;
 
-export type useContextProps = AnyRecord;
-export const useContextProps: AnyFunction = () => undefined;
+export const ToolbarContext: ReactAriaComponents.ToolbarContext = compatPlaceholder as ReactAriaComponents.ToolbarContext;
 
-export type useDrag = AnyRecord;
-export const useDrag: AnyFunction = () => undefined;
+export type ToolbarProps = ReactAriaComponents.ToolbarProps;
 
-export type useDragAndDrop = AnyRecord;
-export const useDragAndDrop: AnyFunction = () => undefined;
+export type ToolbarRenderProps = ReactAriaComponents.ToolbarRenderProps;
 
-export type useDrop = AnyRecord;
-export const useDrop: AnyFunction = () => undefined;
+export const Tooltip: ReactAriaComponents.Tooltip = compatPlaceholder as ReactAriaComponents.Tooltip;
 
-export type useFilter = AnyRecord;
-export const useFilter: AnyFunction = () => undefined;
+export const TooltipContext: ReactAriaComponents.TooltipContext = compatPlaceholder as ReactAriaComponents.TooltipContext;
 
-export type useListData = AnyRecord;
-export const useListData: AnyFunction = () => undefined;
+export type TooltipProps = ReactAriaComponents.TooltipProps;
 
-export type useLocale = AnyRecord;
-export const useLocale: AnyFunction = () => undefined;
+export type TooltipRenderProps = ReactAriaComponents.TooltipRenderProps;
 
-export type useRenderProps = AnyRecord;
-export const useRenderProps: AnyFunction = () => undefined;
+export const TooltipTrigger: ReactAriaComponents.TooltipTrigger = compatPlaceholder as ReactAriaComponents.TooltipTrigger;
 
-export type useSlottedContext = AnyRecord;
-export const useSlottedContext: AnyFunction = () => undefined;
+export type TooltipTriggerComponentProps = ReactAriaComponents.TooltipTriggerComponentProps;
 
-export type useTableOptions = AnyRecord;
-export const useTableOptions: AnyFunction = () => undefined;
+export type TooltipTriggerState = ReactAriaComponents.TooltipTriggerState;
 
-export type useTreeData = AnyRecord;
-export const useTreeData: AnyFunction = () => undefined;
+export const TooltipTriggerStateContext: ReactAriaComponents.TooltipTriggerStateContext = compatPlaceholder as ReactAriaComponents.TooltipTriggerStateContext;
 
+export const Tree: ReactAriaComponents.Tree = compatPlaceholder as ReactAriaComponents.Tree;
+
+export const TreeContext: ReactAriaComponents.TreeContext = compatPlaceholder as ReactAriaComponents.TreeContext;
+
+export type TreeData = ReactAriaComponents.TreeData;
+
+export const TreeHeader: ReactAriaComponents.TreeHeader = compatPlaceholder as ReactAriaComponents.TreeHeader;
+
+export const TreeItem: ReactAriaComponents.TreeItem = compatPlaceholder as ReactAriaComponents.TreeItem;
+
+export const TreeItemContent: ReactAriaComponents.TreeItemContent = compatPlaceholder as ReactAriaComponents.TreeItemContent;
+
+export type TreeItemContentProps = ReactAriaComponents.TreeItemContentProps;
+
+export type TreeItemContentRenderProps = ReactAriaComponents.TreeItemContentRenderProps;
+
+export type TreeItemProps = ReactAriaComponents.TreeItemProps;
+
+export type TreeItemRenderProps = ReactAriaComponents.TreeItemRenderProps;
+
+export const TreeLoadMoreItem: ReactAriaComponents.TreeLoadMoreItem = compatPlaceholder as ReactAriaComponents.TreeLoadMoreItem;
+
+export type TreeLoadMoreItemProps = ReactAriaComponents.TreeLoadMoreItemProps;
+
+export type TreeLoadMoreItemRenderProps = ReactAriaComponents.TreeLoadMoreItemRenderProps;
+
+export type TreeProps = ReactAriaComponents.TreeProps;
+
+export type TreeRenderProps = ReactAriaComponents.TreeRenderProps;
+
+export const TreeSection: ReactAriaComponents.TreeSection = compatPlaceholder as ReactAriaComponents.TreeSection;
+
+export type TreeState = ReactAriaComponents.TreeState;
+
+export const TreeStateContext: ReactAriaComponents.TreeStateContext = compatPlaceholder as ReactAriaComponents.TreeStateContext;
+
+export const UNSTABLE_Toast: ReactAriaComponents.UNSTABLE_Toast = compatPlaceholder as ReactAriaComponents.UNSTABLE_Toast;
+
+export const UNSTABLE_ToastContent: ReactAriaComponents.UNSTABLE_ToastContent = compatPlaceholder as ReactAriaComponents.UNSTABLE_ToastContent;
+
+export const UNSTABLE_ToastList: ReactAriaComponents.UNSTABLE_ToastList = compatPlaceholder as ReactAriaComponents.UNSTABLE_ToastList;
+
+export type UNSTABLE_ToastQueue = ReactAriaComponents.UNSTABLE_ToastQueue;
+export const UNSTABLE_ToastQueue: ReactAriaComponents.UNSTABLE_ToastQueue = compatPlaceholder as ReactAriaComponents.UNSTABLE_ToastQueue;
+
+export const UNSTABLE_ToastRegion: ReactAriaComponents.UNSTABLE_ToastRegion = compatPlaceholder as ReactAriaComponents.UNSTABLE_ToastRegion;
+
+export const UNSTABLE_ToastStateContext: ReactAriaComponents.UNSTABLE_ToastStateContext = compatPlaceholder as ReactAriaComponents.UNSTABLE_ToastStateContext;
+
+export const useAsyncList: <T, C = string>(options: AsyncListOptions<T, C>) => AsyncListData<T> = compatPlaceholder as <T, C = string>(options: AsyncListOptions<T, C>) => AsyncListData<T>;
+
+export const useContextProps: <T, U extends SlotProps, E extends Element>(props: T & SlotProps, ref: ForwardedRef<E> | undefined, context: Context<ContextValue<U, E>>) => [T, RefObject<E | null>] = compatPlaceholder as <T, U extends SlotProps, E extends Element>(props: T & SlotProps, ref: ForwardedRef<E> | undefined, context: Context<ContextValue<U, E>>) => [T, RefObject<E | null>];
+
+export const useDrag: (options: DragOptions) => DragResult = compatPlaceholder as (options: DragOptions) => DragResult;
+
+export const useDragAndDrop: <T = object>(options: DragAndDropOptions<T>) => DragAndDrop<T> = compatPlaceholder as <T = object>(options: DragAndDropOptions<T>) => DragAndDrop<T>;
+
+export const useDrop: (options: DropOptions) => DropResult = compatPlaceholder as (options: DropOptions) => DropResult;
+
+export const useFilter: typeof ReactAriaComponents.useFilter = compatPlaceholder as typeof ReactAriaComponents.useFilter;
+
+export const useListData: <T>(options: ListOptions<T>) => ListData<T> = compatPlaceholder as <T>(options: ListOptions<T>) => ListData<T>;
+
+export const useLocale: () => Locale = compatPlaceholder as () => Locale;
+
+export const useRenderProps: <T, E extends keyof React.JSX.IntrinsicElements>(props: RenderPropsHookOptions<T, E>) => RenderPropsHookRetVal<T, E> = compatPlaceholder as <T, E extends keyof React.JSX.IntrinsicElements>(props: RenderPropsHookOptions<T, E>) => RenderPropsHookRetVal<T, E>;
+
+export function useSlottedContext<T>(context: Context<SlottedContextValue<T>>, slot?: string | null): T | null | undefined {
+  return compatPlaceholder(context, slot);
+}
+
+export const useTableOptions: () => TableOptionsContextValue = compatPlaceholder as () => TableOptionsContextValue;
+
+export const useTreeData: <T extends object>(options: TreeOptions<T>) => TreeData<T> = compatPlaceholder as <T extends object>(options: TreeOptions<T>) => TreeData<T>;
+
+export type ValidationResult = ReactAriaComponents.ValidationResult;
+
+export const Virtualizer: ReactAriaComponents.Virtualizer = compatPlaceholder as ReactAriaComponents.Virtualizer;
+
+export type VirtualizerProps = ReactAriaComponents.VirtualizerProps;
+
+export const VisuallyHidden: ReactAriaComponents.VisuallyHidden = compatPlaceholder as ReactAriaComponents.VisuallyHidden;
+
+export type WaterfallLayout = ReactAriaComponents.WaterfallLayout;
+export const WaterfallLayout: ReactAriaComponents.WaterfallLayout = compatPlaceholder as ReactAriaComponents.WaterfallLayout;
+
+export type WaterfallLayoutOptions = ReactAriaComponents.WaterfallLayoutOptions;

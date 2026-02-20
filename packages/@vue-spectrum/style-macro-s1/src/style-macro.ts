@@ -1,3 +1,8 @@
+import type {
+  keyframes as reactKeyframes,
+  raw as reactRaw
+} from '../../../@react-spectrum/style-macro-s1/src/style-macro';
+
 export type RuntimeStyleProps = Record<string, unknown>;
 export type RuntimeStyleInput = Record<string, unknown>;
 export type RuntimeStyleOutput = (props?: RuntimeStyleProps) => string;
@@ -75,9 +80,7 @@ export function style(definition: RuntimeStyleInput): RuntimeStyleOutput {
   };
 }
 
-export function raw(value: string): `[${string}]` {
-  return `[${value}]`;
-}
+export const raw: typeof reactRaw = ((value: string) => `[${value}]`) as unknown as typeof reactRaw;
 
 function hash(input: string): string {
   let code = 0;
@@ -88,7 +91,9 @@ function hash(input: string): string {
   return code.toString(36);
 }
 
-export function keyframes(definition: Record<string, unknown> | string): string {
+const keyframesRuntime = (definition: Record<string, unknown> | string): string => {
   let source = typeof definition === 'string' ? definition : JSON.stringify(definition);
   return `${PREFIX}keyframes-${hash(source)}`;
-}
+};
+
+export const keyframes: typeof reactKeyframes = keyframesRuntime as unknown as typeof reactKeyframes;

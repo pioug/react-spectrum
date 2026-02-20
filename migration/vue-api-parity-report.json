@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-19T22:42:19.222Z",
+  "generatedAt": "2026-02-20T01:13:28.077Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
@@ -208,14 +208,20 @@
       "sourceEntrypoint": "packages/@react-aria/datepicker/src/index.ts",
       "targetEntrypoint": "packages/@vue-aria/datepicker/src/index.ts",
       "sourceExportCount": 18,
-      "targetExportCount": 22,
+      "targetExportCount": 28,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
         "AriaDatePickerOptions",
         "AriaDateRangePickerOptions",
         "AriaTimeFieldOptions",
-        "DateRangeValue"
+        "DateFieldState",
+        "DatePickerState",
+        "DateRangePickerState",
+        "DateRangeValue",
+        "DateSegment",
+        "DisplayNames",
+        "TimeFieldState"
       ],
       "error": null
     },
@@ -262,14 +268,16 @@
       "sourceEntrypoint": "packages/@react-aria/dnd/src/index.ts",
       "targetEntrypoint": "packages/@vue-aria/dnd/src/index.ts",
       "sourceExportCount": 62,
-      "targetExportCount": 66,
+      "targetExportCount": 68,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
         "AriaDragOptions",
         "AriaDropOptions",
         "DragAria",
-        "DropAria"
+        "DraggableCollectionState",
+        "DropAria",
+        "DroppableCollectionState"
       ],
       "error": null
     },
@@ -303,12 +311,15 @@
       "sourceEntrypoint": "packages/@react-aria/focus/src/index.ts",
       "targetEntrypoint": "packages/@vue-aria/focus/src/index.ts",
       "sourceExportCount": 26,
-      "targetExportCount": 28,
+      "targetExportCount": 31,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
         "AriaHasTabbableChildOptions",
-        "MaybeElementRef"
+        "FocusableElement",
+        "MaybeElementRef",
+        "RefObject",
+        "ShadowTreeWalker"
       ],
       "error": null
     },
@@ -321,12 +332,14 @@
       "sourceEntrypoint": "packages/@react-aria/form/src/index.ts",
       "targetEntrypoint": "packages/@vue-aria/form/src/index.ts",
       "sourceExportCount": 1,
-      "targetExportCount": 5,
+      "targetExportCount": 7,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
         "AriaFormValidationOptions",
         "FormValidationAria",
+        "FormValidationProps",
+        "FormValidationState",
         "NativeValidationResult",
         "ValidatableElement"
       ],
@@ -502,12 +515,13 @@
       "sourceEntrypoint": "packages/@react-aria/listbox/src/index.ts",
       "targetEntrypoint": "packages/@vue-aria/listbox/src/index.ts",
       "sourceExportCount": 12,
-      "targetExportCount": 15,
+      "targetExportCount": 16,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
         "ListBoxCollection",
         "ListBoxItemNode",
+        "ListKey",
         "SelectionMode"
       ],
       "error": null
@@ -594,10 +608,11 @@
       "sourceEntrypoint": "packages/@react-aria/overlays/src/index.ts",
       "targetEntrypoint": "packages/@vue-aria/overlays/src/index.ts",
       "sourceExportCount": 39,
-      "targetExportCount": 49,
+      "targetExportCount": 51,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
+        "AriaHideOutsideOptions",
         "AriaModalOverlayOptions",
         "AriaOverlayOptions",
         "AriaOverlayPositionOptions",
@@ -605,6 +620,7 @@
         "MaybeRef",
         "OverlayPlacement",
         "OverlayTriggerOptions",
+        "OverlayTriggerState",
         "OverlayTriggerType",
         "PreventScrollAria",
         "PreventScrollOptions"
@@ -841,8 +857,8 @@
         "AriaTableRowProps",
         "AriaTableSelectAllCheckboxOptions",
         "AriaTableSelectionCheckboxOptions",
+        "GridRowGroupAria",
         "TableRowAria",
-        "TableRowGroupAria",
         "TableSortDirection"
       ],
       "error": null
@@ -856,12 +872,13 @@
       "sourceEntrypoint": "packages/@react-aria/tabs/src/index.ts",
       "targetEntrypoint": "packages/@vue-aria/tabs/src/index.ts",
       "sourceExportCount": 11,
-      "targetExportCount": 15,
+      "targetExportCount": 16,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
         "AriaTabOptions",
         "AriaTabPanelOptions",
+        "TabListAriaState",
         "TabListState",
         "TabOrientation"
       ],
@@ -937,8 +954,8 @@
         "AriaToastOptions",
         "AriaToastRegionOptions",
         "QueuedToast",
+        "ToastQueueState",
         "ToastRegionState",
-        "ToastState",
         "ToastTimer"
       ],
       "error": null
@@ -1627,10 +1644,11 @@
       "sourceEntrypoint": "packages/@react-spectrum/listbox/src/index.ts",
       "targetEntrypoint": "packages/@vue-spectrum/listbox/src/index.ts",
       "sourceExportCount": 6,
-      "targetExportCount": 7,
+      "targetExportCount": 8,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
+        "ListBoxLayout",
         "VueListBox"
       ],
       "error": null
@@ -2024,12 +2042,14 @@
       "sourceEntrypoint": "packages/@react-spectrum/theme-dark/src/index.ts",
       "targetEntrypoint": "packages/@vue-spectrum/theme-dark/src/index.ts",
       "sourceExportCount": 1,
-      "targetExportCount": 3,
+      "targetExportCount": 5,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
         "SpectrumTheme",
-        "SpectrumThemeSection"
+        "SpectrumThemeSection",
+        "Theme",
+        "ThemeSection"
       ],
       "error": null
     },
@@ -2042,12 +2062,14 @@
       "sourceEntrypoint": "packages/@react-spectrum/theme-default/src/index.ts",
       "targetEntrypoint": "packages/@vue-spectrum/theme-default/src/index.ts",
       "sourceExportCount": 1,
-      "targetExportCount": 3,
+      "targetExportCount": 5,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
         "SpectrumTheme",
-        "SpectrumThemeSection"
+        "SpectrumThemeSection",
+        "Theme",
+        "ThemeSection"
       ],
       "error": null
     },
@@ -2060,10 +2082,11 @@
       "sourceEntrypoint": "packages/@react-spectrum/theme-express/src/index.ts",
       "targetEntrypoint": "packages/@vue-spectrum/theme-express/src/index.ts",
       "sourceExportCount": 1,
-      "targetExportCount": 2,
+      "targetExportCount": 3,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
+        "ExpressTheme",
         "SpectrumExpressTheme"
       ],
       "error": null
@@ -2077,12 +2100,14 @@
       "sourceEntrypoint": "packages/@react-spectrum/theme-light/src/index.ts",
       "targetEntrypoint": "packages/@vue-spectrum/theme-light/src/index.ts",
       "sourceExportCount": 1,
-      "targetExportCount": 3,
+      "targetExportCount": 5,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
         "SpectrumTheme",
-        "SpectrumThemeSection"
+        "SpectrumThemeSection",
+        "Theme",
+        "ThemeSection"
       ],
       "error": null
     },
@@ -2240,11 +2265,12 @@
       "sourceEntrypoint": "packages/@react-stately/calendar/src/index.ts",
       "targetEntrypoint": "packages/@vue-stately/calendar/src/index.ts",
       "sourceExportCount": 6,
-      "targetExportCount": 7,
+      "targetExportCount": 8,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
-        "DateRange"
+        "DateRange",
+        "DateValue"
       ],
       "error": null
     },
@@ -2275,7 +2301,7 @@
       "sourceEntrypoint": "packages/@react-stately/collections/src/index.ts",
       "targetEntrypoint": "packages/@vue-stately/collections/src/index.ts",
       "sourceExportCount": 11,
-      "targetExportCount": 18,
+      "targetExportCount": 19,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
@@ -2285,7 +2311,8 @@
         "CollectionNode",
         "CollectionOptions",
         "ItemProps",
-        "SectionProps"
+        "SectionProps",
+        "VueCollectionOptions"
       ],
       "error": null
     },
@@ -2797,7 +2824,7 @@
       "sourceEntrypoint": "packages/react-aria/src/index.ts",
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
-      "targetExportCount": 821,
+      "targetExportCount": 835,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
@@ -2835,6 +2862,7 @@
         "AriaHasPopup",
         "AriaHasTabbableChildOptions",
         "AriaHiddenSelectOptions",
+        "AriaHideOutsideOptions",
         "AriaMeterOptions",
         "AriaModalOverlayOptions",
         "AriaNumberFieldOptions",
@@ -2902,11 +2930,18 @@
         "ComboBoxItem",
         "ComboBoxTester",
         "DOMLayoutDelegate",
+        "DateFieldState",
+        "DatePickerState",
+        "DateRangePickerState",
         "DateRangeValue",
+        "DateSegment",
         "DialogTester",
         "Direction",
+        "DisplayNames",
         "DragAria",
+        "DraggableCollectionState",
         "DropAria",
+        "DroppableCollectionState",
         "EXAMPLE_THEME_CLASS",
         "ExampleThemeAria",
         "ExampleThemeColorScheme",
@@ -2924,6 +2959,8 @@
         "FocusableProvider",
         "FocusableProviderProps",
         "FormValidationAria",
+        "FormValidationProps",
+        "FormValidationState",
         "FormattedTextFieldState",
         "GridCellAria",
         "GridCellNode",
@@ -2964,6 +3001,7 @@
         "ListBoxCollection",
         "ListBoxItemNode",
         "ListBoxTester",
+        "ListKey",
         "LoadMoreSentinelProps",
         "LoaderNode",
         "LocalizedString",
@@ -2981,6 +3019,7 @@
         "NumberFormatter",
         "OverlayPlacement",
         "OverlayTriggerOptions",
+        "OverlayTriggerState",
         "OverlayTriggerType",
         "PointerType",
         "PortalProviderContextValue",
@@ -2994,6 +3033,7 @@
         "RTLOffsetType",
         "RadioGroupTester",
         "RangeCalendarAria",
+        "RefObject",
         "SSRContextValue",
         "SSRProviderAria",
         "ScrollView",
@@ -3028,10 +3068,10 @@
         "StepListAria",
         "StepListItemAria",
         "StepListState",
+        "TabListAriaState",
         "TabListState",
         "TabOrientation",
         "TableRowAria",
-        "TableRowGroupAria",
         "TableSortDirection",
         "TableTester",
         "TabsTester",
@@ -3039,8 +3079,9 @@
         "TagGroupItemNode",
         "TagSelectionMode",
         "TextFieldInputElementType",
+        "TimeFieldState",
+        "ToastQueueState",
         "ToastRegionState",
-        "ToastState",
         "ToastTimer",
         "ToggleAria",
         "ToggleButtonAria",
@@ -3215,7 +3256,7 @@
       "sourceEntrypoint": "packages/react-aria-components/src/index.ts",
       "targetEntrypoint": "packages/@vue-spectrum/components/src/index.ts",
       "sourceExportCount": 543,
-      "targetExportCount": 572,
+      "targetExportCount": 612,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
@@ -3300,7 +3341,7 @@
       "sourceEntrypoint": "packages/react-stately/src/index.ts",
       "targetEntrypoint": "packages/vue-stately/src/index.ts",
       "sourceExportCount": 165,
-      "targetExportCount": 272,
+      "targetExportCount": 274,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
@@ -3318,6 +3359,7 @@
         "ColorWheelStateOptions",
         "DEFAULT_VALIDATION_RESULT",
         "DateRange",
+        "DateValue",
         "DraggableKey",
         "DropOperationEvent",
         "DropTarget",
@@ -3386,6 +3428,7 @@
         "VirtualizerCollection",
         "VirtualizerRenderOptions",
         "VirtualizerState",
+        "VueCollectionOptions",
         "WaterfallLayout",
         "WaterfallLayoutOptions",
         "buildHeaderRows",

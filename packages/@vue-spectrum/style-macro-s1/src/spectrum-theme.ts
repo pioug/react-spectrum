@@ -1,10 +1,21 @@
-import {type RuntimeStyleOutput, style} from './style-macro';
+import {type RuntimeStyleOutput, style as styleInternal} from './style-macro';
+import type {
+  focusRing as reactFocusRing,
+  style as reactStyle
+} from '../../../@react-spectrum/style-macro-s1/src/spectrum-theme';
+import type * as CSS from 'csstype';
+
+const color = {
+  transparent: 'transparent',
+  black: 'black',
+  white: 'white'
+};
 
 export interface ColorStates {
-  default: string,
-  isFocusVisible: string,
-  isHovered: string,
-  isPressed: string
+  default: CSS.Property.Color,
+  isFocusVisible: CSS.Property.Color,
+  isHovered: CSS.Property.Color,
+  isPressed: CSS.Property.Color
 }
 
 function shiftColorScale(color: string): string {
@@ -17,7 +28,7 @@ function shiftColorScale(color: string): string {
   return `${prefix}-${Number(scale) + 100}`;
 }
 
-export function baseColor(base: string): ColorStates {
+export function baseColor(base: keyof typeof color): ColorStates {
   let next = shiftColorScale(base);
 
   return {
@@ -28,11 +39,13 @@ export function baseColor(base: string): ColorStates {
   };
 }
 
-export function lightDark(light: string, dark: string): `[${string}]` {
+export function lightDark(light: keyof typeof color, dark: keyof typeof color): `[${string}]` {
   return `[light-dark(${light}, ${dark})]`;
 }
 
-export const focusRing: RuntimeStyleOutput = style({
+export const style: typeof reactStyle = styleInternal as unknown as typeof reactStyle;
+
+export const focusRing: typeof reactFocusRing = styleInternal({
   outlineColor: {
     default: 'transparent',
     isFocusVisible: '[Highlight]'
@@ -45,6 +58,4 @@ export const focusRing: RuntimeStyleOutput = style({
     default: '0px',
     isFocusVisible: '2px'
   }
-});
-
-export {style};
+}) as unknown as typeof reactFocusRing;
