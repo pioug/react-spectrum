@@ -2127,7 +2127,7 @@ const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
   box-sizing: border-box;
   color: #2d2d2d;
   display: grid;
-  gap: 8px;
+  gap: 6px;
   grid-template-columns: 16px 1fr auto auto;
   min-block-size: 32px;
   padding: 0 10px;
@@ -2173,10 +2173,9 @@ const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
 
 .parity-searchfield-fixture__clear {
   color: #4b4b4b;
-  font-size: 20px;
+  font-size: 16px;
   line-height: 1;
-  margin-inline-start: 2px;
-  transform: translateY(-1px);
+  margin-inline-start: 0;
 }
 
 .parity-searchfield-fixture__alert {

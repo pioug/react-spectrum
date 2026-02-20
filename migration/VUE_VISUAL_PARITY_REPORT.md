@@ -1,6 +1,6 @@
 # Vue Visual Parity Report
 
-Generated: 2026-02-20T08:10:10.952Z
+Generated: 2026-02-20T08:27:20.176Z
 
 ## Summary
 
@@ -85,8 +85,8 @@ Generated: 2026-02-20T08:10:10.952Z
 | `pkg-overlays` | fail | 7.1318% | 0.0000% | 3039 |
 | `pkg-s2` | fail | 8.8843% | 0.0000% | 13072 |
 | `state-textfield-disabled` | fail | 10.3896% | 0.0000% | 5294 |
-| `state-searchfield-invalid` | fail | 12.5617% | 0.0000% | 6417 |
-| `state-searchfield-focus` | fail | 11.6358% | 0.0000% | 5929 |
+| `state-searchfield-invalid` | fail | 12.5343% | 0.0000% | 6403 |
+| `state-searchfield-focus` | fail | 11.6534% | 0.0000% | 5938 |
 | `state-numberfield-invalid` | fail | 14.1022% | 0.0000% | 7520 |
 | `state-slider-disabled` | fail | 14.2424% | 0.0000% | 7614 |
 | `state-radio-disabled` | fail | 13.3933% | 0.0000% | 7142 |
