@@ -8,6 +8,7 @@ function hasCombination(combinations: StoryState[], candidate: StoryState): bool
 }
 
 // Generate a powerset from a given array of states/options.
+export function generatePowerset(states: Array<object>, exclude?: (merged: any) => boolean): any[];
 export function generatePowerset(states: StoryState[], exclude?: (merged: StoryState) => boolean): StoryState[] {
   let combinations: StoryState[] = [{}];
   let addIfIncluded = (merged: StoryState) => {

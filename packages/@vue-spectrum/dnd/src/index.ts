@@ -5,7 +5,9 @@ export {VueDropZone};
 
 type AnyRecord = Record<string, unknown>;
 
-export type DragAndDropOptions = AnyRecord;
+export type DragAndDropOptions<T = object> = AnyRecord & {
+  _itemType?: T
+};
 export type DragAndDropHooks = {
   dragHooks: AnyRecord,
   dropHooks: AnyRecord
@@ -35,7 +37,8 @@ export type TextDropItem = AnyRecord;
 
 export const DIRECTORY_DRAG_TYPE = 'application/x-directory';
 
-export function useDragAndDrop(): DragAndDropHooks {
+export function useDragAndDrop<T = object>(options?: DragAndDropOptions<T>): DragAndDropHooks {
+  void options;
   return {
     dragHooks: {},
     dropHooks: {}

@@ -1,19 +1,19 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-20T00:27:44.943Z
+Generated: 2026-02-20T00:33:58.385Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 110
+* Fully matched packages: 120
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 2174
-* Mismatched signatures: 498
+* Matched signatures: 2189
+* Mismatched signatures: 483
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 81.36%
+* Signature coverage ratio: 81.92%
 
 ## Package gaps
 
@@ -21,11 +21,8 @@ Generated: 2026-02-20T00:27:44.943Z
 | --- | --- | --- | ---: | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | mismatch | 543 | 299 | 0 | 44.9% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | mismatch | 325 | 134 | 0 | 58.8% |
-| `react-aria` | `vue-aria` | mismatch | 419 | 16 | 0 | 96.2% |
+| `react-aria` | `vue-aria` | mismatch | 419 | 14 | 0 | 96.7% |
 | `@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | mismatch | 6 | 6 | 0 | 0.0% |
-| `@react-aria/toast` | `@vue-aria/toast` | mismatch | 6 | 2 | 0 | 66.7% |
-| `@react-stately/calendar` | `@vue-stately/calendar` | mismatch | 6 | 2 | 0 | 66.7% |
-| `@react-stately/table` | `@vue-stately/table` | mismatch | 25 | 2 | 0 | 92.0% |
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` | mismatch | 1 | 1 | 0 | 0.0% |
 | `@react-aria/combobox` | `@vue-aria/combobox` | mismatch | 4 | 1 | 0 | 75.0% |
 | `@react-aria/dialog` | `@vue-aria/dialog` | mismatch | 3 | 1 | 0 | 66.7% |
@@ -43,15 +40,8 @@ Generated: 2026-02-20T00:27:44.943Z
 | `@react-aria/slider` | `@vue-aria/slider` | mismatch | 8 | 1 | 0 | 87.5% |
 | `@react-aria/spinbutton` | `@vue-aria/spinbutton` | mismatch | 3 | 1 | 0 | 66.7% |
 | `@react-aria/switch` | `@vue-aria/switch` | mismatch | 3 | 1 | 0 | 66.7% |
-| `@react-aria/test-utils` | `@vue-aria/test-utils` | mismatch | 17 | 1 | 0 | 94.1% |
 | `@react-aria/toggle` | `@vue-aria/toggle` | mismatch | 3 | 1 | 0 | 66.7% |
 | `@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | mismatch | 4 | 1 | 0 | 75.0% |
-| `@react-spectrum/color` | `@vue-spectrum/color` | mismatch | 21 | 1 | 0 | 95.2% |
-| `@react-spectrum/dnd` | `@vue-spectrum/dnd` | mismatch | 26 | 1 | 0 | 96.2% |
-| `@react-spectrum/form` | `@vue-spectrum/form` | mismatch | 3 | 1 | 0 | 66.7% |
-| `@react-spectrum/listbox` | `@vue-spectrum/listbox` | mismatch | 6 | 1 | 0 | 83.3% |
-| `@react-spectrum/story-utils` | `@vue-spectrum/story-utils` | mismatch | 2 | 1 | 0 | 50.0% |
-| `@react-spectrum/test-utils` | `@vue-spectrum/test-utils` | mismatch | 19 | 1 | 0 | 94.7% |
 | `@react-stately/checkbox` | `@vue-stately/checkbox` | mismatch | 3 | 1 | 0 | 66.7% |
 | `@react-stately/combobox` | `@vue-stately/combobox` | mismatch | 3 | 1 | 0 | 66.7% |
 | `@react-stately/dnd` | `@vue-stately/dnd` | mismatch | 6 | 1 | 0 | 83.3% |
@@ -90,7 +80,9 @@ Generated: 2026-02-20T00:27:44.943Z
 | `@react-aria/table` | `@vue-aria/table` | ok | 23 | 0 | 0 | 100.0% |
 | `@react-aria/tabs` | `@vue-aria/tabs` | ok | 11 | 0 | 0 | 100.0% |
 | `@react-aria/tag` | `@vue-aria/tag` | ok | 6 | 0 | 0 | 100.0% |
+| `@react-aria/test-utils` | `@vue-aria/test-utils` | ok | 17 | 0 | 0 | 100.0% |
 | `@react-aria/textfield` | `@vue-aria/textfield` | ok | 5 | 0 | 0 | 100.0% |
+| `@react-aria/toast` | `@vue-aria/toast` | ok | 6 | 0 | 0 | 100.0% |
 | `@react-aria/toolbar` | `@vue-aria/toolbar` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-aria/tooltip` | `@vue-aria/tooltip` | ok | 6 | 0 | 0 | 100.0% |
 | `@react-aria/tree` | `@vue-aria/tree` | ok | 8 | 0 | 0 | 100.0% |
@@ -108,13 +100,16 @@ Generated: 2026-02-20T00:27:44.943Z
 | `@react-spectrum/calendar` | `@vue-spectrum/calendar` | ok | 4 | 0 | 0 | 100.0% |
 | `@react-spectrum/card` | `@vue-spectrum/card` | ok | 9 | 0 | 0 | 100.0% |
 | `@react-spectrum/checkbox` | `@vue-spectrum/checkbox` | ok | 4 | 0 | 0 | 100.0% |
+| `@react-spectrum/color` | `@vue-spectrum/color` | ok | 21 | 0 | 0 | 100.0% |
 | `@react-spectrum/combobox` | `@vue-spectrum/combobox` | ok | 4 | 0 | 0 | 100.0% |
 | `@react-spectrum/contextualhelp` | `@vue-spectrum/contextualhelp` | ok | 2 | 0 | 0 | 100.0% |
 | `@react-spectrum/datepicker` | `@vue-spectrum/datepicker` | ok | 8 | 0 | 0 | 100.0% |
 | `@react-spectrum/dialog` | `@vue-spectrum/dialog` | ok | 10 | 0 | 0 | 100.0% |
 | `@react-spectrum/divider` | `@vue-spectrum/divider` | ok | 2 | 0 | 0 | 100.0% |
+| `@react-spectrum/dnd` | `@vue-spectrum/dnd` | ok | 26 | 0 | 0 | 100.0% |
 | `@react-spectrum/dropzone` | `@vue-spectrum/dropzone` | ok | 2 | 0 | 0 | 100.0% |
 | `@react-spectrum/filetrigger` | `@vue-spectrum/filetrigger` | ok | 2 | 0 | 0 | 100.0% |
+| `@react-spectrum/form` | `@vue-spectrum/form` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-spectrum/icon` | `@vue-spectrum/icon` | ok | 9 | 0 | 0 | 100.0% |
 | `@react-spectrum/illustratedmessage` | `@vue-spectrum/illustratedmessage` | ok | 2 | 0 | 0 | 100.0% |
 | `@react-spectrum/image` | `@vue-spectrum/image` | ok | 2 | 0 | 0 | 100.0% |
@@ -124,6 +119,7 @@ Generated: 2026-02-20T00:27:44.943Z
 | `@react-spectrum/layout` | `@vue-spectrum/layout` | ok | 8 | 0 | 0 | 100.0% |
 | `@react-spectrum/link` | `@vue-spectrum/link` | ok | 2 | 0 | 0 | 100.0% |
 | `@react-spectrum/list` | `@vue-spectrum/list` | ok | 3 | 0 | 0 | 100.0% |
+| `@react-spectrum/listbox` | `@vue-spectrum/listbox` | ok | 6 | 0 | 0 | 100.0% |
 | `@react-spectrum/menu` | `@vue-spectrum/menu` | ok | 12 | 0 | 0 | 100.0% |
 | `@react-spectrum/meter` | `@vue-spectrum/meter` | ok | 2 | 0 | 0 | 100.0% |
 | `@react-spectrum/numberfield` | `@vue-spectrum/numberfield` | ok | 2 | 0 | 0 | 100.0% |
@@ -136,10 +132,12 @@ Generated: 2026-02-20T00:27:44.943Z
 | `@react-spectrum/slider` | `@vue-spectrum/slider` | ok | 4 | 0 | 0 | 100.0% |
 | `@react-spectrum/statuslight` | `@vue-spectrum/statuslight` | ok | 2 | 0 | 0 | 100.0% |
 | `@react-spectrum/steplist` | `@vue-spectrum/steplist` | ok | 3 | 0 | 0 | 100.0% |
+| `@react-spectrum/story-utils` | `@vue-spectrum/story-utils` | ok | 2 | 0 | 0 | 100.0% |
 | `@react-spectrum/switch` | `@vue-spectrum/switch` | ok | 2 | 0 | 0 | 100.0% |
 | `@react-spectrum/table` | `@vue-spectrum/table` | ok | 13 | 0 | 0 | 100.0% |
 | `@react-spectrum/tabs` | `@vue-spectrum/tabs` | ok | 7 | 0 | 0 | 100.0% |
 | `@react-spectrum/tag` | `@vue-spectrum/tag` | ok | 3 | 0 | 0 | 100.0% |
+| `@react-spectrum/test-utils` | `@vue-spectrum/test-utils` | ok | 19 | 0 | 0 | 100.0% |
 | `@react-spectrum/text` | `@vue-spectrum/text` | ok | 6 | 0 | 0 | 100.0% |
 | `@react-spectrum/textfield` | `@vue-spectrum/textfield` | ok | 5 | 0 | 0 | 100.0% |
 | `@react-spectrum/theme-dark` | `@vue-spectrum/theme-dark` | ok | 1 | 0 | 0 | 100.0% |
@@ -153,6 +151,7 @@ Generated: 2026-02-20T00:27:44.943Z
 | `@react-spectrum/view` | `@vue-spectrum/view` | ok | 8 | 0 | 0 | 100.0% |
 | `@react-spectrum/well` | `@vue-spectrum/well` | ok | 2 | 0 | 0 | 100.0% |
 | `@react-stately/autocomplete` | `@vue-stately/autocomplete` | ok | 4 | 0 | 0 | 100.0% |
+| `@react-stately/calendar` | `@vue-stately/calendar` | ok | 6 | 0 | 0 | 100.0% |
 | `@react-stately/collections` | `@vue-stately/collections` | ok | 11 | 0 | 0 | 100.0% |
 | `@react-stately/color` | `@vue-stately/color` | ok | 25 | 0 | 0 | 100.0% |
 | `@react-stately/data` | `@vue-stately/data` | ok | 9 | 0 | 0 | 100.0% |
@@ -167,6 +166,7 @@ Generated: 2026-02-20T00:27:44.943Z
 | `@react-stately/selection` | `@vue-stately/selection` | ok | 7 | 0 | 0 | 100.0% |
 | `@react-stately/slider` | `@vue-stately/slider` | ok | 3 | 0 | 0 | 100.0% |
 | `@react-stately/steplist` | `@vue-stately/steplist` | ok | 3 | 0 | 0 | 100.0% |
+| `@react-stately/table` | `@vue-stately/table` | ok | 25 | 0 | 0 | 100.0% |
 | `@react-stately/tabs` | `@vue-stately/tabs` | ok | 4 | 0 | 0 | 100.0% |
 | `@react-stately/toast` | `@vue-stately/toast` | ok | 7 | 0 | 0 | 100.0% |
 | `@react-stately/toggle` | `@vue-stately/toggle` | ok | 7 | 0 | 0 | 100.0% |
@@ -199,9 +199,9 @@ Generated: 2026-02-20T00:27:44.943Z
 * Source entry: `packages/react-aria/src/index.ts`
 * Target entry: `packages/vue-aria/src/index.ts`
 * Compared exports: 419
-* Mismatched signatures: 16
+* Mismatched signatures: 14
 * Missing in target: 0
-* Example mismatches: `useComboBox [call-signatures]`, `useDialog [call-signatures]`, `useDisclosure [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]`, `useLandmark [call-signatures]`, `useLink [call-signatures]`, `useMeter [call-signatures]`, `useNumberField [call-signatures]`, `useProgressBar [call-signatures]`, `useSearchField [call-signatures]`, `useSeparator [call-signatures]`, `useSlider [call-signatures]`, `useSwitch [call-signatures]`, `useToast [call-signatures]`, `useToastRegion [call-signatures]`, `useVisuallyHidden [call-signatures]`
+* Example mismatches: `useComboBox [call-signatures]`, `useDialog [call-signatures]`, `useDisclosure [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]`, `useLandmark [call-signatures]`, `useLink [call-signatures]`, `useMeter [call-signatures]`, `useNumberField [call-signatures]`, `useProgressBar [call-signatures]`, `useSearchField [call-signatures]`, `useSeparator [call-signatures]`, `useSlider [call-signatures]`, `useSwitch [call-signatures]`, `useVisuallyHidden [call-signatures]`
 
 ### @react-spectrum/style-macro-s1 -> @vue-spectrum/style-macro-s1
 
@@ -211,33 +211,6 @@ Generated: 2026-02-20T00:27:44.943Z
 * Mismatched signatures: 6
 * Missing in target: 0
 * Example mismatches: `style [call-signatures]`, `baseColor [call-signatures]`, `lightDark [call-signatures]`, `focusRing [call-signatures]`, `raw [call-signatures]`, `keyframes [call-signatures]`
-
-### @react-aria/toast -> @vue-aria/toast
-
-* Source entry: `packages/@react-aria/toast/src/index.ts`
-* Target entry: `packages/@vue-aria/toast/src/index.ts`
-* Compared exports: 6
-* Mismatched signatures: 2
-* Missing in target: 0
-* Example mismatches: `useToast [call-signatures]`, `useToastRegion [call-signatures]`
-
-### @react-stately/calendar -> @vue-stately/calendar
-
-* Source entry: `packages/@react-stately/calendar/src/index.ts`
-* Target entry: `packages/@vue-stately/calendar/src/index.ts`
-* Compared exports: 6
-* Mismatched signatures: 2
-* Missing in target: 0
-* Example mismatches: `useCalendarState [call-signatures]`, `useRangeCalendarState [call-signatures]`
-
-### @react-stately/table -> @vue-stately/table
-
-* Source entry: `packages/@react-stately/table/src/index.ts`
-* Target entry: `packages/@vue-stately/table/src/index.ts`
-* Compared exports: 25
-* Mismatched signatures: 2
-* Missing in target: 0
-* Example mismatches: `useTableState [call-signatures]`, `buildHeaderRows [call-signatures]`
 
 ### @react-aria/aria-modal-polyfill -> @vue-aria/aria-modal-polyfill
 
@@ -355,4 +328,31 @@ Generated: 2026-02-20T00:27:44.943Z
 * Mismatched signatures: 1
 * Missing in target: 0
 * Example mismatches: `useSelectableItem [call-signatures]`
+
+### @react-aria/separator -> @vue-aria/separator
+
+* Source entry: `packages/@react-aria/separator/src/index.ts`
+* Target entry: `packages/@vue-aria/separator/src/index.ts`
+* Compared exports: 3
+* Mismatched signatures: 1
+* Missing in target: 0
+* Example mismatches: `useSeparator [call-signatures]`
+
+### @react-aria/slider -> @vue-aria/slider
+
+* Source entry: `packages/@react-aria/slider/src/index.ts`
+* Target entry: `packages/@vue-aria/slider/src/index.ts`
+* Compared exports: 8
+* Mismatched signatures: 1
+* Missing in target: 0
+* Example mismatches: `useSlider [call-signatures]`
+
+### @react-aria/spinbutton -> @vue-aria/spinbutton
+
+* Source entry: `packages/@react-aria/spinbutton/src/index.ts`
+* Target entry: `packages/@vue-aria/spinbutton/src/index.ts`
+* Compared exports: 3
+* Mismatched signatures: 1
+* Missing in target: 0
+* Example mismatches: `useSpinButton [call-signatures]`
 

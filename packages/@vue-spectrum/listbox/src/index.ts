@@ -10,8 +10,13 @@ export type SpectrumListBoxProps<T = unknown> = Record<string, unknown> & {
   item?: T
 };
 
-export function useListBoxLayout() {
+export type ListBoxLayout<T = unknown> = {
+  layout: 'stack'
+  _itemType?: T
+};
+
+export function useListBoxLayout<T>(): ListBoxLayout<T> {
   return {
     layout: 'stack'
-  } as const;
+  } as ListBoxLayout<T>;
 }

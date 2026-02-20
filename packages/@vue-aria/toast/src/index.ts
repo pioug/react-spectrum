@@ -6,6 +6,7 @@ type FocusableElement = Element;
 type RefObject<T> = {
   current: T
 };
+type ToastState<T = unknown> = StatelyToastState<T>;
 
 export type AriaToastProps<T = unknown> = AriaToastOptions<T>;
 export type AriaToastRegionProps = AriaToastRegionOptions;
@@ -13,7 +14,7 @@ export type AriaToastRegionProps = AriaToastRegionOptions;
 export type {
   AriaToastOptions,
   ToastAria,
-  VueToastState as ToastState,
+  VueToastState as ToastQueueState,
   ToastTimer,
   QueuedToast,
   AriaToastRegionOptions,
@@ -23,7 +24,7 @@ export type {
 
 export function useToast<T>(
   props: AriaToastProps<T>,
-  state: StatelyToastState<T>,
+  state: ToastState<T>,
   ref: RefObject<FocusableElement | null>
 ): ToastAria;
 export function useToast<T>(options: AriaToastOptions<T>, state: VueToastState<T>): ToastAria;
@@ -33,7 +34,7 @@ export function useToast<T>(options: AriaToastOptions<T>, state: VueToastState<T
 
 export function useToastRegion<T>(
   props: AriaToastRegionProps,
-  state: StatelyToastState<T>,
+  state: ToastState<T>,
   ref: RefObject<HTMLElement | null>
 ): ToastRegionAria;
 export function useToastRegion<T>(options: AriaToastRegionOptions, state: ToastRegionState<T>): ToastRegionAria;

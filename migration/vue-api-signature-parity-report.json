@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-20T00:27:44.943Z",
+  "generatedAt": "2026-02-20T00:33:58.385Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 110,
+    "fullyMatchedPackages": 120,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 2174,
-    "mismatchedExportTotal": 498,
+    "matchedExportTotal": 2189,
+    "mismatchedExportTotal": 483,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.8136
+    "parityCoverage": 0.8192
   },
   "packages": [
     {
@@ -5659,10 +5659,10 @@
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
       "comparedExportCount": 419,
-      "matchedExportCount": 403,
-      "mismatchedExportCount": 16,
+      "matchedExportCount": 405,
+      "mismatchedExportCount": 14,
       "missingInTargetCount": 0,
-      "parityRatio": 0.9618,
+      "parityRatio": 0.9666,
       "missingInTargetExports": [],
       "mismatches": [
         {
@@ -6148,82 +6148,6 @@
           }
         },
         {
-          "exportName": "useToast",
-          "targetExportName": "useToast",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useToast",
-            "resolvedName": "useToast",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaToastProps<T>, state: ToastState<T>, ref: RefObject<FocusableElement | null>) => ToastAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaToastProps<T>, _: ToastState<T>, _: RefObject<FocusableElement | null>) => ToastAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useToast",
-            "resolvedName": "useToast",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "null>): ToastAria; <T>(options: AriaToastOptions<T>, state: ToastState<T>): ToastAria;} | { <T>(props: AriaToastProps<T>, state: StatelyToastState<T>, ref: RefObject<FocusableElement",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaToastOptions<T>, _: ToastState<T>) => ToastAria",
-              "<T>( _: AriaToastProps<T>, _: StatelyToastState<T>, _: RefObject<FocusableElement | null>) => ToastAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useToastRegion",
-          "targetExportName": "useToastRegion",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useToastRegion",
-            "resolvedName": "useToastRegion",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaToastRegionProps, state: ToastState<T>, ref: RefObject<HTMLElement | null>) => ToastRegionAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaToastRegionProps, _: ToastState<T>, _: RefObject<HTMLElement | null>) => ToastRegionAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useToastRegion",
-            "resolvedName": "useToastRegion",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "null>): ToastRegionAria; <T>(options: AriaToastRegionOptions, state: ToastRegionState<T>): ToastRegionAria;} | { <T>(props: AriaToastRegionProps, state: StatelyToastState<T>, ref: RefObject<HTMLElement",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaToastRegionOptions, _: ToastRegionState<T>) => ToastRegionAria",
-              "<T>( _: AriaToastRegionProps, _: StatelyToastState<T>, _: RefObject<HTMLElement | null>) => ToastRegionAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
           "exportName": "useVisuallyHidden",
           "targetExportName": "useVisuallyHidden",
           "differences": [
@@ -6498,290 +6422,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: Record<string, unknown> | string) => string"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/toast",
-      "sourcePath": "packages/@react-aria/toast",
-      "targetPackage": "@vue-aria/toast",
-      "targetPath": "packages/@vue-aria/toast",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/toast/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/toast/src/index.ts",
-      "sourceExportCount": 6,
-      "comparedExportCount": 6,
-      "matchedExportCount": 4,
-      "mismatchedExportCount": 2,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useToast",
-          "targetExportName": "useToast",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useToast",
-            "resolvedName": "useToast",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaToastProps<T>, state: ToastState<T>, ref: RefObject<FocusableElement | null>) => ToastAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaToastProps<T>, _: ToastState<T>, _: RefObject<FocusableElement | null>) => ToastAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useToast",
-            "resolvedName": "useToast",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "null>): ToastAria; <T>(options: AriaToastOptions<T>, state: ToastState<T>): ToastAria;} | { <T>(props: AriaToastProps<T>, state: StatelyToastState<T>, ref: RefObject<FocusableElement",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaToastOptions<T>, _: ToastState<T>) => ToastAria",
-              "<T>( _: AriaToastProps<T>, _: StatelyToastState<T>, _: RefObject<FocusableElement | null>) => ToastAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useToastRegion",
-          "targetExportName": "useToastRegion",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useToastRegion",
-            "resolvedName": "useToastRegion",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaToastRegionProps, state: ToastState<T>, ref: RefObject<HTMLElement | null>) => ToastRegionAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaToastRegionProps, _: ToastState<T>, _: RefObject<HTMLElement | null>) => ToastRegionAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useToastRegion",
-            "resolvedName": "useToastRegion",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "null>): ToastRegionAria; <T>(options: AriaToastRegionOptions, state: ToastRegionState<T>): ToastRegionAria;} | { <T>(props: AriaToastRegionProps, state: StatelyToastState<T>, ref: RefObject<HTMLElement",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaToastRegionOptions, _: ToastRegionState<T>) => ToastRegionAria",
-              "<T>( _: AriaToastRegionProps, _: StatelyToastState<T>, _: RefObject<HTMLElement | null>) => ToastRegionAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/calendar",
-      "sourcePath": "packages/@react-stately/calendar",
-      "targetPackage": "@vue-stately/calendar",
-      "targetPath": "packages/@vue-stately/calendar",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/calendar/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/calendar/src/index.ts",
-      "sourceExportCount": 6,
-      "comparedExportCount": 6,
-      "matchedExportCount": 4,
-      "mismatchedExportCount": 2,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useCalendarState",
-          "targetExportName": "useCalendarState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCalendarState",
-            "resolvedName": "useCalendarState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends DateValue = DateValue>(props: CalendarStateOptions<T>) => CalendarState",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends DateValue = DateValue>( _: CalendarStateOptions<T>) => CalendarState"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCalendarState",
-            "resolvedName": "useCalendarState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: CalendarStateOptions) => CalendarState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: CalendarStateOptions) => CalendarState"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useRangeCalendarState",
-          "targetExportName": "useRangeCalendarState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useRangeCalendarState",
-            "resolvedName": "useRangeCalendarState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends DateValue = DateValue>(props: RangeCalendarStateOptions<T>) => RangeCalendarState<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends DateValue = DateValue>( _: RangeCalendarStateOptions<T>) => RangeCalendarState<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useRangeCalendarState",
-            "resolvedName": "useRangeCalendarState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: RangeCalendarStateOptions) => RangeCalendarState",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: RangeCalendarStateOptions) => RangeCalendarState"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-stately/table",
-      "sourcePath": "packages/@react-stately/table",
-      "targetPackage": "@vue-stately/table",
-      "targetPath": "packages/@vue-stately/table",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-stately/table/src/index.ts",
-      "targetEntrypoint": "packages/@vue-stately/table/src/index.ts",
-      "sourceExportCount": 25,
-      "comparedExportCount": 25,
-      "matchedExportCount": 23,
-      "mismatchedExportCount": 2,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.92,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useTableState",
-          "targetExportName": "useTableState",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTableState",
-            "resolvedName": "useTableState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends object>(props: TableStateProps<T>) => TableState<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends object>( _: TableStateProps<T>) => TableState<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTableState",
-            "resolvedName": "useTableState",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: TableStateProps<T>) => TableState<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: TableStateProps<T>) => TableState<T>"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "buildHeaderRows",
-          "targetExportName": "buildHeaderRows",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "buildHeaderRows",
-            "resolvedName": "buildHeaderRows",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(keyMap: Map<Key, GridNode<T>>, columnNodes: GridNode<T>[]) => GridNode<T>[]",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: Map<Key, GridNode<T>>, _: GridNode<T>[]) => GridNode<T>[]"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "buildHeaderRows",
-            "resolvedName": "buildHeaderRows",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(columns: TableColumn[]) => Array<TableRow<T>>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: TableColumn[]) => Array<TableRow<T>>"
             ],
             "constructSignatures": []
           }
@@ -7761,59 +7401,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-aria/test-utils",
-      "sourcePath": "packages/@react-aria/test-utils",
-      "targetPackage": "@vue-aria/test-utils",
-      "targetPath": "packages/@vue-aria/test-utils",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/test-utils/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/test-utils/src/index.ts",
-      "sourceExportCount": 17,
-      "comparedExportCount": 17,
-      "matchedExportCount": 16,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.9412,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "pointerMap",
-          "targetExportName": "pointerMap",
-          "differences": [
-            "value-type"
-          ],
-          "source": {
-            "name": "pointerMap",
-            "resolvedName": "pointerMap",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "VariableDeclaration"
-            ],
-            "valueType": "pointerKey[]",
-            "declaredType": "",
-            "callSignatures": [],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "pointerMap",
-            "resolvedName": "pointerMap",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "VariableDeclaration"
-            ],
-            "valueType": "PointerKey[]",
-            "declaredType": "",
-            "callSignatures": [],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/toggle",
       "sourcePath": "packages/@react-aria/toggle",
       "targetPackage": "@vue-aria/toggle",
@@ -7920,344 +7507,6 @@
             "callSignatures": [
               "( _: AriaVisuallyHiddenOptions) => VisuallyHiddenAria"
             ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/color",
-      "sourcePath": "packages/@react-spectrum/color",
-      "targetPackage": "@vue-spectrum/color",
-      "targetPath": "packages/@vue-spectrum/color",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/color/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/color/src/index.ts",
-      "sourceExportCount": 21,
-      "comparedExportCount": 21,
-      "matchedExportCount": 20,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.9524,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "parseColor",
-          "targetExportName": "parseColor",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "parseColor",
-            "resolvedName": "parseColor",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(value: string) => IColor",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: string) => IColor"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "parseColor",
-            "resolvedName": "parseColor",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(value: string) => Color",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: string) => Color"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/dnd",
-      "sourcePath": "packages/@react-spectrum/dnd",
-      "targetPackage": "@vue-spectrum/dnd",
-      "targetPath": "packages/@vue-spectrum/dnd",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/dnd/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/dnd/src/index.ts",
-      "sourceExportCount": 26,
-      "comparedExportCount": 26,
-      "matchedExportCount": 25,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.9615,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useDragAndDrop",
-          "targetExportName": "useDragAndDrop",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDragAndDrop",
-            "resolvedName": "useDragAndDrop",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T = object>(options: DragAndDropOptions<T>) => DragAndDropHooks",
-            "declaredType": "",
-            "callSignatures": [
-              "<T = object>( _: DragAndDropOptions<T>) => DragAndDropHooks"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDragAndDrop",
-            "resolvedName": "useDragAndDrop",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => DragAndDropHooks",
-            "declaredType": "",
-            "callSignatures": [
-              "() => DragAndDropHooks"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/form",
-      "sourcePath": "packages/@react-spectrum/form",
-      "targetPackage": "@vue-spectrum/form",
-      "targetPath": "packages/@vue-spectrum/form",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/form/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/form/src/index.ts",
-      "sourceExportCount": 3,
-      "comparedExportCount": 3,
-      "matchedExportCount": 2,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useFormProps",
-          "targetExportName": "useFormProps",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useFormProps",
-            "resolvedName": "useFormProps",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends SpectrumLabelableProps>(props: T) => T",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends SpectrumLabelableProps>( _: T) => T"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useFormProps",
-            "resolvedName": "useFormProps",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends Record<string, unknown>>(props: T) => T",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends Record<string, unknown>>( _: T) => T"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/listbox",
-      "sourcePath": "packages/@react-spectrum/listbox",
-      "targetPackage": "@vue-spectrum/listbox",
-      "targetPath": "packages/@vue-spectrum/listbox",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/listbox/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/listbox/src/index.ts",
-      "sourceExportCount": 6,
-      "comparedExportCount": 6,
-      "matchedExportCount": 5,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.8333,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useListBoxLayout",
-          "targetExportName": "useListBoxLayout",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useListBoxLayout",
-            "resolvedName": "useListBoxLayout",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>() => ListBoxLayout<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>() => ListBoxLayout<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useListBoxLayout",
-            "resolvedName": "useListBoxLayout",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "() => { readonly layout: \"stack\";}",
-            "declaredType": "",
-            "callSignatures": [
-              "() => { readonly layout: \"stack\"; }"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/story-utils",
-      "sourcePath": "packages/@react-spectrum/story-utils",
-      "targetPackage": "@vue-spectrum/story-utils",
-      "targetPath": "packages/@vue-spectrum/story-utils",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/story-utils/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/story-utils/src/index.ts",
-      "sourceExportCount": 2,
-      "comparedExportCount": 2,
-      "matchedExportCount": 1,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.5,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "generatePowerset",
-          "targetExportName": "generatePowerset",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "generatePowerset",
-            "resolvedName": "generatePowerset",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(states: Array<object>, exclude?: (merged: any) => boolean) => any[]",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: Array<object>, _: ( _: any) => boolean) => any[]"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "generatePowerset",
-            "resolvedName": "generatePowerset",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(states: StoryState[], exclude?: (merged: StoryState) => boolean) => StoryState[]",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: StoryState[], _: ( _: StoryState) => boolean) => StoryState[]"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/test-utils",
-      "sourcePath": "packages/@react-spectrum/test-utils",
-      "targetPackage": "@vue-spectrum/test-utils",
-      "targetPath": "packages/@vue-spectrum/test-utils",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/test-utils/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/test-utils/src/index.ts",
-      "sourceExportCount": 19,
-      "comparedExportCount": 19,
-      "matchedExportCount": 18,
-      "mismatchedExportCount": 1,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.9474,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "pointerMap",
-          "targetExportName": "pointerMap",
-          "differences": [
-            "value-type"
-          ],
-          "source": {
-            "name": "pointerMap",
-            "resolvedName": "pointerMap",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "VariableDeclaration"
-            ],
-            "valueType": "pointerKey[]",
-            "declaredType": "",
-            "callSignatures": [],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "pointerMap",
-            "resolvedName": "pointerMap",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "VariableDeclaration"
-            ],
-            "valueType": "PointerKey[]",
-            "declaredType": "",
-            "callSignatures": [],
             "constructSignatures": []
           }
         }
@@ -9403,6 +8652,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/test-utils",
+      "sourcePath": "packages/@react-aria/test-utils",
+      "targetPackage": "@vue-aria/test-utils",
+      "targetPath": "packages/@vue-aria/test-utils",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/test-utils/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/test-utils/src/index.ts",
+      "sourceExportCount": 17,
+      "comparedExportCount": 17,
+      "matchedExportCount": 17,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/textfield",
       "sourcePath": "packages/@react-aria/textfield",
       "targetPackage": "@vue-aria/textfield",
@@ -9413,6 +8681,25 @@
       "sourceExportCount": 5,
       "comparedExportCount": 5,
       "matchedExportCount": 5,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/toast",
+      "sourcePath": "packages/@react-aria/toast",
+      "targetPackage": "@vue-aria/toast",
+      "targetPath": "packages/@vue-aria/toast",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/toast/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/toast/src/index.ts",
+      "sourceExportCount": 6,
+      "comparedExportCount": 6,
+      "matchedExportCount": 6,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
@@ -9745,6 +9032,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/color",
+      "sourcePath": "packages/@react-spectrum/color",
+      "targetPackage": "@vue-spectrum/color",
+      "targetPath": "packages/@vue-spectrum/color",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/color/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/color/src/index.ts",
+      "sourceExportCount": 21,
+      "comparedExportCount": 21,
+      "matchedExportCount": 21,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/combobox",
       "sourcePath": "packages/@react-spectrum/combobox",
       "targetPackage": "@vue-spectrum/combobox",
@@ -9840,6 +9146,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/dnd",
+      "sourcePath": "packages/@react-spectrum/dnd",
+      "targetPackage": "@vue-spectrum/dnd",
+      "targetPath": "packages/@vue-spectrum/dnd",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/dnd/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/dnd/src/index.ts",
+      "sourceExportCount": 26,
+      "comparedExportCount": 26,
+      "matchedExportCount": 26,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/dropzone",
       "sourcePath": "packages/@react-spectrum/dropzone",
       "targetPackage": "@vue-spectrum/dropzone",
@@ -9869,6 +9194,25 @@
       "sourceExportCount": 2,
       "comparedExportCount": 2,
       "matchedExportCount": 2,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/form",
+      "sourcePath": "packages/@react-spectrum/form",
+      "targetPackage": "@vue-spectrum/form",
+      "targetPath": "packages/@vue-spectrum/form",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/form/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/form/src/index.ts",
+      "sourceExportCount": 3,
+      "comparedExportCount": 3,
+      "matchedExportCount": 3,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
@@ -10040,6 +9384,25 @@
       "sourceExportCount": 3,
       "comparedExportCount": 3,
       "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/listbox",
+      "sourcePath": "packages/@react-spectrum/listbox",
+      "targetPackage": "@vue-spectrum/listbox",
+      "targetPath": "packages/@vue-spectrum/listbox",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/listbox/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/listbox/src/index.ts",
+      "sourceExportCount": 6,
+      "comparedExportCount": 6,
+      "matchedExportCount": 6,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
@@ -10277,6 +9640,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-spectrum/story-utils",
+      "sourcePath": "packages/@react-spectrum/story-utils",
+      "targetPackage": "@vue-spectrum/story-utils",
+      "targetPath": "packages/@vue-spectrum/story-utils",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/story-utils/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/story-utils/src/index.ts",
+      "sourceExportCount": 2,
+      "comparedExportCount": 2,
+      "matchedExportCount": 2,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-spectrum/switch",
       "sourcePath": "packages/@react-spectrum/switch",
       "targetPackage": "@vue-spectrum/switch",
@@ -10344,6 +9726,25 @@
       "sourceExportCount": 3,
       "comparedExportCount": 3,
       "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/test-utils",
+      "sourcePath": "packages/@react-spectrum/test-utils",
+      "targetPackage": "@vue-spectrum/test-utils",
+      "targetPath": "packages/@vue-spectrum/test-utils",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/test-utils/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/test-utils/src/index.ts",
+      "sourceExportCount": 19,
+      "comparedExportCount": 19,
+      "matchedExportCount": 19,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
@@ -10591,6 +9992,25 @@
       "sourceExportCount": 4,
       "comparedExportCount": 4,
       "matchedExportCount": 4,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/calendar",
+      "sourcePath": "packages/@react-stately/calendar",
+      "targetPackage": "@vue-stately/calendar",
+      "targetPath": "packages/@vue-stately/calendar",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/calendar/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/calendar/src/index.ts",
+      "sourceExportCount": 6,
+      "comparedExportCount": 6,
+      "matchedExportCount": 6,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
@@ -10857,6 +10277,25 @@
       "sourceExportCount": 3,
       "comparedExportCount": 3,
       "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-stately/table",
+      "sourcePath": "packages/@react-stately/table",
+      "targetPackage": "@vue-stately/table",
+      "targetPath": "packages/@vue-stately/table",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-stately/table/src/index.ts",
+      "targetEntrypoint": "packages/@vue-stately/table/src/index.ts",
+      "sourceExportCount": 25,
+      "comparedExportCount": 25,
+      "matchedExportCount": 25,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,

@@ -9,7 +9,7 @@ type FormContextValue = Pick<SpectrumLabelableProps, 'labelAlign' | 'labelPositi
 
 const formContextKey: InjectionKey<ComputedRef<FormContextValue>> = Symbol('vue-spectrum-form-context');
 
-export function useFormProps<T extends Record<string, unknown>>(props: T): T {
+export function useFormProps<T extends SpectrumLabelableProps>(props: T): T {
   let context = inject(formContextKey, null);
   if (!context) {
     return props;

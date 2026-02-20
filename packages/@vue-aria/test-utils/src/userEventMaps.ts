@@ -1,4 +1,4 @@
-export interface PointerKey {
+export interface pointerKey {
   name: string,
   pointerType: 'mouse' | 'touch',
   button?: 'auxiliary' | 'primary' | 'secondary',
@@ -7,7 +7,7 @@ export interface PointerKey {
   width?: number
 }
 
-type pointerKey = PointerKey;
+export type PointerKey = pointerKey;
 
 export let pointerMap: pointerKey[] = [
   {name: 'MouseLeft', pointerType: 'mouse', button: 'primary', height: 1, width: 1, pressure: 0.5},

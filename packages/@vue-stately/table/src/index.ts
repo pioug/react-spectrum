@@ -1,18 +1,60 @@
-export {TableCollection} from './TableCollection';
+import {
+  TableCollection,
+  buildHeaderRows as buildHeaderRowsInternal,
+  type TableCell,
+  type TableCollectionOptions,
+  type TableColumn,
+  type TableRow
+} from './TableCollection';
+import {
+  UNSTABLE_useFilteredTableState as unstableUseFilteredTableStateInternal,
+  useTableState as useTableStateInternal,
+  type SortDescriptor,
+  type SortDirection,
+  type TableState,
+  type TableStateProps
+} from './useTableState';
+export {Section} from '@vue-stately/collections';
+
+export {TableCollection};
 export type {
   TableCell,
   TableCollectionOptions,
   TableColumn,
-  TableRow
-} from './TableCollection';
-export {UNSTABLE_useFilteredTableState, useTableState} from './useTableState';
-export type {
+  TableRow,
   SortDescriptor,
   SortDirection,
   TableState,
   TableStateProps
-} from './useTableState';
-export {Section} from '@vue-stately/collections';
+};
+
+type Key = string | number;
+type GridNode<T> = {
+  key: Key
+} & Record<string, unknown> & {
+  _itemType?: T
+};
+
+export function useTableState<T extends object>(props: TableStateProps<T>): TableState<T>;
+export function useTableState<T>(props: TableStateProps<T>): TableState<T>;
+export function useTableState<T>(props: TableStateProps<T>): TableState<T> {
+  return useTableStateInternal(props);
+}
+
+export function UNSTABLE_useFilteredTableState<T extends object>(
+  props: TableStateProps<T>,
+  filter: (rows: TableRow<T>[]) => TableRow<T>[]
+): TableState<T>;
+export function UNSTABLE_useFilteredTableState<T>(
+  props: TableStateProps<T>,
+  filter: (rows: TableRow<T>[]) => TableRow<T>[]
+): TableState<T>;
+export function UNSTABLE_useFilteredTableState<T>(
+  props: TableStateProps<T>,
+  filter: (rows: TableRow<T>[]) => TableRow<T>[]
+): TableState<T> {
+  return unstableUseFilteredTableStateInternal(props, filter);
+}
 
 export type TableColumnResizeStateProps<T = unknown> = Record<string, unknown> & {
   _tableType?: T
@@ -84,16 +126,17 @@ export class TableColumnLayout {
   }
 }
 
-export function buildHeaderRows<T>(columns: TableColumn[]): Array<TableRow<T>> {
-  return columns.length > 0
-    ? [{
-      key: 'header-row',
-      cells: columns.map((column) => ({
-        key: `header-${String(column.key)}`,
-        textValue: column.title
-      }))
-    }]
-    : [];
+export function buildHeaderRows<T>(keyMap: Map<Key, GridNode<T>>, columnNodes: GridNode<T>[]): GridNode<T>[];
+export function buildHeaderRows<T>(columns: TableColumn[]): Array<TableRow<T>>;
+export function buildHeaderRows<T>(
+  firstArg: Map<Key, GridNode<T>> | TableColumn[],
+  secondArg?: GridNode<T>[]
+): GridNode<T>[] | Array<TableRow<T>> {
+  if (firstArg instanceof Map && Array.isArray(secondArg)) {
+    return secondArg;
+  }
+
+  return buildHeaderRowsInternal(firstArg as TableColumn[]) as Array<TableRow<T>>;
 }
 
 export function UNSTABLE_useTreeGridState<T>(props: TreeGridStateProps<T>): TreeGridState<T> {

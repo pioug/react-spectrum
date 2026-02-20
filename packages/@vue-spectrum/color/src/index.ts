@@ -4,6 +4,7 @@ export type Color = string;
 export type ColorSpace = 'rgb' | 'hsl' | 'hsb';
 export type ColorFormat = 'hex' | 'rgb' | 'hsl' | 'hsb';
 export type ColorChannel = 'red' | 'green' | 'blue' | 'hue' | 'saturation' | 'lightness' | 'brightness';
+type IColor = Color;
 
 export const ColorArea = VueColorArea;
 export const ColorEditor = VueColorEditor;
@@ -14,7 +15,7 @@ export const ColorSwatch = VueColorSwatch;
 export const ColorSwatchPicker = VueColorSwatchPicker;
 export const ColorWheel = VueColorWheel;
 
-export function parseColor(value: string): Color {
+export function parseColor(value: string): IColor {
   let candidate = value.trim();
   if (/^#[0-9a-fA-F]{3}$/.test(candidate)) {
     let expanded = candidate.slice(1).split('').map((channel) => `${channel}${channel}`).join('');
