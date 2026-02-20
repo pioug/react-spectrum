@@ -1278,6 +1278,155 @@
   inset-block-start: 24px;
 }
 
+.vs-tooltip-trigger {
+  display: inline-flex;
+  position: relative;
+}
+
+.vs-tooltip-trigger__target {
+  display: inline-flex;
+}
+
+.vs-tooltip {
+  --vs-tooltip-background: #323232;
+  align-items: center;
+  background: var(--vs-tooltip-background);
+  border-radius: 4px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.24);
+  box-sizing: border-box;
+  color: #ffffff;
+  cursor: default;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 400;
+  gap: 6px;
+  line-height: 1.25;
+  max-inline-size: 240px;
+  min-block-size: 24px;
+  padding: 4px 8px;
+  position: relative;
+  user-select: none;
+  z-index: 1;
+}
+
+.vs-tooltip__icon {
+  align-items: center;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 12px;
+  font-weight: 700;
+  justify-content: center;
+  line-height: 1;
+}
+
+.vs-tooltip__label {
+  line-height: 1.25;
+  max-inline-size: 100%;
+}
+
+.vs-tooltip::after {
+  border-color: var(--vs-tooltip-background) transparent transparent transparent;
+  border-style: solid;
+  border-width: 6px 6px 0 6px;
+  block-size: 0;
+  content: '';
+  inline-size: 0;
+  inset-inline-start: 50%;
+  margin-inline-start: -6px;
+  position: absolute;
+}
+
+.vs-tooltip--neutral {
+  --vs-tooltip-background: #323232;
+}
+
+.vs-tooltip--info {
+  --vs-tooltip-background: #0265dc;
+}
+
+.vs-tooltip--positive {
+  --vs-tooltip-background: #12805c;
+}
+
+.vs-tooltip--negative {
+  --vs-tooltip-background: #c9252d;
+}
+
+.vs-tooltip--top {
+  margin-block-end: 8px;
+}
+
+.vs-tooltip--top::after {
+  inset-block-start: 100%;
+}
+
+.vs-tooltip--bottom {
+  margin-block-start: 8px;
+}
+
+.vs-tooltip--bottom::after {
+  border-color: transparent transparent var(--vs-tooltip-background) transparent;
+  border-width: 0 6px 6px 6px;
+  inset-block-end: 100%;
+}
+
+.vs-tooltip--right {
+  margin-inline-start: 8px;
+}
+
+.vs-tooltip--right::after {
+  border-color: transparent transparent transparent var(--vs-tooltip-background);
+  border-width: 6px 0 6px 6px;
+  inset-block-start: 50%;
+  inset-inline-start: 100%;
+  margin-block-start: -6px;
+  margin-inline-start: 0;
+}
+
+.vs-tooltip--left {
+  margin-inline-end: 8px;
+}
+
+.vs-tooltip--left::after {
+  border-color: transparent var(--vs-tooltip-background) transparent transparent;
+  border-width: 6px 6px 6px 0;
+  inset-block-start: 50%;
+  inset-inline-end: 100%;
+  inset-inline-start: auto;
+  margin-block-start: -6px;
+  margin-inline-start: 0;
+}
+
+.vs-tooltip-trigger > .vs-tooltip {
+  margin: 0;
+  position: absolute;
+  white-space: nowrap;
+}
+
+.vs-tooltip-trigger > .vs-tooltip--top {
+  inset-block-end: calc(100% + 8px);
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+}
+
+.vs-tooltip-trigger > .vs-tooltip--bottom {
+  inset-block-start: calc(100% + 8px);
+  inset-inline-start: 50%;
+  transform: translateX(-50%);
+}
+
+.vs-tooltip-trigger > .vs-tooltip--left {
+  inset-block-start: 50%;
+  inset-inline-end: calc(100% + 8px);
+  transform: translateY(-50%);
+}
+
+.vs-tooltip-trigger > .vs-tooltip--right {
+  inset-block-start: 50%;
+  inset-inline-start: calc(100% + 8px);
+  transform: translateY(-50%);
+}
+
 .vs-combobox {
   display: grid;
   gap: 8px;

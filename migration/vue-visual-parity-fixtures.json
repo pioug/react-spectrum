@@ -153,6 +153,264 @@
       "path": "/parity.html",
       "selector": "[data-parity-id='table-default']",
       "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-accordion",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-accordion']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-actionbar",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-actionbar']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-actiongroup",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-actiongroup']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-autocomplete",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-autocomplete']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-avatar",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-avatar']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-breadcrumbs",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-breadcrumbs']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-buttongroup",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-buttongroup']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-calendar",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-calendar']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-checkbox",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-checkbox']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-color",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-color']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-combobox",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-combobox']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-datepicker",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-datepicker']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-divider",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-divider']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-dnd",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-dnd']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-dropzone",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-dropzone']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-filetrigger",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-filetrigger']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-form",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-form']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-illustratedmessage",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-illustratedmessage']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-image",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-image']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-inlinealert",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-inlinealert']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-label",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-label']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-labeledvalue",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-labeledvalue']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-layout",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-layout']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-link",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-link']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-list",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-list']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-menu",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-menu']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-meter",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-meter']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-numberfield",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-numberfield']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-picker",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-picker']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-progress",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-progress']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-radio",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-radio']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-searchfield",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-searchfield']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-slider",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-slider']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-statuslight",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-statuslight']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-steplist",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-steplist']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-tag",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-tag']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-toast",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-toast']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-tooltip",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-tooltip']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-tree",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-tree']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-well",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='pkg-well']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-contextualhelp",
+      "path": "/parity-contextual-help.html",
+      "selector": ".vs-contextual-help__dialog",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-dialog",
+      "path": "/parity-dialog.html",
+      "selector": ".vs-dialog",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "pkg-overlays",
+      "path": "/parity-popover.html",
+      "selector": ".vs-popover",
+      "maxDiffRatio": 0
     }
   ]
 }

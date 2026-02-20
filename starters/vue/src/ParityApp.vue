@@ -136,24 +136,285 @@
           row-key="ticket"
           caption="Tickets" />
       </section>
+
+      <section data-parity-id="pkg-accordion" class="parity-card parity-card--wide parity-card--stack">
+        <Accordion v-model="accordionExpanded">
+          <Disclosure id="core">
+            <DisclosureTitle>Core primitives</DisclosureTitle>
+            <DisclosurePanel>Accordion package parity fixture</DisclosurePanel>
+          </Disclosure>
+          <Disclosure id="states">
+            <DisclosureTitle>State coverage</DisclosureTitle>
+            <DisclosurePanel>Expanded state coverage is enabled.</DisclosurePanel>
+          </Disclosure>
+        </Accordion>
+      </section>
+
+      <section data-parity-id="pkg-actionbar" class="parity-card parity-card--wide parity-card--stack">
+        <ActionBarContainer>
+          <ActionBar :selected-item-count="2" :items="actionBarItems" />
+        </ActionBarContainer>
+      </section>
+
+      <section data-parity-id="pkg-actiongroup" class="parity-card parity-card--wide">
+        <ActionGroup v-model="actionGroupSelection" :items="actionGroupItems" selection-mode="multiple" />
+      </section>
+
+      <section data-parity-id="pkg-autocomplete" class="parity-card parity-card--input">
+        <SearchAutocomplete v-model="autocompleteValue" label="Autocomplete" :options="frameworkOptions" />
+      </section>
+
+      <section data-parity-id="pkg-avatar" class="parity-card">
+        <Avatar label="Vue Spectrum" size="l" />
+      </section>
+
+      <section data-parity-id="pkg-breadcrumbs" class="parity-card parity-card--wide">
+        <Breadcrumbs :items="breadcrumbItems" current="Parity" />
+      </section>
+
+      <section data-parity-id="pkg-buttongroup" class="parity-card parity-card--wide">
+        <ButtonGroup>
+          <Button variant="primary">Save</Button>
+          <Button variant="secondary">Cancel</Button>
+        </ButtonGroup>
+      </section>
+
+      <section data-parity-id="pkg-calendar" class="parity-card parity-card--wide parity-card--stack">
+        <Calendar v-model="calendarValue" label="Calendar" />
+        <RangeCalendar v-model="calendarRangeValue" label="Range calendar" />
+      </section>
+
+      <section data-parity-id="pkg-checkbox" class="parity-card parity-card--wide parity-card--stack">
+        <Checkbox v-model="checkboxValue">Subscribe</Checkbox>
+        <CheckboxGroup label="Channels" description="Checkbox group package fixture">
+          <Checkbox :model-value="true">Email</Checkbox>
+          <Checkbox :model-value="false">SMS</Checkbox>
+        </CheckboxGroup>
+      </section>
+
+      <section data-parity-id="pkg-color" class="parity-card parity-card--wide parity-card--stack">
+        <ColorField v-model="colorFieldValue" label="Color field" />
+        <ColorSlider v-model="colorSliderValue" label="Hue" />
+        <ColorArea v-model="colorAreaValue" label="Color area" />
+        <ColorWheel v-model="colorWheelValue" label="Color wheel" />
+        <ColorEditor v-model="colorEditorValue" label="Color editor" />
+        <ColorPicker v-model="colorPickerValue" label="Color picker" />
+        <ColorSwatchPicker v-model="selectedColorPreset" :items="colorPresetItems" />
+        <ColorSwatch :color="colorPickerValue" label="Preview" />
+      </section>
+
+      <section data-parity-id="pkg-combobox" class="parity-card parity-card--input">
+        <ComboBox v-model="comboBoxValue" label="ComboBox" :options="frameworkOptions" />
+      </section>
+
+      <section data-parity-id="pkg-datepicker" class="parity-card parity-card--wide parity-card--stack">
+        <DateField v-model="dateFieldValue" label="Date field" />
+        <DatePicker v-model="datePickerValue" label="Date picker" />
+        <DateRangePicker v-model="dateRangeValue" label="Date range picker" />
+        <TimeField v-model="timeFieldValue" label="Time field" />
+      </section>
+
+      <section data-parity-id="pkg-divider" class="parity-card parity-card--stack">
+        <Text variant="detail">Divider package parity fixture</Text>
+        <Divider />
+        <Text variant="detail">After divider</Text>
+      </section>
+
+      <section data-parity-id="pkg-dnd" class="parity-card">
+        <DndDropZone label="Dnd package drop zone" />
+      </section>
+
+      <section data-parity-id="pkg-dropzone" class="parity-card">
+        <DropZone label="Dropzone package fixture" />
+      </section>
+
+      <section data-parity-id="pkg-filetrigger" class="parity-card">
+        <FileTrigger :accepted-file-types="acceptedFileTypes" allows-multiple>
+          Select files
+        </FileTrigger>
+      </section>
+
+      <section data-parity-id="pkg-form" class="parity-card parity-card--wide parity-card--stack">
+        <Form>
+          <TextField model-value="Avery" label="Name" />
+          <NumberField :model-value="3" label="Seats" />
+        </Form>
+      </section>
+
+      <section data-parity-id="pkg-illustratedmessage" class="parity-card">
+        <IllustratedMessage title="No tasks" description="Illustrated message parity fixture" variant="info" />
+      </section>
+
+      <section data-parity-id="pkg-image" class="parity-card">
+        <Image :src="sampleImage" alt="Parity illustration" fit="cover" />
+      </section>
+
+      <section data-parity-id="pkg-inlinealert" class="parity-card parity-card--stack">
+        <InlineAlert variant="notice" title="Attention">Inline alert package fixture</InlineAlert>
+      </section>
+
+      <section data-parity-id="pkg-label" class="parity-card parity-card--stack">
+        <Label for-id="pkg-label-input" :required="true">Owner</Label>
+        <input id="pkg-label-input" class="parity-native-input" value="Avery" />
+        <HelpText description="Assistive description" />
+      </section>
+
+      <section data-parity-id="pkg-labeledvalue" class="parity-card parity-card--stack">
+        <LabeledValue label="Libraries" :value="['Vue Spectrum', 'React Spectrum']" />
+      </section>
+
+      <section data-parity-id="pkg-layout" class="parity-card parity-card--wide parity-card--stack">
+        <Flex gap="size-100" justify-content="space-between">
+          <View :border="true" padding="s">Flex A</View>
+          <View :border="true" padding="s">Flex B</View>
+        </Flex>
+        <Grid :columns="layoutColumns" gap="size-100">
+          <View :border="true" padding="s">Grid A</View>
+          <View :border="true" padding="s">Grid B</View>
+        </Grid>
+      </section>
+
+      <section data-parity-id="pkg-link" class="parity-card">
+        <Link href="https://react-spectrum.adobe.com/" target="_blank" rel="noreferrer">Spectrum docs</Link>
+      </section>
+
+      <section data-parity-id="pkg-list" class="parity-card parity-card--wide">
+        <ListView label="List view" :items="listItems" model-value="Vue" />
+      </section>
+
+      <section data-parity-id="pkg-menu" class="parity-card parity-card--wide">
+        <Menu v-model="menuValue" label="Menu" :items="menuItems" />
+      </section>
+
+      <section data-parity-id="pkg-meter" class="parity-card parity-card--stack">
+        <Meter label="Health" :value="68" :low="30" :high="75" :optimum="90" />
+      </section>
+
+      <section data-parity-id="pkg-numberfield" class="parity-card parity-card--input">
+        <NumberField :model-value="7" label="Estimate" />
+      </section>
+
+      <section data-parity-id="pkg-picker" class="parity-card parity-card--input">
+        <Picker v-model="pickerValue" label="Milestone" :items="pickerItems" />
+      </section>
+
+      <section data-parity-id="pkg-progress" class="parity-card parity-card--stack">
+        <ProgressBar label="Progress" :value="64" />
+        <ProgressCircle :value="64" />
+      </section>
+
+      <section data-parity-id="pkg-radio" class="parity-card parity-card--stack">
+        <RadioGroup v-model="radioValue" label="Framework" orientation="horizontal">
+          <Radio value="Vue">Vue</Radio>
+          <Radio value="React">React</Radio>
+          <Radio value="Svelte">Svelte</Radio>
+        </RadioGroup>
+      </section>
+
+      <section data-parity-id="pkg-searchfield" class="parity-card parity-card--input">
+        <SearchField v-model="searchValue" label="Search" />
+      </section>
+
+      <section data-parity-id="pkg-slider" class="parity-card parity-card--stack">
+        <Slider v-model="sliderValue" label="Completion" :min="0" :max="100" :step="5" />
+      </section>
+
+      <section data-parity-id="pkg-statuslight" class="parity-card">
+        <StatusLight variant="positive">Status: green</StatusLight>
+      </section>
+
+      <section data-parity-id="pkg-steplist" class="parity-card parity-card--wide">
+        <StepList aria-label="Workflow" model-value="build" :items="stepItems" />
+      </section>
+
+      <section data-parity-id="pkg-tag" class="parity-card parity-card--wide">
+        <TagGroup label="Tags" :items="tagItems" :model-value="['vue']" selection-mode="multiple" />
+      </section>
+
+      <section data-parity-id="pkg-toast" class="parity-card parity-card--wide">
+        <ToastContainer :queue="toastQueue" aria-label="Notifications" placement="bottom" />
+      </section>
+
+      <section data-parity-id="pkg-tooltip" class="parity-card parity-card--wide">
+        <TooltipTrigger :model-value="true" content="Persistent tooltip" placement="right" variant="positive" :show-icon="true">
+          <Button variant="secondary">Tooltip trigger</Button>
+        </TooltipTrigger>
+      </section>
+
+      <section data-parity-id="pkg-tree" class="parity-card parity-card--wide">
+        <Tree :items="treeItems" model-value="project-alpha" />
+      </section>
+
+      <section data-parity-id="pkg-well" class="parity-card">
+        <Well variant="notice">Well package parity fixture</Well>
+      </section>
     </main>
   </Provider>
 </template>
 
 <script setup lang="ts">
 import {ref} from 'vue';
+import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
+import {ActionBar, ActionBarContainer} from '@vue-spectrum/actionbar';
+import {ActionGroup} from '@vue-spectrum/actiongroup';
+import {SearchAutocomplete} from '@vue-spectrum/autocomplete';
+import {Avatar} from '@vue-spectrum/avatar';
 import {Badge} from '@vue-spectrum/badge';
+import {Breadcrumbs} from '@vue-spectrum/breadcrumbs';
 import {Button} from '@vue-spectrum/button';
+import {ButtonGroup} from '@vue-spectrum/buttongroup';
+import {Calendar, RangeCalendar} from '@vue-spectrum/calendar';
 import {Card} from '@vue-spectrum/card';
+import {Checkbox, CheckboxGroup} from '@vue-spectrum/checkbox';
+import {
+  ColorArea,
+  ColorEditor,
+  ColorField,
+  ColorPicker,
+  ColorSlider,
+  ColorSwatch,
+  ColorSwatchPicker,
+  ColorWheel
+} from '@vue-spectrum/color';
+import {ComboBox} from '@vue-spectrum/combobox';
+import {DateField, DatePicker, DateRangePicker, TimeField} from '@vue-spectrum/datepicker';
+import {Divider} from '@vue-spectrum/divider';
+import {DropZone as DndDropZone} from '@vue-spectrum/dnd';
+import {DropZone} from '@vue-spectrum/dropzone';
+import {FileTrigger} from '@vue-spectrum/filetrigger';
+import {Form} from '@vue-spectrum/form';
 import {Icon} from '@vue-spectrum/icon';
+import {IllustratedMessage} from '@vue-spectrum/illustratedmessage';
+import {Image} from '@vue-spectrum/image';
+import {InlineAlert} from '@vue-spectrum/inlinealert';
+import {HelpText, Label} from '@vue-spectrum/label';
+import {LabeledValue} from '@vue-spectrum/labeledvalue';
+import {Flex, Grid, minmax, repeat} from '@vue-spectrum/layout';
+import {Link} from '@vue-spectrum/link';
+import {ListView} from '@vue-spectrum/list';
 import {ListBox} from '@vue-spectrum/listbox';
+import {Menu} from '@vue-spectrum/menu';
+import {Meter} from '@vue-spectrum/meter';
+import {NumberField} from '@vue-spectrum/numberfield';
+import {Picker} from '@vue-spectrum/picker';
+import {ProgressBar, ProgressCircle} from '@vue-spectrum/progress';
 import {Provider} from '@vue-spectrum/provider';
+import {Radio, RadioGroup} from '@vue-spectrum/radio';
+import {SearchField} from '@vue-spectrum/searchfield';
+import {Slider} from '@vue-spectrum/slider';
+import {StatusLight} from '@vue-spectrum/statuslight';
+import {StepList} from '@vue-spectrum/steplist';
 import {Switch} from '@vue-spectrum/switch';
 import {Table} from '@vue-spectrum/table';
+import {TagGroup} from '@vue-spectrum/tag';
 import {Tabs, type TabItemData} from '@vue-spectrum/tabs';
-import {TextField} from '@vue-spectrum/textfield';
 import {Text} from '@vue-spectrum/text';
+import {TextField} from '@vue-spectrum/textfield';
+import {createToastQueue, ToastContainer} from '@vue-spectrum/toast';
+import {TooltipTrigger} from '@vue-spectrum/tooltip';
+import {Tree} from '@vue-spectrum/tree';
 import {View} from '@vue-spectrum/view';
+import {Well} from '@vue-spectrum/well';
 import {theme as darkTheme} from '@vue-spectrum/theme-dark';
 import {theme as defaultTheme} from '@vue-spectrum/theme-default';
 import {theme as expressTheme} from '@vue-spectrum/theme-express';
@@ -161,6 +422,7 @@ import {theme as lightTheme} from '@vue-spectrum/theme-light';
 
 const selectedTab = ref('overview');
 const selectedRow = ref('T-100');
+const listItems = ['React', 'Vue', 'Svelte'];
 
 const tabs: TabItemData[] = [
   {key: 'overview', label: 'Overview', content: 'Overview content'},
@@ -177,7 +439,82 @@ const rows = [
   {ticket: 'T-101', owner: 'Quinn'}
 ];
 
-const listItems = ['React', 'Vue', 'Svelte'];
+const accordionExpanded = ref<string[]>(['core']);
+const actionBarItems = ['Approve', 'Assign', 'Archive'];
+const actionGroupItems = ['Edit', 'Review', 'Publish'];
+const actionGroupSelection = ref<string[]>(['Review']);
+const autocompleteValue = ref('Vue');
+const breadcrumbItems = ['Home', 'Migration', 'Parity'];
+const calendarValue = ref('2026-02-20');
+const calendarRangeValue = ref({
+  start: '2026-02-20',
+  end: '2026-02-24'
+});
+const checkboxValue = ref(true);
+const colorFieldValue = ref('#0ea5e9');
+const colorSliderValue = ref(215);
+const colorAreaValue = ref({x: 52, y: 34});
+const colorWheelValue = ref(210);
+const colorEditorValue = ref('#4f46e5');
+const colorPickerValue = ref('#a855f7');
+const comboBoxValue = ref('React');
+const dateFieldValue = ref('2026-02-19');
+const datePickerValue = ref('2026-02-21');
+const dateRangeValue = ref({
+  start: '2026-02-22',
+  end: '2026-02-27'
+});
+const timeFieldValue = ref('09:45');
+const acceptedFileTypes = ['image/png', 'image/jpeg', 'application/pdf'];
+const layoutColumns = repeat(2, minmax(0, '1fr'));
+const menuItems = ['Design', 'Build', 'Ship'];
+const menuValue = ref('Build');
+const pickerItems = ['Q1', 'Q2', 'Q3', 'Q4'];
+const pickerValue = ref('Q2');
+const radioValue = ref('Vue');
+const searchValue = ref('Vue');
+const sliderValue = ref(64);
+const stepItems = [
+  {key: 'plan', label: 'Plan'},
+  {key: 'build', label: 'Build'},
+  {key: 'ship', label: 'Ship', disabled: true}
+];
+const tagItems = [
+  {key: 'vue', label: 'Vue'},
+  {key: 'react', label: 'React'},
+  {key: 'spectrum', label: 'Spectrum'}
+];
+const treeItems = [
+  {
+    id: 'project-alpha',
+    label: 'Project Alpha',
+    children: [
+      {id: 'alpha-ui', label: 'UI'},
+      {id: 'alpha-data', label: 'Data'}
+    ]
+  },
+  {
+    id: 'project-beta',
+    label: 'Project Beta',
+    children: [
+      {id: 'beta-api', label: 'API'},
+      {id: 'beta-qa', label: 'QA'}
+    ]
+  }
+];
+
+const frameworkOptions = ['React', 'Vue', 'Svelte', 'Solid'];
+const colorPresetItems = [
+  {id: 'azure', label: 'Azure', color: '#0ea5e9'},
+  {id: 'violet', label: 'Violet', color: '#8b5cf6'},
+  {id: 'emerald', label: 'Emerald', color: '#10b981'}
+];
+const selectedColorPreset = ref('azure');
+
+const toastQueue = createToastQueue({maxVisibleToasts: 1});
+toastQueue.positive('Deployment ready', {actionLabel: 'View'});
+
+const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='140' viewBox='0 0 360 140'%3E%3Crect width='360' height='140' fill='%23e8eefc'/%3E%3Ctext x='24' y='78' fill='%2327476e' font-size='24' font-family='Arial'%3EVue Parity%3C/text%3E%3C/svg%3E";
 </script>
 
 <style scoped>
@@ -194,7 +531,7 @@ const listItems = ['React', 'Vue', 'Svelte'];
   gap: 16px;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin: 0 auto;
-  max-width: 1200px;
+  max-width: 1280px;
   padding: 24px;
 }
 
@@ -219,6 +556,12 @@ const listItems = ['React', 'Vue', 'Svelte'];
   grid-column: span 3;
 }
 
+.parity-card--stack {
+  align-items: stretch;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .parity-card--cluster {
   align-items: stretch;
   padding: 0;
@@ -235,6 +578,15 @@ const listItems = ['React', 'Vue', 'Svelte'];
   gap: 12px;
   inline-size: 100%;
   padding: 16px;
+}
+
+.parity-native-input {
+  border: 1px solid #bdbdbd;
+  border-radius: 6px;
+  font-size: 14px;
+  inline-size: 100%;
+  min-height: 32px;
+  padding: 4px 10px;
 }
 
 @media (max-width: 1024px) {

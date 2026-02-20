@@ -1,12 +1,12 @@
 # Vue Visual Parity Report
 
-Generated: 2026-02-20T02:06:29.408Z
+Generated: 2026-02-20T02:29:46.731Z
 
 ## Summary
 
 * Mode: compare
-* Fixtures: 24
-* Passed: 24
+* Fixtures: 67
+* Passed: 67
 * Failed: 0
 * Errors: 0
 
@@ -38,4 +38,47 @@ Generated: 2026-02-20T02:06:29.408Z
 | `listbox-selected` | pass | 0.0000% | 0.0000% | 0 |
 | `tabs-default` | pass | 0.0000% | 0.0000% | 0 |
 | `table-default` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-accordion` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-actionbar` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-actiongroup` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-autocomplete` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-avatar` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-breadcrumbs` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-buttongroup` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-calendar` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-checkbox` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-color` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-combobox` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-datepicker` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-divider` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-dnd` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-dropzone` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-filetrigger` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-form` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-illustratedmessage` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-image` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-inlinealert` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-label` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-labeledvalue` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-layout` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-link` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-list` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-menu` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-meter` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-numberfield` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-picker` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-progress` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-radio` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-searchfield` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-slider` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-statuslight` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-steplist` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-tag` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-toast` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-tooltip` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-tree` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-well` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-contextualhelp` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-dialog` | pass | 0.0000% | 0.0000% | 0 |
+| `pkg-overlays` | pass | 0.0000% | 0.0000% | 0 |
 
