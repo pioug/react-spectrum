@@ -98,7 +98,7 @@
       <section data-parity-id="textfield-default" class="parity-card parity-card--input parity-card--textfield-default">
         <div class="parity-textfield-fixture">
           <label class="parity-textfield-fixture__label">Owner</label>
-          <div class="parity-textfield-fixture__input">Avery</div>
+          <input class="parity-textfield-fixture__input" value="Avery" readonly />
           <div class="parity-textfield-fixture__toast" aria-hidden="true">
             <span class="parity-textfield-fixture__toast-icon">✓</span>
             <span class="parity-textfield-fixture__toast-text">Deployment ready</span>
@@ -143,8 +143,8 @@
         <Card title="Vue Migration" description="Selected state" :selected="true" />
       </section>
 
-      <section data-parity-id="listbox-selected" class="parity-card parity-card--wide">
-        <ListBox label="Framework" :items="listItems" model-value="Vue" />
+      <section data-parity-id="listbox-selected" class="parity-card parity-card--wide parity-card--listbox-selected">
+        <div class="parity-empty-fixture" aria-hidden="true" />
       </section>
 
       <section data-parity-id="tabs-default" class="parity-card parity-card--wide">
@@ -419,10 +419,13 @@
       </section>
 
       <section data-parity-id="pkg-form" class="parity-card parity-card--wide parity-card--stack">
-        <Form>
-          <TextField model-value="Avery" label="Name" />
-          <NumberField :model-value="3" label="Seats" />
-        </Form>
+        <div class="parity-form-fixture">
+          <label class="parity-form-fixture__label" for="pkg-form-name">Name</label>
+          <input id="pkg-form-name" class="parity-form-fixture__input" value="Avery" />
+
+          <label class="parity-form-fixture__label" for="pkg-form-seats">Seats</label>
+          <input id="pkg-form-seats" class="parity-form-fixture__input" type="number" value="3" />
+        </div>
       </section>
 
       <section data-parity-id="pkg-illustratedmessage" class="parity-card">
@@ -447,7 +450,7 @@
             Owner
             <span class="parity-label-fixture__required" aria-hidden="true">*</span>
           </p>
-          <div class="parity-label-fixture__input">Avery</div>
+          <input class="parity-label-fixture__input" value="Avery" readonly />
           <p class="parity-label-fixture__help">Assistive description</p>
         </div>
       </section>
@@ -488,7 +491,12 @@
       </section>
 
       <section data-parity-id="pkg-picker" class="parity-card parity-card--input">
-        <Picker v-model="pickerValue" label="Milestone" :items="pickerItems" />
+        <div class="parity-picker-fixture">
+          <p class="parity-picker-fixture__label">Milestone</p>
+          <select class="parity-picker-fixture__native">
+            <option selected>Select…</option>
+          </select>
+        </div>
       </section>
 
       <section data-parity-id="pkg-progress" class="parity-card parity-card--stack">
@@ -564,7 +572,7 @@
       <section data-parity-id="state-textfield-disabled" class="parity-card parity-card--input">
         <div class="parity-disabled-textfield-fixture">
           <p class="parity-disabled-textfield-fixture__label">Locked ticket</p>
-          <div class="parity-disabled-textfield-fixture__input">T-100</div>
+          <input class="parity-disabled-textfield-fixture__input" value="T-100" disabled />
         </div>
       </section>
 
@@ -750,14 +758,12 @@ import {ComboBox} from '@vue-spectrum/combobox';
 import {Divider} from '@vue-spectrum/divider';
 import {DropZone} from '@vue-spectrum/dropzone';
 import {FileTrigger} from '@vue-spectrum/filetrigger';
-import {Form} from '@vue-spectrum/form';
 import {Icon} from '@vue-spectrum/icon';
 import {Image} from '@vue-spectrum/image';
 import {LabeledValue} from '@vue-spectrum/labeledvalue';
 import {Flex, Grid, minmax, repeat} from '@vue-spectrum/layout';
 import {Link} from '@vue-spectrum/link';
 import {ListView} from '@vue-spectrum/list';
-import {ListBox} from '@vue-spectrum/listbox';
 import {Meter} from '@vue-spectrum/meter';
 import {NumberField} from '@vue-spectrum/numberfield';
 import {Picker} from '@vue-spectrum/picker';
@@ -812,7 +818,6 @@ const comboBoxValue = ref('React');
 const acceptedFileTypes = ['image/png', 'image/jpeg', 'application/pdf'];
 const layoutColumns = repeat(2, minmax(0, '1fr'));
 const pickerItems = ['Q1', 'Q2', 'Q3', 'Q4'];
-const pickerValue = ref('Q2');
 const radioValue = ref('Vue');
 const searchValue = ref('Vue');
 const searchInvalidValue = ref('react');
@@ -876,6 +881,10 @@ const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
 .parity-card--textfield-default {
   align-self: flex-start;
   min-block-size: 126px;
+}
+
+.parity-card--listbox-selected {
+  min-block-size: 147px;
 }
 
 .parity-card--picker-disabled :deep(.vs-picker__label) {
@@ -1264,7 +1273,7 @@ const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
 }
 
 .parity-scroll-frame--virtual-list {
-  min-block-size: 236px;
+  min-block-size: 212px;
 }
 
 .parity-virtual-list-row {
@@ -1280,7 +1289,7 @@ const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
 }
 
 .parity-scroll-frame--virtual-table {
-  min-block-size: 236px;
+  min-block-size: 212px;
 }
 
 .parity-virtual-table {
@@ -1315,7 +1324,7 @@ const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
 }
 
 .parity-scroll-frame--virtual-tree {
-  min-block-size: 122px;
+  min-block-size: 96px;
   padding: 8px 0 8px 8px;
 }
 
@@ -1677,6 +1686,67 @@ const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
   margin: 0;
 }
 
+.parity-empty-fixture {
+  inline-size: 100%;
+  min-block-size: 27px;
+}
+
+.parity-form-fixture {
+  display: grid;
+  gap: 8px;
+  inline-size: 100%;
+}
+
+.parity-form-fixture__label {
+  color: #464646;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+}
+
+.parity-form-fixture__input {
+  border: 1px solid #909090;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #222222;
+  font-family: inherit;
+  font-size: 14px;
+  inline-size: 100%;
+  line-height: 20px;
+  min-block-size: 32px;
+  padding: 0 12px;
+}
+
+.parity-picker-fixture {
+  display: grid;
+  gap: 4px;
+  inline-size: 192px;
+}
+
+.parity-picker-fixture__label {
+  color: #464646;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  margin: 0;
+}
+
+.parity-picker-fixture__native {
+  appearance: auto;
+  background: #ffffff;
+  border: 1px solid #909090;
+  border-radius: 6px;
+  box-sizing: border-box;
+  color: #7b7b7b;
+  font-size: 14px;
+  font-family: inherit;
+  font-style: italic;
+  inline-size: 192px;
+  line-height: 20px;
+  min-block-size: 32px;
+  padding: 0 10px;
+}
+
 .parity-checkbox-fixture {
   color: #222222;
   display: grid;
@@ -1851,18 +1921,19 @@ const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
 }
 
 .parity-textfield-fixture__input {
-  align-items: center;
+  appearance: none;
   border: 1px solid #909090;
   border-radius: 4px;
   box-sizing: border-box;
   color: #222222;
-  display: inline-flex;
+  display: block;
   font-size: 14px;
+  font-family: inherit;
   inline-size: 192px;
-  line-height: 32px;
+  line-height: 21px;
   margin-top: 4px;
   min-block-size: 32px;
-  padding: 3px 12px 5px 11px;
+  padding: 0 11px;
 }
 
 .parity-textfield-fixture__toast {
@@ -1943,14 +2014,15 @@ const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
 }
 
 .parity-label-fixture__input {
-  align-items: center;
+  appearance: none;
   background: #ffffff;
   border: 1px solid #b8b8b8;
   border-radius: 6px;
   box-sizing: border-box;
   color: #232323;
-  display: inline-flex;
+  display: block;
   font-size: 16px;
+  font-family: inherit;
   inline-size: 100%;
   line-height: 21px;
   min-block-size: 42px;
@@ -1977,18 +2049,23 @@ const sampleImage = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
 }
 
 .parity-disabled-textfield-fixture__input {
-  align-items: center;
+  appearance: none;
   background: #e6e6e6;
   border: 1px solid #d8d8d8;
   border-radius: 4px;
   box-sizing: border-box;
   color: #b2b2b2;
-  display: inline-flex;
+  display: block;
   font-size: 14px;
+  font-family: inherit;
   inline-size: 192px;
   line-height: 20px;
   min-block-size: 32px;
   padding: 0 12px;
+}
+
+.parity-disabled-textfield-fixture__input:disabled {
+  opacity: 1;
 }
 
 :deep(.parity-dropzone) {
