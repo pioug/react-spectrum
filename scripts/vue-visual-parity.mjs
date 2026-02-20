@@ -11,22 +11,28 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 
 const DEFAULT_CONFIG_PATH = path.join(REPO_ROOT, 'migration', 'vue-visual-parity-fixtures.json');
 const VISUAL_PARITY_ROOT = path.join(REPO_ROOT, 'migration', 'visual-parity');
-const BASELINE_DIR = path.join(VISUAL_PARITY_ROOT, 'baseline');
-const CURRENT_DIR = path.join(VISUAL_PARITY_ROOT, 'current');
+const REFERENCE_DIR = path.join(VISUAL_PARITY_ROOT, 'react-reference');
+const CANDIDATE_DIR = path.join(VISUAL_PARITY_ROOT, 'vue-current');
 const DIFF_DIR = path.join(VISUAL_PARITY_ROOT, 'diff');
 const REPORT_JSON = path.join(REPO_ROOT, 'migration', 'vue-visual-parity-report.json');
 const REPORT_MD = path.join(REPO_ROOT, 'migration', 'VUE_VISUAL_PARITY_REPORT.md');
 
 function parseArgs(args) {
   let mode = args[0] ?? 'compare';
-  if (!['capture', 'compare'].includes(mode)) {
-    throw new Error(`Unknown mode: ${mode}. Expected "capture" or "compare".`);
+  if (mode === 'capture') {
+    mode = 'capture-reference';
+  }
+
+  if (!['capture-reference', 'capture-candidate', 'compare'].includes(mode)) {
+    throw new Error(`Unknown mode: ${mode}. Expected "capture-reference", "capture-candidate", or "compare".`);
   }
 
   return {
     mode,
     write: args.includes('--write'),
     startServer: args.includes('--start-server'),
+    startReferenceServer: args.includes('--start-reference-server'),
+    startCandidateServer: args.includes('--start-candidate-server'),
     configPath: resolveArgPath(args, '--config', DEFAULT_CONFIG_PATH)
   };
 }
@@ -51,22 +57,60 @@ function ensureDir(dirPath) {
 
 function ensureVisualParityDirs() {
   ensureDir(VISUAL_PARITY_ROOT);
-  ensureDir(BASELINE_DIR);
-  ensureDir(CURRENT_DIR);
+  ensureDir(REFERENCE_DIR);
+  ensureDir(CANDIDATE_DIR);
   ensureDir(DIFF_DIR);
+}
+
+function readTargetConfig(config, targetName) {
+  let targetConfig = config[targetName] ?? {};
+
+  // Backward compatibility: previous config stored candidate settings at the top level.
+  if (targetName === 'candidate') {
+    targetConfig = {
+      baseUrl: targetConfig.baseUrl ?? config.baseUrl,
+      startCommand: targetConfig.startCommand ?? config.startCommand,
+      name: targetConfig.name ?? 'vue'
+    };
+  }
+
+  return {
+    name: targetConfig.name ?? targetName,
+    baseUrl: targetConfig.baseUrl ?? null,
+    startCommand: targetConfig.startCommand ?? null
+  };
+}
+
+function resolveFixtureValue(fixture, targetName, fieldName) {
+  let targetFixture = fixture[targetName];
+  if (targetFixture && targetFixture[fieldName] != null) {
+    return targetFixture[fieldName];
+  }
+
+  let legacyTargetFieldName = `${targetName}${fieldName.charAt(0).toUpperCase()}${fieldName.slice(1)}`;
+  if (fixture[legacyTargetFieldName] != null) {
+    return fixture[legacyTargetFieldName];
+  }
+
+  return fixture[fieldName];
 }
 
 function normalizeBaseUrl(baseUrl) {
   return baseUrl.replace(/\/$/, '');
 }
 
-function fixtureUrl(baseUrl, fixture) {
-  if (fixture.url) {
-    return fixture.url;
+function fixtureUrl(targetConfig, fixture, targetName) {
+  let fixtureAbsoluteUrl = resolveFixtureValue(fixture, targetName, 'url');
+  if (fixtureAbsoluteUrl) {
+    return fixtureAbsoluteUrl;
   }
 
-  let normalizedBaseUrl = normalizeBaseUrl(baseUrl);
-  let fixturePath = fixture.path ?? '/';
+  if (!targetConfig.baseUrl) {
+    throw new Error(`Target "${targetName}" is missing "baseUrl" in parity config.`);
+  }
+
+  let normalizedBaseUrl = normalizeBaseUrl(targetConfig.baseUrl);
+  let fixturePath = resolveFixtureValue(fixture, targetName, 'path') ?? '/';
   return `${normalizedBaseUrl}${fixturePath.startsWith('/') ? fixturePath : `/${fixturePath}`}`;
 }
 
@@ -88,7 +132,7 @@ async function waitForUrl(url, timeoutMs = 45000) {
   throw new Error(`Timed out waiting for ${url}`);
 }
 
-async function maybeStartServer(config, shouldStartServer) {
+async function maybeStartServer(targetName, config, shouldStartServer) {
   if (!shouldStartServer) {
     return null;
   }
@@ -101,7 +145,7 @@ async function maybeStartServer(config, shouldStartServer) {
     throw new Error('Config is missing "baseUrl" but --start-server was requested.');
   }
 
-  console.log(`Starting fixture server: ${config.startCommand}`);
+  console.log(`Starting ${targetName} fixture server: ${config.startCommand}`);
   let child = spawn(config.startCommand, {
     cwd: REPO_ROOT,
     shell: true,
@@ -128,7 +172,7 @@ async function maybeStartServer(config, shouldStartServer) {
   });
 
   await waitForUrl(config.baseUrl);
-  console.log(`Fixture server ready at ${config.baseUrl}`);
+  console.log(`${targetName} fixture server ready at ${config.baseUrl}`);
   return child;
 }
 
@@ -252,6 +296,15 @@ function buildMarkdownReport(report) {
   lines.push('## Summary');
   lines.push('');
   lines.push(`* Mode: ${report.mode}`);
+  if (report.referenceTarget) {
+    lines.push(`* Reference: ${report.referenceTarget}`);
+  }
+  if (report.candidateTarget) {
+    lines.push(`* Candidate: ${report.candidateTarget}`);
+  }
+  if (report.target) {
+    lines.push(`* Target: ${report.target}`);
+  }
   lines.push(`* Fixtures: ${report.summary.totalFixtures}`);
   lines.push(`* Passed: ${report.summary.passedFixtures}`);
   lines.push(`* Failed: ${report.summary.failedFixtures}`);
@@ -277,22 +330,32 @@ function buildMarkdownReport(report) {
 
 function printSummary(report) {
   console.log(`Mode: ${report.mode}`);
+  if (report.referenceTarget) {
+    console.log(`Reference: ${report.referenceTarget}`);
+  }
+  if (report.candidateTarget) {
+    console.log(`Candidate: ${report.candidateTarget}`);
+  }
+  if (report.target) {
+    console.log(`Target: ${report.target}`);
+  }
   console.log(`Fixtures: ${report.summary.totalFixtures}`);
   console.log(`Passed: ${report.summary.passedFixtures}`);
   console.log(`Failed: ${report.summary.failedFixtures}`);
   console.log(`Errors: ${report.summary.erroredFixtures}`);
 }
 
-function getInteractionTargetLocator(page, fixture, locator) {
-  if (fixture.interactionSelector) {
-    return page.locator(fixture.interactionSelector).first();
+function getInteractionTargetLocator(page, fixture, locator, targetName) {
+  let interactionSelector = resolveFixtureValue(fixture, targetName, 'interactionSelector');
+  if (interactionSelector) {
+    return page.locator(interactionSelector).first();
   }
 
   return locator.first();
 }
 
-async function applyFixtureMedia(page, fixture) {
-  let media = fixture.media ?? {};
+async function applyFixtureMedia(page, fixture, targetName) {
+  let media = resolveFixtureValue(fixture, targetName, 'media') ?? {};
   await page.emulateMedia({
     colorScheme: media.colorScheme ?? null,
     forcedColors: media.forcedColors ?? null,
@@ -300,13 +363,13 @@ async function applyFixtureMedia(page, fixture) {
   });
 }
 
-async function applyFixtureInteraction(page, fixture, locator) {
-  let interaction = fixture.interaction ?? 'none';
+async function applyFixtureInteraction(page, fixture, locator, targetName) {
+  let interaction = resolveFixtureValue(fixture, targetName, 'interaction') ?? 'none';
   if (interaction === 'none') {
     return async () => {};
   }
 
-  let target = getInteractionTargetLocator(page, fixture, locator);
+  let target = getInteractionTargetLocator(page, fixture, locator, targetName);
   await target.waitFor({state: 'visible', timeout: 10000});
 
   if (interaction === 'hover') {
@@ -335,14 +398,14 @@ async function applyFixtureInteraction(page, fixture, locator) {
   throw new Error(`Unknown fixture interaction "${interaction}" for fixture "${fixture.id}".`);
 }
 
-async function runCapture(browser, config) {
+async function runCapture(browser, config, targetName, outputDir) {
   let page = await browser.newPage();
   let fixtures = [];
 
   for (let fixture of config.fixtures ?? []) {
     let result = {
       id: fixture.id,
-      maxDiffRatio: fixture.maxDiffRatio ?? 0,
+      maxDiffRatio: resolveFixtureValue(fixture, targetName, 'maxDiffRatio') ?? 0,
       status: 'captured',
       diffRatio: 0,
       changedPixels: 0,
@@ -350,31 +413,34 @@ async function runCapture(browser, config) {
       error: null
     };
 
-    let baselinePath = path.join(BASELINE_DIR, `${fixture.id}.png`);
-    let currentPath = path.join(CURRENT_DIR, `${fixture.id}.png`);
+    let capturePath = path.join(outputDir, `${fixture.id}.png`);
 
     try {
-      let url = fixtureUrl(config.baseUrl, fixture);
-      let viewport = fixture.viewport ?? {width: 1280, height: 720};
+      let url = fixtureUrl(config.targetConfig, fixture, targetName);
+      let viewport = resolveFixtureValue(fixture, targetName, 'viewport') ?? {width: 1280, height: 720};
       await page.setViewportSize(viewport);
-      await applyFixtureMedia(page, fixture);
+      await applyFixtureMedia(page, fixture, targetName);
       await page.goto(url, {waitUntil: 'networkidle'});
 
-      if (fixture.waitForSelector) {
-        await page.waitForSelector(fixture.waitForSelector, {timeout: 10000});
+      let waitForSelector = resolveFixtureValue(fixture, targetName, 'waitForSelector');
+      if (waitForSelector) {
+        await page.waitForSelector(waitForSelector, {timeout: 10000});
       }
 
-      let locator = page.locator(fixture.selector);
+      let selector = resolveFixtureValue(fixture, targetName, 'selector');
+      if (!selector) {
+        throw new Error(`Fixture "${fixture.id}" is missing selector for target "${targetName}".`);
+      }
+
+      let locator = page.locator(selector);
       await locator.waitFor({state: 'visible', timeout: 10000});
-      let cleanupInteraction = await applyFixtureInteraction(page, fixture, locator);
+      let cleanupInteraction = await applyFixtureInteraction(page, fixture, locator, targetName);
       try {
-        await locator.screenshot({path: currentPath, animations: 'disabled'});
+        await locator.screenshot({path: capturePath, animations: 'disabled'});
       } finally {
         await cleanupInteraction();
       }
-      fs.copyFileSync(currentPath, baselinePath);
-      result.baselinePath = path.relative(REPO_ROOT, baselinePath);
-      result.candidatePath = path.relative(REPO_ROOT, currentPath);
+      result.capturePath = path.relative(REPO_ROOT, capturePath);
     } catch (error) {
       result.status = 'error';
       result.error = error instanceof Error ? error.message : String(error);
@@ -388,7 +454,8 @@ async function runCapture(browser, config) {
   let erroredFixtures = fixtures.filter((fixture) => fixture.status === 'error').length;
   return {
     generatedAt: new Date().toISOString(),
-    mode: 'capture',
+    mode: `capture-${targetName}`,
+    target: config.targetConfig.name ?? targetName,
     summary: {
       totalFixtures: fixtures.length,
       passedFixtures: fixtures.length - erroredFixtures,
@@ -399,14 +466,14 @@ async function runCapture(browser, config) {
   };
 }
 
-async function runCompare(browser, config) {
+async function runCompare(browser, config, referenceTargetName = 'reference', candidateTargetName = 'candidate') {
   let page = await browser.newPage();
   let fixtures = [];
 
   for (let fixture of config.fixtures ?? []) {
     let result = {
       id: fixture.id,
-      maxDiffRatio: fixture.maxDiffRatio ?? 0,
+      maxDiffRatio: resolveFixtureValue(fixture, candidateTargetName, 'maxDiffRatio') ?? 0,
       status: 'pass',
       diffRatio: 0,
       changedPixels: 0,
@@ -414,32 +481,38 @@ async function runCompare(browser, config) {
       error: null
     };
 
-    let baselinePath = path.join(BASELINE_DIR, `${fixture.id}.png`);
-    let currentPath = path.join(CURRENT_DIR, `${fixture.id}.png`);
+    let baselinePath = path.join(REFERENCE_DIR, `${fixture.id}.png`);
+    let currentPath = path.join(CANDIDATE_DIR, `${fixture.id}.png`);
     let diffPath = path.join(DIFF_DIR, `${fixture.id}.png`);
 
-    result.baselinePath = path.relative(REPO_ROOT, baselinePath);
+    result.referencePath = path.relative(REPO_ROOT, baselinePath);
     result.candidatePath = path.relative(REPO_ROOT, currentPath);
     result.diffPath = path.relative(REPO_ROOT, diffPath);
 
     try {
       if (!fs.existsSync(baselinePath)) {
-        throw new Error(`Missing baseline image at ${path.relative(REPO_ROOT, baselinePath)}. Run capture first.`);
+        throw new Error(`Missing React reference image at ${path.relative(REPO_ROOT, baselinePath)}. Run capture-reference first.`);
       }
 
-      let url = fixtureUrl(config.baseUrl, fixture);
-      let viewport = fixture.viewport ?? {width: 1280, height: 720};
+      let url = fixtureUrl(config.candidateConfig, fixture, candidateTargetName);
+      let viewport = resolveFixtureValue(fixture, candidateTargetName, 'viewport') ?? {width: 1280, height: 720};
       await page.setViewportSize(viewport);
-      await applyFixtureMedia(page, fixture);
+      await applyFixtureMedia(page, fixture, candidateTargetName);
       await page.goto(url, {waitUntil: 'networkidle'});
 
-      if (fixture.waitForSelector) {
-        await page.waitForSelector(fixture.waitForSelector, {timeout: 10000});
+      let waitForSelector = resolveFixtureValue(fixture, candidateTargetName, 'waitForSelector');
+      if (waitForSelector) {
+        await page.waitForSelector(waitForSelector, {timeout: 10000});
       }
 
-      let locator = page.locator(fixture.selector);
+      let selector = resolveFixtureValue(fixture, candidateTargetName, 'selector');
+      if (!selector) {
+        throw new Error(`Fixture "${fixture.id}" is missing selector for target "${candidateTargetName}".`);
+      }
+
+      let locator = page.locator(selector);
       await locator.waitFor({state: 'visible', timeout: 10000});
-      let cleanupInteraction = await applyFixtureInteraction(page, fixture, locator);
+      let cleanupInteraction = await applyFixtureInteraction(page, fixture, locator, candidateTargetName);
       try {
         await locator.screenshot({path: currentPath, animations: 'disabled'});
       } finally {
@@ -471,6 +544,8 @@ async function runCompare(browser, config) {
   return {
     generatedAt: new Date().toISOString(),
     mode: 'compare',
+    referenceTarget: config.referenceConfig.name ?? referenceTargetName,
+    candidateTarget: config.candidateConfig.name ?? candidateTargetName,
     summary: {
       totalFixtures: fixtures.length,
       passedFixtures,
@@ -489,22 +564,51 @@ function writeReport(report) {
 async function main() {
   let options = parseArgs(process.argv.slice(2));
   let config = readJson(options.configPath);
+  let referenceConfig = readTargetConfig(config, 'reference');
+  let candidateConfig = readTargetConfig(config, 'candidate');
 
-  if (!config.baseUrl) {
-    throw new Error(`Config is missing "baseUrl": ${path.relative(REPO_ROOT, options.configPath)}`);
+  if (options.mode === 'capture-reference' && !referenceConfig.baseUrl) {
+    throw new Error(`Config is missing reference baseUrl: ${path.relative(REPO_ROOT, options.configPath)}`);
+  }
+
+  if ((options.mode === 'capture-candidate' || options.mode === 'compare') && !candidateConfig.baseUrl) {
+    throw new Error(`Config is missing candidate baseUrl: ${path.relative(REPO_ROOT, options.configPath)}`);
   }
 
   ensureVisualParityDirs();
 
-  let server = await maybeStartServer(config, options.startServer);
+  let shouldStartReferenceServer =
+    options.startReferenceServer ||
+    (options.mode === 'capture-reference' && options.startServer);
+  let shouldStartCandidateServer =
+    options.startCandidateServer ||
+    ((options.mode === 'capture-candidate' || options.mode === 'compare') && options.startServer);
+
+  let referenceServer = await maybeStartServer('reference', referenceConfig, shouldStartReferenceServer);
+  let candidateServer = await maybeStartServer('candidate', candidateConfig, shouldStartCandidateServer);
   let browser;
 
   try {
     browser = await chromium.launch({headless: true});
 
-    let report = options.mode === 'capture'
-      ? await runCapture(browser, config)
-      : await runCompare(browser, config);
+    let report;
+    if (options.mode === 'capture-reference') {
+      report = await runCapture(browser, {
+        fixtures: config.fixtures,
+        targetConfig: referenceConfig
+      }, 'reference', REFERENCE_DIR);
+    } else if (options.mode === 'capture-candidate') {
+      report = await runCapture(browser, {
+        fixtures: config.fixtures,
+        targetConfig: candidateConfig
+      }, 'candidate', CANDIDATE_DIR);
+    } else {
+      report = await runCompare(browser, {
+        fixtures: config.fixtures,
+        referenceConfig,
+        candidateConfig
+      }, 'reference', 'candidate');
+    }
 
     printSummary(report);
 
@@ -521,7 +625,8 @@ async function main() {
       await browser.close();
     }
 
-    await stopServer(server);
+    await stopServer(candidateServer);
+    await stopServer(referenceServer);
   }
 }
 

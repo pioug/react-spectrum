@@ -1,6 +1,14 @@
 {
-  "baseUrl": "http://127.0.0.1:4173",
-  "startCommand": "yarn workspace vue-spectrum-starter dev --host 127.0.0.1 --port 4173",
+  "reference": {
+    "name": "react",
+    "baseUrl": "http://127.0.0.1:4273",
+    "startCommand": "yarn vue:parity:visual:start:react"
+  },
+  "candidate": {
+    "name": "vue",
+    "baseUrl": "http://127.0.0.1:4173",
+    "startCommand": "yarn workspace vue-spectrum-starter dev --host 127.0.0.1 --port 4173"
+  },
   "fixtures": [
     {
       "id": "button-default",
@@ -103,7 +111,7 @@
       "path": "/parity.html",
       "selector": "[data-parity-id='textfield-focus']",
       "interaction": "focus",
-      "interactionSelector": "[data-parity-target='textfield-focus-target'] .vs-text-field__input",
+      "interactionSelector": "[data-parity-target='textfield-focus-target'] input",
       "maxDiffRatio": 0
     },
     {
@@ -398,18 +406,21 @@
       "id": "pkg-contextualhelp",
       "path": "/parity-contextual-help.html",
       "selector": ".vs-contextual-help__dialog",
+      "referenceSelector": "[data-parity-id='pkg-contextualhelp']",
       "maxDiffRatio": 0
     },
     {
       "id": "pkg-dialog",
       "path": "/parity-dialog.html",
       "selector": ".vs-dialog",
+      "referenceSelector": "[data-parity-id='pkg-dialog']",
       "maxDiffRatio": 0
     },
     {
       "id": "pkg-overlays",
       "path": "/parity-popover.html",
       "selector": ".vs-popover",
+      "referenceSelector": "[data-parity-id='pkg-overlays']",
       "maxDiffRatio": 0
     },
     {
@@ -435,7 +446,7 @@
       "path": "/parity.html",
       "selector": "[data-parity-id='state-searchfield-focus']",
       "interaction": "focus",
-      "interactionSelector": "[data-parity-target='searchfield-focus-target'] .vs-search-field__input",
+      "interactionSelector": "[data-parity-target='searchfield-focus-target'] input",
       "maxDiffRatio": 0
     },
     {
