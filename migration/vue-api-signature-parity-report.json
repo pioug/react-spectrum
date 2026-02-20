@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-20T00:23:40.015Z",
+  "generatedAt": "2026-02-20T00:27:44.943Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 105,
+    "fullyMatchedPackages": 110,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 2156,
-    "mismatchedExportTotal": 516,
+    "matchedExportTotal": 2174,
+    "mismatchedExportTotal": 498,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.8069
+    "parityCoverage": 0.8136
   },
   "packages": [
     {
@@ -5659,10 +5659,10 @@
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
       "comparedExportCount": 419,
-      "matchedExportCount": 397,
-      "mismatchedExportCount": 22,
+      "matchedExportCount": 403,
+      "mismatchedExportCount": 16,
       "missingInTargetCount": 0,
-      "parityRatio": 0.9475,
+      "parityRatio": 0.9618,
       "missingInTargetExports": [],
       "mismatches": [
         {
@@ -5698,82 +5698,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: AriaComboBoxOptions) => ComboBoxAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useDateField",
-          "targetExportName": "useDateField",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDateField",
-            "resolvedName": "useDateField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends DateValue>(props: AriaDateFieldOptions<T>, state: DateFieldState, ref: RefObject<Element | null>) => DateFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends DateValue>( _: AriaDateFieldOptions<T>, _: DateFieldState, _: RefObject<Element | null>) => DateFieldAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDateField",
-            "resolvedName": "useDateField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "null>): DateFieldAria; (options: AriaDateFieldOptions): DateFieldAria;} | { <T extends DateValue>(props: AriaDateFieldOptions, state: DateFieldState, ref: RefObject<Element",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaDateFieldOptions) => DateFieldAria",
-              "<T extends DateValue>( _: AriaDateFieldOptions, _: DateFieldState, _: RefObject<Element | null>) => DateFieldAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTimeField",
-          "targetExportName": "useTimeField",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTimeField",
-            "resolvedName": "useTimeField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends TimeValue>(props: AriaTimeFieldOptions<T>, state: TimeFieldState, ref: RefObject<Element | null>) => DateFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends TimeValue>( _: AriaTimeFieldOptions<T>, _: TimeFieldState, _: RefObject<Element | null>) => DateFieldAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTimeField",
-            "resolvedName": "useTimeField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "null>): DateFieldAria; (options: AriaTimeFieldOptions): DateFieldAria;} | { <T extends TimeValue>(props: AriaTimeFieldOptions, state: TimeFieldState, ref: RefObject<Element",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTimeFieldOptions) => DateFieldAria",
-              "<T extends TimeValue>( _: AriaTimeFieldOptions, _: TimeFieldState, _: RefObject<Element | null>) => DateFieldAria"
             ],
             "constructSignatures": []
           }
@@ -6252,10 +6176,11 @@
             "declarationKinds": [
               "FunctionDeclaration"
             ],
-            "valueType": "<T>(options: AriaToastOptions<T>, state: ToastState<T>) => ToastAria",
+            "valueType": "null>): ToastAria; <T>(options: AriaToastOptions<T>, state: ToastState<T>): ToastAria;} | { <T>(props: AriaToastProps<T>, state: StatelyToastState<T>, ref: RefObject<FocusableElement",
             "declaredType": "",
             "callSignatures": [
-              "<T>( _: AriaToastOptions<T>, _: ToastState<T>) => ToastAria"
+              "<T>( _: AriaToastOptions<T>, _: ToastState<T>) => ToastAria",
+              "<T>( _: AriaToastProps<T>, _: StatelyToastState<T>, _: RefObject<FocusableElement | null>) => ToastAria"
             ],
             "constructSignatures": []
           }
@@ -6289,158 +6214,11 @@
             "declarationKinds": [
               "FunctionDeclaration"
             ],
-            "valueType": "<T>(options: AriaToastRegionOptions, state: ToastRegionState<T>) => ToastRegionAria",
+            "valueType": "null>): ToastRegionAria; <T>(options: AriaToastRegionOptions, state: ToastRegionState<T>): ToastRegionAria;} | { <T>(props: AriaToastRegionProps, state: StatelyToastState<T>, ref: RefObject<HTMLElement",
             "declaredType": "",
             "callSignatures": [
-              "<T>( _: AriaToastRegionOptions, _: ToastRegionState<T>) => ToastRegionAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTooltip",
-          "targetExportName": "useTooltip",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTooltip",
-            "resolvedName": "useTooltip",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaTooltipProps, state?: TooltipTriggerState) => TooltipAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTooltipProps, _: TooltipTriggerState) => TooltipAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTooltip",
-            "resolvedName": "useTooltip",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaTooltipOptions, state?: TooltipTriggerStateLike) => TooltipAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTooltipOptions, _: TooltipTriggerStateLike) => TooltipAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTooltipTrigger",
-          "targetExportName": "useTooltipTrigger",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTooltipTrigger",
-            "resolvedName": "useTooltipTrigger",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: TooltipTriggerProps, state: TooltipTriggerState, ref: RefObject<FocusableElement | null>) => TooltipTriggerAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: TooltipTriggerProps, _: TooltipTriggerState, _: RefObject<FocusableElement | null>) => TooltipTriggerAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTooltipTrigger",
-            "resolvedName": "useTooltipTrigger",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaTooltipTriggerOptions) => TooltipTriggerAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTooltipTriggerOptions) => TooltipTriggerAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTree",
-          "targetExportName": "useTree",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTree",
-            "resolvedName": "useTree",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTreeOptions<T>, state: TreeState<T>, ref: RefObject<HTMLElement | null>) => TreeAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTreeOptions<T>, _: TreeState<T>, _: RefObject<HTMLElement | null>) => TreeAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTree",
-            "resolvedName": "useTree",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTreeOptions) => TreeAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTreeOptions) => TreeAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTreeItem",
-          "targetExportName": "useTreeItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTreeItem",
-            "resolvedName": "useTreeItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTreeItemOptions, state: TreeState<T>, ref: RefObject<FocusableElement | null>) => TreeItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTreeItemOptions, _: TreeState<T>, _: RefObject<FocusableElement | null>) => TreeItemAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTreeItem",
-            "resolvedName": "useTreeItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTreeItemOptions) => TreeItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTreeItemOptions) => TreeItemAria"
+              "<T>( _: AriaToastRegionOptions, _: ToastRegionState<T>) => ToastRegionAria",
+              "<T>( _: AriaToastRegionProps, _: StatelyToastState<T>, _: RefObject<HTMLElement | null>) => ToastRegionAria"
             ],
             "constructSignatures": []
           }
@@ -6729,288 +6507,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-aria/datepicker",
-      "sourcePath": "packages/@react-aria/datepicker",
-      "targetPackage": "@vue-aria/datepicker",
-      "targetPath": "packages/@vue-aria/datepicker",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/datepicker/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/datepicker/src/index.ts",
-      "sourceExportCount": 18,
-      "comparedExportCount": 18,
-      "matchedExportCount": 16,
-      "mismatchedExportCount": 2,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.8889,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useDateField",
-          "targetExportName": "useDateField",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useDateField",
-            "resolvedName": "useDateField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends DateValue>(props: AriaDateFieldOptions<T>, state: DateFieldState, ref: RefObject<Element | null>) => DateFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends DateValue>( _: AriaDateFieldOptions<T>, _: DateFieldState, _: RefObject<Element | null>) => DateFieldAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useDateField",
-            "resolvedName": "useDateField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "null>): DateFieldAria; (options: AriaDateFieldOptions): DateFieldAria;} | { <T extends DateValue>(props: AriaDateFieldOptions, state: DateFieldState, ref: RefObject<Element",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaDateFieldOptions) => DateFieldAria",
-              "<T extends DateValue>( _: AriaDateFieldOptions, _: DateFieldState, _: RefObject<Element | null>) => DateFieldAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTimeField",
-          "targetExportName": "useTimeField",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTimeField",
-            "resolvedName": "useTimeField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends TimeValue>(props: AriaTimeFieldOptions<T>, state: TimeFieldState, ref: RefObject<Element | null>) => DateFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends TimeValue>( _: AriaTimeFieldOptions<T>, _: TimeFieldState, _: RefObject<Element | null>) => DateFieldAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTimeField",
-            "resolvedName": "useTimeField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "null>): DateFieldAria; (options: AriaTimeFieldOptions): DateFieldAria;} | { <T extends TimeValue>(props: AriaTimeFieldOptions, state: TimeFieldState, ref: RefObject<Element",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTimeFieldOptions) => DateFieldAria",
-              "<T extends TimeValue>( _: AriaTimeFieldOptions, _: TimeFieldState, _: RefObject<Element | null>) => DateFieldAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/steplist",
-      "sourcePath": "packages/@react-aria/steplist",
-      "targetPackage": "@vue-aria/steplist",
-      "targetPath": "packages/@vue-aria/steplist",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/steplist/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/steplist/src/index.ts",
-      "sourceExportCount": 6,
-      "comparedExportCount": 6,
-      "matchedExportCount": 4,
-      "mismatchedExportCount": 2,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useStepList",
-          "targetExportName": "useStepList",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useStepList",
-            "resolvedName": "useStepList",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaStepListProps<T>, state: StepListState<T>, ref: RefObject<HTMLOListElement | null>) => StepListAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaStepListProps<T>, _: StepListState<T>, _: RefObject<HTMLOListElement | null>) => StepListAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useStepList",
-            "resolvedName": "useStepList",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "null>): StepListAria; (state: StepListAriaState, options?: AriaStepListOptions): StepListAria;} | { <T>(props: AriaStepListProps<T>, state: StatelyStepListState<T>, ref: RefObject<HTMLOListElement",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: StepListAriaState, _: AriaStepListOptions) => StepListAria",
-              "<T>( _: AriaStepListProps<T>, _: StatelyStepListState<T>, _: RefObject<HTMLOListElement | null>) => StepListAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useStepListItem",
-          "targetExportName": "useStepListItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useStepListItem",
-            "resolvedName": "useStepListItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaStepListItemProps, state: StepListState<T>, ref: RefObject<HTMLElement | null>) => StepListItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaStepListItemProps, _: StepListState<T>, _: RefObject<HTMLElement | null>) => StepListItemAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useStepListItem",
-            "resolvedName": "useStepListItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "null>): StepListItemAria; (options: AriaStepListItemOptions, state: StepListAriaState): StepListItemAria;} | { <T>(props: AriaStepListItemOptions, state: StatelyStepListState<T>, ref: RefObject<HTMLElement",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaStepListItemOptions, _: StepListAriaState) => StepListItemAria",
-              "<T>( _: AriaStepListItemOptions, _: StatelyStepListState<T>, _: RefObject<HTMLElement | null>) => StepListItemAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/test-utils",
-      "sourcePath": "packages/@react-aria/test-utils",
-      "targetPackage": "@vue-aria/test-utils",
-      "targetPath": "packages/@vue-aria/test-utils",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/test-utils/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/test-utils/src/index.ts",
-      "sourceExportCount": 17,
-      "comparedExportCount": 17,
-      "matchedExportCount": 15,
-      "mismatchedExportCount": 2,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.8824,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "triggerLongPress",
-          "targetExportName": "triggerLongPress",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "triggerLongPress",
-            "resolvedName": "triggerLongPress",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(opts: { element: HTMLElement; advanceTimer: (time: number) => unknown | Promise<unknown>; pointerOpts?: Record<string, any>;}) => Promise<void>",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: { element: HTMLElement; advanceTimer: ( _: number) => unknown | Promise<unknown>; pointerOpts?: Record<string, any>; }) => Promise<void>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "triggerLongPress",
-            "resolvedName": "triggerLongPress",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(opts: { element: HTMLElement; advanceTimer: (time: number) => unknown | Promise<unknown>; pointerOpts?: Record<string, unknown>;}) => Promise<void>",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: { element: HTMLElement; advanceTimer: ( _: number) => unknown | Promise<unknown>; pointerOpts?: Record<string, unknown>; }) => Promise<void>"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "pointerMap",
-          "targetExportName": "pointerMap",
-          "differences": [
-            "value-type"
-          ],
-          "source": {
-            "name": "pointerMap",
-            "resolvedName": "pointerMap",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "VariableDeclaration"
-            ],
-            "valueType": "pointerKey[]",
-            "declaredType": "",
-            "callSignatures": [],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "pointerMap",
-            "resolvedName": "pointerMap",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "VariableDeclaration"
-            ],
-            "valueType": "PointerKey[]",
-            "declaredType": "",
-            "callSignatures": [],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/toast",
       "sourcePath": "packages/@react-aria/toast",
       "targetPackage": "@vue-aria/toast",
@@ -7055,10 +6551,11 @@
             "declarationKinds": [
               "FunctionDeclaration"
             ],
-            "valueType": "<T>(options: AriaToastOptions<T>, state: ToastState<T>) => ToastAria",
+            "valueType": "null>): ToastAria; <T>(options: AriaToastOptions<T>, state: ToastState<T>): ToastAria;} | { <T>(props: AriaToastProps<T>, state: StatelyToastState<T>, ref: RefObject<FocusableElement",
             "declaredType": "",
             "callSignatures": [
-              "<T>( _: AriaToastOptions<T>, _: ToastState<T>) => ToastAria"
+              "<T>( _: AriaToastOptions<T>, _: ToastState<T>) => ToastAria",
+              "<T>( _: AriaToastProps<T>, _: StatelyToastState<T>, _: RefObject<FocusableElement | null>) => ToastAria"
             ],
             "constructSignatures": []
           }
@@ -7092,377 +6589,12 @@
             "declarationKinds": [
               "FunctionDeclaration"
             ],
-            "valueType": "<T>(options: AriaToastRegionOptions, state: ToastRegionState<T>) => ToastRegionAria",
+            "valueType": "null>): ToastRegionAria; <T>(options: AriaToastRegionOptions, state: ToastRegionState<T>): ToastRegionAria;} | { <T>(props: AriaToastRegionProps, state: StatelyToastState<T>, ref: RefObject<HTMLElement",
             "declaredType": "",
             "callSignatures": [
-              "<T>( _: AriaToastRegionOptions, _: ToastRegionState<T>) => ToastRegionAria"
+              "<T>( _: AriaToastRegionOptions, _: ToastRegionState<T>) => ToastRegionAria",
+              "<T>( _: AriaToastRegionProps, _: StatelyToastState<T>, _: RefObject<HTMLElement | null>) => ToastRegionAria"
             ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/toolbar",
-      "sourcePath": "packages/@react-aria/toolbar",
-      "targetPackage": "@vue-aria/toolbar",
-      "targetPath": "packages/@vue-aria/toolbar",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/toolbar/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/toolbar/src/index.ts",
-      "sourceExportCount": 3,
-      "comparedExportCount": 3,
-      "matchedExportCount": 1,
-      "mismatchedExportCount": 2,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.3333,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useToolbar",
-          "targetExportName": "useToolbar",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useToolbar",
-            "resolvedName": "useToolbar",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaToolbarProps, ref: RefObject<HTMLElement | null>) => ToolbarAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaToolbarProps, _: RefObject<HTMLElement | null>) => ToolbarAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useToolbar",
-            "resolvedName": "useToolbar",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaToolbarOptions, refArg?: Ref<HTMLElement | null>) => ToolbarAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaToolbarOptions, _: Ref<HTMLElement | null>) => ToolbarAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "AriaToolbarProps",
-          "targetExportName": "AriaToolbarProps",
-          "differences": [
-            "value-availability"
-          ],
-          "source": {
-            "name": "AriaToolbarProps",
-            "resolvedName": "AriaToolbarProps",
-            "hasType": true,
-            "hasValue": false,
-            "declarationKinds": [
-              "InterfaceDeclaration"
-            ],
-            "valueType": "any",
-            "declaredType": "AriaToolbarProps",
-            "callSignatures": [],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "AriaToolbarProps",
-            "resolvedName": "unknown",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [],
-            "valueType": "any",
-            "declaredType": "",
-            "callSignatures": [],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/tooltip",
-      "sourcePath": "packages/@react-aria/tooltip",
-      "targetPackage": "@vue-aria/tooltip",
-      "targetPath": "packages/@vue-aria/tooltip",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/tooltip/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/tooltip/src/index.ts",
-      "sourceExportCount": 6,
-      "comparedExportCount": 6,
-      "matchedExportCount": 4,
-      "mismatchedExportCount": 2,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useTooltip",
-          "targetExportName": "useTooltip",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTooltip",
-            "resolvedName": "useTooltip",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaTooltipProps, state?: TooltipTriggerState) => TooltipAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTooltipProps, _: TooltipTriggerState) => TooltipAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTooltip",
-            "resolvedName": "useTooltip",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaTooltipOptions, state?: TooltipTriggerStateLike) => TooltipAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTooltipOptions, _: TooltipTriggerStateLike) => TooltipAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTooltipTrigger",
-          "targetExportName": "useTooltipTrigger",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTooltipTrigger",
-            "resolvedName": "useTooltipTrigger",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: TooltipTriggerProps, state: TooltipTriggerState, ref: RefObject<FocusableElement | null>) => TooltipTriggerAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: TooltipTriggerProps, _: TooltipTriggerState, _: RefObject<FocusableElement | null>) => TooltipTriggerAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTooltipTrigger",
-            "resolvedName": "useTooltipTrigger",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaTooltipTriggerOptions) => TooltipTriggerAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTooltipTriggerOptions) => TooltipTriggerAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/tree",
-      "sourcePath": "packages/@react-aria/tree",
-      "targetPackage": "@vue-aria/tree",
-      "targetPath": "packages/@vue-aria/tree",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/tree/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/tree/src/index.ts",
-      "sourceExportCount": 8,
-      "comparedExportCount": 8,
-      "matchedExportCount": 6,
-      "mismatchedExportCount": 2,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.75,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useTree",
-          "targetExportName": "useTree",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTree",
-            "resolvedName": "useTree",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTreeOptions<T>, state: TreeState<T>, ref: RefObject<HTMLElement | null>) => TreeAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTreeOptions<T>, _: TreeState<T>, _: RefObject<HTMLElement | null>) => TreeAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTree",
-            "resolvedName": "useTree",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTreeOptions) => TreeAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTreeOptions) => TreeAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTreeItem",
-          "targetExportName": "useTreeItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTreeItem",
-            "resolvedName": "useTreeItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTreeItemOptions, state: TreeState<T>, ref: RefObject<FocusableElement | null>) => TreeItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTreeItemOptions, _: TreeState<T>, _: RefObject<FocusableElement | null>) => TreeItemAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTreeItem",
-            "resolvedName": "useTreeItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTreeItemOptions) => TreeItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTreeItemOptions) => TreeItemAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-spectrum/test-utils",
-      "sourcePath": "packages/@react-spectrum/test-utils",
-      "targetPackage": "@vue-spectrum/test-utils",
-      "targetPath": "packages/@vue-spectrum/test-utils",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-spectrum/test-utils/src/index.ts",
-      "targetEntrypoint": "packages/@vue-spectrum/test-utils/src/index.ts",
-      "sourceExportCount": 19,
-      "comparedExportCount": 19,
-      "matchedExportCount": 17,
-      "mismatchedExportCount": 2,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.8947,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "triggerLongPress",
-          "targetExportName": "triggerLongPress",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "triggerLongPress",
-            "resolvedName": "triggerLongPress",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(opts: { element: HTMLElement; advanceTimer: (time: number) => unknown | Promise<unknown>; pointerOpts?: Record<string, any>;}) => Promise<void>",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: { element: HTMLElement; advanceTimer: ( _: number) => unknown | Promise<unknown>; pointerOpts?: Record<string, any>; }) => Promise<void>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "triggerLongPress",
-            "resolvedName": "triggerLongPress",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(opts: { element: HTMLElement; advanceTimer: (time: number) => unknown | Promise<unknown>; pointerOpts?: Record<string, unknown>;}) => Promise<void>",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: { element: HTMLElement; advanceTimer: ( _: number) => unknown | Promise<unknown>; pointerOpts?: Record<string, unknown>; }) => Promise<void>"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "pointerMap",
-          "targetExportName": "pointerMap",
-          "differences": [
-            "value-type"
-          ],
-          "source": {
-            "name": "pointerMap",
-            "resolvedName": "pointerMap",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "VariableDeclaration"
-            ],
-            "valueType": "pointerKey[]",
-            "declaredType": "",
-            "callSignatures": [],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "pointerMap",
-            "resolvedName": "pointerMap",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "VariableDeclaration"
-            ],
-            "valueType": "PointerKey[]",
-            "declaredType": "",
-            "callSignatures": [],
             "constructSignatures": []
           }
         }
@@ -8629,6 +7761,59 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/test-utils",
+      "sourcePath": "packages/@react-aria/test-utils",
+      "targetPackage": "@vue-aria/test-utils",
+      "targetPath": "packages/@vue-aria/test-utils",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/test-utils/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/test-utils/src/index.ts",
+      "sourceExportCount": 17,
+      "comparedExportCount": 17,
+      "matchedExportCount": 16,
+      "mismatchedExportCount": 1,
+      "missingInTargetCount": 0,
+      "parityRatio": 0.9412,
+      "missingInTargetExports": [],
+      "mismatches": [
+        {
+          "exportName": "pointerMap",
+          "targetExportName": "pointerMap",
+          "differences": [
+            "value-type"
+          ],
+          "source": {
+            "name": "pointerMap",
+            "resolvedName": "pointerMap",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "VariableDeclaration"
+            ],
+            "valueType": "pointerKey[]",
+            "declaredType": "",
+            "callSignatures": [],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "pointerMap",
+            "resolvedName": "pointerMap",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "VariableDeclaration"
+            ],
+            "valueType": "PointerKey[]",
+            "declaredType": "",
+            "callSignatures": [],
+            "constructSignatures": []
+          }
+        }
+      ],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/toggle",
       "sourcePath": "packages/@react-aria/toggle",
       "targetPackage": "@vue-aria/toggle",
@@ -9020,6 +8205,59 @@
             "callSignatures": [
               "( _: StoryState[], _: ( _: StoryState) => boolean) => StoryState[]"
             ],
+            "constructSignatures": []
+          }
+        }
+      ],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-spectrum/test-utils",
+      "sourcePath": "packages/@react-spectrum/test-utils",
+      "targetPackage": "@vue-spectrum/test-utils",
+      "targetPath": "packages/@vue-spectrum/test-utils",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-spectrum/test-utils/src/index.ts",
+      "targetEntrypoint": "packages/@vue-spectrum/test-utils/src/index.ts",
+      "sourceExportCount": 19,
+      "comparedExportCount": 19,
+      "matchedExportCount": 18,
+      "mismatchedExportCount": 1,
+      "missingInTargetCount": 0,
+      "parityRatio": 0.9474,
+      "missingInTargetExports": [],
+      "mismatches": [
+        {
+          "exportName": "pointerMap",
+          "targetExportName": "pointerMap",
+          "differences": [
+            "value-type"
+          ],
+          "source": {
+            "name": "pointerMap",
+            "resolvedName": "pointerMap",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "VariableDeclaration"
+            ],
+            "valueType": "pointerKey[]",
+            "declaredType": "",
+            "callSignatures": [],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "pointerMap",
+            "resolvedName": "pointerMap",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "VariableDeclaration"
+            ],
+            "valueType": "PointerKey[]",
+            "declaredType": "",
+            "callSignatures": [],
             "constructSignatures": []
           }
         }
@@ -9804,6 +9042,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/datepicker",
+      "sourcePath": "packages/@react-aria/datepicker",
+      "targetPackage": "@vue-aria/datepicker",
+      "targetPath": "packages/@vue-aria/datepicker",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/datepicker/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/datepicker/src/index.ts",
+      "sourceExportCount": 18,
+      "comparedExportCount": 18,
+      "matchedExportCount": 18,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/dnd",
       "sourcePath": "packages/@react-aria/dnd",
       "targetPackage": "@vue-aria/dnd",
@@ -10070,6 +9327,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/steplist",
+      "sourcePath": "packages/@react-aria/steplist",
+      "targetPackage": "@vue-aria/steplist",
+      "targetPath": "packages/@vue-aria/steplist",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/steplist/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/steplist/src/index.ts",
+      "sourceExportCount": 6,
+      "comparedExportCount": 6,
+      "matchedExportCount": 6,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/table",
       "sourcePath": "packages/@react-aria/table",
       "targetPackage": "@vue-aria/table",
@@ -10137,6 +9413,63 @@
       "sourceExportCount": 5,
       "comparedExportCount": 5,
       "matchedExportCount": 5,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/toolbar",
+      "sourcePath": "packages/@react-aria/toolbar",
+      "targetPackage": "@vue-aria/toolbar",
+      "targetPath": "packages/@vue-aria/toolbar",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/toolbar/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/toolbar/src/index.ts",
+      "sourceExportCount": 3,
+      "comparedExportCount": 3,
+      "matchedExportCount": 3,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/tooltip",
+      "sourcePath": "packages/@react-aria/tooltip",
+      "targetPackage": "@vue-aria/tooltip",
+      "targetPath": "packages/@vue-aria/tooltip",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/tooltip/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/tooltip/src/index.ts",
+      "sourceExportCount": 6,
+      "comparedExportCount": 6,
+      "matchedExportCount": 6,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/tree",
+      "sourcePath": "packages/@react-aria/tree",
+      "targetPackage": "@vue-aria/tree",
+      "targetPath": "packages/@vue-aria/tree",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/tree/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/tree/src/index.ts",
+      "sourceExportCount": 8,
+      "comparedExportCount": 8,
+      "matchedExportCount": 8,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,

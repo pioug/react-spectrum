@@ -1,16 +1,42 @@
-export {useToastRegion} from './useToastRegion';
-export type {
-  AriaToastRegionOptions,
-  AriaToastRegionOptions as AriaToastRegionProps,
-  ToastRegionAria,
-  ToastRegionState
-} from './useToastRegion';
-export {useToast} from './useToast';
+import {useToast as useToastInternal, type AriaToastOptions, type ToastAria, type ToastState as VueToastState, type ToastTimer, type QueuedToast} from './useToast';
+import {useToastRegion as useToastRegionInternal, type AriaToastRegionOptions, type ToastRegionAria, type ToastRegionState} from './useToastRegion';
+import type {ToastState as StatelyToastState} from '@vue-stately/toast';
+
+type FocusableElement = Element;
+type RefObject<T> = {
+  current: T
+};
+
+export type AriaToastProps<T = unknown> = AriaToastOptions<T>;
+export type AriaToastRegionProps = AriaToastRegionOptions;
+
 export type {
   AriaToastOptions,
-  AriaToastOptions as AriaToastProps,
   ToastAria,
-  ToastState,
+  VueToastState as ToastState,
   ToastTimer,
-  QueuedToast
-} from './useToast';
+  QueuedToast,
+  AriaToastRegionOptions,
+  ToastRegionAria,
+  ToastRegionState
+};
+
+export function useToast<T>(
+  props: AriaToastProps<T>,
+  state: StatelyToastState<T>,
+  ref: RefObject<FocusableElement | null>
+): ToastAria;
+export function useToast<T>(options: AriaToastOptions<T>, state: VueToastState<T>): ToastAria;
+export function useToast<T>(options: AriaToastOptions<T>, state: VueToastState<T>): ToastAria {
+  return useToastInternal(options, state);
+}
+
+export function useToastRegion<T>(
+  props: AriaToastRegionProps,
+  state: StatelyToastState<T>,
+  ref: RefObject<HTMLElement | null>
+): ToastRegionAria;
+export function useToastRegion<T>(options: AriaToastRegionOptions, state: ToastRegionState<T>): ToastRegionAria;
+export function useToastRegion<T>(options: AriaToastRegionOptions, state: ToastRegionState<T>): ToastRegionAria {
+  return useToastRegionInternal(options, state);
+}

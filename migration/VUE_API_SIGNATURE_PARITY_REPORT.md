@@ -1,19 +1,19 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-20T00:23:40.015Z
+Generated: 2026-02-20T00:27:44.943Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 105
+* Fully matched packages: 110
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 2156
-* Mismatched signatures: 516
+* Matched signatures: 2174
+* Mismatched signatures: 498
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 80.69%
+* Signature coverage ratio: 81.36%
 
 ## Package gaps
 
@@ -21,16 +21,9 @@ Generated: 2026-02-20T00:23:40.015Z
 | --- | --- | --- | ---: | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | mismatch | 543 | 299 | 0 | 44.9% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | mismatch | 325 | 134 | 0 | 58.8% |
-| `react-aria` | `vue-aria` | mismatch | 419 | 22 | 0 | 94.8% |
+| `react-aria` | `vue-aria` | mismatch | 419 | 16 | 0 | 96.2% |
 | `@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | mismatch | 6 | 6 | 0 | 0.0% |
-| `@react-aria/datepicker` | `@vue-aria/datepicker` | mismatch | 18 | 2 | 0 | 88.9% |
-| `@react-aria/steplist` | `@vue-aria/steplist` | mismatch | 6 | 2 | 0 | 66.7% |
-| `@react-aria/test-utils` | `@vue-aria/test-utils` | mismatch | 17 | 2 | 0 | 88.2% |
 | `@react-aria/toast` | `@vue-aria/toast` | mismatch | 6 | 2 | 0 | 66.7% |
-| `@react-aria/toolbar` | `@vue-aria/toolbar` | mismatch | 3 | 2 | 0 | 33.3% |
-| `@react-aria/tooltip` | `@vue-aria/tooltip` | mismatch | 6 | 2 | 0 | 66.7% |
-| `@react-aria/tree` | `@vue-aria/tree` | mismatch | 8 | 2 | 0 | 75.0% |
-| `@react-spectrum/test-utils` | `@vue-spectrum/test-utils` | mismatch | 19 | 2 | 0 | 89.5% |
 | `@react-stately/calendar` | `@vue-stately/calendar` | mismatch | 6 | 2 | 0 | 66.7% |
 | `@react-stately/table` | `@vue-stately/table` | mismatch | 25 | 2 | 0 | 92.0% |
 | `@react-aria/aria-modal-polyfill` | `@vue-aria/aria-modal-polyfill` | mismatch | 1 | 1 | 0 | 0.0% |
@@ -50,6 +43,7 @@ Generated: 2026-02-20T00:23:40.015Z
 | `@react-aria/slider` | `@vue-aria/slider` | mismatch | 8 | 1 | 0 | 87.5% |
 | `@react-aria/spinbutton` | `@vue-aria/spinbutton` | mismatch | 3 | 1 | 0 | 66.7% |
 | `@react-aria/switch` | `@vue-aria/switch` | mismatch | 3 | 1 | 0 | 66.7% |
+| `@react-aria/test-utils` | `@vue-aria/test-utils` | mismatch | 17 | 1 | 0 | 94.1% |
 | `@react-aria/toggle` | `@vue-aria/toggle` | mismatch | 3 | 1 | 0 | 66.7% |
 | `@react-aria/visually-hidden` | `@vue-aria/visually-hidden` | mismatch | 4 | 1 | 0 | 75.0% |
 | `@react-spectrum/color` | `@vue-spectrum/color` | mismatch | 21 | 1 | 0 | 95.2% |
@@ -57,6 +51,7 @@ Generated: 2026-02-20T00:23:40.015Z
 | `@react-spectrum/form` | `@vue-spectrum/form` | mismatch | 3 | 1 | 0 | 66.7% |
 | `@react-spectrum/listbox` | `@vue-spectrum/listbox` | mismatch | 6 | 1 | 0 | 83.3% |
 | `@react-spectrum/story-utils` | `@vue-spectrum/story-utils` | mismatch | 2 | 1 | 0 | 50.0% |
+| `@react-spectrum/test-utils` | `@vue-spectrum/test-utils` | mismatch | 19 | 1 | 0 | 94.7% |
 | `@react-stately/checkbox` | `@vue-stately/checkbox` | mismatch | 3 | 1 | 0 | 66.7% |
 | `@react-stately/combobox` | `@vue-stately/combobox` | mismatch | 3 | 1 | 0 | 66.7% |
 | `@react-stately/dnd` | `@vue-stately/dnd` | mismatch | 6 | 1 | 0 | 83.3% |
@@ -76,6 +71,7 @@ Generated: 2026-02-20T00:23:40.015Z
 | `@react-aria/checkbox` | `@vue-aria/checkbox` | ok | 8 | 0 | 0 | 100.0% |
 | `@react-aria/collections` | `@vue-aria/collections` | ok | 17 | 0 | 0 | 100.0% |
 | `@react-aria/color` | `@vue-aria/color` | ok | 20 | 0 | 0 | 100.0% |
+| `@react-aria/datepicker` | `@vue-aria/datepicker` | ok | 18 | 0 | 0 | 100.0% |
 | `@react-aria/dnd` | `@vue-aria/dnd` | ok | 62 | 0 | 0 | 100.0% |
 | `@react-aria/example-theme` | `@vue-aria/example-theme` | ok | 0 | 0 | 0 | 100.0% |
 | `@react-aria/focus` | `@vue-aria/focus` | ok | 26 | 0 | 0 | 100.0% |
@@ -90,10 +86,14 @@ Generated: 2026-02-20T00:23:40.015Z
 | `@react-aria/radio` | `@vue-aria/radio` | ok | 7 | 0 | 0 | 100.0% |
 | `@react-aria/select` | `@vue-aria/select` | ok | 8 | 0 | 0 | 100.0% |
 | `@react-aria/ssr` | `@vue-aria/ssr` | ok | 4 | 0 | 0 | 100.0% |
+| `@react-aria/steplist` | `@vue-aria/steplist` | ok | 6 | 0 | 0 | 100.0% |
 | `@react-aria/table` | `@vue-aria/table` | ok | 23 | 0 | 0 | 100.0% |
 | `@react-aria/tabs` | `@vue-aria/tabs` | ok | 11 | 0 | 0 | 100.0% |
 | `@react-aria/tag` | `@vue-aria/tag` | ok | 6 | 0 | 0 | 100.0% |
 | `@react-aria/textfield` | `@vue-aria/textfield` | ok | 5 | 0 | 0 | 100.0% |
+| `@react-aria/toolbar` | `@vue-aria/toolbar` | ok | 3 | 0 | 0 | 100.0% |
+| `@react-aria/tooltip` | `@vue-aria/tooltip` | ok | 6 | 0 | 0 | 100.0% |
+| `@react-aria/tree` | `@vue-aria/tree` | ok | 8 | 0 | 0 | 100.0% |
 | `@react-aria/utils` | `@vue-aria/utils` | ok | 74 | 0 | 0 | 100.0% |
 | `@react-aria/virtualizer` | `@vue-aria/virtualizer` | ok | 11 | 0 | 0 | 100.0% |
 | `@react-spectrum/accordion` | `@vue-spectrum/accordion` | ok | 8 | 0 | 0 | 100.0% |
@@ -199,9 +199,9 @@ Generated: 2026-02-20T00:23:40.015Z
 * Source entry: `packages/react-aria/src/index.ts`
 * Target entry: `packages/vue-aria/src/index.ts`
 * Compared exports: 419
-* Mismatched signatures: 22
+* Mismatched signatures: 16
 * Missing in target: 0
-* Example mismatches: `useComboBox [call-signatures]`, `useDateField [call-signatures]`, `useTimeField [call-signatures]`, `useDialog [call-signatures]`, `useDisclosure [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]`, `useLandmark [call-signatures]`, `useLink [call-signatures]`, `useMeter [call-signatures]`, `useNumberField [call-signatures]`, `useProgressBar [call-signatures]`, `useSearchField [call-signatures]`, `useSeparator [call-signatures]`, `useSlider [call-signatures]`, `useSwitch [call-signatures]`, `useToast [call-signatures]`, `useToastRegion [call-signatures]`, `useTooltip [call-signatures]`, `useTooltipTrigger [call-signatures]`, `useTree [call-signatures]`, `useTreeItem [call-signatures]`, `useVisuallyHidden [call-signatures]`
+* Example mismatches: `useComboBox [call-signatures]`, `useDialog [call-signatures]`, `useDisclosure [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]`, `useLandmark [call-signatures]`, `useLink [call-signatures]`, `useMeter [call-signatures]`, `useNumberField [call-signatures]`, `useProgressBar [call-signatures]`, `useSearchField [call-signatures]`, `useSeparator [call-signatures]`, `useSlider [call-signatures]`, `useSwitch [call-signatures]`, `useToast [call-signatures]`, `useToastRegion [call-signatures]`, `useVisuallyHidden [call-signatures]`
 
 ### @react-spectrum/style-macro-s1 -> @vue-spectrum/style-macro-s1
 
@@ -212,33 +212,6 @@ Generated: 2026-02-20T00:23:40.015Z
 * Missing in target: 0
 * Example mismatches: `style [call-signatures]`, `baseColor [call-signatures]`, `lightDark [call-signatures]`, `focusRing [call-signatures]`, `raw [call-signatures]`, `keyframes [call-signatures]`
 
-### @react-aria/datepicker -> @vue-aria/datepicker
-
-* Source entry: `packages/@react-aria/datepicker/src/index.ts`
-* Target entry: `packages/@vue-aria/datepicker/src/index.ts`
-* Compared exports: 18
-* Mismatched signatures: 2
-* Missing in target: 0
-* Example mismatches: `useDateField [call-signatures]`, `useTimeField [call-signatures]`
-
-### @react-aria/steplist -> @vue-aria/steplist
-
-* Source entry: `packages/@react-aria/steplist/src/index.ts`
-* Target entry: `packages/@vue-aria/steplist/src/index.ts`
-* Compared exports: 6
-* Mismatched signatures: 2
-* Missing in target: 0
-* Example mismatches: `useStepList [call-signatures]`, `useStepListItem [call-signatures]`
-
-### @react-aria/test-utils -> @vue-aria/test-utils
-
-* Source entry: `packages/@react-aria/test-utils/src/index.ts`
-* Target entry: `packages/@vue-aria/test-utils/src/index.ts`
-* Compared exports: 17
-* Mismatched signatures: 2
-* Missing in target: 0
-* Example mismatches: `triggerLongPress [call-signatures]`, `pointerMap [value-type]`
-
 ### @react-aria/toast -> @vue-aria/toast
 
 * Source entry: `packages/@react-aria/toast/src/index.ts`
@@ -247,42 +220,6 @@ Generated: 2026-02-20T00:23:40.015Z
 * Mismatched signatures: 2
 * Missing in target: 0
 * Example mismatches: `useToast [call-signatures]`, `useToastRegion [call-signatures]`
-
-### @react-aria/toolbar -> @vue-aria/toolbar
-
-* Source entry: `packages/@react-aria/toolbar/src/index.ts`
-* Target entry: `packages/@vue-aria/toolbar/src/index.ts`
-* Compared exports: 3
-* Mismatched signatures: 2
-* Missing in target: 0
-* Example mismatches: `useToolbar [call-signatures]`, `AriaToolbarProps [value-availability]`
-
-### @react-aria/tooltip -> @vue-aria/tooltip
-
-* Source entry: `packages/@react-aria/tooltip/src/index.ts`
-* Target entry: `packages/@vue-aria/tooltip/src/index.ts`
-* Compared exports: 6
-* Mismatched signatures: 2
-* Missing in target: 0
-* Example mismatches: `useTooltip [call-signatures]`, `useTooltipTrigger [call-signatures]`
-
-### @react-aria/tree -> @vue-aria/tree
-
-* Source entry: `packages/@react-aria/tree/src/index.ts`
-* Target entry: `packages/@vue-aria/tree/src/index.ts`
-* Compared exports: 8
-* Mismatched signatures: 2
-* Missing in target: 0
-* Example mismatches: `useTree [call-signatures]`, `useTreeItem [call-signatures]`
-
-### @react-spectrum/test-utils -> @vue-spectrum/test-utils
-
-* Source entry: `packages/@react-spectrum/test-utils/src/index.ts`
-* Target entry: `packages/@vue-spectrum/test-utils/src/index.ts`
-* Compared exports: 19
-* Mismatched signatures: 2
-* Missing in target: 0
-* Example mismatches: `triggerLongPress [call-signatures]`, `pointerMap [value-type]`
 
 ### @react-stately/calendar -> @vue-stately/calendar
 
@@ -355,4 +292,67 @@ Generated: 2026-02-20T00:23:40.015Z
 * Mismatched signatures: 1
 * Missing in target: 0
 * Example mismatches: `useGridListSelectionCheckbox [call-signatures]`
+
+### @react-aria/landmark -> @vue-aria/landmark
+
+* Source entry: `packages/@react-aria/landmark/src/index.ts`
+* Target entry: `packages/@vue-aria/landmark/src/index.ts`
+* Compared exports: 6
+* Mismatched signatures: 1
+* Missing in target: 0
+* Example mismatches: `useLandmark [call-signatures]`
+
+### @react-aria/link -> @vue-aria/link
+
+* Source entry: `packages/@react-aria/link/src/index.ts`
+* Target entry: `packages/@vue-aria/link/src/index.ts`
+* Compared exports: 3
+* Mismatched signatures: 1
+* Missing in target: 0
+* Example mismatches: `useLink [call-signatures]`
+
+### @react-aria/meter -> @vue-aria/meter
+
+* Source entry: `packages/@react-aria/meter/src/index.ts`
+* Target entry: `packages/@vue-aria/meter/src/index.ts`
+* Compared exports: 3
+* Mismatched signatures: 1
+* Missing in target: 0
+* Example mismatches: `useMeter [call-signatures]`
+
+### @react-aria/numberfield -> @vue-aria/numberfield
+
+* Source entry: `packages/@react-aria/numberfield/src/index.ts`
+* Target entry: `packages/@vue-aria/numberfield/src/index.ts`
+* Compared exports: 3
+* Mismatched signatures: 1
+* Missing in target: 0
+* Example mismatches: `useNumberField [call-signatures]`
+
+### @react-aria/progress -> @vue-aria/progress
+
+* Source entry: `packages/@react-aria/progress/src/index.ts`
+* Target entry: `packages/@vue-aria/progress/src/index.ts`
+* Compared exports: 3
+* Mismatched signatures: 1
+* Missing in target: 0
+* Example mismatches: `useProgressBar [call-signatures]`
+
+### @react-aria/searchfield -> @vue-aria/searchfield
+
+* Source entry: `packages/@react-aria/searchfield/src/index.ts`
+* Target entry: `packages/@vue-aria/searchfield/src/index.ts`
+* Compared exports: 3
+* Mismatched signatures: 1
+* Missing in target: 0
+* Example mismatches: `useSearchField [call-signatures]`
+
+### @react-aria/selection -> @vue-aria/selection
+
+* Source entry: `packages/@react-aria/selection/src/index.ts`
+* Target entry: `packages/@vue-aria/selection/src/index.ts`
+* Compared exports: 15
+* Mismatched signatures: 1
+* Missing in target: 0
+* Example mismatches: `useSelectableItem [call-signatures]`
 

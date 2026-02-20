@@ -10,13 +10,14 @@ import type {StepListState as StatelyStepListState} from '@vue-stately/steplist'
 type RefObject<T> = {
   current: T
 };
+type StepListState<T = unknown> = StatelyStepListState<T>;
+type AriaStepListItemProps = AriaStepListItemOptions;
 
 export type {
   AriaStepListItemOptions,
-  StepListItemAria,
-  VueStepListAriaState as StepListState
+  StepListItemAria
 };
-export type {AriaStepListItemOptions as AriaStepListItemProps};
+export type {AriaStepListItemProps, StepListState};
 export type AriaStepListOptions<T = unknown> = VueAriaStepListOptions;
 export type AriaStepListProps<T = unknown> = AriaStepListOptions<T>;
 export type {StepListAria};
@@ -27,7 +28,7 @@ function isStatelyStepListState<T>(value: unknown): value is StatelyStepListStat
 
 export function useStepList<T>(
   props: AriaStepListProps<T>,
-  state: StatelyStepListState<T>,
+  state: StepListState<T>,
   ref: RefObject<HTMLOListElement | null>
 ): StepListAria;
 export function useStepList(state: VueStepListAriaState, options?: VueAriaStepListOptions): StepListAria;
@@ -43,8 +44,8 @@ export function useStepList(
 }
 
 export function useStepListItem<T>(
-  props: AriaStepListItemOptions,
-  state: StatelyStepListState<T>,
+  props: AriaStepListItemProps,
+  state: StepListState<T>,
   ref: RefObject<HTMLElement | null>
 ): StepListItemAria;
 export function useStepListItem(options: AriaStepListItemOptions, state: VueStepListAriaState): StepListItemAria;

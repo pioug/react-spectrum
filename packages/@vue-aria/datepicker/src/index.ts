@@ -44,7 +44,7 @@ export type AriaDateRangePickerProps<T extends DateValue = DateValue> = AriaDate
 export type AriaTimeFieldProps<T extends TimeValue = TimeValue> = AriaTimeFieldOptions;
 
 export function useDateField<T extends DateValue>(
-  props: AriaDateFieldOptions,
+  props: AriaDateFieldOptions<T>,
   state: DateFieldState,
   ref: RefObject<Element | null>
 ): DateFieldAria;
@@ -54,7 +54,7 @@ export function useDateField(options: AriaDateFieldOptions): DateFieldAria {
 }
 
 export function useTimeField<T extends TimeValue>(
-  props: AriaTimeFieldOptions,
+  props: AriaTimeFieldOptions<T>,
   state: TimeFieldState,
   ref: RefObject<Element | null>
 ): DateFieldAria;

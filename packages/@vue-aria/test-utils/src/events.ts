@@ -39,7 +39,7 @@ function fire(type: string, element: HTMLElement, init: Record<string, unknown> 
 export async function triggerLongPress(opts: {
   element: HTMLElement,
   advanceTimer: (time: number) => unknown | Promise<unknown>,
-  pointerOpts?: Record<string, unknown>
+  pointerOpts?: Record<string, any>
 }): Promise<void> {
   let {element, advanceTimer, pointerOpts = {}} = opts;
   let pointerType = String(pointerOpts.pointerType ?? 'mouse');
