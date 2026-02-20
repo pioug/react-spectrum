@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-20T00:10:18.121Z",
+  "generatedAt": "2026-02-20T00:12:04.875Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 94,
+    "fullyMatchedPackages": 95,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 2115,
-    "mismatchedExportTotal": 557,
+    "matchedExportTotal": 2121,
+    "mismatchedExportTotal": 551,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.7915
+    "parityCoverage": 0.7938
   },
   "packages": [
     {
@@ -5659,10 +5659,10 @@
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
       "comparedExportCount": 419,
-      "matchedExportCount": 382,
-      "mismatchedExportCount": 37,
+      "matchedExportCount": 385,
+      "mismatchedExportCount": 34,
       "missingInTargetCount": 0,
-      "parityRatio": 0.9117,
+      "parityRatio": 0.9189,
       "missingInTargetExports": [],
       "mismatches": [
         {
@@ -5735,117 +5735,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: AriaBreadcrumbsOptions) => BreadcrumbsAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useCheckbox",
-          "targetExportName": "useCheckbox",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCheckbox",
-            "resolvedName": "useCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaCheckboxProps, state: ToggleState, inputRef: RefObject<HTMLInputElement | null>) => CheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCheckboxProps, _: ToggleState, _: RefObject<HTMLInputElement | null>) => CheckboxAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCheckbox",
-            "resolvedName": "useCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaCheckboxOptions) => CheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCheckboxOptions) => CheckboxAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useCheckboxGroup",
-          "targetExportName": "useCheckboxGroup",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCheckboxGroup",
-            "resolvedName": "useCheckboxGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaCheckboxGroupProps, state: CheckboxGroupState) => CheckboxGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCheckboxGroupProps, _: CheckboxGroupState) => CheckboxGroupAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCheckboxGroup",
-            "resolvedName": "useCheckboxGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaCheckboxGroupOptions) => CheckboxGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCheckboxGroupOptions) => CheckboxGroupAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useCheckboxGroupItem",
-          "targetExportName": "useCheckboxGroupItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCheckboxGroupItem",
-            "resolvedName": "useCheckboxGroupItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaCheckboxGroupItemProps, state: CheckboxGroupState, inputRef: RefObject<HTMLInputElement | null>) => CheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCheckboxGroupItemProps, _: CheckboxGroupState, _: RefObject<HTMLInputElement | null>) => CheckboxAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCheckboxGroupItem",
-            "resolvedName": "useCheckboxGroupItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaCheckboxGroupItemOptions) => CheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCheckboxGroupItemOptions) => CheckboxAria"
             ],
             "constructSignatures": []
           }
@@ -7275,137 +7164,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: Record<string, unknown> | string) => string"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/checkbox",
-      "sourcePath": "packages/@react-aria/checkbox",
-      "targetPackage": "@vue-aria/checkbox",
-      "targetPath": "packages/@vue-aria/checkbox",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/checkbox/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/checkbox/src/index.ts",
-      "sourceExportCount": 8,
-      "comparedExportCount": 8,
-      "matchedExportCount": 5,
-      "mismatchedExportCount": 3,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.625,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useCheckbox",
-          "targetExportName": "useCheckbox",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCheckbox",
-            "resolvedName": "useCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaCheckboxProps, state: ToggleState, inputRef: RefObject<HTMLInputElement | null>) => CheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCheckboxProps, _: ToggleState, _: RefObject<HTMLInputElement | null>) => CheckboxAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCheckbox",
-            "resolvedName": "useCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaCheckboxOptions) => CheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCheckboxOptions) => CheckboxAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useCheckboxGroup",
-          "targetExportName": "useCheckboxGroup",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCheckboxGroup",
-            "resolvedName": "useCheckboxGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaCheckboxGroupProps, state: CheckboxGroupState) => CheckboxGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCheckboxGroupProps, _: CheckboxGroupState) => CheckboxGroupAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCheckboxGroup",
-            "resolvedName": "useCheckboxGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaCheckboxGroupOptions) => CheckboxGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCheckboxGroupOptions) => CheckboxGroupAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useCheckboxGroupItem",
-          "targetExportName": "useCheckboxGroupItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCheckboxGroupItem",
-            "resolvedName": "useCheckboxGroupItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaCheckboxGroupItemProps, state: CheckboxGroupState, inputRef: RefObject<HTMLInputElement | null>) => CheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCheckboxGroupItemProps, _: CheckboxGroupState, _: RefObject<HTMLInputElement | null>) => CheckboxAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCheckboxGroupItem",
-            "resolvedName": "useCheckboxGroupItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaCheckboxGroupItemOptions) => CheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCheckboxGroupItemOptions) => CheckboxAria"
             ],
             "constructSignatures": []
           }
@@ -11421,6 +11179,25 @@
       "sourceExportCount": 14,
       "comparedExportCount": 14,
       "matchedExportCount": 14,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/checkbox",
+      "sourcePath": "packages/@react-aria/checkbox",
+      "targetPackage": "@vue-aria/checkbox",
+      "targetPath": "packages/@vue-aria/checkbox",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/checkbox/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/checkbox/src/index.ts",
+      "sourceExportCount": 8,
+      "comparedExportCount": 8,
+      "matchedExportCount": 8,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
