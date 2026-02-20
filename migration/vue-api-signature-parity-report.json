@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-20T00:20:14.762Z",
+  "generatedAt": "2026-02-20T00:23:40.015Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 102,
+    "fullyMatchedPackages": 105,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 2146,
-    "mismatchedExportTotal": 526,
+    "matchedExportTotal": 2156,
+    "mismatchedExportTotal": 516,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.8031
+    "parityCoverage": 0.8069
   },
   "packages": [
     {
@@ -5659,10 +5659,10 @@
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
       "comparedExportCount": 419,
-      "matchedExportCount": 393,
-      "mismatchedExportCount": 26,
+      "matchedExportCount": 397,
+      "mismatchedExportCount": 22,
       "missingInTargetCount": 0,
-      "parityRatio": 0.9379,
+      "parityRatio": 0.9475,
       "missingInTargetExports": [],
       "mismatches": [
         {
@@ -6113,80 +6113,6 @@
           }
         },
         {
-          "exportName": "useHiddenSelect",
-          "targetExportName": "useHiddenSelect",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useHiddenSelect",
-            "resolvedName": "useHiddenSelect",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T, M extends SelectionMode = \"single\">(props: AriaHiddenSelectOptions, state: SelectState<T, M>, triggerRef: RefObject<FocusableElement | null>) => HiddenSelectAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T, M extends SelectionMode = \"single\">( _: AriaHiddenSelectOptions, _: SelectState<T, M>, _: RefObject<FocusableElement | null>) => HiddenSelectAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useHiddenSelect",
-            "resolvedName": "useHiddenSelect",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaHiddenSelectOptions) => HiddenSelectAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaHiddenSelectOptions) => HiddenSelectAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useSelect",
-          "targetExportName": "useSelect",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSelect",
-            "resolvedName": "useSelect",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T, M extends SelectionMode = \"single\">(props: AriaSelectOptions<T, M>, state: SelectState<T, M>, ref: RefObject<HTMLElement | null>) => SelectAria<T, M>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T, M extends SelectionMode = \"single\">( _: AriaSelectOptions<T, M>, _: SelectState<T, M>, _: RefObject<HTMLElement | null>) => SelectAria<T, M>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSelect",
-            "resolvedName": "useSelect",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaSelectOptions) => SelectAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaSelectOptions) => SelectAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
           "exportName": "useSeparator",
           "targetExportName": "useSeparator",
           "differences": [
@@ -6293,80 +6219,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: AriaSwitchOptions) => SwitchAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTag",
-          "targetExportName": "useTag",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTag",
-            "resolvedName": "useTag",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTagProps<T>, state: ListState<T>, ref: RefObject<FocusableElement | null>) => TagAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTagProps<T>, _: ListState<T>, _: RefObject<FocusableElement | null>) => TagAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTag",
-            "resolvedName": "useTag",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTagOptions) => TagAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTagOptions) => TagAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTagGroup",
-          "targetExportName": "useTagGroup",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTagGroup",
-            "resolvedName": "useTagGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTagGroupOptions<T>, state: ListState<T>, ref: RefObject<HTMLElement | null>) => TagGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTagGroupOptions<T>, _: ListState<T>, _: RefObject<HTMLElement | null>) => TagGroupAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTagGroup",
-            "resolvedName": "useTagGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTagGroupOptions) => TagGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTagGroupOptions) => TagGroupAria"
             ],
             "constructSignatures": []
           }
@@ -6877,100 +6729,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-aria/autocomplete",
-      "sourcePath": "packages/@react-aria/autocomplete",
-      "targetPackage": "@vue-aria/autocomplete",
-      "targetPath": "packages/@vue-aria/autocomplete",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/autocomplete/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/autocomplete/src/index.ts",
-      "sourceExportCount": 10,
-      "comparedExportCount": 10,
-      "matchedExportCount": 8,
-      "mismatchedExportCount": 2,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.8,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useSearchAutocomplete",
-          "targetExportName": "useSearchAutocomplete",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSearchAutocomplete",
-            "resolvedName": "useSearchAutocomplete",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaSearchAutocompleteOptions<T>, state: ComboBoxState<T>) => SearchAutocompleteAria<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaSearchAutocompleteOptions<T>, _: ComboBoxState<T>) => SearchAutocompleteAria<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSearchAutocomplete",
-            "resolvedName": "useSearchAutocomplete",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaSearchAutocompleteOptions) => SearchAutocompleteAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaSearchAutocompleteOptions) => SearchAutocompleteAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useAutocomplete",
-          "targetExportName": "useAutocomplete",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useAutocomplete",
-            "resolvedName": "useAutocomplete",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaAutocompleteOptions<T>, state: AutocompleteState) => AutocompleteAria<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaAutocompleteOptions<T>, _: AutocompleteState) => AutocompleteAria<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useAutocomplete",
-            "resolvedName": "useAutocomplete",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaAutocompleteOptions) => AutocompleteAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaAutocompleteOptions) => AutocompleteAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/datepicker",
       "sourcePath": "packages/@react-aria/datepicker",
       "targetPackage": "@vue-aria/datepicker",
@@ -7067,100 +6825,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-aria/select",
-      "sourcePath": "packages/@react-aria/select",
-      "targetPackage": "@vue-aria/select",
-      "targetPath": "packages/@vue-aria/select",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/select/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/select/src/index.ts",
-      "sourceExportCount": 8,
-      "comparedExportCount": 8,
-      "matchedExportCount": 6,
-      "mismatchedExportCount": 2,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.75,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useSelect",
-          "targetExportName": "useSelect",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useSelect",
-            "resolvedName": "useSelect",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T, M extends SelectionMode = \"single\">(props: AriaSelectOptions<T, M>, state: SelectState<T, M>, ref: RefObject<HTMLElement | null>) => SelectAria<T, M>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T, M extends SelectionMode = \"single\">( _: AriaSelectOptions<T, M>, _: SelectState<T, M>, _: RefObject<HTMLElement | null>) => SelectAria<T, M>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useSelect",
-            "resolvedName": "useSelect",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaSelectOptions) => SelectAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaSelectOptions) => SelectAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useHiddenSelect",
-          "targetExportName": "useHiddenSelect",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useHiddenSelect",
-            "resolvedName": "useHiddenSelect",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T, M extends SelectionMode = \"single\">(props: AriaHiddenSelectOptions, state: SelectState<T, M>, triggerRef: RefObject<FocusableElement | null>) => HiddenSelectAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T, M extends SelectionMode = \"single\">( _: AriaHiddenSelectOptions, _: SelectState<T, M>, _: RefObject<FocusableElement | null>) => HiddenSelectAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useHiddenSelect",
-            "resolvedName": "useHiddenSelect",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaHiddenSelectOptions) => HiddenSelectAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaHiddenSelectOptions) => HiddenSelectAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/steplist",
       "sourcePath": "packages/@react-aria/steplist",
       "targetPackage": "@vue-aria/steplist",
@@ -7205,10 +6869,11 @@
             "declarationKinds": [
               "FunctionDeclaration"
             ],
-            "valueType": "(_state: StepListState, options?: AriaStepListOptions) => StepListAria",
+            "valueType": "null>): StepListAria; (state: StepListAriaState, options?: AriaStepListOptions): StepListAria;} | { <T>(props: AriaStepListProps<T>, state: StatelyStepListState<T>, ref: RefObject<HTMLOListElement",
             "declaredType": "",
             "callSignatures": [
-              "( _: StepListState, _: AriaStepListOptions) => StepListAria"
+              "( _: StepListAriaState, _: AriaStepListOptions) => StepListAria",
+              "<T>( _: AriaStepListProps<T>, _: StatelyStepListState<T>, _: RefObject<HTMLOListElement | null>) => StepListAria"
             ],
             "constructSignatures": []
           }
@@ -7242,104 +6907,11 @@
             "declarationKinds": [
               "FunctionDeclaration"
             ],
-            "valueType": "(options: AriaStepListItemOptions, state: StepListState) => StepListItemAria",
+            "valueType": "null>): StepListItemAria; (options: AriaStepListItemOptions, state: StepListAriaState): StepListItemAria;} | { <T>(props: AriaStepListItemOptions, state: StatelyStepListState<T>, ref: RefObject<HTMLElement",
             "declaredType": "",
             "callSignatures": [
-              "( _: AriaStepListItemOptions, _: StepListState) => StepListItemAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/tag",
-      "sourcePath": "packages/@react-aria/tag",
-      "targetPackage": "@vue-aria/tag",
-      "targetPath": "packages/@vue-aria/tag",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/tag/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/tag/src/index.ts",
-      "sourceExportCount": 6,
-      "comparedExportCount": 6,
-      "matchedExportCount": 4,
-      "mismatchedExportCount": 2,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useTag",
-          "targetExportName": "useTag",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTag",
-            "resolvedName": "useTag",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTagProps<T>, state: ListState<T>, ref: RefObject<FocusableElement | null>) => TagAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTagProps<T>, _: ListState<T>, _: RefObject<FocusableElement | null>) => TagAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTag",
-            "resolvedName": "useTag",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTagOptions) => TagAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTagOptions) => TagAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTagGroup",
-          "targetExportName": "useTagGroup",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTagGroup",
-            "resolvedName": "useTagGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaTagGroupOptions<T>, state: ListState<T>, ref: RefObject<HTMLElement | null>) => TagGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaTagGroupOptions<T>, _: ListState<T>, _: RefObject<HTMLElement | null>) => TagGroupAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTagGroup",
-            "resolvedName": "useTagGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTagGroupOptions) => TagGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTagGroupOptions) => TagGroupAria"
+              "( _: AriaStepListItemOptions, _: StepListAriaState) => StepListItemAria",
+              "<T>( _: AriaStepListItemOptions, _: StatelyStepListState<T>, _: RefObject<HTMLElement | null>) => StepListItemAria"
             ],
             "constructSignatures": []
           }
@@ -10099,6 +9671,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/autocomplete",
+      "sourcePath": "packages/@react-aria/autocomplete",
+      "targetPackage": "@vue-aria/autocomplete",
+      "targetPath": "packages/@vue-aria/autocomplete",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/autocomplete/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/autocomplete/src/index.ts",
+      "sourceExportCount": 10,
+      "comparedExportCount": 10,
+      "matchedExportCount": 10,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/breadcrumbs",
       "sourcePath": "packages/@react-aria/breadcrumbs",
       "targetPackage": "@vue-aria/breadcrumbs",
@@ -10441,6 +10032,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/select",
+      "sourcePath": "packages/@react-aria/select",
+      "targetPackage": "@vue-aria/select",
+      "targetPath": "packages/@vue-aria/select",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/select/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/select/src/index.ts",
+      "sourceExportCount": 8,
+      "comparedExportCount": 8,
+      "matchedExportCount": 8,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/ssr",
       "sourcePath": "packages/@react-aria/ssr",
       "targetPackage": "@vue-aria/ssr",
@@ -10489,6 +10099,25 @@
       "sourceExportCount": 11,
       "comparedExportCount": 11,
       "matchedExportCount": 11,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/tag",
+      "sourcePath": "packages/@react-aria/tag",
+      "targetPackage": "@vue-aria/tag",
+      "targetPath": "packages/@vue-aria/tag",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/tag/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/tag/src/index.ts",
+      "sourceExportCount": 6,
+      "comparedExportCount": 6,
+      "matchedExportCount": 6,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
