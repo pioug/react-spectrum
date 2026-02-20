@@ -39,6 +39,18 @@
       "maxDiffRatio": 0
     },
     {
+      "id": "button-dark",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='button-dark']",
+      "maxDiffRatio": 0
+    },
+    {
+      "id": "button-large-scale",
+      "path": "/parity.html",
+      "selector": "[data-parity-id='button-large-scale']",
+      "maxDiffRatio": 0
+    },
+    {
       "id": "badge-positive",
       "path": "/parity.html",
       "selector": "[data-parity-id='badge-positive']",

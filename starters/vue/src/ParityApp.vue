@@ -21,6 +21,18 @@
         <Button data-parity-target="button-focus-target" variant="secondary">Focus state</Button>
       </section>
 
+      <section data-parity-id="button-dark" class="parity-card parity-card--dark">
+        <Provider color-scheme="dark">
+          <Button variant="primary">Dark scheme</Button>
+        </Provider>
+      </section>
+
+      <section data-parity-id="button-large-scale" class="parity-card">
+        <Provider scale="large">
+          <Button variant="primary">Large scale</Button>
+        </Provider>
+      </section>
+
       <section data-parity-id="badge-positive" class="parity-card">
         <Badge variant="positive">Ready</Badge>
       </section>
@@ -161,6 +173,11 @@ const listItems = ['React', 'Vue', 'Svelte'];
 
 .parity-card--wide {
   grid-column: span 3;
+}
+
+.parity-card--dark {
+  background: #2a2a2a;
+  border-color: #444444;
 }
 
 @media (max-width: 1024px) {

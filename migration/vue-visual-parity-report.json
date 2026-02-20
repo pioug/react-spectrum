@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-20T01:15:26.038Z",
+  "generatedAt": "2026-02-20T01:34:29.188Z",
   "mode": "compare",
   "summary": {
-    "totalFixtures": 18,
-    "passedFixtures": 18,
+    "totalFixtures": 20,
+    "passedFixtures": 20,
     "failedFixtures": 0,
     "erroredFixtures": 0
   },
@@ -69,6 +69,30 @@
       "diffPath": "migration/visual-parity/diff/button-focus.png"
     },
     {
+      "id": "button-dark",
+      "maxDiffRatio": 0,
+      "status": "pass",
+      "diffRatio": 0,
+      "changedPixels": 0,
+      "totalPixels": 44880,
+      "error": null,
+      "baselinePath": "migration/visual-parity/baseline/button-dark.png",
+      "candidatePath": "migration/visual-parity/current/button-dark.png",
+      "diffPath": "migration/visual-parity/diff/button-dark.png"
+    },
+    {
+      "id": "button-large-scale",
+      "maxDiffRatio": 0,
+      "status": "pass",
+      "diffRatio": 0,
+      "changedPixels": 0,
+      "totalPixels": 44880,
+      "error": null,
+      "baselinePath": "migration/visual-parity/baseline/button-large-scale.png",
+      "candidatePath": "migration/visual-parity/current/button-large-scale.png",
+      "diffPath": "migration/visual-parity/diff/button-large-scale.png"
+    },
+    {
       "id": "badge-positive",
       "maxDiffRatio": 0,
       "status": "pass",
@@ -86,7 +110,7 @@
       "status": "pass",
       "diffRatio": 0,
       "changedPixels": 0,
-      "totalPixels": 50116,
+      "totalPixels": 44880,
       "error": null,
       "baselinePath": "migration/visual-parity/baseline/text-detail.png",
       "candidatePath": "migration/visual-parity/current/text-detail.png",
@@ -122,7 +146,7 @@
       "status": "pass",
       "diffRatio": 0,
       "changedPixels": 0,
-      "totalPixels": 44880,
+      "totalPixels": 50116,
       "error": null,
       "baselinePath": "migration/visual-parity/baseline/textfield-focus.png",
       "candidatePath": "migration/visual-parity/current/textfield-focus.png",

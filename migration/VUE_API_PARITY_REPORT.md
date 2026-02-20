@@ -1,6 +1,6 @@
 # Vue API Parity Report
 
-Generated: 2026-02-20T01:13:28.077Z
+Generated: 2026-02-20T01:34:47.166Z
 
 ## Summary
 
