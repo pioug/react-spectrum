@@ -47,7 +47,7 @@ This roadmap tracks the work needed to reach:
 ### Phase 5: Stabilization
 
 1. [ ] Keep parity checks green for all new Vue migration changes.
-2. [ ] Gate release/publish workflows on parity checks.
+2. [x] Gate release/publish workflows on parity checks.
 3. [ ] Document exceptions explicitly (if any) with rationale and migration guidance.
 
 ## Current status
@@ -65,4 +65,5 @@ This roadmap tracks the work needed to reach:
 * Vue migration test suite is passing (`181` tests via `yarn test:vue`).
 * API export + signature parity closure is complete for all tracked packages; remaining API work is expanded edge-case behavior fixtures.
 * Visual parity fixture baseline is green and CI now enforces strict API/signature parity asserts plus visual diff thresholds.
+* Nightly publish workflows now require `vue-parity`, so parity regressions block nightly release publishing.
 * Remaining visual work is expanded theme/density/state coverage beyond the current fixture matrix.

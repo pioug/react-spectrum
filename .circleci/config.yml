@@ -1140,7 +1140,13 @@ workflows:
                 - main
     jobs:
       - install
-      - publish-nightly
+      - vue-parity:
+          requires:
+            - install
+      - publish-nightly:
+          requires:
+            - install
+            - vue-parity
 
   nightly-manual:
     when:
@@ -1149,4 +1155,10 @@ workflows:
         - equal: [ "workflow_dispatch", << pipeline.parameters.GHA_Event >>]
     jobs:
       - install
-      - publish-nightly
+      - vue-parity:
+          requires:
+            - install
+      - publish-nightly:
+          requires:
+            - install
+            - vue-parity
