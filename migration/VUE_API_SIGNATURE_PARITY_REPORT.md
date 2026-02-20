@@ -1,19 +1,19 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-20T00:13:33.507Z
+Generated: 2026-02-20T00:15:31.821Z
 
 ## Summary
 
 * Tracked packages: 154
 * Compared packages: 154
 * Errored packages: 0
-* Fully matched packages: 96
+* Fully matched packages: 97
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 2127
-* Mismatched signatures: 545
+* Matched signatures: 2130
+* Mismatched signatures: 542
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 79.60%
+* Signature coverage ratio: 79.72%
 
 ## Package gaps
 
@@ -23,7 +23,6 @@ Generated: 2026-02-20T00:13:33.507Z
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | mismatch | 325 | 134 | 0 | 58.8% |
 | `react-aria` | `vue-aria` | mismatch | 419 | 31 | 0 | 92.6% |
 | `@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | mismatch | 6 | 6 | 0 | 0.0% |
-| `@react-aria/collections` | `@vue-aria/collections` | mismatch | 17 | 3 | 0 | 82.3% |
 | `@react-stately/color` | `@vue-stately/color` | mismatch | 25 | 3 | 0 | 88.0% |
 | `@react-aria/actiongroup` | `@vue-aria/actiongroup` | mismatch | 6 | 2 | 0 | 66.7% |
 | `@react-aria/autocomplete` | `@vue-aria/autocomplete` | mismatch | 10 | 2 | 0 | 80.0% |
@@ -80,6 +79,7 @@ Generated: 2026-02-20T00:13:33.507Z
 | `@react-aria/button` | `@vue-aria/button` | ok | 11 | 0 | 0 | 100.0% |
 | `@react-aria/calendar` | `@vue-aria/calendar` | ok | 14 | 0 | 0 | 100.0% |
 | `@react-aria/checkbox` | `@vue-aria/checkbox` | ok | 8 | 0 | 0 | 100.0% |
+| `@react-aria/collections` | `@vue-aria/collections` | ok | 17 | 0 | 0 | 100.0% |
 | `@react-aria/color` | `@vue-aria/color` | ok | 20 | 0 | 0 | 100.0% |
 | `@react-aria/dnd` | `@vue-aria/dnd` | ok | 62 | 0 | 0 | 100.0% |
 | `@react-aria/example-theme` | `@vue-aria/example-theme` | ok | 0 | 0 | 0 | 100.0% |
@@ -211,15 +211,6 @@ Generated: 2026-02-20T00:13:33.507Z
 * Mismatched signatures: 6
 * Missing in target: 0
 * Example mismatches: `style [call-signatures]`, `baseColor [call-signatures]`, `lightDark [call-signatures]`, `focusRing [call-signatures]`, `raw [call-signatures]`, `keyframes [call-signatures]`
-
-### @react-aria/collections -> @vue-aria/collections
-
-* Source entry: `packages/@react-aria/collections/src/index.ts`
-* Target entry: `packages/@vue-aria/collections/src/index.ts`
-* Compared exports: 17
-* Mismatched signatures: 3
-* Missing in target: 0
-* Example mismatches: `createLeafComponent [call-signatures]`, `createBranchComponent [call-signatures]`, `createHideableComponent [call-signatures]`
 
 ### @react-stately/color -> @vue-stately/color
 
@@ -355,4 +346,13 @@ Generated: 2026-02-20T00:13:33.507Z
 * Mismatched signatures: 2
 * Missing in target: 0
 * Example mismatches: `useTree [call-signatures]`, `useTreeItem [call-signatures]`
+
+### @react-spectrum/test-utils -> @vue-spectrum/test-utils
+
+* Source entry: `packages/@react-spectrum/test-utils/src/index.ts`
+* Target entry: `packages/@vue-spectrum/test-utils/src/index.ts`
+* Compared exports: 19
+* Mismatched signatures: 2
+* Missing in target: 0
+* Example mismatches: `triggerLongPress [call-signatures]`, `pointerMap [value-type]`
 

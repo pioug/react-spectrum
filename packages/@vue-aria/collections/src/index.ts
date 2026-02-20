@@ -32,9 +32,12 @@ type ForwardedRef<T> = {
 
 type ReactElement = unknown;
 type ReactNode = unknown;
-type RefAttributes<T> = {
-  ref?: ForwardedRef<T>
-};
+namespace React {
+  export type Ref<T> = ForwardedRef<T>;
+  export type RefAttributes<T> = {
+    ref?: Ref<T>
+  };
+}
 
 type Node<T> = {
   value?: T
@@ -54,16 +57,13 @@ export {
 };
 
 export function createLeafComponent<T extends object, P extends object, E extends Element>(
-  collectionNodeClass: CollectionNodeClass<any> | null,
-  render: (props: P, ref: ForwardedRef<E>) => ReactElement
-): (props: P & RefAttributes<E>) => ReactElement;
+  collectionNodeClass: CollectionNodeClass<any> | string,
+  render: (props: P, ref: ForwardedRef<E>) => ReactElement | null
+): (props: P & React.RefAttributes<E>) => ReactElement | null;
 export function createLeafComponent<T extends object, P extends object, E extends Element>(
-  collectionNodeClass: CollectionNodeClass<any> | null,
-  render: (props: P, ref: ForwardedRef<E>, node: Node<T>) => ReactElement
-): (props: P & RefAttributes<E>) => ReactElement;
-export function createLeafComponent<T, TComponent>(
-  component: (item: T, index: number) => TComponent
-): (item: T, index: number) => TComponent;
+  collectionNodeClass: CollectionNodeClass<any> | string,
+  render: (props: P, ref: ForwardedRef<E>, node: Node<T>) => ReactElement | null
+): (props: P & React.RefAttributes<E>) => ReactElement | null;
 export function createLeafComponent(...args: unknown[]): unknown {
   if (args.length === 1 && typeof args[0] === 'function') {
     return createLeafComponentInternal(args[0] as (item: unknown, index: number) => unknown);
@@ -73,29 +73,25 @@ export function createLeafComponent(...args: unknown[]): unknown {
 }
 
 export function createBranchComponent<T extends object, P extends {children?: any}, E extends Element>(
-  collectionNodeClass: CollectionNodeClass<any> | null,
-  useChildren: (props: P) => ReactNode,
-  render: (props: P, ref: ForwardedRef<E>, node: Node<T>) => ReactElement
-): (props: P & RefAttributes<E>) => ReactElement;
-export function createBranchComponent<T, TComponent>(
-  component: (item: T, index: number, children: TComponent[]) => TComponent
-): (item: T, index: number, children: TComponent[]) => TComponent;
+  collectionNodeClass: CollectionNodeClass<any> | string,
+  render: (props: P, ref: ForwardedRef<E>, node: Node<T>) => ReactElement | null,
+  useChildren: (props: P) => ReactNode
+): (props: P & React.RefAttributes<E>) => ReactElement | null;
 export function createBranchComponent(...args: unknown[]): unknown {
   if (args.length === 1 && typeof args[0] === 'function') {
     return createBranchComponentInternal(args[0] as (item: unknown, index: number, children: unknown[]) => unknown);
   }
 
-  return (props: unknown) => (args[2] as (props: unknown, ref: ForwardedRef<Element>, node: Node<unknown>) => unknown)?.(props, {current: null}, {});
+  return (props: unknown) => (args[1] as (props: unknown, ref: ForwardedRef<Element>, node: Node<unknown>) => unknown)?.(props, {current: null}, {});
 }
 
 export function createHideableComponent<T, P = {}>(
-  component: (props: P, ref: ForwardedRef<T>) => ReactElement
-): (props: P & RefAttributes<T>) => ReactElement;
-export function createHideableComponent<TProps, TResult>(
-  component: (props: TProps, isHidden: Computedboolean) => TResult
-): (props: TProps) => TResult;
-export function createHideableComponent(component: (props: unknown, isHidden: Computedboolean) => unknown): (props: unknown) => unknown {
-  return createHideableComponentInternal(component);
+  component: (props: P, ref: React.Ref<T>) => ReactElement | null
+): (props: P & React.RefAttributes<T>) => ReactElement | null;
+export function createHideableComponent(component: (props: unknown, ref: React.Ref<unknown>) => ReactElement | null): (props: unknown) => ReactElement | null {
+  return createHideableComponentInternal(component as (props: unknown, isHidden: Computedboolean) => ReactElement | null) as (
+    props: unknown
+  ) => ReactElement | null;
 }
 
 export function useIsHidden(): boolean;
