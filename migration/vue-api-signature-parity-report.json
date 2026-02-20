@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-20T00:16:58.592Z",
+  "generatedAt": "2026-02-20T00:20:14.762Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 98,
+    "fullyMatchedPackages": 102,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 2133,
-    "mismatchedExportTotal": 539,
+    "matchedExportTotal": 2146,
+    "mismatchedExportTotal": 526,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.7983
+    "parityCoverage": 0.8031
   },
   "packages": [
     {
@@ -5659,86 +5659,12 @@
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
       "comparedExportCount": 419,
-      "matchedExportCount": 388,
-      "mismatchedExportCount": 31,
+      "matchedExportCount": 393,
+      "mismatchedExportCount": 26,
       "missingInTargetCount": 0,
-      "parityRatio": 0.926,
+      "parityRatio": 0.9379,
       "missingInTargetExports": [],
       "mismatches": [
-        {
-          "exportName": "useBreadcrumbItem",
-          "targetExportName": "useBreadcrumbItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useBreadcrumbItem",
-            "resolvedName": "useBreadcrumbItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaBreadcrumbItemProps, ref: RefObject<FocusableElement | null>) => BreadcrumbItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaBreadcrumbItemProps, _: RefObject<FocusableElement | null>) => BreadcrumbItemAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useBreadcrumbItem",
-            "resolvedName": "useBreadcrumbItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaBreadcrumbItemOptions) => BreadcrumbItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaBreadcrumbItemOptions) => BreadcrumbItemAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useBreadcrumbs",
-          "targetExportName": "useBreadcrumbs",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useBreadcrumbs",
-            "resolvedName": "useBreadcrumbs",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaBreadcrumbsProps) => BreadcrumbsAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaBreadcrumbsProps) => BreadcrumbsAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useBreadcrumbs",
-            "resolvedName": "useBreadcrumbs",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaBreadcrumbsOptions) => BreadcrumbsAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaBreadcrumbsOptions) => BreadcrumbsAria"
-            ],
-            "constructSignatures": []
-          }
-        },
         {
           "exportName": "useComboBox",
           "targetExportName": "useComboBox",
@@ -6150,80 +6076,6 @@
           }
         },
         {
-          "exportName": "useRadio",
-          "targetExportName": "useRadio",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useRadio",
-            "resolvedName": "useRadio",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaRadioProps, state: RadioGroupState, ref: RefObject<HTMLInputElement | null>) => RadioAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaRadioProps, _: RadioGroupState, _: RefObject<HTMLInputElement | null>) => RadioAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useRadio",
-            "resolvedName": "useRadio",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaRadioOptions, group: RadioGroupAria) => RadioAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaRadioOptions, _: RadioGroupAria) => RadioAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useRadioGroup",
-          "targetExportName": "useRadioGroup",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useRadioGroup",
-            "resolvedName": "useRadioGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaRadioGroupProps, state: RadioGroupState) => RadioGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaRadioGroupProps, _: RadioGroupState) => RadioGroupAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useRadioGroup",
-            "resolvedName": "useRadioGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaRadioGroupOptions) => RadioGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaRadioGroupOptions) => RadioGroupAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
           "exportName": "useSearchField",
           "targetExportName": "useSearchField",
           "differences": [
@@ -6515,43 +6367,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: AriaTagGroupOptions) => TagGroupAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useTextField",
-          "targetExportName": "useTextField",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTextField",
-            "resolvedName": "useTextField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends TextFieldIntrinsicElements = \"input\">(props: AriaTextFieldOptions<T>, ref: TextFieldRefObject<T>) => TextFieldAria<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends TextFieldIntrinsicElements = \"input\">( _: AriaTextFieldOptions<T>, _: TextFieldRefObject<T>) => TextFieldAria<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTextField",
-            "resolvedName": "useTextField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaTextFieldOptions) => TextFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTextFieldOptions) => TextFieldAria"
             ],
             "constructSignatures": []
           }
@@ -7062,100 +6877,6 @@
       "error": null
     },
     {
-      "sourcePackage": "@react-aria/actiongroup",
-      "sourcePath": "packages/@react-aria/actiongroup",
-      "targetPackage": "@vue-aria/actiongroup",
-      "targetPath": "packages/@vue-aria/actiongroup",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/actiongroup/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/actiongroup/src/index.ts",
-      "sourceExportCount": 6,
-      "comparedExportCount": 6,
-      "matchedExportCount": 4,
-      "mismatchedExportCount": 2,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useActionGroup",
-          "targetExportName": "useActionGroup",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useActionGroup",
-            "resolvedName": "useActionGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaActionGroupProps<T>, state: ListState<T>, ref: RefObject<FocusableElement | null>) => ActionGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaActionGroupProps<T>, _: ListState<T>, _: RefObject<FocusableElement | null>) => ActionGroupAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useActionGroup",
-            "resolvedName": "useActionGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: ActionGroupOptions) => ActionGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: ActionGroupOptions) => ActionGroupAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useActionGroupItem",
-          "targetExportName": "useActionGroupItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useActionGroupItem",
-            "resolvedName": "useActionGroupItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaActionGroupItemProps, state: ListState<T>, ref?: RefObject<FocusableElement | null>) => ActionGroupItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaActionGroupItemProps, _: ListState<T>, _: RefObject<FocusableElement | null>) => ActionGroupItemAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useActionGroupItem",
-            "resolvedName": "useActionGroupItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaActionGroupItemProps) => ActionGroupItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaActionGroupItemProps) => ActionGroupItemAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
       "sourcePackage": "@react-aria/autocomplete",
       "sourcePath": "packages/@react-aria/autocomplete",
       "targetPackage": "@vue-aria/autocomplete",
@@ -7241,100 +6962,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: AriaAutocompleteOptions) => AutocompleteAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/breadcrumbs",
-      "sourcePath": "packages/@react-aria/breadcrumbs",
-      "targetPackage": "@vue-aria/breadcrumbs",
-      "targetPath": "packages/@vue-aria/breadcrumbs",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/breadcrumbs/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/breadcrumbs/src/index.ts",
-      "sourceExportCount": 6,
-      "comparedExportCount": 6,
-      "matchedExportCount": 4,
-      "mismatchedExportCount": 2,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useBreadcrumbItem",
-          "targetExportName": "useBreadcrumbItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useBreadcrumbItem",
-            "resolvedName": "useBreadcrumbItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaBreadcrumbItemProps, ref: RefObject<FocusableElement | null>) => BreadcrumbItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaBreadcrumbItemProps, _: RefObject<FocusableElement | null>) => BreadcrumbItemAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useBreadcrumbItem",
-            "resolvedName": "useBreadcrumbItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaBreadcrumbItemOptions) => BreadcrumbItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaBreadcrumbItemOptions) => BreadcrumbItemAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useBreadcrumbs",
-          "targetExportName": "useBreadcrumbs",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useBreadcrumbs",
-            "resolvedName": "useBreadcrumbs",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaBreadcrumbsProps) => BreadcrumbsAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaBreadcrumbsProps) => BreadcrumbsAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useBreadcrumbs",
-            "resolvedName": "useBreadcrumbs",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaBreadcrumbsOptions) => BreadcrumbsAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaBreadcrumbsOptions) => BreadcrumbsAria"
             ],
             "constructSignatures": []
           }
@@ -7431,100 +7058,6 @@
             "callSignatures": [
               "( _: AriaTimeFieldOptions) => DateFieldAria",
               "<T extends TimeValue>( _: AriaTimeFieldOptions, _: TimeFieldState, _: RefObject<Element | null>) => DateFieldAria"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/radio",
-      "sourcePath": "packages/@react-aria/radio",
-      "targetPackage": "@vue-aria/radio",
-      "targetPath": "packages/@vue-aria/radio",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/radio/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/radio/src/index.ts",
-      "sourceExportCount": 7,
-      "comparedExportCount": 7,
-      "matchedExportCount": 5,
-      "mismatchedExportCount": 2,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.7143,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useRadio",
-          "targetExportName": "useRadio",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useRadio",
-            "resolvedName": "useRadio",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaRadioProps, state: RadioGroupState, ref: RefObject<HTMLInputElement | null>) => RadioAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaRadioProps, _: RadioGroupState, _: RefObject<HTMLInputElement | null>) => RadioAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useRadio",
-            "resolvedName": "useRadio",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaRadioOptions, group: RadioGroupAria) => RadioAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaRadioOptions, _: RadioGroupAria) => RadioAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useRadioGroup",
-          "targetExportName": "useRadioGroup",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useRadioGroup",
-            "resolvedName": "useRadioGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaRadioGroupProps, state: RadioGroupState) => RadioGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaRadioGroupProps, _: RadioGroupState) => RadioGroupAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useRadioGroup",
-            "resolvedName": "useRadioGroup",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaRadioGroupOptions) => RadioGroupAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaRadioGroupOptions) => RadioGroupAria"
             ],
             "constructSignatures": []
           }
@@ -7898,100 +7431,6 @@
             "valueType": "PointerKey[]",
             "declaredType": "",
             "callSignatures": [],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/textfield",
-      "sourcePath": "packages/@react-aria/textfield",
-      "targetPackage": "@vue-aria/textfield",
-      "targetPath": "packages/@vue-aria/textfield",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/textfield/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/textfield/src/index.ts",
-      "sourceExportCount": 5,
-      "comparedExportCount": 5,
-      "matchedExportCount": 3,
-      "mismatchedExportCount": 2,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useTextField",
-          "targetExportName": "useTextField",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useTextField",
-            "resolvedName": "useTextField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends TextFieldIntrinsicElements = \"input\">(props: AriaTextFieldOptions<T>, ref: TextFieldRefObject<T>) => TextFieldAria<T>",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends TextFieldIntrinsicElements = \"input\">( _: AriaTextFieldOptions<T>, _: TextFieldRefObject<T>) => TextFieldAria<T>"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useTextField",
-            "resolvedName": "useTextField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaTextFieldOptions) => TextFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTextFieldOptions) => TextFieldAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useFormattedTextField",
-          "targetExportName": "useFormattedTextField",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useFormattedTextField",
-            "resolvedName": "useFormattedTextField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaTextFieldProps, state: FormattedTextFieldState, inputRef: RefObject<HTMLInputElement | null>) => TextFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTextFieldProps, _: FormattedTextFieldState, _: RefObject<HTMLInputElement | null>) => TextFieldAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useFormattedTextField",
-            "resolvedName": "useFormattedTextField",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaTextFieldOptions, state: FormattedTextFieldState, inputRef: Ref<HTMLInputElement | null>) => TextFieldAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaTextFieldOptions, _: FormattedTextFieldState, _: Ref<HTMLInputElement | null>) => TextFieldAria"
-            ],
             "constructSignatures": []
           }
         }
@@ -10641,6 +10080,44 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/actiongroup",
+      "sourcePath": "packages/@react-aria/actiongroup",
+      "targetPackage": "@vue-aria/actiongroup",
+      "targetPath": "packages/@vue-aria/actiongroup",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/actiongroup/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/actiongroup/src/index.ts",
+      "sourceExportCount": 6,
+      "comparedExportCount": 6,
+      "matchedExportCount": 6,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/breadcrumbs",
+      "sourcePath": "packages/@react-aria/breadcrumbs",
+      "targetPackage": "@vue-aria/breadcrumbs",
+      "targetPath": "packages/@vue-aria/breadcrumbs",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/breadcrumbs/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/breadcrumbs/src/index.ts",
+      "sourceExportCount": 6,
+      "comparedExportCount": 6,
+      "matchedExportCount": 6,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/button",
       "sourcePath": "packages/@react-aria/button",
       "targetPackage": "@vue-aria/button",
@@ -10945,6 +10422,25 @@
       "error": null
     },
     {
+      "sourcePackage": "@react-aria/radio",
+      "sourcePath": "packages/@react-aria/radio",
+      "targetPackage": "@vue-aria/radio",
+      "targetPath": "packages/@vue-aria/radio",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/radio/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/radio/src/index.ts",
+      "sourceExportCount": 7,
+      "comparedExportCount": 7,
+      "matchedExportCount": 7,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
       "sourcePackage": "@react-aria/ssr",
       "sourcePath": "packages/@react-aria/ssr",
       "targetPackage": "@vue-aria/ssr",
@@ -10993,6 +10489,25 @@
       "sourceExportCount": 11,
       "comparedExportCount": 11,
       "matchedExportCount": 11,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/textfield",
+      "sourcePath": "packages/@react-aria/textfield",
+      "targetPackage": "@vue-aria/textfield",
+      "targetPath": "packages/@vue-aria/textfield",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/textfield/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/textfield/src/index.ts",
+      "sourceExportCount": 5,
+      "comparedExportCount": 5,
+      "matchedExportCount": 5,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
