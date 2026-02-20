@@ -12,6 +12,8 @@ This folder stores baseline screenshot fixtures used by:
 - `vue-current/`: generated Vue screenshots from the latest comparison run (gitignored).
 - `diff/`: generated pixel-diff images (gitignored).
 
+Legacy note: the old `baseline/` directory is no longer used. React reference fixtures are the only baseline source of truth.
+
 ## Updating baseline intentionally
 
 1. Make visual changes intentionally.

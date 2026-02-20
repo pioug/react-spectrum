@@ -63,15 +63,9 @@ function ensureVisualParityDirs() {
 }
 
 function readTargetConfig(config, targetName) {
-  let targetConfig = config[targetName] ?? {};
-
-  // Backward compatibility: previous config stored candidate settings at the top level.
-  if (targetName === 'candidate') {
-    targetConfig = {
-      baseUrl: targetConfig.baseUrl ?? config.baseUrl,
-      startCommand: targetConfig.startCommand ?? config.startCommand,
-      name: targetConfig.name ?? 'vue'
-    };
+  let targetConfig = config[targetName] ?? null;
+  if (!targetConfig) {
+    throw new Error(`Config is missing "${targetName}" target. Define both "reference" and "candidate" targets.`);
   }
 
   return {
