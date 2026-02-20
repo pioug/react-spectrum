@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-19T23:58:46.721Z",
+  "generatedAt": "2026-02-20T00:03:09.962Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 91,
+    "fullyMatchedPackages": 92,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 2087,
-    "mismatchedExportTotal": 585,
+    "matchedExportTotal": 2095,
+    "mismatchedExportTotal": 577,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.7811
+    "parityCoverage": 0.7841
   },
   "packages": [
     {
@@ -5659,10 +5659,10 @@
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
       "comparedExportCount": 419,
-      "matchedExportCount": 369,
-      "mismatchedExportCount": 50,
+      "matchedExportCount": 373,
+      "mismatchedExportCount": 46,
       "missingInTargetCount": 0,
-      "parityRatio": 0.8807,
+      "parityRatio": 0.8902,
       "missingInTargetExports": [],
       "mismatches": [
         {
@@ -5735,154 +5735,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: AriaBreadcrumbsOptions) => BreadcrumbsAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useCalendar",
-          "targetExportName": "useCalendar",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCalendar",
-            "resolvedName": "useCalendar",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends DateValue>(props: AriaCalendarProps<T>, state: CalendarState) => CalendarAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends DateValue>( _: AriaCalendarProps<T>, _: CalendarState) => CalendarAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCalendar",
-            "resolvedName": "useCalendar",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaCalendarOptions) => CalendarAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCalendarOptions) => CalendarAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useCalendarCell",
-          "targetExportName": "useCalendarCell",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCalendarCell",
-            "resolvedName": "useCalendarCell",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaCalendarCellProps, state: CalendarState | RangeCalendarState, ref: RefObject<HTMLElement | null>) => CalendarCellAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCalendarCellProps, _: CalendarState | RangeCalendarState, _: RefObject<HTMLElement | null>) => CalendarCellAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCalendarCell",
-            "resolvedName": "useCalendarCell",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaCalendarCellOptions) => CalendarCellAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCalendarCellOptions) => CalendarCellAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useCalendarGrid",
-          "targetExportName": "useCalendarGrid",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCalendarGrid",
-            "resolvedName": "useCalendarGrid",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaCalendarGridProps, state: CalendarState | RangeCalendarState) => CalendarGridAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCalendarGridProps, _: CalendarState | RangeCalendarState) => CalendarGridAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCalendarGrid",
-            "resolvedName": "useCalendarGrid",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaCalendarGridOptions) => CalendarGridAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCalendarGridOptions) => CalendarGridAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useRangeCalendar",
-          "targetExportName": "useRangeCalendar",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useRangeCalendar",
-            "resolvedName": "useRangeCalendar",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends DateValue>(props: AriaRangeCalendarProps<T>, state: RangeCalendarState, ref: RefObject<FocusableElement | null>) => CalendarAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends DateValue>( _: AriaRangeCalendarProps<T>, _: RangeCalendarState, _: RefObject<FocusableElement | null>) => CalendarAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useRangeCalendar",
-            "resolvedName": "useRangeCalendar",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaRangeCalendarOptions) => RangeCalendarAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaRangeCalendarOptions) => RangeCalendarAria"
             ],
             "constructSignatures": []
           }
@@ -7755,174 +7607,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: Record<string, unknown> | string) => string"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/calendar",
-      "sourcePath": "packages/@react-aria/calendar",
-      "targetPackage": "@vue-aria/calendar",
-      "targetPath": "packages/@vue-aria/calendar",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/calendar/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/calendar/src/index.ts",
-      "sourceExportCount": 14,
-      "comparedExportCount": 14,
-      "matchedExportCount": 10,
-      "mismatchedExportCount": 4,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.7143,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useCalendar",
-          "targetExportName": "useCalendar",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCalendar",
-            "resolvedName": "useCalendar",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends DateValue>(props: AriaCalendarProps<T>, state: CalendarState) => CalendarAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends DateValue>( _: AriaCalendarProps<T>, _: CalendarState) => CalendarAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCalendar",
-            "resolvedName": "useCalendar",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaCalendarOptions) => CalendarAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCalendarOptions) => CalendarAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useRangeCalendar",
-          "targetExportName": "useRangeCalendar",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useRangeCalendar",
-            "resolvedName": "useRangeCalendar",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T extends DateValue>(props: AriaRangeCalendarProps<T>, state: RangeCalendarState, ref: RefObject<FocusableElement | null>) => CalendarAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T extends DateValue>( _: AriaRangeCalendarProps<T>, _: RangeCalendarState, _: RefObject<FocusableElement | null>) => CalendarAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useRangeCalendar",
-            "resolvedName": "useRangeCalendar",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options?: AriaRangeCalendarOptions) => RangeCalendarAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaRangeCalendarOptions) => RangeCalendarAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useCalendarGrid",
-          "targetExportName": "useCalendarGrid",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCalendarGrid",
-            "resolvedName": "useCalendarGrid",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaCalendarGridProps, state: CalendarState | RangeCalendarState) => CalendarGridAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCalendarGridProps, _: CalendarState | RangeCalendarState) => CalendarGridAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCalendarGrid",
-            "resolvedName": "useCalendarGrid",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaCalendarGridOptions) => CalendarGridAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCalendarGridOptions) => CalendarGridAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useCalendarCell",
-          "targetExportName": "useCalendarCell",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useCalendarCell",
-            "resolvedName": "useCalendarCell",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaCalendarCellProps, state: CalendarState | RangeCalendarState, ref: RefObject<HTMLElement | null>) => CalendarCellAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCalendarCellProps, _: CalendarState | RangeCalendarState, _: RefObject<HTMLElement | null>) => CalendarCellAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useCalendarCell",
-            "resolvedName": "useCalendarCell",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaCalendarCellOptions) => CalendarCellAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaCalendarCellOptions) => CalendarCellAria"
             ],
             "constructSignatures": []
           }
@@ -12492,6 +12176,25 @@
       "sourceExportCount": 11,
       "comparedExportCount": 11,
       "matchedExportCount": 11,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/calendar",
+      "sourcePath": "packages/@react-aria/calendar",
+      "targetPackage": "@vue-aria/calendar",
+      "targetPath": "packages/@vue-aria/calendar",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/calendar/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/calendar/src/index.ts",
+      "sourceExportCount": 14,
+      "comparedExportCount": 14,
+      "matchedExportCount": 14,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,
