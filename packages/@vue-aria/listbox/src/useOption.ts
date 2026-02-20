@@ -1,6 +1,7 @@
 import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
 import {getItemId, type ListKey} from './utils';
 import {type ListBoxAria, type ListBoxItemNode} from './useListBox';
+import type {ListState} from '@vue-stately/list';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
 
@@ -127,7 +128,7 @@ export function useOption(props: AriaOptionProps, listBox: ListBoxAria): OptionA
       id: labelId.value
     })),
     optionProps: computed(() => ({
-      id: getItemId(listBox as object, key.value),
+      id: getItemId(listBox as unknown as ListState<unknown>, key.value),
       role: 'option' as const,
       'aria-disabled': isDisabled.value || undefined,
       'aria-selected': listBox.selectionMode.value !== 'none' ? isSelected.value : undefined,

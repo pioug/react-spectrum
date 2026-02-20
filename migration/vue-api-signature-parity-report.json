@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-02-20T00:06:10.622Z",
+  "generatedAt": "2026-02-20T00:08:18.715Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
     "erroredPackages": 0,
-    "fullyMatchedPackages": 92,
+    "fullyMatchedPackages": 93,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 2101,
-    "mismatchedExportTotal": 571,
+    "matchedExportTotal": 2107,
+    "mismatchedExportTotal": 565,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.7863
+    "parityCoverage": 0.7885
   },
   "packages": [
     {
@@ -5659,10 +5659,10 @@
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
       "comparedExportCount": 419,
-      "matchedExportCount": 376,
-      "mismatchedExportCount": 43,
+      "matchedExportCount": 378,
+      "mismatchedExportCount": 41,
       "missingInTargetCount": 0,
-      "parityRatio": 0.8974,
+      "parityRatio": 0.9021,
       "missingInTargetExports": [],
       "mismatches": [
         {
@@ -6145,80 +6145,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: AriaLinkOptions) => LinkAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useListBox",
-          "targetExportName": "useListBox",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useListBox",
-            "resolvedName": "useListBox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaListBoxOptions<T>, state: ListState<T>, ref: RefObject<HTMLElement | null>) => ListBoxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaListBoxOptions<T>, _: ListState<T>, _: RefObject<HTMLElement | null>) => ListBoxAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useListBox",
-            "resolvedName": "useListBox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaListBoxOptions, collection: MaybeRef<ListBoxCollection>, selectedKeys?: Ref<Set<ListKey>>) => ListBoxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaListBoxOptions, _: MaybeRef<ListBoxCollection>, _: Ref<Set<ListKey>>) => ListBoxAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useOption",
-          "targetExportName": "useOption",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useOption",
-            "resolvedName": "useOption",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaOptionProps, state: ListState<T>, ref: RefObject<FocusableElement | null>) => OptionAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaOptionProps, _: ListState<T>, _: RefObject<FocusableElement | null>) => OptionAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useOption",
-            "resolvedName": "useOption",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaOptionProps, listBox: ListBoxAria) => OptionAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaOptionProps, _: ListBoxAria) => OptionAria"
             ],
             "constructSignatures": []
           }
@@ -7497,170 +7423,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: Record<string, unknown> | string) => string"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/listbox",
-      "sourcePath": "packages/@react-aria/listbox",
-      "targetPackage": "@vue-aria/listbox",
-      "targetPath": "packages/@vue-aria/listbox",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/listbox/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/listbox/src/index.ts",
-      "sourceExportCount": 12,
-      "comparedExportCount": 12,
-      "matchedExportCount": 8,
-      "mismatchedExportCount": 4,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useListBox",
-          "targetExportName": "useListBox",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useListBox",
-            "resolvedName": "useListBox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaListBoxOptions<T>, state: ListState<T>, ref: RefObject<HTMLElement | null>) => ListBoxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaListBoxOptions<T>, _: ListState<T>, _: RefObject<HTMLElement | null>) => ListBoxAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useListBox",
-            "resolvedName": "useListBox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaListBoxOptions, collection: MaybeRef<ListBoxCollection>, selectedKeys?: Ref<Set<ListKey>>) => ListBoxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaListBoxOptions, _: MaybeRef<ListBoxCollection>, _: Ref<Set<ListKey>>) => ListBoxAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useOption",
-          "targetExportName": "useOption",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useOption",
-            "resolvedName": "useOption",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaOptionProps, state: ListState<T>, ref: RefObject<FocusableElement | null>) => OptionAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaOptionProps, _: ListState<T>, _: RefObject<FocusableElement | null>) => OptionAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useOption",
-            "resolvedName": "useOption",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaOptionProps, listBox: ListBoxAria) => OptionAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaOptionProps, _: ListBoxAria) => OptionAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "listData",
-          "targetExportName": "listData",
-          "differences": [
-            "value-type"
-          ],
-          "source": {
-            "name": "listData",
-            "resolvedName": "listData",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "VariableDeclaration"
-            ],
-            "valueType": "WeakMap<ListState<unknown>, ListData>",
-            "declaredType": "",
-            "callSignatures": [],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "listData",
-            "resolvedName": "listData",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "VariableDeclaration"
-            ],
-            "valueType": "WeakMap<object, ListData>",
-            "declaredType": "",
-            "callSignatures": [],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "getItemId",
-          "targetExportName": "getItemId",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "getItemId",
-            "resolvedName": "getItemId",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(state: ListState<T>, itemKey: Key) => string",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: ListState<T>, _: Key) => string"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "getItemId",
-            "resolvedName": "getItemId",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(listBoxState: object, itemKey: ListKey) => string",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: object, _: ListKey) => string"
             ],
             "constructSignatures": []
           }
@@ -12127,6 +11889,25 @@
       "sourceExportCount": 6,
       "comparedExportCount": 6,
       "matchedExportCount": 6,
+      "mismatchedExportCount": 0,
+      "missingInTargetCount": 0,
+      "parityRatio": 1,
+      "missingInTargetExports": [],
+      "mismatches": [],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/listbox",
+      "sourcePath": "packages/@react-aria/listbox",
+      "targetPackage": "@vue-aria/listbox",
+      "targetPath": "packages/@vue-aria/listbox",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/listbox/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/listbox/src/index.ts",
+      "sourceExportCount": 12,
+      "comparedExportCount": 12,
+      "matchedExportCount": 12,
       "mismatchedExportCount": 0,
       "missingInTargetCount": 0,
       "parityRatio": 1,

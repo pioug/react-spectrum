@@ -1,5 +1,6 @@
 import {computed, type ComputedRef, ref, type Ref, unref} from 'vue';
 import {listData, type ListData, type ListKey} from './utils';
+import type {ListState} from '@vue-stately/list';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
 
@@ -152,7 +153,7 @@ export function useListBox(options: AriaListBoxOptions, collection: MaybeRef<Lis
     shouldUseVirtualFocus: shouldUseVirtualFocus.value
   };
 
-  listData.set(listBox as object, data);
+  listData.set(listBox as unknown as ListState<unknown>, data);
 
   return listBox;
 }

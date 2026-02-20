@@ -1,4 +1,6 @@
-export type ListKey = string | number;
+import type {Key, ListState} from '@vue-stately/list';
+
+export type ListKey = Key;
 
 export interface ListData {
   id?: string,
@@ -10,14 +12,14 @@ export interface ListData {
   shouldUseVirtualFocus?: boolean
 }
 
-export const listData: WeakMap<object, ListData> = new WeakMap<object, ListData>();
+export const listData: WeakMap<ListState<unknown>, ListData> = new WeakMap<ListState<unknown>, ListData>();
 
 function normalizeKey(key: ListKey): string {
   return String(key).replace(/\s*/g, '');
 }
 
-export function getItemId(listBoxState: object, itemKey: ListKey): string {
-  let data = listData.get(listBoxState);
+export function getItemId<T>(listBoxState: ListState<T>, itemKey: Key): string {
+  let data = listData.get(listBoxState as unknown as ListState<unknown>);
   if (!data?.id) {
     throw new Error('Unknown listbox');
   }
