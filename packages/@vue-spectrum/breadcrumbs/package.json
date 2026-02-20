@@ -23,7 +23,9 @@
     "url": "https://github.com/adobe/react-spectrum"
   },
   "dependencies": {
-    "@vue-spectrum/components": "^0.1.0"
+    "@react-types/breadcrumbs": "^3.7.18",
+    "@vue-spectrum/components": "^0.1.0",
+    "@vue-stately/collections": "^0.1.0"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

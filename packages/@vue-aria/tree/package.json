@@ -26,6 +26,7 @@
     "vue": "^3.4.0"
   },
   "dependencies": {
+    "@react-stately/tree": "^3.9.5",
     "@vue-aria/gridlist": "workspace:*",
     "@vue-aria/i18n": "workspace:*"
   },

@@ -1,6 +1,6 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-20T01:49:05.778Z
+Generated: 2026-02-20T02:06:07.759Z
 
 ## Summary
 

@@ -1,6 +1,6 @@
 # Vue Migration Tracker
 
-Generated: 2026-02-19
+Generated: 2026-02-20
 
 Tracked source packages: 154
 

@@ -23,6 +23,7 @@
     "url": "https://github.com/adobe/react-spectrum"
   },
   "dependencies": {
+    "@react-types/contextualhelp": "^3.2.23",
     "@vue-spectrum/components": "^0.1.0"
   },
   "peerDependencies": {

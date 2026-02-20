@@ -23,6 +23,7 @@
     "url": "https://github.com/adobe/react-spectrum"
   },
   "dependencies": {
+    "@vue-stately/collections": "^0.1.0",
     "@vue-stately/grid": "workspace:*"
   },
   "peerDependencies": {

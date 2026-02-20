@@ -23,6 +23,7 @@
     "url": "https://github.com/adobe/react-spectrum"
   },
   "dependencies": {
+    "@react-types/image": "^3.5.3",
     "@vue-spectrum/components": "^0.1.0"
   },
   "peerDependencies": {

@@ -23,6 +23,7 @@
     "url": "https://github.com/adobe/react-spectrum"
   },
   "dependencies": {
+    "@react-types/datepicker": "^3.13.4",
     "@vue-spectrum/components": "^0.1.0"
   },
   "peerDependencies": {

@@ -23,6 +23,7 @@
     "url": "https://github.com/adobe/react-spectrum"
   },
   "dependencies": {
+    "@react-types/select": "^3.12.1",
     "@vue-stately/form": "workspace:*",
     "@vue-stately/list": "workspace:*",
     "@vue-stately/overlays": "workspace:*"

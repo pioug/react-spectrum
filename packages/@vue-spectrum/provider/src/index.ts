@@ -1,15 +1,37 @@
 import {VueSpectrumProvider, type SpectrumContextValue} from '@vue-spectrum/components';
 import {computed, defineComponent, h, inject, provide, type ComputedRef, type InjectionKey, type PropType} from 'vue';
-import type {Breakpoints, ProviderContext, ProviderProps, Theme} from '@react-types/provider';
+import type {
+  Breakpoints,
+  ProviderContext as ReactProviderContext,
+  ProviderProps as ReactProviderProps
+} from '@react-types/provider';
 
-type ProviderContextCompat = ProviderContext & {
+type ThemeSectionLike = {
+  className?: string,
+  express?: string
+};
+
+type ThemeLike = {
+  dark?: ThemeSectionLike,
+  global?: ThemeSectionLike,
+  large?: ThemeSectionLike,
+  light?: ThemeSectionLike,
+  medium?: ThemeSectionLike
+};
+
+type ProviderContextCompat = Omit<ReactProviderContext, 'theme'> & {
+  theme: ThemeLike,
   locale: string,
   dir: SpectrumContextValue['dir']
 };
 
+type ProviderPropsCompat = Omit<ReactProviderProps, 'children' | 'theme'> & {
+  theme?: ThemeLike
+};
+
 const defaultProviderContext: ProviderContextCompat = {
   version: '0.1.0',
-  theme: {} as Theme,
+  theme: {},
   colorScheme: 'light',
   scale: 'medium',
   breakpoints: {} as Breakpoints,
@@ -24,7 +46,7 @@ export const Provider = defineComponent({
   inheritAttrs: false,
   props: {
     theme: {
-      type: Object as PropType<ProviderContextCompat['theme'] | undefined>,
+      type: Object as PropType<ProviderPropsCompat['theme']>,
       default: undefined
     },
     scale: {
@@ -95,4 +117,8 @@ export function useProviderProps<T>(props: T): T {
   }, props);
 }
 
-export type {ProviderContext, ProviderProps, SpectrumContextValue};
+export type {
+  ProviderContextCompat as ProviderContext,
+  ProviderPropsCompat as ProviderProps,
+  SpectrumContextValue
+};

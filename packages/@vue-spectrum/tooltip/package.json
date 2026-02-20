@@ -23,6 +23,7 @@
     "url": "https://github.com/adobe/react-spectrum"
   },
   "dependencies": {
+    "@react-types/tooltip": "^3.5.1",
     "@vue-aria/tooltip": "workspace:*"
   },
   "peerDependencies": {
