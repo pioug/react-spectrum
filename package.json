@@ -31,6 +31,7 @@
     "vue:parity:api:signature:report": "node scripts/vue-parity-pipeline.mjs api-signature-report --write",
     "vue:parity:api:signature:assert": "node scripts/vue-parity-pipeline.mjs api-signature-assert --write --max-mismatches 0",
     "vue:parity:api:priority": "node scripts/vue-parity-pipeline.mjs api-priority --write",
+    "vue:parity:visual:coverage:assert": "node scripts/vue-visual-coverage-assert.mjs",
     "vue:parity:visual:capture": "node scripts/vue-visual-parity.mjs capture --start-server --write",
     "vue:parity:visual:compare": "node scripts/vue-visual-parity.mjs compare --start-server --write",
     "build:storybook": "storybook build -c .storybook -o dist/$(git rev-parse HEAD)/storybook",
