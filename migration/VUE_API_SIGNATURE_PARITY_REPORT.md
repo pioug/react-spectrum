@@ -1,6 +1,6 @@
 # Vue API Signature Parity Report
 
-Generated: 2026-02-20T00:03:09.962Z
+Generated: 2026-02-20T00:06:10.622Z
 
 ## Summary
 
@@ -10,10 +10,10 @@ Generated: 2026-02-20T00:03:09.962Z
 * Fully matched packages: 92
 * Source exports inspected: 2672
 * Common exports compared: 2672
-* Matched signatures: 2095
-* Mismatched signatures: 577
+* Matched signatures: 2101
+* Mismatched signatures: 571
 * Missing in target during signature scan: 0
-* Signature coverage ratio: 78.41%
+* Signature coverage ratio: 78.63%
 
 ## Package gaps
 
@@ -21,9 +21,8 @@ Generated: 2026-02-20T00:03:09.962Z
 | --- | --- | --- | ---: | ---: | ---: | ---: |
 | `react-aria-components` | `@vue-spectrum/components` | mismatch | 543 | 299 | 0 | 44.9% |
 | `@react-spectrum/s2` | `@vue-spectrum/s2` | mismatch | 325 | 134 | 0 | 58.8% |
-| `react-aria` | `vue-aria` | mismatch | 419 | 46 | 0 | 89.0% |
+| `react-aria` | `vue-aria` | mismatch | 419 | 43 | 0 | 89.7% |
 | `@react-spectrum/style-macro-s1` | `@vue-spectrum/style-macro-s1` | mismatch | 6 | 6 | 0 | 0.0% |
-| `@react-aria/gridlist` | `@vue-aria/gridlist` | mismatch | 12 | 4 | 0 | 66.7% |
 | `@react-aria/listbox` | `@vue-aria/listbox` | mismatch | 12 | 4 | 0 | 66.7% |
 | `@react-aria/menu` | `@vue-aria/menu` | mismatch | 16 | 4 | 0 | 75.0% |
 | `@react-aria/checkbox` | `@vue-aria/checkbox` | mismatch | 8 | 3 | 0 | 62.5% |
@@ -52,6 +51,7 @@ Generated: 2026-02-20T00:03:09.962Z
 | `@react-aria/dialog` | `@vue-aria/dialog` | mismatch | 3 | 1 | 0 | 66.7% |
 | `@react-aria/disclosure` | `@vue-aria/disclosure` | mismatch | 3 | 1 | 0 | 66.7% |
 | `@react-aria/form` | `@vue-aria/form` | mismatch | 1 | 1 | 0 | 0.0% |
+| `@react-aria/gridlist` | `@vue-aria/gridlist` | mismatch | 12 | 1 | 0 | 91.7% |
 | `@react-aria/landmark` | `@vue-aria/landmark` | mismatch | 6 | 1 | 0 | 83.3% |
 | `@react-aria/link` | `@vue-aria/link` | mismatch | 3 | 1 | 0 | 66.7% |
 | `@react-aria/meter` | `@vue-aria/meter` | mismatch | 3 | 1 | 0 | 66.7% |
@@ -199,9 +199,9 @@ Generated: 2026-02-20T00:03:09.962Z
 * Source entry: `packages/react-aria/src/index.ts`
 * Target entry: `packages/vue-aria/src/index.ts`
 * Compared exports: 419
-* Mismatched signatures: 46
+* Mismatched signatures: 43
 * Missing in target: 0
-* Example mismatches: `useBreadcrumbItem [call-signatures]`, `useBreadcrumbs [call-signatures]`, `useCheckbox [call-signatures]`, `useCheckboxGroup [call-signatures]`, `useCheckboxGroupItem [call-signatures]`, `useComboBox [call-signatures]`, `useDateField [call-signatures]`, `useTimeField [call-signatures]`, `useDialog [call-signatures]`, `useDisclosure [call-signatures]`, `useGridList [call-signatures]`, `useGridListItem [call-signatures]`, `useGridListSection [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]`, `useLandmark [call-signatures]`, `useLink [call-signatures]`, `useListBox [call-signatures]`, `useOption [call-signatures]`, `useMenu [call-signatures]`, `useMenuItem [call-signatures]`, `useMenuTrigger [call-signatures]`, `useSubmenuTrigger [call-signatures]`, `useMeter [call-signatures]`, `useNumberField [call-signatures]`, `useProgressBar [call-signatures]` ...
+* Example mismatches: `useBreadcrumbItem [call-signatures]`, `useBreadcrumbs [call-signatures]`, `useCheckbox [call-signatures]`, `useCheckboxGroup [call-signatures]`, `useCheckboxGroupItem [call-signatures]`, `useComboBox [call-signatures]`, `useDateField [call-signatures]`, `useTimeField [call-signatures]`, `useDialog [call-signatures]`, `useDisclosure [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]`, `useLandmark [call-signatures]`, `useLink [call-signatures]`, `useListBox [call-signatures]`, `useOption [call-signatures]`, `useMenu [call-signatures]`, `useMenuItem [call-signatures]`, `useMenuTrigger [call-signatures]`, `useSubmenuTrigger [call-signatures]`, `useMeter [call-signatures]`, `useNumberField [call-signatures]`, `useProgressBar [call-signatures]`, `useRadio [call-signatures]`, `useRadioGroup [call-signatures]`, `useSearchField [call-signatures]` ...
 
 ### @react-spectrum/style-macro-s1 -> @vue-spectrum/style-macro-s1
 
@@ -211,15 +211,6 @@ Generated: 2026-02-20T00:03:09.962Z
 * Mismatched signatures: 6
 * Missing in target: 0
 * Example mismatches: `style [call-signatures]`, `baseColor [call-signatures]`, `lightDark [call-signatures]`, `focusRing [call-signatures]`, `raw [call-signatures]`, `keyframes [call-signatures]`
-
-### @react-aria/gridlist -> @vue-aria/gridlist
-
-* Source entry: `packages/@react-aria/gridlist/src/index.ts`
-* Target entry: `packages/@vue-aria/gridlist/src/index.ts`
-* Compared exports: 12
-* Mismatched signatures: 4
-* Missing in target: 0
-* Example mismatches: `useGridList [call-signatures]`, `useGridListItem [call-signatures]`, `useGridListSelectionCheckbox [call-signatures]`, `useGridListSection [call-signatures]`
 
 ### @react-aria/listbox -> @vue-aria/listbox
 
@@ -355,4 +346,13 @@ Generated: 2026-02-20T00:03:09.962Z
 * Mismatched signatures: 2
 * Missing in target: 0
 * Example mismatches: `triggerLongPress [call-signatures]`, `pointerMap [value-type]`
+
+### @react-aria/textfield -> @vue-aria/textfield
+
+* Source entry: `packages/@react-aria/textfield/src/index.ts`
+* Target entry: `packages/@vue-aria/textfield/src/index.ts`
+* Compared exports: 5
+* Mismatched signatures: 2
+* Missing in target: 0
+* Example mismatches: `useTextField [call-signatures]`, `useFormattedTextField [call-signatures]`
 

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-20T00:03:09.962Z",
+  "generatedAt": "2026-02-20T00:06:10.622Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
@@ -7,10 +7,10 @@
     "fullyMatchedPackages": 92,
     "sourceExportTotal": 2672,
     "comparedExportTotal": 2672,
-    "matchedExportTotal": 2095,
-    "mismatchedExportTotal": 577,
+    "matchedExportTotal": 2101,
+    "mismatchedExportTotal": 571,
     "missingInTargetTotal": 0,
-    "parityCoverage": 0.7841
+    "parityCoverage": 0.7863
   },
   "packages": [
     {
@@ -5659,10 +5659,10 @@
       "targetEntrypoint": "packages/vue-aria/src/index.ts",
       "sourceExportCount": 419,
       "comparedExportCount": 419,
-      "matchedExportCount": 373,
-      "mismatchedExportCount": 46,
+      "matchedExportCount": 376,
+      "mismatchedExportCount": 43,
       "missingInTargetCount": 0,
-      "parityRatio": 0.8902,
+      "parityRatio": 0.8974,
       "missingInTargetExports": [],
       "mismatches": [
         {
@@ -6038,117 +6038,6 @@
           }
         },
         {
-          "exportName": "useGridList",
-          "targetExportName": "useGridList",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useGridList",
-            "resolvedName": "useGridList",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaGridListOptions<T>, state: ListState<T>, ref: RefObject<HTMLElement | null>) => GridListAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaGridListOptions<T>, _: ListState<T>, _: RefObject<HTMLElement | null>) => GridListAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useGridList",
-            "resolvedName": "useGridList",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaGridListOptions) => GridListAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaGridListOptions) => GridListAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useGridListItem",
-          "targetExportName": "useGridListItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useGridListItem",
-            "resolvedName": "useGridListItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaGridListItemOptions, state: ListState<T> | TreeState<T>, ref: RefObject<FocusableElement | null>) => GridListItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaGridListItemOptions, _: ListState<T> | TreeState<T>, _: RefObject<FocusableElement | null>) => GridListItemAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useGridListItem",
-            "resolvedName": "useGridListItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaGridListItemOptions) => GridListItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaGridListItemOptions) => GridListItemAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useGridListSection",
-          "targetExportName": "useGridListSection",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useGridListSection",
-            "resolvedName": "useGridListSection",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaGridListSectionProps, state: ListState<T>, ref: RefObject<HTMLElement | null>) => GridListSectionAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaGridListSectionProps, _: ListState<T>, _: RefObject<HTMLElement | null>) => GridListSectionAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useGridListSection",
-            "resolvedName": "useGridListSection",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props?: AriaGridListSectionProps) => GridListSectionAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaGridListSectionProps) => GridListSectionAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
           "exportName": "useGridListSelectionCheckbox",
           "targetExportName": "useGridListSelectionCheckbox",
           "differences": [
@@ -6177,10 +6066,11 @@
             "declarationKinds": [
               "FunctionDeclaration"
             ],
-            "valueType": "(props: AriaGridListSelectionCheckboxProps) => GridListSelectionCheckboxAria",
+            "valueType": "{ <T>(props: ReactAriaGridSelectionCheckboxProps, state: ListState<T>): ReactGridSelectionCheckboxAria; (props: AriaGridListSelectionCheckboxProps): GridListSelectionCheckboxAria;}",
             "declaredType": "",
             "callSignatures": [
-              "( _: AriaGridListSelectionCheckboxProps) => GridListSelectionCheckboxAria"
+              "( _: AriaGridListSelectionCheckboxProps) => GridListSelectionCheckboxAria",
+              "<T>( _: ReactAriaGridSelectionCheckboxProps, _: ListState<T>) => ReactGridSelectionCheckboxAria"
             ],
             "constructSignatures": []
           }
@@ -7607,174 +7497,6 @@
             "declaredType": "",
             "callSignatures": [
               "( _: Record<string, unknown> | string) => string"
-            ],
-            "constructSignatures": []
-          }
-        }
-      ],
-      "truncatedMismatchCount": 0,
-      "error": null
-    },
-    {
-      "sourcePackage": "@react-aria/gridlist",
-      "sourcePath": "packages/@react-aria/gridlist",
-      "targetPackage": "@vue-aria/gridlist",
-      "targetPath": "packages/@vue-aria/gridlist",
-      "status": "ported",
-      "sourceEntrypoint": "packages/@react-aria/gridlist/src/index.ts",
-      "targetEntrypoint": "packages/@vue-aria/gridlist/src/index.ts",
-      "sourceExportCount": 12,
-      "comparedExportCount": 12,
-      "matchedExportCount": 8,
-      "mismatchedExportCount": 4,
-      "missingInTargetCount": 0,
-      "parityRatio": 0.6667,
-      "missingInTargetExports": [],
-      "mismatches": [
-        {
-          "exportName": "useGridList",
-          "targetExportName": "useGridList",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useGridList",
-            "resolvedName": "useGridList",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaGridListOptions<T>, state: ListState<T>, ref: RefObject<HTMLElement | null>) => GridListAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaGridListOptions<T>, _: ListState<T>, _: RefObject<HTMLElement | null>) => GridListAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useGridList",
-            "resolvedName": "useGridList",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaGridListOptions) => GridListAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaGridListOptions) => GridListAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useGridListItem",
-          "targetExportName": "useGridListItem",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useGridListItem",
-            "resolvedName": "useGridListItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaGridListItemOptions, state: ListState<T> | TreeState<T>, ref: RefObject<FocusableElement | null>) => GridListItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaGridListItemOptions, _: ListState<T> | TreeState<T>, _: RefObject<FocusableElement | null>) => GridListItemAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useGridListItem",
-            "resolvedName": "useGridListItem",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(options: AriaGridListItemOptions) => GridListItemAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaGridListItemOptions) => GridListItemAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useGridListSelectionCheckbox",
-          "targetExportName": "useGridListSelectionCheckbox",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useGridListSelectionCheckbox",
-            "resolvedName": "useGridListSelectionCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaGridSelectionCheckboxProps, state: ListState<T>) => GridSelectionCheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaGridSelectionCheckboxProps, _: ListState<T>) => GridSelectionCheckboxAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useGridListSelectionCheckbox",
-            "resolvedName": "useGridListSelectionCheckbox",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props: AriaGridListSelectionCheckboxProps) => GridListSelectionCheckboxAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaGridListSelectionCheckboxProps) => GridListSelectionCheckboxAria"
-            ],
-            "constructSignatures": []
-          }
-        },
-        {
-          "exportName": "useGridListSection",
-          "targetExportName": "useGridListSection",
-          "differences": [
-            "call-signatures"
-          ],
-          "source": {
-            "name": "useGridListSection",
-            "resolvedName": "useGridListSection",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "<T>(props: AriaGridListSectionProps, state: ListState<T>, ref: RefObject<HTMLElement | null>) => GridListSectionAria",
-            "declaredType": "",
-            "callSignatures": [
-              "<T>( _: AriaGridListSectionProps, _: ListState<T>, _: RefObject<HTMLElement | null>) => GridListSectionAria"
-            ],
-            "constructSignatures": []
-          },
-          "target": {
-            "name": "useGridListSection",
-            "resolvedName": "useGridListSection",
-            "hasType": false,
-            "hasValue": true,
-            "declarationKinds": [
-              "FunctionDeclaration"
-            ],
-            "valueType": "(props?: AriaGridListSectionProps) => GridListSectionAria",
-            "declaredType": "",
-            "callSignatures": [
-              "( _: AriaGridListSectionProps) => GridListSectionAria"
             ],
             "constructSignatures": []
           }
@@ -10507,6 +10229,64 @@
             "declaredType": "",
             "callSignatures": [
               "( _: AriaFormValidationOptions) => FormValidationAria"
+            ],
+            "constructSignatures": []
+          }
+        }
+      ],
+      "truncatedMismatchCount": 0,
+      "error": null
+    },
+    {
+      "sourcePackage": "@react-aria/gridlist",
+      "sourcePath": "packages/@react-aria/gridlist",
+      "targetPackage": "@vue-aria/gridlist",
+      "targetPath": "packages/@vue-aria/gridlist",
+      "status": "ported",
+      "sourceEntrypoint": "packages/@react-aria/gridlist/src/index.ts",
+      "targetEntrypoint": "packages/@vue-aria/gridlist/src/index.ts",
+      "sourceExportCount": 12,
+      "comparedExportCount": 12,
+      "matchedExportCount": 11,
+      "mismatchedExportCount": 1,
+      "missingInTargetCount": 0,
+      "parityRatio": 0.9167,
+      "missingInTargetExports": [],
+      "mismatches": [
+        {
+          "exportName": "useGridListSelectionCheckbox",
+          "targetExportName": "useGridListSelectionCheckbox",
+          "differences": [
+            "call-signatures"
+          ],
+          "source": {
+            "name": "useGridListSelectionCheckbox",
+            "resolvedName": "useGridListSelectionCheckbox",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "<T>(props: AriaGridSelectionCheckboxProps, state: ListState<T>) => GridSelectionCheckboxAria",
+            "declaredType": "",
+            "callSignatures": [
+              "<T>( _: AriaGridSelectionCheckboxProps, _: ListState<T>) => GridSelectionCheckboxAria"
+            ],
+            "constructSignatures": []
+          },
+          "target": {
+            "name": "useGridListSelectionCheckbox",
+            "resolvedName": "useGridListSelectionCheckbox",
+            "hasType": false,
+            "hasValue": true,
+            "declarationKinds": [
+              "FunctionDeclaration"
+            ],
+            "valueType": "{ <T>(props: ReactAriaGridSelectionCheckboxProps, state: ListState<T>): ReactGridSelectionCheckboxAria; (props: AriaGridListSelectionCheckboxProps): GridListSelectionCheckboxAria;}",
+            "declaredType": "",
+            "callSignatures": [
+              "( _: AriaGridListSelectionCheckboxProps) => GridListSelectionCheckboxAria",
+              "<T>( _: ReactAriaGridSelectionCheckboxProps, _: ListState<T>) => ReactGridSelectionCheckboxAria"
             ],
             "constructSignatures": []
           }
