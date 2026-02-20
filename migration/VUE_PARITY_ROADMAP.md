@@ -36,7 +36,7 @@ This roadmap tracks the work needed to reach:
 
 1. [x] Close missing exports package-by-package.
 2. [x] Close type signature and prop/event mismatch gaps.
-3. [ ] Add edge-case behavior fixtures for each package cluster.
+3. [x] Add edge-case behavior fixtures for each package cluster.
 
 ### Phase 4: Visual parity closure
 
@@ -46,9 +46,9 @@ This roadmap tracks the work needed to reach:
 
 ### Phase 5: Stabilization
 
-1. [ ] Keep parity checks green for all new Vue migration changes.
+1. [x] Keep parity checks green for all new Vue migration changes.
 2. [x] Gate release/publish workflows on parity checks.
-3. [ ] Document exceptions explicitly (if any) with rationale and migration guidance.
+3. [x] Document exceptions explicitly (if any) with rationale and migration guidance.
 
 ## Current status
 
@@ -63,7 +63,12 @@ This roadmap tracks the work needed to reach:
 * Current API signature coverage: `100.00%` (`2672` compared exports, `0` mismatches, `154` fully matched packages).
 * Current visual fixture baseline: `20` fixtures, `0` failures, `0` errors.
 * Vue migration test suite is passing (`181` tests via `yarn test:vue`).
-* API export + signature parity closure is complete for all tracked packages; remaining API work is expanded edge-case behavior fixtures.
+* API export + signature parity closure is complete for all tracked packages, with edge-case behavior fixtures covered in the Vue composition suite.
 * Visual parity fixture baseline is green and CI now enforces strict API/signature parity asserts plus visual diff thresholds.
 * Nightly publish workflows now require `vue-parity`, so parity regressions block nightly release publishing.
 * Remaining visual work is expanded theme/density/state coverage beyond the current matrix (now includes dark scheme and large scale button variants).
+
+## Exceptions
+
+* Current parity exceptions: none.
+* Any future exception must include the affected package/export/fixture, rationale, and migration guidance in this roadmap before release.
