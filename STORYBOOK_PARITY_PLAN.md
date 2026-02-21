@@ -11,6 +11,7 @@ Last updated: 2026-02-21
 - Behavior-first parity gate scaffolded on 2026-02-21 via `scripts/storybook-parity-check.mjs`.
 - Source-audit checklist template + validator added on 2026-02-21 (`storybook-parity/checklists/*`, `scripts/storybook-parity-validate-checklists.mjs`).
 - React catalog manifest exporter added on 2026-02-21 via `scripts/storybook-parity-export-manifest.mjs`.
+- Manifest diff gate scaffolded on 2026-02-21 via `scripts/storybook-parity-compare-manifests.mjs`.
 
 ## Goal
 
