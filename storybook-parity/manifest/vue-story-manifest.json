@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T21:54:04.745Z",
+  "generatedAt": "2026-02-21T21:56:42.826Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 134,
+  "count": 152,
   "entries": [
     {
       "id": "react-aria-components-breadcrumbs--breadcrumbs-example",
@@ -1340,6 +1340,186 @@
       "title": "React Aria Components/ToggleButton",
       "name": "Toggle Button Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/ToggleButton.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tree--button-loading-indicator-story",
+      "title": "React Aria Components/Tree",
+      "name": "Button Loading Indicator Story",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tree.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tree--empty-tree-static-story",
+      "title": "React Aria Components/Tree",
+      "name": "Empty Tree Static Story",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tree.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tree--huge-virtualized-tree",
+      "title": "React Aria Components/Tree",
+      "name": "Huge Virtualized Tree",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tree.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tree--loading-story-dep-on-collection-story",
+      "title": "React Aria Components/Tree",
+      "name": "Loading Story Dep On Collection Story",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tree.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tree--loading-story-dep-on-top-story",
+      "title": "React Aria Components/Tree",
+      "name": "Loading Story Dep On Top Story",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tree.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tree--tree-example-dynamic",
+      "title": "React Aria Components/Tree",
+      "name": "Tree Example Dynamic",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tree.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tree--tree-example-section",
+      "title": "React Aria Components/Tree",
+      "name": "Tree Example Section",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tree.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tree--tree-example-static",
+      "title": "React Aria Components/Tree",
+      "name": "Tree Example Static",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tree.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tree--tree-example-static-no-actions",
+      "title": "React Aria Components/Tree",
+      "name": "Tree Example Static No Actions",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tree.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tree--tree-section-dynamic",
+      "title": "React Aria Components/Tree",
+      "name": "Tree Section Dynamic",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tree.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tree--tree-with-drag-and-drop",
+      "title": "React Aria Components/Tree",
+      "name": "Tree With Drag And Drop",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tree.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tree--tree-with-drag-and-drop-virtualized",
+      "title": "React Aria Components/Tree",
+      "name": "Tree With Drag And Drop Virtualized",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tree.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tree--virtualized-tree",
+      "title": "React Aria Components/Tree",
+      "name": "Virtualized Tree",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tree.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tree--virtualized-tree-multi-loader-mock-async",
+      "title": "React Aria Components/Tree",
+      "name": "Virtualized Tree Multi Loader Mock Async",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tree.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tree--virtualized-tree-multi-loader-use-async-list",
+      "title": "React Aria Components/Tree",
+      "name": "Virtualized Tree Multi Loader Use Async List",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tree.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tree--virtualized-tree-section-render",
+      "title": "React Aria Components/Tree",
+      "name": "Virtualized Tree Section Render",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tree.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tree--with-actions",
+      "title": "React Aria Components/Tree",
+      "name": "With Actions",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tree.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tree--with-links",
+      "title": "React Aria Components/Tree",
+      "name": "With Links",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tree.stories.ts",
       "tags": [
         "dev",
         "test"

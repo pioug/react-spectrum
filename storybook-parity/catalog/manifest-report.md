@@ -6,8 +6,8 @@
 ## Summary
 
 - React entries: 203
-- Vue entries: 134
-- Missing in Vue: 69
+- Vue entries: 152
+- Missing in Vue: 51
 - Extra in Vue: 0
 - Result: fail
 
@@ -64,24 +64,6 @@
 - `react-aria-components-tooltip--tooltip-arrow-boundary-offset-example`
 - `react-aria-components-tooltip--tooltip-container-padding-example`
 - `react-aria-components-tooltip--tooltip-example`
-- `react-aria-components-tree--button-loading-indicator-story`
-- `react-aria-components-tree--empty-tree-static-story`
-- `react-aria-components-tree--huge-virtualized-tree`
-- `react-aria-components-tree--loading-story-dep-on-collection-story`
-- `react-aria-components-tree--loading-story-dep-on-top-story`
-- `react-aria-components-tree--tree-example-dynamic`
-- `react-aria-components-tree--tree-example-section`
-- `react-aria-components-tree--tree-example-static`
-- `react-aria-components-tree--tree-example-static-no-actions`
-- `react-aria-components-tree--tree-section-dynamic`
-- `react-aria-components-tree--tree-with-drag-and-drop`
-- `react-aria-components-tree--tree-with-drag-and-drop-virtualized`
-- `react-aria-components-tree--virtualized-tree`
-- `react-aria-components-tree--virtualized-tree-multi-loader-mock-async`
-- `react-aria-components-tree--virtualized-tree-multi-loader-use-async-list`
-- `react-aria-components-tree--virtualized-tree-section-render`
-- `react-aria-components-tree--with-actions`
-- `react-aria-components-tree--with-links`
 
 ## Extra In Vue
 

@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T21:54:08.231Z",
+  "generatedAt": "2026-02-21T21:56:47.751Z",
   "reactManifest": "storybook-parity/manifest/react-story-manifest.json",
   "vueManifest": "storybook-parity/manifest/vue-story-manifest.json",
   "reactCount": 203,
-  "vueCount": 134,
+  "vueCount": 152,
   "missingInVue": [
     "react-aria-components-animations--modal-animation",
     "react-aria-components-autocomplete--autocomplete-async-loading-example",
@@ -55,25 +55,7 @@
     "react-aria-components-toolbar--toolbar-example",
     "react-aria-components-tooltip--tooltip-arrow-boundary-offset-example",
     "react-aria-components-tooltip--tooltip-container-padding-example",
-    "react-aria-components-tooltip--tooltip-example",
-    "react-aria-components-tree--button-loading-indicator-story",
-    "react-aria-components-tree--empty-tree-static-story",
-    "react-aria-components-tree--huge-virtualized-tree",
-    "react-aria-components-tree--loading-story-dep-on-collection-story",
-    "react-aria-components-tree--loading-story-dep-on-top-story",
-    "react-aria-components-tree--tree-example-dynamic",
-    "react-aria-components-tree--tree-example-section",
-    "react-aria-components-tree--tree-example-static",
-    "react-aria-components-tree--tree-example-static-no-actions",
-    "react-aria-components-tree--tree-section-dynamic",
-    "react-aria-components-tree--tree-with-drag-and-drop",
-    "react-aria-components-tree--tree-with-drag-and-drop-virtualized",
-    "react-aria-components-tree--virtualized-tree",
-    "react-aria-components-tree--virtualized-tree-multi-loader-mock-async",
-    "react-aria-components-tree--virtualized-tree-multi-loader-use-async-list",
-    "react-aria-components-tree--virtualized-tree-section-render",
-    "react-aria-components-tree--with-actions",
-    "react-aria-components-tree--with-links"
+    "react-aria-components-tooltip--tooltip-example"
   ],
   "extraInVue": [],
   "ok": false
