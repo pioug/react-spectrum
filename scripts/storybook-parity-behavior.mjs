@@ -256,6 +256,49 @@ let scenarios = [
         itemCount
       };
     }
+  },
+  {
+    id: 'react-aria-components-menu--submenu-example',
+    async run(page) {
+      let items = page.locator('[role^="menuitem"]');
+      let itemCount = await items.count();
+
+      if (itemCount === 0) {
+        let trigger = await firstVisibleLocator(page, [
+          'button[aria-label="Menu"]',
+          'button[aria-haspopup="menu"]',
+          'button'
+        ]);
+
+        if (!trigger) {
+          throw new Error('Unable to find a submenu trigger button or rendered menu items.');
+        }
+
+        await trigger.click();
+      }
+
+      await page.waitForSelector('[role^="menuitem"]', {timeout: 10000});
+
+      let submenuTrigger = page.locator('[role^="menuitem"][aria-haspopup="menu"]').first();
+      if (await submenuTrigger.count() === 0) {
+        throw new Error('Unable to find submenu trigger item.');
+      }
+
+      let initialExpanded = await submenuTrigger.getAttribute('aria-expanded');
+      await submenuTrigger.focus();
+      await page.keyboard.press('Enter');
+      await page.waitForTimeout(100);
+      let afterEnterExpanded = await submenuTrigger.getAttribute('aria-expanded').catch(() => null);
+
+      let submenuItems = page.locator('[role^="menuitem"]', {hasText: 'Submenu '});
+      let submenuItemCount = await submenuItems.count();
+
+      return {
+        afterEnterExpanded,
+        initialExpanded,
+        submenuItemCount
+      };
+    }
   }
 ];
 

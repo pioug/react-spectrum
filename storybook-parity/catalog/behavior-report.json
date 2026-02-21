@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T22:33:51.895Z",
+  "generatedAt": "2026-02-21T22:39:20.739Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
-  "totalScenarios": 6,
-  "passingScenarios": 6,
+  "totalScenarios": 7,
+  "passingScenarios": 7,
   "failingScenarios": 0,
   "ok": true,
   "results": [
@@ -107,6 +107,22 @@
         "initialAriaChecked": null,
         "initialRole": "menuitem",
         "itemCount": 7
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-menu--submenu-example",
+      "ok": true,
+      "react": {
+        "afterEnterExpanded": "true",
+        "initialExpanded": "false",
+        "submenuItemCount": 3
+      },
+      "vue": {
+        "afterEnterExpanded": "true",
+        "initialExpanded": "false",
+        "submenuItemCount": 3
       },
       "diff": {},
       "error": null

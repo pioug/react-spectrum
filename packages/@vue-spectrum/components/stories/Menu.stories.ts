@@ -4,6 +4,8 @@ import {VueButton, VueMenu, VuePopover} from '@vue-spectrum/components';
 import {ref} from 'vue';
 
 type MenuItem = {
+  children?: MenuItem[],
+  disabled?: boolean,
   key: string,
   label: string
 };
@@ -114,10 +116,17 @@ export const MenuScrollPaddingExample: MenuStory = () => createTriggerMenuStory(
 export const SubmenuExample: SubmenuExampleStory = {
   render: () => createTriggerMenuStory([
     {
-      label: 'Submenu example',
       items: [
         {key: 'Foo', label: 'Foo'},
-        {key: 'Bar', label: 'Bar >'},
+        {
+          key: 'Bar',
+          label: 'Bar',
+          children: [
+            {key: 'Submenu Foo', label: 'Submenu Foo'},
+            {key: 'Submenu Bar', label: 'Submenu Bar'},
+            {key: 'Submenu Baz', label: 'Submenu Baz'}
+          ]
+        },
         {key: 'Baz', label: 'Baz'},
         {key: 'Google', label: 'Google'}
       ]
@@ -136,10 +145,25 @@ export const SubmenuExample: SubmenuExampleStory = {
 export const SubmenuNestedExample: SubmenuExampleStory = {
   render: () => createTriggerMenuStory([
     {
-      label: 'Nested submenu example',
       items: [
         {key: 'Foo', label: 'Foo'},
-        {key: 'Bar', label: 'Bar > Nested >'},
+        {
+          key: 'Bar',
+          label: 'Bar',
+          children: [
+            {key: 'Submenu Foo', label: 'Submenu Foo'},
+            {key: 'Submenu Bar', label: 'Submenu Bar'},
+            {
+              key: 'Submenu Baz',
+              label: 'Submenu Baz',
+              children: [
+                {key: 'Second Submenu Foo', label: 'Second Submenu Foo'},
+                {key: 'Second Submenu Bar', label: 'Second Submenu Bar'},
+                {key: 'Second Submenu Baz', label: 'Second Submenu Baz'}
+              ]
+            }
+          ]
+        },
         {key: 'Baz', label: 'Baz'},
         {key: 'Google', label: 'Google'}
       ]
@@ -158,10 +182,27 @@ export const SubmenuNestedExample: SubmenuExampleStory = {
 export const SubmenuManyItemsExample: SubmenuExampleStory = {
   render: () => createTriggerMenuStory([
     {
-      label: 'Many submenu items',
       items: [
         {key: 'Lvl 1 Item 1', label: 'Lvl 1 Item 1'},
-        {key: 'Lvl 1 Item 2', label: 'Lvl 1 Item 2 >'},
+        {
+          key: 'Lvl 1 Item 2',
+          label: 'Lvl 1 Item 2',
+          children: [
+            ...Array.from({length: 30}, (_, index) => ({
+              key: `Lvl 2 Item ${index + 1}`,
+              label: `Lvl 2 Item ${index + 1}`
+            })),
+            {
+              key: 'Lvl 2 Item 31',
+              label: 'Lvl 2 Item 31',
+              children: [
+                {key: 'Lvl 3 Item 1', label: 'Lvl 3 Item 1'},
+                {key: 'Lvl 3 Item 2', label: 'Lvl 3 Item 2'},
+                {key: 'Lvl 3 Item 3', label: 'Lvl 3 Item 3'}
+              ]
+            }
+          ]
+        },
         ...Array.from({length: 30}, (_, index) => ({
           key: `Lvl 1 Item ${index + 3}`,
           label: `Lvl 1 Item ${index + 3}`
@@ -182,10 +223,18 @@ export const SubmenuManyItemsExample: SubmenuExampleStory = {
 export const SubmenuDisabledExample: SubmenuExampleStory = {
   render: () => createTriggerMenuStory([
     {
-      label: 'Disabled submenu example',
       items: [
         {key: 'Foo', label: 'Foo'},
-        {key: 'Bar', label: 'Bar (disabled)'},
+        {
+          key: 'Bar',
+          label: 'Bar',
+          disabled: true,
+          children: [
+            {key: 'Submenu Foo', label: 'Submenu Foo'},
+            {key: 'Submenu Bar', label: 'Submenu Bar'},
+            {key: 'Submenu Baz', label: 'Submenu Baz'}
+          ]
+        },
         {key: 'Baz', label: 'Baz'},
         {key: 'Google', label: 'Google'}
       ]
@@ -206,17 +255,25 @@ export const SubmenuSectionsExample: SubmenuExampleStory = {
     {
       label: 'Section 1',
       items: [
-        {key: 'Section 1: Foo', label: 'Section 1: Foo'},
-        {key: 'Section 1: Bar', label: 'Section 1: Bar >'},
-        {key: 'Section 1: Baz', label: 'Section 1: Baz'}
+        {key: 'Foo', label: 'Foo'},
+        {
+          key: 'Bar',
+          label: 'Bar',
+          children: [
+            {key: 'Submenu Foo', label: 'Submenu Foo'},
+            {key: 'Submenu Bar', label: 'Submenu Bar'},
+            {key: 'Submenu Baz', label: 'Submenu Baz'}
+          ]
+        },
+        {key: 'Baz', label: 'Baz'}
       ]
     },
     {
       label: 'Section 2',
       items: [
-        {key: 'Section 2: Foo', label: 'Section 2: Foo'},
-        {key: 'Section 2: Bar', label: 'Section 2: Bar'},
-        {key: 'Section 2: Baz', label: 'Section 2: Baz'}
+        {key: 'Foo 2', label: 'Foo'},
+        {key: 'Bar 2', label: 'Bar'},
+        {key: 'Baz 2', label: 'Baz'}
       ]
     }
   ])
@@ -225,10 +282,16 @@ export const SubmenuSectionsExample: SubmenuExampleStory = {
 export const SubdialogExample: SubmenuExampleStory = {
   render: () => createTriggerMenuStory([
     {
-      label: 'Subdialog example',
       items: [
         {key: 'Foo', label: 'Foo'},
-        {key: 'Bar', label: 'Bar > Dialog'},
+        {
+          key: 'Bar',
+          label: 'Bar',
+          children: [
+            {key: 'Subdialog field', label: 'Subdialog field'},
+            {key: 'Subdialog submit', label: 'Submit'}
+          ]
+        },
         {key: 'Baz', label: 'Baz'},
         {key: 'Google', label: 'Google'}
       ]

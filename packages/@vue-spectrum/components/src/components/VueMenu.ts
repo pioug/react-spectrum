@@ -1,11 +1,11 @@
-import {defineComponent, h, type PropType} from 'vue';
+import {defineComponent, h, ref, type PropType, type VNode} from 'vue';
 
 type MenuSelectionMode = 'none' | 'single' | 'multiple';
 type MenuValue = string | string[];
 
 type MenuItemRecord = {
+  children?: MenuItemInput[],
   disabled?: boolean,
-  href?: string,
   id?: string,
   key?: string,
   label?: string,
@@ -15,28 +15,33 @@ type MenuItemRecord = {
 type MenuItemInput = MenuItemRecord | string;
 
 type NormalizedMenuItem = {
+  children: NormalizedMenuItem[],
   disabled: boolean,
-  href?: string,
   key: string,
   label: string,
   value: string
 };
 
-function normalizeItem(item: MenuItemInput, index: number): NormalizedMenuItem {
+function normalizeItem(item: MenuItemInput, index: number, parentKey = ''): NormalizedMenuItem {
   if (typeof item === 'string') {
+    let value = item;
+    let key = parentKey ? `${parentKey}/${item}-${index}` : `${item}-${index}`;
     return {
+      children: [],
       disabled: false,
-      key: `${item}-${index}`,
+      key,
       label: item,
-      value: item
+      value
     };
   }
 
   let value = item.key ?? item.id ?? item.label ?? item.textValue ?? `${index}`;
+  let key = parentKey ? `${parentKey}/${value}` : String(value);
+
   return {
+    children: (item.children ?? []).map((child, childIndex) => normalizeItem(child, childIndex, key)),
     disabled: Boolean(item.disabled),
-    href: item.href,
-    key: String(value),
+    key,
     label: item.label ?? item.textValue ?? String(value),
     value: String(value)
   };
@@ -71,6 +76,8 @@ export const VueMenu = defineComponent({
     select: (value: string) => typeof value === 'string'
   },
   setup(props, {emit, attrs}) {
+    let openKeys = ref<Set<string>>(new Set());
+
     let isSelected = (value: string) => {
       if (props.selectionMode === 'none') {
         return false;
@@ -83,8 +90,23 @@ export const VueMenu = defineComponent({
       return props.modelValue === value;
     };
 
+    let toggleSubmenu = (key: string) => {
+      let next = new Set(openKeys.value);
+      if (next.has(key)) {
+        next.delete(key);
+      } else {
+        next.add(key);
+      }
+      openKeys.value = next;
+    };
+
     let onSelect = (item: NormalizedMenuItem) => {
       if (item.disabled) {
+        return;
+      }
+
+      if (item.children.length > 0) {
+        toggleSubmenu(item.key);
         return;
       }
 
@@ -107,6 +129,51 @@ export const VueMenu = defineComponent({
       emit('update:modelValue', item.value);
     };
 
+    let renderItem = (item: NormalizedMenuItem): VNode => {
+      let selected = isSelected(item.value);
+      let hasSubmenu = item.children.length > 0;
+      let isOpen = openKeys.value.has(item.key);
+
+      let role = 'menuitem';
+      if (!hasSubmenu && props.selectionMode === 'single') {
+        role = 'menuitemradio';
+      } else if (!hasSubmenu && props.selectionMode === 'multiple') {
+        role = 'menuitemcheckbox';
+      }
+
+      return h('div', {
+        key: item.key,
+        class: 'vs-menu__item-wrapper'
+      }, [
+        h('button', {
+          class: ['vs-menu__item', 'item', selected ? 'is-selected' : null, isOpen ? 'open' : null],
+          type: 'button',
+          role,
+          disabled: item.disabled,
+          'aria-disabled': item.disabled ? 'true' : undefined,
+          'aria-haspopup': hasSubmenu ? 'menu' : undefined,
+          'aria-expanded': hasSubmenu ? (isOpen ? 'true' : 'false') : undefined,
+          'aria-checked': (!hasSubmenu && props.selectionMode !== 'none') ? (selected ? 'true' : 'false') : undefined,
+          onClick: () => onSelect(item)
+        }, [
+          h('span', {class: 'vs-menu__item-label'}, item.label),
+          hasSubmenu ? h('span', {'aria-hidden': 'true', class: 'vs-menu__item-chevron'}, '›') : null
+        ]),
+        hasSubmenu && isOpen
+          ? h('div', {
+            class: ['vs-menu__submenu', 'group'],
+            role: 'presentation'
+          }, [
+            h('div', {
+              class: ['vs-menu__items', 'group'],
+              role: 'menu',
+              'aria-label': item.label
+            }, item.children.map((child) => renderItem(child)))
+          ])
+          : null
+      ]);
+    };
+
     return function render() {
       let normalizedItems = props.items.map((item, index) => normalizeItem(item, index));
 
@@ -120,26 +187,7 @@ export const VueMenu = defineComponent({
           class: ['vs-menu__items', 'group'],
           role: 'menu',
           'aria-multiselectable': props.selectionMode === 'multiple' ? 'true' : undefined
-        }, normalizedItems.map((item) => {
-          let selected = isSelected(item.value);
-          let role = 'menuitem';
-          if (props.selectionMode === 'single') {
-            role = 'menuitemradio';
-          } else if (props.selectionMode === 'multiple') {
-            role = 'menuitemcheckbox';
-          }
-
-          return h('button', {
-            key: item.key,
-            class: ['vs-menu__item', 'item', selected ? 'is-selected' : null],
-            type: 'button',
-            role,
-            disabled: item.disabled,
-            'aria-disabled': item.disabled ? 'true' : undefined,
-            'aria-checked': props.selectionMode === 'none' ? undefined : (selected ? 'true' : 'false'),
-            onClick: () => onSelect(item)
-          }, item.label);
-        }))
+        }, normalizedItems.map((item) => renderItem(item)))
       ]);
     };
   }

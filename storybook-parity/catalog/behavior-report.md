@@ -2,8 +2,8 @@
 
 - React URL: http://127.0.0.1:9003
 - Vue URL: http://127.0.0.1:6106
-- Scenarios: 6
-- Passing: 6
+- Scenarios: 7
+- Passing: 7
 - Failing: 0
 - Result: pass
 
@@ -15,3 +15,4 @@
 - PASS `react-aria-components-textfield--textfield-example`
 - PASS `react-aria-components-listbox--list-box-example`
 - PASS `react-aria-components-menu--menu-example`
+- PASS `react-aria-components-menu--submenu-example`
