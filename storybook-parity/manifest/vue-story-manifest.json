@@ -1,10 +1,210 @@
 {
-  "generatedAt": "2026-02-21T21:58:49.313Z",
+  "generatedAt": "2026-02-21T22:01:30.572Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 157,
+  "count": 177,
   "entries": [
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-async-loading-example",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete Async Loading Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-case-sensitive",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete Case Sensitive",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-disabled-keys",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete Disabled Keys",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-example",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete complex static with textfield",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-in-popover",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete In Popover",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-in-popover-dialog-trigger",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete In Popover Dialog Trigger",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-menu-dynamic",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete Menu Dynamic",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-menu-in-popover-dialog-trigger",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete Menu In Popover Dialog Trigger",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-on-action-on-menu-items",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete On Action On Menu Items",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-preserve-first-section-story",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete Preserve First Section Story",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-searchfield",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete complex static with searchfield",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-select",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete Select",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-user-custom-filtering",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete, user custom filterText (mentions)",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-with-async-list-box",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete With Async List Box",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-with-extra-buttons",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete With Extra Buttons",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-with-grid-list",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete With Grid List",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-with-listbox",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete With Listbox",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-with-table",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete With Table",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-with-tag-group",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete With Tag Group",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-autocomplete--autocomplete-with-virtualized-listbox",
+      "title": "React Aria Components/Autocomplete",
+      "name": "Autocomplete With Virtualized Listbox",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Autocomplete.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
     {
       "id": "react-aria-components-breadcrumbs--breadcrumbs-example",
       "title": "React Aria Components/Breadcrumbs",
