@@ -18,7 +18,7 @@
 ## Gap List
 
 1. Audit hover-delay and focus-management parity for submenu open behavior (`SubmenuTrigger` delay semantics from React source are not yet implemented).
-2. Audit menu section/header semantics parity (current Vue rendering uses repeated `VueMenu` blocks vs React `MenuSection` + `Separator` composition).
+2. Audit separator/header visual parity for sectioned menus (`MenuSection` + `Separator` styling/details still simplified in Vue).
 3. Audit custom render and virtualization behavior parity (`MenuCustomRender`, `VirtualizedExample`).
 
 ## Fixes Applied
@@ -45,6 +45,9 @@
 4. Ported nested submenu data structures and rendering for `Submenu*` stories:
    - `VueMenu` now accepts nested `children` items, exposes `aria-haspopup="menu"` / `aria-expanded`, and renders nested submenu menu trees.
    - `packages/@vue-spectrum/components/stories/Menu.stories.ts` now mirrors React submenu story content using nested menu item collections.
+5. Ported section structure parity for `MenuExample`:
+   - `VueMenu` now supports `sections` with `role="group"` semantics under a single top-level `role="menu"` container.
+   - `packages/@vue-spectrum/components/stories/Menu.stories.ts` now passes section collections to one `VueMenu` instance instead of composing multiple root menus.
 
 ## Tests
 
@@ -52,11 +55,11 @@
   - `yarn workspace vue-spectrum-starter build-storybook`
   - `node scripts/storybook-parity-export-manifest.mjs ...`
   - `yarn storybook:parity:manifest:compare`
-  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (PASS for `react-aria-components-menu--menu-example`, `react-aria-components-menu--submenu-example`)
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (PASS for `react-aria-components-menu--menu-example`, `react-aria-components-menu--submenu-example`; includes menu group/top-level structure assertions)
 - Manual: pending
 
 ## Status
 
-- Open items: submenu delay/focus contract parity, section/header composition parity, virtualization semantics.
+- Open items: submenu delay/focus contract parity, separator/header visual parity, virtualization semantics.
 - Risks: submenu open behavior currently click/enter-driven only and does not yet implement React `SubmenuTrigger` timing/hover contracts.
 - Closure criteria: React-source behavior gaps fixed and tested.

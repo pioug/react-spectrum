@@ -238,6 +238,11 @@ let scenarios = [
       let firstItem = page.locator('[role^="menuitem"]').first();
       let initialRole = await firstItem.getAttribute('role');
       let initialAriaChecked = await firstItem.getAttribute('aria-checked');
+      let groupCount = await page.locator('[role="group"]').count();
+      let topLevelMenuCount = await page.evaluate(() => {
+        let menus = Array.from(document.querySelectorAll('[role="menu"]'));
+        return menus.filter((menu) => !menu.parentElement?.closest('[role="menu"]')).length;
+      });
       await firstItem.focus();
       await page.keyboard.press('Enter');
       await page.waitForTimeout(50);
@@ -251,9 +256,11 @@ let scenarios = [
         afterEnterAriaChecked,
         afterEnterItemCount,
         afterEnterRole,
+        groupCount,
         initialAriaChecked,
         initialRole,
-        itemCount
+        itemCount,
+        topLevelMenuCount
       };
     }
   },

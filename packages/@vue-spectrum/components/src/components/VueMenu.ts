@@ -12,6 +12,12 @@ type MenuItemRecord = {
   textValue?: string
 };
 
+type MenuSectionRecord = {
+  ariaLabel?: string,
+  items: MenuItemInput[],
+  label?: string
+};
+
 type MenuItemInput = MenuItemRecord | string;
 
 type NormalizedMenuItem = {
@@ -20,6 +26,13 @@ type NormalizedMenuItem = {
   key: string,
   label: string,
   value: string
+};
+
+type NormalizedMenuSection = {
+  ariaLabel?: string,
+  items: NormalizedMenuItem[],
+  key: string,
+  label?: string
 };
 
 function normalizeItem(item: MenuItemInput, index: number, parentKey = ''): NormalizedMenuItem {
@@ -47,6 +60,17 @@ function normalizeItem(item: MenuItemInput, index: number, parentKey = ''): Norm
   };
 }
 
+function normalizeSection(section: MenuSectionRecord, index: number): NormalizedMenuSection {
+  let key = `section-${index}`;
+
+  return {
+    ariaLabel: section.ariaLabel,
+    items: section.items.map((item, itemIndex) => normalizeItem(item, itemIndex, key)),
+    key,
+    label: section.label
+  };
+}
+
 export const VueMenu = defineComponent({
   name: 'VueMenu',
   props: {
@@ -64,6 +88,10 @@ export const VueMenu = defineComponent({
     },
     items: {
       type: Array as PropType<MenuItemInput[]>,
+      default: () => []
+    },
+    sections: {
+      type: Array as PropType<MenuSectionRecord[]>,
       default: () => []
     }
   },
@@ -174,20 +202,36 @@ export const VueMenu = defineComponent({
       ]);
     };
 
+    let renderSection = (section: NormalizedMenuSection): VNode => {
+      return h('section', {
+        key: section.key,
+        class: ['vs-menu__section', 'group'],
+        role: 'group',
+        'aria-label': section.ariaLabel ?? section.label
+      }, [
+        section.label ? h('div', {class: 'vs-menu__section-label'}, section.label) : null,
+        ...section.items.map((item) => renderItem(item))
+      ]);
+    };
+
     return function render() {
+      let normalizedSections = props.sections.map((section, index) => normalizeSection(section, index));
       let normalizedItems = props.items.map((item, index) => normalizeItem(item, index));
+      let hasSections = normalizedSections.length > 0;
 
       return h('section', {
         ...attrs,
         class: ['vs-menu', 'menu', attrs.class],
         'data-vac': ''
       }, [
-        props.label ? h('p', {class: ['vs-menu__label']}, props.label) : null,
+        props.label && !hasSections ? h('p', {class: ['vs-menu__label']}, props.label) : null,
         h('div', {
           class: ['vs-menu__items', 'group'],
           role: 'menu',
           'aria-multiselectable': props.selectionMode === 'multiple' ? 'true' : undefined
-        }, normalizedItems.map((item) => renderItem(item)))
+        }, hasSections
+          ? normalizedSections.map((section) => renderSection(section))
+          : normalizedItems.map((item) => renderItem(item)))
       ]);
     };
   }

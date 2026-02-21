@@ -53,20 +53,12 @@ function createTriggerMenuStory(sections: MenuSection[]) {
       <div>
         <VueButton aria-label="Menu" variant="secondary" @click="open = !open">☰</VueButton>
         <VuePopover :open="open" placement="bottom" @close="open = false">
-          <div>
-            <template v-for="(section, sectionIndex) in sections" :key="sectionIndex">
-              <VueMenu
-                v-model="selected"
-                class="menu"
-                :items="section.items"
-                :label="section.label"
-                selectionMode="none"
-                @action="onAction" />
-              <div
-                v-if="sectionIndex < sections.length - 1"
-                style="border-top: 1px solid gray; margin: 2px 5px;" />
-            </template>
-          </div>
+          <VueMenu
+            v-model="selected"
+            class="menu"
+            :sections="sections"
+            selectionMode="none"
+            @action="onAction" />
         </VuePopover>
       </div>
     `

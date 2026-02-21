@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-21T22:39:20.739Z",
+  "generatedAt": "2026-02-21T22:44:53.434Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
   "totalScenarios": 7,
@@ -96,17 +96,21 @@
         "afterEnterAriaChecked": null,
         "afterEnterItemCount": 0,
         "afterEnterRole": null,
+        "groupCount": 2,
         "initialAriaChecked": null,
         "initialRole": "menuitem",
-        "itemCount": 7
+        "itemCount": 7,
+        "topLevelMenuCount": 1
       },
       "vue": {
         "afterEnterAriaChecked": null,
         "afterEnterItemCount": 0,
         "afterEnterRole": null,
+        "groupCount": 2,
         "initialAriaChecked": null,
         "initialRole": "menuitem",
-        "itemCount": 7
+        "itemCount": 7,
+        "topLevelMenuCount": 1
       },
       "diff": {},
       "error": null
