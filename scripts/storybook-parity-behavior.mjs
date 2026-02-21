@@ -526,6 +526,34 @@ let scenarios = [
         itemTagName
       };
     }
+  },
+  {
+    id: 'react-aria-components-tabs--tabs-example',
+    async run(page) {
+      await page.waitForSelector('[role="tab"]', {timeout: 10000});
+      let tabs = page.locator('[role="tab"]');
+      let tabCount = await tabs.count();
+      if (tabCount === 0) {
+        throw new Error('Unable to find tabs.');
+      }
+
+      let selectedTab = page.locator('[role="tab"][aria-selected="true"]').first();
+      let initialSelectedText = (await selectedTab.textContent() ?? '').trim();
+      await selectedTab.focus();
+      await page.keyboard.press('ArrowRight');
+      await page.waitForTimeout(100);
+
+      let selectedAfterArrow = page.locator('[role="tab"][aria-selected="true"]').first();
+      let afterArrowSelectedText = (await selectedAfterArrow.textContent() ?? '').trim();
+      let panelText = (await page.locator('[role="tabpanel"]').first().innerText()).replace(/\s+/g, ' ').trim();
+
+      return {
+        afterArrowSelectedText,
+        initialSelectedText,
+        panelText,
+        tabCount
+      };
+    }
   }
 ];
 

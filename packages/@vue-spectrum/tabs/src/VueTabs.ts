@@ -142,6 +142,7 @@ export const VueTabs = defineComponent({
     ]));
 
     return () => {
+      let tabListProps = tabList.tabListProps.value;
       let panelContent = slots.default
         ? slots.default({item: selectedItem.value})
         : selectedItem.value?.content ?? selectedItem.value?.label ?? null;
@@ -153,7 +154,8 @@ export const VueTabs = defineComponent({
         'data-vac': ''
       }, [
         h('div', {
-          ...tabList.tabListProps.value,
+          ...tabListProps,
+          onKeydown: tabListProps.onKeyDown,
           class: 'vs-tabs__list'
         }, props.items.map((item) => h(VueTabButton, {
           key: item.key,

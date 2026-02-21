@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T23:37:58.522Z",
+  "generatedAt": "2026-02-21T23:53:01.020Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
-  "totalScenarios": 10,
-  "passingScenarios": 10,
+  "totalScenarios": 11,
+  "passingScenarios": 11,
   "failingScenarios": 0,
   "ok": true,
   "results": [
@@ -211,6 +211,24 @@
         "afterEnterItemCount": 0,
         "itemHref": "https://google.com",
         "itemTagName": "A"
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-tabs--tabs-example",
+      "ok": true,
+      "react": {
+        "afterArrowSelectedText": "Monarchy and Republic",
+        "initialSelectedText": "Founding of Rome",
+        "panelText": "Senatus Populusque Romanus.",
+        "tabCount": 3
+      },
+      "vue": {
+        "afterArrowSelectedText": "Monarchy and Republic",
+        "initialSelectedText": "Founding of Rome",
+        "panelText": "Senatus Populusque Romanus.",
+        "tabCount": 3
       },
       "diff": {},
       "error": null
