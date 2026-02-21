@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T22:01:30.572Z",
+  "generatedAt": "2026-02-21T22:03:27.625Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 177,
+  "count": 187,
   "entries": [
     {
       "id": "react-aria-components-autocomplete--autocomplete-async-loading-example",
@@ -780,6 +780,106 @@
       "title": "React Aria Components/Form",
       "name": "Form Auto Fill Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/Form.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-gridlist--async-grid-list",
+      "title": "React Aria Components/GridList",
+      "name": "Async Grid List",
+      "importPath": "../../packages/@vue-spectrum/components/stories/GridList.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-gridlist--async-grid-list-grid-virtualized",
+      "title": "React Aria Components/GridList",
+      "name": "Async Grid List Grid Virtualized",
+      "importPath": "../../packages/@vue-spectrum/components/stories/GridList.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-gridlist--async-grid-list-virtualized",
+      "title": "React Aria Components/GridList",
+      "name": "Async Grid List Virtualized",
+      "importPath": "../../packages/@vue-spectrum/components/stories/GridList.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-gridlist--grid-list-example",
+      "title": "React Aria Components/GridList",
+      "name": "Grid List Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/GridList.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-gridlist--grid-list-in-modal-picker",
+      "title": "React Aria Components/GridList",
+      "name": "Grid List In Modal Picker",
+      "importPath": "../../packages/@vue-spectrum/components/stories/GridList.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-gridlist--grid-list-section-example",
+      "title": "React Aria Components/GridList",
+      "name": "Grid List Section Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/GridList.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-gridlist--tag-group-inside-grid-list",
+      "title": "React Aria Components/GridList",
+      "name": "Tag Group Inside Grid List",
+      "importPath": "../../packages/@vue-spectrum/components/stories/GridList.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-gridlist--virtualized-grid-list",
+      "title": "React Aria Components/GridList",
+      "name": "Virtualized Grid List",
+      "importPath": "../../packages/@vue-spectrum/components/stories/GridList.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-gridlist--virtualized-grid-list-grid",
+      "title": "React Aria Components/GridList",
+      "name": "Virtualized Grid List Grid",
+      "importPath": "../../packages/@vue-spectrum/components/stories/GridList.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-gridlist--virtualized-grid-list-section",
+      "title": "React Aria Components/GridList",
+      "name": "Virtualized Grid List Section",
+      "importPath": "../../packages/@vue-spectrum/components/stories/GridList.stories.ts",
       "tags": [
         "dev",
         "test"
