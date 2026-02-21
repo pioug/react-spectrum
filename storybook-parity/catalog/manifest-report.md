@@ -6,8 +6,8 @@
 ## Summary
 
 - React entries: 203
-- Vue entries: 24
-- Missing in Vue: 179
+- Vue entries: 28
+- Missing in Vue: 175
 - Extra in Vue: 0
 - Result: fail
 
@@ -70,9 +70,6 @@
 - `react-aria-components-datepicker--date-picker-trigger-width-example`
 - `react-aria-components-datepicker--date-range-picker-example`
 - `react-aria-components-datepicker--date-range-picker-trigger-width-example`
-- `react-aria-components-disclosure--disclosure-controlled-example`
-- `react-aria-components-disclosure--disclosure-example`
-- `react-aria-components-disclosuregroup--disclosure-group-example`
 - `react-aria-components-dropzone--drop-zone-only-accept-png-with-file-trigger`
 - `react-aria-components-dropzone--drop-zone-with-capture-mobile-only`
 - `react-aria-components-dropzone--dropzone-example-with-copyable-object`
@@ -168,7 +165,6 @@
 - `react-aria-components-taggroup--empty-tag-group`
 - `react-aria-components-taggroup--tag-group-example`
 - `react-aria-components-taggroup--tag-group-example-with-remove`
-- `react-aria-components-togglebutton--toggle-button-example`
 - `react-aria-components-toolbar--select-support`
 - `react-aria-components-toolbar--toolbar-example`
 - `react-aria-components-tooltip--tooltip-arrow-boundary-offset-example`

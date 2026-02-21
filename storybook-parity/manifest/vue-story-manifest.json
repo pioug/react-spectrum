@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T21:31:30.502Z",
+  "generatedAt": "2026-02-21T21:33:31.064Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 24,
+  "count": 28,
   "entries": [
     {
       "id": "react-aria-components-breadcrumbs--breadcrumbs-example",
@@ -110,6 +110,36 @@
       "title": "React Aria Components/DateField",
       "name": "Date Field Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/DateField.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-disclosure--disclosure-controlled-example",
+      "title": "React Aria Components/Disclosure",
+      "name": "Disclosure Controlled Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Disclosure.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-disclosure--disclosure-example",
+      "title": "React Aria Components/Disclosure",
+      "name": "Disclosure Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Disclosure.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-disclosuregroup--disclosure-group-example",
+      "title": "React Aria Components/DisclosureGroup",
+      "name": "Disclosure Group Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/DisclosureGroup.stories.ts",
       "tags": [
         "dev",
         "test"
@@ -240,6 +270,16 @@
       "title": "React Aria Components/TimeField",
       "name": "Time Field Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/TimeField.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-togglebutton--toggle-button-example",
+      "title": "React Aria Components/ToggleButton",
+      "name": "Toggle Button Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ToggleButton.stories.ts",
       "tags": [
         "dev",
         "test"
