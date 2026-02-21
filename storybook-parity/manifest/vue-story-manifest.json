@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T22:06:18.735Z",
+  "generatedAt": "2026-02-21T22:09:29.046Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 192,
+  "count": 203,
   "entries": [
     {
       "id": "react-aria-components-animations--modal-animation",
@@ -1706,6 +1706,66 @@
       ]
     },
     {
+      "id": "react-aria-components-tabs--nested-tabs",
+      "title": "React Aria Components/Tabs",
+      "name": "Nested Tabs",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tabs.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tabs--tabs-example",
+      "title": "React Aria Components/Tabs",
+      "name": "Tabs Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tabs.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tabs--tabs-render-props",
+      "title": "React Aria Components/Tabs",
+      "name": "Tabs Render Props",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tabs.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-taggroup--empty-tag-group",
+      "title": "React Aria Components/TagGroup",
+      "name": "Empty Tag Group",
+      "importPath": "../../packages/@vue-spectrum/components/stories/TagGroup.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-taggroup--tag-group-example",
+      "title": "React Aria Components/TagGroup",
+      "name": "Tag Group Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/TagGroup.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-taggroup--tag-group-example-with-remove",
+      "title": "React Aria Components/TagGroup",
+      "name": "Tag Group Example With Remove",
+      "importPath": "../../packages/@vue-spectrum/components/stories/TagGroup.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
       "id": "react-aria-components-textfield--text-field-submit-example",
       "title": "React Aria Components/TextField",
       "name": "Text Field Submit Example",
@@ -1740,6 +1800,56 @@
       "title": "React Aria Components/ToggleButton",
       "name": "Toggle Button Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/ToggleButton.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-toolbar--select-support",
+      "title": "React Aria Components/Toolbar",
+      "name": "Select Support",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Toolbar.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-toolbar--toolbar-example",
+      "title": "React Aria Components/Toolbar",
+      "name": "Toolbar Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Toolbar.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tooltip--tooltip-arrow-boundary-offset-example",
+      "title": "React Aria Components/Tooltip",
+      "name": "Tooltip Arrow Boundary Offset Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tooltip.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tooltip--tooltip-container-padding-example",
+      "title": "React Aria Components/Tooltip",
+      "name": "Tooltip Container Padding Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tooltip.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-tooltip--tooltip-example",
+      "title": "React Aria Components/Tooltip",
+      "name": "Tooltip Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Tooltip.stories.ts",
       "tags": [
         "dev",
         "test"
