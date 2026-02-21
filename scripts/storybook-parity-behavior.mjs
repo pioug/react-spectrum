@@ -208,6 +208,54 @@ let scenarios = [
         optionCount
       };
     }
+  },
+  {
+    id: 'react-aria-components-menu--menu-example',
+    async run(page) {
+      let items = page.locator('[role^="menuitem"]');
+      let itemCount = await items.count();
+
+      if (itemCount === 0) {
+        let trigger = await firstVisibleLocator(page, [
+          'button[aria-label="Menu"]',
+          'button[aria-haspopup="menu"]',
+          'button'
+        ]);
+
+        if (!trigger) {
+          throw new Error('Unable to find a menu trigger or rendered menu items.');
+        }
+
+        await trigger.click();
+        await page.waitForSelector('[role^="menuitem"]', {timeout: 10000});
+        itemCount = await page.locator('[role^="menuitem"]').count();
+      }
+
+      if (itemCount === 0) {
+        throw new Error('Unable to find menu items.');
+      }
+
+      let firstItem = page.locator('[role^="menuitem"]').first();
+      let initialRole = await firstItem.getAttribute('role');
+      let initialAriaChecked = await firstItem.getAttribute('aria-checked');
+      await firstItem.focus();
+      await page.keyboard.press('Enter');
+      await page.waitForTimeout(50);
+
+      let currentFirstItem = page.locator('[role^="menuitem"]').first();
+      let afterEnterRole = await currentFirstItem.getAttribute('role').catch(() => null);
+      let afterEnterAriaChecked = await currentFirstItem.getAttribute('aria-checked').catch(() => null);
+      let afterEnterItemCount = await page.locator('[role^="menuitem"]').count();
+
+      return {
+        afterEnterAriaChecked,
+        afterEnterItemCount,
+        afterEnterRole,
+        initialAriaChecked,
+        initialRole,
+        itemCount
+      };
+    }
   }
 ];
 
