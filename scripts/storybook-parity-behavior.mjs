@@ -317,13 +317,26 @@ let scenarios = [
 
       let initialExpanded = await submenuTrigger.getAttribute('aria-expanded');
       await submenuTrigger.focus();
+      await page.keyboard.press('ArrowRight');
+      await page.waitForTimeout(120);
+      let afterArrowRightExpanded = await submenuTrigger.getAttribute('aria-expanded').catch(() => null);
+      let afterArrowRightFocusedText = await page.evaluate(() => {
+        let element = document.activeElement;
+        return element ? element.textContent?.trim() ?? '' : null;
+      });
+      let submenuItemCountAfterArrowRight = await page.locator('[role^="menuitem"]', {hasText: 'Submenu '}).count();
+
+      let storyUrl = page.url();
+      await page.goto(storyUrl, {waitUntil: 'domcontentloaded'});
+      await ensureMenuOpen();
+      let enterTrigger = page.locator('[role^="menuitem"][aria-haspopup="menu"]').first();
+      await enterTrigger.focus();
       await page.keyboard.press('Enter');
       await page.waitForTimeout(100);
-      let afterEnterExpanded = await submenuTrigger.getAttribute('aria-expanded').catch(() => null);
+      let afterEnterExpanded = await enterTrigger.getAttribute('aria-expanded').catch(() => null);
       let submenuItems = page.locator('[role^="menuitem"]', {hasText: 'Submenu '});
       let submenuItemCount = await submenuItems.count();
 
-      let storyUrl = page.url();
       await page.goto(storyUrl, {waitUntil: 'domcontentloaded'});
       await ensureMenuOpen();
       let hoverTrigger = page.locator('[role^="menuitem"][aria-haspopup="menu"]').first();
@@ -334,10 +347,13 @@ let scenarios = [
       let hoverExpandedLate = await hoverTrigger.getAttribute('aria-expanded');
 
       return {
+        afterArrowRightExpanded,
+        afterArrowRightFocusedText,
         afterEnterExpanded,
         hoverExpandedEarly,
         hoverExpandedLate,
         initialExpanded,
+        submenuItemCountAfterArrowRight,
         submenuItemCount
       };
     }

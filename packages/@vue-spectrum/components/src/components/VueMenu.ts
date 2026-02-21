@@ -1,4 +1,4 @@
-import {defineComponent, h, onBeforeUnmount, ref, type PropType, type VNode} from 'vue';
+import {defineComponent, h, nextTick, onBeforeUnmount, ref, type PropType, type VNode} from 'vue';
 
 type MenuSelectionMode = 'none' | 'single' | 'multiple';
 type MenuValue = string | string[];
@@ -113,6 +113,7 @@ export const VueMenu = defineComponent({
   setup(props, {emit, attrs}) {
     let openKeys = ref<Set<string>>(new Set());
     let hoverOpenTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
+    let itemRefs = new Map<string, HTMLButtonElement>();
 
     let isSelected = (value: string) => {
       if (props.selectionMode === 'none') {
@@ -142,6 +143,31 @@ export const VueMenu = defineComponent({
       openKeys.value = next;
     };
 
+    let closeSubmenu = (key: string) => {
+      let next = new Set(openKeys.value);
+      next.delete(key);
+      openKeys.value = next;
+    };
+
+    let setItemRef = (key: string, element: HTMLButtonElement | null) => {
+      if (element) {
+        itemRefs.set(key, element);
+      } else {
+        itemRefs.delete(key);
+      }
+    };
+
+    let focusFirstSubmenuItem = (item: NormalizedMenuItem) => {
+      let firstEnabledChild = item.children.find((child) => !child.disabled);
+      if (!firstEnabledChild) {
+        return;
+      }
+
+      nextTick(() => {
+        itemRefs.get(firstEnabledChild.key)?.focus();
+      });
+    };
+
     let clearHoverOpenTimeout = (key: string) => {
       let timeout = hoverOpenTimeouts.get(key);
       if (timeout) {
@@ -163,6 +189,7 @@ export const VueMenu = defineComponent({
         clearTimeout(timeout);
       }
       hoverOpenTimeouts.clear();
+      itemRefs.clear();
     });
 
     let onSelect = (item: NormalizedMenuItem) => {
@@ -213,6 +240,9 @@ export const VueMenu = defineComponent({
         h('button', {
           class: ['vs-menu__item', 'item', selected ? 'is-selected' : null, isOpen ? 'open' : null],
           type: 'button',
+          ref: (element) => {
+            setItemRef(item.key, element as HTMLButtonElement | null);
+          },
           role,
           disabled: item.disabled,
           'aria-disabled': item.disabled ? 'true' : undefined,
@@ -221,6 +251,18 @@ export const VueMenu = defineComponent({
           'aria-checked': (!hasSubmenu && props.selectionMode !== 'none') ? (selected ? 'true' : 'false') : undefined,
           onMouseenter: hasSubmenu ? () => scheduleHoverOpen(item.key) : undefined,
           onMouseleave: hasSubmenu ? () => clearHoverOpenTimeout(item.key) : undefined,
+          onKeydown: hasSubmenu
+            ? (event: KeyboardEvent) => {
+              if (event.key === 'ArrowRight') {
+                event.preventDefault();
+                openSubmenu(item.key);
+                focusFirstSubmenuItem(item);
+              } else if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                closeSubmenu(item.key);
+              }
+            }
+            : undefined,
           onClick: () => onSelect(item)
         }, [
           h('span', {class: 'vs-menu__item-label'}, item.label),

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-21T23:01:01.919Z",
+  "generatedAt": "2026-02-21T23:05:16.296Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
   "totalScenarios": 7,
@@ -121,17 +121,23 @@
       "id": "react-aria-components-menu--submenu-example",
       "ok": true,
       "react": {
+        "afterArrowRightExpanded": "true",
+        "afterArrowRightFocusedText": "Submenu Foo",
         "afterEnterExpanded": "true",
         "hoverExpandedEarly": "false",
         "hoverExpandedLate": "true",
         "initialExpanded": "false",
+        "submenuItemCountAfterArrowRight": 3,
         "submenuItemCount": 3
       },
       "vue": {
+        "afterArrowRightExpanded": "true",
+        "afterArrowRightFocusedText": "Submenu Foo",
         "afterEnterExpanded": "true",
         "hoverExpandedEarly": "false",
         "hoverExpandedLate": "true",
         "initialExpanded": "false",
+        "submenuItemCountAfterArrowRight": 3,
         "submenuItemCount": 3
       },
       "diff": {},
