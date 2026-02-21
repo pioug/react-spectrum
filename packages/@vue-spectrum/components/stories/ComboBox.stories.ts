@@ -156,3 +156,41 @@ export const AsyncVirtualizedDynamicCombobox: StoryObj<typeof AsyncVirtualizedDy
 export const ComboBoxListBoxItemWithAriaLabel: ComboBoxStory = () => createComboBoxStory(['Item Foo', 'Item Bar', 'Item Baz']);
 
 export const MultiSelectComboBox: ComboBoxStory = () => createComboBoxStory(usStateOptions, 'Test');
+
+export function WithCreateOption() {
+  return {
+    components: {
+      VueComboBox
+    },
+    setup() {
+      let value = ref('');
+      let options = ref(['Aardvark', 'Cat', 'Dog', 'Kangaroo', 'Panda', 'Snake']);
+
+      let addOption = () => {
+        let next = value.value.trim();
+        if (!next || options.value.includes(next)) {
+          return;
+        }
+        options.value = [next, ...options.value];
+      };
+
+      return {
+        addOption,
+        options,
+        value
+      };
+    },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 8px; max-width: 320px;">
+        <VueComboBox
+          v-model="value"
+          :options="[
+            ...(value ? [\`Create \"\${value}\"\`] : []),
+            ...options
+          ]"
+          label="Favorite Animal" />
+        <button type="button" @click="addOption">Add option</button>
+      </div>
+    `
+  };
+}

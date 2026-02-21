@@ -20,6 +20,7 @@
 1. Audit popover/listbox composition parity and render-prop semantics.
 2. Audit async loading, virtualization, and IME behavior parity.
 3. Audit multi-select combo box semantics and tag integration parity.
+4. Audit create-option behavior parity.
 
 ## Fixes Applied
 
@@ -33,6 +34,7 @@
    - `ComboBoxImeExample`
    - `VirtualizedComboBox`
    - `AsyncVirtualizedDynamicCombobox`
+   - `WithCreateOption`
    - `ComboBoxListBoxItemWithAriaLabel`
    - `MultiSelectComboBox`
 

@@ -6,18 +6,13 @@
 ## Summary
 
 - React entries: 203
-- Vue entries: 187
-- Missing in Vue: 16
+- Vue entries: 192
+- Missing in Vue: 11
 - Extra in Vue: 0
 - Result: fail
 
 ## Missing In Vue
 
-- `react-aria-components-animations--modal-animation`
-- `react-aria-components-checkboxgroup--checkbox-group-example`
-- `react-aria-components-checkboxgroup--checkbox-group-submit-example`
-- `react-aria-components-combobox--with-create-option`
-- `react-aria-components-comboboxreproductions--combo-box-reproduction-example`
 - `react-aria-components-tabs--nested-tabs`
 - `react-aria-components-tabs--tabs-example`
 - `react-aria-components-tabs--tabs-render-props`

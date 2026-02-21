@@ -1,10 +1,20 @@
 {
-  "generatedAt": "2026-02-21T22:03:27.625Z",
+  "generatedAt": "2026-02-21T22:06:18.735Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 187,
+  "count": 192,
   "entries": [
+    {
+      "id": "react-aria-components-animations--modal-animation",
+      "title": "React Aria Components - Animations",
+      "name": "Modal Animation",
+      "importPath": "../../packages/@vue-spectrum/components/stories/animations.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
     {
       "id": "react-aria-components-autocomplete--autocomplete-async-loading-example",
       "title": "React Aria Components/Autocomplete",
@@ -356,6 +366,26 @@
       ]
     },
     {
+      "id": "react-aria-components-checkboxgroup--checkbox-group-example",
+      "title": "React Aria Components/CheckboxGroup",
+      "name": "Checkbox Group Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/CheckboxGroup.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-checkboxgroup--checkbox-group-submit-example",
+      "title": "React Aria Components/CheckboxGroup",
+      "name": "Checkbox Group Submit Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/CheckboxGroup.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
       "id": "react-aria-components-colorarea--color-area-example",
       "title": "React Aria Components/ColorArea",
       "name": "Color Area Example",
@@ -560,6 +590,26 @@
       "title": "React Aria Components/ComboBox",
       "name": "Virtualized Combo Box",
       "importPath": "../../packages/@vue-spectrum/components/stories/ComboBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-combobox--with-create-option",
+      "title": "React Aria Components/ComboBox",
+      "name": "With Create Option",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ComboBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-comboboxreproductions--combo-box-reproduction-example",
+      "title": "React Aria Components/ComboBoxReproductions",
+      "name": "Combo Box Reproduction Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ComboBoxReproductions.stories.ts",
       "tags": [
         "dev",
         "test"
