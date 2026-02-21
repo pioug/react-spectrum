@@ -27,6 +27,7 @@
     "storybook:parity:catalog:rac": "node scripts/storybook-parity-catalog.mjs --include-id-regex '^react-aria-components-'",
     "storybook:parity:check": "node scripts/storybook-parity-check.mjs",
     "storybook:parity:check:catalog-only": "node scripts/storybook-parity-check.mjs --skip-behavior",
+    "storybook:parity:checklists:validate": "node scripts/storybook-parity-validate-checklists.mjs",
     "typecheck:vue": "yarn workspace vue-spectrum-starter typecheck",
     "test:vue": "yarn workspace vue-spectrum-starter test",
     "vue:migration:report": "node scripts/vue-migration-tracker.mjs report --write",
