@@ -129,6 +129,7 @@ export const VueMenu = defineComponent({
   setup(props, {emit, attrs}) {
     let openKeys = ref<Set<string>>(new Set());
     let scrollTop = ref(0);
+    let hoverCloseTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
     let hoverOpenTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
     let itemRefs = new Map<string, HTMLButtonElement>();
 
@@ -196,11 +197,28 @@ export const VueMenu = defineComponent({
       }
     };
 
+    let clearHoverCloseTimeout = (key: string) => {
+      let timeout = hoverCloseTimeouts.get(key);
+      if (timeout) {
+        clearTimeout(timeout);
+        hoverCloseTimeouts.delete(key);
+      }
+    };
+
     let scheduleHoverOpen = (key: string) => {
       clearHoverOpenTimeout(key);
+      clearHoverCloseTimeout(key);
       hoverOpenTimeouts.set(key, setTimeout(() => {
         openSubmenu(key);
         hoverOpenTimeouts.delete(key);
+      }, props.delay));
+    };
+
+    let scheduleHoverClose = (key: string) => {
+      clearHoverCloseTimeout(key);
+      hoverCloseTimeouts.set(key, setTimeout(() => {
+        closeSubmenu(key);
+        hoverCloseTimeouts.delete(key);
       }, props.delay));
     };
 
@@ -208,6 +226,10 @@ export const VueMenu = defineComponent({
       for (let timeout of hoverOpenTimeouts.values()) {
         clearTimeout(timeout);
       }
+      for (let timeout of hoverCloseTimeouts.values()) {
+        clearTimeout(timeout);
+      }
+      hoverCloseTimeouts.clear();
       hoverOpenTimeouts.clear();
       itemRefs.clear();
     });
@@ -306,8 +328,18 @@ export const VueMenu = defineComponent({
           'aria-expanded': hasSubmenu ? (isOpen ? 'true' : 'false') : undefined,
           'aria-checked': (!hasSubmenu && props.selectionMode !== 'none') ? (selected ? 'true' : 'false') : undefined,
           'data-has-submenu': hasSubmenu ? 'true' : undefined,
-          onMouseenter: hasSubmenu ? () => scheduleHoverOpen(item.key) : undefined,
-          onMouseleave: hasSubmenu ? () => clearHoverOpenTimeout(item.key) : undefined,
+          onMouseenter: hasSubmenu
+            ? () => {
+              clearHoverCloseTimeout(item.key);
+              scheduleHoverOpen(item.key);
+            }
+            : undefined,
+          onMouseleave: hasSubmenu
+            ? () => {
+              clearHoverOpenTimeout(item.key);
+              scheduleHoverClose(item.key);
+            }
+            : undefined,
           onKeydown: (event: KeyboardEvent) => {
             if (event.key === 'ArrowRight' && hasSubmenu) {
               event.preventDefault();
@@ -356,7 +388,13 @@ export const VueMenu = defineComponent({
         hasSubmenu && isOpen
           ? h('div', {
             class: ['vs-menu__submenu', 'group'],
-            role: 'presentation'
+            role: 'presentation',
+            onMouseenter: () => {
+              clearHoverCloseTimeout(item.key);
+            },
+            onMouseleave: () => {
+              scheduleHoverClose(item.key);
+            }
           }, [
             h('div', {
               class: ['vs-menu__items', 'group'],

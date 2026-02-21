@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-21T23:30:00.050Z",
+  "generatedAt": "2026-02-21T23:33:32.539Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
   "totalScenarios": 9,
@@ -128,12 +128,14 @@
         "afterEnterExpanded": "true",
         "afterEscapeExpanded": "false",
         "afterEscapeFocusedText": "Bar",
+        "hoverExpandedAfterLeave": "false",
         "hoverExpandedEarly": "false",
         "hoverExpandedLate": "true",
         "initialExpanded": "false",
         "submenuItemCountAfterArrowLeft": 0,
         "submenuItemCountAfterEscape": 0,
         "submenuItemCountAfterArrowRight": 3,
+        "submenuItemCountAfterHoverLeave": 0,
         "submenuItemCount": 3
       },
       "vue": {
@@ -144,12 +146,14 @@
         "afterEnterExpanded": "true",
         "afterEscapeExpanded": "false",
         "afterEscapeFocusedText": "Bar",
+        "hoverExpandedAfterLeave": "false",
         "hoverExpandedEarly": "false",
         "hoverExpandedLate": "true",
         "initialExpanded": "false",
         "submenuItemCountAfterArrowLeft": 0,
         "submenuItemCountAfterEscape": 0,
         "submenuItemCountAfterArrowRight": 3,
+        "submenuItemCountAfterHoverLeave": 0,
         "submenuItemCount": 3
       },
       "diff": {},

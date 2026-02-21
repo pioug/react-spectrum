@@ -363,6 +363,11 @@ let scenarios = [
       let hoverExpandedEarly = await hoverTrigger.getAttribute('aria-expanded');
       await page.waitForTimeout(180);
       let hoverExpandedLate = await hoverTrigger.getAttribute('aria-expanded');
+      let hoverSiblingItem = page.locator('[role^="menuitem"]:not([aria-haspopup="menu"])').first();
+      await hoverSiblingItem.hover();
+      await page.waitForTimeout(260);
+      let hoverExpandedAfterLeave = await hoverTrigger.getAttribute('aria-expanded');
+      let submenuItemCountAfterHoverLeave = await page.locator('[role^="menuitem"]', {hasText: 'Submenu '}).count();
 
       return {
         afterArrowLeftExpanded,
@@ -372,12 +377,14 @@ let scenarios = [
         afterEnterExpanded,
         afterEscapeExpanded,
         afterEscapeFocusedText,
+        hoverExpandedAfterLeave,
         hoverExpandedEarly,
         hoverExpandedLate,
         initialExpanded,
         submenuItemCountAfterArrowLeft,
         submenuItemCountAfterEscape,
         submenuItemCountAfterArrowRight,
+        submenuItemCountAfterHoverLeave,
         submenuItemCount
       };
     }
