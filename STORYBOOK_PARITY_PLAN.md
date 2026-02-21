@@ -13,6 +13,7 @@ Last updated: 2026-02-21
 - React catalog manifest exporter added on 2026-02-21 via `scripts/storybook-parity-export-manifest.mjs`.
 - Manifest diff gate scaffolded on 2026-02-21 via `scripts/storybook-parity-compare-manifests.mjs`.
 - First identity-matched Vue stories landed for `React Aria Components/TextField` and `React Aria Components/Button` (8 ids matched, 195 remaining in current scoped manifest report).
+- `scripts/storybook-parity-check.mjs` now validates source-audit checklists before behavior/catalog gates.
 
 ## Goal
 

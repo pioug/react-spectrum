@@ -5,10 +5,12 @@ import {spawnSync} from 'node:child_process';
 function parseArgs(argv) {
   let args = {
     behaviorCommand: 'yarn workspace vue-spectrum-starter test',
+    checklistCommand: 'yarn storybook:parity:checklists:validate',
     reactUrl: 'http://127.0.0.1:9003',
     vueUrl: 'http://127.0.0.1:6106',
     includeIdRegex: '^react-aria-components-',
     outputDir: 'artifacts/storybook-parity/catalog',
+    skipChecklists: false,
     skipBehavior: false
   };
 
@@ -16,6 +18,8 @@ function parseArgs(argv) {
     let arg = argv[i];
     if (arg === '--behavior-command') {
       args.behaviorCommand = argv[++i];
+    } else if (arg === '--checklist-command') {
+      args.checklistCommand = argv[++i];
     } else if (arg === '--react-url') {
       args.reactUrl = argv[++i];
     } else if (arg === '--vue-url') {
@@ -24,6 +28,8 @@ function parseArgs(argv) {
       args.includeIdRegex = argv[++i];
     } else if (arg === '--output-dir') {
       args.outputDir = argv[++i];
+    } else if (arg === '--skip-checklists') {
+      args.skipChecklists = true;
     } else if (arg === '--skip-behavior') {
       args.skipBehavior = true;
     } else if (arg === '--help' || arg === '-h') {
@@ -45,12 +51,15 @@ Usage:
 Options:
   --behavior-command <cmd>    Command to run behavior tests first
                               (default: yarn workspace vue-spectrum-starter test)
+  --checklist-command <cmd>   Command to validate source-audit checklists first
+                              (default: yarn storybook:parity:checklists:validate)
   --react-url <url>           React Storybook base URL (default: http://127.0.0.1:9003)
   --vue-url <url>             Vue Storybook base URL (default: http://127.0.0.1:6106)
   --include-id-regex <regex>  Compare ids matching regex
                               (default: ^react-aria-components-)
   --output-dir <dir>          Catalog output directory
                               (default: artifacts/storybook-parity/catalog)
+  --skip-checklists           Skip checklist validation (not recommended)
   --skip-behavior             Skip behavior tests (not recommended)
   --help, -h                  Show help
 `.trim());
@@ -85,6 +94,10 @@ function buildCatalogCommand(args) {
 
 function main() {
   let args = parseArgs(process.argv);
+
+  if (!args.skipChecklists) {
+    run(args.checklistCommand, `Validating source-audit checklists: ${args.checklistCommand}`);
+  }
 
   if (!args.skipBehavior) {
     run(args.behaviorCommand, `Running behavior tests: ${args.behaviorCommand}`);
