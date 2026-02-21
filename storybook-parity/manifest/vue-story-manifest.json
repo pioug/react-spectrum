@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T21:37:13.279Z",
+  "generatedAt": "2026-02-21T21:39:48.661Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 38,
+  "count": 52,
   "entries": [
     {
       "id": "react-aria-components-breadcrumbs--breadcrumbs-example",
@@ -246,6 +246,116 @@
       ]
     },
     {
+      "id": "react-aria-components-dropzone--drop-zone-only-accept-png-with-file-trigger",
+      "title": "React Aria Components/Dropzone",
+      "name": "Drop Zone Only Accept PNG With File Trigger",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Dropzone.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-dropzone--drop-zone-with-capture-mobile-only",
+      "title": "React Aria Components/Dropzone",
+      "name": "Drop Zone With Capture Mobile Only",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Dropzone.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-dropzone--dropzone-example-with-copyable-object",
+      "title": "React Aria Components/Dropzone",
+      "name": "Dropzone Example With Copyable Object",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Dropzone.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-dropzone--dropzone-example-with-draggable-and-file-trigger",
+      "title": "React Aria Components/Dropzone",
+      "name": "Dropzone Example With Draggable And File Trigger",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Dropzone.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-dropzone--dropzone-example-with-draggable-object",
+      "title": "React Aria Components/Dropzone",
+      "name": "Dropzone Example With Draggable Object",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Dropzone.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-dropzone--dropzone-example-with-file-trigger-button",
+      "title": "React Aria Components/Dropzone",
+      "name": "Dropzone Example With File Trigger Button",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Dropzone.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-dropzone--dropzone-example-with-file-trigger-link",
+      "title": "React Aria Components/Dropzone",
+      "name": "Dropzone Example With File Trigger Link",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Dropzone.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-dropzone--dropzone-with-render-props",
+      "title": "React Aria Components/Dropzone",
+      "name": "Dropzone With Render Props",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Dropzone.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-filetrigger--file-trigger-button",
+      "title": "React Aria Components/FileTrigger",
+      "name": "File Trigger Button",
+      "importPath": "../../packages/@vue-spectrum/components/stories/FileTrigger.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-filetrigger--file-trigger-directories",
+      "title": "React Aria Components/FileTrigger",
+      "name": "File Trigger Directories",
+      "importPath": "../../packages/@vue-spectrum/components/stories/FileTrigger.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-filetrigger--file-trigger-link-allows-multiple",
+      "title": "React Aria Components/FileTrigger",
+      "name": "File Trigger Link Allows Multiple",
+      "importPath": "../../packages/@vue-spectrum/components/stories/FileTrigger.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
       "id": "react-aria-components-form--form-auto-fill-example",
       "title": "React Aria Components/Form",
       "name": "Form Auto Fill Example",
@@ -270,6 +380,36 @@
       "title": "React Aria Components/Meter",
       "name": "Meter Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/Meter.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-modal--date-range-picker-inside-modal-story",
+      "title": "React Aria Components/Modal",
+      "name": "Date Range Picker Inside Modal Story",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Modal.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-modal--inert-test-story",
+      "title": "React Aria Components/Modal",
+      "name": "Inert Test Story",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Modal.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-modal--modal-example",
+      "title": "React Aria Components/Modal",
+      "name": "Modal Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Modal.stories.ts",
       "tags": [
         "dev",
         "test"

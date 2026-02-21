@@ -6,8 +6,8 @@
 ## Summary
 
 - React entries: 203
-- Vue entries: 38
-- Missing in Vue: 165
+- Vue entries: 52
+- Missing in Vue: 151
 - Extra in Vue: 0
 - Result: fail
 
@@ -60,17 +60,6 @@
 - `react-aria-components-datepicker--date-picker-trigger-width-example`
 - `react-aria-components-datepicker--date-range-picker-example`
 - `react-aria-components-datepicker--date-range-picker-trigger-width-example`
-- `react-aria-components-dropzone--drop-zone-only-accept-png-with-file-trigger`
-- `react-aria-components-dropzone--drop-zone-with-capture-mobile-only`
-- `react-aria-components-dropzone--dropzone-example-with-copyable-object`
-- `react-aria-components-dropzone--dropzone-example-with-draggable-and-file-trigger`
-- `react-aria-components-dropzone--dropzone-example-with-draggable-object`
-- `react-aria-components-dropzone--dropzone-example-with-file-trigger-button`
-- `react-aria-components-dropzone--dropzone-example-with-file-trigger-link`
-- `react-aria-components-dropzone--dropzone-with-render-props`
-- `react-aria-components-filetrigger--file-trigger-button`
-- `react-aria-components-filetrigger--file-trigger-directories`
-- `react-aria-components-filetrigger--file-trigger-link-allows-multiple`
 - `react-aria-components-gridlist--async-grid-list`
 - `react-aria-components-gridlist--async-grid-list-grid-virtualized`
 - `react-aria-components-gridlist--async-grid-list-virtualized`
@@ -110,9 +99,6 @@
 - `react-aria-components-menu--submenu-nested-example`
 - `react-aria-components-menu--submenu-sections-example`
 - `react-aria-components-menu--virtualized-example`
-- `react-aria-components-modal--date-range-picker-inside-modal-story`
-- `react-aria-components-modal--inert-test-story`
-- `react-aria-components-modal--modal-example`
 - `react-aria-components-popover--popover-arrow-boundary-offset-example`
 - `react-aria-components-popover--popover-example`
 - `react-aria-components-popover--popover-trigger-observer-example`
