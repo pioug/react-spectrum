@@ -1,6 +1,6 @@
 # Vue API Parity Priority
 
-Generated: 2026-02-19T22:28:00.947Z
+Generated: 2026-02-21T15:04:56.359Z
 
 ## Summary
 

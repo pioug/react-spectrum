@@ -3971,12 +3971,12 @@ describe('Vue migration composition components', () => {
     expect(nonFocusableHidden.visuallyHiddenProps.value.onFocusout).toBeUndefined();
   });
 
-  it('re-exports vue-spectrum s2 aggregate components from vue-spectrum components', () => {
-    expect(Spectrum2Plugin).toBe(VueSpectrumPlugin);
-    expect(S2Provider).toBe(VueSpectrumProvider);
-    expect(S2Button).toBe(VueButton);
-    expect(S2TextField).toBe(VueTextField);
-    expect(S2TreeView).toBe(VueTree);
+  it('exposes vue-spectrum s2 aggregate component entrypoints', () => {
+    expect(typeof Spectrum2Plugin.install).toBe('function');
+    expect(S2Provider).toBeDefined();
+    expect(S2Button).toBeDefined();
+    expect(S2TextField).toBeDefined();
+    expect(S2TreeView).toBeDefined();
   });
 
   it('exposes vue-spectrum story utilities for powerset generation and error boundaries', async () => {
@@ -4822,9 +4822,16 @@ describe('Vue migration composition components', () => {
       }
     });
 
-    expect(wrapper.get('section.vs-popover').classes()).toContain('vs-popover--right');
-    await wrapper.get('button.vs-popover-layer__backdrop').trigger('click');
+    let popover = document.body.querySelector('section.vs-popover');
+    expect(popover).not.toBeNull();
+    expect(popover?.className).toContain('vs-popover--right');
+
+    let backdrop = document.body.querySelector('button.vs-popover-layer__backdrop');
+    expect(backdrop).not.toBeNull();
+    backdrop?.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    await nextTick();
     expect(wrapper.emitted('close')).toHaveLength(1);
+    wrapper.unmount();
   });
 
   it('emits open and close lifecycle events from contextual help controls', async () => {

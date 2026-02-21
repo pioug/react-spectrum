@@ -1,7 +1,7 @@
-import {useTooltip as useTooltipInternal, type AriaTooltipOptions, type TooltipAria, type TooltipTriggerStateLike} from './useTooltip';
-import {useTooltipTrigger as useTooltipTriggerInternal, type AriaTooltipTriggerOptions, type TooltipTriggerAria, type TooltipTriggerMode} from './useTooltipTrigger';
+import {type AriaTooltipOptions, type TooltipAria, type TooltipTriggerStateLike, useTooltip as useTooltipInternal} from './useTooltip';
+import type {AriaTooltipProps, TooltipTriggerProps} from '@vue-types/tooltip';
+import {type AriaTooltipTriggerOptions, type TooltipTriggerAria, type TooltipTriggerMode, useTooltipTrigger as useTooltipTriggerInternal} from './useTooltipTrigger';
 import type {TooltipTriggerState} from '@vue-stately/tooltip';
-import type {AriaTooltipProps, TooltipTriggerProps} from '@react-types/tooltip';
 
 type FocusableElement = Element;
 type RefObject<T> = {

@@ -42,7 +42,8 @@ export interface DatePickerState {
   toggle: () => void
 }
 
-export function useDatePickerState<T extends DateValue = DateValue>(options: DatePickerStateOptions<T> = {}): DatePickerState {
+export function useDatePickerState<T extends DateValue = DateValue>(props: DatePickerStateOptions<T>): DatePickerState {
+  let options = props ?? ({} as DatePickerStateOptions<T>);
   let internalValue = ref<string | null>(options.defaultValue ?? null);
   let value = options.value ?? internalValue;
   let timeValue = ref<string | null>(null);

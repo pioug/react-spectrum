@@ -1,15 +1,15 @@
-import {useCheckbox as useCheckboxInternal, type AriaCheckboxOptions, type CheckboxAria} from './useCheckbox';
-import {useCheckboxGroup as useCheckboxGroupInternal, type AriaCheckboxGroupOptions, type CheckboxGroupAria} from './useCheckboxGroup';
-import {useCheckboxGroupItem as useCheckboxGroupItemInternal, type AriaCheckboxGroupItemOptions} from './useCheckboxGroupItem';
+import {type AriaCheckboxGroupItemOptions, useCheckboxGroupItem as useCheckboxGroupItemInternal} from './useCheckboxGroupItem';
+import type {AriaCheckboxGroupItemProps, AriaCheckboxGroupProps, AriaCheckboxProps} from '@vue-types/checkbox';
+import {type AriaCheckboxGroupOptions, type CheckboxGroupAria, useCheckboxGroup as useCheckboxGroupInternal} from './useCheckboxGroup';
+import {type AriaCheckboxOptions, type CheckboxAria, useCheckbox as useCheckboxInternal} from './useCheckbox';
 import type {CheckboxGroupState} from '@vue-stately/checkbox';
 import type {ToggleState} from '@vue-stately/toggle';
-import type {AriaCheckboxGroupItemProps, AriaCheckboxGroupProps, AriaCheckboxProps} from '@react-types/checkbox';
 
 type RefObject<T> = {
   current: T
 };
 
-export type {AriaCheckboxGroupItemProps, AriaCheckboxGroupProps, AriaCheckboxProps} from '@react-types/checkbox';
+export type {AriaCheckboxGroupItemProps, AriaCheckboxGroupProps, AriaCheckboxProps} from '@vue-types/checkbox';
 export type {AriaCheckboxOptions, CheckboxAria, AriaCheckboxGroupOptions, CheckboxGroupAria, AriaCheckboxGroupItemOptions};
 
 export function useCheckbox(

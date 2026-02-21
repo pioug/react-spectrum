@@ -1,0 +1,27 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@vue-aria/*": [
+        "src/typecheck-stubs/vue-aria/*"
+      ],
+      "@vue-spectrum/*": [
+        "src/typecheck-stubs/vue-spectrum/*"
+      ],
+      "@vue-stately/*": [
+        "src/typecheck-stubs/vue-stately/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.d.ts",
+    "src/**/*.vue",
+    "vite.config.ts"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts",
+    "vitest.config.ts"
+  ]
+}

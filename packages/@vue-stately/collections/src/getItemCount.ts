@@ -1,5 +1,5 @@
-import type {Collection, Node} from '@react-types/shared';
 import type {BaseCollection, CollectionNode} from '@vue-aria/collections';
+import type {Collection, Node} from '@vue-types/shared';
 import {getChildNodes} from './getChildNodes';
 
 function countItemNodes<T>(nodes: Iterable<CollectionNode<T>>): number {

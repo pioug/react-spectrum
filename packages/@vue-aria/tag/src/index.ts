@@ -1,5 +1,5 @@
-import {useTagGroup as useTagGroupInternal, type AriaTagGroupOptions as VueAriaTagGroupOptions, type TagGroupAria, type TagGroupItem, type TagGroupItemNode, type TagSelectionMode} from './useTagGroup';
-import {useTag as useTagInternal, type AriaTagOptions as VueAriaTagOptions, type TagAria} from './useTag';
+import {type TagAria, useTag as useTagInternal, type AriaTagOptions as VueAriaTagOptions} from './useTag';
+import {type TagGroupAria, type TagGroupItem, type TagGroupItemNode, type TagSelectionMode, useTagGroup as useTagGroupInternal, type AriaTagGroupOptions as VueAriaTagGroupOptions} from './useTagGroup';
 import type {ListState as VueListState} from '@vue-stately/list';
 
 type FocusableElement = Element;

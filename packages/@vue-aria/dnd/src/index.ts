@@ -1,6 +1,6 @@
+import {type AriaDragOptions, type DragAria, useDrag as useAriaDrag} from './useDrag';
+import {type AriaDropOptions, type DropAria, useDrop as useAriaDrop} from './useDrop';
 import {defineComponent} from 'vue';
-import {useDrag as useAriaDrag, type AriaDragOptions, type DragAria} from './useDrag';
-import {useDrop as useAriaDrop, type AriaDropOptions, type DropAria} from './useDrop';
 import {type DragItem, type DropOperation} from './types';
 
 export type {AriaDragOptions, DragAria, AriaDropOptions, DropAria};

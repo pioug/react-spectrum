@@ -3,32 +3,49 @@ import {describe, expect, it} from 'vitest';
 import {nextTick} from 'vue';
 import {Avatar} from '@vue-spectrum/avatar';
 import {Badge} from '@vue-spectrum/badge';
-import {Button} from '@vue-spectrum/button';
+import {ActionGroup} from '@vue-spectrum/actiongroup';
+import {Breadcrumbs} from '@vue-spectrum/breadcrumbs';
+import {Button, ToggleButton} from '@vue-spectrum/button';
 import {ButtonGroup} from '@vue-spectrum/buttongroup';
+import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {Calendar, RangeCalendar} from '@vue-spectrum/calendar';
 import {Card, CardView} from '@vue-spectrum/card';
-import {Checkbox} from '@vue-spectrum/checkbox';
+import {Checkbox, CheckboxGroup} from '@vue-spectrum/checkbox';
+import {ComboBox} from '@vue-spectrum/combobox';
 import {ColorField, ColorPicker, ColorSwatchPicker} from '@vue-spectrum/color';
 import {DatePicker, DateRangePicker, TimeField} from '@vue-spectrum/datepicker';
+import {DropZone} from '@vue-spectrum/dropzone';
 import {FileTrigger} from '@vue-spectrum/filetrigger';
 import {Image} from '@vue-spectrum/image';
 import {Icon, Illustration, UIIcon} from '@vue-spectrum/icon';
 import {IllustratedMessage} from '@vue-spectrum/illustratedmessage';
 import {InlineAlert} from '@vue-spectrum/inlinealert';
 import {Flex, Grid, fitContent, minmax, repeat} from '@vue-spectrum/layout';
-import {Label} from '@vue-spectrum/label';
+import {Field, HelpText, Label} from '@vue-spectrum/label';
 import {LabeledValue} from '@vue-spectrum/labeledvalue';
+import {Link} from '@vue-spectrum/link';
+import {ListBox} from '@vue-spectrum/listbox';
+import {ListView} from '@vue-spectrum/list';
+import {Menu} from '@vue-spectrum/menu';
+import {Meter} from '@vue-spectrum/meter';
+import {NumberField} from '@vue-spectrum/numberfield';
 import {Picker} from '@vue-spectrum/picker';
 import {Provider} from '@vue-spectrum/provider';
+import {ProgressBar, ProgressCircle} from '@vue-spectrum/progress';
 import {Radio, RadioGroup} from '@vue-spectrum/radio';
+import {SearchField} from '@vue-spectrum/searchfield';
+import {StatusLight} from '@vue-spectrum/statuslight';
+import {RangeSlider, Slider} from '@vue-spectrum/slider';
 import {StepList} from '@vue-spectrum/steplist';
 import {Switch} from '@vue-spectrum/switch';
+import {Table} from '@vue-spectrum/table';
 import {TagGroup} from '@vue-spectrum/tag';
 import {Tabs} from '@vue-spectrum/tabs';
 import {TextField} from '@vue-spectrum/textfield';
 import {Text} from '@vue-spectrum/text';
 import {createToastQueue, ToastContainer} from '@vue-spectrum/toast';
 import {Tooltip, TooltipTrigger} from '@vue-spectrum/tooltip';
+import {Tree} from '@vue-spectrum/tree';
 import {View} from '@vue-spectrum/view';
 import {Well} from '@vue-spectrum/well';
 import {theme as darkTheme} from '@vue-spectrum/theme-dark';
@@ -46,6 +63,15 @@ describe('Vue migration primitives', () => {
 
     expect(wrapper.text()).toContain('VU');
     expect(wrapper.classes()).toContain('vs-avatar--l');
+
+    let disabled = mount(Avatar, {
+      props: {
+        label: 'Disabled',
+        isDisabled: true
+      }
+    });
+    expect(disabled.classes()).toContain('spectrum-Avatar');
+    expect(disabled.classes()).toContain('is-disabled');
   });
 
   it('renders badge variants and slot content', () => {
@@ -192,6 +218,19 @@ describe('Vue migration primitives', () => {
     expect(wrapper.get('.vs-inline-alert__title').text()).toBe('Attention');
     expect(wrapper.text()).toContain('Action required.');
     expect(wrapper.classes()).toContain('vs-inline-alert--notice');
+    expect(wrapper.classes()).toContain('spectrum-InLineAlert--notice');
+    expect(wrapper.attributes('role')).toBe('alert');
+  });
+
+  it('maps inline alert focus-ring class', async () => {
+    let wrapper = mount(InlineAlert, {
+      props: {
+        title: 'Notice'
+      }
+    });
+
+    await wrapper.trigger('focus');
+    expect(wrapper.classes()).toContain('focus-ring');
   });
 
   it('renders illustrated message title, description, and variant class', () => {
@@ -205,8 +244,16 @@ describe('Vue migration primitives', () => {
 
     expect(wrapper.classes()).toContain('vs-illustrated-message');
     expect(wrapper.classes()).toContain('vs-illustrated-message--info');
+    expect(wrapper.classes()).toContain('spectrum-IllustratedMessage');
     expect(wrapper.get('.vs-illustrated-message__heading').text()).toBe('Empty state');
     expect(wrapper.get('.vs-illustrated-message__description').text()).toBe('No migration tasks found.');
+
+    let hidden = mount(IllustratedMessage, {
+      props: {
+        hidden: true
+      }
+    });
+    expect(hidden.attributes('hidden')).toBeDefined();
   });
 
   it('renders icon variants with expected accessibility and classes', () => {
@@ -222,6 +269,7 @@ describe('Vue migration primitives', () => {
 
     expect(wrapper.classes()).toContain('vs-icon--l');
     expect(wrapper.attributes('aria-label')).toBe('Direction');
+    expect(wrapper.classes()).toContain('spectrum-Icon');
 
     let uiIcon = mount(UIIcon, {
       slots: {
@@ -236,6 +284,7 @@ describe('Vue migration primitives', () => {
       }
     });
     expect(illustration.classes()).toContain('vs-illustration');
+    expect(illustration.attributes('aria-hidden')).toBe('true');
   });
 
   it('renders image src/alt and fit class', () => {
@@ -251,6 +300,15 @@ describe('Vue migration primitives', () => {
     expect(image.attributes('src')).toBe('https://example.com/image.png');
     expect(image.attributes('alt')).toBe('Preview');
     expect(wrapper.classes()).toContain('vs-image--fit-contain');
+    expect(wrapper.classes()).toContain('spectrum-Image');
+
+    let hidden = mount(Image, {
+      props: {
+        src: 'https://example.com/hidden.png',
+        hidden: true
+      }
+    });
+    expect(hidden.attributes('hidden')).toBeDefined();
   });
 
   it('renders label content and required indicator', () => {
@@ -267,6 +325,35 @@ describe('Vue migration primitives', () => {
     expect(wrapper.attributes('for')).toBe('field-name');
     expect(wrapper.text()).toContain('Name');
     expect(wrapper.find('.vs-label__required').exists()).toBe(true);
+    expect(wrapper.classes()).toContain('spectrum-FieldLabel');
+    expect(wrapper.get('.vs-label__required').attributes('aria-hidden')).toBe('true');
+  });
+
+  it('maps help text disabled/invalid states and field aria wiring', () => {
+    let helpText = mount(HelpText, {
+      props: {
+        description: 'Enter a value',
+        errorMessage: 'Required',
+        isInvalid: true,
+        isDisabled: true
+      }
+    });
+
+    expect(helpText.classes()).toContain('spectrum-HelpText');
+    expect(helpText.classes()).toContain('is-disabled');
+    expect(helpText.classes()).toContain('is-invalid');
+    expect(helpText.find('.spectrum-HelpText-validationIcon').exists()).toBe(true);
+
+    let field = mount(Field, {
+      props: {
+        label: 'Field label',
+        description: 'Description'
+      },
+      slots: {
+        default: '<input />'
+      }
+    });
+    expect(field.attributes('aria-labelledby')).toBeTruthy();
   });
 
   it('renders labeled value with list-formatted content', () => {
@@ -311,6 +398,54 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('click')).toHaveLength(1);
   });
 
+  it('maps button state classes and spectrum data attributes', async () => {
+    let wrapper = mount(Button, {
+      props: {
+        variant: 'overBackground'
+      },
+      slots: {
+        default: 'Stateful button'
+      }
+    });
+
+    expect(wrapper.classes()).toContain('spectrum-Button');
+    expect(wrapper.attributes('data-variant')).toBe('primary');
+    expect(wrapper.attributes('data-style')).toBe('outline');
+    expect(wrapper.attributes('data-static-color')).toBe('white');
+
+    await wrapper.trigger('mouseenter');
+    expect(wrapper.classes()).toContain('is-hovered');
+    await wrapper.trigger('mouseleave');
+    expect(wrapper.classes()).not.toContain('is-hovered');
+
+    await wrapper.trigger('pointerdown', {button: 0});
+    expect(wrapper.classes()).toContain('is-active');
+    await wrapper.trigger('pointerup');
+    expect(wrapper.classes()).not.toContain('is-active');
+
+    window.dispatchEvent(new KeyboardEvent('keydown', {key: 'Tab'}));
+    await wrapper.trigger('focus');
+    expect(wrapper.classes()).toContain('focus-ring');
+  });
+
+  it('emits toggle button model updates and selected wiring', async () => {
+    let wrapper = mount(ToggleButton, {
+      props: {
+        modelValue: true
+      },
+      slots: {
+        default: 'Toggle me'
+      }
+    });
+
+    expect(wrapper.attributes('aria-pressed')).toBe('true');
+    expect(wrapper.classes()).toContain('is-selected');
+
+    await wrapper.trigger('click');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([false]);
+    expect(wrapper.emitted('change')?.[0]).toEqual([false]);
+  });
+
   it('renders button group orientation and alignment classes', () => {
     let wrapper = mount(ButtonGroup, {
       props: {
@@ -327,6 +462,133 @@ describe('Vue migration primitives', () => {
     expect(wrapper.classes()).toContain('vs-button-group--align-end');
   });
 
+  it('maps actiongroup selected and hovered states with aria wiring', async () => {
+    let wrapper = mount(ActionGroup, {
+      props: {
+        items: ['One', 'Two'],
+        modelValue: ['One'],
+        selectionMode: 'multiple'
+      },
+      attrs: {
+        'aria-label': 'Row actions'
+      }
+    });
+
+    let items = wrapper.findAll('button.vs-action-group__item');
+    expect(items).toHaveLength(2);
+    expect(items[0].classes()).toContain('is-selected');
+    expect(items[0].attributes('aria-label')).toBe('Row actions');
+    await items[1].trigger('mouseenter');
+    expect(items[1].classes()).toContain('is-hovered');
+    await items[1].trigger('click');
+    expect(wrapper.emitted('action')?.[0]).toEqual(['Two']);
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['One', 'Two']]);
+    expect(wrapper.emitted('change')?.[0]).toEqual([['One', 'Two']]);
+    expect(wrapper.get('.vs-action-group__hidden-marker').attributes('hidden')).toBeDefined();
+  });
+
+  it('maps breadcrumbs hovered/focus-ring/disabled states', async () => {
+    let wrapper = mount(Breadcrumbs, {
+      props: {
+        items: ['Home', 'Library', 'Current'],
+        current: 'Current'
+      }
+    });
+
+    let links = wrapper.findAll('button.vs-breadcrumbs__link');
+    expect(links).toHaveLength(2);
+    await links[0].trigger('mouseenter');
+    expect(links[0].classes()).toContain('is-hovered');
+    await links[0].trigger('focus');
+    expect(links[0].classes()).toContain('focus-ring');
+    expect(wrapper.attributes('aria-label')).toBe('Breadcrumbs');
+
+    let disabled = mount(Breadcrumbs, {
+      props: {
+        items: ['One', 'Two'],
+        disabled: true
+      }
+    });
+    expect(disabled.find('.spectrum-Breadcrumbs').classes()).toContain('is-disabled');
+  });
+
+  it('maps link hovered and focus-ring classes', async () => {
+    let wrapper = mount(Link, {
+      props: {
+        href: 'https://example.com',
+        variant: 'secondary'
+      },
+      slots: {
+        default: 'Open docs'
+      }
+    });
+
+    expect(wrapper.classes()).toContain('spectrum-Link--secondary');
+    await wrapper.trigger('mouseenter');
+    expect(wrapper.classes()).toContain('is-hovered');
+    await wrapper.trigger('focus');
+    expect(wrapper.classes()).toContain('focus-ring');
+  });
+
+  it('maps meter variant state classes', () => {
+    let warning = mount(Meter, {
+      props: {
+        value: 60,
+        variant: 'warning'
+      }
+    });
+    expect(warning.find('.vs-meter__track').classes()).toContain('is-warning');
+
+    let positive = mount(Meter, {
+      props: {
+        value: 90,
+        variant: 'positive'
+      }
+    });
+    expect(positive.find('.vs-meter__track').classes()).toContain('is-positive');
+  });
+
+  it('maps statuslight variant and disabled classes', () => {
+    let wrapper = mount(StatusLight, {
+      props: {
+        variant: 'positive',
+        isDisabled: true
+      },
+      slots: {
+        default: 'Ready'
+      }
+    });
+
+    expect(wrapper.classes()).toContain('spectrum-StatusLight--positive');
+    expect(wrapper.classes()).toContain('is-disabled');
+  });
+
+  it('maps progress bar and progress circle spectrum classes and aria wiring', () => {
+    let bar = mount(ProgressBar, {
+      props: {
+        label: 'Loading assets',
+        value: 35,
+        minValue: 0,
+        maxValue: 100
+      }
+    });
+
+    expect(bar.classes()).toContain('spectrum-BarLoader');
+    expect(bar.attributes('role')).toBe('progressbar');
+    expect(bar.attributes('aria-valuenow')).toBe('35');
+
+    let circle = mount(ProgressCircle, {
+      props: {
+        value: 60,
+        ariaLabel: 'Upload progress'
+      }
+    });
+    expect(circle.classes()).toContain('spectrum-CircleLoader');
+    expect(circle.attributes('aria-label')).toBe('Upload progress');
+    expect(circle.get('[data-testid=\"fillSubMask1\"]').exists()).toBe(true);
+    expect(circle.get('[data-testid=\"fillSubMask2\"]').exists()).toBe(true);
+  });
+
   it('updates model value from textfield input', async () => {
     let wrapper = mount(TextField, {
       props: {
@@ -336,6 +598,96 @@ describe('Vue migration primitives', () => {
 
     await wrapper.get('input').setValue('Ada');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Ada']);
+  });
+
+  it('maps spectrum textfield hover, focus-ring, and invalid states', async () => {
+    let wrapper = mount(TextField, {
+      props: {
+        modelValue: '',
+        isInvalid: true
+      }
+    });
+
+    expect(wrapper.find('.spectrum-Textfield--invalid').exists()).toBe(true);
+    await wrapper.get('input').trigger('mouseenter');
+    expect(wrapper.find('.spectrum-Textfield-input').classes()).toContain('is-hovered');
+    await wrapper.get('input').trigger('focus');
+    expect(wrapper.find('.spectrum-Textfield').classes()).toContain('focus-ring');
+  });
+
+  it('maps searchfield disabled/quiet states and clear behavior', async () => {
+    let wrapper = mount(SearchField, {
+      props: {
+        modelValue: 'Ada',
+        isQuiet: true,
+        label: 'Search people'
+      }
+    });
+
+    expect(wrapper.find('.spectrum-Search').classes()).toContain('is-quiet');
+    expect(wrapper.get('[data-testid="searchicon"]').exists()).toBe(true);
+    await wrapper.get('button.vs-search-field__clear').trigger('click');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['']);
+    expect(wrapper.emitted('clear')).toHaveLength(1);
+
+    let disabled = mount(SearchField, {
+      props: {
+        modelValue: '',
+        isDisabled: true
+      }
+    });
+    expect(disabled.find('.spectrum-Search').classes()).toContain('is-disabled');
+  });
+
+  it('maps combobox interaction states, aria wiring, and hidden key input', async () => {
+    let wrapper = mount(ComboBox, {
+      props: {
+        label: 'Framework',
+        modelValue: '',
+        options: ['Vue', 'React'],
+        isQuiet: true
+      }
+    });
+
+    let input = wrapper.get('input.vs-combobox__input');
+    expect(input.attributes('aria-haspopup')).toBe('listbox');
+    expect(input.attributes('aria-labelledby')).toBeTruthy();
+    expect(input.classes()).toContain('is-placeholder');
+
+    await wrapper.get('.vs-combobox__control').trigger('mouseenter');
+    expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('is-hovered');
+    await input.trigger('focus');
+    expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('is-focused');
+    expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('focus-ring');
+
+    await wrapper.get('button.vs-combobox__button').trigger('mousedown');
+    await wrapper.get('button.vs-combobox__button').trigger('click');
+    expect(wrapper.find('button.vs-combobox__button').classes()).toContain('is-active');
+    expect(wrapper.emitted('open')).toHaveLength(1);
+
+    let disabledInvalidWrapper = mount(ComboBox, {
+      props: {
+        modelValue: 'React',
+        isDisabled: true,
+        isInvalid: true
+      }
+    });
+    expect(disabledInvalidWrapper.find('.spectrum-InputGroup').classes()).toContain('is-disabled');
+    expect(disabledInvalidWrapper.find('.spectrum-InputGroup').classes()).not.toContain('spectrum-InputGroup--invalid');
+
+    let keyWrapper = mount(ComboBox, {
+      props: {
+        modelValue: 'Vue',
+        name: 'framework',
+        formValue: 'key',
+        selectedKey: 'vue',
+        options: ['Vue']
+      }
+    });
+    let hiddenInput = keyWrapper.find('input[type="hidden"][name="framework"]');
+    expect(hiddenInput.exists()).toBe(true);
+    expect(hiddenInput.attributes('hidden')).toBeDefined();
+    expect(hiddenInput.element.getAttribute('value')).toBe('vue');
   });
 
   it('updates model value from checkbox change', async () => {
@@ -350,6 +702,55 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('change')?.[0]).toEqual([true]);
   });
 
+  it('maps checkbox checked, indeterminate, hovered, focus-ring, and invalid states', async () => {
+    let wrapper = mount(Checkbox, {
+      props: {
+        modelValue: true,
+        isIndeterminate: true,
+        isInvalid: true
+      }
+    });
+
+    expect(wrapper.classes()).toContain('is-checked');
+    expect(wrapper.classes()).toContain('is-indeterminate');
+    expect(wrapper.classes()).toContain('is-invalid');
+
+    await wrapper.trigger('mouseenter');
+    expect(wrapper.classes()).toContain('is-hovered');
+    await wrapper.get('input.vs-checkbox__input').trigger('focus');
+    expect(wrapper.classes()).toContain('focus-ring');
+
+    let disabledInvalid = mount(Checkbox, {
+      props: {
+        modelValue: false,
+        isDisabled: true,
+        isInvalid: true
+      }
+    });
+    expect(disabledInvalid.classes()).toContain('is-disabled');
+    expect(disabledInvalid.classes()).not.toContain('is-invalid');
+  });
+
+  it('wires checkbox group model updates from child checkbox values', async () => {
+    let wrapper = mount({
+      components: {Checkbox, CheckboxGroup},
+      data() {
+        return {
+          selected: ['vue']
+        };
+      },
+      template: `
+        <CheckboxGroup v-model="selected">
+          <Checkbox value="vue">Vue</Checkbox>
+          <Checkbox value="react">React</Checkbox>
+        </CheckboxGroup>
+      `
+    });
+
+    await wrapper.get('input[value="react"]').setValue(true);
+    expect((wrapper.vm as unknown as {selected: string[]}).selected).toEqual(['vue', 'react']);
+  });
+
   it('updates model value from switch change', async () => {
     let wrapper = mount(Switch, {
       props: {
@@ -360,6 +761,27 @@ describe('Vue migration primitives', () => {
     await wrapper.get('input').setValue(true);
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([true]);
     expect(wrapper.emitted('change')?.[0]).toEqual([true]);
+  });
+
+  it('maps switch hovered, focus-ring, and disabled states', async () => {
+    let wrapper = mount(Switch, {
+      props: {
+        modelValue: false
+      }
+    });
+
+    await wrapper.trigger('mouseenter');
+    expect(wrapper.classes()).toContain('is-hovered');
+    await wrapper.get('input.vs-switch__input').trigger('focus');
+    expect(wrapper.classes()).toContain('focus-ring');
+
+    let disabled = mount(Switch, {
+      props: {
+        modelValue: false,
+        isDisabled: true
+      }
+    });
+    expect(disabled.classes()).toContain('is-disabled');
   });
 
   it('emits model updates and applies aria semantics for step list interactions', async () => {
@@ -525,6 +947,25 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('press')).toHaveLength(1);
   });
 
+  it('maps card hovered/focused/selected classes and aria labels', async () => {
+    let wrapper = mount(Card, {
+      props: {
+        title: 'Snapshot',
+        description: 'Build summary',
+        selected: true
+      }
+    });
+
+    expect(wrapper.classes()).toContain('is-selected');
+    expect(wrapper.attributes('aria-labelledby')).toBeTruthy();
+    expect(wrapper.attributes('aria-describedby')).toBeTruthy();
+    await wrapper.trigger('mouseenter');
+    expect(wrapper.classes()).toContain('is-hovered');
+    await wrapper.trigger('focus');
+    expect(wrapper.classes()).toContain('is-focused');
+    expect(wrapper.classes()).toContain('focus-ring');
+  });
+
   it('emits selection and action from card view items', async () => {
     let wrapper = mount(CardView, {
       props: {
@@ -539,6 +980,7 @@ describe('Vue migration primitives', () => {
     await wrapper.findAll('button.vs-card-view__item')[1].trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['quality']);
     expect(wrapper.emitted('action')?.[0]).toEqual([{id: 'quality', title: 'Quality'}]);
+    expect(wrapper.findAll('[role=\"row\"]')[1].attributes('aria-rowindex')).toBe('2');
   });
 
   it('emits input and change events from color field edits', async () => {
@@ -597,6 +1039,31 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('change')?.[0]).toEqual(['2026-02-20']);
   });
 
+  it('maps datepicker spectrum interaction and visibility state classes', async () => {
+    let wrapper = mount(DatePicker, {
+      props: {
+        modelValue: '',
+        label: 'Schedule date',
+        placeholder: 'MM/DD/YYYY',
+        isInvalid: true
+      }
+    });
+
+    expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('spectrum-InputGroup--invalid');
+    expect(wrapper.get('input.vs-date-picker__input').classes()).toContain('is-placeholder');
+    await wrapper.get('.vs-date-picker__control').trigger('mouseenter');
+    expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('is-hovered');
+    await wrapper.get('input.vs-date-picker__input').trigger('focus');
+    expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('focus-ring');
+
+    let dialog = wrapper.get('.react-spectrum-Datepicker-dialog');
+    expect(dialog.attributes('hidden')).toBeDefined();
+    expect(dialog.attributes('aria-hidden')).toBe('true');
+    await wrapper.get('button.spectrum-FieldButton').trigger('click');
+    expect(wrapper.emitted('open')).toHaveLength(1);
+    expect(wrapper.get('.react-spectrum-Datepicker-dialog').attributes('aria-hidden')).toBe('false');
+  });
+
   it('emits structured range updates from date range picker inputs', async () => {
     let wrapper = mount(DateRangePicker, {
       props: {
@@ -619,6 +1086,24 @@ describe('Vue migration primitives', () => {
     }]);
   });
 
+  it('maps daterange read-only and dash aria-hidden states', async () => {
+    let wrapper = mount(DateRangePicker, {
+      props: {
+        modelValue: {
+          start: '',
+          end: ''
+        },
+        isReadOnly: true
+      }
+    });
+
+    let inputs = wrapper.findAll('input.vs-date-range-picker__input');
+    expect(inputs).toHaveLength(2);
+    expect(inputs[0].classes()).toContain('is-read-only');
+    expect(inputs[1].classes()).toContain('is-read-only');
+    expect(wrapper.get('[data-testid=\"date-range-dash\"]').attributes('aria-hidden')).toBe('true');
+  });
+
   it('emits update and change events from time field inputs', async () => {
     let wrapper = mount(TimeField, {
       props: {
@@ -630,6 +1115,106 @@ describe('Vue migration primitives', () => {
     await wrapper.get('input.vs-time-field__input').setValue('10:45');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['10:45']);
     expect(wrapper.emitted('change')?.[0]).toEqual(['10:45']);
+  });
+
+  it('maps timefield disabled precedence over invalid state classes', () => {
+    let wrapper = mount(TimeField, {
+      props: {
+        modelValue: '',
+        isDisabled: true,
+        isInvalid: true
+      }
+    });
+
+    expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('is-disabled');
+    expect(wrapper.find('.spectrum-InputGroup').classes()).not.toContain('spectrum-InputGroup--invalid');
+  });
+
+  it('maps slider thumb interaction states and disabled class', async () => {
+    let wrapper = mount(Slider, {
+      props: {
+        modelValue: 40,
+        label: 'Progress'
+      }
+    });
+
+    let handle = wrapper.get('.vs-slider__handle');
+    await handle.trigger('mouseenter');
+    expect(handle.classes()).toContain('is-hovered');
+    await wrapper.get('input.vs-slider__input').trigger('focus');
+    expect(handle.classes()).toContain('is-focused');
+    expect(handle.classes()).toContain('is-tophandle');
+    await handle.trigger('mousedown');
+    expect(handle.classes()).toContain('is-dragged');
+    await wrapper.get('input.vs-slider__input').setValue('48');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([48]);
+
+    let disabled = mount(Slider, {
+      props: {
+        modelValue: 10,
+        isDisabled: true
+      }
+    });
+    expect(disabled.classes()).toContain('is-disabled');
+  });
+
+  it('maps range slider handle state classes and hidden markers', async () => {
+    let wrapper = mount(RangeSlider, {
+      props: {
+        modelValue: {
+          start: 20,
+          end: 80
+        },
+        label: 'Window'
+      }
+    });
+
+    let inputs = wrapper.findAll('input.vs-slider__input');
+    expect(inputs).toHaveLength(2);
+    await inputs[1].trigger('focus');
+    expect(wrapper.findAll('.vs-slider__handle')[1].classes()).toContain('is-tophandle');
+    await inputs[0].setValue('30');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([{
+      start: 30,
+      end: 80
+    }]);
+    expect(wrapper.findAll('input[type="hidden"]').length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('maps numberfield stepper interaction classes and hidden key input', async () => {
+    let wrapper = mount(NumberField, {
+      props: {
+        modelValue: 3,
+        label: 'Estimate',
+        name: 'estimate'
+      }
+    });
+
+    await wrapper.get('.vs-number-field__control').trigger('mouseenter');
+    expect(wrapper.find('.spectrum-Stepper').classes()).toContain('is-hovered');
+
+    await wrapper.get('input.vs-number-field__input').trigger('focus');
+    expect(wrapper.find('.spectrum-Stepper').classes()).toContain('is-focused');
+    expect(wrapper.find('.spectrum-Stepper').classes()).toContain('focus-ring');
+
+    await wrapper.get('button.vs-number-field__stepper--up').trigger('mousedown');
+    expect(wrapper.get('button.vs-number-field__stepper--up').classes()).toContain('is-active');
+    await wrapper.get('button.vs-number-field__stepper--up').trigger('click');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([4]);
+
+    let hiddenInput = wrapper.find('input[type="hidden"][name="estimate"]');
+    expect(hiddenInput.exists()).toBe(true);
+    expect(hiddenInput.attributes('hidden')).toBeDefined();
+
+    let disabledInvalid = mount(NumberField, {
+      props: {
+        modelValue: 2,
+        isDisabled: true,
+        isInvalid: true
+      }
+    });
+    expect(disabledInvalid.find('.spectrum-Stepper').classes()).toContain('is-disabled');
+    expect(disabledInvalid.find('.spectrum-Stepper').classes()).not.toContain('is-invalid');
   });
 
   it('emits model updates and change events from picker selections', async () => {
@@ -646,6 +1231,149 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('change')?.[0]).toEqual(['Q3']);
   });
 
+  it('maps picker disabled, invalid, hovered, and placeholder classes', async () => {
+    let disabledInvalidWrapper = mount(Picker, {
+      props: {
+        modelValue: '',
+        isDisabled: true,
+        isInvalid: true,
+        items: ['One']
+      }
+    });
+
+    let disabledDropdown = disabledInvalidWrapper.get('.spectrum-Dropdown');
+    expect(disabledDropdown.classes()).toContain('is-disabled');
+    expect(disabledDropdown.classes()).not.toContain('is-invalid');
+    expect(disabledInvalidWrapper.get('select.vs-picker__select').classes()).toContain('is-placeholder');
+
+    let interactiveWrapper = mount(Picker, {
+      props: {
+        modelValue: '',
+        isInvalid: true,
+        items: ['One']
+      }
+    });
+
+    expect(interactiveWrapper.get('.spectrum-Dropdown').classes()).toContain('is-invalid');
+    await interactiveWrapper.get('.vs-picker__dropdown').trigger('mouseenter');
+    expect(interactiveWrapper.get('select.vs-picker__select').classes()).toContain('is-hovered');
+  });
+
+  it('maps listbox option interaction and selectable/selected classes', async () => {
+    let wrapper = mount(ListBox, {
+      props: {
+        items: ['Vue', 'React'],
+        modelValue: 'Vue',
+        selectionMode: 'single',
+        ariaLabel: 'Frameworks'
+      }
+    });
+
+    let items = wrapper.findAll('button.vs-listbox__item');
+    expect(items).toHaveLength(2);
+    expect(items[0].classes()).toContain('is-selected');
+    expect(items[0].classes()).toContain('is-selectable');
+    expect(items[0].attributes('aria-label')).toBe('Vue');
+
+    await items[1].trigger('mouseenter');
+    expect(items[1].classes()).toContain('is-hovered');
+    await items[1].trigger('focus');
+    expect(items[1].classes()).toContain('is-focused');
+    expect(items[1].classes()).toContain('focus-ring');
+    await items[1].trigger('click');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['React']);
+    expect(wrapper.emitted('select')?.[0]).toEqual(['React']);
+  });
+
+  it('maps list view item state classes and hidden insertion indicators', async () => {
+    let wrapper = mount(ListView, {
+      props: {
+        label: 'Frameworks',
+        items: ['React', 'Vue', 'Svelte'],
+        modelValue: 'React',
+        selectionMode: 'single'
+      }
+    });
+
+    let items = wrapper.findAll('button.vs-listbox__item');
+    expect(items).toHaveLength(3);
+    expect(items[0].classes()).toContain('is-selected');
+
+    await items[2].trigger('click');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Svelte']);
+    expect(wrapper.emitted('select')?.[0]).toEqual(['Svelte']);
+    expect(wrapper.find('[aria-hidden=\"true\"][hidden]').exists()).toBe(true);
+  });
+
+  it('maps menu selectable/open/expanded states and aria visibility signals', async () => {
+    let wrapper = mount(Menu, {
+      props: {
+        label: 'Actions',
+        isExpanded: true,
+        openKeys: ['share'],
+        modelValue: 'edit',
+        items: [
+          {key: 'edit', label: 'Edit'},
+          {key: 'share', label: 'Share', children: [{key: 'copy', label: 'Copy link'}]}
+        ]
+      }
+    });
+
+    expect(wrapper.classes()).toContain('spectrum-Menu-wrapper');
+    expect(wrapper.classes()).toContain('is-expanded');
+    expect(wrapper.attributes('data-testid')).toBe('menu-wrapper');
+
+    let menuItems = wrapper.findAll('button.vs-menu__item');
+    expect(menuItems[0].classes()).toContain('is-selected');
+    expect(menuItems[0].classes()).toContain('is-selectable');
+    expect(menuItems[1].classes()).toContain('is-open');
+    expect(wrapper.find('.vs-menu__submenu').attributes('aria-hidden')).toBe('false');
+
+    await menuItems[0].trigger('click');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['edit']);
+    expect(wrapper.emitted('select')?.[0]).toEqual(['edit']);
+  });
+
+  it('maps table state classes, aria metadata, and hidden drop indicators', async () => {
+    let wrapper = mount(Table, {
+      props: {
+        caption: 'Dependencies',
+        modelValue: 1,
+        sortDescriptor: {
+          column: 'name',
+          direction: 'ascending'
+        },
+        columns: [
+          {key: 'name', label: 'Name', sortable: true, resizable: true},
+          {key: 'license', label: 'License'}
+        ],
+        rows: [
+          {id: 1, name: 'Vue', license: 'MIT'},
+          {id: 2, name: 'React', license: 'MIT', children: [{id: 'child'}]}
+        ]
+      }
+    });
+
+    expect(wrapper.classes()).toContain('spectrum-Table');
+    expect(wrapper.get('th.vs-table__head-cell').classes()).toContain('is-sortable');
+    expect(wrapper.get('th.vs-table__head-cell').classes()).toContain('is-sorted-asc');
+
+    let rows = wrapper.findAll('tr.vs-table__row');
+    expect(rows[0].classes()).toContain('is-selected');
+    expect(rows[0].attributes('aria-rowindex')).toBe('1');
+    expect(rows[0].attributes('aria-selected')).toBe('true');
+
+    await rows[1].trigger('mouseenter');
+    expect(rows[1].classes()).toContain('is-hovered');
+    await rows[1].trigger('mousedown');
+    expect(rows[1].classes()).toContain('is-active');
+
+    await wrapper.get('button.vs-table__sort-button').trigger('click');
+    expect(wrapper.emitted('sortChange')?.[0]).toEqual([{column: 'name', direction: 'descending'}]);
+    expect(wrapper.find('.vs-table__insertion-indicator').exists()).toBe(true);
+    expect(wrapper.find('[hidden][aria-hidden=\"true\"]').exists()).toBe(true);
+  });
+
   it('updates model value from calendar date input', async () => {
     let wrapper = mount(Calendar, {
       props: {
@@ -656,6 +1384,20 @@ describe('Vue migration primitives', () => {
     await wrapper.get('input[type="date"]').setValue('2026-03-01');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['2026-03-01']);
     expect(wrapper.emitted('change')?.[0]).toEqual(['2026-03-01']);
+  });
+
+  it('applies spectrum calendar state classes for selected and unavailable dates', () => {
+    let wrapper = mount(Calendar, {
+      props: {
+        max: '2026-03-20',
+        min: '2026-03-10',
+        modelValue: '2026-03-15'
+      }
+    });
+
+    expect(wrapper.find('.spectrum-Calendar-date.is-selected').exists()).toBe(true);
+    expect(wrapper.find('.spectrum-Calendar-date.is-unavailable').exists()).toBe(true);
+    expect(wrapper.attributes('aria-label')).toBe('Calendar');
   });
 
   it('propagates v-model through range calendar inputs', async () => {
@@ -679,6 +1421,46 @@ describe('Vue migration primitives', () => {
       start: '2026-03-01',
       end: '2026-03-05'
     });
+  });
+
+  it('applies range-selection classes for range calendar values', () => {
+    let wrapper = mount(RangeCalendar, {
+      props: {
+        modelValue: {
+          start: '2026-03-10',
+          end: '2026-03-14'
+        }
+      }
+    });
+
+    expect(wrapper.find('.spectrum-Calendar-date.is-selection-start').exists()).toBe(true);
+    expect(wrapper.find('.spectrum-Calendar-date.is-selection-end').exists()).toBe(true);
+    expect(wrapper.find('.spectrum-Calendar-date.is-range-selection').exists()).toBe(true);
+  });
+
+  it('emits dropped files and wires aria-labelledby in drop zone', async () => {
+    let wrapper = mount(DropZone, {
+      props: {
+        label: 'Upload files',
+        isFilled: true,
+        replaceMessage: 'Replace current file'
+      }
+    });
+
+    let labelledby = wrapper.attributes('aria-labelledby');
+    expect(labelledby).toContain('-heading');
+    expect(labelledby).toContain('-message');
+    expect(wrapper.find('.spectrum-Dropzone-banner').text()).toContain('Replace current file');
+
+    let input = wrapper.get('input[type=\"file\"]');
+    let file = new File(['abc'], 'asset.txt', {type: 'text/plain'});
+    Object.defineProperty(input.element, 'files', {
+      configurable: true,
+      value: [file]
+    });
+
+    await input.trigger('input');
+    expect(wrapper.emitted('filesDrop')?.[0]?.[0]?.[0]?.name).toBe('asset.txt');
   });
 
   it('emits selected files from file trigger input', async () => {
@@ -708,6 +1490,30 @@ describe('Vue migration primitives', () => {
     expect(changed.map((file) => file.name)).toEqual(['alpha.txt', 'beta.txt']);
   });
 
+  it('maps tree hidden visibility signal and emits item actions', async () => {
+    let hidden = mount(Tree, {
+      props: {
+        hidden: true,
+        items: [{id: 'one', label: 'One'}]
+      }
+    });
+    expect(hidden.attributes('hidden')).toBeDefined();
+    expect(hidden.attributes('aria-hidden')).toBe('true');
+    expect(hidden.find('.vs-tree__hidden-marker').attributes('hidden')).toBeDefined();
+
+    let wrapper = mount(Tree, {
+      props: {
+        items: [
+          {id: 'one', label: 'One'},
+          {id: 'two', label: 'Two'}
+        ]
+      }
+    });
+    await wrapper.findAll('button.vs-tree__item')[1].trigger('click');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['two']);
+    expect(wrapper.emitted('itemAction')?.[0]).toEqual([{id: 'two', label: 'Two'}]);
+  });
+
   it('propagates v-model through radio group', async () => {
     let wrapper = mount({
       components: {Radio, RadioGroup},
@@ -722,5 +1528,88 @@ describe('Vue migration primitives', () => {
 
     await wrapper.get('input[value="react"]').setValue(true);
     expect((wrapper.vm as unknown as {value: string}).value).toBe('react');
+  });
+
+  it('maps radio disabled, invalid, hovered, and focus-ring classes', async () => {
+    let wrapper = mount({
+      components: {Radio, RadioGroup},
+      template: `
+        <RadioGroup v-model="value" :is-invalid="true">
+          <Radio value="vue">Vue</Radio>
+        </RadioGroup>
+      `,
+      data() {
+        return {
+          value: 'vue'
+        };
+      }
+    });
+
+    let radio = wrapper.get('label.vs-radio');
+    await radio.trigger('mouseenter');
+    expect(radio.classes()).toContain('is-hovered');
+    expect(radio.classes()).toContain('is-invalid');
+
+    await wrapper.get('input.vs-radio__input').trigger('focus');
+    expect(radio.classes()).toContain('focus-ring');
+
+    let disabled = mount({
+      components: {Radio, RadioGroup},
+      template: `
+        <RadioGroup v-model="value" :is-disabled="true">
+          <Radio value="vue">Vue</Radio>
+        </RadioGroup>
+      `,
+      data() {
+        return {
+          value: 'vue'
+        };
+      }
+    });
+    expect(disabled.get('label.vs-radio').classes()).toContain('is-disabled');
+  });
+
+  it('maps accordion disclosure state classes and hidden/aria-hidden panel signals', async () => {
+    let wrapper = mount({
+      components: {Accordion, Disclosure, DisclosurePanel, DisclosureTitle},
+      data() {
+        return {
+          expanded: ['one']
+        };
+      },
+      template: `
+        <Accordion v-model="expanded">
+          <Disclosure id="one">
+            <DisclosureTitle>One</DisclosureTitle>
+            <DisclosurePanel>Panel one</DisclosurePanel>
+          </Disclosure>
+          <Disclosure id="two">
+            <DisclosureTitle>Two</DisclosureTitle>
+            <DisclosurePanel>Panel two</DisclosurePanel>
+          </Disclosure>
+        </Accordion>
+      `
+    });
+
+    let items = wrapper.findAll('section.vs-accordion__item');
+    expect(items[0].classes()).toContain('is-expanded');
+    expect(items[1].classes()).not.toContain('is-expanded');
+
+    let secondPanel = wrapper.get('#two-panel');
+    expect(secondPanel.attributes('hidden')).toBeDefined();
+    expect(secondPanel.attributes('aria-hidden')).toBe('true');
+
+    let secondTrigger = wrapper.get('#two-trigger');
+    await secondTrigger.trigger('mouseenter');
+    expect(secondTrigger.classes()).toContain('is-hovered');
+    await secondTrigger.trigger('mousedown');
+    expect(secondTrigger.classes()).toContain('is-pressed');
+    await secondTrigger.trigger('focus');
+    expect(secondTrigger.classes()).toContain('focus-ring');
+
+    await secondTrigger.trigger('click');
+    await nextTick();
+    expect((wrapper.vm as unknown as {expanded: string[]}).expanded).toEqual(['one', 'two']);
+    expect(wrapper.get('#two-panel').attributes('aria-hidden')).toBe('false');
   });
 });

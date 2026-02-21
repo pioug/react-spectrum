@@ -1,9 +1,9 @@
-import {GridCollection, type GridCell, type GridNode, type GridRow, type Key} from './GridCollection';
+import {type GridCell, GridCollection, type GridNode, type GridRow, type Key} from './GridCollection';
 import {
-  useGridState as useGridStateInternal,
   type GridState,
-  type GridStateOptions as VueGridStateOptions,
-  type SelectionManager
+  type SelectionManager,
+  useGridState as useGridStateInternal,
+  type GridStateOptions as VueGridStateOptions
 } from './useGridState';
 
 export type GridStateOptions<T extends object, C extends GridCollection<T>> = VueGridStateOptions<T, C>;

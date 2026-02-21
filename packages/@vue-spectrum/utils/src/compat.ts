@@ -1,17 +1,17 @@
-import {defineComponent} from 'vue';
-import {useResizeObserver as useAriaResizeObserver, useValueEffect as useAriaValueEffect} from '@vue-aria/utils';
 import {
   createFocusableRef as createFocusableRefInternal,
+  type DOMRef,
   type DOMRefValue,
   type FocusableElement,
   type FocusableRef,
   type FocusableRefValue,
   type RefObject,
-  type DOMRef,
   unwrapDOMRef as unwrapDOMRefInternal,
   useFocusableRef as useFocusableRefInternal,
   useUnwrapDOMRef as useUnwrapDOMRefInternal
 } from './useDOMRef';
+import {defineComponent} from 'vue';
+import {useResizeObserver as useAriaResizeObserver, useValueEffect as useAriaValueEffect} from '@vue-aria/utils';
 
 type AnyRecord = Record<string, unknown>;
 type Direction = 'ltr' | 'rtl';
@@ -19,7 +19,9 @@ type Breakpoint = 'base' | 'S' | 'M' | 'L' | string;
 type Responsive<T> = T | Record<string, T | undefined>;
 type DimensionValue = number | string | null | undefined;
 type CSSProperties = Record<string, unknown>;
-type HTMLAttributes<T extends HTMLElement = HTMLElement> = Record<string, unknown>;
+type HTMLAttributes<T = unknown> = Record<string, unknown> & {
+  __elementType__?: T
+};
 type ViewStyleProps<C extends ColorVersion = ColorVersion> = AnyRecord & {
   UNSAFE_className?: string,
   UNSAFE_style?: Record<string, unknown>,
@@ -250,6 +252,7 @@ export const BreakpointProvider = defineComponent({
 });
 
 export function useMatchedBreakpoints(_breakpoints: Breakpoints): string[] {
+  void _breakpoints;
   return ['base'];
 }
 

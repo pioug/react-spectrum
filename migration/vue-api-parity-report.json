@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-20T02:30:37.427Z",
+  "generatedAt": "2026-02-21T15:03:08.832Z",
   "summary": {
     "trackedPackages": 154,
     "comparedPackages": 154,
@@ -1627,10 +1627,11 @@
       "sourceEntrypoint": "packages/@react-spectrum/list/src/index.ts",
       "targetEntrypoint": "packages/@vue-spectrum/list/src/index.ts",
       "sourceExportCount": 3,
-      "targetExportCount": 4,
+      "targetExportCount": 5,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
+        "ListItemRecord",
         "VueListView"
       ],
       "error": null
@@ -1713,10 +1714,11 @@
       "sourceEntrypoint": "packages/@react-spectrum/overlays/src/index.ts",
       "targetEntrypoint": "packages/@vue-spectrum/overlays/src/index.ts",
       "sourceExportCount": 5,
-      "targetExportCount": 6,
+      "targetExportCount": 7,
       "parityRatio": 1,
       "missingExports": [],
       "extraExports": [
+        "Underlay",
         "VuePopover"
       ],
       "error": null

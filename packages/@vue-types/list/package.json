@@ -1,0 +1,21 @@
+{
+  "name": "@vue-types/list",
+  "version": "3.2.36",
+  "description": "Spectrum UI components in React",
+  "license": "Apache-2.0",
+  "types": "src/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adobe/react-spectrum"
+  },
+  "dependencies": {
+    "@vue-aria/gridlist": "workspace:*",
+    "@vue-spectrum/list": "workspace:*"
+  },
+  "peerDependencies": {
+    "@vue-spectrum/provider": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

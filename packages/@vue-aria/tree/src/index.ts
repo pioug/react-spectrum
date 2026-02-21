@@ -1,5 +1,5 @@
-import {useTree as useTreeInternal, type AriaTreeOptions as VueAriaTreeOptions, type TreeAria} from './useTree';
-import {useTreeItem as useTreeItemInternal, type AriaTreeItemOptions, type TreeItemAria, type TreeItemNode} from './useTreeItem';
+import {type AriaTreeItemOptions, type TreeItemAria, type TreeItemNode, useTreeItem as useTreeItemInternal} from './useTreeItem';
+import {type TreeAria, useTree as useTreeInternal, type AriaTreeOptions as VueAriaTreeOptions} from './useTree';
 import type {TreeState as VueTreeState} from '@vue-stately/tree';
 
 type FocusableElement = Element;
@@ -9,7 +9,7 @@ type RefObject<T> = {
 
 export type AriaTreeOptions<T = unknown> = VueAriaTreeOptions;
 export type AriaTreeProps<T = unknown> = AriaTreeOptions<T>;
-export type {TreeProps} from '@react-stately/tree';
+export type {TreeProps} from '@vue-stately/tree';
 export type {TreeAria, AriaTreeItemOptions, TreeItemAria, TreeItemNode};
 
 export function useTree<T>(

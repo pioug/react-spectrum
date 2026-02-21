@@ -4,27 +4,29 @@ import {computed, type ComputedRef, type Ref, ref} from 'vue';
 import {useCalendar} from '@vue-aria/calendar';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
+export type DateValue = string | number | Date;
 
-export interface CalendarStateOptions {
-  defaultFocusedValue?: Date | null,
-  defaultValue?: Date | null,
+export interface CalendarStateOptions<T extends DateValue = DateValue> {
+  defaultFocusedValue?: T | null,
+  defaultValue?: T | null,
   isDisabled?: MaybeRef<boolean>,
   locale?: MaybeRef<string>,
-  maxValue?: MaybeRef<Date | null | undefined>,
-  minValue?: MaybeRef<Date | null | undefined>,
-  onChange?: (value: Date | null) => void,
-  onFocusChange?: (value: Date) => void,
-  value?: Ref<Date | null>
+  maxValue?: MaybeRef<T | null | undefined>,
+  minValue?: MaybeRef<T | null | undefined>,
+  onChange?: (value: T | null) => void,
+  onFocusChange?: (value: T) => void,
+  value?: Ref<T | null>
 }
 
-export function useCalendarState(options: CalendarStateOptions = {}): CalendarState {
-  let internalValue = ref<Date | null>(options.defaultValue ? cloneDate(options.defaultValue) : null);
-  let valueRef = options.value ?? internalValue;
+export function useCalendarState<T extends DateValue = DateValue>(props: CalendarStateOptions<T>): CalendarState {
+  let options = props ?? ({} as CalendarStateOptions<T>);
+  let internalValue = ref<Date | null>(options.defaultValue ? cloneDate(options.defaultValue as unknown as Date) : null);
+  let valueRef = (options.value as Ref<Date | null> | undefined) ?? internalValue;
 
   let initialFocusedDate = options.defaultFocusedValue
     ?? valueRef.value
     ?? new Date();
-  let focusedDate = ref(cloneDate(initialFocusedDate));
+  let focusedDate = ref(cloneDate(initialFocusedDate as unknown as Date));
   let isFocused = ref(false);
   let visibleDate = ref(startOfMonth(initialFocusedDate));
 
@@ -45,18 +47,18 @@ export function useCalendarState(options: CalendarStateOptions = {}): CalendarSt
 
   let setValue = (nextValue: Date | null): void => {
     valueRef.value = nextValue ? cloneDate(nextValue) : null;
-    options.onChange?.(valueRef.value ? cloneDate(valueRef.value) : null);
+    options.onChange?.(valueRef.value ? cloneDate(valueRef.value) as unknown as T : null);
   };
 
   let setFocusedDate = (date: Date): void => {
     focusedDate.value = cloneDate(date);
-    options.onFocusChange?.(cloneDate(focusedDate.value));
+    options.onFocusChange?.(cloneDate(focusedDate.value) as unknown as T);
   };
 
   let selectDate = (date: Date): void => {
     calendar.selectDate(date);
     setFocusedDate(date);
-    options.onChange?.(valueRef.value ? cloneDate(valueRef.value) : null);
+    options.onChange?.(valueRef.value ? cloneDate(valueRef.value) as unknown as T : null);
   };
 
   return {

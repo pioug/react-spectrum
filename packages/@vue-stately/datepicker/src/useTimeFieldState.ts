@@ -31,7 +31,8 @@ export interface TimeFieldState {
   setValue: (value: string) => void
 }
 
-export function useTimeFieldState<T extends TimeValue = TimeValue>(options: TimeFieldStateOptions<T> = {}): TimeFieldState {
+export function useTimeFieldState<T extends TimeValue = TimeValue>(props: TimeFieldStateOptions<T>): TimeFieldState {
+  let options = props ?? ({} as TimeFieldStateOptions<T>);
   let internalValue = ref(options.defaultValue ?? '');
   let value = options.value ?? internalValue;
 

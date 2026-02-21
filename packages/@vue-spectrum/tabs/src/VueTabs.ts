@@ -1,5 +1,5 @@
 import {computed, defineComponent, h, inject, type InjectionKey, type PropType, provide, ref, watch} from 'vue';
-import {useTab as createTab, useTabList as createTabList, useTabPanel as createTabPanel, type TabListState, type TabOrientation} from '@vue-aria/tabs';
+import {useTab as createTab, useTabList as createTabList, useTabPanel as createTabPanel, type TabOrientation} from '@vue-aria/tabs';
 
 export interface TabItemData {
   content?: string,
@@ -11,7 +11,7 @@ export interface TabItemData {
 export type TabsValue = string | null;
 
 interface TabsContextValue {
-  state: TabListState
+  state: ReturnType<typeof createTabList>['state']
 }
 
 const tabsContextKey: InjectionKey<TabsContextValue> = Symbol('VueTabsContext');

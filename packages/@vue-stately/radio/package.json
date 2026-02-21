@@ -23,9 +23,9 @@
     "url": "https://github.com/adobe/react-spectrum"
   },
   "dependencies": {
-    "@react-types/radio": "^3.9.3",
     "@vue-aria/utils": "workspace:*",
-    "@vue-stately/form": "workspace:*"
+    "@vue-stately/form": "workspace:*",
+    "@vue-types/radio": "^3.9.3"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

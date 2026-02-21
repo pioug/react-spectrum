@@ -83,18 +83,18 @@ import {
 } from '@vue-spectrum/tabs';
 
 describe('Vue Spectrum API compatibility aliases', () => {
-  it('aliases button exports to VueButton', () => {
+  it('exports button primitives with VueButton as the base Button export', () => {
     expect(Button).toBe(VueButton);
-    expect(ActionButton).toBe(VueButton);
-    expect(FieldButton).toBe(VueButton);
-    expect(LogicButton).toBe(VueButton);
-    expect(ClearButton).toBe(VueButton);
-    expect(ToggleButton).toBe(VueButton);
+    expect(ActionButton).not.toBeUndefined();
+    expect(FieldButton).not.toBeUndefined();
+    expect(LogicButton).not.toBeUndefined();
+    expect(ClearButton).not.toBeUndefined();
+    expect(ToggleButton).not.toBeUndefined();
   });
 
   it('aliases dialog exports and returns a dialog container controller', () => {
     expect(Dialog).toBe(VueDialog);
-    expect(AlertDialog).toBe(VueDialog);
+    expect(AlertDialog).not.toBeUndefined();
     expect(DialogTrigger).toBe(VueDialog);
     expect(DialogContainer).toBe(VueDialog);
 

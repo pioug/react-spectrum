@@ -9639,7 +9639,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-essentials@npm:^8.6.14":
+"@storybook/addon-essentials@npm:8.6.14, @storybook/addon-essentials@npm:^8.6.14":
   version: 8.6.14
   resolution: "@storybook/addon-essentials@npm:8.6.14"
   dependencies:
@@ -9670,7 +9670,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-interactions@npm:^8.6.14":
+"@storybook/addon-interactions@npm:8.6.14, @storybook/addon-interactions@npm:^8.6.14":
   version: 8.6.14
   resolution: "@storybook/addon-interactions@npm:8.6.14"
   dependencies:
@@ -9699,7 +9699,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addon-links@npm:^8.6.14":
+"@storybook/addon-links@npm:8.6.14, @storybook/addon-links@npm:^8.6.14":
   version: 8.6.14
   resolution: "@storybook/addon-links@npm:8.6.14"
   dependencies:
@@ -9795,6 +9795,20 @@ __metadata:
     react-dom:
       optional: true
   checksum: 10c0/3f87c1f224031dee8b5fa6e296022997d21956832fea1e4ffa3525931c05a8ef6450b67c728635297a08548d65ef5abde05d7740d4ea3a9a811f2ff08a5f0148
+  languageName: node
+  linkType: hard
+
+"@storybook/builder-vite@npm:8.6.14":
+  version: 8.6.14
+  resolution: "@storybook/builder-vite@npm:8.6.14"
+  dependencies:
+    "@storybook/csf-plugin": "npm:8.6.14"
+    browser-assert: "npm:^1.2.1"
+    ts-dedent: "npm:^2.0.0"
+  peerDependencies:
+    storybook: ^8.6.14
+    vite: ^4.0.0 || ^5.0.0 || ^6.0.0
+  checksum: 10c0/c24008f8a6109156be4c1cd5772a0e1061c5993d4df0b999844c4de9f7345cfc2d6069ef2f95a55c1bc2a5e48ed4b3a88ba01fc7d190d6ef4238b28ca2e7e172
   languageName: node
   linkType: hard
 
@@ -10097,6 +10111,44 @@ __metadata:
   peerDependencies:
     storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
   checksum: 10c0/765bfbfedcbdcdb719b164a14bb61b8ad60819c6124d0e1f243b6b45e62de877ec8dff6259092207a58d6c2771f4883650e9784a2be1aaf7e0ef0fe75465db0d
+  languageName: node
+  linkType: hard
+
+"@storybook/vue3-vite@npm:8.6.14":
+  version: 8.6.14
+  resolution: "@storybook/vue3-vite@npm:8.6.14"
+  dependencies:
+    "@storybook/builder-vite": "npm:8.6.14"
+    "@storybook/vue3": "npm:8.6.14"
+    find-package-json: "npm:^1.2.0"
+    magic-string: "npm:^0.30.0"
+    typescript: "npm:^5.7.3"
+    vue-component-meta: "npm:^2.0.0"
+    vue-docgen-api: "npm:^4.75.1"
+  peerDependencies:
+    storybook: ^8.6.14
+    vite: ^4.0.0 || ^5.0.0 || ^6.0.0
+  checksum: 10c0/4099d555ed43bc7d545e694aaa4d69bd034e4818bb92a72a5d2f9819f264da155f95850262b64b07b226b869521b3f15cc75133b09aaeefd33e20249b82ac97d
+  languageName: node
+  linkType: hard
+
+"@storybook/vue3@npm:8.6.14":
+  version: 8.6.14
+  resolution: "@storybook/vue3@npm:8.6.14"
+  dependencies:
+    "@storybook/components": "npm:8.6.14"
+    "@storybook/global": "npm:^5.0.0"
+    "@storybook/manager-api": "npm:8.6.14"
+    "@storybook/preview-api": "npm:8.6.14"
+    "@storybook/theming": "npm:8.6.14"
+    "@vue/compiler-core": "npm:^3.0.0"
+    ts-dedent: "npm:^2.0.0"
+    type-fest: "npm:~2.19"
+    vue-component-type-helpers: "npm:latest"
+  peerDependencies:
+    storybook: ^8.6.14
+    vue: ^3.0.0
+  checksum: 10c0/5445030fcb1ae2bd81a2a7c452b1897a13b514c771c30f075cd56188c69cf3680c65dd0a812c8a37689374f114335a590f776d8742ecbf5008d78b3a1f00b7bc
   languageName: node
   linkType: hard
 
@@ -11876,6 +11928,8 @@ __metadata:
 "@vue-aria/checkbox@workspace:*, @vue-aria/checkbox@workspace:packages/@vue-aria/checkbox":
   version: 0.0.0-use.local
   resolution: "@vue-aria/checkbox@workspace:packages/@vue-aria/checkbox"
+  dependencies:
+    "@vue-types/checkbox": "npm:^3.10.3"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -11900,6 +11954,8 @@ __metadata:
 "@vue-aria/combobox@workspace:*, @vue-aria/combobox@workspace:packages/@vue-aria/combobox":
   version: 0.0.0-use.local
   resolution: "@vue-aria/combobox@workspace:packages/@vue-aria/combobox"
+  dependencies:
+    "@vue-types/combobox": "npm:^3.13.11"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -11990,6 +12046,8 @@ __metadata:
 "@vue-aria/interactions@workspace:*, @vue-aria/interactions@workspace:packages/@vue-aria/interactions":
   version: 0.0.0-use.local
   resolution: "@vue-aria/interactions@workspace:packages/@vue-aria/interactions"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12022,6 +12080,8 @@ __metadata:
 "@vue-aria/listbox@workspace:*, @vue-aria/listbox@workspace:packages/@vue-aria/listbox":
   version: 0.0.0-use.local
   resolution: "@vue-aria/listbox@workspace:packages/@vue-aria/listbox"
+  dependencies:
+    "@vue-types/listbox": "npm:^3.7.5"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12038,6 +12098,8 @@ __metadata:
 "@vue-aria/menu@workspace:*, @vue-aria/menu@workspace:packages/@vue-aria/menu":
   version: 0.0.0-use.local
   resolution: "@vue-aria/menu@workspace:packages/@vue-aria/menu"
+  dependencies:
+    "@vue-types/menu": "npm:^3.10.6"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12046,6 +12108,8 @@ __metadata:
 "@vue-aria/meter@workspace:*, @vue-aria/meter@workspace:packages/@vue-aria/meter":
   version: 0.0.0-use.local
   resolution: "@vue-aria/meter@workspace:packages/@vue-aria/meter"
+  dependencies:
+    "@vue-types/meter": "npm:^3.4.14"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12054,6 +12118,8 @@ __metadata:
 "@vue-aria/numberfield@workspace:*, @vue-aria/numberfield@workspace:packages/@vue-aria/numberfield":
   version: 0.0.0-use.local
   resolution: "@vue-aria/numberfield@workspace:packages/@vue-aria/numberfield"
+  dependencies:
+    "@vue-types/numberfield": "npm:^3.8.17"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12070,6 +12136,8 @@ __metadata:
 "@vue-aria/progress@workspace:*, @vue-aria/progress@workspace:packages/@vue-aria/progress":
   version: 0.0.0-use.local
   resolution: "@vue-aria/progress@workspace:packages/@vue-aria/progress"
+  dependencies:
+    "@vue-types/progress": "npm:^3.5.17"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12078,6 +12146,8 @@ __metadata:
 "@vue-aria/radio@workspace:*, @vue-aria/radio@workspace:packages/@vue-aria/radio":
   version: 0.0.0-use.local
   resolution: "@vue-aria/radio@workspace:packages/@vue-aria/radio"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12086,6 +12156,8 @@ __metadata:
 "@vue-aria/searchfield@workspace:*, @vue-aria/searchfield@workspace:packages/@vue-aria/searchfield":
   version: 0.0.0-use.local
   resolution: "@vue-aria/searchfield@workspace:packages/@vue-aria/searchfield"
+  dependencies:
+    "@vue-types/searchfield": "npm:^3.6.7"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12094,6 +12166,8 @@ __metadata:
 "@vue-aria/select@workspace:*, @vue-aria/select@workspace:packages/@vue-aria/select":
   version: 0.0.0-use.local
   resolution: "@vue-aria/select@workspace:packages/@vue-aria/select"
+  dependencies:
+    "@vue-types/select": "npm:^3.12.1"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12154,6 +12228,7 @@ __metadata:
   resolution: "@vue-aria/switch@workspace:packages/@vue-aria/switch"
   dependencies:
     "@vue-aria/checkbox": "workspace:*"
+    "@vue-types/switch": "npm:^3.5.16"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12172,6 +12247,9 @@ __metadata:
 "@vue-aria/tabs@workspace:*, @vue-aria/tabs@workspace:packages/@vue-aria/tabs":
   version: 0.0.0-use.local
   resolution: "@vue-aria/tabs@workspace:packages/@vue-aria/tabs"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+    "@vue-types/tabs": "npm:^3.3.21"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12218,6 +12296,8 @@ __metadata:
 "@vue-aria/toggle@workspace:*, @vue-aria/toggle@workspace:packages/@vue-aria/toggle":
   version: 0.0.0-use.local
   resolution: "@vue-aria/toggle@workspace:packages/@vue-aria/toggle"
+  dependencies:
+    "@vue-types/checkbox": "npm:^3.10.3"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12250,6 +12330,7 @@ __metadata:
   dependencies:
     "@vue-aria/gridlist": "workspace:*"
     "@vue-aria/i18n": "workspace:*"
+    "@vue-stately/tree": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12288,7 +12369,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/accordion@workspace:packages/@vue-spectrum/accordion"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-aria/utils": "workspace:*"
+    "@vue-spectrum/utils": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12298,7 +12381,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/actionbar@workspace:packages/@vue-spectrum/actionbar"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-stately/collections": "workspace:*"
+    "@vue-types/actionbar": "npm:^3.1.20"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12308,7 +12393,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/actiongroup@workspace:packages/@vue-spectrum/actiongroup"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-stately/collections": "workspace:*"
+    "@vue-types/actiongroup": "npm:^3.4.22"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12318,7 +12406,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/autocomplete@workspace:packages/@vue-spectrum/autocomplete"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-aria/utils": "workspace:*"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-stately/collections": "workspace:*"
+    "@vue-types/autocomplete": "npm:3.0.0-alpha.37"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12328,7 +12420,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/avatar@workspace:packages/@vue-spectrum/avatar"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/avatar": "npm:^3.0.20"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12338,7 +12432,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/badge@workspace:packages/@vue-spectrum/badge"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/components": "workspace:*"
+    "@vue-types/badge": "npm:^3.1.22"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12348,7 +12444,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/breadcrumbs@workspace:packages/@vue-spectrum/breadcrumbs"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-stately/collections": "workspace:*"
+    "@vue-types/breadcrumbs": "npm:^3.7.18"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12358,7 +12457,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/button@workspace:packages/@vue-spectrum/button"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-aria/utils": "workspace:*"
+    "@vue-spectrum/utils": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12368,7 +12469,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/buttongroup@workspace:packages/@vue-spectrum/buttongroup"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/components": "workspace:*"
+    "@vue-types/buttongroup": "npm:^3.3.22"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12378,7 +12481,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/calendar@workspace:packages/@vue-spectrum/calendar"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/calendar": "npm:^3.8.2"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12388,7 +12493,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/card@workspace:packages/@vue-spectrum/card"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-aria/utils": "workspace:*"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/card": "npm:3.0.0-alpha.42"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12398,7 +12506,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/checkbox@workspace:packages/@vue-spectrum/checkbox"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-aria/utils": "workspace:*"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/checkbox": "npm:^3.9.1"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12408,7 +12519,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/color@workspace:packages/@vue-spectrum/color"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/color": "npm:^3.1.3"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12418,13 +12531,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/combobox@workspace:packages/@vue-spectrum/combobox"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-aria/utils": "workspace:*"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-stately/collections": "workspace:*"
+    "@vue-types/combobox": "npm:^3.13.11"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
   linkType: soft
 
-"@vue-spectrum/components@npm:^0.1.0, @vue-spectrum/components@workspace:*, @vue-spectrum/components@workspace:packages/@vue-spectrum/components":
+"@vue-spectrum/components@workspace:*, @vue-spectrum/components@workspace:packages/@vue-spectrum/components":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/components@workspace:packages/@vue-spectrum/components"
   peerDependencies:
@@ -12436,7 +12553,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/contextualhelp@workspace:packages/@vue-spectrum/contextualhelp"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/button": "workspace:*"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/contextualhelp": "npm:^3.2.23"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12446,7 +12566,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/datepicker@workspace:packages/@vue-spectrum/datepicker"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-aria/utils": "workspace:*"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/datepicker": "npm:^3.13.4"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12456,7 +12579,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/dialog@workspace:packages/@vue-spectrum/dialog"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/button": "workspace:*"
+    "@vue-spectrum/utils": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12466,7 +12591,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/divider@workspace:packages/@vue-spectrum/divider"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/components": "workspace:*"
+    "@vue-types/divider": "npm:^3.3.22"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12476,7 +12603,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/dnd@workspace:packages/@vue-spectrum/dnd"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@vue-spectrum/components": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12486,7 +12613,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/dropzone@workspace:packages/@vue-spectrum/dropzone"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12496,7 +12624,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/filetrigger@workspace:packages/@vue-spectrum/filetrigger"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@vue-spectrum/components": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12506,7 +12634,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/form@workspace:packages/@vue-spectrum/form"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/components": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12516,7 +12645,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/icon@workspace:packages/@vue-spectrum/icon"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12526,7 +12656,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/illustratedmessage@workspace:packages/@vue-spectrum/illustratedmessage"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/illustratedmessage": "npm:^3.3.22"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12536,7 +12668,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/image@workspace:packages/@vue-spectrum/image"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/image": "npm:^3.5.3"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12546,7 +12680,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/inlinealert@workspace:packages/@vue-spectrum/inlinealert"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-aria/utils": "workspace:*"
+    "@vue-spectrum/utils": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12556,7 +12692,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/label@workspace:packages/@vue-spectrum/label"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12566,7 +12703,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/labeledvalue@workspace:packages/@vue-spectrum/labeledvalue"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/components": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12576,7 +12714,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/layout@workspace:packages/@vue-spectrum/layout"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@vue-spectrum/components": "workspace:*"
+    "@vue-types/layout": "npm:^3.3.28"
+    "@vue-types/shared": "npm:^3.33.0"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12586,7 +12726,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/link@workspace:packages/@vue-spectrum/link"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-aria/utils": "workspace:*"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/link": "npm:^3.6.6"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12596,7 +12739,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/list@workspace:packages/@vue-spectrum/list"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-stately/collections": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12606,7 +12751,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/listbox@workspace:packages/@vue-spectrum/listbox"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12616,7 +12762,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/menu@workspace:packages/@vue-spectrum/menu"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12626,7 +12773,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/meter@workspace:packages/@vue-spectrum/meter"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/meter": "npm:^3.4.14"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12636,7 +12785,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/numberfield@workspace:packages/@vue-spectrum/numberfield"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-aria/utils": "workspace:*"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/numberfield": "npm:^3.8.17"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12646,7 +12798,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/overlays@workspace:packages/@vue-spectrum/overlays"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12656,7 +12809,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/picker@workspace:packages/@vue-spectrum/picker"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/select": "npm:^3.12.1"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12666,7 +12821,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/progress@workspace:packages/@vue-spectrum/progress"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/progress": "npm:^3.4.7"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12676,7 +12833,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/provider@workspace:packages/@vue-spectrum/provider"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/components": "workspace:*"
+    "@vue-spectrum/theme-default": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12686,7 +12845,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/radio@workspace:packages/@vue-spectrum/radio"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-aria/utils": "workspace:*"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/radio": "npm:^3.9.3"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12696,7 +12858,16 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/s2@workspace:packages/@vue-spectrum/s2"
   dependencies:
-    "@vue-spectrum/components": "workspace:*"
+    "@vue-spectrum/button": "workspace:*"
+    "@vue-spectrum/checkbox": "workspace:*"
+    "@vue-spectrum/dialog": "workspace:*"
+    "@vue-spectrum/overlays": "workspace:*"
+    "@vue-spectrum/provider": "workspace:*"
+    "@vue-spectrum/radio": "workspace:*"
+    "@vue-spectrum/switch": "workspace:*"
+    "@vue-spectrum/table": "workspace:*"
+    "@vue-spectrum/textfield": "workspace:*"
+    "@vue-spectrum/tree": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12706,7 +12877,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/searchfield@workspace:packages/@vue-spectrum/searchfield"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/searchfield": "npm:^3.6.7"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12716,7 +12889,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/slider@workspace:packages/@vue-spectrum/slider"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/slider": "npm:^3.8.3"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12726,7 +12901,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/statuslight@workspace:packages/@vue-spectrum/statuslight"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/statuslight": "npm:^3.3.22"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12738,6 +12915,7 @@ __metadata:
   dependencies:
     "@vue-aria/selection": "workspace:*"
     "@vue-aria/steplist": "workspace:*"
+    "@vue-stately/collections": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12765,7 +12943,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/switch@workspace:packages/@vue-spectrum/switch"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-aria/utils": "workspace:*"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/switch": "npm:^3.5.16"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12775,7 +12956,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/table@workspace:packages/@vue-spectrum/table"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12796,6 +12978,7 @@ __metadata:
   resolution: "@vue-spectrum/tag@workspace:packages/@vue-spectrum/tag"
   dependencies:
     "@vue-aria/tag": "workspace:*"
+    "@vue-stately/collections": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12815,7 +12998,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/text@workspace:packages/@vue-spectrum/text"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@vue-spectrum/components": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12825,7 +13008,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/textfield@workspace:packages/@vue-spectrum/textfield"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-aria/utils": "workspace:*"
+    "@vue-spectrum/utils": "workspace:*"
+    "@vue-types/textfield": "npm:^3.8.3"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12834,6 +13020,8 @@ __metadata:
 "@vue-spectrum/theme-dark@workspace:*, @vue-spectrum/theme-dark@workspace:packages/@vue-spectrum/theme-dark":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/theme-dark@workspace:packages/@vue-spectrum/theme-dark"
+  dependencies:
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12842,6 +13030,8 @@ __metadata:
 "@vue-spectrum/theme-default@workspace:*, @vue-spectrum/theme-default@workspace:packages/@vue-spectrum/theme-default":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/theme-default@workspace:packages/@vue-spectrum/theme-default"
+  dependencies:
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12851,6 +13041,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/theme-express@workspace:packages/@vue-spectrum/theme-express"
   dependencies:
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
     "@vue-spectrum/theme-default": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
@@ -12860,6 +13051,8 @@ __metadata:
 "@vue-spectrum/theme-light@workspace:*, @vue-spectrum/theme-light@workspace:packages/@vue-spectrum/theme-light":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/theme-light@workspace:packages/@vue-spectrum/theme-light"
+  dependencies:
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12880,6 +13073,7 @@ __metadata:
   resolution: "@vue-spectrum/tooltip@workspace:packages/@vue-spectrum/tooltip"
   dependencies:
     "@vue-aria/tooltip": "workspace:*"
+    "@vue-types/tooltip": "npm:^3.5.1"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12888,8 +13082,6 @@ __metadata:
 "@vue-spectrum/tree@workspace:*, @vue-spectrum/tree@workspace:packages/@vue-spectrum/tree":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/tree@workspace:packages/@vue-spectrum/tree"
-  dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12909,7 +13101,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/view@workspace:packages/@vue-spectrum/view"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@vue-spectrum/components": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12919,7 +13111,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/well@workspace:packages/@vue-spectrum/well"
   dependencies:
-    "@vue-spectrum/components": "npm:^0.1.0"
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/components": "workspace:*"
+    "@vue-types/well": "npm:^3.3.22"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12946,6 +13140,8 @@ __metadata:
 "@vue-stately/checkbox@workspace:*, @vue-stately/checkbox@workspace:packages/@vue-stately/checkbox":
   version: 0.0.0-use.local
   resolution: "@vue-stately/checkbox@workspace:packages/@vue-stately/checkbox"
+  dependencies:
+    "@vue-types/checkbox": "npm:^3.10.3"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12964,6 +13160,8 @@ __metadata:
 "@vue-stately/color@workspace:*, @vue-stately/color@workspace:packages/@vue-stately/color":
   version: 0.0.0-use.local
   resolution: "@vue-stately/color@workspace:packages/@vue-stately/color"
+  dependencies:
+    "@vue-types/color": "npm:^3.1.3"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -13088,6 +13286,7 @@ __metadata:
   dependencies:
     "@vue-aria/utils": "workspace:*"
     "@vue-stately/form": "workspace:*"
+    "@vue-types/radio": "npm:^3.9.3"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -13096,6 +13295,8 @@ __metadata:
 "@vue-stately/searchfield@workspace:*, @vue-stately/searchfield@workspace:packages/@vue-stately/searchfield":
   version: 0.0.0-use.local
   resolution: "@vue-stately/searchfield@workspace:packages/@vue-stately/searchfield"
+  dependencies:
+    "@vue-types/searchfield": "npm:^3.6.7"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -13108,6 +13309,7 @@ __metadata:
     "@vue-stately/form": "workspace:*"
     "@vue-stately/list": "workspace:*"
     "@vue-stately/overlays": "workspace:*"
+    "@vue-types/select": "npm:^3.12.1"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -13143,6 +13345,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-stately/table@workspace:packages/@vue-stately/table"
   dependencies:
+    "@vue-stately/collections": "workspace:*"
     "@vue-stately/grid": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
@@ -13154,6 +13357,7 @@ __metadata:
   resolution: "@vue-stately/tabs@workspace:packages/@vue-stately/tabs"
   dependencies:
     "@vue-stately/list": "workspace:*"
+    "@vue-types/tabs": "npm:^3.3.21"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -13170,6 +13374,8 @@ __metadata:
 "@vue-stately/toggle@workspace:*, @vue-stately/toggle@workspace:packages/@vue-stately/toggle":
   version: 0.0.0-use.local
   resolution: "@vue-stately/toggle@workspace:packages/@vue-stately/toggle"
+  dependencies:
+    "@vue-types/checkbox": "npm:^3.10.3"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -13211,7 +13417,407 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@vue/compiler-core@npm:3.5.28":
+"@vue-types/actionbar@npm:^3.1.20, @vue-types/actionbar@workspace:packages/@vue-types/actionbar":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/actionbar@workspace:packages/@vue-types/actionbar"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/actiongroup@npm:^3.4.22, @vue-types/actiongroup@workspace:packages/@vue-types/actiongroup":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/actiongroup@workspace:packages/@vue-types/actiongroup"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/autocomplete@npm:3.0.0-alpha.37, @vue-types/autocomplete@workspace:packages/@vue-types/autocomplete":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/autocomplete@workspace:packages/@vue-types/autocomplete"
+  dependencies:
+    "@vue-types/combobox": "npm:^3.13.11"
+    "@vue-types/searchfield": "npm:^3.6.7"
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/avatar@npm:^3.0.20, @vue-types/avatar@workspace:packages/@vue-types/avatar":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/avatar@workspace:packages/@vue-types/avatar"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/badge@npm:^3.1.22, @vue-types/badge@workspace:packages/@vue-types/badge":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/badge@workspace:packages/@vue-types/badge"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/breadcrumbs@npm:^3.7.18, @vue-types/breadcrumbs@workspace:packages/@vue-types/breadcrumbs":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/breadcrumbs@workspace:packages/@vue-types/breadcrumbs"
+  dependencies:
+    "@vue-types/link": "npm:^3.6.6"
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/button@workspace:packages/@vue-types/button":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/button@workspace:packages/@vue-types/button"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/buttongroup@npm:^3.3.22, @vue-types/buttongroup@workspace:packages/@vue-types/buttongroup":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/buttongroup@workspace:packages/@vue-types/buttongroup"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/calendar@npm:^3.8.2, @vue-types/calendar@workspace:packages/@vue-types/calendar":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/calendar@workspace:packages/@vue-types/calendar"
+  dependencies:
+    "@internationalized/date": "npm:^3.11.0"
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/card@npm:3.0.0-alpha.42, @vue-types/card@workspace:packages/@vue-types/card":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/card@workspace:packages/@vue-types/card"
+  dependencies:
+    "@vue-stately/virtualizer": "workspace:*"
+    "@vue-types/provider": "npm:^3.8.14"
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/checkbox@npm:^3.10.3, @vue-types/checkbox@npm:^3.9.1, @vue-types/checkbox@workspace:packages/@vue-types/checkbox":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/checkbox@workspace:packages/@vue-types/checkbox"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/color@npm:^3.1.3, @vue-types/color@workspace:packages/@vue-types/color":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/color@workspace:packages/@vue-types/color"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+    "@vue-types/slider": "npm:^3.8.3"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/combobox@npm:^3.13.11, @vue-types/combobox@workspace:packages/@vue-types/combobox":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/combobox@workspace:packages/@vue-types/combobox"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/contextualhelp@npm:^3.2.23, @vue-types/contextualhelp@workspace:packages/@vue-types/contextualhelp":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/contextualhelp@workspace:packages/@vue-types/contextualhelp"
+  dependencies:
+    "@vue-types/overlays": "npm:^3.9.3"
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/datepicker@npm:^3.13.4, @vue-types/datepicker@workspace:packages/@vue-types/datepicker":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/datepicker@workspace:packages/@vue-types/datepicker"
+  dependencies:
+    "@internationalized/date": "npm:^3.11.0"
+    "@vue-types/calendar": "npm:^3.8.2"
+    "@vue-types/overlays": "npm:^3.9.3"
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/dialog@workspace:packages/@vue-types/dialog":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/dialog@workspace:packages/@vue-types/dialog"
+  dependencies:
+    "@vue-types/overlays": "npm:^3.9.3"
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/divider@npm:^3.3.22, @vue-types/divider@workspace:packages/@vue-types/divider":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/divider@workspace:packages/@vue-types/divider"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/form@workspace:packages/@vue-types/form":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/form@workspace:packages/@vue-types/form"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/grid@npm:^3.3.7, @vue-types/grid@workspace:packages/@vue-types/grid":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/grid@workspace:packages/@vue-types/grid"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/illustratedmessage@npm:^3.3.22, @vue-types/illustratedmessage@workspace:packages/@vue-types/illustratedmessage":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/illustratedmessage@workspace:packages/@vue-types/illustratedmessage"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/image@npm:^3.5.3, @vue-types/image@workspace:packages/@vue-types/image":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/image@workspace:packages/@vue-types/image"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/label@workspace:packages/@vue-types/label":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/label@workspace:packages/@vue-types/label"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/layout@npm:^3.3.28, @vue-types/layout@workspace:packages/@vue-types/layout":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/layout@workspace:packages/@vue-types/layout"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/link@npm:^3.6.6, @vue-types/link@workspace:packages/@vue-types/link":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/link@workspace:packages/@vue-types/link"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/list@workspace:packages/@vue-types/list":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/list@workspace:packages/@vue-types/list"
+  dependencies:
+    "@vue-aria/gridlist": "workspace:*"
+    "@vue-spectrum/list": "workspace:*"
+  peerDependencies:
+    "@vue-spectrum/provider": "workspace:*"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/listbox@npm:^3.7.5, @vue-types/listbox@workspace:packages/@vue-types/listbox":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/listbox@workspace:packages/@vue-types/listbox"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/menu@npm:^3.10.6, @vue-types/menu@workspace:packages/@vue-types/menu":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/menu@workspace:packages/@vue-types/menu"
+  dependencies:
+    "@vue-types/overlays": "npm:^3.9.3"
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/meter@npm:^3.4.14, @vue-types/meter@workspace:packages/@vue-types/meter":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/meter@workspace:packages/@vue-types/meter"
+  dependencies:
+    "@vue-types/progress": "npm:^3.5.17"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/numberfield@npm:^3.8.17, @vue-types/numberfield@workspace:packages/@vue-types/numberfield":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/numberfield@workspace:packages/@vue-types/numberfield"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/overlays@npm:^3.9.3, @vue-types/overlays@workspace:packages/@vue-types/overlays":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/overlays@workspace:packages/@vue-types/overlays"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/progress@npm:^3.4.7, @vue-types/progress@npm:^3.5.17, @vue-types/progress@workspace:packages/@vue-types/progress":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/progress@workspace:packages/@vue-types/progress"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/provider@npm:^3.8.14, @vue-types/provider@workspace:packages/@vue-types/provider":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/provider@workspace:packages/@vue-types/provider"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/radio@npm:^3.9.3, @vue-types/radio@workspace:packages/@vue-types/radio":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/radio@workspace:packages/@vue-types/radio"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/react@workspace:packages/@vue-types/react":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/react@workspace:packages/@vue-types/react"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/searchfield@npm:^3.6.7, @vue-types/searchfield@workspace:packages/@vue-types/searchfield":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/searchfield@workspace:packages/@vue-types/searchfield"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+    "@vue-types/textfield": "npm:^3.12.7"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/select@npm:^3.12.1, @vue-types/select@workspace:packages/@vue-types/select":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/select@workspace:packages/@vue-types/select"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/shared@npm:^3.1.0, @vue-types/shared@npm:^3.33.0, @vue-types/shared@workspace:packages/@vue-types/shared":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/shared@workspace:packages/@vue-types/shared"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/sidenav@workspace:packages/@vue-types/sidenav":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/sidenav@workspace:packages/@vue-types/sidenav"
+  dependencies:
+    "@vue-stately/virtualizer": "workspace:*"
+    "@vue-types/shared": "npm:^3.1.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/slider@npm:^3.8.3, @vue-types/slider@workspace:packages/@vue-types/slider":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/slider@workspace:packages/@vue-types/slider"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/statuslight@npm:^3.3.22, @vue-types/statuslight@workspace:packages/@vue-types/statuslight":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/statuslight@workspace:packages/@vue-types/statuslight"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/switch@npm:^3.5.16, @vue-types/switch@workspace:packages/@vue-types/switch":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/switch@workspace:packages/@vue-types/switch"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/table@workspace:packages/@vue-types/table":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/table@workspace:packages/@vue-types/table"
+  dependencies:
+    "@vue-types/grid": "npm:^3.3.7"
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/tabs@npm:^3.3.21, @vue-types/tabs@workspace:packages/@vue-types/tabs":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/tabs@workspace:packages/@vue-types/tabs"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/text@workspace:packages/@vue-types/text":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/text@workspace:packages/@vue-types/text"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/textfield@npm:^3.12.7, @vue-types/textfield@npm:^3.8.3, @vue-types/textfield@workspace:packages/@vue-types/textfield":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/textfield@workspace:packages/@vue-types/textfield"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/tooltip@npm:^3.5.1, @vue-types/tooltip@workspace:packages/@vue-types/tooltip":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/tooltip@workspace:packages/@vue-types/tooltip"
+  dependencies:
+    "@vue-types/overlays": "npm:^3.9.3"
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/view@workspace:packages/@vue-types/view":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/view@workspace:packages/@vue-types/view"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue-types/well@npm:^3.3.22, @vue-types/well@workspace:packages/@vue-types/well":
+  version: 0.0.0-use.local
+  resolution: "@vue-types/well@workspace:packages/@vue-types/well"
+  dependencies:
+    "@vue-types/shared": "npm:^3.33.0"
+  languageName: unknown
+  linkType: soft
+
+"@vue/compiler-core@npm:3.5.28, @vue/compiler-core@npm:^3.0.0":
   version: 3.5.28
   resolution: "@vue/compiler-core@npm:3.5.28"
   dependencies:
@@ -13224,7 +13830,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/compiler-dom@npm:3.5.28, @vue/compiler-dom@npm:^3.5.0":
+"@vue/compiler-dom@npm:3.5.28, @vue/compiler-dom@npm:^3.2.0, @vue/compiler-dom@npm:^3.5.0":
   version: 3.5.28
   resolution: "@vue/compiler-dom@npm:3.5.28"
   dependencies:
@@ -13234,7 +13840,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vue/compiler-sfc@npm:3.5.28":
+"@vue/compiler-sfc@npm:3.5.28, @vue/compiler-sfc@npm:^3.2.0":
   version: 3.5.28
   resolution: "@vue/compiler-sfc@npm:3.5.28"
   dependencies:
@@ -13466,6 +14072,15 @@ __metadata:
   dependencies:
     acorn: "npm:^8.11.0"
   checksum: 10c0/4a9e24313e6a0a7b389e712ba69b66b455b4cb25988903506a8d247e7b126f02060b05a8a5b738a9284214e4ca95f383dd93443a4ba84f1af9b528305c7f243b
+  languageName: node
+  linkType: hard
+
+"acorn@npm:^7.1.1":
+  version: 7.4.1
+  resolution: "acorn@npm:7.4.1"
+  bin:
+    acorn: bin/acorn
+  checksum: 10c0/bd0b2c2b0f334bbee48828ff897c12bd2eb5898d03bf556dcc8942022cec795ac5bb5b6b585e2de687db6231faf07e096b59a361231dd8c9344d5df5f7f0e526
   languageName: node
   linkType: hard
 
@@ -14024,7 +14639,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"asap@npm:^2.0.0":
+"asap@npm:^2.0.0, asap@npm:~2.0.3":
   version: 2.0.6
   resolution: "asap@npm:2.0.6"
   checksum: 10c0/c6d5e39fe1f15e4b87677460bd66b66050cd14c772269cee6688824c1410a08ab20254bb6784f9afb75af9144a9f9a7692d49547f4d19d715aeb7c0318f3136d
@@ -14037,6 +14652,13 @@ __metadata:
   dependencies:
     safer-buffer: "npm:~2.1.0"
   checksum: 10c0/cdd85010a393ec7b88b127c879a0a580f65ea5f919605e5264bc70cefaa295e9ecb1cfe045fbd76f3dbbea9ee6ab4acd750ae81b39994c61a7e80645b0cbdc42
+  languageName: node
+  linkType: hard
+
+"assert-never@npm:^1.2.1":
+  version: 1.4.0
+  resolution: "assert-never@npm:1.4.0"
+  checksum: 10c0/494db08b89fb43d6231c9b4c48da22824f1912d88992bf0268e43b3dad0f64bd56d380addbb997d2dea7d859421d5e2904e8bd01243794f2bb5bfbc8d32d1fc6
   languageName: node
   linkType: hard
 
@@ -14499,6 +15121,15 @@ __metadata:
     lodash: "npm:^4.17.4"
     to-fast-properties: "npm:^1.0.3"
   checksum: 10c0/cabe371de1b32c4bbb1fd4ed0fe8a8726d42e5ad7d5cefb83cdae6de0f0a152dce591e4026719743fdf3aa45f84fea2c8851fb822fbe29b0c78a1f0094b67418
+  languageName: node
+  linkType: hard
+
+"babel-walk@npm:3.0.0-canary-5":
+  version: 3.0.0-canary-5
+  resolution: "babel-walk@npm:3.0.0-canary-5"
+  dependencies:
+    "@babel/types": "npm:^7.9.6"
+  checksum: 10c0/17b689874d15c37714cedf6797dd9321dcb998d8e0dda9a8fe8c8bbbf128bbdeb8935cf56e8630d6b67eae76d2a0bc1e470751e082c3b0e30b80d58beafb5e64
   languageName: node
   linkType: hard
 
@@ -15204,6 +15835,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"character-parser@npm:^2.2.0":
+  version: 2.2.0
+  resolution: "character-parser@npm:2.2.0"
+  dependencies:
+    is-regex: "npm:^1.0.3"
+  checksum: 10c0/5a8d3eff2c912a6878c84e2ebf9d42524e858aa7e1a1c7e8bb79ab54da109ad008fe9057a9d2b3230541d7ff858eda98983a2ae15db57ba01af2e989d29e932e
+  languageName: node
+  linkType: hard
+
 "character-reference-invalid@npm:^2.0.0":
   version: 2.0.1
   resolution: "character-reference-invalid@npm:2.0.1"
@@ -15821,6 +16461,16 @@ __metadata:
   version: 1.1.0
   resolution: "console-control-strings@npm:1.1.0"
   checksum: 10c0/7ab51d30b52d461412cd467721bb82afe695da78fff8f29fe6f6b9cbaac9a2328e27a22a966014df9532100f6dd85370460be8130b9c677891ba36d96a343f50
+  languageName: node
+  linkType: hard
+
+"constantinople@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "constantinople@npm:4.0.1"
+  dependencies:
+    "@babel/parser": "npm:^7.6.0"
+    "@babel/types": "npm:^7.6.1"
+  checksum: 10c0/15129adef19b1af2c3ade8bd38f97c34781bf461472a30ab414384b28d072be83070c8d2175787c045ef7c222c415101ae609936e7903427796a0c0eca8449fd
   languageName: node
   linkType: hard
 
@@ -16967,6 +17617,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"doctypes@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "doctypes@npm:1.1.0"
+  checksum: 10c0/b3f9d597ad8b9ac6aeba9d64df61f0098174f7570e3d34f7ee245ebc736c7bee122d9738a18e22010b98983fd9a340d63043d3841f02d8a7742a2d96d2c72610
+  languageName: node
+  linkType: hard
+
 "dom-accessibility-api@npm:^0.5.6, dom-accessibility-api@npm:^0.5.9":
   version: 0.5.10
   resolution: "dom-accessibility-api@npm:0.5.10"
@@ -18088,6 +18745,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"esm-resolve@npm:^1.0.8":
+  version: 1.0.11
+  resolution: "esm-resolve@npm:1.0.11"
+  checksum: 10c0/c57bba8a2156e99f76433f24687da710fc366024870e2d2a5aa5c357973956d63c306595d97028eeb329a90ee6e6e9f4a4ca26a529c4f949ed3d66aff3d1d2ee
+  languageName: node
+  linkType: hard
+
 "espree@npm:^10.0.1, espree@npm:^10.1.0, espree@npm:^10.2.0":
   version: 10.2.0
   resolution: "espree@npm:10.2.0"
@@ -18771,6 +19435,13 @@ __metadata:
     fs-exists-sync: "npm:^0.1.0"
     resolve-dir: "npm:^0.1.0"
   checksum: 10c0/5ad62a983ef1371084074911daaec93dae7f0a0e73478024341884d923a56598a4c1bd2e5c949919e47e86141e4e5576ad073f612cb56739f6b3f5dbe2e7e7c1
+  languageName: node
+  linkType: hard
+
+"find-package-json@npm:^1.2.0":
+  version: 1.2.0
+  resolution: "find-package-json@npm:1.2.0"
+  checksum: 10c0/85d6c97afb9f8f0deb0d344a1c4eb8027347cf4d61666c28d3ac3f913e916684441218682b3dd6f8ad570e5d43c96a7db521f70183d70df559d07e1f99cdc635
   languageName: node
   linkType: hard
 
@@ -20068,6 +20739,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"hash-sum@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "hash-sum@npm:2.0.0"
+  checksum: 10c0/45dee9cf318d7a9b0ba5f766d35bfa14eb9483f9b878b1f980f097a87c2a490219774d42962c0c5c9bf53b1cca51724307bc35a0781218236da3d33715b4962d
+  languageName: node
+  linkType: hard
+
 "hasha@npm:^5.0.0":
   version: 5.2.2
   resolution: "hasha@npm:5.2.2"
@@ -20971,6 +21649,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-core-module@npm:^2.16.1":
+  version: 2.16.1
+  resolution: "is-core-module@npm:2.16.1"
+  dependencies:
+    hasown: "npm:^2.0.2"
+  checksum: 10c0/898443c14780a577e807618aaae2b6f745c8538eca5c7bc11388a3f2dc6de82b9902bcc7eb74f07be672b11bbe82dd6a6edded44a00cb3d8f933d0459905eedd
+  languageName: node
+  linkType: hard
+
 "is-data-descriptor@npm:^0.1.4":
   version: 0.1.4
   resolution: "is-data-descriptor@npm:0.1.4"
@@ -21056,6 +21743,16 @@ __metadata:
   bin:
     is-docker: cli.js
   checksum: 10c0/e828365958d155f90c409cdbe958f64051d99e8aedc2c8c4cd7c89dcf35329daed42f7b99346f7828df013e27deb8f721cf9408ba878c76eb9e8290235fbcdcc
+  languageName: node
+  linkType: hard
+
+"is-expression@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "is-expression@npm:4.0.0"
+  dependencies:
+    acorn: "npm:^7.1.1"
+    object-assign: "npm:^4.1.1"
+  checksum: 10c0/541831d39d3e7bfc8cecd966d6b0f3c0e6d9055342f17b634fb23e74f51ce90f1bfc3cf231c722fe003a61e8d4f0b9e07244fdaba57f4fc70a163c74006fd5a0
   languageName: node
   linkType: hard
 
@@ -21308,7 +22005,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-promise@npm:^2.1.0":
+"is-promise@npm:^2.0.0, is-promise@npm:^2.1.0":
   version: 2.2.2
   resolution: "is-promise@npm:2.2.2"
   checksum: 10c0/2dba959812380e45b3df0fb12e7cb4d4528c989c7abb03ececb1d1fd6ab1cbfee956ca9daa587b9db1d8ac3c1e5738cf217bdb3dfd99df8c691be4c00ae09069
@@ -21342,6 +22039,18 @@ __metadata:
   dependencies:
     "@types/estree": "npm:*"
   checksum: 10c0/a61aa6e659d926af73afb0ba13438fc2ac92fdb8b89a6fae9069ddb3fc0da017fe082f492da6ac8790e17499f5fed2b996e6729cfdd6d8a55cdb23973fb5ebb5
+  languageName: node
+  linkType: hard
+
+"is-regex@npm:^1.0.3":
+  version: 1.2.1
+  resolution: "is-regex@npm:1.2.1"
+  dependencies:
+    call-bound: "npm:^1.0.2"
+    gopd: "npm:^1.2.0"
+    has-tostringtag: "npm:^1.0.2"
+    hasown: "npm:^2.0.2"
+  checksum: 10c0/1d3715d2b7889932349241680032e85d0b492cfcb045acb75ffc2c3085e8d561184f1f7e84b6f8321935b4aea39bc9c6ba74ed595b57ce4881a51dfdbc214e04
   languageName: node
   linkType: hard
 
@@ -22361,6 +23070,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"js-stringify@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "js-stringify@npm:1.0.2"
+  checksum: 10c0/a450c04fde3a7e1c27f1c3c4300433f8d79322f9e3c2e76266843cef8c0b5a69b5f11b5f173212b2f15f2df09e068ef7ddf46ef775e2486f3006a6f4e912578d
+  languageName: node
+  linkType: hard
+
 "js-tokens@npm:^3.0.0 || ^4.0.0, js-tokens@npm:^4.0.0":
   version: 4.0.0
   resolution: "js-tokens@npm:4.0.0"
@@ -22692,6 +23408,16 @@ __metadata:
     json-schema: "npm:0.4.0"
     verror: "npm:1.10.0"
   checksum: 10c0/677be2d41df536c92c6d0114a492ef197084018cfbb1a3e10b1fa1aad889564b2e3a7baa6af7949cc2d73678f42368b0be165a26bd4e4de6883a30dd6a24e98d
+  languageName: node
+  linkType: hard
+
+"jstransformer@npm:1.0.0":
+  version: 1.0.0
+  resolution: "jstransformer@npm:1.0.0"
+  dependencies:
+    is-promise: "npm:^2.0.0"
+    promise: "npm:^7.0.1"
+  checksum: 10c0/11f9b4f368a55878dd7973154cd83b0adca27f974d21217728652530775b2bec281e92109de66f0c9e37c76af796d5b76b33f3e38363214a83d102d523a7285b
   languageName: node
   linkType: hard
 
@@ -23414,6 +24140,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"lru-cache@npm:^8.0.3":
+  version: 8.0.5
+  resolution: "lru-cache@npm:8.0.5"
+  checksum: 10c0/cd95a9c38497611c5a6453de39a881f6eb5865851a2a01b5f14104ff3fee515362a7b1e7de28606028f423802910ba05bdb8ae1aa7b0d54eae70c92f0cec10b2
+  languageName: node
+  linkType: hard
+
 "lucide-react@npm:^0.517.0":
   version: 0.517.0
   resolution: "lucide-react@npm:0.517.0"
@@ -23439,7 +24172,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"magic-string@npm:^0.30.12, magic-string@npm:^0.30.21":
+"magic-string@npm:^0.30.0, magic-string@npm:^0.30.12, magic-string@npm:^0.30.21":
   version: 0.30.21
   resolution: "magic-string@npm:0.30.21"
   dependencies:
@@ -26833,6 +27566,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"promise@npm:^7.0.1":
+  version: 7.3.1
+  resolution: "promise@npm:7.3.1"
+  dependencies:
+    asap: "npm:~2.0.3"
+  checksum: 10c0/742e5c0cc646af1f0746963b8776299701ad561ce2c70b49365d62c8db8ea3681b0a1bf0d4e2fe07910bf72f02d39e51e8e73dc8d7503c3501206ac908be107f
+  languageName: node
+  linkType: hard
+
 "prompts@npm:^2.0.1, prompts@npm:^2.4.1":
   version: 2.4.2
   resolution: "prompts@npm:2.4.2"
@@ -26921,6 +27663,133 @@ __metadata:
   version: 1.8.0
   resolution: "psl@npm:1.8.0"
   checksum: 10c0/b5f1956f7530860e1918e7238291689fdc3cab9c2c0cdbc47cde21addcc7f62495d794692cc1e43e54728d273f78037e8e73ac43009509a1a7f823341f4039c8
+  languageName: node
+  linkType: hard
+
+"pug-attrs@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "pug-attrs@npm:3.0.0"
+  dependencies:
+    constantinople: "npm:^4.0.1"
+    js-stringify: "npm:^1.0.2"
+    pug-runtime: "npm:^3.0.0"
+  checksum: 10c0/28178e91c05e8eb9130861c78dccc61eae3e1610931346065bd32ad0b08b023a8dcf2470c3b2409ba45a5098d6d7ed15687717e91cf77770c6381a18626e5194
+  languageName: node
+  linkType: hard
+
+"pug-code-gen@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "pug-code-gen@npm:3.0.3"
+  dependencies:
+    constantinople: "npm:^4.0.1"
+    doctypes: "npm:^1.1.0"
+    js-stringify: "npm:^1.0.2"
+    pug-attrs: "npm:^3.0.0"
+    pug-error: "npm:^2.1.0"
+    pug-runtime: "npm:^3.0.1"
+    void-elements: "npm:^3.1.0"
+    with: "npm:^7.0.0"
+  checksum: 10c0/517a93930dbc80bc7fa5f60ff324229a07cc5ab70ed9d344ce105e2fe24de68db5121c8457a9ba99cdc8d48dd18779dd34956ebfcab009b3c1c6843a3cade109
+  languageName: node
+  linkType: hard
+
+"pug-error@npm:^2.0.0, pug-error@npm:^2.1.0":
+  version: 2.1.0
+  resolution: "pug-error@npm:2.1.0"
+  checksum: 10c0/bbce339b17fab9890de84975c0cd8723a847bf65f35653d3ebcf77018e8ad91529d56e978ab80f4c64c9f4f07ef9e56e7a9fda3be44249c344a93ba11fccff79
+  languageName: node
+  linkType: hard
+
+"pug-filters@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "pug-filters@npm:4.0.0"
+  dependencies:
+    constantinople: "npm:^4.0.1"
+    jstransformer: "npm:1.0.0"
+    pug-error: "npm:^2.0.0"
+    pug-walk: "npm:^2.0.0"
+    resolve: "npm:^1.15.1"
+  checksum: 10c0/7ddd62f5eb97f5242858bd56d93ffed387fef3742210a53770c980020cf91a34384b84b7fc8f0de185b43dfa77de2c4d0f63f575a4c5b3887fdef4e64b8d559d
+  languageName: node
+  linkType: hard
+
+"pug-lexer@npm:^5.0.1":
+  version: 5.0.1
+  resolution: "pug-lexer@npm:5.0.1"
+  dependencies:
+    character-parser: "npm:^2.2.0"
+    is-expression: "npm:^4.0.0"
+    pug-error: "npm:^2.0.0"
+  checksum: 10c0/24195a5681953ab91c6a3ccd80a643f760dddb65e2f266bf8ccba145018ba0271536efe1572de2c2224163eb00873c2f1df0ad7ea7aa8bcbf79a66b586ca8435
+  languageName: node
+  linkType: hard
+
+"pug-linker@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "pug-linker@npm:4.0.0"
+  dependencies:
+    pug-error: "npm:^2.0.0"
+    pug-walk: "npm:^2.0.0"
+  checksum: 10c0/db754ff34cdd4ba9d9e2d9535cce2a74178f2172e848a5fa6381907cb5bfaa0d39d4cc3eb29893d35fc1c417e83ae3cfd434640ba7d3b635c63199104fae976c
+  languageName: node
+  linkType: hard
+
+"pug-load@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "pug-load@npm:3.0.0"
+  dependencies:
+    object-assign: "npm:^4.1.1"
+    pug-walk: "npm:^2.0.0"
+  checksum: 10c0/2a7659dfaf9872dd25d851f85e4c27fa447d907b1db3540030cd844614159ff181e067d8f2bedf90eb6b5b1ff03747253859ecbbb822e40f4834b15591d4e108
+  languageName: node
+  linkType: hard
+
+"pug-parser@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "pug-parser@npm:6.0.0"
+  dependencies:
+    pug-error: "npm:^2.0.0"
+    token-stream: "npm:1.0.0"
+  checksum: 10c0/faa6cec43afdeb2705eb8c68dfdb2e65836238df8043ae55295ffb72450b8c7a990ea1be60adbde19f58988b9e1d18a84ea42453e2c4f104d0031f78fda737b2
+  languageName: node
+  linkType: hard
+
+"pug-runtime@npm:^3.0.0, pug-runtime@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "pug-runtime@npm:3.0.1"
+  checksum: 10c0/0db8166d2e17695a6941d1de81dcb21c8a52921299b1e03bf6a0a3d2b0036b51cf98101b3937b731c745e8d3e0268cb0b728c02f61a80a25fcfaa15c594fb1be
+  languageName: node
+  linkType: hard
+
+"pug-strip-comments@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "pug-strip-comments@npm:2.0.0"
+  dependencies:
+    pug-error: "npm:^2.0.0"
+  checksum: 10c0/ca498adedaeba51dd836b20129bbd161e2d5a397a2baaa553b1e74e888caa2258dcd7326396fc6f8fed8c7b7f906cfebc4c386ccbee8888a27b2ca0d4d86d206
+  languageName: node
+  linkType: hard
+
+"pug-walk@npm:^2.0.0":
+  version: 2.0.0
+  resolution: "pug-walk@npm:2.0.0"
+  checksum: 10c0/005d63177bcf057f5a618b182f6d4600afb039200b07a381a0d89288a2b3126e763a0a6c40b758eab0731c8e63cad1bbcb46d96803b9ae9cfc879f6ef5a0f8f4
+  languageName: node
+  linkType: hard
+
+"pug@npm:^3.0.2":
+  version: 3.0.3
+  resolution: "pug@npm:3.0.3"
+  dependencies:
+    pug-code-gen: "npm:^3.0.3"
+    pug-filters: "npm:^4.0.0"
+    pug-lexer: "npm:^5.0.1"
+    pug-linker: "npm:^4.0.0"
+    pug-load: "npm:^3.0.0"
+    pug-parser: "npm:^6.0.0"
+    pug-runtime: "npm:^3.0.1"
+    pug-strip-comments: "npm:^2.0.0"
+  checksum: 10c0/bda53d3a6deea1d348cd5ab17427c77f3d74165510ad16f4fd182cc63618ad09388ecda317d17122ee890c8a68f9a54b96221fce7f44a332e463fdbb10a9d1e2
   languageName: node
   linkType: hard
 
@@ -28181,6 +29050,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"resolve@npm:^1.15.1":
+  version: 1.22.11
+  resolution: "resolve@npm:1.22.11"
+  dependencies:
+    is-core-module: "npm:^2.16.1"
+    path-parse: "npm:^1.0.7"
+    supports-preserve-symlinks-flag: "npm:^1.0.0"
+  bin:
+    resolve: bin/resolve
+  checksum: 10c0/f657191507530f2cbecb5815b1ee99b20741ea6ee02a59c57028e9ec4c2c8d7681afcc35febbd554ac0ded459db6f2d8153382c53a2f266cee2575e512674409
+  languageName: node
+  linkType: hard
+
 "resolve@npm:^2.0.0-next.5":
   version: 2.0.0-next.5
   resolution: "resolve@npm:2.0.0-next.5"
@@ -28204,6 +29086,19 @@ __metadata:
   bin:
     resolve: bin/resolve
   checksum: 10c0/0446f024439cd2e50c6c8fa8ba77eaa8370b4180f401a96abf3d1ebc770ac51c1955e12764cde449fde3fff480a61f84388e3505ecdbab778f4bef5f8212c729
+  languageName: node
+  linkType: hard
+
+"resolve@patch:resolve@npm%3A^1.15.1#optional!builtin<compat/resolve>":
+  version: 1.22.11
+  resolution: "resolve@patch:resolve@npm%3A1.22.11#optional!builtin<compat/resolve>::version=1.22.11&hash=c3c19d"
+  dependencies:
+    is-core-module: "npm:^2.16.1"
+    path-parse: "npm:^1.0.7"
+    supports-preserve-symlinks-flag: "npm:^1.0.0"
+  bin:
+    resolve: bin/resolve
+  checksum: 10c0/ee5b182f2e37cb1165465e58c6abc797fec0a80b5ba3231607beb4677db0c9291ac010c47cf092b6daa2b7f518d69a0e21888e7e2b633f68d501a874212a8c63
   languageName: node
   linkType: hard
 
@@ -29537,7 +30432,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"storybook@npm:^8.6.14":
+"storybook@npm:8.6.14, storybook@npm:^8.6.14":
   version: 8.6.14
   resolution: "storybook@npm:8.6.14"
   dependencies:
@@ -30497,6 +31392,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"token-stream@npm:1.0.0":
+  version: 1.0.0
+  resolution: "token-stream@npm:1.0.0"
+  checksum: 10c0/c1924a89686fc035d579cbe856da12306571d5fe7408eeeebe80df7c25c5cc644b8ae102d5cbc0f085d0e105f391d1a48dc0e568520434c5b444ea6c7de2b822
+  languageName: node
+  linkType: hard
+
 "totalist@npm:^2.0.0":
   version: 2.0.0
   resolution: "totalist@npm:2.0.0"
@@ -30644,6 +31546,13 @@ __metadata:
   version: 2.2.0
   resolution: "ts-dedent@npm:2.2.0"
   checksum: 10c0/175adea838468cc2ff7d5e97f970dcb798bbcb623f29c6088cb21aa2880d207c5784be81ab1741f56b9ac37840cbaba0c0d79f7f8b67ffe61c02634cafa5c303
+  languageName: node
+  linkType: hard
+
+"ts-map@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "ts-map@npm:1.0.3"
+  checksum: 10c0/82a790ffff3b3b18a024402c612a327407de79ce318270d60c2a247f0fb7c1d3d3afecbf38098a7897fe444dd576d01c017942a5ab692317bd4316bc87f195a9
   languageName: node
   linkType: hard
 
@@ -30809,7 +31718,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-fest@npm:^2.19.0":
+"type-fest@npm:^2.19.0, type-fest@npm:~2.19":
   version: 2.19.0
   resolution: "type-fest@npm:2.19.0"
   checksum: 10c0/a5a7ecf2e654251613218c215c7493574594951c08e52ab9881c9df6a6da0aeca7528c213c622bc374b4e0cb5c443aa3ab758da4e3c959783ce884c3194e12cb
@@ -30937,6 +31846,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"typescript@npm:^5.7.3":
+  version: 5.9.3
+  resolution: "typescript@npm:5.9.3"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/6bd7552ce39f97e711db5aa048f6f9995b53f1c52f7d8667c1abdc1700c68a76a308f579cd309ce6b53646deb4e9a1be7c813a93baaf0a28ccd536a30270e1c5
+  languageName: node
+  linkType: hard
+
 "typescript@patch:typescript@npm%3A^5.5.0#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.8.2#optional!builtin<compat/typescript>":
   version: 5.8.2
   resolution: "typescript@patch:typescript@npm%3A5.8.2#optional!builtin<compat/typescript>::version=5.8.2&hash=b45daf"
@@ -30944,6 +31863,16 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/8a6cd29dfb59bd5a978407b93ae0edb530ee9376a5b95a42ad057a6f80ffb0c410489ccd6fe48d1d0dfad6e8adf5d62d3874bbd251f488ae30e11a1ce6dabd28
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@npm%3A^5.7.3#optional!builtin<compat/typescript>":
+  version: 5.9.3
+  resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=b45daf"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 10c0/6f7e53bf0d9702350deeb6f35e08b69cbc8b958c33e0ec77bdc0ad6a6c8e280f3959dcbfde6f5b0848bece57810696489deaaa53d75de3578ff255d168c1efbd
   languageName: node
   linkType: hard
 
@@ -31968,6 +32897,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"void-elements@npm:^3.1.0":
+  version: 3.1.0
+  resolution: "void-elements@npm:3.1.0"
+  checksum: 10c0/0b8686f9f9aa44012e9bd5eabf287ae0cde409b9a2854c5a2335cb83920c957668ac5876e3f0d158dd424744ac411a7270e64128556b451ed3bec875ef18534d
+  languageName: node
+  linkType: hard
+
 "vscode-uri@npm:^3.0.8":
   version: 3.1.0
   resolution: "vscode-uri@npm:3.1.0"
@@ -31975,10 +32911,65 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue-component-type-helpers@npm:^2.0.0":
+"vue-component-meta@npm:^2.0.0":
+  version: 2.2.12
+  resolution: "vue-component-meta@npm:2.2.12"
+  dependencies:
+    "@volar/typescript": "npm:2.4.15"
+    "@vue/language-core": "npm:2.2.12"
+    path-browserify: "npm:^1.0.1"
+    vue-component-type-helpers: "npm:2.2.12"
+  peerDependencies:
+    typescript: "*"
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: 10c0/2171fa5618b7799ac440ffcbce0a103181a1562d529ed6090304e290808d0c544cce08d7d8c82b68d32b5e9de5dce28e1e47bd931c0eb849261f23dfc5754150
+  languageName: node
+  linkType: hard
+
+"vue-component-type-helpers@npm:2.2.12, vue-component-type-helpers@npm:^2.0.0":
   version: 2.2.12
   resolution: "vue-component-type-helpers@npm:2.2.12"
   checksum: 10c0/ce15a2cdec4a57262a292ac1565aa18da9be73f3dfbcf28758a8a541199944bfff1aefb75802d6de5d955a5529c9667f1b651c659d14815c075e8965ac05175d
+  languageName: node
+  linkType: hard
+
+"vue-component-type-helpers@npm:latest":
+  version: 3.2.5
+  resolution: "vue-component-type-helpers@npm:3.2.5"
+  checksum: 10c0/dd419514a9688922dfcd3c9f517486fd5133686dd0760977a4df66a44744b8a6a476438ca7ba6c27f0406740fa40ec4ac21dd1cd6d01211d79ead7fbfa97e69f
+  languageName: node
+  linkType: hard
+
+"vue-docgen-api@npm:^4.75.1":
+  version: 4.79.2
+  resolution: "vue-docgen-api@npm:4.79.2"
+  dependencies:
+    "@babel/parser": "npm:^7.24.7"
+    "@babel/types": "npm:^7.24.7"
+    "@vue/compiler-dom": "npm:^3.2.0"
+    "@vue/compiler-sfc": "npm:^3.2.0"
+    ast-types: "npm:^0.16.1"
+    esm-resolve: "npm:^1.0.8"
+    hash-sum: "npm:^2.0.0"
+    lru-cache: "npm:^8.0.3"
+    pug: "npm:^3.0.2"
+    recast: "npm:^0.23.1"
+    ts-map: "npm:^1.0.3"
+    vue-inbrowser-compiler-independent-utils: "npm:^4.69.0"
+  peerDependencies:
+    vue: ">=2"
+  checksum: 10c0/c992cc5f34b0666f266850fd1a0c48dc118b4ca8a3b31ec2a42bd3ca8c02d9c654a1b39a27059bdeeef9de5f8730ead648f2eee31f66f70aec78105e908ce08c
+  languageName: node
+  linkType: hard
+
+"vue-inbrowser-compiler-independent-utils@npm:^4.69.0":
+  version: 4.71.1
+  resolution: "vue-inbrowser-compiler-independent-utils@npm:4.71.1"
+  peerDependencies:
+    vue: ">=2"
+  checksum: 10c0/ff2630639fb4e3a9974927845bb32a6c69a8be82fc224e2a623939a59af5537f1859c8eb13a1e3bfd0811c13409de5501deaf7c719a980f51d7f97bef140cdb5
   languageName: node
   linkType: hard
 
@@ -31986,6 +32977,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "vue-spectrum-starter@workspace:starters/vue"
   dependencies:
+    "@storybook/addon-a11y": "npm:8.6.14"
+    "@storybook/addon-essentials": "npm:8.6.14"
+    "@storybook/addon-interactions": "npm:8.6.14"
+    "@storybook/addon-links": "npm:8.6.14"
+    "@storybook/vue3-vite": "npm:8.6.14"
     "@vitejs/plugin-vue": "npm:^5.2.1"
     "@vue-aria/actiongroup": "workspace:*"
     "@vue-aria/aria-modal-polyfill": "workspace:*"
@@ -32140,6 +33136,7 @@ __metadata:
     "@vue-stately/virtualizer": "workspace:*"
     "@vue/test-utils": "npm:^2.4.6"
     jsdom: "npm:^26.0.0"
+    storybook: "npm:8.6.14"
     typescript: "npm:^5.8.2"
     vite: "npm:^5.4.19"
     vitest: "npm:^2.1.9"
@@ -32518,6 +33515,18 @@ __metadata:
   dependencies:
     execa: "npm:^1.0.0"
   checksum: 10c0/80bd211627c4fa0b93400a9e180d89c3f380f5a82c891c4e61249694a64ec9762883f09d9bcfca5ee6d4c89953c18d85f62368d40264640c82bd997df40e5b43
+  languageName: node
+  linkType: hard
+
+"with@npm:^7.0.0":
+  version: 7.0.2
+  resolution: "with@npm:7.0.2"
+  dependencies:
+    "@babel/parser": "npm:^7.9.6"
+    "@babel/types": "npm:^7.9.6"
+    assert-never: "npm:^1.2.1"
+    babel-walk: "npm:3.0.0-canary-5"
+  checksum: 10c0/99289e49afc4b1776afae0ef85e84cfa775e8e07464d2b9853a31b0822347031d1cf77f287d25adc8c3f81e4fa68f4ee31526a9c95d4981ba08a1fe24dee111a
   languageName: node
   linkType: hard
 

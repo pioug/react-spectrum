@@ -551,7 +551,7 @@ const virtualizer = useVirtualizer({
   overscan: 3
 });
 const virtualTotalHeight = computed(() => `${virtualizer.totalHeight.value}px`);
-const virtualVisibleRows = computed(() => virtualizer.visibleIndexes.value.map((index) => ({
+const virtualVisibleRows = computed(() => virtualizer.visibleIndexes.value.map((index: number) => ({
   index,
   label: virtualBacklog[index],
   offsetTop: index * virtualRowHeight

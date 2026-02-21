@@ -1,15 +1,15 @@
-import {useButton as useButtonInternal, type AriaButtonOptions as AriaButtonOptionsBase, type AriaHasPopup, type ButtonAria as ButtonAriaBase, type ButtonProps} from './useButton';
-import {useToggleButton as useToggleButtonInternal, type AriaToggleButtonOptions as AriaToggleButtonOptionsBase, type ToggleButtonAria as ToggleButtonAriaBase} from './useToggleButton';
+import {type AriaButtonOptions as AriaButtonOptionsBase, type AriaHasPopup, type ButtonAria as ButtonAriaBase, type ButtonProps, useButton as useButtonInternal} from './useButton';
 import {
-  useToggleButtonGroup as useToggleButtonGroupInternal,
-  useToggleButtonGroupItem as useToggleButtonGroupItemInternal,
   type AriaToggleButtonGroupItemOptions as AriaToggleButtonGroupItemOptionsBase,
   type AriaToggleButtonGroupOptions as AriaToggleButtonGroupOptionsBase,
   type ToggleButtonGroupAria as ToggleButtonGroupAriaBase,
   type ToggleButtonGroupItemAria as ToggleButtonGroupItemAriaBase,
   type ToggleButtonGroupOrientation,
-  type ToggleButtonGroupSelectionMode
+  type ToggleButtonGroupSelectionMode,
+  useToggleButtonGroup as useToggleButtonGroupInternal,
+  useToggleButtonGroupItem as useToggleButtonGroupItemInternal
 } from './useToggleButtonGroup';
+import {type AriaToggleButtonOptions as AriaToggleButtonOptionsBase, type ToggleButtonAria as ToggleButtonAriaBase, useToggleButton as useToggleButtonInternal} from './useToggleButton';
 
 type RefObject<T> = {
   current: T

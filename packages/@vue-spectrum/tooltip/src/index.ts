@@ -8,4 +8,4 @@ export type {
   TooltipSharedProps,
   TooltipVariant
 } from './VueTooltip';
-export type {SpectrumTooltipProps, SpectrumTooltipTriggerProps} from '@react-types/tooltip';
+export type {SpectrumTooltipProps, SpectrumTooltipTriggerProps} from '@vue-types/tooltip';

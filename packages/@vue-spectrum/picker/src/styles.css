@@ -1,0 +1,71 @@
+.vs-picker {
+  display: grid;
+  gap: 4px;
+  inline-size: 192px;
+}
+
+.vs-picker__label {
+  color: #464646;
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 15.6px;
+  margin: 0;
+  padding: 4px 0 5px;
+}
+
+.vs-picker__dropdown {
+  inline-size: 192px;
+  position: relative;
+}
+
+.vs-picker__select {
+  appearance: none;
+  background: #fdfdfd;
+  border: 1px solid #909090;
+  border-radius: 4px;
+  box-sizing: border-box;
+  color: #222222;
+  display: block;
+  font-family: adobe-clean, "Source Sans Pro", -apple-system, "system-ui", "Segoe UI", Roboto, Ubuntu, "Trebuchet MS", "Lucida Grande", sans-serif;
+  font-size: 14px;
+  inline-size: 192px;
+  line-height: 20px;
+  min-block-size: 32px;
+  padding: 0 28px 0 12px;
+}
+
+.vs-picker__select.is-placeholder {
+  color: #8e8e8e;
+  font-style: italic;
+}
+
+.vs-picker__select:disabled {
+  background: #e6e6e6;
+  color: #b1b1b1;
+}
+
+.vs-picker__chevron {
+  align-items: center;
+  color: #222222;
+  display: inline-flex;
+  font-size: 0;
+  font-style: normal;
+  inline-size: 10px;
+  inset-block-start: 50%;
+  inset-inline-end: 12px;
+  justify-content: center;
+  line-height: 1;
+  pointer-events: none;
+  position: absolute;
+  transform: translateY(-50%);
+}
+
+.vs-picker__chevron::before {
+  border-inline-end: 4px solid transparent;
+  border-inline-start: 4px solid transparent;
+  border-top: 6px solid #222222;
+  content: '';
+  display: block;
+  inline-size: 0;
+}

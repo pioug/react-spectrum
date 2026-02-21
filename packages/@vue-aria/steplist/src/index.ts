@@ -3,14 +3,13 @@ import {
   type StepListItemAria,
   type StepListState as VueStepListAriaState
 } from './types';
-import {useStepList as useStepListInternal, type AriaStepListOptions as VueAriaStepListOptions, type StepListAria} from './useStepList';
+import {type StepListAria, useStepList as useStepListInternal, type AriaStepListOptions as VueAriaStepListOptions} from './useStepList';
 import {useStepListItem as useStepListItemInternal} from './useStepListItem';
-import type {StepListState as StatelyStepListState} from '@vue-stately/steplist';
 
 type RefObject<T> = {
   current: T
 };
-type StepListState<T = unknown> = StatelyStepListState<T>;
+type StepListState<T = unknown> = VueStepListAriaState;
 type AriaStepListItemProps = AriaStepListItemOptions;
 
 export type {
@@ -22,7 +21,7 @@ export type AriaStepListOptions<T = unknown> = VueAriaStepListOptions;
 export type AriaStepListProps<T = unknown> = AriaStepListOptions<T>;
 export type {StepListAria};
 
-function isStatelyStepListState<T>(value: unknown): value is StatelyStepListState<T> {
+function isStepListState<T>(value: unknown): value is StepListState<T> {
   return typeof value === 'object' && value != null && 'selectionManager' in value;
 }
 
@@ -34,9 +33,9 @@ export function useStepList<T>(
 export function useStepList(state: VueStepListAriaState, options?: VueAriaStepListOptions): StepListAria;
 export function useStepList(
   stateOrProps: VueStepListAriaState | VueAriaStepListOptions,
-  optionsOrState?: VueAriaStepListOptions | StatelyStepListState<unknown>
+  optionsOrState?: VueAriaStepListOptions | StepListState<unknown>
 ): StepListAria {
-  if (isStatelyStepListState(optionsOrState)) {
+  if (isStepListState(optionsOrState)) {
     return useStepListInternal(optionsOrState as unknown as VueStepListAriaState, stateOrProps as VueAriaStepListOptions);
   }
 

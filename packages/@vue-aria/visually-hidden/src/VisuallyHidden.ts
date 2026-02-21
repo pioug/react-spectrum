@@ -1,6 +1,6 @@
+import {computed, defineComponent, h, type PropType, resolveDynamicComponent} from 'vue';
+import {type HiddenStyle, useVisuallyHidden} from './useVisuallyHidden';
 import {mergeProps} from '@vue-aria/utils';
-import {computed, defineComponent, h, resolveDynamicComponent, type PropType} from 'vue';
-import {useVisuallyHidden, type HiddenStyle} from './useVisuallyHidden';
 
 export interface VisuallyHiddenProps {
   elementType?: string,

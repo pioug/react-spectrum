@@ -1,5 +1,5 @@
-import {useNumberField as useNumberFieldInternal, type AriaNumberFieldOptions, type NumberFieldAria} from './useNumberField';
-import type {AriaNumberFieldProps} from '@react-types/numberfield';
+import {type AriaNumberFieldOptions, type NumberFieldAria, useNumberField as useNumberFieldInternal} from './useNumberField';
+import type {AriaNumberFieldProps} from '@vue-types/numberfield';
 import type {NumberFieldState} from '@vue-stately/numberfield';
 
 type RefObject<T> = {
@@ -8,7 +8,7 @@ type RefObject<T> = {
 
 export type {AriaNumberFieldOptions, NumberFieldAria};
 export type {MaybeRef} from './types';
-export type {AriaNumberFieldProps} from '@react-types/numberfield';
+export type {AriaNumberFieldProps} from '@vue-types/numberfield';
 
 export function useNumberField(
   props: AriaNumberFieldProps,

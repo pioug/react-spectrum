@@ -1,7 +1,7 @@
-import {useAutocomplete as useAutocompleteInternal, type AriaAutocompleteOptions as VueAriaAutocompleteOptions, type AutocompleteAria as VueAutocompleteAria, type AutocompleteItem, type AutocompleteItemInput} from './useAutocomplete';
-import {useSearchAutocomplete as useSearchAutocompleteInternal, type AriaSearchAutocompleteOptions as VueAriaSearchAutocompleteOptions, type SearchAutocompleteAria as VueSearchAutocompleteAria} from './useSearchAutocomplete';
+import {type AutocompleteItem, type AutocompleteItemInput, useAutocomplete as useAutocompleteInternal, type AriaAutocompleteOptions as VueAriaAutocompleteOptions, type AutocompleteAria as VueAutocompleteAria} from './useAutocomplete';
 import type {AutocompleteState} from '@vue-stately/autocomplete';
 import type {ComboBoxState} from '@vue-stately/combobox';
+import {useSearchAutocomplete as useSearchAutocompleteInternal, type AriaSearchAutocompleteOptions as VueAriaSearchAutocompleteOptions, type SearchAutocompleteAria as VueSearchAutocompleteAria} from './useSearchAutocomplete';
 
 export type AriaAutocompleteOptions<T = unknown> = VueAriaAutocompleteOptions;
 export type AriaSearchAutocompleteOptions<T = unknown> = VueAriaSearchAutocompleteOptions;

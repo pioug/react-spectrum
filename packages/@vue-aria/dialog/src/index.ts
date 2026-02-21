@@ -1,5 +1,5 @@
-import {useDialog as useDialogInternal, type AriaDialogOptions, type DialogAria} from './useDialog';
-import type {AriaDialogProps as ReactAriaDialogProps} from '@react-types/dialog';
+import {type AriaDialogOptions, type DialogAria, useDialog as useDialogInternal} from './useDialog';
+import type {AriaDialogProps as ReactAriaDialogProps} from '@vue-types/dialog';
 
 type RefObject<T> = {
   current: T

@@ -79,7 +79,8 @@
     "@vue-aria/tree": "workspace:*",
     "@vue-aria/utils": "workspace:*",
     "@vue-aria/virtualizer": "workspace:*",
-    "@vue-aria/visually-hidden": "workspace:*"
+    "@vue-aria/visually-hidden": "workspace:*",
+    "@vue-types/shared": "^3.33.0"
   },
   "publishConfig": {
     "access": "public"

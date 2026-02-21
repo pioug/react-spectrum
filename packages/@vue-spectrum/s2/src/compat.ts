@@ -1,6 +1,8 @@
-import type * as ReactSpectrumS2 from '../../../@react-spectrum/s2/src/index';
-import type {Color as IColor} from '@react-types/color';
-import type {CSSProperties, RefObject} from 'react';
+import type {Color as IColor} from '@vue-types/color';
+import type * as ReactSpectrumS2 from './index';
+
+type CSSProperties = Record<string, unknown>;
+type RefObject<T> = {current: T};
 
 const compatPlaceholder: any = new Proxy(function compatPlaceholder() {}, {
   apply: () => compatPlaceholder,

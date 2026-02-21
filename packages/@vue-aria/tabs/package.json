@@ -27,5 +27,9 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@vue-types/shared": "^3.33.0",
+    "@vue-types/tabs": "^3.3.21"
   }
 }

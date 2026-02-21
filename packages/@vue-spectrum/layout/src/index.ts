@@ -1,5 +1,6 @@
+import './flex-gap.css';
+import type {DimensionValue} from '@vue-types/shared';
 import {VueFlex, VueGrid} from '@vue-spectrum/components';
-import type {DimensionValue} from '@react-types/shared';
 
 export const Flex = VueFlex;
 export const Grid = VueGrid;
@@ -18,5 +19,5 @@ export function fitContent(dimension: DimensionValue): string {
 }
 
 export {VueFlex, VueGrid};
-export type {DimensionValue} from '@react-types/shared';
-export type {FlexProps, GridProps} from '@react-types/layout';
+export type {DimensionValue} from '@vue-types/shared';
+export type {FlexProps, GridProps} from '@vue-types/layout';

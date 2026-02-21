@@ -1,9 +1,16 @@
 import type {ComputedRef, Ref} from 'vue';
 
+type DateValue = string | number | Date;
+
 export interface DateRange {
   end: Date | null,
   start: Date | null
 }
+
+type RangeValue<T> = {
+  end: T | null,
+  start: T | null
+};
 
 export interface CalendarState {
   focusNextDay: () => void,
@@ -23,7 +30,7 @@ export interface CalendarState {
   visibleRange: ComputedRef<{end: Date, start: Date}>
 }
 
-export interface RangeCalendarState {
+export interface RangeCalendarState<T extends DateValue = DateValue> {
   anchorDate: Ref<Date | null>,
   focusedDate: Ref<Date>,
   highlightedRange: ComputedRef<DateRange>,
@@ -34,7 +41,7 @@ export interface RangeCalendarState {
   selectFocusedDate: () => void,
   setFocused: (value: boolean) => void,
   setFocusedDate: (date: Date) => void,
-  setValue: (value: DateRange) => void,
-  value: ComputedRef<DateRange>,
+  setValue: (value: RangeValue<T>) => void,
+  value: ComputedRef<RangeValue<T>>,
   visibleRange: ComputedRef<{end: Date, start: Date}>
 }

@@ -1,7 +1,29 @@
+import type {Color as IColor} from '@vue-types/color';
 import type * as ReactAriaComponents from '../../../react-aria-components/src/index';
-import type {Color as IColor} from '@react-types/color';
-import type * as React from 'react';
-import type {Context, ForwardedRef, ReactElement, ReactNode} from 'react';
+
+type Context<T> = {
+  Provider?: unknown,
+  Consumer?: unknown,
+  _defaultValue?: T
+};
+type ForwardedRef<T> = {current: T | null} | ((instance: T | null) => void) | null;
+type ReactNode = unknown;
+type ReactElement<P = any, T = any> = {
+  props?: P,
+  type?: T
+} | null;
+
+declare namespace React {
+  type RefAttributes<T> = {
+    ref?: ForwardedRef<T>
+  };
+
+  namespace JSX {
+    interface IntrinsicElements {
+      [elementName: string]: any
+    }
+  }
+}
 
 type CollectionNodeClass<T> = ReactAriaComponents.CollectionNodeClass<T>;
 type Node<T> = ReactAriaComponents.Node<T>;
@@ -254,7 +276,6 @@ export function createBranchComponent<T extends object, P extends {children?: an
   return compatPlaceholder(CollectionNodeClass, render, useChildren);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function createLeafComponent<T extends object, P extends object, E extends Element>(CollectionNodeClass: CollectionNodeClass<any> | string, render: (props: P, ref: ForwardedRef<E>) => ReactElement | null): (props: P & React.RefAttributes<E>) => ReactElement | null;
 export function createLeafComponent<T extends object, P extends object, E extends Element>(CollectionNodeClass: CollectionNodeClass<any> | string, render: (props: P, ref: ForwardedRef<E>, node: Node<T>) => ReactElement | null): (props: P & React.RefAttributes<E>) => ReactElement | null;
 export function createLeafComponent(...args: any[]): any {

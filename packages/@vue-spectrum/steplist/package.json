@@ -25,7 +25,7 @@
   "dependencies": {
     "@vue-aria/selection": "workspace:*",
     "@vue-aria/steplist": "workspace:*",
-    "@vue-stately/collections": "^0.1.0"
+    "@vue-stately/collections": "workspace:*"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

@@ -1,7 +1,7 @@
-import {useRadio as useRadioInternal, type AriaRadioOptions, type RadioAria} from './useRadio';
-import {useRadioGroup as useRadioGroupInternal, type AriaRadioGroupOptions, type RadioGroupAria} from './useRadioGroup';
+import {type AriaRadioGroupOptions, type RadioGroupAria, useRadioGroup as useRadioGroupInternal} from './useRadioGroup';
+import type {AriaRadioGroupProps, AriaRadioProps} from '@vue-types/radio';
+import {type AriaRadioOptions, type RadioAria, useRadio as useRadioInternal} from './useRadio';
 import type {RadioGroupState} from '@vue-stately/radio';
-import type {AriaRadioGroupProps, AriaRadioProps} from '@react-types/radio';
 
 type RefObject<T> = {
   current: T
@@ -10,7 +10,7 @@ type RefObject<T> = {
 export type {AriaRadioOptions, RadioAria, AriaRadioGroupOptions, RadioGroupAria};
 export type {MaybeRef} from './types';
 export type {AriaRadioGroupProps, AriaRadioProps};
-export type {Orientation} from '@react-types/shared';
+export type {Orientation} from '@vue-types/shared';
 
 export function useRadio(
   props: AriaRadioProps,

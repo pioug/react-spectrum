@@ -23,8 +23,9 @@
     "url": "https://github.com/adobe/react-spectrum"
   },
   "dependencies": {
-    "@react-types/calendar": "^3.8.2",
-    "@vue-spectrum/components": "^0.1.0"
+    "@adobe/spectrum-css-temp": "3.0.0-alpha.1",
+    "@vue-spectrum/utils": "workspace:*",
+    "@vue-types/calendar": "^3.8.2"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

@@ -1,7 +1,7 @@
-import {useMenuTrigger as useMenuTriggerInternal, type AriaMenuTriggerProps, type MenuTriggerAria as VueMenuTriggerAria} from './useMenuTrigger';
-import {useMenu as useMenuInternal, type AriaMenuOptions as VueAriaMenuOptions, type MenuAria} from './useMenu';
-import {useMenuItem as useMenuItemInternal, type AriaMenuItemProps, type MenuItemAria} from './useMenuItem';
-import {useSubmenuTrigger as useSubmenuTriggerInternal, type AriaSubmenuTriggerProps, type SubmenuTriggerAria as VueSubmenuTriggerAria} from './useSubmenuTrigger';
+import {type AriaMenuItemProps, type MenuItemAria, useMenuItem as useMenuItemInternal} from './useMenuItem';
+import {type AriaMenuTriggerProps, useMenuTrigger as useMenuTriggerInternal, type MenuTriggerAria as VueMenuTriggerAria} from './useMenuTrigger';
+import {type AriaSubmenuTriggerProps, useSubmenuTrigger as useSubmenuTriggerInternal, type SubmenuTriggerAria as VueSubmenuTriggerAria} from './useSubmenuTrigger';
+import {type MenuAria, useMenu as useMenuInternal, type AriaMenuOptions as VueAriaMenuOptions} from './useMenu';
 import type {MenuTriggerState, SubmenuTriggerState} from '@vue-stately/menu';
 import type {TreeState as VueTreeState} from '@vue-stately/tree';
 
@@ -49,7 +49,7 @@ export function useMenuItem(props: AriaMenuItemProps, menu: MenuAria): MenuItemA
 export {useMenuSection} from './useMenuSection';
 export type {AriaMenuSectionProps, MenuSectionAria} from './useMenuSection';
 export type {MenuKey, MaybeRef, SelectionMode} from './types';
-export type {AriaMenuProps} from '@react-types/menu';
+export type {AriaMenuProps} from '@vue-types/menu';
 
 export function useSubmenuTrigger<T>(
   props: AriaSubmenuTriggerProps,

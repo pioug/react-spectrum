@@ -1,4 +1,4 @@
-import {computed, defineComponent, ref, type ComputedRef, type Ref, unref} from 'vue';
+import {computed, type ComputedRef, defineComponent, type Ref, ref, unref} from 'vue';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
 type Direction = 'ltr' | 'rtl';

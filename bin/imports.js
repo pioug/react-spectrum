@@ -109,6 +109,7 @@ function exists(deps, name) {
 
 // Insert a key into an object and sort it.
 function insertObject(obj, key, value) {
+  obj = obj || {};
   obj[key] = value;
 
   let res = {};

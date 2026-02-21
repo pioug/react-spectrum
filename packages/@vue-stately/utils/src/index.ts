@@ -1,6 +1,6 @@
 import {clamp, roundToStepPrecision, snapValueToStep, toFixedNumber} from './number';
-import {useControlledState as useControlledStateInternal, type SetValueAction} from './useControlledState';
 import {isRef, ref, type Ref} from 'vue';
+import {type SetValueAction, useControlledState as useControlledStateInternal} from './useControlledState';
 
 type SetStateAction<T> = SetValueAction<T>;
 

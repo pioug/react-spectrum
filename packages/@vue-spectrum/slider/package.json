@@ -23,8 +23,9 @@
     "url": "https://github.com/adobe/react-spectrum"
   },
   "dependencies": {
-    "@react-types/slider": "^3.8.3",
-    "@vue-spectrum/components": "^0.1.0"
+    "@adobe/spectrum-css-temp": "3.0.0-alpha.1",
+    "@vue-spectrum/utils": "workspace:*",
+    "@vue-types/slider": "^3.8.3"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

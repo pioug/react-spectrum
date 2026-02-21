@@ -1,13 +1,13 @@
-import {useToggle as useToggleInternal, type AriaToggleOptions, type ToggleAria, type ToggleValidationState} from './useToggle';
+import {type AriaToggleOptions, type ToggleAria, type ToggleValidationState, useToggle as useToggleInternal} from './useToggle';
+import type {AriaToggleProps} from '@vue-types/checkbox';
 import type {ToggleState} from '@vue-stately/toggle';
-import type {AriaToggleProps} from '@react-types/checkbox';
 
 type RefObject<T> = {
   current: T
 };
 
 export type {AriaToggleOptions, ToggleAria, ToggleValidationState};
-export type {AriaToggleProps} from '@react-types/checkbox';
+export type {AriaToggleProps} from '@vue-types/checkbox';
 
 export function useToggle(
   props: AriaToggleProps,

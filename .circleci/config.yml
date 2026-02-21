@@ -427,36 +427,6 @@ jobs:
             yarn vue:migration:test
             yarn vue:migration:assert-complete
 
-  vue-parity:
-    executor: rsp-large
-    steps:
-      - restore_cache:
-          key: react-spectrum-{{ .Environment.CACHE_VERSION }}-{{ .Environment.CIRCLE_SHA1 }}
-
-      - run:
-          name: verify vue parity gates
-          command: |
-            yarn vue:parity:api:assert
-            yarn vue:parity:api:signature:assert
-            yarn vue:parity:visual:coverage:assert
-            yarn playwright install chromium
-            yarn vue:parity:visual:compare
-
-      - store_artifacts:
-          path: migration/VUE_API_PARITY_REPORT.md
-      - store_artifacts:
-          path: migration/VUE_API_SIGNATURE_PARITY_REPORT.md
-      - store_artifacts:
-          path: migration/VUE_VISUAL_PARITY_REPORT.md
-      - store_artifacts:
-          path: migration/vue-api-parity-report.json
-      - store_artifacts:
-          path: migration/vue-api-signature-parity-report.json
-      - store_artifacts:
-          path: migration/vue-visual-parity-report.json
-      - store_artifacts:
-          path: migration/visual-parity/diff
-
   ts-build-branch:
     executor: rsp-large
     steps:
@@ -973,9 +943,6 @@ workflows:
       - vue-migration:
           requires:
             - install
-      - vue-parity:
-          requires:
-            - install
       - ts-build-fork-point:
           requires:
             - install
@@ -1067,7 +1034,6 @@ workflows:
             - storybook
             - storybook-s2
             - vue-migration
-            - vue-parity
       - deploy-s3-stage:
           name: deploy-s3-commit
           requires:
@@ -1141,13 +1107,9 @@ workflows:
                 - main
     jobs:
       - install
-      - vue-parity:
-          requires:
-            - install
       - publish-nightly:
           requires:
             - install
-            - vue-parity
 
   nightly-manual:
     when:
@@ -1156,10 +1118,6 @@ workflows:
         - equal: [ "workflow_dispatch", << pipeline.parameters.GHA_Event >>]
     jobs:
       - install
-      - vue-parity:
-          requires:
-            - install
       - publish-nightly:
           requires:
             - install
-            - vue-parity

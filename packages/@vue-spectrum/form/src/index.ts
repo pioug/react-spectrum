@@ -1,9 +1,10 @@
+import '@adobe/spectrum-css-temp/components/fieldlabel/vars.css';
+import type {Alignment, LabelPosition, SpectrumLabelableProps} from '@vue-types/shared';
+import {computed, type ComputedRef, defineComponent, h, inject, type InjectionKey, type PropType, provide} from 'vue';
+import type {SpectrumFormProps} from '@vue-types/form';
 import {VueForm} from '@vue-spectrum/components';
-import {computed, defineComponent, h, inject, provide, type ComputedRef, type InjectionKey, type PropType} from 'vue';
-import type {SpectrumFormProps} from '@react-types/form';
-import type {Alignment, LabelPosition, SpectrumLabelableProps} from '@react-types/shared';
 
-type FormContextValue = Pick<SpectrumLabelableProps, 'labelAlign' | 'labelPosition' | 'necessityIndicator'> & {
+type FormContextValue = Partial<Pick<SpectrumLabelableProps, 'labelAlign' | 'labelPosition' | 'necessityIndicator'>> & {
   validationBehavior?: 'aria' | 'native'
 };
 
@@ -42,7 +43,7 @@ export const Form = defineComponent({
   setup(props, {attrs, slots}) {
     let parentContext = inject(
       formContextKey,
-      computed(() => ({}))
+      computed<FormContextValue>(() => ({}))
     );
 
     let context = computed<FormContextValue>(() => ({

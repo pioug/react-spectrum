@@ -471,6 +471,36 @@ export default [{
         },
     },
 }, {
+    files: [
+        "packages/@vue-aria/**/src/**/*.ts",
+        "packages/@vue-aria/**/src/**/*.tsx",
+    ],
+
+    rules: {
+        "@typescript-eslint/no-unused-vars": OFF,
+        "react-hooks/rules-of-hooks": OFF,
+        "rsp-rules/faster-node-contains": OFF,
+        "rsp-rules/no-non-shadow-contains": OFF,
+        "rsp-rules/shadow-safe-active-element": OFF,
+    },
+}, {
+    files: [
+        "packages/@vue-spectrum/**/src/**/*.ts",
+        "packages/@vue-spectrum/**/src/**/*.tsx",
+    ],
+
+    rules: {
+        "react-hooks/rules-of-hooks": OFF,
+    },
+}, {
+    files: ["packages/@vue-spectrum/**/src/compat.ts"],
+
+    rules: {
+        "no-undef": OFF,
+        "@typescript-eslint/no-redeclare": OFF,
+        "@typescript-eslint/no-unused-vars": OFF,
+    },
+}, {
     files: ["**/dev/**", "**/scripts/**"],
 
     rules: {

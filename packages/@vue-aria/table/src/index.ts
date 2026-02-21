@@ -1,43 +1,43 @@
 import {
-  useTable as useTableInternal,
-  type AriaTableOptions
-} from './useTable';
-import {
-  useTableCell as useTableCellInternal,
   type AriaTableCellProps,
-  type TableCellAria
+  type TableCellAria,
+  useTableCell as useTableCellInternal
 } from './useTableCell';
 import {
-  useTableColumnHeader as useTableColumnHeaderInternal,
   type AriaTableColumnHeaderProps,
   type TableColumnHeaderAria,
-  type TableSortDirection
+  type TableSortDirection,
+  useTableColumnHeader as useTableColumnHeaderInternal
 } from './useTableColumnHeader';
 import {
-  useTableColumnResize as useTableColumnResizeInternal,
   type AriaTableColumnResizeProps,
-  type TableColumnResizeAria
+  type TableColumnResizeAria,
+  useTableColumnResize as useTableColumnResizeInternal
 } from './useTableColumnResize';
 import {
-  useTableHeaderRow as useTableHeaderRowInternal,
   type AriaTableHeaderRowProps,
-  type TableHeaderRowAria
+  type TableHeaderRowAria,
+  useTableHeaderRow as useTableHeaderRowInternal
 } from './useTableHeaderRow';
 import {
-  useTableRow as useTableRowInternal,
+  type AriaTableOptions,
+  useTable as useTableInternal
+} from './useTable';
+import {
   type AriaTableRowProps,
-  type TableRowAria
+  type TableRowAria,
+  useTableRow as useTableRowInternal
 } from './useTableRow';
 import {
-  useTableSelectionCheckbox as useTableSelectionCheckboxInternal,
-  useTableSelectAllCheckbox as useTableSelectAllCheckboxInternal,
   type AriaTableSelectAllCheckboxOptions,
   type AriaTableSelectionCheckboxOptions,
   type TableSelectAllCheckboxAria,
-  type TableSelectionCheckboxAria
+  type TableSelectionCheckboxAria,
+  useTableSelectAllCheckbox as useTableSelectAllCheckboxInternal,
+  useTableSelectionCheckbox as useTableSelectionCheckboxInternal
 } from './useTableSelectionCheckbox';
+import type {GridAria, GridRowAria, GridRowGroupAria, GridRowProps} from '@vue-aria/grid';
 import {useTableRowGroup as useTableRowGroupInternal} from './useTableRowGroup';
-import type {GridAria, GridRowAria, GridRowGroupAria, GridRowProps} from '@react-aria/grid';
 
 type AnyRecord = Record<string, unknown>;
 type RefObject<T> = {current: T};

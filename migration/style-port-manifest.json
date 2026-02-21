@@ -1,0 +1,1141 @@
+{
+  "generatedAt": "2026-02-21T15:44:21.998Z",
+  "source": {
+    "reactSpectrumRoot": "packages/@react-spectrum",
+    "analyzedSubpath": "src/**/*.{ts,tsx,js,jsx,mts,cts,mjs,cjs}"
+  },
+  "summary": {
+    "packagesAnalyzed": 64,
+    "filesScanned": 334,
+    "uniqueSpectrumComponentCssImports": 52,
+    "uniqueSpectrumVarCssImports": 8,
+    "uniqueLocalCssFiles": 12,
+    "uniqueSpectrumComponentsReferenced": 52
+  },
+  "imports": {
+    "spectrumComponentCss": [
+      "@adobe/spectrum-css-temp/components/accordion/vars.css",
+      "@adobe/spectrum-css-temp/components/actiongroup/vars.css",
+      "@adobe/spectrum-css-temp/components/avatar/vars.css",
+      "@adobe/spectrum-css-temp/components/badge/vars.css",
+      "@adobe/spectrum-css-temp/components/barloader/vars.css",
+      "@adobe/spectrum-css-temp/components/breadcrumb/vars.css",
+      "@adobe/spectrum-css-temp/components/button/vars.css",
+      "@adobe/spectrum-css-temp/components/buttongroup/vars.css",
+      "@adobe/spectrum-css-temp/components/calendar/vars.css",
+      "@adobe/spectrum-css-temp/components/card/vars.css",
+      "@adobe/spectrum-css-temp/components/checkbox/vars.css",
+      "@adobe/spectrum-css-temp/components/circleloader/vars.css",
+      "@adobe/spectrum-css-temp/components/colorarea/vars.css",
+      "@adobe/spectrum-css-temp/components/colorhandle/vars.css",
+      "@adobe/spectrum-css-temp/components/colorloupe/vars.css",
+      "@adobe/spectrum-css-temp/components/colorslider/vars.css",
+      "@adobe/spectrum-css-temp/components/colorwheel/vars.css",
+      "@adobe/spectrum-css-temp/components/contextualhelp/vars.css",
+      "@adobe/spectrum-css-temp/components/dialog/vars.css",
+      "@adobe/spectrum-css-temp/components/dropdown/vars.css",
+      "@adobe/spectrum-css-temp/components/dropzone/vars.css",
+      "@adobe/spectrum-css-temp/components/fieldgroup/vars.css",
+      "@adobe/spectrum-css-temp/components/fieldlabel/vars.css",
+      "@adobe/spectrum-css-temp/components/helptext/vars.css",
+      "@adobe/spectrum-css-temp/components/icon/vars.css",
+      "@adobe/spectrum-css-temp/components/illustratedmessage/vars.css",
+      "@adobe/spectrum-css-temp/components/image/vars.css",
+      "@adobe/spectrum-css-temp/components/inlinealert/vars.css",
+      "@adobe/spectrum-css-temp/components/inputgroup/vars.css",
+      "@adobe/spectrum-css-temp/components/link/vars.css",
+      "@adobe/spectrum-css-temp/components/menu/vars.css",
+      "@adobe/spectrum-css-temp/components/modal/vars.css",
+      "@adobe/spectrum-css-temp/components/page/vars.css",
+      "@adobe/spectrum-css-temp/components/popover/vars.css",
+      "@adobe/spectrum-css-temp/components/radio/vars.css",
+      "@adobe/spectrum-css-temp/components/rule/vars.css",
+      "@adobe/spectrum-css-temp/components/search/vars.css",
+      "@adobe/spectrum-css-temp/components/slider/vars.css",
+      "@adobe/spectrum-css-temp/components/statuslight/vars.css",
+      "@adobe/spectrum-css-temp/components/steplist/vars.css",
+      "@adobe/spectrum-css-temp/components/stepper/vars.css",
+      "@adobe/spectrum-css-temp/components/table/vars.css",
+      "@adobe/spectrum-css-temp/components/tabs/vars.css",
+      "@adobe/spectrum-css-temp/components/tags/vars.css",
+      "@adobe/spectrum-css-temp/components/textfield/vars.css",
+      "@adobe/spectrum-css-temp/components/toast/vars.css",
+      "@adobe/spectrum-css-temp/components/toggle/vars.css",
+      "@adobe/spectrum-css-temp/components/tooltip/vars.css",
+      "@adobe/spectrum-css-temp/components/tray/vars.css",
+      "@adobe/spectrum-css-temp/components/typography/index.css",
+      "@adobe/spectrum-css-temp/components/underlay/vars.css",
+      "@adobe/spectrum-css-temp/components/well/vars.css"
+    ],
+    "spectrumVarCss": [
+      "@adobe/spectrum-css-temp/vars/express.css",
+      "@adobe/spectrum-css-temp/vars/spectrum-dark.css",
+      "@adobe/spectrum-css-temp/vars/spectrum-darkest.css",
+      "@adobe/spectrum-css-temp/vars/spectrum-global.css",
+      "@adobe/spectrum-css-temp/vars/spectrum-large.css",
+      "@adobe/spectrum-css-temp/vars/spectrum-light.css",
+      "@adobe/spectrum-css-temp/vars/spectrum-lightest.css",
+      "@adobe/spectrum-css-temp/vars/spectrum-medium.css"
+    ],
+    "localCssFiles": [
+      "packages/@react-spectrum/actionbar/src/actionbar.css",
+      "packages/@react-spectrum/autocomplete/src/searchautocomplete.css",
+      "packages/@react-spectrum/color/src/colorfield.css",
+      "packages/@react-spectrum/combobox/src/combobox.css",
+      "packages/@react-spectrum/datepicker/src/styles.css",
+      "packages/@react-spectrum/layout/src/flex-gap.css",
+      "packages/@react-spectrum/list/src/styles.css",
+      "packages/@react-spectrum/overlays/src/overlays.css",
+      "packages/@react-spectrum/s2/src/font-faces.css",
+      "packages/@react-spectrum/s2/src/Toast.module.css",
+      "packages/@react-spectrum/table/src/table.css",
+      "packages/@react-spectrum/toast/src/toastContainer.css"
+    ],
+    "spectrumComponents": [
+      "accordion",
+      "actiongroup",
+      "avatar",
+      "badge",
+      "barloader",
+      "breadcrumb",
+      "button",
+      "buttongroup",
+      "calendar",
+      "card",
+      "checkbox",
+      "circleloader",
+      "colorarea",
+      "colorhandle",
+      "colorloupe",
+      "colorslider",
+      "colorwheel",
+      "contextualhelp",
+      "dialog",
+      "dropdown",
+      "dropzone",
+      "fieldgroup",
+      "fieldlabel",
+      "helptext",
+      "icon",
+      "illustratedmessage",
+      "image",
+      "inlinealert",
+      "inputgroup",
+      "link",
+      "menu",
+      "modal",
+      "page",
+      "popover",
+      "radio",
+      "rule",
+      "search",
+      "slider",
+      "statuslight",
+      "steplist",
+      "stepper",
+      "table",
+      "tabs",
+      "tags",
+      "textfield",
+      "toast",
+      "toggle",
+      "tooltip",
+      "tray",
+      "typography",
+      "underlay",
+      "well"
+    ]
+  },
+  "packages": [
+    {
+      "sourcePackage": "@react-spectrum/accordion",
+      "sourcePath": "packages/@react-spectrum/accordion",
+      "targetPackage": "@vue-spectrum/accordion",
+      "targetPath": "packages/@vue-spectrum/accordion",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/accordion/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/actionbar",
+      "sourcePath": "packages/@react-spectrum/actionbar",
+      "targetPackage": "@vue-spectrum/actionbar",
+      "targetPath": "packages/@vue-spectrum/actionbar",
+      "targetPackageExists": true,
+      "filesScanned": 3,
+      "styles": {
+        "spectrumComponentCss": [],
+        "spectrumVarCss": [],
+        "localCssFiles": [
+          "packages/@react-spectrum/actionbar/src/actionbar.css"
+        ]
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/actiongroup",
+      "sourcePath": "packages/@react-spectrum/actiongroup",
+      "targetPackage": "@vue-spectrum/actiongroup",
+      "targetPath": "packages/@vue-spectrum/actiongroup",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/actiongroup/vars.css",
+          "@adobe/spectrum-css-temp/components/button/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/autocomplete",
+      "sourcePath": "packages/@react-spectrum/autocomplete",
+      "targetPackage": "@vue-spectrum/autocomplete",
+      "targetPath": "packages/@vue-spectrum/autocomplete",
+      "targetPackageExists": true,
+      "filesScanned": 3,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/inputgroup/vars.css",
+          "@adobe/spectrum-css-temp/components/search/vars.css",
+          "@adobe/spectrum-css-temp/components/textfield/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": [
+          "packages/@react-spectrum/autocomplete/src/searchautocomplete.css"
+        ]
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/avatar",
+      "sourcePath": "packages/@react-spectrum/avatar",
+      "targetPackage": "@vue-spectrum/avatar",
+      "targetPath": "packages/@vue-spectrum/avatar",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/avatar/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/badge",
+      "sourcePath": "packages/@react-spectrum/badge",
+      "targetPackage": "@vue-spectrum/badge",
+      "targetPath": "packages/@vue-spectrum/badge",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/badge/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/breadcrumbs",
+      "sourcePath": "packages/@react-spectrum/breadcrumbs",
+      "targetPackage": "@vue-spectrum/breadcrumbs",
+      "targetPath": "packages/@vue-spectrum/breadcrumbs",
+      "targetPackageExists": true,
+      "filesScanned": 3,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/breadcrumb/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/button",
+      "sourcePath": "packages/@react-spectrum/button",
+      "targetPackage": "@vue-spectrum/button",
+      "targetPath": "packages/@vue-spectrum/button",
+      "targetPackageExists": true,
+      "filesScanned": 7,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/button/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/buttongroup",
+      "sourcePath": "packages/@react-spectrum/buttongroup",
+      "targetPackage": "@vue-spectrum/buttongroup",
+      "targetPath": "packages/@vue-spectrum/buttongroup",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/buttongroup/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/calendar",
+      "sourcePath": "packages/@react-spectrum/calendar",
+      "targetPackage": "@vue-spectrum/calendar",
+      "targetPath": "packages/@vue-spectrum/calendar",
+      "targetPackageExists": true,
+      "filesScanned": 6,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/calendar/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/card",
+      "sourcePath": "packages/@react-spectrum/card",
+      "targetPackage": "@vue-spectrum/card",
+      "targetPath": "packages/@vue-spectrum/card",
+      "targetPackageExists": true,
+      "filesScanned": 9,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/card/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/checkbox",
+      "sourcePath": "packages/@react-spectrum/checkbox",
+      "targetPackage": "@vue-spectrum/checkbox",
+      "targetPath": "packages/@vue-spectrum/checkbox",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/checkbox/vars.css",
+          "@adobe/spectrum-css-temp/components/fieldgroup/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/color",
+      "sourcePath": "packages/@react-spectrum/color",
+      "targetPackage": "@vue-spectrum/color",
+      "targetPath": "packages/@vue-spectrum/color",
+      "targetPackageExists": true,
+      "filesScanned": 10,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/colorarea/vars.css",
+          "@adobe/spectrum-css-temp/components/colorhandle/vars.css",
+          "@adobe/spectrum-css-temp/components/colorloupe/vars.css",
+          "@adobe/spectrum-css-temp/components/colorslider/vars.css",
+          "@adobe/spectrum-css-temp/components/colorwheel/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": [
+          "packages/@react-spectrum/color/src/colorfield.css"
+        ]
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/combobox",
+      "sourcePath": "packages/@react-spectrum/combobox",
+      "targetPackage": "@vue-spectrum/combobox",
+      "targetPath": "packages/@vue-spectrum/combobox",
+      "targetPackageExists": true,
+      "filesScanned": 3,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/button/vars.css",
+          "@adobe/spectrum-css-temp/components/fieldlabel/vars.css",
+          "@adobe/spectrum-css-temp/components/inputgroup/vars.css",
+          "@adobe/spectrum-css-temp/components/search/vars.css",
+          "@adobe/spectrum-css-temp/components/textfield/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": [
+          "packages/@react-spectrum/combobox/src/combobox.css"
+        ]
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/contextualhelp",
+      "sourcePath": "packages/@react-spectrum/contextualhelp",
+      "targetPackage": "@vue-spectrum/contextualhelp",
+      "targetPath": "packages/@vue-spectrum/contextualhelp",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/contextualhelp/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/datepicker",
+      "sourcePath": "packages/@react-spectrum/datepicker",
+      "targetPackage": "@vue-spectrum/datepicker",
+      "targetPath": "packages/@vue-spectrum/datepicker",
+      "targetPackageExists": true,
+      "filesScanned": 9,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/inputgroup/vars.css",
+          "@adobe/spectrum-css-temp/components/textfield/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": [
+          "packages/@react-spectrum/datepicker/src/styles.css"
+        ]
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/dialog",
+      "sourcePath": "packages/@react-spectrum/dialog",
+      "targetPackage": "@vue-spectrum/dialog",
+      "targetPath": "packages/@vue-spectrum/dialog",
+      "targetPackageExists": true,
+      "filesScanned": 7,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/dialog/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/divider",
+      "sourcePath": "packages/@react-spectrum/divider",
+      "targetPackage": "@vue-spectrum/divider",
+      "targetPath": "packages/@vue-spectrum/divider",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/rule/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/dnd",
+      "sourcePath": "packages/@react-spectrum/dnd",
+      "targetPackage": "@vue-spectrum/dnd",
+      "targetPath": "packages/@vue-spectrum/dnd",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/dropzone",
+      "sourcePath": "packages/@react-spectrum/dropzone",
+      "targetPackage": "@vue-spectrum/dropzone",
+      "targetPath": "packages/@vue-spectrum/dropzone",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/dropzone/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/filetrigger",
+      "sourcePath": "packages/@react-spectrum/filetrigger",
+      "targetPackage": "@vue-spectrum/filetrigger",
+      "targetPath": "packages/@vue-spectrum/filetrigger",
+      "targetPackageExists": true,
+      "filesScanned": 1,
+      "styles": {
+        "spectrumComponentCss": [],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/form",
+      "sourcePath": "packages/@react-spectrum/form",
+      "targetPackage": "@vue-spectrum/form",
+      "targetPath": "packages/@vue-spectrum/form",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/fieldlabel/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/icon",
+      "sourcePath": "packages/@react-spectrum/icon",
+      "targetPackage": "@vue-spectrum/icon",
+      "targetPath": "packages/@vue-spectrum/icon",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/icon/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/illustratedmessage",
+      "sourcePath": "packages/@react-spectrum/illustratedmessage",
+      "targetPackage": "@vue-spectrum/illustratedmessage",
+      "targetPath": "packages/@vue-spectrum/illustratedmessage",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/illustratedmessage/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/image",
+      "sourcePath": "packages/@react-spectrum/image",
+      "targetPackage": "@vue-spectrum/image",
+      "targetPath": "packages/@vue-spectrum/image",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/image/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/inlinealert",
+      "sourcePath": "packages/@react-spectrum/inlinealert",
+      "targetPackage": "@vue-spectrum/inlinealert",
+      "targetPath": "packages/@vue-spectrum/inlinealert",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/inlinealert/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/label",
+      "sourcePath": "packages/@react-spectrum/label",
+      "targetPackage": "@vue-spectrum/label",
+      "targetPath": "packages/@vue-spectrum/label",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/fieldlabel/vars.css",
+          "@adobe/spectrum-css-temp/components/helptext/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/labeledvalue",
+      "sourcePath": "packages/@react-spectrum/labeledvalue",
+      "targetPackage": "@vue-spectrum/labeledvalue",
+      "targetPath": "packages/@vue-spectrum/labeledvalue",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/fieldlabel/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/layout",
+      "sourcePath": "packages/@react-spectrum/layout",
+      "targetPackage": "@vue-spectrum/layout",
+      "targetPath": "packages/@vue-spectrum/layout",
+      "targetPackageExists": true,
+      "filesScanned": 3,
+      "styles": {
+        "spectrumComponentCss": [],
+        "spectrumVarCss": [],
+        "localCssFiles": [
+          "packages/@react-spectrum/layout/src/flex-gap.css"
+        ]
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/link",
+      "sourcePath": "packages/@react-spectrum/link",
+      "targetPackage": "@vue-spectrum/link",
+      "targetPath": "packages/@vue-spectrum/link",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/link/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/list",
+      "sourcePath": "packages/@react-spectrum/list",
+      "targetPackage": "@vue-spectrum/list",
+      "targetPath": "packages/@vue-spectrum/list",
+      "targetPackageExists": true,
+      "filesScanned": 7,
+      "styles": {
+        "spectrumComponentCss": [],
+        "spectrumVarCss": [],
+        "localCssFiles": [
+          "packages/@react-spectrum/list/src/styles.css"
+        ]
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/listbox",
+      "sourcePath": "packages/@react-spectrum/listbox",
+      "targetPackage": "@vue-spectrum/listbox",
+      "targetPath": "packages/@vue-spectrum/listbox",
+      "targetPackageExists": true,
+      "filesScanned": 7,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/menu/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/menu",
+      "sourcePath": "packages/@react-spectrum/menu",
+      "targetPackage": "@vue-spectrum/menu",
+      "targetPath": "packages/@vue-spectrum/menu",
+      "targetPackageExists": true,
+      "filesScanned": 10,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/contextualhelp/vars.css",
+          "@adobe/spectrum-css-temp/components/menu/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/meter",
+      "sourcePath": "packages/@react-spectrum/meter",
+      "targetPackage": "@vue-spectrum/meter",
+      "targetPath": "packages/@vue-spectrum/meter",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/barloader/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/numberfield",
+      "sourcePath": "packages/@react-spectrum/numberfield",
+      "targetPackage": "@vue-spectrum/numberfield",
+      "targetPath": "packages/@vue-spectrum/numberfield",
+      "targetPackageExists": true,
+      "filesScanned": 3,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/stepper/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/overlays",
+      "sourcePath": "packages/@react-spectrum/overlays",
+      "targetPackage": "@vue-spectrum/overlays",
+      "targetPath": "packages/@vue-spectrum/overlays",
+      "targetPackageExists": true,
+      "filesScanned": 7,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/modal/vars.css",
+          "@adobe/spectrum-css-temp/components/popover/vars.css",
+          "@adobe/spectrum-css-temp/components/tray/vars.css",
+          "@adobe/spectrum-css-temp/components/underlay/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": [
+          "packages/@react-spectrum/overlays/src/overlays.css"
+        ]
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/picker",
+      "sourcePath": "packages/@react-spectrum/picker",
+      "targetPackage": "@vue-spectrum/picker",
+      "targetPath": "packages/@vue-spectrum/picker",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/dropdown/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/progress",
+      "sourcePath": "packages/@react-spectrum/progress",
+      "targetPackage": "@vue-spectrum/progress",
+      "targetPath": "packages/@vue-spectrum/progress",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/barloader/vars.css",
+          "@adobe/spectrum-css-temp/components/circleloader/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/provider",
+      "sourcePath": "packages/@react-spectrum/provider",
+      "targetPackage": "@vue-spectrum/provider",
+      "targetPath": "packages/@vue-spectrum/provider",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/page/vars.css",
+          "@adobe/spectrum-css-temp/components/typography/index.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/radio",
+      "sourcePath": "packages/@react-spectrum/radio",
+      "targetPackage": "@vue-spectrum/radio",
+      "targetPath": "packages/@vue-spectrum/radio",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/fieldgroup/vars.css",
+          "@adobe/spectrum-css-temp/components/radio/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/s2",
+      "sourcePath": "packages/@react-spectrum/s2",
+      "targetPackage": "@vue-spectrum/s2",
+      "targetPath": "packages/@vue-spectrum/s2",
+      "targetPackageExists": true,
+      "filesScanned": 98,
+      "styles": {
+        "spectrumComponentCss": [],
+        "spectrumVarCss": [],
+        "localCssFiles": [
+          "packages/@react-spectrum/s2/src/font-faces.css",
+          "packages/@react-spectrum/s2/src/Toast.module.css"
+        ]
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/searchfield",
+      "sourcePath": "packages/@react-spectrum/searchfield",
+      "targetPackage": "@vue-spectrum/searchfield",
+      "targetPath": "packages/@vue-spectrum/searchfield",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/search/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/slider",
+      "sourcePath": "packages/@react-spectrum/slider",
+      "targetPackage": "@vue-spectrum/slider",
+      "targetPath": "packages/@vue-spectrum/slider",
+      "targetPackageExists": true,
+      "filesScanned": 5,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/slider/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/statuslight",
+      "sourcePath": "packages/@react-spectrum/statuslight",
+      "targetPackage": "@vue-spectrum/statuslight",
+      "targetPath": "packages/@vue-spectrum/statuslight",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/statuslight/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/steplist",
+      "sourcePath": "packages/@react-spectrum/steplist",
+      "targetPackage": "@vue-spectrum/steplist",
+      "targetPath": "packages/@vue-spectrum/steplist",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/steplist/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/story-utils",
+      "sourcePath": "packages/@react-spectrum/story-utils",
+      "targetPackage": "@vue-spectrum/story-utils",
+      "targetPath": "packages/@vue-spectrum/story-utils",
+      "targetPackageExists": true,
+      "filesScanned": 3,
+      "styles": {
+        "spectrumComponentCss": [],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/style-macro-s1",
+      "sourcePath": "packages/@react-spectrum/style-macro-s1",
+      "targetPackage": "@vue-spectrum/style-macro-s1",
+      "targetPath": "packages/@vue-spectrum/style-macro-s1",
+      "targetPackageExists": true,
+      "filesScanned": 5,
+      "styles": {
+        "spectrumComponentCss": [],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/switch",
+      "sourcePath": "packages/@react-spectrum/switch",
+      "targetPackage": "@vue-spectrum/switch",
+      "targetPath": "packages/@vue-spectrum/switch",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/toggle/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/table",
+      "sourcePath": "packages/@react-spectrum/table",
+      "targetPackage": "@vue-spectrum/table",
+      "targetPath": "packages/@vue-spectrum/table",
+      "targetPackageExists": true,
+      "filesScanned": 11,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/table/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": [
+          "packages/@react-spectrum/table/src/table.css"
+        ]
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/tabs",
+      "sourcePath": "packages/@react-spectrum/tabs",
+      "targetPackage": "@vue-spectrum/tabs",
+      "targetPath": "packages/@vue-spectrum/tabs",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/tabs/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/tag",
+      "sourcePath": "packages/@react-spectrum/tag",
+      "targetPackage": "@vue-spectrum/tag",
+      "targetPath": "packages/@vue-spectrum/tag",
+      "targetPackageExists": true,
+      "filesScanned": 3,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/tags/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/test-utils",
+      "sourcePath": "packages/@react-spectrum/test-utils",
+      "targetPackage": "@vue-spectrum/test-utils",
+      "targetPath": "packages/@vue-spectrum/test-utils",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/text",
+      "sourcePath": "packages/@react-spectrum/text",
+      "targetPackage": "@vue-spectrum/text",
+      "targetPath": "packages/@vue-spectrum/text",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "styles": {
+        "spectrumComponentCss": [],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/textfield",
+      "sourcePath": "packages/@react-spectrum/textfield",
+      "targetPackage": "@vue-spectrum/textfield",
+      "targetPath": "packages/@vue-spectrum/textfield",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/textfield/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/theme-dark",
+      "sourcePath": "packages/@react-spectrum/theme-dark",
+      "targetPackage": "@vue-spectrum/theme-dark",
+      "targetPath": "packages/@vue-spectrum/theme-dark",
+      "targetPackageExists": true,
+      "filesScanned": 1,
+      "styles": {
+        "spectrumComponentCss": [],
+        "spectrumVarCss": [
+          "@adobe/spectrum-css-temp/vars/spectrum-dark.css",
+          "@adobe/spectrum-css-temp/vars/spectrum-darkest.css",
+          "@adobe/spectrum-css-temp/vars/spectrum-global.css",
+          "@adobe/spectrum-css-temp/vars/spectrum-large.css",
+          "@adobe/spectrum-css-temp/vars/spectrum-medium.css"
+        ],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/theme-default",
+      "sourcePath": "packages/@react-spectrum/theme-default",
+      "targetPackage": "@vue-spectrum/theme-default",
+      "targetPath": "packages/@vue-spectrum/theme-default",
+      "targetPackageExists": true,
+      "filesScanned": 1,
+      "styles": {
+        "spectrumComponentCss": [],
+        "spectrumVarCss": [
+          "@adobe/spectrum-css-temp/vars/spectrum-darkest.css",
+          "@adobe/spectrum-css-temp/vars/spectrum-global.css",
+          "@adobe/spectrum-css-temp/vars/spectrum-large.css",
+          "@adobe/spectrum-css-temp/vars/spectrum-light.css",
+          "@adobe/spectrum-css-temp/vars/spectrum-medium.css"
+        ],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/theme-express",
+      "sourcePath": "packages/@react-spectrum/theme-express",
+      "targetPackage": "@vue-spectrum/theme-express",
+      "targetPath": "packages/@vue-spectrum/theme-express",
+      "targetPackageExists": true,
+      "filesScanned": 1,
+      "styles": {
+        "spectrumComponentCss": [],
+        "spectrumVarCss": [
+          "@adobe/spectrum-css-temp/vars/express.css"
+        ],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/theme-light",
+      "sourcePath": "packages/@react-spectrum/theme-light",
+      "targetPackage": "@vue-spectrum/theme-light",
+      "targetPath": "packages/@vue-spectrum/theme-light",
+      "targetPackageExists": true,
+      "filesScanned": 1,
+      "styles": {
+        "spectrumComponentCss": [],
+        "spectrumVarCss": [
+          "@adobe/spectrum-css-temp/vars/spectrum-darkest.css",
+          "@adobe/spectrum-css-temp/vars/spectrum-global.css",
+          "@adobe/spectrum-css-temp/vars/spectrum-large.css",
+          "@adobe/spectrum-css-temp/vars/spectrum-lightest.css",
+          "@adobe/spectrum-css-temp/vars/spectrum-medium.css"
+        ],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/toast",
+      "sourcePath": "packages/@react-spectrum/toast",
+      "targetPackage": "@vue-spectrum/toast",
+      "targetPath": "packages/@vue-spectrum/toast",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/toast/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": [
+          "packages/@react-spectrum/toast/src/toastContainer.css"
+        ]
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/tooltip",
+      "sourcePath": "packages/@react-spectrum/tooltip",
+      "targetPackage": "@vue-spectrum/tooltip",
+      "targetPath": "packages/@vue-spectrum/tooltip",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/tooltip/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/tree",
+      "sourcePath": "packages/@react-spectrum/tree",
+      "targetPackage": "@vue-spectrum/tree",
+      "targetPath": "packages/@vue-spectrum/tree",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/utils",
+      "sourcePath": "packages/@react-spectrum/utils",
+      "targetPackage": "@vue-spectrum/utils",
+      "targetPath": "packages/@vue-spectrum/utils",
+      "targetPackageExists": true,
+      "filesScanned": 10,
+      "styles": {
+        "spectrumComponentCss": [],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/view",
+      "sourcePath": "packages/@react-spectrum/view",
+      "targetPackage": "@vue-spectrum/view",
+      "targetPath": "packages/@vue-spectrum/view",
+      "targetPackageExists": true,
+      "filesScanned": 5,
+      "styles": {
+        "spectrumComponentCss": [],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    },
+    {
+      "sourcePackage": "@react-spectrum/well",
+      "sourcePath": "packages/@react-spectrum/well",
+      "targetPackage": "@vue-spectrum/well",
+      "targetPath": "packages/@vue-spectrum/well",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "styles": {
+        "spectrumComponentCss": [
+          "@adobe/spectrum-css-temp/components/well/vars.css"
+        ],
+        "spectrumVarCss": [],
+        "localCssFiles": []
+      }
+    }
+  ]
+}

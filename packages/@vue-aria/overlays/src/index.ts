@@ -1,14 +1,13 @@
-import {defineComponent, ref, type Ref} from 'vue';
 import {ariaHideOutside as ariaHideOutsideInternal} from './ariaHideOutside';
-import {useModal} from './useModal';
-import {useModalOverlay as useModalOverlayInternal, type AriaModalOverlayOptions, type ModalOverlayAria} from './useModalOverlay';
-import {useOverlay as useOverlayInternal, type AriaOverlayOptions, type OverlayAria} from './useOverlay';
-import {useOverlayPosition as useOverlayPositionInternal, type AriaOverlayPositionOptions, type OverlayPlacement, type PositionAria} from './useOverlayPosition';
-import {useOverlayTrigger as useOverlayTriggerInternal, type OverlayTriggerAria, type OverlayTriggerOptions, type OverlayTriggerType} from './useOverlayTrigger';
-import {usePopover as usePopoverInternal, type AriaPopoverOptions, type PopoverAria} from './usePopover';
-import {usePreventScroll as usePreventScrollInternal, type PreventScrollAria, type PreventScrollOptions} from './usePreventScroll';
-import type {AriaModalOptions, ModalAria} from './useModal';
+import {type AriaModalOptions, type ModalAria, useModal} from './useModal';
+import {type AriaModalOverlayOptions, type ModalOverlayAria, useModalOverlay as useModalOverlayInternal} from './useModalOverlay';
+import {type AriaOverlayOptions, type OverlayAria, useOverlay as useOverlayInternal} from './useOverlay';
+import {type AriaOverlayPositionOptions, type OverlayPlacement, type PositionAria, useOverlayPosition as useOverlayPositionInternal} from './useOverlayPosition';
+import {type AriaPopoverOptions, type PopoverAria, usePopover as usePopoverInternal} from './usePopover';
+import {defineComponent, ref, type Ref} from 'vue';
 import type {MaybeRef} from './types';
+import {type OverlayTriggerAria, type OverlayTriggerOptions, type OverlayTriggerType, useOverlayTrigger as useOverlayTriggerInternal} from './useOverlayTrigger';
+import {type PreventScrollAria, type PreventScrollOptions, usePreventScroll as usePreventScrollInternal} from './usePreventScroll';
 
 export {useModal};
 export type {AriaModalOptions, ModalAria, AriaModalOverlayOptions, ModalOverlayAria, AriaOverlayOptions, OverlayAria, AriaOverlayPositionOptions, OverlayPlacement, PositionAria, OverlayTriggerAria, OverlayTriggerOptions, OverlayTriggerType, AriaPopoverOptions, PopoverAria, PreventScrollAria, PreventScrollOptions, MaybeRef};

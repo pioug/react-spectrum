@@ -12,6 +12,12 @@ const TRACKER_FILE = path.join(REPO_ROOT, 'VUE_MIGRATION_TRACKER.md');
 const STATUS_ORDER = ['in_progress', 'ported', 'planned', 'blocked', 'not_started'];
 const ACTIVE_STATUSES = new Set(['in_progress', 'ported']);
 const VALID_STATUSES = new Set(STATUS_ORDER);
+const MIGRATION_PREREQUISITE_TESTS = [
+  {
+    name: 'Vue React removal assertion',
+    command: 'yarn vue:react-removal:assert-zero'
+  }
+];
 
 const SCOPED_PACKAGE_ROOTS = [
   'packages/@react-aria',
@@ -253,6 +259,27 @@ function runAcceptanceTests(entries) {
 
   let hasFailure = false;
   let commandResults = new Map();
+
+  for (let test of MIGRATION_PREREQUISITE_TESTS) {
+    console.log(`\n[ACCEPTANCE] ${test.name}`);
+    console.log(`$ ${test.command}`);
+
+    try {
+      execSync(test.command, {
+        cwd: REPO_ROOT,
+        stdio: 'inherit'
+      });
+      commandResults.set(test.command, true);
+    } catch {
+      hasFailure = true;
+      commandResults.set(test.command, false);
+    }
+  }
+
+  if (hasFailure) {
+    process.exitCode = 1;
+    return;
+  }
 
   for (let entry of activeEntries) {
     console.log(`\n=== ${entry.sourcePackage} -> ${entry.targetPackage} (${entry.status}) ===`);

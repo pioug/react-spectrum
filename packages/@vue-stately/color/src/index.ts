@@ -1,7 +1,7 @@
-import {getColorChannels, parseColor as parseColorInternal, type Color} from './Color';
-import {useColorWheelState as useColorWheelStateInternal, type ColorWheelState, type ColorWheelStateOptions} from './useColorWheelState';
-import {useColorFieldState as useColorFieldStateInternal, type ColorFieldState, type ColorFieldStateOptions} from './useColorFieldState';
-import type {ColorFieldProps, ColorWheelProps} from '@react-types/color';
+import {type Color, getColorChannels, parseColor as parseColorInternal} from './Color';
+import type {ColorFieldProps, ColorWheelProps} from '@vue-types/color';
+import {type ColorFieldState, type ColorFieldStateOptions, useColorFieldState as useColorFieldStateInternal} from './useColorFieldState';
+import {type ColorWheelState, type ColorWheelStateOptions, useColorWheelState as useColorWheelStateInternal} from './useColorWheelState';
 export type {Color, ColorChannel, ColorFormat, ColorSpace} from './Color';
 export {getColorChannels};
 export {useColorAreaState} from './useColorAreaState';
@@ -12,7 +12,7 @@ export {useColorChannelFieldState} from './useColorChannelFieldState';
 export type {ColorChannelFieldProps, ColorChannelFieldState, ColorChannelFieldStateOptions} from './useColorChannelFieldState';
 export {useColorPickerState} from './useColorPickerState';
 export type {ColorPickerProps, ColorPickerState} from './useColorPickerState';
-export type {ColorFieldProps, ColorWheelProps} from '@react-types/color';
+export type {ColorFieldProps, ColorWheelProps} from '@vue-types/color';
 
 type IColor = Color;
 

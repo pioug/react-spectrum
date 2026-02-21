@@ -1,18 +1,18 @@
 import {
-  TableCollection,
   buildHeaderRows as buildHeaderRowsInternal,
   type TableCell,
+  TableCollection,
   type TableCollectionOptions,
   type TableColumn,
   type TableRow
 } from './TableCollection';
 import {
-  UNSTABLE_useFilteredTableState as unstableUseFilteredTableStateInternal,
-  useTableState as useTableStateInternal,
   type SortDescriptor,
   type SortDirection,
   type TableState,
-  type TableStateProps
+  type TableStateProps,
+  UNSTABLE_useFilteredTableState as unstableUseFilteredTableStateInternal,
+  useTableState as useTableStateInternal
 } from './useTableState';
 export {Section} from '@vue-stately/collections';
 
@@ -63,7 +63,7 @@ export interface TableColumnResizeState<T = unknown> {
   columnWidths: Map<string | number, number>,
   startResize: (columnKey: string | number, width: number) => void,
   updateResize: (columnKey: string | number, width: number) => void,
-  endResize: (columnKey: string | number) => void
+  endResize: (columnKey: string | number) => void,
   _tableType?: T
 }
 
@@ -93,6 +93,8 @@ export function useTableColumnResizeState<T>(
   _props?: TableColumnResizeStateProps<T>,
   _state?: TableState<T>
 ): TableColumnResizeState<T> {
+  void _props;
+  void _state;
   let columnWidths = new Map<string | number, number>();
   return {
     columnWidths,

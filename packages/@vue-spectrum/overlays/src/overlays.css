@@ -1,0 +1,18 @@
+.spectrum-Popover {
+  &.react-spectrum-Popover {
+    visibility: visible;
+  }
+
+  .spectrum-Dialog-content {
+    max-height: initial;
+  }
+}
+
+.spectrum-Modal-wrapper.react-spectrum-Modal-wrapper,
+.spectrum-Modal.react-spectrum-Modal {
+  visibility: visible;
+}
+
+.spectrum-Tray.react-spectrum-Tray {
+  visibility: visible;
+}

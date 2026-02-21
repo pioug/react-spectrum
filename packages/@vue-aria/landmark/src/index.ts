@@ -1,12 +1,12 @@
 import {
-  UNSTABLE_createLandmarkController,
-  useLandmark as useLandmarkInternal,
   type AriaLandmarkProps,
   type AriaLandmarkRole,
   type LandmarkAria,
   type LandmarkController,
   type LandmarkControllerOptions,
-  type LandmarkDOMProps
+  type LandmarkDOMProps,
+  UNSTABLE_createLandmarkController,
+  useLandmark as useLandmarkInternal
 } from './useLandmark';
 import {ref} from 'vue';
 

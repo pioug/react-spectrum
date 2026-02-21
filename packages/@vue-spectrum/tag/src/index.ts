@@ -1,4 +1,4 @@
-import {VueTagGroup, type TagItemData} from './VueTagGroup';
+import {type TagItemData, VueTagGroup} from './VueTagGroup';
 
 export const TagGroup = VueTagGroup;
 export {VueTagGroup};

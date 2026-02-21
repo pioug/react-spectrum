@@ -57,7 +57,8 @@
     "@vue-stately/tooltip": "workspace:*",
     "@vue-stately/tree": "workspace:*",
     "@vue-stately/utils": "workspace:*",
-    "@vue-stately/virtualizer": "workspace:*"
+    "@vue-stately/virtualizer": "workspace:*",
+    "@vue-types/shared": "^3.33.0"
   },
   "publishConfig": {
     "access": "public"

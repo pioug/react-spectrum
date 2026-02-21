@@ -1,32 +1,32 @@
 import {
-  useColorArea as useColorAreaInternal,
   type AriaColorAreaOptions,
-  type ColorAreaAria
+  type ColorAreaAria,
+  useColorArea as useColorAreaInternal
 } from './useColorArea';
 import {
-  useColorChannelField as useColorChannelFieldInternal,
   type AriaColorChannelFieldOptions,
-  type ColorChannelFieldAria
+  type ColorChannelFieldAria,
+  useColorChannelField as useColorChannelFieldInternal
 } from './useColorChannelField';
 import {
-  useColorField as useColorFieldInternal,
   type AriaColorFieldOptions,
-  type ColorFieldAria
+  type ColorFieldAria,
+  useColorField as useColorFieldInternal
 } from './useColorField';
 import {
-  useColorSlider as useColorSliderInternal,
   type AriaColorSliderOptions,
-  type ColorSliderAria
+  type ColorSliderAria,
+  useColorSlider as useColorSliderInternal
 } from './useColorSlider';
 import {
-  useColorSwatch as useColorSwatchInternal,
   type AriaColorSwatchOptions,
-  type ColorSwatchAria
+  type ColorSwatchAria,
+  useColorSwatch as useColorSwatchInternal
 } from './useColorSwatch';
 import {
-  useColorWheel as useColorWheelInternal,
   type AriaColorWheelOptions,
-  type ColorWheelAria
+  type ColorWheelAria,
+  useColorWheel as useColorWheelInternal
 } from './useColorWheel';
 import type {
   AriaColorAreaProps as ReactAriaColorAreaProps,
@@ -34,7 +34,7 @@ import type {
   AriaColorFieldProps as ReactAriaColorFieldProps,
   AriaColorSliderProps as ReactAriaColorSliderProps,
   AriaColorSwatchProps as ReactAriaColorSwatchProps
-} from '@react-types/color';
+} from '@vue-types/color';
 
 type AnyRecord = Record<string, unknown>;
 type RefObject<T> = {current: T};

@@ -1,5 +1,5 @@
-import {useToast as useToastInternal, type AriaToastOptions, type ToastAria, type ToastState as VueToastState, type ToastTimer, type QueuedToast} from './useToast';
-import {useToastRegion as useToastRegionInternal, type AriaToastRegionOptions, type ToastRegionAria, type ToastRegionState} from './useToastRegion';
+import {type AriaToastOptions, type QueuedToast, type ToastAria, type ToastTimer, useToast as useToastInternal, type ToastState as VueToastState} from './useToast';
+import {type AriaToastRegionOptions, type ToastRegionAria, type ToastRegionState, useToastRegion as useToastRegionInternal} from './useToastRegion';
 import type {ToastState as StatelyToastState} from '@vue-stately/toast';
 
 type FocusableElement = Element;

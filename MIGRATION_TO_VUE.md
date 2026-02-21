@@ -16,11 +16,6 @@ Roadmap baseline coverage is complete across all migration phases for tracked pa
   * `yarn build:vue`
   * `yarn typecheck:vue`
   * `yarn vue:migration:assert-complete`
-  * `yarn vue:parity:api:report`
-  * `yarn vue:parity:api:assert`
-  * `yarn vue:parity:api:priority`
-  * `yarn vue:parity:visual:capture`
-  * `yarn vue:parity:visual:compare`
 * Added a package-by-package tracker:
   * `VUE_MIGRATION_TRACKER.md` (generated snapshot)
   * `migration/vue-migration-status.json` (status and acceptance test definitions)
@@ -200,17 +195,12 @@ Roadmap baseline coverage is complete across all migration phases for tracked pa
 * Added API stabilization and deprecation planning baseline artifacts:
   * Added root `README.md` maintenance-mode notice and migration links for React package consumers.
   * Added migration notices and Vue replacement links to top-level React package READMEs (`@adobe/react-spectrum`, `react-aria`, `react-stately`, `react-aria-components`, and `tailwindcss-react-aria-components`).
-  * Added execution status checklist in `migration/REACT_DEPRECATION_PLAN.md` for phased deprecation rollout tracking.
   * `migration/VUE_PUBLISH_CHECKLIST.md`
-  * `migration/REACT_DEPRECATION_PLAN.md`
   * `migration/REACT_TO_VUE_MIGRATION_GUIDE.md`
   * `migration/VUE_PACKAGE_ARCHITECTURE.md`
-  * Added `migration/VUE_PARITY_ROADMAP.md` to track API parity, edge-case behavior parity, and visual parity closure.
-  * Added visual parity fixture + artifact pipeline:
-    * `migration/vue-visual-parity-fixtures.json`
-    * `migration/VUE_VISUAL_PARITY_REPORT.md`
-    * `migration/vue-visual-parity-report.json`
-    * `migration/visual-parity/baseline/*.png`
+  * Consolidated parity + decoupling execution into migration tracker/checklist artifacts.
+  * Replaced legacy visual parity fixture artifacts with Storybook-first parity execution plan:
+    * `STORYBOOK_PARITY_PLAN.md`
   * Added API gap priority ranking artifacts:
     * `migration/VUE_API_PARITY_PRIORITY.md`
     * `migration/vue-api-parity-priority.json`

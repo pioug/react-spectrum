@@ -129,7 +129,7 @@ export const VueStepList = defineComponent({
     let state: StepListState = {
       isSelectable: (key) => !disabledKeySet.value.has(key),
       selectedKey,
-      selectionManager: selectableList.selectionManager
+      selectionManager: selectableList.selectionManager as StepListState['selectionManager']
     };
     let stepList = createStepList(state, {
       ariaLabel: computed(() => props.ariaLabel)

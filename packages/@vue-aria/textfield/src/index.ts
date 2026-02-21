@@ -1,7 +1,7 @@
+import type {AriaTextFieldProps} from '@vue-types/textfield';
+import {type FormattedTextFieldState, useFormattedTextField as useFormattedTextFieldInternal} from './useFormattedTextField';
 import {type Ref, ref} from 'vue';
-import {useTextField as useTextFieldInternal, type AriaTextFieldOptions as VueAriaTextFieldOptions, type TextFieldAria as VueTextFieldAria, type TextFieldInputElementType} from './useTextField';
-import {useFormattedTextField as useFormattedTextFieldInternal, type FormattedTextFieldState} from './useFormattedTextField';
-import type {AriaTextFieldProps} from '@react-types/textfield';
+import {type TextFieldInputElementType, useTextField as useTextFieldInternal, type AriaTextFieldOptions as VueAriaTextFieldOptions, type TextFieldAria as VueTextFieldAria} from './useTextField';
 
 type DefaultElementType = 'input';
 type TextFieldIntrinsicElements = 'input' | 'textarea';

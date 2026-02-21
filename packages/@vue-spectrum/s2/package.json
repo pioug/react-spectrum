@@ -26,7 +26,16 @@
     "vue": "^3.4.0"
   },
   "dependencies": {
-    "@vue-spectrum/components": "workspace:*"
+    "@vue-spectrum/button": "workspace:*",
+    "@vue-spectrum/checkbox": "workspace:*",
+    "@vue-spectrum/dialog": "workspace:*",
+    "@vue-spectrum/overlays": "workspace:*",
+    "@vue-spectrum/provider": "workspace:*",
+    "@vue-spectrum/radio": "workspace:*",
+    "@vue-spectrum/switch": "workspace:*",
+    "@vue-spectrum/table": "workspace:*",
+    "@vue-spectrum/textfield": "workspace:*",
+    "@vue-spectrum/tree": "workspace:*"
   },
   "publishConfig": {
     "access": "public"

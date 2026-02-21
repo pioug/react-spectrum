@@ -1,13 +1,13 @@
-import {useSwitch as useSwitchInternal, type AriaSwitchOptions, type SwitchAria} from './useSwitch';
+import {type AriaSwitchOptions, type SwitchAria, useSwitch as useSwitchInternal} from './useSwitch';
+import type {AriaSwitchProps} from '@vue-types/switch';
 import type {ToggleState} from '@vue-stately/toggle';
-import type {AriaSwitchProps} from '@react-types/switch';
 
 type RefObject<T> = {
   current: T
 };
 
 export type {AriaSwitchOptions, SwitchAria};
-export type {AriaSwitchProps} from '@react-types/switch';
+export type {AriaSwitchProps} from '@vue-types/switch';
 
 export function useSwitch(
   props: AriaSwitchProps,

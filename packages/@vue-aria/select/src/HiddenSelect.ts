@@ -1,5 +1,5 @@
-import {defineComponent, h, ref, watch, type PropType} from 'vue';
-import {useHiddenSelect, type AriaHiddenSelectOptions} from './useHiddenSelect';
+import {type AriaHiddenSelectOptions, useHiddenSelect} from './useHiddenSelect';
+import {defineComponent, h, type PropType, ref, watch} from 'vue';
 import type {SelectKey, SelectOption} from './useSelect';
 
 export interface AriaHiddenSelectProps extends AriaHiddenSelectOptions {}

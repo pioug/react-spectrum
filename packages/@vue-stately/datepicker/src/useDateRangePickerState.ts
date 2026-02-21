@@ -64,7 +64,8 @@ export interface DateRangePickerStateOptions<T extends DateValue = DateValue> {
   value?: Ref<DateRangeValue>
 }
 
-export function useDateRangePickerState<T extends DateValue = DateValue>(options: DateRangePickerStateOptions<T> = {}): DateRangePickerState {
+export function useDateRangePickerState<T extends DateValue = DateValue>(props: DateRangePickerStateOptions<T>): DateRangePickerState {
+  let options = props ?? ({} as DateRangePickerStateOptions<T>);
   let internalValue = ref(cloneRange(options.defaultValue));
   let value = options.value ?? internalValue;
   let timeRange = ref<TimeRangeValue>({

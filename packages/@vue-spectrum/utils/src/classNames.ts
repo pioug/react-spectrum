@@ -4,6 +4,7 @@ export interface ClassNameRecord {
 
 type ClassMap = {[key: string]: string};
 type ClassNameInput = string | ClassNameRecord | undefined;
+export type ClassNameValue = ClassNameInput;
 
 export let shouldKeepSpectrumClassNames = false;
 

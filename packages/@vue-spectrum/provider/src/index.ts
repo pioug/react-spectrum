@@ -1,10 +1,13 @@
-import {VueSpectrumProvider, type SpectrumContextValue} from '@vue-spectrum/components';
-import {computed, defineComponent, h, inject, provide, type ComputedRef, type InjectionKey, type PropType} from 'vue';
+import '@adobe/spectrum-css-temp/components/page/vars.css';
+import '@adobe/spectrum-css-temp/components/typography/index.css';
+import {theme as defaultTheme} from '@vue-spectrum/theme-default';
 import type {
   Breakpoints,
   ProviderContext as ReactProviderContext,
   ProviderProps as ReactProviderProps
-} from '@react-types/provider';
+} from '@vue-types/provider';
+import {computed, type ComputedRef, defineComponent, h, inject, type InjectionKey, type PropType, provide} from 'vue';
+import {type SpectrumContextValue, VueSpectrumProvider} from '@vue-spectrum/components';
 
 type ThemeSectionLike = {
   className?: string,
@@ -31,7 +34,7 @@ type ProviderPropsCompat = Omit<ReactProviderProps, 'children' | 'theme'> & {
 
 const defaultProviderContext: ProviderContextCompat = {
   version: '0.1.0',
-  theme: {},
+  theme: defaultTheme as unknown as ThemeLike,
   colorScheme: 'light',
   scale: 'medium',
   breakpoints: {} as Breakpoints,
@@ -77,7 +80,7 @@ export const Provider = defineComponent({
       let locale = props.locale ?? parent.locale;
       return {
         ...parent,
-        theme: props.theme ?? parent.theme,
+        theme: props.theme ?? parent.theme ?? (defaultTheme as unknown as ThemeLike),
         colorScheme: props.colorScheme ?? parent.colorScheme,
         scale: props.scale ?? parent.scale,
         locale,

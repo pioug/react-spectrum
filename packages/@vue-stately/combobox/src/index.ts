@@ -1,10 +1,10 @@
+import type {SelectionMode} from '@vue-types/shared';
 import {
   useComboBoxState as useComboBoxStateInternal,
   type ComboBoxState as VueComboBoxState,
   type ComboBoxStateOptions as VueComboBoxStateOptions,
   type StatelyComboBoxState as VueStatelyComboBoxState
 } from './useComboBoxState';
-import type {SelectionMode} from '@react-types/shared';
 
 export type ComboBoxStateOptions<T extends object, M extends SelectionMode = 'single'> = VueComboBoxStateOptions & {
   _itemType?: T,

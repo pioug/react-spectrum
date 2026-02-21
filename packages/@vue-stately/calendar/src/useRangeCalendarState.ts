@@ -4,30 +4,39 @@ import type {DateRange, RangeCalendarState} from './types';
 import {useRangeCalendar} from '@vue-aria/calendar';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
+export type DateValue = string | number | Date;
 
-export interface RangeCalendarStateOptions {
-  defaultFocusedValue?: Date | null,
-  defaultValue?: DateRange,
+type RangeValue<T> = {
+  start: T | null,
+  end: T | null
+};
+
+export interface RangeCalendarStateOptions<T extends DateValue = DateValue> {
+  defaultFocusedValue?: T | null,
+  defaultValue?: RangeValue<T>,
   isDisabled?: MaybeRef<boolean>,
   locale?: MaybeRef<string>,
-  maxValue?: MaybeRef<Date | null | undefined>,
-  minValue?: MaybeRef<Date | null | undefined>,
-  onChange?: (value: DateRange) => void,
-  onFocusChange?: (value: Date) => void,
-  value?: Ref<DateRange>
+  maxValue?: MaybeRef<T | null | undefined>,
+  minValue?: MaybeRef<T | null | undefined>,
+  onChange?: (value: RangeValue<T>) => void,
+  onFocusChange?: (value: T) => void,
+  value?: Ref<RangeValue<T>>
 }
 
-export function useRangeCalendarState(options: RangeCalendarStateOptions = {}): RangeCalendarState {
-  let internalValue = ref<DateRange>(normalizeDateRange(options.defaultValue ?? {
+export function useRangeCalendarState<T extends DateValue = DateValue>(
+  props: RangeCalendarStateOptions<T>
+): RangeCalendarState<T> {
+  let options = props ?? ({} as RangeCalendarStateOptions<T>);
+  let internalValue = ref<DateRange>(normalizeDateRange(options.defaultValue as unknown as DateRange ?? {
     start: null,
     end: null
   }));
-  let valueRef = options.value ?? internalValue;
+  let valueRef = (options.value as Ref<DateRange> | undefined) ?? internalValue;
 
   let initialFocusedDate = options.defaultFocusedValue
     ?? valueRef.value.start
     ?? new Date();
-  let focusedDate = ref(cloneDate(initialFocusedDate));
+  let focusedDate = ref(cloneDate(initialFocusedDate as unknown as Date));
   let isFocused = ref(false);
   let anchorDate = ref<Date | null>(null);
   let visibleDate = ref(startOfMonth(initialFocusedDate));
@@ -50,12 +59,12 @@ export function useRangeCalendarState(options: RangeCalendarStateOptions = {}): 
 
   let setValue = (nextValue: DateRange): void => {
     valueRef.value = normalizeDateRange(nextValue);
-    options.onChange?.(normalizeDateRange(valueRef.value));
+    options.onChange?.(normalizeDateRange(valueRef.value) as unknown as RangeValue<T>);
   };
 
   let setFocusedDate = (date: Date): void => {
     focusedDate.value = cloneDate(date);
-    options.onFocusChange?.(cloneDate(focusedDate.value));
+    options.onFocusChange?.(cloneDate(focusedDate.value) as unknown as T);
   };
 
   let selectDate = (date: Date): void => {
@@ -65,7 +74,7 @@ export function useRangeCalendarState(options: RangeCalendarStateOptions = {}): 
 
     calendar.selectDate(date);
     setFocusedDate(date);
-    options.onChange?.(normalizeDateRange(valueRef.value));
+    options.onChange?.(normalizeDateRange(valueRef.value) as unknown as RangeValue<T>);
 
     if (valueRef.value.start && valueRef.value.end) {
       anchorDate.value = null;
@@ -99,5 +108,5 @@ export function useRangeCalendarState(options: RangeCalendarStateOptions = {}): 
     setFocused: (nextFocused: boolean) => {
       isFocused.value = nextFocused;
     }
-  };
+  } as unknown as RangeCalendarState<T>;
 }

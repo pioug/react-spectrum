@@ -1,6 +1,6 @@
 import {type BaseCollection, CollectionBuilder} from '@vue-aria/collections';
+import type {Collection, CollectionStateBase, Node} from '@vue-types/shared';
 import {computed, type ComputedRef, type Ref, unref} from 'vue';
-import type {Collection, CollectionStateBase, Node} from '@react-types/shared';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 

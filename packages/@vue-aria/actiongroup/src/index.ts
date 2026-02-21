@@ -1,6 +1,6 @@
-import {useActionGroup as useActionGroupInternal, type ActionGroupAria, type ActionGroupOptions, type ActionGroupSelectionMode} from './useActionGroup';
-import {useActionGroupItem as useActionGroupItemInternal, type ActionGroupItemAria, type AriaActionGroupItemProps} from './useActionGroupItem';
-import type {AriaActionGroupProps} from '@react-types/actiongroup';
+import {type ActionGroupAria, type ActionGroupOptions, type ActionGroupSelectionMode, useActionGroup as useActionGroupInternal} from './useActionGroup';
+import {type ActionGroupItemAria, type AriaActionGroupItemProps, useActionGroupItem as useActionGroupItemInternal} from './useActionGroupItem';
+import type {AriaActionGroupProps} from '@vue-types/actiongroup';
 import type {ListState as VueListState} from '@vue-stately/list';
 
 type RefObject<T> = {

@@ -1,5 +1,5 @@
+import {type AriaToolbarOptions, type ToolbarAria, type ToolbarOrientation, useToolbar as useToolbarInternal} from './useToolbar';
 import type {Ref} from 'vue';
-import {useToolbar as useToolbarInternal, type AriaToolbarOptions, type ToolbarAria, type ToolbarOrientation} from './useToolbar';
 
 type RefObject<T> = {
   current: T

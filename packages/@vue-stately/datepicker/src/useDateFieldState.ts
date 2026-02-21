@@ -14,17 +14,6 @@ export interface DateSegment {
   value?: number | string | null
 }
 
-export interface DateFieldStateOptions<T extends DateValue = DateValue> {
-  defaultValue?: string,
-  isDisabled?: MaybeRef<boolean>,
-  isReadOnly?: MaybeRef<boolean>,
-  isRequired?: MaybeRef<boolean>,
-  maxValue?: MaybeRef<string | undefined>,
-  minValue?: MaybeRef<string | undefined>,
-  onChange?: (value: string) => void,
-  value?: Ref<string>
-}
-
 export interface DateFieldState {
   dateValue: ComputedRef<Date | null>,
   defaultValue: string,
@@ -41,7 +30,19 @@ export interface DateFieldState {
   setValue: (value: string) => void
 }
 
-export function useDateFieldState<T extends DateValue = DateValue>(options: DateFieldStateOptions<T> = {}): DateFieldState {
+export interface DateFieldStateOptions<T extends DateValue = DateValue> {
+  defaultValue?: string,
+  isDisabled?: MaybeRef<boolean>,
+  isReadOnly?: MaybeRef<boolean>,
+  isRequired?: MaybeRef<boolean>,
+  maxValue?: MaybeRef<string | undefined>,
+  minValue?: MaybeRef<string | undefined>,
+  onChange?: (value: string) => void,
+  value?: Ref<string>
+}
+
+export function useDateFieldState<T extends DateValue = DateValue>(props: DateFieldStateOptions<T>): DateFieldState {
+  let options = props ?? ({} as DateFieldStateOptions<T>);
   let internalValue = ref(options.defaultValue ?? '');
   let value = options.value ?? internalValue;
 

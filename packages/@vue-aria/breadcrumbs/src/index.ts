@@ -1,6 +1,6 @@
-import {useBreadcrumbItem as useBreadcrumbItemInternal, type AriaBreadcrumbItemOptions, type BreadcrumbCurrentValue, type BreadcrumbItemAria} from './useBreadcrumbItem';
-import {useBreadcrumbs as useBreadcrumbsInternal, type AriaBreadcrumbsOptions, type BreadcrumbsAria} from './useBreadcrumbs';
-import type {AriaBreadcrumbItemProps, AriaBreadcrumbsProps} from '@react-types/breadcrumbs';
+import {type AriaBreadcrumbItemOptions, type BreadcrumbCurrentValue, type BreadcrumbItemAria, useBreadcrumbItem as useBreadcrumbItemInternal} from './useBreadcrumbItem';
+import type {AriaBreadcrumbItemProps, AriaBreadcrumbsProps} from '@vue-types/breadcrumbs';
+import {type AriaBreadcrumbsOptions, type BreadcrumbsAria, useBreadcrumbs as useBreadcrumbsInternal} from './useBreadcrumbs';
 
 type RefObject<T> = {
   current: T

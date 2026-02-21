@@ -1,5 +1,5 @@
-import {useSearchField as useSearchFieldInternal, type AriaSearchFieldOptions, type SearchFieldAria} from './useSearchField';
-import type {AriaSearchFieldProps} from '@react-types/searchfield';
+import {type AriaSearchFieldOptions, type SearchFieldAria, useSearchField as useSearchFieldInternal} from './useSearchField';
+import type {AriaSearchFieldProps} from '@vue-types/searchfield';
 import type {SearchFieldState} from '@vue-stately/searchfield';
 
 type RefObject<T> = {
@@ -8,7 +8,7 @@ type RefObject<T> = {
 
 export type {AriaSearchFieldOptions, SearchFieldAria};
 export type {MaybeRef} from './types';
-export type {AriaSearchFieldProps} from '@react-types/searchfield';
+export type {AriaSearchFieldProps} from '@vue-types/searchfield';
 
 export function useSearchField(
   props: AriaSearchFieldProps,

@@ -1,4 +1,4 @@
-import {useDisclosure as useDisclosureInternal, type AriaDisclosureOptions, type DisclosureAria} from './useDisclosure';
+import {type AriaDisclosureOptions, type DisclosureAria, useDisclosure as useDisclosureInternal} from './useDisclosure';
 import type {DisclosureState} from '@vue-stately/disclosure';
 
 type RefObject<T> = {

@@ -23,9 +23,9 @@
     "url": "https://github.com/adobe/react-spectrum"
   },
   "dependencies": {
-    "@react-types/actionbar": "^3.1.20",
-    "@vue-spectrum/components": "^0.1.0",
-    "@vue-stately/collections": "^0.1.0"
+    "@vue-spectrum/utils": "workspace:*",
+    "@vue-stately/collections": "workspace:*",
+    "@vue-types/actionbar": "^3.1.20"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

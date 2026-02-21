@@ -1,6 +1,6 @@
-import {useHiddenSelect as useHiddenSelectInternal, type AriaHiddenSelectOptions, type HiddenSelectAria} from './useHiddenSelect';
+import {type AriaHiddenSelectOptions, type HiddenSelectAria, useHiddenSelect as useHiddenSelectInternal} from './useHiddenSelect';
 import {HiddenSelect} from './HiddenSelect';
-import {useSelect as useSelectInternal, type AriaSelectOptions as VueAriaSelectOptions, type SelectAria as VueSelectAria, type SelectKey, type SelectOption} from './useSelect';
+import {type SelectKey, type SelectOption, useSelect as useSelectInternal, type AriaSelectOptions as VueAriaSelectOptions, type SelectAria as VueSelectAria} from './useSelect';
 import type {SelectState} from '@vue-stately/select';
 
 type SelectionMode = 'multiple' | 'single';
@@ -11,7 +11,7 @@ type RefObject<T> = {
 
 export {HiddenSelect};
 export type {AriaHiddenSelectProps, HiddenSelectProps} from './HiddenSelect';
-export type {AriaSelectProps} from '@react-types/select';
+export type {AriaSelectProps} from '@vue-types/select';
 export type {MaybeRef} from './types';
 
 export type AriaSelectOptions<T = unknown, M extends SelectionMode = 'single'> = VueAriaSelectOptions;

@@ -1,8 +1,8 @@
-import {useTab as useTabInternal, type AriaTabOptions, type TabAria} from './useTab';
-import {useTabList as useTabListInternal, type AriaTabListOptions as VueAriaTabListOptions, type TabListAria, type TabListState as VueTabListAriaState, type TabOrientation} from './useTabList';
-import {useTabPanel as useTabPanelInternal, type AriaTabPanelOptions, type TabPanelAria} from './useTabPanel';
+import type {AriaTabListProps, AriaTabPanelProps, AriaTabProps} from '@vue-types/tabs';
+import {type AriaTabOptions, type TabAria, useTab as useTabInternal} from './useTab';
+import {type AriaTabPanelOptions, type TabPanelAria, useTabPanel as useTabPanelInternal} from './useTabPanel';
+import {type TabListAria, type TabOrientation, useTabList as useTabListInternal, type AriaTabListOptions as VueAriaTabListOptions, type TabListState as VueTabListAriaState} from './useTabList';
 import type {TabListState as VueTabListState} from '@vue-stately/tabs';
-import type {AriaTabListProps, AriaTabPanelProps, AriaTabProps} from '@react-types/tabs';
 
 type RefObject<T> = {
   current: T
@@ -52,5 +52,5 @@ export function useTabPanel(options: AriaTabPanelOptions, state: VueTabListAriaS
   return useTabPanelInternal(options, state);
 }
 
-export type {AriaTabListProps, AriaTabPanelProps, AriaTabProps} from '@react-types/tabs';
-export type {Orientation} from '@react-types/shared';
+export type {AriaTabListProps, AriaTabPanelProps, AriaTabProps} from '@vue-types/tabs';
+export type {Orientation} from '@vue-types/shared';

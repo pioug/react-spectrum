@@ -1,0 +1,15 @@
+.vs-spectrum-well {
+  align-items: center;
+  background: #fbfbfb;
+  border: 1px solid #d8d8d8;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #222222;
+  display: inline-flex;
+  font-size: 14px;
+  inline-size: 198px;
+  line-height: 20px;
+  margin: 0;
+  min-block-size: 54px;
+  padding: 0 16px;
+}

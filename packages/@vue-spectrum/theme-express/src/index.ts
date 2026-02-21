@@ -1,4 +1,7 @@
+import '@adobe/spectrum-css-temp/vars/express.css';
 import {theme as defaultTheme, type Theme} from '@vue-spectrum/theme-default';
+const express: {[key: string]: string} = {};
+
 
 export interface ExpressTheme extends Theme {
   global: Theme['global'] & {express: string},
@@ -8,18 +11,22 @@ export interface ExpressTheme extends Theme {
 
 export type SpectrumExpressTheme = ExpressTheme;
 
+function resolveClassName(styles: Record<string, string>, key: string, fallback: string): string {
+  return styles[key] ?? fallback;
+}
+
 export const theme: Theme = {
   ...defaultTheme,
   global: {
     ...defaultTheme.global,
-    express: 'spectrum-express-global'
+    express: resolveClassName(express, 'express', 'express')
   },
   medium: {
     ...defaultTheme.medium,
-    express: 'spectrum-express-medium'
+    express: resolveClassName(express, 'medium', 'medium')
   },
   large: {
     ...defaultTheme.large,
-    express: 'spectrum-express-large'
+    express: resolveClassName(express, 'large', 'large')
   }
 };

@@ -23,9 +23,11 @@
     "url": "https://github.com/adobe/react-spectrum"
   },
   "dependencies": {
-    "@react-types/combobox": "^3.13.11",
-    "@vue-spectrum/components": "^0.1.0",
-    "@vue-stately/collections": "^0.1.0"
+    "@adobe/spectrum-css-temp": "3.0.0-alpha.1",
+    "@vue-aria/utils": "workspace:*",
+    "@vue-spectrum/utils": "workspace:*",
+    "@vue-stately/collections": "workspace:*",
+    "@vue-types/combobox": "^3.13.11"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

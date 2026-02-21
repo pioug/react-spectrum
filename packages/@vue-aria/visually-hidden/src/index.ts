@@ -1,8 +1,8 @@
 import {
-  VISUALLY_HIDDEN_STYLES,
-  useVisuallyHidden as useVisuallyHiddenInternal,
   type AriaVisuallyHiddenOptions,
   type HiddenStyle,
+  useVisuallyHidden as useVisuallyHiddenInternal,
+  VISUALLY_HIDDEN_STYLES,
   type VisuallyHiddenAria
 } from './useVisuallyHidden';
 import {VisuallyHidden, type VisuallyHiddenProps} from './VisuallyHidden';

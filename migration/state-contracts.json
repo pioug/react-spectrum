@@ -1,0 +1,3538 @@
+{
+  "generatedAt": "2026-02-21T15:44:21.999Z",
+  "source": {
+    "reactSpectrumRoot": "packages/@react-spectrum",
+    "analyzedSubpath": "src/**/*.{ts,tsx,js,jsx,mts,cts,mjs,cjs}"
+  },
+  "summary": {
+    "packagesAnalyzed": 64,
+    "filesWithContracts": 138,
+    "uniqueStateClasses": 36,
+    "uniqueDataAttributes": 23,
+    "uniqueAriaAttributes": 15,
+    "uniqueVisibilitySignals": 16
+  },
+  "taxonomy": {
+    "interactiveStateClasses": [
+      "focus-ring",
+      "is-active",
+      "is-checked",
+      "is-disabled",
+      "is-focused",
+      "is-hovered",
+      "is-invalid",
+      "is-open",
+      "is-pressed",
+      "is-read-only",
+      "is-selected"
+    ],
+    "visibilityStateClasses": [
+      "is-expanded",
+      "is-open",
+      "is-placeholder",
+      "is-range-end",
+      "is-range-selection",
+      "is-range-start",
+      "is-selection-end",
+      "is-selection-start",
+      "is-today",
+      "is-unavailable"
+    ]
+  },
+  "contracts": {
+    "stateClasses": [
+      "focus-ring",
+      "is-active",
+      "is-checked",
+      "is-completed",
+      "is-critical",
+      "is-disabled",
+      "is-dragged",
+      "is-expanded",
+      "is-focused",
+      "is-hovered",
+      "is-indeterminate",
+      "is-invalid",
+      "is-next-selected",
+      "is-open",
+      "is-placeholder",
+      "is-positive",
+      "is-pressed",
+      "is-prev-selected",
+      "is-quiet",
+      "is-range-end",
+      "is-range-selection",
+      "is-range-start",
+      "is-read-only",
+      "is-resizable",
+      "is-reversed",
+      "is-selectable",
+      "is-selected",
+      "is-selection-end",
+      "is-selection-start",
+      "is-sortable",
+      "is-sorted-asc",
+      "is-sorted-desc",
+      "is-today",
+      "is-tophandle",
+      "is-unavailable",
+      "is-warning"
+    ],
+    "dataAttributes": [
+      "data-background",
+      "data-color-scheme",
+      "data-disabled",
+      "data-expanded",
+      "data-focus-visible",
+      "data-focus-visible-within",
+      "data-focused",
+      "data-hidden-breadcrumb",
+      "data-hidden-tab",
+      "data-hovered",
+      "data-key",
+      "data-placement",
+      "data-position",
+      "data-pressed",
+      "data-rac",
+      "data-react-aria-prevent-focus",
+      "data-rsp-slot",
+      "data-slot",
+      "data-static-color",
+      "data-style",
+      "data-testid",
+      "data-trigger",
+      "data-variant"
+    ],
+    "ariaAttributes": [
+      "aria-colindex",
+      "aria-colspan",
+      "aria-describedby",
+      "aria-details",
+      "aria-disabled",
+      "aria-haspopup",
+      "aria-hidden",
+      "aria-label",
+      "aria-labelledby",
+      "aria-level",
+      "aria-live",
+      "aria-posinset",
+      "aria-rowindex",
+      "aria-selected",
+      "aria-setsize"
+    ],
+    "visibilitySignals": [
+      "aria-hidden",
+      "data-expanded",
+      "data-hidden-breadcrumb",
+      "data-hidden-tab",
+      "hidden",
+      "is-expanded",
+      "is-open",
+      "is-placeholder",
+      "is-range-end",
+      "is-range-selection",
+      "is-range-start",
+      "is-selection-end",
+      "is-selection-start",
+      "is-today",
+      "is-unavailable",
+      "visibility"
+    ]
+  },
+  "packages": [
+    {
+      "sourcePackage": "@react-spectrum/accordion",
+      "sourcePath": "packages/@react-spectrum/accordion",
+      "targetPackage": "@vue-spectrum/accordion",
+      "targetPath": "packages/@vue-spectrum/accordion",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-expanded",
+          "is-hovered",
+          "is-pressed"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-hovered",
+          "is-pressed"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-hidden"
+        ],
+        "visibilitySignals": [
+          "aria-hidden",
+          "hidden",
+          "is-expanded"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/accordion/src/Accordion.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-disabled",
+            "is-expanded",
+            "is-hovered",
+            "is-pressed"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-hidden"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden",
+            "is-expanded"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/actionbar",
+      "sourcePath": "packages/@react-spectrum/actionbar",
+      "targetPackage": "@vue-spectrum/actionbar",
+      "targetPath": "packages/@vue-spectrum/actionbar",
+      "targetPackageExists": true,
+      "filesScanned": 3,
+      "contract": {
+        "stateClasses": [
+          "is-open"
+        ],
+        "interactiveStateClasses": [
+          "is-open"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-label"
+        ],
+        "visibilitySignals": [
+          "is-open"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/actionbar/src/ActionBar.tsx",
+          "stateClasses": [
+            "is-open"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "is-open"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/actiongroup",
+      "sourcePath": "packages/@react-spectrum/actiongroup",
+      "targetPackage": "@vue-spectrum/actiongroup",
+      "targetPath": "packages/@vue-spectrum/actiongroup",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [
+          "is-hovered",
+          "is-selected"
+        ],
+        "interactiveStateClasses": [
+          "is-hovered",
+          "is-selected"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-label",
+          "aria-labelledby"
+        ],
+        "visibilitySignals": [
+          "hidden"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/actiongroup/src/ActionGroup.tsx",
+          "stateClasses": [
+            "is-hovered",
+            "is-selected"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label",
+            "aria-labelledby"
+          ],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/autocomplete",
+      "sourcePath": "packages/@react-spectrum/autocomplete",
+      "targetPackage": "@vue-spectrum/autocomplete",
+      "targetPath": "packages/@vue-spectrum/autocomplete",
+      "targetPackageExists": true,
+      "filesScanned": 3,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-focused",
+          "is-hovered",
+          "is-placeholder",
+          "is-quiet"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-focused",
+          "is-hovered"
+        ],
+        "dataAttributes": [
+          "data-testid"
+        ],
+        "ariaAttributes": [
+          "aria-haspopup",
+          "aria-label",
+          "aria-labelledby"
+        ],
+        "visibilitySignals": [
+          "hidden",
+          "is-placeholder"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/autocomplete/src/MobileSearchAutocomplete.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-disabled",
+            "is-focused",
+            "is-hovered",
+            "is-placeholder",
+            "is-quiet"
+          ],
+          "dataAttributes": [
+            "data-testid"
+          ],
+          "ariaAttributes": [
+            "aria-haspopup",
+            "aria-label",
+            "aria-labelledby"
+          ],
+          "visibilitySignals": [
+            "hidden",
+            "is-placeholder"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/autocomplete/src/SearchAutocomplete.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-disabled",
+            "is-focused",
+            "is-hovered",
+            "is-quiet"
+          ],
+          "dataAttributes": [
+            "data-testid"
+          ],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/avatar",
+      "sourcePath": "packages/@react-spectrum/avatar",
+      "targetPackage": "@vue-spectrum/avatar",
+      "targetPath": "packages/@vue-spectrum/avatar",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [
+          "is-disabled"
+        ],
+        "interactiveStateClasses": [
+          "is-disabled"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/avatar/src/Avatar.tsx",
+          "stateClasses": [
+            "is-disabled"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/badge",
+      "sourcePath": "packages/@react-spectrum/badge",
+      "targetPackage": "@vue-spectrum/badge",
+      "targetPath": "packages/@vue-spectrum/badge",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    },
+    {
+      "sourcePackage": "@react-spectrum/breadcrumbs",
+      "sourcePath": "packages/@react-spectrum/breadcrumbs",
+      "targetPackage": "@vue-spectrum/breadcrumbs",
+      "targetPath": "packages/@vue-spectrum/breadcrumbs",
+      "targetPackageExists": true,
+      "filesScanned": 3,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-hovered",
+          "is-reversed"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-hovered"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-label"
+        ],
+        "visibilitySignals": []
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/breadcrumbs/src/BreadcrumbItem.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-disabled",
+            "is-hovered",
+            "is-reversed"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/breadcrumbs/src/Breadcrumbs.tsx",
+          "stateClasses": [
+            "is-disabled"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/button",
+      "sourcePath": "packages/@react-spectrum/button",
+      "targetPackage": "@vue-spectrum/button",
+      "targetPath": "packages/@vue-spectrum/button",
+      "targetPackageExists": true,
+      "filesScanned": 7,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-active",
+          "is-disabled",
+          "is-hovered",
+          "is-selected"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-active",
+          "is-disabled",
+          "is-hovered",
+          "is-selected"
+        ],
+        "dataAttributes": [
+          "data-static-color",
+          "data-style",
+          "data-variant"
+        ],
+        "ariaAttributes": [
+          "aria-disabled",
+          "aria-hidden",
+          "aria-label",
+          "aria-labelledby",
+          "aria-live"
+        ],
+        "visibilitySignals": [
+          "aria-hidden",
+          "hidden",
+          "visibility"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/button/src/ActionButton.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-active",
+            "is-disabled",
+            "is-hovered"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/button/src/Button.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-active",
+            "is-disabled",
+            "is-hovered"
+          ],
+          "dataAttributes": [
+            "data-static-color",
+            "data-style",
+            "data-variant"
+          ],
+          "ariaAttributes": [
+            "aria-disabled",
+            "aria-hidden",
+            "aria-label",
+            "aria-labelledby",
+            "aria-live"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden",
+            "visibility"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/button/src/ClearButton.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-active",
+            "is-disabled",
+            "is-hovered"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/button/src/FieldButton.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-active",
+            "is-disabled",
+            "is-hovered"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/button/src/LogicButton.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-active",
+            "is-disabled",
+            "is-hovered"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/button/src/ToggleButton.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-active",
+            "is-disabled",
+            "is-hovered",
+            "is-selected"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/buttongroup",
+      "sourcePath": "packages/@react-spectrum/buttongroup",
+      "targetPackage": "@vue-spectrum/buttongroup",
+      "targetPath": "packages/@vue-spectrum/buttongroup",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    },
+    {
+      "sourcePackage": "@react-spectrum/calendar",
+      "sourcePath": "packages/@react-spectrum/calendar",
+      "targetPackage": "@vue-spectrum/calendar",
+      "targetPath": "packages/@vue-spectrum/calendar",
+      "targetPackageExists": true,
+      "filesScanned": 6,
+      "contract": {
+        "stateClasses": [
+          "is-disabled",
+          "is-focused",
+          "is-hovered",
+          "is-invalid",
+          "is-pressed",
+          "is-range-end",
+          "is-range-selection",
+          "is-range-start",
+          "is-selected",
+          "is-selection-end",
+          "is-selection-start",
+          "is-today",
+          "is-unavailable"
+        ],
+        "interactiveStateClasses": [
+          "is-disabled",
+          "is-focused",
+          "is-hovered",
+          "is-invalid",
+          "is-pressed",
+          "is-selected"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-label"
+        ],
+        "visibilitySignals": [
+          "hidden",
+          "is-range-end",
+          "is-range-selection",
+          "is-range-start",
+          "is-selection-end",
+          "is-selection-start",
+          "is-today",
+          "is-unavailable"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/calendar/src/CalendarBase.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/calendar/src/CalendarCell.tsx",
+          "stateClasses": [
+            "is-disabled",
+            "is-focused",
+            "is-hovered",
+            "is-invalid",
+            "is-pressed",
+            "is-range-end",
+            "is-range-selection",
+            "is-range-start",
+            "is-selected",
+            "is-selection-end",
+            "is-selection-start",
+            "is-today",
+            "is-unavailable"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "is-range-end",
+            "is-range-selection",
+            "is-range-start",
+            "is-selection-end",
+            "is-selection-start",
+            "is-today",
+            "is-unavailable"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/card",
+      "sourcePath": "packages/@react-spectrum/card",
+      "targetPackage": "@vue-spectrum/card",
+      "targetPath": "packages/@vue-spectrum/card",
+      "targetPackageExists": true,
+      "filesScanned": 9,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-focused",
+          "is-hovered",
+          "is-selected"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-focused",
+          "is-hovered",
+          "is-selected"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-describedby",
+          "aria-label",
+          "aria-labelledby",
+          "aria-rowindex"
+        ],
+        "visibilitySignals": []
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/card/src/Card.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/card/src/CardBase.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-focused",
+            "is-hovered",
+            "is-selected"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-describedby",
+            "aria-label",
+            "aria-labelledby"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/card/src/CardView.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label",
+            "aria-rowindex"
+          ],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/checkbox",
+      "sourcePath": "packages/@react-spectrum/checkbox",
+      "targetPackage": "@vue-spectrum/checkbox",
+      "targetPath": "packages/@vue-spectrum/checkbox",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-checked",
+          "is-disabled",
+          "is-hovered",
+          "is-indeterminate",
+          "is-invalid"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-checked",
+          "is-disabled",
+          "is-hovered",
+          "is-invalid"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/checkbox/src/Checkbox.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-checked",
+            "is-disabled",
+            "is-hovered",
+            "is-indeterminate",
+            "is-invalid"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/color",
+      "sourcePath": "packages/@react-spectrum/color",
+      "targetPackage": "@vue-spectrum/color",
+      "targetPath": "packages/@vue-spectrum/color",
+      "targetPackageExists": true,
+      "filesScanned": 10,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-focused",
+          "is-open"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-focused",
+          "is-open"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-describedby",
+          "aria-details",
+          "aria-hidden",
+          "aria-label",
+          "aria-labelledby"
+        ],
+        "visibilitySignals": [
+          "aria-hidden",
+          "hidden",
+          "is-open"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/color/src/ColorArea.tsx",
+          "stateClasses": [
+            "is-disabled"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/color/src/ColorEditor.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/color/src/ColorField.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/color/src/ColorPicker.tsx",
+          "stateClasses": [
+            "focus-ring"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-describedby",
+            "aria-details",
+            "aria-label",
+            "aria-labelledby"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/color/src/ColorSlider.tsx",
+          "stateClasses": [
+            "is-disabled"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/color/src/ColorSwatchPicker.tsx",
+          "stateClasses": [
+            "focus-ring"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/color/src/ColorThumb.tsx",
+          "stateClasses": [
+            "is-disabled",
+            "is-focused",
+            "is-open"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-hidden"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden",
+            "is-open"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/color/src/ColorWheel.tsx",
+          "stateClasses": [
+            "is-disabled"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/combobox",
+      "sourcePath": "packages/@react-spectrum/combobox",
+      "targetPackage": "@vue-spectrum/combobox",
+      "targetPath": "packages/@vue-spectrum/combobox",
+      "targetPackageExists": true,
+      "filesScanned": 3,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-active",
+          "is-disabled",
+          "is-focused",
+          "is-hovered",
+          "is-placeholder"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-active",
+          "is-disabled",
+          "is-focused",
+          "is-hovered"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-haspopup",
+          "aria-label",
+          "aria-labelledby"
+        ],
+        "visibilitySignals": [
+          "hidden",
+          "is-placeholder"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/combobox/src/ComboBox.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-disabled",
+            "is-focused",
+            "is-hovered"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/combobox/src/MobileComboBox.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-active",
+            "is-disabled",
+            "is-focused",
+            "is-hovered",
+            "is-placeholder"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-haspopup",
+            "aria-label",
+            "aria-labelledby"
+          ],
+          "visibilitySignals": [
+            "hidden",
+            "is-placeholder"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/contextualhelp",
+      "sourcePath": "packages/@react-spectrum/contextualhelp",
+      "targetPackage": "@vue-spectrum/contextualhelp",
+      "targetPath": "packages/@vue-spectrum/contextualhelp",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    },
+    {
+      "sourcePackage": "@react-spectrum/datepicker",
+      "sourcePath": "packages/@react-spectrum/datepicker",
+      "targetPackage": "@vue-spectrum/datepicker",
+      "targetPath": "packages/@vue-spectrum/datepicker",
+      "targetPackageExists": true,
+      "filesScanned": 9,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-focused",
+          "is-hovered",
+          "is-invalid",
+          "is-placeholder",
+          "is-read-only"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-focused",
+          "is-hovered",
+          "is-invalid",
+          "is-read-only"
+        ],
+        "dataAttributes": [
+          "data-testid"
+        ],
+        "ariaAttributes": [
+          "aria-hidden"
+        ],
+        "visibilitySignals": [
+          "aria-hidden",
+          "hidden",
+          "is-placeholder"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/datepicker/src/DatePicker.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-disabled",
+            "is-focused",
+            "is-hovered",
+            "is-invalid"
+          ],
+          "dataAttributes": [
+            "data-testid"
+          ],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/datepicker/src/DatePickerField.tsx",
+          "stateClasses": [],
+          "dataAttributes": [
+            "data-testid"
+          ],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/datepicker/src/DatePickerSegment.tsx",
+          "stateClasses": [
+            "is-placeholder",
+            "is-read-only"
+          ],
+          "dataAttributes": [
+            "data-testid"
+          ],
+          "ariaAttributes": [
+            "aria-hidden"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden",
+            "is-placeholder"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/datepicker/src/DateRangePicker.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-disabled",
+            "is-focused",
+            "is-hovered",
+            "is-invalid"
+          ],
+          "dataAttributes": [
+            "data-testid"
+          ],
+          "ariaAttributes": [
+            "aria-hidden"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/datepicker/src/Input.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-disabled",
+            "is-focused"
+          ],
+          "dataAttributes": [
+            "data-testid"
+          ],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/dialog",
+      "sourcePath": "packages/@react-spectrum/dialog",
+      "targetPackage": "@vue-spectrum/dialog",
+      "targetPath": "packages/@vue-spectrum/dialog",
+      "targetPackageExists": true,
+      "filesScanned": 7,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [
+          "data-testid"
+        ],
+        "ariaAttributes": [
+          "aria-label"
+        ],
+        "visibilitySignals": [
+          "hidden"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/dialog/src/AlertDialog.tsx",
+          "stateClasses": [],
+          "dataAttributes": [
+            "data-testid"
+          ],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/dialog/src/Dialog.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/divider",
+      "sourcePath": "packages/@react-spectrum/divider",
+      "targetPackage": "@vue-spectrum/divider",
+      "targetPath": "packages/@vue-spectrum/divider",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    },
+    {
+      "sourcePackage": "@react-spectrum/dnd",
+      "sourcePath": "packages/@react-spectrum/dnd",
+      "targetPackage": "@vue-spectrum/dnd",
+      "targetPath": "packages/@vue-spectrum/dnd",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    },
+    {
+      "sourcePackage": "@react-spectrum/dropzone",
+      "sourcePath": "packages/@react-spectrum/dropzone",
+      "targetPackage": "@vue-spectrum/dropzone",
+      "targetPath": "packages/@vue-spectrum/dropzone",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-labelledby"
+        ],
+        "visibilitySignals": []
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/dropzone/src/DropZone.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-labelledby"
+          ],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/filetrigger",
+      "sourcePath": "packages/@react-spectrum/filetrigger",
+      "targetPackage": "@vue-spectrum/filetrigger",
+      "targetPath": "packages/@vue-spectrum/filetrigger",
+      "targetPackageExists": true,
+      "filesScanned": 1,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    },
+    {
+      "sourcePackage": "@react-spectrum/form",
+      "sourcePath": "packages/@react-spectrum/form",
+      "targetPackage": "@vue-spectrum/form",
+      "targetPath": "packages/@vue-spectrum/form",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    },
+    {
+      "sourcePackage": "@react-spectrum/icon",
+      "sourcePath": "packages/@react-spectrum/icon",
+      "targetPackage": "@vue-spectrum/icon",
+      "targetPath": "packages/@vue-spectrum/icon",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-hidden",
+          "aria-label",
+          "aria-labelledby"
+        ],
+        "visibilitySignals": [
+          "aria-hidden",
+          "hidden"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/icon/src/Icon.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-hidden",
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/icon/src/Illustration.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-hidden",
+            "aria-label",
+            "aria-labelledby"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/icon/src/UIIcon.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-hidden",
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/illustratedmessage",
+      "sourcePath": "packages/@react-spectrum/illustratedmessage",
+      "targetPackage": "@vue-spectrum/illustratedmessage",
+      "targetPath": "packages/@vue-spectrum/illustratedmessage",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": [
+          "hidden"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/illustratedmessage/src/IllustratedMessage.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/image",
+      "sourcePath": "packages/@react-spectrum/image",
+      "targetPackage": "@vue-spectrum/image",
+      "targetPath": "packages/@vue-spectrum/image",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": [
+          "hidden"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/image/src/Image.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/inlinealert",
+      "sourcePath": "packages/@react-spectrum/inlinealert",
+      "targetPackage": "@vue-spectrum/inlinealert",
+      "targetPath": "packages/@vue-spectrum/inlinealert",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [
+          "focus-ring"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-label"
+        ],
+        "visibilitySignals": []
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/inlinealert/src/InlineAlert.tsx",
+          "stateClasses": [
+            "focus-ring"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/label",
+      "sourcePath": "packages/@react-spectrum/label",
+      "targetPackage": "@vue-spectrum/label",
+      "targetPath": "packages/@vue-spectrum/label",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "contract": {
+        "stateClasses": [
+          "is-disabled"
+        ],
+        "interactiveStateClasses": [
+          "is-disabled"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-hidden",
+          "aria-label",
+          "aria-labelledby"
+        ],
+        "visibilitySignals": [
+          "aria-hidden",
+          "hidden"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/label/src/Field.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-labelledby"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/label/src/HelpText.tsx",
+          "stateClasses": [
+            "is-disabled"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/label/src/Label.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-hidden",
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/labeledvalue",
+      "sourcePath": "packages/@react-spectrum/labeledvalue",
+      "targetPackage": "@vue-spectrum/labeledvalue",
+      "targetPath": "packages/@vue-spectrum/labeledvalue",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    },
+    {
+      "sourcePackage": "@react-spectrum/layout",
+      "sourcePath": "packages/@react-spectrum/layout",
+      "targetPackage": "@vue-spectrum/layout",
+      "targetPath": "packages/@vue-spectrum/layout",
+      "targetPackageExists": true,
+      "filesScanned": 3,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    },
+    {
+      "sourcePackage": "@react-spectrum/link",
+      "sourcePath": "packages/@react-spectrum/link",
+      "targetPackage": "@vue-spectrum/link",
+      "targetPath": "packages/@vue-spectrum/link",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-hovered"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-hovered"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/link/src/Link.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-hovered"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/list",
+      "sourcePath": "packages/@react-spectrum/list",
+      "targetPackage": "@vue-spectrum/list",
+      "targetPath": "packages/@vue-spectrum/list",
+      "targetPackageExists": true,
+      "filesScanned": 7,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-active",
+          "is-disabled",
+          "is-focused",
+          "is-hovered",
+          "is-next-selected",
+          "is-prev-selected",
+          "is-selected"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-active",
+          "is-disabled",
+          "is-focused",
+          "is-hovered",
+          "is-selected"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-hidden",
+          "aria-label",
+          "aria-rowindex",
+          "aria-selected"
+        ],
+        "visibilitySignals": [
+          "aria-hidden",
+          "hidden"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/list/src/InsertionIndicator.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-hidden",
+            "aria-selected"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/list/src/ListView.tsx",
+          "stateClasses": [
+            "focus-ring"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label",
+            "aria-rowindex"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/list/src/ListViewItem.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-active",
+            "is-disabled",
+            "is-focused",
+            "is-hovered",
+            "is-next-selected",
+            "is-prev-selected",
+            "is-selected"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-hidden"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/list/src/RootDropIndicator.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-hidden",
+            "aria-selected"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/listbox",
+      "sourcePath": "packages/@react-spectrum/listbox",
+      "targetPackage": "@vue-spectrum/listbox",
+      "targetPath": "packages/@vue-spectrum/listbox",
+      "targetPackageExists": true,
+      "filesScanned": 7,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-focused",
+          "is-hovered",
+          "is-selectable",
+          "is-selected"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-focused",
+          "is-hovered",
+          "is-selected"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-label"
+        ],
+        "visibilitySignals": []
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/listbox/src/ListBoxBase.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/listbox/src/ListBoxOption.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-disabled",
+            "is-focused",
+            "is-hovered",
+            "is-selectable",
+            "is-selected"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/listbox/src/ListBoxSection.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/menu",
+      "sourcePath": "packages/@react-spectrum/menu",
+      "targetPackage": "@vue-spectrum/menu",
+      "targetPath": "packages/@vue-spectrum/menu",
+      "targetPackageExists": true,
+      "filesScanned": 10,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-expanded",
+          "is-open",
+          "is-selectable",
+          "is-selected"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-open",
+          "is-selected"
+        ],
+        "dataAttributes": [
+          "data-testid"
+        ],
+        "ariaAttributes": [
+          "aria-hidden",
+          "aria-label",
+          "aria-labelledby"
+        ],
+        "visibilitySignals": [
+          "aria-hidden",
+          "hidden",
+          "is-expanded",
+          "is-open"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/menu/src/Menu.tsx",
+          "stateClasses": [
+            "is-expanded"
+          ],
+          "dataAttributes": [
+            "data-testid"
+          ],
+          "ariaAttributes": [
+            "aria-hidden",
+            "aria-label",
+            "aria-labelledby"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden",
+            "is-expanded"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/menu/src/MenuItem.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-disabled",
+            "is-open",
+            "is-selectable",
+            "is-selected"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "is-open"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/menu/src/MenuSection.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/meter",
+      "sourcePath": "packages/@react-spectrum/meter",
+      "targetPackage": "@vue-spectrum/meter",
+      "targetPath": "packages/@vue-spectrum/meter",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [
+          "is-critical",
+          "is-positive",
+          "is-warning"
+        ],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/meter/src/Meter.tsx",
+          "stateClasses": [
+            "is-critical",
+            "is-positive",
+            "is-warning"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/numberfield",
+      "sourcePath": "packages/@react-spectrum/numberfield",
+      "targetPackage": "@vue-spectrum/numberfield",
+      "targetPath": "packages/@vue-spectrum/numberfield",
+      "targetPackageExists": true,
+      "filesScanned": 3,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-active",
+          "is-disabled",
+          "is-focused",
+          "is-hovered",
+          "is-invalid"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-active",
+          "is-disabled",
+          "is-focused",
+          "is-hovered",
+          "is-invalid"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": [
+          "hidden"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/numberfield/src/NumberField.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-disabled",
+            "is-focused",
+            "is-hovered",
+            "is-invalid"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/numberfield/src/StepButton.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-active",
+            "is-disabled",
+            "is-hovered"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/overlays",
+      "sourcePath": "packages/@react-spectrum/overlays",
+      "targetPackage": "@vue-spectrum/overlays",
+      "targetPath": "packages/@vue-spectrum/overlays",
+      "targetPackageExists": true,
+      "filesScanned": 7,
+      "contract": {
+        "stateClasses": [
+          "is-open"
+        ],
+        "interactiveStateClasses": [
+          "is-open"
+        ],
+        "dataAttributes": [
+          "data-testid"
+        ],
+        "ariaAttributes": [],
+        "visibilitySignals": [
+          "is-open"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/overlays/src/Modal.tsx",
+          "stateClasses": [
+            "is-open"
+          ],
+          "dataAttributes": [
+            "data-testid"
+          ],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "is-open"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/overlays/src/Popover.tsx",
+          "stateClasses": [
+            "is-open"
+          ],
+          "dataAttributes": [
+            "data-testid"
+          ],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "is-open"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/overlays/src/Tray.tsx",
+          "stateClasses": [
+            "is-open"
+          ],
+          "dataAttributes": [
+            "data-testid"
+          ],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "is-open"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/overlays/src/Underlay.tsx",
+          "stateClasses": [
+            "is-open"
+          ],
+          "dataAttributes": [
+            "data-testid"
+          ],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "is-open"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/picker",
+      "sourcePath": "packages/@react-spectrum/picker",
+      "targetPackage": "@vue-spectrum/picker",
+      "targetPath": "packages/@vue-spectrum/picker",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [
+          "is-disabled",
+          "is-hovered",
+          "is-invalid",
+          "is-placeholder"
+        ],
+        "interactiveStateClasses": [
+          "is-disabled",
+          "is-hovered",
+          "is-invalid"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-describedby",
+          "aria-label"
+        ],
+        "visibilitySignals": [
+          "is-placeholder"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/picker/src/Picker.tsx",
+          "stateClasses": [
+            "is-disabled",
+            "is-hovered",
+            "is-invalid",
+            "is-placeholder"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-describedby",
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "is-placeholder"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/progress",
+      "sourcePath": "packages/@react-spectrum/progress",
+      "targetPackage": "@vue-spectrum/progress",
+      "targetPath": "packages/@vue-spectrum/progress",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [
+          "data-testid"
+        ],
+        "ariaAttributes": [
+          "aria-label",
+          "aria-labelledby"
+        ],
+        "visibilitySignals": []
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/progress/src/ProgressBarBase.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label",
+            "aria-labelledby"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/progress/src/ProgressCircle.tsx",
+          "stateClasses": [],
+          "dataAttributes": [
+            "data-testid"
+          ],
+          "ariaAttributes": [
+            "aria-label",
+            "aria-labelledby"
+          ],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/provider",
+      "sourcePath": "packages/@react-spectrum/provider",
+      "targetPackage": "@vue-spectrum/provider",
+      "targetPath": "packages/@vue-spectrum/provider",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    },
+    {
+      "sourcePackage": "@react-spectrum/radio",
+      "sourcePath": "packages/@react-spectrum/radio",
+      "targetPackage": "@vue-spectrum/radio",
+      "targetPath": "packages/@vue-spectrum/radio",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-hovered",
+          "is-invalid"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-hovered",
+          "is-invalid"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/radio/src/Radio.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-disabled",
+            "is-hovered",
+            "is-invalid"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/s2",
+      "sourcePath": "packages/@react-spectrum/s2",
+      "targetPackage": "@vue-spectrum/s2",
+      "targetPath": "packages/@vue-spectrum/s2",
+      "targetPackageExists": true,
+      "filesScanned": 98,
+      "contract": {
+        "stateClasses": [
+          "focus-ring"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring"
+        ],
+        "dataAttributes": [
+          "data-background",
+          "data-color-scheme",
+          "data-disabled",
+          "data-expanded",
+          "data-focus-visible",
+          "data-focus-visible-within",
+          "data-focused",
+          "data-hidden-breadcrumb",
+          "data-hidden-tab",
+          "data-hovered",
+          "data-pressed",
+          "data-rac",
+          "data-react-aria-prevent-focus",
+          "data-rsp-slot",
+          "data-slot",
+          "data-testid",
+          "data-trigger"
+        ],
+        "ariaAttributes": [
+          "aria-describedby",
+          "aria-details",
+          "aria-hidden",
+          "aria-label",
+          "aria-labelledby"
+        ],
+        "visibilitySignals": [
+          "aria-hidden",
+          "data-expanded",
+          "data-hidden-breadcrumb",
+          "data-hidden-tab",
+          "hidden",
+          "visibility"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/s2/src/Accordion.tsx",
+          "stateClasses": [],
+          "dataAttributes": [
+            "data-disabled",
+            "data-expanded",
+            "data-focus-visible-within"
+          ],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "data-expanded",
+            "hidden",
+            "visibility"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/ActionBar.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/ActionButton.tsx",
+          "stateClasses": [
+            "focus-ring"
+          ],
+          "dataAttributes": [
+            "data-rsp-slot"
+          ],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "hidden",
+            "visibility"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/AlertDialog.tsx",
+          "stateClasses": [],
+          "dataAttributes": [
+            "data-testid"
+          ],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/Badge.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/bar-utils.ts",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/Breadcrumbs.tsx",
+          "stateClasses": [
+            "focus-ring"
+          ],
+          "dataAttributes": [
+            "data-hidden-breadcrumb"
+          ],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "data-hidden-breadcrumb",
+            "hidden",
+            "visibility"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/Button.tsx",
+          "stateClasses": [
+            "focus-ring"
+          ],
+          "dataAttributes": [
+            "data-rsp-slot"
+          ],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "hidden",
+            "visibility"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/Calendar.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden",
+            "visibility"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/Card.tsx",
+          "stateClasses": [],
+          "dataAttributes": [
+            "data-slot"
+          ],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/CardView.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/CenterBaseline.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden",
+            "visibility"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/CloseButton.tsx",
+          "stateClasses": [
+            "focus-ring"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/CoachMark.tsx",
+          "stateClasses": [
+            "focus-ring"
+          ],
+          "dataAttributes": [
+            "data-slot",
+            "data-trigger"
+          ],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/ColorHandle.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-hidden"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/ColorSlider.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/ColorSwatchPicker.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/ComboBox.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-describedby",
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/Content.tsx",
+          "stateClasses": [],
+          "dataAttributes": [
+            "data-rsp-slot"
+          ],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/DateField.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/DateRangePicker.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-hidden"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/Dialog.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/Disclosure.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-hidden"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/Field.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-hidden",
+            "aria-label",
+            "aria-labelledby"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/Icon.tsx",
+          "stateClasses": [],
+          "dataAttributes": [
+            "data-slot"
+          ],
+          "ariaAttributes": [
+            "aria-hidden",
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/Image.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/InlineAlert.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/Link.tsx",
+          "stateClasses": [
+            "focus-ring"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/Menu.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden",
+            "visibility"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/NotificationBadge.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/NumberField.tsx",
+          "stateClasses": [],
+          "dataAttributes": [
+            "data-disabled",
+            "data-focus-visible",
+            "data-focused",
+            "data-hovered",
+            "data-pressed",
+            "data-rac"
+          ],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/page.macro.ts",
+          "stateClasses": [],
+          "dataAttributes": [
+            "data-background",
+            "data-color-scheme"
+          ],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/Picker.tsx",
+          "stateClasses": [],
+          "dataAttributes": [
+            "data-slot"
+          ],
+          "ariaAttributes": [
+            "aria-describedby",
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/Popover.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/RangeSlider.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/SegmentedControl.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/SelectBoxGroup.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-hidden"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/Skeleton.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden",
+            "visibility"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/StatusLight.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-hidden"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/style-utils.ts",
+          "stateClasses": [],
+          "dataAttributes": [
+            "data-rsp-slot"
+          ],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "visibility"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/TableView.tsx",
+          "stateClasses": [
+            "focus-ring"
+          ],
+          "dataAttributes": [
+            "data-focus-visible-within",
+            "data-react-aria-prevent-focus"
+          ],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "hidden",
+            "visibility"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/Tabs.tsx",
+          "stateClasses": [],
+          "dataAttributes": [
+            "data-hidden-tab"
+          ],
+          "ariaAttributes": [
+            "aria-describedby",
+            "aria-details",
+            "aria-label",
+            "aria-labelledby"
+          ],
+          "visibilitySignals": [
+            "data-hidden-tab",
+            "hidden",
+            "visibility"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/TabsPicker.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-labelledby"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/TagGroup.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label",
+            "aria-labelledby"
+          ],
+          "visibilitySignals": [
+            "hidden",
+            "visibility"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/TextField.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/Toast.tsx",
+          "stateClasses": [
+            "focus-ring"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/s2/src/TreeView.tsx",
+          "stateClasses": [
+            "focus-ring"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "hidden",
+            "visibility"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/searchfield",
+      "sourcePath": "packages/@react-spectrum/searchfield",
+      "targetPackage": "@vue-spectrum/searchfield",
+      "targetPath": "packages/@vue-spectrum/searchfield",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [
+          "is-disabled",
+          "is-quiet"
+        ],
+        "interactiveStateClasses": [
+          "is-disabled"
+        ],
+        "dataAttributes": [
+          "data-testid"
+        ],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/searchfield/src/SearchField.tsx",
+          "stateClasses": [
+            "is-disabled",
+            "is-quiet"
+          ],
+          "dataAttributes": [
+            "data-testid"
+          ],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/slider",
+      "sourcePath": "packages/@react-spectrum/slider",
+      "targetPackage": "@vue-spectrum/slider",
+      "targetPath": "packages/@vue-spectrum/slider",
+      "targetPackageExists": true,
+      "filesScanned": 5,
+      "contract": {
+        "stateClasses": [
+          "is-disabled",
+          "is-dragged",
+          "is-focused",
+          "is-hovered",
+          "is-tophandle"
+        ],
+        "interactiveStateClasses": [
+          "is-disabled",
+          "is-focused",
+          "is-hovered"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-label"
+        ],
+        "visibilitySignals": [
+          "hidden"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/slider/src/RangeSlider.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/slider/src/SliderBase.tsx",
+          "stateClasses": [
+            "is-disabled"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/slider/src/SliderThumb.tsx",
+          "stateClasses": [
+            "is-dragged",
+            "is-focused",
+            "is-hovered",
+            "is-tophandle"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/statuslight",
+      "sourcePath": "packages/@react-spectrum/statuslight",
+      "targetPackage": "@vue-spectrum/statuslight",
+      "targetPath": "packages/@vue-spectrum/statuslight",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [
+          "is-disabled"
+        ],
+        "interactiveStateClasses": [
+          "is-disabled"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/statuslight/src/StatusLight.tsx",
+          "stateClasses": [
+            "is-disabled"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/steplist",
+      "sourcePath": "packages/@react-spectrum/steplist",
+      "targetPackage": "@vue-spectrum/steplist",
+      "targetPath": "packages/@vue-spectrum/steplist",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-completed",
+          "is-disabled",
+          "is-hovered",
+          "is-reversed",
+          "is-selectable",
+          "is-selected"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-hovered",
+          "is-selected"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-hidden",
+          "aria-labelledby"
+        ],
+        "visibilitySignals": [
+          "aria-hidden",
+          "hidden"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/steplist/src/StepListItem.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-completed",
+            "is-disabled",
+            "is-hovered",
+            "is-reversed",
+            "is-selectable",
+            "is-selected"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-hidden",
+            "aria-labelledby"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/story-utils",
+      "sourcePath": "packages/@react-spectrum/story-utils",
+      "targetPackage": "@vue-spectrum/story-utils",
+      "targetPath": "packages/@vue-spectrum/story-utils",
+      "targetPackageExists": true,
+      "filesScanned": 3,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    },
+    {
+      "sourcePackage": "@react-spectrum/style-macro-s1",
+      "sourcePath": "packages/@react-spectrum/style-macro-s1",
+      "targetPackage": "@vue-spectrum/style-macro-s1",
+      "targetPath": "packages/@vue-spectrum/style-macro-s1",
+      "targetPackageExists": true,
+      "filesScanned": 5,
+      "contract": {
+        "stateClasses": [
+          "focus-ring"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": [
+          "hidden",
+          "visibility"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/style-macro-s1/src/spectrum-theme.ts",
+          "stateClasses": [
+            "focus-ring"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden",
+            "visibility"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/switch",
+      "sourcePath": "packages/@react-spectrum/switch",
+      "targetPackage": "@vue-spectrum/switch",
+      "targetPath": "packages/@vue-spectrum/switch",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-hovered"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-hovered"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/switch/src/Switch.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-disabled",
+            "is-hovered"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/table",
+      "sourcePath": "packages/@react-spectrum/table",
+      "targetPackage": "@vue-spectrum/table",
+      "targetPath": "packages/@vue-spectrum/table",
+      "targetPackageExists": true,
+      "filesScanned": 11,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-active",
+          "is-disabled",
+          "is-focused",
+          "is-hovered",
+          "is-next-selected",
+          "is-open",
+          "is-resizable",
+          "is-selected",
+          "is-sortable",
+          "is-sorted-asc",
+          "is-sorted-desc"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-active",
+          "is-disabled",
+          "is-focused",
+          "is-hovered",
+          "is-open",
+          "is-selected"
+        ],
+        "dataAttributes": [
+          "data-testid"
+        ],
+        "ariaAttributes": [
+          "aria-colindex",
+          "aria-colspan",
+          "aria-hidden",
+          "aria-label",
+          "aria-labelledby",
+          "aria-level",
+          "aria-posinset",
+          "aria-rowindex",
+          "aria-selected",
+          "aria-setsize"
+        ],
+        "visibilitySignals": [
+          "aria-hidden",
+          "hidden",
+          "is-open",
+          "visibility"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/table/src/InsertionIndicator.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-hidden"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/table/src/Resizer.tsx",
+          "stateClasses": [
+            "focus-ring"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/table/src/RootDropIndicator.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-colspan",
+            "aria-hidden",
+            "aria-selected"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/table/src/TableViewBase.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-active",
+            "is-disabled",
+            "is-focused",
+            "is-hovered",
+            "is-next-selected",
+            "is-open",
+            "is-resizable",
+            "is-selected",
+            "is-sortable",
+            "is-sorted-asc",
+            "is-sorted-desc"
+          ],
+          "dataAttributes": [
+            "data-testid"
+          ],
+          "ariaAttributes": [
+            "aria-colindex",
+            "aria-colspan",
+            "aria-label",
+            "aria-labelledby",
+            "aria-level",
+            "aria-posinset",
+            "aria-rowindex",
+            "aria-setsize"
+          ],
+          "visibilitySignals": [
+            "hidden",
+            "is-open",
+            "visibility"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/tabs",
+      "sourcePath": "packages/@react-spectrum/tabs",
+      "targetPackage": "@vue-spectrum/tabs",
+      "targetPath": "packages/@vue-spectrum/tabs",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-hovered",
+          "is-selected"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-disabled",
+          "is-hovered",
+          "is-selected"
+        ],
+        "dataAttributes": [
+          "data-key"
+        ],
+        "ariaAttributes": [
+          "aria-hidden",
+          "aria-label",
+          "aria-labelledby"
+        ],
+        "visibilitySignals": [
+          "aria-hidden",
+          "hidden",
+          "visibility"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/tabs/src/Tabs.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-disabled",
+            "is-hovered",
+            "is-selected"
+          ],
+          "dataAttributes": [
+            "data-key"
+          ],
+          "ariaAttributes": [
+            "aria-hidden",
+            "aria-label",
+            "aria-labelledby"
+          ],
+          "visibilitySignals": [
+            "aria-hidden",
+            "hidden",
+            "visibility"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/tag",
+      "sourcePath": "packages/@react-spectrum/tag",
+      "targetPackage": "@vue-spectrum/tag",
+      "targetPath": "packages/@vue-spectrum/tag",
+      "targetPackageExists": true,
+      "filesScanned": 3,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-focused",
+          "is-hovered"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-focused",
+          "is-hovered"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-label",
+          "aria-labelledby"
+        ],
+        "visibilitySignals": [
+          "hidden"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/tag/src/Tag.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-focused",
+            "is-hovered"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/tag/src/TagGroup.tsx",
+          "stateClasses": [
+            "focus-ring"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label",
+            "aria-labelledby"
+          ],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/test-utils",
+      "sourcePath": "packages/@react-spectrum/test-utils",
+      "targetPackage": "@vue-spectrum/test-utils",
+      "targetPath": "packages/@vue-spectrum/test-utils",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    },
+    {
+      "sourcePackage": "@react-spectrum/text",
+      "sourcePath": "packages/@react-spectrum/text",
+      "targetPackage": "@vue-spectrum/text",
+      "targetPath": "packages/@vue-spectrum/text",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    },
+    {
+      "sourcePackage": "@react-spectrum/textfield",
+      "sourcePath": "packages/@react-spectrum/textfield",
+      "targetPackage": "@vue-spectrum/textfield",
+      "targetPath": "packages/@vue-spectrum/textfield",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "contract": {
+        "stateClasses": [
+          "focus-ring",
+          "is-hovered"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring",
+          "is-hovered"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [
+          "aria-label"
+        ],
+        "visibilitySignals": [
+          "hidden"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/textfield/src/TextArea.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        },
+        {
+          "file": "packages/@react-spectrum/textfield/src/TextFieldBase.tsx",
+          "stateClasses": [
+            "focus-ring",
+            "is-hovered"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/theme-dark",
+      "sourcePath": "packages/@react-spectrum/theme-dark",
+      "targetPackage": "@vue-spectrum/theme-dark",
+      "targetPath": "packages/@vue-spectrum/theme-dark",
+      "targetPackageExists": true,
+      "filesScanned": 1,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    },
+    {
+      "sourcePackage": "@react-spectrum/theme-default",
+      "sourcePath": "packages/@react-spectrum/theme-default",
+      "targetPackage": "@vue-spectrum/theme-default",
+      "targetPath": "packages/@vue-spectrum/theme-default",
+      "targetPackageExists": true,
+      "filesScanned": 1,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    },
+    {
+      "sourcePackage": "@react-spectrum/theme-express",
+      "sourcePath": "packages/@react-spectrum/theme-express",
+      "targetPackage": "@vue-spectrum/theme-express",
+      "targetPath": "packages/@vue-spectrum/theme-express",
+      "targetPackageExists": true,
+      "filesScanned": 1,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    },
+    {
+      "sourcePackage": "@react-spectrum/theme-light",
+      "sourcePath": "packages/@react-spectrum/theme-light",
+      "targetPackage": "@vue-spectrum/theme-light",
+      "targetPath": "packages/@vue-spectrum/theme-light",
+      "targetPackageExists": true,
+      "filesScanned": 1,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    },
+    {
+      "sourcePackage": "@react-spectrum/toast",
+      "sourcePath": "packages/@react-spectrum/toast",
+      "targetPackage": "@vue-spectrum/toast",
+      "targetPath": "packages/@vue-spectrum/toast",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "contract": {
+        "stateClasses": [
+          "focus-ring"
+        ],
+        "interactiveStateClasses": [
+          "focus-ring"
+        ],
+        "dataAttributes": [
+          "data-placement",
+          "data-position",
+          "data-testid"
+        ],
+        "ariaAttributes": [
+          "aria-label"
+        ],
+        "visibilitySignals": []
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/toast/src/Toast.tsx",
+          "stateClasses": [
+            "focus-ring"
+          ],
+          "dataAttributes": [
+            "data-testid"
+          ],
+          "ariaAttributes": [
+            "aria-label"
+          ],
+          "visibilitySignals": []
+        },
+        {
+          "file": "packages/@react-spectrum/toast/src/Toaster.tsx",
+          "stateClasses": [
+            "focus-ring"
+          ],
+          "dataAttributes": [
+            "data-placement",
+            "data-position"
+          ],
+          "ariaAttributes": [],
+          "visibilitySignals": []
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/tooltip",
+      "sourcePath": "packages/@react-spectrum/tooltip",
+      "targetPackage": "@vue-spectrum/tooltip",
+      "targetPath": "packages/@vue-spectrum/tooltip",
+      "targetPackageExists": true,
+      "filesScanned": 4,
+      "contract": {
+        "stateClasses": [
+          "is-open"
+        ],
+        "interactiveStateClasses": [
+          "is-open"
+        ],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": [
+          "hidden",
+          "is-open"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/tooltip/src/Tooltip.tsx",
+          "stateClasses": [
+            "is-open"
+          ],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden",
+            "is-open"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/tree",
+      "sourcePath": "packages/@react-spectrum/tree",
+      "targetPackage": "@vue-spectrum/tree",
+      "targetPath": "packages/@vue-spectrum/tree",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": [
+          "hidden"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/tree/src/TreeView.tsx",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/utils",
+      "sourcePath": "packages/@react-spectrum/utils",
+      "targetPackage": "@vue-spectrum/utils",
+      "targetPath": "packages/@vue-spectrum/utils",
+      "targetPackageExists": true,
+      "filesScanned": 10,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": [
+          "hidden"
+        ]
+      },
+      "files": [
+        {
+          "file": "packages/@react-spectrum/utils/src/styleProps.ts",
+          "stateClasses": [],
+          "dataAttributes": [],
+          "ariaAttributes": [],
+          "visibilitySignals": [
+            "hidden"
+          ]
+        }
+      ]
+    },
+    {
+      "sourcePackage": "@react-spectrum/view",
+      "sourcePath": "packages/@react-spectrum/view",
+      "targetPackage": "@vue-spectrum/view",
+      "targetPath": "packages/@vue-spectrum/view",
+      "targetPackageExists": true,
+      "filesScanned": 5,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    },
+    {
+      "sourcePackage": "@react-spectrum/well",
+      "sourcePath": "packages/@react-spectrum/well",
+      "targetPackage": "@vue-spectrum/well",
+      "targetPath": "packages/@vue-spectrum/well",
+      "targetPackageExists": true,
+      "filesScanned": 2,
+      "contract": {
+        "stateClasses": [],
+        "interactiveStateClasses": [],
+        "dataAttributes": [],
+        "ariaAttributes": [],
+        "visibilitySignals": []
+      },
+      "files": []
+    }
+  ]
+}

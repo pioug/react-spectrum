@@ -1,6 +1,11 @@
-import {VueProgressBar as VueProgressBarComponent} from '@vue-spectrum/components';
-import {computed, defineComponent, h, type PropType} from 'vue';
-import type {SpectrumProgressBarProps, SpectrumProgressCircleProps} from '@react-types/progress';
+import '@adobe/spectrum-css-temp/components/barloader/vars.css';
+import '@adobe/spectrum-css-temp/components/circleloader/vars.css';
+import {classNames} from '@vue-spectrum/utils';
+import {computed, type CSSProperties, defineComponent, h, type PropType} from 'vue';
+import type {SpectrumProgressBarProps, SpectrumProgressCircleProps} from '@vue-types/progress';
+const barStyles: {[key: string]: string} = {};
+const circleStyles: {[key: string]: string} = {};
+
 
 function clamp(value: number, min: number, max: number): number {
   return Math.min(max, Math.max(min, value));
@@ -10,76 +15,143 @@ export const ProgressBar = defineComponent({
   name: 'VueSpectrumProgressBar',
   inheritAttrs: false,
   props: {
-    label: {
+    ariaLabel: {
       type: String,
       default: ''
     },
-    value: {
-      type: Number,
-      default: 0
-    },
-    minValue: {
-      type: Number,
-      default: 0
-    },
-    maxValue: {
-      type: Number,
-      default: 100
+    ariaLabelledby: {
+      type: String,
+      default: ''
     },
     isIndeterminate: {
       type: Boolean,
       default: false
     },
+    label: {
+      type: String,
+      default: ''
+    },
+    labelPosition: {
+      type: String as PropType<'side' | 'top'>,
+      default: 'top'
+    },
+    maxValue: {
+      type: Number,
+      default: 100
+    },
+    minValue: {
+      type: Number,
+      default: 0
+    },
     showValueLabel: {
       type: Boolean as PropType<boolean | undefined>,
       default: undefined
+    },
+    size: {
+      type: String as PropType<'L' | 'S'>,
+      default: 'L'
+    },
+    value: {
+      type: Number,
+      default: 0
     }
   },
-  setup(props, {attrs}) {
+  setup(props, {attrs, slots}) {
     let showValueLabel = computed(() => props.showValueLabel ?? !!props.label);
-
-    return () => h(VueProgressBarComponent, {
-      ...attrs,
-      label: props.label,
-      value: props.value,
-      min: props.minValue,
-      max: props.maxValue,
-      indeterminate: props.isIndeterminate,
-      showValueLabel: showValueLabel.value
+    let clampedValue = computed(() => clamp(props.value, props.minValue, props.maxValue));
+    let percentage = computed(() => {
+      if (props.maxValue <= props.minValue) {
+        return 0;
+      }
+      return ((clampedValue.value - props.minValue) / (props.maxValue - props.minValue)) * 100;
     });
+
+    return () => h('div', {
+      ...attrs,
+      class: [
+        classNames(
+          barStyles,
+          'spectrum-BarLoader',
+          {
+            'spectrum-BarLoader--indeterminate': props.isIndeterminate,
+            'spectrum-BarLoader--large': props.size === 'L',
+            'spectrum-BarLoader--sideLabel': props.labelPosition === 'side',
+            'spectrum-BarLoader--small': props.size === 'S'
+          }
+        ),
+        'vs-progress-bar',
+        attrs.class
+      ],
+      role: 'progressbar',
+      'aria-label': props.ariaLabel || attrs['aria-label'],
+      'aria-labelledby': props.ariaLabelledby || attrs['aria-labelledby'],
+      'aria-valuemin': props.isIndeterminate ? undefined : props.minValue,
+      'aria-valuemax': props.isIndeterminate ? undefined : props.maxValue,
+      'aria-valuenow': props.isIndeterminate ? undefined : clampedValue.value,
+      'aria-valuetext': props.isIndeterminate ? undefined : `${Math.round(percentage.value)}%`,
+      'data-vac': ''
+    }, [
+      props.label
+        ? h('span', {
+          class: classNames(barStyles, 'spectrum-BarLoader-label')
+        }, props.label)
+        : null,
+      showValueLabel.value
+        ? h('div', {
+          class: classNames(barStyles, 'spectrum-BarLoader-percentage')
+        }, props.isIndeterminate ? '' : `${Math.round(percentage.value)}%`)
+        : null,
+      h('div', {
+        class: classNames(barStyles, 'spectrum-BarLoader-track')
+      }, [
+        h('div', {
+          class: classNames(barStyles, 'spectrum-BarLoader-fill'),
+          style: props.isIndeterminate ? undefined : ({width: `${Math.round(percentage.value)}%`} as CSSProperties)
+        })
+      ]),
+      slots.default ? h('span', {class: 'vs-progress-bar__content'}, slots.default()) : null
+    ]);
   }
 });
 
 export const ProgressBarBase = ProgressBar;
-export const VueProgressBar = VueProgressBarComponent;
+export const VueProgressBar = ProgressBar;
 
 export const ProgressCircle = defineComponent({
   name: 'VueSpectrumProgressCircle',
   inheritAttrs: false,
   props: {
-    value: {
-      type: Number,
-      default: 0
+    ariaLabel: {
+      type: String,
+      default: ''
     },
-    minValue: {
-      type: Number,
-      default: 0
-    },
-    maxValue: {
-      type: Number,
-      default: 100
+    ariaLabelledby: {
+      type: String,
+      default: ''
     },
     isIndeterminate: {
       type: Boolean,
       default: false
     },
+    maxValue: {
+      type: Number,
+      default: 100
+    },
+    minValue: {
+      type: Number,
+      default: 0
+    },
     size: {
-      type: String as PropType<'S' | 'M' | 'L'>,
+      type: String as PropType<'L' | 'M' | 'S'>,
       default: 'M'
     },
     staticColor: {
-      type: String as PropType<'white' | 'black' | undefined>,
+      type: String as PropType<'black' | 'white' | undefined>,
       default: undefined
+    },
+    value: {
+      type: Number,
+      default: 0
     },
     variant: {
       type: String as PropType<'overBackground' | undefined>,
@@ -88,7 +160,7 @@ export const ProgressCircle = defineComponent({
   },
   setup(props, {attrs}) {
     let clampedValue = computed(() => clamp(props.value, props.minValue, props.maxValue));
-    let normalizedValue = computed(() => {
+    let percentage = computed(() => {
       if (props.isIndeterminate || props.maxValue <= props.minValue) {
         return 0;
       }
@@ -96,68 +168,92 @@ export const ProgressCircle = defineComponent({
       return ((clampedValue.value - props.minValue) / (props.maxValue - props.minValue)) * 100;
     });
 
-    let radius = computed(() => {
-      switch (props.size) {
-        case 'S':
-          return 14;
-        case 'L':
-          return 22;
-        default:
-          return 18;
+    let fillSubMask1Style = computed<CSSProperties>(() => {
+      if (props.isIndeterminate) {
+        return {};
       }
+
+      if (percentage.value > 0 && percentage.value <= 50) {
+        let angle = -180 + (percentage.value / 50) * 180;
+        return {
+          transform: `rotate(${angle}deg)`
+        };
+      }
+
+      if (percentage.value > 50) {
+        return {
+          transform: 'rotate(0deg)'
+        };
+      }
+
+      return {
+        transform: 'rotate(-180deg)'
+      };
     });
 
-    let circumference = computed(() => 2 * Math.PI * radius.value);
-    let dashOffset = computed(() => circumference.value * (1 - normalizedValue.value / 100));
+    let fillSubMask2Style = computed<CSSProperties>(() => {
+      if (props.isIndeterminate) {
+        return {};
+      }
+
+      if (percentage.value > 50) {
+        let angle = -180 + ((percentage.value - 50) / 50) * 180;
+        return {
+          transform: `rotate(${angle}deg)`
+        };
+      }
+
+      return {
+        transform: 'rotate(-180deg)'
+      };
+    });
 
     return () => h('div', {
       ...attrs,
       class: [
+        classNames(
+          circleStyles,
+          'spectrum-CircleLoader',
+          {
+            'spectrum-CircleLoader--indeterminate': props.isIndeterminate,
+            'spectrum-CircleLoader--large': props.size === 'L',
+            'spectrum-CircleLoader--overBackground': props.variant === 'overBackground',
+            'spectrum-CircleLoader--small': props.size === 'S',
+            'spectrum-CircleLoader--staticBlack': props.staticColor === 'black',
+            'spectrum-CircleLoader--staticWhite': props.staticColor === 'white'
+          }
+        ),
         'vs-progress-circle',
-        `vs-progress-circle--${props.size.toLowerCase()}`,
-        props.isIndeterminate ? 'is-indeterminate' : null,
-        props.staticColor ? `is-${props.staticColor}` : null,
-        props.variant === 'overBackground' ? 'is-over-background' : null,
         attrs.class
       ],
-      'data-vac': '',
       role: 'progressbar',
+      'aria-label': props.ariaLabel || attrs['aria-label'],
+      'aria-labelledby': props.ariaLabelledby || attrs['aria-labelledby'],
       'aria-valuemin': props.isIndeterminate ? undefined : props.minValue,
       'aria-valuemax': props.isIndeterminate ? undefined : props.maxValue,
-      'aria-valuenow': props.isIndeterminate ? undefined : clampedValue.value
+      'aria-valuenow': props.isIndeterminate ? undefined : clampedValue.value,
+      'data-vac': ''
     }, [
-      h('svg', {
-        viewBox: '0 0 48 48',
-        style: {
-          width: props.size === 'S' ? '24px' : props.size === 'L' ? '40px' : '32px',
-          height: props.size === 'S' ? '24px' : props.size === 'L' ? '40px' : '32px'
-        }
-      }, [
-        h('circle', {
-          cx: 24,
-          cy: 24,
-          r: radius.value,
-          fill: 'none',
-          stroke: 'currentColor',
-          'stroke-opacity': 0.2,
-          'stroke-width': 4
-        }),
-        h('circle', {
-          cx: 24,
-          cy: 24,
-          r: radius.value,
-          fill: 'none',
-          stroke: 'currentColor',
-          'stroke-width': 4,
-          'stroke-linecap': 'round',
-          'stroke-dasharray': circumference.value,
-          'stroke-dashoffset': props.isIndeterminate ? circumference.value * 0.65 : dashOffset.value,
-          style: {
-            transform: 'rotate(-90deg)',
-            transformOrigin: 'center',
-            transition: props.isIndeterminate ? undefined : 'stroke-dashoffset 150ms ease'
-          }
-        })
+      h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-track')}),
+      h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-fills')}, [
+        h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-fillMask1')}, [
+          h('div', {
+            class: classNames(circleStyles, 'spectrum-CircleLoader-fillSubMask1'),
+            'data-testid': 'fillSubMask1',
+            style: fillSubMask1Style.value
+          }, [
+            h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-fill')})
+          ])
+        ]),
+        h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-fillMask2')}, [
+          h('div', {
+            class: classNames(circleStyles, 'spectrum-CircleLoader-fillSubMask2'),
+            'data-testid': 'fillSubMask2',
+            style: fillSubMask2Style.value
+          }, [
+            h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-fill')})
+          ])
+        ])
       ])
     ]);
   }

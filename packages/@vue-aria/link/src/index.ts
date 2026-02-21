@@ -1,4 +1,4 @@
-import {useLink as useLinkInternal, type AriaLinkOptions, type LinkAria, type LinkDOMProps} from './useLink';
+import {type AriaLinkOptions, type LinkAria, type LinkDOMProps, useLink as useLinkInternal} from './useLink';
 
 type RefObject<T> = {
   current: T

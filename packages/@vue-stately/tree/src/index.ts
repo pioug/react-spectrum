@@ -1,5 +1,5 @@
-import {TreeCollection, type Key, type TreeNode} from './TreeCollection';
-import {useTreeState as useTreeStateInternal, type TreeProps, type TreeState} from './useTreeState';
+import {type Key, TreeCollection, type TreeNode} from './TreeCollection';
+import {type TreeProps, type TreeState, useTreeState as useTreeStateInternal} from './useTreeState';
 
 export {TreeCollection};
 export type {Key, TreeNode, TreeProps, TreeState};

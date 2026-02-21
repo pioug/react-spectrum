@@ -1,9 +1,8 @@
-import {useListBox as useListBoxInternal, type AriaListBoxOptions as VueAriaListBoxOptions, type ListBoxAria, type ListBoxCollection, type ListBoxItemNode, type SelectionMode} from './useListBox';
-import {useOption as useOptionInternal, type AriaOptionProps, type OptionAria} from './useOption';
-import type {ListKey} from './utils';
-import type {ListState as VueListState} from '@vue-stately/list';
+import {type AriaOptionProps, type OptionAria, useOption as useOptionInternal} from './useOption';
+import {getItemId, listData, type ListKey} from './utils';
+import {type ListBoxAria, type ListBoxCollection, type ListBoxItemNode, type SelectionMode, useListBox as useListBoxInternal, type AriaListBoxOptions as VueAriaListBoxOptions} from './useListBox';
 import type {Ref} from 'vue';
-import {getItemId, listData} from './utils';
+import type {ListState as VueListState} from '@vue-stately/list';
 
 type RefObject<T> = {
   current: T
@@ -14,7 +13,7 @@ type ListState<T> = VueListState<T>;
 export {getItemId, listData};
 export {useListBoxSection} from './useListBoxSection';
 export type {AriaListBoxSectionProps, ListBoxSectionAria} from './useListBoxSection';
-export type {AriaListBoxProps} from '@react-types/listbox';
+export type {AriaListBoxProps} from '@vue-types/listbox';
 
 export type AriaListBoxOptions<T = unknown> = VueAriaListBoxOptions;
 export type {

@@ -1,3 +1,15 @@
+import '@adobe/spectrum-css-temp/vars/spectrum-dark.css';
+import '@adobe/spectrum-css-temp/vars/spectrum-darkest.css';
+import '@adobe/spectrum-css-temp/vars/spectrum-global.css';
+import '@adobe/spectrum-css-temp/vars/spectrum-large.css';
+import '@adobe/spectrum-css-temp/vars/spectrum-medium.css';
+const dark: {[key: string]: string} = {};
+const darkest: {[key: string]: string} = {};
+const global: {[key: string]: string} = {};
+const large: {[key: string]: string} = {};
+const medium: {[key: string]: string} = {};
+
+
 export interface ThemeSection {
   className: string,
   colorScheme?: 'dark' | 'light',
@@ -15,24 +27,28 @@ export interface Theme {
 export type SpectrumThemeSection = ThemeSection;
 export type SpectrumTheme = Theme;
 
+function resolveClassName(styles: Record<string, string>, key: string, fallback: string): string {
+  return styles[key] ?? fallback;
+}
+
 export const theme: Theme = {
   global: {
-    className: 'spectrum-dark-global'
+    className: resolveClassName(global, 'spectrum', 'spectrum')
   },
   light: {
-    className: 'spectrum-dark',
+    className: resolveClassName(dark, 'spectrum--dark', 'spectrum--dark'),
     colorScheme: 'dark'
   },
   dark: {
-    className: 'spectrum-darkest',
+    className: resolveClassName(darkest, 'spectrum--darkest', 'spectrum--darkest'),
     colorScheme: 'dark'
   },
   medium: {
-    className: 'spectrum-medium',
+    className: resolveClassName(medium, 'spectrum--medium', 'spectrum--medium'),
     scale: 'medium'
   },
   large: {
-    className: 'spectrum-large',
+    className: resolveClassName(large, 'spectrum--large', 'spectrum--large'),
     scale: 'large'
   }
 };

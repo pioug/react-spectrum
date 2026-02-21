@@ -1,15 +1,9 @@
-import {type RuntimeStyleOutput, style as styleInternal} from './style-macro';
+import type * as CSS from 'csstype';
 import type {
   focusRing as reactFocusRing,
   style as reactStyle
 } from '../../../@react-spectrum/style-macro-s1/src/spectrum-theme';
-import type * as CSS from 'csstype';
-
-const color = {
-  transparent: 'transparent',
-  black: 'black',
-  white: 'white'
-};
+import {style as styleInternal} from './style-macro';
 
 export interface ColorStates {
   default: CSS.Property.Color,
@@ -17,6 +11,12 @@ export interface ColorStates {
   isHovered: CSS.Property.Color,
   isPressed: CSS.Property.Color
 }
+
+const color = {
+  transparent: 'transparent',
+  black: 'black',
+  white: 'white'
+} as const;
 
 function shiftColorScale(color: string): string {
   let match = color.match(/^(.*?)-(\d+)$/);

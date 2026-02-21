@@ -1,8 +1,8 @@
 import {
+  type ComboBoxItem,
   useComboBox as useComboBoxInternal,
   type AriaComboBoxOptions as VueAriaComboBoxOptions,
-  type ComboBoxAria as VueComboBoxAria,
-  type ComboBoxItem
+  type ComboBoxAria as VueComboBoxAria
 } from './useComboBox';
 import type {ComboBoxState as VueComboBoxState} from '@vue-stately/combobox';
 
@@ -20,7 +20,7 @@ export type ComboBoxAria<T = unknown> = VueComboBoxAria & {
   _itemType?: T
 };
 export type {ComboBoxItem};
-export type {AriaComboBoxProps} from '@react-types/combobox';
+export type {AriaComboBoxProps} from '@vue-types/combobox';
 
 export function useComboBox<T, M extends SelectionMode = 'single'>(
   props: AriaComboBoxOptions<T, M>,

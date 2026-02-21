@@ -1,4 +1,4 @@
-import {useSeparator as useSeparatorInternal, type SeparatorAria, type SeparatorOptions} from './useSeparator';
+import {type SeparatorAria, type SeparatorOptions, useSeparator as useSeparatorInternal} from './useSeparator';
 
 export type SeparatorProps = SeparatorOptions;
 export type {SeparatorAria, SeparatorOptions};
