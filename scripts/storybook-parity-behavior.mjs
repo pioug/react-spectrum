@@ -184,6 +184,30 @@ let scenarios = [
         afterType
       };
     }
+  },
+  {
+    id: 'react-aria-components-listbox--list-box-example',
+    async run(page) {
+      let options = page.locator('[role="option"]');
+      let optionCount = await options.count();
+      if (optionCount === 0) {
+        throw new Error('Unable to find listbox options.');
+      }
+
+      let firstOption = options.first();
+      let readSelected = async () => firstOption.evaluate((el) => el.getAttribute('aria-selected') === 'true');
+
+      let initialSelected = await readSelected();
+      await firstOption.focus();
+      await page.keyboard.press('Enter');
+      let afterEnter = await readSelected();
+
+      return {
+        afterEnter,
+        initialSelected,
+        optionCount
+      };
+    }
   }
 ];
 

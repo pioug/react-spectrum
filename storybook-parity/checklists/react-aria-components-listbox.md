@@ -42,12 +42,17 @@
    - `ListBoxSmoothScroll`
    - `VirtualizedListBoxDndOnAction`
    - `DropOntoRoot`
+2. Updated `VueListBox` selection semantics to align with React `selectionMode` behavior:
+   - `selectionMode="none"` no longer mutates selection state.
+   - `selectionMode="multiple"` now toggles string-array selections.
+   - Added `aria-multiselectable` when in multiple mode.
 
 ## Tests
 
 - Automated:
   - `node scripts/storybook-parity-validate-checklists.mjs`
   - `yarn build:vue:storybook`
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106`
   - `node scripts/storybook-parity-export-manifest.mjs ...`
   - `node scripts/storybook-parity-compare-manifests.mjs`
 - Manual: pending

@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T22:18:11.708Z",
+  "generatedAt": "2026-02-21T22:20:37.230Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
-  "totalScenarios": 4,
-  "passingScenarios": 4,
+  "totalScenarios": 5,
+  "passingScenarios": 5,
   "failingScenarios": 0,
   "ok": true,
   "results": [
@@ -69,6 +69,22 @@
       "vue": {
         "afterClear": "hello parity",
         "afterType": "hello parity"
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-listbox--list-box-example",
+      "ok": true,
+      "react": {
+        "afterEnter": false,
+        "initialSelected": false,
+        "optionCount": 4
+      },
+      "vue": {
+        "afterEnter": false,
+        "initialSelected": false,
+        "optionCount": 4
       },
       "diff": {},
       "error": null
