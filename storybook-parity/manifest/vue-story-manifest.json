@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T21:25:32.932Z",
+  "generatedAt": "2026-02-21T21:27:38.652Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 12,
+  "count": 16,
   "entries": [
     {
       "id": "react-aria-components-breadcrumbs--breadcrumbs-example",
@@ -100,6 +100,46 @@
       "title": "React Aria Components/Meter",
       "name": "Meter Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/Meter.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-numberfield--number-field-controlled-example",
+      "title": "React Aria Components/NumberField",
+      "name": "Number Field Controlled Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/NumberField.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-numberfield--number-field-example",
+      "title": "React Aria Components/NumberField",
+      "name": "Number Field Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/NumberField.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-progressbar--progress-bar-example",
+      "title": "React Aria Components/ProgressBar",
+      "name": "Progress Bar Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ProgressBar.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-searchfield--search-field-example",
+      "title": "React Aria Components/SearchField",
+      "name": "Search Field Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/SearchField.stories.ts",
       "tags": [
         "dev",
         "test"

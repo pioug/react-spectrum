@@ -6,8 +6,8 @@
 ## Summary
 
 - React entries: 203
-- Vue entries: 12
-- Missing in Vue: 191
+- Vue entries: 16
+- Missing in Vue: 187
 - Extra in Vue: 0
 - Result: fail
 
@@ -130,19 +130,15 @@
 - `react-aria-components-modal--date-range-picker-inside-modal-story`
 - `react-aria-components-modal--inert-test-story`
 - `react-aria-components-modal--modal-example`
-- `react-aria-components-numberfield--number-field-controlled-example`
-- `react-aria-components-numberfield--number-field-example`
 - `react-aria-components-popover--popover-arrow-boundary-offset-example`
 - `react-aria-components-popover--popover-example`
 - `react-aria-components-popover--popover-trigger-observer-example`
 - `react-aria-components-popover--popover-trigger-width-example`
 - `react-aria-components-popover--scrolling-boundary-container`
-- `react-aria-components-progressbar--progress-bar-example`
 - `react-aria-components-radiogroup--radio-group-controlled-example`
 - `react-aria-components-radiogroup--radio-group-example`
 - `react-aria-components-radiogroup--radio-group-in-dialog-example`
 - `react-aria-components-radiogroup--radio-group-submit-example`
-- `react-aria-components-searchfield--search-field-example`
 - `react-aria-components-select--async-virtualized-collection-render-select`
 - `react-aria-components-select--required-select-with-many-items`
 - `react-aria-components-select--select-example`
