@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T21:33:31.064Z",
+  "generatedAt": "2026-02-21T21:35:25.912Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 28,
+  "count": 31,
   "entries": [
     {
       "id": "react-aria-components-breadcrumbs--breadcrumbs-example",
@@ -90,6 +90,36 @@
       "title": "React Aria Components/Checkbox",
       "name": "Checkbox Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/Checkbox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-colorfield--color-field-example",
+      "title": "React Aria Components/ColorField",
+      "name": "Color Field Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ColorField.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-colorslider--color-slider-example",
+      "title": "React Aria Components/ColorSlider",
+      "name": "Color Slider Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ColorSlider.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-colorwheel--color-wheel-example",
+      "title": "React Aria Components/ColorWheel",
+      "name": "Color Wheel Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ColorWheel.stories.ts",
       "tags": [
         "dev",
         "test"
