@@ -6,8 +6,8 @@
 ## Summary
 
 - React entries: 203
-- Vue entries: 52
-- Missing in Vue: 151
+- Vue entries: 67
+- Missing in Vue: 136
 - Extra in Vue: 0
 - Result: fail
 
@@ -34,12 +34,6 @@
 - `react-aria-components-autocomplete--autocomplete-with-table`
 - `react-aria-components-autocomplete--autocomplete-with-tag-group`
 - `react-aria-components-autocomplete--autocomplete-with-virtualized-listbox`
-- `react-aria-components-calendar--calendar-example`
-- `react-aria-components-calendar--calendar-first-day-of-week-example`
-- `react-aria-components-calendar--calendar-multi-month`
-- `react-aria-components-calendar--calendar-reset-value`
-- `react-aria-components-calendar--range-calendar-example`
-- `react-aria-components-calendar--range-calendar-multi-month-example`
 - `react-aria-components-checkboxgroup--checkbox-group-example`
 - `react-aria-components-checkboxgroup--checkbox-group-submit-example`
 - `react-aria-components-combobox--async-virtualized-dynamic-combobox`
@@ -55,11 +49,6 @@
 - `react-aria-components-combobox--virtualized-combo-box`
 - `react-aria-components-combobox--with-create-option`
 - `react-aria-components-comboboxreproductions--combo-box-reproduction-example`
-- `react-aria-components-datepicker--date-picker-autofill`
-- `react-aria-components-datepicker--date-picker-example`
-- `react-aria-components-datepicker--date-picker-trigger-width-example`
-- `react-aria-components-datepicker--date-range-picker-example`
-- `react-aria-components-datepicker--date-range-picker-trigger-width-example`
 - `react-aria-components-gridlist--async-grid-list`
 - `react-aria-components-gridlist--async-grid-list-grid-virtualized`
 - `react-aria-components-gridlist--async-grid-list-virtualized`
@@ -104,10 +93,6 @@
 - `react-aria-components-popover--popover-trigger-observer-example`
 - `react-aria-components-popover--popover-trigger-width-example`
 - `react-aria-components-popover--scrolling-boundary-container`
-- `react-aria-components-radiogroup--radio-group-controlled-example`
-- `react-aria-components-radiogroup--radio-group-example`
-- `react-aria-components-radiogroup--radio-group-in-dialog-example`
-- `react-aria-components-radiogroup--radio-group-submit-example`
 - `react-aria-components-select--async-virtualized-collection-render-select`
 - `react-aria-components-select--required-select-with-many-items`
 - `react-aria-components-select--select-example`

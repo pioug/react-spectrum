@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T21:39:48.661Z",
+  "generatedAt": "2026-02-21T21:42:09.972Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 52,
+  "count": 67,
   "entries": [
     {
       "id": "react-aria-components-breadcrumbs--breadcrumbs-example",
@@ -80,6 +80,66 @@
       "title": "React Aria Components/Button",
       "name": "Ripple Button Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/Button.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-calendar--calendar-example",
+      "title": "React Aria Components/Calendar",
+      "name": "Calendar Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Calendar.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-calendar--calendar-first-day-of-week-example",
+      "title": "React Aria Components/Calendar",
+      "name": "Calendar First Day Of Week Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Calendar.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-calendar--calendar-multi-month",
+      "title": "React Aria Components/Calendar",
+      "name": "Calendar Multi Month",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Calendar.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-calendar--calendar-reset-value",
+      "title": "React Aria Components/Calendar",
+      "name": "Calendar Reset Value",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Calendar.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-calendar--range-calendar-example",
+      "title": "React Aria Components/Calendar",
+      "name": "Range Calendar Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Calendar.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-calendar--range-calendar-multi-month-example",
+      "title": "React Aria Components/Calendar",
+      "name": "Range Calendar Multi Month Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Calendar.stories.ts",
       "tags": [
         "dev",
         "test"
@@ -210,6 +270,56 @@
       "title": "React Aria Components/DateField",
       "name": "Date Field Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/DateField.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-datepicker--date-picker-autofill",
+      "title": "React Aria Components/DatePicker",
+      "name": "Date Picker Autofill",
+      "importPath": "../../packages/@vue-spectrum/components/stories/DatePicker.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-datepicker--date-picker-example",
+      "title": "React Aria Components/DatePicker",
+      "name": "Date Picker Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/DatePicker.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-datepicker--date-picker-trigger-width-example",
+      "title": "React Aria Components/DatePicker",
+      "name": "Date Picker Trigger Width Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/DatePicker.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-datepicker--date-range-picker-example",
+      "title": "React Aria Components/DatePicker",
+      "name": "Date Range Picker Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/DatePicker.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-datepicker--date-range-picker-trigger-width-example",
+      "title": "React Aria Components/DatePicker",
+      "name": "Date Range Picker Trigger Width Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/DatePicker.stories.ts",
       "tags": [
         "dev",
         "test"
@@ -440,6 +550,46 @@
       "title": "React Aria Components/ProgressBar",
       "name": "Progress Bar Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/ProgressBar.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-radiogroup--radio-group-controlled-example",
+      "title": "React Aria Components/RadioGroup",
+      "name": "Radio Group Controlled Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/RadioGroup.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-radiogroup--radio-group-example",
+      "title": "React Aria Components/RadioGroup",
+      "name": "Radio Group Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/RadioGroup.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-radiogroup--radio-group-in-dialog-example",
+      "title": "React Aria Components/RadioGroup",
+      "name": "Radio Group In Dialog Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/RadioGroup.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-radiogroup--radio-group-submit-example",
+      "title": "React Aria Components/RadioGroup",
+      "name": "Radio Group Submit Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/RadioGroup.stories.ts",
       "tags": [
         "dev",
         "test"
