@@ -381,6 +381,73 @@ let scenarios = [
         submenuItemCount
       };
     }
+  },
+  {
+    id: 'react-aria-components-menu--submenu-sections-example',
+    async run(page) {
+      let ensureMenuOpen = async () => {
+        let firstControl = null;
+        let timeoutAt = Date.now() + 10000;
+        while (!firstControl && Date.now() < timeoutAt) {
+          firstControl = await firstVisibleLocator(page, [
+            '[role^="menuitem"]',
+            'button[aria-label="Menu"]',
+            'button'
+          ]);
+
+          if (!firstControl) {
+            await page.waitForTimeout(200);
+          }
+        }
+
+        if (!firstControl) {
+          throw new Error('Unable to find a visible menu trigger button or rendered menu items.');
+        }
+
+        let items = page.locator('[role^="menuitem"]');
+        let itemCount = await items.count();
+
+        if (itemCount === 0) {
+          let trigger = await firstVisibleLocator(page, [
+            'button[aria-label="Menu"]',
+            'button[aria-haspopup="menu"]',
+            'button'
+          ]);
+
+          if (!trigger) {
+            throw new Error('Unable to find a submenu sections trigger button or rendered menu items.');
+          }
+
+          await trigger.click();
+        }
+
+        await page.waitForSelector('[role^="menuitem"]', {timeout: 10000});
+      };
+
+      await ensureMenuOpen();
+      let submenuTrigger = page.locator('[role^="menuitem"][aria-haspopup="menu"]').first();
+      if (await submenuTrigger.count() === 0) {
+        throw new Error('Unable to find submenu trigger item for submenu sections scenario.');
+      }
+
+      await submenuTrigger.focus();
+      await page.keyboard.press('ArrowRight');
+      await page.waitForTimeout(120);
+
+      let groupCount = await page.locator('[role="group"]').count();
+      let separatorCount = await page.locator('[role="separator"]').count();
+      let submenuItemCount = await page.locator('[role^="menuitem"]', {hasText: 'Submenu '}).count();
+      let submenuSection1HeadingCount = await page.locator('text=Submenu Section 1').count();
+      let submenuSection2HeadingCount = await page.locator('text=Submenu Section 2').count();
+
+      return {
+        groupCount,
+        separatorCount,
+        submenuItemCount,
+        submenuSection1HeadingCount,
+        submenuSection2HeadingCount
+      };
+    }
   }
 ];
 

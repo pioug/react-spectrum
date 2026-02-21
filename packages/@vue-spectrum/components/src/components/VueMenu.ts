@@ -4,6 +4,7 @@ type MenuSelectionMode = 'none' | 'single' | 'multiple';
 type MenuValue = string | string[];
 
 type MenuItemRecord = {
+  childSections?: MenuSectionRecord[],
   children?: MenuItemInput[],
   disabled?: boolean,
   id?: string,
@@ -22,6 +23,7 @@ type MenuSectionRecord = {
 type MenuItemInput = MenuItemRecord | string;
 
 type NormalizedMenuItem = {
+  childSections: NormalizedMenuSection[],
   children: NormalizedMenuItem[],
   disabled: boolean,
   key: string,
@@ -42,6 +44,7 @@ function normalizeItem(item: MenuItemInput, index: number, parentKey = ''): Norm
     let value = item;
     let key = parentKey ? `${parentKey}/${item}-${index}` : `${item}-${index}`;
     return {
+      childSections: [],
       children: [],
       disabled: false,
       key,
@@ -54,6 +57,7 @@ function normalizeItem(item: MenuItemInput, index: number, parentKey = ''): Norm
   let key = parentKey ? `${parentKey}/${value}` : String(value);
 
   return {
+    childSections: (item.childSections ?? []).map((section, sectionIndex) => normalizeSection(section, sectionIndex, key)),
     children: (item.children ?? []).map((child, childIndex) => normalizeItem(child, childIndex, key)),
     disabled: Boolean(item.disabled),
     key,
@@ -62,8 +66,8 @@ function normalizeItem(item: MenuItemInput, index: number, parentKey = ''): Norm
   };
 }
 
-function normalizeSection(section: MenuSectionRecord, index: number): NormalizedMenuSection {
-  let key = `section-${index}`;
+function normalizeSection(section: MenuSectionRecord, index: number, parentKey = ''): NormalizedMenuSection {
+  let key = parentKey ? `${parentKey}/section-${index}` : `section-${index}`;
 
   return {
     ariaLabel: section.ariaLabel,
@@ -158,7 +162,10 @@ export const VueMenu = defineComponent({
     };
 
     let focusFirstSubmenuItem = (item: NormalizedMenuItem) => {
-      let firstEnabledChild = item.children.find((child) => !child.disabled);
+      let submenuItems = item.childSections.length > 0
+        ? item.childSections.flatMap((section) => section.items)
+        : item.children;
+      let firstEnabledChild = submenuItems.find((child) => !child.disabled);
       if (!firstEnabledChild) {
         return;
       }
@@ -197,7 +204,7 @@ export const VueMenu = defineComponent({
         return;
       }
 
-      if (item.children.length > 0) {
+      if (item.children.length > 0 || item.childSections.length > 0) {
         toggleSubmenu(item.key);
         return;
       }
@@ -221,9 +228,41 @@ export const VueMenu = defineComponent({
       emit('update:modelValue', item.value);
     };
 
-    let renderItem = (item: NormalizedMenuItem, parentSubmenuKey?: string): VNode => {
+    let renderSectionSeparator = (key: string): VNode => {
+      return h('div', {
+        key,
+        class: 'vs-menu__separator',
+        role: 'separator',
+        style: {borderTop: '1px solid gray', margin: '2px 5px'}
+      });
+    };
+
+    let renderItem: (item: NormalizedMenuItem, parentSubmenuKey?: string) => VNode;
+    let renderSection = (section: NormalizedMenuSection, parentSubmenuKey?: string): VNode => {
+      return h('section', {
+        key: section.key,
+        class: ['vs-menu__section', 'group'],
+        role: 'group',
+        'aria-label': section.ariaLabel ?? section.label
+      }, [
+        section.label ? h('div', {class: 'vs-menu__section-label'}, section.label) : null,
+        ...section.items.map((item) => renderItem(item, parentSubmenuKey))
+      ]);
+    };
+
+    let renderSections = (sections: NormalizedMenuSection[], parentSubmenuKey?: string): VNode[] => {
+      return sections.flatMap((section, index) => {
+        let nodes: VNode[] = [renderSection(section, parentSubmenuKey)];
+        if (section.separatorAfter && index < sections.length - 1) {
+          nodes.push(renderSectionSeparator(`${section.key}-separator`));
+        }
+        return nodes;
+      });
+    };
+
+    renderItem = (item: NormalizedMenuItem, parentSubmenuKey?: string): VNode => {
       let selected = isSelected(item.value);
-      let hasSubmenu = item.children.length > 0;
+      let hasSubmenu = item.children.length > 0 || item.childSections.length > 0;
       let isOpen = openKeys.value.has(item.key);
 
       let role = 'menuitem';
@@ -232,6 +271,10 @@ export const VueMenu = defineComponent({
       } else if (!hasSubmenu && props.selectionMode === 'multiple') {
         role = 'menuitemcheckbox';
       }
+
+      let submenuContent = item.childSections.length > 0
+        ? renderSections(item.childSections, item.key)
+        : item.children.map((child) => renderItem(child, item.key));
 
       return h('div', {
         key: item.key,
@@ -306,21 +349,9 @@ export const VueMenu = defineComponent({
               class: ['vs-menu__items', 'group'],
               role: 'menu',
               'aria-label': item.label
-            }, item.children.map((child) => renderItem(child, item.key)))
+            }, submenuContent)
           ])
           : null
-      ]);
-    };
-
-    let renderSection = (section: NormalizedMenuSection): VNode => {
-      return h('section', {
-        key: section.key,
-        class: ['vs-menu__section', 'group'],
-        role: 'group',
-        'aria-label': section.ariaLabel ?? section.label
-      }, [
-        section.label ? h('div', {class: 'vs-menu__section-label'}, section.label) : null,
-        ...section.items.map((item) => renderItem(item))
       ]);
     };
 
@@ -340,18 +371,7 @@ export const VueMenu = defineComponent({
           role: 'menu',
           'aria-multiselectable': props.selectionMode === 'multiple' ? 'true' : undefined
         }, hasSections
-          ? normalizedSections.flatMap((section, index) => {
-            let nodes: VNode[] = [renderSection(section)];
-            if (section.separatorAfter && index < normalizedSections.length - 1) {
-              nodes.push(h('div', {
-                key: `${section.key}-separator`,
-                class: 'vs-menu__separator',
-                role: 'separator',
-                style: {borderTop: '1px solid gray', margin: '2px 5px'}
-              }));
-            }
-            return nodes;
-          })
+          ? renderSections(normalizedSections)
           : normalizedItems.map((item) => renderItem(item)))
       ]);
     };

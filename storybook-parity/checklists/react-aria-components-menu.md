@@ -18,7 +18,7 @@
 ## Gap List
 
 1. Audit remaining pointer-exit close sequencing for nested submenus (keyboard close semantics now align for covered cases).
-2. Audit section/header parity for complex submenu section stories (`SubmenuSectionsExample` still simplifies nested section composition details).
+2. Audit remaining visual detail parity for complex submenu section stories (structure/ARIA now matched; styling nuances still simplified).
 3. Audit custom render and virtualization behavior parity (`MenuCustomRender`, `VirtualizedExample`).
 
 ## Fixes Applied
@@ -57,6 +57,10 @@
    - `VueMenu` now collapses submenu on `Escape` from submenu items and returns focus to the parent trigger.
    - submenu trigger chevron is now rendered via React-style `data-has-submenu` CSS semantics so text content matches React.
    - behavior gate now asserts `ArrowRight`/`ArrowLeft`/`Escape` expanded states, focus handoff, and submenu item counts against React.
+9. Ported nested submenu sections composition parity:
+   - `VueMenu` now supports `childSections` on submenu trigger items, including per-section headers and separators.
+   - `SubmenuSectionsExample` now mirrors React nested section composition (`Submenu Section 1/2`, separator, six submenu items).
+   - behavior gate now asserts nested section group/separator/header/item counts for `react-aria-components-menu--submenu-sections-example`.
 5. Ported section structure parity for `MenuExample`:
    - `VueMenu` now supports `sections` with `role="group"` semantics under a single top-level `role="menu"` container.
    - `packages/@vue-spectrum/components/stories/Menu.stories.ts` now passes section collections to one `VueMenu` instance instead of composing multiple root menus.
@@ -67,11 +71,11 @@
   - `yarn workspace vue-spectrum-starter build-storybook`
   - `node scripts/storybook-parity-export-manifest.mjs ...`
   - `yarn storybook:parity:manifest:compare`
-  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (PASS for `react-aria-components-menu--menu-example`, `react-aria-components-menu--submenu-example`; includes menu group/top-level/separator structure plus submenu hover-delay and `ArrowRight`/`ArrowLeft`/`Escape` focus assertions)
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (PASS for `react-aria-components-menu--menu-example`, `react-aria-components-menu--submenu-example`, `react-aria-components-menu--submenu-sections-example`; includes menu group/top-level/separator structure plus submenu hover-delay, keyboard focus, and nested section assertions)
 - Manual: pending
 
 ## Status
 
-- Open items: nested pointer-exit close sequencing, complex submenu section composition parity, virtualization semantics.
+- Open items: nested pointer-exit close sequencing, virtualization semantics.
 - Risks: nested submenu pointer-close sequencing is still simplified compared to React `SubmenuTrigger` internals.
 - Closure criteria: React-source behavior gaps fixed and tested.

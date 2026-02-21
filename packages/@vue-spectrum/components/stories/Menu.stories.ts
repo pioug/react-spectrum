@@ -4,6 +4,7 @@ import {VueButton, VueMenu, VuePopover} from '@vue-spectrum/components';
 import {ref} from 'vue';
 
 type MenuItem = {
+  childSections?: MenuSection[],
   children?: MenuItem[],
   disabled?: boolean,
   key: string,
@@ -256,10 +257,25 @@ export const SubmenuSectionsExample: SubmenuExampleStory = {
         {
           key: 'Bar',
           label: 'Bar',
-          children: [
-            {key: 'Submenu Foo', label: 'Submenu Foo'},
-            {key: 'Submenu Bar', label: 'Submenu Bar'},
-            {key: 'Submenu Baz', label: 'Submenu Baz'}
+          childSections: [
+            {
+              label: 'Submenu Section 1',
+              items: [
+                {key: 'Submenu Foo', label: 'Submenu Foo'},
+                {key: 'Submenu Bar', label: 'Submenu Bar'},
+                {key: 'Submenu Baz', label: 'Submenu Baz'},
+                {key: 'Submenu Google', label: 'Google'}
+              ],
+              separatorAfter: true
+            },
+            {
+              label: 'Submenu Section 2',
+              items: [
+                {key: 'Submenu Foo 2', label: 'Submenu Foo'},
+                {key: 'Submenu Bar 2', label: 'Submenu Bar'},
+                {key: 'Submenu Baz 2', label: 'Submenu Baz'}
+              ]
+            }
           ]
         },
         {key: 'Baz', label: 'Baz'}
@@ -269,9 +285,9 @@ export const SubmenuSectionsExample: SubmenuExampleStory = {
     {
       label: 'Section 2',
       items: [
-        {key: 'Foo 2', label: 'Foo'},
-        {key: 'Bar 2', label: 'Bar'},
-        {key: 'Baz 2', label: 'Baz'}
+        {key: 'Foo section 2', label: 'Foo'},
+        {key: 'Bar section 2', label: 'Bar'},
+        {key: 'Baz section 2', label: 'Baz'}
       ]
     }
   ])

@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T23:15:09.067Z",
+  "generatedAt": "2026-02-21T23:20:52.933Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
-  "totalScenarios": 7,
-  "passingScenarios": 7,
+  "totalScenarios": 8,
+  "passingScenarios": 8,
   "failingScenarios": 0,
   "ok": true,
   "results": [
@@ -151,6 +151,26 @@
         "submenuItemCountAfterEscape": 0,
         "submenuItemCountAfterArrowRight": 3,
         "submenuItemCount": 3
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-menu--submenu-sections-example",
+      "ok": true,
+      "react": {
+        "groupCount": 4,
+        "separatorCount": 2,
+        "submenuItemCount": 6,
+        "submenuSection1HeadingCount": 1,
+        "submenuSection2HeadingCount": 1
+      },
+      "vue": {
+        "groupCount": 4,
+        "separatorCount": 2,
+        "submenuItemCount": 6,
+        "submenuSection1HeadingCount": 1,
+        "submenuSection2HeadingCount": 1
       },
       "diff": {},
       "error": null
