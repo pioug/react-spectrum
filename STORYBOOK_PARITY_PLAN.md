@@ -8,6 +8,7 @@ Last updated: 2026-02-21
 
 - Phase 0 completed on 2026-02-21 (legacy parity fixtures/pages/reports removed).
 - Catalog identity gate scaffolded on 2026-02-21 via `scripts/storybook-parity-catalog.mjs`.
+- Behavior-first parity gate scaffolded on 2026-02-21 via `scripts/storybook-parity-check.mjs`.
 
 ## Goal
 
