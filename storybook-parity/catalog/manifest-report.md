@@ -6,8 +6,8 @@
 ## Summary
 
 - React entries: 203
-- Vue entries: 31
-- Missing in Vue: 172
+- Vue entries: 38
+- Missing in Vue: 165
 - Extra in Vue: 0
 - Result: fail
 
@@ -42,13 +42,6 @@
 - `react-aria-components-calendar--range-calendar-multi-month-example`
 - `react-aria-components-checkboxgroup--checkbox-group-example`
 - `react-aria-components-checkboxgroup--checkbox-group-submit-example`
-- `react-aria-components-colorarea--color-area-example`
-- `react-aria-components-colorarea--color-area-hsb`
-- `react-aria-components-colorarea--color-area-hsl`
-- `react-aria-components-colorpicker--color-picker-example`
-- `react-aria-components-colorpicker--color-picker-sliders`
-- `react-aria-components-colorswatch--color-swatch-example`
-- `react-aria-components-colorswatch--color-swatch-example-render`
 - `react-aria-components-combobox--async-virtualized-dynamic-combobox`
 - `react-aria-components-combobox--combo-box-async-loading-example`
 - `react-aria-components-combobox--combo-box-example`

@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T21:35:25.912Z",
+  "generatedAt": "2026-02-21T21:37:13.279Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 31,
+  "count": 38,
   "entries": [
     {
       "id": "react-aria-components-breadcrumbs--breadcrumbs-example",
@@ -96,6 +96,36 @@
       ]
     },
     {
+      "id": "react-aria-components-colorarea--color-area-example",
+      "title": "React Aria Components/ColorArea",
+      "name": "Color Area Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ColorArea.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-colorarea--color-area-hsb",
+      "title": "React Aria Components/ColorArea",
+      "name": "Color Area HSB",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ColorArea.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-colorarea--color-area-hsl",
+      "title": "React Aria Components/ColorArea",
+      "name": "Color Area HSL",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ColorArea.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
       "id": "react-aria-components-colorfield--color-field-example",
       "title": "React Aria Components/ColorField",
       "name": "Color Field Example",
@@ -106,10 +136,50 @@
       ]
     },
     {
+      "id": "react-aria-components-colorpicker--color-picker-example",
+      "title": "React Aria Components/ColorPicker",
+      "name": "Color Picker Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ColorPicker.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-colorpicker--color-picker-sliders",
+      "title": "React Aria Components/ColorPicker",
+      "name": "Color Picker Sliders",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ColorPicker.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
       "id": "react-aria-components-colorslider--color-slider-example",
       "title": "React Aria Components/ColorSlider",
       "name": "Color Slider Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/ColorSlider.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-colorswatch--color-swatch-example",
+      "title": "React Aria Components/ColorSwatch",
+      "name": "Color Swatch Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ColorSwatch.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-colorswatch--color-swatch-example-render",
+      "title": "React Aria Components/ColorSwatch",
+      "name": "Color Swatch Example Render",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ColorSwatch.stories.ts",
       "tags": [
         "dev",
         "test"
