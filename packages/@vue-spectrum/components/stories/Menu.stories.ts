@@ -11,8 +11,10 @@ type MenuItem = {
 };
 
 type MenuSection = {
+  ariaLabel?: string,
   label?: string,
-  items: MenuItem[]
+  items: MenuItem[],
+  separatorAfter?: boolean
 };
 
 const meta = {
@@ -69,13 +71,14 @@ function createTriggerMenuStory(sections: MenuSection[], menuArgs: Record<string
 
 export const MenuExample: MenuStory = () => createTriggerMenuStory([
   {
-    label: 'Section 1',
+    ariaLabel: 'Section 1',
     items: [
       {key: 'Foo', label: 'Foo'},
       {key: 'Bar', label: 'Bar'},
       {key: 'Baz', label: 'Baz'},
       {key: 'Google', label: 'Google'}
-    ]
+    ],
+    separatorAfter: true
   },
   {
     label: 'Section 2',
@@ -260,7 +263,8 @@ export const SubmenuSectionsExample: SubmenuExampleStory = {
           ]
         },
         {key: 'Baz', label: 'Baz'}
-      ]
+      ],
+      separatorAfter: true
     },
     {
       label: 'Section 2',

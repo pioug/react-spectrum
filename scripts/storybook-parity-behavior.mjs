@@ -239,6 +239,7 @@ let scenarios = [
       let initialRole = await firstItem.getAttribute('role');
       let initialAriaChecked = await firstItem.getAttribute('aria-checked');
       let groupCount = await page.locator('[role="group"]').count();
+      let separatorCount = await page.locator('[role="separator"]').count();
       let topLevelMenuCount = await page.evaluate(() => {
         let menus = Array.from(document.querySelectorAll('[role="menu"]'));
         return menus.filter((menu) => !menu.parentElement?.closest('[role="menu"]')).length;
@@ -260,6 +261,7 @@ let scenarios = [
         initialAriaChecked,
         initialRole,
         itemCount,
+        separatorCount,
         topLevelMenuCount
       };
     }

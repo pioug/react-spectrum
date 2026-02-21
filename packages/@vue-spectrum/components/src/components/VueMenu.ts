@@ -15,7 +15,8 @@ type MenuItemRecord = {
 type MenuSectionRecord = {
   ariaLabel?: string,
   items: MenuItemInput[],
-  label?: string
+  label?: string,
+  separatorAfter?: boolean
 };
 
 type MenuItemInput = MenuItemRecord | string;
@@ -32,7 +33,8 @@ type NormalizedMenuSection = {
   ariaLabel?: string,
   items: NormalizedMenuItem[],
   key: string,
-  label?: string
+  label?: string,
+  separatorAfter?: boolean
 };
 
 function normalizeItem(item: MenuItemInput, index: number, parentKey = ''): NormalizedMenuItem {
@@ -67,7 +69,8 @@ function normalizeSection(section: MenuSectionRecord, index: number): Normalized
     ariaLabel: section.ariaLabel,
     items: section.items.map((item, itemIndex) => normalizeItem(item, itemIndex, key)),
     key,
-    label: section.label
+    label: section.label,
+    separatorAfter: section.separatorAfter
   };
 }
 
@@ -266,7 +269,18 @@ export const VueMenu = defineComponent({
           role: 'menu',
           'aria-multiselectable': props.selectionMode === 'multiple' ? 'true' : undefined
         }, hasSections
-          ? normalizedSections.map((section) => renderSection(section))
+          ? normalizedSections.flatMap((section, index) => {
+            let nodes: VNode[] = [renderSection(section)];
+            if (section.separatorAfter && index < normalizedSections.length - 1) {
+              nodes.push(h('div', {
+                key: `${section.key}-separator`,
+                class: 'vs-menu__separator',
+                role: 'separator',
+                style: {borderTop: '1px solid gray', margin: '2px 5px'}
+              }));
+            }
+            return nodes;
+          })
           : normalizedItems.map((item) => renderItem(item)))
       ]);
     };

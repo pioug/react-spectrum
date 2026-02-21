@@ -18,7 +18,7 @@
 ## Gap List
 
 1. Audit focus-management parity for submenu traversal (hover-delay semantics now implemented, but keyboard focus handoff behavior is still simplified).
-2. Audit separator/header visual parity for sectioned menus (`MenuSection` + `Separator` styling/details still simplified in Vue).
+2. Audit section/header parity for complex submenu section stories (`SubmenuSectionsExample` still simplifies nested section composition details).
 3. Audit custom render and virtualization behavior parity (`MenuCustomRender`, `VirtualizedExample`).
 
 ## Fixes Applied
@@ -48,6 +48,9 @@
 6. Ported submenu delay semantics from React `SubmenuTrigger` stories:
    - `VueMenu` now supports `delay` (default `200`) for hover-open submenu timing.
    - `Submenu*` stories now bind story `delay` args to `VueMenu` so Storybook controls map to runtime behavior.
+7. Ported MenuExample separator/header structure parity:
+   - `VueMenu` now supports section separators with `role="separator"` and section `aria-label` support.
+   - `MenuExample` now mirrors React section labeling (`Section 1` aria-label only, visible `Section 2` header).
 5. Ported section structure parity for `MenuExample`:
    - `VueMenu` now supports `sections` with `role="group"` semantics under a single top-level `role="menu"` container.
    - `packages/@vue-spectrum/components/stories/Menu.stories.ts` now passes section collections to one `VueMenu` instance instead of composing multiple root menus.
@@ -58,11 +61,11 @@
   - `yarn workspace vue-spectrum-starter build-storybook`
   - `node scripts/storybook-parity-export-manifest.mjs ...`
   - `yarn storybook:parity:manifest:compare`
-  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (PASS for `react-aria-components-menu--menu-example`, `react-aria-components-menu--submenu-example`; includes menu group/top-level structure and submenu hover-delay assertions)
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (PASS for `react-aria-components-menu--menu-example`, `react-aria-components-menu--submenu-example`; includes menu group/top-level/separator structure and submenu hover-delay assertions)
 - Manual: pending
 
 ## Status
 
-- Open items: submenu focus-management parity, separator/header visual parity, virtualization semantics.
+- Open items: submenu focus-management parity, complex submenu section composition parity, virtualization semantics.
 - Risks: submenu keyboard focus handoff and multi-level navigation are currently simplified compared to React `SubmenuTrigger` internals.
 - Closure criteria: React-source behavior gaps fixed and tested.

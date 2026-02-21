@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-21T22:56:55.832Z",
+  "generatedAt": "2026-02-21T23:01:01.919Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
   "totalScenarios": 7,
@@ -100,6 +100,7 @@
         "initialAriaChecked": null,
         "initialRole": "menuitem",
         "itemCount": 7,
+        "separatorCount": 1,
         "topLevelMenuCount": 1
       },
       "vue": {
@@ -110,6 +111,7 @@
         "initialAriaChecked": null,
         "initialRole": "menuitem",
         "itemCount": 7,
+        "separatorCount": 1,
         "topLevelMenuCount": 1
       },
       "diff": {},
