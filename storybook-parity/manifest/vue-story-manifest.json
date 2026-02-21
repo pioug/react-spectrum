@@ -1,10 +1,30 @@
 {
-  "generatedAt": "2026-02-21T21:18:49.135Z",
+  "generatedAt": "2026-02-21T21:25:32.932Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 8,
+  "count": 12,
   "entries": [
+    {
+      "id": "react-aria-components-breadcrumbs--breadcrumbs-example",
+      "title": "React Aria Components/Breadcrumbs",
+      "name": "Breadcrumbs Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Breadcrumbs.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-breadcrumbs--dynamic-breadcrumbs-example",
+      "title": "React Aria Components/Breadcrumbs",
+      "name": "Dynamic Breadcrumbs Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Breadcrumbs.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
     {
       "id": "react-aria-components-button--button-example",
       "title": "React Aria Components/Button",
@@ -60,6 +80,26 @@
       "title": "React Aria Components/Button",
       "name": "Ripple Button Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/Button.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-link--link-example",
+      "title": "React Aria Components/Link",
+      "name": "Link Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Link.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-meter--meter-example",
+      "title": "React Aria Components/Meter",
+      "name": "Meter Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Meter.stories.ts",
       "tags": [
         "dev",
         "test"

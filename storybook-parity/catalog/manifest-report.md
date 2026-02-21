@@ -6,8 +6,8 @@
 ## Summary
 
 - React entries: 203
-- Vue entries: 8
-- Missing in Vue: 195
+- Vue entries: 12
+- Missing in Vue: 191
 - Extra in Vue: 0
 - Result: fail
 
@@ -34,8 +34,6 @@
 - `react-aria-components-autocomplete--autocomplete-with-table`
 - `react-aria-components-autocomplete--autocomplete-with-tag-group`
 - `react-aria-components-autocomplete--autocomplete-with-virtualized-listbox`
-- `react-aria-components-breadcrumbs--breadcrumbs-example`
-- `react-aria-components-breadcrumbs--dynamic-breadcrumbs-example`
 - `react-aria-components-calendar--calendar-example`
 - `react-aria-components-calendar--calendar-first-day-of-week-example`
 - `react-aria-components-calendar--calendar-multi-month`
@@ -100,7 +98,6 @@
 - `react-aria-components-gridlist--virtualized-grid-list`
 - `react-aria-components-gridlist--virtualized-grid-list-grid`
 - `react-aria-components-gridlist--virtualized-grid-list-section`
-- `react-aria-components-link--link-example`
 - `react-aria-components-listbox--async-list-box`
 - `react-aria-components-listbox--async-list-box-virtualized`
 - `react-aria-components-listbox--drop-onto-root`
@@ -130,7 +127,6 @@
 - `react-aria-components-menu--submenu-nested-example`
 - `react-aria-components-menu--submenu-sections-example`
 - `react-aria-components-menu--virtualized-example`
-- `react-aria-components-meter--meter-example`
 - `react-aria-components-modal--date-range-picker-inside-modal-story`
 - `react-aria-components-modal--inert-test-story`
 - `react-aria-components-modal--modal-example`
