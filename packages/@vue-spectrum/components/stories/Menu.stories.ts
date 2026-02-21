@@ -7,6 +7,7 @@ type MenuItem = {
   childSections?: MenuSection[],
   children?: MenuItem[],
   disabled?: boolean,
+  href?: string,
   key: string,
   label: string
 };
@@ -325,7 +326,7 @@ export const MenuCustomRender: MenuStory = () => createTriggerMenuStory([
   {
     label: 'Custom render menu',
     items: [
-      {key: 'Google', label: 'Google'}
+      {key: 'Google', label: 'Google', href: 'https://google.com'}
     ]
   }
 ]);

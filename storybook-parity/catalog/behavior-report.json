@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T23:33:32.539Z",
+  "generatedAt": "2026-02-21T23:37:58.522Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
-  "totalScenarios": 9,
-  "passingScenarios": 9,
+  "totalScenarios": 10,
+  "passingScenarios": 10,
   "failingScenarios": 0,
   "ok": true,
   "results": [
@@ -195,6 +195,22 @@
         "initialFirstText": "Object 1",
         "initialLastTextStartsWithObject": true,
         "windowChangedAfterScroll": true
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-menu--menu-custom-render",
+      "ok": true,
+      "react": {
+        "afterEnterItemCount": 0,
+        "itemHref": "https://google.com",
+        "itemTagName": "A"
+      },
+      "vue": {
+        "afterEnterItemCount": 0,
+        "itemHref": "https://google.com",
+        "itemTagName": "A"
       },
       "diff": {},
       "error": null

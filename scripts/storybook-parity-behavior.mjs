@@ -495,6 +495,37 @@ let scenarios = [
         windowChangedAfterScroll: afterScrollFirstText !== initialFirstText
       };
     }
+  },
+  {
+    id: 'react-aria-components-menu--menu-custom-render',
+    async run(page) {
+      let trigger = await firstVisibleLocator(page, [
+        'button[aria-label="Menu"]',
+        'button:has-text("Menu")',
+        'button'
+      ]);
+
+      if (!trigger) {
+        throw new Error('Unable to find custom-render menu trigger button.');
+      }
+
+      await trigger.click();
+      await page.waitForSelector('[role^="menuitem"]', {timeout: 10000});
+
+      let item = page.locator('[role^="menuitem"]').first();
+      let itemTagName = await item.evaluate((element) => element.tagName);
+      let itemHref = await item.getAttribute('href');
+      await item.focus();
+      await page.keyboard.press('Enter');
+      await page.waitForTimeout(100);
+      let afterEnterItemCount = await page.locator('[role^="menuitem"]').count();
+
+      return {
+        afterEnterItemCount,
+        itemHref,
+        itemTagName
+      };
+    }
   }
 ];
 

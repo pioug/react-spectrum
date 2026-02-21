@@ -7,6 +7,7 @@ type MenuItemRecord = {
   childSections?: MenuSectionRecord[],
   children?: MenuItemInput[],
   disabled?: boolean,
+  href?: string,
   id?: string,
   key?: string,
   label?: string,
@@ -26,6 +27,7 @@ type NormalizedMenuItem = {
   childSections: NormalizedMenuSection[],
   children: NormalizedMenuItem[],
   disabled: boolean,
+  href?: string,
   key: string,
   label: string,
   value: string
@@ -47,6 +49,7 @@ function normalizeItem(item: MenuItemInput, index: number, parentKey = ''): Norm
       childSections: [],
       children: [],
       disabled: false,
+      href: undefined,
       key,
       label: item,
       value
@@ -60,6 +63,7 @@ function normalizeItem(item: MenuItemInput, index: number, parentKey = ''): Norm
     childSections: (item.childSections ?? []).map((section, sectionIndex) => normalizeSection(section, sectionIndex, key)),
     children: (item.children ?? []).map((child, childIndex) => normalizeItem(child, childIndex, key)),
     disabled: Boolean(item.disabled),
+    href: item.href,
     key,
     label: item.label ?? item.textValue ?? String(value),
     value: String(value)
@@ -131,7 +135,7 @@ export const VueMenu = defineComponent({
     let scrollTop = ref(0);
     let hoverCloseTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
     let hoverOpenTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
-    let itemRefs = new Map<string, HTMLButtonElement>();
+    let itemRefs = new Map<string, HTMLElement>();
 
     let isSelected = (value: string) => {
       if (props.selectionMode === 'none') {
@@ -167,7 +171,7 @@ export const VueMenu = defineComponent({
       openKeys.value = next;
     };
 
-    let setItemRef = (key: string, element: HTMLButtonElement | null) => {
+    let setItemRef = (key: string, element: HTMLElement | null) => {
       if (element) {
         itemRefs.set(key, element);
       } else {
@@ -306,6 +310,7 @@ export const VueMenu = defineComponent({
       } else if (!hasSubmenu && props.selectionMode === 'multiple') {
         role = 'menuitemcheckbox';
       }
+      let isLink = Boolean(item.href) && !hasSubmenu;
 
       let submenuContent = item.childSections.length > 0
         ? renderSections(item.childSections, item.key)
@@ -315,14 +320,16 @@ export const VueMenu = defineComponent({
         key: item.key,
         class: 'vs-menu__item-wrapper'
       }, [
-        h('button', {
+        h(isLink ? 'a' : 'button', {
           class: ['vs-menu__item', 'item', selected ? 'is-selected' : null, isOpen ? 'open' : null],
-          type: 'button',
+          type: isLink ? undefined : 'button',
           ref: (element) => {
-            setItemRef(item.key, element as HTMLButtonElement | null);
+            setItemRef(item.key, element as HTMLElement | null);
           },
           role,
-          disabled: item.disabled,
+          href: isLink ? item.href : undefined,
+          disabled: !isLink ? item.disabled : undefined,
+          tabIndex: isLink && item.disabled ? -1 : undefined,
           'aria-disabled': item.disabled ? 'true' : undefined,
           'aria-haspopup': hasSubmenu ? 'menu' : undefined,
           'aria-expanded': hasSubmenu ? (isOpen ? 'true' : 'false') : undefined,
@@ -381,7 +388,12 @@ export const VueMenu = defineComponent({
               }
             }
           },
-          onClick: () => onSelect(item)
+          onClick: (event: MouseEvent) => {
+            if (isLink) {
+              event.preventDefault();
+            }
+            onSelect(item);
+          }
         }, [
           h('span', {class: 'vs-menu__item-label'}, item.label)
         ]),

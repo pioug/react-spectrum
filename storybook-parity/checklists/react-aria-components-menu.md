@@ -17,8 +17,7 @@
 
 ## Gap List
 
-1. Audit remaining visual detail parity for complex submenu section stories (structure/ARIA now matched; styling nuances still simplified).
-2. Audit any remaining custom-render edge cases (`MenuCustomRender` still uses simplified rendering).
+1. Manual visual fine-tuning audit for menu spacing/typography details after behavior parity closure.
 
 ## Fixes Applied
 
@@ -67,6 +66,10 @@
 11. Ported nested pointer-exit close sequencing parity:
    - `VueMenu` now closes hovered submenus when pointer leaves trigger/submenu regions after delay, matching React hover-close behavior.
    - behavior gate now asserts `hoverExpandedAfterLeave=false` and `submenuItemCountAfterHoverLeave=0` for `react-aria-components-menu--submenu-example`.
+12. Ported MenuCustomRender element parity:
+   - `VueMenu` now supports link menu items (`href`) rendering as anchor elements when appropriate.
+   - `MenuCustomRender` now renders `Google` as an anchor menuitem (`<a href=\"https://google.com\">`) and closes on action like React.
+   - behavior gate now asserts anchor tag/href parity for `react-aria-components-menu--menu-custom-render`.
 5. Ported section structure parity for `MenuExample`:
    - `VueMenu` now supports `sections` with `role="group"` semantics under a single top-level `role="menu"` container.
    - `packages/@vue-spectrum/components/stories/Menu.stories.ts` now passes section collections to one `VueMenu` instance instead of composing multiple root menus.
@@ -77,11 +80,11 @@
   - `yarn workspace vue-spectrum-starter build-storybook`
   - `node scripts/storybook-parity-export-manifest.mjs ...`
   - `yarn storybook:parity:manifest:compare`
-  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (PASS for `react-aria-components-menu--menu-example`, `react-aria-components-menu--submenu-example`, `react-aria-components-menu--submenu-sections-example`, `react-aria-components-menu--virtualized-example`; includes menu structure, submenu hover/keyboard/pointer-close, nested section, and virtualization-window assertions)
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (PASS for `react-aria-components-menu--menu-example`, `react-aria-components-menu--submenu-example`, `react-aria-components-menu--submenu-sections-example`, `react-aria-components-menu--virtualized-example`, `react-aria-components-menu--menu-custom-render`; includes menu structure, submenu hover/keyboard/pointer-close, nested section, virtualization-window, and custom-render anchor assertions)
 - Manual: pending
 
 ## Status
 
-- Open items: complex submenu visual detail parity, custom-render edge cases.
-- Risks: some story-level visual details remain simplified while behavior/ARIA parity gates pass.
+- Open items: manual visual detail audit only.
+- Risks: minor story-level visual details may still differ while behavior/ARIA parity gates pass.
 - Closure criteria: React-source behavior gaps fixed and tested.
