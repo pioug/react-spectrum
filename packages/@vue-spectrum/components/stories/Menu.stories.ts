@@ -25,7 +25,7 @@ export default meta;
 type MenuStory = StoryFn<typeof VueMenu>;
 type SubmenuExampleStory = StoryObj<typeof meta>;
 
-function createTriggerMenuStory(sections: MenuSection[]) {
+function createTriggerMenuStory(sections: MenuSection[], menuArgs: Record<string, unknown> = {}) {
   return {
     components: {
       VueButton,
@@ -43,6 +43,7 @@ function createTriggerMenuStory(sections: MenuSection[]) {
       };
 
       return {
+        menuArgs,
         onAction,
         open,
         sections,
@@ -55,6 +56,7 @@ function createTriggerMenuStory(sections: MenuSection[]) {
         <VuePopover :open="open" placement="bottom" @close="open = false">
           <VueMenu
             v-model="selected"
+            v-bind="menuArgs"
             class="menu"
             :sections="sections"
             selectionMode="none"
@@ -106,7 +108,7 @@ export const MenuScrollPaddingExample: MenuStory = () => createTriggerMenuStory(
 ]);
 
 export const SubmenuExample: SubmenuExampleStory = {
-  render: () => createTriggerMenuStory([
+  render: (args) => createTriggerMenuStory([
     {
       items: [
         {key: 'Foo', label: 'Foo'},
@@ -123,7 +125,7 @@ export const SubmenuExample: SubmenuExampleStory = {
         {key: 'Google', label: 'Google'}
       ]
     }
-  ]),
+  ], {delay: args.delay}),
   args: {
     delay: 200
   },
@@ -135,7 +137,7 @@ export const SubmenuExample: SubmenuExampleStory = {
 };
 
 export const SubmenuNestedExample: SubmenuExampleStory = {
-  render: () => createTriggerMenuStory([
+  render: (args) => createTriggerMenuStory([
     {
       items: [
         {key: 'Foo', label: 'Foo'},
@@ -160,7 +162,7 @@ export const SubmenuNestedExample: SubmenuExampleStory = {
         {key: 'Google', label: 'Google'}
       ]
     }
-  ]),
+  ], {delay: args.delay}),
   args: {
     delay: 200
   },
@@ -172,7 +174,7 @@ export const SubmenuNestedExample: SubmenuExampleStory = {
 };
 
 export const SubmenuManyItemsExample: SubmenuExampleStory = {
-  render: () => createTriggerMenuStory([
+  render: (args) => createTriggerMenuStory([
     {
       items: [
         {key: 'Lvl 1 Item 1', label: 'Lvl 1 Item 1'},
@@ -201,7 +203,7 @@ export const SubmenuManyItemsExample: SubmenuExampleStory = {
         }))
       ]
     }
-  ]),
+  ], {delay: args.delay}),
   args: {
     delay: 200
   },
@@ -213,7 +215,7 @@ export const SubmenuManyItemsExample: SubmenuExampleStory = {
 };
 
 export const SubmenuDisabledExample: SubmenuExampleStory = {
-  render: () => createTriggerMenuStory([
+  render: (args) => createTriggerMenuStory([
     {
       items: [
         {key: 'Foo', label: 'Foo'},
@@ -231,7 +233,7 @@ export const SubmenuDisabledExample: SubmenuExampleStory = {
         {key: 'Google', label: 'Google'}
       ]
     }
-  ]),
+  ], {delay: args.delay}),
   args: {
     delay: 200
   },
@@ -272,7 +274,7 @@ export const SubmenuSectionsExample: SubmenuExampleStory = {
 };
 
 export const SubdialogExample: SubmenuExampleStory = {
-  render: () => createTriggerMenuStory([
+  render: (args) => createTriggerMenuStory([
     {
       items: [
         {key: 'Foo', label: 'Foo'},
@@ -288,7 +290,7 @@ export const SubdialogExample: SubmenuExampleStory = {
         {key: 'Google', label: 'Google'}
       ]
     }
-  ]),
+  ], {delay: args.delay}),
   args: {
     delay: 200
   },

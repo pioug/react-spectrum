@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-21T22:44:53.434Z",
+  "generatedAt": "2026-02-21T22:56:55.832Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
   "totalScenarios": 7,
@@ -120,11 +120,15 @@
       "ok": true,
       "react": {
         "afterEnterExpanded": "true",
+        "hoverExpandedEarly": "false",
+        "hoverExpandedLate": "true",
         "initialExpanded": "false",
         "submenuItemCount": 3
       },
       "vue": {
         "afterEnterExpanded": "true",
+        "hoverExpandedEarly": "false",
+        "hoverExpandedLate": "true",
         "initialExpanded": "false",
         "submenuItemCount": 3
       },

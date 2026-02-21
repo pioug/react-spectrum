@@ -267,24 +267,46 @@ let scenarios = [
   {
     id: 'react-aria-components-menu--submenu-example',
     async run(page) {
-      let items = page.locator('[role^="menuitem"]');
-      let itemCount = await items.count();
+      let ensureMenuOpen = async () => {
+        let firstControl = null;
+        let timeoutAt = Date.now() + 10000;
+        while (!firstControl && Date.now() < timeoutAt) {
+          firstControl = await firstVisibleLocator(page, [
+            '[role^="menuitem"]',
+            'button[aria-label="Menu"]',
+            'button'
+          ]);
 
-      if (itemCount === 0) {
-        let trigger = await firstVisibleLocator(page, [
-          'button[aria-label="Menu"]',
-          'button[aria-haspopup="menu"]',
-          'button'
-        ]);
-
-        if (!trigger) {
-          throw new Error('Unable to find a submenu trigger button or rendered menu items.');
+          if (!firstControl) {
+            await page.waitForTimeout(200);
+          }
         }
 
-        await trigger.click();
-      }
+        if (!firstControl) {
+          throw new Error('Unable to find a visible menu trigger button or rendered menu items.');
+        }
 
-      await page.waitForSelector('[role^="menuitem"]', {timeout: 10000});
+        let items = page.locator('[role^="menuitem"]');
+        let itemCount = await items.count();
+
+        if (itemCount === 0) {
+          let trigger = await firstVisibleLocator(page, [
+            'button[aria-label="Menu"]',
+            'button[aria-haspopup="menu"]',
+            'button'
+          ]);
+
+          if (!trigger) {
+            throw new Error('Unable to find a submenu trigger button or rendered menu items.');
+          }
+
+          await trigger.click();
+        }
+
+        await page.waitForSelector('[role^="menuitem"]', {timeout: 10000});
+      };
+
+      await ensureMenuOpen();
 
       let submenuTrigger = page.locator('[role^="menuitem"][aria-haspopup="menu"]').first();
       if (await submenuTrigger.count() === 0) {
@@ -296,12 +318,23 @@ let scenarios = [
       await page.keyboard.press('Enter');
       await page.waitForTimeout(100);
       let afterEnterExpanded = await submenuTrigger.getAttribute('aria-expanded').catch(() => null);
-
       let submenuItems = page.locator('[role^="menuitem"]', {hasText: 'Submenu '});
       let submenuItemCount = await submenuItems.count();
 
+      let storyUrl = page.url();
+      await page.goto(storyUrl, {waitUntil: 'domcontentloaded'});
+      await ensureMenuOpen();
+      let hoverTrigger = page.locator('[role^="menuitem"][aria-haspopup="menu"]').first();
+      await hoverTrigger.hover();
+      await page.waitForTimeout(80);
+      let hoverExpandedEarly = await hoverTrigger.getAttribute('aria-expanded');
+      await page.waitForTimeout(180);
+      let hoverExpandedLate = await hoverTrigger.getAttribute('aria-expanded');
+
       return {
         afterEnterExpanded,
+        hoverExpandedEarly,
+        hoverExpandedLate,
         initialExpanded,
         submenuItemCount
       };

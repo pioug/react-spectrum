@@ -1,4 +1,4 @@
-import {defineComponent, h, ref, type PropType, type VNode} from 'vue';
+import {defineComponent, h, onBeforeUnmount, ref, type PropType, type VNode} from 'vue';
 
 type MenuSelectionMode = 'none' | 'single' | 'multiple';
 type MenuValue = string | string[];
@@ -93,6 +93,10 @@ export const VueMenu = defineComponent({
     sections: {
       type: Array as PropType<MenuSectionRecord[]>,
       default: () => []
+    },
+    delay: {
+      type: Number,
+      default: 200
     }
   },
   emits: {
@@ -105,6 +109,7 @@ export const VueMenu = defineComponent({
   },
   setup(props, {emit, attrs}) {
     let openKeys = ref<Set<string>>(new Set());
+    let hoverOpenTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
 
     let isSelected = (value: string) => {
       if (props.selectionMode === 'none') {
@@ -127,6 +132,35 @@ export const VueMenu = defineComponent({
       }
       openKeys.value = next;
     };
+
+    let openSubmenu = (key: string) => {
+      let next = new Set(openKeys.value);
+      next.add(key);
+      openKeys.value = next;
+    };
+
+    let clearHoverOpenTimeout = (key: string) => {
+      let timeout = hoverOpenTimeouts.get(key);
+      if (timeout) {
+        clearTimeout(timeout);
+        hoverOpenTimeouts.delete(key);
+      }
+    };
+
+    let scheduleHoverOpen = (key: string) => {
+      clearHoverOpenTimeout(key);
+      hoverOpenTimeouts.set(key, setTimeout(() => {
+        openSubmenu(key);
+        hoverOpenTimeouts.delete(key);
+      }, props.delay));
+    };
+
+    onBeforeUnmount(() => {
+      for (let timeout of hoverOpenTimeouts.values()) {
+        clearTimeout(timeout);
+      }
+      hoverOpenTimeouts.clear();
+    });
 
     let onSelect = (item: NormalizedMenuItem) => {
       if (item.disabled) {
@@ -182,6 +216,8 @@ export const VueMenu = defineComponent({
           'aria-haspopup': hasSubmenu ? 'menu' : undefined,
           'aria-expanded': hasSubmenu ? (isOpen ? 'true' : 'false') : undefined,
           'aria-checked': (!hasSubmenu && props.selectionMode !== 'none') ? (selected ? 'true' : 'false') : undefined,
+          onMouseenter: hasSubmenu ? () => scheduleHoverOpen(item.key) : undefined,
+          onMouseleave: hasSubmenu ? () => clearHoverOpenTimeout(item.key) : undefined,
           onClick: () => onSelect(item)
         }, [
           h('span', {class: 'vs-menu__item-label'}, item.label),
