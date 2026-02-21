@@ -1,8 +1,29 @@
 {
-  "generatedAt": "2026-02-21T21:11:25.049Z",
+  "generatedAt": "2026-02-21T21:16:15.165Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 0,
-  "entries": []
+  "count": 2,
+  "entries": [
+    {
+      "id": "react-aria-components-textfield--text-field-submit-example",
+      "title": "React Aria Components/TextField",
+      "name": "Text Field Submit Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/TextField.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-textfield--textfield-example",
+      "title": "React Aria Components/TextField",
+      "name": "Textfield Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/TextField.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    }
+  ]
 }

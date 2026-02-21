@@ -28,15 +28,24 @@
 
 ## Fixes Applied
 
-1. None yet.
+1. Added Vue Storybook story file with React-matching title/exports:
+   - `packages/@vue-spectrum/components/stories/TextField.stories.ts`
+   - `title: 'React Aria Components/TextField'`
+   - exports: `TextfieldExample`, `TextFieldSubmitExample`
+2. Verified Storybook id parity for this group via manifest export:
+   - `react-aria-components-textfield--textfield-example`
+   - `react-aria-components-textfield--text-field-submit-example`
 
 ## Tests
 
-- Automated: pending
+- Automated:
+  - `yarn workspace vue-spectrum-starter build-storybook`
+  - `node scripts/storybook-parity-export-manifest.mjs --source-url http://127.0.0.1:6106 --include-id-regex '^react-aria-components-' --output-path storybook-parity/manifest/vue-story-manifest.json`
+  - `yarn storybook:parity:manifest:compare` (expected fail overall while scope is incomplete; confirms 2 matching ids)
 - Manual: pending
 
 ## Status
 
-- Open items: full source parity audit and behavior gap closure.
+- Open items: full source parity audit and behavior gap closure for TextField internals and submit behavior.
 - Risks: visual parity may mask behavior mismatches without explicit behavior tests.
 - Closure criteria: all identified gaps fixed in Vue implementation and covered by tests.

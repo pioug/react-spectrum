@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T21:14:31.586Z",
+  "generatedAt": "2026-02-21T21:16:22.341Z",
   "reactManifest": "storybook-parity/manifest/react-story-manifest.json",
   "vueManifest": "storybook-parity/manifest/vue-story-manifest.json",
   "reactCount": 203,
-  "vueCount": 0,
+  "vueCount": 2,
   "missingInVue": [
     "react-aria-components-animations--modal-animation",
     "react-aria-components-autocomplete--autocomplete-async-loading-example",
@@ -181,8 +181,6 @@
     "react-aria-components-taggroup--empty-tag-group",
     "react-aria-components-taggroup--tag-group-example",
     "react-aria-components-taggroup--tag-group-example-with-remove",
-    "react-aria-components-textfield--text-field-submit-example",
-    "react-aria-components-textfield--textfield-example",
     "react-aria-components-timefield--time-field-example",
     "react-aria-components-togglebutton--toggle-button-example",
     "react-aria-components-toolbar--select-support",

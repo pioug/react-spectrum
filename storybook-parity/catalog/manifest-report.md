@@ -6,8 +6,8 @@
 ## Summary
 
 - React entries: 203
-- Vue entries: 0
-- Missing in Vue: 203
+- Vue entries: 2
+- Missing in Vue: 201
 - Extra in Vue: 0
 - Result: fail
 
@@ -189,8 +189,6 @@
 - `react-aria-components-taggroup--empty-tag-group`
 - `react-aria-components-taggroup--tag-group-example`
 - `react-aria-components-taggroup--tag-group-example-with-remove`
-- `react-aria-components-textfield--text-field-submit-example`
-- `react-aria-components-textfield--textfield-example`
 - `react-aria-components-timefield--time-field-example`
 - `react-aria-components-togglebutton--toggle-button-example`
 - `react-aria-components-toolbar--select-support`
