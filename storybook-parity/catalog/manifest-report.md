@@ -6,8 +6,8 @@
 ## Summary
 
 - React entries: 203
-- Vue entries: 98
-- Missing in Vue: 105
+- Vue entries: 134
+- Missing in Vue: 69
 - Extra in Vue: 0
 - Result: fail
 
@@ -48,47 +48,11 @@
 - `react-aria-components-gridlist--virtualized-grid-list`
 - `react-aria-components-gridlist--virtualized-grid-list-grid`
 - `react-aria-components-gridlist--virtualized-grid-list-section`
-- `react-aria-components-listbox--async-list-box`
-- `react-aria-components-listbox--async-list-box-virtualized`
-- `react-aria-components-listbox--drop-onto-root`
-- `react-aria-components-listbox--list-box-complex`
-- `react-aria-components-listbox--list-box-dnd`
-- `react-aria-components-listbox--list-box-example`
-- `react-aria-components-listbox--list-box-grid`
-- `react-aria-components-listbox--list-box-hover`
-- `react-aria-components-listbox--list-box-preview-offset`
-- `react-aria-components-listbox--list-box-scroll-margin`
-- `react-aria-components-listbox--list-box-sections`
-- `react-aria-components-listbox--list-box-smooth-scroll`
-- `react-aria-components-listbox--virtualized-list-box`
-- `react-aria-components-listbox--virtualized-list-box-dnd`
-- `react-aria-components-listbox--virtualized-list-box-dnd-on-action`
-- `react-aria-components-listbox--virtualized-list-box-empty`
-- `react-aria-components-listbox--virtualized-list-box-grid`
-- `react-aria-components-listbox--virtualized-list-box-waterfall`
 - `react-aria-components-popover--popover-arrow-boundary-offset-example`
 - `react-aria-components-popover--popover-example`
 - `react-aria-components-popover--popover-trigger-observer-example`
 - `react-aria-components-popover--popover-trigger-width-example`
 - `react-aria-components-popover--scrolling-boundary-container`
-- `react-aria-components-table--dnd-table-example`
-- `react-aria-components-table--dnd-table-with-no-valid-drop-targets`
-- `react-aria-components-table--on-load-more-table-story`
-- `react-aria-components-table--on-load-more-table-story-virtualized`
-- `react-aria-components-table--on-load-more-table-virtualized-resize-wrapper-story`
-- `react-aria-components-table--render-empty-state-story`
-- `react-aria-components-table--reorderable-table-example`
-- `react-aria-components-table--table-cell-col-span-example`
-- `react-aria-components-table--table-cell-col-span-with-various-spans-example`
-- `react-aria-components-table--table-dynamic-example`
-- `react-aria-components-table--table-example-story`
-- `react-aria-components-table--table-loading-body-wrapper-story`
-- `react-aria-components-table--table-loading-row-render-wrapper-story`
-- `react-aria-components-table--table-with-react-transition`
-- `react-aria-components-table--table-with-suspense`
-- `react-aria-components-table--virtualized-table`
-- `react-aria-components-table--virtualized-table-with-empty-state-story`
-- `react-aria-components-table--virtualized-table-with-resizing`
 - `react-aria-components-tabs--nested-tabs`
 - `react-aria-components-tabs--tabs-example`
 - `react-aria-components-tabs--tabs-render-props`

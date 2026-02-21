@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T21:46:25.905Z",
+  "generatedAt": "2026-02-21T21:54:04.745Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 98,
+  "count": 134,
   "entries": [
     {
       "id": "react-aria-components-breadcrumbs--breadcrumbs-example",
@@ -596,6 +596,186 @@
       ]
     },
     {
+      "id": "react-aria-components-listbox--async-list-box",
+      "title": "React Aria Components/ListBox",
+      "name": "Async List Box",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ListBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-listbox--async-list-box-virtualized",
+      "title": "React Aria Components/ListBox",
+      "name": "Async List Box Virtualized",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ListBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-listbox--drop-onto-root",
+      "title": "React Aria Components/ListBox",
+      "name": "Drop Onto Root",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ListBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-listbox--list-box-complex",
+      "title": "React Aria Components/ListBox",
+      "name": "List Box Complex",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ListBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-listbox--list-box-dnd",
+      "title": "React Aria Components/ListBox",
+      "name": "List Box Dnd",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ListBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-listbox--list-box-example",
+      "title": "React Aria Components/ListBox",
+      "name": "List Box Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ListBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-listbox--list-box-grid",
+      "title": "React Aria Components/ListBox",
+      "name": "List Box Grid",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ListBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-listbox--list-box-hover",
+      "title": "React Aria Components/ListBox",
+      "name": "List Box Hover",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ListBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-listbox--list-box-preview-offset",
+      "title": "React Aria Components/ListBox",
+      "name": "List Box Preview Offset",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ListBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-listbox--list-box-scroll-margin",
+      "title": "React Aria Components/ListBox",
+      "name": "List Box Scroll Margin",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ListBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-listbox--list-box-sections",
+      "title": "React Aria Components/ListBox",
+      "name": "List Box Sections",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ListBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-listbox--list-box-smooth-scroll",
+      "title": "React Aria Components/ListBox",
+      "name": "List Box Smooth Scroll",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ListBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-listbox--virtualized-list-box",
+      "title": "React Aria Components/ListBox",
+      "name": "Virtualized List Box",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ListBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-listbox--virtualized-list-box-dnd",
+      "title": "React Aria Components/ListBox",
+      "name": "Virtualized List Box Dnd",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ListBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-listbox--virtualized-list-box-dnd-on-action",
+      "title": "React Aria Components/ListBox",
+      "name": "Virtualized List Box Dnd On Action",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ListBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-listbox--virtualized-list-box-empty",
+      "title": "React Aria Components/ListBox",
+      "name": "Virtualized List Box Empty",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ListBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-listbox--virtualized-list-box-grid",
+      "title": "React Aria Components/ListBox",
+      "name": "Virtualized List Box Grid",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ListBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-listbox--virtualized-list-box-waterfall",
+      "title": "React Aria Components/ListBox",
+      "name": "Virtualized List Box Waterfall",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ListBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
       "id": "react-aria-components-menu--menu-complex",
       "title": "React Aria Components/Menu",
       "name": "Menu Complex",
@@ -940,6 +1120,186 @@
       "title": "React Aria Components/Switch",
       "name": "Switch Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/Switch.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-table--dnd-table-example",
+      "title": "React Aria Components/Table",
+      "name": "Dnd Table Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Table.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-table--dnd-table-with-no-valid-drop-targets",
+      "title": "React Aria Components/Table",
+      "name": "Dnd Table with no valid drop targets",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Table.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-table--on-load-more-table-story",
+      "title": "React Aria Components/Table",
+      "name": "onLoadMore table",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Table.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-table--on-load-more-table-story-virtualized",
+      "title": "React Aria Components/Table",
+      "name": "Virtualized Table with async loading",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Table.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-table--on-load-more-table-virtualized-resize-wrapper-story",
+      "title": "React Aria Components/Table",
+      "name": "Virtualized Table with async loading, with wrapper around Virtualizer",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Table.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-table--render-empty-state-story",
+      "title": "React Aria Components/Table",
+      "name": "Empty/Loading Table rendered with TableLoadingIndicator collection element",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Table.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-table--reorderable-table-example",
+      "title": "React Aria Components/Table",
+      "name": "Reorderable Table Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Table.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-table--table-cell-col-span-example",
+      "title": "React Aria Components/Table",
+      "name": "Table Cell Col Span Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Table.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-table--table-cell-col-span-with-various-spans-example",
+      "title": "React Aria Components/Table",
+      "name": "Table Cell Col Span With Various Spans Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Table.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-table--table-dynamic-example",
+      "title": "React Aria Components/Table",
+      "name": "Table Dynamic Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Table.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-table--table-example-story",
+      "title": "React Aria Components/Table",
+      "name": "Table Example Story",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Table.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-table--table-loading-body-wrapper-story",
+      "title": "React Aria Components/Table",
+      "name": "Table loading, table body wrapper with collection",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Table.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-table--table-loading-row-render-wrapper-story",
+      "title": "React Aria Components/Table",
+      "name": "Table loading, row renderer wrapper and dep array",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Table.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-table--table-with-react-transition",
+      "title": "React Aria Components/Table",
+      "name": "Table With React Transition",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Table.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-table--table-with-suspense",
+      "title": "React Aria Components/Table",
+      "name": "Table With Suspense",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Table.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-table--virtualized-table",
+      "title": "React Aria Components/Table",
+      "name": "Virtualized Table",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Table.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-table--virtualized-table-with-empty-state-story",
+      "title": "React Aria Components/Table",
+      "name": "Virtualized Table With Empty State",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Table.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-table--virtualized-table-with-resizing",
+      "title": "React Aria Components/Table",
+      "name": "Virtualized Table With Resizing",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Table.stories.ts",
       "tags": [
         "dev",
         "test"
