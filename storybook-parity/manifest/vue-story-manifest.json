@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T21:56:42.826Z",
+  "generatedAt": "2026-02-21T21:58:49.313Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 152,
+  "count": 157,
   "entries": [
     {
       "id": "react-aria-components-breadcrumbs--breadcrumbs-example",
@@ -940,6 +940,56 @@
       "title": "React Aria Components/NumberField",
       "name": "Number Field Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/NumberField.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-popover--popover-arrow-boundary-offset-example",
+      "title": "React Aria Components/Popover",
+      "name": "Popover Arrow Boundary Offset Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Popover.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-popover--popover-example",
+      "title": "React Aria Components/Popover",
+      "name": "Popover Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Popover.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-popover--popover-trigger-observer-example",
+      "title": "React Aria Components/Popover",
+      "name": "Popover Trigger Observer Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Popover.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-popover--popover-trigger-width-example",
+      "title": "React Aria Components/Popover",
+      "name": "Popover Trigger Width Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Popover.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-popover--scrolling-boundary-container",
+      "title": "React Aria Components/Popover",
+      "name": "Scrolling Boundary Container",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Popover.stories.ts",
       "tags": [
         "dev",
         "test"

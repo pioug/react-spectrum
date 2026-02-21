@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T21:56:47.751Z",
+  "generatedAt": "2026-02-21T21:58:52.322Z",
   "reactManifest": "storybook-parity/manifest/react-story-manifest.json",
   "vueManifest": "storybook-parity/manifest/vue-story-manifest.json",
   "reactCount": 203,
-  "vueCount": 152,
+  "vueCount": 157,
   "missingInVue": [
     "react-aria-components-animations--modal-animation",
     "react-aria-components-autocomplete--autocomplete-async-loading-example",
@@ -40,11 +40,6 @@
     "react-aria-components-gridlist--virtualized-grid-list",
     "react-aria-components-gridlist--virtualized-grid-list-grid",
     "react-aria-components-gridlist--virtualized-grid-list-section",
-    "react-aria-components-popover--popover-arrow-boundary-offset-example",
-    "react-aria-components-popover--popover-example",
-    "react-aria-components-popover--popover-trigger-observer-example",
-    "react-aria-components-popover--popover-trigger-width-example",
-    "react-aria-components-popover--scrolling-boundary-container",
     "react-aria-components-tabs--nested-tabs",
     "react-aria-components-tabs--tabs-example",
     "react-aria-components-tabs--tabs-render-props",

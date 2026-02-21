@@ -6,8 +6,8 @@
 ## Summary
 
 - React entries: 203
-- Vue entries: 152
-- Missing in Vue: 51
+- Vue entries: 157
+- Missing in Vue: 46
 - Extra in Vue: 0
 - Result: fail
 
@@ -48,11 +48,6 @@
 - `react-aria-components-gridlist--virtualized-grid-list`
 - `react-aria-components-gridlist--virtualized-grid-list-grid`
 - `react-aria-components-gridlist--virtualized-grid-list-section`
-- `react-aria-components-popover--popover-arrow-boundary-offset-example`
-- `react-aria-components-popover--popover-example`
-- `react-aria-components-popover--popover-trigger-observer-example`
-- `react-aria-components-popover--popover-trigger-width-example`
-- `react-aria-components-popover--scrolling-boundary-container`
 - `react-aria-components-tabs--nested-tabs`
 - `react-aria-components-tabs--tabs-example`
 - `react-aria-components-tabs--tabs-render-props`
