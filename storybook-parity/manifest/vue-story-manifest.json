@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T21:43:29.971Z",
+  "generatedAt": "2026-02-21T21:45:03.271Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 78,
+  "count": 87,
   "entries": [
     {
       "id": "react-aria-components-breadcrumbs--breadcrumbs-example",
@@ -710,6 +710,96 @@
       "title": "React Aria Components/SearchField",
       "name": "Search Field Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/SearchField.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-select--async-virtualized-collection-render-select",
+      "title": "React Aria Components/Select",
+      "name": "Async Virtualized Collection Render Select",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Select.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-select--required-select-with-many-items",
+      "title": "React Aria Components/Select",
+      "name": "Required Select With Many Items",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Select.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-select--select-example",
+      "title": "React Aria Components/Select",
+      "name": "Select Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Select.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-select--select-many-items",
+      "title": "React Aria Components/Select",
+      "name": "Select Many Items",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Select.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-select--select-render-props",
+      "title": "React Aria Components/Select",
+      "name": "Select Render Props",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Select.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-select--select-scroll-bug",
+      "title": "React Aria Components/Select",
+      "name": "Select Scroll Bug",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Select.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-select--select-submit-example",
+      "title": "React Aria Components/Select",
+      "name": "Select Submit Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Select.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-select--select-with-tag-group",
+      "title": "React Aria Components/Select",
+      "name": "Select With Tag Group",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Select.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-select--virtualized-select",
+      "title": "React Aria Components/Select",
+      "name": "Virtualized Select",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Select.stories.ts",
       "tags": [
         "dev",
         "test"

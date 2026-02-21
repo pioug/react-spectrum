@@ -6,8 +6,8 @@
 ## Summary
 
 - React entries: 203
-- Vue entries: 78
-- Missing in Vue: 125
+- Vue entries: 87
+- Missing in Vue: 116
 - Extra in Vue: 0
 - Result: fail
 
@@ -82,15 +82,6 @@
 - `react-aria-components-popover--popover-trigger-observer-example`
 - `react-aria-components-popover--popover-trigger-width-example`
 - `react-aria-components-popover--scrolling-boundary-container`
-- `react-aria-components-select--async-virtualized-collection-render-select`
-- `react-aria-components-select--required-select-with-many-items`
-- `react-aria-components-select--select-example`
-- `react-aria-components-select--select-many-items`
-- `react-aria-components-select--select-render-props`
-- `react-aria-components-select--select-scroll-bug`
-- `react-aria-components-select--select-submit-example`
-- `react-aria-components-select--select-with-tag-group`
-- `react-aria-components-select--virtualized-select`
 - `react-aria-components-table--dnd-table-example`
 - `react-aria-components-table--dnd-table-with-no-valid-drop-targets`
 - `react-aria-components-table--on-load-more-table-story`
