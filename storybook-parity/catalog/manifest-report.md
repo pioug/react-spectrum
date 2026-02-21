@@ -6,8 +6,8 @@
 ## Summary
 
 - React entries: 203
-- Vue entries: 16
-- Missing in Vue: 187
+- Vue entries: 19
+- Missing in Vue: 184
 - Extra in Vue: 0
 - Result: fail
 
@@ -40,7 +40,6 @@
 - `react-aria-components-calendar--calendar-reset-value`
 - `react-aria-components-calendar--range-calendar-example`
 - `react-aria-components-calendar--range-calendar-multi-month-example`
-- `react-aria-components-checkbox--checkbox-example`
 - `react-aria-components-checkboxgroup--checkbox-group-example`
 - `react-aria-components-checkboxgroup--checkbox-group-submit-example`
 - `react-aria-components-colorarea--color-area-example`
@@ -87,7 +86,6 @@
 - `react-aria-components-filetrigger--file-trigger-button`
 - `react-aria-components-filetrigger--file-trigger-directories`
 - `react-aria-components-filetrigger--file-trigger-link-allows-multiple`
-- `react-aria-components-form--form-auto-fill-example`
 - `react-aria-components-gridlist--async-grid-list`
 - `react-aria-components-gridlist--async-grid-list-grid-virtualized`
 - `react-aria-components-gridlist--async-grid-list-virtualized`
@@ -150,7 +148,6 @@
 - `react-aria-components-select--virtualized-select`
 - `react-aria-components-slider--slider-css`
 - `react-aria-components-slider--slider-example`
-- `react-aria-components-switch--switch-example`
 - `react-aria-components-table--dnd-table-example`
 - `react-aria-components-table--dnd-table-with-no-valid-drop-targets`
 - `react-aria-components-table--on-load-more-table-story`

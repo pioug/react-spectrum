@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T21:27:38.652Z",
+  "generatedAt": "2026-02-21T21:29:28.343Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 16,
+  "count": 19,
   "entries": [
     {
       "id": "react-aria-components-breadcrumbs--breadcrumbs-example",
@@ -86,6 +86,26 @@
       ]
     },
     {
+      "id": "react-aria-components-checkbox--checkbox-example",
+      "title": "React Aria Components/Checkbox",
+      "name": "Checkbox Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Checkbox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-form--form-auto-fill-example",
+      "title": "React Aria Components/Form",
+      "name": "Form Auto Fill Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Form.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
       "id": "react-aria-components-link--link-example",
       "title": "React Aria Components/Link",
       "name": "Link Example",
@@ -140,6 +160,16 @@
       "title": "React Aria Components/SearchField",
       "name": "Search Field Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/SearchField.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-switch--switch-example",
+      "title": "React Aria Components/Switch",
+      "name": "Switch Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Switch.stories.ts",
       "tags": [
         "dev",
         "test"
