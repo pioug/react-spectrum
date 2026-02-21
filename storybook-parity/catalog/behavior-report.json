@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T23:20:52.933Z",
+  "generatedAt": "2026-02-21T23:30:00.050Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
-  "totalScenarios": 8,
-  "passingScenarios": 8,
+  "totalScenarios": 9,
+  "passingScenarios": 9,
   "failingScenarios": 0,
   "ok": true,
   "results": [
@@ -171,6 +171,26 @@
         "submenuItemCount": 6,
         "submenuSection1HeadingCount": 1,
         "submenuSection2HeadingCount": 1
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-menu--virtualized-example",
+      "ok": true,
+      "react": {
+        "afterScrollCountVirtualized": true,
+        "initialCountVirtualized": true,
+        "initialFirstText": "Object 1",
+        "initialLastTextStartsWithObject": true,
+        "windowChangedAfterScroll": true
+      },
+      "vue": {
+        "afterScrollCountVirtualized": true,
+        "initialCountVirtualized": true,
+        "initialFirstText": "Object 1",
+        "initialLastTextStartsWithObject": true,
+        "windowChangedAfterScroll": true
       },
       "diff": {},
       "error": null

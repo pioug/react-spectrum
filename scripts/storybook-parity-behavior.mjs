@@ -448,6 +448,46 @@ let scenarios = [
         submenuSection2HeadingCount
       };
     }
+  },
+  {
+    id: 'react-aria-components-menu--virtualized-example',
+    async run(page) {
+      let trigger = await firstVisibleLocator(page, [
+        'button[aria-label="Menu"]',
+        'button:has-text("Menu")',
+        'button'
+      ]);
+
+      if (!trigger) {
+        throw new Error('Unable to find virtualized menu trigger button.');
+      }
+
+      await trigger.click();
+      await page.waitForSelector('[role^="menuitem"]', {timeout: 10000});
+
+      let items = page.locator('[role^="menuitem"]');
+      let initialCount = await items.count();
+      let initialFirstText = (await items.first().textContent() ?? '').trim();
+      let initialLastText = (await items.last().textContent() ?? '').trim();
+
+      let menu = page.locator('[role="menu"]').first();
+      await menu.evaluate((element) => {
+        element.scrollTop = element.scrollHeight / 2;
+      });
+      await page.waitForTimeout(200);
+
+      let scrolledItems = page.locator('[role^="menuitem"]');
+      let afterScrollCount = await scrolledItems.count();
+      let afterScrollFirstText = (await scrolledItems.first().textContent() ?? '').trim();
+
+      return {
+        afterScrollCountVirtualized: afterScrollCount > 0 && afterScrollCount < 100,
+        initialCountVirtualized: initialCount > 0 && initialCount < 100,
+        initialFirstText,
+        initialLastTextStartsWithObject: initialLastText.startsWith('Object '),
+        windowChangedAfterScroll: afterScrollFirstText !== initialFirstText
+      };
+    }
   }
 ];
 

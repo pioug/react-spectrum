@@ -330,12 +330,48 @@ export const MenuCustomRender: MenuStory = () => createTriggerMenuStory([
   }
 ]);
 
-export const VirtualizedExample: MenuStory = () => createTriggerMenuStory([
-  {
-    label: 'Virtualized menu',
-    items: Array.from({length: 600}, (_, index) => ({
-      key: `Item ${index + 1}`,
-      label: `Item ${index + 1}`
-    }))
-  }
-]);
+export const VirtualizedExample: MenuStory = () => ({
+  components: {
+    VueButton,
+    VueMenu,
+    VuePopover
+  },
+  setup() {
+    let open = ref(false);
+    let selected = ref('');
+    let items = Array.from({length: 600}, (_, index) => ({
+      key: `Object ${index + 1}`,
+      label: `Object ${index + 1}`
+    }));
+
+    let onAction = (value: string) => {
+      action('onAction')(value);
+      selected.value = value;
+      open.value = false;
+    };
+
+    return {
+      items,
+      onAction,
+      open,
+      selected
+    };
+  },
+  template: `
+    <div>
+      <VueButton aria-label="Menu" variant="secondary" @click="open = !open">☰</VueButton>
+      <VuePopover :open="open" placement="bottom" @close="open = false">
+        <VueMenu
+          v-model="selected"
+          class="menu"
+          :items="items"
+          label="Virtualized menu"
+          selectionMode="none"
+          virtualized
+          :visibleItemCount="20"
+          :estimatedItemHeight="16"
+          @action="onAction" />
+      </VuePopover>
+    </div>
+  `
+});

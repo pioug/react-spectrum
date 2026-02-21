@@ -104,6 +104,18 @@ export const VueMenu = defineComponent({
     delay: {
       type: Number,
       default: 200
+    },
+    virtualized: {
+      type: Boolean,
+      default: false
+    },
+    visibleItemCount: {
+      type: Number,
+      default: 20
+    },
+    estimatedItemHeight: {
+      type: Number,
+      default: 16
     }
   },
   emits: {
@@ -116,6 +128,7 @@ export const VueMenu = defineComponent({
   },
   setup(props, {emit, attrs}) {
     let openKeys = ref<Set<string>>(new Set());
+    let scrollTop = ref(0);
     let hoverOpenTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
     let itemRefs = new Map<string, HTMLButtonElement>();
 
@@ -359,6 +372,46 @@ export const VueMenu = defineComponent({
       let normalizedSections = props.sections.map((section, index) => normalizeSection(section, index));
       let normalizedItems = props.items.map((item, index) => normalizeItem(item, index));
       let hasSections = normalizedSections.length > 0;
+      let isVirtualizedFlat = props.virtualized
+        && !hasSections
+        && normalizedItems.every((item) => item.children.length === 0 && item.childSections.length === 0);
+
+      let menuChildren: VNode[];
+      let menuStyle: Record<string, string> | undefined;
+      if (isVirtualizedFlat) {
+        let itemHeight = Math.max(1, props.estimatedItemHeight);
+        let clampedVisibleCount = Math.max(1, props.visibleItemCount);
+        let maxStart = Math.max(0, normalizedItems.length - clampedVisibleCount);
+        let startIndex = Math.min(maxStart, Math.max(0, Math.floor(scrollTop.value / itemHeight)));
+        let endIndex = Math.min(normalizedItems.length, startIndex + clampedVisibleCount);
+        let topSpacerHeight = startIndex * itemHeight;
+        let bottomSpacerHeight = Math.max(0, (normalizedItems.length - endIndex) * itemHeight);
+        let visibleItems = normalizedItems.slice(startIndex, endIndex);
+
+        menuStyle = {
+          maxHeight: `${clampedVisibleCount * itemHeight}px`,
+          overflowY: 'auto',
+          position: 'relative'
+        };
+
+        menuChildren = [
+          h('div', {
+            'aria-hidden': 'true',
+            class: 'vs-menu__virtual-spacer--top',
+            style: {height: `${topSpacerHeight}px`}
+          }),
+          ...visibleItems.map((item) => renderItem(item)),
+          h('div', {
+            'aria-hidden': 'true',
+            class: 'vs-menu__virtual-spacer--bottom',
+            style: {height: `${bottomSpacerHeight}px`}
+          })
+        ];
+      } else {
+        menuChildren = hasSections
+          ? renderSections(normalizedSections)
+          : normalizedItems.map((item) => renderItem(item));
+      }
 
       return h('section', {
         ...attrs,
@@ -369,10 +422,15 @@ export const VueMenu = defineComponent({
         h('div', {
           class: ['vs-menu__items', 'group'],
           role: 'menu',
-          'aria-multiselectable': props.selectionMode === 'multiple' ? 'true' : undefined
-        }, hasSections
-          ? renderSections(normalizedSections)
-          : normalizedItems.map((item) => renderItem(item)))
+          style: menuStyle,
+          'aria-multiselectable': props.selectionMode === 'multiple' ? 'true' : undefined,
+          onScroll: isVirtualizedFlat
+            ? (event: Event) => {
+              let target = event.currentTarget as HTMLElement;
+              scrollTop.value = target.scrollTop;
+            }
+            : undefined
+        }, menuChildren)
       ]);
     };
   }
