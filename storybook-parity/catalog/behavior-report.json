@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T23:53:01.020Z",
+  "generatedAt": "2026-02-21T23:58:28.953Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
-  "totalScenarios": 11,
-  "passingScenarios": 11,
+  "totalScenarios": 13,
+  "passingScenarios": 13,
   "failingScenarios": 0,
   "ok": true,
   "results": [
@@ -229,6 +229,50 @@
         "initialSelectedText": "Founding of Rome",
         "panelText": "Senatus Populusque Romanus.",
         "tabCount": 3
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-tabs--tabs-render-props",
+      "ok": true,
+      "react": {
+        "afterToggleOrientation": "horizontal",
+        "initialOrientation": "vertical",
+        "panelTextAfterToggle": "Arma virumque cano, Troiae qui primus ab oris.",
+        "panelTextBeforeToggle": "Arma virumque cano, Troiae qui primus ab oris.",
+        "tabCount": 3
+      },
+      "vue": {
+        "afterToggleOrientation": "horizontal",
+        "initialOrientation": "vertical",
+        "panelTextAfterToggle": "Arma virumque cano, Troiae qui primus ab oris.",
+        "panelTextBeforeToggle": "Arma virumque cano, Troiae qui primus ab oris.",
+        "tabCount": 3
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-tabs--nested-tabs",
+      "ok": true,
+      "react": {
+        "panelTextAfterBar": "Bar",
+        "selectedTabsAfterBarText": "Bar",
+        "selectedTabsInitialText": "Foo|One",
+        "tabListCountAfterBar": 1,
+        "tabListCountInitial": 2,
+        "totalTabCountAfterBar": 2,
+        "totalTabCountInitial": 4
+      },
+      "vue": {
+        "panelTextAfterBar": "Bar",
+        "selectedTabsAfterBarText": "Bar",
+        "selectedTabsInitialText": "Foo|One",
+        "tabListCountAfterBar": 1,
+        "tabListCountInitial": 2,
+        "totalTabCountAfterBar": 2,
+        "totalTabCountInitial": 4
       },
       "diff": {},
       "error": null

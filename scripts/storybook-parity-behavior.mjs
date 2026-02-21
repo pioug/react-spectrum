@@ -554,6 +554,77 @@ let scenarios = [
         tabCount
       };
     }
+  },
+  {
+    id: 'react-aria-components-tabs--tabs-render-props',
+    async run(page) {
+      await page.waitForSelector('[role="tablist"]', {timeout: 10000});
+
+      let tablist = page.locator('[role="tablist"]').first();
+      let tabCount = await tablist.locator('[role="tab"]').count();
+      let initialOrientation = await tablist.getAttribute('aria-orientation');
+      let panelTextBeforeToggle = (await page.locator('[role="tabpanel"]').first().innerText()).replace(/\s+/g, ' ').trim();
+
+      let toggleButton = await firstVisibleLocator(page, [
+        'button:has-text("Change Orientation")',
+        'button'
+      ]);
+
+      if (!toggleButton) {
+        throw new Error('Unable to find tabs render props orientation toggle button.');
+      }
+
+      await toggleButton.click();
+      await page.waitForTimeout(100);
+
+      let toggledTablist = page.locator('[role="tablist"]').first();
+      let afterToggleOrientation = await toggledTablist.getAttribute('aria-orientation');
+      let panelTextAfterToggle = (await page.locator('[role="tabpanel"]').first().innerText()).replace(/\s+/g, ' ').trim();
+
+      return {
+        afterToggleOrientation,
+        initialOrientation,
+        panelTextAfterToggle,
+        panelTextBeforeToggle,
+        tabCount
+      };
+    }
+  },
+  {
+    id: 'react-aria-components-tabs--nested-tabs',
+    async run(page) {
+      await page.waitForSelector('[role="tablist"]', {timeout: 10000});
+
+      let tabListCountInitial = await page.locator('[role="tablist"]').count();
+      let totalTabCountInitial = await page.locator('[role="tab"]').count();
+      let selectedTabsInitial = await page.locator('[role="tab"][aria-selected="true"]').allTextContents();
+      let selectedTabsInitialText = selectedTabsInitial.map((text) => text.trim()).join('|');
+
+      let outerTabList = page.locator('[role="tablist"]').first();
+      let barTab = outerTabList.locator('[role="tab"]').filter({hasText: /^Bar$/}).first();
+      if (await barTab.count() === 0) {
+        throw new Error('Unable to find outer "Bar" tab in nested tabs story.');
+      }
+
+      await barTab.click();
+      await page.waitForTimeout(100);
+
+      let tabListCountAfterBar = await page.locator('[role="tablist"]').count();
+      let totalTabCountAfterBar = await page.locator('[role="tab"]').count();
+      let selectedTabsAfterBar = await page.locator('[role="tab"][aria-selected="true"]').allTextContents();
+      let selectedTabsAfterBarText = selectedTabsAfterBar.map((text) => text.trim()).join('|');
+      let panelTextAfterBar = (await page.locator('[role="tabpanel"]').first().innerText()).replace(/\s+/g, ' ').trim();
+
+      return {
+        panelTextAfterBar,
+        selectedTabsAfterBarText,
+        selectedTabsInitialText,
+        tabListCountAfterBar,
+        tabListCountInitial,
+        totalTabCountAfterBar,
+        totalTabCountInitial
+      };
+    }
   }
 ];
 

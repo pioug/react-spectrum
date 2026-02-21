@@ -18,8 +18,7 @@
 ## Gap List
 
 1. Add tooltip-in-tab composition parity for `TabsExample` from React source.
-2. Audit `TabsRenderProps` callback shape and orientation-driven layout parity.
-3. Re-run visual parity snapshots for all tabs stories after style-port phase.
+2. Re-run visual parity snapshots for all tabs stories after style-port phase.
 
 ## Fixes Applied
 
@@ -37,13 +36,15 @@
 ## Tests
 
 - Automated:
-  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (11/11 passing)
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (13/13 passing)
   - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --scenario-ids react-aria-components-tabs--tabs-example --output-dir storybook-parity/catalog` (pass)
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --scenario-ids react-aria-components-tabs--tabs-example,react-aria-components-tabs--tabs-render-props,react-aria-components-tabs--nested-tabs --output-dir storybook-parity/catalog` (3/3 passing)
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (13/13 passing)
 - Manual:
   - Verified `TabsExample` ArrowRight focus/selection progression in both Storybooks.
 
 ## Status
 
-- Open items: tooltip composition and render-props fidelity audit.
+- Open items: tooltip composition parity and visual snapshot parity for all tabs stories.
 - Risks: `TabsExample` does not yet include React-side tooltip trigger composition.
 - Closure criteria: React-source structure and behavior parity gates remain green after remaining source-derived fixes.

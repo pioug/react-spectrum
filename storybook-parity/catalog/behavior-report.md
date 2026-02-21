@@ -2,8 +2,8 @@
 
 - React URL: http://127.0.0.1:9003
 - Vue URL: http://127.0.0.1:6106
-- Scenarios: 11
-- Passing: 11
+- Scenarios: 13
+- Passing: 13
 - Failing: 0
 - Result: pass
 
@@ -20,3 +20,5 @@
 - PASS `react-aria-components-menu--virtualized-example`
 - PASS `react-aria-components-menu--menu-custom-render`
 - PASS `react-aria-components-tabs--tabs-example`
+- PASS `react-aria-components-tabs--tabs-render-props`
+- PASS `react-aria-components-tabs--nested-tabs`
