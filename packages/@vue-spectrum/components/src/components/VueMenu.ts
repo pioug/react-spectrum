@@ -221,7 +221,7 @@ export const VueMenu = defineComponent({
       emit('update:modelValue', item.value);
     };
 
-    let renderItem = (item: NormalizedMenuItem): VNode => {
+    let renderItem = (item: NormalizedMenuItem, parentSubmenuKey?: string): VNode => {
       let selected = isSelected(item.value);
       let hasSubmenu = item.children.length > 0;
       let isOpen = openKeys.value.has(item.key);
@@ -249,24 +249,36 @@ export const VueMenu = defineComponent({
           'aria-haspopup': hasSubmenu ? 'menu' : undefined,
           'aria-expanded': hasSubmenu ? (isOpen ? 'true' : 'false') : undefined,
           'aria-checked': (!hasSubmenu && props.selectionMode !== 'none') ? (selected ? 'true' : 'false') : undefined,
+          'data-has-submenu': hasSubmenu ? 'true' : undefined,
           onMouseenter: hasSubmenu ? () => scheduleHoverOpen(item.key) : undefined,
           onMouseleave: hasSubmenu ? () => clearHoverOpenTimeout(item.key) : undefined,
-          onKeydown: hasSubmenu
-            ? (event: KeyboardEvent) => {
-              if (event.key === 'ArrowRight') {
+          onKeydown: (event: KeyboardEvent) => {
+            if (event.key === 'ArrowRight' && hasSubmenu) {
+              event.preventDefault();
+              openSubmenu(item.key);
+              focusFirstSubmenuItem(item);
+              return;
+            }
+
+            if (event.key === 'ArrowLeft') {
+              if (parentSubmenuKey) {
                 event.preventDefault();
-                openSubmenu(item.key);
-                focusFirstSubmenuItem(item);
-              } else if (event.key === 'ArrowLeft') {
+                closeSubmenu(parentSubmenuKey);
+                nextTick(() => {
+                  itemRefs.get(parentSubmenuKey)?.focus();
+                });
+                return;
+              }
+
+              if (hasSubmenu) {
                 event.preventDefault();
                 closeSubmenu(item.key);
               }
             }
-            : undefined,
+          },
           onClick: () => onSelect(item)
         }, [
-          h('span', {class: 'vs-menu__item-label'}, item.label),
-          hasSubmenu ? h('span', {'aria-hidden': 'true', class: 'vs-menu__item-chevron'}, '›') : null
+          h('span', {class: 'vs-menu__item-label'}, item.label)
         ]),
         hasSubmenu && isOpen
           ? h('div', {
@@ -277,7 +289,7 @@ export const VueMenu = defineComponent({
               class: ['vs-menu__items', 'group'],
               role: 'menu',
               'aria-label': item.label
-            }, item.children.map((child) => renderItem(child)))
+            }, item.children.map((child) => renderItem(child, item.key)))
           ])
           : null
       ]);

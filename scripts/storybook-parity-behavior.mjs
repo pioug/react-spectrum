@@ -325,6 +325,14 @@ let scenarios = [
         return element ? element.textContent?.trim() ?? '' : null;
       });
       let submenuItemCountAfterArrowRight = await page.locator('[role^="menuitem"]', {hasText: 'Submenu '}).count();
+      await page.keyboard.press('ArrowLeft');
+      await page.waitForTimeout(120);
+      let afterArrowLeftExpanded = await submenuTrigger.getAttribute('aria-expanded').catch(() => null);
+      let afterArrowLeftFocusedText = await page.evaluate(() => {
+        let element = document.activeElement;
+        return element ? element.textContent?.trim() ?? '' : null;
+      });
+      let submenuItemCountAfterArrowLeft = await page.locator('[role^="menuitem"]', {hasText: 'Submenu '}).count();
 
       let storyUrl = page.url();
       await page.goto(storyUrl, {waitUntil: 'domcontentloaded'});
@@ -347,12 +355,15 @@ let scenarios = [
       let hoverExpandedLate = await hoverTrigger.getAttribute('aria-expanded');
 
       return {
+        afterArrowLeftExpanded,
+        afterArrowLeftFocusedText,
         afterArrowRightExpanded,
         afterArrowRightFocusedText,
         afterEnterExpanded,
         hoverExpandedEarly,
         hoverExpandedLate,
         initialExpanded,
+        submenuItemCountAfterArrowLeft,
         submenuItemCountAfterArrowRight,
         submenuItemCount
       };
