@@ -92,6 +92,17 @@ function buildCatalogCommand(args) {
   return parts.join(' ');
 }
 
+function buildBehaviorCommand(args) {
+  let parts = [
+    'node scripts/storybook-parity-behavior.mjs',
+    `--react-url "${args.reactUrl}"`,
+    `--vue-url "${args.vueUrl}"`,
+    `--output-dir "${args.outputDir}"`
+  ];
+
+  return parts.join(' ');
+}
+
 function main() {
   let args = parseArgs(process.argv);
 
@@ -101,6 +112,7 @@ function main() {
 
   if (!args.skipBehavior) {
     run(args.behaviorCommand, `Running behavior tests: ${args.behaviorCommand}`);
+    run(buildBehaviorCommand(args), 'Running Storybook behavior parity checks');
   }
 
   run(buildCatalogCommand(args), 'Validating Storybook catalog identity');

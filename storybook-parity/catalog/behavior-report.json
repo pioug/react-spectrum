@@ -1,0 +1,77 @@
+{
+  "generatedAt": "2026-02-21T22:18:11.708Z",
+  "reactUrl": "http://127.0.0.1:9003",
+  "vueUrl": "http://127.0.0.1:6106",
+  "totalScenarios": 4,
+  "passingScenarios": 4,
+  "failingScenarios": 0,
+  "ok": true,
+  "results": [
+    {
+      "id": "react-aria-components-checkbox--checkbox-example",
+      "ok": true,
+      "react": {
+        "afterFirstSpace": true,
+        "afterSecondSpace": false,
+        "initial": false,
+        "role": null
+      },
+      "vue": {
+        "afterFirstSpace": true,
+        "afterSecondSpace": false,
+        "initial": false,
+        "role": null
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-switch--switch-example",
+      "ok": true,
+      "react": {
+        "afterFirstSpace": true,
+        "afterSecondSpace": false,
+        "initial": false,
+        "role": "switch"
+      },
+      "vue": {
+        "afterFirstSpace": true,
+        "afterSecondSpace": false,
+        "initial": false,
+        "role": "switch"
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-searchfield--search-field-example",
+      "ok": true,
+      "react": {
+        "afterClear": "",
+        "afterType": "parity-query",
+        "usedClearButton": true
+      },
+      "vue": {
+        "afterClear": "",
+        "afterType": "parity-query",
+        "usedClearButton": true
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-textfield--textfield-example",
+      "ok": true,
+      "react": {
+        "afterClear": "hello parity",
+        "afterType": "hello parity"
+      },
+      "vue": {
+        "afterClear": "hello parity",
+        "afterType": "hello parity"
+      },
+      "diff": {},
+      "error": null
+    }
+  ]
+}

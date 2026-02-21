@@ -15,3 +15,8 @@ Checklist files must follow the section template in `_TEMPLATE.md`.
 Validation:
 
 - Run `yarn storybook:parity:checklists:validate` to ensure checklist structure is complete.
+- Run `yarn storybook:parity:behavior` (with React/Vue Storybook servers running) to validate baseline behavior parity scenarios.
+
+Style provenance rule:
+
+- Vue Storybook must source shared parity styles from React story sources (`packages/react-aria-components/stories/styles.css` and `packages/react-aria-components/example/index.css`) via `starters/vue/.storybook/preview.ts`.
