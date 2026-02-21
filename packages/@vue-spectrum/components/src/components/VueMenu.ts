@@ -274,6 +274,23 @@ export const VueMenu = defineComponent({
                 event.preventDefault();
                 closeSubmenu(item.key);
               }
+              return;
+            }
+
+            if (event.key === 'Escape') {
+              if (parentSubmenuKey) {
+                event.preventDefault();
+                closeSubmenu(parentSubmenuKey);
+                nextTick(() => {
+                  itemRefs.get(parentSubmenuKey)?.focus();
+                });
+                return;
+              }
+
+              if (hasSubmenu) {
+                event.preventDefault();
+                closeSubmenu(item.key);
+              }
             }
           },
           onClick: () => onSelect(item)
