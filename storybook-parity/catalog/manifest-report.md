@@ -6,8 +6,8 @@
 ## Summary
 
 - React entries: 203
-- Vue entries: 67
-- Missing in Vue: 136
+- Vue entries: 78
+- Missing in Vue: 125
 - Extra in Vue: 0
 - Result: fail
 
@@ -77,17 +77,6 @@
 - `react-aria-components-listbox--virtualized-list-box-empty`
 - `react-aria-components-listbox--virtualized-list-box-grid`
 - `react-aria-components-listbox--virtualized-list-box-waterfall`
-- `react-aria-components-menu--menu-complex`
-- `react-aria-components-menu--menu-custom-render`
-- `react-aria-components-menu--menu-example`
-- `react-aria-components-menu--menu-scroll-padding-example`
-- `react-aria-components-menu--subdialog-example`
-- `react-aria-components-menu--submenu-disabled-example`
-- `react-aria-components-menu--submenu-example`
-- `react-aria-components-menu--submenu-many-items-example`
-- `react-aria-components-menu--submenu-nested-example`
-- `react-aria-components-menu--submenu-sections-example`
-- `react-aria-components-menu--virtualized-example`
 - `react-aria-components-popover--popover-arrow-boundary-offset-example`
 - `react-aria-components-popover--popover-example`
 - `react-aria-components-popover--popover-trigger-observer-example`

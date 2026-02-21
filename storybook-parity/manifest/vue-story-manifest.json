@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T21:42:09.972Z",
+  "generatedAt": "2026-02-21T21:43:29.971Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 67,
+  "count": 78,
   "entries": [
     {
       "id": "react-aria-components-breadcrumbs--breadcrumbs-example",
@@ -480,6 +480,116 @@
       "title": "React Aria Components/Link",
       "name": "Link Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/Link.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-menu--menu-complex",
+      "title": "React Aria Components/Menu",
+      "name": "Menu Complex",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Menu.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-menu--menu-custom-render",
+      "title": "React Aria Components/Menu",
+      "name": "Menu Custom Render",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Menu.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-menu--menu-example",
+      "title": "React Aria Components/Menu",
+      "name": "Menu Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Menu.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-menu--menu-scroll-padding-example",
+      "title": "React Aria Components/Menu",
+      "name": "Menu Scroll Padding Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Menu.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-menu--subdialog-example",
+      "title": "React Aria Components/Menu",
+      "name": "Subdialog Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Menu.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-menu--submenu-disabled-example",
+      "title": "React Aria Components/Menu",
+      "name": "Submenu Disabled Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Menu.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-menu--submenu-example",
+      "title": "React Aria Components/Menu",
+      "name": "Submenu Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Menu.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-menu--submenu-many-items-example",
+      "title": "React Aria Components/Menu",
+      "name": "Submenu Many Items Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Menu.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-menu--submenu-nested-example",
+      "title": "React Aria Components/Menu",
+      "name": "Submenu Nested Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Menu.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-menu--submenu-sections-example",
+      "title": "React Aria Components/Menu",
+      "name": "Submenu Sections Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Menu.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-menu--virtualized-example",
+      "title": "React Aria Components/Menu",
+      "name": "Virtualized Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Menu.stories.ts",
       "tags": [
         "dev",
         "test"
