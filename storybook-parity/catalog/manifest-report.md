@@ -6,8 +6,8 @@
 ## Summary
 
 - React entries: 203
-- Vue entries: 19
-- Missing in Vue: 184
+- Vue entries: 24
+- Missing in Vue: 179
 - Extra in Vue: 0
 - Result: fail
 
@@ -65,8 +65,6 @@
 - `react-aria-components-combobox--virtualized-combo-box`
 - `react-aria-components-combobox--with-create-option`
 - `react-aria-components-comboboxreproductions--combo-box-reproduction-example`
-- `react-aria-components-datefield--date-field-auto-fill`
-- `react-aria-components-datefield--date-field-example`
 - `react-aria-components-datepicker--date-picker-autofill`
 - `react-aria-components-datepicker--date-picker-example`
 - `react-aria-components-datepicker--date-picker-trigger-width-example`
@@ -146,8 +144,6 @@
 - `react-aria-components-select--select-submit-example`
 - `react-aria-components-select--select-with-tag-group`
 - `react-aria-components-select--virtualized-select`
-- `react-aria-components-slider--slider-css`
-- `react-aria-components-slider--slider-example`
 - `react-aria-components-table--dnd-table-example`
 - `react-aria-components-table--dnd-table-with-no-valid-drop-targets`
 - `react-aria-components-table--on-load-more-table-story`
@@ -172,7 +168,6 @@
 - `react-aria-components-taggroup--empty-tag-group`
 - `react-aria-components-taggroup--tag-group-example`
 - `react-aria-components-taggroup--tag-group-example-with-remove`
-- `react-aria-components-timefield--time-field-example`
 - `react-aria-components-togglebutton--toggle-button-example`
 - `react-aria-components-toolbar--select-support`
 - `react-aria-components-toolbar--toolbar-example`

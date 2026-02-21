@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T21:29:28.343Z",
+  "generatedAt": "2026-02-21T21:31:30.502Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 19,
+  "count": 24,
   "entries": [
     {
       "id": "react-aria-components-breadcrumbs--breadcrumbs-example",
@@ -96,6 +96,26 @@
       ]
     },
     {
+      "id": "react-aria-components-datefield--date-field-auto-fill",
+      "title": "React Aria Components/DateField",
+      "name": "Date Field Auto Fill",
+      "importPath": "../../packages/@vue-spectrum/components/stories/DateField.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-datefield--date-field-example",
+      "title": "React Aria Components/DateField",
+      "name": "Date Field Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/DateField.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
       "id": "react-aria-components-form--form-auto-fill-example",
       "title": "React Aria Components/Form",
       "name": "Form Auto Fill Example",
@@ -166,6 +186,26 @@
       ]
     },
     {
+      "id": "react-aria-components-slider--slider-css",
+      "title": "React Aria Components/Slider",
+      "name": "Slider CSS",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Slider.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-slider--slider-example",
+      "title": "React Aria Components/Slider",
+      "name": "Slider Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Slider.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
       "id": "react-aria-components-switch--switch-example",
       "title": "React Aria Components/Switch",
       "name": "Switch Example",
@@ -190,6 +230,16 @@
       "title": "React Aria Components/TextField",
       "name": "Textfield Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/TextField.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-timefield--time-field-example",
+      "title": "React Aria Components/TimeField",
+      "name": "Time Field Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/TimeField.stories.ts",
       "tags": [
         "dev",
         "test"
