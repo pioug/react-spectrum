@@ -23,6 +23,7 @@
     "start:vue:storybook": "yarn workspace vue-spectrum-starter storybook",
     "build:vue": "yarn workspace vue-spectrum-starter build",
     "build:vue:storybook": "yarn workspace vue-spectrum-starter build-storybook",
+    "storybook:parity:manifest:export": "node scripts/storybook-parity-export-manifest.mjs",
     "storybook:parity:catalog": "node scripts/storybook-parity-catalog.mjs",
     "storybook:parity:catalog:rac": "node scripts/storybook-parity-catalog.mjs --include-id-regex '^react-aria-components-'",
     "storybook:parity:check": "node scripts/storybook-parity-check.mjs",
