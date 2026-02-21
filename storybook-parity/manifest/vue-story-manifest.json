@@ -1,10 +1,70 @@
 {
-  "generatedAt": "2026-02-21T21:16:15.165Z",
+  "generatedAt": "2026-02-21T21:18:49.135Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 2,
+  "count": 8,
   "entries": [
+    {
+      "id": "react-aria-components-button--button-example",
+      "title": "React Aria Components/Button",
+      "name": "Button Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Button.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-button--button-performance",
+      "title": "React Aria Components/Button",
+      "name": "Button Performance",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Button.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-button--button-render",
+      "title": "React Aria Components/Button",
+      "name": "Button Render",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Button.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-button--pending-button",
+      "title": "React Aria Components/Button",
+      "name": "Pending Button",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Button.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-button--pending-button-tooltip",
+      "title": "React Aria Components/Button",
+      "name": "Pending Button Tooltip",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Button.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-button--ripple-button-example",
+      "title": "React Aria Components/Button",
+      "name": "Ripple Button Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/Button.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
     {
       "id": "react-aria-components-textfield--text-field-submit-example",
       "title": "React Aria Components/TextField",

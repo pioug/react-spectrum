@@ -6,8 +6,8 @@
 ## Summary
 
 - React entries: 203
-- Vue entries: 2
-- Missing in Vue: 201
+- Vue entries: 8
+- Missing in Vue: 195
 - Extra in Vue: 0
 - Result: fail
 
@@ -36,12 +36,6 @@
 - `react-aria-components-autocomplete--autocomplete-with-virtualized-listbox`
 - `react-aria-components-breadcrumbs--breadcrumbs-example`
 - `react-aria-components-breadcrumbs--dynamic-breadcrumbs-example`
-- `react-aria-components-button--button-example`
-- `react-aria-components-button--button-performance`
-- `react-aria-components-button--button-render`
-- `react-aria-components-button--pending-button`
-- `react-aria-components-button--pending-button-tooltip`
-- `react-aria-components-button--ripple-button-example`
 - `react-aria-components-calendar--calendar-example`
 - `react-aria-components-calendar--calendar-first-day-of-week-example`
 - `react-aria-components-calendar--calendar-multi-month`
