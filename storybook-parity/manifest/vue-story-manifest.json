@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-21T21:45:03.271Z",
+  "generatedAt": "2026-02-21T21:46:25.905Z",
   "sourceUrl": "http://127.0.0.1:6106",
   "catalogUrl": "http://127.0.0.1:6106/index.json",
   "includeIdRegex": "^react-aria-components-",
-  "count": 87,
+  "count": 98,
   "entries": [
     {
       "id": "react-aria-components-breadcrumbs--breadcrumbs-example",
@@ -250,6 +250,116 @@
       "title": "React Aria Components/ColorWheel",
       "name": "Color Wheel Example",
       "importPath": "../../packages/@vue-spectrum/components/stories/ColorWheel.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-combobox--async-virtualized-dynamic-combobox",
+      "title": "React Aria Components/ComboBox",
+      "name": "Async Virtualized Dynamic Combobox",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ComboBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-combobox--combo-box-async-loading-example",
+      "title": "React Aria Components/ComboBox",
+      "name": "Combo Box Async Loading Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ComboBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-combobox--combo-box-example",
+      "title": "React Aria Components/ComboBox",
+      "name": "Combo Box Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ComboBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-combobox--combo-box-ime-example",
+      "title": "React Aria Components/ComboBox",
+      "name": "Combo Box Ime Example",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ComboBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-combobox--combo-box-list-box-item-with-aria-label",
+      "title": "React Aria Components/ComboBox",
+      "name": "Combo Box List Box Item With Aria Label",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ComboBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-combobox--combo-box-render-props-default-items",
+      "title": "React Aria Components/ComboBox",
+      "name": "Combo Box Render Props Default Items",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ComboBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-combobox--combo-box-render-props-items",
+      "title": "React Aria Components/ComboBox",
+      "name": "Combo Box Render Props Items",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ComboBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-combobox--combo-box-render-props-list-box-dynamic",
+      "title": "React Aria Components/ComboBox",
+      "name": "Combo Box Render Props List Box Dynamic",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ComboBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-combobox--combo-box-render-props-static",
+      "title": "React Aria Components/ComboBox",
+      "name": "Combo Box Render Props Static",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ComboBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-combobox--multi-select-combo-box",
+      "title": "React Aria Components/ComboBox",
+      "name": "Multi Select Combo Box",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ComboBox.stories.ts",
+      "tags": [
+        "dev",
+        "test"
+      ]
+    },
+    {
+      "id": "react-aria-components-combobox--virtualized-combo-box",
+      "title": "React Aria Components/ComboBox",
+      "name": "Virtualized Combo Box",
+      "importPath": "../../packages/@vue-spectrum/components/stories/ComboBox.stories.ts",
       "tags": [
         "dev",
         "test"

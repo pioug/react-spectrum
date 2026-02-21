@@ -6,8 +6,8 @@
 ## Summary
 
 - React entries: 203
-- Vue entries: 87
-- Missing in Vue: 116
+- Vue entries: 98
+- Missing in Vue: 105
 - Extra in Vue: 0
 - Result: fail
 
@@ -36,17 +36,6 @@
 - `react-aria-components-autocomplete--autocomplete-with-virtualized-listbox`
 - `react-aria-components-checkboxgroup--checkbox-group-example`
 - `react-aria-components-checkboxgroup--checkbox-group-submit-example`
-- `react-aria-components-combobox--async-virtualized-dynamic-combobox`
-- `react-aria-components-combobox--combo-box-async-loading-example`
-- `react-aria-components-combobox--combo-box-example`
-- `react-aria-components-combobox--combo-box-ime-example`
-- `react-aria-components-combobox--combo-box-list-box-item-with-aria-label`
-- `react-aria-components-combobox--combo-box-render-props-default-items`
-- `react-aria-components-combobox--combo-box-render-props-items`
-- `react-aria-components-combobox--combo-box-render-props-list-box-dynamic`
-- `react-aria-components-combobox--combo-box-render-props-static`
-- `react-aria-components-combobox--multi-select-combo-box`
-- `react-aria-components-combobox--virtualized-combo-box`
 - `react-aria-components-combobox--with-create-option`
 - `react-aria-components-comboboxreproductions--combo-box-reproduction-example`
 - `react-aria-components-gridlist--async-grid-list`
