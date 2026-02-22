@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-22T00:06:31.761Z",
+  "generatedAt": "2026-02-22T04:04:44.637Z",
   "reactStoriesGlob": "packages/react-aria-components/stories/*.stories.tsx",
   "vueStoriesGlob": "packages/@vue-spectrum/components/stories/*.stories.ts",
   "vuePreviewFile": "starters/vue/.storybook/preview.ts",
@@ -7,7 +7,7 @@
   "vueStoryCount": 45,
   "reactCssImportCount": 69,
   "vueGlobalImportCount": 3,
-  "vueStoryImportCount": 3,
+  "vueStoryImportCount": 5,
   "vueGlobalStyleSources": [
     "@vue-spectrum/components/styles.css",
     "packages/react-aria-components/example/index.css",

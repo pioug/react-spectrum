@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-22T03:45:32.721Z",
+  "generatedAt": "2026-02-22T04:03:40.857Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
-  "totalScenarios": 23,
-  "passingScenarios": 23,
+  "totalScenarios": 26,
+  "passingScenarios": 26,
   "failingScenarios": 0,
   "ok": true,
   "results": [
@@ -255,6 +255,56 @@
         "ariaExpandedAfterInput": "true",
         "firstOptionText": "Foo",
         "optionCountAfterOpen": 1
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-combobox--virtualized-combo-box",
+      "ok": true,
+      "react": {
+        "hasFirstItemVisible": true,
+        "hasLastItemVisible": false,
+        "isWindowedAfterOpen": true
+      },
+      "vue": {
+        "hasFirstItemVisible": true,
+        "hasLastItemVisible": false,
+        "isWindowedAfterOpen": true
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-combobox--multi-select-combo-box",
+      "ok": true,
+      "react": {
+        "emptyStateVisibleAfter": false,
+        "emptyStateVisibleBefore": true,
+        "optionCountAfterOpen": 59,
+        "selectedContainsAlabama": true
+      },
+      "vue": {
+        "emptyStateVisibleAfter": false,
+        "emptyStateVisibleBefore": true,
+        "optionCountAfterOpen": 59,
+        "selectedContainsAlabama": true
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-combobox--async-virtualized-dynamic-combobox",
+      "ok": true,
+      "react": {
+        "ariaExpandedAfterSearch": "false",
+        "containsLuke": false,
+        "optionCountAfterSearch": 0
+      },
+      "vue": {
+        "ariaExpandedAfterSearch": "false",
+        "containsLuke": false,
+        "optionCountAfterSearch": 0
       },
       "diff": {},
       "error": null

@@ -1,3 +1,5 @@
+@import "../../@react-aria/example-theme/src/index.css";
+
 html,
 body,
 #root {
@@ -5,8 +7,6 @@ body,
   margin: 0;
   height: 100%;
 }
-
-@import "@react-aria/example-theme";
 
 :global(.react-aria-ComboBox) {
   color: var(--text-color);

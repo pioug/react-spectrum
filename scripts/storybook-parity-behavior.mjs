@@ -597,6 +597,124 @@ let scenarios = [
     }
   },
   {
+    id: 'react-aria-components-combobox--virtualized-combo-box',
+    async run(page) {
+      let input = await waitForFirstVisibleLocator(page, [
+        'input[role="combobox"]',
+        'input[aria-haspopup="listbox"]',
+        'input'
+      ], 10000);
+
+      if (!input) {
+        throw new Error('Unable to find virtualized combobox input.');
+      }
+
+      let triggerClicked = await clickNearestComboboxTrigger(input, page);
+      if (!triggerClicked) {
+        throw new Error('Unable to click virtualized combobox trigger button.');
+      }
+      await page.waitForTimeout(150);
+
+      let optionCountAfterOpen = await page.locator('[role="option"]').count();
+      let hasFirstItemVisible = await page.locator('[role="option"]', {hasText: 'Item 0'}).count();
+      let hasLastItemVisible = await page.locator('[role="option"]', {hasText: 'Item 9999'}).count();
+
+      let listbox = await firstVisibleLocator(page, [
+        '[role="listbox"]',
+        '.react-aria-ListBox'
+      ]);
+
+      if (!listbox) {
+        throw new Error('Unable to find virtualized combobox listbox.');
+      }
+
+      return {
+        hasFirstItemVisible: hasFirstItemVisible > 0,
+        hasLastItemVisible: hasLastItemVisible > 0,
+        isWindowedAfterOpen: optionCountAfterOpen > 0 && optionCountAfterOpen < 10000
+      };
+    }
+  },
+  {
+    id: 'react-aria-components-combobox--multi-select-combo-box',
+    async run(page) {
+      let input = await waitForFirstVisibleLocator(page, [
+        'input[role="combobox"]',
+        'input[aria-haspopup="listbox"]',
+        'input'
+      ], 10000);
+
+      if (!input) {
+        throw new Error('Unable to find multi-select combobox input.');
+      }
+
+      let selectedState = page.locator('[aria-label="Selected states"]').first();
+      if (await selectedState.count() === 0) {
+        throw new Error('Unable to find selected states region.');
+      }
+
+      let emptyStateVisibleBefore = ((await selectedState.innerText()).replace(/\s+/g, ' ').trim()).includes('No selected items');
+
+      let triggerClicked = await clickNearestComboboxTrigger(input, page);
+      if (!triggerClicked) {
+        throw new Error('Unable to click multi-select combobox trigger button.');
+      }
+      await page.waitForTimeout(150);
+
+      let optionCountAfterOpen = await page.locator('[role="option"]').count();
+      if (optionCountAfterOpen === 0) {
+        throw new Error('Multi-select combobox rendered no options.');
+      }
+
+      await page.locator('[role="option"]').first().click();
+      await page.waitForTimeout(120);
+
+      let selectedStateTextAfter = (await selectedState.innerText()).replace(/\s+/g, ' ').trim();
+      let emptyStateVisibleAfter = selectedStateTextAfter.includes('No selected items');
+
+      return {
+        emptyStateVisibleAfter,
+        emptyStateVisibleBefore,
+        optionCountAfterOpen,
+        selectedContainsAlabama: selectedStateTextAfter.includes('Alabama')
+      };
+    }
+  },
+  {
+    id: 'react-aria-components-combobox--async-virtualized-dynamic-combobox',
+    async run(page) {
+      let input = await waitForFirstVisibleLocator(page, [
+        'input[role="combobox"]',
+        'input[aria-haspopup="listbox"]',
+        'input'
+      ], 10000);
+
+      if (!input) {
+        throw new Error('Unable to find async virtualized dynamic combobox input.');
+      }
+
+      await page.waitForTimeout(600);
+      await input.fill('luke');
+      await page.waitForTimeout(900);
+
+      let triggerClicked = await clickNearestComboboxTrigger(input, page);
+      if (!triggerClicked) {
+        throw new Error('Unable to click async virtualized dynamic combobox trigger button.');
+      }
+      await page.waitForTimeout(150);
+
+      let optionCountAfterSearch = await page.locator('[role="option"]').count();
+      let containsLuke = await page.locator('[role="option"]', {hasText: 'Luke Skywalker'}).count();
+      let ariaExpandedAfterSearch = await input.getAttribute('aria-expanded');
+
+      return {
+        ariaExpandedAfterSearch,
+        containsLuke: containsLuke > 0,
+        optionCountAfterSearch
+      };
+    }
+  },
+  {
     id: 'react-aria-components-menu--menu-example',
     async run(page) {
       let items = page.locator('[role^="menuitem"]');
