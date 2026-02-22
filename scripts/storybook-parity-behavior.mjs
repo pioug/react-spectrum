@@ -521,13 +521,16 @@ let scenarios = [
       await input.fill('Wolf');
       await page.waitForTimeout(80);
 
-      let triggerClicked = await clickNearestComboboxTrigger(input, page);
-      if (!triggerClicked) {
-        throw new Error('Unable to click with-create-option combobox trigger button.');
+      let expandedAfterInput = await input.getAttribute('aria-expanded');
+      if (expandedAfterInput !== 'true') {
+        let triggerClicked = await clickNearestComboboxTrigger(input, page);
+        if (!triggerClicked) {
+          throw new Error('Unable to open with-create-option combobox.');
+        }
       }
       await page.waitForTimeout(120);
 
-      let createOptionCount = await page.locator('text=Create "Wolf"').count();
+      let createOptionCount = await page.locator('[role="option"]', {hasText: 'Create "Wolf"'}).count();
       let optionCountAfterOpen = await page.locator('[role="option"]').count();
       let ariaExpandedAfterOpen = await input.getAttribute('aria-expanded');
 
@@ -697,9 +700,12 @@ let scenarios = [
       await input.fill('luke');
       await page.waitForTimeout(900);
 
-      let triggerClicked = await clickNearestComboboxTrigger(input, page);
-      if (!triggerClicked) {
-        throw new Error('Unable to click async virtualized dynamic combobox trigger button.');
+      let expandedAfterInput = await input.getAttribute('aria-expanded');
+      if (expandedAfterInput !== 'true') {
+        let triggerClicked = await clickNearestComboboxTrigger(input, page);
+        if (!triggerClicked) {
+          throw new Error('Unable to open async virtualized dynamic combobox.');
+        }
       }
       await page.waitForTimeout(150);
 

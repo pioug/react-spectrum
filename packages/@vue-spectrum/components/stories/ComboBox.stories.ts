@@ -326,18 +326,28 @@ const AsyncVirtualizedDynamicComboboxRender = (props: {delay: number}) => ({
     let options = ref<ComboBoxItem[]>([]);
     let cursor = ref<string | null>(null);
     let loading = ref(false);
+    let requestVersion = 0;
+    let activeController: AbortController | null = null;
 
     let load = async (nextCursor: string | null, append = false) => {
-      if (loading.value) {
-        return;
+      requestVersion += 1;
+      let version = requestVersion;
+      if (activeController) {
+        activeController.abort();
       }
+      let controller = new AbortController();
+      activeController = controller;
 
       loading.value = true;
       try {
         let normalizedCursor = nextCursor ? nextCursor.replace(/^http:\/\//i, 'https://') : null;
         await new Promise((resolve) => setTimeout(resolve, props.delay));
-        let response = await fetch(normalizedCursor || `https://swapi.py4e.com/api/people/?search=${value.value}`);
+        let response = await fetch(normalizedCursor || `https://swapi.py4e.com/api/people/?search=${value.value}`, {signal: controller.signal});
         let payload = await response.json() as {next: string | null, results: Character[]};
+        if (version !== requestVersion) {
+          return;
+        }
+
         cursor.value = payload.next;
 
         let mapped = payload.results.map((item) => ({
@@ -346,14 +356,26 @@ const AsyncVirtualizedDynamicComboboxRender = (props: {delay: number}) => ({
         }));
 
         options.value = append ? [...options.value, ...mapped] : mapped;
+      } catch (error) {
+        if (!(error instanceof DOMException) || error.name !== 'AbortError') {
+          throw error;
+        }
       } finally {
-        loading.value = false;
+        if (version === requestVersion) {
+          loading.value = false;
+        }
       }
     };
 
     watch(value, () => {
       void load(null, false);
     }, {immediate: true});
+
+    onBeforeUnmount(() => {
+      if (activeController) {
+        activeController.abort();
+      }
+    });
 
     let onLoadMore = () => {
       if (!cursor.value) {
