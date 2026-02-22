@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-22T04:14:27.366Z",
+  "generatedAt": "2026-02-22T04:19:10.499Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
-  "totalScenarios": 26,
-  "passingScenarios": 26,
+  "totalScenarios": 30,
+  "passingScenarios": 30,
   "failingScenarios": 0,
   "ok": true,
   "results": [
@@ -209,6 +209,62 @@
         "ariaExpandedAfterOpen": "true",
         "firstOptionText": "Foo",
         "optionCountAfterOpen": 4
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-combobox--combo-box-render-props-static",
+      "ok": true,
+      "react": {
+        "firstOptionText": "Foo",
+        "optionCountAfterOpen": 3
+      },
+      "vue": {
+        "firstOptionText": "Foo",
+        "optionCountAfterOpen": 3
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-combobox--combo-box-render-props-default-items",
+      "ok": true,
+      "react": {
+        "firstOptionText": "Foo",
+        "optionCountAfterOpen": 3
+      },
+      "vue": {
+        "firstOptionText": "Foo",
+        "optionCountAfterOpen": 3
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-combobox--combo-box-render-props-items",
+      "ok": true,
+      "react": {
+        "ariaExpandedAfterInput": "true",
+        "optionCountAfterInput": 3
+      },
+      "vue": {
+        "ariaExpandedAfterInput": "true",
+        "optionCountAfterInput": 3
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-combobox--combo-box-render-props-list-box-dynamic",
+      "ok": true,
+      "react": {
+        "firstOptionText": "Foo",
+        "optionCountAfterOpen": 3
+      },
+      "vue": {
+        "firstOptionText": "Foo",
+        "optionCountAfterOpen": 3
       },
       "diff": {},
       "error": null

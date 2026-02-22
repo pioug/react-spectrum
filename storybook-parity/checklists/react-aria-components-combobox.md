@@ -61,6 +61,11 @@
 7. Matched `WithCreateOption` action-item semantics with React behavior:
    - action-only option input now clears after selection (`"Create \"...\""` no longer becomes the input value)
    - behavior gate now verifies post-click value/expanded-state parity for create-option flows.
+8. Added render-props story behavior coverage and aligned static story item set to React source:
+   - `react-aria-components-combobox--combo-box-render-props-static`
+   - `react-aria-components-combobox--combo-box-render-props-default-items`
+   - `react-aria-components-combobox--combo-box-render-props-items`
+   - `react-aria-components-combobox--combo-box-render-props-list-box-dynamic`
 
 ## Tests
 
@@ -68,8 +73,8 @@
   - `yarn workspace vue-spectrum-starter build-storybook`
   - `node scripts/storybook-parity-export-manifest.mjs ...`
   - `yarn storybook:parity:manifest:compare`
-  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --scenario-ids react-aria-components-combobox--combo-box-example,react-aria-components-combobox--combo-box-ime-example,react-aria-components-combobox--combo-box-async-loading-example,react-aria-components-combobox--with-create-option,react-aria-components-combobox--virtualized-combo-box,react-aria-components-combobox--multi-select-combo-box,react-aria-components-combobox--async-virtualized-dynamic-combobox --output-dir storybook-parity/catalog` (7/7 passing)
-  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (26/26 passing)
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --scenario-ids react-aria-components-combobox--combo-box-example,react-aria-components-combobox--combo-box-render-props-static,react-aria-components-combobox--combo-box-render-props-default-items,react-aria-components-combobox--combo-box-render-props-items,react-aria-components-combobox--combo-box-render-props-list-box-dynamic,react-aria-components-combobox--combo-box-ime-example,react-aria-components-combobox--combo-box-async-loading-example,react-aria-components-combobox--with-create-option,react-aria-components-combobox--virtualized-combo-box,react-aria-components-combobox--multi-select-combo-box,react-aria-components-combobox--async-virtualized-dynamic-combobox --output-dir storybook-parity/catalog` (11/11 passing)
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (30/30 passing)
 - Manual: pending
 
 ## Status

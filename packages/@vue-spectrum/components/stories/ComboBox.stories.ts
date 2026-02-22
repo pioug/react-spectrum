@@ -10,6 +10,7 @@ interface ComboBoxItem {
 }
 
 const baseOptions = ['Foo', 'Bar', 'Baz', 'Google'];
+const staticRenderPropOptions = ['Foo', 'Bar', 'Baz'];
 const imeOptions = ['にほんご', 'ニホンゴ', 'ﾆﾎﾝｺﾞ', '日本語', '123', '１２３'];
 const renderPropItems: ComboBoxItem[] = [
   {id: '1', name: 'Foo'},
@@ -150,7 +151,7 @@ export const ComboBoxExample: ComboBoxStory = () => ({
   `
 });
 
-export const ComboBoxRenderPropsStatic: ComboBoxStory = () => createComboBoxStory(baseOptions);
+export const ComboBoxRenderPropsStatic: ComboBoxStory = () => createComboBoxStory(staticRenderPropOptions);
 
 export const ComboBoxRenderPropsDefaultItems: ComboBoxStory = () => createComboBoxStory(renderPropItems);
 

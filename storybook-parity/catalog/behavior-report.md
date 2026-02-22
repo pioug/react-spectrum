@@ -2,8 +2,8 @@
 
 - React URL: http://127.0.0.1:9003
 - Vue URL: http://127.0.0.1:6106
-- Scenarios: 26
-- Passing: 26
+- Scenarios: 30
+- Passing: 30
 - Failing: 0
 - Result: pass
 
@@ -21,6 +21,10 @@
 - PASS `react-aria-components-button--button-render`
 - PASS `react-aria-components-comboboxreproductions--combo-box-reproduction-example`
 - PASS `react-aria-components-combobox--combo-box-example`
+- PASS `react-aria-components-combobox--combo-box-render-props-static`
+- PASS `react-aria-components-combobox--combo-box-render-props-default-items`
+- PASS `react-aria-components-combobox--combo-box-render-props-items`
+- PASS `react-aria-components-combobox--combo-box-render-props-list-box-dynamic`
 - PASS `react-aria-components-combobox--with-create-option`
 - PASS `react-aria-components-combobox--combo-box-ime-example`
 - PASS `react-aria-components-combobox--combo-box-async-loading-example`

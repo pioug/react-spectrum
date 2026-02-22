@@ -506,6 +506,129 @@ let scenarios = [
     }
   },
   {
+    id: 'react-aria-components-combobox--combo-box-render-props-static',
+    async run(page) {
+      let input = await waitForFirstVisibleLocator(page, [
+        'input[role="combobox"]',
+        'input[aria-haspopup="listbox"]',
+        'input'
+      ], 10000);
+
+      if (!input) {
+        throw new Error('Unable to find render-props static combobox input.');
+      }
+
+      let triggerClicked = await clickNearestComboboxTrigger(input, page);
+      if (!triggerClicked) {
+        throw new Error('Unable to open render-props static combobox.');
+      }
+      await page.waitForTimeout(120);
+
+      let optionCountAfterOpen = await page.locator('[role="option"]').count();
+      let firstOptionText = optionCountAfterOpen > 0
+        ? (await page.locator('[role="option"]').first().innerText()).replace(/\s+/g, ' ').trim()
+        : null;
+
+      return {
+        firstOptionText,
+        optionCountAfterOpen
+      };
+    }
+  },
+  {
+    id: 'react-aria-components-combobox--combo-box-render-props-default-items',
+    async run(page) {
+      let input = await waitForFirstVisibleLocator(page, [
+        'input[role="combobox"]',
+        'input[aria-haspopup="listbox"]',
+        'input'
+      ], 10000);
+
+      if (!input) {
+        throw new Error('Unable to find render-props default-items combobox input.');
+      }
+
+      let triggerClicked = await clickNearestComboboxTrigger(input, page);
+      if (!triggerClicked) {
+        throw new Error('Unable to open render-props default-items combobox.');
+      }
+      await page.waitForTimeout(120);
+
+      let optionCountAfterOpen = await page.locator('[role="option"]').count();
+      let firstOptionText = optionCountAfterOpen > 0
+        ? (await page.locator('[role="option"]').first().innerText()).replace(/\s+/g, ' ').trim()
+        : null;
+
+      return {
+        firstOptionText,
+        optionCountAfterOpen
+      };
+    }
+  },
+  {
+    id: 'react-aria-components-combobox--combo-box-render-props-items',
+    async run(page) {
+      let input = await waitForFirstVisibleLocator(page, [
+        'input[role="combobox"]',
+        'input[aria-haspopup="listbox"]',
+        'input'
+      ], 10000);
+
+      if (!input) {
+        throw new Error('Unable to find render-props controlled-items combobox input.');
+      }
+
+      await input.fill('zz');
+      await page.waitForTimeout(120);
+
+      let expandedAfterInput = await input.getAttribute('aria-expanded');
+      if (expandedAfterInput !== 'true') {
+        let triggerClicked = await clickNearestComboboxTrigger(input, page);
+        if (!triggerClicked) {
+          throw new Error('Unable to open render-props controlled-items combobox.');
+        }
+      }
+      await page.waitForTimeout(120);
+
+      let optionCountAfterInput = await page.locator('[role="option"]').count();
+
+      return {
+        ariaExpandedAfterInput: await input.getAttribute('aria-expanded'),
+        optionCountAfterInput
+      };
+    }
+  },
+  {
+    id: 'react-aria-components-combobox--combo-box-render-props-list-box-dynamic',
+    async run(page) {
+      let input = await waitForFirstVisibleLocator(page, [
+        'input[role="combobox"]',
+        'input[aria-haspopup="listbox"]',
+        'input'
+      ], 10000);
+
+      if (!input) {
+        throw new Error('Unable to find render-props listbox-dynamic combobox input.');
+      }
+
+      let triggerClicked = await clickNearestComboboxTrigger(input, page);
+      if (!triggerClicked) {
+        throw new Error('Unable to open render-props listbox-dynamic combobox.');
+      }
+      await page.waitForTimeout(120);
+
+      let optionCountAfterOpen = await page.locator('[role="option"]').count();
+      let firstOptionText = optionCountAfterOpen > 0
+        ? (await page.locator('[role="option"]').first().innerText()).replace(/\s+/g, ' ').trim()
+        : null;
+
+      return {
+        firstOptionText,
+        optionCountAfterOpen
+      };
+    }
+  },
+  {
     id: 'react-aria-components-combobox--with-create-option',
     async run(page) {
       let input = await waitForFirstVisibleLocator(page, [
