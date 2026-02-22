@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-22T00:06:01.471Z",
+  "generatedAt": "2026-02-22T00:15:36.485Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
-  "totalScenarios": 13,
-  "passingScenarios": 13,
+  "totalScenarios": 17,
+  "passingScenarios": 17,
   "failingScenarios": 0,
   "ok": true,
   "results": [
@@ -85,6 +85,68 @@
         "afterEnter": false,
         "initialSelected": false,
         "optionCount": 4
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-button--button-example",
+      "ok": true,
+      "react": {
+        "role": null,
+        "tagName": "BUTTON",
+        "text": "Press me"
+      },
+      "vue": {
+        "role": null,
+        "tagName": "BUTTON",
+        "text": "Press me"
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-button--pending-button",
+      "ok": true,
+      "react": {
+        "ariaDisabled": "true",
+        "buttonTextAfterPress": "Press me",
+        "disabled": null
+      },
+      "vue": {
+        "ariaDisabled": "true",
+        "buttonTextAfterPress": "Press me",
+        "disabled": null
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-button--pending-button-tooltip",
+      "ok": true,
+      "react": {
+        "tooltipVisibleAfterPress": 0,
+        "tooltipVisibleBeforePress": 0
+      },
+      "vue": {
+        "tooltipVisibleAfterPress": 0,
+        "tooltipVisibleBeforePress": 0
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-button--ripple-button-example",
+      "ok": true,
+      "react": {
+        "afterSpanCount": 2,
+        "beforeSpanCount": 1,
+        "firstSpanHasPositionStyle": true
+      },
+      "vue": {
+        "afterSpanCount": 2,
+        "beforeSpanCount": 1,
+        "firstSpanHasPositionStyle": true
       },
       "diff": {},
       "error": null

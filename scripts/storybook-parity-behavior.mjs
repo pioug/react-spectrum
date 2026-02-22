@@ -57,14 +57,32 @@ function storyUrl(baseUrl, storyId) {
 
 async function firstVisibleLocator(page, selectors) {
   for (let selector of selectors) {
-    let locator = page.locator(selector).first();
-    if (await locator.count() === 0) {
+    let locator = page.locator(selector);
+    let count = await locator.count();
+    if (count === 0) {
       continue;
     }
 
-    if (await locator.isVisible().catch(() => false)) {
+    for (let index = 0; index < count; index++) {
+      let candidate = locator.nth(index);
+      if (await candidate.isVisible().catch(() => false)) {
+        return candidate;
+      }
+    }
+  }
+
+  return null;
+}
+
+async function waitForFirstVisibleLocator(page, selectors, timeout = 10000) {
+  let timeoutAt = Date.now() + timeout;
+  while (Date.now() < timeoutAt) {
+    let locator = await firstVisibleLocator(page, selectors);
+    if (locator) {
       return locator;
     }
+
+    await page.waitForTimeout(200);
   }
 
   return null;
@@ -206,6 +224,122 @@ let scenarios = [
         afterEnter,
         initialSelected,
         optionCount
+      };
+    }
+  },
+  {
+    id: 'react-aria-components-button--button-example',
+    async run(page) {
+      let button = await firstVisibleLocator(page, [
+        '[data-testid="button-example"]',
+        'button',
+        '[role="button"]'
+      ]);
+
+      if (!button) {
+        throw new Error('Unable to find button example control.');
+      }
+
+      return {
+        role: await button.getAttribute('role'),
+        tagName: await button.evaluate((element) => element.tagName),
+        text: (await button.innerText()).replace(/\s+/g, ' ').trim()
+      };
+    }
+  },
+  {
+    id: 'react-aria-components-button--pending-button',
+    async run(page) {
+      let button = await waitForFirstVisibleLocator(page, [
+        'button',
+        '[role="button"]'
+      ], 10000);
+
+      if (!button) {
+        throw new Error('Unable to find pending button.');
+      }
+
+      await button.click();
+      await page.waitForTimeout(120);
+
+      let ariaDisabled = await button.getAttribute('aria-disabled');
+      let disabled = await button.getAttribute('disabled');
+      let buttonTextAfterPress = (await button.innerText()).replace(/\s+/g, ' ').trim();
+
+      return {
+        ariaDisabled,
+        buttonTextAfterPress,
+        disabled,
+      };
+    }
+  },
+  {
+    id: 'react-aria-components-button--pending-button-tooltip',
+    async run(page) {
+      let button = await waitForFirstVisibleLocator(page, [
+        'button',
+        '[role="button"]'
+      ], 10000);
+
+      if (!button) {
+        throw new Error('Unable to find pending tooltip button.');
+      }
+
+      await button.hover();
+      await page.waitForTimeout(220);
+
+      let tooltipVisibleBeforePress = await page.locator('text=Tooltip should appear on hover').count();
+
+      await button.click();
+      await page.waitForTimeout(120);
+      await button.hover();
+      await page.waitForTimeout(220);
+      let tooltipVisibleAfterPress = await page.locator('text=Tooltip should appear on hover').count();
+
+      return {
+        tooltipVisibleAfterPress,
+        tooltipVisibleBeforePress
+      };
+    }
+  },
+  {
+    id: 'react-aria-components-button--ripple-button-example',
+    async run(page) {
+      let button = await firstVisibleLocator(page, [
+        '[data-testid="button-example"]',
+        'button:has-text("Press me")',
+        '[role="button"]:has-text("Press me")'
+      ]);
+
+      if (!button) {
+        throw new Error('Unable to find ripple button.');
+      }
+
+      let beforeSpanCount = await button.locator('span').count();
+      let box = await button.boundingBox();
+      if (!box) {
+        throw new Error('Unable to determine ripple button bounding box.');
+      }
+
+      await button.click({
+        position: {
+          x: Math.max(1, Math.floor(box.width / 2)),
+          y: Math.max(1, Math.floor(box.height / 2))
+        }
+      });
+
+      await page.waitForTimeout(80);
+
+      let spans = button.locator('span');
+      let afterSpanCount = await spans.count();
+      let firstSpanStyle = afterSpanCount > 0
+        ? await spans.first().getAttribute('style')
+        : null;
+
+      return {
+        afterSpanCount,
+        beforeSpanCount,
+        firstSpanHasPositionStyle: Boolean(firstSpanStyle && firstSpanStyle.includes('left') && firstSpanStyle.includes('top'))
       };
     }
   },

@@ -24,10 +24,8 @@
 
 ## Gap List
 
-1. Audit parity for pending/loading semantics from React `PendingButton` stories.
-2. Audit parity for tooltip/ripple stories and whether Vue equivalents exist in implementation.
-3. Audit parity for render override/custom button rendering semantics (`ButtonRender` story).
-4. Audit event and interaction parity for press/hover/focus states and emitted payloads.
+1. Audit parity for render override/custom button rendering semantics (`ButtonRender` story).
+2. Audit event and interaction parity for press/hover/focus states and emitted payloads.
 
 ## Fixes Applied
 
@@ -39,6 +37,10 @@
 3. Ported React story style sources used by button parity fixtures into the Vue story:
    - `packages/react-aria-components/stories/button-pending.css`
    - `packages/react-aria-components/stories/button-ripple.css`
+4. Ported pending, pending-tooltip, and ripple story behavior from React source structure:
+   - pending stories now use spinner/text layering classes from React CSS and pending-state gating.
+   - pending tooltip story now suppresses tooltip while pending to match React behavior.
+   - ripple story now emits click-position ripple element using the React ripple class contract.
 
 ## Tests
 
@@ -47,10 +49,12 @@
   - `node scripts/storybook-parity-export-manifest.mjs --source-url http://127.0.0.1:6106 --include-id-regex '^react-aria-components-' --output-path storybook-parity/manifest/vue-story-manifest.json`
   - `yarn storybook:parity:manifest:compare` (expected fail overall while scope is incomplete; confirms matched ids)
   - `node scripts/storybook-parity-style-sources.mjs --output-dir storybook-parity/catalog` (pass, 0 missing style ports)
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --scenario-ids react-aria-components-button--button-example,react-aria-components-button--pending-button,react-aria-components-button--pending-button-tooltip,react-aria-components-button--ripple-button-example --output-dir storybook-parity/catalog` (4/4 passing)
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (17/17 passing)
 - Manual: pending
 
 ## Status
 
-- Open items: source-level behavior parity audit and gap closure for pending/tooltip/ripple/render semantics.
-- Risks: current Vue stories provide id coverage but do not yet prove full React behavior parity.
+- Open items: render-override and press-event payload semantics parity.
+- Risks: `ButtonRender` custom render-path parity is still story-level approximation.
 - Closure criteria: React-source-audited behavior gaps resolved in Vue implementation and covered by tests.

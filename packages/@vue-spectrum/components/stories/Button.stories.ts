@@ -1,5 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {Button} from '@vue-spectrum/button';
+import {VueTooltipTrigger} from '@vue-spectrum/tooltip';
 import {ref} from 'vue';
 import '../../../react-aria-components/stories/button-pending.css';
 import '../../../react-aria-components/stories/button-ripple.css';
@@ -34,6 +35,10 @@ export const PendingButton: Story = {
     setup() {
       let isPending = ref(false);
       let onPress = () => {
+        if (isPending.value) {
+          return;
+        }
+
         isPending.value = true;
         setTimeout(() => {
           isPending.value = false;
@@ -46,8 +51,22 @@ export const PendingButton: Story = {
       };
     },
     template: `
-      <Button :is-disabled="isPending" @click="onPress">
-        {{ isPending ? 'Loading…' : 'Press me' }}
+      <Button
+        element-type="a"
+        :is-disabled="isPending"
+        class="button"
+        @click="onPress">
+        <span :class="{pending: isPending}">
+          Press me
+        </span>
+        <span :class="['spinner', {'spinner-pending': isPending}]">
+          <svg width="24" height="24" viewBox="0 0 24 24" aria-label="loading">
+            <path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25" />
+            <path fill="currentColor" d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z">
+              <animateTransform attributeName="transform" type="rotate" dur="0.75s" values="0 12 12;360 12 12" repeatCount="indefinite" />
+            </path>
+          </svg>
+        </span>
       </Button>
     `
   })
@@ -56,11 +75,18 @@ export const PendingButton: Story = {
 export const PendingButtonTooltip: Story = {
   render: () => ({
     components: {
-      Button
+      Button,
+      VueTooltipTrigger
     },
     setup() {
       let isPending = ref(false);
+      let tooltipOpen = ref(false);
       let onPress = () => {
+        if (isPending.value) {
+          return;
+        }
+
+        tooltipOpen.value = false;
         isPending.value = true;
         setTimeout(() => {
           isPending.value = false;
@@ -69,15 +95,34 @@ export const PendingButtonTooltip: Story = {
 
       return {
         isPending,
+        tooltipOpen,
         onPress
       };
     },
     template: `
-      <div>
-        <Button :is-disabled="isPending" @click="onPress">
-          {{ isPending ? 'Loading…' : 'Press me, then hover again to see tooltip' }}
+      <VueTooltipTrigger
+        v-model="tooltipOpen"
+        :is-disabled="isPending"
+        content="Tooltip should appear on hover"
+        placement="top">
+        <Button
+          element-type="a"
+          :is-disabled="isPending"
+          class="button"
+          @click="onPress">
+          <span :class="{pending: isPending}">
+            Press me, then hover again to see tooltip
+          </span>
+          <span :class="['spinner', {'spinner-pending': isPending}]">
+            <svg width="24" height="24" viewBox="0 0 24 24" aria-label="loading">
+              <path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25" />
+              <path fill="currentColor" d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z">
+                <animateTransform attributeName="transform" type="rotate" dur="0.75s" values="0 12 12;360 12 12" repeatCount="indefinite" />
+              </path>
+            </svg>
+          </span>
         </Button>
-      </div>
+      </VueTooltipTrigger>
     `
   })
 };
@@ -87,9 +132,40 @@ export const RippleButtonExample: Story = {
     components: {
       Button
     },
+    setup() {
+      let isRippling = ref(false);
+      let rippleX = ref(-1);
+      let rippleY = ref(-1);
+
+      let onPress = (event: MouseEvent) => {
+        let target = event.currentTarget as HTMLElement | null;
+        if (!target) {
+          return;
+        }
+
+        let rect = target.getBoundingClientRect();
+        rippleX.value = event.clientX - rect.left;
+        rippleY.value = event.clientY - rect.top;
+        isRippling.value = true;
+        setTimeout(() => {
+          isRippling.value = false;
+        }, 300);
+      };
+
+      return {
+        isRippling,
+        onPress,
+        rippleX,
+        rippleY
+      };
+    },
     template: `
-      <Button data-testid="button-example">
-        Press me
+      <Button data-testid="button-example" class="ripple-button" @click="onPress">
+        <span
+          v-if="isRippling"
+          class="ripple"
+          :style="{left: rippleX + 'px', top: rippleY + 'px'}" />
+        <span class="content">Press me</span>
       </Button>
     `
   })
@@ -124,7 +200,7 @@ export const ButtonPerformance: Story = {
           {{ showButtons ? 'Re-render' : 'Render' }}
         </Button>
         <div v-if="showButtons" style="display: flex; gap: 2px; flex-wrap: wrap;" :key="count">
-          <Button v-for="item in 2000" :key="item">Press me</Button>
+          <Button v-for="item in 20000" :key="item">Press me</Button>
         </div>
       </div>
     `
