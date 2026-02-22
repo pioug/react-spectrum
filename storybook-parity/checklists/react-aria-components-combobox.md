@@ -58,6 +58,9 @@
    - `react-aria-components-combobox--virtualized-combo-box`
    - `react-aria-components-combobox--multi-select-combo-box`
    - `react-aria-components-combobox--async-virtualized-dynamic-combobox`
+7. Matched `WithCreateOption` action-item semantics with React behavior:
+   - action-only option input now clears after selection (`"Create \"...\""` no longer becomes the input value)
+   - behavior gate now verifies post-click value/expanded-state parity for create-option flows.
 
 ## Tests
 

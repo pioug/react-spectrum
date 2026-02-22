@@ -533,10 +533,19 @@ let scenarios = [
       let createOptionCount = await page.locator('[role="option"]', {hasText: 'Create "Wolf"'}).count();
       let optionCountAfterOpen = await page.locator('[role="option"]').count();
       let ariaExpandedAfterOpen = await input.getAttribute('aria-expanded');
+      if (createOptionCount > 0) {
+        await page.locator('[role="option"]', {hasText: 'Create "Wolf"'}).first().click();
+        await page.waitForTimeout(120);
+      }
+
+      let inputValueAfterCreate = await input.inputValue();
+      let ariaExpandedAfterCreate = await input.getAttribute('aria-expanded');
 
       return {
+        ariaExpandedAfterCreate,
         ariaExpandedAfterOpen,
         createOptionCount,
+        inputValueAfterCreate,
         optionCountAfterOpen
       };
     }

@@ -18,10 +18,13 @@ type FormValue = 'text' | 'key';
 type SelectionMode = 'single' | 'multiple';
 type ValidationState = 'invalid' | 'valid';
 type PickerOptionInput = string | {
+  actionOnly?: boolean,
   id?: OptionKey,
+  inputValueOnSelect?: string,
   key?: OptionKey,
   label?: string,
   name?: string,
+  onAction?: () => void,
   textValue?: string,
   value?: OptionKey
 };
@@ -29,7 +32,10 @@ type PickerOptionInput = string | {
 type SelectionChangeValue = OptionKey | OptionKey[] | null;
 
 interface NormalizedOption {
+  actionOnly: boolean,
   id: string,
+  inputValueOnSelect?: string,
+  onAction?: () => void,
   textValue: string
 }
 
@@ -46,6 +52,7 @@ function toOptionKey(value: OptionKey | null | undefined): string | null {
 function normalizeOption(option: PickerOptionInput, index: number): NormalizedOption {
   if (typeof option === 'string') {
     return {
+      actionOnly: false,
       id: option,
       textValue: option
     };
@@ -65,7 +72,10 @@ function normalizeOption(option: PickerOptionInput, index: number): NormalizedOp
     ?? String(keyCandidate);
 
   return {
+    actionOnly: Boolean(option.actionOnly),
     id: String(keyCandidate),
+    inputValueOnSelect: option.inputValueOnSelect,
+    onAction: option.onAction,
     textValue
   };
 }
@@ -437,7 +447,17 @@ export const ComboBox = defineComponent({
     };
 
     let selectOption = (option: NormalizedOption) => {
+      if (option.onAction) {
+        option.onAction();
+      }
+
       if (props.selectionMode === 'multiple') {
+        if (option.actionOnly) {
+          emitValue(option.inputValueOnSelect ?? '');
+          closeMenu();
+          return;
+        }
+
         let next = new Set(selectedKeysRef.value);
         if (next.has(option.id)) {
           next.delete(option.id);
@@ -454,8 +474,15 @@ export const ComboBox = defineComponent({
         return;
       }
 
+      if (option.actionOnly) {
+        updateSelection(new Set());
+        emitValue(option.inputValueOnSelect ?? '');
+        closeMenu();
+        return;
+      }
+
       updateSelection(new Set([option.id]));
-      emitValue(option.textValue);
+      emitValue(option.inputValueOnSelect ?? option.textValue);
       closeMenu();
     };
 

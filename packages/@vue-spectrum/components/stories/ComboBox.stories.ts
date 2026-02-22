@@ -440,7 +440,13 @@ export function WithCreateOption() {
           return options.value;
         }
 
-        return [{id: `create-${value.value}`, name: `Create "${value.value}"`}, ...options.value];
+        return [{
+          actionOnly: true,
+          id: `create-${value.value}`,
+          inputValueOnSelect: '',
+          name: `Create "${value.value}"`,
+          onAction: () => {}
+        }, ...options.value];
       });
 
       return {
