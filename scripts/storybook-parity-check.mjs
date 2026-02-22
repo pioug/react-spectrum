@@ -11,7 +11,9 @@ function parseArgs(argv) {
     includeIdRegex: '^react-aria-components-',
     outputDir: 'artifacts/storybook-parity/catalog',
     skipChecklists: false,
-    skipBehavior: false
+    skipBehavior: false,
+    skipStyles: false,
+    styleCommand: 'node scripts/storybook-parity-style-sources.mjs'
   };
 
   for (let i = 2; i < argv.length; i++) {
@@ -32,6 +34,10 @@ function parseArgs(argv) {
       args.skipChecklists = true;
     } else if (arg === '--skip-behavior') {
       args.skipBehavior = true;
+    } else if (arg === '--style-command') {
+      args.styleCommand = argv[++i];
+    } else if (arg === '--skip-styles') {
+      args.skipStyles = true;
     } else if (arg === '--help' || arg === '-h') {
       printHelp();
       process.exit(0);
@@ -53,6 +59,8 @@ Options:
                               (default: yarn workspace vue-spectrum-starter test)
   --checklist-command <cmd>   Command to validate source-audit checklists first
                               (default: yarn storybook:parity:checklists:validate)
+  --style-command <cmd>       Command to validate style-source parity
+                              (default: node scripts/storybook-parity-style-sources.mjs)
   --react-url <url>           React Storybook base URL (default: http://127.0.0.1:9003)
   --vue-url <url>             Vue Storybook base URL (default: http://127.0.0.1:6106)
   --include-id-regex <regex>  Compare ids matching regex
@@ -60,6 +68,7 @@ Options:
   --output-dir <dir>          Catalog output directory
                               (default: artifacts/storybook-parity/catalog)
   --skip-checklists           Skip checklist validation (not recommended)
+  --skip-styles               Skip style-source parity validation (not recommended)
   --skip-behavior             Skip behavior tests (not recommended)
   --help, -h                  Show help
 `.trim());
@@ -108,6 +117,10 @@ function main() {
 
   if (!args.skipChecklists) {
     run(args.checklistCommand, `Validating source-audit checklists: ${args.checklistCommand}`);
+  }
+
+  if (!args.skipStyles) {
+    run(args.styleCommand, `Validating style-source parity: ${args.styleCommand}`);
   }
 
   if (!args.skipBehavior) {

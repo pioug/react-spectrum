@@ -26,6 +26,7 @@
     "storybook:parity:manifest:export": "node scripts/storybook-parity-export-manifest.mjs",
     "storybook:parity:manifest:compare": "node scripts/storybook-parity-compare-manifests.mjs",
     "storybook:parity:behavior": "node scripts/storybook-parity-behavior.mjs",
+    "storybook:parity:styles": "node scripts/storybook-parity-style-sources.mjs",
     "storybook:parity:catalog": "node scripts/storybook-parity-catalog.mjs",
     "storybook:parity:catalog:rac": "node scripts/storybook-parity-catalog.mjs --include-id-regex '^react-aria-components-'",
     "storybook:parity:check": "node scripts/storybook-parity-check.mjs",
