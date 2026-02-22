@@ -1,6 +1,6 @@
 import {action} from '@storybook/addon-actions';
 import type {Meta, StoryFn, StoryObj} from '@storybook/vue3-vite';
-import {VueListBox, VuePopover} from '@vue-spectrum/components';
+import {VueButton, VueListBox, VuePopover} from '@vue-spectrum/components';
 import {computed, ref} from 'vue';
 
 type StoryArgs = Record<string, unknown>;
@@ -306,33 +306,91 @@ export let TagGroupInsideGridList: GridListStory = () => ({
   `
 });
 
-function GridListInModalPickerRender() {
+function GridListDropdown() {
   return {
     components: {
+      VueButton,
       VueListBox,
       VuePopover
     },
     setup() {
-      let open = ref(false);
+      let isOpen = ref(false);
       let selected = ref('');
+      let items = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
+
+      let handleSelection = (value: string) => {
+        selected.value = value;
+        isOpen.value = false;
+      };
+
       return {
-        open,
+        handleSelection,
+        isOpen,
+        items,
         selected
       };
     },
     template: `
       <div>
-        <button type="button" @click="open = !open">Open picker</button>
-        <VuePopover :open="open" placement="bottom" @close="open = false">
-          <div style="background: Canvas; color: CanvasText; border: 1px solid gray; padding: 12px; width: 320px;">
-            <h4 style="margin: 0 0 8px 0;">Grid list in modal picker</h4>
+        <VueButton @click="isOpen = true">Open GridList Options</VueButton>
+        <VuePopover :open="isOpen" placement="bottom" @close="isOpen = false">
+          <div>
             <VueListBox
               v-model="selected"
-              :items="['Photo', 'Document', 'Slide deck', 'Spreadsheet']"
-              label="modal picker grid list"
-              style="height: 200px; overflow: auto;" />
+              :items="items"
+              label="Favorite pokemon"
+              selection-mode="single"
+              @select="handleSelection" />
           </div>
         </VuePopover>
+      </div>
+    `
+  };
+}
+
+function GridListInModalPickerRender() {
+  return {
+    components: {
+      GridListDropdown,
+      VueButton
+    },
+    setup() {
+      let mainModalOpen = ref(true);
+      return {
+        mainModalOpen
+      };
+    },
+    template: `
+      <div>
+        <VueButton @click="mainModalOpen = true">Open Modal</VueButton>
+        <div
+          v-if="mainModalOpen"
+          style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+          "
+          @click.self="mainModalOpen = false">
+          <div
+            style="
+              display: flex;
+              flex-direction: column;
+              padding: 8px;
+              background: #ccc;
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%,-50%);
+              width: max-content;
+              height: max-content;
+            ">
+            <h2 style="margin: 0 0 8px 0;">Open the GridList Picker</h2>
+            <GridListDropdown />
+          </div>
+        </div>
       </div>
     `
   };

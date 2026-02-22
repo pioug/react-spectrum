@@ -191,7 +191,6 @@ function ensureOutputDirectories(outputDir) {
 async function waitForStoryReady(page) {
   let root = page.locator('#storybook-root, #root').first();
   await root.waitFor({state: 'attached', timeout: 20000});
-  await root.waitFor({state: 'visible', timeout: 20000});
 
   await page.evaluate(async () => {
     let settle = () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
@@ -209,6 +208,18 @@ async function waitForStoryReady(page) {
   });
 }
 
+async function captureRootOrPage(page, outputPath) {
+  let root = page.locator('#storybook-root, #root').first();
+  let rootIsVisible = await root.isVisible().catch(() => false);
+  if (rootIsVisible) {
+    await root.screenshot({path: outputPath});
+    return {target: 'root'};
+  }
+
+  await page.screenshot({path: outputPath, fullPage: true});
+  return {target: 'page'};
+}
+
 async function captureStory(page, storyUrl, outputPath) {
   await page.goto(storyUrl, {waitUntil: 'networkidle'});
 
@@ -224,9 +235,11 @@ async function captureStory(page, storyUrl, outputPath) {
     // ignore style injection issues in strict iframe contexts
   });
 
-  await waitForStoryReady(page);
-  let root = page.locator('#storybook-root, #root').first();
-  await root.screenshot({path: outputPath});
+  await waitForStoryReady(page).catch(() => {
+    // continue with fallback screenshot capture if the story root never becomes visible
+  });
+
+  return captureRootOrPage(page, outputPath);
 }
 
 async function readRawImage(imagePath) {
@@ -429,8 +442,12 @@ function formatMarkdown(report) {
     lines.push('- none');
   } else {
     for (let story of report.stories) {
-      lines.push(`- ${story.ok ? 'PASS' : 'FAIL'} \`${story.id}\` changedPixels=${story.changedPixels}`);
+      let changedSummary = story.changedPixels == null ? 'capture-error' : `changedPixels=${story.changedPixels}`;
+      lines.push(`- ${story.ok ? 'PASS' : 'FAIL'} \`${story.id}\` ${changedSummary}`);
       if (!story.ok) {
+        if (story.error) {
+          lines.push(`  - Error: ${story.error}`);
+        }
         lines.push(`  - React: \`${story.reactImage}\``);
         lines.push(`  - Vue: \`${story.vueImage}\``);
         lines.push(`  - Side by side: \`${story.sideBySideImage}\``);
@@ -539,53 +556,93 @@ async function main() {
 
       process.stdout.write(`[${index + 1}/${filteredStoryIds.length}] ${id}\n`);
 
-      await captureStory(reactPage, reactStoryUrl, reactImagePath);
-      await captureStory(vuePage, vueStoryUrl, vueImagePath);
+      let reactCaptureTarget = 'none';
+      let vueCaptureTarget = 'none';
 
-      await writeSideBySide(reactImagePath, vueImagePath, sideBySideImagePath);
+      try {
+        let reactCapture = await captureStory(reactPage, reactStoryUrl, reactImagePath);
+        let vueCapture = await captureStory(vuePage, vueStoryUrl, vueImagePath);
+        reactCaptureTarget = reactCapture.target;
+        vueCaptureTarget = vueCapture.target;
 
-      let reactImage = await readRawImage(reactImagePath);
-      let vueImage = await readRawImage(vueImagePath);
-      let comparison = compareImages(reactImage, vueImage);
+        await writeSideBySide(reactImagePath, vueImagePath, sideBySideImagePath);
 
-      await writeRawPng(comparison.diffData, comparison.width, comparison.height, diffImagePath);
+        let reactImage = await readRawImage(reactImagePath);
+        let vueImage = await readRawImage(vueImagePath);
+        let comparison = compareImages(reactImage, vueImage);
 
-      let storyResult = {
-        id,
-        reactUrl: reactStoryUrl,
-        vueUrl: vueStoryUrl,
-        reactImage: relativePath(args.outputDir, reactImagePath),
-        vueImage: relativePath(args.outputDir, vueImagePath),
-        sideBySideImage: relativePath(args.outputDir, sideBySideImagePath),
-        diffImage: relativePath(args.outputDir, diffImagePath),
-        changedPixels: comparison.changedPixels,
-        totalPixels: comparison.totalPixels,
-        changedRatio: comparison.totalPixels === 0 ? 0 : comparison.changedPixels / comparison.totalPixels,
-        dimensions: {
-          react: {
-            width: reactImage.width,
-            height: reactImage.height
+        await writeRawPng(comparison.diffData, comparison.width, comparison.height, diffImagePath);
+
+        let storyResult = {
+          id,
+          reactUrl: reactStoryUrl,
+          vueUrl: vueStoryUrl,
+          reactImage: relativePath(args.outputDir, reactImagePath),
+          vueImage: relativePath(args.outputDir, vueImagePath),
+          sideBySideImage: relativePath(args.outputDir, sideBySideImagePath),
+          diffImage: relativePath(args.outputDir, diffImagePath),
+          changedPixels: comparison.changedPixels,
+          totalPixels: comparison.totalPixels,
+          changedRatio: comparison.totalPixels === 0 ? 0 : comparison.changedPixels / comparison.totalPixels,
+          capture: {
+            react: reactCaptureTarget,
+            vue: vueCaptureTarget
           },
-          vue: {
-            width: vueImage.width,
-            height: vueImage.height
+          dimensions: {
+            react: {
+              width: reactImage.width,
+              height: reactImage.height
+            },
+            vue: {
+              width: vueImage.width,
+              height: vueImage.height
+            },
+            compared: {
+              width: comparison.width,
+              height: comparison.height
+            }
           },
-          compared: {
-            width: comparison.width,
-            height: comparison.height
+          ok: comparison.changedPixels === 0
+        };
+
+        report.stories.push(storyResult);
+        report.summary.total++;
+        report.summary.changedPixels += comparison.changedPixels;
+        if (storyResult.ok) {
+          report.summary.passed++;
+        } else {
+          report.summary.failed++;
+          process.stdout.write(`  -> fail changedPixels=${comparison.changedPixels}\n`);
+          if (args.failFast) {
+            break;
           }
-        },
-        ok: comparison.changedPixels === 0
-      };
+        }
+      } catch (error) {
+        let message = error instanceof Error ? error.message : String(error);
+        let storyResult = {
+          id,
+          reactUrl: reactStoryUrl,
+          vueUrl: vueStoryUrl,
+          reactImage: relativePath(args.outputDir, reactImagePath),
+          vueImage: relativePath(args.outputDir, vueImagePath),
+          sideBySideImage: relativePath(args.outputDir, sideBySideImagePath),
+          diffImage: relativePath(args.outputDir, diffImagePath),
+          changedPixels: null,
+          totalPixels: null,
+          changedRatio: null,
+          capture: {
+            react: reactCaptureTarget,
+            vue: vueCaptureTarget
+          },
+          dimensions: null,
+          error: message,
+          ok: false
+        };
 
-      report.stories.push(storyResult);
-      report.summary.total++;
-      report.summary.changedPixels += comparison.changedPixels;
-      if (storyResult.ok) {
-        report.summary.passed++;
-      } else {
+        report.stories.push(storyResult);
+        report.summary.total++;
         report.summary.failed++;
-        process.stdout.write(`  -> fail changedPixels=${comparison.changedPixels}\n`);
+        process.stdout.write(`  -> error ${message}\n`);
         if (args.failFast) {
           break;
         }
