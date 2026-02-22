@@ -4,7 +4,7 @@ import '@adobe/spectrum-css-temp/components/inputgroup/vars.css';
 import '@adobe/spectrum-css-temp/components/search/vars.css';
 import '@adobe/spectrum-css-temp/components/textfield/vars.css';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, type PropType, ref, watch} from 'vue';
+import {computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, type PropType, ref, watch} from 'vue';
 import './combobox.css';
 import {getEventTarget} from '@vue-aria/utils';
 
@@ -214,8 +214,11 @@ export const ComboBox = defineComponent({
     let isFocusVisible = ref(false);
     let isHovered = ref(false);
     let isPressed = ref(false);
+    let inputRef = ref<HTMLInputElement | null>(null);
     let listBoxRef = ref<HTMLElement | null>(null);
+    let listBoxWidth = ref<string | null>(null);
     let listBoxScrollTop = ref(0);
+    let triggerRef = ref<HTMLButtonElement | null>(null);
     let selectedKeysRef = ref<Set<string>>(new Set());
 
     let inputId = computed(() => props.id ?? generatedId);
@@ -386,6 +389,27 @@ export const ComboBox = defineComponent({
       emit('change', value);
     };
 
+    let updateListBoxWidth = () => {
+      let inputRect = inputRef.value?.getBoundingClientRect();
+      if (!inputRect) {
+        return;
+      }
+
+      let buttonRect = triggerRef.value?.getBoundingClientRect();
+      let minX = buttonRect ? Math.min(buttonRect.left, inputRect.left) : inputRect.left;
+      let maxX = buttonRect ? Math.max(buttonRect.right, inputRect.right) : inputRect.right;
+      listBoxWidth.value = `${Math.max(0, maxX - minX)}px`;
+    };
+
+    onMounted(() => {
+      updateListBoxWidth();
+      window.addEventListener('resize', updateListBoxWidth);
+    });
+
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', updateListBoxWidth);
+    });
+
     let updateSelection = (nextSelection: Set<string>) => {
       selectedKeysRef.value = new Set(nextSelection);
 
@@ -432,6 +456,9 @@ export const ComboBox = defineComponent({
       hasEmittedLoadMore.value = false;
       listBoxScrollTop.value = 0;
       setActiveKey(focus);
+      void nextTick(() => {
+        updateListBoxWidth();
+      });
       emit('open');
     };
 
@@ -584,7 +611,7 @@ export const ComboBox = defineComponent({
 
     return () => h('div', {
       ...rootAttrs.value,
-      class: ['vs-combobox', 'react-aria-ComboBox', attrs.class],
+      class: ['react-aria-ComboBox', attrs.class],
       'data-disabled': isDisabled.value || undefined,
       'data-invalid': isInvalid.value || undefined,
       'data-open': isExpanded.value || undefined,
@@ -615,6 +642,7 @@ export const ComboBox = defineComponent({
           class: [inputWrapperClassName.value, 'vs-combobox__field']
         }, [
           h('input', {
+            ref: inputRef,
             id: inputId.value,
             class: [inputClassName.value, 'vs-combobox__input', 'react-aria-Input'],
             type: 'text',
@@ -699,6 +727,7 @@ export const ComboBox = defineComponent({
             : null
         ]),
         h('button', {
+          ref: triggerRef,
           class: [triggerClassName.value, 'vs-combobox__button', 'react-aria-Button'],
           type: 'button',
           disabled: isDisabled.value,
@@ -747,7 +776,8 @@ export const ComboBox = defineComponent({
             style: {
               maxHeight: maxListHeight.value,
               overflow: 'auto',
-              position: 'relative'
+              position: 'relative',
+              width: listBoxWidth.value ?? undefined
             },
             onScroll: onListScroll
           }, virtualizationEnabled.value

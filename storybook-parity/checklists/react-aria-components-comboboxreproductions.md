@@ -32,6 +32,12 @@
    - input exposes combobox ARIA contract (`role="combobox"`, `aria-expanded`, `aria-controls`)
    - popup listbox/option structure rendered when expanded
 4. Added behavior-gate scenario `react-aria-components-comboboxreproductions--combo-box-reproduction-example` covering trigger-open semantics and long-option presence parity.
+5. Expanded reproduction behavior gate to include keyboard and overflow parity details:
+   - `ArrowDown` opens popup and sets active descendant.
+   - second `ArrowDown` advances active descendant.
+   - `Enter` commits focused option and closes popup.
+   - reopened popup exposes long-token horizontal overflow parity (`scrollWidth > clientWidth`).
+6. Ported React combobox popup-width measurement pattern (input + trigger bounds) into Vue combobox internals so reproduction popup width tracks trigger width rather than content width.
 
 ## Tests
 
@@ -41,12 +47,12 @@
   - `node scripts/storybook-parity-export-manifest.mjs ...`
   - `node scripts/storybook-parity-compare-manifests.mjs`
   - `node scripts/storybook-parity-style-sources.mjs --output-dir storybook-parity/catalog` (pass, 0 missing style ports)
-  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --scenario-ids react-aria-components-comboboxreproductions--combo-box-reproduction-example --output-dir storybook-parity/catalog` (pass)
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --scenario-ids react-aria-components-comboboxreproductions--combo-box-reproduction-example --output-dir storybook-parity/catalog` (pass, keyboard + overflow checks included)
   - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (30/30 passing)
 - Manual: pending
 
 ## Status
 
-- Open items: keyboard-detail and long-option visual overflow parity audit.
-- Risks: popup behavior is parity-aligned structurally but still needs focused keyboard-detail verification.
+- Open items: manual visual snapshot audit only.
+- Risks: minor visual details may still differ without screenshot parity artifacts.
 - Closure criteria: React-source behavior gaps resolved and parity checks pass.

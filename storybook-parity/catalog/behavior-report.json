@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-22T04:19:10.499Z",
+  "generatedAt": "2026-02-22T04:35:44.830Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
   "totalScenarios": 30,
@@ -183,14 +183,24 @@
       "id": "react-aria-components-comboboxreproductions--combo-box-reproduction-example",
       "ok": true,
       "react": {
-        "ariaExpanded": "true",
-        "longOptionCount": 1,
-        "optionCount": 6
+        "activeDescendantChangesOnSecondArrow": true,
+        "ariaExpandedAfterEnter": "false",
+        "ariaExpandedAfterFirstArrow": "true",
+        "hasActiveDescendantAfterFirstArrow": true,
+        "inputValueAfterEnter": "Cat",
+        "listboxHasHorizontalOverflow": true,
+        "longOptionCountAfterReopen": 1,
+        "optionCountAfterFirstArrow": 6
       },
       "vue": {
-        "ariaExpanded": "true",
-        "longOptionCount": 1,
-        "optionCount": 6
+        "activeDescendantChangesOnSecondArrow": true,
+        "ariaExpandedAfterEnter": "false",
+        "ariaExpandedAfterFirstArrow": "true",
+        "hasActiveDescendantAfterFirstArrow": true,
+        "inputValueAfterEnter": "Cat",
+        "listboxHasHorizontalOverflow": true,
+        "longOptionCountAfterReopen": 1,
+        "optionCountAfterFirstArrow": 6
       },
       "diff": {},
       "error": null

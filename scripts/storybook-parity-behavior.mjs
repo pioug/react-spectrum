@@ -446,25 +446,57 @@ let scenarios = [
         throw new Error('Unable to find combobox reproduction input.');
       }
 
-      let triggerClicked = await clickNearestComboboxTrigger(input, page);
-      if (!triggerClicked) {
-        throw new Error('Unable to click combobox reproduction trigger button.');
+      await input.focus();
+      await page.keyboard.press('ArrowDown');
+      await page.waitForTimeout(120);
+
+      let ariaExpandedAfterFirstArrow = await input.getAttribute('aria-expanded');
+      let activeDescendantAfterFirstArrow = await input.getAttribute('aria-activedescendant');
+      let optionCountAfterFirstArrow = await page.locator('[role="option"]').count();
+
+      await page.keyboard.press('ArrowDown');
+      await page.waitForTimeout(120);
+      let activeDescendantAfterSecondArrow = await input.getAttribute('aria-activedescendant');
+
+      await page.keyboard.press('Enter');
+      await page.waitForTimeout(120);
+      let inputValueAfterEnter = await input.inputValue();
+      let ariaExpandedAfterEnter = await input.getAttribute('aria-expanded');
+
+      await input.fill('');
+      await page.waitForTimeout(120);
+
+      if (await input.getAttribute('aria-expanded') !== 'true') {
+        let triggerClicked = await clickNearestComboboxTrigger(input, page);
+        if (!triggerClicked) {
+          throw new Error('Unable to reopen combobox reproduction popup.');
+        }
       }
       await page.waitForTimeout(120);
 
-      let combobox = await firstVisibleLocator(page, [
-        '[role="combobox"]',
-        'input[aria-haspopup="listbox"]',
-        'input'
+      let longOption = page.locator('[role="option"]', {hasText: 'Dooooooooooooooooooooooooooooooooog'}).first();
+      let longOptionCountAfterReopen = await longOption.count();
+
+      let listbox = await firstVisibleLocator(page, [
+        '[role="listbox"]',
+        '.react-aria-ListBox'
       ]);
-      let ariaExpanded = combobox ? await combobox.getAttribute('aria-expanded') : null;
-      let optionCount = await page.locator('[role="option"]').count();
-      let longOptionCount = await page.locator('text=Dooooooooooooooooooooooooooooooooog').count();
+
+      if (!listbox) {
+        throw new Error('Unable to find combobox reproduction listbox.');
+      }
+
+      let listboxHasHorizontalOverflow = await listbox.evaluate((element) => element.scrollWidth > element.clientWidth);
 
       return {
-        ariaExpanded,
-        longOptionCount,
-        optionCount
+        activeDescendantChangesOnSecondArrow: Boolean(activeDescendantAfterFirstArrow && activeDescendantAfterSecondArrow && activeDescendantAfterFirstArrow !== activeDescendantAfterSecondArrow),
+        ariaExpandedAfterEnter,
+        ariaExpandedAfterFirstArrow,
+        hasActiveDescendantAfterFirstArrow: Boolean(activeDescendantAfterFirstArrow),
+        inputValueAfterEnter,
+        listboxHasHorizontalOverflow,
+        longOptionCountAfterReopen,
+        optionCountAfterFirstArrow
       };
     }
   },

@@ -66,6 +66,9 @@
    - `react-aria-components-combobox--combo-box-render-props-default-items`
    - `react-aria-components-combobox--combo-box-render-props-items`
    - `react-aria-components-combobox--combo-box-render-props-list-box-dynamic`
+9. Ported React popup-width sizing strategy from `packages/react-aria-components/src/ComboBox.tsx`:
+   - Vue popup width now derives from input + trigger bounding union (instead of container/content width), matching React trigger-width behavior used by reproduction styles.
+10. Removed Vue-only root class coupling from combobox root so local grid-only layout styles do not override React parity sizing behavior.
 
 ## Tests
 
