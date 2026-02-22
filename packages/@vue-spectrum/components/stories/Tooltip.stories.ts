@@ -2,6 +2,8 @@ import type {Meta, StoryFn, StoryObj} from '@storybook/vue3-vite';
 import {VuePopover} from '@vue-spectrum/components';
 import {computed, ref} from 'vue';
 
+type Side = 'top' | 'right' | 'bottom' | 'left';
+
 const placementOptions = [
   'bottom',
   'bottom left',
@@ -51,18 +53,33 @@ export default meta;
 export type TooltipStory = StoryFn<typeof VuePopover>;
 export type TooltipStoryObj = StoryObj<typeof meta>;
 
-function normalizePlacement(raw: unknown): 'top' | 'right' | 'bottom' | 'left' {
-  let value = String(raw ?? 'top').toLowerCase();
-  if (value.includes('top')) {
-    return 'top';
-  }
-  if (value.includes('right') || value.includes('end')) {
-    return 'right';
-  }
-  if (value.includes('left') || value.includes('start')) {
+function getPlacementSide(raw: unknown): Side {
+  let placement = String(raw ?? 'top').trim().toLowerCase();
+  let [side] = placement.split(/\s+/);
+  if (side === 'start') {
     return 'left';
   }
+  if (side === 'end') {
+    return 'right';
+  }
+  if (side === 'top' || side === 'right' || side === 'left') {
+    return side;
+  }
   return 'bottom';
+}
+
+function getArrowRotation(raw: unknown): string {
+  let side = getPlacementSide(raw);
+  if (side === 'bottom') {
+    return 'rotate(180deg)';
+  }
+  if (side === 'left') {
+    return 'rotate(-90deg)';
+  }
+  if (side === 'right') {
+    return 'rotate(90deg)';
+  }
+  return 'rotate(0deg)';
 }
 
 export const TooltipExample: TooltipStory = (args) => ({
@@ -71,10 +88,16 @@ export const TooltipExample: TooltipStory = (args) => ({
   },
   setup() {
     let open = ref(false);
+    let placement = computed(() => String(args.placement ?? 'top'));
+    let animationClass = computed(() => String(args.animation ?? 'transition'));
+    let arrowRotation = computed(() => getArrowRotation(placement.value));
+
     return {
       args,
-      normalizedPlacement: computed(() => normalizePlacement(args.placement)),
-      open
+      animationClass,
+      arrowRotation,
+      open,
+      placement
     };
   },
   template: `
@@ -82,12 +105,17 @@ export const TooltipExample: TooltipStory = (args) => ({
       <button type="button" @mouseenter="open = true" @mouseleave="open = false">Tooltip trigger</button>
       <VuePopover
         :open="open"
-        :placement="normalizedPlacement"
-        :dismissable="false">
-        <div style="background: Canvas; color: CanvasText; border: 1px solid gray; padding: 5px; border-radius: 4px;">
-          <div v-if="!args.hideArrow">▲</div>
-          I am a tooltip
+        :placement="placement"
+        :offset="5"
+        :dismissable="false"
+        :class="['tooltip-base', animationClass]"
+        :style="{background: 'Canvas', color: 'CanvasText', border: '1px solid gray', padding: '5px', borderRadius: '4px'}">
+        <div v-if="!args.hideArrow" style="transform: translateX(-50%);">
+          <svg width="8" height="8" :style="{display: 'block', transform: arrowRotation}">
+            <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
+          </svg>
         </div>
+        I am a tooltip
       </VuePopover>
     </div>
   `
@@ -104,78 +132,122 @@ interface TooltipArrowBoundaryOffsetArgs {
   bottomRight: number
 }
 
+type PlacementCard = {
+  key: keyof TooltipArrowBoundaryOffsetArgs,
+  label: string,
+  placement: string,
+  arrowRotation: string
+};
+
+const rows: PlacementCard[][] = [
+  [
+    {key: 'topLeft', label: 'Top left', placement: 'top left', arrowRotation: 'rotate(0deg)'},
+    {key: 'topRight', label: 'Top right', placement: 'top right', arrowRotation: 'rotate(0deg)'}
+  ],
+  [
+    {key: 'leftTop', label: 'Left top', placement: 'left top', arrowRotation: 'rotate(-90deg)'},
+    {key: 'leftBottom', label: 'Left bottom', placement: 'left bottom', arrowRotation: 'rotate(-90deg)'}
+  ],
+  [
+    {key: 'rightTop', label: 'Right top', placement: 'right top', arrowRotation: 'rotate(90deg)'},
+    {key: 'rightBottom', label: 'Right bottom', placement: 'right bottom', arrowRotation: 'rotate(90deg)'}
+  ],
+  [
+    {key: 'bottomLeft', label: 'Bottom left', placement: 'bottom left', arrowRotation: 'rotate(180deg)'},
+    {key: 'bottomRight', label: 'Bottom right', placement: 'bottom right', arrowRotation: 'rotate(180deg)'}
+  ]
+];
+
 export const TooltipArrowBoundaryOffsetExample: TooltipStoryObj = {
-  render: (args: TooltipArrowBoundaryOffsetArgs) => ({
+  render: (_args: TooltipArrowBoundaryOffsetArgs) => ({
     components: {
       VuePopover
     },
     setup() {
-      let cards = [
-        {key: 'topLeft', label: 'Top left', placement: 'top'},
-        {key: 'topRight', label: 'Top right', placement: 'top'},
-        {key: 'leftTop', label: 'Left top', placement: 'left'},
-        {key: 'leftBottom', label: 'Left bottom', placement: 'left'},
-        {key: 'rightTop', label: 'Right top', placement: 'right'},
-        {key: 'rightBottom', label: 'Right bottom', placement: 'right'},
-        {key: 'bottomLeft', label: 'Bottom left', placement: 'bottom'},
-        {key: 'bottomRight', label: 'Bottom right', placement: 'bottom'}
-      ] as const;
       return {
-        args,
-        cards
+        rows
       };
     },
     template: `
-      <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-        <div v-for="card in cards" :key="card.key" style="padding: 12px;">
-          <button type="button" style="width: 200px; height: 100px;">{{ card.label }}</button>
-          <VuePopover
-            open
-            :dismissable="false"
-            :placement="card.placement">
-            <div style="background: Canvas; color: CanvasText; border: 1px solid gray; padding: 8px; border-radius: 9999px;">
-              {{ card.label }} (offset: {{ args[card.key] }})
-            </div>
-          </VuePopover>
+      <div style="display: flex; flex-direction: column;">
+        <div v-for="(row, rowIndex) in rows" :key="rowIndex" style="display: flex;">
+          <div v-for="card in row" :key="card.key" style="padding: 12px;">
+            <button type="button" style="width: 200px; height: 100px;">{{ card.label }}</button>
+            <VuePopover
+              open
+              :dismissable="false"
+              :placement="card.placement"
+              :offset="7"
+              :style="{background: 'Canvas', color: 'CanvasText', border: '1px solid gray', padding: '8px', borderRadius: '9999px'}">
+              <svg width="8" height="8" :style="{display: 'block', transform: card.arrowRotation}">
+                <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
+              </svg>
+              {{ card.label }}
+            </VuePopover>
+          </div>
         </div>
       </div>
     `
   }),
   args: {
-    topLeft: 0,
-    topRight: 0,
-    leftTop: 0,
-    leftBottom: 0,
-    rightTop: 0,
-    rightBottom: 0,
-    bottomLeft: 0,
-    bottomRight: 0
+    topLeft: 25,
+    topRight: 25,
+    leftTop: 15,
+    leftBottom: 15,
+    rightTop: 15,
+    rightBottom: 15,
+    bottomLeft: 25,
+    bottomRight: 25
+  },
+  argTypes: {
+    topLeft: {control: {type: 'range', min: -100, max: 100}},
+    topRight: {control: {type: 'range', min: -100, max: 100}},
+    leftTop: {control: {type: 'range', min: -100, max: 100}},
+    leftBottom: {control: {type: 'range', min: -100, max: 100}},
+    rightTop: {control: {type: 'range', min: -100, max: 100}},
+    rightBottom: {control: {type: 'range', min: -100, max: 100}},
+    bottomLeft: {control: {type: 'range', min: -100, max: 100}},
+    bottomRight: {control: {type: 'range', min: -100, max: 100}}
   }
 };
 
 export const TooltipContainerPaddingExample: TooltipStoryObj = {
-  render: () => ({
+  render: (args) => ({
     components: {
       VuePopover
     },
     setup() {
-      let open = ref(true);
+      let open = ref(false);
+      let placement = computed(() => String(args.placement ?? 'top'));
+
       return {
-        open
+        args,
+        open,
+        placement
       };
     },
     template: `
-      <div style="padding: 32px; border: 1px dashed #d9d9d9; width: fit-content;">
-        <button type="button" @mouseenter="open = true" @mouseleave="open = false">Trigger with container padding</button>
+      <div style="position: relative; min-height: 42px;">
+        <button
+          type="button"
+          style="position: absolute; top: 0; left: 0;"
+          @mouseenter="open = true"
+          @mouseleave="open = false">
+          Tooltip trigger
+        </button>
         <VuePopover
           :open="open"
-          placement="top"
-          :dismissable="false">
-          <div style="background: Canvas; color: CanvasText; border: 1px solid gray; padding: 5px; border-radius: 4px;">
-            Tooltip with container padding.
-          </div>
+          :placement="placement"
+          :offset="5"
+          :container-padding="Number(args.containerPadding ?? 10)"
+          :dismissable="false"
+          :style="{background: 'Canvas', color: 'CanvasText', border: '1px solid gray', padding: '5px', borderRadius: '4px'}">
+          I am a tooltip
         </VuePopover>
       </div>
     `
-  })
+  }),
+  args: {
+    containerPadding: 10
+  }
 };

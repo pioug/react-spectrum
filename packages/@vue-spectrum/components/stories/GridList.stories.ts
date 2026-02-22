@@ -309,7 +309,6 @@ export let TagGroupInsideGridList: GridListStory = () => ({
 function GridListDropdown() {
   return {
     components: {
-      VueButton,
       VueListBox,
       VuePopover
     },
@@ -332,7 +331,7 @@ function GridListDropdown() {
     },
     template: `
       <div>
-        <VueButton @click="isOpen = true">Open GridList Options</VueButton>
+        <button type="button" style="display: block; width: 100%;" @click="isOpen = true">Open GridList Options</button>
         <VuePopover :open="isOpen" placement="bottom" @close="isOpen = false">
           <div>
             <VueListBox
@@ -349,9 +348,10 @@ function GridListDropdown() {
 }
 
 function GridListInModalPickerRender() {
+  let GridListDropdownComponent = GridListDropdown();
   return {
     components: {
-      GridListDropdown,
+      GridListDropdown: GridListDropdownComponent,
       VueButton
     },
     setup() {

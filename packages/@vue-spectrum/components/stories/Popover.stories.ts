@@ -1,9 +1,8 @@
 import type {Meta, StoryFn, StoryObj} from '@storybook/vue3-vite';
 import {VuePopover} from '@vue-spectrum/components';
-import {computed, onUnmounted, ref} from 'vue';
+import {computed, onUnmounted, ref, type CSSProperties} from 'vue';
 
-type StoryArgs = Record<string, unknown>;
-type StyleMap = Record<string, number | string>;
+type Side = 'top' | 'right' | 'bottom' | 'left';
 
 const placementOptions = [
   'bottom',
@@ -54,71 +53,89 @@ export default meta;
 type PopoverStory = StoryFn<typeof VuePopover>;
 type Story = StoryObj<typeof meta>;
 
-function normalizePlacement(raw: unknown): 'top' | 'right' | 'bottom' | 'left' {
-  let value = String(raw ?? 'bottom').toLowerCase();
-  if (value.includes('top')) {
-    return 'top';
+function getPlacementSide(raw: unknown): Side {
+  let placement = String(raw ?? 'bottom').trim().toLowerCase();
+  let [side] = placement.split(/\s+/);
+  if (side === 'start') {
+    return 'left';
   }
-  if (value.includes('right') || value.includes('end')) {
+  if (side === 'end') {
     return 'right';
   }
-  if (value.includes('left') || value.includes('start')) {
-    return 'left';
+  if (side === 'top' || side === 'right' || side === 'left') {
+    return side;
   }
   return 'bottom';
 }
 
-function createPopoverStory(args: StoryArgs = {}, opts: {
-  contentText?: string,
-  contentTitle: string,
-  triggerLabel: string,
-  triggerStyle?: StyleMap,
-  wrapperStyle?: StyleMap
-}) {
-  return {
-    components: {
-      VuePopover
-    },
-    setup() {
-      let isOpen = ref(false);
-      let close = () => {
-        isOpen.value = false;
-      };
-
-      return {
-        args,
-        close,
-        isOpen,
-        normalizedPlacement: computed(() => normalizePlacement(args.placement)),
-        opts,
-        toggle: () => {
-          isOpen.value = !isOpen.value;
-        }
-      };
-    },
-    template: `
-      <div :style="opts.wrapperStyle ?? {minHeight: '240px'}">
-        <button type="button" :style="opts.triggerStyle" @click="toggle">{{ opts.triggerLabel }}</button>
-        <VuePopover
-          :open="isOpen"
-          :placement="normalizedPlacement"
-          @close="close">
-          <div style="background: Canvas; color: CanvasText; border: 1px solid gray; padding: 16px; z-index: 5; min-width: 240px;">
-            <div v-if="!args.hideArrow" style="margin-bottom: 8px;">▼</div>
-            <h4 style="margin: 0 0 8px 0;">{{ opts.contentTitle }}</h4>
-            <p style="margin: 0 0 12px 0;">{{ opts.contentText ?? 'Popover content parity fixture.' }}</p>
-            <button type="button" @click="close">Submit</button>
-          </div>
-        </VuePopover>
-      </div>
-    `
-  };
+function getArrowRotation(raw: unknown): string {
+  let side = getPlacementSide(raw);
+  if (side === 'bottom') {
+    return 'rotate(180deg)';
+  }
+  if (side === 'left') {
+    return 'rotate(-90deg)';
+  }
+  if (side === 'right') {
+    return 'rotate(90deg)';
+  }
+  return 'rotate(0deg)';
 }
 
-export const PopoverExample: PopoverStory = (args) => createPopoverStory(args, {
-  triggerLabel: 'Open popover',
-  contentTitle: 'Sign up',
-  contentText: 'First Name: John / Last Name: Smith'
+const popoverSurfaceStyle: CSSProperties = {
+  background: 'Canvas',
+  color: 'CanvasText',
+  border: '1px solid gray',
+  padding: '30px',
+  zIndex: 5
+};
+
+export const PopoverExample: PopoverStory = (args) => ({
+  components: {
+    VuePopover
+  },
+  setup() {
+    let isOpen = ref(false);
+    let placement = computed(() => String(args.placement ?? 'bottom start'));
+    let animationClass = computed(() => String(args.animation ?? 'transition'));
+    let arrowRotation = computed(() => getArrowRotation(placement.value));
+
+    return {
+      args,
+      animationClass,
+      arrowRotation,
+      isOpen,
+      placement,
+      popoverSurfaceStyle
+    };
+  },
+  template: `
+    <div>
+      <button type="button" @click="isOpen = !isOpen">Open popover</button>
+      <VuePopover
+        :open="isOpen"
+        :placement="placement"
+        :class="['popover-base', animationClass]"
+        :style="popoverSurfaceStyle"
+        @close="isOpen = false">
+        <div v-if="!args.hideArrow" style="display: flex;">
+          <svg width="12" height="12" viewBox="0 0 12 12" :style="{display: 'block', transform: arrowRotation}">
+            <path d="M0 0L6 6L12 0" fill="white" stroke-width="1" stroke="gray" />
+          </svg>
+        </div>
+        <form style="display: flex; flex-direction: column; outline: 2px solid #1473e6; outline-offset: -2px;">
+          <h2 style="margin: 0 0 8px 0;">Sign up</h2>
+          <label>
+            First Name: <input placeholder="John">
+          </label>
+          <label>
+            Last Name: <input placeholder="Smith">
+          </label>
+          <button type="button" style="margin-top: 10px;" @click="isOpen = false">Submit</button>
+        </form>
+      </VuePopover>
+    </div>
+  `
 });
 
 const COUNTDOWN = 5000;
@@ -131,14 +148,19 @@ export const PopoverTriggerObserverExample: Story = {
     setup() {
       let countdown = ref(COUNTDOWN);
       let isOpen = ref(true);
-      let triggerStyle = ref<StyleMap>({});
+      let triggerStyle = ref<CSSProperties>({});
 
       let intervalId = setInterval(() => {
-        countdown.value = Math.max(0, countdown.value - 1000);
+        if (countdown.value > 0) {
+          countdown.value -= 1000;
+        }
       }, 1000);
 
       let timeoutId = setTimeout(() => {
-        triggerStyle.value = {width: '200px', height: '50px'};
+        triggerStyle.value = {
+          width: '200px',
+          height: '50px'
+        };
       }, COUNTDOWN + 1000);
 
       onUnmounted(() => {
@@ -149,22 +171,31 @@ export const PopoverTriggerObserverExample: Story = {
       return {
         countdown,
         isOpen,
+        popoverSurfaceStyle,
         triggerStyle
       };
     },
     template: `
       <div style="margin-bottom: 100px; display: flex; flex-direction: column; align-items: center;">
-        <p>The trigger button below will change size in <strong>{{ Math.floor(countdown / 1000) }}s</strong></p>
+        <div>
+          <p>The trigger button below will change size in <strong>{{ Math.floor(countdown / 1000) }}s</strong></p>
+        </div>
         <button type="button" :style="triggerStyle" @click="isOpen = !isOpen">Open popover</button>
         <VuePopover
           :open="isOpen"
-          placement="bottom"
+          placement="bottom start"
+          :style="popoverSurfaceStyle"
           @close="isOpen = false">
-          <div style="background: Canvas; color: CanvasText; border: 1px solid gray; padding: 16px; min-width: 240px;">
-            <h4 style="margin: 0 0 8px 0;">Sign up</h4>
-            <p style="margin: 0 0 12px 0;">Trigger observer parity fixture.</p>
-            <button type="button" @click="isOpen = false">Submit</button>
-          </div>
+          <form style="display: flex; flex-direction: column; outline: 2px solid #1473e6; outline-offset: -2px;">
+            <h2 style="margin: 0 0 8px 0;">Sign up</h2>
+            <label>
+              First Name: <input placeholder="John">
+            </label>
+            <label>
+              Last Name: <input placeholder="Smith">
+            </label>
+            <button type="button" style="margin-top: 10px;" @click="isOpen = false">Submit</button>
+          </form>
         </VuePopover>
       </div>
     `
@@ -182,23 +213,39 @@ interface ArrowBoundaryOffsetArgs {
   bottomRight: number
 }
 
+type PlacementCard = {
+  key: keyof ArrowBoundaryOffsetArgs,
+  label: string,
+  placement: string,
+  arrowRotation: string
+};
+
+const rows: PlacementCard[][] = [
+  [
+    {key: 'topLeft', label: 'Top left', placement: 'top left', arrowRotation: 'rotate(0deg)'},
+    {key: 'topRight', label: 'Top right', placement: 'top right', arrowRotation: 'rotate(0deg)'}
+  ],
+  [
+    {key: 'leftTop', label: 'Left top', placement: 'left top', arrowRotation: 'rotate(-90deg)'},
+    {key: 'leftBottom', label: 'Left bottom', placement: 'left bottom', arrowRotation: 'rotate(-90deg)'}
+  ],
+  [
+    {key: 'rightTop', label: 'Right top', placement: 'right top', arrowRotation: 'rotate(90deg)'},
+    {key: 'rightBottom', label: 'Right bottom', placement: 'right bottom', arrowRotation: 'rotate(90deg)'}
+  ],
+  [
+    {key: 'bottomLeft', label: 'Bottom left', placement: 'bottom left', arrowRotation: 'rotate(180deg)'},
+    {key: 'bottomRight', label: 'Bottom right', placement: 'bottom right', arrowRotation: 'rotate(180deg)'}
+  ]
+];
+
 export const PopoverArrowBoundaryOffsetExample: Story = {
-  render: (args: ArrowBoundaryOffsetArgs) => ({
+  render: (_args: ArrowBoundaryOffsetArgs) => ({
     components: {
       VuePopover
     },
     setup() {
       let active = ref<string>('');
-      let cards = [
-        {key: 'topLeft', label: 'Top left', placement: 'top'},
-        {key: 'topRight', label: 'Top right', placement: 'top'},
-        {key: 'leftTop', label: 'Left top', placement: 'left'},
-        {key: 'leftBottom', label: 'Left bottom', placement: 'left'},
-        {key: 'rightTop', label: 'Right top', placement: 'right'},
-        {key: 'rightBottom', label: 'Right bottom', placement: 'right'},
-        {key: 'bottomLeft', label: 'Bottom left', placement: 'bottom'},
-        {key: 'bottomRight', label: 'Bottom right', placement: 'bottom'}
-      ] as const;
 
       let toggle = (key: string) => {
         active.value = active.value === key ? '' : key;
@@ -206,80 +253,146 @@ export const PopoverArrowBoundaryOffsetExample: Story = {
 
       return {
         active,
-        args,
-        cards,
+        rows,
         toggle
       };
     },
     template: `
-      <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-        <div v-for="card in cards" :key="card.key" style="padding: 12px; border: 1px solid #d9d9d9; border-radius: 8px;">
-          <button type="button" style="width: 180px; height: 90px;" @click="toggle(card.key)">
-            {{ card.label }}
-          </button>
-          <VuePopover
-            :open="active === card.key"
-            :placement="card.placement"
-            dismissable
-            @close="active = ''">
-            <div style="background: Canvas; color: CanvasText; border: 1px solid gray; padding: 8px; border-radius: 12px;">
-              <strong>{{ card.label }}</strong>
-              <p style="margin: 6px 0 0 0;">Offset: {{ args[card.key] }}</p>
-            </div>
-          </VuePopover>
+      <div style="display: flex; flex-direction: column;">
+        <div v-for="(row, rowIndex) in rows" :key="rowIndex" style="display: flex;">
+          <div v-for="card in row" :key="card.key" style="padding: 12px;">
+            <button type="button" style="width: 200px; height: 100px;" @click="toggle(card.key)">
+              {{ card.label }}
+            </button>
+            <VuePopover
+              :open="active === card.key"
+              :placement="card.placement"
+              :style="{
+                background: 'Canvas',
+                color: 'CanvasText',
+                border: '1px solid gray',
+                padding: '8px',
+                zIndex: 5,
+                borderRadius: '30px'
+              }"
+              @close="active = ''">
+              <div style="display: flex;">
+                <svg width="12" height="12" viewBox="0 0 12 12" :style="{display: 'block', transform: card.arrowRotation}">
+                  <path d="M0 0L6 6L12 0" fill="white" stroke-width="1" stroke="gray" />
+                </svg>
+              </div>
+              <div>{{ card.label }}</div>
+            </VuePopover>
+          </div>
         </div>
       </div>
     `
   }),
   args: {
-    topLeft: 0,
-    topRight: 0,
-    leftTop: 0,
-    leftBottom: 0,
-    rightTop: 0,
-    rightBottom: 0,
-    bottomLeft: 0,
-    bottomRight: 0
+    topLeft: 25,
+    topRight: 25,
+    leftTop: 15,
+    leftBottom: 15,
+    rightTop: 15,
+    rightBottom: 15,
+    bottomLeft: 25,
+    bottomRight: 25
+  },
+  argTypes: {
+    topLeft: {control: {type: 'range', min: -100, max: 100}},
+    topRight: {control: {type: 'range', min: -100, max: 100}},
+    leftTop: {control: {type: 'range', min: -100, max: 100}},
+    leftBottom: {control: {type: 'range', min: -100, max: 100}},
+    rightTop: {control: {type: 'range', min: -100, max: 100}},
+    rightBottom: {control: {type: 'range', min: -100, max: 100}},
+    bottomLeft: {control: {type: 'range', min: -100, max: 100}},
+    bottomRight: {control: {type: 'range', min: -100, max: 100}}
   }
 };
 
-export const PopoverTriggerWidthExample: PopoverStory = () => createPopoverStory({}, {
-  triggerLabel: 'Open popover',
-  contentTitle: 'Trigger width parity fixture',
-  triggerStyle: {
-    width: '260px'
+export const PopoverTriggerWidthExample: PopoverStory = () => ({
+  components: {
+    VuePopover
   },
-  wrapperStyle: {
-    minHeight: '220px',
-    width: '280px'
-  }
+  setup() {
+    let isOpen = ref(false);
+
+    return {
+      isOpen
+    };
+  },
+  template: `
+    <div>
+      <button type="button" @click="isOpen = !isOpen">Open popover</button>
+      <VuePopover
+        :open="isOpen"
+        placement="bottom start"
+        :style="{
+          background: 'Canvas',
+          color: 'CanvasText',
+          border: '1px solid gray',
+          zIndex: 5,
+          width: 'var(--trigger-width)'
+        }"
+        @close="isOpen = false">
+        Should match the width of the trigger button
+      </VuePopover>
+    </div>
+  `
 });
 
 export const ScrollingBoundaryContainer: Story = {
-  render: () => ({
+  render: (args) => ({
     components: {
       VuePopover
     },
     setup() {
       let isOpen = ref(false);
+
       return {
+        args,
         isOpen
       };
     },
     template: `
-      <div style="height: 300px; width: 360px; overflow: auto; border: 1px solid #d9d9d9; padding: 12px;">
-        <div style="height: 700px; padding-top: 260px;">
-          <button type="button" @click="isOpen = !isOpen">Open popover</button>
-          <VuePopover
-            :open="isOpen"
-            placement="bottom"
-            @close="isOpen = false">
-            <div style="background: Canvas; color: CanvasText; border: 1px solid gray; padding: 12px;">
-              Scrolling boundary container fixture.
-            </div>
-          </VuePopover>
+      <div style="height: 300px; width: 300px; overflow: auto; border: 1px solid black;">
+        <div style="width: 600px; height: 600px; display: flex; align-items: center; justify-content: center;">
+          <div>
+            <button type="button" style="width: 200px; height: 200px;" @click="isOpen = !isOpen">Open popover</button>
+            <VuePopover
+              :open="isOpen"
+              :placement="String(args.placement ?? 'bottom')"
+              :container-padding="Number(args.containerPadding ?? 0)"
+              :style="{background: 'Canvas', color: 'CanvasText', border: '1px solid gray', zIndex: 5}"
+              @close="isOpen = false">
+              This is some dummy content for the popover
+            </VuePopover>
+          </div>
         </div>
       </div>
     `
-  })
+  }),
+  args: {
+    containerPadding: 0,
+    placement: 'bottom'
+  },
+  argTypes: {
+    containerPadding: {
+      control: {
+        type: 'range',
+        min: 0,
+        max: 100
+      }
+    },
+    hideArrow: {
+      table: {
+        disable: true
+      }
+    },
+    animation: {
+      table: {
+        disable: true
+      }
+    }
+  }
 };
