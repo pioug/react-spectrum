@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-22T00:15:36.485Z",
+  "generatedAt": "2026-02-22T00:19:49.664Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
-  "totalScenarios": 17,
-  "passingScenarios": 17,
+  "totalScenarios": 18,
+  "passingScenarios": 18,
   "failingScenarios": 0,
   "ok": true,
   "results": [
@@ -147,6 +147,22 @@
         "afterSpanCount": 2,
         "beforeSpanCount": 1,
         "firstSpanHasPositionStyle": true
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-button--button-render",
+      "ok": true,
+      "react": {
+        "backgroundColor": "rgb(255, 0, 0)",
+        "tagName": "BUTTON",
+        "text": "Testing"
+      },
+      "vue": {
+        "backgroundColor": "rgb(255, 0, 0)",
+        "tagName": "BUTTON",
+        "text": "Testing"
       },
       "diff": {},
       "error": null

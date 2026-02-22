@@ -2,8 +2,8 @@
 
 - React URL: http://127.0.0.1:9003
 - Vue URL: http://127.0.0.1:6106
-- Scenarios: 17
-- Passing: 17
+- Scenarios: 18
+- Passing: 18
 - Failing: 0
 - Result: pass
 
@@ -18,6 +18,7 @@
 - PASS `react-aria-components-button--pending-button`
 - PASS `react-aria-components-button--pending-button-tooltip`
 - PASS `react-aria-components-button--ripple-button-example`
+- PASS `react-aria-components-button--button-render`
 - PASS `react-aria-components-menu--menu-example`
 - PASS `react-aria-components-menu--submenu-example`
 - PASS `react-aria-components-menu--submenu-sections-example`

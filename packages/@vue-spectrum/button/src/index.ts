@@ -288,6 +288,10 @@ export const VueButton = defineComponent({
       type: String as PropType<ButtonFillStyle | undefined>,
       default: undefined
     },
+    render: {
+      type: Function as PropType<(props: Record<string, unknown>, children: unknown) => unknown>,
+      default: undefined
+    },
     variant: {
       type: String as PropType<ButtonVariant>,
       default: 'primary'
@@ -342,7 +346,8 @@ export const VueButton = defineComponent({
       }
     ));
 
-    return () => h(buttonState.elementType.value, {
+    return () => {
+      let buttonProps = {
       ...buttonState.domProps.value,
       class: [
         buttonClass.value,
@@ -353,7 +358,15 @@ export const VueButton = defineComponent({
       'data-static-color': resolvedStaticColor.value || undefined,
       'data-style': resolvedStyle.value,
       'data-variant': resolvedVariant.value
-    }, slots.default ? slots.default() : 'Button');
+      };
+      let children = slots.default ? slots.default() : 'Button';
+
+      if (props.render) {
+        return props.render(buttonProps, children);
+      }
+
+      return h(buttonState.elementType.value, buttonProps, children);
+    };
   }
 });
 

@@ -344,6 +344,29 @@ let scenarios = [
     }
   },
   {
+    id: 'react-aria-components-button--button-render',
+    async run(page) {
+      let button = await waitForFirstVisibleLocator(page, [
+        'button',
+        '[role="button"]'
+      ], 10000);
+
+      if (!button) {
+        throw new Error('Unable to find button render control.');
+      }
+
+      let backgroundColor = await button.evaluate((element) => window.getComputedStyle(element).backgroundColor);
+      let text = (await button.innerText()).replace(/\s+/g, ' ').trim();
+      let tagName = await button.evaluate((element) => element.tagName);
+
+      return {
+        backgroundColor,
+        tagName,
+        text
+      };
+    }
+  },
+  {
     id: 'react-aria-components-menu--menu-example',
     async run(page) {
       let items = page.locator('[role^="menuitem"]');

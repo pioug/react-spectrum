@@ -1,7 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {Button} from '@vue-spectrum/button';
 import {VueTooltipTrigger} from '@vue-spectrum/tooltip';
-import {ref} from 'vue';
+import {h, ref} from 'vue';
 import '../../../react-aria-components/stories/button-pending.css';
 import '../../../react-aria-components/stories/button-ripple.css';
 
@@ -217,8 +217,18 @@ export const ButtonRender: Story = {
     components: {
       Button
     },
+    setup() {
+      let renderButton = (props: Record<string, unknown>, children: unknown) => h('button', {
+        ...props,
+        style: 'background: red;'
+      }, children);
+
+      return {
+        renderButton
+      };
+    },
     template: `
-      <Button style="background: red;">
+      <Button :render="renderButton">
         Testing
       </Button>
     `
