@@ -19,7 +19,7 @@
 ## Gap List
 
 1. Audit popover/listbox composition parity and render-prop semantics.
-2. Audit async loading, virtualization, and IME behavior parity.
+2. Audit virtualization and dynamic async-loading parity (`VirtualizedComboBox`, `AsyncVirtualizedDynamicCombobox`).
 3. Audit multi-select combo box semantics and tag integration parity.
 
 ## Fixes Applied
@@ -39,6 +39,11 @@
    - `MultiSelectComboBox`
 2. Replaced the components-layer combobox wrapper with the richer `@vue-spectrum/combobox` implementation to align base input/trigger/popup combobox structure with React contracts.
 3. Fixed `WithCreateOption` Vue story template parsing and moved create-option list derivation into `setup()` computed state for deterministic behavior parity execution.
+4. Added behavior-gate coverage for core combobox stories:
+   - `react-aria-components-combobox--combo-box-example`
+   - `react-aria-components-combobox--combo-box-ime-example`
+   - `react-aria-components-combobox--combo-box-async-loading-example`
+   - `react-aria-components-combobox--with-create-option`
 
 ## Tests
 
@@ -46,12 +51,12 @@
   - `yarn workspace vue-spectrum-starter build-storybook`
   - `node scripts/storybook-parity-export-manifest.mjs ...`
   - `yarn storybook:parity:manifest:compare`
-  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --scenario-ids react-aria-components-combobox--combo-box-example,react-aria-components-combobox--with-create-option --output-dir storybook-parity/catalog` (2/2 passing)
-  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (21/21 passing)
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --scenario-ids react-aria-components-combobox--combo-box-example,react-aria-components-combobox--combo-box-ime-example,react-aria-components-combobox--combo-box-async-loading-example,react-aria-components-combobox--with-create-option --output-dir storybook-parity/catalog` (4/4 passing)
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (23/23 passing)
 - Manual: pending
 
 ## Status
 
 - Open items: source-level behavior parity audit.
-- Risks: advanced combo behaviors (virtualization, async loading transitions, multi-select semantics) still require source-level parity auditing.
+- Risks: advanced combo behaviors (virtualization, async dynamic loading, multi-select tag integration) still require source-level parity auditing.
 - Closure criteria: React-source behavior gaps fixed and tested.

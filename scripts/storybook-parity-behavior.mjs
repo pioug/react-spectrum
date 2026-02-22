@@ -88,6 +88,45 @@ async function waitForFirstVisibleLocator(page, selectors, timeout = 10000) {
   return null;
 }
 
+async function clickNearestComboboxTrigger(input, page) {
+  let clicked = await input.evaluate((element) => {
+    let node = element;
+    while (node && node !== document.body) {
+      let parent = node.parentElement;
+      if (!parent) {
+        break;
+      }
+
+      let candidate = parent.querySelector('button[aria-haspopup="listbox"]');
+      if (candidate instanceof HTMLButtonElement) {
+        candidate.click();
+        return true;
+      }
+
+      node = parent;
+    }
+
+    return false;
+  });
+
+  if (clicked) {
+    return true;
+  }
+
+  let fallback = await waitForFirstVisibleLocator(page, [
+    'button[aria-haspopup="listbox"]',
+    'button:has-text("▼")',
+    'button:has-text("▾")'
+  ], 5000);
+
+  if (!fallback) {
+    return false;
+  }
+
+  await fallback.click();
+  return true;
+}
+
 function checkedExtractorScript() {
   return (el) => {
     if (el instanceof HTMLInputElement) {
@@ -407,17 +446,10 @@ let scenarios = [
         throw new Error('Unable to find combobox reproduction input.');
       }
 
-      let trigger = await waitForFirstVisibleLocator(page, [
-        'button[aria-haspopup="listbox"]',
-        'button:has-text("▼")',
-        'button:has-text("▾")'
-      ], 10000);
-
-      if (!trigger) {
-        throw new Error('Unable to find combobox reproduction trigger button.');
+      let triggerClicked = await clickNearestComboboxTrigger(input, page);
+      if (!triggerClicked) {
+        throw new Error('Unable to click combobox reproduction trigger button.');
       }
-
-      await trigger.click();
       await page.waitForTimeout(120);
 
       let combobox = await firstVisibleLocator(page, [
@@ -449,17 +481,10 @@ let scenarios = [
         throw new Error('Unable to find combobox input.');
       }
 
-      let trigger = await waitForFirstVisibleLocator(page, [
-        'button[aria-haspopup="listbox"]',
-        'button:has-text("▼")',
-        'button:has-text("▾")'
-      ], 10000);
-
-      if (!trigger) {
-        throw new Error('Unable to find combobox trigger button.');
+      let triggerClicked = await clickNearestComboboxTrigger(input, page);
+      if (!triggerClicked) {
+        throw new Error('Unable to click combobox trigger button.');
       }
-
-      await trigger.click();
       await page.waitForTimeout(120);
 
       let optionCountAfterOpen = await page.locator('[role="option"]').count();
@@ -496,17 +521,10 @@ let scenarios = [
       await input.fill('Wolf');
       await page.waitForTimeout(80);
 
-      let trigger = await waitForFirstVisibleLocator(page, [
-        'button[aria-haspopup="listbox"]',
-        'button:has-text("▼")',
-        'button:has-text("▾")'
-      ], 10000);
-
-      if (!trigger) {
-        throw new Error('Unable to find with-create-option combobox trigger button.');
+      let triggerClicked = await clickNearestComboboxTrigger(input, page);
+      if (!triggerClicked) {
+        throw new Error('Unable to click with-create-option combobox trigger button.');
       }
-
-      await trigger.click();
       await page.waitForTimeout(120);
 
       let createOptionCount = await page.locator('text=Create "Wolf"').count();
@@ -516,6 +534,64 @@ let scenarios = [
       return {
         ariaExpandedAfterOpen,
         createOptionCount,
+        optionCountAfterOpen
+      };
+    }
+  },
+  {
+    id: 'react-aria-components-combobox--combo-box-ime-example',
+    async run(page) {
+      let input = await waitForFirstVisibleLocator(page, [
+        'input[role="combobox"]',
+        'input[aria-haspopup="listbox"]',
+        'input'
+      ], 10000);
+
+      if (!input) {
+        throw new Error('Unable to find IME combobox input.');
+      }
+
+      let triggerClicked = await clickNearestComboboxTrigger(input, page);
+      if (!triggerClicked) {
+        throw new Error('Unable to click IME combobox trigger button.');
+      }
+      await page.waitForTimeout(120);
+
+      let optionCountAfterOpen = await page.locator('[role="option"]').count();
+      let containsJapaneseOption = await page.locator('text=日本語').count();
+
+      return {
+        containsJapaneseOption,
+        optionCountAfterOpen
+      };
+    }
+  },
+  {
+    id: 'react-aria-components-combobox--combo-box-async-loading-example',
+    async run(page) {
+      let input = await waitForFirstVisibleLocator(page, [
+        'input[role="combobox"]',
+        'input[aria-haspopup="listbox"]',
+        'input'
+      ], 10000);
+
+      if (!input) {
+        throw new Error('Unable to find async combobox input.');
+      }
+
+      await page.waitForTimeout(1000);
+      await input.fill('f');
+      await page.waitForTimeout(420);
+
+      let optionCountAfterOpen = await page.locator('[role="option"]').count();
+      let firstOptionText = optionCountAfterOpen > 0
+        ? (await page.locator('[role="option"]').first().innerText()).replace(/\s+/g, ' ').trim()
+        : null;
+      let ariaExpandedAfterInput = await input.getAttribute('aria-expanded');
+
+      return {
+        ariaExpandedAfterInput,
+        firstOptionText,
         optionCountAfterOpen
       };
     }
