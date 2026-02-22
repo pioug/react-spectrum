@@ -437,6 +437,50 @@ let scenarios = [
     }
   },
   {
+    id: 'react-aria-components-combobox--combo-box-example',
+    async run(page) {
+      let input = await waitForFirstVisibleLocator(page, [
+        'input[role="combobox"]',
+        'input[aria-haspopup="listbox"]',
+        'input'
+      ], 10000);
+
+      if (!input) {
+        throw new Error('Unable to find combobox input.');
+      }
+
+      let trigger = await waitForFirstVisibleLocator(page, [
+        'button[aria-haspopup="listbox"]',
+        'button:has-text("▼")',
+        'button:has-text("▾")'
+      ], 10000);
+
+      if (!trigger) {
+        throw new Error('Unable to find combobox trigger button.');
+      }
+
+      await trigger.click();
+      await page.waitForTimeout(120);
+
+      let optionCountAfterOpen = await page.locator('[role="option"]').count();
+      let firstOptionText = optionCountAfterOpen > 0
+        ? (await page.locator('[role="option"]').first().innerText()).replace(/\s+/g, ' ').trim()
+        : null;
+      let ariaExpandedAfterOpen = await input.getAttribute('aria-expanded');
+
+      await input.press('Escape');
+      await page.waitForTimeout(120);
+      let ariaExpandedAfterEscape = await input.getAttribute('aria-expanded');
+
+      return {
+        ariaExpandedAfterEscape,
+        ariaExpandedAfterOpen,
+        firstOptionText,
+        optionCountAfterOpen
+      };
+    }
+  },
+  {
     id: 'react-aria-components-menu--menu-example',
     async run(page) {
       let items = page.locator('[role^="menuitem"]');

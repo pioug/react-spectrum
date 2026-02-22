@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-22T00:33:17.564Z",
+  "generatedAt": "2026-02-22T00:37:04.437Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
-  "totalScenarios": 19,
-  "passingScenarios": 19,
+  "totalScenarios": 20,
+  "passingScenarios": 20,
   "failingScenarios": 0,
   "ok": true,
   "results": [
@@ -191,6 +191,24 @@
         "ariaExpanded": "true",
         "longOptionCount": 1,
         "optionCount": 6
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-combobox--combo-box-example",
+      "ok": true,
+      "react": {
+        "ariaExpandedAfterEscape": "false",
+        "ariaExpandedAfterOpen": "true",
+        "firstOptionText": "Foo",
+        "optionCountAfterOpen": 4
+      },
+      "vue": {
+        "ariaExpandedAfterEscape": "false",
+        "ariaExpandedAfterOpen": "true",
+        "firstOptionText": "Foo",
+        "optionCountAfterOpen": 4
       },
       "diff": {},
       "error": null
