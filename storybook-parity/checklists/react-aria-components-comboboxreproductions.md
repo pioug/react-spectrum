@@ -25,6 +25,8 @@
 
 1. Added Vue story file with React-matching title/exports:
    - `ComboBoxReproductionExample`
+2. Ported React reproduction-specific style source into Vue story:
+   - `packages/react-aria-components/stories/combobox-reproductions.css`
 
 ## Tests
 
@@ -33,6 +35,7 @@
   - `yarn build:vue:storybook`
   - `node scripts/storybook-parity-export-manifest.mjs ...`
   - `node scripts/storybook-parity-compare-manifests.mjs`
+  - `node scripts/storybook-parity-style-sources.mjs --output-dir storybook-parity/catalog` (pass, 0 missing style ports)
 - Manual: pending
 
 ## Status

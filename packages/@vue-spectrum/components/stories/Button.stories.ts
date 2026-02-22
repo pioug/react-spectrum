@@ -1,6 +1,8 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {Button} from '@vue-spectrum/button';
 import {ref} from 'vue';
+import '../../../react-aria-components/stories/button-pending.css';
+import '../../../react-aria-components/stories/button-ripple.css';
 
 const meta = {
   title: 'React Aria Components/Button',

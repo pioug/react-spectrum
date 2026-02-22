@@ -1,0 +1,404 @@
+{
+  "generatedAt": "2026-02-22T00:06:31.761Z",
+  "reactStoriesGlob": "packages/react-aria-components/stories/*.stories.tsx",
+  "vueStoriesGlob": "packages/@vue-spectrum/components/stories/*.stories.ts",
+  "vuePreviewFile": "starters/vue/.storybook/preview.ts",
+  "reactStoryCount": 45,
+  "vueStoryCount": 45,
+  "reactCssImportCount": 69,
+  "vueGlobalImportCount": 3,
+  "vueStoryImportCount": 3,
+  "vueGlobalStyleSources": [
+    "@vue-spectrum/components/styles.css",
+    "packages/react-aria-components/example/index.css",
+    "packages/react-aria-components/stories/styles.css"
+  ],
+  "missing": [],
+  "coverage": [
+    {
+      "story": "animations",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "autocomplete",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "breadcrumbs",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "button",
+      "reactImports": [
+        "packages/react-aria-components/stories/button-pending.css",
+        "packages/react-aria-components/stories/button-ripple.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 3,
+      "missingCount": 0
+    },
+    {
+      "story": "calendar",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "checkbox",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "checkboxgroup",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "colorarea",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "colorfield",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "colorpicker",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "colorslider",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "colorswatch",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "colorwheel",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "combobox",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "comboboxreproductions",
+      "reactImports": [
+        "packages/react-aria-components/stories/combobox-reproductions.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "datefield",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "datepicker",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "disclosure",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "disclosuregroup",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "dropzone",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "filetrigger",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "form",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "gridlist",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "link",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "listbox",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "menu",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "meter",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "modal",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "numberfield",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "popover",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "progressbar",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "radiogroup",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "searchfield",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "select",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "slider",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "switch",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "table",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "tabs",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "taggroup",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "textfield",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "timefield",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "togglebutton",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "toolbar",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    },
+    {
+      "story": "tooltip",
+      "reactImports": [
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 1,
+      "missingCount": 0
+    },
+    {
+      "story": "tree",
+      "reactImports": [
+        "packages/react-aria-components/example/index.css",
+        "packages/react-aria-components/stories/styles.css"
+      ],
+      "coveredCount": 2,
+      "missingCount": 0
+    }
+  ],
+  "ok": true
+}

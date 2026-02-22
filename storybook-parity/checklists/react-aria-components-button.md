@@ -36,6 +36,9 @@
    - `title: 'React Aria Components/Button'`
    - exports: `ButtonExample`, `PendingButton`, `PendingButtonTooltip`, `RippleButtonExample`, `ButtonPerformance`, `ButtonRender`
 2. Verified Storybook id parity for this group via manifest export (6 ids).
+3. Ported React story style sources used by button parity fixtures into the Vue story:
+   - `packages/react-aria-components/stories/button-pending.css`
+   - `packages/react-aria-components/stories/button-ripple.css`
 
 ## Tests
 
@@ -43,6 +46,7 @@
   - `yarn workspace vue-spectrum-starter build-storybook`
   - `node scripts/storybook-parity-export-manifest.mjs --source-url http://127.0.0.1:6106 --include-id-regex '^react-aria-components-' --output-path storybook-parity/manifest/vue-story-manifest.json`
   - `yarn storybook:parity:manifest:compare` (expected fail overall while scope is incomplete; confirms matched ids)
+  - `node scripts/storybook-parity-style-sources.mjs --output-dir storybook-parity/catalog` (pass, 0 missing style ports)
 - Manual: pending
 
 ## Status
