@@ -481,6 +481,46 @@ let scenarios = [
     }
   },
   {
+    id: 'react-aria-components-combobox--with-create-option',
+    async run(page) {
+      let input = await waitForFirstVisibleLocator(page, [
+        'input[role="combobox"]',
+        'input[aria-haspopup="listbox"]',
+        'input'
+      ], 10000);
+
+      if (!input) {
+        throw new Error('Unable to find with-create-option combobox input.');
+      }
+
+      await input.fill('Wolf');
+      await page.waitForTimeout(80);
+
+      let trigger = await waitForFirstVisibleLocator(page, [
+        'button[aria-haspopup="listbox"]',
+        'button:has-text("▼")',
+        'button:has-text("▾")'
+      ], 10000);
+
+      if (!trigger) {
+        throw new Error('Unable to find with-create-option combobox trigger button.');
+      }
+
+      await trigger.click();
+      await page.waitForTimeout(120);
+
+      let createOptionCount = await page.locator('text=Create "Wolf"').count();
+      let optionCountAfterOpen = await page.locator('[role="option"]').count();
+      let ariaExpandedAfterOpen = await input.getAttribute('aria-expanded');
+
+      return {
+        ariaExpandedAfterOpen,
+        createOptionCount,
+        optionCountAfterOpen
+      };
+    }
+  },
+  {
     id: 'react-aria-components-menu--menu-example',
     async run(page) {
       let items = page.locator('[role^="menuitem"]');

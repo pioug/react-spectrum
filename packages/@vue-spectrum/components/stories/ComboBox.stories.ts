@@ -1,6 +1,6 @@
 import type {Meta, StoryFn, StoryObj} from '@storybook/vue3-vite';
 import {VueComboBox} from '@vue-spectrum/components';
-import {ref} from 'vue';
+import {computed, ref} from 'vue';
 
 const baseOptions = ['Foo', 'Bar', 'Baz', 'Google'];
 const imeOptions = ['にほんご', 'ニホンゴ', 'ﾆﾎﾝｺﾞ', '日本語', '123', '１２３'];
@@ -165,6 +165,10 @@ export function WithCreateOption() {
     setup() {
       let value = ref('');
       let options = ref(['Aardvark', 'Cat', 'Dog', 'Kangaroo', 'Panda', 'Snake']);
+      let displayOptions = computed(() => [
+        ...(value.value ? [`Create "${value.value}"`] : []),
+        ...options.value
+      ]);
 
       let addOption = () => {
         let next = value.value.trim();
@@ -176,6 +180,7 @@ export function WithCreateOption() {
 
       return {
         addOption,
+        displayOptions,
         options,
         value
       };
@@ -184,10 +189,7 @@ export function WithCreateOption() {
       <div style="display: flex; flex-direction: column; gap: 8px; max-width: 320px;">
         <VueComboBox
           v-model="value"
-          :options="[
-            ...(value ? [\`Create \"\${value}\"\`] : []),
-            ...options
-          ]"
+          :options="displayOptions"
           label="Favorite Animal" />
         <button type="button" @click="addOption">Add option</button>
       </div>

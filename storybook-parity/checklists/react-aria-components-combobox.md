@@ -21,7 +21,6 @@
 1. Audit popover/listbox composition parity and render-prop semantics.
 2. Audit async loading, virtualization, and IME behavior parity.
 3. Audit multi-select combo box semantics and tag integration parity.
-4. Audit create-option behavior parity.
 
 ## Fixes Applied
 
@@ -39,6 +38,7 @@
    - `ComboBoxListBoxItemWithAriaLabel`
    - `MultiSelectComboBox`
 2. Replaced the components-layer combobox wrapper with the richer `@vue-spectrum/combobox` implementation to align base input/trigger/popup combobox structure with React contracts.
+3. Fixed `WithCreateOption` Vue story template parsing and moved create-option list derivation into `setup()` computed state for deterministic behavior parity execution.
 
 ## Tests
 
@@ -46,8 +46,8 @@
   - `yarn workspace vue-spectrum-starter build-storybook`
   - `node scripts/storybook-parity-export-manifest.mjs ...`
   - `yarn storybook:parity:manifest:compare`
-  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --scenario-ids react-aria-components-combobox--combo-box-example --output-dir storybook-parity/catalog` (pass)
-  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (20/20 passing)
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --scenario-ids react-aria-components-combobox--combo-box-example,react-aria-components-combobox--with-create-option --output-dir storybook-parity/catalog` (2/2 passing)
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (21/21 passing)
 - Manual: pending
 
 ## Status
