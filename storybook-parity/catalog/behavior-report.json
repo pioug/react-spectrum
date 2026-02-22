@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-22T00:27:32.387Z",
+  "generatedAt": "2026-02-22T00:33:17.564Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
-  "totalScenarios": 18,
-  "passingScenarios": 18,
+  "totalScenarios": 19,
+  "passingScenarios": 19,
   "failingScenarios": 0,
   "ok": true,
   "results": [
@@ -175,6 +175,22 @@
         "backgroundColor": "rgb(255, 0, 0)",
         "tagName": "BUTTON",
         "text": "Testing"
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-comboboxreproductions--combo-box-reproduction-example",
+      "ok": true,
+      "react": {
+        "ariaExpanded": "true",
+        "longOptionCount": 1,
+        "optionCount": 6
+      },
+      "vue": {
+        "ariaExpanded": "true",
+        "longOptionCount": 1,
+        "optionCount": 6
       },
       "diff": {},
       "error": null

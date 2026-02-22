@@ -396,6 +396,47 @@ let scenarios = [
     }
   },
   {
+    id: 'react-aria-components-comboboxreproductions--combo-box-reproduction-example',
+    async run(page) {
+      let input = await waitForFirstVisibleLocator(page, [
+        'input[role="combobox"]',
+        'input'
+      ], 10000);
+
+      if (!input) {
+        throw new Error('Unable to find combobox reproduction input.');
+      }
+
+      let trigger = await waitForFirstVisibleLocator(page, [
+        'button[aria-haspopup="listbox"]',
+        'button:has-text("▼")',
+        'button:has-text("▾")'
+      ], 10000);
+
+      if (!trigger) {
+        throw new Error('Unable to find combobox reproduction trigger button.');
+      }
+
+      await trigger.click();
+      await page.waitForTimeout(120);
+
+      let combobox = await firstVisibleLocator(page, [
+        '[role="combobox"]',
+        'input[aria-haspopup="listbox"]',
+        'input'
+      ]);
+      let ariaExpanded = combobox ? await combobox.getAttribute('aria-expanded') : null;
+      let optionCount = await page.locator('[role="option"]').count();
+      let longOptionCount = await page.locator('text=Dooooooooooooooooooooooooooooooooog').count();
+
+      return {
+        ariaExpanded,
+        longOptionCount,
+        optionCount
+      };
+    }
+  },
+  {
     id: 'react-aria-components-menu--menu-example',
     async run(page) {
       let items = page.locator('[role^="menuitem"]');

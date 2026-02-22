@@ -14,6 +14,7 @@
 
 - `packages/@vue-spectrum/components/stories/ComboBox.stories.ts`
 - `packages/@vue-spectrum/components/src/components/VueComboBox.ts`
+- `packages/@vue-spectrum/combobox/src/index.ts`
 
 ## Gap List
 
@@ -37,6 +38,7 @@
    - `WithCreateOption`
    - `ComboBoxListBoxItemWithAriaLabel`
    - `MultiSelectComboBox`
+2. Replaced the components-layer combobox wrapper with the richer `@vue-spectrum/combobox` implementation to align base input/trigger/popup combobox structure with React contracts.
 
 ## Tests
 
@@ -49,5 +51,5 @@
 ## Status
 
 - Open items: source-level behavior parity audit.
-- Risks: Vue combobox is currently a simplified datalist-driven surface vs React combobox contracts.
+- Risks: advanced combo behaviors (virtualization, async loading transitions, multi-select semantics) still require source-level parity auditing.
 - Closure criteria: React-source behavior gaps fixed and tested.

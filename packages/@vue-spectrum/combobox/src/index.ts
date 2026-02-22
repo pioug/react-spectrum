@@ -190,7 +190,16 @@ export const ComboBox = defineComponent({
       classNames(inputGroupStyles, 'spectrum-FieldButton')
     ));
 
-    let noResultsHidden = computed(() => !isExpanded.value || props.options.length > 0);
+    let filteredOptions = computed(() => {
+      let query = props.modelValue.trim().toLowerCase();
+      if (!query) {
+        return props.options;
+      }
+
+      return props.options.filter((option) => option.toLowerCase().includes(query));
+    });
+
+    let noResultsHidden = computed(() => !isExpanded.value || filteredOptions.value.length > 0);
 
     let emitValue = (value: string) => {
       emit('update:modelValue', value);
@@ -213,6 +222,11 @@ export const ComboBox = defineComponent({
 
       isExpanded.value = false;
       emit('close');
+    };
+
+    let selectOption = (option: string) => {
+      emitValue(option);
+      closeMenu();
     };
 
     return () => h('label', {
@@ -247,14 +261,15 @@ export const ComboBox = defineComponent({
             id: inputId.value,
             class: [inputClassName.value, 'vs-combobox__input'],
             type: 'text',
-            list: listId.value,
             value: props.modelValue,
             placeholder: props.placeholder || undefined,
             disabled: isDisabled.value,
             readonly: props.isReadOnly || undefined,
             name: resolvedFormValue.value === 'text' ? props.name : undefined,
             form: props.form || undefined,
+            role: 'combobox',
             'aria-haspopup': 'listbox',
+            'aria-controls': listId.value,
             'aria-expanded': isExpanded.value ? 'true' : 'false',
             'aria-invalid': isInvalid.value ? 'true' : undefined,
             'aria-label': ariaLabel.value,
@@ -263,6 +278,7 @@ export const ComboBox = defineComponent({
             onInput: (event: Event) => {
               let target = event.currentTarget as HTMLInputElement | null;
               emitValue(target?.value ?? '');
+              openMenu();
             },
             onFocus: (event: FocusEvent) => {
               isFocused.value = true;
@@ -300,6 +316,7 @@ export const ComboBox = defineComponent({
           type: 'button',
           disabled: isDisabled.value,
           'aria-haspopup': 'listbox',
+          'aria-controls': listId.value,
           'aria-label': ariaLabel.value,
           'aria-labelledby': ariaLabelledBy.value,
           'aria-expanded': isExpanded.value ? 'true' : 'false',
@@ -331,9 +348,23 @@ export const ComboBox = defineComponent({
           h('span', {
             class: classNames(inputGroupStyles, 'spectrum-Dropdown-chevron'),
             'aria-hidden': 'true'
-          }, '\u25be')
+          }, '\u25bc')
         ]),
-        h('datalist', {id: listId.value}, props.options.map((option) => h('option', {value: option}, option)))
+        isExpanded.value
+          ? h('div', {
+            id: listId.value,
+            role: 'listbox',
+            class: ['vs-combobox__listbox', 'react-aria-ListBox']
+          }, filteredOptions.value.map((option) => h('div', {
+            key: option,
+            role: 'option',
+            class: ['vs-combobox__option', 'react-aria-ListBoxItem'],
+            onMousedown: (event: MouseEvent) => {
+              event.preventDefault();
+              selectOption(option);
+            }
+          }, option)))
+          : null
       ]),
       props.name && resolvedFormValue.value === 'key'
         ? h('input', {

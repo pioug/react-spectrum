@@ -17,9 +17,8 @@
 
 ## Gap List
 
-1. Audit reproduction-case layout parity, including long option overflow behavior.
-2. Audit trigger/input/button composition parity.
-3. Audit popup/listbox interaction parity.
+1. Audit long-option visual overflow parity against React CSS (line wrapping/truncation/scroll behavior).
+2. Audit keyboard navigation detail parity for popup/listbox interactions.
 
 ## Fixes Applied
 
@@ -27,6 +26,11 @@
    - `ComboBoxReproductionExample`
 2. Ported React reproduction-specific style source into Vue story:
    - `packages/react-aria-components/stories/combobox-reproductions.css`
+3. Replaced `@vue-spectrum/components` combobox wrapper implementation with `@vue-spectrum/combobox` base component to align with React structure:
+   - trigger button rendered in control
+   - input exposes combobox ARIA contract (`role="combobox"`, `aria-expanded`, `aria-controls`)
+   - popup listbox/option structure rendered when expanded
+4. Added behavior-gate scenario `react-aria-components-comboboxreproductions--combo-box-reproduction-example` covering trigger-open semantics and long-option presence parity.
 
 ## Tests
 
@@ -36,10 +40,12 @@
   - `node scripts/storybook-parity-export-manifest.mjs ...`
   - `node scripts/storybook-parity-compare-manifests.mjs`
   - `node scripts/storybook-parity-style-sources.mjs --output-dir storybook-parity/catalog` (pass, 0 missing style ports)
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --scenario-ids react-aria-components-comboboxreproductions--combo-box-reproduction-example --output-dir storybook-parity/catalog` (pass)
+  - `node scripts/storybook-parity-behavior.mjs --react-url http://127.0.0.1:9003 --vue-url http://127.0.0.1:6106 --output-dir storybook-parity/catalog` (19/19 passing)
 - Manual: pending
 
 ## Status
 
-- Open items: source-level interaction and overflow behavior audit.
-- Risks: current Vue combobox surface is datalist-based.
+- Open items: keyboard-detail and long-option visual overflow parity audit.
+- Risks: popup behavior is parity-aligned structurally but still needs focused keyboard-detail verification.
 - Closure criteria: React-source behavior gaps resolved and parity checks pass.
