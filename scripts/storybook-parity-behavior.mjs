@@ -240,7 +240,36 @@ let scenarios = [
         throw new Error('Unable to find button example control.');
       }
 
+      let readState = async () => ({
+        dataFocusVisible: await button.getAttribute('data-focus-visible'),
+        dataHovered: await button.getAttribute('data-hovered'),
+        dataPressed: await button.getAttribute('data-pressed')
+      });
+
+      let initialState = await readState();
+      let box = await button.boundingBox();
+      if (box) {
+        await page.mouse.move(box.x + Math.max(1, Math.floor(box.width / 2)), box.y + Math.max(1, Math.floor(box.height / 2)));
+      }
+      await page.waitForTimeout(40);
+      let stateAfterHover = await readState();
+      await page.keyboard.press('Tab');
+      await page.waitForTimeout(40);
+      let stateAfterKeyboardFocus = await readState();
+      await page.keyboard.down('Space');
+      await page.waitForTimeout(40);
+      let stateDuringSpacePress = await readState();
+      await page.keyboard.up('Space');
+      await page.waitForTimeout(40);
+      let stateAfterSpaceRelease = await readState();
+
       return {
+        focusVisibleAfterKeyboard: stateAfterKeyboardFocus.dataFocusVisible === 'true',
+        hoveredAfterHover: stateAfterHover.dataHovered === 'true',
+        hoveredAfterSpaceRelease: stateAfterSpaceRelease.dataHovered === 'true',
+        initialHovered: initialState.dataHovered === 'true',
+        initialPressed: initialState.dataPressed === 'true',
+        pressedDuringSpacePress: stateDuringSpacePress.dataPressed === 'true',
         role: await button.getAttribute('role'),
         tagName: await button.evaluate((element) => element.tagName),
         text: (await button.innerText()).replace(/\s+/g, ' ').trim()

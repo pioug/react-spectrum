@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-02-22T00:19:49.664Z",
+  "generatedAt": "2026-02-22T00:27:32.387Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
   "totalScenarios": 18,
@@ -93,11 +93,23 @@
       "id": "react-aria-components-button--button-example",
       "ok": true,
       "react": {
+        "focusVisibleAfterKeyboard": true,
+        "hoveredAfterHover": true,
+        "hoveredAfterSpaceRelease": true,
+        "initialHovered": false,
+        "initialPressed": false,
+        "pressedDuringSpacePress": true,
         "role": null,
         "tagName": "BUTTON",
         "text": "Press me"
       },
       "vue": {
+        "focusVisibleAfterKeyboard": true,
+        "hoveredAfterHover": true,
+        "hoveredAfterSpaceRelease": true,
+        "initialHovered": false,
+        "initialPressed": false,
+        "pressedDuringSpacePress": true,
         "role": null,
         "tagName": "BUTTON",
         "text": "Press me"

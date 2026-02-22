@@ -64,6 +64,7 @@ function chainHandlers<EventType>(userHandler: EventHandler<EventType>, ownHandl
 function useInteractionState(isDisabled: ComputedRef<boolean>) {
   ensureGlobalModalityListeners();
 
+  let isFocused = ref(false);
   let isHovered = ref(false);
   let isPressed = ref(false);
   let isFocusVisible = ref(false);
@@ -114,6 +115,7 @@ function useInteractionState(isDisabled: ComputedRef<boolean>) {
   };
 
   let onFocus = (event: FocusEvent) => {
+    isFocused.value = true;
     let target = getEventTarget(event);
     if (target instanceof HTMLElement && target.matches(':focus-visible')) {
       isFocusVisible.value = true;
@@ -124,11 +126,13 @@ function useInteractionState(isDisabled: ComputedRef<boolean>) {
   };
 
   let onBlur = () => {
+    isFocused.value = false;
     isPressed.value = false;
     isFocusVisible.value = false;
   };
 
   return {
+    isFocused,
     isHovered,
     isPressed,
     isFocusVisible,
@@ -355,6 +359,11 @@ export const VueButton = defineComponent({
         attrs.class
       ],
       'data-vac': '',
+      'data-focused': buttonState.interaction.isFocused.value ? 'true' : undefined,
+      'data-focus-visible': buttonState.interaction.isFocusVisible.value ? 'true' : undefined,
+      'data-hovered': buttonState.interaction.isHovered.value ? 'true' : undefined,
+      'data-pressed': buttonState.interaction.isPressed.value ? 'true' : undefined,
+      'data-disabled': buttonState.isDisabled.value ? 'true' : undefined,
       'data-static-color': resolvedStaticColor.value || undefined,
       'data-style': resolvedStyle.value,
       'data-variant': resolvedVariant.value

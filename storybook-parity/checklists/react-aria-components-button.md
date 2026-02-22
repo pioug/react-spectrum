@@ -24,7 +24,7 @@
 
 ## Gap List
 
-1. Audit event and interaction parity for press/hover/focus states and emitted payloads.
+1. Audit event payload parity (`onPress`/`onClick` detail shape and cancellation semantics) between React and Vue button stories.
 
 ## Fixes Applied
 
@@ -41,6 +41,7 @@
    - pending tooltip story now suppresses tooltip while pending to match React behavior.
    - ripple story now emits click-position ripple element using the React ripple class contract.
 5. Added `render` prop support to `@vue-spectrum/button` and updated `ButtonRender` story to use custom renderer callback, matching React render-override semantics.
+6. Added React-style interaction state data attributes to `@vue-spectrum/button` (`data-hovered`, `data-pressed`, `data-focus-visible`, `data-focused`, `data-disabled`) and verified parity via behavior gate.
 
 ## Tests
 
@@ -55,6 +56,6 @@
 
 ## Status
 
-- Open items: press-event payload semantics and hover/focus state parity deep-audit.
+- Open items: press-event payload semantics (`onPress` parity) deep-audit.
 - Risks: button interaction payloads are not yet behavior-gated event-for-event.
 - Closure criteria: React-source-audited behavior gaps resolved in Vue implementation and covered by tests.
