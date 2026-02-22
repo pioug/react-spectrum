@@ -2,7 +2,7 @@
 
 Status: active
 Owner: Vue migration workstream
-Last updated: 2026-02-21
+Last updated: 2026-02-22
 
 ## Progress
 
@@ -14,6 +14,10 @@ Last updated: 2026-02-21
 - Manifest diff gate scaffolded on 2026-02-21 via `scripts/storybook-parity-compare-manifests.mjs`.
 - First identity-matched Vue stories landed for `React Aria Components/TextField` and `React Aria Components/Button` (8 ids matched, 195 remaining in current scoped manifest report).
 - `scripts/storybook-parity-check.mjs` now validates source-audit checklists before behavior/catalog gates.
+- Story mapping spec is now enforced as strict id identity (`React story id === Vue story id`) by catalog/manifest gates.
+- Visual zero-diff gate added on 2026-02-22 via `scripts/storybook-parity-visual.mjs` and wired into `scripts/storybook-parity-check.mjs`.
+- Legacy pre-step behavior command (`yarn workspace vue-spectrum-starter test`) removed from parity check flow.
+- Current scoped manifest identity is `203/203` with no missing or extra ids.
 
 ## Goal
 
@@ -74,14 +78,14 @@ Recreate the Vue Storybook so it mirrors the React Storybook structure and behav
   - no per-story CSS overrides for parity
   - no Vue-only component CSS that changes visual behavior beyond what exists in React style sources
 
-## Current baseline (2026-02-21)
+## Current baseline (2026-02-22)
 
 - React stories:
   - `react-aria-components`: 45
   - `@react-spectrum/*`: 166
   - `@react-aria/*`: 29
   - `@react-stately/*`: 1
-- Vue stories currently wired in Storybook: 2 (`Button`, `TextField`)
+- Vue stories currently wired in Storybook for the parity scope: 203 (id identity with React manifest)
 
 ## Execution plan
 
@@ -213,7 +217,7 @@ Acceptance criteria:
 
 ## Immediate next actions
 
-1. Generate a React->Vue story mapping file from `index.json`.
-2. Scaffold all missing Vue story files with matching titles/exports.
-3. Build the parity runner and make it the only visual gate.
-4. Wire `yarn storybook:parity:check` into CI as required.
+1. Run full visual parity (`yarn storybook:parity:visual`) and rank failing stories by `changedPixels`.
+2. For top failing stories, perform React-source vs Vue-source audits and fix behavior/style gaps in Vue internals.
+3. Expand behavior scenarios where visual diffs indicate likely behavior mismatches.
+4. Wire `yarn storybook:parity:check` (including visual gate) into required CI checks.

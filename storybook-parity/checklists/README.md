@@ -16,6 +16,7 @@ Validation:
 
 - Run `yarn storybook:parity:checklists:validate` to ensure checklist structure is complete.
 - Run `yarn storybook:parity:behavior` (with React/Vue Storybook servers running) to validate baseline behavior parity scenarios.
+- Run `yarn storybook:parity:visual` (with React/Vue Storybook servers running) to enforce strict visual parity (`changedPixels = 0`).
 
 Style provenance rule:
 
