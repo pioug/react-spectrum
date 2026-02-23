@@ -28,20 +28,18 @@ export const ModalExample: Story = {
       };
     },
     template: `
-      <div>
-        <VueButton @click="open = true">Open modal</VueButton>
-        <VueDialog :open="open" title="Sign up" @close="close">
-          <form style="display: flex; flex-direction: column; gap: 8px;">
-            <label>
-              First Name: <input placeholder="John">
-            </label>
-            <label>
-              Last Name: <input placeholder="Smith">
-            </label>
-            <VueButton @click="close">Submit</VueButton>
-          </form>
-        </VueDialog>
-      </div>
+      <button class="react-aria-Button" type="button" @click="open = true">Open modal</button>
+      <VueDialog :open="open" title="Sign up" @close="close">
+        <form style="display: flex; flex-direction: column; gap: 8px;">
+          <label>
+            First Name: <input placeholder="John">
+          </label>
+          <label>
+            Last Name: <input placeholder="Smith">
+          </label>
+          <VueButton @click="close">Submit</VueButton>
+        </form>
+      </VueDialog>
     `
   })
 };
@@ -64,15 +62,13 @@ export const InertTestStory: Story = {
       };
     },
     template: `
-      <div>
-        <VueButton @click="open = true">Open modal</VueButton>
-        <VueDialog :open="open" title="Inert test" @close="close">
-          <div style="display: flex; flex-direction: column; gap: 10px;">
-            <VueTextField label="First name" />
-            <VueButton>Combobox Trigger</VueButton>
-          </div>
-        </VueDialog>
-      </div>
+      <button class="react-aria-Button" type="button" @click="open = true">Open modal</button>
+      <VueDialog :open="open" title="Inert test" @close="close">
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <VueTextField label="First name" />
+          <VueButton>Combobox Trigger</VueButton>
+        </div>
+      </VueDialog>
     `
   }),
   parameters: {
@@ -102,12 +98,10 @@ export const DateRangePickerInsideModalStory: Story = {
       };
     },
     template: `
-      <div>
-        <VueButton @click="open = true">Open modal</VueButton>
-        <VueDialog :open="open" title="Date range picker" @close="close">
-          <VueDateRangePicker v-model="range" label="Date range" />
-        </VueDialog>
-      </div>
+      <button class="react-aria-Button" type="button" @click="open = true">Open modal</button>
+      <VueDialog :open="open" title="Date range picker" @close="close">
+        <VueDateRangePicker v-model="range" label="Date range" />
+      </VueDialog>
     `
   }),
   parameters: {
