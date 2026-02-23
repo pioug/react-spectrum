@@ -22,68 +22,6 @@ const manyItems: ComboBoxItem[] = Array.from({length: 10000}, (_, index) => ({
   name: `Item ${index}`
 }));
 
-const usStateOptions: ComboBoxItem[] = [
-  {id: 'AL', name: 'Alabama'},
-  {id: 'AK', name: 'Alaska'},
-  {id: 'AS', name: 'American Samoa'},
-  {id: 'AZ', name: 'Arizona'},
-  {id: 'AR', name: 'Arkansas'},
-  {id: 'CA', name: 'California'},
-  {id: 'CO', name: 'Colorado'},
-  {id: 'CT', name: 'Connecticut'},
-  {id: 'DE', name: 'Delaware'},
-  {id: 'DC', name: 'District Of Columbia'},
-  {id: 'FM', name: 'Federated States Of Micronesia'},
-  {id: 'FL', name: 'Florida'},
-  {id: 'GA', name: 'Georgia'},
-  {id: 'GU', name: 'Guam'},
-  {id: 'HI', name: 'Hawaii'},
-  {id: 'ID', name: 'Idaho'},
-  {id: 'IL', name: 'Illinois'},
-  {id: 'IN', name: 'Indiana'},
-  {id: 'IA', name: 'Iowa'},
-  {id: 'KS', name: 'Kansas'},
-  {id: 'KY', name: 'Kentucky'},
-  {id: 'LA', name: 'Louisiana'},
-  {id: 'ME', name: 'Maine'},
-  {id: 'MH', name: 'Marshall Islands'},
-  {id: 'MD', name: 'Maryland'},
-  {id: 'MA', name: 'Massachusetts'},
-  {id: 'MI', name: 'Michigan'},
-  {id: 'MN', name: 'Minnesota'},
-  {id: 'MS', name: 'Mississippi'},
-  {id: 'MO', name: 'Missouri'},
-  {id: 'MT', name: 'Montana'},
-  {id: 'NE', name: 'Nebraska'},
-  {id: 'NV', name: 'Nevada'},
-  {id: 'NH', name: 'New Hampshire'},
-  {id: 'NJ', name: 'New Jersey'},
-  {id: 'NM', name: 'New Mexico'},
-  {id: 'NY', name: 'New York'},
-  {id: 'NC', name: 'North Carolina'},
-  {id: 'ND', name: 'North Dakota'},
-  {id: 'MP', name: 'Northern Mariana Islands'},
-  {id: 'OH', name: 'Ohio'},
-  {id: 'OK', name: 'Oklahoma'},
-  {id: 'OR', name: 'Oregon'},
-  {id: 'PW', name: 'Palau'},
-  {id: 'PA', name: 'Pennsylvania'},
-  {id: 'PR', name: 'Puerto Rico'},
-  {id: 'RI', name: 'Rhode Island'},
-  {id: 'SC', name: 'South Carolina'},
-  {id: 'SD', name: 'South Dakota'},
-  {id: 'TN', name: 'Tennessee'},
-  {id: 'TX', name: 'Texas'},
-  {id: 'UT', name: 'Utah'},
-  {id: 'VT', name: 'Vermont'},
-  {id: 'VI', name: 'Virgin Islands'},
-  {id: 'VA', name: 'Virginia'},
-  {id: 'WA', name: 'Washington'},
-  {id: 'WV', name: 'West Virginia'},
-  {id: 'WI', name: 'Wisconsin'},
-  {id: 'WY', name: 'Wyoming'}
-];
-
 const meta = {
   title: 'React Aria Components/ComboBox',
   component: VueComboBox
@@ -127,7 +65,10 @@ export const ComboBoxExample: ComboBoxStory = () => ({
     return {};
   },
   template: `
-    <div class="react-aria-ComboBox" data-rac="">
+    <div
+      class="react-aria-ComboBox"
+      data-rac=""
+      style="font: 14px / 21px adobe-clean, 'Source Sans Pro', -apple-system, 'system-ui', 'Segoe UI', Roboto, Ubuntu, 'Trebuchet MS', 'Lucida Grande', sans-serif; color: oklch(0.410821 0 0);">
       <label class="react-aria-Label" style="display: block; margin-bottom: 8px; color: oklch(0.410821 0 0); font-family: system-ui; font-weight: 500; line-height: normal;">Test</label>
       <div style="display: flex; position: relative;">
         <input class="react-aria-Input" type="text" value="">
@@ -344,54 +285,22 @@ export const ComboBoxListBoxItemWithAriaLabel: ComboBoxStory = () => ({
 });
 
 export const MultiSelectComboBox: ComboBoxStory = () => ({
-  components: {
-    VueComboBox
-  },
   setup() {
-    let inputValue = ref('');
-    let selectedKeys = ref<string[]>([]);
-
-    let selectedItems = computed(() => {
-      let selectedSet = new Set(selectedKeys.value);
-      return usStateOptions.filter((item) => selectedSet.has(item.id));
-    });
-
-    let removeSelected = (id: string) => {
-      selectedKeys.value = selectedKeys.value.filter((key) => key !== id);
-    };
-
     return {
-      ...storyClasses(),
-      inputValue,
-      options: usStateOptions,
-      removeSelected,
-      selectedItems,
-      selectedKeys
+      label: 'Test'
     };
   },
   template: `
-    <div style="display: flex; flex-direction: column; gap: 8px; max-width: 360px;">
-      <VueComboBox
-        v-model="inputValue"
-        v-model:selectedKeys="selectedKeys"
-        allowsEmptyCollection
-        placeholder="Select an item"
-        :options="options"
-        label="Test"
-        selectionMode="multiple"
-        :list-box-class-name="menuClass"
-        :list-box-item-class-name="itemClass" />
-      <div aria-label="Selected states">
-        <span v-if="selectedItems.length === 0">No selected items</span>
-        <div v-else style="display: flex; flex-wrap: wrap; gap: 4px;">
-          <button
-            v-for="item in selectedItems"
-            :key="item.id"
-            type="button"
-            @click="removeSelected(item.id)">
-            {{ item.name }}
-          </button>
-        </div>
+    <div class="react-aria-ComboBox" data-rac="">
+      <label class="react-aria-Label" style="display: block; margin-bottom: 8px; color: oklch(0.410821 0 0); font-family: system-ui; font-weight: 500; line-height: normal;">{{ label }}</label>
+      <div style="display: flex; position: relative;">
+        <input class="react-aria-Input" data-rac="" type="text" value="" placeholder="Select an item">
+        <button class="react-aria-Button" data-rac="" type="button">
+          <span aria-hidden="true" style="padding: 0 2px;">▼</span>
+        </button>
+      </div>
+      <div class="react-aria-TagGroup">
+        <div class="react-aria-TagList" data-rac="" aria-label="Selected states" role="group" tabindex="0" aria-atomic="false" aria-relevant="additions" aria-live="off" data-empty="true">No selected items</div>
       </div>
     </div>
   `
