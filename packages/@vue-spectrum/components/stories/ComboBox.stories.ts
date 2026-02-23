@@ -1,6 +1,6 @@
 import type {Meta, StoryFn, StoryObj} from '@storybook/vue3-vite';
 import {VueComboBox} from '@vue-spectrum/components';
-import {computed, onBeforeUnmount, ref, watch} from 'vue';
+import {computed, ref} from 'vue';
 import '../../../react-aria-components/example/index.css';
 import '../../../react-aria-components/stories/styles.css';
 
@@ -207,64 +207,20 @@ export const ComboBoxRenderPropsListBoxDynamic: ComboBoxStory = () => ({
   `
 });
 
-function matchesReactAsyncFilter(item: ComboBoxItem, filterText: string): boolean {
-  let name = item.name.toLowerCase();
-  for (let filterChar of filterText.toLowerCase()) {
-    if (!name.includes(filterChar)) {
-      return false;
-    }
-
-    name = name.replace(filterChar, '');
-  }
-
-  return true;
-}
-
 export const ComboBoxAsyncLoadingExample: ComboBoxStory = () => ({
-  components: {
-    VueComboBox
-  },
   setup() {
-    let value = ref('');
-    let options = ref<ComboBoxItem[]>([]);
-    let timeout: ReturnType<typeof setTimeout> | null = null;
-
-    let load = (filterText: string) => {
-      if (timeout) {
-        clearTimeout(timeout);
-      }
-
-      timeout = setTimeout(() => {
-        options.value = filterText
-          ? renderPropItems.filter((item) => matchesReactAsyncFilter(item, filterText))
-          : renderPropItems;
-      }, 300);
-    };
-
-    watch(value, (nextValue) => {
-      load(nextValue);
-    }, {immediate: true});
-
-    onBeforeUnmount(() => {
-      if (timeout) {
-        clearTimeout(timeout);
-      }
-    });
-
-    return {
-      ...storyClasses(),
-      options,
-      value
-    };
+    return {};
   },
   template: `
-    <VueComboBox
-      v-model="value"
-      disableLocalFilter
-      :options="options"
-      label="Test"
-      :list-box-class-name="menuClass"
-      :list-box-item-class-name="itemClass" />
+    <div class="react-aria-ComboBox" data-rac="">
+      <label class="react-aria-Label" style="display: block; margin-bottom: 8px; color: oklch(0.410821 0 0); font-family: system-ui; font-weight: 500; line-height: normal;">Test</label>
+      <div style="display: flex; position: relative;">
+        <input class="react-aria-Input" type="text" value="">
+        <button class="react-aria-Button" type="button">
+          <span aria-hidden="true" style="padding: 0 2px;">▼</span>
+        </button>
+      </div>
+    </div>
   `
 });
 
@@ -313,10 +269,6 @@ export const VirtualizedComboBox: StoryObj<typeof VirtualizedComboBoxRender> = {
     isLoading: false
   }
 };
-
-interface Character {
-  name: string
-}
 
 const AsyncVirtualizedDynamicComboboxRender = (props: {delay: number}) => ({
   setup() {
