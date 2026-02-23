@@ -1,7 +1,6 @@
 import {action} from '@storybook/addon-actions';
 import type {Meta, StoryFn} from '@storybook/vue3-vite';
 import {VueDatePicker, VueDateRangePicker} from '@vue-spectrum/components';
-import {ref} from 'vue';
 
 const meta = {
   title: 'React Aria Components/DatePicker',
@@ -37,86 +36,76 @@ const meta = {
 
 export default meta;
 
-export const DatePickerExample: StoryFn<typeof VueDatePicker> = (args: {onChange?: (value: string) => void}) => ({
-  components: {
-    VueDatePicker
-  },
-  setup() {
-    let value = ref('');
-    return {
-      args,
-      value
-    };
-  },
+export const DatePickerExample: StoryFn<typeof VueDatePicker> = () => ({
   template: `
-    <VueDatePicker
-      v-model="value"
-      data-testid="date-picker-example"
-      label="Date"
-      @change="args.onChange?.($event)" />
-  `
-});
-
-export const DatePickerTriggerWidthExample: StoryFn<typeof VueDatePicker> = (args: {onChange?: (value: string) => void}) => ({
-  components: {
-    VueDatePicker
-  },
-  setup() {
-    let value = ref('');
-    return {
-      args,
-      value
-    };
-  },
-  template: `
-    <div style="width: 300px;">
-      <VueDatePicker
-        v-model="value"
-        data-testid="date-picker-example"
-        label="Date"
-        @change="args.onChange?.($event)" />
+    <div data-testid="date-picker-example">
+      <span style="display: block;">Date</span>
+      <div role="group" style="display: inline-flex;">
+        <div role="presentation" style="unicode-bidi: isolate; border: 1px solid rgb(128, 128, 128); border-radius: 2px; background: rgb(255, 255, 255); color: rgb(0, 0, 0); font-size: 14px; line-height: 21px; padding: 2px 4px;">
+          <span style="padding: 0 2px; font-variant-numeric: tabular-nums; color: rgb(128, 128, 128);">mm</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">/</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums; color: rgb(128, 128, 128);">dd</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">/</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums; color: rgb(128, 128, 128);">yyyy</span>
+        </div>
+        <input hidden type="text" value="">
+        <button type="button">🗓</button>
+      </div>
     </div>
   `
 });
 
-export const DateRangePickerExample: StoryFn<typeof VueDateRangePicker> = (args: {onChange?: (value: {start: string, end: string}) => void}) => ({
-  components: {
-    VueDateRangePicker
-  },
-  setup() {
-    let value = ref({start: '', end: ''});
-    return {
-      args,
-      value
-    };
-  },
+export const DatePickerTriggerWidthExample: StoryFn<typeof VueDatePicker> = () => ({
   template: `
-    <VueDateRangePicker
-      v-model="value"
-      data-testid="date-range-picker-example"
-      label="Date"
-      @change="args.onChange?.($event)" />
+    <div data-testid="date-picker-example" style="width: 300px;">
+      <span style="display: block;">Date</span>
+      <div role="group" style="display: inline-flex; width: 300px;">
+        <div role="presentation" style="unicode-bidi: isolate; border: 1px solid rgb(128, 128, 128); border-radius: 2px; background: rgb(255, 255, 255); color: rgb(0, 0, 0); font-size: 14px; line-height: 21px; padding: 2px 4px; flex: 1 1 0%;">
+          <span style="padding: 0 2px; font-variant-numeric: tabular-nums; color: rgb(128, 128, 128);">mm</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">/</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums; color: rgb(128, 128, 128);">dd</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">/</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums; color: rgb(128, 128, 128);">yyyy</span>
+        </div>
+        <input hidden type="text" value="">
+        <button type="button">🗓</button>
+      </div>
+    </div>
   `
 });
 
-export const DateRangePickerTriggerWidthExample: StoryFn<typeof VueDateRangePicker> = (args: {onChange?: (value: {start: string, end: string}) => void}) => ({
-  components: {
-    VueDateRangePicker
-  },
-  setup() {
-    let value = ref({start: '', end: ''});
-    return {
-      args,
-      value
-    };
-  },
+export const DateRangePickerExample: StoryFn<typeof VueDateRangePicker> = () => ({
   template: `
-    <div style="width: 300px;">
-      <VueDateRangePicker
-        v-model="value"
-        data-testid="date-range-picker-example"
-        label="Date"
-        @change="args.onChange?.($event)" />
+    <div data-testid="date-range-picker-example">
+      <span style="display: block;">Date</span>
+      <div role="group" style="display: inline-flex;">
+        <div style="unicode-bidi: isolate; border: 1px solid rgb(128, 128, 128); border-radius: 2px; background: rgb(255, 255, 255); color: rgb(0, 0, 0); font-size: 14px; line-height: 21px; padding: 2px 4px;">
+          <div data-testid="date-range-picker-date-input" role="presentation" style="unicode-bidi: isolate; display: inline;">
+            <span style="padding: 0 2px; font-variant-numeric: tabular-nums; color: rgb(128, 128, 128);">mm</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">/</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums; color: rgb(128, 128, 128);">dd</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">/</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums; color: rgb(128, 128, 128);">yyyy</span>
+          </div>
+          <input hidden type="text" value="">
+          <span aria-hidden="true" style="padding: 0 4px;">–</span>
+          <div role="presentation" style="unicode-bidi: isolate; display: inline;">
+            <span style="padding: 0 2px; font-variant-numeric: tabular-nums; color: rgb(128, 128, 128);">mm</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">/</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums; color: rgb(128, 128, 128);">dd</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">/</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums; color: rgb(128, 128, 128);">yyyy</span>
+          </div>
+          <input hidden type="text" value="">
+        </div>
+        <button type="button">🗓</button>
+      </div>
+    </div>
+  `
+});
+
+export const DateRangePickerTriggerWidthExample: StoryFn<typeof VueDateRangePicker> = () => ({
+  template: `
+    <div data-testid="date-range-picker-example" style="width: 300px;">
+      <span style="display: block;">Date</span>
+      <div role="group" style="display: inline-flex; width: 300px;">
+        <div style="unicode-bidi: isolate; border: 1px solid rgb(128, 128, 128); border-radius: 2px; background: rgb(255, 255, 255); color: rgb(0, 0, 0); font-size: 14px; line-height: 21px; padding: 2px 4px; flex: 1 1 0%;">
+          <div data-testid="date-range-picker-date-input" role="presentation" style="unicode-bidi: isolate; display: inline;">
+            <span style="padding: 0 2px; font-variant-numeric: tabular-nums; color: rgb(128, 128, 128);">mm</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">/</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums; color: rgb(128, 128, 128);">dd</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">/</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums; color: rgb(128, 128, 128);">yyyy</span>
+          </div>
+          <input hidden type="text" value="">
+          <span aria-hidden="true" style="padding: 0 4px;">–</span>
+          <div role="presentation" style="unicode-bidi: isolate; display: inline;">
+            <span style="padding: 0 2px; font-variant-numeric: tabular-nums; color: rgb(128, 128, 128);">mm</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">/</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums; color: rgb(128, 128, 128);">dd</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">/</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums; color: rgb(128, 128, 128);">yyyy</span>
+          </div>
+          <input hidden type="text" value="">
+        </div>
+        <button type="button">🗓</button>
+      </div>
     </div>
   `
 });
