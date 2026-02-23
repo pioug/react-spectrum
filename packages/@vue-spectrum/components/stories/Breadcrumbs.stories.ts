@@ -16,7 +16,13 @@ export const BreadcrumbsExample: Story = {
       VueBreadcrumbs
     },
     template: `
-      <VueBreadcrumbs :items="['Home', 'React Aria', 'Breadcrumbs']" current="Breadcrumbs" />
+      <VueBreadcrumbs
+        :items="[
+          {id: 'Home', url: '/'},
+          {id: 'React Aria', url: '/react-aria'},
+          {id: 'Breadcrumbs', url: '/react-aria'}
+        ]"
+      />
     `
   })
 };
@@ -27,7 +33,13 @@ export const DynamicBreadcrumbsExample: Story = {
       VueBreadcrumbs
     },
     template: `
-      <VueBreadcrumbs :items="['Home', 'React Aria', 'Breadcrumbs']" current="Breadcrumbs" />
+      <VueBreadcrumbs
+        :items="[
+          {id: 'Home', url: '/'},
+          {id: 'React Aria', url: '/react-aria'},
+          {id: 'Breadcrumbs', url: '/react-aria/breadcrumbs'}
+        ]"
+      />
     `
   })
 };

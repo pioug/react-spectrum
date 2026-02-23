@@ -8,7 +8,6 @@ const styles: {[key: string]: string} = {};
 type ButtonElementType = 'a' | 'button' | 'div' | 'span';
 type ButtonNativeType = 'button' | 'reset' | 'submit';
 type ButtonVariant = 'accent' | 'cta' | 'negative' | 'overBackground' | 'primary' | 'secondary';
-type ButtonFillStyle = 'fill' | 'outline';
 type StaticColor = 'black' | 'white';
 type LogicButtonVariant = 'and' | 'or';
 
@@ -234,16 +233,6 @@ function useBaseButtonSemantics(
   };
 }
 
-function buttonLegacyClass(variant: string, isDisabled: boolean) {
-  let legacyVariant = variant === 'secondary' ? 'secondary' : 'primary';
-  return [
-    'vs-button',
-    `vs-button--${legacyVariant}`,
-    'vs-button--medium',
-    isDisabled ? 'is-disabled' : null
-  ];
-}
-
 const sharedButtonProps = {
   autoFocus: {
     type: Boolean,
@@ -288,10 +277,6 @@ export const VueButton = defineComponent({
       type: String as PropType<StaticColor | undefined>,
       default: undefined
     },
-    style: {
-      type: String as PropType<ButtonFillStyle | undefined>,
-      default: undefined
-    },
     render: {
       type: Function as PropType<(props: Record<string, unknown>, children: unknown) => unknown>,
       default: undefined
@@ -305,26 +290,6 @@ export const VueButton = defineComponent({
     click: (event: MouseEvent) => event instanceof MouseEvent
   },
   setup(props, {attrs, emit, slots}) {
-    let resolvedVariant = computed(() => {
-      if (props.variant === 'cta') {
-        return 'accent';
-      }
-
-      if (props.variant === 'overBackground') {
-        return 'primary';
-      }
-
-      return props.variant;
-    });
-
-    let resolvedStyle = computed(() => {
-      if (props.style) {
-        return props.style;
-      }
-
-      return resolvedVariant.value === 'accent' ? 'fill' : 'outline';
-    });
-
     let resolvedStaticColor = computed<StaticColor | undefined>(() => {
       if (props.variant === 'overBackground') {
         return 'white';
@@ -341,12 +306,9 @@ export const VueButton = defineComponent({
 
     let buttonClass = computed(() => classNames(
       styles,
-      'spectrum-Button',
+      'react-aria-Button',
       {
-        'focus-ring': buttonState.interaction.isFocusVisible.value,
-        'is-active': buttonState.interaction.isPressed.value,
-        'is-disabled': buttonState.isDisabled.value,
-        'is-hovered': buttonState.interaction.isHovered.value
+        'is-disabled': buttonState.isDisabled.value
       }
     ));
 
@@ -355,18 +317,16 @@ export const VueButton = defineComponent({
       ...buttonState.domProps.value,
       class: [
         buttonClass.value,
-        buttonLegacyClass(resolvedVariant.value, buttonState.isDisabled.value),
         attrs.class
       ],
-      'data-vac': '',
+      'data-rac': '',
+      'data-react-aria-pressable': 'true',
       'data-focused': buttonState.interaction.isFocused.value ? 'true' : undefined,
       'data-focus-visible': buttonState.interaction.isFocusVisible.value ? 'true' : undefined,
       'data-hovered': buttonState.interaction.isHovered.value ? 'true' : undefined,
       'data-pressed': buttonState.interaction.isPressed.value ? 'true' : undefined,
       'data-disabled': buttonState.isDisabled.value ? 'true' : undefined,
-      'data-static-color': resolvedStaticColor.value || undefined,
-      'data-style': resolvedStyle.value,
-      'data-variant': resolvedVariant.value
+      'data-static-color': resolvedStaticColor.value || undefined
       };
       let children = slots.default ? slots.default() : 'Button';
 

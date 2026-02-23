@@ -52,7 +52,6 @@ export const PendingButton: Story = {
     },
     template: `
       <Button
-        element-type="a"
         :is-disabled="isPending"
         class="button"
         @click="onPress">
@@ -106,7 +105,6 @@ export const PendingButtonTooltip: Story = {
         content="Tooltip should appear on hover"
         placement="top">
         <Button
-          element-type="a"
           :is-disabled="isPending"
           class="button"
           @click="onPress">
