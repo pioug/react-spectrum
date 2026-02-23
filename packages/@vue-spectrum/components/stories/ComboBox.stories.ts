@@ -148,49 +148,7 @@ export const ComboBoxAsyncLoadingExample: ComboBoxStory = () => ({
 
 export const ComboBoxImeExample: ComboBoxStory = () => createComboBoxStory(imeOptions, 'IME Test');
 
-const VirtualizedComboBoxRender = (args: {isLoading: boolean}) => ({
-  components: {
-    VueComboBox
-  },
-  setup() {
-    let value = ref('');
-    let filteredItems = computed(() => {
-      let query = value.value.trim().toLowerCase();
-      if (!query) {
-        return manyItems;
-      }
-
-      return manyItems.filter((item) => item.name.toLowerCase().includes(query));
-    });
-
-    return {
-      ...storyClasses(),
-      args,
-      filteredItems,
-      value
-    };
-  },
-  template: `
-    <VueComboBox
-      v-model="value"
-      allowsEmptyCollection
-      disableLocalFilter
-      :options="filteredItems"
-      label="Test"
-      :virtualized="true"
-      :estimated-item-height="25"
-      :visible-item-count="20"
-      :list-box-class-name="menuClass"
-      :list-box-item-class-name="itemClass" />
-  `
-});
-
-export const VirtualizedComboBox: StoryObj<typeof VirtualizedComboBoxRender> = {
-  render: (args: {isLoading: boolean}) => VirtualizedComboBoxRender(args),
-  args: {
-    isLoading: false
-  }
-};
+export const VirtualizedComboBox: ComboBoxStory = () => createComboBoxStory(manyItems);
 
 const AsyncVirtualizedDynamicComboboxRender = (props: {delay: number}) => ({
   setup() {
