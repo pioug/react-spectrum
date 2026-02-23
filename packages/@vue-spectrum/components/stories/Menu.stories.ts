@@ -1,6 +1,6 @@
 import {action} from '@storybook/addon-actions';
 import type {Meta, StoryFn, StoryObj} from '@storybook/vue3-vite';
-import {VueButton, VueMenu, VuePopover} from '@vue-spectrum/components';
+import {VueMenu, VuePopover} from '@vue-spectrum/components';
 import {ref} from 'vue';
 
 type MenuItem = {
@@ -32,7 +32,6 @@ type SubmenuExampleStory = StoryObj<typeof meta>;
 function createTriggerMenuStory(sections: MenuSection[], menuArgs: Record<string, unknown> = {}) {
   return {
     components: {
-      VueButton,
       VueMenu,
       VuePopover
     },
@@ -55,18 +54,22 @@ function createTriggerMenuStory(sections: MenuSection[], menuArgs: Record<string
       };
     },
     template: `
-      <div>
-        <VueButton aria-label="Menu" variant="secondary" @click="open = !open">☰</VueButton>
-        <VuePopover :open="open" placement="bottom" @close="open = false">
-          <VueMenu
-            v-model="selected"
-            v-bind="menuArgs"
-            class="menu"
-            :sections="sections"
-            selectionMode="none"
-            @action="onAction" />
-        </VuePopover>
-      </div>
+      <button
+        aria-label="Menu"
+        aria-haspopup="true"
+        class="react-aria-Button"
+        :aria-expanded="open ? 'true' : 'false'"
+        type="button"
+        @click="open = !open">☰</button>
+      <VuePopover :open="open" placement="bottom" @close="open = false">
+        <VueMenu
+          v-model="selected"
+          v-bind="menuArgs"
+          class="menu"
+          :sections="sections"
+          selectionMode="none"
+          @action="onAction" />
+      </VuePopover>
     `
   };
 }
@@ -333,7 +336,6 @@ export const MenuCustomRender: MenuStory = () => createTriggerMenuStory([
 
 export const VirtualizedExample: MenuStory = () => ({
   components: {
-    VueButton,
     VueMenu,
     VuePopover
   },
@@ -359,20 +361,24 @@ export const VirtualizedExample: MenuStory = () => ({
     };
   },
   template: `
-    <div>
-      <VueButton aria-label="Menu" variant="secondary" @click="open = !open">☰</VueButton>
-      <VuePopover :open="open" placement="bottom" @close="open = false">
-        <VueMenu
-          v-model="selected"
-          class="menu"
-          :items="items"
-          label="Virtualized menu"
-          selectionMode="none"
-          virtualized
-          :visibleItemCount="20"
-          :estimatedItemHeight="16"
-          @action="onAction" />
-      </VuePopover>
-    </div>
+    <button
+      aria-label="Actions"
+      aria-haspopup="true"
+      class="react-aria-Button"
+      :aria-expanded="open ? 'true' : 'false'"
+      type="button"
+      @click="open = !open">Menu ☰</button>
+    <VuePopover :open="open" placement="bottom" @close="open = false">
+      <VueMenu
+        v-model="selected"
+        class="menu"
+        :items="items"
+        label="Virtualized menu"
+        selectionMode="none"
+        virtualized
+        :visibleItemCount="20"
+        :estimatedItemHeight="16"
+        @action="onAction" />
+    </VuePopover>
   `
 });
