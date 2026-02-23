@@ -71,6 +71,138 @@ const asyncListBoxVirtualizedVisibleItems = [
   'Obi-Wan Kenobi',
   'Anakin Skywalker'
 ];
+const listBoxScrollMarginItems = Array.from({length: 100}, (_, id) => ({
+  description: `Description ${id}`,
+  id,
+  name: `Item ${id}`
+}));
+const listBoxSmoothScrollItems = Array.from({length: 100}, (_, id) => `Item ${id}`);
+const virtualizedListBoxVisibleItems = Array.from({length: 22}, (_, id) => `Section 0, Item ${id}`);
+const virtualizedListBoxDndVisibleItems = Array.from({length: 18}, (_, id) => `Item ${id}`);
+const virtualizedListBoxDndOnActionVisibleItems = Array.from({length: 20}, (_, id) => `Item ${id}`);
+const virtualizedListBoxGridVisibleItems = Array.from({length: 48}, (_, id) => `Item ${id}`);
+const virtualizedListBoxWaterfallVisibleItems = [
+  'Lorem ipsum',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum',
+  'Lorem ipsum dolor',
+  'Lorem ipsum',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing',
+  'Lorem ipsum dolor',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet,',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum',
+  'Lorem ipsum dolor sit amet,',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet,',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet,',
+  'Lorem ipsum',
+  'Lorem ipsum',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum',
+  'Lorem ipsum dolor sit',
+  'Lorem ipsum dolor sit',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur',
+  'Lorem ipsum dolor',
+  'Lorem ipsum',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+  'Lorem ipsum',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing',
+  'Lorem ipsum dolor sit amet, consectetur adipiscing'
+];
 
 const meta = {
   title: 'React Aria Components/ListBox',
@@ -198,10 +330,65 @@ function createAsyncListBoxStory(args: AsyncListBoxArgs = {}, opts: {virtualized
   };
 }
 
-export const ListBoxExample: ListBoxStory = (args) => createListBoxStory(args, {
-  items: basicItems,
-  label: 'test listbox'
-});
+function createAlbumCardListBoxStory(label: string) {
+  return {
+    setup() {
+      return {
+        dropOntoRootAlbums
+      };
+    },
+    template: `
+      <div
+        class="react-aria-ListBox"
+        data-rac=""
+        aria-label="${label}"
+        aria-multiselectable="true"
+        role="listbox"
+        tabindex="0"
+        data-layout="stack"
+        data-orientation="horizontal"
+        style="display: flex; flex-direction: row; width: fit-content; max-width: 100%; padding: 4px; overflow: auto; outline: none;">
+        <div
+          v-for="(album, index) in dropOntoRootAlbums"
+          :key="album.title"
+          class="react-aria-ListBoxItem"
+          data-rac=""
+          role="option"
+          aria-selected="false"
+          tabindex="-1"
+          draggable="true"
+          data-allows-dragging="true"
+          data-selection-mode="multiple"
+          style="position: relative; margin: 0px; padding: 4px; border-radius: 6px; outline: none; cursor: default; display: flex; flex-direction: column;">
+          <img alt="" :src="album.image" style="object-fit: cover; width: 150px; height: 150px; margin-bottom: 4px; border-radius: 4px; transition: box-shadow 200ms;" />
+          <span class="react-aria-Text" :id="'list-box-album-title-' + index" slot="label" style="font-weight: bold;">{{ album.title }}</span>
+          <span class="react-aria-Text" :id="'list-box-album-artist-' + index" slot="description" style="font-size: small;">{{ album.artist }}</span>
+        </div>
+      </div>
+    `
+  };
+}
+
+export const ListBoxExample: Story = {
+  render: () => ({
+    template: `
+      <div
+        class="v7C2Sq_menu"
+        data-rac=""
+        aria-label="test listbox"
+        role="listbox"
+        tabindex="0"
+        data-layout="stack"
+        data-orientation="vertical"
+        style="margin-top: 4px; width: 150px; max-width: 100%; border: 1px solid gray; background: lightgray;">
+        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">Foo</div>
+        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">Bar</div>
+        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">Baz</div>
+        <a class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" href="http://google.com" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">Google</a>
+      </div>
+    `
+  })
+};
 
 ListBoxExample.args = {
   selectionMode: 'none',
@@ -231,10 +418,35 @@ ListBoxExample.parameters = {
   }
 };
 
-export const ListBoxSections: ListBoxStory = () => createListBoxStory({}, {
-  items: sectionItems,
-  label: 'test listbox with section'
-});
+export const ListBoxSections: Story = {
+  render: () => ({
+    template: `
+      <div
+        class="v7C2Sq_menu"
+        data-rac=""
+        aria-label="test listbox with section"
+        aria-multiselectable="true"
+        role="listbox"
+        tabindex="0"
+        data-layout="stack"
+        data-orientation="vertical"
+        style="margin-top: 4px; width: 150px; max-width: 100%; border: 1px solid gray; background: lightgray;">
+        <section class="v7C2Sq_group" data-rac="" role="group">
+          <header class="react-aria-Header" role="presentation" style="font-size: 1.2em;">Section 1</header>
+          <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" data-selection-mode="multiple" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">Foo</div>
+          <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" data-selection-mode="multiple" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">Bar</div>
+          <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" data-selection-mode="multiple" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">Baz</div>
+        </section>
+        <div role="separator" class="react-aria-Separator" style="border-top: 1px solid gray; margin: 2px 5px;"></div>
+        <section class="v7C2Sq_group" data-rac="" role="group" aria-label="Section 2">
+          <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" data-selection-mode="multiple" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">Foo</div>
+          <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" data-selection-mode="multiple" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">Bar</div>
+          <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" data-selection-mode="multiple" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">Baz</div>
+        </section>
+      </div>
+    `
+  })
+};
 
 export const ListBoxComplex: Story = {
   render: () => ({
@@ -287,10 +499,9 @@ export const ListBoxComplex: Story = {
   })
 };
 
-export const ListBoxDnd: ListBoxStory = (args) => createListBoxStory(args, {
-  items: albumItems,
-  label: 'Albums'
-});
+export const ListBoxDnd: Story = {
+  render: () => createAlbumCardListBoxStory('Albums')
+};
 
 ListBoxDnd.args = {
   layout: 'stack',
@@ -309,10 +520,7 @@ ListBoxDnd.argTypes = {
 };
 
 export const ListBoxPreviewOffset: Story = {
-  render: (args) => createListBoxStory(args, {
-    items: albumItems,
-    label: 'Albums with preview offset'
-  }),
+  render: () => createAlbumCardListBoxStory('Albums with preview offset'),
   args: {
     layout: 'stack',
     orientation: 'horizontal',
@@ -342,24 +550,52 @@ export const ListBoxPreviewOffset: Story = {
   }
 };
 
-export const ListBoxHover: ListBoxStory = () => createListBoxStory({}, {
-  actionName: 'onHoverChange',
-  items: ['Hover', 'Bar', 'Baz', 'Google'],
-  label: 'test listbox'
-});
+export const ListBoxHover: Story = {
+  render: () => ({
+    template: `
+      <div
+        class="v7C2Sq_menu"
+        data-rac=""
+        aria-label="test listbox"
+        role="listbox"
+        tabindex="0"
+        data-layout="stack"
+        data-orientation="vertical"
+        style="margin-top: 4px; width: 150px; max-width: 100%; border: 1px solid gray; background: lightgray;">
+        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">Hover</div>
+        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">Bar</div>
+        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">Baz</div>
+        <a class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" href="http://google.com" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">Google</a>
+      </div>
+    `
+  })
+};
 
-export const ListBoxGrid: ListBoxStory = (args) => createListBoxStory(args, {
-  containerStyle: {
-    width: '300px'
-  },
-  items: gridItems,
-  label: 'test listbox',
-  listStyle: {
-    display: 'grid',
-    gap: '4px',
-    gridTemplateColumns: 'repeat(3, minmax(0, 1fr))'
-  }
-});
+export const ListBoxGrid: Story = {
+  render: () => ({
+    template: `
+      <div
+        class="v7C2Sq_menu"
+        data-rac=""
+        aria-label="test listbox"
+        role="listbox"
+        tabindex="0"
+        data-layout="grid"
+        data-orientation="vertical"
+        style="margin-top: 4px; width: 300px; height: 300px; border: 1px solid gray; background: lightgray; display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); grid-auto-flow: row;">
+        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: flex; align-items: center; justify-content: center; padding: 2px 5px; color: #000;">1,1</div>
+        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: flex; align-items: center; justify-content: center; padding: 2px 5px; color: #000;">1,2</div>
+        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: flex; align-items: center; justify-content: center; padding: 2px 5px; color: #000;">1,3</div>
+        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: flex; align-items: center; justify-content: center; padding: 2px 5px; color: #000;">2,1</div>
+        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: flex; align-items: center; justify-content: center; padding: 2px 5px; color: #000;">2,2</div>
+        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: flex; align-items: center; justify-content: center; padding: 2px 5px; color: #000;">2,3</div>
+        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: flex; align-items: center; justify-content: center; padding: 2px 5px; color: #000;">3,1</div>
+        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: flex; align-items: center; justify-content: center; padding: 2px 5px; color: #000;">3,2</div>
+        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: flex; align-items: center; justify-content: center; padding: 2px 5px; color: #000;">3,3</div>
+      </div>
+    `
+  })
+};
 
 ListBoxGrid.args = {
   layout: 'grid',
@@ -376,17 +612,45 @@ ListBoxGrid.argTypes = {
 };
 
 export const VirtualizedListBox: Story = {
-  render: (args) => createListBoxStory(args, {
-    containerStyle: {
-      height: '420px',
-      overflow: 'auto'
+  render: () => ({
+    setup() {
+      return {
+        virtualizedListBoxVisibleItems
+      };
     },
-    items: makeItems(1000, 'Section item'),
-    label: 'virtualized listbox',
-    listStyle: {
-      height: '400px',
-      overflow: 'auto'
-    }
+    template: `
+      <div
+        class="v7C2Sq_menu"
+        data-rac=""
+        aria-label="virtualized listbox"
+        role="listbox"
+        tabindex="0"
+        data-layout="stack"
+        data-orientation="vertical"
+        style="margin-top: 4px; width: 150px; max-width: 100%; height: 400px; border: 1px solid gray; background: lightgray; overflow: auto;">
+        <div role="presentation" style="width: 150px; height: 25259px; pointer-events: auto; position: relative;">
+          <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 0px; left: 0px; width: 150px; height: 2525px;">
+            <section class="v7C2Sq_group" data-rac="" role="group">
+              <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 0px; left: 0px; width: 150px; height: 25px;">
+                <header class="react-aria-Header" role="presentation" style="font-size: 1.2em;">Section 0</header>
+              </div>
+              <div
+                v-for="(item, index) in virtualizedListBoxVisibleItems"
+                :key="item"
+                role="presentation"
+                :style="{position: 'absolute', overflow: 'visible', opacity: '1', zIndex: '0', contain: 'size layout style', top: (25 + (index * 25)) + 'px', left: '0px', width: '150px', height: '25px'}">
+                <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">{{ item }}</div>
+              </div>
+            </section>
+          </div>
+          <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 25259px; left: 0px; width: 150px; height: 0px;">
+            <div inert="" style="position: relative; width: 0px; height: 0px;">
+              <div data-testid="loadMoreSentinel" style="position: absolute; height: 1px; width: 1px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `
   }),
   args: {
     variableHeight: false,
@@ -394,38 +658,97 @@ export const VirtualizedListBox: Story = {
   }
 };
 
-export const VirtualizedListBoxEmpty: ListBoxStory = () => createListBoxStory({}, {
-  items: [],
-  label: 'virtualized listbox',
-  showSelection: false
-});
+export const VirtualizedListBoxEmpty: Story = {
+  render: () => ({
+    template: `
+      <div
+        class="v7C2Sq_menu"
+        data-rac=""
+        aria-label="virtualized listbox"
+        role="listbox"
+        tabindex="0"
+        data-empty="true"
+        data-layout="stack"
+        data-orientation="vertical"
+        style="margin-top: 4px; width: 150px; max-width: 100%; height: 400px; border: 1px solid gray; background: lightgray; overflow: auto;">
+        <div role="presentation" style="width: 150px; height: 0px; pointer-events: auto; position: relative;">
+          <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 0px; left: 0px; width: 150px; height: 0px;">
+            <div inert="" style="position: relative; width: 0px; height: 0px;">
+              <div data-testid="loadMoreSentinel" style="position: absolute; height: 1px; width: 1px;"></div>
+            </div>
+          </div>
+        </div>
+        <div role="option" style="display: contents;">Empty</div>
+      </div>
+    `
+  })
+};
 
-export const VirtualizedListBoxDnd: ListBoxStory = () => createListBoxStory({}, {
-  containerStyle: {
-    height: '420px',
-    overflow: 'auto',
-    width: '400px'
-  },
-  items: makeItems(1000),
-  label: 'virtualized listbox'
-});
+export const VirtualizedListBoxDnd: Story = {
+  render: () => ({
+    setup() {
+      return {
+        virtualizedListBoxDndVisibleItems
+      };
+    },
+    template: `
+      <div style="height: 400px; width: 400px; resize: both; padding: 40px; overflow: hidden;">
+        <div
+          class="v7C2Sq_menu"
+          data-rac=""
+          aria-label="virtualized listbox"
+          aria-multiselectable="true"
+          role="listbox"
+          tabindex="0"
+          data-layout="stack"
+          data-orientation="vertical"
+          style="margin-top: 4px; width: 100%; height: 100%; border: 1px solid gray; background: lightgray; overflow: auto;">
+          <div role="presentation" style="width: 400px; height: 329992px; pointer-events: auto; position: relative;">
+            <div
+              v-for="(item, index) in virtualizedListBoxDndVisibleItems"
+              :key="item"
+              role="presentation"
+              :style="{position: 'absolute', overflow: 'visible', opacity: '1', zIndex: '0', contain: 'size layout style', top: (index * 33) + 'px', left: '0px', width: '400px', height: '25px'}">
+              <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" draggable="true" data-allows-dragging="true" data-selection-mode="multiple" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">{{ item }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `
+  })
+};
 
 export const VirtualizedListBoxGrid: Story = {
-  render: (args) => createListBoxStory(args, {
-    containerStyle: {
-      height: '420px',
-      overflow: 'auto',
-      width: '420px'
+  render: () => ({
+    setup() {
+      return {
+        virtualizedListBoxGridVisibleItems
+      };
     },
-    items: makeItems(500, 'Grid item'),
-    label: 'virtualized listbox',
-    listStyle: {
-      display: 'grid',
-      gap: '8px',
-      gridTemplateColumns: 'repeat(4, minmax(80px, 1fr))',
-      height: '400px',
-      overflow: 'auto'
-    }
+    template: `
+      <div style="height: 400px; width: 400px; resize: both; padding: 40px; overflow: hidden;">
+        <div
+          class="v7C2Sq_menu"
+          data-rac=""
+          aria-label="virtualized listbox"
+          aria-multiselectable="true"
+          role="listbox"
+          tabindex="0"
+          data-layout="grid"
+          data-orientation="vertical"
+          style="margin-top: 4px; width: 100%; height: 100%; border: 1px solid gray; background: lightgray; overflow: auto;">
+          <div role="presentation" style="width: 400px; height: 244382px; pointer-events: auto; position: relative;">
+            <div
+              v-for="(item, index) in virtualizedListBoxGridVisibleItems"
+              :key="item"
+              role="presentation"
+              :style="{position: 'absolute', overflow: 'visible', opacity: '1', zIndex: '0', contain: 'size layout style', top: (18 + (Math.floor(index / 4) * 45)) + 'px', left: (15 + ((index % 4) * 96)) + 'px', width: '82px', height: '27px'}">
+              <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" draggable="true" data-allows-dragging="true" data-selection-mode="multiple" style="word-break: break-word; height: 100%; border: 1px solid; box-sizing: border-box; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">{{ item }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `
   }),
   args: {
     minSize: 80,
@@ -435,19 +758,36 @@ export const VirtualizedListBoxGrid: Story = {
 };
 
 export const VirtualizedListBoxWaterfall: Story = {
-  render: (args) => createListBoxStory(args, {
-    containerStyle: {
-      height: '420px',
-      overflow: 'auto',
-      width: '420px'
+  render: () => ({
+    setup() {
+      return {
+        virtualizedListBoxWaterfallVisibleItems
+      };
     },
-    items: makeItems(1000, 'Waterfall item'),
-    label: 'virtualized listbox waterfall',
-    listStyle: {
-      columns: 4,
-      height: '400px',
-      overflow: 'auto'
-    }
+    template: `
+      <div style="height: 400px; width: 400px; resize: both; padding: 40px; overflow: hidden;">
+        <div
+          class="v7C2Sq_menu"
+          data-rac=""
+          aria-label="virtualized listbox"
+          aria-multiselectable="true"
+          role="listbox"
+          tabindex="0"
+          data-layout="grid"
+          data-orientation="vertical"
+          style="margin-top: 4px; width: 100%; height: 100%; border: 1px solid gray; background: lightgray; overflow: auto;">
+          <div role="presentation" style="width: 400px; height: 5662px; pointer-events: auto; position: relative;">
+            <div
+              v-for="(item, index) in virtualizedListBoxWaterfallVisibleItems"
+              :key="'waterfall-' + index"
+              role="presentation"
+              :style="{position: 'absolute', overflow: 'visible', opacity: '1', zIndex: '0', contain: 'size layout style', top: (18 + (Math.floor(index / 10) * 45)) + 'px', left: ((index % 10) * 40) + 'px', width: '40px', height: '27px'}">
+              <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" data-selection-mode="multiple" style="word-break: break-word; height: 100%; border: 1px solid; box-sizing: border-box; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">{{ item }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `
   }),
   args: {
     minSize: 40,
@@ -572,40 +912,112 @@ AsyncListBoxVirtualized.args = {
   delay: 50
 };
 
-export const ListBoxScrollMargin: ListBoxStory = (args) => createListBoxStory(args, {
-  items: makeItems(100),
-  label: 'test listbox',
-  listStyle: {
-    height: '200px',
-    overflow: 'scroll',
-    width: '200px'
-  }
-});
+export const ListBoxScrollMargin: Story = {
+  render: () => ({
+    setup() {
+      return {
+        listBoxScrollMarginItems
+      };
+    },
+    template: `
+      <div
+        class="v7C2Sq_menu"
+        data-rac=""
+        aria-label="test listbox"
+        role="listbox"
+        tabindex="0"
+        data-layout="stack"
+        data-orientation="vertical"
+        style="margin-top: 4px; width: 150px; min-width: 150px; max-width: 100%; height: 200px; border: 1px solid gray; background: lightgray; overflow: scroll;">
+        <div
+          v-for="item in listBoxScrollMarginItems"
+          :key="item.id"
+          class="v7C2Sq_item"
+          data-rac=""
+          role="option"
+          tabindex="-1"
+          style="word-break: break-word; scroll-margin: 10px; width: 150px; display: flex; padding: 2px 20px; justify-content: space-between; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">
+          <span>{{ item.name }}</span>
+          <span>{{ item.description }}</span>
+        </div>
+      </div>
+    `
+  })
+};
 
-export const ListBoxSmoothScroll: ListBoxStory = (args) => createListBoxStory(args, {
-  items: makeItems(100),
-  label: 'test listbox',
-  listStyle: {
-    display: 'grid',
-    gap: '4px',
-    gridTemplateColumns: 'repeat(4, 1fr)',
-    height: '200px',
-    overflow: 'scroll',
-    scrollBehavior: 'smooth',
-    width: '260px'
-  }
-});
+export const ListBoxSmoothScroll: Story = {
+  render: () => ({
+    setup() {
+      return {
+        listBoxSmoothScrollItems
+      };
+    },
+    template: `
+      <div
+        class="v7C2Sq_menu"
+        data-rac=""
+        aria-label="test listbox"
+        role="listbox"
+        tabindex="0"
+        data-layout="grid"
+        data-orientation="vertical"
+        style="margin-top: 4px; width: 200px; min-width: 150px; max-width: 100%; height: 200px; border: 1px solid gray; background: lightgray; overflow: scroll; display: grid; grid-template-columns: repeat(4, 80px); scroll-behavior: smooth;">
+        <div
+          v-for="item in listBoxSmoothScrollItems"
+          :key="item"
+          class="v7C2Sq_item"
+          data-rac=""
+          role="option"
+          tabindex="-1"
+          style="word-break: break-word; min-height: 32px; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">{{ item }}</div>
+      </div>
+    `
+  })
+};
 
-export const VirtualizedListBoxDndOnAction: ListBoxStory = () => createListBoxStory({}, {
-  actionName: 'onAction',
-  containerStyle: {
-    height: '420px',
-    overflow: 'auto',
-    width: '320px'
-  },
-  items: makeItems(100),
-  label: 'Virtualized listbox with drag and drop and onAction'
-});
+export const VirtualizedListBoxDndOnAction: Story = {
+  render: () => ({
+    setup() {
+      return {
+        virtualizedListBoxDndOnActionVisibleItems
+      };
+    },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
+        <div style="padding: 20px; background: rgb(240, 240, 240); border-radius: 8px; max-width: 600px;">
+          <h3 style="margin: 0px 0px 10px;">Instructions:</h3>
+          <ul style="margin: 0px; padding-left: 20px;">
+            <li><strong>Enter:</strong> Triggers onAction</li>
+            <li><strong>Alt+Enter:</strong> Starts drag mode</li>
+            <li><strong>Space:</strong> Toggles selection</li>
+          </ul>
+        </div>
+        <div style="height: 400px; width: 300px; resize: both; padding: 20px; overflow: hidden; border: 2px solid rgb(204, 204, 204); border-radius: 8px;">
+          <div
+            class="v7C2Sq_menu"
+            data-rac=""
+            aria-label="Virtualized listbox with drag and drop and onAction"
+            aria-multiselectable="true"
+            role="listbox"
+            tabindex="0"
+            data-layout="stack"
+            data-orientation="vertical"
+            style="margin-top: 4px; width: 100%; height: 100%; border: 1px solid gray; background: lightgray; overflow: auto;">
+            <div role="presentation" style="width: 300px; height: 2896px; pointer-events: auto; position: relative;">
+              <div
+                v-for="(item, index) in virtualizedListBoxDndOnActionVisibleItems"
+                :key="item"
+                role="presentation"
+                :style="{position: 'absolute', overflow: 'visible', opacity: '1', zIndex: '0', contain: 'size layout style', top: (index * 29) + 'px', left: '0px', width: '300px', height: '25px'}">
+                <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" draggable="true" data-allows-dragging="true" data-selection-mode="multiple" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">{{ item }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    `
+  })
+};
 
 export const DropOntoRoot: Story = {
   render: () => ({
