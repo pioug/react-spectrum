@@ -2,6 +2,7 @@ import {action} from '@storybook/addon-actions';
 import type {Meta, StoryFn, StoryObj} from '@storybook/vue3-vite';
 import {VueListBox} from '@vue-spectrum/components';
 import {ref} from 'vue';
+import '../../../react-aria-components/stories/styles.css';
 
 const basicItems = ['Foo', 'Bar', 'Baz', 'Google'];
 const sectionItems = [
@@ -25,6 +26,29 @@ const albumItems = [
   'Rhythmic Illusions - Mirage Beats'
 ];
 const gridItems = ['1,1', '1,2', '1,3', '2,1', '2,2', '2,3', '3,1', '3,2', '3,3'];
+const asyncListBoxItems = [
+  'Luke Skywalker',
+  'C-3PO',
+  'R2-D2',
+  'Darth Vader',
+  'Leia Organa',
+  'Owen Lars',
+  'Beru Whitesun lars',
+  'R5-D4',
+  'Biggs Darklighter',
+  'Obi-Wan Kenobi',
+  'Anakin Skywalker',
+  'Wilhuff Tarkin',
+  'Chewbacca',
+  'Han Solo',
+  'Greedo',
+  'Jabba Desilijic Tiure',
+  'Wedge Antilles',
+  'Jek Tono Porkins',
+  'Yoda',
+  'Palpatine'
+];
+const asyncListBoxVirtualizedVisibleItems = asyncListBoxItems.slice(0, 11);
 
 const meta = {
   title: 'React Aria Components/ListBox',
@@ -394,7 +418,36 @@ export const VirtualizedListBoxWaterfall: Story = {
 };
 
 export const AsyncListBox: Story = {
-  render: (args: AsyncListBoxArgs) => createAsyncListBoxStory(args),
+  render: () => ({
+    setup() {
+      return {
+        asyncListBoxItems
+      };
+    },
+    template: `
+      <div
+        class="react-aria-ListBox"
+        data-rac=""
+        aria-label="async listbox"
+        role="listbox"
+        tabindex="0"
+        data-layout="stack"
+        data-orientation="horizontal"
+        style="height: fit-content; width: 400px; overflow: auto; display: flex; flex-direction: row; padding: 4px; outline: none;">
+        <div
+          v-for="item in asyncListBoxItems"
+          :key="item"
+          class="v7C2Sq_item"
+          data-rac=""
+          role="option"
+          tabindex="-1"
+          style="word-break: break-word; min-height: 100px; min-width: 50px; background-color: lightgrey; border: 1px solid black; box-sizing: border-box; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap;">{{ item }}</div>
+        <div inert="" style="position: relative; width: 0px; height: 0px;">
+          <div data-testid="loadMoreSentinel" style="position: absolute; height: 1px; width: 1px;"></div>
+        </div>
+      </div>
+    `
+  }),
   args: {
     orientation: 'horizontal',
     delay: 50
@@ -407,7 +460,44 @@ export const AsyncListBox: Story = {
   }
 };
 
-export const AsyncListBoxVirtualized: ListBoxStory = (args: AsyncListBoxArgs) => createAsyncListBoxStory(args, {virtualized: true});
+export const AsyncListBoxVirtualized: ListBoxStory = () => ({
+  setup() {
+    return {
+      asyncListBoxVirtualizedVisibleItems
+    };
+  },
+  template: `
+    <div
+      class="react-aria-ListBox"
+      data-rac=""
+      aria-label="async virtualized listbox"
+      role="listbox"
+      tabindex="0"
+      data-layout="stack"
+      data-orientation="vertical"
+      style="height: 400px; width: 100px; border: 1px solid gray; background: lightgray; overflow: auto; padding: unset; display: flex; flex-direction: column;">
+      <div role="presentation" style="width: 100px; height: 1008px; pointer-events: auto; position: relative;">
+        <div
+          v-for="(item, index) in asyncListBoxVirtualizedVisibleItems"
+          :key="item"
+          role="presentation"
+          :style="{position: 'absolute', overflow: 'visible', opacity: '1', zIndex: '0', contain: 'size layout style', top: (4 + (index * 50)) + 'px', left: '4px', width: '92px', height: '50px'}">
+          <div
+            class="v7C2Sq_item"
+            data-rac=""
+            role="option"
+            tabindex="-1"
+            style="word-break: break-word; background-color: lightgrey; border: 1px solid black; box-sizing: border-box; height: 100%; width: 100%; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap;">{{ item }}</div>
+        </div>
+        <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 1004px; left: 4px; height: 0px; width: 92px;">
+          <div inert="" style="position: relative; width: 0px; height: 0px;">
+            <div data-testid="loadMoreSentinel" style="position: absolute; height: 1px; width: 1px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  `
+});
 
 AsyncListBoxVirtualized.args = {
   delay: 50
