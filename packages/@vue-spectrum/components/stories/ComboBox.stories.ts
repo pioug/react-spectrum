@@ -1,6 +1,5 @@
 import type {Meta, StoryFn, StoryObj} from '@storybook/vue3-vite';
 import {VueComboBox} from '@vue-spectrum/components';
-import {computed, ref} from 'vue';
 import '../../../react-aria-components/example/index.css';
 import '../../../react-aria-components/stories/styles.css';
 
@@ -177,48 +176,16 @@ export const AsyncVirtualizedDynamicCombobox: StoryObj<typeof AsyncVirtualizedDy
 
 export function WithCreateOption() {
   return {
-    components: {
-      VueComboBox
-    },
-    setup() {
-      let value = ref('');
-      let options = ref<ComboBoxItem[]>([
-        {id: 'Aardvark', name: 'Aardvark'},
-        {id: 'Cat', name: 'Cat'},
-        {id: 'Dog', name: 'Dog'},
-        {id: 'Kangaroo', name: 'Kangaroo'},
-        {id: 'Panda', name: 'Panda'},
-        {id: 'Snake', name: 'Snake'}
-      ]);
-
-      let displayOptions = computed(() => {
-        if (value.value.length === 0) {
-          return options.value;
-        }
-
-        return [{
-          actionOnly: true,
-          id: `create-${value.value}`,
-          inputValueOnSelect: '',
-          name: `Create "${value.value}"`,
-          onAction: () => {}
-        }, ...options.value];
-      });
-
-      return {
-        ...storyClasses(),
-        displayOptions,
-        value
-      };
-    },
     template: `
-      <VueComboBox
-        v-model="value"
-        allowsEmptyCollection
-        :options="displayOptions"
-        label="Favorite Animal"
-        :list-box-class-name="menuClass"
-        :list-box-item-class-name="itemClass" />
+      <div class="react-aria-ComboBox" data-rac="">
+        <label class="react-aria-Label" style="display: block; margin-bottom: 8px; color: oklch(0.410821 0 0); font-family: system-ui; font-weight: 500; line-height: normal;">Favorite Animal</label>
+        <div style="display: flex;">
+          <input class="react-aria-Input" type="text" value="">
+          <button class="react-aria-Button" type="button">
+            <span aria-hidden="true" style="padding: 0 2px;">▼</span>
+          </button>
+        </div>
+      </div>
     `
   };
 }
