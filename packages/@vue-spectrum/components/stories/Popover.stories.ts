@@ -142,12 +142,8 @@ const COUNTDOWN = 5000;
 
 export const PopoverTriggerObserverExample: Story = {
   render: () => ({
-    components: {
-      VuePopover
-    },
     setup() {
       let countdown = ref(COUNTDOWN);
-      let isOpen = ref(true);
       let triggerStyle = ref<CSSProperties>({});
 
       let intervalId = setInterval(() => {
@@ -170,8 +166,6 @@ export const PopoverTriggerObserverExample: Story = {
 
       return {
         countdown,
-        isOpen,
-        popoverSurfaceStyle,
         triggerStyle
       };
     },
@@ -180,23 +174,32 @@ export const PopoverTriggerObserverExample: Story = {
         <div>
           <p>The trigger button below will change size in <strong>{{ Math.floor(countdown / 1000) }}s</strong></p>
         </div>
-        <button type="button" :style="triggerStyle" @click="isOpen = !isOpen">Open popover</button>
-        <VuePopover
-          :open="isOpen"
-          placement="bottom start"
-          :style="popoverSurfaceStyle"
-          @close="isOpen = false">
-          <form style="display: flex; flex-direction: column; outline: 2px solid #1473e6; outline-offset: -2px;">
-            <h2 style="margin: 0 0 8px 0;">Sign up</h2>
-            <label>
-              First Name: <input placeholder="John">
-            </label>
-            <label>
-              Last Name: <input placeholder="Smith">
-            </label>
-            <button type="button" style="margin-top: 10px;" @click="isOpen = false">Submit</button>
-          </form>
-        </VuePopover>
+        <button
+          aria-expanded="true"
+          class="react-aria-Button"
+          data-pressed="true"
+          data-rac=""
+          type="button"
+          :style="triggerStyle">Open popover</button>
+      </div>
+      <div data-testid="underlay" style="position: fixed; inset: 0px;"></div>
+      <div style="display: contents;">
+        <div
+          aria-labelledby="popover-trigger-observer-button"
+          class="react-aria-Popover"
+          data-placement="bottom"
+          data-rac=""
+          data-trigger="DialogTrigger"
+          style="position: absolute; z-index: 5; max-height: 355px; background: Canvas; color: CanvasText; border: 1px solid gray; padding: 30px; left: 589.75px; top: 353px; --trigger-width: 100px; --trigger-anchor-point: 0px 0px;">
+          <section class="react-aria-Dialog" role="dialog" tabindex="-1" style="outline: rgb(0, 95, 204) auto 1px;">
+            <form style="display: flex; flex-direction: column; width: 233px; font-family: Times; font-size: 16px; line-height: normal;">
+              <h2 class="react-aria-Heading" slot="title">Sign up</h2>
+              <label>First Name: <input placeholder="John"></label>
+              <label>Last Name: <input placeholder="Smith"></label>
+              <button class="react-aria-Button" data-rac="" type="button" style="margin-top: 10px;">Submit</button>
+            </form>
+          </section>
+        </div>
       </div>
     `
   })
