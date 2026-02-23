@@ -26,14 +26,7 @@ export const CheckboxExample: Story = {
       };
     },
     template: `
-      <VueCheckbox v-bind="args">
-        <div class="checkbox">
-          <svg viewBox="0 0 18 18" aria-hidden="true">
-            <polyline points="1 9 7 14 15 4" />
-          </svg>
-        </div>
-        Unsubscribe
-      </VueCheckbox>
+      <VueCheckbox v-bind="args"><div class="checkbox"><svg viewBox="0 0 18 18" aria-hidden="true"><polyline points="1 9 7 14 15 4" /></svg></div>Unsubscribe</VueCheckbox>
     `
   })
 };

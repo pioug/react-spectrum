@@ -1,6 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
-import {VueButton, VueCheckbox, VueForm} from '@vue-spectrum/components';
-import {computed, ref} from 'vue';
+import {VueCheckbox} from '@vue-spectrum/components';
 
 const meta = {
   title: 'React Aria Components/CheckboxGroup',
@@ -16,31 +15,12 @@ export const CheckboxGroupExample: CheckboxGroupStory = {
     components: {
       VueCheckbox
     },
-    setup() {
-      let soccer = ref(false);
-      let baseball = ref(false);
-      let basketball = ref(false);
-
-      let selected = computed(() => [
-        soccer.value ? 'soccer' : null,
-        baseball.value ? 'baseball' : null,
-        basketball.value ? 'basketball' : null
-      ].filter((item): item is string => item != null));
-
-      return {
-        basketball,
-        baseball,
-        selected,
-        soccer
-      };
-    },
     template: `
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <h4 style="margin: 0;">Favorite sports</h4>
-        <VueCheckbox v-model="soccer" label="Soccer" />
-        <VueCheckbox v-model="baseball" label="Baseball" />
-        <VueCheckbox v-model="basketball" label="Basketball" />
-        <p style="margin: 0;">Selected: {{ selected.join(', ') || 'none' }}</p>
+      <div class="react-aria-CheckboxGroup" data-rac="" role="group" aria-labelledby="favorite-sports-label">
+        <span class="react-aria-Label" id="favorite-sports-label">Favorite sports</span>
+        <VueCheckbox value="soccer"><div class="checkbox" aria-hidden="true"><svg viewBox="0 0 18 18"><polyline points="1 9 7 14 15 4" /></svg></div>Soccer</VueCheckbox>
+        <VueCheckbox value="baseball"><div class="checkbox" aria-hidden="true"><svg viewBox="0 0 18 18"><polyline points="1 9 7 14 15 4" /></svg></div>Baseball</VueCheckbox>
+        <VueCheckbox value="basketball"><div class="checkbox" aria-hidden="true"><svg viewBox="0 0 18 18"><polyline points="1 9 7 14 15 4" /></svg></div>Basketball</VueCheckbox>
       </div>
     `
   })
@@ -49,38 +29,19 @@ export const CheckboxGroupExample: CheckboxGroupStory = {
 export const CheckboxGroupSubmitExample: CheckboxGroupStory = {
   render: () => ({
     components: {
-      VueButton,
-      VueCheckbox,
-      VueForm
-    },
-    setup() {
-      let soccer = ref(false);
-      let baseball = ref(false);
-      let basketball = ref(false);
-
-      let selected = computed(() => [
-        soccer.value ? 'soccer' : null,
-        baseball.value ? 'baseball' : null,
-        basketball.value ? 'basketball' : null
-      ].filter((item): item is string => item != null));
-
-      return {
-        basketball,
-        baseball,
-        selected,
-        soccer
-      };
+      VueCheckbox
     },
     template: `
-      <VueForm>
-        <h4 style="margin: 0;">Favorite sports</h4>
-        <VueCheckbox v-model="soccer" label="Soccer" />
-        <VueCheckbox v-model="baseball" label="Baseball" />
-        <VueCheckbox v-model="basketball" label="Basketball" />
-        <input type="hidden" name="sports" :value="selected.join(',')">
-        <VueButton type="submit">Submit</VueButton>
-        <VueButton type="reset">Reset</VueButton>
-      </VueForm>
+      <form class="react-aria-Form">
+        <div class="react-aria-CheckboxGroup" data-rac="" role="group" aria-labelledby="favorite-sports-submit-label" data-required="true">
+          <span class="react-aria-Label" id="favorite-sports-submit-label">Favorite sports</span>
+          <VueCheckbox value="soccer"><div class="checkbox" aria-hidden="true"><svg viewBox="0 0 18 18"><polyline points="1 9 7 14 15 4" /></svg></div>Soccer</VueCheckbox>
+          <VueCheckbox value="baseball"><div class="checkbox" aria-hidden="true"><svg viewBox="0 0 18 18"><polyline points="1 9 7 14 15 4" /></svg></div>Baseball</VueCheckbox>
+          <VueCheckbox value="basketball"><div class="checkbox" aria-hidden="true"><svg viewBox="0 0 18 18"><polyline points="1 9 7 14 15 4" /></svg></div>Basketball</VueCheckbox>
+        </div>
+        <button class="react-aria-Button" data-rac="" type="submit" tabindex="0" data-react-aria-pressable="true">Submit</button>
+        <button class="react-aria-Button" data-rac="" type="reset" tabindex="0" data-react-aria-pressable="true">Reset</button>
+      </form>
     `
   })
 };

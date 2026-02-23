@@ -1,5 +1,17 @@
-import {computed, defineComponent, h} from 'vue';
-import {getSpectrumContext} from '../context';
+import {defineComponent, h} from 'vue';
+
+const HIDDEN_INPUT_STYLE = {
+  border: '0px',
+  clip: 'rect(0px, 0px, 0px, 0px)',
+  clipPath: 'inset(50%)',
+  height: '1px',
+  margin: '-1px',
+  overflow: 'hidden',
+  padding: '0px',
+  position: 'absolute',
+  whiteSpace: 'nowrap',
+  width: '1px'
+} as const;
 
 export const VueCheckbox = defineComponent({
   name: 'VueCheckbox',
@@ -24,14 +36,6 @@ export const VueCheckbox = defineComponent({
     blur: (event: FocusEvent) => event instanceof FocusEvent
   },
   setup(props, {emit, slots, attrs}) {
-    let context = getSpectrumContext();
-
-    let classes = computed(() => ([
-      'vs-checkbox',
-      context.value.scale === 'large' ? 'vs-checkbox--large' : 'vs-checkbox--medium',
-      props.disabled ? 'is-disabled' : null
-    ]));
-
     let onChange = (event: Event) => {
       let target = event.currentTarget as HTMLInputElement | null;
       let checked = target?.checked ?? false;
@@ -42,19 +46,29 @@ export const VueCheckbox = defineComponent({
     return function render() {
       return h('label', {
         ...attrs,
-        'data-vac': '',
-        class: [classes.value, attrs.class]
+        class: ['react-aria-Checkbox', attrs.class],
+        'data-rac': '',
+        'data-react-aria-pressable': 'true',
+        'data-disabled': props.disabled ? 'true' : undefined
       }, [
-        h('input', {
-          class: 'vs-checkbox__input',
-          type: 'checkbox',
-          checked: props.modelValue,
-          disabled: props.disabled,
-          onChange,
-          onFocus: (event: FocusEvent) => emit('focus', event),
-          onBlur: (event: FocusEvent) => emit('blur', event)
-        }),
-        h('span', {class: 'vs-checkbox__label'}, slots.default ? slots.default() : props.label)
+        h('span', {
+          style: HIDDEN_INPUT_STYLE
+        }, [
+          h('input', {
+            'data-react-aria-pressable': 'true',
+            tabindex: props.disabled ? undefined : 0,
+            type: 'checkbox',
+            title: '',
+            checked: props.modelValue,
+            disabled: props.disabled,
+            onChange,
+            onFocus: (event: FocusEvent) => emit('focus', event),
+            onBlur: (event: FocusEvent) => emit('blur', event)
+          })
+        ]),
+        ...(slots.default
+          ? slots.default()
+          : [props.label])
       ]);
     };
   }
