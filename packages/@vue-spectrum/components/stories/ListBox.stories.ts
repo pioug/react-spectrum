@@ -34,21 +34,21 @@ const asyncListBoxItems = [
   'Leia Organa',
   'Owen Lars',
   'Beru Whitesun lars',
+  'R5-D4'
+];
+const asyncListBoxVirtualizedVisibleItems = [
+  'Luke Skywalker',
+  'C-3PO',
+  'R2-D2',
+  'Darth Vader',
+  'Leia Organa',
+  'Owen Lars',
+  'Beru Whitesun lars',
   'R5-D4',
   'Biggs Darklighter',
   'Obi-Wan Kenobi',
-  'Anakin Skywalker',
-  'Wilhuff Tarkin',
-  'Chewbacca',
-  'Han Solo',
-  'Greedo',
-  'Jabba Desilijic Tiure',
-  'Wedge Antilles',
-  'Jek Tono Porkins',
-  'Yoda',
-  'Palpatine'
+  'Anakin Skywalker'
 ];
-const asyncListBoxVirtualizedVisibleItems = asyncListBoxItems.slice(0, 11);
 
 const meta = {
   title: 'React Aria Components/ListBox',
@@ -433,7 +433,7 @@ export const AsyncListBox: Story = {
         tabindex="0"
         data-layout="stack"
         data-orientation="horizontal"
-        style="height: fit-content; width: 400px; overflow: auto; display: flex; flex-direction: row; padding: 4px; outline: none;">
+        style="height: fit-content; width: 404px; max-width: 100%; overflow: hidden; display: flex; flex-direction: row; padding: 4px 0 4px 4px; outline: none;">
         <div
           v-for="item in asyncListBoxItems"
           :key="item"
@@ -441,7 +441,8 @@ export const AsyncListBox: Story = {
           data-rac=""
           role="option"
           tabindex="-1"
-          style="word-break: break-word; min-height: 100px; min-width: 50px; background-color: lightgrey; border: 1px solid black; box-sizing: border-box; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap;">{{ item }}</div>
+          style="word-break: break-word; min-height: 100px; min-width: 50px; background-color: lightgrey; border: 1px solid black; box-sizing: border-box; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">{{ item }}</div>
+        <div aria-hidden="true" style="min-width: 4px; width: 4px; background: rgb(248, 248, 248);"></div>
         <div inert="" style="position: relative; width: 0px; height: 0px;">
           <div data-testid="loadMoreSentinel" style="position: absolute; height: 1px; width: 1px;"></div>
         </div>
@@ -475,7 +476,7 @@ export const AsyncListBoxVirtualized: ListBoxStory = () => ({
       tabindex="0"
       data-layout="stack"
       data-orientation="vertical"
-      style="height: 400px; width: 100px; border: 1px solid gray; background: lightgray; overflow: auto; padding: unset; display: flex; flex-direction: column;">
+      style="height: 400px; width: 100px; max-width: 100%; border: 1px solid gray; background: lightgray; overflow: auto; padding: unset; display: flex; flex-direction: column;">
       <div role="presentation" style="width: 100px; height: 1008px; pointer-events: auto; position: relative;">
         <div
           v-for="(item, index) in asyncListBoxVirtualizedVisibleItems"
@@ -487,7 +488,7 @@ export const AsyncListBoxVirtualized: ListBoxStory = () => ({
             data-rac=""
             role="option"
             tabindex="-1"
-            style="word-break: break-word; background-color: lightgrey; border: 1px solid black; box-sizing: border-box; height: 100%; width: 100%; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap;">{{ item }}</div>
+            style="word-break: break-word; background-color: lightgrey; border: 1px solid black; box-sizing: border-box; height: 100%; width: 100%; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">{{ item }}</div>
         </div>
         <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 1004px; left: 4px; height: 0px; width: 92px;">
           <div inert="" style="position: relative; width: 0px; height: 0px;">
