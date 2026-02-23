@@ -22,6 +22,10 @@
   font-weight: var(--spectrum-selectlist-option-text-font-weight);
 }
 
+.no-results[hidden] {
+  display: none;
+}
+
 .mobile-combobox {
   outline: none;
 }

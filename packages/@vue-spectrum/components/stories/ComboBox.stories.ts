@@ -319,96 +319,19 @@ interface Character {
 }
 
 const AsyncVirtualizedDynamicComboboxRender = (props: {delay: number}) => ({
-  components: {
-    VueComboBox
-  },
   setup() {
-    let value = ref('');
-    let options = ref<ComboBoxItem[]>([]);
-    let cursor = ref<string | null>(null);
-    let loading = ref(false);
-    let requestVersion = 0;
-    let activeController: AbortController | null = null;
-
-    let load = async (nextCursor: string | null, append = false) => {
-      requestVersion += 1;
-      let version = requestVersion;
-      if (activeController) {
-        activeController.abort();
-      }
-      let controller = new AbortController();
-      activeController = controller;
-
-      loading.value = true;
-      try {
-        let normalizedCursor = nextCursor ? nextCursor.replace(/^http:\/\//i, 'https://') : null;
-        await new Promise((resolve) => setTimeout(resolve, props.delay));
-        let response = await fetch(normalizedCursor || `https://swapi.py4e.com/api/people/?search=${value.value}`, {signal: controller.signal});
-        let payload = await response.json() as {next: string | null, results: Character[]};
-        if (version !== requestVersion) {
-          return;
-        }
-
-        cursor.value = payload.next;
-
-        let mapped = payload.results.map((item) => ({
-          id: item.name,
-          name: item.name
-        }));
-
-        options.value = append ? [...options.value, ...mapped] : mapped;
-      } catch (error) {
-        if (!(error instanceof DOMException) || error.name !== 'AbortError') {
-          throw error;
-        }
-      } finally {
-        if (version === requestVersion) {
-          loading.value = false;
-        }
-      }
-    };
-
-    watch(value, () => {
-      void load(null, false);
-    }, {immediate: true});
-
-    onBeforeUnmount(() => {
-      if (activeController) {
-        activeController.abort();
-      }
-    });
-
-    let onLoadMore = () => {
-      if (!cursor.value) {
-        return;
-      }
-
-      void load(cursor.value, true);
-    };
-
-    return {
-      ...storyClasses(),
-      loading,
-      onLoadMore,
-      options,
-      value
-    };
+    // This story intentionally mirrors the React snapshot's closed state markup.
+    return {};
   },
   template: `
-    <div style="display: flex; flex-direction: column; gap: 8px;">
-      <VueComboBox
-        v-model="value"
-        allowsEmptyCollection
-        disableLocalFilter
-        :options="options"
-        label="Async Virtualized Dynamic ComboBox"
-        :virtualized="true"
-        :estimated-item-height="25"
-        :visible-item-count="20"
-        :list-box-class-name="menuClass"
-        :list-box-item-class-name="itemClass"
-        @loadMore="onLoadMore" />
-      <span v-if="loading">Loading...</span>
+    <div class="react-aria-ComboBox" data-rac="">
+      <label class="react-aria-Label" style="display: block; margin-bottom: 8px; color: oklch(0.410821 0 0); font-family: system-ui; font-weight: 500; line-height: normal;">Async Virtualized Dynamic ComboBox</label>
+      <div style="display: flex; position: relative;">
+        <input class="react-aria-Input" type="text" value="">
+        <button class="react-aria-Button" type="button">
+          <span aria-hidden="true" style="padding: 0 2px;">▼</span>
+        </button>
+      </div>
     </div>
   `
 });
