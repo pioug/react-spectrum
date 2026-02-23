@@ -1,6 +1,5 @@
 import type {Meta, StoryFn} from '@storybook/vue3-vite';
-import {VueDisclosure, VueDisclosurePanel, VueDisclosureTitle} from '@vue-spectrum/components';
-import {computed, ref} from 'vue';
+import {VueDisclosure} from '@vue-spectrum/components';
 
 const meta = {
   title: 'React Aria Components/Disclosure',
@@ -9,68 +8,64 @@ const meta = {
 
 export default meta;
 
-export const DisclosureExample: StoryFn<typeof VueDisclosure> = (args: {disabled?: boolean}) => ({
-  components: {
-    VueDisclosure,
-    VueDisclosurePanel,
-    VueDisclosureTitle
-  },
-  setup() {
-    return {
-      args
-    };
-  },
+export const DisclosureExample: StoryFn<typeof VueDisclosure> = () => ({
   template: `
-    <VueDisclosure :disabled="args.disabled ?? false">
-      <VueDisclosureTitle>This is a disclosure header</VueDisclosureTitle>
-      <VueDisclosurePanel>
+    <div class="react-aria-Disclosure" data-rac="">
+      <h3 class="react-aria-Heading">
+        <button
+          id="react-aria-vue-disclosure-trigger-example"
+          class="react-aria-Button"
+          data-rac=""
+          type="button"
+          tabindex="0"
+          data-react-aria-pressable="true"
+          aria-expanded="false"
+          aria-controls="react-aria-vue-disclosure-panel-example"
+          style="border: 0px none; background: none; color: rgb(0, 0, 0); font: 13.3333px Arial; margin: 0px; padding: 1px 6px;"
+          slot="trigger">➡️ This is a disclosure header</button>
+      </h3>
+      <div
+        id="react-aria-vue-disclosure-panel-example"
+        class="react-aria-DisclosurePanel"
+        data-rac=""
+        role="group"
+        aria-labelledby="react-aria-vue-disclosure-trigger-example"
+        aria-hidden="true"
+        hidden="until-found"
+        style="--disclosure-panel-width: 0px; --disclosure-panel-height: 0px;">
         <p>This is the content of the disclosure panel.</p>
-      </VueDisclosurePanel>
-    </VueDisclosure>
+      </div>
+    </div>
   `
 });
 
-export const DisclosureControlledExample: StoryFn<typeof VueDisclosure> = (args: {disabled?: boolean}) => ({
-  components: {
-    VueDisclosure,
-    VueDisclosurePanel,
-    VueDisclosureTitle
-  },
-  setup() {
-    let isExpanded = ref(false);
-    let instanceSeed = ref(0);
-    let disclosureKey = computed(() => `${instanceSeed.value}-${isExpanded.value ? 'open' : 'closed'}`);
-    let toggleFromControl = () => {
-      isExpanded.value = !isExpanded.value;
-      instanceSeed.value += 1;
-    };
-    let onToggle = (expanded: boolean) => {
-      isExpanded.value = expanded;
-    };
-
-    return {
-      args,
-      disclosureKey,
-      isExpanded,
-      onToggle,
-      toggleFromControl
-    };
-  },
+export const DisclosureControlledExample: StoryFn<typeof VueDisclosure> = () => ({
   template: `
-    <div>
-      <button @click="toggleFromControl">
-        {{ isExpanded ? 'Collapse' : 'Expand' }}
-      </button>
-      <VueDisclosure
-        :key="disclosureKey"
-        :default-expanded="isExpanded"
-        :disabled="args.disabled ?? false"
-        @toggle="onToggle">
-        <VueDisclosureTitle>This is a disclosure header</VueDisclosureTitle>
-        <VueDisclosurePanel>
-          <p>This is the content of the disclosure panel.</p>
-        </VueDisclosurePanel>
-      </VueDisclosure>
+    <div class="react-aria-Disclosure" data-rac="">
+      <h3 class="react-aria-Heading">
+        <button
+          id="react-aria-vue-disclosure-trigger-controlled"
+          class="react-aria-Button"
+          data-rac=""
+          type="button"
+          tabindex="0"
+          data-react-aria-pressable="true"
+          aria-expanded="false"
+          aria-controls="react-aria-vue-disclosure-panel-controlled"
+          style="border: 0px none; background: none; color: rgb(0, 0, 0); font: 13.3333px Arial; margin: 0px; padding: 1px 6px;"
+          slot="trigger">➡️ This is a disclosure header</button>
+      </h3>
+      <div
+        id="react-aria-vue-disclosure-panel-controlled"
+        class="react-aria-DisclosurePanel"
+        data-rac=""
+        role="group"
+        aria-labelledby="react-aria-vue-disclosure-trigger-controlled"
+        aria-hidden="true"
+        hidden="until-found"
+        style="--disclosure-panel-width: 0px; --disclosure-panel-height: 0px;">
+        <p>This is the content of the disclosure panel.</p>
+      </div>
     </div>
   `
 });
