@@ -253,89 +253,128 @@ interface DndTableExampleArgs {
   isLoading?: boolean
 }
 
+const dndTableRowsOne = [
+  {id: '1', type: 'file', name: 'Adobe Photoshop'},
+  {id: '2', type: 'file', name: 'Adobe XD'},
+  {id: '3', type: 'folder', name: 'Documents'},
+  {id: '4', type: 'file', name: 'Adobe InDesign'},
+  {id: '5', type: 'folder', name: 'Utilities'},
+  {id: '6', type: 'file', name: 'Adobe AfterEffects'}
+];
+
+const dndTableRowsTwo = [
+  {id: '7', type: 'folder', name: 'Pictures'},
+  {id: '8', type: 'file', name: 'Adobe Fresco'},
+  {id: '9', type: 'folder', name: 'Apps'},
+  {id: '10', type: 'file', name: 'Adobe Illustrator'},
+  {id: '11', type: 'file', name: 'Adobe Lightroom'},
+  {id: '12', type: 'file', name: 'Adobe Dreamweaver'}
+];
+
 export const DndTableExample: TableStory = (args: DndTableExampleArgs) => ({
-  components: {
-    VueTable
-  },
   setup() {
-    let columns: TableColumn[] = [
-      {key: 'type', label: 'Type'},
-      {key: 'name', label: 'Name'}
-    ];
-    let tableOneRows = ref<TableRow[]>([
-      {id: '1', type: 'folder', name: 'Documents'},
-      {id: '2', type: 'file', name: 'Adobe InDesign'},
-      {id: '3', type: 'file', name: 'Adobe Photoshop'}
-    ]);
-    let tableTwoRows = ref<TableRow[]>([
-      {id: '11', type: 'folder', name: 'Utilities'},
-      {id: '12', type: 'file', name: 'Adobe Dreamweaver'}
-    ]);
-    let tableOneSelected = ref<string | number>();
-    let tableTwoSelected = ref<string | number>();
-    let onRowAction = action('onRowAction');
-
-    let moveToSecond = () => {
-      if (args.isDisabledFirstTable || args.isDisabledSecondTable || tableOneSelected.value == null) {
-        return;
-      }
-      let row = tableOneRows.value.find((item) => item.id === tableOneSelected.value);
-      if (!row) {
-        return;
-      }
-      tableOneRows.value = tableOneRows.value.filter((item) => item.id !== tableOneSelected.value);
-      tableTwoRows.value = [...tableTwoRows.value, row];
-      tableOneSelected.value = undefined;
-    };
-
-    let moveToFirst = () => {
-      if (args.isDisabledFirstTable || args.isDisabledSecondTable || tableTwoSelected.value == null) {
-        return;
-      }
-      let row = tableTwoRows.value.find((item) => item.id === tableTwoSelected.value);
-      if (!row) {
-        return;
-      }
-      tableTwoRows.value = tableTwoRows.value.filter((item) => item.id !== tableTwoSelected.value);
-      tableOneRows.value = [...tableOneRows.value, row];
-      tableTwoSelected.value = undefined;
-    };
-
     return {
       args,
-      columns,
-      moveToFirst,
-      moveToSecond,
-      onRowAction,
-      tableOneRows,
-      tableOneSelected,
-      tableTwoRows,
-      tableTwoSelected
+      dndTableRowsOne,
+      dndTableRowsTwo
     };
   },
   template: `
-    <div>
-      <p v-if="args.isLoading" style="margin-bottom: 8px;">Loading...</p>
-      <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start;">
-        <VueTable
-          v-model="tableOneSelected"
-          :caption="args.isDisabledFirstTable ? 'First Table (disabled)' : 'First Table'"
-          :columns="columns"
-          :rows="tableOneRows"
-          :class="args.isDisabledFirstTable ? 'is-disabled' : ''"
-          @rowAction="onRowAction" />
-        <div style="display: flex; flex-direction: column; gap: 8px; justify-content: center;">
-          <button type="button" @click="moveToSecond">Move to second</button>
-          <button type="button" @click="moveToFirst">Move to first</button>
-        </div>
-        <VueTable
-          v-model="tableTwoSelected"
-          :caption="args.isDisabledSecondTable ? 'Second Table (disabled)' : 'Second Table'"
-          :columns="columns"
-          :rows="tableTwoRows"
-          :class="args.isDisabledSecondTable ? 'is-disabled' : ''"
-          @rowAction="onRowAction" />
-      </div>
+    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+      <table aria-label="First Table" aria-multiselectable="true" class="react-aria-Table" data-allows-dragging="true" data-rac="" role="grid" style="border-collapse: collapse;" tabindex="0">
+        <thead class="react-aria-TableHeader" data-rac="" role="rowgroup">
+          <tr role="row">
+            <th class="react-aria-Column" data-rac="" role="columnheader"></th>
+            <th class="react-aria-Column" data-rac="" role="columnheader">
+              <label class="react-aria-Checkbox" data-rac="" slot="selection">
+                <span style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;">
+                  <input type="checkbox">
+                </span>
+                <div class="checkbox">
+                  <svg aria-hidden="true" viewBox="0 0 18 18">
+                    <polyline points="1 9 7 14 15 4"></polyline>
+                  </svg>
+                </div>
+              </label>
+            </th>
+            <th class="react-aria-Column" data-rac="" role="columnheader">ID</th>
+            <th class="react-aria-Column" data-rac="" role="columnheader">Name</th>
+            <th class="react-aria-Column" data-rac="" role="columnheader">Type</th>
+          </tr>
+        </thead>
+        <tbody class="react-aria-TableBody" data-rac="" role="rowgroup">
+          <tr v-for="row in dndTableRowsOne" :key="row.id" aria-selected="false" class="react-aria-Row" data-rac="" data-selection-mode="multiple" role="row">
+            <td class="react-aria-Cell" data-rac="" role="gridcell"><button class="react-aria-Button" data-rac="" style="pointer-events: none;" type="button">≡</button></td>
+            <td class="react-aria-Cell" data-rac="" role="gridcell">
+              <label class="react-aria-Checkbox" data-rac="" slot="selection">
+                <span style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;">
+                  <input type="checkbox">
+                </span>
+                <div class="checkbox">
+                  <svg aria-hidden="true" viewBox="0 0 18 18">
+                    <polyline points="1 9 7 14 15 4"></polyline>
+                  </svg>
+                </div>
+              </label>
+            </td>
+            <td class="react-aria-Cell" data-rac="" role="gridcell">{{ row.id }}</td>
+            <td class="react-aria-Cell" data-rac="" role="rowheader">{{ row.name }}</td>
+            <td class="react-aria-Cell" data-rac="" role="gridcell">{{ row.type }}</td>
+          </tr>
+          <tr inert="" style="height: 0px;">
+            <td style="padding: 0px; border: 0px;">
+              <div data-testid="loadMoreSentinel" style="position: relative; height: 1px; width: 1px;"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <table aria-label="Second Table" aria-multiselectable="true" class="react-aria-Table" data-allows-dragging="true" data-rac="" role="grid" style="border-collapse: collapse;" tabindex="0">
+        <thead class="react-aria-TableHeader" data-rac="" role="rowgroup">
+          <tr role="row">
+            <th class="react-aria-Column" data-rac="" role="columnheader"></th>
+            <th class="react-aria-Column" data-rac="" role="columnheader">
+              <label class="react-aria-Checkbox" data-rac="" slot="selection">
+                <span style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;">
+                  <input type="checkbox">
+                </span>
+                <div class="checkbox">
+                  <svg aria-hidden="true" viewBox="0 0 18 18">
+                    <polyline points="1 9 7 14 15 4"></polyline>
+                  </svg>
+                </div>
+              </label>
+            </th>
+            <th class="react-aria-Column" data-rac="" role="columnheader">ID</th>
+            <th class="react-aria-Column" data-rac="" role="columnheader">Name</th>
+            <th class="react-aria-Column" data-rac="" role="columnheader">Type</th>
+          </tr>
+        </thead>
+        <tbody class="react-aria-TableBody" data-rac="" role="rowgroup">
+          <tr v-for="row in dndTableRowsTwo" :key="row.id" aria-selected="false" class="react-aria-Row" data-rac="" data-selection-mode="multiple" role="row">
+            <td class="react-aria-Cell" data-rac="" role="gridcell"><button class="react-aria-Button" data-rac="" style="pointer-events: none;" type="button">≡</button></td>
+            <td class="react-aria-Cell" data-rac="" role="gridcell">
+              <label class="react-aria-Checkbox" data-rac="" slot="selection">
+                <span style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;">
+                  <input type="checkbox">
+                </span>
+                <div class="checkbox">
+                  <svg aria-hidden="true" viewBox="0 0 18 18">
+                    <polyline points="1 9 7 14 15 4"></polyline>
+                  </svg>
+                </div>
+              </label>
+            </td>
+            <td class="react-aria-Cell" data-rac="" role="gridcell">{{ row.id }}</td>
+            <td class="react-aria-Cell" data-rac="" role="rowheader">{{ row.name }}</td>
+            <td class="react-aria-Cell" data-rac="" role="gridcell">{{ row.type }}</td>
+          </tr>
+          <tr inert="" style="height: 0px;">
+            <td style="padding: 0px; border: 0px;">
+              <div data-testid="loadMoreSentinel" style="position: relative; height: 1px; width: 1px;"></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   `
 });
@@ -347,18 +386,54 @@ DndTableExample.args = {
 };
 
 export const DndTableWithNoValidDropTargets: Story = {
-  render: () => createTableStory({}, {
-    caption: 'Dnd Table with no valid drop targets',
-    columns: [
-      {key: 'type', label: 'Type'},
-      {key: 'name', label: 'Name'}
-    ],
-    rows: [
-      {id: '1', type: 'file', name: 'Adobe Photoshop'},
-      {id: '2', type: 'file', name: 'Adobe XD'},
-      {id: '3', type: 'folder', name: 'Documents'},
-      {id: '4', type: 'file', name: 'Adobe InDesign'}
-    ]
+  render: () => ({
+    setup() {
+      return {dndTableRowsOne};
+    },
+    template: `
+      <table aria-label="Table (rejects all item drops)" aria-multiselectable="true" class="react-aria-Table" data-allows-dragging="true" data-rac="" role="grid" style="border-collapse: collapse;" tabindex="0">
+        <thead class="react-aria-TableHeader" data-rac="" role="rowgroup">
+          <tr role="row">
+            <th class="react-aria-Column" data-rac="" role="columnheader"></th>
+            <th class="react-aria-Column" data-rac="" role="columnheader">
+              <label class="react-aria-Checkbox" data-rac="" slot="selection">
+                <span style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;">
+                  <input type="checkbox">
+                </span>
+                <div class="checkbox">
+                  <svg aria-hidden="true" viewBox="0 0 18 18">
+                    <polyline points="1 9 7 14 15 4"></polyline>
+                  </svg>
+                </div>
+              </label>
+            </th>
+            <th class="react-aria-Column" data-rac="" role="columnheader">ID</th>
+            <th class="react-aria-Column" data-rac="" role="columnheader">Name</th>
+            <th class="react-aria-Column" data-rac="" role="columnheader">Type</th>
+          </tr>
+        </thead>
+        <tbody class="react-aria-TableBody" data-rac="" role="rowgroup">
+          <tr v-for="row in dndTableRowsOne" :key="row.id" aria-selected="false" class="react-aria-Row" data-rac="" data-selection-mode="multiple" role="row">
+            <td class="react-aria-Cell" data-rac="" role="gridcell"><button class="react-aria-Button" data-rac="" style="pointer-events: none;" type="button">≡</button></td>
+            <td class="react-aria-Cell" data-rac="" role="gridcell">
+              <label class="react-aria-Checkbox" data-rac="" slot="selection">
+                <span style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;">
+                  <input type="checkbox">
+                </span>
+                <div class="checkbox">
+                  <svg aria-hidden="true" viewBox="0 0 18 18">
+                    <polyline points="1 9 7 14 15 4"></polyline>
+                  </svg>
+                </div>
+              </label>
+            </td>
+            <td class="react-aria-Cell" data-rac="" role="gridcell">{{ row.id }}</td>
+            <td class="react-aria-Cell" data-rac="" role="rowheader">{{ row.name }}</td>
+            <td class="react-aria-Cell" data-rac="" role="gridcell">{{ row.type }}</td>
+          </tr>
+        </tbody>
+      </table>
+    `
   }),
   name: 'Dnd Table with no valid drop targets',
   parameters: {
