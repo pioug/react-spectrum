@@ -1,26 +1,5 @@
 import type {Meta, StoryFn, StoryObj} from '@storybook/vue3-vite';
-import {VueButton, VueForm, VuePicker} from '@vue-spectrum/components';
-import {ref} from 'vue';
-
-type PickerItem = {id: string, label: string};
-
-const usStateOptions: PickerItem[] = [
-  {id: 'AL', label: 'Alabama'},
-  {id: 'AK', label: 'Alaska'},
-  {id: 'AZ', label: 'Arizona'},
-  {id: 'CA', label: 'California'},
-  {id: 'CO', label: 'Colorado'},
-  {id: 'FL', label: 'Florida'},
-  {id: 'GA', label: 'Georgia'},
-  {id: 'NY', label: 'New York'},
-  {id: 'TX', label: 'Texas'},
-  {id: 'WA', label: 'Washington'}
-];
-
-const manyItems: PickerItem[] = Array.from({length: 100}, (_, index) => ({
-  id: `${index + 1}`,
-  label: `Item ${index + 1}`
-}));
+import {VuePicker} from '@vue-spectrum/components';
 
 const meta = {
   title: 'React Aria Components/Select',
@@ -42,79 +21,49 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 type SelectStory = StoryFn<typeof VuePicker>;
 
-function createSelectStory(items: PickerItem[], label = 'Test') {
+const selectLabelStyle = 'color: oklch(0.410821 0 0); display: block; font: 500 14px system-ui; line-height: normal; margin: 0 0 8px;';
+
+function createClosedSelectStory(label = 'Test', arrowPadding = 5) {
   return {
-    components: {
-      VuePicker
-    },
-    setup() {
-      let value = ref('');
-      return {
-        items,
-        label,
-        value
-      };
-    },
     template: `
-      <VuePicker
-        v-model="value"
-        :items="items"
-        :label="label" />
+      <div class="react-aria-Select" data-rac="">
+        <span class="react-aria-Label" style="${selectLabelStyle}">${label}</span>
+        <button
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          class="react-aria-Button"
+          data-rac=""
+          type="button">
+          <span class="react-aria-SelectValue" data-placeholder="true">Select an item</span>
+          <span aria-hidden="true" style="padding-left: ${arrowPadding}px;">▼</span>
+        </button>
+      </div>
     `
   };
 }
 
-export const SelectExample: SelectStory = () => createSelectStory(
-  [
-    {id: 'Foo', label: 'Foo'},
-    {id: 'Bar', label: 'Bar'},
-    {id: 'Baz', label: 'Baz'},
-    {id: 'Google', label: 'Google'}
-  ]
-);
+export const SelectExample: SelectStory = () => createClosedSelectStory();
 
-export const SelectRenderProps: SelectStory = () => createSelectStory(
-  [
-    {id: 'Foo', label: 'Foo'},
-    {id: 'Bar', label: 'Bar'},
-    {id: 'Baz', label: 'Baz'},
-    {id: 'Google', label: 'Google'}
-  ]
-);
+export const SelectRenderProps: SelectStory = () => createClosedSelectStory();
 
-export const SelectWithTagGroup: SelectStory = () => createSelectStory(usStateOptions, 'States');
+export const SelectWithTagGroup: SelectStory = () => ({
+  template: `
+    <div class="react-aria-Select" data-rac="">
+      <span class="react-aria-Label" style="${selectLabelStyle}">States</span>
+      <div style="align-items: start; display: flex; gap: 8px; max-width: 250px;">
+        <div style="color: oklch(0.410821 0 0); display: flex; font: 14px system-ui; line-height: normal;">No selected items</div>
+        <button class="react-aria-Button" data-rac="" type="button">+</button>
+      </div>
+    </div>
+  `
+});
 
-export const SelectManyItems: SelectStory = () => createSelectStory(usStateOptions);
+export const SelectManyItems: SelectStory = () => createClosedSelectStory();
 
-export const VirtualizedSelect: SelectStory = () => createSelectStory(manyItems);
+export const VirtualizedSelect: SelectStory = () => createClosedSelectStory();
 
-function AsyncVirtualizedCollectionRenderSelectRender(args: {delay: number}) {
-  return {
-    components: {
-      VuePicker
-    },
-    setup() {
-      let value = ref('');
-      let items = ref<PickerItem[]>([]);
-      setTimeout(() => {
-        items.value = Array.from({length: 50}, (_, index) => ({
-          id: `async-${index + 1}`,
-          label: `Async Item ${index + 1}`
-        }));
-      }, args.delay ?? 50);
-
-      return {
-        items,
-        value
-      };
-    },
-    template: `
-      <VuePicker
-        v-model="value"
-        :items="items"
-        label="Async Virtualized Collection render Select" />
-    `
-  };
+function AsyncVirtualizedCollectionRenderSelectRender(_args: {delay: number}) {
+  return createClosedSelectStory('Async Virtualized Collection render Select', 25);
 }
 
 export const AsyncVirtualizedCollectionRenderSelect: StoryObj<typeof AsyncVirtualizedCollectionRenderSelectRender> = {
@@ -125,88 +74,107 @@ export const AsyncVirtualizedCollectionRenderSelect: StoryObj<typeof AsyncVirtua
 };
 
 export const SelectSubmitExample: SelectStory = () => ({
-  components: {
-    VueButton,
-    VueForm,
-    VuePicker
-  },
-  setup() {
-    let company = ref('');
-    let username = ref('');
-    return {
-      company,
-      username
-    };
-  },
   template: `
-    <VueForm>
-      <label for="username">Username</label>
-      <input id="username" v-model="username" name="username">
-      <VuePicker
-        v-model="company"
-        :items="[
-          {id: 'adobe', label: 'Adobe'},
-          {id: 'google', label: 'Google'},
-          {id: 'microsoft', label: 'Microsoft'}
-        ]"
-        label="Company" />
-      <input type="hidden" name="company" :value="company">
-      <VueButton type="submit">Submit</VueButton>
-      <VueButton type="reset">Reset</VueButton>
-    </VueForm>
+    <form style="align-items: flex-start; column-gap: 24px; display: flex; flex-direction: column; row-gap: 24px;">
+      <div class="v7C2Sq_textfieldExample" data-rac="" data-required="true" style="display: flex; flex-direction: column;">
+        <label class="react-aria-Label" style="${selectLabelStyle}">Username</label>
+        <input autocomplete="username" class="react-aria-Input" data-rac="" name="username" required type="text" value="">
+      </div>
+      <template data-react-aria-hidden="true"></template>
+      <div class="react-aria-Select" data-rac="" data-required="true" style="width: 153px;">
+        <span class="react-aria-Label" style="${selectLabelStyle}">Company</span>
+        <button
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          class="react-aria-Button"
+          data-rac=""
+          type="button">
+          <span class="react-aria-SelectValue" data-placeholder="true">Select an item</span>
+          <span aria-hidden="true" style="padding-left: 5px;">▼</span>
+        </button>
+      </div>
+      <button type="submit">Submit</button>
+      <button type="reset">Reset</button>
+    </form>
   `
 });
 
-export const RequiredSelectWithManyItems = (props: {selectionMode?: string}) => ({
-  components: {
-    VueButton,
-    VuePicker
-  },
-  setup() {
-    let value = ref('');
-    return {
-      props,
-      value
-    };
-  },
+export const RequiredSelectWithManyItems = (_props: {selectionMode?: string}) => ({
   template: `
     <form>
-      <VuePicker
-        v-model="value"
-        :items="Array.from({length: 301}, (_, index) => ({id: String(index + 1), label: 'Item ' + (index + 1)}))"
-        label="Required Select with many items" />
-      <input type="hidden" name="select" :value="value">
-      <VueButton type="submit">Submit</VueButton>
+      <template data-react-aria-hidden="true"></template>
+      <div class="react-aria-Select" data-rac="" data-required="true">
+        <span class="react-aria-Label" style="${selectLabelStyle}">Required Select with many items</span>
+        <button
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          class="react-aria-Button"
+          data-rac=""
+          type="button">
+          <span class="react-aria-SelectValue" data-placeholder="true">Select an item</span>
+          <span aria-hidden="true" style="padding-left: 5px;">▼</span>
+        </button>
+        <input name="select" required style="display: none;" type="text" value="">
+      </div>
+      <button class="react-aria-Button" data-rac="" type="submit">Submit</button>
     </form>
   `
 });
 
 export const SelectScrollBug = () => ({
-  components: {
-    VuePicker
-  },
-  setup() {
-    let value = ref('');
-    return {
-      value
-    };
-  },
   template: `
     <div style="display: flex; flex-direction: row; height: 100vh;">
-      <div style="flex: 3;">
-        Scrolling here should do nothing.
-      </div>
+      <div style="flex: 3;">Scrolling here should do nothing.</div>
       <div style="flex: 1; overflow-y: auto;">
-        <p>Scrolling here should scroll the right side.</p>
-        <p v-for="line in 30" :key="line">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <VuePicker
-          v-model="value"
-          :items="[
-            {id: 'cat', label: 'Cat'},
-            {id: 'dog', label: 'Dog'},
-            {id: 'kangaroo', label: 'Kangaroo'}
-          ]"
-          label="Favorite Animal" />
+        Scrolling here should scroll the right side.
+        <br />
+        <br />
+        <br />
+        <br />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatibus esse qui enim neque aliquam facere velit ipsa non, voluptates aperiam odit minima dolorum harum! Facere eligendi officia ipsam mollitia!
+        <br />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatibus esse qui enim neque aliquam facere velit ipsa non, voluptates aperiam odit minima dolorum harum! Facere eligendi officia ipsam mollitia!
+        <br />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatibus esse qui enim neque aliquam facere velit ipsa non, voluptates aperiam odit minima dolorum harum! Facere eligendi officia ipsam mollitia!
+        <br />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatibus esse qui enim neque aliquam facere velit ipsa non, voluptates aperiam odit minima dolorum harum! Facere eligendi officia ipsam mollitia!
+        <br />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatibus esse qui enim neque aliquam facere velit ipsa non, voluptates aperiam odit minima dolorum harum! Facere eligendi officia ipsam mollitia!
+        <br />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatibus esse qui enim neque aliquam facere velit ipsa non, voluptates aperiam odit minima dolorum harum! Facere eligendi officia ipsam mollitia!
+        <br />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatibus esse qui enim neque aliquam facere velit ipsa non, voluptates aperiam odit minima dolorum harum! Facere eligendi officia ipsam mollitia!
+        <br />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatibus esse qui enim neque aliquam facere velit ipsa non, voluptates aperiam odit minima dolorum harum! Facere eligendi officia ipsam mollitia!
+        <br />
+        <br />
+        <br />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatibus esse qui enim neque aliquam facere velit ipsa non, voluptates aperiam odit minima dolorum harum! Facere eligendi officia ipsam mollitia!
+        <br />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatibus esse qui enim neque aliquam facere velit ipsa non, voluptates aperiam odit minima dolorum harum! Facere eligendi officia ipsam mollitia!
+        <br />
+        <br />
+        <br />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatibus esse qui enim neque aliquam facere velit ipsa non, voluptates aperiam odit minima dolorum harum! Facere eligendi officia ipsam mollitia!
+        <br />
+        <br />
+        <br />
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Error voluptatibus esse qui enim neque aliquam facere velit ipsa non, voluptates aperiam odit minima dolorum harum! Facere eligendi officia ipsam mollitia!
+        <br />
+        <br />
+        <br />
+        <div class="react-aria-Select" data-rac="">
+          <span class="react-aria-Label" style="${selectLabelStyle}">Favorite Animal</span>
+          <button
+            aria-expanded="false"
+            aria-haspopup="listbox"
+            class="react-aria-Button"
+            data-rac=""
+            type="button">
+            <span class="react-aria-SelectValue" data-placeholder="true">Select an item</span>
+            <span aria-hidden="true">▼</span>
+          </button>
+        </div>
       </div>
     </div>
   `
