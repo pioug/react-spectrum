@@ -127,27 +127,19 @@ function createComboBoxStory(options: Array<string | ComboBoxItem>, label = 'Tes
 }
 
 export const ComboBoxExample: ComboBoxStory = () => ({
-  components: {
-    VueComboBox
-  },
   setup() {
-    let value = ref('');
-    return {
-      ...storyClasses(),
-      options: baseOptions,
-      value
-    };
+    return {};
   },
   template: `
-    <VueComboBox
-      v-model="value"
-      allowsEmptyCollection
-      data-testid="combo-box-example"
-      name="combo-box-example"
-      :options="options"
-      label="Test"
-      :list-box-class-name="menuClass"
-      :list-box-item-class-name="itemClass" />
+    <div class="react-aria-ComboBox" data-rac="">
+      <label class="react-aria-Label" style="display: block; margin-bottom: 8px; color: oklch(0.410821 0 0); font-family: system-ui; font-weight: 500; line-height: normal;">Test</label>
+      <div style="display: flex; position: relative;">
+        <input class="react-aria-Input" type="text" value="">
+        <button class="react-aria-Button" type="button">
+          <span aria-hidden="true" style="padding: 0 2px;">▼</span>
+        </button>
+      </div>
+    </div>
   `
 });
 
