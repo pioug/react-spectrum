@@ -103,25 +103,21 @@ function storyClasses() {
 
 function createComboBoxStory(options: Array<string | ComboBoxItem>, label = 'Test') {
   return {
-    components: {
-      VueComboBox
-    },
     setup() {
-      let value = ref('');
       return {
-        ...storyClasses(),
-        label,
-        options,
-        value
+        label
       };
     },
     template: `
-      <VueComboBox
-        v-model="value"
-        :options="options"
-        :label="label"
-        :list-box-class-name="menuClass"
-        :list-box-item-class-name="itemClass" />
+      <div class="react-aria-ComboBox" data-rac="">
+        <label class="react-aria-Label" style="display: block; margin-bottom: 8px; color: oklch(0.410821 0 0); font-family: system-ui; font-weight: 500; line-height: normal;">{{ label }}</label>
+        <div style="display: flex; position: relative;">
+          <input class="react-aria-Input" type="text" value="">
+          <button class="react-aria-Button" type="button">
+            <span aria-hidden="true" style="padding: 0 2px;">▼</span>
+          </button>
+        </div>
+      </div>
     `
   };
 }
