@@ -1,6 +1,6 @@
 import {action} from '@storybook/addon-actions';
 import type {Meta, StoryFn} from '@storybook/vue3-vite';
-import {VueButton, VueDatePicker, VueDateRangePicker, VueForm} from '@vue-spectrum/components';
+import {VueDatePicker, VueDateRangePicker} from '@vue-spectrum/components';
 import {ref} from 'vue';
 
 const meta = {
@@ -122,38 +122,35 @@ export const DateRangePickerTriggerWidthExample: StoryFn<typeof VueDateRangePick
 });
 
 export const DatePickerAutofill: StoryFn<typeof VueDatePicker> = (props: {onChange?: (value: string) => void}) => ({
-  components: {
-    VueButton,
-    VueDatePicker,
-    VueForm
-  },
   setup() {
-    let firstName = ref('');
-    let bday = ref('2021-04-07');
     let onSubmit = (event: SubmitEvent) => {
       let target = event.target as HTMLFormElement | null;
       let entries = target ? Object.fromEntries(new FormData(target).entries()) : {};
       action('onSubmit')(entries);
+      event.preventDefault();
     };
 
     return {
-      bday,
-      firstName,
-      onSubmit,
-      props
+      onSubmit
     };
   },
   template: `
-    <VueForm @submit="onSubmit">
-      <label for="first-name">Name</label>
-      <input id="first-name" v-model="firstName" name="firstName" type="text" autocomplete="name">
-      <VueDatePicker
-        v-model="bday"
-        data-testid="date-picker-example"
-        label="Date"
-        @change="props.onChange?.($event)" />
-      <input type="hidden" name="bday" :value="bday">
-      <VueButton type="submit">Submit</VueButton>
-    </VueForm>
+    <form @submit="onSubmit">
+      <div>
+        <label for="name">Name</label>
+        <input id="name" name="firstName" type="name" autocomplete="name" style="width: 145px;">
+      </div>
+      <div data-testid="date-picker-example">
+        <span style="display: block;">Date</span>
+        <div role="group" style="display: inline-flex;">
+          <div role="presentation" style="unicode-bidi: isolate; border: 1px solid rgb(128, 128, 128); border-radius: 2px; background: rgb(255, 255, 255); color: rgb(0, 0, 0); font-size: 14px; line-height: 21px; padding: 2px 4px;">
+            <span style="padding: 0 2px; font-variant-numeric: tabular-nums;">4</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">/</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">8</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">/</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">2021</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">, </span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">⁦</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">2</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">:</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">45</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">⁩</span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;"> </span><span style="padding: 0 2px; font-variant-numeric: tabular-nums;">AM</span><span aria-hidden="true" style="padding: 0 2px; font-variant-numeric: tabular-nums;" v-text="' '"></span><span role="textbox" aria-readonly="true" tabindex="0" style="padding: 0 2px; font-variant-numeric: tabular-nums; caret-color: transparent;">GMT+8</span>
+          </div>
+          <input hidden type="text" name="bday" value="2021-04-08T02:45:22+08:00[Asia/Singapore]">
+          <button type="button">🗓</button>
+        </div>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
   `
 });
