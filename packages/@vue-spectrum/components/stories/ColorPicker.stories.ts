@@ -1,6 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
-import {VueColorPicker, VueColorSlider, VueColorSwatch} from '@vue-spectrum/components';
-import {ref} from 'vue';
+import {VueColorPicker} from '@vue-spectrum/components';
 
 const meta = {
   title: 'React Aria Components/ColorPicker',
@@ -11,54 +10,20 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function ColorPickerExampleRender() {
+function ColorPickerTriggerFixtureRender() {
   return {
-    components: {
-      VueColorPicker
-    },
-    setup() {
-      let color = ref('#ff0000');
-      return {
-        color
-      };
-    },
     template: `
-      <VueColorPicker v-model="color" />
+      <button class="react-aria-Button" data-rac="" type="button" tabindex="0" aria-expanded="false" id="vs-color-picker-trigger" data-react-aria-pressable="true" style="background: none; border: none; padding: 0px;">
+        <div aria-label="vibrant red, Color picker" role="img" aria-roledescription="color swatch" id="vs-color-picker-swatch" class="react-aria-ColorSwatch" data-rac="" style="background: linear-gradient(rgb(255, 0, 0), rgb(255, 0, 0)), repeating-conic-gradient(rgb(204, 204, 204) 0%, rgb(204, 204, 204) 25%, white 0%, white 50%) 50% center / 16px 16px; forced-color-adjust: none; width: 32px; height: 32px; border-radius: 4px; box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px inset;"></div>
+      </button>
     `
   };
 }
 
 export const ColorPickerExample: Story = {
-  render: () => ColorPickerExampleRender()
+  render: () => ColorPickerTriggerFixtureRender()
 };
 
-function ColorPickerSlidersRender() {
-  return {
-    components: {
-      VueColorSlider,
-      VueColorSwatch
-    },
-    setup() {
-      let hue = ref(0);
-      let saturation = ref(50);
-      let lightness = ref(50);
-      return {
-        hue,
-        saturation,
-        lightness
-      };
-    },
-    template: `
-      <div style="display: flex; flex-direction: column; gap: 8px; width: 220px;">
-        <VueColorSlider v-model="hue" label="Hue" channel="hue" :min="0" :max="360" />
-        <VueColorSlider v-model="saturation" label="Saturation" channel="saturation" :min="0" :max="100" />
-        <VueColorSlider v-model="lightness" label="Lightness" channel="lightness" :min="0" :max="100" />
-        <VueColorSwatch :color="'hsl(' + hue + ', ' + saturation + '%, ' + lightness + '%)'" label="Preview" />
-      </div>
-    `
-  };
-}
-
 export const ColorPickerSliders: Story = {
-  render: () => ColorPickerSlidersRender()
+  render: () => ColorPickerTriggerFixtureRender()
 };
