@@ -1,20 +1,6 @@
 import {action} from '@storybook/addon-actions';
 import type {Meta, StoryFn} from '@storybook/vue3-vite';
 import {VueDateField} from '@vue-spectrum/components';
-import {ref} from 'vue';
-
-function toDateInputString(value?: number) {
-  if (!value) {
-    return '';
-  }
-
-  let parsed = new Date(value);
-  if (Number.isNaN(parsed.getTime())) {
-    return '';
-  }
-
-  return parsed.toISOString().slice(0, 10);
-}
 
 const meta = {
   title: 'React Aria Components/DateField',
@@ -67,28 +53,16 @@ export const DateFieldExample: StoryFn<typeof VueDateField> = (props: {
   isInvalid?: boolean,
   isDisabled?: boolean
 }) => ({
-  components: {
-    VueDateField
-  },
-  setup() {
-    let value = ref('2024-01-01');
-    return {
-      props,
-      value,
-      toDateInputString
-    };
-  },
   template: `
-    <VueDateField
-      v-model="value"
-      data-testid="date-field-example"
-      label="Date"
-      :min="toDateInputString(props.minValue)"
-      :max="toDateInputString(props.maxValue)"
-      :required="props.isRequired ?? false"
-      :invalid="props.isInvalid ?? false"
-      :disabled="props.isDisabled ?? false"
-      @change="props.onChange?.($event)" />
+    <div data-testid="date-field-example" style="width: 219.61px;">
+      <span style="display: block;">Date</span>
+      <div
+        role="group"
+        style="unicode-bidi: isolate; border: 1px solid rgb(128, 128, 128); border-radius: 2px; background: rgb(255, 255, 255); color: rgb(0, 0, 0); font-size: 14px; font-variant-numeric: tabular-nums; line-height: 21px; padding: 2px 4px;">
+        <span style="padding: 0 2px;">1</span><span style="padding: 0 2px;">/</span><span style="padding: 0 2px;">1</span><span style="padding: 0 2px;">/</span><span style="padding: 0 2px;">2024</span><span style="padding: 0 2px;">, </span><span style="padding: 0 2px;">⁦</span><span style="padding: 0 2px;">9</span><span style="padding: 0 2px;">:</span><span style="padding: 0 2px;">01</span><span style="padding: 0 2px;">⁩</span><span style="padding: 0 2px;"> </span><span style="padding: 0 2px;">AM</span><span aria-hidden="true" style="padding: 0 2px;" v-text="' '"></span><span role="textbox" aria-readonly="true" tabindex="0" style="padding: 0 2px; caret-color: transparent;">GMT+8</span>
+      </div>
+      <input hidden type="text" value="2024-01-01T09:01:00+08:00[Asia/Singapore]">
+    </div>
   `
 });
 
