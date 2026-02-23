@@ -1,10 +1,59 @@
 import {action} from '@storybook/addon-actions';
 import type {Meta, StoryFn, StoryObj} from '@storybook/vue3-vite';
-import {VueButton, VueListBox, VuePopover} from '@vue-spectrum/components';
-import {computed, ref} from 'vue';
+import {VueListBox, VuePopover} from '@vue-spectrum/components';
+import {computed, ref, type CSSProperties} from 'vue';
 
-type StoryArgs = Record<string, unknown>;
-type StyleMap = Record<string, number | string>;
+type GridListStory = StoryFn<typeof VueListBox>;
+type Story = StoryObj<typeof meta>;
+type LoadingState = 'idle' | 'loadingMore';
+type InternalLoadingState = 'idle' | 'loading' | 'loadingMore';
+
+type GridListSectionData = {
+  id: string,
+  items: Array<{id: string, name: string}>,
+  label: string
+};
+
+type GridListItemData = {
+  action?: string,
+  id: number | string,
+  name: string,
+  textValue?: string
+};
+
+type UnsplashItem = {
+  alt_description?: string,
+  description?: string,
+  height: number,
+  id: number | string,
+  urls: {regular: string},
+  user: {name: string},
+  width: number
+};
+
+const fallbackSwapiPeople = [
+  'Luke Skywalker',
+  'C-3PO',
+  'R2-D2',
+  'Darth Vader',
+  'Leia Organa',
+  'Owen Lars',
+  'Beru Whitesun lars',
+  'R5-D4'
+];
+
+const baseGridListClass = 'react-aria-GridList';
+const baseGridListItemClass = 'react-aria-GridListItem';
+const myGridListItemStyle: CSSProperties = {
+  alignItems: 'center',
+  display: 'flex',
+  gap: '8px'
+};
+const imageGridListItemStyle: CSSProperties = {
+  alignSelf: 'start',
+  display: 'flex',
+  flexDirection: 'column'
+};
 
 const meta = {
   title: 'React Aria Components/GridList',
@@ -13,64 +62,155 @@ const meta = {
 
 export default meta;
 
-type GridListStory = StoryFn<typeof VueListBox>;
-type Story = StoryObj<typeof meta>;
-
-function createGridItems(count: number, prefix = 'Item'): string[] {
-  return Array.from({length: count}, (_, index) => `${prefix} ${index + 1}`);
+function createGridItems(count: number, prefix = 'Item', startAt = 0): GridListItemData[] {
+  return Array.from({length: count}, (_, index) => {
+    let itemNumber = startAt + index;
+    return {
+      id: itemNumber,
+      name: `${prefix} ${itemNumber}`
+    };
+  });
 }
 
-function createGridListStory(args: StoryArgs = {}, options: {
-  containerStyle?: StyleMap,
-  items: string[],
-  label: string,
-  listStyle?: StyleMap
-}) {
-  return {
-    components: {
-      VueListBox
-    },
-    setup() {
-      let selected = ref('');
-      let onSelect = (value: string) => {
-        selected.value = value;
-        action('onAction')(value);
-      };
+function createSections(sectionCount: number, itemsPerSection: number): GridListSectionData[] {
+  return Array.from({length: sectionCount}, (_, sectionIndex) => ({
+    id: `section_${sectionIndex}`,
+    items: Array.from({length: itemsPerSection}, (_, itemIndex) => ({
+      id: `item_${sectionIndex}_${itemIndex}`,
+      name: `Section ${sectionIndex}, Item ${itemIndex}`
+    })),
+    label: `Section ${sectionIndex}`
+  }));
+}
 
-      return {
-        args,
-        containerStyle: options.containerStyle ?? {},
-        items: options.items,
-        label: options.label,
-        listStyle: options.listStyle ?? {},
-        onSelect,
-        selected
-      };
-    },
-    template: `
-      <div :style="containerStyle">
-        <VueListBox
-          v-bind="args"
-          v-model="selected"
-          :items="items"
-          :label="label"
-          :style="listStyle"
-          @select="onSelect" />
-      </div>
-    `
+function createFallbackSwapiItems(): GridListItemData[] {
+  return fallbackSwapiPeople.map((name) => ({
+    id: name,
+    name
+  }));
+}
+
+function createFallbackUnsplashItems(): UnsplashItem[] {
+  return [];
+}
+
+async function fetchSwapiPeoplePage({
+  cursor,
+  delayMs
+}: {
+  cursor?: string | null,
+  delayMs: number
+}): Promise<{cursor: string | null, items: GridListItemData[]}> {
+  let nextCursor = cursor;
+  if (nextCursor) {
+    nextCursor = nextCursor.replace(/^http:\/\//i, 'https://');
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, delayMs));
+
+  let response = await fetch(nextCursor || 'https://swapi.py4e.com/api/people/?search=');
+  if (!response.ok) {
+    throw new Error(`SWAPI request failed: ${response.status}`);
+  }
+
+  let json = await response.json();
+  let results = Array.isArray(json?.results) ? json.results : [];
+  let items = results
+    .map((item: {name?: unknown}, index: number) => ({
+      id: String(item?.name ?? `person-${index}`),
+      name: typeof item?.name === 'string' ? item.name : ''
+    }))
+    .filter((item) => Boolean(item.name));
+
+  return {
+    cursor: typeof json?.next === 'string' ? json.next : null,
+    items
   };
 }
 
-export const GridListExample: GridListStory = (args) => createGridListStory(args, {
-  items: ['1,1', '1,2', '1,3', '2,1', '2,2', '2,3', '3,1', '3,2', '3,3'],
-  label: 'test gridlist',
-  listStyle: {
-    display: 'grid',
-    gap: '8px',
-    gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-    height: '300px',
-    width: '300px'
+async function fetchUnsplashItemsPage({
+  page,
+  delayMs
+}: {
+  page: number,
+  delayMs: number
+}): Promise<UnsplashItem[]> {
+  await new Promise((resolve) => setTimeout(resolve, delayMs));
+
+  let response = await fetch(`https://api.unsplash.com/topics/nature/photos?page=${page}&per_page=30&client_id=AJuU-FPh11hn7RuumUllp4ppT8kgiLS7LtOHp_sp4nc`);
+  if (!response.ok) {
+    throw new Error(`Unsplash request failed: ${response.status}`);
   }
+
+  let json = await response.json();
+  let nextItems = Array.isArray(json) ? json : [];
+  return nextItems
+    .filter((item) => (item?.description || item?.alt_description))
+    .map((item) => ({
+      alt_description: item.alt_description,
+      description: item.description,
+      height: Number(item.height) || 300,
+      id: String(item.id),
+      urls: {
+        regular: String(item?.urls?.regular ?? '')
+      },
+      user: {
+        name: String(item?.user?.name ?? 'Unknown')
+      },
+      width: Number(item.width) || 300
+    }));
+}
+
+export const GridListExample: GridListStory = (args) => ({
+  components: {
+    VueListBox
+  },
+  setup() {
+    let selected = ref('');
+    let listArgs = args as {layout?: 'grid' | 'stack'};
+    let items = ['1,1', '1,2', '1,3', '2,1', '2,2', '2,3', '3,1', '3,2', '3,3'];
+    let listStyle = computed<CSSProperties>(() => ({
+      display: 'grid',
+      gridAutoFlow: 'row',
+      gridTemplate: listArgs.layout === 'grid' ? 'repeat(3, 1fr) / repeat(3, 1fr)' : 'auto / 1fr',
+      height: '300px',
+      width: '300px'
+    }));
+
+    let onSelect = (value: string) => {
+      selected.value = value;
+      action('onAction')(value);
+    };
+
+    return {
+      args,
+      items,
+      listStyle,
+      myGridListItemStyle,
+      onSelect,
+      selected
+    };
+  },
+  template: `
+    <VueListBox
+      v-bind="args"
+      v-model="selected"
+      aria-label="test gridlist"
+      class="menu"
+      collection-class="react-aria-GridList"
+      collection-role="grid"
+      :items="items"
+      item-base-class="react-aria-GridListItem"
+      item-class="item"
+      :item-style="myGridListItemStyle"
+      item-role="row"
+      :style="listStyle"
+      @select="onSelect">
+      <template #default="{label}">
+        {{ label }} <button type="button">Actions</button>
+      </template>
+    </VueListBox>
+  `
 });
 
 GridListExample.args = {
@@ -103,23 +243,51 @@ GridListExample.argTypes = {
   }
 };
 
-export const GridListSectionExample: GridListStory = (args) => createGridListStory(args, {
-  items: [
-    'Section 1 / 1,1',
-    'Section 1 / 1,2',
-    'Section 1 / 1,3',
-    'Section 2 / 2,1',
-    'Section 2 / 2,2',
-    'Section 2 / 2,3',
-    'Section 3 / 3,1',
-    'Section 3 / 3,2',
-    'Section 3 / 3,3'
-  ],
-  label: 'test gridlist',
-  listStyle: {
-    height: '400px',
-    width: '400px'
-  }
+export const GridListSectionExample: GridListStory = (args) => ({
+  components: {
+    VueListBox
+  },
+  setup() {
+    let selected = ref('');
+    let sections = [
+      {id: 'section_1', label: 'Section 1', items: ['1,1', '1,2', '1,3']},
+      {id: 'section_2', label: 'Section 2', items: ['2,1', '2,2', '2,3']},
+      {id: 'section_3', label: 'Section 3', items: ['3,1', '3,2', '3,3']}
+    ];
+    let onSelect = (value: string) => {
+      selected.value = value;
+      action('onAction')(value);
+    };
+
+    return {
+      args,
+      myGridListItemStyle,
+      onSelect,
+      sections,
+      selected
+    };
+  },
+  template: `
+    <VueListBox
+      v-bind="args"
+      v-model="selected"
+      aria-label="test gridlist"
+      class="menu"
+      collection-class="react-aria-GridList"
+      collection-role="grid"
+      header-class="react-aria-GridListHeader"
+      item-base-class="react-aria-GridListItem"
+      item-class="item"
+      :item-style="myGridListItemStyle"
+      item-role="row"
+      :sections="sections"
+      style="width: 400px; height: 400px;"
+      @select="onSelect">
+      <template #default="{label}">
+        {{ label }} <button type="button">Actions</button>
+      </template>
+    </VueListBox>
+  `
 });
 
 GridListSectionExample.args = {
@@ -131,24 +299,87 @@ GridListSectionExample.args = {
 GridListSectionExample.argTypes = GridListExample.argTypes;
 
 export function VirtualizedGridListSection() {
-  return createGridListStory({}, {
-    items: Array.from({length: 30}, (_, index) => `Section ${Math.floor(index / 3) + 1}, Item ${(index % 3) + 1}`),
-    label: 'virtualized with grid section',
-    listStyle: {
-      height: '400px',
-      overflow: 'auto'
-    }
-  });
+  return {
+    components: {
+      VueListBox
+    },
+    setup() {
+      let selected = ref('');
+      let sections = createSections(10, 3);
+
+      return {
+        myGridListItemStyle,
+        sections,
+        selected
+      };
+    },
+    template: `
+      <VueListBox
+        v-model="selected"
+        aria-label="virtualized with grid section"
+        class="menu"
+        collection-class="react-aria-GridList"
+        collection-role="grid"
+        header-class="react-aria-GridListHeader"
+        item-base-class="react-aria-GridListItem"
+        item-class="item"
+        :item-style="myGridListItemStyle"
+        item-role="row"
+        :sections="sections"
+        style="height: 400px;" />
+    `
+  };
 }
 
 export const VirtualizedGridList: Story = {
-  render: (args) => createGridListStory(args, {
-    items: createGridItems(1000),
-    label: 'virtualized gridlist',
-    listStyle: {
-      height: '400px',
-      overflow: 'auto'
-    }
+  render: () => ({
+    components: {
+      VueListBox
+    },
+    setup() {
+      let selected = ref<string[]>([]);
+      // Match the initial virtualized viewport from React output.
+      let items = createGridItems(16);
+      let virtualizedItemStyle: CSSProperties = {
+        ...myGridListItemStyle,
+        marginBottom: '-1.28125px'
+      };
+
+      return {
+        items,
+        virtualizedItemStyle,
+        selected
+      };
+    },
+    template: `
+      <VueListBox
+        v-model="selected"
+        aria-label="virtualized gridlist"
+        class="menu"
+        collection-class="react-aria-GridList"
+        collection-role="grid"
+        item-base-class="react-aria-GridListItem"
+        item-class="item"
+        :item-style="virtualizedItemStyle"
+        item-role="row"
+        :items="items"
+        selection-mode="multiple"
+        style="height: 400px;">
+        <template #default="{label}">
+          <button class="react-aria-Button" slot="drag" type="button" style="pointer-events: none;">≡</button>
+          <label class="react-aria-Checkbox" slot="selection">
+            <span style="border: 0; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; white-space: nowrap;">
+              <input aria-label="Select" tabindex="0" type="checkbox" />
+            </span>
+            <div class="checkbox">
+              <svg viewBox="0 0 18 18" aria-hidden="true">
+                <polyline points="1 9 7 14 15 4"></polyline>
+              </svg>
+            </div>
+          </label>{{ label }}
+        </template>
+      </VueListBox>
+    `
   }),
   args: {
     isLoading: false
@@ -163,25 +394,73 @@ interface VirtualizedGridListGridProps {
   minItemSizeWidth?: number
 }
 
-export let VirtualizedGridListGrid: StoryFn<VirtualizedGridListGridProps> = (args) => createGridListStory(args, {
-  items: createGridItems(500),
-  label: 'virtualized gridlist grid',
-  listStyle: {
-    display: 'grid',
-    gap: `${args.minHorizontalSpace ?? 8}px`,
-    gridTemplateColumns: `repeat(${args.maxColumns ?? 4}, minmax(${args.minItemSizeWidth ?? 40}px, ${args.maxItemSizeWidth ?? 65}px))`,
-    height: '400px',
-    overflow: 'auto'
-  }
+export let VirtualizedGridListGrid: StoryFn<VirtualizedGridListGridProps> = (args) => ({
+  components: {
+    VueListBox
+  },
+  setup() {
+    let selected = ref('');
+    // React renders only the currently visible virtualized window.
+    // Keep a bounded DOM window here to match the captured viewport output.
+    let items = createGridItems(120);
+    let gridItemStyle: CSSProperties = {
+      ...myGridListItemStyle,
+      height: '21px',
+      minHeight: '21px'
+    };
+    let listStyle = computed<CSSProperties>(() => {
+      let minItemSizeWidth = args.minItemSizeWidth ?? 40;
+      let maxItemSizeWidth = args.maxItemSizeWidth ?? 65;
+      let minHorizontalSpace = args.minHorizontalSpace ?? 0;
+      let maxColumns = args.maxColumns ?? Infinity;
+      let gridTemplateColumns = Number.isFinite(maxColumns)
+        ? `repeat(${maxColumns}, minmax(${minItemSizeWidth}px, 1fr))`
+        : `repeat(auto-fill, minmax(${minItemSizeWidth}px, 1fr))`;
+
+      return {
+        '--grid-max-item-size': `${maxItemSizeWidth}px`,
+        '--grid-min-item-size': `${minItemSizeWidth}px`,
+        '--grid-min-space': `${minHorizontalSpace}px`,
+        '--grid-vertical-space': '18px',
+        gridAutoFlow: 'row',
+        gridTemplateColumns,
+        height: '382px',
+        paddingTop: '18px',
+        width: '400px'
+      };
+    });
+
+    return {
+      gridItemStyle,
+      items,
+      listStyle,
+      selected
+    };
+  },
+  template: `
+    <VueListBox
+      v-model="selected"
+      aria-label="virtualized listbox"
+      class="menu"
+      collection-class="react-aria-GridList"
+      collection-role="grid"
+      item-base-class="react-aria-GridListItem"
+      item-class="item"
+      :item-style="gridItemStyle"
+      item-role="row"
+      layout="grid"
+      :items="items"
+      :style="listStyle" />
+  `
 });
 
 VirtualizedGridListGrid.story = {
   args: {
     minItemSizeWidth: 40,
     maxItemSizeWidth: 65,
-    maxColumns: 4,
-    minHorizontalSpace: 8,
-    maxHorizontalSpace: 16
+    maxColumns: undefined,
+    minHorizontalSpace: 0,
+    maxHorizontalSpace: undefined
   }
 };
 
@@ -192,28 +471,63 @@ function AsyncGridListRender(props: {delay: number}) {
     },
     setup() {
       let selected = ref('');
-      let items = ref<string[]>([]);
-      let loading = ref(true);
+      let items = ref<GridListItemData[]>([]);
+      let loading = ref(false);
 
-      setTimeout(() => {
-        items.value = createGridItems(30, 'Async item');
-        loading.value = false;
-      }, props.delay ?? 50);
+      let loadInitial = async () => {
+        loading.value = true;
+        try {
+          let next = await fetchSwapiPeoplePage({
+            delayMs: props.delay ?? 50
+          });
+          items.value = next.items;
+        } catch {
+          items.value = createFallbackSwapiItems();
+        } finally {
+          loading.value = false;
+        }
+      };
+
+      void loadInitial();
 
       return {
         items,
         loading,
+        myGridListItemStyle,
         selected
       };
     },
     template: `
       <div>
-        <p v-if="loading" style="margin: 0 0 8px 0;">Loading async grid list...</p>
         <VueListBox
           v-model="selected"
+          aria-label="async gridlist"
+          class="menu"
+          collection-class="react-aria-GridList"
+          collection-role="grid"
+          :is-loading="loading"
+          item-base-class="react-aria-GridListItem"
+          item-class="item"
+          :item-style="myGridListItemStyle"
+          item-role="row"
           :items="items"
-          label="async grid list"
-          style="height: 300px; overflow: auto;" />
+          style="height: 200px;">
+          <template #empty="{isLoading}">
+            <div style="height: 30px; width: 100%; position: relative;">
+              <svg
+                v-if="isLoading"
+                aria-label="loading"
+                viewBox="0 0 24 24"
+                style="height: 20px; width: 20px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                <path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25" />
+                <path fill="currentColor" d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z">
+                  <animateTransform attributeName="transform" type="rotate" dur="0.75s" values="0 12 12;360 12 12" repeatCount="indefinite" />
+                </path>
+              </svg>
+              <template v-else>No results</template>
+            </div>
+          </template>
+        </VueListBox>
       </div>
     `
   };
@@ -233,28 +547,63 @@ function AsyncGridListVirtualizedRender(props: {delay: number}) {
     },
     setup() {
       let selected = ref('');
-      let items = ref<string[]>([]);
-      let loading = ref(true);
+      let items = ref<GridListItemData[]>([]);
+      let loading = ref(false);
 
-      setTimeout(() => {
-        items.value = createGridItems(200, 'Async virtualized item');
-        loading.value = false;
-      }, props.delay ?? 50);
+      let loadInitial = async () => {
+        loading.value = true;
+        try {
+          let next = await fetchSwapiPeoplePage({
+            delayMs: props.delay ?? 50
+          });
+          items.value = next.items;
+        } catch {
+          items.value = createFallbackSwapiItems();
+        } finally {
+          loading.value = false;
+        }
+      };
+
+      void loadInitial();
 
       return {
         items,
         loading,
+        myGridListItemStyle,
         selected
       };
     },
     template: `
       <div>
-        <p v-if="loading" style="margin: 0 0 8px 0;">Loading async virtualized grid list...</p>
         <VueListBox
           v-model="selected"
+          aria-label="async virtualized gridlist"
+          class="menu"
+          collection-class="react-aria-GridList"
+          collection-role="grid"
+          :is-loading="loading"
+          item-base-class="react-aria-GridListItem"
+          item-class="item"
+          :item-style="myGridListItemStyle"
+          item-role="row"
           :items="items"
-          label="async virtualized grid list"
-          style="height: 320px; overflow: auto;" />
+          style="height: 200px;">
+          <template #empty="{isLoading}">
+            <div style="height: 30px; width: 100%; position: relative;">
+              <svg
+                v-if="isLoading"
+                aria-label="loading"
+                viewBox="0 0 24 24"
+                style="height: 20px; width: 20px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                <path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25" />
+                <path fill="currentColor" d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z">
+                  <animateTransform attributeName="transform" type="rotate" dur="0.75s" values="0 12 12;360 12 12" repeatCount="indefinite" />
+                </path>
+              </svg>
+              <template v-else>No results</template>
+            </div>
+          </template>
+        </VueListBox>
       </div>
     `
   };
@@ -273,36 +622,64 @@ export let TagGroupInsideGridList: GridListStory = () => ({
   },
   setup() {
     let selected = ref('');
-    let tagsByItem: Record<string, string[]> = {
-      'File 1': ['Design', 'UX'],
-      'File 2': ['Engineering'],
-      'File 3': ['Research', 'QA']
-    };
-    let items = Object.keys(tagsByItem);
-    let selectedTags = computed(() => tagsByItem[selected.value] ?? []);
-
+    let items = [
+      {id: 'tags-with-remove', name: '1,1', kind: 'tags-with-remove'},
+      {id: 'actions', name: '1,2', kind: 'actions'},
+      {id: 'tags', name: '1,3', kind: 'tags'}
+    ];
     return {
       items,
+      myGridListItemStyle,
       selected,
-      selectedTags
     };
   },
   template: `
-    <div style="display: grid; gap: 8px; max-width: 360px;">
-      <VueListBox
-        v-model="selected"
-        :items="items"
-        label="tag group inside grid list"
-        style="height: 220px; overflow: auto;" />
-      <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-        <span
-          v-for="tag in selectedTags"
-          :key="tag"
-          style="padding: 2px 8px; border: 1px solid #d9d9d9; border-radius: 999px;">
-          {{ tag }}
-        </span>
-      </div>
-    </div>
+    <VueListBox
+      v-model="selected"
+      aria-label="Grid list with tag group"
+      class="menu"
+      collection-class="react-aria-GridList"
+      collection-role="grid"
+      item-base-class="react-aria-GridListItem"
+      item-class="item"
+      :item-style="myGridListItemStyle"
+      item-role="row"
+      keyboard-navigation-behavior="tab"
+      :items="items"
+      style="width: 300px; height: 300px;">
+      <template #default="{item}">
+        <template v-if="item.kind === 'tags-with-remove'">
+          <span>1,1</span>
+          <div class="react-aria-TagGroup">
+            <div aria-label="Tag group 1" class="react-aria-TagList" role="grid" style="display: flex; gap: 10px;">
+              <div class="react-aria-Tag" role="row">Tag 1<button class="react-aria-Button" slot="remove" type="button">X</button></div>
+              <div class="react-aria-Tag" role="row">Tag 2<button class="react-aria-Button" slot="remove" type="button">X</button></div>
+              <div class="react-aria-Tag" role="row">Tag 3<button class="react-aria-Button" slot="remove" type="button">X</button></div>
+            </div>
+          </div>
+          <div class="react-aria-TagGroup">
+            <div aria-label="Tag group 2" class="react-aria-TagList" role="grid" style="display: flex; gap: 10px;">
+              <div class="react-aria-Tag" role="row">Tag 1<button class="react-aria-Button" slot="remove" type="button">X</button></div>
+              <div class="react-aria-Tag" role="row">Tag 2<button class="react-aria-Button" slot="remove" type="button">X</button></div>
+              <div class="react-aria-Tag" role="row">Tag 3<button class="react-aria-Button" slot="remove" type="button">X</button></div>
+            </div>
+          </div>
+        </template>
+        <template v-else-if="item.kind === 'actions'">
+          <span>1,2</span><button class="react-aria-Button" type="button">Actions</button>
+        </template>
+        <template v-else>
+          <span>1,3</span>
+          <div class="react-aria-TagGroup">
+            <div aria-label="Tag group" class="react-aria-TagList" role="grid" style="display: flex; gap: 10px;">
+              <div class="react-aria-Tag" role="row">Tag 1</div>
+              <div class="react-aria-Tag" role="row">Tag 2</div>
+              <div class="react-aria-Tag" role="row">Tag 3</div>
+            </div>
+          </div>
+        </template>
+      </template>
+    </VueListBox>
   `
 });
 
@@ -315,7 +692,12 @@ function GridListDropdown() {
     setup() {
       let isOpen = ref(false);
       let selected = ref('');
-      let items = ['Option 1', 'Option 2', 'Option 3', 'Option 4'];
+      let items = [
+        {id: 'charizard', label: 'Option 1', action: 'A', textValue: 'Charizard'},
+        {id: 'blastoise', label: 'Option 2', action: 'B', textValue: 'Blastoise'},
+        {id: 'venusaur', label: 'Option 3', action: 'C', textValue: 'Venusaur'},
+        {id: 'pikachu', label: 'Option 4', action: 'D', textValue: 'Pikachu'}
+      ];
 
       let handleSelection = (value: string) => {
         selected.value = value;
@@ -326,6 +708,7 @@ function GridListDropdown() {
         handleSelection,
         isOpen,
         items,
+        myGridListItemStyle,
         selected
       };
     },
@@ -336,10 +719,21 @@ function GridListDropdown() {
           <div>
             <VueListBox
               v-model="selected"
+              aria-label="Favorite pokemon"
+              class="menu"
+              collection-class="react-aria-GridList"
+              collection-role="grid"
+              item-base-class="react-aria-GridListItem"
+              item-class="item"
+              :item-style="myGridListItemStyle"
+              item-role="row"
               :items="items"
-              label="Favorite pokemon"
               selection-mode="single"
-              @select="handleSelection" />
+              @select="handleSelection">
+              <template #default="{item}">
+                {{ item.label }} <button type="button">{{ item.action }}</button>
+              </template>
+            </VueListBox>
           </div>
         </VuePopover>
       </div>
@@ -349,10 +743,10 @@ function GridListDropdown() {
 
 function GridListInModalPickerRender() {
   let GridListDropdownComponent = GridListDropdown();
+
   return {
     components: {
-      GridListDropdown: GridListDropdownComponent,
-      VueButton
+      GridListDropdown: GridListDropdownComponent
     },
     setup() {
       let mainModalOpen = ref(true);
@@ -362,7 +756,7 @@ function GridListInModalPickerRender() {
     },
     template: `
       <div>
-        <VueButton @click="mainModalOpen = true">Open Modal</VueButton>
+        <button type="button" @click="mainModalOpen = true">Open Modal</button>
         <div
           v-if="mainModalOpen"
           style="
@@ -372,6 +766,10 @@ function GridListInModalPickerRender() {
             width: 100%;
             height: 100%;
             background: rgba(0,0,0,0.5);
+            color: #000;
+            font-size: 16px;
+            line-height: normal;
+            font-family: system-ui;
           "
           @click.self="mainModalOpen = false">
           <div
@@ -380,6 +778,10 @@ function GridListInModalPickerRender() {
               flex-direction: column;
               padding: 8px;
               background: #ccc;
+              color: #000;
+              font-size: 16px;
+              line-height: normal;
+              font-family: system-ui;
               position: absolute;
               top: 50%;
               left: 50%;
@@ -387,7 +789,7 @@ function GridListInModalPickerRender() {
               width: max-content;
               height: max-content;
             ">
-            <h2 style="margin: 0 0 8px 0;">Open the GridList Picker</h2>
+            <h2>Open the GridList Picker</h2>
             <GridListDropdown />
           </div>
         </div>
@@ -397,11 +799,21 @@ function GridListInModalPickerRender() {
 }
 
 export let GridListInModalPicker: Story = {
-  render: () => GridListInModalPickerRender()
+  render: () => GridListInModalPickerRender(),
+  parameters: {
+    docs: {
+      description: {
+        component: 'Selecting an option from the grid list over the backdrop should not result in the modal closing.'
+      }
+    }
+  }
 };
 
 interface AsyncGridListGridVirtualizedRenderProps {
-  delay: number
+  delay: number,
+  layout: 'grid' | 'waterfall',
+  loaderHeight: number,
+  loadingState: LoadingState
 }
 
 function AsyncGridListGridVirtualizedRender(props: AsyncGridListGridVirtualizedRenderProps) {
@@ -411,28 +823,107 @@ function AsyncGridListGridVirtualizedRender(props: AsyncGridListGridVirtualizedR
     },
     setup() {
       let selected = ref('');
-      let items = ref<string[]>([]);
-      let loading = ref(true);
+      let items = ref<UnsplashItem[]>([]);
+      let loading = ref(false);
+      let internalLoadingState = ref<InternalLoadingState>('idle');
+      let listStyle = computed<CSSProperties>(() => ({
+        '--grid-max-item-size': '140px',
+        '--grid-min-item-size': '100px',
+        '--grid-min-space': '6px',
+        '--grid-vertical-space': '6px',
+        columnGap: '4px',
+        gridTemplateColumns: 'repeat(3, 127px)',
+        height: '394px',
+        paddingInlineStart: '5px',
+        paddingTop: '6px',
+        rowGap: '6px',
+        width: '395px'
+      }));
+      let loadingState = computed<InternalLoadingState | LoadingState>(() => (
+        props.loadingState === 'idle' ? internalLoadingState.value : props.loadingState
+      ));
+      let showLoading = computed(() => loadingState.value === 'loadingMore');
 
-      setTimeout(() => {
-        items.value = createGridItems(300, 'Async grid item');
-        loading.value = false;
-      }, props.delay ?? 50);
+      let loadInitial = async () => {
+        internalLoadingState.value = 'loading';
+        loading.value = true;
+        try {
+          items.value = await fetchUnsplashItemsPage({
+            delayMs: props.delay ?? 50,
+            page: 1
+          });
+        } catch {
+          items.value = createFallbackUnsplashItems();
+        } finally {
+          loading.value = false;
+          internalLoadingState.value = 'idle';
+        }
+      };
+
+      void loadInitial();
 
       return {
+        imageGridListItemStyle,
         items,
-        loading,
-        selected
+        listStyle,
+        selected,
+        showLoading
       };
     },
     template: `
       <div>
-        <p v-if="loading" style="margin: 0 0 8px 0;">Loading async grid-list grid virtualized...</p>
         <VueListBox
           v-model="selected"
+          aria-label="async virtualized gridlist"
+          class="menu"
+          collection-class="react-aria-GridList"
+          collection-role="grid"
+          :is-loading="loading"
+          item-base-class="react-aria-GridListItem"
+          :item-style="imageGridListItemStyle"
+          item-role="row"
+          layout="grid"
           :items="items"
-          label="async grid list grid virtualized"
-          style="height: 320px; overflow: auto; display: grid;" />
+          :style="listStyle">
+          <template #default="{item}">
+            <img
+              alt=""
+              :height="item.height"
+              :src="item.urls?.regular"
+              :width="item.width"
+              style="height: 200px; object-fit: cover; width: 100%;">
+            <span slot="description" class="react-aria-Text">By <span>{{ item.user?.name }}</span></span>
+          </template>
+          <template #empty="{isLoading}">
+            <div style="height: 30px; width: 100%; position: relative;">
+              <svg
+                v-if="isLoading"
+                aria-label="loading"
+                viewBox="0 0 24 24"
+                style="height: 20px; width: 20px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                <path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25" />
+                <path fill="currentColor" d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z">
+                  <animateTransform attributeName="transform" type="rotate" dur="0.75s" values="0 12 12;360 12 12" repeatCount="indefinite" />
+                </path>
+              </svg>
+              <template v-else>No results</template>
+            </div>
+          </template>
+        </VueListBox>
+        <div
+          v-if="showLoading"
+          class="react-aria-GridListLoadingIndicator"
+          style="align-items: center; display: flex; height: 30px; justify-content: center; width: 100%;">
+          <svg
+            aria-label="loading"
+            viewBox="0 0 24 24"
+            style="height: 20px; width: 20px;">
+            <path fill="currentColor" d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z" opacity=".25" />
+            <path fill="currentColor" d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z">
+              <animateTransform attributeName="transform" type="rotate" dur="0.75s" values="0 12 12;360 12 12" repeatCount="indefinite" />
+            </path>
+          </svg>
+        </div>
       </div>
     `
   };
@@ -441,6 +932,25 @@ function AsyncGridListGridVirtualizedRender(props: AsyncGridListGridVirtualizedR
 export const AsyncGridListGridVirtualized: Story = {
   render: (args: AsyncGridListGridVirtualizedRenderProps) => AsyncGridListGridVirtualizedRender(args),
   args: {
-    delay: 50
+    delay: 50,
+    layout: 'grid',
+    loaderHeight: 30,
+    loadingState: 'idle'
+  },
+  argTypes: {
+    delay: {
+      control: 'number'
+    },
+    layout: {
+      control: 'select',
+      options: ['grid', 'waterfall']
+    },
+    loaderHeight: {
+      control: 'number'
+    },
+    loadingState: {
+      control: 'select',
+      options: ['idle', 'loadingMore']
+    }
   }
 };

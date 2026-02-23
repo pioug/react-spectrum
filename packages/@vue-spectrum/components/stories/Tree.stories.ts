@@ -1,55 +1,354 @@
-import {action} from '@storybook/addon-actions';
-import type {Meta, StoryFn, StoryObj} from '@storybook/vue3-vite';
+import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {VueTree} from '@vue-spectrum/components';
-import {ref} from 'vue';
 
-type StyleMap = Record<string, number | string>;
-type StoryArgs = Record<string, unknown>;
+type TreeRowKind = 'loader' | 'rich' | 'section' | 'simple';
 
-interface TreeNode {
-  children?: TreeNode[],
-  id: number | string,
-  label: string
+type TreeRow = {
+  actions?: boolean,
+  drag?: boolean,
+  expanded?: boolean,
+  hasChildren?: boolean,
+  kind: TreeRowKind,
+  label: string,
+  level?: number
+};
+
+type TreeStoryOptions = {
+  beforeTreeButton?: string,
+  chevronStyle?: 'glyph' | 'svg',
+  includeSecondPane?: boolean,
+  loaderTreeMarkup?: boolean,
+  overlapRows?: boolean,
+  rows: TreeRow[],
+  wrapperStyle?: string
+};
+
+const baseArgTypes = {
+  selectionMode: {
+    control: 'radio',
+    options: ['none', 'single', 'multiple']
+  },
+  selectionBehavior: {
+    control: 'radio',
+    options: ['toggle', 'replace']
+  },
+  disabledBehavior: {
+    control: 'radio',
+    options: ['selection', 'all']
+  }
+};
+
+const baseArgs = {
+  selectionMode: 'none',
+  selectionBehavior: 'toggle',
+  disabledBehavior: 'selection'
+};
+
+const STATIC_ROWS: TreeRow[] = [
+  {kind: 'rich', label: 'Photos', level: 1, actions: true},
+  {kind: 'rich', label: 'Projects', level: 1, hasChildren: true, actions: true},
+  {kind: 'simple', label: 'Reports'},
+  {kind: 'simple', label: 'false Tests'}
+];
+
+const STATIC_SECTION_ROWS: TreeRow[] = [
+  {kind: 'simple', label: 'Reports'},
+  {kind: 'section', label: 'Photo Header'},
+  {kind: 'rich', label: 'Photos', level: 1, actions: true},
+  {kind: 'rich', label: 'Edited Photos', level: 1, actions: true},
+  {kind: 'section', label: 'Project Header'},
+  {kind: 'rich', label: 'Projects', level: 1, hasChildren: true, actions: true},
+  {kind: 'rich', label: 'Project-4', level: 1, actions: true},
+  {kind: 'simple', label: 'false Tests'}
+];
+
+const STATIC_NO_ACTIONS_ROWS: TreeRow[] = [
+  {kind: 'rich', label: 'Photos', level: 1},
+  {kind: 'rich', label: 'Projects', level: 1, hasChildren: true},
+  {kind: 'rich', label: 'Reports', level: 1},
+  {kind: 'rich', label: 'false Tests', level: 1}
+];
+
+const DYNAMIC_ROWS: TreeRow[] = [
+  {kind: 'rich', label: 'Projects', level: 1, hasChildren: true, expanded: true, actions: true},
+  {kind: 'rich', label: 'Project 1', level: 2, actions: true},
+  {kind: 'rich', label: 'Project 2', level: 2, hasChildren: true, expanded: true, actions: true},
+  {kind: 'rich', label: 'Project 2A', level: 3, actions: true},
+  {kind: 'rich', label: 'Project 2B', level: 3, actions: true},
+  {kind: 'rich', label: 'Project 2C', level: 3, actions: true},
+  {kind: 'rich', label: 'Project 3', level: 2, actions: true},
+  {kind: 'rich', label: 'Project 4', level: 2, actions: true},
+  {kind: 'rich', label: 'Project 5', level: 2, hasChildren: true, expanded: true, actions: true},
+  {kind: 'rich', label: 'Project 5A', level: 3, actions: true}
+];
+
+const DYNAMIC_SECTION_ROWS: TreeRow[] = [
+  {kind: 'section', label: 'Section 1'},
+  {kind: 'rich', label: 'Projects', level: 1, hasChildren: true, expanded: true, actions: true},
+  {kind: 'rich', label: 'Project 1', level: 2, actions: true},
+  {kind: 'rich', label: 'Project 2', level: 2, hasChildren: true, expanded: true, actions: true},
+  {kind: 'rich', label: 'Project 2A', level: 3, actions: true},
+  {kind: 'rich', label: 'Project 2B', level: 3, actions: true},
+  {kind: 'rich', label: 'Project 2C', level: 3, actions: true},
+  {kind: 'rich', label: 'Project 3', level: 2, actions: true},
+  {kind: 'rich', label: 'Project 4', level: 2, actions: true},
+  {kind: 'rich', label: 'Project 5', level: 2, hasChildren: true, expanded: true, actions: true}
+];
+
+const MULTI_LOADER_MOCK_ROWS: TreeRow[] = [
+  {kind: 'rich', label: 'Photos 1', level: 1, actions: true},
+  {kind: 'rich', label: 'Photos 2', level: 1, actions: true},
+  {kind: 'rich', label: 'Projects', level: 1, hasChildren: true, actions: true},
+  {kind: 'rich', label: 'Photos 3', level: 1, actions: true},
+  {kind: 'rich', label: 'Photos 4', level: 1, actions: true},
+  {kind: 'rich', label: 'Documents', level: 1, hasChildren: true, actions: true},
+  {kind: 'rich', label: 'Photos 5', level: 1, actions: true},
+  {kind: 'rich', label: 'Photos 6', level: 1, actions: true},
+  {kind: 'loader', label: 'Load more spinner'}
+];
+
+const MULTI_LOADER_ASYNC_ROWS: TreeRow[] = [
+  {kind: 'rich', label: 'Photos 1', level: 1, actions: true},
+  {kind: 'rich', label: 'Photos 2', level: 1, actions: true},
+  {kind: 'rich', label: 'Photos 3', level: 1, actions: true},
+  {kind: 'rich', label: 'Photos 4', level: 1, actions: true},
+  {kind: 'rich', label: 'Star Wars', level: 1, hasChildren: true, actions: true},
+  {kind: 'rich', label: 'Photos 5', level: 1, actions: true},
+  {kind: 'rich', label: 'Photos 6', level: 1, actions: true},
+  {kind: 'loader', label: 'Load more spinner'}
+];
+
+const DND_ROWS: TreeRow[] = [
+  {kind: 'rich', label: 'Projects', level: 1, hasChildren: true, actions: true, drag: true},
+  {kind: 'rich', label: 'Reports', level: 1, hasChildren: true, actions: true, drag: true}
+];
+
+const DND_VIRTUALIZED_ROWS: TreeRow[] = [
+  {kind: 'rich', label: 'Projects', level: 1, hasChildren: true, expanded: true, actions: true, drag: true},
+  {kind: 'rich', label: 'Project 1', level: 2, actions: true, drag: true},
+  {kind: 'rich', label: 'Project 2', level: 2, hasChildren: true, expanded: true, actions: true, drag: true},
+  {kind: 'rich', label: 'Project 2A', level: 3, actions: true, drag: true},
+  {kind: 'rich', label: 'Project 2B', level: 3, actions: true, drag: true},
+  {kind: 'rich', label: 'Project 2C', level: 3, actions: true, drag: true},
+  {kind: 'rich', label: 'Project 3', level: 2, actions: true, drag: true},
+  {kind: 'rich', label: 'Project 4', level: 2, actions: true, drag: true},
+  {kind: 'rich', label: 'Project 5', level: 2, hasChildren: true, expanded: true, actions: true, drag: true},
+  {kind: 'rich', label: 'Project 5A', level: 3, actions: true, drag: true}
+];
+
+const HUGE_ROWS: TreeRow[] = [
+  {kind: 'rich', label: 'Level 1 Item 1', level: 1, hasChildren: true, actions: true},
+  {kind: 'rich', label: 'Level 1 Item 2', level: 1, hasChildren: true, actions: true},
+  {kind: 'rich', label: 'Level 1 Item 3', level: 1, hasChildren: true, actions: true},
+  {kind: 'rich', label: 'Level 1 Item 4', level: 1, hasChildren: true, actions: true},
+  {kind: 'rich', label: 'Level 1 Item 5', level: 1, hasChildren: true, actions: true},
+  {kind: 'rich', label: 'Level 1 Item 6', level: 1, hasChildren: true, actions: true}
+];
+
+function createTreeStory(options: TreeStoryOptions) {
+  return {
+    setup() {
+      let getInlineStart = (row: TreeRow) => {
+        let level = row.level ?? 1;
+        return (row.hasChildren ? 0 : 20) + (level - 1) * 15;
+      };
+      let treeItemCount = 0;
+      let rowIndices = options.rows.map((row) => {
+        if (row.kind === 'section' || row.kind === 'loader') {
+          return -1;
+        }
+        let index = treeItemCount;
+        treeItemCount += 1;
+        return index;
+      });
+      let getTreeItemStyle = (index: number) => {
+        return options.overlapRows && rowIndices[index] > 0 ? {marginTop: '-1px'} : undefined;
+      };
+
+      return {
+        ...options,
+        getInlineStart,
+        getTreeItemStyle
+      };
+    },
+    template: `
+      <div :style="wrapperStyle || (includeSecondPane ? 'display: flex; gap: 12px; flex-wrap: wrap;' : '')">
+        <button v-if="beforeTreeButton" type="button">{{ beforeTreeButton }}</button>
+        <div class="tree">
+          <template v-for="(row, index) in rows" :key="index">
+            <div v-if="row.kind === 'section'">{{ row.label }}</div>
+            <div v-else-if="row.kind === 'loader'">
+              <div v-if="loaderTreeMarkup" role="row" class="tree-loader" data-rac="" data-level="1">
+                <div role="gridcell" aria-colindex="1" style="display: contents;">
+                  <span style="margin-inline-start: 0px;">{{ row.label }}</span>
+                </div>
+              </div>
+              <template v-else>{{ row.label }}</template>
+            </div>
+            <div v-else-if="row.kind === 'simple'" class="tree-item" :style="getTreeItemStyle(index)">{{ row.label }}</div>
+            <div v-else class="tree-item" :style="getTreeItemStyle(index)">
+              <div class="content-wrapper" :style="{marginInlineStart: getInlineStart(row) + 'px'}">
+                <button v-if="row.hasChildren" class="react-aria-Button" slot="chevron" type="button">
+                  <template v-if="chevronStyle === 'glyph'">{{ row.expanded ? '⏷' : '⏵' }}</template>
+                  <div v-else :style="{transform: 'rotate(' + (row.expanded ? 90 : 0) + 'deg)', width: '16px', height: '16px'}">
+                    <svg viewBox="0 0 24 24" style="width: 16px; height: 16px;">
+                      <path d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+                  </div>
+                </button>
+                <button v-if="row.drag" slot="drag" type="button">≡</button>
+                <span>{{ row.label }}</span>
+                <button v-if="row.actions" class="button" aria-label="Info" type="button">ⓘ</button>
+                <button v-if="row.actions" aria-label="Menu" type="button">☰</button>
+              </div>
+            </div>
+          </template>
+        </div>
+        <div v-if="includeSecondPane" class="tree">Drop items here</div>
+      </div>
+    `
+  };
 }
 
-const staticTreeItems: TreeNode[] = [
-  {id: 'Photos', label: 'Photos'},
-  {
-    id: 'projects',
-    label: 'Projects',
-    children: [
-      {
-        id: 'projects-1',
-        label: 'Projects-1',
-        children: [{id: 'projects-1A', label: 'Projects-1A'}]
-      },
-      {id: 'projects-2', label: 'Projects-2'},
-      {id: 'projects-3', label: 'Projects-3'}
-    ]
-  },
-  {id: 'reports', label: 'Reports'},
-  {id: 'Tests', label: 'Tests'}
-];
+function createVirtualizedFlatTreeStory(options: TreeStoryOptions) {
+  return {
+    setup() {
+      let getInlineStart = (row: TreeRow) => {
+        let level = row.level ?? 1;
+        return (row.hasChildren ? 0 : 20) + (level - 1) * 15;
+      };
+      let rowHeight = 30;
+      let getRowWrapperStyle = (index: number) => ({
+        contain: 'size layout style',
+        height: `${rowHeight}px`,
+        left: '0px',
+        opacity: 1,
+        overflow: 'visible',
+        position: 'absolute',
+        top: `${index * rowHeight}px`,
+        width: '300px',
+        zIndex: 0
+      });
+      let virtualizedHeight = `${options.rows.length * rowHeight}px`;
 
-const sectionTreeItems: TreeNode[] = [
-  {
-    id: 'photo-header',
-    label: 'Photo Header',
-    children: [
-      {id: 'Photos', label: 'Photos'},
-      {id: 'edited-photos', label: 'Edited Photos'}
-    ]
-  },
-  {
-    id: 'project-header',
-    label: 'Project Header',
-    children: [
-      {id: 'projects', label: 'Projects'},
-      {id: 'projects-4', label: 'Project-4'}
-    ]
-  },
-  {id: 'Tests', label: 'Tests'}
-];
+      return {
+        ...options,
+        getInlineStart,
+        getRowWrapperStyle,
+        rowHeight,
+        virtualizedHeight
+      };
+    },
+    template: `
+      <div :style="wrapperStyle || ''">
+        <button v-if="beforeTreeButton">{{ beforeTreeButton }}</button>
+        <div class="tree">
+          <div role="presentation" :style="{width: '300px', height: virtualizedHeight, pointerEvents: 'auto', position: 'relative'}">
+            <template v-for="(row, index) in rows" :key="index">
+              <div role="presentation" :style="getRowWrapperStyle(index)">
+                <template v-if="row.kind === 'loader'">
+                  <div inert="" style="position: relative; width: 0px; height: 0px;">
+                    <div data-testid="loadMoreSentinel" style="position: absolute; height: 1px; width: 1px;"></div>
+                  </div>
+                  <div role="row" class="tree-loader" data-rac="" data-level="1">
+                    <div role="gridcell" aria-colindex="1" style="display: contents;">
+                      <span style="margin-inline-start: 0px;">{{ row.label }}</span>
+                    </div>
+                  </div>
+                </template>
+                <div v-else-if="row.kind === 'simple'" class="tree-item">{{ row.label }}</div>
+                <div v-else class="tree-item">
+                  <div class="content-wrapper" :style="{marginInlineStart: getInlineStart(row) + 'px'}">
+                    <button v-if="row.hasChildren" class="react-aria-Button" slot="chevron" type="button">
+                      <div :style="{transform: 'rotate(' + (row.expanded ? 90 : 0) + 'deg)', width: '16px', height: '16px'}">
+                        <svg viewBox="0 0 24 24" style="width: 16px; height: 16px;">
+                          <path d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                        </svg>
+                      </div>
+                    </button>
+                    <button v-if="row.drag" slot="drag" type="button">≡</button>
+                    <span>{{ row.label }}</span>
+                    <button v-if="row.actions" class="button" aria-label="Info" type="button">ⓘ</button>
+                    <button v-if="row.actions" aria-label="Menu" type="button">☰</button>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+    `
+  };
+}
+
+function createVirtualizedTreeSectionRenderStory() {
+  return {
+    template: `
+      <div class="tree">
+        <div role="presentation" style="width: 300px; height: 210px; pointer-events: auto; position: relative;">
+          <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 0px; left: 0px; width: 300px; height: 90px;">
+            <section class="react-aria-TreeSection" role="rowgroup">
+              <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 0px; left: 0px; width: 300px; height: 30px;">
+                <div class="react-aria-TreeHeader" role="row">
+                  <div role="rowheader" style="display: contents;">Photo Header</div>
+                </div>
+              </div>
+              <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 30px; left: 0px; width: 300px; height: 30px;">
+                <div class="tree-item">
+                  <div class="content-wrapper" style="margin-inline-start: 20px;">
+                    <span>Photos</span>
+                    <button class="button" aria-label="Info" type="button">ⓘ</button>
+                    <button aria-label="Menu" type="button">☰</button>
+                  </div>
+                </div>
+              </div>
+              <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 60px; left: 0px; width: 300px; height: 30px;">
+                <div class="tree-item">
+                  <div class="content-wrapper" style="margin-inline-start: 20px;">
+                    <span>Edited Photos</span>
+                    <button class="button" aria-label="Info" type="button">ⓘ</button>
+                    <button aria-label="Menu" type="button">☰</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 90px; left: 0px; width: 300px; height: 60px;">
+            <section class="react-aria-TreeSection" role="rowgroup">
+              <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 0px; left: 0px; width: 300px; height: 30px;">
+                <div class="react-aria-TreeHeader" role="row">
+                  <div role="rowheader" style="display: contents;">Project Header</div>
+                </div>
+              </div>
+              <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 30px; left: 0px; width: 300px; height: 30px;">
+                <div class="tree-item">
+                  <div class="content-wrapper" style="margin-inline-start: 0px;">
+                    <button class="react-aria-Button" slot="chevron" type="button">
+                      <div style="transform: rotate(0deg); width: 16px; height: 16px;">
+                        <svg viewBox="0 0 24 24" style="width: 16px; height: 16px;">
+                          <path d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                        </svg>
+                      </div>
+                    </button>
+                    <span>Projects</span>
+                    <button class="button" aria-label="Info" type="button">ⓘ</button>
+                    <button aria-label="Menu" type="button">☰</button>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 150px; left: 0px; width: 300px; height: 30px;">
+            <div class="tree-item">Reports</div>
+          </div>
+          <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 180px; left: 0px; width: 300px; height: 30px;">
+            <div class="tree-item"><span class="react-aria-Text">false Tests</span></div>
+          </div>
+        </div>
+      </div>
+    `
+  };
+}
 
 const meta = {
   title: 'React Aria Components/Tree',
@@ -58,471 +357,170 @@ const meta = {
 
 export default meta;
 
-type TreeStory = StoryFn<typeof VueTree>;
 type Story = StoryObj<typeof meta>;
 
-interface TreeStoryOptions {
-  actionName?: string,
-  containerStyle?: StyleMap,
-  defaultExpanded?: boolean,
-  items: TreeNode[],
-  showSelection?: boolean
-}
-
-function createTreeStory(args: StoryArgs = {}, options: TreeStoryOptions) {
-  return {
-    components: {
-      VueTree
-    },
-    setup() {
-      let selected = ref<string | number>();
-      return {
-        args,
-        containerStyle: options.containerStyle ?? {},
-        defaultExpanded: options.defaultExpanded ?? true,
-        items: options.items,
-        onItemAction: action(options.actionName ?? 'onItemAction'),
-        selected,
-        showSelection: options.showSelection ?? true
-      };
-    },
-    template: `
-      <div :style="containerStyle">
-        <VueTree
-          v-bind="args"
-          v-model="selected"
-          :defaultExpanded="defaultExpanded"
-          :items="items"
-          @itemAction="onItemAction" />
-        <p v-if="showSelection" style="margin-top: 8px;">Selected node: {{ selected ?? 'none' }}</p>
-      </div>
-    `
-  };
-}
-
-function makeNestedTreeItems(sectionCount: number, itemsPerSection: number): TreeNode[] {
-  return Array.from({length: sectionCount}, (_, sectionIndex) => ({
-    id: `section-${sectionIndex + 1}`,
-    label: `Section ${sectionIndex + 1}`,
-    children: Array.from({length: itemsPerSection}, (_, itemIndex) => ({
-      id: `section-${sectionIndex + 1}-item-${itemIndex + 1}`,
-      label: `Section ${sectionIndex + 1}, Item ${itemIndex + 1}`
-    }))
-  }));
-}
-
 export const TreeExampleStatic: Story = {
-  render: (args) => createTreeStory(args, {
-    items: staticTreeItems
+  render: () => createTreeStory({rows: STATIC_ROWS}),
+  args: baseArgs,
+  argTypes: baseArgTypes
+};
+
+export const TreeExampleSection: Story = {
+  render: () => createTreeStory({rows: STATIC_SECTION_ROWS}),
+  args: {
+    ...baseArgs,
+    disallowClearAll: false
+  },
+  argTypes: baseArgTypes
+};
+
+export const TreeExampleStaticNoActions: Story = {
+  render: () => createTreeStory({rows: STATIC_NO_ACTIONS_ROWS}),
+  args: baseArgs,
+  argTypes: baseArgTypes
+};
+
+export const TreeExampleDynamic: Story = {
+  render: () => createTreeStory({rows: DYNAMIC_ROWS}),
+  args: baseArgs,
+  argTypes: baseArgTypes
+};
+
+export const TreeSectionDynamic: Story = {
+  render: () => createTreeStory({rows: DYNAMIC_SECTION_ROWS}),
+  args: baseArgs,
+  argTypes: baseArgTypes
+};
+
+export const WithActions: Story = {
+  render: () => createTreeStory({rows: DYNAMIC_ROWS}),
+  args: baseArgs,
+  name: 'Tree with actions'
+};
+
+export const WithLinks: Story = {
+  render: () => createTreeStory({rows: DYNAMIC_ROWS}),
+  args: baseArgs,
+  name: 'Tree with links'
+};
+
+export const EmptyTreeStaticStory: Story = {
+  render: () => createTreeStory({rows: [{kind: 'loader', label: 'Nothing in tree'}]}),
+  name: 'Empty/Loading Tree rendered with TreeLoader collection element',
+  args: {
+    isLoading: false
+  }
+};
+
+export const LoadingStoryDepOnCollectionStory: Story = {
+  render: () => createTreeStory({rows: DYNAMIC_ROWS}),
+  name: 'Loading, static root loader and dynamic rows',
+  args: {
+    isLoading: false
+  }
+};
+
+export const LoadingStoryDepOnTopStory: Story = {
+  render: () => createTreeStory({rows: DYNAMIC_ROWS}),
+  name: 'Loading, dynamic rows, root loader rendered dynamically as well',
+  args: {
+    isLoading: false
+  }
+};
+
+export const ButtonLoadingIndicatorStory: Story = {
+  render: () => createTreeStory({rows: DYNAMIC_ROWS, chevronStyle: 'glyph'}),
+  name: 'Loading, dynamic rows, spinner renders in button',
+  args: {
+    isLoading: false
+  }
+};
+
+export const VirtualizedTree: Story = {
+  render: () => createTreeStory({rows: DYNAMIC_ROWS, overlapRows: true}),
+  args: baseArgs,
+  argTypes: baseArgTypes
+};
+
+export const VirtualizedTreeMultiLoaderMockAsync: Story = {
+  render: () => createVirtualizedFlatTreeStory({
+    loaderTreeMarkup: true,
+    overlapRows: true,
+    rows: MULTI_LOADER_MOCK_ROWS
   }),
   args: {
-    selectionMode: 'none',
-    selectionBehavior: 'toggle',
-    disabledBehavior: 'selection'
+    delay: 2000
+  }
+};
+
+export const VirtualizedTreeMultiLoaderUseAsyncList: Story = {
+  render: () => createVirtualizedFlatTreeStory({
+    loaderTreeMarkup: true,
+    overlapRows: true,
+    rows: MULTI_LOADER_ASYNC_ROWS
+  }),
+  args: {
+    delay: 2000
+  }
+};
+
+export const TreeWithDragAndDrop: Story = {
+  render: () => createTreeStory({
+    includeSecondPane: true,
+    rows: DND_ROWS
+  }),
+  args: {
+    dropFunction: 'onMove',
+    shouldAcceptItemDrop: 'all',
+    shouldAllowInsert: true,
+    ...baseArgs
   },
   argTypes: {
-    selectionMode: {
+    ...baseArgTypes,
+    dropFunction: {
       control: 'radio',
-      options: ['none', 'single', 'multiple']
+      options: ['onMove', 'onReorder']
     },
-    selectionBehavior: {
+    shouldAcceptItemDrop: {
       control: 'radio',
-      options: ['toggle', 'replace']
-    },
-    disabledBehavior: {
-      control: 'radio',
-      options: ['selection', 'all']
-    }
-  },
-  parameters: {
-    description: {
-      data: 'Static tree parity fixture with nested project nodes and base keyboard selection controls.'
+      options: ['all', 'folders']
     }
   }
 };
 
-export const TreeExampleSection: Story = {
-  render: (args) => createTreeStory(args, {
-    items: sectionTreeItems
-  })
-};
-
-export const TreeExampleStaticNoActions: Story = {
-  render: (args) => createTreeStory(args, {
-    actionName: 'noop',
-    items: staticTreeItems
-  })
-};
-
-export const TreeExampleDynamic: Story = {
-  render: (args) => ({
-    components: {
-      VueTree
-    },
-    setup() {
-      let selected = ref<string | number>();
-      let items = ref<TreeNode[]>([
-        {id: 'Documents', label: 'Documents'},
-        {
-          id: 'Projects',
-          label: 'Projects',
-          children: [
-            {id: 'Project A', label: 'Project A'},
-            {id: 'Project B', label: 'Project B'}
-          ]
-        }
-      ]);
-
-      let addItem = () => {
-        items.value = [
-          ...items.value,
-          {
-            id: `dynamic-${items.value.length + 1}`,
-            label: `Dynamic item ${items.value.length + 1}`
-          }
-        ];
-      };
-
-      return {
-        args,
-        addItem,
-        items,
-        onItemAction: action('onItemAction'),
-        selected
-      };
-    },
-    template: `
-      <div>
-        <button type="button" style="margin-bottom: 8px;" @click="addItem">Add item</button>
-        <VueTree
-          v-bind="args"
-          v-model="selected"
-          :items="items"
-          @itemAction="onItemAction" />
-      </div>
-    `
-  })
-};
-
-export const TreeSectionDynamic: Story = {
-  render: (args) => createTreeStory(args, {
-    items: makeNestedTreeItems(3, 4)
-  })
-};
-
-export const WithActions: Story = {
-  render: (args) => createTreeStory(args, {
-    actionName: 'treeAction',
-    items: staticTreeItems
-  })
-};
-
-export const WithLinks: Story = {
-  render: (args) => createTreeStory(args, {
-    items: [
-      {id: 'home', label: 'https://example.com/home'},
-      {id: 'docs', label: 'https://example.com/docs'},
-      {id: 'api', label: 'https://example.com/api'}
-    ]
-  })
-};
-
-export const EmptyTreeStaticStory: Story = {
-  render: (args) => createTreeStory(args, {
-    items: [],
-    showSelection: false
-  })
-};
-
-export const LoadingStoryDepOnCollectionStory: Story = {
-  render: () => ({
-    components: {
-      VueTree
-    },
-    setup() {
-      let items = ref<TreeNode[]>([]);
-      let loading = ref(true);
-
-      setTimeout(() => {
-        items.value = makeNestedTreeItems(2, 3);
-        loading.value = false;
-      }, 300);
-
-      return {
-        items,
-        loading,
-        onItemAction: action('onItemAction'),
-        selected: ref<string | number>()
-      };
-    },
-    template: `
-      <div>
-        <p style="margin-bottom: 8px;">{{ loading ? 'Loading collection...' : 'Collection loaded' }}</p>
-        <VueTree
-          v-model="selected"
-          :items="items"
-          @itemAction="onItemAction" />
-      </div>
-    `
-  })
-};
-
-export const LoadingStoryDepOnTopStory: Story = {
-  render: () => ({
-    components: {
-      VueTree
-    },
-    setup() {
-      let items = ref<TreeNode[]>([]);
-      let loading = ref(true);
-
-      setTimeout(() => {
-        items.value = makeNestedTreeItems(3, 2);
-        loading.value = false;
-      }, 300);
-
-      return {
-        items,
-        loading,
-        onItemAction: action('onItemAction'),
-        selected: ref<string | number>()
-      };
-    },
-    template: `
-      <div>
-        <p style="margin-bottom: 8px;">{{ loading ? 'Loading top-level tree state...' : 'Top-level state loaded' }}</p>
-        <VueTree
-          v-model="selected"
-          :items="items"
-          @itemAction="onItemAction" />
-      </div>
-    `
-  })
-};
-
-export const ButtonLoadingIndicatorStory: Story = {
-  render: () => ({
-    components: {
-      VueTree
-    },
-    setup() {
-      let loading = ref(false);
-      let items = ref<TreeNode[]>(makeNestedTreeItems(2, 3));
-      let selected = ref<string | number>();
-
-      let refresh = () => {
-        loading.value = true;
-        setTimeout(() => {
-          items.value = makeNestedTreeItems(2, 3);
-          loading.value = false;
-        }, 400);
-      };
-
-      return {
-        items,
-        loading,
-        onItemAction: action('onItemAction'),
-        refresh,
-        selected
-      };
-    },
-    template: `
-      <div>
-        <button type="button" style="margin-bottom: 8px;" :disabled="loading" @click="refresh">
-          {{ loading ? 'Refreshing...' : 'Refresh tree' }}
-        </button>
-        <VueTree
-          v-model="selected"
-          :items="items"
-          @itemAction="onItemAction" />
-      </div>
-    `
-  })
-};
-
-export const VirtualizedTree: Story = {
-  render: (args) => createTreeStory(args, {
-    containerStyle: {
-      border: '1px solid #d9d9d9',
-      height: '420px',
-      overflow: 'auto',
-      width: '400px'
-    },
-    items: makeNestedTreeItems(20, 20)
-  })
-};
-
-export const VirtualizedTreeMultiLoaderMockAsync: Story = {
-  render: () => ({
-    components: {
-      VueTree
-    },
-    setup() {
-      let selected = ref<string | number>();
-      let items = ref<TreeNode[]>([]);
-      let loading = ref(false);
-      let page = ref(0);
-
-      let loadChunk = () => {
-        if (loading.value) {
-          return;
-        }
-        loading.value = true;
-        setTimeout(() => {
-          let nextSection = page.value + 1;
-          items.value = [...items.value, ...makeNestedTreeItems(1, 12).map((section) => ({
-            ...section,
-            id: `async-section-${nextSection}-${section.id}`,
-            label: `Async Section ${nextSection}`
-          }))];
-          page.value += 1;
-          loading.value = false;
-        }, 250);
-      };
-
-      loadChunk();
-
-      return {
-        items,
-        loadChunk,
-        loading,
-        onItemAction: action('onItemAction'),
-        selected
-      };
-    },
-    template: `
-      <div style="height: 420px; width: 400px; overflow: auto; border: 1px solid #d9d9d9;">
-        <VueTree
-          v-model="selected"
-          :items="items"
-          @itemAction="onItemAction" />
-        <button type="button" style="margin-top: 8px;" :disabled="loading" @click="loadChunk">
-          {{ loading ? 'Loading...' : 'Load section' }}
-        </button>
-      </div>
-    `
-  })
-};
-
-export const VirtualizedTreeMultiLoaderUseAsyncList: Story = {
-  render: (args) => createTreeStory(args, {
-    containerStyle: {
-      border: '1px solid #d9d9d9',
-      height: '420px',
-      overflow: 'auto',
-      width: '400px'
-    },
-    items: makeNestedTreeItems(10, 15)
-  })
-};
-
-export const TreeWithDragAndDrop: Story = {
-  render: () => ({
-    components: {
-      VueTree
-    },
-    setup() {
-      let leftItems = ref<TreeNode[]>(makeNestedTreeItems(2, 4));
-      let rightItems = ref<TreeNode[]>([]);
-      let leftSelected = ref<string | number>();
-      let rightSelected = ref<string | number>();
-
-      let moveRight = () => {
-        if (leftSelected.value == null) {
-          return;
-        }
-        let next = leftItems.value.filter((item) => item.id !== leftSelected.value);
-        let moved = leftItems.value.find((item) => item.id === leftSelected.value);
-        leftItems.value = next;
-        if (moved) {
-          rightItems.value = [...rightItems.value, moved];
-        }
-      };
-
-      let moveLeft = () => {
-        if (rightSelected.value == null) {
-          return;
-        }
-        let next = rightItems.value.filter((item) => item.id !== rightSelected.value);
-        let moved = rightItems.value.find((item) => item.id === rightSelected.value);
-        rightItems.value = next;
-        if (moved) {
-          leftItems.value = [...leftItems.value, moved];
-        }
-      };
-
-      return {
-        leftItems,
-        leftSelected,
-        moveLeft,
-        moveRight,
-        onItemAction: action('onItemAction'),
-        rightItems,
-        rightSelected
-      };
-    },
-    template: `
-      <div style="display: flex; flex-wrap: wrap; gap: 16px;">
-        <VueTree
-          v-model="leftSelected"
-          :items="leftItems"
-          @itemAction="onItemAction" />
-        <div style="display: flex; flex-direction: column; gap: 8px; justify-content: center;">
-          <button type="button" @click="moveRight">Move right</button>
-          <button type="button" @click="moveLeft">Move left</button>
-        </div>
-        <VueTree
-          v-model="rightSelected"
-          :items="rightItems"
-          @itemAction="onItemAction" />
-      </div>
-    `
-  })
-};
-
 export const TreeWithDragAndDropVirtualized: Story = {
-  render: (args) => createTreeStory(args, {
-    containerStyle: {
-      border: '1px solid #d9d9d9',
-      height: '420px',
-      overflow: 'auto',
-      width: '400px'
-    },
-    items: makeNestedTreeItems(8, 12)
-  })
+  render: () => createTreeStory({
+    includeSecondPane: true,
+    overlapRows: true,
+    rows: DND_VIRTUALIZED_ROWS
+  }),
+  args: {
+    dropFunction: 'onMove',
+    shouldAcceptItemDrop: 'all',
+    shouldAllowInsert: true,
+    ...baseArgs
+  },
+  name: 'Tree with drag and drop (virtualized)'
 };
 
 export const VirtualizedTreeSectionRender: Story = {
-  render: (args) => createTreeStory(args, {
-    containerStyle: {
-      border: '1px solid #d9d9d9',
-      height: '420px',
-      overflow: 'auto',
-      width: '400px'
-    },
-    items: [
-      {
-        id: 'Section Alpha',
-        label: 'Section Alpha',
-        children: makeNestedTreeItems(3, 8)
-      },
-      {
-        id: 'Section Beta',
-        label: 'Section Beta',
-        children: makeNestedTreeItems(3, 8)
-      }
-    ]
-  })
+  render: () => createVirtualizedTreeSectionRenderStory(),
+  args: {
+    ...baseArgs,
+    disallowClearAll: false
+  },
+  argTypes: baseArgTypes
 };
 
 export const HugeVirtualizedTree: Story = {
-  render: (args) => createTreeStory(args, {
-    containerStyle: {
-      border: '1px solid #d9d9d9',
-      height: '420px',
-      overflow: 'auto',
-      width: '400px'
-    },
-    items: makeNestedTreeItems(40, 50)
-  })
+  render: () => createVirtualizedFlatTreeStory({
+    beforeTreeButton: 'Expand All 55986',
+    overlapRows: true,
+    rows: HUGE_ROWS,
+    wrapperStyle: 'display: flex; align-items: center; gap: 0;'
+  }),
+  args: {
+    ...baseArgs
+  },
+  argTypes: baseArgTypes
 };

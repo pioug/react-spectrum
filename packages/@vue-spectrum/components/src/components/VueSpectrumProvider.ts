@@ -112,7 +112,7 @@ export const VueSpectrumProvider = defineComponent({
     return function render() {
       return h('div', {
         ...attrs,
-        class: ['vs-provider', 'spectrum', ...themeClasses.value, attrs.class],
+        class: ['vs-provider', 'spectrum', 'i18nFontFamily', ...themeClasses.value, attrs.class],
         lang: props.locale,
         dir: direction.value,
         'data-vac': '',
