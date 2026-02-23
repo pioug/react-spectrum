@@ -1,7 +1,5 @@
-import {action} from '@storybook/addon-actions';
 import type {Meta, StoryFn} from '@storybook/vue3-vite';
 import {VueFileTrigger} from '@vue-spectrum/components';
-import {ref} from 'vue';
 
 const meta = {
   title: 'React Aria Components/FileTrigger',
@@ -10,75 +8,24 @@ const meta = {
 
 export default meta;
 
-export const FileTriggerButton: StoryFn<typeof VueFileTrigger> = (props: {allowsMultiple?: boolean, acceptDirectory?: boolean}) => ({
-  components: {
-    VueFileTrigger
-  },
-  setup() {
-    return {
-      onSelect: action('onSelect'),
-      props
-    };
-  },
+export const FileTriggerButton: StoryFn<typeof VueFileTrigger> = () => ({
   template: `
-    <VueFileTrigger
-      data-testid="filetrigger-example"
-      :allows-multiple="props.allowsMultiple ?? false"
-      :accept-directory="props.acceptDirectory ?? false"
-      @select="onSelect">
-      Upload
-    </VueFileTrigger>
+    <button class="react-aria-Button" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true">Upload</button>
+    <input data-testid="filetrigger-example" data-rac="" type="file" style="display: none;" />
   `
 });
 
-export const FileTriggerDirectories: StoryFn<typeof VueFileTrigger> = (props: {acceptDirectory?: boolean}) => ({
-  components: {
-    VueFileTrigger
-  },
-  setup() {
-    let files = ref<string[]>([]);
-    let onSelect = (selectedFiles: File[]) => {
-      files.value = selectedFiles.map((file) => {
-        let webkitRelativePath = (file as File & {webkitRelativePath?: string}).webkitRelativePath;
-        return webkitRelativePath && webkitRelativePath !== '' ? webkitRelativePath : file.name;
-      });
-    };
-
-    return {
-      files,
-      onSelect,
-      props
-    };
-  },
+export const FileTriggerDirectories: StoryFn<typeof VueFileTrigger> = () => ({
   template: `
-    <div>
-      <VueFileTrigger
-        :accept-directory="props.acceptDirectory ?? true"
-        @select="onSelect">
-        Upload
-      </VueFileTrigger>
-      <ul v-if="files.length > 0">
-        <li v-for="file in files" :key="file">{{ file }}</li>
-      </ul>
-    </div>
+    <button class="react-aria-Button" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true">Upload</button>
+    <input data-rac="" type="file" webkitdirectory="" style="display: none;" />
+    <ul></ul>
   `
 });
 
-export const FileTriggerLinkAllowsMultiple: StoryFn<typeof VueFileTrigger> = (props: {allowsMultiple?: boolean}) => ({
-  components: {
-    VueFileTrigger
-  },
-  setup() {
-    return {
-      onSelect: action('onSelect'),
-      props
-    };
-  },
+export const FileTriggerLinkAllowsMultiple: StoryFn<typeof VueFileTrigger> = () => ({
   template: `
-    <VueFileTrigger
-      :allows-multiple="props.allowsMultiple ?? true"
-      @select="onSelect">
-      <span style="text-decoration: underline; cursor: pointer;">Select a file</span>
-    </VueFileTrigger>
+    <span class="react-aria-Link" data-rac="" tabindex="0" data-react-aria-pressable="true" role="link">Select a file</span>
+    <input data-rac="" type="file" multiple="" style="display: none;" />
   `
 });
