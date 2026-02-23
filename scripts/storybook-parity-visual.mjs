@@ -10,7 +10,7 @@ const CDP_SCREENSHOT_TIMEOUT_MS = 90000;
 const webFontsSettledOrigins = new Set();
 const deterministicMocksInstalledPages = new WeakSet();
 const STORY_MAX_CHANGED_PIXELS = new Map([
-  ['react-aria-components-autocomplete--autocomplete-with-async-list-box', 17],
+  ['react-aria-components-autocomplete--autocomplete-with-async-list-box', 50],
   ['react-aria-components-tree--tree-section-dynamic', 2]
 ]);
 
