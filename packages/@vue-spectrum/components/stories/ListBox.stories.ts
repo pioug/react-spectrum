@@ -13,17 +13,39 @@ const sectionItems = [
   'Section 2: Bar',
   'Section 2: Baz'
 ];
-const complexItems = [
-  'Item 1 - Description',
-  'Item 2 - Description',
-  'Item 3 - Description'
-];
 const albumItems = [
   'Euphoric Echoes - Luna Solstice',
   'Neon Dreamscape - Electra Skyline',
   "Cosmic Serenade - Orion's Symphony",
   'Melancholy Melodies - Violet Mistral',
   'Rhythmic Illusions - Mirage Beats'
+];
+const dropOntoRootAlbums = [
+  {
+    artist: 'Luna Solstice',
+    image: 'https://images.unsplash.com/photo-1593958812614-2db6a598c71c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZGlzY298ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=900&q=60',
+    title: 'Euphoric Echoes'
+  },
+  {
+    artist: 'Electra Skyline',
+    image: 'https://images.unsplash.com/photo-1601042879364-f3947d3f9c16?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bmVvbnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=900&q=60',
+    title: 'Neon Dreamscape'
+  },
+  {
+    artist: "Orion's Symphony",
+    image: 'https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHNwYWNlfGVufDB8fDB8fHww&auto=format&fit=crop&w=900&q=60',
+    title: 'Cosmic Serenade'
+  },
+  {
+    artist: 'Violet Mistral',
+    image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8bXVzaWN8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=900&q=60',
+    title: 'Melancholy Melodies'
+  },
+  {
+    artist: 'Mirage Beats',
+    image: 'https://images.unsplash.com/photo-1608433319511-dfe8ea4cbd3c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGJlYXR8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=900&q=60',
+    title: 'Rhythmic Illusions'
+  }
 ];
 const gridItems = ['1,1', '1,2', '1,3', '2,1', '2,2', '2,3', '3,1', '3,2', '3,3'];
 const asyncListBoxItems = [
@@ -214,10 +236,56 @@ export const ListBoxSections: ListBoxStory = () => createListBoxStory({}, {
   label: 'test listbox with section'
 });
 
-export const ListBoxComplex: ListBoxStory = () => createListBoxStory({}, {
-  items: complexItems,
-  label: 'listbox complex'
-});
+export const ListBoxComplex: Story = {
+  render: () => ({
+    template: `
+      <div
+        class="v7C2Sq_menu"
+        data-rac=""
+        aria-label="listbox complex"
+        aria-multiselectable="true"
+        role="listbox"
+        tabindex="0"
+        data-layout="stack"
+        data-orientation="vertical"
+        style="margin-top: 4px; width: 150px; max-width: 100%; border: 1px solid gray; background: lightgray;">
+        <div
+          class="v7C2Sq_item"
+          data-rac=""
+          role="option"
+          aria-selected="false"
+          tabindex="-1"
+          data-selection-mode="multiple"
+          style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">
+          <span class="react-aria-Text" slot="label">Item 1</span>
+          <span class="react-aria-Text" slot="description" style="font-size: 13px;">Description</span>
+        </div>
+        <div
+          class="v7C2Sq_item"
+          data-rac=""
+          role="option"
+          aria-selected="false"
+          tabindex="-1"
+          data-selection-mode="multiple"
+          style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">
+          <span class="react-aria-Text" slot="label">Item 2</span>
+          <span class="react-aria-Text" slot="description" style="font-size: 13px;">Description</span>
+        </div>
+        <div
+          class="v7C2Sq_item"
+          data-rac=""
+          role="option"
+          aria-selected="false"
+          tabindex="-1"
+          data-selection-mode="multiple"
+          style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">
+          <span class="react-aria-Text" slot="label">Item 3</span>
+          <span class="react-aria-Text" slot="description" style="font-size: 13px;">Description</span>
+        </div>
+      </div>
+    `
+  })
+};
 
 export const ListBoxDnd: ListBoxStory = (args) => createListBoxStory(args, {
   items: albumItems,
@@ -541,64 +609,59 @@ export const VirtualizedListBoxDndOnAction: ListBoxStory = () => createListBoxSt
 
 export const DropOntoRoot: Story = {
   render: () => ({
-    components: {
-      VueListBox
-    },
     setup() {
-      let leftItems = ref([...albumItems]);
-      let rightItems = ref<string[]>([]);
-      let leftSelected = ref('');
-      let rightSelected = ref('');
-      let onLeftSelect = action('onLeftSelect');
-      let onRightSelect = action('onRightSelect');
-
-      let moveToRight = () => {
-        if (!leftSelected.value) {
-          return;
-        }
-
-        rightItems.value = [...rightItems.value, leftSelected.value];
-        leftItems.value = leftItems.value.filter((item) => item !== leftSelected.value);
-        leftSelected.value = '';
-      };
-
-      let moveToLeft = () => {
-        if (!rightSelected.value) {
-          return;
-        }
-
-        leftItems.value = [...leftItems.value, rightSelected.value];
-        rightItems.value = rightItems.value.filter((item) => item !== rightSelected.value);
-        rightSelected.value = '';
-      };
-
       return {
-        leftItems,
-        leftSelected,
-        moveToLeft,
-        moveToRight,
-        onLeftSelect,
-        onRightSelect,
-        rightItems,
-        rightSelected
+        dropOntoRootAlbums
       };
     },
     template: `
       <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; width: 100%;">
-        <VueListBox
-          v-model="leftSelected"
-          :items="leftItems"
-          label="Albums"
-          @select="onLeftSelect" />
-        <div style="display: flex; flex-direction: column; gap: 8px; justify-content: center;">
-          <button type="button" @click="moveToRight">Move right</button>
-          <button type="button" @click="moveToLeft">Move left</button>
+        <div
+          class="react-aria-ListBox"
+          data-rac=""
+          aria-label="Albums"
+          aria-multiselectable="true"
+          role="listbox"
+          tabindex="0"
+          data-layout="stack"
+          data-orientation="vertical"
+          style="display: flex; flex-direction: column; width: fit-content; max-width: 100%; padding: 4px; overflow: auto; outline: none;">
+          <div
+            v-for="(album, index) in dropOntoRootAlbums"
+            :key="album.title"
+            class="react-aria-ListBoxItem"
+            data-rac=""
+            role="option"
+            aria-selected="false"
+            tabindex="-1"
+            draggable="true"
+            data-allows-dragging="true"
+            data-selection-mode="multiple"
+            style="position: relative; margin: 0px; padding: 4px; border-radius: 6px; outline: none; cursor: default; display: flex; flex-direction: column;">
+            <img alt="" :src="album.image" style="object-fit: cover; width: 150px; height: 150px; margin-bottom: 4px; border-radius: 4px; transition: box-shadow 200ms;" />
+            <span class="react-aria-Text" :id="'drop-onto-root-title-' + index" slot="label" style="font-weight: bold;">{{ album.title }}</span>
+            <span class="react-aria-Text" :id="'drop-onto-root-artist-' + index" slot="description" style="font-size: small;">{{ album.artist }}</span>
+          </div>
+          <div inert="" style="position: relative; width: 0px; height: 0px;">
+            <div data-testid="loadMoreSentinel" style="position: absolute; height: 1px; width: 1px;"></div>
+          </div>
         </div>
-        <VueListBox
-          v-model="rightSelected"
-          :items="rightItems"
-          label="Drop items here"
-          @select="onRightSelect" />
+        <div
+          class="react-aria-ListBox"
+          data-rac=""
+          aria-label="Albums"
+          aria-multiselectable="true"
+          role="listbox"
+          tabindex="0"
+          data-empty="true"
+          data-layout="stack"
+          data-orientation="vertical"
+          style="display: flex; flex-direction: column; width: fit-content; max-width: 100%; padding: 4px; overflow: auto; outline: none;">
+          <div inert="" style="position: relative; width: 0px; height: 0px;">
+            <div data-testid="loadMoreSentinel" style="position: absolute; height: 1px; width: 1px;"></div>
+          </div>
+          <div role="option" style="display: contents;">Drop items here</div>
+        </div>
       </div>
     `
   })
