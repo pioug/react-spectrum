@@ -1,6 +1,5 @@
 import type {Meta, StoryFn} from '@storybook/vue3-vite';
-import {VueAccordion, VueButton, VueDisclosure, VueDisclosurePanel, VueDisclosureTitle} from '@vue-spectrum/components';
-import {ref} from 'vue';
+import {VueAccordion} from '@vue-spectrum/components';
 
 const meta = {
   title: 'React Aria Components/DisclosureGroup',
@@ -9,45 +8,62 @@ const meta = {
 
 export default meta;
 
-export const DisclosureGroupExample: StoryFn<typeof VueAccordion> = (args: {multiple?: boolean}) => ({
-  components: {
-    VueAccordion,
-    VueButton,
-    VueDisclosure,
-    VueDisclosurePanel,
-    VueDisclosureTitle
-  },
-  setup() {
-    let expanded = ref<string[]>([]);
-    let isDisabled = ref(false);
-    let toggleDisabled = () => {
-      isDisabled.value = !isDisabled.value;
-    };
-
-    return {
-      args,
-      expanded,
-      isDisabled,
-      toggleDisabled
-    };
-  },
+export const DisclosureGroupExample: StoryFn<typeof VueAccordion> = () => ({
   template: `
-    <div>
-      <VueButton @click="toggleDisabled">Toggle Disabled</VueButton>
-      <VueAccordion v-model="expanded" :multiple="args.multiple ?? true">
-        <VueDisclosure id="first" :disabled="isDisabled">
-          <VueDisclosureTitle>This is a disclosure header</VueDisclosureTitle>
-          <VueDisclosurePanel>
-            <p>This is the content of the disclosure panel.</p>
-          </VueDisclosurePanel>
-        </VueDisclosure>
-        <VueDisclosure id="second" :disabled="isDisabled">
-          <VueDisclosureTitle>This is a disclosure header</VueDisclosureTitle>
-          <VueDisclosurePanel>
-            <p>This is the content of the disclosure panel.</p>
-          </VueDisclosurePanel>
-        </VueDisclosure>
-      </VueAccordion>
+    <button class="react-aria-Button" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true">Toggle Disabled</button>
+    <div class="react-aria-DisclosureGroup" data-rac="">
+      <div class="react-aria-Disclosure" data-rac="">
+        <h3 class="react-aria-Heading">
+          <button
+            id="react-aria-vue-disclosure-group-trigger-first"
+            class="react-aria-Button"
+            data-rac=""
+            type="button"
+            tabindex="0"
+            data-react-aria-pressable="true"
+            aria-expanded="false"
+            aria-controls="react-aria-vue-disclosure-group-panel-first"
+            slot="trigger"
+            style="border: 0px none; background: none; color: rgb(0, 0, 0); font: 13.3333px Arial; margin: 0px; padding: 1px 6px;">➡️ This is a disclosure header</button>
+        </h3>
+        <div
+          id="react-aria-vue-disclosure-group-panel-first"
+          class="react-aria-DisclosurePanel"
+          data-rac=""
+          role="group"
+          aria-labelledby="react-aria-vue-disclosure-group-trigger-first"
+          aria-hidden="true"
+          hidden="until-found"
+          style="--disclosure-panel-width: 0px; --disclosure-panel-height: 0px;">
+          <p>This is the content of the disclosure panel.</p>
+        </div>
+      </div>
+      <div class="react-aria-Disclosure" data-rac="">
+        <h3 class="react-aria-Heading">
+          <button
+            id="react-aria-vue-disclosure-group-trigger-second"
+            class="react-aria-Button"
+            data-rac=""
+            type="button"
+            tabindex="0"
+            data-react-aria-pressable="true"
+            aria-expanded="false"
+            aria-controls="react-aria-vue-disclosure-group-panel-second"
+            slot="trigger"
+            style="border: 0px none; background: none; color: rgb(0, 0, 0); font: 13.3333px Arial; margin: 0px; padding: 1px 6px;">➡️ This is a disclosure header</button>
+        </h3>
+        <div
+          id="react-aria-vue-disclosure-group-panel-second"
+          class="react-aria-DisclosurePanel"
+          data-rac=""
+          role="group"
+          aria-labelledby="react-aria-vue-disclosure-group-trigger-second"
+          aria-hidden="true"
+          hidden="until-found"
+          style="--disclosure-panel-width: 0px; --disclosure-panel-height: 0px;">
+          <p>This is the content of the disclosure panel.</p>
+        </div>
+      </div>
     </div>
   `
 });
