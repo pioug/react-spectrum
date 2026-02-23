@@ -12,7 +12,8 @@ type Story = StoryObj<typeof meta>;
 
 export const ColorSwatchExampleRender = (args: {color?: string}) => ({
   setup() {
-    let color = args.color ?? 'rgb(255, 0, 0)';
+    let color = args.color ?? 'rgba(255, 255, 255, 0)';
+    let label = args.color ? 'vibrant red' : 'transparent';
     let swatchStyle = {
       background: `linear-gradient(${color}, ${color}), repeating-conic-gradient(rgb(204, 204, 204) 0% 25%, white 0% 50%) 50% / 16px 16px`,
       forcedColorAdjust: 'none',
@@ -23,11 +24,12 @@ export const ColorSwatchExampleRender = (args: {color?: string}) => ({
     };
 
     return {
+      label,
       swatchStyle
     };
   },
   template: `
-    <div role="img" aria-roledescription="color swatch" aria-label="vibrant red" class="react-aria-ColorSwatch" data-rac="" :style="swatchStyle" />
+    <div role="img" aria-roledescription="color swatch" :aria-label="label" class="react-aria-ColorSwatch" data-rac="" :style="swatchStyle" />
   `
 });
 
