@@ -91,24 +91,11 @@ export const DropzoneExampleWithDraggableAndFileTrigger: StoryFn<typeof VueDropZ
 });
 
 export const DropZoneOnlyAcceptPNGWithFileTrigger: StoryFn<typeof VueDropZone> = () => ({
-  components: {
-    VueDropZone,
-    VueFileTrigger
-  },
-  setup() {
-    let actions = useDropActions();
-    return {
-      actions,
-      onSelect: action('onSelect')
-    };
-  },
   template: `
     <div>
-      <VueDropZone
-        label="Drop PNG files"
-        accept="image/png"
-        @files-drop="actions.onDrop" />
-      <VueFileTrigger :accepted-file-types="['image/png']" @select="onSelect">Upload</VueFileTrigger>
+      <div style="border: 2px solid white; margin: 20px; padding: 20px; outline: none;">
+        <button type="button">Upload</button>
+      </div>
     </div>
   `
 });
