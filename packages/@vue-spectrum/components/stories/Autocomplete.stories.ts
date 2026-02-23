@@ -355,7 +355,7 @@ export const AutocompleteMenuInPopoverDialogTrigger: AutocompleteStory = {
 
 export const AutocompleteSelect = () => ({
   template: `
-    <div class="react-aria-Select" data-rac="" style="margin-bottom: 40px;">
+    <div class="react-aria-Select" data-rac="" style="margin-bottom: 40px; font: 14px / 21px adobe-clean, 'Source Sans Pro', -apple-system, 'system-ui', 'Segoe UI', Roboto, Ubuntu, 'Trebuchet MS', 'Lucida Grande', sans-serif; color: rgb(34, 34, 34);">
       <span class="react-aria-Label" style="display: block;">Test</span>
       <button class="react-aria-Button" data-rac="" type="button" aria-haspopup="listbox" aria-expanded="false">
         <span class="react-aria-SelectValue" data-rac="" data-placeholder="true">Select an item</span>
