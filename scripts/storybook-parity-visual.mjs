@@ -30,6 +30,10 @@ function toSolidSvgDataUri(fill) {
   return `data:image/svg+xml,${encodeURIComponent(svg)}`;
 }
 
+function toSolidSvgMarkup(fill) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="960" height="640"><rect width="100%" height="100%" fill="${fill}" /></svg>`;
+}
+
 const UNSPLASH_FIXTURE_ITEMS = [
   {id: 'fixture-1', user: {name: 'Jeremy Goodmaker'}, urls: {regular: toSolidSvgDataUri('#11152f')}, description: 'Night sky', alt_description: 'Night sky', width: 960, height: 640},
   {id: 'fixture-2', user: {name: 'Bennie Bates'}, urls: {regular: toSolidSvgDataUri('#21351d')}, description: 'Green leaves', alt_description: 'Green leaves', width: 960, height: 640},
@@ -41,6 +45,7 @@ const UNSPLASH_FIXTURE_ITEMS = [
   {id: 'fixture-8', user: {name: 'Lia Peak'}, urls: {regular: toSolidSvgDataUri('#375b8a')}, description: 'Mountain', alt_description: 'Mountain', width: 960, height: 640},
   {id: 'fixture-9', user: {name: 'Ian River'}, urls: {regular: toSolidSvgDataUri('#264a68')}, description: 'River', alt_description: 'River', width: 960, height: 640}
 ];
+const UNSPLASH_IMAGE_FIXTURE_COLORS = ['#11152f', '#21351d', '#2f4d1f', '#6f8fe8', '#a8b4df', '#182349', '#2a5e43', '#375b8a', '#264a68'];
 
 // Some Storybook Vue stories keep `document.fonts.ready` pending indefinitely.
 // Playwright screenshot waits on fonts by default, which can hang captures.
@@ -239,6 +244,14 @@ function buildJsonHeaders() {
   };
 }
 
+function buildImageHeaders() {
+  return {
+    'access-control-allow-origin': '*',
+    'cache-control': 'no-store',
+    'content-type': 'image/svg+xml; charset=utf-8'
+  };
+}
+
 function toSwapiFixtureResponse(urlString) {
   let searchText = '';
   try {
@@ -277,6 +290,24 @@ function toUnsplashFixtureResponse(urlString) {
   return [];
 }
 
+function toUnsplashImageFixtureMarkup(urlString) {
+  let key = urlString;
+  try {
+    let parsed = new URL(urlString);
+    key = `${parsed.pathname}${parsed.search}`;
+  } catch {
+    // ignore malformed URL and keep original key
+  }
+
+  let hash = 0;
+  for (let index = 0; index < key.length; index += 1) {
+    hash = (hash * 31 + key.charCodeAt(index)) >>> 0;
+  }
+
+  let color = UNSPLASH_IMAGE_FIXTURE_COLORS[hash % UNSPLASH_IMAGE_FIXTURE_COLORS.length];
+  return toSolidSvgMarkup(color);
+}
+
 async function setupDeterministicNetworkMocks(page) {
   if (deterministicMocksInstalledPages.has(page)) {
     return;
@@ -299,6 +330,15 @@ async function setupDeterministicNetworkMocks(page) {
       status: 200,
       headers: buildJsonHeaders(),
       body: JSON.stringify(payload)
+    });
+  });
+
+  await page.route(/https?:\/\/images\.unsplash\.com\/.*/i, async (route) => {
+    let payload = toUnsplashImageFixtureMarkup(route.request().url());
+    await route.fulfill({
+      status: 200,
+      headers: buildImageHeaders(),
+      body: payload
     });
   });
 }
