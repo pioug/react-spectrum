@@ -4,6 +4,69 @@ import fs from 'node:fs';
 import path from 'node:path';
 import {chromium} from 'playwright';
 
+const deterministicMocksInstalledPages = new WeakSet();
+const SWAPI_FIXTURE_RESULTS = [
+  {name: 'Luke Skywalker'},
+  {name: 'C-3PO'},
+  {name: 'R2-D2'},
+  {name: 'Darth Vader'},
+  {name: 'Leia Organa'},
+  {name: 'Owen Lars'},
+  {name: 'Beru Whitesun lars'},
+  {name: 'R5-D4'}
+];
+
+function normalizeText(value) {
+  return String(value ?? '').replace(/\s+/g, ' ').trim();
+}
+
+function buildJsonHeaders() {
+  return {
+    'access-control-allow-origin': '*',
+    'cache-control': 'no-store',
+    'content-type': 'application/json; charset=utf-8'
+  };
+}
+
+function toSwapiFixtureResponse(urlString) {
+  let searchText = '';
+  try {
+    let parsed = new URL(urlString);
+    searchText = (parsed.searchParams.get('search') ?? '').trim().toLowerCase();
+  } catch {
+    // ignore malformed URL and return unfiltered fixture payload
+  }
+
+  let results = SWAPI_FIXTURE_RESULTS;
+  if (searchText) {
+    results = SWAPI_FIXTURE_RESULTS.filter((item) => item.name.toLowerCase().includes(searchText));
+  }
+
+  return {
+    count: results.length,
+    next: null,
+    previous: null,
+    results
+  };
+}
+
+async function setupDeterministicNetworkMocks(page) {
+  if (deterministicMocksInstalledPages.has(page)) {
+    return;
+  }
+
+  deterministicMocksInstalledPages.add(page);
+
+  await page.route(/https?:\/\/swapi\.py4e\.com\/api\/people\/?.*/i, async (route) => {
+    let payload = toSwapiFixtureResponse(route.request().url());
+    await route.fulfill({
+      status: 200,
+      headers: buildJsonHeaders(),
+      body: JSON.stringify(payload)
+    });
+  });
+}
+
 function parseArgs(argv) {
   let args = {
     reactUrl: 'http://127.0.0.1:9003',
@@ -885,6 +948,67 @@ let scenarios = [
     }
   },
   {
+    id: 'react-aria-components-select--async-virtualized-collection-render-select',
+    async run(page) {
+      let label = await waitForFirstVisibleLocator(page, [
+        '.react-aria-Label',
+        'label'
+      ], 10000);
+
+      if (!label) {
+        throw new Error('Unable to find async virtualized select label.');
+      }
+
+      let trigger = await waitForFirstVisibleLocator(page, [
+        'button[aria-haspopup="listbox"]'
+      ], 10000);
+
+      if (!trigger) {
+        throw new Error('Unable to find async virtualized select trigger.');
+      }
+
+      let selectValue = page.locator('.react-aria-SelectValue').first();
+      let hasSelectValue = await selectValue.count() > 0;
+
+      return {
+        ariaExpanded: await trigger.getAttribute('aria-expanded'),
+        ariaHasPopup: await trigger.getAttribute('aria-haspopup'),
+        labelText: normalizeText(await label.innerText()),
+        selectValuePlaceholder: hasSelectValue ? await selectValue.getAttribute('data-placeholder') : null,
+        selectValueText: hasSelectValue ? normalizeText(await selectValue.innerText()) : null,
+        triggerText: normalizeText(await trigger.innerText())
+      };
+    }
+  },
+  {
+    id: 'react-aria-components-tree--tree-section-dynamic',
+    async run(page) {
+      let treeRoot = await waitForFirstVisibleLocator(page, [
+        '[role="treegrid"]',
+        '.react-aria-Tree',
+        '.tree'
+      ], 10000);
+
+      if (!treeRoot) {
+        throw new Error('Unable to find dynamic tree root.');
+      }
+
+      let labelsToCheck = ['Section 1', 'Project 2A', 'Project 2C'];
+      let hasLabels = {};
+
+      for (let label of labelsToCheck) {
+        hasLabels[label] = (await page.getByText(label, {exact: true}).count()) > 0;
+      }
+
+      return {
+        hasChevronButtons: (await page.locator('button[slot="chevron"]').count()) > 0,
+        hasInfoButtons: (await page.locator('button[aria-label="Info"]').count()) > 0,
+        hasLabels,
+        hasMenuButtons: (await page.locator('button[aria-label="Menu"]').count()) > 0
+      };
+    }
+  },
+  {
     id: 'react-aria-components-menu--menu-example',
     async run(page) {
       let items = page.locator('[role^="menuitem"]');
@@ -1339,6 +1463,7 @@ function selectScenarios(allScenarios, scenarioIds) {
 async function runScenario(browser, baseUrl, scenario) {
   let page = await browser.newPage();
   try {
+    await setupDeterministicNetworkMocks(page);
     await page.goto(storyUrl(baseUrl, scenario.id), {waitUntil: 'domcontentloaded'});
     await page.waitForSelector('#storybook-root, #root, body');
     return await scenario.run(page);
