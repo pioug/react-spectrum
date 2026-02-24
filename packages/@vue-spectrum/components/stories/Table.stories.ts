@@ -1336,9 +1336,9 @@ export const TableWithReactTransition: TableStory = () => ({
             data-rac=""
             role="row"
             tabindex="-1">
-            <td class="react-aria-Cell" data-rac="" role="rowheader">{{ row.name }}</td>
-            <td class="react-aria-Cell" data-rac="" role="gridcell">{{ row.type }}</td>
-            <td class="react-aria-Cell" data-rac="" role="gridcell">{{ row.date }}</td>
+            <td class="react-aria-Cell" data-rac="" role="rowheader" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ row.name }}</td>
+            <td class="react-aria-Cell" data-rac="" role="gridcell" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ row.type }}</td>
+            <td class="react-aria-Cell" data-rac="" role="gridcell" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ row.date }}</td>
           </tr>
         </tbody>
       </table>
