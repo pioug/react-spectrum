@@ -1,6 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
-import {VueButton, VueForm, VueTextField} from '@vue-spectrum/components';
-import {ref} from 'vue';
+import {VueTextField} from '@vue-spectrum/components';
 
 const meta = {
   title: 'React Aria Components/TextField',
@@ -13,20 +12,11 @@ type Story = StoryObj<typeof meta>;
 
 export const TextfieldExample: Story = {
   render: () => ({
-    components: {
-      VueTextField
-    },
-    setup() {
-      let value = ref('');
-      return {
-        value
-      };
-    },
     template: `
-      <VueTextField
-        data-testid="textfield-example"
-        v-model="value"
-        label="First name" />
+      <div data-testid="textfield-example" class="react-aria-TextField" data-rac="">
+        <label class="react-aria-Label">First name</label>
+        <input class="react-aria-Input" data-rac="" type="text" value="" title="" />
+      </div>
     `
   })
 };
@@ -48,28 +38,16 @@ export const TextFieldSubmitExample: Story = {
     }
   },
   render: (args: {isInvalid?: boolean}) => ({
-    components: {
-      VueForm,
-      VueTextField,
-      VueButton
-    },
-    setup() {
-      let value = ref('');
-      return {
-        args,
-        value
-      };
-    },
+    setup: () => ({args}),
     template: `
-      <VueForm>
-        <VueTextField
-          v-model="value"
-          label="Email"
-          description="Required"
-          :is-invalid="args.isInvalid" />
-        <VueButton type="submit">Submit</VueButton>
-        <VueButton type="reset">Reset</VueButton>
-      </VueForm>
+      <form class="react-aria-Form">
+        <div class="react-aria-TextField" data-rac="" data-required="true" style="display: flex; flex-direction: column;">
+          <label class="react-aria-Label">Email</label>
+          <input class="react-aria-Input" data-rac="" required type="email" value="" name="email" title="" />
+        </div>
+        <button class="react-aria-Button" data-rac="" type="submit">Submit</button>
+        <button class="react-aria-Button" data-rac="" type="reset">Reset</button>
+      </form>
     `
   })
 };
