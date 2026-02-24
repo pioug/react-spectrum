@@ -34,6 +34,11 @@ export const PendingButton: Story = {
     },
     setup() {
       let isPending = ref(false);
+      let renderPendingButton = (props: Record<string, unknown>, children: unknown) => {
+        let {disabled: _disabled, ...rest} = props;
+        return h('button', rest, children);
+      };
+
       let onPress = () => {
         if (isPending.value) {
           return;
@@ -47,12 +52,14 @@ export const PendingButton: Story = {
 
       return {
         isPending,
-        onPress
+        onPress,
+        renderPendingButton
       };
     },
     template: `
       <Button
         :is-disabled="isPending"
+        :render="renderPendingButton"
         class="button"
         @click="onPress">
         <span :class="{pending: isPending}">
