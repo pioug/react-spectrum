@@ -11,9 +11,6 @@ const meta = {
 export default meta;
 
 export const ToggleButtonExample: StoryFn<typeof VueButton> = () => ({
-  components: {
-    VueButton
-  },
   setup() {
     let textColor = ref('black');
     let onHoverStart = () => {
@@ -32,14 +29,20 @@ export const ToggleButtonExample: StoryFn<typeof VueButton> = () => ({
     };
   },
   template: `
-    <VueButton
+    <button
       data-testid="toggle-button-example"
+      class="v7C2Sq_toggleButtonExample"
+      data-rac=""
+      type="button"
+      tabindex="0"
+      data-react-aria-pressable="true"
+      aria-pressed="false"
       :style="{color: textColor}"
       @keyup="onKeyUp"
       @click="onPress"
       @mouseenter="onHoverStart"
       @mouseleave="onHoverEnd">
       Toggle
-    </VueButton>
+    </button>
   `
 });

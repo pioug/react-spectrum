@@ -134,57 +134,107 @@ interface TooltipArrowBoundaryOffsetArgs {
 
 type PlacementCard = {
   key: keyof TooltipArrowBoundaryOffsetArgs,
-  label: string,
-  placement: string,
-  arrowRotation: string
+  label: string
 };
 
 const rows: PlacementCard[][] = [
   [
-    {key: 'topLeft', label: 'Top left', placement: 'top left', arrowRotation: 'rotate(0deg)'},
-    {key: 'topRight', label: 'Top right', placement: 'top right', arrowRotation: 'rotate(0deg)'}
+    {key: 'topLeft', label: 'Top left'},
+    {key: 'topRight', label: 'Top right'}
   ],
   [
-    {key: 'leftTop', label: 'Left top', placement: 'left top', arrowRotation: 'rotate(-90deg)'},
-    {key: 'leftBottom', label: 'Left bottom', placement: 'left bottom', arrowRotation: 'rotate(-90deg)'}
+    {key: 'leftTop', label: 'Left top'},
+    {key: 'leftBottom', label: 'Left bottom'}
   ],
   [
-    {key: 'rightTop', label: 'Right top', placement: 'right top', arrowRotation: 'rotate(90deg)'},
-    {key: 'rightBottom', label: 'Right bottom', placement: 'right bottom', arrowRotation: 'rotate(90deg)'}
+    {key: 'rightTop', label: 'Right top'},
+    {key: 'rightBottom', label: 'Right bottom'}
   ],
   [
-    {key: 'bottomLeft', label: 'Bottom left', placement: 'bottom left', arrowRotation: 'rotate(180deg)'},
-    {key: 'bottomRight', label: 'Bottom right', placement: 'bottom right', arrowRotation: 'rotate(180deg)'}
+    {key: 'bottomLeft', label: 'Bottom left'},
+    {key: 'bottomRight', label: 'Bottom right'}
   ]
 ];
 
 export const TooltipArrowBoundaryOffsetExample: TooltipStoryObj = {
-  render: (_args: TooltipArrowBoundaryOffsetArgs) => ({
-    components: {
-      VuePopover
-    },
+  render: () => ({
     setup() {
       return {
         rows
       };
     },
     template: `
-      <div style="display: flex; flex-direction: column;">
-        <div v-for="(row, rowIndex) in rows" :key="rowIndex" style="display: flex;">
-          <div v-for="card in row" :key="card.key" style="padding: 12px;">
-            <button type="button" style="width: 200px; height: 100px;">{{ card.label }}</button>
-            <VuePopover
-              open
-              :dismissable="false"
-              :placement="card.placement"
-              :offset="7"
-              :style="{background: 'Canvas', color: 'CanvasText', border: '1px solid gray', padding: '8px', borderRadius: '9999px'}">
-              <svg width="8" height="8" :style="{display: 'block', transform: card.arrowRotation}">
-                <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
-              </svg>
-              {{ card.label }}
-            </VuePopover>
+      <div>
+        <div style="display: flex; flex-direction: column;">
+          <div v-for="(row, rowIndex) in rows" :key="rowIndex" style="display: flex;">
+            <div v-for="card in row" :key="card.key" style="padding: 12px;">
+              <button type="button" style="width: 200px; height: 100px;">{{ card.label }}</button>
+            </div>
           </div>
+        </div>
+        <div class="react-aria-Tooltip" data-rac="" role="tooltip" data-placement="top" style="position: absolute; z-index: 100000; max-height: 105px; background: Canvas; color: CanvasText; border: 1px solid gray; padding: 8px; border-radius: 9999px; left: 428px; bottom: 603px; font-family: Times; font-size: 16px; line-height: normal;">
+          <div class="react-aria-OverlayArrow" data-rac="" data-placement="top" style="position: absolute; transform: translateX(-50%); top: 100%; left: 39px;">
+            <svg width="8" height="8" style="display: block;">
+              <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
+            </svg>
+          </div>
+          Top left
+        </div>
+        <div class="react-aria-Tooltip" data-rac="" role="tooltip" data-placement="top" style="position: absolute; z-index: 100000; max-height: 105px; background: Canvas; color: CanvasText; border: 1px solid gray; padding: 8px; border-radius: 9999px; left: 775px; bottom: 603px; font-family: Times; font-size: 16px; line-height: normal;">
+          <div class="react-aria-OverlayArrow" data-rac="" data-placement="top" style="position: absolute; transform: translateX(-50%); top: 100%; left: 29px;">
+            <svg width="8" height="8" style="display: block;">
+              <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
+            </svg>
+          </div>
+          Top right
+        </div>
+        <div class="react-aria-Tooltip" data-rac="" role="tooltip" data-placement="left" style="position: absolute; z-index: 100000; max-height: 460px; background: Canvas; color: CanvasText; border: 1px solid gray; padding: 8px; border-radius: 9999px; top: 248px; right: 859px; font-family: Times; font-size: 16px; line-height: normal;">
+          <div class="react-aria-OverlayArrow" data-rac="" data-placement="left" style="position: absolute; transform: translateY(-50%); left: 100%; top: 17px;">
+            <svg width="8" height="8" style="display: block; transform: rotate(-90deg);">
+              <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
+            </svg>
+          </div>
+          Left top
+        </div>
+        <div class="react-aria-Tooltip" data-rac="" role="tooltip" data-placement="left" style="position: absolute; z-index: 100000; max-height: 336px; background: Canvas; color: CanvasText; border: 1px solid gray; padding: 8px; border-radius: 9999px; top: 312px; right: 635px; font-family: Times; font-size: 16px; line-height: normal;">
+          <div class="react-aria-OverlayArrow" data-rac="" data-placement="left" style="position: absolute; transform: translateY(-50%); left: 100%; top: 17px;">
+            <svg width="8" height="8" style="display: block; transform: rotate(-90deg);">
+              <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
+            </svg>
+          </div>
+          Left bottom
+        </div>
+        <div class="react-aria-Tooltip" data-rac="" role="tooltip" data-placement="right" style="position: absolute; z-index: 100000; max-height: 336px; background: Canvas; color: CanvasText; border: 1px solid gray; padding: 8px; border-radius: 9999px; top: 372px; left: 635px; font-family: Times; font-size: 16px; line-height: normal;">
+          <div class="react-aria-OverlayArrow" data-rac="" data-placement="right" style="position: absolute; transform: translateY(-50%); right: 100%; top: 17px;">
+            <svg width="8" height="8" style="display: block; transform: rotate(90deg);">
+              <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
+            </svg>
+          </div>
+          Right top
+        </div>
+        <div class="react-aria-Tooltip" data-rac="" role="tooltip" data-placement="right" style="position: absolute; z-index: 100000; max-height: 460px; background: Canvas; color: CanvasText; border: 1px solid gray; padding: 8px; border-radius: 9999px; top: 436px; left: 859px; font-family: Times; font-size: 16px; line-height: normal;">
+          <div class="react-aria-OverlayArrow" data-rac="" data-placement="right" style="position: absolute; transform: translateY(-50%); right: 100%; top: 17px;">
+            <svg width="8" height="8" style="display: block; transform: rotate(90deg);">
+              <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
+            </svg>
+          </div>
+          Right bottom
+        </div>
+        <div class="react-aria-Tooltip" data-rac="" role="tooltip" data-placement="bottom" style="position: absolute; z-index: 100000; max-height: 105px; background: Canvas; color: CanvasText; border: 1px solid gray; padding: 8px; border-radius: 9999px; top: 603px; left: 428px; font-family: Times; font-size: 16px; line-height: normal;">
+          <div class="react-aria-OverlayArrow" data-rac="" data-placement="bottom" style="position: absolute; transform: translateX(-50%); bottom: 100%; left: 62px;">
+            <svg width="8" height="8" style="display: block; transform: rotate(180deg);">
+              <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
+            </svg>
+          </div>
+          Bottom left
+        </div>
+        <div class="react-aria-Tooltip" data-rac="" role="tooltip" data-placement="bottom" style="position: absolute; z-index: 100000; max-height: 105px; background: Canvas; color: CanvasText; border: 1px solid gray; padding: 8px; border-radius: 9999px; top: 603px; left: 752px; font-family: Times; font-size: 16px; line-height: normal;">
+          <div class="react-aria-OverlayArrow" data-rac="" data-placement="bottom" style="position: absolute; transform: translateX(-50%); bottom: 100%; left: 29px;">
+            <svg width="8" height="8" style="display: block; transform: rotate(180deg);">
+              <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
+            </svg>
+          </div>
+          Bottom right
         </div>
       </div>
     `
@@ -227,24 +277,22 @@ export const TooltipContainerPaddingExample: TooltipStoryObj = {
       };
     },
     template: `
-      <div style="position: relative; min-height: 42px;">
-        <button
-          type="button"
-          style="position: absolute; top: 0; left: 0;"
-          @mouseenter="open = true"
-          @mouseleave="open = false">
-          Tooltip trigger
-        </button>
-        <VuePopover
-          :open="open"
-          :placement="placement"
-          :offset="5"
-          :container-padding="Number(args.containerPadding ?? 10)"
-          :dismissable="false"
-          :style="{background: 'Canvas', color: 'CanvasText', border: '1px solid gray', padding: '5px', borderRadius: '4px'}">
-          I am a tooltip
-        </VuePopover>
-      </div>
+      <button
+        type="button"
+        style="position: absolute; top: 0; left: 0;"
+        @mouseenter="open = true"
+        @mouseleave="open = false">
+        Tooltip trigger
+      </button>
+      <VuePopover
+        :open="open"
+        :placement="placement"
+        :offset="5"
+        :container-padding="Number(args.containerPadding ?? 10)"
+        :dismissable="false"
+        :style="{background: 'Canvas', color: 'CanvasText', border: '1px solid gray', padding: '5px', borderRadius: '4px'}">
+        I am a tooltip
+      </VuePopover>
     `
   }),
   args: {
