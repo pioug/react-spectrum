@@ -15,6 +15,7 @@
 4. Fix behavior and structure in Vue component internals (no story-only hacks).
 5. Add or update component tests for every fixed gap.
 6. Record reviewed scope, gaps, and evidence in the component fix PR/commit notes.
+7. Commit and push frequently in small, reviewable increments while parity work is in progress.
 
 ## Style handling policy (required)
 
