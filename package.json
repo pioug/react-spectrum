@@ -25,7 +25,6 @@
     "build:vue:storybook": "yarn workspace vue-spectrum-starter build-storybook",
     "typecheck:vue": "yarn workspace vue-spectrum-starter typecheck",
     "test:vue": "yarn workspace vue-spectrum-starter test",
-    "vue:types:sync": "node scripts/vue-types-sync.mjs",
     "build:storybook": "storybook build -c .storybook -o dist/$(git rev-parse HEAD)/storybook",
     "start:chromatic": "CHROMATIC=1 NODE_ENV=storybook storybook dev -p 9004 --ci -c '.chromatic'",
     "build:chromatic": "CHROMATIC=1 storybook build -c .chromatic -o dist/$(git rev-parse HEAD)/chromatic",

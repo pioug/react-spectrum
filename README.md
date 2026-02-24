@@ -16,7 +16,7 @@ This repository now includes a Vue migration baseline so teams can begin moving 
 * `packages/tailwindcss-vue-aria-components` provides a Vue-tailored Tailwind variant plugin baseline.
 * `starters/vue` is a runnable Vue + Vite starter wired to the new package.
 * `MIGRATION_TO_VUE.md` describes the migration plan from existing React packages to Vue packages.
-* `migration/VUE_PUBLISH_CHECKLIST.md`, `migration/REACT_TO_VUE_MIGRATION_GUIDE.md`, and `migration/VUE_PACKAGE_ARCHITECTURE.md` track publish execution, consumer migration guidance, and package-layout rationale for the stabilization phase.
+* `migration/REACT_TO_VUE_MIGRATION_GUIDE.md` tracks consumer migration guidance.
 * `migration/STORYBOOK_PARITY_PROGRESS.md` is the manual parity progression tracker for Storybook work.
 
 Use the starter from the repository root:
