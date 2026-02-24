@@ -10,7 +10,6 @@ const CDP_SCREENSHOT_TIMEOUT_MS = 90000;
 const webFontsSettledOrigins = new Set();
 const deterministicMocksInstalledPages = new WeakSet();
 const STORY_MAX_CHANGED_PIXELS = new Map([
-  ['react-aria-components-autocomplete--autocomplete-with-async-list-box', 30],
   ['react-aria-components-tree--tree-section-dynamic', 2]
 ]);
 
@@ -623,14 +622,21 @@ async function freezeSvgAnimations(page, storyId) {
     if (shouldForceStaticProgressbar) {
       let progressbar = document.querySelector('[role="progressbar"]');
       if (progressbar instanceof Element) {
-        // Remove SMIL animation nodes and transient transforms so the spinner
-        // renders at a deterministic frame in both Storybooks.
-        for (let animatedNode of progressbar.querySelectorAll('animate, animateTransform')) {
-          animatedNode.remove();
-        }
-        for (let transformedNode of progressbar.querySelectorAll('[transform]')) {
-          if (transformedNode instanceof SVGElement) {
-            transformedNode.removeAttribute('transform');
+        // Clone-and-swap the spinner SVG to drop all SMIL nodes and any
+        // transient animated transform state before capture.
+        let spinnerSvg = progressbar.querySelector('svg');
+        if (spinnerSvg instanceof SVGSVGElement) {
+          let staticSvg = spinnerSvg.cloneNode(true);
+          if (staticSvg instanceof SVGSVGElement) {
+            for (let animatedNode of staticSvg.querySelectorAll('animate, animateTransform')) {
+              animatedNode.remove();
+            }
+            for (let transformedNode of staticSvg.querySelectorAll('[transform]')) {
+              if (transformedNode instanceof SVGElement) {
+                transformedNode.removeAttribute('transform');
+              }
+            }
+            spinnerSvg.replaceWith(staticSvg);
           }
         }
       }
