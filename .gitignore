@@ -22,3 +22,13 @@ starters/tailwind/registry
 starters/docs/yarn.lock
 starters/tailwind/yarn.lock
 starters/vue/yarn.lock
+
+# Storybook parity generated artifacts.
+storybook-parity/catalog-*/
+storybook-parity/visual-*/
+storybook-parity/tmp-*/
+storybook-parity/*.html
+storybook-parity/*.png
+storybook-parity/*.tsv
+storybook-parity/*.txt
+tmp-*
