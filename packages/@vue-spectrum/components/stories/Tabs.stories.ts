@@ -1,6 +1,7 @@
 import type {Meta, StoryFn} from '@storybook/vue3-vite';
 import {VueTabs} from '@vue-spectrum/tabs';
 import {ref} from 'vue';
+import './tabs.css';
 
 const meta = {
   title: 'React Aria Components/Tabs',
@@ -41,10 +42,12 @@ export const TabsExample: TabsStory = () => ({
     };
   },
   template: `
-    <VueTabs
-      v-model="selected"
-      aria-label="History of Ancient Rome"
-      :items="items" />
+    <div class="tabs-story tabs-example-story">
+      <VueTabs
+        v-model="selected"
+        aria-label="History of Ancient Rome"
+        :items="items" />
+    </div>
   `
 });
 
@@ -85,7 +88,7 @@ export const TabsRenderProps: TabsStory = () => ({
     };
   },
   template: `
-    <div style="display: flex; flex-direction: row; gap: 8px;">
+    <div class="tabs-story tabs-render-props-story" style="display: flex; flex-direction: row; gap: 8px;">
       <button type="button" @click="toggleOrientation">Change Orientation</button>
       <VueTabs
         v-model="selected"
@@ -122,11 +125,13 @@ export const NestedTabs: TabsStory = () => ({
     };
   },
   template: `
-    <VueTabs v-model="outer" :items="outerItems">
-      <template #default="{item}">
-        <VueTabs v-if="item?.key === 'foo'" v-model="inner" :items="innerItems" />
-        <p v-else>Bar</p>
-      </template>
-    </VueTabs>
+    <div class="tabs-story tabs-nested-story">
+      <VueTabs v-model="outer" :items="outerItems">
+        <template #default="{item}">
+          <VueTabs v-if="item?.key === 'foo'" v-model="inner" :items="innerItems" />
+          <p v-else>Bar</p>
+        </template>
+      </VueTabs>
+    </div>
   `
 });

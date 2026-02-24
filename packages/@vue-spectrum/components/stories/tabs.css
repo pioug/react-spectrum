@@ -1,0 +1,65 @@
+.tabs-story .vs-tabs {
+  width: fit-content;
+}
+
+.tabs-story .vs-tabs__list {
+  align-items: flex-start;
+  display: flex;
+  gap: 8px;
+}
+
+.tabs-story .vs-tabs__tab {
+  appearance: none;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: inherit;
+  cursor: default;
+  font: inherit;
+  line-height: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+.tabs-story .vs-tabs__tab.is-selected {
+  border-bottom-color: slateblue;
+}
+
+.tabs-render-props-story .vs-tabs__tab.is-selected {
+  position: relative;
+}
+
+.tabs-render-props-story .vs-tabs__tab.is-selected::after {
+  border-bottom: 2px solid slateblue;
+  bottom: -2px;
+  content: '';
+  left: 100%;
+  position: absolute;
+  width: 30px;
+}
+
+.tabs-example-story .vs-tabs__tab {
+  color: LinkText;
+  text-decoration: underline;
+}
+
+.tabs-render-props-story .vs-tabs {
+  display: flex;
+  gap: 8px;
+}
+
+.tabs-render-props-story .vs-tabs.vs-tabs--vertical {
+  flex-direction: row;
+}
+
+.tabs-render-props-story .vs-tabs.vs-tabs--horizontal {
+  flex-direction: column;
+}
+
+.tabs-render-props-story .vs-tabs.vs-tabs--vertical > .vs-tabs__list {
+  flex-direction: column;
+}
+
+.tabs-render-props-story .vs-tabs.vs-tabs--horizontal > .vs-tabs__list {
+  flex-direction: row;
+}
