@@ -4,8 +4,9 @@
 
 1. React packages are in maintenance mode while Vue migration ports continue.
 2. Storybook parity is still in progress and must be validated manually.
-3. Script-driven parity and migration completion gates were removed.
-4. Completion is not inferred from scripts or checklists.
+3. Vue Storybook now includes `@vue-spectrum/*/stories` source scaffolds for components that previously had no Vue story source.
+4. Script-driven parity and migration completion gates were removed.
+5. Completion is not inferred from scripts or checklists.
 
 ## Current working method (required)
 
