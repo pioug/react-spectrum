@@ -1207,9 +1207,13 @@ function formatMarkdown(report) {
     lines.push('- none');
   } else {
     for (let story of report.stories) {
+      let channelToleranceSummary = '';
+      if (typeof story.channelDeltaTolerance === 'number' && story.channelDeltaTolerance > 0) {
+        channelToleranceSummary = ` channelDeltaTolerance=${story.channelDeltaTolerance}`;
+      }
       let changedSummary = story.changedPixels == null
         ? 'capture-error'
-        : `changedPixels=${story.changedPixels} maxChangedPixels=${story.maxChangedPixels}`;
+        : `changedPixels=${story.changedPixels} maxChangedPixels=${story.maxChangedPixels}${channelToleranceSummary}`;
       lines.push(`- ${story.ok ? 'PASS' : 'FAIL'} \`${story.id}\` ${changedSummary}`);
       if (!story.ok) {
         if (story.error) {
