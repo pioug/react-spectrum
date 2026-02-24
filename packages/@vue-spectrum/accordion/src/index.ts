@@ -1,12 +1,13 @@
 import '@adobe/spectrum-css-temp/components/accordion/vars.css';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, type ComputedRef, defineComponent, h, inject, type InjectionKey, type PropType, provide, ref} from 'vue';
+import {computed, type ComputedRef, defineComponent, h, inject, type InjectionKey, onMounted, type PropType, provide, ref, watch} from 'vue';
 import {getEventTarget} from '@vue-aria/utils';
 const styles: {[key: string]: string} = {};
 
 
 interface AccordionContextValue {
   expandedKeys: ComputedRef<string[]>,
+  isDisabled: ComputedRef<boolean>,
   isQuiet: ComputedRef<boolean>,
   toggleKey: (key: string) => void
 }
@@ -27,13 +28,29 @@ export const Accordion = defineComponent({
   name: 'VueAccordion',
   inheritAttrs: false,
   props: {
+    defaultExpandedKeys: {
+      type: Array as PropType<string[]>,
+      default: () => []
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    expandedKeys: {
+      type: Array as PropType<string[] | undefined>,
+      default: undefined
+    },
+    isDisabled: {
+      type: Boolean,
+      default: false
+    },
     isQuiet: {
       type: Boolean as PropType<boolean | undefined>,
       default: undefined
     },
     modelValue: {
-      type: Array as PropType<string[]>,
-      default: () => []
+      type: Array as PropType<string[] | undefined>,
+      default: undefined
     },
     multiple: {
       type: Boolean,
@@ -45,36 +62,40 @@ export const Accordion = defineComponent({
     }
   },
   emits: {
+    'update:expandedKeys': (value: string[]) => Array.isArray(value),
     'update:modelValue': (value: string[]) => Array.isArray(value)
   },
   setup(props, {emit, slots, attrs}) {
+    let internalExpandedKeys = ref([...props.defaultExpandedKeys]);
+    let expandedKeys = computed(() => props.modelValue ?? props.expandedKeys ?? internalExpandedKeys.value);
+    let isDisabled = computed(() => props.isDisabled || props.disabled);
     let resolvedQuiet = computed(() => props.isQuiet ?? props.quiet);
 
     let toggleKey = (key: string) => {
-      let expanded = props.modelValue.includes(key);
+      let currentExpanded = expandedKeys.value;
+      let nextExpanded = currentExpanded.includes(key)
+        ? currentExpanded.filter((item) => item !== key)
+        : (props.multiple ? [...currentExpanded, key] : [key]);
 
-      if (expanded) {
-        emit('update:modelValue', props.modelValue.filter((item) => item !== key));
-        return;
+      if (props.modelValue === undefined && props.expandedKeys === undefined) {
+        internalExpandedKeys.value = nextExpanded;
       }
 
-      if (props.multiple) {
-        emit('update:modelValue', [...props.modelValue, key]);
-        return;
-      }
-
-      emit('update:modelValue', [key]);
+      emit('update:modelValue', nextExpanded);
+      emit('update:expandedKeys', nextExpanded);
     };
 
     provide(accordionContextKey, {
-      expandedKeys: computed(() => props.modelValue),
+      expandedKeys,
+      isDisabled,
       isQuiet: resolvedQuiet,
       toggleKey
     });
 
     return () => h('div', {
       ...attrs,
-      class: [classNames(styles, 'spectrum-Accordion'), 'vs-accordion', attrs.class],
+      class: [classNames(styles, 'spectrum-Accordion'), attrs.class],
+      'data-rac': '',
       'data-vac': ''
     }, slots.default ? slots.default() : []);
   }
@@ -92,8 +113,20 @@ export const Disclosure = defineComponent({
       type: Boolean,
       default: false
     },
+    expanded: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
+    },
     id: {
       type: String,
+      default: undefined
+    },
+    isDisabled: {
+      type: Boolean,
+      default: false
+    },
+    isExpanded: {
+      type: Boolean as PropType<boolean | undefined>,
       default: undefined
     },
     isQuiet: {
@@ -106,6 +139,8 @@ export const Disclosure = defineComponent({
     }
   },
   emits: {
+    'update:expanded': (expanded: boolean) => typeof expanded === 'boolean',
+    'update:isExpanded': (expanded: boolean) => typeof expanded === 'boolean',
     toggle: (expanded: boolean) => typeof expanded === 'boolean'
   },
   setup(props, {emit, slots, attrs}) {
@@ -113,9 +148,11 @@ export const Disclosure = defineComponent({
     let generatedId = `vs-disclosure-${++disclosureId}`;
     let disclosureKey = computed(() => props.id ?? generatedId);
     let localExpanded = ref(props.defaultExpanded);
+    let isControlled = computed(() => props.isExpanded !== undefined || props.expanded !== undefined);
+    let disabled = computed(() => props.isDisabled || props.disabled || accordion?.isDisabled.value || false);
     let expanded = computed(() => accordion
       ? accordion.expandedKeys.value.includes(disclosureKey.value)
-      : localExpanded.value);
+      : (props.isExpanded ?? props.expanded ?? localExpanded.value));
     let resolvedQuiet = computed(() => {
       if (accordion) {
         return accordion.isQuiet.value;
@@ -127,28 +164,30 @@ export const Disclosure = defineComponent({
     });
 
     let toggle = () => {
-      if (props.disabled) {
+      if (disabled.value) {
         return;
       }
 
       let nextValue = !expanded.value;
       if (accordion) {
         accordion.toggleKey(disclosureKey.value);
-      } else {
+      } else if (!isControlled.value) {
         localExpanded.value = nextValue;
       }
+      emit('update:isExpanded', nextValue);
+      emit('update:expanded', nextValue);
       emit('toggle', nextValue);
     };
 
     provide(disclosureContextKey, {
-      disabled: computed(() => props.disabled),
+      disabled,
       expanded,
       id: disclosureKey,
       isQuiet: resolvedQuiet,
       toggle
     });
 
-    return () => h('section', {
+    return () => h('div', {
       ...attrs,
       class: [classNames(
         styles,
@@ -156,10 +195,11 @@ export const Disclosure = defineComponent({
         {
           'spectrum-Accordion-item--quiet': resolvedQuiet.value,
           'is-expanded': expanded.value,
-          'is-disabled': props.disabled,
+          'is-disabled': disabled.value,
           'in-accordion': accordion !== null
         }
-      ), 'vs-accordion__item', attrs.class],
+      ), attrs.class],
+      'data-rac': '',
       'data-vac': ''
     }, slots.default ? slots.default() : []);
   }
@@ -189,13 +229,13 @@ export const DisclosureTitle = defineComponent({
       if (!disclosure) {
         return h(headingTag.value, {
           ...attrs,
-          class: [classNames(styles, 'spectrum-Accordion-itemHeading'), 'vs-disclosure__heading', attrs.class],
+          class: [classNames(styles, 'spectrum-Accordion-itemHeading'), attrs.class],
           'data-vac': ''
         }, slots.default ? slots.default() : []);
       }
 
       return h(headingTag.value, {
-        class: [classNames(styles, 'spectrum-Accordion-itemHeading'), 'vs-disclosure__heading']
+        class: [classNames(styles, 'spectrum-Accordion-itemHeading')]
       }, [
         h('button', {
           ...attrs,
@@ -207,8 +247,9 @@ export const DisclosureTitle = defineComponent({
               'is-pressed': isPressed.value && !disclosure.disabled.value,
               'focus-ring': isFocusVisible.value
             }
-          ), 'vs-disclosure__trigger', attrs.class],
+          ), attrs.class],
           id: `${disclosure.id.value}-trigger`,
+          slot: 'trigger',
           type: 'button',
           disabled: disclosure.disabled.value,
           'aria-controls': `${disclosure.id.value}-panel`,
@@ -247,13 +288,23 @@ export const DisclosureTitle = defineComponent({
             isPressed.value = false;
             disclosure.toggle();
           },
+          'data-rac': '',
           'data-vac': ''
         }, [
-          h('span', {class: 'vs-disclosure__label'}, slots.default ? slots.default() : 'Section'),
-          h('span', {
-            class: [classNames(styles, 'spectrum-Accordion-itemIndicator'), 'vs-disclosure__indicator'],
-            'aria-hidden': 'true'
-          }, '›')
+          h('svg', {
+            class: [classNames(styles, 'spectrum-Accordion-itemIndicator'), 'spectrum-Icon', 'spectrum-UIIcon-ChevronRightMedium'],
+            focusable: 'false',
+            'aria-hidden': 'true',
+            role: 'img',
+            viewBox: '0 0 6 10',
+            width: '6',
+            height: '10'
+          }, [
+            h('path', {
+              d: 'M5.99 5a.997.997 0 0 0-.293-.707L1.717.303A1 1 0 1 0 .303 1.717L3.586 5 .303 8.283a1 1 0 1 0 1.414 1.414l3.98-3.99A.997.997 0 0 0 5.99 5z'
+            })
+          ]),
+          ...(slots.default ? slots.default() : ['Section'])
         ])
       ]);
     };
@@ -265,31 +316,53 @@ export const DisclosurePanel = defineComponent({
   inheritAttrs: false,
   setup(_props, {slots, attrs}) {
     let disclosure = inject(disclosureContextKey, null);
+    let isExpanded = computed(() => disclosure?.expanded.value ?? true);
+    let panelRef = ref<HTMLElement | null>(null);
+    let panelHidden = ref<string | undefined>(undefined);
+    let panelSizeVars = ref<Record<string, string>>({});
+
+    let syncPanelState = () => {
+      if (isExpanded.value) {
+        panelHidden.value = undefined;
+        panelSizeVars.value = {
+          '--disclosure-panel-height': 'auto',
+          '--disclosure-panel-width': 'auto'
+        };
+        panelRef.value?.removeAttribute('hidden');
+        return;
+      }
+
+      panelHidden.value = 'until-found';
+      panelSizeVars.value = {
+        '--disclosure-panel-height': '0px',
+        '--disclosure-panel-width': '0px'
+      };
+      panelRef.value?.setAttribute('hidden', 'until-found');
+    };
+
+    onMounted(() => {
+      syncPanelState();
+    });
+
+    watch(isExpanded, () => {
+      syncPanelState();
+    });
 
     return () => {
-      let isExpanded = disclosure?.expanded.value ?? true;
       let panelId = disclosure ? `${disclosure.id.value}-panel` : attrs.id;
       let labelledBy = disclosure ? `${disclosure.id.value}-trigger` : attrs['aria-labelledby'];
 
-      if (!isExpanded) {
-        return h('div', {
-          ...attrs,
-          id: panelId,
-          hidden: true,
-          'aria-hidden': 'true',
-          'aria-labelledby': labelledBy,
-          class: attrs.class,
-          'data-vac': ''
-        });
-      }
-
       return h('div', {
         ...attrs,
+        ref: panelRef,
         id: panelId,
-        class: [classNames(styles, 'spectrum-Accordion-itemContent'), 'vs-disclosure__panel', disclosure?.isQuiet.value ? 'is-quiet' : null, attrs.class],
-        role: 'region',
-        'aria-hidden': 'false',
+        class: [classNames(styles, 'spectrum-Accordion-itemContent'), attrs.class],
+        role: 'group',
+        hidden: panelHidden.value,
+        style: [panelSizeVars.value, attrs.style],
+        'aria-hidden': isExpanded.value ? 'false' : 'true',
         'aria-labelledby': labelledBy,
+        'data-rac': '',
         'data-vac': ''
       }, slots.default ? slots.default() : []);
     };

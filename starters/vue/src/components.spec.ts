@@ -1591,15 +1591,21 @@ describe('Vue migration primitives', () => {
       `
     });
 
-    let items = wrapper.findAll('section.vs-accordion__item');
+    let items = wrapper.findAll('.spectrum-Accordion-item');
     expect(items[0].classes()).toContain('is-expanded');
     expect(items[1].classes()).not.toContain('is-expanded');
 
     let secondPanel = wrapper.get('#two-panel');
     expect(secondPanel.attributes('hidden')).toBeDefined();
     expect(secondPanel.attributes('aria-hidden')).toBe('true');
+    expect(secondPanel.attributes('role')).toBe('group');
+    expect(secondPanel.classes()).toContain('spectrum-Accordion-itemContent');
+    expect(secondPanel.attributes('hidden')).not.toBeUndefined();
 
     let secondTrigger = wrapper.get('#two-trigger');
+    let indicator = secondTrigger.find('.spectrum-Accordion-itemIndicator');
+    expect(indicator.exists()).toBe(true);
+    expect(indicator.element.tagName.toLowerCase()).toBe('svg');
     await secondTrigger.trigger('mouseenter');
     expect(secondTrigger.classes()).toContain('is-hovered');
     await secondTrigger.trigger('mousedown');
@@ -1611,5 +1617,38 @@ describe('Vue migration primitives', () => {
     await nextTick();
     expect((wrapper.vm as unknown as {expanded: string[]}).expanded).toEqual(['one', 'two']);
     expect(wrapper.get('#two-panel').attributes('aria-hidden')).toBe('false');
+  });
+
+  it('supports uncontrolled accordion state via defaultExpandedKeys and accordion-level disabled aliases', async () => {
+    let wrapper = mount({
+      components: {Accordion, Disclosure, DisclosurePanel, DisclosureTitle},
+      template: `
+        <Accordion :default-expanded-keys="['files']" is-disabled>
+          <Disclosure id="files">
+            <DisclosureTitle>Files</DisclosureTitle>
+            <DisclosurePanel>Files content</DisclosurePanel>
+          </Disclosure>
+          <Disclosure id="people">
+            <DisclosureTitle>People</DisclosureTitle>
+            <DisclosurePanel>People content</DisclosurePanel>
+          </Disclosure>
+        </Accordion>
+      `
+    });
+
+    let filesItem = wrapper.find('.spectrum-Accordion-item');
+    expect(filesItem.classes()).toContain('is-expanded');
+
+    let filesPanel = wrapper.get('#files-panel');
+    expect(filesPanel.attributes('aria-hidden')).toBe('false');
+    expect(filesPanel.attributes('role')).toBe('group');
+
+    let peopleTrigger = wrapper.get('#people-trigger');
+    expect(peopleTrigger.attributes('disabled')).toBeDefined();
+    expect(wrapper.get('#people-panel').attributes('aria-hidden')).toBe('true');
+
+    await peopleTrigger.trigger('click');
+    await nextTick();
+    expect(wrapper.get('#people-panel').attributes('aria-hidden')).toBe('true');
   });
 });

@@ -4958,10 +4958,13 @@ describe('Vue migration composition components', () => {
       `
     });
 
-    expect(wrapper.findAll('.vs-disclosure__panel')).toHaveLength(1);
-    await wrapper.findAll('button.vs-disclosure__trigger')[0].trigger('click');
+    let panels = wrapper.findAll('.spectrum-Accordion-itemContent');
+    expect(panels).toHaveLength(2);
+    expect(panels[0].attributes('aria-hidden')).toBe('false');
+    expect(panels[1].attributes('aria-hidden')).toBe('true');
+    await wrapper.findAll('button.spectrum-Accordion-itemHeader')[0].trigger('click');
     expect((wrapper.vm as unknown as {expanded: string[]}).expanded).toEqual([]);
-    await wrapper.findAll('button.vs-disclosure__trigger')[1].trigger('click');
+    await wrapper.findAll('button.spectrum-Accordion-itemHeader')[1].trigger('click');
     expect((wrapper.vm as unknown as {expanded: string[]}).expanded).toEqual(['composition']);
   });
 });

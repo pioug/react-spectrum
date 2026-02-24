@@ -1,22 +1,56 @@
+import {Disclosure, DisclosurePanel, DisclosureTitle, type SpectrumDisclosureProps} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<SpectrumDisclosureProps> = {
   title: 'Disclosure',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
+  component: Disclosure,
+  argTypes: {
+    isDisabled: {
+      control: 'boolean'
+    },
+    isQuiet: {
+      control: 'boolean'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
+type DisclosureStory = StoryObj<typeof Disclosure>;
 
-type Story = StoryObj<typeof meta>;
+export const Default: DisclosureStory = {
+  render: (args) => ({
+    components: {Disclosure, DisclosurePanel, DisclosureTitle},
+    setup() {
+      return {args};
+    },
+    template: `
+      <Disclosure v-bind="args">
+        <DisclosureTitle>
+          Files
+        </DisclosureTitle>
+        <DisclosurePanel>
+          Files content
+        </DisclosurePanel>
+      </Disclosure>
+    `
+  })
+};
 
-export const DisclosureScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const WrappingTitle: DisclosureStory = {
+  render: (args) => ({
+    components: {Disclosure, DisclosurePanel, DisclosureTitle},
+    setup() {
+      return {args};
+    },
+    template: `
+      <Disclosure v-bind="args" style="max-width: var(--spectrum-global-dimension-size-3000);">
+        <DisclosureTitle>
+          Long long long long long long long long long long long long long long long long wrapping title
+        </DisclosureTitle>
+        <DisclosurePanel>
+          Files content
+        </DisclosurePanel>
+      </Disclosure>
+    `
   })
 };
