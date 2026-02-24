@@ -1,6 +1,6 @@
+import {computed, ref} from 'vue';
 import type {Meta, StoryFn, StoryObj} from '@storybook/vue3-vite';
 import {VuePopover} from '@vue-spectrum/components';
-import {computed, ref} from 'vue';
 
 type Side = 'top' | 'right' | 'bottom' | 'left';
 
@@ -102,7 +102,12 @@ export const TooltipExample: TooltipStory = (args) => ({
   },
   template: `
     <div>
-      <button type="button" @mouseenter="open = true" @mouseleave="open = false">Tooltip trigger</button>
+      <button
+        type="button"
+        @mouseenter="open = true"
+        @mouseleave="open = false"
+        @focus="open = true"
+        @blur="open = false">Tooltip trigger</button>
       <VuePopover
         :open="open"
         :placement="placement"

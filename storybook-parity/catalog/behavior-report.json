@@ -1,8 +1,8 @@
 {
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
-  "totalScenarios": 32,
-  "passingScenarios": 32,
+  "totalScenarios": 34,
+  "passingScenarios": 34,
   "failingScenarios": 0,
   "ok": true,
   "results": [
@@ -411,7 +411,11 @@
           "Project 2A": true,
           "Project 2C": true
         },
-        "hasMenuButtons": true
+        "hasMultipleChevrons": true,
+        "hasMenuButtons": true,
+        "project2AAfterCollapse": false,
+        "project2AAfterReexpand": true,
+        "project2ABeforeCollapse": true
       },
       "vue": {
         "hasChevronButtons": true,
@@ -421,7 +425,45 @@
           "Project 2A": true,
           "Project 2C": true
         },
-        "hasMenuButtons": true
+        "hasMultipleChevrons": true,
+        "hasMenuButtons": true,
+        "project2AAfterCollapse": false,
+        "project2AAfterReexpand": true,
+        "project2ABeforeCollapse": true
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-popover--popover-example",
+      "ok": true,
+      "react": {
+        "firstNameInputVisible": true,
+        "lastNameInputVisible": true,
+        "signUpVisibleAfterSubmit": false,
+        "signUpVisibleBeforeOpen": false
+      },
+      "vue": {
+        "firstNameInputVisible": true,
+        "lastNameInputVisible": true,
+        "signUpVisibleAfterSubmit": false,
+        "signUpVisibleBeforeOpen": false
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-tooltip--tooltip-example",
+      "ok": true,
+      "react": {
+        "tooltipVisibleAfterBlur": false,
+        "tooltipVisibleAfterFocus": true,
+        "tooltipVisibleBeforeFocus": false
+      },
+      "vue": {
+        "tooltipVisibleAfterBlur": false,
+        "tooltipVisibleAfterFocus": true,
+        "tooltipVisibleBeforeFocus": false
       },
       "diff": {},
       "error": null

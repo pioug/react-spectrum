@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
+import {chromium} from 'playwright';
 import fs from 'node:fs';
 import path from 'node:path';
-import {chromium} from 'playwright';
 
 const deterministicMocksInstalledPages = new WeakSet();
 const SWAPI_FIXTURE_RESULTS = [
@@ -149,6 +149,18 @@ async function waitForFirstVisibleLocator(page, selectors, timeout = 10000) {
   }
 
   return null;
+}
+
+async function hasVisibleExactText(page, text) {
+  let locator = page.getByText(text, {exact: true});
+  let count = await locator.count();
+  for (let index = 0; index < count; index += 1) {
+    if (await locator.nth(index).isVisible().catch(() => false)) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 async function clickNearestComboboxTrigger(input, page) {
@@ -400,7 +412,7 @@ let scenarios = [
       return {
         ariaDisabled,
         buttonTextAfterPress,
-        disabled,
+        disabled
       };
     }
   },
@@ -997,14 +1009,123 @@ let scenarios = [
       let hasLabels = {};
 
       for (let label of labelsToCheck) {
-        hasLabels[label] = (await page.getByText(label, {exact: true}).count()) > 0;
+        hasLabels[label] = await hasVisibleExactText(page, label);
+      }
+
+      let chevrons = page.locator('button[slot="chevron"]');
+      let chevronCount = await chevrons.count();
+      let toggleChevron = null;
+      if (chevronCount > 1) {
+        toggleChevron = chevrons.nth(1);
+      } else if (chevronCount > 0) {
+        toggleChevron = chevrons.first();
+      }
+
+      let project2ABeforeCollapse = await hasVisibleExactText(page, 'Project 2A');
+      let project2AAfterCollapse = null;
+      let project2AAfterReexpand = null;
+
+      if (toggleChevron) {
+        await toggleChevron.click();
+        await page.waitForTimeout(120);
+        project2AAfterCollapse = await hasVisibleExactText(page, 'Project 2A');
+
+        await toggleChevron.click();
+        await page.waitForTimeout(120);
+        project2AAfterReexpand = await hasVisibleExactText(page, 'Project 2A');
       }
 
       return {
         hasChevronButtons: (await page.locator('button[slot="chevron"]').count()) > 0,
         hasInfoButtons: (await page.locator('button[aria-label="Info"]').count()) > 0,
         hasLabels,
-        hasMenuButtons: (await page.locator('button[aria-label="Menu"]').count()) > 0
+        hasMultipleChevrons: chevronCount > 1,
+        hasMenuButtons: (await page.locator('button[aria-label="Menu"]').count()) > 0,
+        project2AAfterCollapse,
+        project2AAfterReexpand,
+        project2ABeforeCollapse
+      };
+    }
+  },
+  {
+    id: 'react-aria-components-popover--popover-example',
+    async run(page) {
+      let trigger = await waitForFirstVisibleLocator(page, [
+        'button:has-text("Open popover")',
+        '[role="button"]:has-text("Open popover")',
+        'button'
+      ], 10000);
+
+      if (!trigger) {
+        throw new Error('Unable to find popover trigger.');
+      }
+
+      let signUpVisibleBeforeOpen = await hasVisibleExactText(page, 'Sign up');
+
+      await trigger.click();
+      await page.waitForTimeout(120);
+
+      let headingVisibleAfterOpen = await waitForFirstVisibleLocator(page, [
+        'text=Sign up'
+      ], 5000);
+      if (!headingVisibleAfterOpen) {
+        throw new Error('Unable to observe popover heading after opening.');
+      }
+
+      let firstNameInputVisible = await firstVisibleLocator(page, [
+        'input[placeholder="John"]'
+      ]);
+      let lastNameInputVisible = await firstVisibleLocator(page, [
+        'input[placeholder="Smith"]'
+      ]);
+      let submit = await firstVisibleLocator(page, [
+        'button:has-text("Submit")'
+      ]);
+
+      if (!submit) {
+        throw new Error('Unable to find popover submit button.');
+      }
+
+      await submit.click();
+      await page.waitForTimeout(160);
+
+      let signUpVisibleAfterSubmit = await hasVisibleExactText(page, 'Sign up');
+
+      return {
+        firstNameInputVisible: Boolean(firstNameInputVisible),
+        lastNameInputVisible: Boolean(lastNameInputVisible),
+        signUpVisibleAfterSubmit,
+        signUpVisibleBeforeOpen
+      };
+    }
+  },
+  {
+    id: 'react-aria-components-tooltip--tooltip-example',
+    async run(page) {
+      let trigger = await waitForFirstVisibleLocator(page, [
+        'button:has-text("Tooltip trigger")',
+        '[role="button"]:has-text("Tooltip trigger")',
+        'button'
+      ], 10000);
+
+      if (!trigger) {
+        throw new Error('Unable to find tooltip trigger.');
+      }
+
+      let tooltipVisibleBeforeFocus = await hasVisibleExactText(page, 'I am a tooltip');
+
+      await trigger.focus();
+      await page.waitForTimeout(280);
+
+      let tooltipVisibleAfterFocus = await hasVisibleExactText(page, 'I am a tooltip');
+      await page.keyboard.press('Tab');
+      await page.waitForTimeout(320);
+      let tooltipVisibleAfterBlur = await hasVisibleExactText(page, 'I am a tooltip');
+
+      return {
+        tooltipVisibleAfterBlur,
+        tooltipVisibleAfterFocus,
+        tooltipVisibleBeforeFocus
       };
     }
   },
@@ -1120,6 +1241,7 @@ let scenarios = [
       await page.waitForTimeout(120);
       let afterArrowRightExpanded = await submenuTrigger.getAttribute('aria-expanded').catch(() => null);
       let afterArrowRightFocusedText = await page.evaluate(() => {
+        // eslint-disable-next-line rsp-rules/shadow-safe-active-element
         let element = document.activeElement;
         return element ? element.textContent?.trim() ?? '' : null;
       });
@@ -1128,6 +1250,7 @@ let scenarios = [
       await page.waitForTimeout(120);
       let afterEscapeExpanded = await submenuTrigger.getAttribute('aria-expanded').catch(() => null);
       let afterEscapeFocusedText = await page.evaluate(() => {
+        // eslint-disable-next-line rsp-rules/shadow-safe-active-element
         let element = document.activeElement;
         return element ? element.textContent?.trim() ?? '' : null;
       });
@@ -1138,6 +1261,7 @@ let scenarios = [
       await page.waitForTimeout(120);
       let afterArrowLeftExpanded = await submenuTrigger.getAttribute('aria-expanded').catch(() => null);
       let afterArrowLeftFocusedText = await page.evaluate(() => {
+        // eslint-disable-next-line rsp-rules/shadow-safe-active-element
         let element = document.activeElement;
         return element ? element.textContent?.trim() ?? '' : null;
       });

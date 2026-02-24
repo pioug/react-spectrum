@@ -1,4 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
+import {ref} from 'vue';
 import {VueTree} from '@vue-spectrum/components';
 
 type TreeRowKind = 'loader' | 'rich' | 'section' | 'simple';
@@ -152,6 +153,12 @@ function createTreeStory(options: TreeStoryOptions) {
         let level = row.level ?? 1;
         return (row.hasChildren ? 0 : 20) + (level - 1) * 15;
       };
+      let expandedState = ref<Record<number, boolean>>({});
+      options.rows.forEach((row, index) => {
+        if (row.hasChildren) {
+          expandedState.value[index] = row.expanded === true;
+        }
+      });
       let treeItemCount = 0;
       let rowIndices = options.rows.map((row) => {
         if (row.kind === 'section' || row.kind === 'loader') {
@@ -164,11 +171,61 @@ function createTreeStory(options: TreeStoryOptions) {
       let getTreeItemStyle = (index: number) => {
         return options.overlapRows && rowIndices[index] > 0 ? {marginTop: '-1px'} : undefined;
       };
+      let isExpanded = (index: number, row: TreeRow) => {
+        if (!row.hasChildren) {
+          return false;
+        }
+
+        return expandedState.value[index] === true;
+      };
+      let toggleExpanded = (index: number, row: TreeRow) => {
+        if (!row.hasChildren) {
+          return;
+        }
+
+        expandedState.value[index] = !isExpanded(index, row);
+      };
+      let isRowVisible = (index: number) => {
+        let row = options.rows[index];
+        if (!row) {
+          return false;
+        }
+
+        if (row.kind === 'section') {
+          return true;
+        }
+
+        let level = row.level ?? 1;
+        if (level <= 1) {
+          return true;
+        }
+
+        let parentLevel = level;
+        for (let cursor = index - 1; cursor >= 0 && parentLevel > 1; cursor -= 1) {
+          let candidate = options.rows[cursor];
+          if (!candidate || candidate.kind === 'section' || candidate.kind === 'loader') {
+            continue;
+          }
+
+          let candidateLevel = candidate.level ?? 1;
+          if (candidateLevel < parentLevel) {
+            if (candidate.hasChildren && !isExpanded(cursor, candidate)) {
+              return false;
+            }
+            parentLevel = candidateLevel;
+          }
+        }
+
+        return true;
+      };
 
       return {
         ...options,
         getInlineStart,
-        getTreeItemStyle
+        getTreeItemStyle,
+        isExpanded,
+        isRowVisible,
+        toggleExpanded
       };
     },
     template: `
@@ -176,8 +233,8 @@ function createTreeStory(options: TreeStoryOptions) {
         <button v-if="beforeTreeButton" type="button">{{ beforeTreeButton }}</button>
         <div class="tree">
           <template v-for="(row, index) in rows" :key="index">
-            <div v-if="row.kind === 'section'">{{ row.label }}</div>
-            <div v-else-if="row.kind === 'loader'">
+            <div v-if="row.kind === 'section' && isRowVisible(index)">{{ row.label }}</div>
+            <div v-else-if="row.kind === 'loader' && isRowVisible(index)">
               <div v-if="loaderTreeMarkup" role="row" class="tree-loader" data-rac="" data-level="1">
                 <div role="gridcell" aria-colindex="1" style="display: contents;">
                   <span style="margin-inline-start: 0px;">{{ row.label }}</span>
@@ -185,12 +242,12 @@ function createTreeStory(options: TreeStoryOptions) {
               </div>
               <template v-else>{{ row.label }}</template>
             </div>
-            <div v-else-if="row.kind === 'simple'" class="tree-item" :style="getTreeItemStyle(index)">{{ row.label }}</div>
-            <div v-else class="tree-item" :style="getTreeItemStyle(index)">
+            <div v-else-if="row.kind === 'simple' && isRowVisible(index)" class="tree-item" :style="getTreeItemStyle(index)">{{ row.label }}</div>
+            <div v-else-if="isRowVisible(index)" class="tree-item" :style="getTreeItemStyle(index)">
               <div class="content-wrapper" :style="{marginInlineStart: getInlineStart(row) + 'px'}">
-                <button v-if="row.hasChildren" class="react-aria-Button" slot="chevron" type="button">
-                  <template v-if="chevronStyle === 'glyph'">{{ row.expanded ? '⏷' : '⏵' }}</template>
-                  <div v-else :style="{transform: 'rotate(' + (row.expanded ? 90 : 0) + 'deg)', width: '16px', height: '16px'}">
+                <button v-if="row.hasChildren" class="react-aria-Button" slot="chevron" type="button" @click="toggleExpanded(index, row)">
+                  <template v-if="chevronStyle === 'glyph'">{{ isExpanded(index, row) ? '⏷' : '⏵' }}</template>
+                  <div v-else :style="{transform: 'rotate(' + (isExpanded(index, row) ? 90 : 0) + 'deg)', width: '16px', height: '16px'}">
                     <svg viewBox="0 0 24 24" style="width: 16px; height: 16px;">
                       <path d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                     </svg>
