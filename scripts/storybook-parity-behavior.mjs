@@ -1539,7 +1539,6 @@ async function main() {
     }
 
     let report = {
-      generatedAt: new Date().toISOString(),
       reactUrl: args.reactUrl,
       vueUrl: args.vueUrl,
       totalScenarios: results.length,

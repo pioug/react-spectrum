@@ -1,5 +1,4 @@
 {
-  "generatedAt": "2026-02-24T16:28:24.031Z",
   "reactStoriesGlob": "packages/react-aria-components/stories/*.stories.tsx",
   "vueStoriesGlob": "packages/@vue-spectrum/components/stories/*.stories.ts",
   "vuePreviewFile": "starters/vue/.storybook/preview.ts",

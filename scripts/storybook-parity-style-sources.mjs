@@ -226,7 +226,6 @@ function main() {
   });
 
   let report = {
-    generatedAt: new Date().toISOString(),
     reactStoriesGlob: args.reactStoriesGlob,
     vueStoriesGlob: args.vueStoriesGlob,
     vuePreviewFile: args.vuePreviewFile,

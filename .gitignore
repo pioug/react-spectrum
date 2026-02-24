@@ -25,6 +25,8 @@ starters/vue/yarn.lock
 
 # Storybook parity generated artifacts.
 storybook-parity/catalog-*/
+storybook-parity/catalog/report.json
+storybook-parity/catalog/report.md
 storybook-parity/visual-*/
 storybook-parity/tmp-*/
 storybook-parity/*.html
