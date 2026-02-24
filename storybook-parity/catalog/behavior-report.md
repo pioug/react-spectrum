@@ -2,8 +2,8 @@
 
 - React URL: http://127.0.0.1:9003
 - Vue URL: http://127.0.0.1:6106
-- Scenarios: 30
-- Passing: 30
+- Scenarios: 32
+- Passing: 32
 - Failing: 0
 - Result: pass
 
@@ -31,6 +31,8 @@
 - PASS `react-aria-components-combobox--virtualized-combo-box`
 - PASS `react-aria-components-combobox--multi-select-combo-box`
 - PASS `react-aria-components-combobox--async-virtualized-dynamic-combobox`
+- PASS `react-aria-components-select--async-virtualized-collection-render-select`
+- PASS `react-aria-components-tree--tree-section-dynamic`
 - PASS `react-aria-components-menu--menu-example`
 - PASS `react-aria-components-menu--submenu-example`
 - PASS `react-aria-components-menu--submenu-sections-example`

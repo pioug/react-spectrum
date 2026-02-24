@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-02-22T04:35:44.830Z",
+  "generatedAt": "2026-02-24T16:27:25.524Z",
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
-  "totalScenarios": 30,
-  "passingScenarios": 30,
+  "totalScenarios": 32,
+  "passingScenarios": 32,
   "failingScenarios": 0,
   "ok": true,
   "results": [
@@ -375,6 +375,54 @@
         "ariaExpandedAfterSearch": "true",
         "containsLuke": true,
         "optionCountAfterSearch": 1
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-select--async-virtualized-collection-render-select",
+      "ok": true,
+      "react": {
+        "ariaExpanded": "false",
+        "ariaHasPopup": "listbox",
+        "labelText": "Async Virtualized Collection render Select",
+        "selectValuePlaceholder": "true",
+        "selectValueText": "Select an item",
+        "triggerText": "Select an item▼"
+      },
+      "vue": {
+        "ariaExpanded": "false",
+        "ariaHasPopup": "listbox",
+        "labelText": "Async Virtualized Collection render Select",
+        "selectValuePlaceholder": "true",
+        "selectValueText": "Select an item",
+        "triggerText": "Select an item▼"
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-tree--tree-section-dynamic",
+      "ok": true,
+      "react": {
+        "hasChevronButtons": true,
+        "hasInfoButtons": true,
+        "hasLabels": {
+          "Section 1": true,
+          "Project 2A": true,
+          "Project 2C": true
+        },
+        "hasMenuButtons": true
+      },
+      "vue": {
+        "hasChevronButtons": true,
+        "hasInfoButtons": true,
+        "hasLabels": {
+          "Section 1": true,
+          "Project 2A": true,
+          "Project 2C": true
+        },
+        "hasMenuButtons": true
       },
       "diff": {},
       "error": null
