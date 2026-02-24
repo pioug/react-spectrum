@@ -15,9 +15,7 @@ This repository now includes a Vue migration baseline so teams can begin moving 
 * `packages/@vue-spectrum/accordion`, `packages/@vue-spectrum/actionbar`, `packages/@vue-spectrum/actiongroup`, `packages/@vue-spectrum/breadcrumbs`, `packages/@vue-spectrum/calendar`, `packages/@vue-spectrum/card`, `packages/@vue-spectrum/color`, `packages/@vue-spectrum/contextualhelp`, `packages/@vue-spectrum/datepicker`, `packages/@vue-spectrum/dialog`, `packages/@vue-spectrum/overlays`, `packages/@vue-spectrum/picker`, `packages/@vue-spectrum/combobox`, `packages/@vue-spectrum/menu`, and `packages/@vue-spectrum/listbox` start the composition-component migration layer.
 * `packages/tailwindcss-vue-aria-components` provides a Vue-tailored Tailwind variant plugin baseline.
 * `starters/vue` is a runnable Vue + Vite starter wired to the new package.
-* `MIGRATION_TO_VUE.md` describes the migration plan from existing React packages to Vue packages.
-* `migration/REACT_TO_VUE_MIGRATION_GUIDE.md` tracks consumer migration guidance.
-* `migration/STORYBOOK_PARITY_PROGRESS.md` is the manual parity progression tracker for Storybook work.
+* `MIGRATION_TO_VUE.md` is the single migration source of truth for workflow and parity progress.
 
 Use the starter from the repository root:
 
@@ -40,7 +38,7 @@ As of February 19, 2026, React package development in this repository is in main
 
 * New feature development should target Vue packages first.
 * React packages continue to accept security fixes, bug fixes, and critical compatibility updates.
-* Use `migration/REACT_TO_VUE_MIGRATION_GUIDE.md` for package replacement mappings.
+* Use `MIGRATION_TO_VUE.md` for migration workflow and progress tracking.
 
 ### React Spectrum
 

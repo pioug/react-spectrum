@@ -7,7 +7,7 @@ A library of React Hooks that provides accessible UI primitives for your design 
 As of February 19, 2026, this React package is in maintenance mode while Vue migration ports continue.
 
 * Vue replacement package: `vue-aria` (plus the `@vue-aria/*` package set).
-* Migration guide: [`migration/REACT_TO_VUE_MIGRATION_GUIDE.md`](../../migration/REACT_TO_VUE_MIGRATION_GUIDE.md).
+* Migration guide: [`MIGRATION_TO_VUE.md`](../../MIGRATION_TO_VUE.md).
 
 ## Features
 
