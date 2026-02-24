@@ -459,6 +459,10 @@ function isAutocompleteWithAsyncListBoxStory(storyId) {
   return storyId.includes('autocomplete--autocomplete-with-async-list-box');
 }
 
+function isListBoxPreviewOffsetStory(storyId) {
+  return storyId.includes('listbox--list-box-preview-offset');
+}
+
 async function waitForWebFontsClassSettledOncePerOrigin(page, storyUrl, timeoutMs = 5000) {
   let origin;
   try {
@@ -596,6 +600,53 @@ async function waitForAutocompleteAsyncSettled(page, storyId) {
         .some((element) => element.textContent?.trim() === 'Loading');
 
       if (optionCount > 0 && !hasLoadingText) {
+        break;
+      }
+
+      await delay(60);
+    }
+
+    await settle();
+    await settle();
+  });
+}
+
+async function waitForListBoxPreviewOffsetSettled(page, storyId) {
+  if (!isListBoxPreviewOffsetStory(storyId)) {
+    return;
+  }
+
+  await page.evaluate(async () => {
+    let root = document.querySelector('#storybook-root') || document.querySelector('#root');
+    if (!(root instanceof HTMLElement)) {
+      return;
+    }
+
+    let delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    let settle = () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    let isVisible = (element) => {
+      if (!(element instanceof Element)) {
+        return false;
+      }
+
+      let style = window.getComputedStyle(element);
+      if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
+        return false;
+      }
+
+      let rect = element.getBoundingClientRect();
+      return rect.width > 0 && rect.height > 0;
+    };
+
+    let endTime = performance.now() + 15000;
+    while (performance.now() < endTime) {
+      let optionCount = root.querySelectorAll('[role="option"], .react-aria-ListBoxItem').length;
+      let visibleImages = Array.from(root.querySelectorAll('img')).filter((image) => isVisible(image));
+      let allVisibleImagesLoaded = visibleImages.every((image) => (
+        image.complete && image.naturalWidth > 0 && image.naturalHeight > 0
+      ));
+
+      if (optionCount >= 5 && visibleImages.length >= 5 && allVisibleImagesLoaded) {
         break;
       }
 
@@ -902,6 +953,13 @@ async function captureStory(page, storyId, storyUrl, outputPath) {
     `Autocomplete async settle wait failed for ${storyId}`
   ).catch(() => {
     // continue with fallback screenshot capture if async data never settles
+  });
+  await withTimeout(
+    waitForListBoxPreviewOffsetSettled(page, storyId),
+    18000,
+    `ListBox preview-offset settle wait failed for ${storyId}`
+  ).catch(() => {
+    // continue with capture if preview images remain in transient loading state
   });
   await withTimeout(
     waitForProgressbarSvgReady(page, storyId),
