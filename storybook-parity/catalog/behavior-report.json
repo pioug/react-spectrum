@@ -1,8 +1,8 @@
 {
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
-  "totalScenarios": 35,
-  "passingScenarios": 35,
+  "totalScenarios": 36,
+  "passingScenarios": 36,
   "failingScenarios": 0,
   "ok": true,
   "results": [
@@ -464,6 +464,32 @@
         "tooltipVisibleAfterBlur": false,
         "tooltipVisibleAfterFocus": true,
         "tooltipVisibleBeforeFocus": false
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-toolbar--toolbar-example",
+      "ok": true,
+      "react": {
+        "afterValue": "after",
+        "beforeValue": "before",
+        "checkboxCheckedAfter": true,
+        "checkboxCheckedBefore": false,
+        "firstTogglePressedAfter": "true",
+        "firstTogglePressedBefore": "false",
+        "helpHref": "https://google.com/",
+        "toggleCount": 3
+      },
+      "vue": {
+        "afterValue": "after",
+        "beforeValue": "before",
+        "checkboxCheckedAfter": true,
+        "checkboxCheckedBefore": false,
+        "firstTogglePressedAfter": "true",
+        "firstTogglePressedBefore": "false",
+        "helpHref": "https://google.com/",
+        "toggleCount": 3
       },
       "diff": {},
       "error": null

@@ -15,19 +15,37 @@ export const ToolbarExample: ToolbarStory = {
     orientation: 'horizontal'
   },
   render: () => ({
+    setup() {
+      let isNightMode = ref(false);
+      let pressed = ref({
+        bold: false,
+        italic: false,
+        underline: false
+      });
+
+      let toggleStyle = (style: 'bold' | 'italic' | 'underline') => {
+        pressed.value[style] = !pressed.value[style];
+      };
+
+      return {
+        isNightMode,
+        pressed,
+        toggleStyle
+      };
+    },
     template: `
       <div>
         <label for="before">Input Before Toolbar</label>
         <input id="before" type="text">
         <div class="react-aria-Toolbar" data-rac="" role="toolbar" aria-orientation="horizontal" data-orientation="horizontal" style="display: flex; flex-wrap: wrap; gap: 20px; flex-direction: row;">
           <div role="group" aria-label="Text style">
-            <button class="v7C2Sq_toggleButtonExample" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" aria-pressed="false"><strong>B</strong></button>
-            <button class="v7C2Sq_toggleButtonExample" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" aria-pressed="false"><div style="text-decoration: underline;">U</div></button>
-            <button class="v7C2Sq_toggleButtonExample" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" aria-pressed="false"><i>I</i></button>
+            <button class="v7C2Sq_toggleButtonExample" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" :aria-pressed="String(pressed.bold)" @click="toggleStyle('bold')"><strong>B</strong></button>
+            <button class="v7C2Sq_toggleButtonExample" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" :aria-pressed="String(pressed.underline)" @click="toggleStyle('underline')"><div style="text-decoration: underline;">U</div></button>
+            <button class="v7C2Sq_toggleButtonExample" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" :aria-pressed="String(pressed.italic)" @click="toggleStyle('italic')"><i>I</i></button>
           </div>
           <label data-react-aria-pressable="true" class="react-aria-Checkbox" data-rac="">
             <span style="border: 0; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; white-space: nowrap;">
-              <input data-react-aria-pressable="true" tabindex="0" type="checkbox" title="">
+              <input data-react-aria-pressable="true" tabindex="0" type="checkbox" title="" v-model="isNightMode">
             </span>
             <div class="checkbox">
               <svg viewBox="0 0 18 18" aria-hidden="true">

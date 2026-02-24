@@ -1130,6 +1130,95 @@ let scenarios = [
     }
   },
   {
+    id: 'react-aria-components-toolbar--toolbar-example',
+    async run(page) {
+      let toolbar = await waitForFirstVisibleLocator(page, [
+        '[role="toolbar"]'
+      ], 10000);
+
+      if (!toolbar) {
+        throw new Error('Unable to find toolbar root.');
+      }
+
+      let styleGroup = page.locator('[role="group"][aria-label="Text style"]').first();
+      let toggleButtons = styleGroup.locator('button[aria-pressed]');
+      let toggleCount = await toggleButtons.count();
+      if (toggleCount === 0) {
+        toggleButtons = page.locator('button[aria-pressed]');
+        toggleCount = await toggleButtons.count();
+      }
+
+      if (toggleCount === 0) {
+        throw new Error('Unable to find toolbar toggle buttons.');
+      }
+
+      let firstToggle = toggleButtons.first();
+      let firstTogglePressedBefore = await firstToggle.getAttribute('aria-pressed');
+      await firstToggle.click();
+      await page.waitForTimeout(100);
+      let firstTogglePressedAfter = await firstToggle.getAttribute('aria-pressed');
+
+      let checkbox = await waitForFirstVisibleLocator(page, [
+        'label:has-text("Night Mode") input[type="checkbox"]',
+        '.react-aria-Checkbox input[type="checkbox"]',
+        'input[type="checkbox"]'
+      ], 10000);
+
+      if (!checkbox) {
+        throw new Error('Unable to find toolbar checkbox.');
+      }
+
+      let checkboxCheckedBefore = await checkbox.isChecked();
+      let checkboxLabel = await firstVisibleLocator(page, [
+        'label:has-text("Night Mode")',
+        '.react-aria-Checkbox:has-text("Night Mode")'
+      ]);
+      if (checkboxLabel) {
+        await checkboxLabel.click();
+      } else {
+        await checkbox.click();
+      }
+      await page.waitForTimeout(100);
+      let checkboxCheckedAfter = await checkbox.isChecked();
+
+      let helpLink = await waitForFirstVisibleLocator(page, [
+        'a:has-text("Help")',
+        '[role="link"]:has-text("Help")'
+      ], 10000);
+      if (!helpLink) {
+        throw new Error('Unable to find toolbar help link.');
+      }
+
+      let beforeInput = await firstVisibleLocator(page, [
+        'input#before'
+      ]);
+      let afterInput = await firstVisibleLocator(page, [
+        'input#after'
+      ]);
+
+      if (!beforeInput || !afterInput) {
+        throw new Error('Unable to find toolbar surrounding inputs.');
+      }
+
+      await beforeInput.fill('before');
+      await afterInput.fill('after');
+
+      let helpHref = await helpLink.getAttribute('href');
+      let helpHrefAbsolute = helpHref ? new URL(helpHref, page.url()).toString() : null;
+
+      return {
+        afterValue: await afterInput.inputValue(),
+        beforeValue: await beforeInput.inputValue(),
+        checkboxCheckedAfter,
+        checkboxCheckedBefore,
+        firstTogglePressedAfter,
+        firstTogglePressedBefore,
+        helpHref: helpHrefAbsolute,
+        toggleCount
+      };
+    }
+  },
+  {
     id: 'react-aria-components-toolbar--select-support',
     async run(page) {
       let boldButton = await waitForFirstVisibleLocator(page, [
