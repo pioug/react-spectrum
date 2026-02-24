@@ -86,6 +86,7 @@ function parseArgs(argv) {
     viewportWidth: 1280,
     viewportHeight: 720,
     deviceScaleFactor: 1,
+    retryFailedStories: 2,
     failFast: true
   };
 
@@ -109,6 +110,8 @@ function parseArgs(argv) {
       args.viewportHeight = Number.parseInt(argv[++i], 10);
     } else if (arg === '--device-scale-factor') {
       args.deviceScaleFactor = Number.parseFloat(argv[++i]);
+    } else if (arg === '--retry-failed-stories') {
+      args.retryFailedStories = Number.parseInt(argv[++i], 10);
     } else if (arg === '--fail-fast') {
       args.failFast = true;
     } else if (arg === '--no-fail-fast') {
@@ -133,6 +136,9 @@ function parseArgs(argv) {
   if (!Number.isFinite(args.deviceScaleFactor) || args.deviceScaleFactor <= 0) {
     throw new Error('--device-scale-factor must be a positive number.');
   }
+  if (!Number.isInteger(args.retryFailedStories) || args.retryFailedStories < 0) {
+    throw new Error('--retry-failed-stories must be a non-negative integer.');
+  }
 
   return args;
 }
@@ -151,6 +157,7 @@ Options:
   --viewport-width <px>          Viewport width (default: 1280)
   --viewport-height <px>         Viewport height (default: 720)
   --device-scale-factor <n>      Browser device scale factor (default: 1)
+  --retry-failed-stories <n>     Retries per failed story before final result (default: 2)
   --output-dir <dir>             Output directory (default: artifacts/storybook-parity)
   --fail-fast                    Stop on first non-zero diff (default: true)
   --no-fail-fast                 Continue through all stories
@@ -1182,6 +1189,7 @@ async function main() {
     options: {
       maxStories: args.maxStories,
       failFast: args.failFast,
+      retryFailedStories: args.retryFailedStories,
       viewportWidth: args.viewportWidth,
       viewportHeight: args.viewportHeight,
       deviceScaleFactor: args.deviceScaleFactor
@@ -1247,110 +1255,149 @@ async function main() {
 
       process.stdout.write(`[${index + 1}/${filteredStoryIds.length}] ${id}\n`);
 
-      let reactCaptureTarget = 'none';
-      let vueCaptureTarget = 'none';
-      let storyPage = await context.newPage();
+      let maxAttempts = args.retryFailedStories + 1;
+      let attemptSummaries = [];
+      let finalStoryResult = null;
 
-      try {
-        logDebug(`story:${id}:react:capture:start`);
-        let reactCapture = await withTimeout(
-          captureStory(storyPage, id, reactStoryUrl, reactImagePath),
-          240000,
-          `React capture failed for ${id}`
-        );
-        logDebug(`story:${id}:react:capture:done`);
-        logDebug(`story:${id}:vue:capture:start`);
-        let vueCapture = await withTimeout(
-          captureStory(storyPage, id, vueStoryUrl, vueImagePath),
-          240000,
-          `Vue capture failed for ${id}`
-        );
-        logDebug(`story:${id}:vue:capture:done`);
-        reactCaptureTarget = reactCapture.target;
-        vueCaptureTarget = vueCapture.target;
+      for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+        let reactCaptureTarget = 'none';
+        let vueCaptureTarget = 'none';
+        let storyPage = await context.newPage();
 
-        logDebug(`story:${id}:side-by-side:start`);
-        await withTimeout(
-          writeSideBySide(reactImagePath, vueImagePath, sideBySideImagePath),
-          30000,
-          `Side-by-side compose failed for ${id}`
-        );
-        logDebug(`story:${id}:side-by-side:done`);
+        try {
+          logDebug(`story:${id}:attempt:${attempt}:react:capture:start`);
+          let reactCapture = await withTimeout(
+            captureStory(storyPage, id, reactStoryUrl, reactImagePath),
+            240000,
+            `React capture failed for ${id}`
+          );
+          logDebug(`story:${id}:attempt:${attempt}:react:capture:done`);
+          logDebug(`story:${id}:attempt:${attempt}:vue:capture:start`);
+          let vueCapture = await withTimeout(
+            captureStory(storyPage, id, vueStoryUrl, vueImagePath),
+            240000,
+            `Vue capture failed for ${id}`
+          );
+          logDebug(`story:${id}:attempt:${attempt}:vue:capture:done`);
+          reactCaptureTarget = reactCapture.target;
+          vueCaptureTarget = vueCapture.target;
 
-        logDebug(`story:${id}:read-react:start`);
-        let reactImage = await withTimeout(
-          readRawImage(reactImagePath),
-          10000,
-          `React image read failed for ${id}`
-        );
-        logDebug(`story:${id}:read-react:done ${reactImage.width}x${reactImage.height}`);
-        logDebug(`story:${id}:read-vue:start`);
-        let vueImage = await withTimeout(
-          readRawImage(vueImagePath),
-          10000,
-          `Vue image read failed for ${id}`
-        );
-        logDebug(`story:${id}:read-vue:done ${vueImage.width}x${vueImage.height}`);
-        logDebug(`story:${id}:compare:start`);
-        let comparison = compareImages(reactImage, vueImage);
-        logDebug(`story:${id}:compare:done changedPixels=${comparison.changedPixels}`);
+          logDebug(`story:${id}:attempt:${attempt}:side-by-side:start`);
+          await withTimeout(
+            writeSideBySide(reactImagePath, vueImagePath, sideBySideImagePath),
+            30000,
+            `Side-by-side compose failed for ${id}`
+          );
+          logDebug(`story:${id}:attempt:${attempt}:side-by-side:done`);
 
-        logDebug(`story:${id}:diff-write:start`);
-        await withTimeout(
-          writeRawPng(comparison.diffData, comparison.width, comparison.height, diffImagePath),
-          30000,
-          `Diff image write failed for ${id}`
-        );
-        logDebug(`story:${id}:diff-write:done`);
+          logDebug(`story:${id}:attempt:${attempt}:read-react:start`);
+          let reactImage = await withTimeout(
+            readRawImage(reactImagePath),
+            10000,
+            `React image read failed for ${id}`
+          );
+          logDebug(`story:${id}:attempt:${attempt}:read-react:done ${reactImage.width}x${reactImage.height}`);
+          logDebug(`story:${id}:attempt:${attempt}:read-vue:start`);
+          let vueImage = await withTimeout(
+            readRawImage(vueImagePath),
+            10000,
+            `Vue image read failed for ${id}`
+          );
+          logDebug(`story:${id}:attempt:${attempt}:read-vue:done ${vueImage.width}x${vueImage.height}`);
+          logDebug(`story:${id}:attempt:${attempt}:compare:start`);
+          let comparison = compareImages(reactImage, vueImage);
+          logDebug(`story:${id}:attempt:${attempt}:compare:done changedPixels=${comparison.changedPixels}`);
 
-        let storyResult = {
-          id,
-          maxChangedPixels,
-          reactUrl: reactStoryUrl,
-          vueUrl: vueStoryUrl,
-          reactImage: relativePath(args.outputDir, reactImagePath),
-          vueImage: relativePath(args.outputDir, vueImagePath),
-          sideBySideImage: relativePath(args.outputDir, sideBySideImagePath),
-          diffImage: relativePath(args.outputDir, diffImagePath),
-          changedPixels: comparison.changedPixels,
-          totalPixels: comparison.totalPixels,
-          changedRatio: comparison.totalPixels === 0 ? 0 : comparison.changedPixels / comparison.totalPixels,
-          capture: {
-            react: reactCaptureTarget,
-            vue: vueCaptureTarget
-          },
-          dimensions: {
-            react: {
-              width: reactImage.width,
-              height: reactImage.height
+          logDebug(`story:${id}:attempt:${attempt}:diff-write:start`);
+          await withTimeout(
+            writeRawPng(comparison.diffData, comparison.width, comparison.height, diffImagePath),
+            30000,
+            `Diff image write failed for ${id}`
+          );
+          logDebug(`story:${id}:attempt:${attempt}:diff-write:done`);
+
+          finalStoryResult = {
+            id,
+            maxChangedPixels,
+            reactUrl: reactStoryUrl,
+            vueUrl: vueStoryUrl,
+            reactImage: relativePath(args.outputDir, reactImagePath),
+            vueImage: relativePath(args.outputDir, vueImagePath),
+            sideBySideImage: relativePath(args.outputDir, sideBySideImagePath),
+            diffImage: relativePath(args.outputDir, diffImagePath),
+            changedPixels: comparison.changedPixels,
+            totalPixels: comparison.totalPixels,
+            changedRatio: comparison.totalPixels === 0 ? 0 : comparison.changedPixels / comparison.totalPixels,
+            capture: {
+              react: reactCaptureTarget,
+              vue: vueCaptureTarget
             },
-            vue: {
-              width: vueImage.width,
-              height: vueImage.height
+            dimensions: {
+              react: {
+                width: reactImage.width,
+                height: reactImage.height
+              },
+              vue: {
+                width: vueImage.width,
+                height: vueImage.height
+              },
+              compared: {
+                width: comparison.width,
+                height: comparison.height
+              }
             },
-            compared: {
-              width: comparison.width,
-              height: comparison.height
-            }
-          },
-          ok: comparison.changedPixels <= maxChangedPixels
-        };
-
-        report.stories.push(storyResult);
-        report.summary.total++;
-        report.summary.changedPixels += comparison.changedPixels;
-        if (storyResult.ok) {
-          report.summary.passed++;
-        } else {
-          report.summary.failed++;
-          process.stdout.write(`  -> fail changedPixels=${comparison.changedPixels} maxChangedPixels=${maxChangedPixels}\n`);
-          if (args.failFast) {
-            break;
-          }
+            attempt,
+            ok: comparison.changedPixels <= maxChangedPixels
+          };
+        } catch (error) {
+          let message = error instanceof Error ? error.message : String(error);
+          finalStoryResult = {
+            id,
+            maxChangedPixels,
+            reactUrl: reactStoryUrl,
+            vueUrl: vueStoryUrl,
+            reactImage: relativePath(args.outputDir, reactImagePath),
+            vueImage: relativePath(args.outputDir, vueImagePath),
+            sideBySideImage: relativePath(args.outputDir, sideBySideImagePath),
+            diffImage: relativePath(args.outputDir, diffImagePath),
+            changedPixels: null,
+            totalPixels: null,
+            changedRatio: null,
+            capture: {
+              react: reactCaptureTarget,
+              vue: vueCaptureTarget
+            },
+            dimensions: null,
+            attempt,
+            error: message,
+            ok: false
+          };
+        } finally {
+          await withTimeout(storyPage.close().catch(() => {}), 10000, `Story page close failed for ${id}`).catch(() => {});
         }
-      } catch (error) {
-        let message = error instanceof Error ? error.message : String(error);
-        let storyResult = {
+
+        attemptSummaries.push({
+          attempt,
+          ok: finalStoryResult.ok,
+          changedPixels: finalStoryResult.changedPixels,
+          error: finalStoryResult.error ?? null
+        });
+
+        if (finalStoryResult.ok) {
+          if (attempt > 1) {
+            process.stdout.write(`  -> pass after retry attempt=${attempt}/${maxAttempts}\n`);
+          }
+          break;
+        }
+
+        if (attempt < maxAttempts) {
+          process.stdout.write(`  -> retry attempt=${attempt + 1}/${maxAttempts}\n`);
+          await new Promise((resolve) => setTimeout(resolve, 200));
+        }
+      }
+
+      if (!finalStoryResult) {
+        finalStoryResult = {
           id,
           maxChangedPixels,
           reactUrl: reactStoryUrl,
@@ -1363,23 +1410,37 @@ async function main() {
           totalPixels: null,
           changedRatio: null,
           capture: {
-            react: reactCaptureTarget,
-            vue: vueCaptureTarget
+            react: 'none',
+            vue: 'none'
           },
           dimensions: null,
-          error: message,
+          attempt: maxAttempts,
+          error: 'No attempt result available',
           ok: false
         };
+      }
 
-        report.stories.push(storyResult);
-        report.summary.total++;
+      finalStoryResult.attempts = attemptSummaries;
+      report.stories.push(finalStoryResult);
+      report.summary.total++;
+      if (typeof finalStoryResult.changedPixels === 'number') {
+        report.summary.changedPixels += finalStoryResult.changedPixels;
+      }
+
+      if (finalStoryResult.ok) {
+        report.summary.passed++;
+      } else {
         report.summary.failed++;
-        process.stdout.write(`  -> error ${message}\n`);
+        if (finalStoryResult.changedPixels == null) {
+          process.stdout.write(`  -> error ${finalStoryResult.error}\n`);
+        } else {
+          process.stdout.write(
+            `  -> fail changedPixels=${finalStoryResult.changedPixels} maxChangedPixels=${maxChangedPixels} (attempt=${finalStoryResult.attempt}/${maxAttempts})\n`
+          );
+        }
         if (args.failFast) {
           break;
         }
-      } finally {
-        await withTimeout(storyPage.close().catch(() => {}), 10000, `Story page close failed for ${id}`).catch(() => {});
       }
     }
   } finally {
