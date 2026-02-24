@@ -2,13 +2,15 @@
 
 - React URL: http://127.0.0.1:9003
 - Vue URL: http://127.0.0.1:6106
-- Scenarios: 36
-- Passing: 36
+- Scenarios: 38
+- Passing: 38
 - Failing: 0
 - Result: pass
 
 ## Scenario Results
 
+- PASS `react-aria-components-breadcrumbs--breadcrumbs-example`
+- PASS `react-aria-components-breadcrumbs--dynamic-breadcrumbs-example`
 - PASS `react-aria-components-checkbox--checkbox-example`
 - PASS `react-aria-components-switch--switch-example`
 - PASS `react-aria-components-searchfield--search-field-example`

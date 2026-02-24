@@ -1,11 +1,79 @@
 {
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
-  "totalScenarios": 36,
-  "passingScenarios": 36,
+  "totalScenarios": 38,
+  "passingScenarios": 38,
   "failingScenarios": 0,
   "ok": true,
   "results": [
+    {
+      "id": "react-aria-components-breadcrumbs--breadcrumbs-example",
+      "ok": true,
+      "react": {
+        "hasBreadcrumbs": true,
+        "hrefs": [
+          "/",
+          "/react-aria",
+          "/react-aria"
+        ],
+        "itemCount": 3,
+        "lastAriaCurrent": "page",
+        "lastAriaDisabled": "true",
+        "lastDataDisabled": "true",
+        "linkCount": 3,
+        "textOrder": "Home|React Aria|Breadcrumbs"
+      },
+      "vue": {
+        "hasBreadcrumbs": true,
+        "hrefs": [
+          "/",
+          "/react-aria",
+          "/react-aria"
+        ],
+        "itemCount": 3,
+        "lastAriaCurrent": "page",
+        "lastAriaDisabled": "true",
+        "lastDataDisabled": "true",
+        "linkCount": 3,
+        "textOrder": "Home|React Aria|Breadcrumbs"
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-breadcrumbs--dynamic-breadcrumbs-example",
+      "ok": true,
+      "react": {
+        "hasBreadcrumbs": true,
+        "hrefs": [
+          "/",
+          "/react-aria",
+          "/react-aria/breadcrumbs"
+        ],
+        "itemCount": 3,
+        "lastAriaCurrent": "page",
+        "lastAriaDisabled": "true",
+        "lastDataDisabled": "true",
+        "linkCount": 3,
+        "textOrder": "Home|React Aria|Breadcrumbs"
+      },
+      "vue": {
+        "hasBreadcrumbs": true,
+        "hrefs": [
+          "/",
+          "/react-aria",
+          "/react-aria/breadcrumbs"
+        ],
+        "itemCount": 3,
+        "lastAriaCurrent": "page",
+        "lastAriaDisabled": "true",
+        "lastDataDisabled": "true",
+        "linkCount": 3,
+        "textOrder": "Home|React Aria|Breadcrumbs"
+      },
+      "diff": {},
+      "error": null
+    },
     {
       "id": "react-aria-components-checkbox--checkbox-example",
       "ok": true,

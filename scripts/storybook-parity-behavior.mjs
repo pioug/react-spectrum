@@ -213,7 +213,56 @@ function checkedExtractorScript() {
   };
 }
 
+async function readBreadcrumbStoryState(page) {
+  return page.evaluate(() => {
+    let root = document.querySelector('#storybook-root') || document.querySelector('#root') || document.body;
+    let breadcrumbs = root.querySelector('[aria-label="Breadcrumbs"]');
+    if (!(breadcrumbs instanceof HTMLElement)) {
+      return {
+        hasBreadcrumbs: false
+      };
+    }
+
+    let items = Array.from(breadcrumbs.querySelectorAll('li'));
+    let links = Array.from(breadcrumbs.querySelectorAll('a, [role="link"]'));
+    let lastLink = links[links.length - 1] ?? null;
+
+    return {
+      hasBreadcrumbs: true,
+      hrefs: links.map((link) => link.getAttribute('href')),
+      itemCount: items.length,
+      lastAriaCurrent: lastLink?.getAttribute('aria-current') ?? null,
+      lastAriaDisabled: lastLink?.getAttribute('aria-disabled') ?? null,
+      lastDataDisabled: lastLink?.getAttribute('data-disabled') ?? null,
+      linkCount: links.length,
+      textOrder: links.map((link) => (link.textContent ?? '').replace(/\s+/g, ' ').trim()).join('|')
+    };
+  });
+}
+
 let scenarios = [
+  {
+    id: 'react-aria-components-breadcrumbs--breadcrumbs-example',
+    async run(page) {
+      let state = await readBreadcrumbStoryState(page);
+      if (!state.hasBreadcrumbs) {
+        throw new Error('Unable to find breadcrumbs root element in static breadcrumbs story.');
+      }
+
+      return state;
+    }
+  },
+  {
+    id: 'react-aria-components-breadcrumbs--dynamic-breadcrumbs-example',
+    async run(page) {
+      let state = await readBreadcrumbStoryState(page);
+      if (!state.hasBreadcrumbs) {
+        throw new Error('Unable to find breadcrumbs root element in dynamic breadcrumbs story.');
+      }
+
+      return state;
+    }
+  },
   {
     id: 'react-aria-components-checkbox--checkbox-example',
     async run(page) {
