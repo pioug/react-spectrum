@@ -14,7 +14,7 @@
 3. Compare component internals/code paths in React vs Vue for each identified gap.
 4. Fix behavior and structure in Vue component internals (no story-only hacks).
 5. Add or update component tests for every fixed gap.
-6. Record reviewed scope, gaps, and evidence in the progress log below.
+6. Record reviewed scope, gaps, and evidence in the component fix PR/commit notes.
 
 ## Validation for each component fix
 
@@ -29,10 +29,4 @@
 2. Interactions and state behavior match React.
 3. Code-path review shows no unexplained divergence for covered behaviors.
 4. Regression tests exist for fixed gaps.
-5. Progress log entry is complete in this file.
-
-## Progress log
-
-| Date | Component | Story scope reviewed | Gap summary | Internal diff notes | Tests added/updated | Status | Reviewer |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| 2026-02-24 | Process baseline | Storybook parity workflow | Replaced script-driven parity process with manual, evidence-first workflow | Requires side-by-side story review and internals comparison before fixes are accepted | Required for all future parity fixes | active | codex |
+5. Evidence is attached to the component fix PR/commit notes.
