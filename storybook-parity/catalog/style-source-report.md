@@ -4,7 +4,7 @@
 - Vue story files: 45
 - React CSS imports: 69
 - Vue global CSS imports: 3
-- Vue story CSS imports: 6
+- Vue story CSS imports: 9
 - Missing ports: 0
 - Result: pass
 
