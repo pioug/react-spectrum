@@ -21,7 +21,6 @@
 1. `yarn typecheck:vue`
 2. `yarn test:vue`
 3. Manual Storybook side-by-side interaction review
-4. Optional screenshots as confirmation evidence only
 
 ## Completion criteria
 
