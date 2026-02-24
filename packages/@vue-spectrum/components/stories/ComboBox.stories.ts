@@ -225,7 +225,7 @@ export const MultiSelectComboBox: ComboBoxStory = () => ({
         </button>
       </div>
       <div class="react-aria-TagGroup">
-        <div class="react-aria-TagList" data-rac="" aria-label="Selected states" role="group" tabindex="0" aria-atomic="false" aria-relevant="additions" aria-live="off" data-empty="true">No selected items</div>
+        <div class="react-aria-TagList" style="display: flex; color: oklch(0.410821 0 0); font-family: system-ui; line-height: normal;" data-rac="" aria-label="Selected states" role="group" tabindex="0" aria-atomic="false" aria-relevant="additions" aria-live="off" data-empty="true">No selected items</div>
       </div>
     </div>
   `
