@@ -421,11 +421,10 @@ jobs:
           key: react-spectrum-{{ .Environment.CACHE_VERSION }}-{{ .Environment.CIRCLE_SHA1 }}
 
       - run:
-          name: verify vue migration tracker
+          name: verify vue baseline
           command: |
-            yarn vue:migration:report
-            yarn vue:migration:test
-            yarn vue:migration:assert-complete
+            yarn typecheck:vue
+            yarn test:vue
 
   ts-build-branch:
     executor: rsp-large

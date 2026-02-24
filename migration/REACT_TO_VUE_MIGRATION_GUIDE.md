@@ -401,4 +401,6 @@ let state = useVirtualizerState({
 1. Run `yarn workspace vue-spectrum-starter typecheck`.
 2. Run `yarn workspace vue-spectrum-starter build`.
 3. Run `yarn test:vue`.
-4. Run `yarn vue:migration:test` before merging migration updates.
+4. Review React and Vue stories side by side in Storybook to identify missing states, controls, and interactions.
+5. Compare React and Vue component internals for the reviewed stories to confirm behavior/code-path parity.
+6. Add or update component tests for every fixed parity gap before merge.

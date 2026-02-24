@@ -16,8 +16,8 @@ This repository now includes a Vue migration baseline so teams can begin moving 
 * `packages/tailwindcss-vue-aria-components` provides a Vue-tailored Tailwind variant plugin baseline.
 * `starters/vue` is a runnable Vue + Vite starter wired to the new package.
 * `MIGRATION_TO_VUE.md` describes the migration plan from existing React packages to Vue packages.
-* `VUE_MIGRATION_TRACKER.md` tracks package-by-package migration status and acceptance tests.
 * `migration/VUE_PUBLISH_CHECKLIST.md`, `migration/REACT_TO_VUE_MIGRATION_GUIDE.md`, and `migration/VUE_PACKAGE_ARCHITECTURE.md` track publish execution, consumer migration guidance, and package-layout rationale for the stabilization phase.
+* `migration/STORYBOOK_PARITY_PROGRESS.md` is the manual parity progression tracker for Storybook work.
 
 Use the starter from the repository root:
 
@@ -25,11 +25,10 @@ Use the starter from the repository root:
 yarn start:vue
 ```
 
-Regenerate and validate the migration tracker:
+Validate the Vue baseline:
 
 ```sh
-yarn vue:migration:report
-yarn vue:migration:test
+yarn typecheck:vue
 yarn test:vue
 ```
 
@@ -42,7 +41,6 @@ As of February 19, 2026, React package development in this repository is in main
 * New feature development should target Vue packages first.
 * React packages continue to accept security fixes, bug fixes, and critical compatibility updates.
 * Use `migration/REACT_TO_VUE_MIGRATION_GUIDE.md` for package replacement mappings.
-* Use `VUE_MIGRATION_TRACKER.md` for current package-by-package migration status.
 
 ### React Spectrum
 

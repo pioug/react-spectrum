@@ -5,14 +5,15 @@ This checklist defines the minimum release bar for promoting Vue migration packa
 ## Release gates
 
 1. Package API is documented in package README with examples and known limitations.
-2. `yarn vue:migration:test` passes with no skipped package acceptance checks.
-3. `yarn vue:migration:assert-complete` passes (all tracked migration entries remain `ported`).
-4. `yarn test:vue` passes for starter interaction coverage.
-5. Package has at least one interaction or behavior test in Vue test harness coverage.
-6. Migration tracker entry for the package has actionable notes and acceptance tests.
-7. Migration examples in `migration/REACT_TO_VUE_MIGRATION_GUIDE.md` are current for the package.
-8. Package versioning and changelog entry are prepared for public release.
-9. Aggregate packages (`vue-aria`, `vue-stately`) are validated for export coverage when package-level releases are prepared.
+2. `yarn typecheck:vue` passes for starter TypeScript coverage.
+3. `yarn test:vue` passes for starter interaction coverage.
+4. Storybook gaps are discovered by manual side-by-side review of React and Vue stories (structure, controls, states, and interactions), not inferred from parity scripts.
+5. React and Vue component internals are compared to confirm behavior/code-path equivalence for every fixed gap.
+6. Every parity fix adds or updates a component-level test to prevent regression.
+7. Progress/evidence is updated in `migration/STORYBOOK_PARITY_PROGRESS.md` for each component reviewed.
+8. Migration examples in `migration/REACT_TO_VUE_MIGRATION_GUIDE.md` are current for the package.
+9. Package versioning and changelog entry are prepared for public release.
+10. Aggregate packages (`vue-aria`, `vue-stately`) are validated for export coverage when package-level releases are prepared.
 
 ## Publish order
 
@@ -31,7 +32,7 @@ This checklist defines the minimum release bar for promoting Vue migration packa
 
 ## Current baseline evidence
 
-1. On February 19, 2026, `yarn vue:migration:test` passed with all active migration acceptance checks.
-2. On February 19, 2026, `yarn test:vue` passed in `starters/vue` with 181 passing tests.
-3. The CircleCI `vue-migration` job now enforces `yarn vue:migration:assert-complete` alongside tracker report and acceptance tests.
-4. Legacy parity scripts were removed in February 2026 because they were no longer reliable.
+1. On February 24, 2026, legacy parity and migration-tracker scripts were removed from active workflow.
+2. On February 24, 2026, `migration/STORYBOOK_PARITY_PROGRESS.md` was established as the manual progression log.
+3. On February 19, 2026, `yarn test:vue` passed in `starters/vue` with 181 passing tests.
+4. The CircleCI `vue-migration` job now enforces `yarn typecheck:vue` and `yarn test:vue`.

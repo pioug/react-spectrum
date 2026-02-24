@@ -8,7 +8,6 @@ As of February 19, 2026, this React package is in maintenance mode while Vue mig
 
 * Vue replacement package: `vue-aria` (plus the `@vue-aria/*` package set).
 * Migration guide: [`migration/REACT_TO_VUE_MIGRATION_GUIDE.md`](../../migration/REACT_TO_VUE_MIGRATION_GUIDE.md).
-* Current tracker: [`VUE_MIGRATION_TRACKER.md`](../../VUE_MIGRATION_TRACKER.md).
 
 ## Features
 

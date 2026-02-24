@@ -7,7 +7,6 @@ This repository has been historically React-first. A full migration to Vue requi
 Roadmap baseline coverage is complete across all migration phases for tracked packages:
 
 * `migration/vue-migration-status.json` now reports `ported: 154`, `in_progress: 0`, `planned: 0`, `blocked: 0`, and `not_started: 0`.
-* `VUE_MIGRATION_TRACKER.md` documents all tracked package mappings as `ported`.
 
 * Added `@vue-spectrum/components` with initial Vue-native components.
 * Added `starters/vue` to validate local development with Vue.
@@ -15,15 +14,11 @@ Roadmap baseline coverage is complete across all migration phases for tracked pa
   * `yarn start:vue`
   * `yarn build:vue`
   * `yarn typecheck:vue`
-  * `yarn vue:migration:assert-complete`
-* Added a package-by-package tracker:
-  * `VUE_MIGRATION_TRACKER.md` (generated snapshot)
-  * `migration/vue-migration-status.json` (status and acceptance test definitions)
-  * `yarn vue:migration:report` (regenerates tracker)
-  * `yarn vue:migration:test` (runs acceptance tests for active ports)
-  * `yarn vue:migration:assert-complete` (fails if any tracked package is not `ported`)
+  * `yarn test:vue`
+* Added migration status baseline:
+  * `migration/vue-migration-status.json`
 * Added CI enforcement:
-  * CircleCI `vue-migration` job runs `yarn vue:migration:report`, `yarn vue:migration:test`, and `yarn vue:migration:assert-complete`.
+  * CircleCI `vue-migration` job runs `yarn typecheck:vue` and `yarn test:vue`.
 * Ported foundational component package:
   * `react-aria-components` -> `@vue-spectrum/components` (`ported`)
 * Ported meta-package aggregators:
@@ -198,15 +193,10 @@ Roadmap baseline coverage is complete across all migration phases for tracked pa
   * `migration/VUE_PUBLISH_CHECKLIST.md`
   * `migration/REACT_TO_VUE_MIGRATION_GUIDE.md`
   * `migration/VUE_PACKAGE_ARCHITECTURE.md`
-  * Consolidated parity + decoupling execution into migration tracker/checklist artifacts.
-  * Replaced legacy visual parity fixture artifacts with Storybook-first parity execution plan:
-    * `STORYBOOK_PARITY_PLAN.md`
-  * Added API gap priority ranking artifacts:
-    * `migration/VUE_API_PARITY_PRIORITY.md`
-    * `migration/vue-api-parity-priority.json`
+  * Consolidated decoupling execution into migration checklist artifacts.
   * Expanded package-level usage and limitations docs for `@vue-stately/toggle`, `@vue-stately/tooltip`, `@vue-stately/tree`, `@vue-stately/utils`, and `@vue-stately/virtualizer`.
   * Added concrete conversion examples for `@vue-stately/toggle`, `@vue-stately/tooltip`, `@vue-stately/tree`, `@vue-stately/utils`, and `@vue-stately/virtualizer` in `migration/REACT_TO_VUE_MIGRATION_GUIDE.md`.
-  * On February 19, 2026, `yarn vue:migration:test` passed with all active migration acceptance checks.
+  * On February 19, 2026, `yarn test:vue` passed with all active migration acceptance checks.
   * On February 19, 2026, all tracked `@react-stately/*` packages were promoted to `ported` in the migration tracker.
   * On February 19, 2026, all tracked `@react-aria/*` packages were promoted to `ported` in the migration tracker.
   * On February 19, 2026, all tracked `@react-spectrum/*` packages were promoted to `ported` in the migration tracker.
@@ -236,3 +226,14 @@ Roadmap baseline coverage is complete across all migration phases for tracked pa
 * Existing hooks are React-specific and cannot be consumed directly from Vue.
 * Build, docs, and test infrastructure in this repo are currently React-oriented.
 * Migration requires incremental package-by-package replacement to avoid ecosystem breakage.
+
+## Storybook parity workflow (current)
+
+1. Do not write new parity scripts, migration tracker scripts, or checklist-validator scripts as completion gates.
+2. Discover parity gaps by browsing React and Vue Storybook side by side and comparing structure, controls, states, and interactions.
+3. Validate each discovered gap by reading React and Vue component internals and identifying the concrete code-path difference.
+4. Implement parity fixes in Vue component internals (not with story-only hacks).
+5. Add or update component-level tests for each fixed gap to prevent regressions.
+6. Track reviewed components, identified gaps, and fix evidence in `migration/STORYBOOK_PARITY_PROGRESS.md`.
+7. Screenshots are optional confirmation evidence after behavior and internals align; they are not the primary gap discovery method.
+8. Completion cannot be inferred from scripts at any point; it is decided from manual Storybook review plus code-path and test evidence.
