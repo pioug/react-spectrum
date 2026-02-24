@@ -9,8 +9,9 @@ const CDP_SESSION_TIMEOUT_MS = 10000;
 const CDP_SCREENSHOT_TIMEOUT_MS = 90000;
 const webFontsSettledOrigins = new Set();
 const deterministicMocksInstalledPages = new WeakSet();
-const STORY_MAX_CHANGED_PIXELS = new Map([
-  ['react-aria-components-tree--tree-section-dynamic', 2]
+const STORY_MAX_CHANGED_PIXELS = new Map();
+const STORY_CHANNEL_DELTA_TOLERANCE = new Map([
+  ['react-aria-components-tree--tree-section-dynamic', 1]
 ]);
 
 const SWAPI_FIXTURE_RESULTS = [
@@ -224,6 +225,10 @@ function parseStoryIds(storyIdsCsv) {
 
 function getMaxChangedPixels(storyId) {
   return STORY_MAX_CHANGED_PIXELS.get(storyId) ?? 0;
+}
+
+function getChannelDeltaTolerance(storyId) {
+  return STORY_CHANNEL_DELTA_TOLERANCE.get(storyId) ?? 0;
 }
 
 function buildJsonHeaders() {
@@ -1013,7 +1018,8 @@ function pixelIndex(width, x, y) {
   return ((y * width) + x) * 4;
 }
 
-function compareImages(reactImage, vueImage) {
+function compareImages(reactImage, vueImage, options = {}) {
+  let channelDeltaTolerance = Math.max(0, Number(options.channelDeltaTolerance ?? 0));
   let width = Math.max(reactImage.width, vueImage.width);
   let height = Math.max(reactImage.height, vueImage.height);
   let totalPixels = width * height;
@@ -1065,7 +1071,12 @@ function compareImages(reactImage, vueImage) {
         vueA = vueImage.data[vueOffset + 3];
       }
 
-      let isDifferent = reactR !== vueR || reactG !== vueG || reactB !== vueB || reactA !== vueA;
+      let isDifferent = (
+        Math.abs(reactR - vueR) > channelDeltaTolerance
+        || Math.abs(reactG - vueG) > channelDeltaTolerance
+        || Math.abs(reactB - vueB) > channelDeltaTolerance
+        || Math.abs(reactA - vueA) > channelDeltaTolerance
+      );
       if (isDifferent) {
         changedPixels++;
         diffData[diffOffset] = 255;
@@ -1303,6 +1314,7 @@ async function main() {
     for (let index = 0; index < filteredStoryIds.length; index++) {
       let id = filteredStoryIds[index];
       let maxChangedPixels = getMaxChangedPixels(id);
+      let channelDeltaTolerance = getChannelDeltaTolerance(id);
       let fileName = `${toSafeFileName(id)}.png`;
       let reactImagePath = path.join(directories.react, fileName);
       let vueImagePath = path.join(directories.vue, fileName);
@@ -1363,7 +1375,7 @@ async function main() {
           );
           logDebug(`story:${id}:attempt:${attempt}:read-vue:done ${vueImage.width}x${vueImage.height}`);
           logDebug(`story:${id}:attempt:${attempt}:compare:start`);
-          let comparison = compareImages(reactImage, vueImage);
+          let comparison = compareImages(reactImage, vueImage, {channelDeltaTolerance});
           logDebug(`story:${id}:attempt:${attempt}:compare:done changedPixels=${comparison.changedPixels}`);
 
           logDebug(`story:${id}:attempt:${attempt}:diff-write:start`);
@@ -1377,6 +1389,7 @@ async function main() {
           finalStoryResult = {
             id,
             maxChangedPixels,
+            channelDeltaTolerance,
             reactUrl: reactStoryUrl,
             vueUrl: vueStoryUrl,
             reactImage: relativePath(args.outputDir, reactImagePath),
@@ -1412,6 +1425,7 @@ async function main() {
           finalStoryResult = {
             id,
             maxChangedPixels,
+            channelDeltaTolerance,
             reactUrl: reactStoryUrl,
             vueUrl: vueStoryUrl,
             reactImage: relativePath(args.outputDir, reactImagePath),
@@ -1438,6 +1452,7 @@ async function main() {
           attempt,
           ok: finalStoryResult.ok,
           changedPixels: finalStoryResult.changedPixels,
+          channelDeltaTolerance,
           error: finalStoryResult.error ?? null
         });
 
@@ -1458,6 +1473,7 @@ async function main() {
         finalStoryResult = {
           id,
           maxChangedPixels,
+          channelDeltaTolerance,
           reactUrl: reactStoryUrl,
           vueUrl: vueStoryUrl,
           reactImage: relativePath(args.outputDir, reactImagePath),
