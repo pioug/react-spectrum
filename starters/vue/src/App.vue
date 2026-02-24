@@ -25,7 +25,7 @@
         <p class="eyebrow">Vue Migration Baseline</p>
         <h1>Vue Spectrum Starter</h1>
         <p class="lead">
-          This starter uses <code>@vue-spectrum/components</code> from this monorepo.
+          This starter uses <code>vue-aria-components</code> from this monorepo.
         </p>
         <VueText variant="detail">
           Typography baseline is now provided by <code>@vue-spectrum/text</code>.

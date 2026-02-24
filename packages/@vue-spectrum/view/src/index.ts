@@ -1,4 +1,4 @@
-import {VueView} from '@vue-spectrum/components';
+import {VueView} from 'vue-aria-components';
 
 export const View = VueView;
 export const Header = VueView;

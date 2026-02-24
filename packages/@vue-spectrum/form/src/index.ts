@@ -2,7 +2,7 @@ import '@adobe/spectrum-css-temp/components/fieldlabel/vars.css';
 import type {Alignment, LabelPosition, SpectrumLabelableProps} from '@vue-types/shared';
 import {computed, type ComputedRef, defineComponent, h, inject, type InjectionKey, type PropType, provide} from 'vue';
 import type {SpectrumFormProps} from '@vue-types/form';
-import {VueForm} from '@vue-spectrum/components';
+import {VueForm} from 'vue-aria-components';
 
 type FormContextValue = Partial<Pick<SpectrumLabelableProps, 'labelAlign' | 'labelPosition' | 'necessityIndicator'>> & {
   validationBehavior?: 'aria' | 'native'

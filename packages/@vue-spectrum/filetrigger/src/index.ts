@@ -1,4 +1,4 @@
-import {VueFileTrigger} from '@vue-spectrum/components';
+import {VueFileTrigger} from 'vue-aria-components';
 
 export const FileTrigger = VueFileTrigger;
 export {VueFileTrigger};

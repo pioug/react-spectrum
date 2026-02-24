@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@adobe/spectrum-css-temp": "3.0.0-alpha.1",
-    "@vue-spectrum/components": "workspace:*",
-    "@vue-types/buttongroup": "^3.3.22"
+    "@vue-types/buttongroup": "^3.3.22",
+    "vue-aria-components": "workspace:*"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

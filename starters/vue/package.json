@@ -83,7 +83,6 @@
     "@vue-spectrum/checkbox": "workspace:*",
     "@vue-spectrum/color": "workspace:*",
     "@vue-spectrum/combobox": "workspace:*",
-    "@vue-spectrum/components": "workspace:*",
     "@vue-spectrum/contextualhelp": "workspace:*",
     "@vue-spectrum/datepicker": "workspace:*",
     "@vue-spectrum/dialog": "workspace:*",
@@ -166,7 +165,8 @@
     "@vue-stately/tree": "workspace:*",
     "@vue-stately/utils": "workspace:*",
     "@vue-stately/virtualizer": "workspace:*",
-    "vue": "^3.5.13"
+    "vue": "^3.5.13",
+    "vue-aria-components": "workspace:*"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "8.6.14",

@@ -23,9 +23,9 @@
     "url": "https://github.com/adobe/react-spectrum"
   },
   "dependencies": {
-    "@vue-spectrum/components": "workspace:*",
     "@vue-types/layout": "^3.3.28",
-    "@vue-types/shared": "^3.33.0"
+    "@vue-types/shared": "^3.33.0",
+    "vue-aria-components": "workspace:*"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

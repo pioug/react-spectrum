@@ -7,7 +7,7 @@ import type {
   ProviderProps as ReactProviderProps
 } from '@vue-types/provider';
 import {computed, type ComputedRef, defineComponent, h, inject, type InjectionKey, type PropType, provide} from 'vue';
-import {type SpectrumContextValue, VueSpectrumProvider} from '@vue-spectrum/components';
+import {type SpectrumContextValue, VueSpectrumProvider} from 'vue-aria-components';
 
 type ThemeSectionLike = {
   className?: string,

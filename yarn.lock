@@ -12433,8 +12433,8 @@ __metadata:
   resolution: "@vue-spectrum/badge@workspace:packages/@vue-spectrum/badge"
   dependencies:
     "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
-    "@vue-spectrum/components": "workspace:*"
     "@vue-types/badge": "npm:^3.1.22"
+    vue-aria-components: "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12470,8 +12470,8 @@ __metadata:
   resolution: "@vue-spectrum/buttongroup@workspace:packages/@vue-spectrum/buttongroup"
   dependencies:
     "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
-    "@vue-spectrum/components": "workspace:*"
     "@vue-types/buttongroup": "npm:^3.3.22"
+    vue-aria-components: "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12541,14 +12541,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@vue-spectrum/components@workspace:*, @vue-spectrum/components@workspace:packages/@vue-spectrum/components":
-  version: 0.0.0-use.local
-  resolution: "@vue-spectrum/components@workspace:packages/@vue-spectrum/components"
-  peerDependencies:
-    vue: ^3.4.0
-  languageName: unknown
-  linkType: soft
-
 "@vue-spectrum/contextualhelp@workspace:*, @vue-spectrum/contextualhelp@workspace:packages/@vue-spectrum/contextualhelp":
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/contextualhelp@workspace:packages/@vue-spectrum/contextualhelp"
@@ -12592,8 +12584,8 @@ __metadata:
   resolution: "@vue-spectrum/divider@workspace:packages/@vue-spectrum/divider"
   dependencies:
     "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
-    "@vue-spectrum/components": "workspace:*"
     "@vue-types/divider": "npm:^3.3.22"
+    vue-aria-components: "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12603,7 +12595,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/dnd@workspace:packages/@vue-spectrum/dnd"
   dependencies:
-    "@vue-spectrum/components": "workspace:*"
+    vue-aria-components: "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12624,7 +12616,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/filetrigger@workspace:packages/@vue-spectrum/filetrigger"
   dependencies:
-    "@vue-spectrum/components": "workspace:*"
+    vue-aria-components: "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12635,7 +12627,7 @@ __metadata:
   resolution: "@vue-spectrum/form@workspace:packages/@vue-spectrum/form"
   dependencies:
     "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
-    "@vue-spectrum/components": "workspace:*"
+    vue-aria-components: "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12704,7 +12696,7 @@ __metadata:
   resolution: "@vue-spectrum/labeledvalue@workspace:packages/@vue-spectrum/labeledvalue"
   dependencies:
     "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
-    "@vue-spectrum/components": "workspace:*"
+    vue-aria-components: "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12714,9 +12706,9 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/layout@workspace:packages/@vue-spectrum/layout"
   dependencies:
-    "@vue-spectrum/components": "workspace:*"
     "@vue-types/layout": "npm:^3.3.28"
     "@vue-types/shared": "npm:^3.33.0"
+    vue-aria-components: "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12834,8 +12826,8 @@ __metadata:
   resolution: "@vue-spectrum/provider@workspace:packages/@vue-spectrum/provider"
   dependencies:
     "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
-    "@vue-spectrum/components": "workspace:*"
     "@vue-spectrum/theme-default": "workspace:*"
+    vue-aria-components: "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12998,7 +12990,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/text@workspace:packages/@vue-spectrum/text"
   dependencies:
-    "@vue-spectrum/components": "workspace:*"
+    vue-aria-components: "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -13101,7 +13093,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/view@workspace:packages/@vue-spectrum/view"
   dependencies:
-    "@vue-spectrum/components": "workspace:*"
+    vue-aria-components: "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -13112,8 +13104,8 @@ __metadata:
   resolution: "@vue-spectrum/well@workspace:packages/@vue-spectrum/well"
   dependencies:
     "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
-    "@vue-spectrum/components": "workspace:*"
     "@vue-types/well": "npm:^3.3.22"
+    vue-aria-components: "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -32911,6 +32903,14 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vue-aria-components@workspace:*, vue-aria-components@workspace:packages/vue-aria-components":
+  version: 0.0.0-use.local
+  resolution: "vue-aria-components@workspace:packages/vue-aria-components"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "vue-component-meta@npm:^2.0.0":
   version: 2.2.12
   resolution: "vue-component-meta@npm:2.2.12"
@@ -33051,7 +33051,6 @@ __metadata:
     "@vue-spectrum/checkbox": "workspace:*"
     "@vue-spectrum/color": "workspace:*"
     "@vue-spectrum/combobox": "workspace:*"
-    "@vue-spectrum/components": "workspace:*"
     "@vue-spectrum/contextualhelp": "workspace:*"
     "@vue-spectrum/datepicker": "workspace:*"
     "@vue-spectrum/dialog": "workspace:*"
@@ -33141,6 +33140,7 @@ __metadata:
     vite: "npm:^5.4.19"
     vitest: "npm:^2.1.9"
     vue: "npm:^3.5.13"
+    vue-aria-components: "workspace:*"
     vue-tsc: "npm:^2.2.0"
   languageName: unknown
   linkType: soft

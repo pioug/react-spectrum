@@ -1,6 +1,6 @@
 import './flex-gap.css';
 import type {DimensionValue} from '@vue-types/shared';
-import {VueFlex, VueGrid} from '@vue-spectrum/components';
+import {VueFlex, VueGrid} from 'vue-aria-components';
 
 export const Flex = VueFlex;
 export const Grid = VueGrid;

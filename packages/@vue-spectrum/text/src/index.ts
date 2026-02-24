@@ -1,4 +1,4 @@
-import {VueText} from '@vue-spectrum/components';
+import {VueText} from 'vue-aria-components';
 
 export const Text = VueText;
 export const Heading = VueText;

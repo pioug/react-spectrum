@@ -6,7 +6,7 @@ Over 50 components with built-in behavior, adaptive interactions, top-tier acces
 
 As of February 19, 2026, this React package is in maintenance mode while Vue migration ports continue.
 
-* Vue replacement package: `@vue-spectrum/components`.
+* Vue replacement package: `vue-aria-components`.
 * Migration guide: [`MIGRATION_TO_VUE.md`](../../MIGRATION_TO_VUE.md).
 
 ## Features

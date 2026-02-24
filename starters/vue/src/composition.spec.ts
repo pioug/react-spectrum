@@ -140,7 +140,7 @@ import {Dialog} from '@vue-spectrum/dialog';
 import {ListView} from '@vue-spectrum/list';
 import {Menu} from '@vue-spectrum/menu';
 import {Popover} from '@vue-spectrum/overlays';
-import {VueButton, VueSpectrumPlugin, VueSpectrumProvider, VueTextField, VueTree} from '@vue-spectrum/components';
+import {VueButton, VueSpectrumPlugin, VueSpectrumProvider, VueTextField, VueTree} from 'vue-aria-components';
 import {Button as S2Button, Provider as S2Provider, Spectrum2Plugin, TextField as S2TextField, TreeView as S2TreeView} from '@vue-spectrum/s2';
 import {baseColor as baseS1Color, focusRing as s1FocusRing, keyframes as s1Keyframes, lightDark as s1LightDark, raw as s1Raw, style as s1Style} from '@vue-spectrum/style-macro-s1';
 import {ErrorBoundary as StoryUtilsErrorBoundary, generatePowerset as generateStoryPowerset} from '@vue-spectrum/story-utils';

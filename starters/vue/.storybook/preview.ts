@@ -6,7 +6,7 @@ import {theme as defaultTheme} from '@vue-spectrum/theme-default';
 import {theme as darkTheme} from '@vue-spectrum/theme-dark';
 import {theme as expressTheme} from '@vue-spectrum/theme-express';
 import {theme as lightTheme} from '@vue-spectrum/theme-light';
-import '@vue-spectrum/components/styles.css';
+import 'vue-aria-components/styles.css';
 import '../../../packages/react-aria-components/stories/styles.css';
 import '../../../packages/react-aria-components/example/index.css';
 

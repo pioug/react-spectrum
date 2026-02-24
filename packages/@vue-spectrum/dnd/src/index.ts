@@ -1,4 +1,4 @@
-import {VueDropZone} from '@vue-spectrum/components';
+import {VueDropZone} from 'vue-aria-components';
 
 export const DropZone = VueDropZone;
 export {VueDropZone};

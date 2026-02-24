@@ -1,5 +1,5 @@
 import '@adobe/spectrum-css-temp/components/fieldlabel/vars.css';
-import {VueLabeledValue} from '@vue-spectrum/components';
+import {VueLabeledValue} from 'vue-aria-components';
 
 export const LabeledValue = VueLabeledValue;
 export {VueLabeledValue};
