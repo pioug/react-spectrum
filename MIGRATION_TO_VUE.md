@@ -16,6 +16,17 @@
 5. Add or update component tests for every fixed gap.
 6. Record reviewed scope, gaps, and evidence in the component fix PR/commit notes.
 
+## Style handling policy (required)
+
+1. Style source of truth priority:
+   1. `@adobe/spectrum-css-temp` component and vars styles.
+   2. Existing React package-local styles when needed for parity.
+   3. Vue-local styles only for Vue-only DOM that has no React equivalent.
+2. Vue components should keep React/Spectrum class structure and class names where feasible.
+3. Prefer wiring Vue components to existing React/Spectrum style modules instead of duplicating CSS.
+4. Do not create Vue-only duplicate style files when an equivalent React/Spectrum stylesheet already exists.
+5. When fixing style gaps, include tests for style-state behavior (e.g. focus, hover, pressed, disabled, pending) so regressions are caught.
+
 ## Validation for each component fix
 
 1. `yarn typecheck:vue`
