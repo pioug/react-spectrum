@@ -1,4 +1,5 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
+import {computed, ref} from 'vue';
 import '../../../react-aria-components/stories/styles.css';
 
 const meta = {
@@ -49,21 +50,72 @@ export const SelectSupport: ToolbarStory = {
     orientation: 'horizontal'
   },
   render: () => ({
+    setup() {
+      let selectedAnimal = ref('');
+      let isOpen = ref(false);
+      let pressed = ref({
+        bold: false,
+        italic: false,
+        underline: false
+      });
+      let animals = ['Aardvark', 'Cat', 'Dog', 'Kangaroo', 'Panda', 'Snake'];
+      let selectText = computed(() => selectedAnimal.value || 'Select an item');
+      let selectPlaceholder = computed(() => (selectedAnimal.value ? null : 'true'));
+
+      let toggleStyle = (style: 'bold' | 'italic' | 'underline') => {
+        pressed.value[style] = !pressed.value[style];
+      };
+
+      let toggleOpen = () => {
+        isOpen.value = !isOpen.value;
+      };
+
+      let selectAnimal = (animal: string) => {
+        selectedAnimal.value = animal;
+        isOpen.value = false;
+      };
+
+      return {
+        animals,
+        isOpen,
+        pressed,
+        selectedAnimal,
+        selectAnimal,
+        selectPlaceholder,
+        selectText,
+        toggleOpen,
+        toggleStyle
+      };
+    },
     template: `
       <div class="react-aria-Toolbar" data-rac="" aria-label="Text formatting" role="toolbar" aria-orientation="horizontal" data-orientation="horizontal" style="display: flex; flex-wrap: wrap; gap: 20px; flex-direction: row;">
         <div aria-label="Style" class="react-aria-Group" data-rac="" role="group">
-          <button class="react-aria-ToggleButton" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" aria-label="Bold" aria-pressed="false"><b>B</b></button>
-          <button class="react-aria-ToggleButton" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" aria-label="Italic" aria-pressed="false"><i>I</i></button>
-          <button class="react-aria-ToggleButton" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" aria-label="Underline" aria-pressed="false"><u>U</u></button>
+          <button class="react-aria-ToggleButton" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" aria-label="Bold" :aria-pressed="String(pressed.bold)" @click="toggleStyle('bold')"><b>B</b></button>
+          <button class="react-aria-ToggleButton" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" aria-label="Italic" :aria-pressed="String(pressed.italic)" @click="toggleStyle('italic')"><i>I</i></button>
+          <button class="react-aria-ToggleButton" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" aria-label="Underline" :aria-pressed="String(pressed.underline)" @click="toggleStyle('underline')"><u>U</u></button>
         </div>
         <div role="separator" aria-orientation="vertical" class="react-aria-Separator"></div>
         <template data-react-aria-hidden="true"></template>
         <div class="react-aria-Select" data-rac="">
           <span class="react-aria-Label">Favorite Animal</span>
-          <button class="react-aria-Button" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" aria-haspopup="listbox" aria-expanded="false">
-            <span class="react-aria-SelectValue" data-rac="" data-placeholder="true">Select an item</span>
+          <button class="react-aria-Button" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" aria-haspopup="listbox" :aria-expanded="String(isOpen)" @click="toggleOpen">
+            <span class="react-aria-SelectValue" data-rac="" :data-placeholder="selectPlaceholder">{{ selectText }}</span>
             <span aria-hidden="true">▼</span>
           </button>
+          <div v-if="isOpen" class="react-aria-Popover" data-rac="" data-trigger="Select" style="position: absolute; z-index: 5; max-height: 355px; background: Canvas; color: CanvasText; border: 1px solid gray;">
+            <div class="react-aria-ListBox" data-rac="" role="listbox">
+              <div
+                v-for="animal in animals"
+                :key="animal"
+                class="react-aria-ListBoxItem"
+                data-rac=""
+                role="option"
+                :aria-selected="String(selectedAnimal === animal)"
+                @click="selectAnimal(animal)">
+                {{ animal }}
+              </div>
+            </div>
+          </div>
         </div>
         <div role="separator" aria-orientation="vertical" class="react-aria-Separator"></div>
         <div aria-label="Clipboard" class="react-aria-Group" data-rac="" role="group">

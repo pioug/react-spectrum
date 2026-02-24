@@ -1,8 +1,8 @@
 {
   "reactUrl": "http://127.0.0.1:9003",
   "vueUrl": "http://127.0.0.1:6106",
-  "totalScenarios": 34,
-  "passingScenarios": 34,
+  "totalScenarios": 35,
+  "passingScenarios": 35,
   "failingScenarios": 0,
   "ok": true,
   "results": [
@@ -464,6 +464,32 @@
         "tooltipVisibleAfterBlur": false,
         "tooltipVisibleAfterFocus": true,
         "tooltipVisibleBeforeFocus": false
+      },
+      "diff": {},
+      "error": null
+    },
+    {
+      "id": "react-aria-components-toolbar--select-support",
+      "ok": true,
+      "react": {
+        "ariaExpandedAfterOpen": "true",
+        "ariaExpandedAfterSelection": "false",
+        "boldPressedAfter": "true",
+        "boldPressedBefore": "false",
+        "optionCountAfterOpen": 6,
+        "selectPlaceholderAfter": null,
+        "selectPlaceholderBefore": "true",
+        "selectValueTextAfterSelection": "Dog"
+      },
+      "vue": {
+        "ariaExpandedAfterOpen": "true",
+        "ariaExpandedAfterSelection": "false",
+        "boldPressedAfter": "true",
+        "boldPressedBefore": "false",
+        "optionCountAfterOpen": 6,
+        "selectPlaceholderAfter": null,
+        "selectPlaceholderBefore": "true",
+        "selectValueTextAfterSelection": "Dog"
       },
       "diff": {},
       "error": null

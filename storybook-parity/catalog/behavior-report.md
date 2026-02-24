@@ -2,8 +2,8 @@
 
 - React URL: http://127.0.0.1:9003
 - Vue URL: http://127.0.0.1:6106
-- Scenarios: 34
-- Passing: 34
+- Scenarios: 35
+- Passing: 35
 - Failing: 0
 - Result: pass
 
@@ -35,6 +35,7 @@
 - PASS `react-aria-components-tree--tree-section-dynamic`
 - PASS `react-aria-components-popover--popover-example`
 - PASS `react-aria-components-tooltip--tooltip-example`
+- PASS `react-aria-components-toolbar--select-support`
 - PASS `react-aria-components-menu--menu-example`
 - PASS `react-aria-components-menu--submenu-example`
 - PASS `react-aria-components-menu--submenu-sections-example`

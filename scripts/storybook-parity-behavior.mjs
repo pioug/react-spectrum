@@ -1130,6 +1130,73 @@ let scenarios = [
     }
   },
   {
+    id: 'react-aria-components-toolbar--select-support',
+    async run(page) {
+      let boldButton = await waitForFirstVisibleLocator(page, [
+        'button[aria-label="Bold"]',
+        'button:has-text("B")'
+      ], 10000);
+
+      if (!boldButton) {
+        throw new Error('Unable to find toolbar bold button.');
+      }
+
+      let selectTrigger = await waitForFirstVisibleLocator(page, [
+        'button[aria-haspopup="listbox"]'
+      ], 10000);
+
+      if (!selectTrigger) {
+        throw new Error('Unable to find toolbar select trigger.');
+      }
+
+      let selectValue = await waitForFirstVisibleLocator(page, [
+        '.react-aria-SelectValue'
+      ], 10000);
+
+      if (!selectValue) {
+        throw new Error('Unable to find toolbar select value content.');
+      }
+
+      let boldPressedBefore = await boldButton.getAttribute('aria-pressed');
+      await boldButton.click();
+      await page.waitForTimeout(100);
+      let boldPressedAfter = await boldButton.getAttribute('aria-pressed');
+
+      let selectPlaceholderBefore = await selectValue.getAttribute('data-placeholder');
+      await selectTrigger.click();
+      await page.waitForTimeout(120);
+
+      let optionCountAfterOpen = await page.locator('[role="option"]').count();
+      let ariaExpandedAfterOpen = await selectTrigger.getAttribute('aria-expanded');
+
+      if (optionCountAfterOpen === 0) {
+        throw new Error('Toolbar select did not render any options after open.');
+      }
+
+      let dogOption = page.locator('[role="option"]', {hasText: 'Dog'}).first();
+      let optionToSelect = await dogOption.count() > 0
+        ? dogOption
+        : page.locator('[role="option"]').first();
+      await optionToSelect.click();
+      await page.waitForTimeout(120);
+
+      let ariaExpandedAfterSelection = await selectTrigger.getAttribute('aria-expanded');
+      let selectValueTextAfterSelection = normalizeText(await selectValue.innerText());
+      let selectPlaceholderAfter = await selectValue.getAttribute('data-placeholder');
+
+      return {
+        ariaExpandedAfterOpen,
+        ariaExpandedAfterSelection,
+        boldPressedAfter,
+        boldPressedBefore,
+        optionCountAfterOpen,
+        selectPlaceholderAfter,
+        selectPlaceholderBefore,
+        selectValueTextAfterSelection
+      };
+    }
+  },
+  {
     id: 'react-aria-components-menu--menu-example',
     async run(page) {
       let items = page.locator('[role^="menuitem"]');
