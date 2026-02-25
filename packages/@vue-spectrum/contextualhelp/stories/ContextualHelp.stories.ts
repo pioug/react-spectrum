@@ -42,27 +42,71 @@ export const Default: Story = {
     setup() {
       return {args};
     },
-    template: '<ContextualHelp v-bind="args">Example</ContextualHelp>'
+    template: `
+      <ContextualHelp v-bind="args">
+        <h3 style="margin: 0 0 8px 0;">Help title</h3>
+        <p style="margin: 0;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus.</p>
+      </ContextualHelp>
+    `
   })
 };
 
-export const CustomLabel: Story = {
-  ...Default,
-  args: {
-    label: 'More info'
-  }
+export const WithLink: Story = {
+  render: (args) => ({
+    components: {ContextualHelp},
+    setup() {
+      return {args};
+    },
+    template: `
+      <ContextualHelp v-bind="args">
+        <h3 style="margin: 0 0 8px 0;">Help title</h3>
+        <p style="margin: 0;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus.</p>
+        <template #footer>
+          <a href="https://react-spectrum.adobe.com" target="_blank" rel="noreferrer">Learn more</a>
+        </template>
+      </ContextualHelp>
+    `
+  }),
+  name: 'with link'
 };
 
-export const Disabled: Story = {
-  ...Default,
+export const WithButton: Story = {
   args: {
-    disabled: true
-  }
+    variant: 'help'
+  },
+  render: (args) => ({
+    components: {ContextualHelp},
+    setup() {
+      return {args};
+    },
+    template: `
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button type="button" disabled>Create</button>
+        <ContextualHelp v-bind="args" class="foo">
+          <h3 style="margin: 0 0 8px 0;">Help title</h3>
+          <p style="margin: 0;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus.</p>
+        </ContextualHelp>
+      </div>
+    `
+  }),
+  name: 'with button'
 };
 
-export const AlternateLabel: Story = {
-  ...Default,
-  args: {
-    label: 'Alternate label'
-  }
+export const AriaLabelledyBy: Story = {
+  render: (args) => ({
+    components: {ContextualHelp},
+    setup() {
+      return {args};
+    },
+    template: `
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <div id="foo">I label the contextual help button</div>
+        <ContextualHelp v-bind="args" aria-labelledby="foo">
+          <h3 style="margin: 0 0 8px 0;">Help title</h3>
+          <p style="margin: 0;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus.</p>
+        </ContextualHelp>
+      </div>
+    `
+  }),
+  name: 'aria-labelledyby'
 };
