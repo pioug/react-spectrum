@@ -2266,6 +2266,27 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('change')?.[0]).toEqual(['2026-03-01']);
   });
 
+  it('supports calendar compatibility aliases for value and bounds', async () => {
+    let onChange = vi.fn();
+    let wrapper = mount(Calendar, {
+      props: {
+        defaultValue: {year: 2026, month: 3, day: 15},
+        minValue: new Date(2026, 2, 10),
+        maxValue: '2026-03-20',
+        onChange
+      }
+    });
+
+    expect(wrapper.find('.spectrum-Calendar-date.is-selected').exists()).toBe(true);
+    let input = wrapper.get('input[type="date"]');
+    expect(input.attributes('min')).toBe('2026-03-10');
+    expect(input.attributes('max')).toBe('2026-03-20');
+
+    await input.setValue('2026-03-18');
+    expect(wrapper.emitted('update:value')?.[0]).toEqual(['2026-03-18']);
+    expect(onChange).toHaveBeenCalledWith('2026-03-18');
+  });
+
   it('applies spectrum calendar state classes for selected and unavailable dates', () => {
     let wrapper = mount(Calendar, {
       props: {
@@ -2278,6 +2299,17 @@ describe('Vue migration primitives', () => {
     expect(wrapper.find('.spectrum-Calendar-date.is-selected').exists()).toBe(true);
     expect(wrapper.find('.spectrum-Calendar-date.is-unavailable').exists()).toBe(true);
     expect(wrapper.attributes('aria-label')).toBe('Calendar');
+  });
+
+  it('marks custom unavailable dates from isDateUnavailable in calendar', () => {
+    let wrapper = mount(Calendar, {
+      props: {
+        defaultValue: '2026-03-15',
+        isDateUnavailable: (date: Date) => date.getDay() === 0 || date.getDay() === 6
+      }
+    });
+
+    expect(wrapper.find('.spectrum-Calendar-date.is-unavailable').exists()).toBe(true);
   });
 
   it('propagates v-model through range calendar inputs', async () => {
@@ -2300,6 +2332,35 @@ describe('Vue migration primitives', () => {
     expect((wrapper.vm as unknown as {range: {start: string, end: string}}).range).toEqual({
       start: '2026-03-01',
       end: '2026-03-05'
+    });
+  });
+
+  it('supports range calendar compatibility aliases for value and bounds', async () => {
+    let onChange = vi.fn();
+    let wrapper = mount(RangeCalendar, {
+      props: {
+        defaultValue: {
+          start: {year: 2026, month: 3, day: 10},
+          end: {year: 2026, month: 3, day: 14}
+        },
+        minValue: new Date(2026, 2, 1),
+        maxValue: '2026-03-20',
+        onChange
+      }
+    });
+
+    let inputs = wrapper.findAll('input[type="date"]');
+    expect(inputs[0].attributes('min')).toBe('2026-03-01');
+    expect(inputs[1].attributes('max')).toBe('2026-03-20');
+
+    await inputs[1].setValue('2026-03-16');
+    expect(wrapper.emitted('update:value')?.[0]?.[0]).toEqual({
+      start: '2026-03-10',
+      end: '2026-03-16'
+    });
+    expect(onChange).toHaveBeenCalledWith({
+      start: '2026-03-10',
+      end: '2026-03-16'
     });
   });
 

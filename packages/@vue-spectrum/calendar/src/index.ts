@@ -11,11 +11,24 @@ type DateRangeValue = {
   start: string
 };
 
+type CalendarInputValue = Date | {
+  day: number,
+  month: number,
+  toString?: () => string,
+  year: number
+} | string | undefined | null;
+
+type RangeInputValue = {
+  end?: CalendarInputValue,
+  start?: CalendarInputValue
+} | undefined | null;
+
 type MonthRenderOptions = {
   disabled: boolean,
   firstDayIndex: number,
   focusedKey: string | null,
   hoveredKey: string | null,
+  isDateUnavailable: (date: Date) => boolean,
   isDateSelected: (date: Date) => boolean,
   isRangeEnd: (date: Date) => boolean,
   isRangeSelection: boolean,
@@ -71,6 +84,46 @@ function parseDateValue(value: string): Date | null {
   }
 
   return parsed;
+}
+
+function toDateString(value: CalendarInputValue): string {
+  if (value == null) {
+    return '';
+  }
+
+  if (typeof value === 'string') {
+    let match = value.match(/\d{4}-\d{2}-\d{2}/);
+    return match?.[0] ?? '';
+  }
+
+  if (value instanceof Date) {
+    return Number.isNaN(value.getTime()) ? '' : formatDateValue(value);
+  }
+
+  if (typeof value === 'object') {
+    if (
+      typeof value.year === 'number'
+      && typeof value.month === 'number'
+      && typeof value.day === 'number'
+    ) {
+      return `${value.year}-${padDatePart(value.month)}-${padDatePart(value.day)}`;
+    }
+
+    if (typeof value.toString === 'function') {
+      let stringValue = value.toString();
+      let match = stringValue.match(/\d{4}-\d{2}-\d{2}/);
+      return match?.[0] ?? '';
+    }
+  }
+
+  return '';
+}
+
+function normalizeDateRangeValue(value: RangeInputValue): DateRangeValue {
+  return {
+    start: toDateString(value?.start),
+    end: toDateString(value?.end)
+  };
 }
 
 function startOfMonth(date: Date): Date {
@@ -193,8 +246,9 @@ function renderCalendarMonth(options: MonthRenderOptions) {
       let dayKey = dateKeyFormatter(day);
       let isOutsideMonth = !isSameMonth(day, options.monthStart);
       let isWithinBounds = isDateWithinBounds(day, options.minDate, options.maxDate);
-      let isDisabled = options.disabled || isOutsideMonth || !isWithinBounds;
-      let isUnavailable = !isOutsideMonth && !isWithinBounds;
+      let isCustomUnavailable = !isOutsideMonth && options.isDateUnavailable(day);
+      let isUnavailable = !isOutsideMonth && (!isWithinBounds || isCustomUnavailable);
+      let isDisabled = options.disabled || isOutsideMonth || isUnavailable;
       let isSelected = options.isDateSelected(day);
       let isToday = isSameDay(day, new Date());
 
@@ -312,6 +366,14 @@ export const VueCalendar = defineComponent({
       type: String,
       default: ''
     },
+    defaultFocusedValue: {
+      type: [String, Object, Date] as PropType<CalendarInputValue>,
+      default: undefined
+    },
+    defaultValue: {
+      type: [String, Object, Date] as PropType<CalendarInputValue>,
+      default: undefined
+    },
     disabled: {
       type: Boolean,
       default: false
@@ -324,6 +386,18 @@ export const VueCalendar = defineComponent({
       type: String as PropType<FirstDayOfWeek>,
       default: 'sun'
     },
+    focusedValue: {
+      type: [String, Object, Date] as PropType<CalendarInputValue>,
+      default: undefined
+    },
+    isDateUnavailable: {
+      type: Function as PropType<(date: Date) => boolean>,
+      default: undefined
+    },
+    isDisabled: {
+      type: Boolean,
+      default: undefined
+    },
     label: {
       type: String,
       default: ''
@@ -332,13 +406,33 @@ export const VueCalendar = defineComponent({
       type: String,
       default: ''
     },
+    maxValue: {
+      type: [String, Object, Date] as PropType<CalendarInputValue>,
+      default: undefined
+    },
     min: {
       type: String,
       default: ''
     },
+    minValue: {
+      type: [String, Object, Date] as PropType<CalendarInputValue>,
+      default: undefined
+    },
     modelValue: {
-      type: String,
-      default: ''
+      type: [String, Object, Date] as PropType<CalendarInputValue>,
+      default: undefined
+    },
+    onChange: {
+      type: Function as PropType<(value: string) => void>,
+      default: undefined
+    },
+    onFocusChange: {
+      type: Function as PropType<(value: string | null) => void>,
+      default: undefined
+    },
+    value: {
+      type: [String, Object, Date] as PropType<CalendarInputValue>,
+      default: undefined
     },
     visibleMonths: {
       type: Number,
@@ -347,29 +441,62 @@ export const VueCalendar = defineComponent({
   },
   emits: {
     change: (value: string) => typeof value === 'string',
+    focusChange: (value: string | null) => value == null || typeof value === 'string',
+    'update:value': (value: string) => typeof value === 'string',
     'update:modelValue': (value: string) => typeof value === 'string'
   },
   setup(props, {attrs, emit}) {
-    let selectedDate = computed(() => parseDateValue(props.modelValue));
-    let minDate = computed(() => parseDateValue(props.min));
-    let maxDate = computed(() => parseDateValue(props.max));
+    let isControlled = computed(() => props.value !== undefined || props.modelValue !== undefined);
+    let controlledValue = computed(() => toDateString(props.value ?? props.modelValue));
+    let uncontrolledValue = ref(toDateString(props.defaultValue));
 
-    let visibleMonthStart = ref(startOfMonth(selectedDate.value ?? new Date()));
-    watch(() => props.modelValue, (nextValue) => {
-      let parsed = parseDateValue(nextValue);
-      if (parsed) {
-        visibleMonthStart.value = startOfMonth(parsed);
+    watch(controlledValue, (nextValue) => {
+      if (isControlled.value) {
+        uncontrolledValue.value = nextValue;
       }
-    });
+    }, {immediate: true});
+
+    let selectedValue = computed(() => isControlled.value ? controlledValue.value : uncontrolledValue.value);
+    let selectedDate = computed(() => parseDateValue(selectedValue.value));
+
+    let minValue = computed(() => toDateString(props.minValue) || toDateString(props.min));
+    let maxValue = computed(() => toDateString(props.maxValue) || toDateString(props.max));
+    let minDate = computed(() => parseDateValue(minValue.value));
+    let maxDate = computed(() => parseDateValue(maxValue.value));
 
     let firstDayIndex = computed(() => firstDayIndexByCode[props.firstDayOfWeek] ?? firstDayIndexByCode.sun);
     let visibleMonths = computed(() => Math.max(1, props.visibleMonths));
+    let initialVisibleDate = parseDateValue(toDateString(props.defaultFocusedValue)) ?? selectedDate.value ?? new Date();
+    let visibleMonthStart = ref(startOfMonth(initialVisibleDate));
     let monthStarts = computed(() => [...new Array(visibleMonths.value).keys()].map((offset) => addMonths(visibleMonthStart.value, offset)));
     let weekDayLabels = computed(() => getWeekdayLabels(firstDayIndex.value));
 
     let hoveredKey = ref<string | null>(null);
     let pressedKey = ref<string | null>(null);
-    let focusedKey = ref<string | null>(null);
+    let focusedKey = ref<string | null>(toDateString(props.focusedValue) || toDateString(props.defaultFocusedValue) || null);
+
+    let controlledFocusedValue = computed(() => toDateString(props.focusedValue));
+    watch(controlledFocusedValue, (nextValue) => {
+      if (nextValue) {
+        focusedKey.value = nextValue;
+      }
+    }, {immediate: true});
+
+    watch(selectedValue, (nextValue) => {
+      let parsed = parseDateValue(nextValue);
+      if (parsed) {
+        visibleMonthStart.value = startOfMonth(parsed);
+      }
+    }, {immediate: true});
+
+    watch(focusedKey, (nextValue) => {
+      let parsed = parseDateValue(nextValue ?? '');
+      if (parsed) {
+        visibleMonthStart.value = startOfMonth(parsed);
+      }
+    });
+
+    let isDisabled = computed(() => props.isDisabled ?? props.disabled);
 
     let ariaLabel = computed(() => {
       let fromAttrs = attrs['aria-label'];
@@ -393,20 +520,39 @@ export const VueCalendar = defineComponent({
         return false;
       }
 
-      return !isDateWithinBounds(selectedDate.value, minDate.value, maxDate.value);
+      if (!isDateWithinBounds(selectedDate.value, minDate.value, maxDate.value)) {
+        return true;
+      }
+
+      return props.isDateUnavailable?.(selectedDate.value) ?? false;
     });
+
+    let emitValue = (value: string) => {
+      if (!isControlled.value) {
+        uncontrolledValue.value = value;
+      }
+
+      emit('update:modelValue', value);
+      emit('update:value', value);
+      emit('change', value);
+      props.onChange?.(value);
+    };
+
+    let setFocusedKey = (key: string | null) => {
+      focusedKey.value = key;
+      emit('focusChange', key);
+      props.onFocusChange?.(key);
+    };
 
     let selectDate = (date: Date) => {
       let value = formatDateValue(date);
-      emit('update:modelValue', value);
-      emit('change', value);
+      emitValue(value);
+      setFocusedKey(value);
     };
 
     let emitInputValue = (event: Event) => {
       let target = event.currentTarget as HTMLInputElement | null;
-      let value = target?.value ?? '';
-      emit('update:modelValue', value);
-      emit('change', value);
+      emitValue(target?.value ?? '');
     };
 
     return () => h('div', {
@@ -431,7 +577,7 @@ export const VueCalendar = defineComponent({
           ? h('button', {
             'aria-label': 'Previous month',
             class: [classNames(styles, 'spectrum-Calendar-prevMonth'), 'vs-calendar__prev-month'],
-            disabled: props.disabled,
+            disabled: isDisabled.value,
             onClick: () => {
               visibleMonthStart.value = addMonths(visibleMonthStart.value, -1);
             },
@@ -446,7 +592,7 @@ export const VueCalendar = defineComponent({
           ? h('button', {
             'aria-label': 'Next month',
             class: [classNames(styles, 'spectrum-Calendar-nextMonth'), 'vs-calendar__next-month'],
-            disabled: props.disabled,
+            disabled: isDisabled.value,
             onClick: () => {
               visibleMonthStart.value = addMonths(visibleMonthStart.value, 1);
             },
@@ -455,10 +601,11 @@ export const VueCalendar = defineComponent({
           : null
       ]))),
       h('div', {class: classNames(styles, 'spectrum-Calendar-months')}, monthStarts.value.map((monthStartDate) => renderCalendarMonth({
-        disabled: props.disabled,
+        disabled: isDisabled.value,
         firstDayIndex: firstDayIndex.value,
         focusedKey: focusedKey.value,
         hoveredKey: hoveredKey.value,
+        isDateUnavailable: (date) => props.isDateUnavailable?.(date) ?? false,
         isDateSelected: (date) => isSameDay(date, selectedDate.value),
         isRangeEnd: () => false,
         isRangeSelection: false,
@@ -469,7 +616,7 @@ export const VueCalendar = defineComponent({
         minDate: minDate.value,
         monthStart: monthStartDate,
         onFocus: (key) => {
-          focusedKey.value = key;
+          setFocusedKey(key);
         },
         onHover: (key) => {
           hoveredKey.value = key;
@@ -484,14 +631,14 @@ export const VueCalendar = defineComponent({
       h('input', {
         'aria-hidden': 'true',
         class: 'vs-calendar__input',
-        disabled: props.disabled,
+        disabled: isDisabled.value,
         hidden: true,
-        max: props.max || undefined,
-        min: props.min || undefined,
+        max: maxValue.value || undefined,
+        min: minValue.value || undefined,
         onInput: emitInputValue,
         tabindex: -1,
         type: 'date',
-        value: props.modelValue
+        value: selectedValue.value
       }),
       isValueInvalid.value
         ? h('p', {class: 'spectrum-Calendar-helpText'}, props.errorMessage || 'Invalid selection')
@@ -504,9 +651,17 @@ export const VueRangeCalendar = defineComponent({
   name: 'VueRangeCalendar',
   inheritAttrs: false,
   props: {
+    allowsNonContiguousRanges: {
+      type: Boolean,
+      default: false
+    },
     ariaLabel: {
       type: String,
       default: ''
+    },
+    defaultValue: {
+      type: Object as PropType<RangeInputValue>,
+      default: undefined
     },
     disabled: {
       type: Boolean,
@@ -520,6 +675,14 @@ export const VueRangeCalendar = defineComponent({
       type: String as PropType<FirstDayOfWeek>,
       default: 'sun'
     },
+    isDateUnavailable: {
+      type: Function as PropType<(date: Date) => boolean>,
+      default: undefined
+    },
+    isDisabled: {
+      type: Boolean,
+      default: undefined
+    },
     label: {
       type: String,
       default: ''
@@ -528,16 +691,29 @@ export const VueRangeCalendar = defineComponent({
       type: String,
       default: ''
     },
+    maxValue: {
+      type: [String, Object, Date] as PropType<CalendarInputValue>,
+      default: undefined
+    },
     min: {
       type: String,
       default: ''
     },
+    minValue: {
+      type: [String, Object, Date] as PropType<CalendarInputValue>,
+      default: undefined
+    },
     modelValue: {
-      type: Object as PropType<DateRangeValue>,
-      default: () => ({
-        end: '',
-        start: ''
-      })
+      type: Object as PropType<RangeInputValue>,
+      default: undefined
+    },
+    onChange: {
+      type: Function as PropType<(value: DateRangeValue) => void>,
+      default: undefined
+    },
+    value: {
+      type: Object as PropType<RangeInputValue>,
+      default: undefined
     },
     visibleMonths: {
       type: Number,
@@ -546,21 +722,36 @@ export const VueRangeCalendar = defineComponent({
   },
   emits: {
     change: (value: DateRangeValue) => value != null && typeof value === 'object',
+    'update:value': (value: DateRangeValue) => value != null && typeof value === 'object',
     'update:modelValue': (value: DateRangeValue) => value != null && typeof value === 'object'
   },
   setup(props, {attrs, emit}) {
-    let startDate = computed(() => parseDateValue(props.modelValue.start));
-    let endDate = computed(() => parseDateValue(props.modelValue.end));
-    let minDate = computed(() => parseDateValue(props.min));
-    let maxDate = computed(() => parseDateValue(props.max));
+    let isControlled = computed(() => props.value !== undefined || props.modelValue !== undefined);
+    let controlledRange = computed(() => normalizeDateRangeValue(props.value ?? props.modelValue));
+    let uncontrolledRange = ref(normalizeDateRangeValue(props.defaultValue));
+
+    watch(controlledRange, (nextRange) => {
+      if (isControlled.value) {
+        uncontrolledRange.value = nextRange;
+      }
+    }, {immediate: true});
+
+    let selectedRange = computed(() => isControlled.value ? controlledRange.value : uncontrolledRange.value);
+    let startDate = computed(() => parseDateValue(selectedRange.value.start));
+    let endDate = computed(() => parseDateValue(selectedRange.value.end));
+
+    let minValue = computed(() => toDateString(props.minValue) || toDateString(props.min));
+    let maxValue = computed(() => toDateString(props.maxValue) || toDateString(props.max));
+    let minDate = computed(() => parseDateValue(minValue.value));
+    let maxDate = computed(() => parseDateValue(maxValue.value));
 
     let visibleMonthStart = ref(startOfMonth(startDate.value ?? new Date()));
-    watch(() => props.modelValue.start, (nextStart) => {
+    watch(() => selectedRange.value.start, (nextStart) => {
       let parsed = parseDateValue(nextStart);
       if (parsed) {
         visibleMonthStart.value = startOfMonth(parsed);
       }
-    });
+    }, {immediate: true});
 
     let firstDayIndex = computed(() => firstDayIndexByCode[props.firstDayOfWeek] ?? firstDayIndexByCode.sun);
     let visibleMonths = computed(() => Math.max(1, props.visibleMonths));
@@ -569,7 +760,8 @@ export const VueRangeCalendar = defineComponent({
 
     let hoveredKey = ref<string | null>(null);
     let pressedKey = ref<string | null>(null);
-    let focusedKey = ref<string | null>(null);
+    let focusedKey = ref<string | null>(selectedRange.value.start || null);
+    let isDisabled = computed(() => props.isDisabled ?? props.disabled);
 
     let ariaLabel = computed(() => {
       let fromAttrs = attrs['aria-label'];
@@ -588,24 +780,43 @@ export const VueRangeCalendar = defineComponent({
       return 'Range calendar';
     });
 
+    let isUnavailable = (date: Date): boolean => {
+      if (!isDateWithinBounds(date, minDate.value, maxDate.value)) {
+        return true;
+      }
+
+      return props.isDateUnavailable?.(date) ?? false;
+    };
+
     let isValueInvalid = computed(() => {
-      let invalidStart = Boolean(startDate.value) && !isDateWithinBounds(startDate.value as Date, minDate.value, maxDate.value);
-      let invalidEnd = Boolean(endDate.value) && !isDateWithinBounds(endDate.value as Date, minDate.value, maxDate.value);
+      let invalidStart = Boolean(startDate.value) && isUnavailable(startDate.value as Date);
+      let invalidEnd = Boolean(endDate.value) && isUnavailable(endDate.value as Date);
       return invalidStart || invalidEnd;
     });
 
     let emitRange = (nextValue: DateRangeValue) => {
+      if (!isControlled.value) {
+        uncontrolledRange.value = nextValue;
+      }
+
       emit('update:modelValue', nextValue);
+      emit('update:value', nextValue);
       emit('change', nextValue);
+      props.onChange?.(nextValue);
     };
 
     let selectDate = (date: Date) => {
+      if (isUnavailable(date)) {
+        return;
+      }
+
       let dateValue = formatDateValue(date);
       if (!startDate.value || (startDate.value && endDate.value)) {
         emitRange({
           end: '',
           start: dateValue
         });
+        focusedKey.value = dateValue;
         return;
       }
 
@@ -614,6 +825,7 @@ export const VueRangeCalendar = defineComponent({
           end: formatDateValue(startDate.value),
           start: dateValue
         });
+        focusedKey.value = dateValue;
         return;
       }
 
@@ -621,16 +833,17 @@ export const VueRangeCalendar = defineComponent({
         end: dateValue,
         start: formatDateValue(startDate.value)
       });
+      focusedKey.value = dateValue;
     };
 
     let isFirstSelectedAfterUnavailable = (date: Date) => {
       let previous = addDays(date, -1);
-      return !isDateWithinBounds(previous, minDate.value, maxDate.value);
+      return isUnavailable(previous);
     };
 
     let isLastSelectedBeforeUnavailable = (date: Date) => {
       let next = addDays(date, 1);
-      return !isDateWithinBounds(next, minDate.value, maxDate.value);
+      return isUnavailable(next);
     };
 
     let dayIndexFromFirstDay = (date: Date) => (date.getDay() - firstDayIndex.value + 7) % 7;
@@ -657,7 +870,7 @@ export const VueRangeCalendar = defineComponent({
           ? h('button', {
             'aria-label': 'Previous month',
             class: [classNames(styles, 'spectrum-Calendar-prevMonth'), 'vs-range-calendar__prev-month'],
-            disabled: props.disabled,
+            disabled: isDisabled.value,
             onClick: () => {
               visibleMonthStart.value = addMonths(visibleMonthStart.value, -1);
             },
@@ -672,7 +885,7 @@ export const VueRangeCalendar = defineComponent({
           ? h('button', {
             'aria-label': 'Next month',
             class: [classNames(styles, 'spectrum-Calendar-nextMonth'), 'vs-range-calendar__next-month'],
-            disabled: props.disabled,
+            disabled: isDisabled.value,
             onClick: () => {
               visibleMonthStart.value = addMonths(visibleMonthStart.value, 1);
             },
@@ -681,10 +894,11 @@ export const VueRangeCalendar = defineComponent({
           : null
       ]))),
       h('div', {class: classNames(styles, 'spectrum-Calendar-months')}, monthStarts.value.map((monthStartDate) => renderCalendarMonth({
-        disabled: props.disabled,
+        disabled: isDisabled.value,
         firstDayIndex: firstDayIndex.value,
         focusedKey: focusedKey.value,
         hoveredKey: hoveredKey.value,
+        isDateUnavailable: (date) => props.isDateUnavailable?.(date) ?? false,
         isDateSelected: (date) => {
           if (!startDate.value) {
             return false;
@@ -751,38 +965,38 @@ export const VueRangeCalendar = defineComponent({
         h('input', {
           'aria-hidden': 'true',
           class: 'vs-range-calendar__input',
-          disabled: props.disabled,
+          disabled: isDisabled.value,
           hidden: true,
-          max: props.max || undefined,
-          min: props.min || undefined,
+          max: maxValue.value || undefined,
+          min: minValue.value || undefined,
           onInput: (event: Event) => {
             let target = event.currentTarget as HTMLInputElement | null;
             emitRange({
-              end: props.modelValue.end,
+              end: selectedRange.value.end,
               start: target?.value ?? ''
             });
           },
           tabindex: -1,
           type: 'date',
-          value: props.modelValue.start
+          value: selectedRange.value.start
         }),
         h('input', {
           'aria-hidden': 'true',
           class: 'vs-range-calendar__input',
-          disabled: props.disabled,
+          disabled: isDisabled.value,
           hidden: true,
-          max: props.max || undefined,
-          min: props.min || undefined,
+          max: maxValue.value || undefined,
+          min: minValue.value || undefined,
           onInput: (event: Event) => {
             let target = event.currentTarget as HTMLInputElement | null;
             emitRange({
               end: target?.value ?? '',
-              start: props.modelValue.start
+              start: selectedRange.value.start
             });
           },
           tabindex: -1,
           type: 'date',
-          value: props.modelValue.end
+          value: selectedRange.value.end
         })
       ]),
       isValueInvalid.value
