@@ -431,7 +431,11 @@ export const VueButton = defineComponent({
         class: [
           classNames(
             styles,
+            'i18nFontFamily',
+            'spectrum-BaseButton',
             'spectrum-Button',
+            'spectrum-FocusRing',
+            'spectrum-FocusRing-ring',
             {
               'focus-ring': buttonState.interaction.isFocusVisible.value,
               'is-active': buttonState.interaction.isPressed.value,

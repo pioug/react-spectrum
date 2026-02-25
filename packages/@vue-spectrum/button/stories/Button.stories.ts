@@ -11,7 +11,14 @@ type ButtonStoryArgs = {
   href?: string,
   isDisabled?: boolean,
   isPending?: boolean,
-  onClick?: (event: MouseEvent) => void,
+  onBlur?: (event: FocusEvent) => void,
+  onFocus?: (event: FocusEvent) => void,
+  onKeyUp?: (event: KeyboardEvent) => void,
+  onPress?: (event: MouseEvent | KeyboardEvent) => void,
+  onPressChange?: (isPressed: boolean) => void,
+  onPressEnd?: (event: MouseEvent | KeyboardEvent) => void,
+  onPressStart?: (event: MouseEvent | KeyboardEvent) => void,
+  onPressUp?: (event: MouseEvent | KeyboardEvent) => void,
   rel?: string,
   staticColor?: 'black' | 'white',
   style?: 'fill' | 'outline',
@@ -19,6 +26,103 @@ type ButtonStoryArgs = {
   type?: 'button' | 'reset' | 'submit',
   variant?: 'accent' | 'cta' | 'negative' | 'overBackground' | 'primary' | 'secondary'
 };
+
+type ButtonRenderProps = Omit<
+  ButtonStoryArgs,
+  'onBlur' | 'onFocus' | 'onKeyUp' | 'onPress' | 'onPressChange' | 'onPressEnd' | 'onPressStart' | 'onPressUp'
+>;
+
+function pickButtonProps(args: ButtonStoryArgs): ButtonRenderProps {
+  let {
+    onBlur: _onBlur,
+    onFocus: _onFocus,
+    onKeyUp: _onKeyUp,
+    onPress: _onPress,
+    onPressChange: _onPressChange,
+    onPressEnd: _onPressEnd,
+    onPressStart: _onPressStart,
+    onPressUp: _onPressUp,
+    ...buttonProps
+  } = args;
+
+  return buttonProps;
+}
+
+function createPressActionHandlers(args: ButtonStoryArgs) {
+  let isPressed = false;
+
+  let setPressed = (nextPressed: boolean) => {
+    if (isPressed === nextPressed) {
+      return;
+    }
+
+    isPressed = nextPressed;
+    args.onPressChange?.(nextPressed);
+  };
+
+  return {
+    onBlur: (event: FocusEvent) => {
+      args.onBlur?.(event);
+      if (isPressed) {
+        args.onPressEnd?.(event as unknown as KeyboardEvent);
+        setPressed(false);
+      }
+    },
+    onClick: (event: MouseEvent) => {
+      args.onPress?.(event);
+    },
+    onFocus: (event: FocusEvent) => {
+      args.onFocus?.(event);
+    },
+    onKeydown: (event: KeyboardEvent) => {
+      if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') {
+        return;
+      }
+
+      args.onPressStart?.(event);
+      setPressed(true);
+    },
+    onKeyup: (event: KeyboardEvent) => {
+      args.onKeyUp?.(event);
+      if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') {
+        return;
+      }
+
+      if (isPressed) {
+        args.onPressEnd?.(event);
+        args.onPressUp?.(event);
+        setPressed(false);
+      }
+    },
+    onPointercancel: () => {
+      if (isPressed) {
+        setPressed(false);
+      }
+    },
+    onPointerdown: (event: PointerEvent) => {
+      if (event.button !== 0) {
+        return;
+      }
+
+      args.onPressStart?.(event as unknown as MouseEvent);
+      setPressed(true);
+    },
+    onPointerleave: () => {
+      if (isPressed) {
+        setPressed(false);
+      }
+    },
+    onPointerup: (event: PointerEvent) => {
+      if (event.button !== 0 || !isPressed) {
+        return;
+      }
+
+      args.onPressEnd?.(event as unknown as MouseEvent);
+      args.onPressUp?.(event as unknown as MouseEvent);
+      setPressed(false);
+    }
+  };
+}
 
 function renderBellIcon() {
   return h('svg', {
@@ -68,16 +172,19 @@ function wrapInProvider(args: ButtonStoryArgs, content: ReturnType<typeof h>) {
 }
 
 function renderButtonPair(args: ButtonStoryArgs, defaultChildren: unknown[], disabledChildren: unknown[]) {
+  let buttonProps = pickButtonProps(args);
+  let defaultHandlers = createPressActionHandlers(args);
+
   return h('div', {
     style: {
       display: 'flex',
       gap: '16px'
     }
   }, [
-    h(Button, {...args}, {
+    h(Button, {...buttonProps, ...defaultHandlers}, {
       default: () => defaultChildren
     }),
-    h(Button, {...args, isDisabled: true}, {
+    h(Button, {...buttonProps, isDisabled: true}, {
       default: () => disabledChildren
     })
   ]);
@@ -95,15 +202,41 @@ const meta = {
   title: 'Button',
   component: Button,
   args: {
-    onClick: action('click'),
+    onPress: action('press'),
+    onPressStart: action('pressstart'),
+    onPressEnd: action('pressend'),
+    onPressChange: action('presschange'),
+    onPressUp: action('pressup'),
+    onFocus: action('focus'),
+    onBlur: action('blur'),
+    onKeyUp: action('keyup'),
     variant: 'accent'
   },
   argTypes: {
-    onClick: {
+    onPress: {
       table: {
         disable: true
       }
     },
+    onPressStart: {
+      table: {
+        disable: true
+      }
+    },
+    onPressEnd: {
+      table: {
+        disable: true
+      }
+    },
+    onPressUp: {
+      table: {
+        disable: true
+      }
+    },
+    onPressChange: {},
+    onFocus: {},
+    onBlur: {},
+    onKeyUp: {},
     autoFocus: {
       control: 'boolean'
     },
@@ -281,6 +414,7 @@ export const PendingSpinner: Story = {
       };
 
       return {
+        buttonProps: pickButtonProps(args),
         pendingDefault,
         pendingIcon,
         triggerPending
@@ -295,7 +429,7 @@ export const PendingSpinner: Story = {
         }
       }, [
         h(Button, {
-          ...args,
+          ...this.buttonProps,
           isPending: this.pendingDefault,
           onClick: (event: MouseEvent) => {
             action('press')(event);
@@ -305,7 +439,7 @@ export const PendingSpinner: Story = {
           default: () => ['click me!']
         }),
         h(Button, {
-          ...args,
+          ...this.buttonProps,
           isPending: this.pendingIcon,
           onClick: (event: MouseEvent) => {
             action('press')(event);
@@ -315,7 +449,7 @@ export const PendingSpinner: Story = {
           default: () => [renderBellIcon(), h('span', {class: 'spectrum-Button-label'}, 'I have an icon')]
         }),
         h(Button, {
-          ...args,
+          ...this.buttonProps,
           isPending: args.isPending
         }, {
           default: () => [h('span', {class: 'spectrum-Button-label'}, 'Controlled')]

@@ -19,14 +19,14 @@ export const theme: ExpressTheme = {
   ...defaultTheme,
   global: {
     ...defaultTheme.global,
-    express: resolveClassName(express, 'express', 'spectrum-express-global')
+    express: resolveClassName(express, 'express', 'express')
   },
   medium: {
     ...defaultTheme.medium,
-    express: resolveClassName(express, 'medium', 'spectrum-express-medium')
+    express: resolveClassName(express, 'medium', 'medium')
   },
   large: {
     ...defaultTheme.large,
-    express: resolveClassName(express, 'large', 'spectrum-express-large')
+    express: resolveClassName(express, 'large', 'large')
   }
 };

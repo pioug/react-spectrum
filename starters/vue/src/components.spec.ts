@@ -103,9 +103,9 @@ describe('Vue migration primitives', () => {
 
     let expressRoot = expressWrapper.get('.vs-provider');
     expect(expressRoot.attributes('data-theme')).toBe('express');
-    expect(expressRoot.classes()).toContain('spectrum-default-global');
-    expect(expressRoot.classes()).toContain('spectrum-express-global');
-    expect(expressRoot.classes()).toContain('spectrum-express-large');
+    expect(expressRoot.classes()).toContain('spectrum');
+    expect(expressRoot.classes()).toContain('express');
+    expect(expressRoot.classes()).toContain('large');
 
     let lightWrapper = mount(Provider, {
       props: {

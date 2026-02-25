@@ -4229,33 +4229,33 @@ describe('Vue migration composition components', () => {
   });
 
   it('exposes vue-spectrum dark theme token sections', () => {
-    expect(darkTheme.global.className).toBe('spectrum-dark-global');
+    expect(darkTheme.global.className).toBe('spectrum');
     expect(darkTheme.light.colorScheme).toBe('dark');
-    expect(darkTheme.dark.className).toBe('spectrum-darkest');
+    expect(darkTheme.dark.className).toBe('spectrum--darkest');
     expect(darkTheme.medium.scale).toBe('medium');
     expect(darkTheme.large.scale).toBe('large');
   });
 
   it('exposes vue-spectrum default theme token sections', () => {
-    expect(defaultTheme.global.className).toBe('spectrum-default-global');
+    expect(defaultTheme.global.className).toBe('spectrum');
     expect(defaultTheme.light.colorScheme).toBe('light');
-    expect(defaultTheme.dark.className).toBe('spectrum-darkest');
+    expect(defaultTheme.dark.className).toBe('spectrum--darkest');
     expect(defaultTheme.medium.scale).toBe('medium');
     expect(defaultTheme.large.scale).toBe('large');
   });
 
   it('exposes vue-spectrum express theme token sections', () => {
-    expect(expressTheme.global.express).toBe('spectrum-express-global');
-    expect(expressTheme.medium.express).toBe('spectrum-express-medium');
-    expect(expressTheme.large.express).toBe('spectrum-express-large');
+    expect(expressTheme.global.express).toBe('express');
+    expect(expressTheme.medium.express).toBe('medium');
+    expect(expressTheme.large.express).toBe('large');
     expect(expressTheme.light.colorScheme).toBe('light');
   });
 
   it('exposes vue-spectrum light theme token sections', () => {
-    expect(lightTheme.global.className).toBe('spectrum-light-global');
-    expect(lightTheme.light.className).toBe('spectrum-lightest');
+    expect(lightTheme.global.className).toBe('spectrum');
+    expect(lightTheme.light.className).toBe('spectrum--lightest');
     expect(lightTheme.light.colorScheme).toBe('light');
-    expect(lightTheme.dark.className).toBe('spectrum-darkest');
+    expect(lightTheme.dark.className).toBe('spectrum--darkest');
     expect(lightTheme.medium.scale).toBe('medium');
     expect(lightTheme.large.scale).toBe('large');
   });

@@ -26,12 +26,12 @@ function resolveThemeVariant(theme: SpectrumThemeLike | undefined): ThemeVariant
     return 'express';
   }
 
-  let globalClassName = theme.global?.className ?? '';
-  if (globalClassName.includes('spectrum-dark-global')) {
+  let lightClassName = theme.light?.className ?? '';
+  if (lightClassName.includes('spectrum--dark')) {
     return 'dark';
   }
 
-  if (globalClassName.includes('spectrum-light-global')) {
+  if (lightClassName.includes('spectrum--lightest')) {
     return 'light';
   }
 
