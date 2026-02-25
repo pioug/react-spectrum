@@ -4,24 +4,9 @@ import type {Meta, StoryObj} from '@storybook/vue3-vite';
 const meta: Meta<typeof ColorSwatch> = {
   title: 'ColorSwatch',
   component: ColorSwatch,
-  args: {
-    label: 'Example'
-  },
   argTypes: {
-    bordered: {
-      control: 'boolean'
-    },
     color: {
-      control: 'text'
-    },
-    isDisabled: {
-      control: 'boolean'
-    },
-    label: {
-      control: 'text'
-    },
-    selected: {
-      control: 'boolean'
+      control: 'color'
     }
   }
 };
@@ -31,32 +16,37 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  args: {
+    color: 'rgb(255, 0, 0)'
+  },
   render: (args) => ({
     components: {ColorSwatch},
     setup() {
       return {args};
     },
-    template: '<ColorSwatch v-bind="args">Example</ColorSwatch>'
+    template: '<ColorSwatch v-bind="args" />'
   })
 };
 
-export const Disabled: Story = {
-  ...Default,
-  args: {
-    isDisabled: true
-  }
+export const NoValue: Story = {
+  render: (args) => ({
+    components: {ColorSwatch},
+    setup() {
+      return {args};
+    },
+    template: '<ColorSwatch v-bind="args" />'
+  })
 };
 
-export const CustomLabel: Story = {
-  ...Default,
+export const CustomWidth: Story = {
+  render: (args) => ({
+    components: {ColorSwatch},
+    setup() {
+      return {args};
+    },
+    template: '<ColorSwatch v-bind="args" style="width: 96px; height: 24px;" />'
+  }),
   args: {
-    label: 'Brand swatch'
-  }
-};
-
-export const AlternateLabel: Story = {
-  ...Default,
-  args: {
-    label: 'Accent swatch'
+    ...Default.args
   }
 };
