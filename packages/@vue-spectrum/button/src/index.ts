@@ -85,6 +85,37 @@ function hasVisibleTextChild(value: unknown): boolean {
   return false;
 }
 
+function mergePressedUserSelectStyle(styleValue: unknown): unknown {
+  if (styleValue == null) {
+    return {userSelect: 'none'};
+  }
+
+  if (typeof styleValue === 'string') {
+    if (/user-select\s*:/.test(styleValue)) {
+      return styleValue;
+    }
+
+    let needsDelimiter = styleValue.trim().length > 0 && !styleValue.trim().endsWith(';');
+    return `${styleValue}${needsDelimiter ? ';' : ''} user-select: none;`;
+  }
+
+  if (Array.isArray(styleValue)) {
+    return [
+      ...styleValue,
+      {userSelect: 'none'}
+    ];
+  }
+
+  if (typeof styleValue === 'object') {
+    return {
+      ...(styleValue as Record<string, unknown>),
+      userSelect: 'none'
+    };
+  }
+
+  return styleValue;
+}
+
 function useInteractionState(isDisabled: ComputedRef<boolean>) {
   ensureGlobalModalityListeners();
 
@@ -233,6 +264,10 @@ function useBaseButtonSemantics(
       onPointerleave: chainHandlers(userPointerLeave, interaction.onPointerLeave),
       onPointerup: chainHandlers(userPointerUp, interaction.onPointerUp)
     };
+
+    if (interaction.isPressed.value) {
+      propsForElement.style = mergePressedUserSelectStyle(attrs.style);
+    }
 
     if (elementType.value === 'button') {
       propsForElement.type = props.type ?? 'button';

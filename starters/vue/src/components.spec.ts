@@ -504,8 +504,10 @@ describe('Vue migration primitives', () => {
 
     await wrapper.trigger('pointerdown', {button: 0});
     expect(wrapper.classes()).toContain('is-active');
+    expect(wrapper.attributes('style')).toContain('user-select: none');
     await wrapper.trigger('pointerup');
     expect(wrapper.classes()).not.toContain('is-active');
+    expect(wrapper.attributes('style')).toBeUndefined();
 
     window.dispatchEvent(new KeyboardEvent('keydown', {key: 'Tab'}));
     await wrapper.trigger('focus');
