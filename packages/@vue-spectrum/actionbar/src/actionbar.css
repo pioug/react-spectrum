@@ -1,6 +1,7 @@
 .ActionBarContainer {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   position: relative;
 
   & > :not(.react-spectrum-ActionBar) {

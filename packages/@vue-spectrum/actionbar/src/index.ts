@@ -81,6 +81,9 @@ export const ActionBar = defineComponent({
           items: props.items,
           selectionMode: 'none',
           isQuiet: true,
+          overflowMode: 'collapse',
+          buttonLabelBehavior: props.buttonLabelBehavior,
+          staticColor: isEmphasized.value ? 'white' : undefined,
           disabledKeys: props.disabledKeys,
           disabled: false,
           onAction: (key: string) => emit('action', key)

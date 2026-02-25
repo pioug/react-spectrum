@@ -1,5 +1,5 @@
 import {mount} from '@vue/test-utils';
-import {describe, expect, it} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import {nextTick} from 'vue';
 import {Avatar} from '@vue-spectrum/avatar';
 import {Badge} from '@vue-spectrum/badge';
@@ -477,7 +477,7 @@ describe('Vue migration primitives', () => {
     let items = wrapper.findAll('button.vs-action-group__item');
     expect(items).toHaveLength(2);
     expect(items[0].classes()).toContain('is-selected');
-    expect(items[0].attributes('aria-label')).toBe('Row actions');
+    expect(wrapper.get('.vs-action-group').attributes('aria-label')).toBe('Row actions');
     await items[1].trigger('mouseenter');
     expect(items[1].classes()).toContain('is-hovered');
     await items[1].trigger('click');
@@ -485,6 +485,164 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['One', 'Two']]);
     expect(wrapper.emitted('change')?.[0]).toEqual([['One', 'Two']]);
     expect(wrapper.get('.vs-action-group__hidden-marker').attributes('hidden')).toBeDefined();
+  });
+
+  it('collapses overflowing action group items into a menu trigger', async () => {
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      callback(0);
+      return 1;
+    });
+    vi.stubGlobal('cancelAnimationFrame', () => {});
+
+    let originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
+    let getBoundingClientRectSpy = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function getBoundingClientRect() {
+      if (this.classList.contains('vs-action-group__wrapper')) {
+        return {
+          width: 170,
+          height: 40,
+          top: 0,
+          right: 170,
+          bottom: 40,
+          left: 0,
+          x: 0,
+          y: 0,
+          toJSON: () => ({})
+        } as DOMRect;
+      }
+
+      if (this.classList.contains('vs-action-group__overflow-measure')) {
+        return {
+          width: 48,
+          height: 30,
+          top: 0,
+          right: 48,
+          bottom: 30,
+          left: 0,
+          x: 0,
+          y: 0,
+          toJSON: () => ({})
+        } as DOMRect;
+      }
+
+      if (this.getAttribute('data-vs-action-group-item') === 'true') {
+        return {
+          width: 72,
+          height: 30,
+          top: 0,
+          right: 72,
+          bottom: 30,
+          left: 0,
+          x: 0,
+          y: 0,
+          toJSON: () => ({})
+        } as DOMRect;
+      }
+
+      return originalGetBoundingClientRect.call(this);
+    });
+
+    try {
+      let wrapper = mount(ActionGroup, {
+        props: {
+          items: ['One', 'Two', 'Three'],
+          overflowMode: 'collapse'
+        },
+        attrs: {
+          'aria-label': 'Row actions'
+        }
+      });
+
+      await nextTick();
+      await nextTick();
+
+      expect(wrapper.findAll('[data-vs-action-group-item="true"]')).toHaveLength(1);
+      expect(wrapper.find('[data-vs-action-group-overflow-trigger="true"]').exists()).toBe(true);
+
+      let overflowButton = wrapper.get('[data-vs-action-group-overflow-trigger="true"]');
+      await overflowButton.trigger('click');
+      expect(wrapper.findAll('.vs-action-group__overflow-menu .spectrum-Menu-item')).toHaveLength(2);
+
+      let overflowItems = wrapper.findAll('.vs-action-group__overflow-menu .spectrum-Menu-item');
+      await overflowItems[0].trigger('click');
+      expect(wrapper.emitted('action')?.[0]).toEqual(['Two']);
+    } finally {
+      getBoundingClientRectSpy.mockRestore();
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it('collapses all action items when overflow occurs in selection mode', async () => {
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      callback(0);
+      return 1;
+    });
+    vi.stubGlobal('cancelAnimationFrame', () => {});
+
+    let originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
+    let getBoundingClientRectSpy = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function getBoundingClientRect() {
+      if (this.classList.contains('vs-action-group__wrapper')) {
+        return {
+          width: 160,
+          height: 40,
+          top: 0,
+          right: 160,
+          bottom: 40,
+          left: 0,
+          x: 0,
+          y: 0,
+          toJSON: () => ({})
+        } as DOMRect;
+      }
+
+      if (this.classList.contains('vs-action-group__overflow-measure')) {
+        return {
+          width: 48,
+          height: 30,
+          top: 0,
+          right: 48,
+          bottom: 30,
+          left: 0,
+          x: 0,
+          y: 0,
+          toJSON: () => ({})
+        } as DOMRect;
+      }
+
+      if (this.getAttribute('data-vs-action-group-item') === 'true') {
+        return {
+          width: 72,
+          height: 30,
+          top: 0,
+          right: 72,
+          bottom: 30,
+          left: 0,
+          x: 0,
+          y: 0,
+          toJSON: () => ({})
+        } as DOMRect;
+      }
+
+      return originalGetBoundingClientRect.call(this);
+    });
+
+    try {
+      let wrapper = mount(ActionGroup, {
+        props: {
+          items: ['One', 'Two', 'Three'],
+          overflowMode: 'collapse',
+          selectionMode: 'multiple'
+        }
+      });
+
+      await nextTick();
+      await nextTick();
+
+      expect(wrapper.findAll('[data-vs-action-group-item="true"]')).toHaveLength(0);
+      expect(wrapper.find('[data-vs-action-group-overflow-trigger="true"]').exists()).toBe(true);
+    } finally {
+      getBoundingClientRectSpy.mockRestore();
+      vi.unstubAllGlobals();
+    }
   });
 
   it('maps breadcrumbs hovered/focus-ring/disabled states', async () => {
