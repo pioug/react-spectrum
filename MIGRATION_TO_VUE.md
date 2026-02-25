@@ -19,6 +19,24 @@
 7. Record reviewed scope, gaps, and evidence in commit/PR notes.
 8. Commit and push frequently in small, reviewable increments.
 
+## Execution mode (required every session)
+
+1. Do not wait for user screenshot checks to discover gaps.
+2. Pick the next component in Storybook and run the full parity loop end-to-end.
+3. Only move to the next component after the current component passes the done gate.
+4. If blocked, record the blocker in commit/PR notes with the exact missing dependency or code path.
+5. Ask for user validation only after structure, style, behavior, and tests are aligned for that component.
+
+## Done gate before requesting review (required)
+
+1. Story source structure is matched to React for the component.
+2. Featured scenarios present in React stories are present in Vue stories.
+3. DOM structure and critical attributes/classes are matched.
+4. Computed style checks for critical states are matched.
+5. Interaction/state flow is matched.
+6. Vue implementation changes are covered by regression tests.
+7. Validation commands pass and notes are captured in commit/PR description.
+
 ## Story parity strategy (required)
 
 1. Match story source structure first.
