@@ -339,7 +339,7 @@ export const ControlledCards: Story = {
   name: 'selected keys, controlled'
 };
 
-export const NoCards: Story = {
+const NoCards: Story = {
   render: (args) => ({
     setup() {
       let show = ref(false);
@@ -372,6 +372,8 @@ export const NoCards: Story = {
     }
   })
 };
+
+export const ResizeObserverCrash: Story = NoCards;
 
 export const IsLoadingHeightGrid: Story = {
   ...NoCards,

@@ -341,156 +341,129 @@ export const Default: Story = {
 };
 
 export const WithFalsyItemKey: Story = {
-  render: renderTabs({items: cloneItems(falsyKeyItems)}),
-  name: 'with falsy item key'
+  render: renderTabs({items: cloneItems(falsyKeyItems)})
 };
 
 export const DefaultSelectedKeyVal2: Story = {
-  render: renderTabs({modelValue: 'val2'}),
-  name: 'defaultSelectedKey: val2'
+  render: renderTabs({modelValue: 'val2'})
 };
 
 export const ControlledSelectedKeyVal3: Story = {
-  render: renderTabs({modelValue: 'val3'}),
-  name: 'controlled: selectedKey: val3'
+  render: renderTabs({modelValue: 'val3'})
 };
 
 export const OrientationVertical: Story = {
-  render: renderTabs({orientation: 'vertical'}),
-  name: 'orientation: vertical'
+  render: renderTabs({orientation: 'vertical'})
 };
 
 export const OrientationVerticalWrap: Story = {
-  render: renderTabs({orientation: 'vertical', items: cloneItems(verticalWrapItems)}),
-  name: 'orientation: vertical, wrap: true'
+  render: renderTabs({orientation: 'vertical', items: cloneItems(verticalWrapItems)})
 };
 
 export const DensityCompact: Story = {
-  render: renderTabs(),
-  name: 'density: compact'
+  render: renderTabs()
 };
 
 export const IsQuiet: Story = {
-  render: renderTabs(),
-  name: 'isQuiet'
+  render: renderTabs()
 };
 
 export const IsQuietDensityCompact: Story = {
-  render: renderTabs(),
-  name: 'isQuiet, density: compact'
+  render: renderTabs()
 };
 
 export const DensityCompactOrientationVertical: Story = {
-  render: renderTabs({orientation: 'vertical'}),
-  name: 'density: compact, orientation: vertical'
+  render: renderTabs({orientation: 'vertical'})
 };
 
 export const Icons: Story = {
-  render: renderTabs({items: cloneItems(iconItems), modelValue: 'dashboard'}),
-  name: 'icons'
+  render: renderTabs({items: cloneItems(iconItems), modelValue: 'dashboard'})
 };
 
 export const IconsDensityCompact: Story = {
-  render: renderTabs({items: cloneItems(iconItems), modelValue: 'dashboard'}),
-  name: 'icons, density: compact'
+  render: renderTabs({items: cloneItems(iconItems), modelValue: 'dashboard'})
 };
 
 export const IconsOrientationVertical: Story = {
-  render: renderTabs({items: cloneItems(iconItems), modelValue: 'dashboard', orientation: 'vertical'}),
-  name: 'icons, orientation: vertical'
+  render: renderTabs({items: cloneItems(iconItems), modelValue: 'dashboard', orientation: 'vertical'})
 };
 
 export const IconsDensityCompactOrientationVertical: Story = {
-  render: renderTabs({items: cloneItems(iconItems), modelValue: 'dashboard', orientation: 'vertical'}),
-  name: 'icons, density: compact, orientation: vertical'
+  render: renderTabs({items: cloneItems(iconItems), modelValue: 'dashboard', orientation: 'vertical'})
 };
 
 export const IsEmphasizedTrue: Story = {
-  render: renderTabs(),
-  name: 'isEmphasized: true'
+  render: renderTabs()
 };
 
 export const IsEmphasizedTrueIconsIsQuietTrue: Story = {
-  render: renderTabs({items: cloneItems(iconItems), modelValue: 'dashboard'}),
-  name: 'isEmphasized: true, icons, isQuiet: true'
+  render: renderTabs({items: cloneItems(iconItems), modelValue: 'dashboard'})
 };
 
 export const IsEmphasizedTrueOrientationVertical: Story = {
-  render: renderTabs({orientation: 'vertical'}),
-  name: 'isEmphasized: true, orientation: vertical'
+  render: renderTabs({orientation: 'vertical'})
 };
 
 export const DisableAllTabs: Story = {
-  render: renderTabs({items: cloneItems(allDisabledItems)}),
-  name: 'disable all tabs'
+  render: renderTabs({items: cloneItems(allDisabledItems)})
 };
 
 export const KeyboardActivationManual: Story = {
-  render: renderTabs(),
-  name: 'keyboardActivation: manual'
+  render: renderTabs()
 };
 
 export const MiddleDisabled: Story = {
-  render: renderTabs({items: cloneItems(middleDisabledItems)}),
-  name: 'middle disabled'
+  render: renderTabs({items: cloneItems(middleDisabledItems)})
 };
 
 export const AllDisabled: Story = {
-  render: renderTabs({items: cloneItems(allDisabledItems)}),
-  name: 'all disabled'
+  render: renderTabs({items: cloneItems(allDisabledItems)})
 };
 
 export const Resizeable: Story = {
-  render: renderTabs({}, 'min-width: 100px; width: 300px; height: 400px; padding: 10px; resize: horizontal; overflow: auto; background-color: var(--spectrum-global-color-gray-50);'),
-  name: 'resizeable'
+  render: renderTabs({}, 'min-width: 100px; width: 300px; height: 400px; padding: 10px; resize: horizontal; overflow: auto; background-color: var(--spectrum-global-color-gray-50);')
 };
 
 export const CollapseBehavior: Story = {
   render: () => ({
     components: {DynamicTabs},
     template: '<DynamicTabs />'
-  }),
-  name: 'collapse behavior'
+  })
 };
 
 export const CollapseBehaviorIsQuiet: Story = {
   render: () => ({
     components: {DynamicTabs},
     template: '<DynamicTabs annotation="isQuiet variant" />'
-  }),
-  name: 'collapse behavior, isQuiet'
+  })
 };
 
 export const CollapseBehaviorDensityCompact: Story = {
   render: () => ({
     components: {DynamicTabs},
     template: '<DynamicTabs annotation="density: compact variant" />'
-  }),
-  name: 'collapse behavior, density: compact'
+  })
 };
 
 export const CollapseBehaviorDensityCompactIsQuiet: Story = {
   render: () => ({
     components: {DynamicTabs},
     template: '<DynamicTabs annotation="density: compact, isQuiet variant" />'
-  }),
-  name: 'collapse behavior, density: compact, isQuiet'
+  })
 };
 
 export const CollapseBehaviorIsEmphasizedTrue: Story = {
   render: () => ({
     components: {DynamicTabs},
     template: '<DynamicTabs annotation="isEmphasized: true variant" />'
-  }),
-  name: 'collapse behavior, isEmphasized: true'
+  })
 };
 
 export const _OrientationFlip: Story = {
   render: () => ({
     components: {OrientationFlip},
     template: '<OrientationFlip />'
-  }),
-  name: 'orientation flip'
+  })
 };
 
 export const TestingTabsInFlex: Story = {
@@ -519,29 +492,25 @@ export const TestingTabsInFlex: Story = {
           @update:model-value="selectedKey = $event; onSelectionChange($event)" />
       </div>
     `
-  }),
-  name: 'testing: tabs in flex'
+  })
 };
 
 export const TransitionBetweenTabSizes: Story = {
-  render: renderTabs({items: cloneItems(longTitleItems), modelValue: 'val1'}),
-  name: 'transition between tab sizes'
+  render: renderTabs({items: cloneItems(longTitleItems), modelValue: 'val1'})
 };
 
 export const TabWithFlexContainerInBetween: Story = {
   render: () => ({
     components: {DynamicTabsWithDecoration},
     template: '<DynamicTabsWithDecoration />'
-  }),
-  name: 'Tab with flex container in between'
+  })
 };
 
 export const TabsAtTheBottom: Story = {
   render: renderTabs({items: [
     {key: 'tab1', label: 'Tab 1', content: 'Text 1'},
     {key: 'tab2', label: 'Tab 2', content: 'Text 2'}
-  ]}),
-  name: 'tabs at the bottom'
+  ]})
 };
 
 export const TabsOnTheRight: Story = {
@@ -551,8 +520,7 @@ export const TabsOnTheRight: Story = {
       {key: 'tab1', label: 'Tab 1', content: 'Text 1'},
       {key: 'tab2', label: 'Tab 2', content: 'Text 2'}
     ]
-  }),
-  name: 'tabs on the right'
+  })
 };
 
 export const FocusableElementInTabPanel: Story = {
@@ -590,8 +558,7 @@ export const FocusableElementInTabPanel: Story = {
         </template>
       </Tabs>
     `
-  }),
-  name: 'focusable element in tab panel'
+  })
 };
 
 export const Tab1ControlledChild: Story = {
@@ -631,8 +598,7 @@ export const Tab1ControlledChild: Story = {
         </template>
       </Tabs>
     `
-  }),
-  name: 'Tab 1 controlled child'
+  })
 };
 
 export const ChangingTabTitles: Story = {
@@ -673,16 +639,14 @@ export const ChangingTabTitles: Story = {
           @update:model-value="selectedKey = $event; onSelectionChange($event)" />
       </div>
     `
-  }),
-  name: 'changing tab titles'
+  })
 };
 
 export const ChangingSelectionProgrammatically: Story = {
   render: () => ({
     components: {ControlledSelection},
     template: '<ControlledSelection />'
-  }),
-  name: 'changing selection programmatically'
+  })
 };
 
 export const Links: Story = {

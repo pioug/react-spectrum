@@ -322,20 +322,17 @@ function renderNoLabel(baseArgs: NumberFieldStoryArgs = {}, ariaLabel = 'Width',
 }
 
 export const Default: Story = {
-  render: renderNumberField(),
-  name: 'default'
+  render: renderNumberField()
 };
 
 export const DefaultValue10: Story = {
   ...Default,
-  args: {modelValue: 10},
-  name: 'defaultValue: 10'
+  args: {modelValue: 10}
 };
 
 export const Value10: Story = {
   ...Default,
-  args: {modelValue: 10},
-  name: 'value: 10'
+  args: {modelValue: 10}
 };
 
 export const MaximumFractionDigits0: Story = {
@@ -343,8 +340,7 @@ export const MaximumFractionDigits0: Story = {
   args: {
     modelValue: 10,
     step: 1
-  },
-  name: 'maximumFractionDigits = 0'
+  }
 };
 
 export const Currency: Story = {
@@ -352,8 +348,7 @@ export const Currency: Story = {
   args: {
     label: 'Price',
     modelValue: 10
-  },
-  name: 'currency'
+  }
 };
 
 export const Percent: Story = {
@@ -361,8 +356,7 @@ export const Percent: Story = {
   args: {
     label: 'Tax',
     modelValue: 10
-  },
-  name: 'percent'
+  }
 };
 
 export const PercentMaxFractionDigits2NoMinFractionDigits: Story = {
@@ -371,8 +365,7 @@ export const PercentMaxFractionDigits2NoMinFractionDigits: Story = {
     label: 'Tax',
     modelValue: 10,
     step: 0.01
-  },
-  name: 'percent, max fraction digits: 2, no min fraction digits'
+  }
 };
 
 export const PercentMin2Max2FractionDigits: Story = {
@@ -381,8 +374,7 @@ export const PercentMin2Max2FractionDigits: Story = {
     label: 'Tax',
     modelValue: 10,
     step: 0.01
-  },
-  name: 'percent min = 2 max = 2 fraction digits'
+  }
 };
 
 export const PercentMin2Max3FractionDigits: Story = {
@@ -391,8 +383,7 @@ export const PercentMin2Max3FractionDigits: Story = {
     label: 'Tax',
     modelValue: 10,
     step: 0.001
-  },
-  name: 'percent min = 2 max = 3 fraction digits'
+  }
 };
 
 export const MinValue00FractionDigits: Story = {
@@ -400,8 +391,7 @@ export const MinValue00FractionDigits: Story = {
   args: {
     min: 0,
     step: 1
-  },
-  name: 'minValue = 0, 0 fraction digits'
+  }
 };
 
 export const PercentUsingSign: Story = {
@@ -410,14 +400,12 @@ export const PercentUsingSign: Story = {
     label: 'Tax',
     modelValue: 10,
     description: 'Sign display: always'
-  },
-  name: 'percent using sign'
+  }
 };
 
 export const Disabled: Story = {
   ...Default,
-  args: {isDisabled: true},
-  name: 'disabled'
+  args: {isDisabled: true}
 };
 
 export const Readonly: Story = {
@@ -425,14 +413,12 @@ export const Readonly: Story = {
   args: {
     isReadOnly: true,
     modelValue: 10
-  },
-  name: 'readonly'
+  }
 };
 
 export const IsQuiet: Story = {
   ...Default,
-  args: {isQuiet: true},
-  name: 'isQuiet'
+  args: {isQuiet: true}
 };
 
 export const QuietDisabled: Story = {
@@ -441,8 +427,7 @@ export const QuietDisabled: Story = {
     isQuiet: true,
     isDisabled: true,
     modelValue: 10
-  },
-  name: 'quiet disabled'
+  }
 };
 
 export const QuietReadonly: Story = {
@@ -451,20 +436,17 @@ export const QuietReadonly: Story = {
     isQuiet: true,
     isReadOnly: true,
     modelValue: 10
-  },
-  name: 'quiet readonly'
+  }
 };
 
 export const ValidationStateInvalid: Story = {
   ...Default,
-  args: {validationState: 'invalid'},
-  name: 'validationState: invalid'
+  args: {validationState: 'invalid'}
 };
 
 export const ValidationStateValid: Story = {
   ...Default,
-  args: {validationState: 'valid'},
-  name: 'validationState: valid'
+  args: {validationState: 'valid'}
 };
 
 export const ValidationStateInvalidIsQuiet: Story = {
@@ -472,8 +454,7 @@ export const ValidationStateInvalidIsQuiet: Story = {
   args: {
     validationState: 'invalid',
     isQuiet: true
-  },
-  name: 'validationState: invalid, isQuiet'
+  }
 };
 
 export const ValidationStateValidIsQuiet: Story = {
@@ -481,8 +462,7 @@ export const ValidationStateValidIsQuiet: Story = {
   args: {
     validationState: 'valid',
     isQuiet: true
-  },
-  name: 'validationState: valid, isQuiet'
+  }
 };
 
 export const MinValue0MaxValue20: Story = {
@@ -490,8 +470,7 @@ export const MinValue0MaxValue20: Story = {
   args: {
     min: 0,
     max: 20
-  },
-  name: 'minValue = 0, maxValue = 20'
+  }
 };
 
 export const MinValue0MaxValue20Quiet: Story = {
@@ -500,8 +479,7 @@ export const MinValue0MaxValue20Quiet: Story = {
     isQuiet: true,
     min: 0,
     max: 20
-  },
-  name: 'minValue = 0, maxValue = 20, quiet'
+  }
 };
 
 export const MinValue50MaxValue20: Story = {
@@ -509,8 +487,7 @@ export const MinValue50MaxValue20: Story = {
   args: {
     min: -50,
     max: -20
-  },
-  name: 'minValue = -50, maxValue = -20'
+  }
 };
 
 export const MinValue20MaxValue50: Story = {
@@ -518,8 +495,7 @@ export const MinValue20MaxValue50: Story = {
   args: {
     min: 20,
     max: 50
-  },
-  name: 'minValue = 20, maxValue = 50'
+  }
 };
 
 export const MinValue0DefaultValue0: Story = {
@@ -527,14 +503,12 @@ export const MinValue0DefaultValue0: Story = {
   args: {
     min: 0,
     modelValue: 0
-  },
-  name: 'minValue = 0, defaultValue = 0'
+  }
 };
 
 export const Step5: Story = {
   ...Default,
-  args: {step: 5},
-  name: 'step = 5'
+  args: {step: 5}
 };
 
 export const Step3WithMin2Max21: Story = {
@@ -543,20 +517,17 @@ export const Step3WithMin2Max21: Story = {
     step: 3,
     min: 2,
     max: 21
-  },
-  name: 'step = 3 with min = 2, max = 21'
+  }
 };
 
 export const AutoFocus: Story = {
   ...Default,
-  args: {autoFocus: true},
-  name: 'autoFocus'
+  args: {autoFocus: true}
 };
 
 export const HideStepper: Story = {
   ...Default,
-  args: {hideStepper: true},
-  name: 'hideStepper'
+  args: {hideStepper: true}
 };
 
 export const IsQuietHideStepper: Story = {
@@ -564,22 +535,19 @@ export const IsQuietHideStepper: Story = {
   args: {
     isQuiet: true,
     hideStepper: true
-  },
-  name: 'isQuiet, hideStepper'
+  }
 };
 
 export const Required: Story = {
   ...Default,
-  args: {isRequired: true},
-  name: 'required'
+  args: {isRequired: true}
 };
 
 export const Optional: Story = {
   ...Default,
   args: {
     description: 'Optional'
-  },
-  name: 'optional'
+  }
 };
 
 export const RequiredWithLabel: Story = {
@@ -587,8 +555,7 @@ export const RequiredWithLabel: Story = {
   args: {
     isRequired: true,
     description: 'Required with label'
-  },
-  name: 'required with label'
+  }
 };
 
 export const LabelTopEnd: Story = {
@@ -596,8 +563,7 @@ export const LabelTopEnd: Story = {
   args: {
     isRequired: true,
     description: 'labelPosition: top, labelAlign: end'
-  },
-  name: 'label top end'
+  }
 };
 
 export const LabelSide: Story = {
@@ -605,23 +571,19 @@ export const LabelSide: Story = {
   args: {
     isRequired: true,
     description: 'labelPosition: side'
-  },
-  name: 'label side'
+  }
 };
 
 export const NoVisibleLabel: Story = {
-  render: renderNoLabel({isRequired: true}),
-  name: 'no visible label'
+  render: renderNoLabel({isRequired: true})
 };
 
 export const QuietNoVisibleLabel: Story = {
-  render: renderNoLabel({isQuiet: true, isRequired: true}),
-  name: 'quiet no visible label'
+  render: renderNoLabel({isQuiet: true, isRequired: true})
 };
 
 export const QuietNoVisibleLabelHidestepper: Story = {
-  render: renderNoLabel({hideStepper: true, isQuiet: true, isRequired: true}),
-  name: 'quiet no visible label hidestepper'
+  render: renderNoLabel({hideStepper: true, isQuiet: true, isRequired: true})
 };
 
 export const AriaLabelledby: Story = {
@@ -648,13 +610,11 @@ export const AriaLabelledby: Story = {
           @focus="onFocus" />
       </div>
     `
-  }),
-  name: 'aria-labelledby'
+  })
 };
 
 export const WithDescriptionNoVisibleLabel: Story = {
-  render: renderNoLabel({description: 'Please select your age.'}, 'Age'),
-  name: 'with description, no visible label'
+  render: renderNoLabel({description: 'Please select your age.'}, 'Age')
 };
 
 export const WithErrorMessageLabelPositionSide: Story = {
@@ -663,8 +623,7 @@ export const WithErrorMessageLabelPositionSide: Story = {
     description: 'labelPosition: side',
     errorMessage: 'Please enter a positive number.',
     validationState: 'invalid'
-  },
-  name: 'with error message, labelPosition: side'
+  }
 };
 
 export const _ContextualHelp: Story = {
@@ -694,28 +653,23 @@ export const _ContextualHelp: Story = {
         </ContextualHelp>
       </div>
     `
-  }),
-  name: 'contextual help'
+  })
 };
 
 export const CustomWidth: Story = {
-  render: renderNumberField({}, 'width: var(--spectrum-global-dimension-size-3000);'),
-  name: 'custom width'
+  render: renderNumberField({}, 'width: var(--spectrum-global-dimension-size-3000);')
 };
 
 export const QuietCustomWidth: Story = {
-  render: renderNumberField({isQuiet: true}, 'width: var(--spectrum-global-dimension-size-3000);'),
-  name: 'quiet custom width'
+  render: renderNumberField({isQuiet: true}, 'width: var(--spectrum-global-dimension-size-3000);')
 };
 
 export const CustomWidthNoVisibleLabel: Story = {
-  render: renderNoLabel({isRequired: true}, 'Width', 'width: var(--spectrum-global-dimension-size-3000);'),
-  name: 'custom width no visible label'
+  render: renderNoLabel({isRequired: true}, 'Width', 'width: var(--spectrum-global-dimension-size-3000);')
 };
 
 export const CustomWidthLabelPositionSide: Story = {
-  render: renderNumberField({description: 'labelPosition: side'}, 'width: var(--spectrum-global-dimension-size-3000);'),
-  name: 'custom width, labelPosition=side'
+  render: renderNumberField({description: 'labelPosition: side'}, 'width: var(--spectrum-global-dimension-size-3000);')
 };
 
 export const Controlled: Story = {
@@ -725,8 +679,7 @@ export const Controlled: Story = {
       return {args};
     },
     template: '<NumberFieldControlled :args="args" />'
-  }),
-  name: 'controlled'
+  })
 };
 
 export const CurrencySwitcher: Story = {
@@ -736,8 +689,7 @@ export const CurrencySwitcher: Story = {
       return {args};
     },
     template: '<NumberFieldWithCurrencySelect :args="args" />'
-  }),
-  name: 'currency switcher'
+  })
 };
 
 export const Flexed: Story = {
@@ -751,13 +703,11 @@ export const Flexed: Story = {
         <NumberField aria-label="Static" class="custom_classname" label="" />
       </div>
     `
-  }),
-  name: 'flexed'
+  })
 };
 
 export const MinWidth: Story = {
-  render: renderNumberField({}, 'width: 0; min-width: 0;'),
-  name: 'min width'
+  render: renderNumberField({}, 'width: 0; min-width: 0;')
 };
 
 export const FocusEvents: Story = {
@@ -786,8 +736,7 @@ export const FocusEvents: Story = {
         @keydown="onKeyDown"
         @keyup="onKeyUp" />
     `
-  }),
-  name: 'focus events'
+  })
 };
 
 export const InputDomEvents: Story = {
@@ -827,14 +776,12 @@ export const InputDomEvents: Story = {
         @paste="onPaste"
         @select="onSelect" />
     `
-  }),
-  name: 'input dom events'
+  })
 };
 
 export const ResetControlledStateToBlankWithNull: Story = {
   render: () => ({
     components: {NumberFieldControlledStateReset},
     template: '<NumberFieldControlledStateReset />'
-  }),
-  name: 'reset controlled state to blank with null'
+  })
 };
