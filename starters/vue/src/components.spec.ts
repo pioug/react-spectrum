@@ -482,20 +482,89 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('change')?.[0]).toEqual([false]);
   });
 
-  it('renders button group orientation and alignment classes', () => {
+  it('maps button group to Spectrum classes and child button slots', async () => {
     let wrapper = mount(ButtonGroup, {
       props: {
         orientation: 'vertical',
-        align: 'end'
+        align: 'end',
+        isDisabled: true
       },
       slots: {
-        default: '<button type="button">First</button><button type="button">Second</button>'
+        default: () => [
+          h(Button, {variant: 'primary'}, {default: () => 'First'}),
+          h(Button, {variant: 'secondary'}, {default: () => 'Second'})
+        ]
       }
     });
 
-    expect(wrapper.classes()).toContain('vs-button-group');
-    expect(wrapper.classes()).toContain('vs-button-group--vertical');
-    expect(wrapper.classes()).toContain('vs-button-group--align-end');
+    expect(wrapper.classes()).toContain('spectrum-ButtonGroup');
+    expect(wrapper.classes()).toContain('spectrum-ButtonGroup--vertical');
+    expect(wrapper.classes()).toContain('spectrum-ButtonGroup--alignEnd');
+
+    let buttons = wrapper.findAll('button');
+    expect(buttons).toHaveLength(2);
+    expect(buttons[0].classes()).toContain('spectrum-ButtonGroup-Button');
+    expect(buttons[1].classes()).toContain('spectrum-ButtonGroup-Button');
+    expect(buttons[0].attributes('disabled')).toBeDefined();
+    expect(buttons[1].attributes('disabled')).toBeDefined();
+
+    await buttons[0].trigger('click');
+    expect(wrapper.emitted('click')).toBeUndefined();
+  });
+
+  it('switches horizontal button group to vertical on overflow and back on resize', async () => {
+    let groupWidth = 88;
+    let originalOffsetWidth = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetWidth');
+    let originalOffsetLeft = Object.getOwnPropertyDescriptor(HTMLElement.prototype, 'offsetLeft');
+    let offsetWidthSpy = vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockImplementation(function getOffsetWidth(this: HTMLElement) {
+      if (this.classList.contains('spectrum-ButtonGroup')) {
+        return groupWidth;
+      }
+
+      if (this.tagName === 'BUTTON') {
+        return 30;
+      }
+
+      return originalOffsetWidth?.get ? originalOffsetWidth.get.call(this) : 0;
+    });
+    let offsetLeftSpy = vi.spyOn(HTMLElement.prototype, 'offsetLeft', 'get').mockImplementation(function getOffsetLeft(this: HTMLElement) {
+      if (this.textContent?.includes('Button1')) {
+        return 0;
+      }
+
+      if (this.textContent?.includes('Button2')) {
+        return 30;
+      }
+
+      if (this.textContent?.includes('Button3')) {
+        return 60;
+      }
+
+      return originalOffsetLeft?.get ? originalOffsetLeft.get.call(this) : 0;
+    });
+
+    try {
+      let wrapper = mount(ButtonGroup, {
+        slots: {
+          default: () => [
+            h(Button, {variant: 'primary'}, {default: () => 'Button1'}),
+            h(Button, {variant: 'primary'}, {default: () => 'Button2'}),
+            h(Button, {variant: 'primary'}, {default: () => 'Button3'})
+          ]
+        }
+      });
+
+      await nextTick();
+      expect(wrapper.classes()).toContain('spectrum-ButtonGroup--vertical');
+
+      groupWidth = 100;
+      window.dispatchEvent(new Event('resize'));
+      await nextTick();
+      expect(wrapper.classes()).not.toContain('spectrum-ButtonGroup--vertical');
+    } finally {
+      offsetWidthSpy.mockRestore();
+      offsetLeftSpy.mockRestore();
+    }
   });
 
   it('maps actiongroup selected and hovered states with aria wiring', async () => {
