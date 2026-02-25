@@ -18,6 +18,13 @@ import {
 } from '../../../packages/vue-aria-components/stories/Calendar.stories';
 import {SelectSupport as ToolbarSelectSupport, ToolbarExample} from '../../../packages/vue-aria-components/stories/Toolbar.stories';
 import treeMeta, {TreeExampleStaticRender} from '../../../packages/vue-aria-components/stories/Tree.stories';
+import {
+  AutocompleteInPopover,
+  AutocompleteInPopoverDialogTrigger,
+  AutocompleteMenuInPopoverDialogTrigger,
+  AutocompleteWithListbox,
+  AutocompleteWithVirtualizedListbox
+} from '../../../packages/vue-aria-components/stories/Autocomplete.stories';
 
 function expectExcluded(meta: unknown, storyName: string) {
   let excludeStories = (meta as {excludeStories?: string[]}).excludeStories;
@@ -136,5 +143,31 @@ describe('Vue storybook helper parity', () => {
     let rangeStartStory = RangeCalendarMultiMonthExample.render?.({selectionAlignment: 'start'}) as ReturnType<Exclude<typeof RangeCalendarMultiMonthExample.render, undefined>>;
     let rangeStartWrapper = mount(rangeStartStory);
     expect(rangeStartWrapper.get('.react-aria-Heading').text().startsWith('August')).toBe(true);
+  });
+
+  it('renders autocomplete popover stories with real listbox shell content', async () => {
+    let listboxStory = AutocompleteWithListbox.render?.({selectionMode: 'single'}) as ReturnType<Exclude<typeof AutocompleteWithListbox.render, undefined>>;
+    let listboxWrapper = mount(listboxStory);
+    expect(listboxWrapper.find('.react-aria-Popover').exists()).toBe(true);
+    expect(listboxWrapper.findAll('.item').length).toBeGreaterThan(0);
+    await listboxWrapper.findAll('.item')[0].trigger('click');
+    await nextTick();
+    expect(listboxWrapper.find('.item[aria-selected="true"]').exists()).toBe(true);
+
+    let virtualizedStory = AutocompleteWithVirtualizedListbox.render?.({selectionMode: 'single'}) as ReturnType<Exclude<typeof AutocompleteWithVirtualizedListbox.render, undefined>>;
+    let virtualizedWrapper = mount(virtualizedStory);
+    expect(virtualizedWrapper.text()).toContain('Item 0');
+
+    let menuTriggerStory = AutocompleteInPopover.render?.({}) as ReturnType<Exclude<typeof AutocompleteInPopover.render, undefined>>;
+    let menuTriggerWrapper = mount(menuTriggerStory);
+    expect(menuTriggerWrapper.text()).toContain('Section 0, Item 0');
+
+    let dialogTriggerStory = AutocompleteInPopoverDialogTrigger.render?.({}) as ReturnType<Exclude<typeof AutocompleteInPopoverDialogTrigger.render, undefined>>;
+    let dialogTriggerWrapper = mount(dialogTriggerStory);
+    expect(dialogTriggerWrapper.text()).toContain('Section 1, Item 1');
+
+    let dynamicDialogStory = AutocompleteMenuInPopoverDialogTrigger.render?.({}) as ReturnType<Exclude<typeof AutocompleteMenuInPopoverDialogTrigger.render, undefined>>;
+    let dynamicDialogWrapper = mount(dynamicDialogStory);
+    expect(dynamicDialogWrapper.text()).toContain('Command Palette');
   });
 });

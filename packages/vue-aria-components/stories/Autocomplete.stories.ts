@@ -160,9 +160,76 @@ const dynamicMenuMarkup = `
   </div>
 `;
 
-function createClosedPopoverStory() {
+function createAutocompletePopoverShellStory(
+  args: StoryArgs = {},
+  options: {
+    defaultValue?: string,
+    idPrefix: string,
+    listItems: string[],
+    listStyle?: Record<string, string>,
+    selectionMode?: 'none' | 'single' | 'multiple'
+  }
+) {
   return {
-    template: '<button type="button">Open popover</button>'
+    components: {
+      VueListBox
+    },
+    setup() {
+      let storyArgs = args as {
+        escapeKeyBehavior?: 'clearSelection' | 'none',
+        selectionMode?: 'none' | 'single' | 'multiple'
+      } & StoryArgs;
+      let selected = ref<string[]>([]);
+      let listArgs = computed(() => ({
+        selectionMode: storyArgs.selectionMode ?? options.selectionMode ?? 'single',
+        escapeKeyBehavior: storyArgs.escapeKeyBehavior
+      }));
+      let listStyle = options.listStyle ?? {
+        height: '170px',
+        overflow: 'auto'
+      };
+      let onSelect = (item: string) => {
+        selected.value = [item];
+        action('onAction')(item);
+      };
+
+      return {
+        listArgs,
+        listItems: options.listItems,
+        listStyle,
+        onSelect,
+        selected
+      };
+    },
+    template: `
+      <div>
+        <button type="button">Open popover</button>
+        <div
+          class="react-aria-Popover"
+          data-rac=""
+          style="background: Canvas; color: CanvasText; border: 1px solid gray; padding: 20px; height: 250px; width: 320px;">
+          ${createAutocompleteField({
+            idPrefix: options.idPrefix,
+            includeDescription: true,
+            useSearchField: true,
+            value: options.defaultValue ?? ''
+          })}
+          <VueListBox
+            v-bind="listArgs"
+            class="menu"
+            v-model="selected"
+            id="${options.idPrefix}-listbox"
+            aria-label="Suggestions"
+            collection-class="react-aria-ListBox"
+            data-orientation="vertical"
+            item-class="item"
+            :item-style="{wordBreak: 'break-word'}"
+            :items="listItems"
+            :style="listStyle"
+            @select="onSelect" />
+        </div>
+      </div>
+    `
   };
 }
 
@@ -339,27 +406,50 @@ export const AutocompleteCaseSensitive: AutocompleteStory = {
 };
 
 export const AutocompleteWithListbox: AutocompleteStory = {
-  render: () => createClosedPopoverStory(),
+  render: (args) => createAutocompletePopoverShellStory(args as StoryArgs, {
+    defaultValue: 'Ba',
+    idPrefix: 'autocomplete-listbox-popover',
+    listItems: ['Foo', 'Bar', 'Baz', 'Google', 'Copy', 'Paste', 'Cut']
+  }),
   name: 'Autocomplete with ListBox + Popover'
 };
 
 export const AutocompleteWithVirtualizedListbox: AutocompleteStory = {
-  render: () => createClosedPopoverStory(),
+  render: (args) => createAutocompletePopoverShellStory(args as StoryArgs, {
+    idPrefix: 'autocomplete-virtualized-popover',
+    listItems: Array.from({length: 200}, (_entry, index) => `Item ${index}`),
+    listStyle: {
+      height: '200px',
+      overflow: 'auto'
+    }
+  }),
   name: 'Autocomplete with ListBox + Popover, virtualized'
 };
 
 export const AutocompleteInPopover: AutocompleteStory = {
-  render: () => createClosedPopoverStory(),
+  render: (args) => createAutocompletePopoverShellStory(args as StoryArgs, {
+    idPrefix: 'autocomplete-menu-trigger-shell',
+    listItems: ['Section 0, Item 0', 'Section 0, Item 1', 'Section 1, Item 0', 'Section 1, Item 1'],
+    selectionMode: 'single'
+  }),
   name: 'Autocomplete in popover (menu trigger), shell example'
 };
 
 export const AutocompleteInPopoverDialogTrigger: AutocompleteStory = {
-  render: () => createClosedPopoverStory(),
+  render: (args) => createAutocompletePopoverShellStory(args as StoryArgs, {
+    idPrefix: 'autocomplete-dialog-trigger-shell',
+    listItems: ['Section 0, Item 0', 'Section 0, Item 1', 'Section 1, Item 0', 'Section 1, Item 1'],
+    selectionMode: 'single'
+  }),
   name: 'Autocomplete in popover (dialog trigger), shell example'
 };
 
 export const AutocompleteMenuInPopoverDialogTrigger: AutocompleteStory = {
-  render: () => createClosedPopoverStory(),
+  render: (args) => createAutocompletePopoverShellStory(args as StoryArgs, {
+    idPrefix: 'autocomplete-dialog-trigger-dynamic-shell',
+    listItems: ['Command Palette', 'Open View', 'Appearance', 'Editor Layout'],
+    selectionMode: 'single'
+  }),
   name: 'Autocomplete in popover (dialog trigger), rendering dynamic autocomplete menu'
 };
 
