@@ -954,6 +954,28 @@ describe('Vue migration primitives', () => {
       }
     });
     expect(disabled.find('.spectrum-Breadcrumbs').classes()).toContain('is-disabled');
+
+    let withLinks = mount(Breadcrumbs, {
+      props: {
+        isMultiline: true,
+        items: [
+          {key: 'home', label: 'Home', href: 'https://example.com/home'},
+          {key: 'current', label: 'Current'}
+        ],
+        showRoot: true,
+        size: 'S'
+      }
+    });
+
+    let breadcrumbRoot = withLinks.find('.spectrum-Breadcrumbs');
+    expect(breadcrumbRoot.classes()).toContain('spectrum-Breadcrumbs--small');
+    expect(breadcrumbRoot.classes()).toContain('spectrum-Breadcrumbs--multiline');
+    expect(breadcrumbRoot.classes()).toContain('spectrum-Breadcrumbs--showRoot');
+
+    let anchor = withLinks.get('a.vs-breadcrumbs__link');
+    expect(anchor.attributes('href')).toBe('https://example.com/home');
+    await anchor.trigger('click');
+    expect(withLinks.emitted('action')?.[0]).toEqual(['home']);
   });
 
   it('maps link hovered and focus-ring classes', async () => {
