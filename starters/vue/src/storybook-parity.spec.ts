@@ -42,6 +42,7 @@ import {
   RippleButtonExample
 } from '../../../packages/vue-aria-components/stories/Button.stories';
 import {BreadcrumbsExample, DynamicBreadcrumbsExample} from '../../../packages/vue-aria-components/stories/Breadcrumbs.stories';
+import {CheckboxExample} from '../../../packages/vue-aria-components/stories/Checkbox.stories';
 import {vi} from 'vitest';
 
 function expectExcluded(meta: unknown, storyName: string) {
@@ -281,6 +282,46 @@ describe('Vue storybook helper parity', () => {
     let dynamicBreadcrumbs = dynamicWrapper.findAll('li.react-aria-Breadcrumb');
     expect(dynamicBreadcrumbs).toHaveLength(3);
     expect(dynamicBreadcrumbs[2].get('.react-aria-Link').attributes('href')).toBe('/react-aria/breadcrumbs');
+  });
+
+  it('renders checkbox stories with selection and interaction state parity', async () => {
+    let checkboxStory = CheckboxExample.render?.({}) as ReturnType<Exclude<typeof CheckboxExample.render, undefined>>;
+    let checkboxWrapper = mount(checkboxStory);
+    let checkboxRoot = checkboxWrapper.get('.react-aria-Checkbox');
+    let checkboxInput = checkboxWrapper.get('input[type="checkbox"]');
+
+    expect(checkboxRoot.attributes('data-selected')).toBeUndefined();
+    expect(checkboxRoot.attributes('data-rac')).toBe('');
+    expect(checkboxRoot.attributes('data-react-aria-pressable')).toBe('true');
+
+    await checkboxInput.trigger('focus');
+    await nextTick();
+    expect(checkboxRoot.attributes('data-focused')).toBe('true');
+
+    await checkboxRoot.trigger('mouseenter');
+    await nextTick();
+    expect(checkboxRoot.attributes('data-hovered')).toBe('true');
+
+    await checkboxInput.setValue(true);
+    await nextTick();
+    expect(checkboxRoot.attributes('data-selected')).toBe('true');
+
+    await checkboxInput.trigger('keydown', {key: ' '});
+    await nextTick();
+    expect(checkboxRoot.attributes('data-pressed')).toBe('true');
+    expect(checkboxRoot.attributes('data-focus-visible')).toBe('true');
+
+    await checkboxInput.trigger('keyup', {key: ' '});
+    await nextTick();
+    expect(checkboxRoot.attributes('data-pressed')).toBeUndefined();
+
+    await checkboxRoot.trigger('mouseleave');
+    await checkboxInput.trigger('blur');
+    await checkboxInput.setValue(false);
+    await nextTick();
+    expect(checkboxRoot.attributes('data-hovered')).toBeUndefined();
+    expect(checkboxRoot.attributes('data-focused')).toBeUndefined();
+    expect(checkboxRoot.attributes('data-selected')).toBeUndefined();
   });
 
   it('renders select stories with live open and selection behavior', async () => {
