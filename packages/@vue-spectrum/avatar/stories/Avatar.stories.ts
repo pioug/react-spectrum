@@ -1,11 +1,14 @@
 import {Avatar} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
+const SRC_URL_1 = 'https://mir-s3-cdn-cf.behance.net/project_modules/disp/690bc6105945313.5f84bfc9de488.png';
+const SRC_URL_2 = 'https://i.imgur.com/xIe7Wlb.png';
+
 const meta: Meta<typeof Avatar> = {
   title: 'Avatar',
   component: Avatar,
   args: {
-    label: 'Example'
+    src: SRC_URL_1
   },
   argTypes: {
     alt: {
@@ -39,27 +42,34 @@ export const Default: Story = {
     setup() {
       return {args};
     },
-    template: '<Avatar v-bind="args">Example</Avatar>'
-  })
+    template: '<Avatar v-bind="args" />'
+  }),
+  name: 'default'
 };
 
 export const Disabled: Story = {
   ...Default,
   args: {
-    isDisabled: true
-  }
+    isDisabled: true,
+    src: SRC_URL_1
+  },
+  name: 'isDisabled'
 };
 
-export const CustomLabel: Story = {
+export const WithAltText: Story = {
   ...Default,
   args: {
-    label: 'Product avatar'
-  }
+    alt: 'Pensive',
+    src: SRC_URL_2
+  },
+  name: 'with alt text'
 };
 
-export const AlternateLabel: Story = {
+export const CustomSize: Story = {
   ...Default,
   args: {
-    label: 'Alternate label'
-  }
+    ...WithAltText.args,
+    size: 'avatar-size-700'
+  },
+  name: 'with custom size'
 };
