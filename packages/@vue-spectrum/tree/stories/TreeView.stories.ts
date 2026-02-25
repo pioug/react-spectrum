@@ -183,7 +183,8 @@ export const WithLinks: Story = {
         label: `${node.label} (https://adobe.com/)`
       }))
     }))
-  }
+  },
+  name: 'Tree with links'
 };
 
 export const EmptyTree: Story = {
