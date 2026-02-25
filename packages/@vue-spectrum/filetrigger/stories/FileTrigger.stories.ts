@@ -1,69 +1,41 @@
 import {FileTrigger} from '../src';
+import {Button} from '@vue-spectrum/button';
+import {Link} from '@vue-spectrum/link';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 const meta: Meta<typeof FileTrigger> = {
   title: 'FileTrigger',
-  component: FileTrigger,
-  args: {
-    disabled: false
-  },
-  argTypes: {
-    accept: {
-      control: 'text'
-    },
-    acceptedFileTypes: {
-      control: 'object'
-    },
-    acceptDirectory: {
-      control: 'boolean'
-    },
-    allowsMultiple: {
-      control: 'boolean'
-    },
-    defaultCamera: {
-      control: 'radio',
-      options: ['user', 'environment']
-    },
-    disabled: {
-      control: 'boolean'
-    },
-    multiple: {
-      control: 'boolean'
-    }
-  }
+  component: FileTrigger
 };
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const DefaultWithButton: Story = {
   render: (args) => ({
-    components: {FileTrigger},
+    components: {Button, FileTrigger},
     setup() {
       return {args};
     },
-    template: '<FileTrigger v-bind="args">Select files</FileTrigger>'
+    template: `
+      <FileTrigger v-bind="args">
+        <Button variant="accent">Upload</Button>
+      </FileTrigger>
+    `
   })
 };
 
-export const AllowsMultiple: Story = {
-  ...Default,
-  args: {
-    allowsMultiple: true
-  }
-};
-
-export const AcceptedImages: Story = {
-  ...Default,
-  args: {
-    acceptedFileTypes: ['image/png', 'image/jpeg']
-  }
-};
-
-export const DirectorySelection: Story = {
-  ...Default,
-  args: {
-    acceptDirectory: true
-  }
+export const DefaultWithLink: Story = {
+  render: (args) => ({
+    components: {FileTrigger, Link},
+    setup() {
+      return {args};
+    },
+    template: `
+      <FileTrigger v-bind="args">
+        <Link>Upload</Link>
+      </FileTrigger>
+    `
+  })
 };
