@@ -12,6 +12,10 @@ export const ActionGroup = defineComponent({
   name: 'VueActionGroup',
   inheritAttrs: false,
   props: {
+    disabledKeys: {
+      type: Array as PropType<string[]>,
+      default: () => []
+    },
     disabled: {
       type: Boolean,
       default: false
@@ -75,7 +79,8 @@ export const ActionGroup = defineComponent({
     ));
 
     let onAction = (item: string) => {
-      if (isDisabled.value) {
+      let isItemDisabled = isDisabled.value || props.disabledKeys.includes(item);
+      if (isItemDisabled) {
         return;
       }
 
@@ -108,6 +113,7 @@ export const ActionGroup = defineComponent({
     }, [
       ...props.items.map((item) => {
         let isSelected = props.modelValue.includes(item);
+        let isItemDisabled = isDisabled.value || props.disabledKeys.includes(item);
         let ariaPressed: 'true' | 'false' | undefined = undefined;
         if (props.selectionMode !== 'none') {
           ariaPressed = isSelected ? 'true' : 'false';
@@ -120,8 +126,8 @@ export const ActionGroup = defineComponent({
             'spectrum-ActionGroup-item',
             {
               'is-selected': isSelected,
-              'is-hovered': hoveredKey.value === item && !isDisabled.value,
-              'spectrum-ActionGroup-item--isDisabled': isDisabled.value
+              'is-hovered': hoveredKey.value === item && !isItemDisabled,
+              'spectrum-ActionGroup-item--isDisabled': isItemDisabled
             },
             classNames(
               buttonStyles,
@@ -133,12 +139,13 @@ export const ActionGroup = defineComponent({
             )
           ), 'vs-action-group__item'],
           type: 'button',
-          disabled: isDisabled.value,
+          disabled: isItemDisabled,
           'aria-pressed': ariaPressed,
+          'aria-disabled': isItemDisabled ? 'true' : 'false',
           'aria-label': attrs['aria-label'],
           'aria-labelledby': attrs['aria-labelledby'],
           onMouseenter: () => {
-            if (isDisabled.value) {
+            if (isItemDisabled) {
               return;
             }
 

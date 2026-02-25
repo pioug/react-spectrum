@@ -1336,6 +1336,9 @@ describe('Vue migration primitives', () => {
 
   it('maps table state classes, aria metadata, and hidden drop indicators', async () => {
     let wrapper = mount(Table, {
+      attrs: {
+        style: 'width: 420px;'
+      },
       props: {
         caption: 'Dependencies',
         modelValue: 1,
@@ -1355,6 +1358,7 @@ describe('Vue migration primitives', () => {
     });
 
     expect(wrapper.classes()).toContain('spectrum-Table');
+    expect((wrapper.element as HTMLElement).style.width).toBe('420px');
     expect(wrapper.get('th.vs-table__head-cell').classes()).toContain('is-sortable');
     expect(wrapper.get('th.vs-table__head-cell').classes()).toContain('is-sorted-asc');
 

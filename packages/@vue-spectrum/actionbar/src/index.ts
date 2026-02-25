@@ -7,6 +7,10 @@ export const ActionBar = defineComponent({
   name: 'VueActionBar',
   inheritAttrs: false,
   props: {
+    buttonLabelBehavior: {
+      type: String as PropType<'collapse' | 'hide' | 'show'>,
+      default: 'collapse'
+    },
     clearLabel: {
       type: String,
       default: 'Clear selection'
@@ -52,7 +56,8 @@ export const ActionBar = defineComponent({
         return 'All selected';
       }
 
-      return '{count, plural, =0 {None selected} other {# selected}}';
+      let count = Math.max(0, Number(props.selectedItemCount) || 0);
+      return `${count} selected`;
     });
 
     let actionBarClassName = computed(() => [
@@ -76,6 +81,7 @@ export const ActionBar = defineComponent({
           items: props.items,
           selectionMode: 'none',
           isQuiet: true,
+          disabledKeys: props.disabledKeys,
           disabled: false,
           onAction: (key: string) => emit('action', key)
         }, {

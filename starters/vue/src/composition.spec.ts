@@ -4907,10 +4907,34 @@ describe('Vue migration composition components', () => {
       }
     });
 
-    await wrapper.findAll('button.vs-action-bar__action')[1].trigger('click');
+    let actionButtons = wrapper.findAll('button.vs-action-group__item');
+    expect(actionButtons).toHaveLength(2);
+    expect(wrapper.text()).toContain('2 selected');
+
+    await actionButtons[1].trigger('click');
     await wrapper.get('button.vs-action-bar__clear').trigger('click');
     expect(wrapper.emitted('action')?.[0]).toEqual(['Archive']);
     expect(wrapper.emitted('clearSelection')).toHaveLength(1);
+  });
+
+  it('skips disabled action bar items from disabledKeys', async () => {
+    let wrapper = mount(ActionBar, {
+      props: {
+        selectedItemCount: 2,
+        items: ['Edit', 'Archive'],
+        disabledKeys: ['Edit']
+      }
+    });
+
+    let buttons = wrapper.findAll('button.vs-action-group__item');
+    expect(buttons[0].attributes('disabled')).toBeDefined();
+    expect(buttons[0].attributes('aria-disabled')).toBe('true');
+
+    await buttons[0].trigger('click');
+    expect(wrapper.emitted('action')).toBeUndefined();
+
+    await buttons[1].trigger('click');
+    expect(wrapper.emitted('action')?.[0]).toEqual(['Archive']);
   });
 
   it('emits action and selection updates from action group', async () => {

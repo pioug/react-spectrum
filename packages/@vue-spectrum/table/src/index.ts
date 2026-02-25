@@ -255,9 +255,7 @@ export const Table = defineComponent({
         'aria-label': props.ariaLabel || attrs['aria-label'],
         'aria-labelledby': tableLabelId.value || attrs['aria-labelledby'],
         'data-testid': props.dataTestid || attrs['data-testid'],
-        style: {
-          visibility: props.visibility
-        },
+        style: [attrs.style, {visibility: props.visibility}],
         'data-vac': ''
       }, [
         h('table', {class: 'vs-table__table'}, [
