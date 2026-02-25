@@ -41,6 +41,7 @@ import {
   PendingButtonTooltip,
   RippleButtonExample
 } from '../../../packages/vue-aria-components/stories/Button.stories';
+import {BreadcrumbsExample, DynamicBreadcrumbsExample} from '../../../packages/vue-aria-components/stories/Breadcrumbs.stories';
 import {vi} from 'vitest';
 
 function expectExcluded(meta: unknown, storyName: string) {
@@ -254,6 +255,32 @@ describe('Vue storybook helper parity', () => {
     expect(renderWrapper.get('button').classes()).toContain('react-aria-Button');
     expect(renderWrapper.get('button').attributes('data-rac')).toBe('');
     expect(renderWrapper.get('button').attributes('style')?.replace(/\s/g, '')).toContain('background:red');
+  });
+
+  it('renders breadcrumbs stories with current-item and aria semantics parity', () => {
+    let breadcrumbsStory = BreadcrumbsExample.render?.({}) as ReturnType<Exclude<typeof BreadcrumbsExample.render, undefined>>;
+    let breadcrumbsWrapper = mount(breadcrumbsStory);
+    let root = breadcrumbsWrapper.get('ol.react-aria-Breadcrumbs');
+    expect(root.attributes('aria-label')).toBe('Breadcrumbs');
+    expect(root.attributes('data-rac')).toBeUndefined();
+
+    let breadcrumbs = breadcrumbsWrapper.findAll('li.react-aria-Breadcrumb');
+    expect(breadcrumbs).toHaveLength(3);
+    expect(breadcrumbs[2].attributes('data-current')).toBe('true');
+    expect(breadcrumbs[2].attributes('data-disabled')).toBe('true');
+
+    let currentItem = breadcrumbs[2].get('.react-aria-Link');
+    expect(currentItem.element.tagName.toLowerCase()).toBe('span');
+    expect(currentItem.attributes('aria-current')).toBe('page');
+    expect(currentItem.attributes('aria-disabled')).toBe('true');
+    expect(currentItem.attributes('data-current')).toBe('true');
+    expect(currentItem.attributes('data-disabled')).toBe('true');
+
+    let dynamicStory = DynamicBreadcrumbsExample.render?.({}) as ReturnType<Exclude<typeof DynamicBreadcrumbsExample.render, undefined>>;
+    let dynamicWrapper = mount(dynamicStory);
+    let dynamicBreadcrumbs = dynamicWrapper.findAll('li.react-aria-Breadcrumb');
+    expect(dynamicBreadcrumbs).toHaveLength(3);
+    expect(dynamicBreadcrumbs[2].get('.react-aria-Link').attributes('href')).toBe('/react-aria/breadcrumbs');
   });
 
   it('renders select stories with live open and selection behavior', async () => {

@@ -45,8 +45,7 @@ export const VueBreadcrumbs = defineComponent({
       return h('ol', {
         ...attrs,
         class: ['react-aria-Breadcrumbs', attrs.class],
-        'aria-label': 'Breadcrumbs',
-        'data-rac': ''
+        'aria-label': 'Breadcrumbs'
       }, normalizedItems.value.map((item, index) => {
         let isCurrent = item.id === currentItem.value;
         let link = isCurrent
