@@ -1,43 +1,70 @@
 import {ListView} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
+type ListViewItem = {
+  id: string,
+  label: string,
+  type?: 'folder' | 'item'
+};
+type RenderOptions = {
+  includeDropTarget?: boolean,
+  items?: ListViewItem[],
+  twoLists?: boolean
+};
+type StoryArgs = Record<string, unknown>;
+
+const BASE_ITEMS: ListViewItem[] = [
+  {id: '1', label: 'Folder 1', type: 'folder'},
+  {id: '2', label: 'File 1', type: 'item'},
+  {id: '3', label: 'File 2', type: 'item'}
+];
+
+const SECOND_ITEMS: ListViewItem[] = [
+  {id: 'a', label: 'Inbox', type: 'folder'},
+  {id: 'b', label: 'Shared PSD', type: 'item'},
+  {id: 'c', label: 'Sprint notes', type: 'item'}
+];
+
+const MANY_ITEMS: ListViewItem[] = Array.from({length: 100}, (_, index) => ({
+  id: `item-${index}`,
+  label: `Item ${index}`,
+  type: 'item'
+}));
+
 const meta: Meta<typeof ListView> = {
   title: 'ListView/Drag and Drop/Util Handlers',
   component: ListView,
   args: {
-    label: 'Example'
+    density: 'regular',
+    disabledBehavior: 'selection',
+    isQuiet: false,
+    overflowMode: 'truncate',
+    selectionMode: 'multiple',
+    selectionStyle: 'checkbox'
   },
   argTypes: {
-    ariaLabel: {
-      control: 'text'
-    },
     density: {
       control: 'select',
       options: ['compact', 'regular', 'spacious']
     },
-    isDisabled: {
-      control: 'boolean'
+    disabledBehavior: {
+      control: 'radio',
+      options: ['selection', 'all']
     },
     isQuiet: {
       control: 'boolean'
     },
-    items: {
-      table: {
-        disable: true
-      }
-    },
-    label: {
-      control: 'text'
-    },
-    loadingState: {
-      control: 'select',
-      options: ['idle', 'loading', 'loadingMore']
+    overflowMode: {
+      control: 'radio',
+      options: ['truncate', 'wrap']
     },
     selectionMode: {
-      control: 'text'
+      control: 'radio',
+      options: ['none', 'single', 'multiple']
     },
     selectionStyle: {
-      control: 'text'
+      control: 'radio',
+      options: ['checkbox', 'highlight']
     }
   }
 };
@@ -46,33 +73,122 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  render: (args) => ({
+function renderUtilStory(args: StoryArgs, note: string, options: RenderOptions = {}) {
+  let {
+    includeDropTarget = false,
+    items = BASE_ITEMS,
+    twoLists = false
+  } = options;
+  return {
     components: {ListView},
     setup() {
-      return {args};
+      return {
+        args,
+        includeDropTarget,
+        items,
+        note,
+        secondItems: SECOND_ITEMS,
+        twoLists
+      };
     },
-    template: '<ListView v-bind="args">Example</ListView>'
-  })
+    template: `
+      <div style="display: grid; gap: 8px; width: 320px;">
+        <div>{{note}}</div>
+        <div v-if="includeDropTarget" style="border: 1px dashed #9ca3af; border-radius: 6px; padding: 6px 8px;">
+          Droppable placeholder
+        </div>
+        <ListView v-bind="args" aria-label="util handlers list" :items="items" />
+        <ListView
+          v-if="twoLists"
+          v-bind="args"
+          aria-label="util handlers destination list"
+          :items="secondItems" />
+      </div>
+    `
+  };
+}
+
+export const DragOut: Story = {
+  render: (args) => renderUtilStory(args, 'Drag out of list', {includeDropTarget: true}),
+  name: 'Drag out of list'
 };
 
-export const Disabled: Story = {
-  ...Default,
-  args: {
-    isDisabled: true
+export const DragWithin: Story = {
+  render: (args) => renderUtilStory(args, 'Drag within list (reorder)'),
+  name: 'Drag within list (Reorder}'
+};
+
+export const DragWithinMany: Story = {
+  render: (args) => renderUtilStory(args, 'Drag within list with many items', {items: MANY_ITEMS}),
+  name: 'Drag within list with many items'
+};
+
+export const DropOntoItem: Story = {
+  render: (args) => renderUtilStory(args, 'drop onto item/folder'),
+  name: 'drop onto item/folder',
+  parameters: {
+    description: {
+      data: 'Allows dropping on items and folders. Dropping on a item is a no op (action fires still). Dropping external items is also a no op'
+    }
   }
 };
 
-export const Quiet: Story = {
-  ...Default,
-  args: {
-    isQuiet: true
+export const DropOntoRoot: Story = {
+  render: (args) => renderUtilStory(args, 'drop onto root', {twoLists: true}),
+  name: 'drop onto root',
+  parameters: {
+    description: {
+      data: 'Allows one way dragging from first list to root of second list. Copy and link operations shouldnt remove items from the first list'
+    }
   }
 };
 
-export const Compact: Story = {
-  ...Default,
-  args: {
-    density: 'compact'
+export const DropBetween: Story = {
+  render: (args) => renderUtilStory(args, 'drop between items', {twoLists: true}),
+  name: 'drop between items',
+  parameters: {
+    description: {
+      data: 'Allows one way dragging from first list to between items of second list. Copy and link operations shouldnt remove items from the first list'
+    }
+  }
+};
+
+export const DirectoryFileDrop: Story = {
+  render: (args) => renderUtilStory(args, 'allows directories and files from finder', {twoLists: true}),
+  name: 'allows directories and files from finder',
+  parameters: {
+    description: {
+      data: 'The first list should allow only directory drops (e.g. folders from finder). The second list should allow all drag type drops (directory/files from finder, any drag items).'
+    }
+  }
+};
+
+export const Complex: Story = {
+  render: (args) => renderUtilStory(args, 'complex drag between lists', {twoLists: true}),
+  name: 'complex drag between lists',
+  parameters: {
+    description: {
+      data: 'The first list should allow dragging and drops into its folder, but disallow reorder operations. External root drops should be placed at the end of the list. The second list should allow all operations and root drops should be placed at the top of the list. Move and copy operations are allowed. The invalid drag item should be able to be dropped in either list if accompanied by other valid drag items.'
+    }
+  }
+};
+
+export const GetDropOperationDefault: Story = {
+  render: (args) => renderUtilStory(args, 'using getDropOperations to determine default drop operation', {twoLists: true}),
+  name: 'using getDropOperations to determine default drop operation',
+  parameters: {
+    description: {
+      data: 'Dragging from the first to the second list should automatically set a link operation and all other drop operations should be disabled. Dragging from the second to first list should support copy and link operations, with copy being the default.'
+    }
+  }
+};
+
+export const UtilOverride: Story = {
+  render: (args) => renderUtilStory(args, 'util handlers overridden by onDrop and getDropOperations', {twoLists: true}),
+  name: 'util handlers overridden by onDrop and getDropOperations',
+  parameters: {
+    description: {
+      data: 'The first list should be draggable, the second list should only be root droppable. No actions for onRootDrop, onReorder, onItemDrop, or onInsert should appear in the storybook actions panel.'
+    }
   }
 };
