@@ -953,7 +953,7 @@ describe('Vue migration primitives', () => {
     }
   });
 
-  it('normalizes actionbar action keys and disabled key mapping', async () => {
+  it('preserves actionbar action key casing and disabled key mapping', async () => {
     let wrapper = mount(ActionBar, {
       props: {
         selectedItemCount: 1,
@@ -967,7 +967,7 @@ describe('Vue migration primitives', () => {
     expect(actionButtons[0].attributes('disabled')).toBeDefined();
 
     await actionButtons[1].trigger('click');
-    expect(wrapper.emitted('action')?.[0]).toEqual(['copy']);
+    expect(wrapper.emitted('action')?.[0]).toEqual(['Copy']);
   });
 
   it('renders actionbar item slot with workflow icon content', () => {

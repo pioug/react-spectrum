@@ -33,22 +33,22 @@ function resolveClassName(styles: Record<string, string>, key: string, fallback:
 
 export const theme: Theme = {
   global: {
-    className: resolveClassName(global, 'spectrum', 'spectrum')
+    className: resolveClassName(global, 'spectrum', 'spectrum-light-global')
   },
   light: {
-    className: resolveClassName(lightest, 'spectrum--lightest', 'spectrum--lightest'),
+    className: resolveClassName(lightest, 'spectrum--lightest', 'spectrum-lightest'),
     colorScheme: 'light'
   },
   dark: {
-    className: resolveClassName(darkest, 'spectrum--darkest', 'spectrum--darkest'),
+    className: resolveClassName(darkest, 'spectrum--darkest', 'spectrum-darkest'),
     colorScheme: 'dark'
   },
   medium: {
-    className: resolveClassName(medium, 'spectrum--medium', 'spectrum--medium'),
+    className: resolveClassName(medium, 'spectrum--medium', 'spectrum-medium'),
     scale: 'medium'
   },
   large: {
-    className: resolveClassName(large, 'spectrum--large', 'spectrum--large'),
+    className: resolveClassName(large, 'spectrum--large', 'spectrum-large'),
     scale: 'large'
   }
 };

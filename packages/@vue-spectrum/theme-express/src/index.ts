@@ -15,18 +15,18 @@ function resolveClassName(styles: Record<string, string>, key: string, fallback:
   return styles[key] ?? fallback;
 }
 
-export const theme: Theme = {
+export const theme: ExpressTheme = {
   ...defaultTheme,
   global: {
     ...defaultTheme.global,
-    express: resolveClassName(express, 'express', 'express')
+    express: resolveClassName(express, 'express', 'spectrum-express-global')
   },
   medium: {
     ...defaultTheme.medium,
-    express: resolveClassName(express, 'medium', 'medium')
+    express: resolveClassName(express, 'medium', 'spectrum-express-medium')
   },
   large: {
     ...defaultTheme.large,
-    express: resolveClassName(express, 'large', 'large')
+    express: resolveClassName(express, 'large', 'spectrum-express-large')
   }
 };
