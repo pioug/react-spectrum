@@ -7,7 +7,7 @@ import {Badge} from '@vue-spectrum/badge';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
 import {ActionBar} from '@vue-spectrum/actionbar';
 import {Breadcrumbs} from '@vue-spectrum/breadcrumbs';
-import {Button, ToggleButton} from '@vue-spectrum/button';
+import {ActionButton, Button, LogicButton, ToggleButton} from '@vue-spectrum/button';
 import {ButtonGroup} from '@vue-spectrum/buttongroup';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {Calendar, RangeCalendar} from '@vue-spectrum/calendar';
@@ -510,6 +510,28 @@ describe('Vue migration primitives', () => {
     expect(wrapper.classes()).toContain('focus-ring');
   });
 
+  it('maps action button quiet/static classes and emits click', async () => {
+    let wrapper = mount(ActionButton, {
+      props: {
+        isQuiet: true,
+        staticColor: 'white'
+      },
+      slots: {
+        default: () => [
+          h('span', {class: 'spectrum-ActionButton-label'}, 'Action')
+        ]
+      }
+    });
+
+    expect(wrapper.classes()).toContain('spectrum-ActionButton');
+    expect(wrapper.classes()).toContain('spectrum-ActionButton--quiet');
+    expect(wrapper.classes()).toContain('spectrum-ActionButton--staticColor');
+    expect(wrapper.classes()).toContain('spectrum-ActionButton--staticWhite');
+
+    await wrapper.trigger('click');
+    expect(wrapper.emitted('click')).toHaveLength(1);
+  });
+
   it('removes href and blocks click when pending anchor button', async () => {
     let wrapper = mount(Button, {
       props: {
@@ -545,6 +567,40 @@ describe('Vue migration primitives', () => {
     await wrapper.trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([false]);
     expect(wrapper.emitted('change')?.[0]).toEqual([false]);
+  });
+
+  it('maps logic button variant class and disabled semantics', async () => {
+    let enabled = mount(LogicButton, {
+      props: {
+        variant: 'and'
+      },
+      slots: {
+        default: 'Enabled'
+      }
+    });
+
+    expect(enabled.classes()).toContain('spectrum-LogicButton');
+    expect(enabled.classes()).toContain('spectrum-LogicButton--and');
+
+    await enabled.trigger('click');
+    expect(enabled.emitted('click')).toHaveLength(1);
+
+    let disabled = mount(LogicButton, {
+      props: {
+        variant: 'or',
+        isDisabled: true
+      },
+      slots: {
+        default: 'Disabled'
+      }
+    });
+
+    expect(disabled.classes()).toContain('spectrum-LogicButton--or');
+    expect(disabled.classes()).toContain('is-disabled');
+    expect(disabled.attributes('aria-disabled')).toBe('true');
+
+    await disabled.trigger('click');
+    expect(disabled.emitted('click')).toBeUndefined();
   });
 
   it('maps button group to Spectrum classes and child button slots', async () => {
