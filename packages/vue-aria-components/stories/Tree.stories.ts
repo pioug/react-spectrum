@@ -409,15 +409,20 @@ function createVirtualizedTreeSectionRenderStory() {
 
 const meta = {
   title: 'React Aria Components/Tree',
-  component: VueTree
+  component: VueTree,
+  excludeStories: ['TreeExampleStaticRender']
 } satisfies Meta<typeof VueTree>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+export function TreeExampleStaticRender() {
+  return createTreeStory({rows: STATIC_ROWS});
+}
+
 export const TreeExampleStatic: Story = {
-  render: () => createTreeStory({rows: STATIC_ROWS}),
+  render: () => TreeExampleStaticRender(),
   args: baseArgs,
   argTypes: baseArgTypes
 };

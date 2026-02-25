@@ -57,10 +57,16 @@ const imageGridListItemStyle: CSSProperties = {
 
 const meta = {
   title: 'React Aria Components/GridList',
-  component: VueListBox
+  component: VueListBox,
+  excludeStories: ['MyGridListItem']
 } satisfies Meta<typeof VueListBox>;
 
 export default meta;
+
+export const MyGridListItem = {
+  className: 'item',
+  style: myGridListItemStyle
+};
 
 function createGridItems(count: number, prefix = 'Item', startAt = 0): GridListItemData[] {
   return Array.from({length: count}, (_, index) => {

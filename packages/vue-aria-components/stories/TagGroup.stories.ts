@@ -15,11 +15,19 @@ const meta = {
       control: 'inline-radio',
       options: ['toggle', 'replace']
     }
-  }
+  },
+  excludeStories: ['MyTag']
 } satisfies Meta;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+export function MyTag(props: {href?: string} = {}) {
+  return {
+    cursor: props.href ? 'pointer' : 'default',
+    style: 'border: 1px solid gray; border-radius: 4px; padding: 0 4px;'
+  };
+}
 
 export const TagGroupExample: Story = {
   render: () => ({

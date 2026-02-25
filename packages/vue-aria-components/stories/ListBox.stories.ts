@@ -204,7 +204,8 @@ const virtualizedListBoxWaterfallVisibleItems = [
 
 const meta = {
   title: 'React Aria Components/ListBox',
-  component: VueListBox
+  component: VueListBox,
+  excludeStories: ['MyListBoxLoaderIndicator']
 } satisfies Meta<typeof VueListBox>;
 
 export default meta;
@@ -213,6 +214,22 @@ type ListBoxStory = StoryFn<typeof VueListBox>;
 type Story = StoryObj<typeof meta>;
 type ListBoxStoryArgs = Record<string, unknown>;
 type StyleMap = Record<string, string | number>;
+
+export function MyListBoxLoaderIndicator(props: {isLoading?: boolean, orientation?: 'horizontal' | 'vertical'} = {}) {
+  let orientation = props.orientation ?? 'vertical';
+  return {
+    label: props.isLoading ? 'Loading...' : 'Load more',
+    style: {
+      alignItems: 'center',
+      display: 'flex',
+      flexShrink: 0,
+      height: orientation === 'horizontal' ? '100px' : '30px',
+      justifyContent: 'center',
+      marginTop: '8px',
+      width: orientation === 'horizontal' ? '30px' : '100%'
+    } as StyleMap
+  };
+}
 
 interface ListBoxStoryOptions {
   actionName?: string,
@@ -306,6 +323,7 @@ function createAsyncListBoxStory(args: AsyncListBoxArgs = {}, opts: {virtualized
         } as StyleMap,
         loading,
         loadMore,
+        loaderIndicator: MyListBoxLoaderIndicator({isLoading: loading.value, orientation}),
         onSelect: action('onAction'),
         selected,
         items
@@ -320,8 +338,8 @@ function createAsyncListBoxStory(args: AsyncListBoxArgs = {}, opts: {virtualized
           label="async listbox"
           :style="listStyle"
           @select="onSelect" />
-        <button type="button" style="margin-top: 8px;" :disabled="loading" @click="loadMore">
-          {{ loading ? 'Loading...' : 'Load more' }}
+        <button type="button" :style="loaderIndicator.style" :disabled="loading" @click="loadMore">
+          {{ loading ? 'Loading...' : loaderIndicator.label }}
         </button>
       </div>
     `

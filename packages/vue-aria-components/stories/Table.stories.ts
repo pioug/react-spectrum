@@ -128,13 +128,30 @@ const virtualizedTableRows: TableRow[] = Array.from({length: 22}, (_, index) => 
 
 const meta = {
   title: 'React Aria Components/Table',
-  component: VueTable
+  component: VueTable,
+  excludeStories: ['DndTable', 'makePromise', 'MyCheckbox']
 } satisfies Meta<typeof VueTable>;
 
 export default meta;
 
 type TableStory = StoryFn<typeof VueTable>;
 type Story = StoryObj<typeof meta>;
+
+export const MyCheckbox = {
+  className: 'react-aria-Checkbox',
+  iconViewBox: '0 0 18 18'
+};
+
+export function makePromise<T>() {
+  let resolve!: (value: T | PromiseLike<T>) => void;
+  let reject!: (reason?: unknown) => void;
+  let promise = new Promise<T>((resolvePromise, rejectPromise) => {
+    resolve = resolvePromise;
+    reject = rejectPromise;
+  });
+
+  return {promise, resolve, reject};
+}
 
 interface TableStoryOptions {
   actionName?: string,
@@ -511,7 +528,7 @@ const dndTableRowsTwo = [
   {id: '12', type: 'file', name: 'Adobe Dreamweaver'}
 ];
 
-export const DndTableExample: TableStory = (args: DndTableExampleArgs) => ({
+export const DndTable = (args: DndTableExampleArgs) => ({
   setup() {
     return {
       args,
@@ -618,6 +635,8 @@ export const DndTableExample: TableStory = (args: DndTableExampleArgs) => ({
     </div>
   `
 });
+
+export const DndTableExample: TableStory = (args: DndTableExampleArgs) => DndTable(args);
 
 DndTableExample.args = {
   isDisabledFirstTable: false,
