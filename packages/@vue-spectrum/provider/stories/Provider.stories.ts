@@ -42,7 +42,7 @@ export const Default: Story = {
 export const CustomScale: Story = {
   ...Default,
   args: {
-    scale: 'Story variant'
+    scale: 'large'
   }
 };
 

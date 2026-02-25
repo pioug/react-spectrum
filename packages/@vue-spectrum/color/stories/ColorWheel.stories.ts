@@ -47,6 +47,6 @@ export const Disabled: Story = {
 export const CustomLabel: Story = {
   ...Default,
   args: {
-    label: 'Story variant'
+    label: 'Color wheel'
   }
 };

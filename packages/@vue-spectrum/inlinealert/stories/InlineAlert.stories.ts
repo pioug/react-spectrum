@@ -40,13 +40,13 @@ export const Default: Story = {
 export const CustomLabel: Story = {
   ...Default,
   args: {
-    label: 'Story variant'
+    label: 'Update available'
   }
 };
 
 export const CustomTitle: Story = {
   ...Default,
   args: {
-    title: 'Story variant'
+    title: 'System notice'
   }
 };

@@ -48,6 +48,6 @@ export const AlternateVariant: Story = {
 export const CustomTitle: Story = {
   ...Default,
   args: {
-    title: 'Story variant'
+    title: 'No results found'
   }
 };

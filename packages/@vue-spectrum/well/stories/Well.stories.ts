@@ -28,7 +28,7 @@ export const Default: Story = {
 export const CustomRole: Story = {
   ...Default,
   args: {
-    role: 'Story variant'
+    role: 'status'
   }
 };
 

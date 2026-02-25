@@ -84,7 +84,7 @@ export const Default: Story = {
 export const CustomTitle: Story = {
   ...Default,
   args: {
-    title: 'Story variant'
+    title: 'Delete item'
   }
 };
 
