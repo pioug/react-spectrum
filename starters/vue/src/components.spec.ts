@@ -1347,6 +1347,38 @@ describe('Vue migration primitives', () => {
     expect(wrapper.classes()).toContain('focus-ring');
   });
 
+  it('maps card layout and no-preview classes', () => {
+    let withPreview = mount(Card, {
+      props: {
+        layout: 'grid',
+        title: 'Snapshot',
+        detail: 'PNG',
+        description: 'Build summary'
+      },
+      slots: {
+        preview: () => h('img', {src: 'https://i.imgur.com/Z7AzH2c.jpg', alt: ''})
+      }
+    });
+
+    expect(withPreview.classes()).toContain('spectrum-Card--grid');
+    expect(withPreview.classes()).not.toContain('spectrum-Card--noPreview');
+    expect(withPreview.find('.spectrum-Card-image').exists()).toBe(true);
+    expect(withPreview.find('.spectrum-Card-detail').exists()).toBe(true);
+    expect(withPreview.find('.spectrum-Card-content').exists()).toBe(true);
+
+    let withoutPreview = mount(Card, {
+      props: {
+        layout: 'waterfall',
+        title: 'Snapshot',
+        detail: 'PNG',
+        description: 'Build summary'
+      }
+    });
+
+    expect(withoutPreview.classes()).toContain('spectrum-Card--waterfall');
+    expect(withoutPreview.classes()).toContain('spectrum-Card--noPreview');
+  });
+
   it('emits selection and action from card view items', async () => {
     let wrapper = mount(CardView, {
       props: {

@@ -1,6 +1,6 @@
 import '@adobe/spectrum-css-temp/components/card/vars.css';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, type PropType, ref} from 'vue';
+import {Comment, computed, defineComponent, h, isVNode, Text, type PropType, ref} from 'vue';
 import {getEventTarget} from '@vue-aria/utils';
 const styles: {[key: string]: string} = {};
 
@@ -26,13 +26,52 @@ type CardViewItem = {
   title: string
 };
 
+type CardLayout = 'gallery' | 'grid' | 'waterfall';
+type CardOrientation = 'horizontal' | 'vertical';
+
 let cardId = 0;
+
+function hasRenderableContent(value: unknown): boolean {
+  if (value == null || typeof value === 'boolean') {
+    return false;
+  }
+
+  if (typeof value === 'string') {
+    return value.trim().length > 0;
+  }
+
+  if (typeof value === 'number') {
+    return true;
+  }
+
+  if (Array.isArray(value)) {
+    return value.some(hasRenderableContent);
+  }
+
+  if (!isVNode(value)) {
+    return true;
+  }
+
+  if (value.type === Comment) {
+    return false;
+  }
+
+  if (value.type === Text) {
+    return hasRenderableContent(value.children);
+  }
+
+  return true;
+}
 
 export const Card = defineComponent({
   name: 'VueCard',
   inheritAttrs: false,
   props: {
     description: {
+      type: String,
+      default: ''
+    },
+    detail: {
       type: String,
       default: ''
     },
@@ -44,9 +83,25 @@ export const Card = defineComponent({
       type: String,
       default: undefined
     },
+    isDisabled: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
+    },
     isQuiet: {
       type: Boolean as PropType<boolean | undefined>,
       default: undefined
+    },
+    isSelected: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
+    },
+    layout: {
+      type: String as PropType<CardLayout | undefined>,
+      default: undefined
+    },
+    orientation: {
+      type: String as PropType<CardOrientation>,
+      default: 'vertical'
     },
     quiet: {
       type: Boolean,
@@ -69,40 +124,92 @@ export const Card = defineComponent({
   setup(props, {slots, emit, attrs}) {
     let generatedId = `vs-card-${++cardId}`;
     let cardBaseId = computed(() => props.id ?? generatedId);
-    let titleId = computed(() => props.title ? `${cardBaseId.value}-title` : undefined);
-    let descriptionId = computed(() => props.description ? `${cardBaseId.value}-description` : undefined);
     let isQuiet = computed(() => props.isQuiet ?? props.quiet);
+    let isDisabled = computed(() => props.isDisabled ?? props.disabled);
+    let isSelected = computed(() => props.isSelected ?? props.selected);
 
     let isHovered = ref(false);
     let isFocused = ref(false);
     let isFocusVisible = ref(false);
 
+    let titleNodes = computed(() => {
+      if (slots.title) {
+        return slots.title();
+      }
+
+      if (props.title) {
+        return [props.title];
+      }
+
+      return [];
+    });
+    let detailNodes = computed(() => {
+      if (slots.detail) {
+        return slots.detail();
+      }
+
+      if (props.detail) {
+        return [props.detail];
+      }
+
+      if (slots.default) {
+        return slots.default();
+      }
+
+      return [];
+    });
+    let contentNodes = computed(() => {
+      if (slots.content) {
+        return slots.content();
+      }
+
+      if (props.description) {
+        return [props.description];
+      }
+
+      return [];
+    });
+    let previewNodes = computed(() => slots.preview ? slots.preview() : []);
+
+    let hasTitle = computed(() => hasRenderableContent(titleNodes.value));
+    let hasDetail = computed(() => hasRenderableContent(detailNodes.value));
+    let hasContent = computed(() => hasRenderableContent(contentNodes.value));
+    let hasPreview = computed(() => hasRenderableContent(previewNodes.value));
+
+    let titleId = computed(() => hasTitle.value ? `${cardBaseId.value}-title` : undefined);
+    let descriptionId = computed(() => hasContent.value ? `${cardBaseId.value}-description` : undefined);
+
     let className = computed(() => classNames(
       styles,
       'spectrum-Card',
       {
-        'spectrum-Card--default': !isQuiet.value,
-        'spectrum-Card--isQuiet': isQuiet.value,
-        'spectrum-Card--noLayout': true,
-        'is-hovered': isHovered.value && !props.disabled,
+        'spectrum-Card--default': !isQuiet.value && props.orientation !== 'horizontal',
+        'spectrum-Card--isQuiet': isQuiet.value && props.orientation !== 'horizontal',
+        'spectrum-Card--horizontal': props.orientation === 'horizontal',
+        'spectrum-Card--waterfall': props.layout === 'waterfall',
+        'spectrum-Card--gallery': props.layout === 'gallery',
+        'spectrum-Card--grid': props.layout === 'grid',
+        'spectrum-Card--noLayout': props.layout !== 'waterfall' && props.layout !== 'gallery' && props.layout !== 'grid',
+        'spectrum-Card--noPreview': !hasPreview.value,
+        'is-hovered': isHovered.value && !isDisabled.value,
         'is-focused': isFocused.value,
-        'is-selected': props.selected,
+        'is-selected': isSelected.value,
         'focus-ring': isFocusVisible.value
       }
     ));
 
-    return () => h('button', {
+    return () => h('div', {
       ...attrs,
-      type: 'button',
       class: [className.value, 'vs-card', attrs.class],
-      disabled: props.disabled,
-      tabindex: props.disabled ? -1 : 0,
-      'aria-label': typeof attrs['aria-label'] === 'string' ? attrs['aria-label'] : (props.title || undefined),
+      role: typeof attrs.role === 'string' ? attrs.role : 'article',
+      tabindex: isDisabled.value ? -1 : 0,
+      'aria-disabled': isDisabled.value ? 'true' : undefined,
+      'aria-label': typeof attrs['aria-label'] === 'string' ? attrs['aria-label'] : (hasTitle.value ? undefined : props.title || undefined),
       'aria-labelledby': titleId.value,
       'aria-describedby': descriptionId.value,
       'data-vac': '',
       onMouseenter: () => {
-        if (!props.disabled) {
+        if (!isDisabled.value) {
           isHovered.value = true;
         }
       },
@@ -125,16 +232,19 @@ export const Card = defineComponent({
         emit('blur', event);
       },
       onClick: () => {
-        if (!props.disabled) {
+        if (!isDisabled.value) {
           emit('press');
         }
       }
     }, [
       h('div', {class: classNames(styles, 'spectrum-Card-grid')}, [
-        props.title ? h('span', {id: titleId.value, class: ['vs-card__title', classNames(styles, 'spectrum-Card-heading')]}, props.title) : null,
-        props.description ? h('span', {id: descriptionId.value, class: ['vs-card__description', classNames(styles, 'spectrum-Card-content')]}, props.description) : null,
-        slots.default ? h('span', {class: ['vs-card__content', classNames(styles, 'spectrum-Card-detail')]}, slots.default()) : null,
-        h('span', {class: classNames(styles, 'spectrum-Card-decoration'), 'aria-hidden': 'true'})
+        hasPreview.value
+          ? h('div', {class: classNames(styles, 'spectrum-Card-image')}, previewNodes.value)
+          : null,
+        hasTitle.value ? h('span', {id: titleId.value, class: ['vs-card__title', classNames(styles, 'spectrum-Card-heading')]}, titleNodes.value) : null,
+        hasDetail.value ? h('span', {class: ['vs-card__detail', classNames(styles, 'spectrum-Card-detail')]}, detailNodes.value) : null,
+        hasContent.value ? h('span', {id: descriptionId.value, class: ['vs-card__description', classNames(styles, 'spectrum-Card-content')]}, contentNodes.value) : null,
+        h('div', {class: classNames(styles, 'spectrum-Card-decoration'), 'aria-hidden': 'true'})
       ])
     ]);
   }

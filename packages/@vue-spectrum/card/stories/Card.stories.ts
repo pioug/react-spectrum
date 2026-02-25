@@ -1,30 +1,87 @@
 import {Card} from '../src';
+import {h, ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
+
+type CardStoryArgs = {
+  isQuiet?: boolean,
+  layout?: 'gallery' | 'grid' | 'waterfall',
+  orientation?: 'horizontal' | 'vertical'
+};
+
+const MESSY_TEXT = 'Rechtsschutzversicherungsgesellschaften Nahrungsmittelunverträglichkeit Unabhängigkeitserklärungen Freundschaftsbeziehungen';
+const images = [
+  {src: 'https://i.imgur.com/Z7AzH2c.jpg'},
+  {src: 'https://i.imgur.com/DhygPot.jpg'},
+  {src: 'https://i.imgur.com/L7RTlvI.png'},
+  {src: 'https://i.imgur.com/1nScMIH.jpg'},
+  {src: 'https://i.imgur.com/zzwWogn.jpg'}
+];
+const descriptions = [
+  'Description',
+  'Description that is a medium length',
+  'This is the description that never ends, it goes on and on my friends. Someone started typing without knowing what it was',
+  MESSY_TEXT
+];
+
+function getImage(index: number): string {
+  return images[index % images.length].src;
+}
+
+function getDescription(index: number): string {
+  return descriptions[index % descriptions.length];
+}
+
+function renderPreview(index: number) {
+  return () => [
+    h('img', {
+      alt: '',
+      src: getImage(index),
+      style: {
+        display: 'block',
+        height: '100%',
+        objectFit: 'cover',
+        width: '100%'
+      }
+    })
+  ];
+}
+
+function renderCard(
+  args: CardStoryArgs,
+  index: number,
+  options: {
+    description?: string,
+    detail?: string,
+    title?: string,
+    withPreview?: boolean
+  } = {}
+) {
+  let title = options.title ?? `Title ${index}`;
+  let detail = options.detail ?? 'PNG';
+  let description = options.description ?? 'Description';
+  let withPreview = options.withPreview ?? true;
+
+  return h(Card, {
+    ...args,
+    description,
+    detail,
+    title
+  }, withPreview ? {preview: renderPreview(index)} : undefined);
+}
 
 const meta: Meta<typeof Card> = {
   title: 'Card/default',
   component: Card,
   argTypes: {
-    description: {
-      control: 'text'
+    children: {
+      table: {
+        disable: true
+      }
     },
-    disabled: {
-      control: 'boolean'
-    },
-    id: {
-      control: 'text'
-    },
-    isQuiet: {
-      control: 'boolean'
-    },
-    quiet: {
-      control: 'boolean'
-    },
-    selected: {
-      control: 'boolean'
-    },
-    title: {
-      control: 'text'
+    layout: {
+      table: {
+        disable: true
+      }
     }
   }
 };
@@ -35,31 +92,269 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: (args) => ({
-    components: {Card},
-    setup() {
-      return {args};
-    },
-    template: '<Card v-bind="args">Example</Card>'
+    render() {
+      return h('div', {
+        style: {
+          width: '208px'
+        }
+      }, [
+        renderCard(args, 0, {
+          description: 'Description',
+          detail: 'PNG',
+          title: 'Title'
+        })
+      ]);
+    }
   })
 };
 
-export const Quiet: Story = {
-  ...Default,
+export const CardGrid: Story = {
   args: {
-    isQuiet: true
-  }
+    layout: 'grid'
+  },
+  render: (args) => ({
+    render() {
+      return h('div', {
+        style: {
+          alignItems: 'start',
+          display: 'grid',
+          gap: '20px',
+          gridAutoRows: 'auto',
+          gridTemplateColumns: 'repeat(auto-fit, 208px)',
+          justifyContent: 'center',
+          justifyItems: 'center',
+          margin: '50px',
+          width: '100%'
+        }
+      }, new Array(15).fill(0).map((_, index) => h('div', {
+        key: `${index}-${getImage(index)}`,
+        style: {
+          height: '293px',
+          width: '208px'
+        }
+      }, [
+        renderCard(args, index)
+      ])));
+    }
+  })
 };
 
-export const Disabled: Story = {
-  ...Default,
+export const CardWaterfall: Story = {
   args: {
-    disabled: true
-  }
+    layout: 'waterfall'
+  },
+  render: (args) => ({
+    render() {
+      return h('div', {
+        style: {
+          alignItems: 'start',
+          display: 'flex',
+          flexDirection: 'column',
+          flexWrap: 'wrap',
+          height: '150vh',
+          margin: '50px',
+          width: '100%'
+        }
+      }, new Array(15).fill(0).map((_, index) => h('div', {
+        key: `${index}-${getImage(index)}`,
+        style: {
+          margin: '10px',
+          width: '208px'
+        }
+      }, [
+        renderCard(args, index, {
+          description: getDescription(index)
+        })
+      ])));
+    }
+  })
 };
 
-export const CustomTitle: Story = {
-  ...Default,
+export const CardFloat: Story = {
+  render: (args) => ({
+    render() {
+      return h('div', {
+        style: {
+          margin: '50px',
+          width: '100%'
+        }
+      }, new Array(15).fill(0).map((_, index) => h('div', {
+        key: `${index}-${getImage(index)}`,
+        style: {
+          float: 'left',
+          margin: '10px'
+        }
+      }, [
+        renderCard(args, index)
+      ])));
+    }
+  })
+};
+
+export const CardGridMessyText: Story = {
   args: {
-    title: 'Sample title'
-  }
+    layout: 'grid'
+  },
+  render: (args) => ({
+    render() {
+      return h('div', {
+        style: {
+          alignItems: 'start',
+          display: 'grid',
+          gap: '20px',
+          gridAutoRows: 'auto',
+          gridTemplateColumns: 'repeat(auto-fit, 208px)',
+          justifyContent: 'center',
+          justifyItems: 'center',
+          margin: '50px',
+          width: '100%'
+        }
+      }, new Array(15).fill(0).map((_, index) => h('div', {
+        key: `${index}-${getImage(index)}`,
+        style: {
+          height: '293px',
+          width: '208px'
+        }
+      }, [
+        renderCard(args, index, {
+          description: MESSY_TEXT,
+          detail: MESSY_TEXT,
+          title: `${index} ${MESSY_TEXT}`
+        })
+      ])));
+    }
+  })
+};
+
+export const CardWaterfallMessyText: Story = {
+  args: {
+    layout: 'waterfall'
+  },
+  render: (args) => ({
+    render() {
+      return h('div', {
+        style: {
+          alignItems: 'start',
+          display: 'flex',
+          flexDirection: 'column',
+          flexWrap: 'wrap',
+          height: '150vh',
+          margin: '50px',
+          width: '100%'
+        }
+      }, new Array(15).fill(0).map((_, index) => h('div', {
+        key: `${index}-${getImage(index)}`,
+        style: {
+          margin: '10px',
+          width: '208px'
+        }
+      }, [
+        renderCard(args, index, {
+          description: MESSY_TEXT,
+          detail: MESSY_TEXT,
+          title: `${index} ${MESSY_TEXT}`
+        })
+      ])));
+    }
+  })
+};
+
+export const CardGridNoPreview: Story = {
+  args: {
+    layout: 'grid'
+  },
+  render: (args) => ({
+    render() {
+      return h('div', {
+        style: {
+          alignItems: 'start',
+          display: 'grid',
+          gap: '20px',
+          gridAutoRows: 'auto',
+          gridTemplateColumns: 'repeat(auto-fit, 208px)',
+          justifyContent: 'center',
+          justifyItems: 'center',
+          margin: '50px',
+          width: '100%'
+        }
+      }, new Array(15).fill(0).map((_, index) => h('div', {
+        key: `${index}-${getImage(index)}`,
+        style: {
+          height: '160px',
+          width: '208px'
+        }
+      }, [
+        renderCard(args, index, {
+          withPreview: false
+        })
+      ])));
+    }
+  })
+};
+
+export const CardWaterfallNoPreview: Story = {
+  args: {
+    layout: 'waterfall'
+  },
+  render: (args) => ({
+    render() {
+      return h('div', {
+        style: {
+          alignItems: 'start',
+          display: 'flex',
+          flexDirection: 'column',
+          flexWrap: 'wrap',
+          height: '150vh',
+          margin: '50px',
+          width: '100%'
+        }
+      }, new Array(15).fill(0).map((_, index) => h('div', {
+        key: `${index}-${getImage(index)}`,
+        style: {
+          margin: '10px',
+          width: '208px'
+        }
+      }, [
+        renderCard(args, index, {
+          description: getDescription(index),
+          withPreview: false
+        })
+      ])));
+    }
+  })
+};
+
+export const Selected: Story = {
+  render: (args) => ({
+    setup() {
+      let selected = ref(true);
+      let toggleSelected = () => {
+        selected.value = !selected.value;
+      };
+
+      return {
+        args,
+        selected,
+        toggleSelected
+      };
+    },
+    render() {
+      return h('div', {
+        style: {
+          width: '208px'
+        }
+      }, [
+        h(Card, {
+          ...this.args,
+          description: 'Description',
+          detail: 'PNG',
+          isSelected: this.selected,
+          onPress: this.toggleSelected,
+          title: 'Title'
+        }, {
+          preview: renderPreview(0)
+        })
+      ]);
+    }
+  })
 };
