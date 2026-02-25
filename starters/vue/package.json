@@ -15,6 +15,7 @@
     "prepublishOnly": "echo \"Skipping publish for starter workspace\""
   },
   "dependencies": {
+    "@spectrum-icons-vue/workflow": "workspace:*",
     "@vue-aria/actiongroup": "workspace:*",
     "@vue-aria/aria-modal-polyfill": "workspace:*",
     "@vue-aria/autocomplete": "workspace:*",

@@ -1,0 +1,10 @@
+import {createWorkflowIcon} from './createIcon';
+
+const svgAttributes = {
+  "viewBox": "0 0 36 36"
+};
+const svgInnerHTML = `<path fill-rule="evenodd" d="M5,4A1.00294,1.00294,0,0,0,4,5v6a1,1,0,0,0,1,1H7a1,1,0,0,0,1-1V8h8V28H13a1,1,0,0,0-1,1v2a1,1,0,0,0,1,1H23a1,1,0,0,0,1-1V29a1,1,0,0,0-1-1H20V8h8v3a1,1,0,0,0,1,1h2a1,1,0,0,0,1-1V5a1.00294,1.00294,0,0,0-1-1Z"></path>`;
+
+const Text = createWorkflowIcon('VueWorkflowText', svgAttributes, svgInnerHTML);
+
+export default Text;

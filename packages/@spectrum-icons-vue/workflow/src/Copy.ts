@@ -1,0 +1,10 @@
+import {createWorkflowIcon} from './createIcon';
+
+const svgAttributes = {
+  "viewBox": "0 0 36 36"
+};
+const svgInnerHTML = `<rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="32" y="22"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="32" y="18"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="32" y="14"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="32" y="10"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="32" y="6"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="32" y="2"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="28" y="2"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="24" y="2"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="20" y="2"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="16" y="2"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="12" y="2"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="12" y="6"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="12" y="10"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="12" y="14"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="12" y="18"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="12" y="22"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="16" y="22"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="20" y="22"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="24" y="22"></rect><rect fill-rule="evenodd" height="2" rx="0.5" ry="0.5" width="2" x="28" y="22"></rect><path fill-rule="evenodd" d="M10,12H3a1,1,0,0,0-1,1V33a1,1,0,0,0,1,1H23a1,1,0,0,0,1-1V26H11a1,1,0,0,1-1-1Z"></path>`;
+
+const Copy = createWorkflowIcon('VueWorkflowCopy', svgAttributes, svgInnerHTML);
+
+export default Copy;

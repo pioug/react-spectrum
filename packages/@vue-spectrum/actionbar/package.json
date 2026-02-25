@@ -23,6 +23,7 @@
     "url": "https://github.com/adobe/react-spectrum"
   },
   "dependencies": {
+    "@spectrum-icons-vue/workflow": "workspace:*",
     "@vue-spectrum/utils": "workspace:*",
     "@vue-stately/collections": "workspace:*",
     "@vue-types/actionbar": "^3.1.20"

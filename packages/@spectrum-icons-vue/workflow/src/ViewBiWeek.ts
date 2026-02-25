@@ -1,0 +1,10 @@
+import {createWorkflowIcon} from './createIcon';
+
+const svgAttributes = {
+  "viewBox": "0 0 36 36"
+};
+const svgInnerHTML = `<path fill-rule="evenodd" d="M35,6H30V3a1,1,0,0,0-1-1H27a1,1,0,0,0-1,1V6H12V3a1,1,0,0,0-1-1H9A1,1,0,0,0,8,3V6H3A1,1,0,0,0,2,7V33a1,1,0,0,0,1,1H35a1,1,0,0,0,1-1V7A1,1,0,0,0,35,6ZM34,32H4V8H8V9a1,1,0,0,0,1,1h2a1,1,0,0,0,1-1V8H26V9a1,1,0,0,0,1,1h2a1,1,0,0,0,1-1V8h4Z"></path><rect fill-rule="evenodd" height="4" rx="0.5" ry="0.5" width="22" x="8" y="14"></rect><rect fill-rule="evenodd" height="4" rx="0.5" ry="0.5" width="22" x="8" y="22"></rect>`;
+
+const ViewBiWeek = createWorkflowIcon('VueWorkflowViewBiWeek', svgAttributes, svgInnerHTML);
+
+export default ViewBiWeek;

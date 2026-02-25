@@ -85,6 +85,12 @@ export const ActionBar = defineComponent({
         return null;
       }
 
+      let renderItem = slots.item
+        ? (itemProps: {item: string, selected: boolean}) => slots.item?.(itemProps)
+        : ({item}: {item: string}) => h('span', {
+          class: 'spectrum-ActionButton-label'
+        }, item);
+
       let actions = slots.default
         ? slots.default()
         : h(ActionGroup, {
@@ -100,9 +106,7 @@ export const ActionBar = defineComponent({
           disabled: false,
           onAction: (key: string) => emit('action', normalizeActionKey(key))
         }, {
-          item: ({item}: {item: string}) => h('span', {
-            class: 'vs-action-bar__action'
-          }, item)
+          item: renderItem
         });
 
       return h('div', {

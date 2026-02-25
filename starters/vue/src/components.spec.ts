@@ -1,6 +1,7 @@
 import {mount} from '@vue/test-utils';
 import {describe, expect, it, vi} from 'vitest';
-import {nextTick} from 'vue';
+import {h, nextTick} from 'vue';
+import EditWorkflow from '@spectrum-icons-vue/workflow/Edit';
 import {Avatar} from '@vue-spectrum/avatar';
 import {Badge} from '@vue-spectrum/badge';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -286,6 +287,21 @@ describe('Vue migration primitives', () => {
     });
     expect(illustration.classes()).toContain('vs-illustration');
     expect(illustration.attributes('aria-hidden')).toBe('true');
+  });
+
+  it('renders vue workflow icon markup without react wrappers', () => {
+    let wrapper = mount(EditWorkflow, {
+      props: {
+        size: 'S',
+        label: 'Edit item'
+      }
+    });
+
+    expect(wrapper.element.tagName).toBe('svg');
+    expect(wrapper.classes()).toContain('spectrum-Icon');
+    expect(wrapper.classes()).toContain('spectrum-Icon--sizeS');
+    expect(wrapper.attributes('aria-label')).toBe('Edit item');
+    expect(wrapper.find('path').exists()).toBe(true);
   });
 
   it('renders image src/alt and fit class', () => {
@@ -661,6 +677,25 @@ describe('Vue migration primitives', () => {
 
     await actionButtons[1].trigger('click');
     expect(wrapper.emitted('action')?.[0]).toEqual(['copy']);
+  });
+
+  it('renders actionbar item slot with workflow icon content', () => {
+    let wrapper = mount(ActionBar, {
+      props: {
+        selectedItemCount: 1,
+        items: ['Edit']
+      },
+      slots: {
+        item: ({item}: {item: string}) => [
+          h(EditWorkflow),
+          h('span', {class: 'spectrum-ActionButton-label'}, item)
+        ]
+      }
+    });
+
+    let actionButton = wrapper.get('button.vs-action-group__item');
+    expect(actionButton.find('svg.spectrum-Icon').exists()).toBe(true);
+    expect(actionButton.find('.spectrum-ActionButton-label').text()).toBe('Edit');
   });
 
   it('maps breadcrumbs hovered/focus-ring/disabled states', async () => {

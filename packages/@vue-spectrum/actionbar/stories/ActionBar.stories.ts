@@ -1,6 +1,11 @@
 import {action} from '@storybook/addon-actions';
 import {ActionBar, ActionBarContainer, type SpectrumActionBarProps} from '../src';
+import Copy from '@spectrum-icons-vue/workflow/Copy';
+import Delete from '@spectrum-icons-vue/workflow/Delete';
+import Duplicate from '@spectrum-icons-vue/workflow/Duplicate';
+import Edit from '@spectrum-icons-vue/workflow/Edit';
 import {computed, defineComponent, ref, type PropType} from 'vue';
+import Move from '@spectrum-icons-vue/workflow/Move';
 import {Table} from '@vue-spectrum/table';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
@@ -28,6 +33,13 @@ const defaultRows: TableRow[] = Array.from({length: 16}, (_unused, index) => {
 });
 
 const actionItems = ['Edit', 'Copy', 'Delete', 'Move', 'Duplicate'];
+const actionItemIcons: Record<string, unknown> = {
+  Edit,
+  Copy,
+  Delete,
+  Move,
+  Duplicate
+};
 
 const ActionBarExample = defineComponent({
   name: 'ActionBarStoryExample',
@@ -86,6 +98,7 @@ const ActionBarExample = defineComponent({
     };
 
     return {
+      actionItemIcons,
       actionItems,
       clearSelection,
       columns,
@@ -114,7 +127,12 @@ const ActionBarExample = defineComponent({
         :disabled-keys="props.disabledKeys"
         :items="actionItems"
         @clear-selection="clearSelection"
-        @action="handleAction" />
+        @action="handleAction">
+        <template #item="{item}">
+          <component :is="actionItemIcons[item]" />
+          <span class="spectrum-ActionButton-label">{{ item }}</span>
+        </template>
+      </ActionBar>
     </ActionBarContainer>
   `
 });

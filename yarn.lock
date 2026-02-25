@@ -9448,6 +9448,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@spectrum-icons-vue/workflow@workspace:*, @spectrum-icons-vue/workflow@workspace:packages/@spectrum-icons-vue/workflow":
+  version: 0.0.0-use.local
+  resolution: "@spectrum-icons-vue/workflow@workspace:packages/@spectrum-icons-vue/workflow"
+  dependencies:
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/utils": "workspace:*"
+  peerDependencies:
+    vue: ^3.4.0
+  languageName: unknown
+  linkType: soft
+
 "@spectrum-icons/build-tools@npm:3.0.0-alpha.1, @spectrum-icons/build-tools@workspace:packages/@spectrum-icons/build-tools":
   version: 0.0.0-use.local
   resolution: "@spectrum-icons/build-tools@workspace:packages/@spectrum-icons/build-tools"
@@ -12381,6 +12392,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/actionbar@workspace:packages/@vue-spectrum/actionbar"
   dependencies:
+    "@spectrum-icons-vue/workflow": "workspace:*"
     "@vue-spectrum/utils": "workspace:*"
     "@vue-stately/collections": "workspace:*"
     "@vue-types/actionbar": "npm:^3.1.20"
@@ -32977,6 +32989,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "vue-spectrum-starter@workspace:starters/vue"
   dependencies:
+    "@spectrum-icons-vue/workflow": "workspace:*"
     "@storybook/addon-a11y": "npm:8.6.14"
     "@storybook/addon-essentials": "npm:8.6.14"
     "@storybook/addon-interactions": "npm:8.6.14"
