@@ -1,18 +1,12 @@
-import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {Well} from '../src';
+import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta: Meta<typeof Well> = {
+const meta = {
   title: 'Well',
-  component: Well,
-  argTypes: {
-    role: {
-      control: 'text'
-    }
-  }
-};
+  component: Well
+} satisfies Meta<typeof Well>;
 
 export default meta;
-
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
@@ -21,27 +15,6 @@ export const Default: Story = {
     setup() {
       return {args};
     },
-    template: '<Well v-bind="args">Example</Well>'
+    template: '<Well v-bind="args">This is a React Spectrum Well</Well>'
   })
-};
-
-export const CustomRole: Story = {
-  ...Default,
-  args: {
-    role: 'status'
-  }
-};
-
-export const RegionRole: Story = {
-  ...Default,
-  args: {
-    role: 'region'
-  }
-};
-
-export const AlertRole: Story = {
-  ...Default,
-  args: {
-    role: 'alert'
-  }
 };

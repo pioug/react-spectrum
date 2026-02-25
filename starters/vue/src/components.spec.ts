@@ -133,10 +133,13 @@ describe('Vue migration primitives', () => {
     expect(darkRoot.attributes('data-color-scheme')).toBe('dark');
   });
 
-  it('renders well variants and slot content', () => {
+  it('renders well content and role-based aria labelling', () => {
     let wrapper = mount(Well, {
       props: {
-        variant: 'notice'
+        role: 'group'
+      },
+      attrs: {
+        'aria-label': 'Migration block details'
       },
       slots: {
         default: 'Migration block'
@@ -144,7 +147,25 @@ describe('Vue migration primitives', () => {
     });
 
     expect(wrapper.text()).toContain('Migration block');
-    expect(wrapper.classes()).toContain('vs-well--notice');
+    expect(wrapper.classes()).toContain('spectrum-Well');
+    expect(wrapper.attributes('role')).toBe('group');
+    expect(wrapper.attributes('aria-label')).toBe('Migration block details');
+  });
+
+  it('removes aria labels from well without a role', () => {
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    let wrapper = mount(Well, {
+      attrs: {
+        'aria-label': 'Migration block details'
+      },
+      slots: {
+        default: 'Migration block'
+      }
+    });
+
+    expect(wrapper.attributes('aria-label')).toBeUndefined();
+    expect(warn).toHaveBeenCalledWith('A labelled Well must have a role.');
+    warn.mockRestore();
   });
 
   it('renders view with dynamic element type and classes', () => {
