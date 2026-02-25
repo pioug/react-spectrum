@@ -21,13 +21,23 @@ export type WaterfallLayoutOptions = {
 };
 
 type CardViewItem = {
+  [key: string]: unknown,
   description?: string,
-  id: string,
-  title: string
+  detail?: string,
+  height?: number,
+  id?: string | number | null,
+  key?: string | number,
+  src?: string,
+  title?: string,
+  width?: number
 };
 
 type CardLayout = 'gallery' | 'grid' | 'waterfall';
 type CardOrientation = 'horizontal' | 'vertical';
+type CardViewLayoutInput = CardLayout | ((options?: unknown) => unknown) | Record<string, unknown>;
+type CardViewLoadingState = 'filtering' | 'idle' | 'loading' | 'loadingMore';
+type CardViewSelectionMode = 'multiple' | 'none' | 'single';
+type CardViewSelectionValue = string | string[];
 
 let cardId = 0;
 
@@ -61,6 +71,68 @@ function hasRenderableContent(value: unknown): boolean {
   }
 
   return true;
+}
+
+function resolveCardViewLayout(layout: CardViewLayoutInput | undefined): CardLayout {
+  if (layout === 'gallery' || layout === 'waterfall' || layout === 'grid') {
+    return layout;
+  }
+
+  if (layout && typeof layout === 'object' && 'layoutType' in layout) {
+    let layoutType = (layout as {layoutType?: unknown}).layoutType;
+    if (layoutType === 'gallery' || layoutType === 'waterfall' || layoutType === 'grid') {
+      return layoutType;
+    }
+  }
+
+  if (typeof layout === 'function') {
+    let name = layout.name.toLowerCase();
+    if (name.includes('gallery')) {
+      return 'gallery';
+    }
+
+    if (name.includes('waterfall')) {
+      return 'waterfall';
+    }
+  }
+
+  return 'grid';
+}
+
+function getItemKey(item: CardViewItem, index: number): string {
+  if (item.id != null) {
+    return String(item.id);
+  }
+
+  if (item.key != null) {
+    return String(item.key);
+  }
+
+  if (item.title) {
+    return String(item.title);
+  }
+
+  return `item-${index}`;
+}
+
+function toStringArray(value: unknown): string[] {
+  if (value == null) {
+    return [];
+  }
+
+  if (typeof value === 'string') {
+    return [value];
+  }
+
+  if (Array.isArray(value)) {
+    return value.map((item) => String(item));
+  }
+
+  if (typeof value === 'object' && Symbol.iterator in (value as Record<string | symbol, unknown>)) {
+    return Array.from(value as Iterable<unknown>).map((item) => String(item));
+  }
+
+  return [];
 }
 
 export const Card = defineComponent({
@@ -254,6 +326,10 @@ export const CardView = defineComponent({
   name: 'VueCardView',
   inheritAttrs: false,
   props: {
+    cardOrientation: {
+      type: String as PropType<CardOrientation>,
+      default: 'vertical'
+    },
     columns: {
       type: Number,
       default: 3
@@ -262,95 +338,210 @@ export const CardView = defineComponent({
       type: Boolean,
       default: false
     },
+    disabledKeys: {
+      type: Array as PropType<Array<string | number>>,
+      default: () => []
+    },
+    isQuiet: {
+      type: Boolean,
+      default: true
+    },
     items: {
       type: Array as PropType<CardViewItem[]>,
       default: () => []
     },
+    layout: {
+      type: [String, Function, Object] as PropType<CardViewLayoutInput | undefined>,
+      default: undefined
+    },
+    layoutOptions: {
+      type: Object as PropType<Record<string, unknown> | undefined>,
+      default: undefined
+    },
+    loadingState: {
+      type: String as PropType<CardViewLoadingState>,
+      default: 'idle'
+    },
     modelValue: {
-      type: String,
-      default: ''
+      type: [String, Array] as PropType<CardViewSelectionValue | undefined>,
+      default: undefined
+    },
+    renderEmptyState: {
+      type: Function as PropType<(() => unknown) | undefined>,
+      default: undefined
+    },
+    selectedKeys: {
+      type: [String, Array, Object] as PropType<'all' | Iterable<string | number> | undefined>,
+      default: undefined
+    },
+    selectionMode: {
+      type: String as PropType<CardViewSelectionMode>,
+      default: 'single'
     }
   },
   emits: {
     action: (item: CardViewItem) => typeof item === 'object' && item !== null,
-    'update:modelValue': (value: string) => typeof value === 'string'
+    change: (value: unknown) => Array.isArray(value) || typeof value === 'string',
+    selectionChange: (value: unknown) => Array.isArray(value) || value === 'all',
+    'update:modelValue': (value: unknown) => Array.isArray(value) || typeof value === 'string'
   },
   setup(props, {emit, attrs}) {
-    let columnCount = computed(() => Math.max(1, Math.round(props.columns)));
-    let focusedId = ref<string | null>(null);
-    let hoveredId = ref<string | null>(null);
+    let layoutColumnCount = computed(() => {
+      if (!props.layoutOptions) {
+        return undefined;
+      }
 
-    return () => h('div', {
-      ...attrs,
-      class: [classNames(styles, 'spectrum-CardView'), 'vs-card-view', attrs.class],
-      role: 'grid',
-      'aria-label': attrs['aria-label'],
-      style: {
-        gridTemplateColumns: `repeat(${columnCount.value}, minmax(0, 1fr))`
-      },
-      'data-vac': ''
-    }, props.items.map((item, index) => {
-      let rowId = `vs-card-view-row-${item.id}`;
-      let titleId = `${rowId}-title`;
-      let descriptionId = `${rowId}-description`;
-      let isSelected = props.modelValue === item.id;
-      let isFocused = focusedId.value === item.id;
-      let isHovered = hoveredId.value === item.id && !props.disabled;
+      let maxColumns = props.layoutOptions.maxColumns;
+      if (typeof maxColumns === 'number' && Number.isFinite(maxColumns) && maxColumns > 0) {
+        return Math.max(1, Math.round(maxColumns));
+      }
+
+      return undefined;
+    });
+    let columnCount = computed(() => layoutColumnCount.value ?? Math.max(1, Math.round(props.columns)));
+    let normalizedItems = computed(() => props.items.map((item, index) => ({
+      item,
+      key: getItemKey(item, index)
+    })));
+    let itemKeySet = computed(() => new Set(normalizedItems.value.map((entry) => entry.key)));
+    let disabledKeySet = computed(() => new Set(props.disabledKeys.map((key) => String(key))));
+    let resolvedLayout = computed(() => resolveCardViewLayout(props.layout));
+    let selectedKeys = computed(() => {
+      if (props.selectedKeys === 'all') {
+        return new Set(itemKeySet.value);
+      }
+
+      let selected = toStringArray(props.selectedKeys ?? props.modelValue);
+      return new Set(selected.filter((key) => itemKeySet.value.has(key)));
+    });
+    let isLoading = computed(() => props.loadingState === 'loading' || props.loadingState === 'loadingMore' || props.loadingState === 'filtering');
+
+    let emitSelection = (nextSelection: Set<string>) => {
+      if (props.selectionMode === 'single') {
+        let value = nextSelection.values().next().value ?? '';
+        emit('update:modelValue', value);
+        emit('change', value);
+        emit('selectionChange', value ? [value] : []);
+        return;
+      }
+
+      let value = Array.from(nextSelection);
+      emit('update:modelValue', value);
+      emit('change', value);
+      emit('selectionChange', value);
+    };
+
+    let onItemPress = (item: CardViewItem, itemKey: string) => {
+      if (props.disabled || disabledKeySet.value.has(itemKey)) {
+        return;
+      }
+
+      if (props.selectionMode === 'none') {
+        emit('action', item);
+        return;
+      }
+
+      if (props.selectionMode === 'single') {
+        emitSelection(new Set([itemKey]));
+        emit('action', item);
+        return;
+      }
+
+      let nextSelection = new Set(selectedKeys.value);
+      if (nextSelection.has(itemKey)) {
+        nextSelection.delete(itemKey);
+      } else {
+        nextSelection.add(itemKey);
+      }
+      emitSelection(nextSelection);
+      emit('action', item);
+    };
+
+    let renderCenteredRow = (content: unknown) => h('div', {
+      role: 'row',
+      'aria-rowindex': normalizedItems.value.length + 1,
+      class: classNames(styles, 'spectrum-CardView-centeredWrapper')
+    }, [
+      h('div', {role: 'gridcell'}, [content])
+    ]);
+
+    return () => {
+      let gridRows = normalizedItems.value.map(({item, key}, index) => {
+        let itemTitle = item.title ? String(item.title) : `Item ${index + 1}`;
+        let itemDetail = item.detail ? String(item.detail) : 'PNG';
+        let itemDescription = item.description ? String(item.description) : undefined;
+        let itemSrc = item.src ? String(item.src) : undefined;
+        let isItemDisabled = props.disabled || disabledKeySet.value.has(key);
+        let isItemSelected = selectedKeys.value.has(key);
+
+        let cardSlots = itemSrc
+          ? {
+            preview: () => [
+              h('img', {
+                alt: '',
+                src: itemSrc,
+                style: {
+                  display: 'block',
+                  height: '100%',
+                  objectFit: props.cardOrientation === 'horizontal' ? 'cover' : 'contain',
+                  width: '100%'
+                }
+              })
+            ]
+          }
+          : undefined;
+
+        return h('div', {
+          key,
+          role: 'row',
+          'aria-rowindex': index + 1,
+          class: classNames(styles, 'spectrum-CardView-row')
+        }, [
+          h(Card, {
+            class: 'vs-card-view__item',
+            description: itemDescription,
+            detail: itemDetail,
+            id: item.id == null ? undefined : String(item.id),
+            isDisabled: isItemDisabled,
+            isQuiet: props.isQuiet,
+            isSelected: isItemSelected,
+            layout: resolvedLayout.value,
+            orientation: props.cardOrientation,
+            role: 'gridcell',
+            title: itemTitle,
+            'aria-label': itemTitle,
+            'aria-selected': props.selectionMode === 'none' ? undefined : (isItemSelected ? 'true' : 'false'),
+            onPress: () => onItemPress(item, key)
+          }, cardSlots)
+        ]);
+      });
+
+      if (normalizedItems.value.length === 0) {
+        if (isLoading.value) {
+          gridRows.push(renderCenteredRow('Loading...'));
+        } else if (props.renderEmptyState) {
+          gridRows.push(renderCenteredRow(props.renderEmptyState()));
+        }
+      } else if (props.loadingState === 'loadingMore') {
+        gridRows.push(renderCenteredRow('Loading more...'));
+      }
 
       return h('div', {
-        key: item.id,
-        role: 'row',
-        'aria-rowindex': index + 1,
-        class: classNames(styles, 'spectrum-CardView-row')
-      }, [
-        h('button', {
-          class: [classNames(
-            styles,
-            'spectrum-Card',
-            'spectrum-Card--isQuiet',
-            {
-              'is-selected': isSelected,
-              'is-focused': isFocused,
-              'is-hovered': isHovered,
-              'focus-ring': isFocused
-            }
-          ), 'vs-card-view__item'],
-          type: 'button',
-          role: 'gridcell',
-          disabled: props.disabled,
-          'aria-label': item.title,
-          'aria-labelledby': titleId,
-          'aria-describedby': item.description ? descriptionId : undefined,
-          onMouseenter: () => {
-            hoveredId.value = item.id;
+        ...attrs,
+        class: [classNames(styles, 'spectrum-CardView'), 'vs-card-view', attrs.class],
+        role: 'grid',
+        'aria-label': attrs['aria-label'],
+        'aria-rowcount': normalizedItems.value.length,
+        'aria-multiselectable': props.selectionMode === 'multiple' ? 'true' : undefined,
+        style: [
+          {
+            gridTemplateColumns: `repeat(${columnCount.value}, minmax(0, 1fr))`
           },
-          onMouseleave: () => {
-            if (hoveredId.value === item.id) {
-              hoveredId.value = null;
-            }
-          },
-          onFocus: () => {
-            focusedId.value = item.id;
-          },
-          onBlur: () => {
-            if (focusedId.value === item.id) {
-              focusedId.value = null;
-            }
-          },
-          onClick: () => {
-            if (props.disabled) {
-              return;
-            }
-
-            emit('update:modelValue', item.id);
-            emit('action', item);
-          }
-        }, [
-          h('span', {id: titleId, class: ['vs-card-view__title', classNames(styles, 'spectrum-Card-heading')]}, item.title),
-          item.description ? h('span', {id: descriptionId, class: ['vs-card-view__description', classNames(styles, 'spectrum-Card-content')]}, item.description) : null
-        ])
-      ]);
-    }));
+          attrs.style
+        ],
+        'data-vac': ''
+      }, gridRows);
+    };
   }
 });
 export const GalleryLayout = (options: GalleryLayoutOptions = {}) => options;

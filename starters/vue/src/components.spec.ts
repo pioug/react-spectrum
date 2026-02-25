@@ -1428,10 +1428,54 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    await wrapper.findAll('button.vs-card-view__item')[1].trigger('click');
+    await wrapper.findAll('.vs-card-view__item')[1].trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['quality']);
     expect(wrapper.emitted('action')?.[0]).toEqual([{id: 'quality', title: 'Quality'}]);
     expect(wrapper.findAll('[role=\"row\"]')[1].attributes('aria-rowindex')).toBe('2');
+  });
+
+  it('supports card view disabledKeys and multiple selection mode', async () => {
+    let wrapper = mount(CardView, {
+      props: {
+        disabledKeys: ['quality'],
+        items: [
+          {id: 'overview', title: 'Overview'},
+          {id: 'quality', title: 'Quality'}
+        ],
+        selectionMode: 'multiple'
+      }
+    });
+
+    let cards = wrapper.findAll('.vs-card-view__item');
+    expect(cards).toHaveLength(2);
+    expect(cards[1].attributes('aria-disabled')).toBe('true');
+
+    await cards[1].trigger('click');
+    expect(wrapper.emitted('action')).toBeUndefined();
+    expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+
+    await cards[0].trigger('click');
+    expect(wrapper.emitted('action')?.[0]).toEqual([{id: 'overview', title: 'Overview'}]);
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['overview']]);
+    expect(wrapper.emitted('selectionChange')?.[0]).toEqual([['overview']]);
+  });
+
+  it('renders loading and empty rows for card view states', () => {
+    let loading = mount(CardView, {
+      props: {
+        items: [],
+        loadingState: 'loading'
+      }
+    });
+    expect(loading.text()).toContain('Loading...');
+
+    let empty = mount(CardView, {
+      props: {
+        items: [],
+        renderEmptyState: () => h('div', 'No results')
+      }
+    });
+    expect(empty.text()).toContain('No results');
   });
 
   it('emits input and change events from color field edits', async () => {
