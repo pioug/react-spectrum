@@ -4783,6 +4783,71 @@ describe('Vue migration composition components', () => {
     }
   });
 
+  it('preserves default link behavior when vue-aria usePress handles click', () => {
+    let presses = 0;
+    let defaultPrevented: boolean | null = null;
+    let press = usePress({
+      onPress: () => {
+        presses += 1;
+      }
+    });
+    let link = document.createElement('a');
+    link.href = 'https://example.com';
+    document.body.append(link);
+
+    try {
+      if (press.pressProps.value.onClick) {
+        link.addEventListener('click', press.pressProps.value.onClick as EventListener);
+      }
+
+      link.addEventListener('click', (event) => {
+        defaultPrevented = event.defaultPrevented;
+      });
+
+      let dispatched = link.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true}));
+      expect(dispatched).toBe(true);
+      expect(defaultPrevented).toBe(false);
+      expect(presses).toBe(1);
+    } finally {
+      document.body.removeChild(link);
+    }
+  });
+
+  it('cancels vue-aria press when pointer exits and cancellation is enabled', () => {
+    let events: string[] = [];
+    let press = usePress({
+      onPress: () => {
+        events.push('press');
+      },
+      onPressEnd: () => {
+        events.push('end');
+      },
+      onPressStart: () => {
+        events.push('start');
+      },
+      shouldCancelOnPointerExit: true
+    });
+    let button = document.createElement('button');
+    document.body.append(button);
+
+    try {
+      if (press.pressProps.value.onPointerDown) {
+        button.addEventListener('pointerdown', press.pressProps.value.onPointerDown as EventListener);
+      }
+      if (press.pressProps.value.onPointerLeave) {
+        button.addEventListener('pointerleave', press.pressProps.value.onPointerLeave as EventListener);
+      }
+
+      button.dispatchEvent(createPointerEvent('pointerdown'));
+      button.dispatchEvent(createPointerEvent('pointerleave'));
+
+      expect(events).toEqual(['start', 'end']);
+      expect(press.isPressed.value).toBe(false);
+    } finally {
+      document.body.removeChild(button);
+    }
+  });
+
   it('tracks vue-aria hover/focus-within and global focus-visible state', () => {
     let hoverChanges: boolean[] = [];
     let focusWithinChanges: boolean[] = [];
