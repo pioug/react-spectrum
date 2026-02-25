@@ -54,73 +54,59 @@ function renderWithMeta(args: StoryArgs, fallbackDescription?: string) {
 }
 
 export const IsQuiet: Story = {
-  render: (args) => renderWithMeta({...args, isQuiet: true}),
-  name: 'isQuiet'
+  render: (args) => renderWithMeta({...args, isQuiet: true})
 };
 
 export const LabelPositionSide: Story = {
-  render: (args) => renderWithMeta({...args, labelPosition: 'side'}, 'labelPosition: side'),
-  name: 'labelPosition: side'
+  render: (args) => renderWithMeta({...args, labelPosition: 'side'}, 'labelPosition: side')
 };
 
 export const LabelAlignEnd: Story = {
-  render: (args) => renderWithMeta({...args, labelPosition: 'top', labelAlign: 'end'}, 'labelAlign: end'),
-  name: 'labelAlign: end'
+  render: (args) => renderWithMeta({...args, labelPosition: 'top', labelAlign: 'end'}, 'labelAlign: end')
 };
 
 export const Required: Story = {
-  render: (args) => renderWithMeta({...args, isRequired: true}),
-  name: 'required'
+  render: (args) => renderWithMeta({...args, isRequired: true})
 };
 
 export const RequiredWithLabel: Story = {
-  render: (args) => renderWithMeta({...args, isRequired: true, necessityIndicator: 'label'}, 'required with label'),
-  name: 'required with label'
+  render: (args) => renderWithMeta({...args, isRequired: true, necessityIndicator: 'label'}, 'required with label')
 };
 
 export const Optional: Story = {
-  render: (args) => renderWithMeta({...args, necessityIndicator: 'label'}, 'optional'),
-  name: 'optional'
+  render: (args) => renderWithMeta({...args, necessityIndicator: 'label'}, 'optional')
 };
 
 export const NoVisibleLabel: Story = {
-  render: (args) => renderWithMeta({...args, 'aria-label': 'Date range', label: ''}),
-  name: 'no visible label'
+  render: (args) => renderWithMeta({...args, 'aria-label': 'Date range', label: ''})
 };
 
 export const QuietNoVisibleLabel: Story = {
-  render: (args) => renderWithMeta({...args, isQuiet: true, 'aria-label': 'Date range', label: ''}),
-  name: 'quiet no visible label'
+  render: (args) => renderWithMeta({...args, isQuiet: true, 'aria-label': 'Date range', label: ''})
 };
 
 export const CustomWidth: Story = {
-  render: (args) => renderWithMeta({...args, style: 'width: min(100%, 460px);'}, 'custom width'),
-  name: 'custom width'
+  render: (args) => renderWithMeta({...args, style: 'width: min(100%, 460px);'}, 'custom width')
 };
 
 export const QuietCustomWidth: Story = {
-  render: (args) => renderWithMeta({...args, isQuiet: true, style: 'width: min(100%, 460px);'}, 'quiet custom width'),
-  name: 'quiet custom width'
+  render: (args) => renderWithMeta({...args, isQuiet: true, style: 'width: min(100%, 460px);'}, 'quiet custom width')
 };
 
 export const CustomWidthNoVisibleLabel: Story = {
-  render: (args) => renderWithMeta({...args, style: 'width: min(100%, 460px);', label: '', 'aria-label': 'Date range'}),
-  name: 'custom width no visible label'
+  render: (args) => renderWithMeta({...args, style: 'width: min(100%, 460px);', label: '', 'aria-label': 'Date range'})
 };
 
 export const CustomWidthLabelPositionSide: Story = {
-  render: (args) => renderWithMeta({...args, style: 'width: min(100%, 460px);', labelPosition: 'side'}, 'custom width, labelPosition=side'),
-  name: 'custom width, labelPosition=side'
+  render: (args) => renderWithMeta({...args, style: 'width: min(100%, 460px);', labelPosition: 'side'}, 'custom width, labelPosition=side')
 };
 
 export const Description: Story = {
-  render: (args) => renderWithMeta({...args, description: 'Help text'}),
-  name: 'description'
+  render: (args) => renderWithMeta({...args, description: 'Help text'})
 };
 
 export const ErrorMessage: Story = {
-  render: (args) => renderWithMeta({...args, validationState: 'invalid', description: 'Dates must be after today'}),
-  name: 'errorMessage'
+  render: (args) => renderWithMeta({...args, validationState: 'invalid', description: 'Dates must be after today'})
 };
 
 export const InvalidWithTime: Story = {
@@ -131,13 +117,11 @@ export const InvalidWithTime: Story = {
       start: '2020-02-03T09:00:00-05:00',
       end: '2020-02-12T09:00:00-08:00'
     }
-  }, 'invalid with time'),
-  name: 'invalid with time'
+  }, 'invalid with time')
 };
 
 export const _ContextualHelp: Story = {
-  render: (args) => renderWithMeta({...args, description: 'Contextual help: Segments identify who your visitors are.'}),
-  name: 'contextual help'
+  render: (args) => renderWithMeta({...args, description: 'Contextual help: Segments identify who your visitors are.'})
 };
 
 export const InScrollableContainer: Story = {
@@ -151,11 +135,9 @@ export const InScrollableContainer: Story = {
         <DateRangePicker v-bind="args" label="Date range" style="max-width: calc(100vw - 40px);" />
       </div>
     `
-  }),
-  name: 'in scrollable container'
+  })
 };
 
 export const ShouldFlipFalse: Story = {
-  render: (args) => renderWithMeta({...args, shouldFlip: false}, 'shouldFlip: false'),
-  name: 'shouldFlip: false'
+  render: (args) => renderWithMeta({...args, shouldFlip: false}, 'shouldFlip: false')
 };
