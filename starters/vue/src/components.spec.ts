@@ -1398,6 +1398,25 @@ describe('Vue migration primitives', () => {
     expect(wrapper.classes()).not.toContain('spectrum-Card--default');
   });
 
+  it('maps quiet card layout classes', () => {
+    let wrapper = mount(Card, {
+      props: {
+        isQuiet: true,
+        layout: 'gallery',
+        title: 'Snapshot',
+        detail: 'PNG',
+        description: 'Build summary'
+      },
+      slots: {
+        preview: () => h('img', {src: 'https://i.imgur.com/Z7AzH2c.jpg', alt: ''})
+      }
+    });
+
+    expect(wrapper.classes()).toContain('spectrum-Card--isQuiet');
+    expect(wrapper.classes()).toContain('spectrum-Card--gallery');
+    expect(wrapper.classes()).not.toContain('spectrum-Card--default');
+  });
+
   it('emits selection and action from card view items', async () => {
     let wrapper = mount(CardView, {
       props: {
