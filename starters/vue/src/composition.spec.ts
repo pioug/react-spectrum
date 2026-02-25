@@ -569,9 +569,16 @@ describe('Vue migration composition components', () => {
     let visibleDate = ref(new Date(2025, 0, 1));
     let calendar = useCalendar({visibleDate});
     let grid = useCalendarGrid({visibleDate});
+    let tuesdayFirstGrid = useCalendarGrid({
+      visibleDate,
+      firstDayOfWeek: 2,
+      locale: 'en-US'
+    });
 
     expect(grid.weekDays.value).toHaveLength(7);
     expect(grid.weeks.value).toHaveLength(6);
+    expect(tuesdayFirstGrid.weekDays.value[0]).toMatch(/^Tue/i);
+    expect(tuesdayFirstGrid.weeks.value[0][0].getDay()).toBe(2);
 
     let cellDate = grid.weeks.value[2][3];
     let cell = useCalendarCell({
@@ -597,6 +604,19 @@ describe('Vue migration composition components', () => {
       date: new Date(2025, 0, 6)
     });
     expect(rangeCell.isSelected.value).toBe(true);
+
+    let febDate = new Date(2025, 1, 1);
+    let defaultOutsideCell = useCalendarCell({
+      calendar,
+      date: febDate
+    });
+    let offsetMonthCell = useCalendarCell({
+      calendar,
+      date: febDate,
+      visibleDate: ref(new Date(2025, 1, 1))
+    });
+    expect(defaultOutsideCell.isOutsideVisibleRange.value).toBe(true);
+    expect(offsetMonthCell.isOutsideVisibleRange.value).toBe(false);
   });
 
   it('manages vue-stately calendar and range-calendar state transitions', () => {

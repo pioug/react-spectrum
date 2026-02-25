@@ -10,6 +10,12 @@ import tagGroupMeta, {
   TagGroupExample,
   TagGroupExampleWithRemove
 } from '../../../packages/vue-aria-components/stories/TagGroup.stories';
+import {
+  CalendarFirstDayOfWeekExample,
+  CalendarMultiMonth,
+  CalendarResetValue,
+  RangeCalendarMultiMonthExample
+} from '../../../packages/vue-aria-components/stories/Calendar.stories';
 import {SelectSupport as ToolbarSelectSupport, ToolbarExample} from '../../../packages/vue-aria-components/stories/Toolbar.stories';
 import treeMeta, {TreeExampleStaticRender} from '../../../packages/vue-aria-components/stories/Tree.stories';
 
@@ -85,5 +91,36 @@ describe('Vue storybook helper parity', () => {
     expect(selectToolbarElement.attributes('role')).toBe('toolbar');
     expect(selectToolbarElement.attributes('aria-label')).toBe('Text formatting');
     expect(selectToolbarElement.attributes('aria-orientation')).toBe('horizontal');
+  });
+
+  it('renders calendar stories with live hooks, first-day locale, and reset flows', async () => {
+    let calendarResetStory = CalendarResetValue.render?.({}) as ReturnType<Exclude<typeof CalendarResetValue.render, undefined>>;
+    let calendarResetWrapper = mount(calendarResetStory);
+    let visibleCells = calendarResetWrapper.findAll('.react-aria-CalendarCell')
+      .filter((cell) => !(cell.attributes('style') ?? '').includes('display: none'));
+    expect(visibleCells.length).toBeGreaterThan(0);
+
+    await visibleCells[0].trigger('click');
+    await nextTick();
+    expect(calendarResetWrapper.findAll('.react-aria-CalendarCell').some((cell) => cell.attributes('data-selected') === 'true')).toBe(true);
+
+    let resetButtons = calendarResetWrapper.findAll('button');
+    await resetButtons[resetButtons.length - 1].trigger('click');
+    await nextTick();
+    expect(calendarResetWrapper.findAll('.react-aria-CalendarCell').some((cell) => cell.attributes('data-selected') === 'true')).toBe(false);
+
+    let multiMonthStory = CalendarMultiMonth.render?.({selectionAlignment: 'center'}) as ReturnType<Exclude<typeof CalendarMultiMonth.render, undefined>>;
+    let multiMonthWrapper = mount(multiMonthStory);
+    expect(multiMonthWrapper.findAll('.react-aria-CalendarGrid')).toHaveLength(3);
+    expect(multiMonthWrapper.find('button').text()).toBe('Reset focused date');
+
+    let firstDayStory = CalendarFirstDayOfWeekExample.render?.({locale: 'en-US-u-ca-iso8601-fw-tue'}) as ReturnType<Exclude<typeof CalendarFirstDayOfWeekExample.render, undefined>>;
+    let firstDayWrapper = mount(firstDayStory);
+    expect(firstDayWrapper.find('.react-aria-CalendarHeaderCell').text()).toBe('T');
+
+    let rangeStory = RangeCalendarMultiMonthExample.render?.({selectionAlignment: 'center'}) as ReturnType<Exclude<typeof RangeCalendarMultiMonthExample.render, undefined>>;
+    let rangeWrapper = mount(rangeStory);
+    expect(rangeWrapper.findAll('.react-aria-CalendarGrid')).toHaveLength(3);
+    expect(rangeWrapper.findAll('.react-aria-CalendarCell').some((cell) => cell.attributes('data-selected') === 'true')).toBe(true);
   });
 });

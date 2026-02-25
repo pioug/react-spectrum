@@ -15,9 +15,11 @@ export function startOfMonth(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), 1);
 }
 
-export function startOfWeek(date: Date): Date {
+export function startOfWeek(date: Date, firstDayOfWeek = 0): Date {
   let firstDay = cloneDate(date);
-  firstDay.setDate(firstDay.getDate() - firstDay.getDay());
+  let day = firstDay.getDay();
+  let offset = (day - firstDayOfWeek + 7) % 7;
+  firstDay.setDate(firstDay.getDate() - offset);
   return firstDay;
 }
 

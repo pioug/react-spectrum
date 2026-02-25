@@ -7,7 +7,8 @@ type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
 
 export interface AriaCalendarCellOptions {
   calendar: CalendarAria | RangeCalendarAria,
-  date: MaybeRef<Date>
+  date: MaybeRef<Date>,
+  visibleDate?: MaybeRef<Date>
 }
 
 export interface CalendarCellAria {
@@ -33,8 +34,9 @@ function isRangeCalendar(calendar: CalendarAria | RangeCalendarAria): calendar i
 
 export function useCalendarCell(options: AriaCalendarCellOptions): CalendarCellAria {
   let date = computed(() => cloneDate(unref(options.date)));
+  let visibleDate = computed(() => cloneDate(unref(options.visibleDate ?? options.calendar.visibleDate)));
   let isDisabled = computed(() => options.calendar.isDateDisabled(date.value));
-  let isOutsideVisibleRange = computed(() => !isSameMonth(date.value, options.calendar.visibleDate.value));
+  let isOutsideVisibleRange = computed(() => !isSameMonth(date.value, visibleDate.value));
 
   let isSelected = computed(() => {
     if (isRangeCalendar(options.calendar)) {

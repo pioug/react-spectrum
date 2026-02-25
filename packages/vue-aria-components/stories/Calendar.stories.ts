@@ -1,217 +1,58 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
-import {Calendar as VueCalendar} from '@vue-spectrum/calendar';
+import {Calendar as SpectrumCalendar} from '@vue-spectrum/calendar';
+import {
+  useCalendar,
+  useCalendarCell,
+  useCalendarGrid,
+  useRangeCalendar,
+  type CalendarAria,
+  type DateRange,
+  type RangeCalendarAria
+} from '@vue-aria/calendar';
+import {computed, defineComponent, ref, type PropType} from 'vue';
 
 type OutsideMonthMode = 'dim' | 'hide';
+type StoryCalendar = CalendarAria | RangeCalendarAria;
+type StoryMode = 'calendar' | 'range';
 
 type DateRangeSelection = {
-  end: string,
-  start: string
+  end?: string,
+  start?: string
 };
 
-type CalendarCellData = {
-  ariaDisabled?: string,
-  ariaLabel: string,
-  day: number,
-  key: string,
-  outsideMonth: boolean,
-  selected: boolean,
-  style: string,
-  tabIndex?: string
-};
-
-type CalendarMonthData = {
-  ariaLabel: string,
-  key: string,
-  tableStyle: string,
-  weeks: CalendarCellData[][]
-};
-
-type CalendarStoryModel = {
-  afterButtonText?: string,
-  ariaLabel: string,
-  beforeButtonStyle?: string,
-  beforeButtonText?: string,
-  containerStyle?: string,
-  hiddenHeadingStyle: string,
-  isRange: boolean,
-  months: CalendarMonthData[],
-  rootClass: 'react-aria-Calendar' | 'react-aria-RangeCalendar',
-  visibleHeading: string,
-  weekdayLabels: string[],
-  width: number
-};
-
-type CalendarModelOptions = {
+type CalendarStoryOptions = {
   afterButtonText?: string,
   beforeButtonStyle?: string,
   beforeButtonText?: string,
   containerStyle?: string,
-  firstDayIndex: number,
+  deriveFirstDayFromLocale?: boolean,
+  firstDayIndex?: number,
+  mode: StoryMode,
   monthCount: number,
-  monthStart: Date,
+  monthStart?: Date,
   outsideMonthMode: OutsideMonthMode,
-  rootClass: 'react-aria-Calendar' | 'react-aria-RangeCalendar',
   selectedDate?: string,
   selectedRange?: DateRangeSelection,
   width: number
 };
 
+const HIDDEN_HEADING_STYLE = 'border: 0; clip: rect(0 0 0 0); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; white-space: nowrap;';
+
 const meta = {
   title: 'React Aria Components/Calendar',
-  component: VueCalendar
-} satisfies Meta<typeof VueCalendar>;
+  component: SpectrumCalendar
+} satisfies Meta<typeof SpectrumCalendar>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const HIDDEN_HEADING_STYLE = 'border: 0; clip: rect(0 0 0 0); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; white-space: nowrap;';
-
-const CALENDAR_TEMPLATE = `
-  <div :style="containerStyle">
-    <button
-      v-if="beforeButtonText"
-      :style="beforeButtonStyle">
-      {{ beforeButtonText }}
-    </button>
-    <div
-      :class="rootClass"
-      data-rac=""
-      :aria-label="ariaLabel"
-      role="application"
-      :style="'width: ' + width + 'px;'">
-      <div :style="hiddenHeadingStyle">
-        <h2>{{ ariaLabel }}</h2>
-      </div>
-      <div style="display: flex; align-items: center;">
-        <button
-          class="react-aria-Button"
-          data-rac=""
-          type="button"
-          tabindex="0"
-          data-react-aria-pressable="true"
-          aria-label="Previous"
-          slot="previous">&lt;</button>
-        <h2 aria-hidden="true" class="react-aria-Heading" style="flex: 1 1 0%; text-align: center;">
-          {{ visibleHeading }}
-        </h2>
-        <button
-          class="react-aria-Button"
-          data-rac=""
-          type="button"
-          tabindex="0"
-          data-react-aria-pressable="true"
-          aria-label="Next"
-          slot="next">&gt;</button>
-      </div>
-      <div v-if="months.length > 1" style="display: flex; gap: 20px;">
-        <table
-          v-for="month in months"
-          :key="month.key"
-          :aria-label="month.ariaLabel"
-          role="grid"
-          :aria-multiselectable="isRange ? 'true' : undefined"
-          cellpadding="0"
-          class="react-aria-CalendarGrid"
-          :style="month.tableStyle">
-          <thead aria-hidden="true" class="react-aria-CalendarGridHeader">
-            <tr>
-              <th
-                v-for="(label, index) in weekdayLabels"
-                :key="month.key + '-head-' + index"
-                class="react-aria-CalendarHeaderCell">
-                {{ label }}
-              </th>
-            </tr>
-          </thead>
-          <tbody class="react-aria-CalendarGridBody">
-            <tr
-              v-for="(week, weekIndex) in month.weeks"
-              :key="month.key + '-week-' + weekIndex">
-              <td
-                v-for="cell in week"
-                :key="cell.key"
-                role="gridcell"
-                :aria-disabled="cell.ariaDisabled">
-                <div
-                  data-react-aria-pressable="true"
-                  :tabindex="cell.tabIndex"
-                  role="button"
-                  :aria-label="cell.ariaLabel"
-                  :aria-disabled="cell.ariaDisabled"
-                  :data-disabled="cell.outsideMonth ? 'true' : undefined"
-                  :data-outside-visible-range="cell.outsideMonth ? 'true' : undefined"
-                  :data-outside-month="cell.outsideMonth ? 'true' : undefined"
-                  :data-selected="cell.selected ? 'true' : undefined"
-                  class="react-aria-CalendarCell"
-                  data-rac=""
-                  :style="cell.style">
-                  {{ cell.day }}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <table
-        v-else
-        :aria-label="months[0].ariaLabel"
-        role="grid"
-        :aria-multiselectable="isRange ? 'true' : undefined"
-        cellpadding="0"
-        class="react-aria-CalendarGrid"
-        style="width: 100%;">
-        <thead aria-hidden="true" class="react-aria-CalendarGridHeader">
-          <tr>
-            <th
-              v-for="(label, index) in weekdayLabels"
-              :key="'single-head-' + index"
-              class="react-aria-CalendarHeaderCell">
-              {{ label }}
-            </th>
-          </tr>
-        </thead>
-        <tbody class="react-aria-CalendarGridBody">
-          <tr
-            v-for="(week, weekIndex) in months[0].weeks"
-            :key="'single-week-' + weekIndex">
-            <td
-              v-for="cell in week"
-              :key="cell.key"
-              role="gridcell"
-              :aria-disabled="cell.ariaDisabled">
-              <div
-                data-react-aria-pressable="true"
-                :tabindex="cell.tabIndex"
-                role="button"
-                :aria-label="cell.ariaLabel"
-                :aria-disabled="cell.ariaDisabled"
-                :data-disabled="cell.outsideMonth ? 'true' : undefined"
-                :data-outside-visible-range="cell.outsideMonth ? 'true' : undefined"
-                :data-outside-month="cell.outsideMonth ? 'true' : undefined"
-                :data-selected="cell.selected ? 'true' : undefined"
-                class="react-aria-CalendarCell"
-                data-rac=""
-                :style="cell.style">
-                {{ cell.day }}
-              </div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <button v-if="afterButtonText">{{ afterButtonText }}</button>
-  </div>
-`;
+function cloneDate(date: Date): Date {
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+}
 
 function startOfMonth(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), 1);
-}
-
-function addDays(date: Date, amount: number): Date {
-  let next = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-  next.setDate(next.getDate() + amount);
-  return next;
 }
 
 function addMonths(date: Date, amount: number): Date {
@@ -223,7 +64,7 @@ function parseIsoDate(value?: string): Date | null {
     return null;
   }
 
-  let [year, month, day] = value.split('-').map((part) => Number(part));
+  let [year, month, day] = value.split('-').map((segment) => Number(segment));
   let parsed = new Date(year, month - 1, day);
   if (Number.isNaN(parsed.getTime())) {
     return null;
@@ -240,159 +81,17 @@ function parseIsoDate(value?: string): Date | null {
   return parsed;
 }
 
-function formatMonthYear(date: Date): string {
-  return new Intl.DateTimeFormat('en-US', {
+function formatMonthYear(date: Date, locale: string): string {
+  return new Intl.DateTimeFormat(locale, {
     month: 'long',
     year: 'numeric'
   }).format(date);
 }
 
-function formatMonthOnly(date: Date): string {
-  return new Intl.DateTimeFormat('en-US', {
+function formatMonthOnly(date: Date, locale: string): string {
+  return new Intl.DateTimeFormat(locale, {
     month: 'long'
   }).format(date);
-}
-
-function formatAriaDate(date: Date): string {
-  return new Intl.DateTimeFormat('en-US', {
-    day: 'numeric',
-    month: 'long',
-    weekday: 'long',
-    year: 'numeric'
-  }).format(date);
-}
-
-function isSameDay(left: Date, right: Date): boolean {
-  return (
-    left.getFullYear() === right.getFullYear()
-    && left.getMonth() === right.getMonth()
-    && left.getDate() === right.getDate()
-  );
-}
-
-function isDateInRange(date: Date, start: Date, end: Date): boolean {
-  let timestamp = date.getTime();
-  return timestamp >= start.getTime() && timestamp <= end.getTime();
-}
-
-function getWeekdayLabels(firstDayIndex: number): string[] {
-  let formatter = new Intl.DateTimeFormat('en-US', {weekday: 'short'});
-  let base = new Date(2024, 0, 7);
-
-  return [...new Array(7).keys()].map((offset) => {
-    let day = addDays(base, firstDayIndex + offset);
-    return formatter.format(day).charAt(0);
-  });
-}
-
-function buildMonthWeeks(monthStart: Date, firstDayIndex: number): Date[][] {
-  let firstOfMonth = startOfMonth(monthStart);
-  let firstDay = firstOfMonth.getDay();
-  let offset = (firstDay - firstDayIndex + 7) % 7;
-  let daysInMonth = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0).getDate();
-  let weekCount = Math.ceil((offset + daysInMonth) / 7);
-  let current = addDays(firstOfMonth, -offset);
-
-  let weeks: Date[][] = [];
-  for (let week = 0; week < weekCount; week++) {
-    let days: Date[] = [];
-    for (let day = 0; day < 7; day++) {
-      days.push(current);
-      current = addDays(current, 1);
-    }
-    weeks.push(days);
-  }
-
-  return weeks;
-}
-
-function buildMonthData(
-  monthStart: Date,
-  firstDayIndex: number,
-  outsideMonthMode: OutsideMonthMode,
-  monthCount: number,
-  selectedDate?: string,
-  selectedRange?: DateRangeSelection
-): CalendarMonthData {
-  let parsedSelectedDate = parseIsoDate(selectedDate);
-  let parsedRangeStart = parseIsoDate(selectedRange?.start);
-  let parsedRangeEnd = parseIsoDate(selectedRange?.end);
-
-  let weeks = buildMonthWeeks(monthStart, firstDayIndex).map((week, weekIndex) => (
-    week.map((date, dayIndex) => {
-      let outsideMonth = date.getMonth() !== monthStart.getMonth() || date.getFullYear() !== monthStart.getFullYear();
-      let isSelected = (
-        (parsedSelectedDate ? isSameDay(date, parsedSelectedDate) : false)
-        || (parsedRangeStart && parsedRangeEnd ? isDateInRange(date, parsedRangeStart, parsedRangeEnd) : false)
-      ) && !outsideMonth;
-
-      let styleParts = ['text-align: center', 'cursor: default'];
-      if (outsideMonthMode === 'hide' && outsideMonth) {
-        styleParts.push('display: none');
-      }
-      if (outsideMonthMode === 'dim' && outsideMonth) {
-        styleParts.push('opacity: 0.5');
-      }
-      if (isSelected) {
-        styleParts.push('background: blue');
-      }
-
-      return {
-        ariaDisabled: outsideMonth ? 'true' : undefined,
-        ariaLabel: formatAriaDate(date),
-        day: date.getDate(),
-        key: `${monthStart.getFullYear()}-${monthStart.getMonth()}-${weekIndex}-${dayIndex}`,
-        outsideMonth,
-        selected: isSelected,
-        style: `${styleParts.join('; ')};`,
-        tabIndex: outsideMonth ? undefined : '-1'
-      };
-    })
-  ));
-
-  return {
-    ariaLabel: formatMonthYear(monthStart),
-    key: `${monthStart.getFullYear()}-${monthStart.getMonth()}`,
-    tableStyle: monthCount > 1 ? 'flex: 1 1 0%;' : 'width: 100%;',
-    weeks
-  };
-}
-
-function createModel(options: CalendarModelOptions): CalendarStoryModel {
-  let months = [...new Array(options.monthCount).keys()].map((offset) => {
-    let monthStart = addMonths(options.monthStart, offset);
-    return buildMonthData(
-      monthStart,
-      options.firstDayIndex,
-      options.outsideMonthMode,
-      options.monthCount,
-      options.selectedDate,
-      options.selectedRange
-    );
-  });
-
-  let endMonth = addMonths(options.monthStart, options.monthCount - 1);
-  let visibleHeading = options.monthCount === 1
-    ? formatMonthYear(options.monthStart)
-    : `${formatMonthOnly(options.monthStart)}\u2009\u2013\u2009${formatMonthYear(endMonth)}`;
-  let ariaLabel = options.monthCount === 1
-    ? formatMonthYear(options.monthStart)
-    : `${formatMonthOnly(options.monthStart)} to ${formatMonthYear(endMonth)}`;
-
-  return {
-    afterButtonText: options.afterButtonText,
-    ariaLabel,
-    beforeButtonStyle: options.beforeButtonStyle,
-    beforeButtonText: options.beforeButtonText,
-    containerStyle: options.containerStyle,
-    hiddenHeadingStyle: HIDDEN_HEADING_STYLE,
-    isRange: options.rootClass === 'react-aria-RangeCalendar',
-    months,
-    rootClass: options.rootClass,
-    visibleHeading,
-    weekdayLabels: getWeekdayLabels(options.firstDayIndex),
-    width: options.width
-  };
 }
 
 function firstDayIndexFromLocale(locale?: string): number {
@@ -417,63 +116,384 @@ function firstDayIndexFromLocale(locale?: string): number {
   }
 }
 
-function createCalendarStory(modelOptions: Omit<CalendarModelOptions, 'firstDayIndex' | 'monthStart'> & {firstDayIndex?: number, monthStart?: Date}): Story {
+const CalendarCellView = defineComponent({
+  name: 'StoryCalendarCellView',
+  props: {
+    calendar: {
+      type: Object as PropType<StoryCalendar>,
+      required: true
+    },
+    date: {
+      type: Date,
+      required: true
+    },
+    locale: {
+      type: String,
+      required: true
+    },
+    monthDate: {
+      type: Date,
+      required: true
+    },
+    outsideMonthMode: {
+      type: String as PropType<OutsideMonthMode>,
+      required: true
+    }
+  },
+  setup(props) {
+    let dateLabelFormatter = computed(() => new Intl.DateTimeFormat(props.locale, {
+      day: 'numeric',
+      month: 'long',
+      weekday: 'long',
+      year: 'numeric'
+    }));
+    let cell = useCalendarCell({
+      calendar: props.calendar,
+      date: computed(() => props.date),
+      visibleDate: computed(() => props.monthDate)
+    });
+    let isOutsideMonth = computed(() => cell.isOutsideVisibleRange.value);
+    let cellStyle = computed<Record<string, string>>(() => {
+      let style: Record<string, string> = {
+        cursor: 'default',
+        textAlign: 'center'
+      };
+
+      if (props.outsideMonthMode === 'hide' && isOutsideMonth.value) {
+        style.display = 'none';
+      }
+
+      if (props.outsideMonthMode === 'dim' && isOutsideMonth.value) {
+        style.opacity = '0.5';
+      }
+
+      if (cell.isSelected.value) {
+        style.background = 'blue';
+      }
+
+      return style;
+    });
+    let dateAriaLabel = computed(() => dateLabelFormatter.value.format(props.date));
+
+    return {
+      cell,
+      cellStyle,
+      dateAriaLabel,
+      isOutsideMonth,
+      onPress: () => {
+        cell.press();
+      }
+    };
+  },
+  template: `
+    <td role="gridcell" :aria-disabled="cell.cellProps.value['aria-disabled'] ? 'true' : undefined">
+      <div
+        data-react-aria-pressable="true"
+        class="react-aria-CalendarCell"
+        data-rac=""
+        role="button"
+        :aria-label="dateAriaLabel"
+        :aria-disabled="cell.cellProps.value['aria-disabled'] ? 'true' : undefined"
+        :data-disabled="isOutsideMonth ? 'true' : undefined"
+        :data-outside-visible-range="isOutsideMonth ? 'true' : undefined"
+        :data-outside-month="isOutsideMonth ? 'true' : undefined"
+        :data-selected="cell.isSelected.value ? 'true' : undefined"
+        :tabindex="cell.buttonProps.value.tabindex"
+        :style="cellStyle"
+        @click="onPress">
+        {{ cell.formattedDate.value }}
+      </div>
+    </td>
+  `
+});
+
+const CalendarGridView = defineComponent({
+  name: 'StoryCalendarGridView',
+  components: {
+    CalendarCellView
+  },
+  props: {
+    calendar: {
+      type: Object as PropType<StoryCalendar>,
+      required: true
+    },
+    firstDayIndex: {
+      type: Number,
+      required: true
+    },
+    isRange: {
+      type: Boolean,
+      required: true
+    },
+    locale: {
+      type: String,
+      required: true
+    },
+    monthCount: {
+      type: Number,
+      required: true
+    },
+    monthOffset: {
+      type: Number,
+      required: true
+    },
+    outsideMonthMode: {
+      type: String as PropType<OutsideMonthMode>,
+      required: true
+    }
+  },
+  setup(props) {
+    let monthDate = computed(() => addMonths(startOfMonth(props.calendar.visibleDate.value), props.monthOffset));
+    let monthLabel = computed(() => formatMonthYear(monthDate.value, props.locale));
+    let tableStyle = computed(() => (props.monthCount > 1 ? 'flex: 1 1 0%;' : 'width: 100%;'));
+    let grid = useCalendarGrid({
+      firstDayOfWeek: computed(() => props.firstDayIndex),
+      locale: computed(() => props.locale),
+      visibleDate: monthDate
+    });
+    let weekdayLabels = computed(() => grid.weekDays.value.map((label) => label.charAt(0)));
+
+    return {
+      grid,
+      monthDate,
+      monthLabel,
+      tableStyle,
+      weekdayLabels
+    };
+  },
+  template: `
+    <table
+      :aria-label="monthLabel"
+      role="grid"
+      :aria-multiselectable="isRange ? 'true' : undefined"
+      cellpadding="0"
+      class="react-aria-CalendarGrid"
+      :style="tableStyle">
+      <thead aria-hidden="true" class="react-aria-CalendarGridHeader">
+        <tr>
+          <th
+            v-for="(label, index) in weekdayLabels"
+            :key="'head-' + index"
+            class="react-aria-CalendarHeaderCell">
+            {{ label }}
+          </th>
+        </tr>
+      </thead>
+      <tbody class="react-aria-CalendarGridBody">
+        <tr
+          v-for="(week, weekIndex) in grid.weeks.value"
+          :key="'week-' + weekIndex">
+          <CalendarCellView
+            v-for="date in week"
+            :key="date.toISOString()"
+            :calendar="calendar"
+            :date="date"
+            :locale="locale"
+            :month-date="monthDate"
+            :outside-month-mode="outsideMonthMode" />
+        </tr>
+      </tbody>
+    </table>
+  `
+});
+
+function createCalendarStory(options: CalendarStoryOptions): Story {
   return {
-    render: () => ({
-      setup() {
-        let model = createModel({
-          ...modelOptions,
-          firstDayIndex: modelOptions.firstDayIndex ?? 0,
-          monthStart: modelOptions.monthStart ?? startOfMonth(new Date())
-        });
-        return model;
+    render: (args: {locale?: string}) => ({
+      components: {
+        CalendarGridView
       },
-      template: CALENDAR_TEMPLATE
+      setup() {
+        let locale = computed(() => args.locale ?? 'en-US');
+        let monthStart = startOfMonth(options.monthStart ?? new Date());
+        let visibleDate = ref(cloneDate(monthStart));
+        let defaultVisibleDate = cloneDate(monthStart);
+        let selectedDate = ref<Date | null>(parseIsoDate(options.selectedDate));
+        let selectedRange = ref<DateRange>({
+          start: parseIsoDate(options.selectedRange?.start),
+          end: parseIsoDate(options.selectedRange?.end)
+        });
+        let calendar = options.mode === 'range'
+          ? useRangeCalendar({
+            locale,
+            value: selectedRange,
+            visibleDate
+          })
+          : useCalendar({
+            locale,
+            value: selectedDate,
+            visibleDate
+          });
+        let firstDayIndex = computed(() => {
+          if (options.deriveFirstDayFromLocale) {
+            return firstDayIndexFromLocale(locale.value);
+          }
+
+          return options.firstDayIndex ?? 0;
+        });
+        let isRange = options.mode === 'range';
+        let rootClass = isRange ? 'react-aria-RangeCalendar' : 'react-aria-Calendar';
+        let monthOffsets = computed(() => Array.from({length: options.monthCount}, (_entry, index) => index));
+        let endMonthDate = computed(() => addMonths(visibleDate.value, Math.max(options.monthCount - 1, 0)));
+        let visibleHeading = computed(() => (
+          options.monthCount === 1
+            ? formatMonthYear(visibleDate.value, locale.value)
+            : `${formatMonthOnly(visibleDate.value, locale.value)} - ${formatMonthYear(endMonthDate.value, locale.value)}`
+        ));
+        let ariaLabel = computed(() => (
+          options.monthCount === 1
+            ? formatMonthYear(visibleDate.value, locale.value)
+            : `${formatMonthOnly(visibleDate.value, locale.value)} to ${formatMonthYear(endMonthDate.value, locale.value)}`
+        ));
+        let resetFocusedDate = () => {
+          visibleDate.value = cloneDate(defaultVisibleDate);
+        };
+        let resetValue = () => {
+          if (isRange) {
+            selectedRange.value = {
+              start: null,
+              end: null
+            };
+            return;
+          }
+
+          selectedDate.value = null;
+        };
+
+        return {
+          afterButtonText: options.afterButtonText,
+          ariaLabel,
+          beforeButtonStyle: options.beforeButtonStyle,
+          beforeButtonText: options.beforeButtonText,
+          calendar,
+          containerStyle: options.containerStyle,
+          firstDayIndex,
+          hiddenHeadingStyle: HIDDEN_HEADING_STYLE,
+          isRange,
+          locale,
+          monthOffsets,
+          outsideMonthMode: options.outsideMonthMode,
+          resetFocusedDate,
+          resetValue,
+          rootClass,
+          visibleHeading,
+          width: options.width
+        };
+      },
+      template: `
+        <div :style="containerStyle">
+          <button
+            v-if="beforeButtonText"
+            :style="beforeButtonStyle"
+            @click="resetFocusedDate">
+            {{ beforeButtonText }}
+          </button>
+          <div
+            :class="rootClass"
+            data-rac=""
+            :aria-label="ariaLabel"
+            role="application"
+            :style="'width: ' + width + 'px;'">
+            <div :style="hiddenHeadingStyle">
+              <h2>{{ ariaLabel }}</h2>
+            </div>
+            <div style="display: flex; align-items: center;">
+              <button
+                class="react-aria-Button"
+                data-rac=""
+                type="button"
+                tabindex="0"
+                data-react-aria-pressable="true"
+                aria-label="Previous"
+                slot="previous"
+                @click="calendar.prevPage()">&lt;</button>
+              <h2 aria-hidden="true" class="react-aria-Heading" style="flex: 1 1 0%; text-align: center;">
+                {{ visibleHeading }}
+              </h2>
+              <button
+                class="react-aria-Button"
+                data-rac=""
+                type="button"
+                tabindex="0"
+                data-react-aria-pressable="true"
+                aria-label="Next"
+                slot="next"
+                @click="calendar.nextPage()">&gt;</button>
+            </div>
+            <div v-if="monthOffsets.length > 1" style="display: flex; gap: 20px;">
+              <CalendarGridView
+                v-for="monthOffset in monthOffsets"
+                :key="monthOffset"
+                :calendar="calendar"
+                :first-day-index="firstDayIndex"
+                :is-range="isRange"
+                :locale="locale"
+                :month-count="monthOffsets.length"
+                :month-offset="monthOffset"
+                :outside-month-mode="outsideMonthMode" />
+            </div>
+            <CalendarGridView
+              v-else
+              :calendar="calendar"
+              :first-day-index="firstDayIndex"
+              :is-range="isRange"
+              :locale="locale"
+              :month-count="1"
+              :month-offset="0"
+              :outside-month-mode="outsideMonthMode" />
+          </div>
+          <button v-if="afterButtonText" @click="resetValue">{{ afterButtonText }}</button>
+        </div>
+      `
     })
   };
 }
 
 export const CalendarExample: Story = createCalendarStory({
+  mode: 'calendar',
   monthCount: 1,
   outsideMonthMode: 'hide',
-  rootClass: 'react-aria-Calendar',
   width: 220
 });
 
 export const CalendarResetValue: Story = createCalendarStory({
   afterButtonText: 'Reset value',
+  mode: 'calendar',
   monthCount: 1,
   outsideMonthMode: 'hide',
-  rootClass: 'react-aria-Calendar',
   width: 220
 });
 
-export const CalendarMultiMonth: Story = createCalendarStory({
-  beforeButtonStyle: 'margin-bottom: 20px;',
-  beforeButtonText: 'Reset focused date',
-  containerStyle: 'display: contents;',
-  firstDayIndex: 0,
-  monthCount: 3,
-  monthStart: new Date(2021, 5, 1),
-  outsideMonthMode: 'dim',
-  rootClass: 'react-aria-Calendar',
-  selectedDate: '2021-07-01',
-  width: 500
-});
+export const CalendarMultiMonth: Story = {
+  ...createCalendarStory({
+    beforeButtonStyle: 'margin-bottom: 20px;',
+    beforeButtonText: 'Reset focused date',
+    containerStyle: 'display: contents;',
+    mode: 'calendar',
+    monthCount: 3,
+    monthStart: new Date(2021, 5, 1),
+    outsideMonthMode: 'dim',
+    selectedDate: '2021-07-01',
+    width: 500
+  }),
+  args: {
+    selectionAlignment: 'center'
+  },
+  argTypes: {
+    selectionAlignment: {
+      control: 'select',
+      options: ['start', 'center', 'end']
+    }
+  }
+};
 
 export const CalendarFirstDayOfWeekExample: Story = {
-  render: (args: {locale?: string}) => ({
-    setup() {
-      return createModel({
-        firstDayIndex: firstDayIndexFromLocale(args.locale),
-        monthCount: 1,
-        monthStart: startOfMonth(new Date()),
-        outsideMonthMode: 'hide',
-        rootClass: 'react-aria-Calendar',
-        width: 220
-      });
-    },
-    template: CALENDAR_TEMPLATE
+  ...createCalendarStory({
+    deriveFirstDayFromLocale: true,
+    mode: 'calendar',
+    monthCount: 1,
+    outsideMonthMode: 'hide',
+    width: 220
   }),
   args: {
     locale: 'en-US-u-ca-iso8601-fw-tue'
@@ -487,21 +507,31 @@ export const CalendarFirstDayOfWeekExample: Story = {
 };
 
 export const RangeCalendarExample: Story = createCalendarStory({
+  mode: 'range',
   monthCount: 1,
   outsideMonthMode: 'hide',
-  rootClass: 'react-aria-RangeCalendar',
   width: 220
 });
 
-export const RangeCalendarMultiMonthExample: Story = createCalendarStory({
-  firstDayIndex: 0,
-  monthCount: 3,
-  monthStart: new Date(2025, 6, 1),
-  outsideMonthMode: 'hide',
-  rootClass: 'react-aria-RangeCalendar',
-  selectedRange: {
-    start: '2025-08-04',
-    end: '2025-08-10'
+export const RangeCalendarMultiMonthExample: Story = {
+  ...createCalendarStory({
+    mode: 'range',
+    monthCount: 3,
+    monthStart: new Date(2025, 6, 1),
+    outsideMonthMode: 'hide',
+    selectedRange: {
+      start: '2025-08-04',
+      end: '2025-08-10'
+    },
+    width: 500
+  }),
+  args: {
+    selectionAlignment: 'center'
   },
-  width: 500
-});
+  argTypes: {
+    selectionAlignment: {
+      control: 'select',
+      options: ['start', 'center', 'end']
+    }
+  }
+};
