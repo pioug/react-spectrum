@@ -109,25 +109,25 @@ function renderEvents(args: StoryArgs) {
 }
 
 export const Default: Story = {
-  render: () => render(),
+  render: () => render()
 };
 
 export const DefaultValue: Story = {
   render: (args) => render({
     ...args,
     modelValue: '20:24'
-  }),
+  })
 };
 
 export const ControlledValue: Story = {
-  render: (args) => renderControlledValue(args),
+  render: (args) => renderControlledValue(args)
 };
 
 export const GranularitySecond: Story = {
   render: (args) => render({
     ...args,
     step: 1
-  }),
+  })
 };
 
 export const HourCycle12: Story = {
@@ -135,7 +135,7 @@ export const HourCycle12: Story = {
     ...args,
     modelValue: '00:00',
     description: 'hourCycle: 12'
-  }),
+  })
 };
 
 export const HourCycle24: Story = {
@@ -143,7 +143,7 @@ export const HourCycle24: Story = {
     ...args,
     modelValue: '00:00',
     description: 'hourCycle: 24'
-  }),
+  })
 };
 
 export const HourCycle12GranularityHour: Story = {
@@ -151,7 +151,7 @@ export const HourCycle12GranularityHour: Story = {
     ...args,
     step: 3600,
     description: 'hourCycle: 12, granularity: hour'
-  }),
+  })
 };
 
 export const HourCycle24GranularityHour: Story = {
@@ -159,7 +159,7 @@ export const HourCycle24GranularityHour: Story = {
     ...args,
     step: 3600,
     description: 'hourCycle: 24, granularity: hour'
-  }),
+  })
 };
 
 export const Zoned: Story = {
@@ -167,14 +167,14 @@ export const Zoned: Story = {
     ...args,
     modelValue: '00:45',
     description: 'zoned'
-  }),
+  })
 };
 
 export const ZonedPlaceholder: Story = {
   render: (args) => render({
     ...args,
     placeholder: '00:45 America/Los_Angeles'
-  }),
+  })
 };
 
 export const HideTimeZone: Story = {
@@ -182,7 +182,7 @@ export const HideTimeZone: Story = {
     ...args,
     modelValue: '00:45',
     description: 'hideTimeZone'
-  }),
+  })
 };
 
 export const ForceLeadingZeros: Story = {
@@ -190,7 +190,7 @@ export const ForceLeadingZeros: Story = {
     ...args,
     modelValue: '08:00',
     description: 'shouldForceLeadingZeros'
-  }),
+  })
 };
 
 export const IsDisabled: Story = {
@@ -198,7 +198,7 @@ export const IsDisabled: Story = {
     ...args,
     isDisabled: true,
     modelValue: CONTROLLED_VALUE
-  }),
+  })
 };
 
 export const IsQuietIsDisabled: Story = {
@@ -207,7 +207,7 @@ export const IsQuietIsDisabled: Story = {
     isQuiet: true,
     isDisabled: true,
     modelValue: CONTROLLED_VALUE
-  }),
+  })
 };
 
 export const IsReadOnly: Story = {
@@ -215,14 +215,14 @@ export const IsReadOnly: Story = {
     ...args,
     isReadOnly: true,
     modelValue: CONTROLLED_VALUE
-  }),
+  })
 };
 
 export const AutoFocus: Story = {
   render: (args) => render({
     ...args,
     autoFocus: true
-  }),
+  })
 };
 
 export const ValidationStateInvalid: Story = {
@@ -230,7 +230,7 @@ export const ValidationStateInvalid: Story = {
     ...args,
     validationState: 'invalid',
     modelValue: CONTROLLED_VALUE
-  }),
+  })
 };
 
 export const ValidationStateValid: Story = {
@@ -238,35 +238,35 @@ export const ValidationStateValid: Story = {
     ...args,
     validationState: 'valid',
     modelValue: CONTROLLED_VALUE
-  }),
+  })
 };
 
 export const PlaceholderValue8Am: Story = {
   render: (args) => render({
     ...args,
     placeholder: '08:00'
-  }),
+  })
 };
 
 export const PlaceholderValue1980118AmZoned: Story = {
   render: (args) => render({
     ...args,
     placeholder: '1980/1/1 08:00 America/Los_Angeles'
-  }),
+  })
 };
 
 export const MinValue8Am: Story = {
   render: (args) => render({
     ...args,
     min: '08:00'
-  }),
+  })
 };
 
 export const MaxValue8Pm: Story = {
   render: (args) => render({
     ...args,
     max: '20:00'
-  }),
+  })
 };
 
 export const MinValue8AmMaxValue8Pm: Story = {
@@ -274,9 +274,9 @@ export const MinValue8AmMaxValue8Pm: Story = {
     ...args,
     min: '08:00',
     max: '20:00'
-  }),
+  })
 };
 
 export const AllTheEvents: Story = {
-  render: (args) => renderEvents(args),
+  render: (args) => renderEvents(args)
 };
