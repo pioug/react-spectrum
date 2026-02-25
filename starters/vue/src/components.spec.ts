@@ -1535,8 +1535,11 @@ describe('Vue migration primitives', () => {
 
     expect(wrapper.classes()).toContain('spectrum-Table');
     expect((wrapper.element as HTMLElement).style.width).toBe('420px');
+    expect(wrapper.get('thead.vs-table__head').classes()).toContain('spectrum-Table-headWrapper');
+    expect(wrapper.get('tbody.vs-table__body').classes()).toContain('spectrum-Table-body');
     expect(wrapper.get('th.vs-table__head-cell').classes()).toContain('is-sortable');
     expect(wrapper.get('th.vs-table__head-cell').classes()).toContain('is-sorted-asc');
+    expect(wrapper.get('button.vs-table__sort-button').classes()).toContain('spectrum-Table-headCellButton');
 
     let rows = wrapper.findAll('tr.vs-table__row');
     expect(rows[0].classes()).toContain('is-selected');
@@ -1574,6 +1577,7 @@ describe('Vue migration primitives', () => {
     let rowSelection = wrapper.findAll('tbody.vs-table__body input.vs-table__selection-checkbox');
     expect(rowSelection).toHaveLength(2);
     expect(wrapper.findAll('th.vs-table__head-cell--selection')).toHaveLength(1);
+    expect(selectAll.classes()).toContain('spectrum-Table-checkbox');
 
     await selectAll.setValue(true);
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([[1, 2]]);

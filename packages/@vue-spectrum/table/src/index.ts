@@ -84,6 +84,18 @@ function getCellTextValue(row: TableRow, columnKey: string): string {
   return String(value);
 }
 
+function alignToSpectrumToken(align: TableColumn['align']): 'Center' | 'End' | 'Start' {
+  if (align === 'center') {
+    return 'Center';
+  }
+
+  if (align === 'end') {
+    return 'End';
+  }
+
+  return 'Start';
+}
+
 export const Table = defineComponent({
   name: 'VueTable',
   inheritAttrs: false,
@@ -299,7 +311,7 @@ export const Table = defineComponent({
           props.caption
             ? h('caption', {id: `${generatedId}-caption`, class: 'vs-table__caption'}, props.caption)
             : null,
-          h('thead', {class: 'vs-table__head', role: 'rowgroup'}, [
+          h('thead', {class: [classNames(styles, 'spectrum-Table-headWrapper'), 'vs-table__head'], role: 'rowgroup'}, [
             h('tr', {
               class: [classNames(styles, 'spectrum-Table-head'), 'vs-table__head-row'],
               role: 'row'
@@ -316,7 +328,7 @@ export const Table = defineComponent({
                   'aria-colindex': 1
                 }, [
                   h('input', {
-                    class: 'vs-table__selection-checkbox',
+                    class: [classNames(styles, 'spectrum-Table-checkbox'), 'vs-table__selection-checkbox'],
                     type: 'checkbox',
                     checked: allRowsSelected.value,
                     disabled: props.isDisabled || selectableRowIds.value.length === 0,
@@ -358,19 +370,37 @@ export const Table = defineComponent({
                 }
               );
 
+              let alignToken = alignToSpectrumToken(column.align);
               let alignClassName = column.align
-                ? `react-spectrum-Table-cell--align${column.align[0].toUpperCase()}${column.align.slice(1)}`
+                ? `react-spectrum-Table-cell--align${alignToken}`
                 : 'react-spectrum-Table-cell--alignStart';
 
               let headerContent = isSortable
                 ? h('button', {
-                  class: ['vs-table__sort-button'],
+                  class: [
+                    classNames(
+                      styles,
+                      'spectrum-Table-headCellButton',
+                      `spectrum-Table-headCellButton--align${alignToken}`
+                    ),
+                    'vs-table__sort-button'
+                  ],
                   type: 'button',
                   onClick: () => onToggleSort(column)
                 }, [
-                  h('span', {class: [classNames(styles, 'spectrum-Table-headCellContents'), 'vs-table__head-cell-content']}, column.label ?? column.key)
+                  h('span', {
+                    class: [
+                      classNames(styles, 'spectrum-Table-headCellContents', 'spectrum-Table-headerCellText'),
+                      'vs-table__head-cell-content'
+                    ]
+                  }, column.label ?? column.key)
                 ])
-                : h('span', {class: [classNames(styles, 'spectrum-Table-headCellContents'), 'vs-table__head-cell-content']}, column.label ?? column.key);
+                : h('span', {
+                  class: [
+                    classNames(styles, 'spectrum-Table-headCellContents', 'spectrum-Table-headerCellText'),
+                    'vs-table__head-cell-content'
+                  ]
+                }, column.label ?? column.key);
 
               return h('th', {
                 key: column.key,
@@ -416,7 +446,7 @@ export const Table = defineComponent({
             })
             ])
           ]),
-          h('tbody', {class: 'vs-table__body', role: 'rowgroup'}, props.rows.length > 0
+          h('tbody', {class: [classNames(styles, 'spectrum-Table-body'), 'vs-table__body'], role: 'rowgroup'}, props.rows.length > 0
             ? props.rows.map((row, rowIndex) => {
               let rowId = getRowId(row, rowIndex, props.rowKey);
               let rowChildren = row.children;
@@ -504,7 +534,7 @@ export const Table = defineComponent({
                     'aria-colindex': 1
                   }, [
                     h('input', {
-                      class: 'vs-table__selection-checkbox',
+                      class: [classNames(styles, 'spectrum-Table-checkbox'), 'vs-table__selection-checkbox'],
                       type: 'checkbox',
                       checked: isRowSelected,
                       disabled: isRowDisabled,
