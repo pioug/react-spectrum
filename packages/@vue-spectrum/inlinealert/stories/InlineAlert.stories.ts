@@ -1,23 +1,25 @@
 import {InlineAlert} from '../src';
+import {ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta: Meta<typeof InlineAlert> = {
+type StoryArgs = InstanceType<typeof InlineAlert>['$props'] & {content: string, title: string};
+
+const meta: Meta<StoryArgs> = {
   title: 'InlineAlert',
   component: InlineAlert,
   args: {
-    label: 'Example'
+    title: 'Title',
+    content: 'Content'
   },
   argTypes: {
-    autoFocus: {
-      control: 'boolean'
-    },
-    label: {
-      control: 'text'
+    variant: {
+      control: 'select',
+      options: ['neutral', 'info', 'positive', 'notice', 'negative']
     },
     title: {
       control: 'text'
     },
-    variant: {
+    content: {
       control: 'text'
     }
   }
@@ -33,27 +35,34 @@ export const Default: Story = {
     setup() {
       return {args};
     },
-    template: '<InlineAlert v-bind="args">Example</InlineAlert>'
+    template: '<InlineAlert v-bind="args" :title="args.title">{{ args.content }}</InlineAlert>'
   })
 };
 
-export const CustomLabel: Story = {
-  ...Default,
-  args: {
-    label: 'Update available'
-  }
-};
+export const Dynamic: Story = {
+  render: (args) => ({
+    components: {InlineAlert},
+    setup() {
+      let shown = ref(false);
+      let onToggle = () => {
+        shown.value = !shown.value;
+      };
 
-export const CustomTitle: Story = {
-  ...Default,
-  args: {
-    title: 'System notice'
-  }
-};
-
-export const AlternateLabel: Story = {
-  ...Default,
-  args: {
-    label: 'Maintenance notice'
-  }
+      return {
+        args,
+        onToggle,
+        shown
+      };
+    },
+    template: `
+      <div>
+        <button type="button" @click="onToggle">
+          {{ shown ? 'Hide Alert' : 'Show Alert' }}
+        </button>
+        <InlineAlert v-if="shown" v-bind="args" :title="args.title" auto-focus style="margin-top: 12px;">
+          {{ args.content }}
+        </InlineAlert>
+      </div>
+    `
+  })
 };

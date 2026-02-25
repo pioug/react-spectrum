@@ -256,6 +256,23 @@ describe('Vue migration primitives', () => {
     expect(wrapper.classes()).toContain('focus-ring');
   });
 
+  it('autofocuses inline alert when autoFocus is true', async () => {
+    let wrapper = mount(InlineAlert, {
+      attachTo: document.body,
+      props: {
+        autoFocus: true,
+        title: 'Notice'
+      },
+      slots: {
+        default: 'Alert details'
+      }
+    });
+
+    await nextTick();
+    expect(document.activeElement).toBe(wrapper.element);
+    wrapper.unmount();
+  });
+
   it('renders illustrated message title, description, and variant class', () => {
     let wrapper = mount(IllustratedMessage, {
       props: {

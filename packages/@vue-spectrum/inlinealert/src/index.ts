@@ -1,6 +1,6 @@
 import '@adobe/spectrum-css-temp/components/inlinealert/vars.css';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, type PropType, ref, type VNodeChild} from 'vue';
+import {computed, defineComponent, h, nextTick, onMounted, type PropType, ref, type VNodeChild} from 'vue';
 import {getEventTarget} from '@vue-aria/utils';
 const styles: {[key: string]: string} = {};
 
@@ -29,7 +29,16 @@ export const InlineAlert = defineComponent({
     }
   },
   setup(props, {slots, attrs}) {
+    let rootRef = ref<HTMLElement | null>(null);
     let isFocusVisible = ref(false);
+
+    onMounted(() => {
+      if (props.autoFocus) {
+        void nextTick(() => {
+          rootRef.value?.focus();
+        });
+      }
+    });
 
     let className = computed(() => classNames(
       styles,
@@ -50,6 +59,7 @@ export const InlineAlert = defineComponent({
 
       return h('section', {
         ...attrs,
+        ref: rootRef,
         class: [className.value, 'vs-inline-alert', `vs-inline-alert--${props.variant}`, attrs.class],
         role: 'alert',
         tabindex: props.autoFocus ? -1 : attrs.tabindex,
