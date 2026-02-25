@@ -194,7 +194,7 @@ function renderHorizontalTable(args: StoryArgs, flushBottom = false) {
   return {
     components: {Table},
     setup() {
-      return {args};
+      return {args, flushBottom};
     },
     template: `
       <div :style="{overflowX: 'auto', paddingBottom: flushBottom ? '0px' : '24px'}">
@@ -264,6 +264,7 @@ function renderAsyncTable(args: StoryArgs, label: string, loadMoreEnabled = fals
 }
 
 export const Static: Story = {
+  name: 'static',
   render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS,
@@ -272,6 +273,7 @@ export const Static: Story = {
 };
 
 export const Dynamic: Story = {
+  name: 'dynamic',
   render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS,
@@ -280,6 +282,7 @@ export const Dynamic: Story = {
 };
 
 export const DynamicFalsyRowKeys: Story = {
+  name: 'dynamic, falsy row keys',
   render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS,
@@ -288,6 +291,7 @@ export const DynamicFalsyRowKeys: Story = {
 };
 
 export const HorizontalScrollingOnly: Story = {
+  name: 'horizontal scrolling only',
   render: (args) => renderHorizontalTable(args),
   args: {
     columns: MANY_COLUMNS,
@@ -296,6 +300,7 @@ export const HorizontalScrollingOnly: Story = {
 };
 
 export const HorizontalScrollingOnlyFlushBottom: Story = {
+  name: 'horizontal scrolling only flush bottom',
   render: (args) => renderHorizontalTable(args, true),
   args: {
     columns: MANY_COLUMNS,
@@ -304,6 +309,7 @@ export const HorizontalScrollingOnlyFlushBottom: Story = {
 };
 
 export const DynamicWithDisabledKeys: Story = {
+  name: 'dynamic with disabled keys',
   render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS,
@@ -312,6 +318,7 @@ export const DynamicWithDisabledKeys: Story = {
 };
 
 export const DynamicShowDividers: Story = {
+  name: 'dynamic showDividers',
   render: (args) => renderTableWithNote(args, 'Divider visibility parity scenario'),
   args: {
     columns: BASE_COLUMNS,
@@ -320,6 +327,7 @@ export const DynamicShowDividers: Story = {
 };
 
 export const DynamicSelectedKeys: Story = {
+  name: 'selectedKeys',
   render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS,
@@ -330,6 +338,7 @@ export const DynamicSelectedKeys: Story = {
 };
 
 export const StaticNestedColumns: Story = {
+  name: 'static with nested columns',
   render: (args) => renderTable(args),
   args: {
     columns: NESTED_COLUMNS,
@@ -338,6 +347,7 @@ export const StaticNestedColumns: Story = {
 };
 
 export const DynamicNestedColumns: Story = {
+  name: 'dynamic with nested columns',
   render: (args) => renderTable(args),
   args: {
     columns: NESTED_COLUMNS,
@@ -346,6 +356,7 @@ export const DynamicNestedColumns: Story = {
 };
 
 export const DynamicNestedColumnsWithResizing: Story = {
+  name: 'dynamic with nested columns with resizing',
   render: (args) => renderTable(args),
   args: {
     columns: NESTED_COLUMNS,
@@ -378,6 +389,7 @@ export const TableCellColSpanWithVariousSpansExample: Story = {
 };
 
 export const FocusableCells: Story = {
+  name: 'focusable cells',
   render: (args) => renderTableWithNote(args, 'Focusable cells parity scenario'),
   args: {
     columns: BASE_COLUMNS,
@@ -386,6 +398,7 @@ export const FocusableCells: Story = {
 };
 
 export const ManyColumnsAndRows: Story = {
+  name: 'many columns and rows',
   render: (args) => renderTable(args),
   args: {
     columns: MANY_COLUMNS,
@@ -394,6 +407,7 @@ export const ManyColumnsAndRows: Story = {
 };
 
 export const ShouldFillCellWidth: Story = {
+  name: 'should fill cell width',
   render: (args) => ({
     components: {Table},
     setup() {
@@ -412,6 +426,7 @@ export const ShouldFillCellWidth: Story = {
 };
 
 export const ColumnWidthsAndDividers: Story = {
+  name: 'column widths and dividers',
   render: (args) => renderTableWithNote(args, 'Column width and divider parity scenario'),
   args: {
     columns: MANY_COLUMNS.slice(0, 6),
@@ -421,6 +436,7 @@ export const ColumnWidthsAndDividers: Story = {
 };
 
 export const CellWithLongContent: Story = {
+  name: 'cell with long content',
   render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS,
@@ -430,6 +446,7 @@ export const CellWithLongContent: Story = {
 };
 
 export const CustomRowHeaderLabeling: Story = {
+  name: 'custom isRowHeader labeling',
   render: (args) => ({
     components: {Table},
     setup() {
@@ -489,6 +506,7 @@ export const CRUD: Story = {
 };
 
 export const InlineDeleteButtons: Story = {
+  name: 'Inline delete buttons',
   render: (args) => ({
     components: {ActionButton, Table},
     setup() {
@@ -520,6 +538,7 @@ export const InlineDeleteButtons: Story = {
 };
 
 export const HidingColumnsExample: Story = {
+  name: 'hiding columns',
   render: (args) => ({
     components: {ActionButton, Table},
     setup() {
@@ -547,6 +566,7 @@ export const HidingColumnsExample: Story = {
 };
 
 export const IsLoading: Story = {
+  name: 'isLoading',
   render: (args) => renderTableWithNote(args, 'Loading state parity scenario'),
   args: {
     columns: BASE_COLUMNS,
@@ -555,6 +575,7 @@ export const IsLoading: Story = {
 };
 
 export const IsLoadingMore: Story = {
+  name: 'isLoading more',
   render: (args) => renderTableWithNote(args, 'Loading more parity scenario'),
   args: {
     columns: BASE_COLUMNS,
@@ -563,6 +584,7 @@ export const IsLoadingMore: Story = {
 };
 
 export const Filtering: Story = {
+  name: 'filtering',
   render: (args) => ({
     components: {Table},
     setup() {
@@ -594,6 +616,7 @@ export const Filtering: Story = {
 };
 
 export const EmptyStateStory: Story = {
+  name: 'renderEmptyState',
   render: (args) => EmptyStateTable(args),
   args: {
     columns: BASE_COLUMNS,
@@ -602,6 +625,7 @@ export const EmptyStateStory: Story = {
 };
 
 export const AsyncLoading: Story = {
+  name: 'async loading',
   render: (args) => renderAsyncTable(args, 'Async loading parity scenario'),
   args: {
     columns: BASE_COLUMNS,
@@ -610,6 +634,7 @@ export const AsyncLoading: Story = {
 };
 
 export const AsyncLoadingQuarryTest: Story = {
+  name: 'async reload on sort',
   render: (args) => renderAsyncTable(args, 'Async loading quarry test parity scenario'),
   args: {
     columns: BASE_COLUMNS,
@@ -618,6 +643,7 @@ export const AsyncLoadingQuarryTest: Story = {
 };
 
 export const HideHeader: Story = {
+  name: 'hideHeader',
   render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS,
@@ -627,6 +653,7 @@ export const HideHeader: Story = {
 };
 
 export const AsyncLoadingClientFiltering: Story = {
+  name: 'async client side filter loading',
   render: (args) => renderAsyncTable(args, 'Async loading with client filtering parity scenario'),
   args: {
     columns: BASE_COLUMNS,
@@ -635,6 +662,7 @@ export const AsyncLoadingClientFiltering: Story = {
 };
 
 export const AsyncLoadingServerFiltering: Story = {
+  name: 'async server side filter loading',
   render: (args) => renderAsyncTable(args, 'Async loading with server filtering parity scenario'),
   args: {
     columns: BASE_COLUMNS,
@@ -643,6 +671,7 @@ export const AsyncLoadingServerFiltering: Story = {
 };
 
 export const AsyncLoadingServerFilteringLoadMore: Story = {
+  name: 'loads more on scroll when contentSize.height < rect.height * 2',
   render: (args) => renderAsyncTable(args, 'Async loading server filtering + load more parity scenario', true),
   args: {
     columns: BASE_COLUMNS,
@@ -651,6 +680,7 @@ export const AsyncLoadingServerFilteringLoadMore: Story = {
 };
 
 export const WithDialogTrigger: Story = {
+  name: 'with dialog trigger',
   render: (args) => ({
     components: {DialogTrigger, Table},
     setup() {
@@ -672,6 +702,7 @@ export const WithDialogTrigger: Story = {
 };
 
 export const WithBreadcrumbNavigation: Story = {
+  name: 'table with breadcrumb navigation',
   render: (args) => ({
     components: {Table},
     setup() {
@@ -691,6 +722,7 @@ export const WithBreadcrumbNavigation: Story = {
 };
 
 export const ResizingUncontrolledDynamicWidths: Story = {
+  name: 'allowsResizing, uncontrolled, dynamic widths',
   render: (args) => renderTableWithNote(args, 'Uncontrolled resizing with dynamic widths parity scenario'),
   args: {
     columns: MANY_COLUMNS.slice(0, 8),
@@ -700,6 +732,7 @@ export const ResizingUncontrolledDynamicWidths: Story = {
 };
 
 export const ResizingUncontrolledStaticWidths: Story = {
+  name: 'allowsResizing, uncontrolled, static widths',
   render: (args) => renderTableWithNote(args, 'Uncontrolled resizing with static widths parity scenario'),
   args: {
     columns: BASE_COLUMNS,
@@ -709,6 +742,7 @@ export const ResizingUncontrolledStaticWidths: Story = {
 };
 
 export const ResizingUncontrolledColumnDivider: Story = {
+  name: 'allowsResizing, uncontrolled, column divider',
   render: (args) => renderTableWithNote(args, 'Uncontrolled resizing with column dividers parity scenario'),
   args: {
     columns: BASE_COLUMNS,
@@ -718,6 +752,7 @@ export const ResizingUncontrolledColumnDivider: Story = {
 };
 
 export const ResizingUncontrolledMinMax: Story = {
+  name: 'allowsResizing, uncontrolled, min/max widths',
   render: (args) => renderTableWithNote(args, 'Uncontrolled resizing min/max parity scenario'),
   args: {
     columns: BASE_COLUMNS,
@@ -727,6 +762,7 @@ export const ResizingUncontrolledMinMax: Story = {
 };
 
 export const ResizingUncontrolledSomeNotAllowed: Story = {
+  name: 'allowsResizing, uncontrolled, some columns not allowed resizing',
   render: (args) => renderTableWithNote(args, 'Only some columns resizable parity scenario'),
   args: {
     columns: BASE_COLUMNS,
@@ -736,6 +772,7 @@ export const ResizingUncontrolledSomeNotAllowed: Story = {
 };
 
 export const ResizingUncontrolledNoHeightWidth: Story = {
+  name: 'allowsResizing, uncontrolled, undefined table width and height',
   render: (args) => renderTableWithNote(args, 'Uncontrolled resizing with no explicit height/width parity scenario'),
   args: {
     columns: BASE_COLUMNS,
@@ -745,6 +782,7 @@ export const ResizingUncontrolledNoHeightWidth: Story = {
 };
 
 export const ResizingUncontrolledSortableColumns: Story = {
+  name: 'allowsResizing, uncontrolled, sortable columns',
   render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS.map((column) => ({...column, sortable: true})),
@@ -758,6 +796,7 @@ export const ResizingUncontrolledSortableColumns: Story = {
 };
 
 export const ResizingManyColumnsRows: Story = {
+  name: 'allowsResizing, many columns and rows',
   render: (args) => renderTable(args),
   args: {
     columns: MANY_COLUMNS,
@@ -767,6 +806,7 @@ export const ResizingManyColumnsRows: Story = {
 };
 
 export const ResizingHidingColumns: Story = {
+  name: 'allowsResizing, hiding columns',
   render: (args) => ({
     components: {ActionButton, Table},
     setup() {
@@ -795,6 +835,7 @@ export const ResizingHidingColumns: Story = {
 };
 
 export const ResizingZoom: Story = {
+  name: 'zoom resizing table',
   render: (args) => ({
     components: {Table},
     setup() {
@@ -814,6 +855,7 @@ export const ResizingZoom: Story = {
 };
 
 export const ResizingControlledNoInitialWidths: Story = {
+  name: 'allowsResizing, controlled, no widths',
   render: (args) => renderTableWithNote(args, 'Controlled resizing without initial widths parity scenario'),
   args: {
     columns: BASE_COLUMNS,
@@ -823,6 +865,7 @@ export const ResizingControlledNoInitialWidths: Story = {
 };
 
 export const ResizingControlledSomeInitialWidths: Story = {
+  name: 'allowsResizing, controlled, some widths',
   render: (args) => renderTableWithNote(args, 'Controlled resizing with some initial widths parity scenario'),
   args: {
     columns: BASE_COLUMNS,
@@ -832,6 +875,7 @@ export const ResizingControlledSomeInitialWidths: Story = {
 };
 
 export const ResizingControlledAllInitialWidths: Story = {
+  name: 'allowsResizing, controlled, all widths',
   render: (args) => renderTableWithNote(args, 'Controlled resizing with all initial widths parity scenario'),
   args: {
     columns: BASE_COLUMNS,
@@ -841,6 +885,7 @@ export const ResizingControlledAllInitialWidths: Story = {
 };
 
 export const ResizingControlledHideHeader: Story = {
+  name: 'allowsResizing, controlled, hideHeader',
   render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS,
@@ -898,6 +943,7 @@ export const Links: Story = {
 };
 
 export const ColumnHeaderFocusRingTable: Story = {
+  name: 'column header focus after loading',
   render: (args) => renderTableWithNote(args, 'Column header focus ring parity scenario'),
   args: {
     columns: BASE_COLUMNS.map((column) => ({...column, sortable: true})),
@@ -906,10 +952,19 @@ export const ColumnHeaderFocusRingTable: Story = {
 };
 
 export const AsyncLoadOverflowWrapReproStory: Story = {
+  name: 'async, overflow wrap scroll jumping reproduction',
   render: (args) => renderAsyncTable(args, 'Async load overflow wrap repro parity scenario', false, true),
   args: {
     columns: BASE_COLUMNS,
     rows: [],
     overflowMode: 'wrap'
+  }
+};
+
+export const Performance: Story = {
+  render: (args) => renderTable(args),
+  args: {
+    columns: MANY_COLUMNS,
+    rows: MANY_ROWS
   }
 };
