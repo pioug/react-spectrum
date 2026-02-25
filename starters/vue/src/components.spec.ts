@@ -491,9 +491,11 @@ describe('Vue migration primitives', () => {
     });
 
     expect(wrapper.classes()).toContain('spectrum-Button');
+    expect(wrapper.attributes('data-react-aria-pressable')).toBe('true');
     expect(wrapper.attributes('data-variant')).toBe('primary');
     expect(wrapper.attributes('data-style')).toBe('outline');
     expect(wrapper.attributes('data-static-color')).toBe('white');
+    expect(wrapper.attributes('tabindex')).toBe('0');
 
     await wrapper.trigger('mouseenter');
     expect(wrapper.classes()).toContain('is-hovered');
@@ -508,6 +510,42 @@ describe('Vue migration primitives', () => {
     window.dispatchEvent(new KeyboardEvent('keydown', {key: 'Tab'}));
     await wrapper.trigger('focus');
     expect(wrapper.classes()).toContain('focus-ring');
+
+    await wrapper.trigger('pointerdown', {button: 0});
+    expect(wrapper.classes()).not.toContain('focus-ring');
+  });
+
+  it('keeps native disabled button attrs aligned with react', () => {
+    let wrapper = mount(Button, {
+      props: {
+        isDisabled: true
+      },
+      slots: {
+        default: 'Disabled button'
+      }
+    });
+
+    expect(wrapper.attributes('disabled')).toBeDefined();
+    expect(wrapper.attributes('aria-disabled')).toBeUndefined();
+    expect(wrapper.attributes('data-disabled')).toBeUndefined();
+    expect(wrapper.attributes('tabindex')).toBeUndefined();
+    expect(wrapper.attributes('data-react-aria-pressable')).toBe('true');
+  });
+
+  it('marks pending native button as aria-disabled without disabled attr', () => {
+    let wrapper = mount(Button, {
+      props: {
+        isPending: true
+      },
+      slots: {
+        default: 'Pending button'
+      }
+    });
+
+    expect(wrapper.attributes('aria-disabled')).toBe('true');
+    expect(wrapper.attributes('disabled')).toBeUndefined();
+    expect(wrapper.attributes('tabindex')).toBe('0');
+    expect(wrapper.attributes('data-react-aria-pressable')).toBe('true');
   });
 
   it('maps action button quiet/static classes and emits click', async () => {
@@ -597,7 +635,9 @@ describe('Vue migration primitives', () => {
 
     expect(disabled.classes()).toContain('spectrum-LogicButton--or');
     expect(disabled.classes()).toContain('is-disabled');
-    expect(disabled.attributes('aria-disabled')).toBe('true');
+    expect(disabled.attributes('aria-disabled')).toBeUndefined();
+    expect(disabled.attributes('disabled')).toBeDefined();
+    expect(disabled.attributes('data-react-aria-pressable')).toBe('true');
 
     await disabled.trigger('click');
     expect(disabled.emitted('click')).toBeUndefined();

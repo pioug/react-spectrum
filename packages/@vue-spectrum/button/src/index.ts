@@ -109,6 +109,7 @@ function useInteractionState(isDisabled: ComputedRef<boolean>) {
     if (isDisabled.value || event.button !== 0) {
       return;
     }
+    isFocusVisible.value = false;
     isPressed.value = true;
   };
 
@@ -188,12 +189,13 @@ function useBaseButtonSemantics(
   attrs: Record<string, unknown>,
   emitClick: (event: MouseEvent) => void
 ) {
-  let isDisabled = computed(() => Boolean(props.disabled || props.isDisabled || props.isPending));
+  let isDisabled = computed(() => Boolean(props.disabled || props.isDisabled));
+  let isUnavailable = computed(() => Boolean(isDisabled.value || props.isPending));
   let elementType = computed(() => props.elementType ?? 'button');
   let interaction = useInteractionState(isDisabled);
 
   let onClick = (event: MouseEvent) => {
-    if (isDisabled.value) {
+    if (isUnavailable.value) {
       event.preventDefault();
       event.stopPropagation();
       return;
@@ -218,6 +220,7 @@ function useBaseButtonSemantics(
     let propsForElement: Record<string, unknown> = {
       ...attrs,
       autofocus: props.autoFocus || attrs.autofocus || undefined,
+      'data-react-aria-pressable': 'true',
       onBlur: chainHandlers(userBlur, interaction.onBlur),
       onClick: chainHandlers(userClick, onClick),
       onFocus: chainHandlers(userFocus, interaction.onFocus),
@@ -234,16 +237,17 @@ function useBaseButtonSemantics(
     if (elementType.value === 'button') {
       propsForElement.type = props.type ?? 'button';
       propsForElement.disabled = isDisabled.value || undefined;
-      propsForElement['aria-disabled'] = isDisabled.value ? 'true' : undefined;
+      propsForElement.tabindex = isDisabled.value ? undefined : attrs.tabindex ?? 0;
+      propsForElement['aria-disabled'] = props.isPending ? 'true' : undefined;
       return propsForElement;
     }
 
     propsForElement.role = 'button';
-    propsForElement.tabindex = isDisabled.value ? undefined : 0;
-    propsForElement['aria-disabled'] = isDisabled.value ? 'true' : undefined;
+    propsForElement.tabindex = isDisabled.value ? undefined : attrs.tabindex ?? 0;
+    propsForElement['aria-disabled'] = isUnavailable.value ? 'true' : undefined;
 
     if (elementType.value === 'a') {
-      propsForElement.href = isDisabled.value ? undefined : props.href;
+      propsForElement.href = isUnavailable.value ? undefined : props.href;
       propsForElement.target = props.target;
       propsForElement.rel = props.rel;
     }
@@ -404,11 +408,6 @@ export const VueButton = defineComponent({
           ),
           attrs.class
         ],
-        'data-focused': buttonState.interaction.isFocused.value ? 'true' : undefined,
-        'data-focus-visible': buttonState.interaction.isFocusVisible.value ? 'true' : undefined,
-        'data-hovered': buttonState.interaction.isHovered.value ? 'true' : undefined,
-        'data-pressed': buttonState.interaction.isPressed.value ? 'true' : undefined,
-        'data-disabled': buttonState.isDisabled.value ? 'true' : undefined,
         'data-static-color': resolvedStaticColor.value || undefined,
         'data-style': resolvedStyle.value,
         'data-variant': resolvedVariant.value
