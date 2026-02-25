@@ -215,7 +215,7 @@ type Story = StoryObj<typeof meta>;
 type ListBoxStoryArgs = Record<string, unknown>;
 type StyleMap = Record<string, string | number>;
 
-export function MyListBoxLoaderIndicator(props: {isLoading?: boolean, orientation?: 'horizontal' | 'vertical'} = {}) {
+export const MyListBoxLoaderIndicator = (props: {isLoading?: boolean, orientation?: 'horizontal' | 'vertical'} = {}) => {
   let orientation = props.orientation ?? 'vertical';
   return {
     label: props.isLoading ? 'Loading...' : 'Load more',
@@ -229,7 +229,7 @@ export function MyListBoxLoaderIndicator(props: {isLoading?: boolean, orientatio
       width: orientation === 'horizontal' ? '30px' : '100%'
     } as StyleMap
   };
-}
+};
 
 interface ListBoxStoryOptions {
   actionName?: string,
