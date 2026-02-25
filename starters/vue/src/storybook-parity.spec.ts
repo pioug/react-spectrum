@@ -43,6 +43,7 @@ import {
 } from '../../../packages/vue-aria-components/stories/Button.stories';
 import {BreadcrumbsExample, DynamicBreadcrumbsExample} from '../../../packages/vue-aria-components/stories/Breadcrumbs.stories';
 import {CheckboxExample} from '../../../packages/vue-aria-components/stories/Checkbox.stories';
+import {CheckboxGroupExample, CheckboxGroupSubmitExample} from '../../../packages/vue-aria-components/stories/CheckboxGroup.stories';
 import {vi} from 'vitest';
 
 function expectExcluded(meta: unknown, storyName: string) {
@@ -322,6 +323,34 @@ describe('Vue storybook helper parity', () => {
     expect(checkboxRoot.attributes('data-hovered')).toBeUndefined();
     expect(checkboxRoot.attributes('data-focused')).toBeUndefined();
     expect(checkboxRoot.attributes('data-selected')).toBeUndefined();
+  });
+
+  it('renders checkbox group stories with required submit invalid-state parity', async () => {
+    let checkboxGroupStory = CheckboxGroupExample.render?.({}) as ReturnType<Exclude<typeof CheckboxGroupExample.render, undefined>>;
+    let checkboxGroupWrapper = mount(checkboxGroupStory);
+    let group = checkboxGroupWrapper.get('.react-aria-CheckboxGroup');
+    expect(group.attributes('role')).toBe('group');
+    expect(group.attributes('data-rac')).toBe('');
+    expect(checkboxGroupWrapper.findAll('.react-aria-Checkbox')).toHaveLength(3);
+
+    let submitStory = CheckboxGroupSubmitExample.render?.({}) as ReturnType<Exclude<typeof CheckboxGroupSubmitExample.render, undefined>>;
+    let submitWrapper = mount(submitStory);
+    let submitGroup = submitWrapper.get('.react-aria-CheckboxGroup');
+    expect(submitGroup.attributes('data-required')).toBe('true');
+    expect(submitGroup.attributes('data-invalid')).toBeUndefined();
+
+    await submitWrapper.get('form.react-aria-Form').trigger('submit');
+    await nextTick();
+    expect(submitGroup.attributes('data-invalid')).toBe('true');
+
+    await submitWrapper.findAll('.react-aria-Checkbox input[type="checkbox"]')[0].setValue(true);
+    await nextTick();
+    expect(submitGroup.attributes('data-invalid')).toBeUndefined();
+
+    await submitWrapper.get('form.react-aria-Form').trigger('reset');
+    await nextTick();
+    expect(submitGroup.attributes('data-invalid')).toBeUndefined();
+    expect(submitWrapper.findAll('.react-aria-Checkbox')[0].attributes('data-selected')).toBeUndefined();
   });
 
   it('renders select stories with live open and selection behavior', async () => {
