@@ -1,22 +1,33 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
+import {Well} from '../src';
 
-const meta = {
+const meta: Meta<typeof Well> = {
   title: 'Well',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
+  component: Well,
+  argTypes: {
+    role: {
+      control: 'text'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const WellScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {Well},
+    setup() {
+      return {args};
+    },
+    template: '<Well v-bind="args">Example</Well>'
   })
+};
+
+export const CustomRole: Story = {
+  ...Default,
+  args: {
+    role: 'Story variant'
+  }
 };

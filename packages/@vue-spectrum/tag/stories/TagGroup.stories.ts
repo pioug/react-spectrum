@@ -1,22 +1,31 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
+import {TagGroup} from '../src';
 
-const meta = {
+const meta: Meta<typeof TagGroup> = {
   title: 'TagGroup',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
-    }
-  }
-} satisfies Meta;
+  component: TagGroup
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const TagGroupScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {TagGroup},
+    setup() {
+      return {args};
+    },
+    template: '<TagGroup v-bind="args">Example</TagGroup>'
+  })
+};
+
+export const AlternateContent: Story = {
+  render: (args) => ({
+    components: {TagGroup},
+    setup() {
+      return {args};
+    },
+    template: '<TagGroup v-bind="args">Story variant</TagGroup>'
   })
 };

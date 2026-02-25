@@ -1,22 +1,62 @@
+import {Dialog} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof Dialog> = {
   title: 'Dialog',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
+  component: Dialog,
+  argTypes: {
+    dismissable: {
+      control: 'boolean'
+    },
+    isDismissable: {
+      control: 'boolean'
+    },
+    isHidden: {
+      control: 'boolean'
+    },
+    isOpen: {
+      control: 'boolean'
+    },
+    onDismiss: {
+      table: {
+        disable: true
       }
+    },
+    open: {
+      control: 'boolean'
+    },
+    role: {
+      control: 'text'
+    },
+    size: {
+      control: 'text'
+    },
+    title: {
+      control: 'text'
+    },
+    type: {
+      control: 'text'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const DialogScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {Dialog},
+    setup() {
+      return {args};
+    },
+    template: '<Dialog v-bind="args">Example</Dialog>'
   })
+};
+
+export const CustomTitle: Story = {
+  ...Default,
+  args: {
+    title: 'Story variant'
+  }
 };

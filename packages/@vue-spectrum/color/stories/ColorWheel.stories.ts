@@ -1,22 +1,45 @@
+import {ColorWheel} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof ColorWheel> = {
   title: 'ColorWheel',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
+  component: ColorWheel,
+  args: {
+    label: 'Example'
+  },
+  argTypes: {
+    disabled: {
+      control: 'boolean'
+    },
+    isDisabled: {
+      control: 'boolean'
+    },
+    label: {
+      control: 'text'
+    },
+    modelValue: {
+      control: 'number'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const ColorWheelScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {ColorWheel},
+    setup() {
+      return {args};
+    },
+    template: '<ColorWheel v-bind="args">Example</ColorWheel>'
   })
+};
+
+export const Disabled: Story = {
+  ...Default,
+  args: {
+    isDisabled: true
+  }
 };

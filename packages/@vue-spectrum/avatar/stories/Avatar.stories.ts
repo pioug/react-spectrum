@@ -1,22 +1,51 @@
+import {Avatar} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof Avatar> = {
   title: 'Avatar',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
+  component: Avatar,
+  args: {
+    label: 'Example'
+  },
+  argTypes: {
+    alt: {
+      control: 'text'
+    },
+    isDisabled: {
+      control: 'boolean'
+    },
+    label: {
+      control: 'text'
+    },
+    shape: {
+      control: 'text'
+    },
+    size: {
+      control: 'text'
+    },
+    src: {
+      control: 'text'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const AvatarScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {Avatar},
+    setup() {
+      return {args};
+    },
+    template: '<Avatar v-bind="args">Example</Avatar>'
   })
+};
+
+export const Disabled: Story = {
+  ...Default,
+  args: {
+    isDisabled: true
+  }
 };

@@ -1,22 +1,31 @@
+import {Grid} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof Grid> = {
   title: 'Grid',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
-    }
-  }
-} satisfies Meta;
+  component: Grid
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const GridScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {Grid},
+    setup() {
+      return {args};
+    },
+    template: '<Grid v-bind="args">Example</Grid>'
+  })
+};
+
+export const AlternateContent: Story = {
+  render: (args) => ({
+    components: {Grid},
+    setup() {
+      return {args};
+    },
+    template: '<Grid v-bind="args">Story variant</Grid>'
   })
 };

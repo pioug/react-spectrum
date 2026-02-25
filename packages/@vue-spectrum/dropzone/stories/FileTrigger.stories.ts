@@ -1,22 +1,51 @@
+import {DropZone} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof DropZone> = {
   title: 'FileTrigger',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
+  component: DropZone,
+  args: {
+    label: 'Example'
+  },
+  argTypes: {
+    accept: {
+      control: 'text'
+    },
+    disabled: {
+      control: 'boolean'
+    },
+    isFilled: {
+      control: 'boolean'
+    },
+    label: {
+      control: 'text'
+    },
+    multiple: {
+      control: 'boolean'
+    },
+    replaceMessage: {
+      control: 'text'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const FileTriggerScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {DropZone},
+    setup() {
+      return {args};
+    },
+    template: '<DropZone v-bind="args">Example</DropZone>'
   })
+};
+
+export const CustomLabel: Story = {
+  ...Default,
+  args: {
+    label: 'Story variant'
+  }
 };

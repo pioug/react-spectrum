@@ -1,22 +1,31 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
+import {StepList} from '../src';
 
-const meta = {
+const meta: Meta<typeof StepList> = {
   title: 'StepList',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
-    }
-  }
-} satisfies Meta;
+  component: StepList
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const StepListScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {StepList},
+    setup() {
+      return {args};
+    },
+    template: '<StepList v-bind="args">Example</StepList>'
+  })
+};
+
+export const AlternateContent: Story = {
+  render: (args) => ({
+    components: {StepList},
+    setup() {
+      return {args};
+    },
+    template: '<StepList v-bind="args">Story variant</StepList>'
   })
 };

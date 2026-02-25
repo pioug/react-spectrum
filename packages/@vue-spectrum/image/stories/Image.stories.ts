@@ -1,22 +1,46 @@
+import {Image} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof Image> = {
   title: 'Image',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
+  component: Image,
+  argTypes: {
+    alt: {
+      control: 'text'
+    },
+    borderRadius: {
+      control: 'text'
+    },
+    fit: {
+      control: 'select',
+      options: ['contain', 'cover', 'fill', 'none']
+    },
+    hidden: {
+      control: 'boolean'
+    },
+    src: {
+      control: 'text'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const ImageScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {Image},
+    setup() {
+      return {args};
+    },
+    template: '<Image v-bind="args">Example</Image>'
   })
+};
+
+export const Hidden: Story = {
+  ...Default,
+  args: {
+    hidden: true
+  }
 };

@@ -1,22 +1,41 @@
+import {Breadcrumbs} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof Breadcrumbs> = {
   title: 'Breadcrumbs',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
+  component: Breadcrumbs,
+  argTypes: {
+    current: {
+      control: 'text'
+    },
+    disabled: {
+      control: 'boolean'
+    },
+    items: {
+      table: {
+        disable: true
       }
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const BreadcrumbsScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {Breadcrumbs},
+    setup() {
+      return {args};
+    },
+    template: '<Breadcrumbs v-bind="args">Example</Breadcrumbs>'
   })
+};
+
+export const Disabled: Story = {
+  ...Default,
+  args: {
+    disabled: true
+  }
 };

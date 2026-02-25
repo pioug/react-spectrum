@@ -1,22 +1,31 @@
+import {MenuTrigger} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof MenuTrigger> = {
   title: 'MenuTrigger',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
-    }
-  }
-} satisfies Meta;
+  component: MenuTrigger
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const MenuTriggerScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {MenuTrigger},
+    setup() {
+      return {args};
+    },
+    template: '<MenuTrigger v-bind="args">Example</MenuTrigger>'
+  })
+};
+
+export const AlternateContent: Story = {
+  render: (args) => ({
+    components: {MenuTrigger},
+    setup() {
+      return {args};
+    },
+    template: '<MenuTrigger v-bind="args">Story variant</MenuTrigger>'
   })
 };

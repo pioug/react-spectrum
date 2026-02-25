@@ -1,22 +1,80 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
+import {Modal} from '../src';
 
-const meta = {
+const meta: Meta<typeof Modal> = {
   title: 'Modal',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
+  component: Modal,
+  argTypes: {
+    dismissable: {
+      control: 'boolean'
+    },
+    isDismissable: {
+      control: 'boolean'
+    },
+    isOpen: {
+      control: 'boolean'
+    },
+    onEnter: {
+      table: {
+        disable: true
       }
+    },
+    onEntered: {
+      table: {
+        disable: true
+      }
+    },
+    onEntering: {
+      table: {
+        disable: true
+      }
+    },
+    onExit: {
+      table: {
+        disable: true
+      }
+    },
+    onExited: {
+      table: {
+        disable: true
+      }
+    },
+    onExiting: {
+      table: {
+        disable: true
+      }
+    },
+    open: {
+      control: 'boolean'
+    },
+    state: {
+      table: {
+        disable: true
+      }
+    },
+    type: {
+      control: 'text'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const ModalScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {Modal},
+    setup() {
+      return {args};
+    },
+    template: '<Modal v-bind="args">Example</Modal>'
   })
+};
+
+export const Dismissable: Story = {
+  ...Default,
+  args: {
+    dismissable: true
+  }
 };

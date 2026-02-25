@@ -1,22 +1,31 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
+import {TreeView} from '../src';
 
-const meta = {
+const meta: Meta<typeof TreeView> = {
   title: 'TreeView',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
-    }
-  }
-} satisfies Meta;
+  component: TreeView
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const TreeViewScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {TreeView},
+    setup() {
+      return {args};
+    },
+    template: '<TreeView v-bind="args">Example</TreeView>'
+  })
+};
+
+export const AlternateContent: Story = {
+  render: (args) => ({
+    components: {TreeView},
+    setup() {
+      return {args};
+    },
+    template: '<TreeView v-bind="args">Story variant</TreeView>'
   })
 };

@@ -1,22 +1,50 @@
+import {HelpText} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof HelpText> = {
   title: 'HelpText',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
+  component: HelpText,
+  argTypes: {
+    description: {
+      control: 'text'
+    },
+    validationState: {
+      control: 'select',
+      options: ['valid', 'invalid']
+    },
+    isInvalid: {
+      control: 'boolean'
+    },
+    isDisabled: {
+      control: 'boolean'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const HelpTextScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {HelpText},
+    setup() {
+      return {args};
+    },
+    template: '<HelpText v-bind="args">Example</HelpText>'
   })
+};
+
+export const Disabled: Story = {
+  ...Default,
+  args: {
+    isDisabled: true
+  }
+};
+
+export const Invalid: Story = {
+  ...Default,
+  args: {
+    isInvalid: true
+  }
 };

@@ -1,22 +1,47 @@
+import {ColorArea} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof ColorArea> = {
   title: 'ColorArea',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
+  component: ColorArea,
+  args: {
+    label: 'Example'
+  },
+  argTypes: {
+    disabled: {
+      control: 'boolean'
+    },
+    isDisabled: {
+      control: 'boolean'
+    },
+    label: {
+      control: 'text'
+    },
+    modelValue: {
+      table: {
+        disable: true
       }
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const ColorAreaScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {ColorArea},
+    setup() {
+      return {args};
+    },
+    template: '<ColorArea v-bind="args">Example</ColorArea>'
   })
+};
+
+export const Disabled: Story = {
+  ...Default,
+  args: {
+    isDisabled: true
+  }
 };

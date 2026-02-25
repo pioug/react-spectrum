@@ -1,22 +1,63 @@
+import {CheckboxGroup} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof CheckboxGroup> = {
   title: 'CheckboxGroup',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
+  component: CheckboxGroup,
+  args: {
+    label: 'Example'
+  },
+  argTypes: {
+    description: {
+      control: 'text'
+    },
+    invalid: {
+      control: 'boolean'
+    },
+    isDisabled: {
+      control: 'boolean'
+    },
+    isInvalid: {
+      control: 'boolean'
+    },
+    label: {
+      control: 'text'
+    },
+    modelValue: {
+      table: {
+        disable: true
       }
+    },
+    validationState: {
+      control: 'text'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const CheckboxGroupScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {CheckboxGroup},
+    setup() {
+      return {args};
+    },
+    template: '<CheckboxGroup v-bind="args">Example</CheckboxGroup>'
   })
+};
+
+export const Disabled: Story = {
+  ...Default,
+  args: {
+    isDisabled: true
+  }
+};
+
+export const Invalid: Story = {
+  ...Default,
+  args: {
+    isInvalid: true
+  }
 };

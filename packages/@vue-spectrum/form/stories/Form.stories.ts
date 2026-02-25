@@ -1,22 +1,43 @@
+import {Form} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof Form> = {
   title: 'Form',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
+  component: Form,
+  argTypes: {
+    labelPosition: {
+      control: 'text'
+    },
+    labelAlign: {
+      control: 'text'
+    },
+    necessityIndicator: {
+      control: 'text'
+    },
+    validationBehavior: {
+      control: 'select',
+      options: ['aria', 'native']
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const FormScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {Form},
+    setup() {
+      return {args};
+    },
+    template: '<Form v-bind="args">Example</Form>'
   })
+};
+
+export const AlternateValidationBehavior: Story = {
+  ...Default,
+  args: {
+    validationBehavior: 'native'
+  }
 };

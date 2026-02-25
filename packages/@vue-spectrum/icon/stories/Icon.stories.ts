@@ -1,22 +1,31 @@
+import {Icon} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof Icon> = {
   title: 'Icons/Custom',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
-    }
-  }
-} satisfies Meta;
+  component: Icon
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const IconScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {Icon},
+    setup() {
+      return {args};
+    },
+    template: '<Icon v-bind="args">Example</Icon>'
+  })
+};
+
+export const AlternateContent: Story = {
+  render: (args) => ({
+    components: {Icon},
+    setup() {
+      return {args};
+    },
+    template: '<Icon v-bind="args">Story variant</Icon>'
   })
 };

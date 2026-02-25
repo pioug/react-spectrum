@@ -1,22 +1,54 @@
+import {ContextualHelp} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof ContextualHelp> = {
   title: 'ContextualHelp',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
+  component: ContextualHelp,
+  args: {
+    label: 'Example'
+  },
+  argTypes: {
+    disabled: {
+      control: 'boolean'
+    },
+    dismissable: {
+      control: 'boolean'
+    },
+    label: {
+      control: 'text'
+    },
+    modelValue: {
+      control: 'boolean'
+    },
+    placement: {
+      control: 'text'
+    },
+    title: {
+      control: 'text'
+    },
+    variant: {
+      control: 'text'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const ContextualHelpScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {ContextualHelp},
+    setup() {
+      return {args};
+    },
+    template: '<ContextualHelp v-bind="args">Example</ContextualHelp>'
   })
+};
+
+export const CustomLabel: Story = {
+  ...Default,
+  args: {
+    label: 'Story variant'
+  }
 };

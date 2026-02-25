@@ -1,22 +1,63 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
+import {Slider} from '../src';
 
-const meta = {
+const meta: Meta<typeof Slider> = {
   title: 'Slider',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
+  component: Slider,
+  args: {
+    label: 'Example'
+  },
+  argTypes: {
+    description: {
+      control: 'text'
+    },
+    disabled: {
+      control: 'boolean'
+    },
+    id: {
+      control: 'text'
+    },
+    isDisabled: {
+      control: 'boolean'
+    },
+    label: {
+      control: 'text'
+    },
+    max: {
+      control: 'number'
+    },
+    min: {
+      control: 'number'
+    },
+    modelValue: {
+      control: 'number'
+    },
+    showValue: {
+      control: 'boolean'
+    },
+    step: {
+      control: 'number'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const SliderScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {Slider},
+    setup() {
+      return {args};
+    },
+    template: '<Slider v-bind="args">Example</Slider>'
   })
+};
+
+export const Disabled: Story = {
+  ...Default,
+  args: {
+    isDisabled: true
+  }
 };

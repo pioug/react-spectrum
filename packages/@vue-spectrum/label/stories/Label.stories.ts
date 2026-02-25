@@ -1,22 +1,60 @@
+import {Label} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof Label> = {
   title: 'Label',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
+  component: Label,
+  argTypes: {
+    elementType: {
+      control: 'text'
+    },
+    for: {
+      control: 'text'
+    },
+    forId: {
+      control: 'text'
+    },
+    htmlFor: {
+      control: 'text'
+    },
+    includeNecessityIndicatorInAccessibilityName: {
+      control: 'boolean'
+    },
+    isRequired: {
+      control: 'boolean'
+    },
+    labelAlign: {
+      control: 'text'
+    },
+    labelPosition: {
+      control: 'text'
+    },
+    necessityIndicator: {
+      control: 'text'
+    },
+    required: {
+      control: 'boolean'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const LabelScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {Label},
+    setup() {
+      return {args};
+    },
+    template: '<Label v-bind="args">Example</Label>'
   })
+};
+
+export const Required: Story = {
+  ...Default,
+  args: {
+    isRequired: true
+  }
 };

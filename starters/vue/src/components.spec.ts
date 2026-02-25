@@ -1940,6 +1940,10 @@ describe('Vue migration primitives', () => {
     await secondTrigger.trigger('mousedown');
     expect(secondTrigger.classes()).toContain('is-pressed');
     await secondTrigger.trigger('focus');
+    expect(secondTrigger.classes()).not.toContain('focus-ring');
+    await secondTrigger.trigger('mouseup');
+    await secondTrigger.trigger('blur');
+    await secondTrigger.trigger('focus');
     expect(secondTrigger.classes()).toContain('focus-ring');
 
     await secondTrigger.trigger('click');

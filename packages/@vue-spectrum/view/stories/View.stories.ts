@@ -1,22 +1,31 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
+import {View} from '../src';
 
-const meta = {
+const meta: Meta<typeof View> = {
   title: 'View',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
-    }
-  }
-} satisfies Meta;
+  component: View
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const ViewScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {View},
+    setup() {
+      return {args};
+    },
+    template: '<View v-bind="args">Example</View>'
+  })
+};
+
+export const AlternateContent: Story = {
+  render: (args) => ({
+    components: {View},
+    setup() {
+      return {args};
+    },
+    template: '<View v-bind="args">Story variant</View>'
   })
 };

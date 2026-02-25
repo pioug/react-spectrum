@@ -1,22 +1,31 @@
+import {Calendar} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof Calendar> = {
   title: 'Date and Time/Calendar',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
-    }
-  }
-} satisfies Meta;
+  component: Calendar
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const CalendarScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {Calendar},
+    setup() {
+      return {args};
+    },
+    template: '<Calendar v-bind="args">Example</Calendar>'
+  })
+};
+
+export const AlternateContent: Story = {
+  render: (args) => ({
+    components: {Calendar},
+    setup() {
+      return {args};
+    },
+    template: '<Calendar v-bind="args">Story variant</Calendar>'
   })
 };

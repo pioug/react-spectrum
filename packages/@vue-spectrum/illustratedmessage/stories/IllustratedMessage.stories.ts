@@ -1,22 +1,46 @@
+import {IllustratedMessage} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof IllustratedMessage> = {
   title: 'IllustratedMessage',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
+  component: IllustratedMessage,
+  argTypes: {
+    description: {
+      control: 'text'
+    },
+    elementType: {
+      control: 'text'
+    },
+    hidden: {
+      control: 'boolean'
+    },
+    title: {
+      control: 'text'
+    },
+    variant: {
+      control: 'select',
+      options: ['info', 'negative', 'neutral', 'notice', 'positive']
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const IllustratedMessageScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {IllustratedMessage},
+    setup() {
+      return {args};
+    },
+    template: '<IllustratedMessage v-bind="args">Example</IllustratedMessage>'
   })
+};
+
+export const AlternateVariant: Story = {
+  ...Default,
+  args: {
+    variant: 'info'
+  }
 };

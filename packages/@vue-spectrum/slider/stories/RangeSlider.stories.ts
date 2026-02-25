@@ -1,22 +1,59 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
+import {RangeSlider} from '../src';
 
-const meta = {
+const meta: Meta<typeof RangeSlider> = {
   title: 'Slider/RangeSlider',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
+  component: RangeSlider,
+  args: {
+    label: 'Example'
+  },
+  argTypes: {
+    disabled: {
+      control: 'boolean'
+    },
+    isDisabled: {
+      control: 'boolean'
+    },
+    label: {
+      control: 'text'
+    },
+    max: {
+      control: 'number'
+    },
+    min: {
+      control: 'number'
+    },
+    modelValue: {
+      table: {
+        disable: true
       }
+    },
+    showValue: {
+      control: 'boolean'
+    },
+    step: {
+      control: 'number'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const RangeSliderScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {RangeSlider},
+    setup() {
+      return {args};
+    },
+    template: '<RangeSlider v-bind="args">Example</RangeSlider>'
   })
+};
+
+export const Disabled: Story = {
+  ...Default,
+  args: {
+    isDisabled: true
+  }
 };

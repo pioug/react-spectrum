@@ -1,22 +1,50 @@
+import {ListBox} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof ListBox> = {
   title: 'ListBox',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
+  component: ListBox,
+  args: {
+    label: 'Example'
+  },
+  argTypes: {
+    ariaLabel: {
+      control: 'text'
+    },
+    isDisabled: {
+      control: 'boolean'
+    },
+    items: {
+      table: {
+        disable: true
       }
+    },
+    label: {
+      control: 'text'
+    },
+    selectionMode: {
+      control: 'text'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const ListBoxScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {ListBox},
+    setup() {
+      return {args};
+    },
+    template: '<ListBox v-bind="args">Example</ListBox>'
   })
+};
+
+export const Disabled: Story = {
+  ...Default,
+  args: {
+    isDisabled: true
+  }
 };

@@ -1,22 +1,45 @@
+import {Link} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof Link> = {
   title: 'Link',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
+  component: Link,
+  argTypes: {
+    href: {
+      control: 'text'
+    },
+    isQuiet: {
+      control: 'boolean'
+    },
+    rel: {
+      control: 'text'
+    },
+    target: {
+      control: 'text'
+    },
+    variant: {
+      control: 'text'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const LinkScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {Link},
+    setup() {
+      return {args};
+    },
+    template: '<Link v-bind="args">Example</Link>'
   })
+};
+
+export const Quiet: Story = {
+  ...Default,
+  args: {
+    isQuiet: true
+  }
 };

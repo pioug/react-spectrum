@@ -1,22 +1,48 @@
+import {ColorSwatch} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof ColorSwatch> = {
   title: 'ColorThumb',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
+  component: ColorSwatch,
+  args: {
+    label: 'Example'
+  },
+  argTypes: {
+    bordered: {
+      control: 'boolean'
+    },
+    color: {
+      control: 'text'
+    },
+    isDisabled: {
+      control: 'boolean'
+    },
+    label: {
+      control: 'text'
+    },
+    selected: {
+      control: 'boolean'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const ColorThumbScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {ColorSwatch},
+    setup() {
+      return {args};
+    },
+    template: '<ColorSwatch v-bind="args">Example</ColorSwatch>'
   })
+};
+
+export const Disabled: Story = {
+  ...Default,
+  args: {
+    isDisabled: true
+  }
 };

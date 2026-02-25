@@ -1,22 +1,31 @@
+import {Divider} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof Divider> = {
   title: 'Divider',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
-    }
-  }
-} satisfies Meta;
+  component: Divider
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const DividerScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {Divider},
+    setup() {
+      return {args};
+    },
+    template: '<Divider v-bind="args">Example</Divider>'
+  })
+};
+
+export const AlternateContent: Story = {
+  render: (args) => ({
+    components: {Divider},
+    setup() {
+      return {args};
+    },
+    template: '<Divider v-bind="args">Story variant</Divider>'
   })
 };

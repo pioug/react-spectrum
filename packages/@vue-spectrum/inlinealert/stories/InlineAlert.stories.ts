@@ -1,22 +1,45 @@
+import {InlineAlert} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof InlineAlert> = {
   title: 'InlineAlert',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
+  component: InlineAlert,
+  args: {
+    label: 'Example'
+  },
+  argTypes: {
+    autoFocus: {
+      control: 'boolean'
+    },
+    label: {
+      control: 'text'
+    },
+    title: {
+      control: 'text'
+    },
+    variant: {
+      control: 'text'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const InlineAlertScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {InlineAlert},
+    setup() {
+      return {args};
+    },
+    template: '<InlineAlert v-bind="args">Example</InlineAlert>'
   })
+};
+
+export const CustomLabel: Story = {
+  ...Default,
+  args: {
+    label: 'Story variant'
+  }
 };

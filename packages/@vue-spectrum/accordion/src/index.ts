@@ -73,9 +73,15 @@ export const Accordion = defineComponent({
 
     let toggleKey = (key: string) => {
       let currentExpanded = expandedKeys.value;
-      let nextExpanded = currentExpanded.includes(key)
-        ? currentExpanded.filter((item) => item !== key)
-        : (props.multiple ? [...currentExpanded, key] : [key]);
+      let nextExpanded: string[];
+
+      if (currentExpanded.includes(key)) {
+        nextExpanded = currentExpanded.filter((item) => item !== key);
+      } else if (props.multiple) {
+        nextExpanded = [...currentExpanded, key];
+      } else {
+        nextExpanded = [key];
+      }
 
       if (props.modelValue === undefined && props.expandedKeys === undefined) {
         internalExpandedKeys.value = nextExpanded;
@@ -275,11 +281,7 @@ export const DisclosureTitle = defineComponent({
           },
           onFocus: (event: FocusEvent) => {
             let target = getEventTarget(event);
-            if (target instanceof HTMLElement && target.matches(':focus-visible')) {
-              isFocusVisible.value = true;
-            } else {
-              isFocusVisible.value = true;
-            }
+            isFocusVisible.value = target instanceof HTMLElement ? !isPressed.value : false;
           },
           onBlur: () => {
             isFocusVisible.value = false;

@@ -1,22 +1,51 @@
+import {Card} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta = {
+const meta: Meta<typeof Card> = {
   title: 'CardView/Waterfall layout',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Story source scaffold for Vue parity. Replace with real Vue story implementations.'
-      }
+  component: Card,
+  argTypes: {
+    description: {
+      control: 'text'
+    },
+    disabled: {
+      control: 'boolean'
+    },
+    id: {
+      control: 'text'
+    },
+    isQuiet: {
+      control: 'boolean'
+    },
+    quiet: {
+      control: 'boolean'
+    },
+    selected: {
+      control: 'boolean'
+    },
+    title: {
+      control: 'text'
     }
   }
-} satisfies Meta;
+};
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const WaterfallCardViewScaffold: Story = {
-  render: () => ({
-    template: '<div style="padding: 16px;">Story source scaffold</div>'
+export const Default: Story = {
+  render: (args) => ({
+    components: {Card},
+    setup() {
+      return {args};
+    },
+    template: '<Card v-bind="args">Example</Card>'
   })
+};
+
+export const Quiet: Story = {
+  ...Default,
+  args: {
+    isQuiet: true
+  }
 };
