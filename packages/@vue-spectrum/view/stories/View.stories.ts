@@ -5,25 +5,8 @@ const meta: Meta<typeof View> = {
   title: 'View',
   component: View,
   args: {
-    padding: 'm',
-    border: true
-  },
-  argTypes: {
-    border: {
-      control: 'boolean'
-    },
-    elementType: {
-      control: 'text'
-    },
-    padding: {
-      control: 'select',
-      options: [
-        'none',
-        's',
-        'm',
-        'l'
-      ]
-    }
+    colorVersion: 5,
+    backgroundColor: 'blue-400'
   }
 };
 
@@ -37,30 +20,6 @@ export const Default: Story = {
     setup() {
       return {args};
     },
-    template: `<View v-bind="args">
-  <h3 style="margin: 0 0 8px;">Container Title</h3>
-  <p style="margin: 0;">This content is wrapped in View.</p>
-</View>`
+    template: '<View v-bind="args" width="single-line-width" height="size-500" element-type="span" />'
   })
-};
-
-export const Borderless: Story = {
-  ...Default,
-  args: {
-    border: false
-  }
-};
-
-export const CompactPadding: Story = {
-  ...Default,
-  args: {
-    padding: 's'
-  }
-};
-
-export const NoPadding: Story = {
-  ...Default,
-  args: {
-    padding: 'none'
-  }
 };
