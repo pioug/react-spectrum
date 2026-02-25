@@ -11,12 +11,14 @@ export type ListItemRecord = {
   id?: number | string,
   key?: number | string,
   label?: string,
+  name?: string,
   textValue?: string
 } & Record<string, unknown>;
 
 type SelectionMode = 'multiple' | 'none' | 'single';
 type SelectionStyle = 'checkbox' | 'highlight';
 type SelectionValue = number | string | Array<number | string>;
+type DisabledBehavior = 'all' | 'selection';
 
 type NormalizedListItem = {
   disabled: boolean,
@@ -36,7 +38,8 @@ function normalizeItem(item: ListItemRecord | string, index: number): Normalized
   }
 
   let key = item.key ?? item.id ?? index;
-  let label = item.label ?? item.textValue ?? String(key);
+  let itemName = typeof item.name === 'string' ? item.name : undefined;
+  let label = item.label ?? item.textValue ?? itemName ?? String(key);
 
   return {
     key,
@@ -58,6 +61,10 @@ function normalizeSelection(value: SelectionValue | undefined): Array<number | s
   return [];
 }
 
+function hasKey(collection: Array<number | string>, key: number | string): boolean {
+  return collection.some((entry) => entry === key);
+}
+
 function toBooleanString(value: boolean): 'false' | 'true' {
   return value ? 'true' : 'false';
 }
@@ -73,6 +80,14 @@ export const ListView = defineComponent({
     density: {
       type: String as PropType<'compact' | 'regular' | 'spacious'>,
       default: 'regular'
+    },
+    disabledBehavior: {
+      type: String as PropType<DisabledBehavior>,
+      default: 'selection'
+    },
+    disabledKeys: {
+      type: Array as PropType<Array<number | string>>,
+      default: () => []
     },
     isDisabled: {
       type: Boolean,
@@ -98,6 +113,22 @@ export const ListView = defineComponent({
       type: [String, Number, Array] as PropType<SelectionValue | undefined>,
       default: undefined
     },
+    onAction: {
+      type: Function as PropType<(key: number | string) => void>,
+      default: undefined
+    },
+    onSelectionChange: {
+      type: Function as PropType<(value: SelectionValue) => void>,
+      default: undefined
+    },
+    overflowMode: {
+      type: String as PropType<'truncate' | 'wrap'>,
+      default: 'truncate'
+    },
+    selectedKeys: {
+      type: [String, Number, Array] as PropType<SelectionValue | undefined>,
+      default: undefined
+    },
     selectionMode: {
       type: String as PropType<SelectionMode>,
       default: 'single'
@@ -110,6 +141,20 @@ export const ListView = defineComponent({
   emits: {
     action: (key: number | string) => typeof key === 'number' || typeof key === 'string',
     select: (value: SelectionValue) => {
+      if (typeof value === 'number' || typeof value === 'string') {
+        return true;
+      }
+
+      return Array.isArray(value);
+    },
+    selectionChange: (value: SelectionValue) => {
+      if (typeof value === 'number' || typeof value === 'string') {
+        return true;
+      }
+
+      return Array.isArray(value);
+    },
+    'update:selectedKeys': (value: SelectionValue) => {
       if (typeof value === 'number' || typeof value === 'string') {
         return true;
       }
@@ -130,19 +175,36 @@ export const ListView = defineComponent({
     let activeKey = ref<number | string | null>(null);
 
     let normalizedItems = computed(() => props.items.map((item, index) => normalizeItem(item, index)));
-    let selectedKeys = computed(() => new Set(normalizeSelection(props.modelValue)));
+    let isControlledSelection = computed(() => props.selectedKeys !== undefined || props.modelValue !== undefined);
+    let controlledSelection = computed(() => normalizeSelection(props.selectedKeys ?? props.modelValue));
+    let uncontrolledSelection = ref<Array<number | string>>(normalizeSelection(props.modelValue));
+    let selectedKeys = computed(() => new Set(isControlledSelection.value ? controlledSelection.value : uncontrolledSelection.value));
 
-    let onSelectItem = (item: NormalizedListItem) => {
+    let emitSelection = (value: SelectionValue) => {
+      if (!isControlledSelection.value) {
+        uncontrolledSelection.value = normalizeSelection(value);
+      }
+
+      emit('update:modelValue', value);
+      emit('update:selectedKeys', value);
+      emit('selectionChange', value);
+      emit('select', value);
+    };
+
+    let onSelectItem = (item: NormalizedListItem, options: {isSelectionDisabled: boolean, isTotallyDisabled: boolean}) => {
+      if (options.isTotallyDisabled) {
+        return;
+      }
+
       emit('action', item.key);
 
-      if (props.selectionMode === 'none' || props.isDisabled || item.disabled) {
+      if (props.selectionMode === 'none' || options.isSelectionDisabled) {
         emit('select', item.key);
         return;
       }
 
       if (props.selectionMode === 'single') {
-        emit('update:modelValue', item.key);
-        emit('select', item.key);
+        emitSelection(item.key);
         return;
       }
 
@@ -154,8 +216,7 @@ export const ListView = defineComponent({
       }
 
       let values = Array.from(next);
-      emit('update:modelValue', values);
-      emit('select', values);
+      emitSelection(values);
     };
 
     return () => {
@@ -180,7 +241,7 @@ export const ListView = defineComponent({
           'react-spectrum-ListView--isVerticalScrollbarVisible': false,
           'react-spectrum-ListView--loadingMore': props.loadingState === 'loadingMore',
           'react-spectrum-ListView--quiet': props.isQuiet,
-          'react-spectrum-ListView--wrap': false,
+          'react-spectrum-ListView--wrap': props.overflowMode === 'wrap',
           'focus-ring': focusedKey.value !== null
         }
       );
@@ -226,11 +287,12 @@ export const ListView = defineComponent({
               h('div', {role: 'gridcell'}, slots.default ? slots.default() : 'No items')
             ])
             : items.map((item, index) => {
-              let isDisabled = props.isDisabled || item.disabled;
+              let isItemDisabled = props.isDisabled || item.disabled || hasKey(props.disabledKeys, item.key);
+              let isTotallyDisabled = props.isDisabled || (isItemDisabled && props.disabledBehavior === 'all');
               let isSelected = selectedKeys.value.has(item.key);
-              let isFocused = focusedKey.value === item.key && !isDisabled;
-              let isHovered = hoveredKey.value === item.key && !isDisabled;
-              let isActive = activeKey.value === item.key && !isDisabled;
+              let isFocused = focusedKey.value === item.key && !isTotallyDisabled;
+              let isHovered = hoveredKey.value === item.key && !isTotallyDisabled;
+              let isActive = activeKey.value === item.key && !isTotallyDisabled;
               let prevSelected = index > 0 ? selectedKeys.value.has(items[index - 1].key) : false;
               let nextSelected = index + 1 < items.length ? selectedKeys.value.has(items[index + 1].key) : false;
 
@@ -243,7 +305,7 @@ export const ListView = defineComponent({
               let itemClassName = classNames(listStyles, 'react-spectrum-ListViewItem', {
                 'focus-ring': isFocused,
                 'is-active': isActive,
-                'is-disabled': isDisabled,
+                'is-disabled': isItemDisabled,
                 'is-focused': isFocused,
                 'is-hovered': isHovered,
                 'is-next-selected': nextSelected,
@@ -260,7 +322,7 @@ export const ListView = defineComponent({
                 key: String(item.key),
                 role: 'row',
                 class: [rowClassName, 'vs-list-view__row'],
-                tabindex: isDisabled ? -1 : 0,
+                tabindex: isTotallyDisabled ? -1 : 0,
                 'aria-rowindex': index + 1,
                 onMouseenter: () => {
                   hoveredKey.value = item.key;
@@ -274,7 +336,7 @@ export const ListView = defineComponent({
                   }
                 },
                 onMousedown: () => {
-                  if (!isDisabled) {
+                  if (!isTotallyDisabled) {
                     activeKey.value = item.key;
                   }
                 },
@@ -291,7 +353,7 @@ export const ListView = defineComponent({
                   h('button', {
                     type: 'button',
                     class: [itemClassName, 'vs-list-view__item', 'vs-listbox__item'],
-                    disabled: isDisabled,
+                    disabled: isTotallyDisabled,
                     role: 'option',
                     'aria-selected': props.selectionMode === 'none' ? undefined : toBooleanString(isSelected),
                     onFocus: () => {
@@ -304,7 +366,10 @@ export const ListView = defineComponent({
                     },
                     onClick: () => {
                       activeKey.value = null;
-                      onSelectItem(item);
+                      onSelectItem(item, {
+                        isSelectionDisabled: isItemDisabled,
+                        isTotallyDisabled
+                      });
                     }
                   }, [
                     h('div', {class: classNames(listStyles, 'react-spectrum-ListViewItem-grid')}, [

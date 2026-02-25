@@ -2149,6 +2149,53 @@ describe('Vue migration primitives', () => {
     expect(wrapper.find('[aria-hidden=\"true\"][hidden]').exists()).toBe(true);
   });
 
+  it('supports list view selection aliases and disabled behaviors', async () => {
+    let onAction = vi.fn();
+    let onSelectionChange = vi.fn();
+    let wrapper = mount(ListView, {
+      props: {
+        items: [
+          {key: 'a', name: 'Adobe Photoshop'},
+          {key: 'b', name: 'Documents'}
+        ],
+        selectionMode: 'multiple',
+        selectedKeys: ['a'],
+        disabledKeys: ['b'],
+        disabledBehavior: 'selection',
+        overflowMode: 'wrap',
+        onAction,
+        onSelectionChange
+      }
+    });
+
+    let items = wrapper.findAll('button.vs-listbox__item');
+    expect(items[1].classes()).toContain('is-disabled');
+    expect(wrapper.classes()).toContain('react-spectrum-ListView--wrap');
+
+    await items[1].trigger('click');
+    expect(onAction).toHaveBeenCalledWith('b');
+    expect(wrapper.emitted('update:selectedKeys')).toBeUndefined();
+
+    await items[0].trigger('click');
+    expect(wrapper.emitted('update:selectedKeys')?.[0]).toEqual([[]]);
+    expect(onSelectionChange).toHaveBeenCalledWith([]);
+
+    let allDisabled = mount(ListView, {
+      props: {
+        items: [
+          {key: 'a', name: 'Adobe Photoshop'},
+          {key: 'b', name: 'Documents'}
+        ],
+        disabledKeys: ['b'],
+        disabledBehavior: 'all',
+        onAction
+      }
+    });
+
+    await allDisabled.findAll('button.vs-listbox__item')[1].trigger('click');
+    expect(onAction).toHaveBeenCalledTimes(2);
+  });
+
   it('maps menu selectable/open/expanded states and aria visibility signals', async () => {
     let wrapper = mount(Menu, {
       props: {
