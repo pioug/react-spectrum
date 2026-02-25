@@ -68,27 +68,70 @@ export const Default: Story = {
       return {args};
     },
     template: '<DialogContainer v-bind="args">Dialog content</DialogContainer>'
+  }),
+  name: 'default'
+};
+
+export const InAMenu: Story = {
+  ...Default,
+  render: (args) => ({
+    components: {DialogContainer},
+    setup() {
+      return {args};
+    },
+    template: `
+      <div style="display: grid; gap: 8px;">
+        <div>Menu trigger parity scenario</div>
+        <DialogContainer v-bind="args">Dialog content from menu</DialogContainer>
+      </div>
+    `
+  }),
+  name: 'in a menu'
+};
+
+export const TypeFullscreen: Story = {
+  ...Default,
+  args: {
+    type: 'fullscreen'
+  },
+  name: 'type: fullscreen'
+};
+
+export const TypeFullscreenTakeover: Story = {
+  ...Default,
+  args: {
+    type: 'fullscreenTakeover'
+  },
+  name: 'type: fullscreenTakeover'
+};
+
+export const IsDismissable: Story = {
+  ...Default,
+  args: {
+    isDismissable: true
+  },
+  name: 'isDismissable'
+};
+
+export const IsKeyboardDismissDisabled: Story = {
+  ...Default,
+  args: {
+    isKeyboardDismissDisabled: true
+  },
+  name: 'isKeyboardDismissDisabled'
+};
+
+export const NestedDialogContainers: Story = {
+  render: (args) => ({
+    components: {DialogContainer},
+    setup() {
+      return {args};
+    },
+    template: `
+      <DialogContainer v-bind="args">
+        Outer dialog content
+        <DialogContainer title="Nested dialog">Nested dialog content</DialogContainer>
+      </DialogContainer>
+    `
   })
-};
-
-export const NonDismissable: Story = {
-  ...Default,
-  args: {
-    isDismissable: false
-  }
-};
-
-export const Popover: Story = {
-  ...Default,
-  args: {
-    type: 'popover',
-    size: 'S'
-  }
-};
-
-export const Hidden: Story = {
-  ...Default,
-  args: {
-    isHidden: true
-  }
 };
