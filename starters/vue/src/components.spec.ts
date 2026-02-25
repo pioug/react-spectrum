@@ -43,7 +43,7 @@ import {Switch} from '@vue-spectrum/switch';
 import {Table} from '@vue-spectrum/table';
 import {TagGroup} from '@vue-spectrum/tag';
 import {Tabs} from '@vue-spectrum/tabs';
-import {TextField} from '@vue-spectrum/textfield';
+import {TextArea, TextField} from '@vue-spectrum/textfield';
 import {Text} from '@vue-spectrum/text';
 import {createToastQueue, ToastContainer} from '@vue-spectrum/toast';
 import {Tooltip, TooltipTrigger} from '@vue-spectrum/tooltip';
@@ -1274,6 +1274,37 @@ describe('Vue migration primitives', () => {
     expect(valid.find('.vs-text-field__icon').exists()).toBe(true);
     expect(valid.find('.vs-text-field__contextual-help').text()).toContain('Segment help');
     expect((valid.element as HTMLElement).style.width).toBe('300px');
+  });
+
+  it('updates model value from textarea input', async () => {
+    let wrapper = mount(TextArea, {
+      props: {
+        modelValue: ''
+      }
+    });
+
+    await wrapper.get('textarea').setValue('Ada Lovelace');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Ada Lovelace']);
+    expect(wrapper.emitted('change')?.[0]).toEqual(['Ada Lovelace']);
+  });
+
+  it('maps multiline textarea classes and row props', async () => {
+    let wrapper = mount(TextArea, {
+      props: {
+        defaultValue: 'Test',
+        rows: 5,
+        isQuiet: true
+      }
+    });
+
+    expect(wrapper.find('.spectrum-Textfield').classes()).toContain('spectrum-Textfield--multiline');
+    expect(wrapper.find('.spectrum-Textfield').classes()).toContain('spectrum-Textfield--quiet');
+    expect(wrapper.find('textarea.spectrum-Textfield-input').exists()).toBe(true);
+    expect(wrapper.find('.vs-text-field__input--multiline').exists()).toBe(true);
+    expect(wrapper.get('textarea').attributes('rows')).toBe('5');
+
+    await wrapper.get('textarea').trigger('mouseenter');
+    expect(wrapper.find('textarea').classes()).toContain('is-hovered');
   });
 
   it('maps searchfield disabled/quiet states and clear behavior', async () => {
