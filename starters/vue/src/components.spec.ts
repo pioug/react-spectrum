@@ -1169,6 +1169,57 @@ describe('Vue migration primitives', () => {
     expect(wrapper.find('.spectrum-Textfield').classes()).toContain('focus-ring');
   });
 
+  it('supports textfield controlled aliases and validation display props', async () => {
+    let uncontrolled = mount(TextField, {
+      props: {
+        defaultValue: 'Test'
+      }
+    });
+    expect((uncontrolled.get('input').element as HTMLInputElement).value).toBe('Test');
+
+    let controlled = mount(TextField, {
+      props: {
+        value: 'Controlled',
+        modelValue: 'Ignored'
+      }
+    });
+    expect((controlled.get('input').element as HTMLInputElement).value).toBe('Controlled');
+
+    let typed = mount(TextField, {
+      props: {
+        type: 'email',
+        pattern: '[0-9]+'
+      }
+    });
+    expect(typed.get('input').attributes('type')).toBe('email');
+    expect(typed.get('input').attributes('pattern')).toBe('[0-9]+');
+
+    let invalid = mount(TextField, {
+      props: {
+        modelValue: 'abc',
+        validationState: 'invalid',
+        errorMessage: 'Please enter a valid street address.'
+      }
+    });
+    expect(invalid.find('.vs-text-field__error').text()).toContain('valid street address');
+    expect(invalid.attributes('aria-describedby')).toBeUndefined();
+    expect(invalid.get('input').attributes('aria-describedby')).toContain('error');
+
+    let valid = mount(TextField, {
+      props: {
+        value: 'user@example.com',
+        validationState: 'valid',
+        width: '300px',
+        icon: 'i',
+        contextualHelp: 'Segment help text'
+      }
+    });
+    expect(valid.find('.spectrum-Textfield').classes()).toContain('is-valid');
+    expect(valid.find('.vs-text-field__icon').exists()).toBe(true);
+    expect(valid.find('.vs-text-field__contextual-help').text()).toContain('Segment help');
+    expect((valid.element as HTMLElement).style.width).toBe('300px');
+  });
+
   it('maps searchfield disabled/quiet states and clear behavior', async () => {
     let wrapper = mount(SearchField, {
       props: {

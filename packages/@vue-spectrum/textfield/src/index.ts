@@ -1,6 +1,6 @@
 import '@adobe/spectrum-css-temp/components/textfield/vars.css';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, type PropType, ref} from 'vue';
+import {computed, defineComponent, h, type PropType, ref, watch} from 'vue';
 import {getEventTarget} from '@vue-aria/utils';
 import type {SpectrumTextAreaProps, SpectrumTextFieldProps} from '@vue-types/textfield';
 const styles: {[key: string]: string} = {};
@@ -53,12 +53,24 @@ function buildField(
         type: String,
         default: ''
       },
+      defaultValue: {
+        type: String,
+        default: ''
+      },
       disabled: {
         type: Boolean,
         default: false
       },
+      errorMessage: {
+        type: String,
+        default: ''
+      },
       id: {
         type: String,
+        default: undefined
+      },
+      icon: {
+        type: null as unknown as PropType<unknown>,
         default: undefined
       },
       invalid: {
@@ -89,13 +101,25 @@ function buildField(
         type: String,
         default: ''
       },
-      modelValue: {
+      contextualHelp: {
         type: String,
         default: ''
+      },
+      modelValue: {
+        type: String as PropType<string | undefined>,
+        default: undefined
+      },
+      value: {
+        type: String as PropType<string | undefined>,
+        default: undefined
       },
       placeholder: {
         type: String,
         default: ''
+      },
+      pattern: {
+        type: String as PropType<string | undefined>,
+        default: undefined
       },
       required: {
         type: Boolean,
@@ -107,6 +131,14 @@ function buildField(
       },
       validationState: {
         type: String as PropType<ValidationState | undefined>,
+        default: undefined
+      },
+      type: {
+        type: String,
+        default: 'text'
+      },
+      width: {
+        type: [Number, String] as PropType<number | string | undefined>,
         default: undefined
       }
     },
@@ -126,8 +158,31 @@ function buildField(
       let isDisabled = computed(() => resolveIsDisabled(props));
       let isInvalid = computed(() => resolveIsInvalid(props, isDisabled.value));
       let isRequired = computed(() => resolveIsRequired(props));
+      let isValid = computed(() => !isInvalid.value && props.validationState === 'valid');
+
+      let uncontrolledValue = ref(props.defaultValue);
+      let currentValue = computed(() => props.value ?? props.modelValue ?? uncontrolledValue.value);
+
+      watch(() => [props.modelValue, props.value], ([modelValue, value]) => {
+        if (typeof value === 'string') {
+          uncontrolledValue.value = value;
+          return;
+        }
+
+        if (typeof modelValue === 'string') {
+          uncontrolledValue.value = modelValue;
+        }
+      }, {immediate: true});
 
       let descriptionId = computed(() => props.description ? `${inputId.value}-description` : undefined);
+      let errorMessageId = computed(() => props.errorMessage ? `${inputId.value}-error` : undefined);
+      let describedBy = computed(() => {
+        if (isInvalid.value && props.errorMessage) {
+          return errorMessageId.value;
+        }
+
+        return descriptionId.value;
+      });
 
       let wrapperClassName = computed(() => classNames(
         styles,
@@ -141,10 +196,11 @@ function buildField(
         styles,
         'spectrum-Textfield',
         {
-          'spectrum-Textfield--invalid': isInvalid.value,
-          'spectrum-Textfield--quiet': props.isQuiet,
-          'spectrum-Textfield--multiline': kind === 'textarea',
-          'focus-ring': isFocusVisible.value
+            'spectrum-Textfield--invalid': isInvalid.value,
+            'is-valid': isValid.value,
+            'spectrum-Textfield--quiet': props.isQuiet,
+            'spectrum-Textfield--multiline': kind === 'textarea',
+            'focus-ring': isFocusVisible.value
         }
       ));
 
@@ -169,6 +225,7 @@ function buildField(
       let onInput = (event: Event) => {
         let target = event.currentTarget as HTMLInputElement | HTMLTextAreaElement | null;
         let value = target?.value ?? '';
+        uncontrolledValue.value = value;
         emit('update:modelValue', value);
         emit('change', value);
       };
@@ -179,14 +236,16 @@ function buildField(
         let inputNode = h(inputTag, {
           id: inputId.value,
           class: [inputClassName.value, 'vs-text-field__input'],
-          value: props.modelValue,
+          value: currentValue.value,
+          type: kind === 'textarea' ? undefined : props.type,
+          pattern: kind === 'textarea' ? undefined : props.pattern,
           placeholder: props.placeholder || undefined,
           disabled: isDisabled.value,
           required: isRequired.value || undefined,
           readonly: props.isReadOnly || undefined,
           rows: kind === 'textarea' ? props.rows : undefined,
           'aria-invalid': isInvalid.value ? 'true' : undefined,
-          'aria-describedby': descriptionId.value,
+          'aria-describedby': describedBy.value,
           'aria-label': ariaLabel.value,
           autofocus: props.autoFocus || attrs.autofocus || undefined,
           onInput,
@@ -219,21 +278,48 @@ function buildField(
         return h('label', {
           ...attrs,
           class: [wrapperClassName.value, 'vs-text-field', attrs.class],
+          style: {
+            ...((attrs.style as Record<string, unknown>) ?? {}),
+            width: props.width ?? (attrs.style as Record<string, unknown> | undefined)?.width
+          },
           'data-vac': ''
         }, [
-          props.label ? h('span', {class: 'vs-text-field__label'}, props.label) : null,
+          props.label || props.contextualHelp
+            ? h('div', {class: 'vs-text-field__label-row'}, [
+              props.label ? h('span', {class: 'vs-text-field__label'}, props.label) : null,
+              props.contextualHelp
+                ? h('span', {class: 'vs-text-field__contextual-help'}, props.contextualHelp)
+                : null
+            ])
+            : null,
           h('div', {
             class: [containerClassName.value, 'vs-text-field__container']
           }, [
+            props.icon
+              ? h('span', {
+                class: 'vs-text-field__icon',
+                'aria-hidden': 'true'
+              }, typeof props.icon === 'string' ? props.icon : [props.icon as never])
+              : null,
             inputNode,
             isInvalid.value
               ? h('span', {
                 class: classNames(styles, 'spectrum-Textfield-validationIcon'),
                 'aria-hidden': 'true'
               }, '!')
+              : isValid.value
+                ? h('span', {
+                  class: classNames(styles, 'spectrum-Textfield-validationIcon'),
+                  'aria-hidden': 'true'
+                }, '\u2713')
               : null
           ]),
-          props.description
+          isInvalid.value && props.errorMessage
+            ? h('span', {
+              id: errorMessageId.value,
+              class: 'vs-text-field__error'
+            }, props.errorMessage)
+            : props.description
             ? h('span', {
               id: descriptionId.value,
               class: 'vs-text-field__description'
