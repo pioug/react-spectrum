@@ -588,6 +588,88 @@ describe('Vue migration primitives', () => {
     }
   });
 
+  it('uses icon-only visible actions when collapse overflows and icon slots are provided', async () => {
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      callback(0);
+      return 1;
+    });
+    vi.stubGlobal('cancelAnimationFrame', () => {});
+
+    let originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
+    let getBoundingClientRectSpy = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function getBoundingClientRect() {
+      if (this.classList.contains('vs-action-group__wrapper')) {
+        return {
+          width: 170,
+          height: 40,
+          top: 0,
+          right: 170,
+          bottom: 40,
+          left: 0,
+          x: 0,
+          y: 0,
+          toJSON: () => ({})
+        } as DOMRect;
+      }
+
+      if (this.classList.contains('vs-action-group__overflow-measure')) {
+        return {
+          width: 48,
+          height: 30,
+          top: 0,
+          right: 48,
+          bottom: 30,
+          left: 0,
+          x: 0,
+          y: 0,
+          toJSON: () => ({})
+        } as DOMRect;
+      }
+
+      if (this.getAttribute('data-vs-action-group-item') === 'true') {
+        return {
+          width: 72,
+          height: 30,
+          top: 0,
+          right: 72,
+          bottom: 30,
+          left: 0,
+          x: 0,
+          y: 0,
+          toJSON: () => ({})
+        } as DOMRect;
+      }
+
+      return originalGetBoundingClientRect.call(this);
+    });
+
+    try {
+      let wrapper = mount(ActionGroup, {
+        props: {
+          buttonLabelBehavior: 'collapse',
+          items: ['Edit', 'Copy', 'Delete'],
+          overflowMode: 'collapse'
+        },
+        slots: {
+          item: ({item}: {item: string}) => [
+            h(EditWorkflow),
+            h('span', {class: 'spectrum-ActionButton-label'}, item)
+          ]
+        }
+      });
+
+      await nextTick();
+      await nextTick();
+
+      let visibleItems = wrapper.findAll('[data-vs-action-group-item="true"]');
+      expect(visibleItems).toHaveLength(1);
+      expect(visibleItems[0].classes()).toContain('spectrum-ActionGroup-item--iconOnly');
+      expect(wrapper.find('[data-vs-action-group-overflow-trigger="true"]').exists()).toBe(true);
+    } finally {
+      getBoundingClientRectSpy.mockRestore();
+      vi.unstubAllGlobals();
+    }
+  });
+
   it('collapses all action items when overflow occurs in selection mode', async () => {
     vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
       callback(0);

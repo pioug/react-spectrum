@@ -49,3 +49,7 @@
   top: -10000px;
   visibility: hidden;
 }
+
+.spectrum-ActionGroup-item--iconOnly .spectrum-ActionButton-label {
+  display: none;
+}

@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@adobe/spectrum-css-temp": "3.0.0-alpha.1",
+    "@spectrum-icons-vue/workflow": "workspace:*",
     "@vue-spectrum/utils": "workspace:*",
     "@vue-stately/collections": "workspace:*",
     "@vue-types/actiongroup": "^3.4.22"

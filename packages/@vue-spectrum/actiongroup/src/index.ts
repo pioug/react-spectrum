@@ -2,6 +2,7 @@ import '@adobe/spectrum-css-temp/components/actiongroup/vars.css';
 import '@adobe/spectrum-css-temp/components/button/vars.css';
 import '@adobe/spectrum-css-temp/components/menu/vars.css';
 import './actiongroup.css';
+import More from '@spectrum-icons-vue/workflow/More';
 import {classNames} from '@vue-spectrum/utils';
 import {
   computed,
@@ -199,6 +200,17 @@ export const ActionGroup = defineComponent({
     let overflowItems = computed(() => props.items.slice(resolvedVisibleItems.value));
     let hasOverflow = computed(() => canCollapse.value && overflowItems.value.length > 0);
     let shouldHideGroupAria = computed(() => hasOverflow.value && resolvedVisibleItems.value === 0);
+    let shouldHideButtonText = computed(() => {
+      if (!slots.item) {
+        return false;
+      }
+
+      if (props.buttonLabelBehavior === 'hide') {
+        return true;
+      }
+
+      return props.buttonLabelBehavior === 'collapse' && hasOverflow.value;
+    });
     let itemCount = computed(() => props.items.length);
 
     let className = computed(() => classNames(
@@ -411,7 +423,7 @@ export const ActionGroup = defineComponent({
             {
               'is-selected': isSelected,
               'is-hovered': hoveredKey.value === item && !isItemDisabled,
-              'spectrum-ActionGroup-item--iconOnly': props.buttonLabelBehavior === 'hide',
+              'spectrum-ActionGroup-item--iconOnly': shouldHideButtonText.value,
               'spectrum-ActionGroup-item--isDisabled': isItemDisabled
             },
             classNames(
@@ -429,6 +441,7 @@ export const ActionGroup = defineComponent({
           ), 'vs-action-group__item'],
           type: 'button',
           disabled: isItemDisabled,
+          'aria-label': shouldHideButtonText.value ? item : undefined,
           'aria-pressed': ariaPressed,
           'aria-disabled': isItemDisabled ? 'true' : undefined,
           onMouseenter: () => {
@@ -442,7 +455,7 @@ export const ActionGroup = defineComponent({
             hoveredKey.value = null;
           },
           onClick: () => onAction(item)
-        }, slots.item ? slots.item({item, selected: isSelected}) : [
+        }, slots.item ? slots.item({item, selected: isSelected, hideButtonText: shouldHideButtonText.value}) : [
           h('span', {class: classNames(actionGroupStyles, 'spectrum-ActionButton-label')}, item)
         ]);
       }),
@@ -490,7 +503,7 @@ export const ActionGroup = defineComponent({
             h('span', {
               class: classNames(actionGroupStyles, 'spectrum-ActionGroup-menu-contents'),
               'aria-hidden': 'true'
-            }, '\u2026')
+            }, [h(More)])
           ]),
           isOverflowMenuOpen.value
             ? h('div', {
@@ -565,7 +578,7 @@ export const ActionGroup = defineComponent({
         h('span', {
           class: classNames(actionGroupStyles, 'spectrum-ActionGroup-menu-contents'),
           'aria-hidden': 'true'
-        }, '\u2026')
+        }, [h(More)])
       ])
     ]);
   }

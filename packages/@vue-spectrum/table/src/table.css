@@ -43,6 +43,15 @@
   margin: 0;
 }
 
+.vs-table__head-row {
+  display: table-row;
+}
+
+.vs-table__head-cell {
+  display: table-cell;
+  vertical-align: middle;
+}
+
 .react-spectrum-Table-cell {
   display: flex;
   align-items: center;

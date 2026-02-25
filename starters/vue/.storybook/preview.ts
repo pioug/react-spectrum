@@ -1,6 +1,5 @@
 import type {Preview} from '@storybook/vue3-vite';
 import {h} from 'vue';
-import {version as reactVersion} from 'react';
 import {Provider} from '@vue-spectrum/provider';
 import {theme as defaultTheme} from '@vue-spectrum/theme-default';
 import {theme as darkTheme} from '@vue-spectrum/theme-dark';
@@ -68,9 +67,6 @@ function withScrollingSwitcher(story: any) {
         class: 'react-spectrum-story',
         style: wrapperStyle
       }, [
-        h('span', {
-          style: {position: 'absolute', top: '0', left: '0'}
-        }, reactVersion),
         h(Story)
       ]);
 
