@@ -167,6 +167,7 @@ const RestoreFocusPreview = defineComponent({
 const meta: Meta<typeof ListBox> = {
   title: 'ListBox',
   component: ListBox,
+  excludeStories: ['FocusExample'],
   args: {
     ariaLabel: 'Listbox example',
     items: [...defaultItems],
@@ -244,6 +245,13 @@ function renderListBox(baseArgs: Partial<ListBoxStoryArgs> = {}, wrapperStyle?: 
       </div>
     `
   });
+}
+
+export function FocusExample(_args: ListBoxStoryArgs = {}) {
+  return {
+    components: {RestoreFocusPreview},
+    template: '<RestoreFocusPreview />'
+  };
 }
 
 export const DefaultListBox: Story = {
@@ -440,10 +448,7 @@ export const ListboxContainers: Story = {
 };
 
 export const RestoreFocusExample: Story = {
-  render: () => ({
-    components: {RestoreFocusPreview},
-    template: '<RestoreFocusPreview />'
-  })
+  render: (args) => FocusExample(args)
 };
 
 export const WithTranslations: Story = {
@@ -464,5 +469,18 @@ export const WithAvatars: Story = {
   render: renderListBox({
     items: ['Avery (avatar)', 'Kai (avatar)', 'Lena (avatar)', 'Rina (avatar)'],
     label: 'With avatars'
+  })
+};
+
+export const WithTreeData: Story = {
+  render: renderListBox({
+    items: [
+      'Documents / Projects / Proposal.md',
+      'Documents / Projects / Design.sketch',
+      'Documents / Notes / Ideas.txt',
+      'Media / Images / Launch.png',
+      'Media / Videos / Demo.mp4'
+    ],
+    label: 'With tree data'
   })
 };
