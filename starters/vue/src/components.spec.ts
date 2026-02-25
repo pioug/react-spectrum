@@ -445,6 +445,25 @@ describe('Vue migration primitives', () => {
     expect(wrapper.classes()).toContain('focus-ring');
   });
 
+  it('removes href and blocks click when pending anchor button', async () => {
+    let wrapper = mount(Button, {
+      props: {
+        elementType: 'a',
+        href: '//example.com',
+        isPending: true
+      },
+      slots: {
+        default: 'Pending link'
+      }
+    });
+
+    expect(wrapper.attributes('href')).toBeUndefined();
+    expect(wrapper.attributes('aria-disabled')).toBe('true');
+
+    await wrapper.trigger('click');
+    expect(wrapper.emitted('click')).toBeUndefined();
+  });
+
   it('emits toggle button model updates and selected wiring', async () => {
     let wrapper = mount(ToggleButton, {
       props: {

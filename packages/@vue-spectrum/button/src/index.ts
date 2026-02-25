@@ -1,6 +1,6 @@
 import '@adobe/spectrum-css-temp/components/button/vars.css';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, type ComputedRef, defineComponent, h, type PropType, ref} from 'vue';
+import {computed, type ComputedRef, defineComponent, h, onBeforeUnmount, type PropType, ref, watch} from 'vue';
 import {getEventTarget} from '@vue-aria/utils';
 const styles: {[key: string]: string} = {};
 
@@ -8,6 +8,7 @@ const styles: {[key: string]: string} = {};
 type ButtonElementType = 'a' | 'button' | 'div' | 'span';
 type ButtonNativeType = 'button' | 'reset' | 'submit';
 type ButtonVariant = 'accent' | 'cta' | 'negative' | 'overBackground' | 'primary' | 'secondary';
+type ButtonStyle = 'fill' | 'outline';
 type StaticColor = 'black' | 'white';
 type LogicButtonVariant = 'and' | 'or';
 
@@ -58,6 +59,30 @@ function chainHandlers<EventType>(userHandler: EventHandler<EventType>, ownHandl
     invokeEventHandler(userHandler, event);
     ownHandler(event);
   };
+}
+
+function hasVisibleTextChild(value: unknown): boolean {
+  if (value == null || typeof value === 'boolean') {
+    return false;
+  }
+
+  if (typeof value === 'string') {
+    return value.trim().length > 0;
+  }
+
+  if (typeof value === 'number') {
+    return true;
+  }
+
+  if (Array.isArray(value)) {
+    return value.some(hasVisibleTextChild);
+  }
+
+  if (typeof value === 'object' && 'children' in (value as Record<string, unknown>)) {
+    return hasVisibleTextChild((value as {children?: unknown}).children);
+  }
+
+  return false;
 }
 
 function useInteractionState(isDisabled: ComputedRef<boolean>) {
@@ -154,6 +179,7 @@ function useBaseButtonSemantics(
     disabled?: boolean,
     elementType?: ButtonElementType,
     href?: string,
+    isPending?: boolean,
     isDisabled?: boolean,
     rel?: string,
     target?: string,
@@ -162,7 +188,7 @@ function useBaseButtonSemantics(
   attrs: Record<string, unknown>,
   emitClick: (event: MouseEvent) => void
 ) {
-  let isDisabled = computed(() => Boolean(props.disabled || props.isDisabled));
+  let isDisabled = computed(() => Boolean(props.disabled || props.isDisabled || props.isPending));
   let elementType = computed(() => props.elementType ?? 'button');
   let interaction = useInteractionState(isDisabled);
 
@@ -273,6 +299,14 @@ export const VueButton = defineComponent({
   inheritAttrs: false,
   props: {
     ...sharedButtonProps,
+    isPending: {
+      type: Boolean,
+      default: false
+    },
+    style: {
+      type: String as PropType<ButtonStyle | undefined>,
+      default: undefined
+    },
     staticColor: {
       type: String as PropType<StaticColor | undefined>,
       default: undefined
@@ -290,6 +324,51 @@ export const VueButton = defineComponent({
     click: (event: MouseEvent) => event instanceof MouseEvent
   },
   setup(props, {attrs, emit, slots}) {
+    let pendingTimer = ref<ReturnType<typeof setTimeout> | null>(null);
+    let isProgressVisible = ref(false);
+
+    watch(() => props.isPending, (isPending) => {
+      if (pendingTimer.value) {
+        clearTimeout(pendingTimer.value);
+        pendingTimer.value = null;
+      }
+
+      if (!isPending) {
+        isProgressVisible.value = false;
+        return;
+      }
+
+      pendingTimer.value = setTimeout(() => {
+        isProgressVisible.value = true;
+      }, 1000);
+    }, {immediate: true});
+
+    onBeforeUnmount(() => {
+      if (pendingTimer.value) {
+        clearTimeout(pendingTimer.value);
+      }
+    });
+
+    let resolvedVariant = computed(() => {
+      if (props.variant === 'cta') {
+        return 'accent';
+      }
+
+      if (props.variant === 'overBackground') {
+        return 'primary';
+      }
+
+      return props.variant;
+    });
+
+    let resolvedStyle = computed<ButtonStyle>(() => {
+      if (props.style) {
+        return props.style;
+      }
+
+      return props.variant === 'accent' || props.variant === 'cta' ? 'fill' : 'outline';
+    });
+
     let resolvedStaticColor = computed<StaticColor | undefined>(() => {
       if (props.variant === 'overBackground') {
         return 'white';
@@ -304,37 +383,59 @@ export const VueButton = defineComponent({
       (event) => emit('click', event)
     );
 
-    let buttonClass = computed(() => classNames(
-      styles,
-      'react-aria-Button',
-      {
-        'is-disabled': buttonState.isDisabled.value
-      }
-    ));
-
     return () => {
+      let children = slots.default ? slots.default() : ['Button'];
+      let hasLabel = hasVisibleTextChild(children);
+
       let buttonProps = {
-      ...buttonState.domProps.value,
-      class: [
-        buttonClass.value,
-        attrs.class
-      ],
-      'data-rac': '',
-      'data-react-aria-pressable': 'true',
-      'data-focused': buttonState.interaction.isFocused.value ? 'true' : undefined,
-      'data-focus-visible': buttonState.interaction.isFocusVisible.value ? 'true' : undefined,
-      'data-hovered': buttonState.interaction.isHovered.value ? 'true' : undefined,
-      'data-pressed': buttonState.interaction.isPressed.value ? 'true' : undefined,
-      'data-disabled': buttonState.isDisabled.value ? 'true' : undefined,
-      'data-static-color': resolvedStaticColor.value || undefined
+        ...buttonState.domProps.value,
+        class: [
+          classNames(
+            styles,
+            'spectrum-Button',
+            {
+              'focus-ring': buttonState.interaction.isFocusVisible.value,
+              'is-active': buttonState.interaction.isPressed.value,
+              'is-disabled': buttonState.isDisabled.value || isProgressVisible.value,
+              'is-hovered': buttonState.interaction.isHovered.value,
+              'spectrum-Button--iconOnly': !hasLabel,
+              'spectrum-Button--pending': isProgressVisible.value
+            }
+          ),
+          attrs.class
+        ],
+        'data-focused': buttonState.interaction.isFocused.value ? 'true' : undefined,
+        'data-focus-visible': buttonState.interaction.isFocusVisible.value ? 'true' : undefined,
+        'data-hovered': buttonState.interaction.isHovered.value ? 'true' : undefined,
+        'data-pressed': buttonState.interaction.isPressed.value ? 'true' : undefined,
+        'data-disabled': buttonState.isDisabled.value ? 'true' : undefined,
+        'data-static-color': resolvedStaticColor.value || undefined,
+        'data-style': resolvedStyle.value,
+        'data-variant': resolvedVariant.value
       };
-      let children = slots.default ? slots.default() : 'Button';
+      let renderedChildren = Array.isArray(children) ? [...children] : [children];
+
+      if (props.isPending) {
+        buttonProps['aria-disabled'] = 'true';
+        renderedChildren.push(
+          h('div', {
+            'aria-hidden': 'true',
+            class: classNames(styles, 'spectrum-Button-circleLoader'),
+            style: {visibility: isProgressVisible.value ? 'visible' : 'hidden'}
+          }, [
+            h('div', {
+              role: 'img',
+              'aria-label': 'Pending'
+            })
+          ])
+        );
+      }
 
       if (props.render) {
-        return props.render(buttonProps, children);
+        return props.render(buttonProps, renderedChildren);
       }
 
-      return h(buttonState.elementType.value, buttonProps, children);
+      return h(buttonState.elementType.value, buttonProps, renderedChildren);
     };
   }
 });
