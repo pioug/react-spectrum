@@ -13,11 +13,23 @@ export const Switch = defineComponent({
       type: Boolean,
       default: false
     },
+    defaultSelected: {
+      type: Boolean,
+      default: false
+    },
     disabled: {
       type: Boolean,
       default: false
     },
     isDisabled: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
+    },
+    isReadOnly: {
+      type: Boolean,
+      default: false
+    },
+    isSelected: {
       type: Boolean as PropType<boolean | undefined>,
       default: undefined
     },
@@ -30,8 +42,8 @@ export const Switch = defineComponent({
       default: ''
     },
     modelValue: {
-      type: Boolean,
-      default: false
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
     }
   },
   emits: {
@@ -43,7 +55,10 @@ export const Switch = defineComponent({
   setup(props, {emit, slots, attrs}) {
     let isHovered = ref(false);
     let isFocusVisible = ref(false);
+    let uncontrolledSelected = ref(props.defaultSelected);
     let isDisabled = computed(() => props.isDisabled ?? props.disabled);
+    let isSelected = computed(() => props.isSelected ?? props.modelValue ?? uncontrolledSelected.value);
+    let hasLabel = computed(() => !!slots.default || !!props.label);
 
     let className = computed(() => classNames(
       styles,
@@ -75,12 +90,26 @@ export const Switch = defineComponent({
         class: [classNames(styles, 'spectrum-ToggleSwitch-input'), 'vs-switch__input'],
         type: 'checkbox',
         role: 'switch',
-        checked: props.modelValue,
+        checked: isSelected.value,
         disabled: isDisabled.value,
+        readonly: props.isReadOnly || undefined,
         autofocus: props.autoFocus || attrs.autofocus || undefined,
         onChange: (event: Event) => {
           let target = event.currentTarget as HTMLInputElement | null;
-          let checked = target?.checked ?? false;
+          if (!target) {
+            return;
+          }
+
+          if (isDisabled.value || props.isReadOnly) {
+            target.checked = isSelected.value;
+            return;
+          }
+
+          let checked = target.checked;
+          if (props.isSelected === undefined && props.modelValue === undefined) {
+            uncontrolledSelected.value = checked;
+          }
+
           emit('update:modelValue', checked);
           emit('change', checked);
         },
@@ -101,7 +130,9 @@ export const Switch = defineComponent({
       h('span', {class: [classNames(styles, 'spectrum-ToggleSwitch-switch'), 'vs-switch__track'], 'aria-hidden': 'true'}, [
         h('span', {class: 'vs-switch__thumb'})
       ]),
-      h('span', {class: [classNames(styles, 'spectrum-ToggleSwitch-label'), 'vs-switch__label']}, slots.default ? slots.default() : props.label)
+      hasLabel.value
+        ? h('span', {class: [classNames(styles, 'spectrum-ToggleSwitch-label'), 'vs-switch__label']}, slots.default ? slots.default() : props.label)
+        : null
     ]);
   }
 });

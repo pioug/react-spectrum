@@ -1277,6 +1277,23 @@ describe('Vue migration primitives', () => {
     await wrapper.get('input').setValue(true);
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([true]);
     expect(wrapper.emitted('change')?.[0]).toEqual([true]);
+
+    let uncontrolled = mount(Switch, {
+      props: {
+        defaultSelected: true
+      }
+    });
+    expect((uncontrolled.get('input').element as HTMLInputElement).checked).toBe(true);
+
+    let readOnly = mount(Switch, {
+      props: {
+        isReadOnly: true,
+        isSelected: true
+      }
+    });
+    await readOnly.get('input').setValue(false);
+    expect(readOnly.emitted('update:modelValue')).toBeUndefined();
+    expect((readOnly.get('input').element as HTMLInputElement).checked).toBe(true);
   });
 
   it('maps switch hovered, focus-ring, and disabled states', async () => {

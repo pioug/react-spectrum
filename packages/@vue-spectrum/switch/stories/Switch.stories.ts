@@ -1,30 +1,22 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
+import {ref} from 'vue';
 import {Switch} from '../src';
 
 const meta: Meta<typeof Switch> = {
   title: 'Switch',
   component: Switch,
   args: {
-    label: 'Example'
+    isEmphasized: false
   },
   argTypes: {
-    autoFocus: {
-      control: 'boolean'
+    onChange: {
+      action: 'change'
     },
-    disabled: {
-      control: 'boolean'
+    onFocus: {
+      action: 'focus'
     },
-    isDisabled: {
-      control: 'boolean'
-    },
-    isEmphasized: {
-      control: 'boolean'
-    },
-    label: {
-      control: 'text'
-    },
-    modelValue: {
-      control: 'boolean'
+    onBlur: {
+      action: 'blur'
     }
   }
 };
@@ -39,27 +31,142 @@ export const Default: Story = {
     setup() {
       return {args};
     },
-    template: '<Switch v-bind="args">Example</Switch>'
+    template: '<Switch v-bind="args">Switch Label</Switch>'
+  }),
+  args: {}
+};
+
+export const DefaultSelectedTrue: Story = {
+  ...Default,
+  args: {
+    ...Default.args,
+    defaultSelected: true
+  },
+  name: 'defaultSelected: true'
+};
+
+export const IsSelectedTrue: Story = {
+  ...Default,
+  args: {
+    ...Default.args,
+    isSelected: true
+  },
+  name: 'isSelected: true'
+};
+
+export const IsSelectedFalse: Story = {
+  ...Default,
+  args: {
+    ...Default.args,
+    isSelected: false
+  },
+  name: 'isSelected: false'
+};
+
+export const IsDisabledTrue: Story = {
+  ...Default,
+  args: {
+    ...Default.args,
+    isDisabled: true
+  },
+  name: 'isDisabled: true'
+};
+
+export const IsReadOnlyTrueIsSelectedTrue: Story = {
+  ...Default,
+  args: {
+    ...Default.args,
+    isReadOnly: true,
+    isSelected: true
+  },
+  name: 'isReadOnly: true, isSelected: true'
+};
+
+export const AutoFocus: Story = {
+  ...Default,
+  args: {
+    ...Default.args,
+    autoFocus: true
+  },
+  name: 'autoFocus'
+};
+
+export const CustomLabel: Story = {
+  ...Default,
+  render: (args) => ({
+    components: {Switch},
+    setup() {
+      return {args};
+    },
+    template: '<Switch v-bind="args"><span><i>Italicized</i> Switch Label</span></Switch>'
+  }),
+  name: 'custom label'
+};
+
+export const LongLabel: Story = {
+  ...Default,
+  render: (args) => ({
+    components: {Switch},
+    setup() {
+      return {args};
+    },
+    template: '<Switch v-bind="args">Super long checkbox label. Sample text. Arma virumque cano, Troiae qui primus ab oris. Italiam, fato profugus, Laviniaque venit.</Switch>'
+  }),
+  name: 'long label'
+};
+
+export const NoLabel: Story = {
+  render: (args) => ({
+    components: {Switch},
+    setup() {
+      return {args};
+    },
+    template: '<Switch v-bind="args" />'
+  }),
+  args: {
+    'aria-label': 'This switch has no visible label'
+  },
+  name: 'no label',
+  parameters: {
+    description: {data: 'Try me with a screen reader.'}
+  }
+};
+
+export const ControlledImplementation: Story = {
+  ...Default,
+  render: (args) => ({
+    components: {Switch},
+    setup() {
+      let checked = ref(false);
+      let onChange = (value: boolean) => {
+        checked.value = value;
+      };
+
+      return {args, checked, onChange};
+    },
+    template: '<Switch v-bind="args" :is-selected="checked" @change="onChange">Switch Label</Switch>'
   })
 };
 
-export const Disabled: Story = {
-  ...Default,
-  args: {
-    isDisabled: true
-  }
-};
-
-export const Emphasized: Story = {
-  ...Default,
-  args: {
-    isEmphasized: true
-  }
-};
-
-export const DisabledProp: Story = {
-  ...Default,
-  args: {
-    disabled: true
-  }
+export const WHCMTest: Story = {
+  render: () => ({
+    components: {Switch},
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 16px;">
+        <div style="display: flex; gap: 16px;">
+          <Switch>Option</Switch>
+          <Switch is-disabled>Option</Switch>
+        </div>
+        <div style="display: flex; gap: 16px;">
+          <Switch is-selected is-emphasized>Option</Switch>
+          <Switch is-selected is-emphasized is-disabled>Option</Switch>
+        </div>
+        <div style="display: flex; gap: 16px;">
+          <Switch is-selected>Option</Switch>
+          <Switch is-selected is-disabled>Option</Switch>
+        </div>
+      </div>
+    `
+  }),
+  name: 'WHCM test'
 };
