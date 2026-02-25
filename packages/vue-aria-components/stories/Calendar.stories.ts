@@ -9,9 +9,10 @@ import {
   type DateRange,
   type RangeCalendarAria
 } from '@vue-aria/calendar';
-import {computed, defineComponent, ref, type PropType} from 'vue';
+import {computed, defineComponent, ref, type PropType, watch} from 'vue';
 
 type OutsideMonthMode = 'dim' | 'hide';
+type SelectionAlignment = 'start' | 'center' | 'end';
 type StoryCalendar = CalendarAria | RangeCalendarAria;
 type StoryMode = 'calendar' | 'range';
 
@@ -92,6 +93,35 @@ function formatMonthOnly(date: Date, locale: string): string {
   return new Intl.DateTimeFormat(locale, {
     month: 'long'
   }).format(date);
+}
+
+function normalizeSelectionAlignment(value: unknown): SelectionAlignment {
+  if (value === 'center' || value === 'end') {
+    return value;
+  }
+
+  return 'start';
+}
+
+function alignmentOffset(monthCount: number, selectionAlignment: SelectionAlignment): number {
+  if (monthCount <= 1) {
+    return 0;
+  }
+
+  if (selectionAlignment === 'center') {
+    return Math.floor((monthCount - 1) / 2);
+  }
+
+  if (selectionAlignment === 'end') {
+    return monthCount - 1;
+  }
+
+  return 0;
+}
+
+function alignVisibleDate(anchorDate: Date, monthCount: number, selectionAlignment: SelectionAlignment): Date {
+  let offset = alignmentOffset(monthCount, selectionAlignment);
+  return addMonths(startOfMonth(anchorDate), -offset);
 }
 
 function firstDayIndexFromLocale(locale?: string): number {
@@ -299,20 +329,39 @@ const CalendarGridView = defineComponent({
 
 function createCalendarStory(options: CalendarStoryOptions): Story {
   return {
-    render: (args: {locale?: string}) => ({
+    render: (args: {locale?: string, selectionAlignment?: SelectionAlignment}) => ({
       components: {
         CalendarGridView
       },
       setup() {
         let locale = computed(() => args.locale ?? 'en-US');
         let monthStart = startOfMonth(options.monthStart ?? new Date());
-        let visibleDate = ref(cloneDate(monthStart));
-        let defaultVisibleDate = cloneDate(monthStart);
         let selectedDate = ref<Date | null>(parseIsoDate(options.selectedDate));
         let selectedRange = ref<DateRange>({
           start: parseIsoDate(options.selectedRange?.start),
           end: parseIsoDate(options.selectedRange?.end)
         });
+        let selectionAlignment = computed(() => normalizeSelectionAlignment(args.selectionAlignment));
+        let alignmentAnchorDate = computed(() => {
+          if (options.mode === 'range') {
+            return selectedRange.value.start ?? monthStart;
+          }
+
+          return selectedDate.value ?? monthStart;
+        });
+        let alignedDefaultVisibleDate = computed(() => {
+          if (options.monthCount <= 1) {
+            return cloneDate(monthStart);
+          }
+
+          return alignVisibleDate(
+            alignmentAnchorDate.value,
+            options.monthCount,
+            selectionAlignment.value
+          );
+        });
+        let defaultVisibleDate = ref(cloneDate(alignedDefaultVisibleDate.value));
+        let visibleDate = ref(cloneDate(defaultVisibleDate.value));
         let calendar = options.mode === 'range'
           ? useRangeCalendar({
             locale,
@@ -324,6 +373,21 @@ function createCalendarStory(options: CalendarStoryOptions): Story {
             value: selectedDate,
             visibleDate
           });
+
+        watch(selectionAlignment, () => {
+          if (options.monthCount <= 1) {
+            return;
+          }
+
+          let alignedVisibleDate = alignVisibleDate(
+            alignmentAnchorDate.value,
+            options.monthCount,
+            selectionAlignment.value
+          );
+          visibleDate.value = cloneDate(alignedVisibleDate);
+          defaultVisibleDate.value = cloneDate(alignedVisibleDate);
+        });
+
         let firstDayIndex = computed(() => {
           if (options.deriveFirstDayFromLocale) {
             return firstDayIndexFromLocale(locale.value);
@@ -346,7 +410,7 @@ function createCalendarStory(options: CalendarStoryOptions): Story {
             : `${formatMonthOnly(visibleDate.value, locale.value)} to ${formatMonthYear(endMonthDate.value, locale.value)}`
         ));
         let resetFocusedDate = () => {
-          visibleDate.value = cloneDate(defaultVisibleDate);
+          visibleDate.value = cloneDate(defaultVisibleDate.value);
         };
         let resetValue = () => {
           if (isRange) {

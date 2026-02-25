@@ -113,6 +113,15 @@ describe('Vue storybook helper parity', () => {
     let multiMonthWrapper = mount(multiMonthStory);
     expect(multiMonthWrapper.findAll('.react-aria-CalendarGrid')).toHaveLength(3);
     expect(multiMonthWrapper.find('button').text()).toBe('Reset focused date');
+    expect(multiMonthWrapper.get('.react-aria-Heading').text().startsWith('June')).toBe(true);
+
+    let multiMonthStartStory = CalendarMultiMonth.render?.({selectionAlignment: 'start'}) as ReturnType<Exclude<typeof CalendarMultiMonth.render, undefined>>;
+    let multiMonthStartWrapper = mount(multiMonthStartStory);
+    expect(multiMonthStartWrapper.get('.react-aria-Heading').text().startsWith('July')).toBe(true);
+
+    let multiMonthEndStory = CalendarMultiMonth.render?.({selectionAlignment: 'end'}) as ReturnType<Exclude<typeof CalendarMultiMonth.render, undefined>>;
+    let multiMonthEndWrapper = mount(multiMonthEndStory);
+    expect(multiMonthEndWrapper.get('.react-aria-Heading').text().startsWith('May')).toBe(true);
 
     let firstDayStory = CalendarFirstDayOfWeekExample.render?.({locale: 'en-US-u-ca-iso8601-fw-tue'}) as ReturnType<Exclude<typeof CalendarFirstDayOfWeekExample.render, undefined>>;
     let firstDayWrapper = mount(firstDayStory);
@@ -122,5 +131,10 @@ describe('Vue storybook helper parity', () => {
     let rangeWrapper = mount(rangeStory);
     expect(rangeWrapper.findAll('.react-aria-CalendarGrid')).toHaveLength(3);
     expect(rangeWrapper.findAll('.react-aria-CalendarCell').some((cell) => cell.attributes('data-selected') === 'true')).toBe(true);
+    expect(rangeWrapper.get('.react-aria-Heading').text().startsWith('July')).toBe(true);
+
+    let rangeStartStory = RangeCalendarMultiMonthExample.render?.({selectionAlignment: 'start'}) as ReturnType<Exclude<typeof RangeCalendarMultiMonthExample.render, undefined>>;
+    let rangeStartWrapper = mount(rangeStartStory);
+    expect(rangeStartWrapper.get('.react-aria-Heading').text().startsWith('August')).toBe(true);
   });
 });
