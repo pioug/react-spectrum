@@ -1,5 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {computed, ref} from 'vue';
+import {useToolbar as useAriaToolbar} from '@vue-aria/toolbar';
 import '../../react-aria-components/stories/styles.css';
 
 const meta = {
@@ -14,7 +15,7 @@ export const ToolbarExample: ToolbarStory = {
   args: {
     orientation: 'horizontal'
   },
-  render: () => ({
+  render: (args: {orientation?: 'horizontal' | 'vertical'}) => ({
     setup() {
       let isNightMode = ref(false);
       let pressed = ref({
@@ -22,6 +23,16 @@ export const ToolbarExample: ToolbarStory = {
         italic: false,
         underline: false
       });
+      let toolbarRef = ref<HTMLElement | null>(null);
+      let toolbar = useAriaToolbar({
+        orientation: computed(() => args.orientation ?? 'horizontal')
+      }, toolbarRef);
+      let toolbarStyle = computed(() => ({
+        display: 'flex',
+        flexDirection: (args.orientation ?? 'horizontal') === 'vertical' ? 'column' : 'row',
+        flexWrap: 'wrap',
+        gap: '20px'
+      }));
 
       let toggleStyle = (style: 'bold' | 'italic' | 'underline') => {
         pressed.value[style] = !pressed.value[style];
@@ -30,6 +41,9 @@ export const ToolbarExample: ToolbarStory = {
       return {
         isNightMode,
         pressed,
+        toolbar,
+        toolbarRef,
+        toolbarStyle,
         toggleStyle
       };
     },
@@ -37,7 +51,7 @@ export const ToolbarExample: ToolbarStory = {
       <div>
         <label for="before">Input Before Toolbar</label>
         <input id="before" type="text">
-        <div class="react-aria-Toolbar" data-rac="" role="toolbar" aria-orientation="horizontal" data-orientation="horizontal" style="display: flex; flex-wrap: wrap; gap: 20px; flex-direction: row;">
+        <div ref="toolbarRef" v-bind="toolbar.toolbarProps.value" class="react-aria-Toolbar" data-rac="" :data-orientation="toolbar.toolbarProps.value['aria-orientation']" :style="toolbarStyle">
           <div role="group" aria-label="Text style">
             <button class="v7C2Sq_toggleButtonExample" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" :aria-pressed="String(pressed.bold)" @click="toggleStyle('bold')"><strong>B</strong></button>
             <button class="v7C2Sq_toggleButtonExample" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" :aria-pressed="String(pressed.underline)" @click="toggleStyle('underline')"><div style="text-decoration: underline;">U</div></button>
@@ -67,7 +81,7 @@ export const SelectSupport: ToolbarStory = {
   args: {
     orientation: 'horizontal'
   },
-  render: () => ({
+  render: (args: {orientation?: 'horizontal' | 'vertical'}) => ({
     setup() {
       let selectedAnimal = ref('');
       let isOpen = ref(false);
@@ -76,6 +90,17 @@ export const SelectSupport: ToolbarStory = {
         italic: false,
         underline: false
       });
+      let toolbarRef = ref<HTMLElement | null>(null);
+      let toolbar = useAriaToolbar({
+        ariaLabel: 'Text formatting',
+        orientation: computed(() => args.orientation ?? 'horizontal')
+      }, toolbarRef);
+      let toolbarStyle = computed(() => ({
+        display: 'flex',
+        flexDirection: (args.orientation ?? 'horizontal') === 'vertical' ? 'column' : 'row',
+        flexWrap: 'wrap',
+        gap: '20px'
+      }));
       let animals = ['Aardvark', 'Cat', 'Dog', 'Kangaroo', 'Panda', 'Snake'];
       let selectText = computed(() => selectedAnimal.value || 'Select an item');
       let selectPlaceholder = computed(() => (selectedAnimal.value ? null : 'true'));
@@ -101,12 +126,15 @@ export const SelectSupport: ToolbarStory = {
         selectAnimal,
         selectPlaceholder,
         selectText,
+        toolbar,
+        toolbarRef,
+        toolbarStyle,
         toggleOpen,
         toggleStyle
       };
     },
     template: `
-      <div class="react-aria-Toolbar" data-rac="" aria-label="Text formatting" role="toolbar" aria-orientation="horizontal" data-orientation="horizontal" style="display: flex; flex-wrap: wrap; gap: 20px; flex-direction: row;">
+      <div ref="toolbarRef" v-bind="toolbar.toolbarProps.value" class="react-aria-Toolbar" data-rac="" :data-orientation="toolbar.toolbarProps.value['aria-orientation']" :style="toolbarStyle">
         <div aria-label="Style" class="react-aria-Group" data-rac="" role="group">
           <button class="react-aria-ToggleButton" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" aria-label="Bold" :aria-pressed="String(pressed.bold)" @click="toggleStyle('bold')"><b>B</b></button>
           <button class="react-aria-ToggleButton" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" aria-label="Italic" :aria-pressed="String(pressed.italic)" @click="toggleStyle('italic')"><i>I</i></button>

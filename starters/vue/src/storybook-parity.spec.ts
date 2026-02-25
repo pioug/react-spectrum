@@ -10,6 +10,7 @@ import tagGroupMeta, {
   TagGroupExample,
   TagGroupExampleWithRemove
 } from '../../../packages/vue-aria-components/stories/TagGroup.stories';
+import {SelectSupport as ToolbarSelectSupport, ToolbarExample} from '../../../packages/vue-aria-components/stories/Toolbar.stories';
 import treeMeta, {TreeExampleStaticRender} from '../../../packages/vue-aria-components/stories/Tree.stories';
 
 function expectExcluded(meta: unknown, storyName: string) {
@@ -68,5 +69,21 @@ describe('Vue storybook helper parity', () => {
     let emptyWrapper = mount(emptyStory);
     expect(emptyWrapper.get('.react-aria-TagList').attributes('role')).toBe('group');
     expect(emptyWrapper.text()).toContain('No categories.');
+  });
+
+  it('renders toolbar stories with live useToolbar role/orientation props', () => {
+    let toolbarStory = ToolbarExample.render?.({orientation: 'vertical'}) as ReturnType<Exclude<typeof ToolbarExample.render, undefined>>;
+    let toolbarWrapper = mount(toolbarStory);
+    let toolbarElement = toolbarWrapper.get('.react-aria-Toolbar');
+    expect(toolbarElement.attributes('role')).toBe('toolbar');
+    expect(toolbarElement.attributes('aria-orientation')).toBe('vertical');
+    expect(toolbarElement.attributes('data-orientation')).toBe('vertical');
+
+    let selectStory = ToolbarSelectSupport.render?.({orientation: 'horizontal'}) as ReturnType<Exclude<typeof ToolbarSelectSupport.render, undefined>>;
+    let selectWrapper = mount(selectStory);
+    let selectToolbarElement = selectWrapper.get('.react-aria-Toolbar');
+    expect(selectToolbarElement.attributes('role')).toBe('toolbar');
+    expect(selectToolbarElement.attributes('aria-label')).toBe('Text formatting');
+    expect(selectToolbarElement.attributes('aria-orientation')).toBe('horizontal');
   });
 });
