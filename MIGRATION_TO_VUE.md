@@ -56,6 +56,19 @@
 8. Add regression tests for the fixed gap.
 9. Use screenshots only as final confirmation after structure, styles, and behavior already match.
 
+## Gap discovery workflow (required)
+
+1. Build auditable Storybook outputs before gap analysis (use current React Storybook build artifact and a fresh Vue Storybook build).
+2. Compare the exact same story id in both iframes (`iframe.html?id=<story-id>&viewMode=story`).
+3. Capture baseline DOM snapshots for the canonical interactive node (tag, class, role, `data-*`, `aria-*`, `tabindex`, and other critical attributes).
+4. Run a deterministic interaction probe sequence for each story: keyboard focus (`Tab`), hover, pointer down/up, keyboard activation (`Space`/`Enter`), then story-specific interactions.
+5. Capture post-step snapshots after each probe and diff React vs Vue state attributes and class/state transitions.
+6. Treat contract drift as a gap: missing attributes, extra attributes, wrong classes, mismatched ARIA state, or divergent interaction transitions.
+7. Validate computed styles only on critical states and representative nodes; avoid broad screenshot-only judgments.
+8. If direct cross-framework story imports fail in tests due workspace resolution, use browser-level probes against built Storybook output rather than blocking discovery.
+9. Record each gap with evidence: story id, probe step, expected React output, actual Vue output, and suspected source file path.
+10. Fix one gap cluster at a time, add regression coverage, then rerun validation gates before moving to the next component.
+
 ## Style handling policy (required)
 
 1. Style source of truth priority is:
@@ -71,8 +84,10 @@
 
 1. `yarn typecheck:vue`
 2. `yarn test:vue`
-3. Manual Storybook side-by-side review for structure, computed styles, and interactions
-4. Optional final screenshot confirmation
+3. Vue Storybook build (`yarn build:vue:storybook`)
+4. Storybook index parity check (React vs Vue story id diff must be zero for targeted scope)
+5. Manual Storybook side-by-side review for structure, computed styles, and interactions
+6. Optional final screenshot confirmation
 
 ## Completion criteria
 
