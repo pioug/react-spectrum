@@ -6,7 +6,21 @@ import type {Meta, StoryObj} from '@storybook/vue3-vite';
 const meta: Meta<typeof ColorWheel> = {
   title: 'ColorWheel',
   component: ColorWheel,
+  args: {
+    onChange: action('onChange'),
+    onChangeEnd: action('onChangeEnd')
+  },
   argTypes: {
+    onChange: {
+      table: {
+        disable: true
+      }
+    },
+    onChangeEnd: {
+      table: {
+        disable: true
+      }
+    },
     disabled: {
       control: 'boolean'
     },
@@ -40,7 +54,7 @@ export const Default: Story = {
   })
 };
 
-export function ControlledHSLRender(args: ControlledArgs = {}) {
+function renderControlledHSL(args: ControlledArgs = {}) {
   return {
     components: {ColorWheel},
     setup() {
@@ -70,9 +84,13 @@ export function ControlledHSLRender(args: ControlledArgs = {}) {
 }
 
 export const Controlled: Story = {
-  render: (args) => ControlledHSLRender(args)
+  render: (args) => renderControlledHSL(args)
+};
+
+export const ControlledHSLRender: Story = {
+  render: (args) => renderControlledHSL(args)
 };
 
 export const ControlledHSL: Story = {
-  render: (args) => ControlledHSLRender(args)
+  render: (args) => renderControlledHSL(args)
 };
