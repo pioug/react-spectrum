@@ -33,6 +33,14 @@ import {
   SelectWithTagGroup,
   VirtualizedSelect
 } from '../../../packages/vue-aria-components/stories/Select.stories';
+import {
+  ButtonExample,
+  ButtonRender,
+  PendingButton,
+  PendingButtonTooltip,
+  RippleButtonExample
+} from '../../../packages/vue-aria-components/stories/Button.stories';
+import {vi} from 'vitest';
 
 function expectExcluded(meta: unknown, storyName: string) {
   let excludeStories = (meta as {excludeStories?: string[]}).excludeStories;
@@ -177,6 +185,53 @@ describe('Vue storybook helper parity', () => {
     let dynamicDialogStory = AutocompleteMenuInPopoverDialogTrigger.render?.({}) as ReturnType<Exclude<typeof AutocompleteMenuInPopoverDialogTrigger.render, undefined>>;
     let dynamicDialogWrapper = mount(dynamicDialogStory);
     expect(dynamicDialogWrapper.text()).toContain('Command Palette');
+  });
+
+  it('renders button stories with pending, ripple, and render override parity behavior', async () => {
+    let buttonStory = ButtonExample.render?.({}) as ReturnType<Exclude<typeof ButtonExample.render, undefined>>;
+    let buttonWrapper = mount(buttonStory);
+    let button = buttonWrapper.get('button');
+    expect(button.text()).toContain('Press me');
+    expect(button.attributes('data-variant')).toBe('primary');
+    expect(button.attributes('data-style')).toBeDefined();
+
+    vi.useFakeTimers();
+    try {
+      let pendingStory = PendingButton.render?.({children: 'Press me'}) as ReturnType<Exclude<typeof PendingButton.render, undefined>>;
+      let pendingWrapper = mount(pendingStory);
+      let pendingButton = pendingWrapper.get('button');
+      expect(pendingButton.attributes('aria-disabled')).toBeUndefined();
+      await pendingButton.trigger('click');
+      await nextTick();
+      expect(pendingButton.attributes('aria-disabled')).toBe('true');
+      expect(pendingWrapper.get('.pending').exists()).toBe(true);
+      expect(pendingWrapper.get('.spinner-pending').exists()).toBe(true);
+
+      vi.advanceTimersByTime(5000);
+      await nextTick();
+      expect(pendingButton.attributes('aria-disabled')).toBeUndefined();
+      expect(pendingWrapper.find('.spinner-pending').exists()).toBe(false);
+      pendingWrapper.unmount();
+    } finally {
+      vi.useRealTimers();
+    }
+
+    let pendingTooltipStory = PendingButtonTooltip.render?.({children: 'Press me, then hover again to see tooltip'}) as ReturnType<Exclude<typeof PendingButtonTooltip.render, undefined>>;
+    let pendingTooltipWrapper = mount(pendingTooltipStory);
+    expect(pendingTooltipWrapper.text()).toContain('Press me, then hover again to see tooltip');
+    await pendingTooltipWrapper.get('button').trigger('click');
+    await nextTick();
+    expect(pendingTooltipWrapper.get('button').attributes('aria-disabled')).toBe('true');
+
+    let rippleStory = RippleButtonExample.render?.({}) as ReturnType<Exclude<typeof RippleButtonExample.render, undefined>>;
+    let rippleWrapper = mount(rippleStory);
+    await rippleWrapper.get('button').trigger('click', {clientX: 15, clientY: 15});
+    await nextTick();
+    expect(rippleWrapper.find('.ripple').exists()).toBe(true);
+
+    let renderStory = ButtonRender.render?.({}) as ReturnType<Exclude<typeof ButtonRender.render, undefined>>;
+    let renderWrapper = mount(renderStory);
+    expect(renderWrapper.get('button').attributes('style')?.replace(/\s/g, '')).toContain('background:red');
   });
 
   it('renders select stories with live open and selection behavior', async () => {

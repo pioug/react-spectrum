@@ -1,7 +1,8 @@
+import {action} from '@storybook/addon-actions';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {Button} from '@vue-spectrum/button';
 import {VueTooltipTrigger} from '@vue-spectrum/tooltip';
-import {h, ref} from 'vue';
+import {h, onBeforeUnmount, ref} from 'vue';
 import '../../react-aria-components/stories/button-pending.css';
 import '../../react-aria-components/stories/button-ripple.css';
 
@@ -13,14 +14,24 @@ const meta = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+type ButtonStoryArgs = {
+  children?: string
+};
+const PENDING_TIMEOUT_MS = 5000;
 
 export const ButtonExample: Story = {
   render: () => ({
     components: {
       Button
     },
+    setup() {
+      let onClick = action('onClick');
+      return {
+        onClick
+      };
+    },
     template: `
-      <Button data-testid="button-example">
+      <Button data-testid="button-example" @click="onClick">
         Press me
       </Button>
     `
@@ -28,42 +39,46 @@ export const ButtonExample: Story = {
 };
 
 export const PendingButton: Story = {
-  render: () => ({
+  render: (args: ButtonStoryArgs) => ({
     components: {
       Button
     },
     setup() {
       let isPending = ref(false);
-      let renderPendingButton = (props: Record<string, unknown>, children: unknown) => {
-        let {disabled: _disabled, ...rest} = props;
-        return h('button', rest, children);
-      };
+      let pendingTimeout = ref<ReturnType<typeof setTimeout> | null>(null);
 
-      let onPress = () => {
+      let onPress = (event: MouseEvent) => {
+        action('pressed')(event);
         if (isPending.value) {
           return;
         }
 
         isPending.value = true;
-        setTimeout(() => {
+        pendingTimeout.value = setTimeout(() => {
           isPending.value = false;
-        }, 5000);
+          pendingTimeout.value = null;
+        }, PENDING_TIMEOUT_MS);
       };
 
+      onBeforeUnmount(() => {
+        if (pendingTimeout.value) {
+          clearTimeout(pendingTimeout.value);
+        }
+      });
+
       return {
+        args,
         isPending,
-        onPress,
-        renderPendingButton
+        onPress
       };
     },
     template: `
       <Button
-        :is-disabled="isPending"
-        :render="renderPendingButton"
+        :is-pending="isPending"
         class="button"
         @click="onPress">
         <span :class="{pending: isPending}">
-          Press me
+          {{ args.children }}
         </span>
         <span :class="['spinner', {'spinner-pending': isPending}]">
           <svg width="24" height="24" viewBox="0 0 24 24" aria-label="loading">
@@ -77,29 +92,42 @@ export const PendingButton: Story = {
     `
   })
 };
+PendingButton.args = {
+  children: 'Press me'
+};
 
 export const PendingButtonTooltip: Story = {
-  render: () => ({
+  render: (args: ButtonStoryArgs) => ({
     components: {
       Button,
       VueTooltipTrigger
     },
     setup() {
       let isPending = ref(false);
+      let pendingTimeout = ref<ReturnType<typeof setTimeout> | null>(null);
       let tooltipOpen = ref(false);
-      let onPress = () => {
+      let onPress = (event: MouseEvent) => {
+        action('pressed')(event);
         if (isPending.value) {
           return;
         }
 
         tooltipOpen.value = false;
         isPending.value = true;
-        setTimeout(() => {
+        pendingTimeout.value = setTimeout(() => {
           isPending.value = false;
-        }, 5000);
+          pendingTimeout.value = null;
+        }, PENDING_TIMEOUT_MS);
       };
 
+      onBeforeUnmount(() => {
+        if (pendingTimeout.value) {
+          clearTimeout(pendingTimeout.value);
+        }
+      });
+
       return {
+        args,
         isPending,
         tooltipOpen,
         onPress
@@ -112,11 +140,11 @@ export const PendingButtonTooltip: Story = {
         content="Tooltip should appear on hover"
         placement="top">
         <Button
-          :is-disabled="isPending"
+          :is-pending="isPending"
           class="button"
           @click="onPress">
           <span :class="{pending: isPending}">
-            Press me, then hover again to see tooltip
+            {{ args.children }}
           </span>
           <span :class="['spinner', {'spinner-pending': isPending}]">
             <svg width="24" height="24" viewBox="0 0 24 24" aria-label="loading">
@@ -130,6 +158,9 @@ export const PendingButtonTooltip: Story = {
       </VueTooltipTrigger>
     `
   })
+};
+PendingButtonTooltip.args = {
+  children: 'Press me, then hover again to see tooltip'
 };
 
 export const RippleButtonExample: Story = {
