@@ -4907,6 +4907,31 @@ describe('Vue migration composition components', () => {
     }
   });
 
+  it('clears vue-aria hover state when interaction becomes disabled', async () => {
+    let isDisabled = ref(false);
+    let hover = useHover({
+      isDisabled
+    });
+    let button = document.createElement('button');
+    document.body.append(button);
+
+    try {
+      if (hover.hoverProps.value.onPointerEnter) {
+        button.addEventListener('pointerenter', hover.hoverProps.value.onPointerEnter as EventListener);
+      }
+
+      button.dispatchEvent(createPointerEvent('pointerenter'));
+      expect(hover.isHovered.value).toBe(true);
+
+      isDisabled.value = true;
+      await nextTick();
+
+      expect(hover.isHovered.value).toBe(false);
+    } finally {
+      document.body.removeChild(button);
+    }
+  });
+
   it('fires vue-aria interact-outside and keyboard move events', () => {
     let outsideEvents: string[] = [];
     let moveEvents: Array<{type: string, x?: number, y?: number}> = [];
