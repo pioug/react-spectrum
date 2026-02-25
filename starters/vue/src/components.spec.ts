@@ -325,28 +325,43 @@ describe('Vue migration primitives', () => {
     expect(wrapper.find('path').exists()).toBe(true);
   });
 
-  it('renders image src/alt and fit class', () => {
+  it('renders image src/alt and handles image load errors', async () => {
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
     let wrapper = mount(Image, {
       props: {
         src: 'https://example.com/image.png',
         alt: 'Preview',
-        fit: 'contain'
+        objectFit: 'contain'
       }
     });
 
     let image = wrapper.get('img');
     expect(image.attributes('src')).toBe('https://example.com/image.png');
     expect(image.attributes('alt')).toBe('Preview');
-    expect(wrapper.classes()).toContain('vs-image--fit-contain');
+    expect((image.element as HTMLImageElement).style.objectFit).toBe('contain');
     expect(wrapper.classes()).toContain('spectrum-Image');
 
-    let hidden = mount(Image, {
+    let onError = vi.fn();
+    let fallback = mount(Image, {
       props: {
         src: 'https://example.com/hidden.png',
-        hidden: true
+        alt: 'Fallback image'
+      },
+      attrs: {
+        onError
       }
     });
-    expect(hidden.attributes('hidden')).toBeDefined();
+
+    await fallback.get('img').trigger('error');
+    expect(onError).toHaveBeenCalledTimes(1);
+
+    mount(Image, {
+      props: {
+        src: 'https://example.com/missing-alt.png'
+      }
+    });
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining('The `alt` prop was not provided to an image.'));
+    warn.mockRestore();
   });
 
   it('renders label content and required indicator', () => {
