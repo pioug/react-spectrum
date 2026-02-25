@@ -103,16 +103,36 @@ export const VueTooltip = defineComponent({
 export const VueTooltipTrigger = defineComponent({
   name: 'VueTooltipTrigger',
   props: {
+    closeDelay: {
+      type: Number,
+      default: 500
+    },
     content: {
       type: String,
       default: ''
+    },
+    defaultOpen: {
+      type: Boolean,
+      default: false
+    },
+    delay: {
+      type: Number,
+      default: 1500
     },
     isDisabled: {
       type: Boolean,
       default: false
     },
+    isOpen: {
+      type: Boolean,
+      default: undefined
+    },
     modelValue: {
       type: Boolean,
+      default: undefined
+    },
+    onOpenChange: {
+      type: Function as PropType<((isOpen: boolean) => void) | undefined>,
       default: undefined
     },
     placement: {
@@ -138,13 +158,15 @@ export const VueTooltipTrigger = defineComponent({
   },
   emits: {
     change: (value: boolean) => typeof value === 'boolean',
+    'update:isOpen': (value: boolean) => typeof value === 'boolean',
     'update:modelValue': (value: boolean) => typeof value === 'boolean'
   },
   setup(props, {attrs, emit, slots}) {
     let triggerRef = ref<HTMLElement | null>(null);
-    let isOpen = ref(false);
+    let isOpen = ref(props.defaultOpen);
 
-    watch(() => props.modelValue, (nextValue) => {
+    watch(() => [props.modelValue, props.isOpen], ([modelValue, controlledOpen]) => {
+      let nextValue = typeof controlledOpen === 'boolean' ? controlledOpen : modelValue;
       if (typeof nextValue === 'boolean') {
         isOpen.value = nextValue;
       }
@@ -154,6 +176,8 @@ export const VueTooltipTrigger = defineComponent({
       isDisabled: computed(() => props.isDisabled),
       isOpen,
       onOpenChange: (nextOpen) => {
+        props.onOpenChange?.(nextOpen);
+        emit('update:isOpen', nextOpen);
         emit('update:modelValue', nextOpen);
         emit('change', nextOpen);
       },

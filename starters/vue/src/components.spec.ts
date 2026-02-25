@@ -1535,9 +1535,28 @@ describe('Vue migration primitives', () => {
     await nextTick();
 
     let modelUpdates = wrapper.emitted('update:modelValue') ?? [];
+    let openUpdates = wrapper.emitted('update:isOpen') ?? [];
     let changeEvents = wrapper.emitted('change') ?? [];
     expect(modelUpdates[modelUpdates.length - 1]).toEqual([false]);
+    expect(openUpdates[openUpdates.length - 1]).toEqual([false]);
     expect(changeEvents[changeEvents.length - 1]).toEqual([false]);
+  });
+
+  it('supports defaultOpen and isOpen control aliases on tooltip trigger', async () => {
+    let wrapper = mount(TooltipTrigger, {
+      props: {
+        content: 'Tooltip details',
+        defaultOpen: true
+      },
+      slots: {
+        default: '<button type=\"button\">Trigger</button>'
+      }
+    });
+
+    expect(wrapper.find('.vs-tooltip').exists()).toBe(true);
+    await wrapper.setProps({isOpen: false});
+    await nextTick();
+    expect(wrapper.find('.vs-tooltip').exists()).toBe(false);
   });
 
   it('emits press events from standalone cards', async () => {
