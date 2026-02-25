@@ -126,28 +126,23 @@ function renderRadioGroup(baseArgs: Partial<RadioStoryArgs> = {}, radioProps: Pa
 }
 
 export const Default: Story = {
-  render: renderRadioGroup(),
-  name: 'default'
+  render: renderRadioGroup()
 };
 
 export const DefaultValueDragons: Story = {
-  render: renderRadioGroup({modelValue: 'dragons'}),
-  name: 'defaultValue: dragons'
+  render: renderRadioGroup({modelValue: 'dragons'})
 };
 
 export const ControlledDragons: Story = {
-  render: renderRadioGroup({modelValue: 'dragons'}),
-  name: 'controlled: dragons'
+  render: renderRadioGroup({modelValue: 'dragons'})
 };
 
 export const IsDisabledOnOneRadio: Story = {
-  render: renderRadioGroup({}, [{}, {isDisabled: true}, {}]),
-  name: 'isDisabled on one radio'
+  render: renderRadioGroup({}, [{}, {isDisabled: true}, {}])
 };
 
 export const WithDescription: Story = {
-  render: renderRadioGroup({description: 'Please select a pet.'}),
-  name: 'with description'
+  render: renderRadioGroup({description: 'Please select a pet.'})
 };
 
 export const WithErrorMessage: Story = {
@@ -155,8 +150,7 @@ export const WithErrorMessage: Story = {
     description: 'Please select a pet.',
     isInvalid: true,
     validationState: 'invalid'
-  }),
-  name: 'with error message'
+  })
 };
 
 export const WithErrorMessageAndErrorIcon: Story = {
@@ -164,8 +158,7 @@ export const WithErrorMessageAndErrorIcon: Story = {
     description: 'Please select a pet. (error icon variant)',
     isInvalid: true,
     validationState: 'invalid'
-  }),
-  name: 'with error message and error icon'
+  })
 };
 
 export const WithDescriptionErrorMessageAndValidationFixedWidth: Story = {
@@ -197,8 +190,7 @@ export const WithDescriptionErrorMessageAndValidationFixedWidth: Story = {
         </RadioGroup>
       </div>
     `
-  }),
-  name: 'with description, error message and validation, fixed width'
+  })
 };
 
 export const _ContextualHelp: Story = {
@@ -228,13 +220,11 @@ export const _ContextualHelp: Story = {
         </ContextualHelp>
       </div>
     `
-  }),
-  name: 'contextual help'
+  })
 };
 
 export const NoVisibleLabel: Story = {
-  render: renderRadioGroup({label: ''}),
-  name: 'no visible label'
+  render: renderRadioGroup({label: ''})
 };
 
 export const LongRadioLabel: Story = {
@@ -254,8 +244,7 @@ export const LongRadioLabel: Story = {
         <Radio value="dragons">Dragons</Radio>
       </RadioGroup>
     `
-  }),
-  name: 'long radio label'
+  })
 };
 
 export const ProviderControlIsDisabled: Story = {
@@ -277,19 +266,16 @@ export const ProviderControlIsDisabled: Story = {
         </div>
       </Provider>
     `
-  }),
-  name: 'provider control: isDisabled'
+  })
 };
 
 export const AutoFocusOnOneRadio: Story = {
-  render: renderRadioGroup({}, [{}, {autoFocus: true}, {}]),
-  name: 'autoFocus on one radio'
+  render: renderRadioGroup({}, [{}, {autoFocus: true}, {}])
 };
 
 export const ControlledRovingTab: Story = {
   render: () => ({
     components: {ControlledRovingTabPreview},
     template: '<ControlledRovingTabPreview />'
-  }),
-  name: 'controlled roving tab'
+  })
 };

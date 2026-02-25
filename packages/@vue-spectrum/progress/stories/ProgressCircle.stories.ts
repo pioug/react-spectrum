@@ -75,43 +75,36 @@ export const Default: ProgressCircleStory = {
 
 export const Value50: ProgressCircleStory = {
   args: {value: 50},
-  name: 'value: 50',
   render: (args) => renderProgressCircle(args)
 };
 
 export const Value100: ProgressCircleStory = {
   args: {value: 100},
-  name: 'value: 100',
   render: (args) => renderProgressCircle(args)
 };
 
 export const SizeS: ProgressCircleStory = {
   args: {size: 'S'},
-  name: 'size: S',
   render: (args) => renderProgressCircle(args)
 };
 
 export const SizeL: ProgressCircleStory = {
   args: {size: 'L'},
-  name: 'size: L',
   render: (args) => renderProgressCircle(args)
 };
 
 export const VariantOverBackground: ProgressCircleStory = {
   args: {variant: 'overBackground'},
-  name: 'variant: overBackground',
   render: (args) => renderProgressCircle(args, grayedBoxStyle)
 };
 
 export const StaticColorWhite: ProgressCircleStory = {
   args: {staticColor: 'white'},
-  name: 'staticColor: white',
   render: (args) => renderProgressCircle(args, staticWhiteBackgroundStyle)
 };
 
 export const StaticColorBlack: ProgressCircleStory = {
   args: {staticColor: 'black'},
-  name: 'staticColor: black',
   render: (args) => renderProgressCircle(args, staticBlackBackgroundStyle)
 };
 
@@ -120,13 +113,11 @@ export const UsingRawValuesForMinValueMaxValueAndValue: ProgressCircleStory = {
     maxValue: 2147483648,
     value: 715827883
   },
-  name: 'Using raw values for minValue, maxValue, and value',
   render: (args) => renderProgressCircle(args)
 };
 
 export const IsIndeterminateTrue: ProgressCircleStory = {
   args: {isIndeterminate: true},
-  name: 'isIndeterminate: true',
   render: (args) => renderProgressCircle(args)
 };
 
@@ -135,7 +126,6 @@ export const IsIndeterminateTrueSizeS: ProgressCircleStory = {
     isIndeterminate: true,
     size: 'S'
   },
-  name: 'isIndeterminate: true, size: S',
   render: (args) => renderProgressCircle(args)
 };
 
@@ -144,7 +134,6 @@ export const IsIndeterminateTrueSizeL: ProgressCircleStory = {
     isIndeterminate: true,
     size: 'L'
   },
-  name: 'isIndeterminate: true, size: L',
   render: (args) => renderProgressCircle(args)
 };
 
@@ -153,6 +142,5 @@ export const IsIndeterminateTrueVariantOverBackground: ProgressCircleStory = {
     isIndeterminate: true,
     variant: 'overBackground'
   },
-  name: 'isIndeterminate: true, variant: overBackground',
   render: (args) => renderProgressCircle(args, grayedBoxStyle)
 };

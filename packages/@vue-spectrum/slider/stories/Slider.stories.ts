@@ -65,23 +65,19 @@ export const Default: Story = {
 };
 
 export const Label: Story = {
-  render: (args) => render(args),
-  name: 'label'
+  render: (args) => render(args)
 };
 
 export const Multitouch: Story = {
-  render: (args) => renderMultitouch(args),
-  name: 'multitouch'
+  render: (args) => renderMultitouch(args)
 };
 
 export const CustomWidth: Story = {
-  render: (args) => render({...args, style: 'width: 300px;'}),
-  name: 'custom width'
+  render: (args) => render({...args, style: 'width: 300px;'})
 };
 
 export const CustomWidthSmall: Story = {
-  render: (args) => render({...args, style: 'width: 30px;'}),
-  name: 'custom width small'
+  render: (args) => render({...args, style: 'width: 30px;'})
 };
 
 export const LabelOverflow: Story = {
@@ -90,13 +86,11 @@ export const LabelOverflow: Story = {
     label: 'This is a rather long label for this narrow slider element.',
     max: 1000,
     style: 'width: 300px;'
-  }),
-  name: 'label overflow'
+  })
 };
 
 export const ShowValueLabelFalse: Story = {
-  render: (args) => render({...args, showValue: false}),
-  name: 'showValueLabel: false'
+  render: (args) => render({...args, showValue: false})
 };
 
 export const FormatOptionsPercent: Story = {
@@ -106,8 +100,7 @@ export const FormatOptionsPercent: Story = {
     max: 1,
     step: 0.01,
     description: 'formatOptions percent'
-  }),
-  name: 'formatOptions percent'
+  })
 };
 
 export const FormatOptionsCentimeter: Story = {
@@ -115,16 +108,14 @@ export const FormatOptionsCentimeter: Story = {
     ...args,
     max: 1000,
     description: 'formatOptions centimeter'
-  }),
-  name: 'formatOptions centimeter'
+  })
 };
 
 export const CustomValueLabel: Story = {
   render: (args) => render({
     ...args,
     description: 'custom valueLabel'
-  }),
-  name: 'custom valueLabel'
+  })
 };
 
 export const CustomValueLabelWithLabelOverflow: Story = {
@@ -132,23 +123,19 @@ export const CustomValueLabelWithLabelOverflow: Story = {
     ...args,
     label: 'This is a rather long label for this narrow slider element.',
     description: 'custom valueLabel with label overflow'
-  }),
-  name: 'custom valueLabel with label overflow'
+  })
 };
 
 export const MinMax: Story = {
-  render: (args) => render({...args, min: 30, max: 70}),
-  name: 'min/max'
+  render: (args) => render({...args, min: 30, max: 70})
 };
 
 export const Step: Story = {
-  render: (args) => render({...args, min: 0, max: 100, step: 5}),
-  name: 'step'
+  render: (args) => render({...args, min: 0, max: 100, step: 5})
 };
 
 export const IsFilledTrue: Story = {
-  render: (args) => render({...args, description: 'isFilled: true'}),
-  name: 'isFilled: true'
+  render: (args) => render({...args, description: 'isFilled: true'})
 };
 
 export const FillOffset: Story = {
@@ -159,16 +146,14 @@ export const FillOffset: Story = {
     max: 5,
     modelValue: 0,
     description: 'fillOffset'
-  }),
-  name: 'fillOffset'
+  })
 };
 
 export const TrackGradient: Story = {
   render: (args) => render({
     ...args,
     description: 'trackGradient'
-  }),
-  name: 'trackGradient'
+  })
 };
 
 export const TrackGradientWithFillOffset: Story = {
@@ -178,14 +163,12 @@ export const TrackGradientWithFillOffset: Story = {
     max: 100,
     modelValue: 50,
     description: 'trackGradient with fillOffset'
-  }),
-  name: 'trackGradient with fillOffset'
+  })
 };
 
 export const _ContextualHelp: Story = {
   render: (args) => render({
     ...args,
     description: 'Contextual help: Segments identify who your visitors are.'
-  }),
-  name: 'contextual help'
+  })
 };

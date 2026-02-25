@@ -117,13 +117,11 @@ function renderProvider(providerArgs: Record<string, unknown> = {}, wrapperStyle
 }
 
 export const ColorSchemeDark: Story = {
-  render: () => renderProvider({colorScheme: 'dark'}, 'padding: 50px; text-align: center; width: 500px;'),
-  name: 'colorScheme: dark'
+  render: () => renderProvider({colorScheme: 'dark'}, 'padding: 50px; text-align: center; width: 500px;')
 };
 
 export const ScaleLarge: Story = {
-  render: () => renderProvider({scale: 'large'}),
-  name: 'scale: large'
+  render: () => renderProvider({scale: 'large'})
 };
 
 export const NestedColorSchemes: Story = {
@@ -137,8 +135,7 @@ export const NestedColorSchemes: Story = {
         </Provider>
       </Provider>
     `
-  }),
-  name: 'nested color schemes'
+  })
 };
 
 export const NestedProps: Story = {
@@ -152,43 +149,35 @@ export const NestedProps: Story = {
         </Provider>
       </Provider>
     `
-  }),
-  name: 'nested props'
+  })
 };
 
 export const IsQuiet: Story = {
-  render: () => renderProvider({isQuiet: true}),
-  name: 'isQuiet'
+  render: () => renderProvider({isQuiet: true})
 };
 
 export const IsEmphasized: Story = {
-  render: () => renderProvider({isEmphasized: true}),
-  name: 'isEmphasized'
+  render: () => renderProvider({isEmphasized: true})
 };
 
 export const IsDisabled: Story = {
-  render: () => renderProvider({isDisabled: true}),
-  name: 'isDisabled'
+  render: () => renderProvider({isDisabled: true})
 };
 
 export const IsReadOnly: Story = {
-  render: () => renderProvider({isReadOnly: true}),
-  name: 'isReadOnly'
+  render: () => renderProvider({isReadOnly: true})
 };
 
 export const IsRequired: Story = {
-  render: () => renderProvider({isRequired: true}),
-  name: 'isRequired'
+  render: () => renderProvider({isRequired: true})
 };
 
 export const CustomTheme: Story = {
-  render: () => renderProvider({theme: CUSTOM_THEME}),
-  name: 'custom theme'
+  render: () => renderProvider({theme: CUSTOM_THEME})
 };
 
 export const ExpressTheme: Story = {
-  render: () => renderProvider({theme: expressTheme}),
-  name: 'express theme'
+  render: () => renderProvider({theme: expressTheme})
 };
 
 export const ResponsiveStyleProps: Story = {
@@ -202,8 +191,7 @@ export const ResponsiveStyleProps: Story = {
         <Button variant="primary" style="margin-top: 16px;">Responsive style preview</Button>
       </Provider>
     `
-  }),
-  name: 'responsive styleProps'
+  })
 };
 
 export const CustomResponsiveStyleProps: Story = {
@@ -221,8 +209,7 @@ export const CustomResponsiveStyleProps: Story = {
         <div>width: {{widthLabel}}</div>
       </Provider>
     `
-  }),
-  name: 'custom responsive styleProps'
+  })
 };
 
 export const BreakpointOmitted: Story = {
@@ -234,8 +221,7 @@ export const BreakpointOmitted: Story = {
         <Button variant="primary" style="width: min(100%, 340px);">Button with omitted breakpoint.</Button>
       </Provider>
     `
-  }),
-  name: 'breakpoint omitted'
+  })
 };
 
 export const LocaleZhHant: Story = {
@@ -249,6 +235,5 @@ export const LocaleZhHant: Story = {
         </Provider>
       </div>
     `
-  }),
-  name: 'locale: zh-Hant'
+  })
 };
