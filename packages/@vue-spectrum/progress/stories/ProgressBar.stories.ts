@@ -3,6 +3,25 @@ import {ProgressBar} from '../src';
 
 type WrapperStyle = Record<string, string>;
 
+const formatOptions: Intl.NumberFormatOptions = {
+  style: 'currency',
+  currency: 'JPY'
+};
+
+const grayedBoxStyle: WrapperStyle = {
+  width: '250px',
+  height: '60px',
+  backgroundColor: 'rgba(0,0,0,0.4)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center'
+};
+
+const lightBoxStyle: WrapperStyle = {
+  ...grayedBoxStyle,
+  backgroundColor: 'rgb(206, 247, 243)'
+};
+
 function renderProgressBar(args: Record<string, unknown>, wrapperStyle?: WrapperStyle) {
   return {
     components: {ProgressBar},
@@ -43,6 +62,14 @@ const meta: Meta<typeof ProgressBar> = {
     },
     showValueLabel: {
       control: 'boolean'
+    },
+    valueLabel: {
+      control: 'text'
+    },
+    formatOptions: {
+      table: {
+        disable: true
+      }
     }
   }
 };
@@ -57,31 +84,49 @@ export const Default: ProgressBarStory = {
 
 export const Value50: ProgressBarStory = {
   args: {value: 50},
-  name: 'value: 50',
+  name: 'Value 50',
   render: (args) => renderProgressBar(args)
 };
 
 export const Value100: ProgressBarStory = {
   args: {value: 100},
-  name: 'value: 100',
+  name: 'Value 100',
   render: (args) => renderProgressBar(args)
 };
 
 export const SizeS: ProgressBarStory = {
   args: {size: 'S'},
-  name: 'size: S',
+  name: 'Size S',
   render: (args) => renderProgressBar(args)
 };
 
 export const ShowValueLabelTrue: ProgressBarStory = {
   args: {showValueLabel: true},
-  name: 'showValueLabel: true',
+  name: 'Show Value Label True',
   render: (args) => renderProgressBar(args)
 };
 
 export const ShowValueLabelFalse: ProgressBarStory = {
   args: {showValueLabel: false},
-  name: 'showValueLabel: false',
+  name: 'Show Value Label False',
+  render: (args) => renderProgressBar(args)
+};
+
+export const ValueLabel1Of4: ProgressBarStory = {
+  args: {
+    value: 25,
+    valueLabel: '1 of 4'
+  },
+  name: 'Value Label 1 Of 4',
+  render: (args) => renderProgressBar(args)
+};
+
+export const UsingNumberFormatOptionsWithCurrencyStyle: ProgressBarStory = {
+  args: {
+    showValueLabel: true,
+    formatOptions
+  },
+  name: 'Using Number Format Options With Currency Style',
   render: (args) => renderProgressBar(args)
 };
 
@@ -90,19 +135,19 @@ export const NoVisibleLabel: ProgressBarStory = {
     label: '',
     ariaLabel: 'Loading…'
   },
-  name: 'no visible label',
+  name: 'No Visible Label',
   render: (args) => renderProgressBar(args)
 };
 
 export const LabelPositionSide: ProgressBarStory = {
   args: {labelPosition: 'side'},
-  name: 'labelPosition: side',
+  name: 'Label Position Side',
   render: (args) => renderProgressBar(args)
 };
 
 export const LabelPositionTop: ProgressBarStory = {
   args: {labelPosition: 'top'},
-  name: 'labelPosition: top',
+  name: 'Label Position Top',
   render: (args) => renderProgressBar(args)
 };
 
@@ -110,7 +155,7 @@ export const LongLabel: ProgressBarStory = {
   args: {
     label: 'Super long progress bar label. Sample label copy. Loading...'
   },
-  name: 'long label',
+  name: 'Long Label',
   render: (args) => renderProgressBar(args)
 };
 
@@ -119,13 +164,13 @@ export const LongLabelLabelPositionSide: ProgressBarStory = {
     label: 'Super long progress bar label. Sample label copy. Loading...',
     labelPosition: 'side'
   },
-  name: 'long label, labelPosition: side',
+  name: 'Long Label Label Position Side',
   render: (args) => renderProgressBar(args)
 };
 
 export const IsIndeterminateTrue: ProgressBarStory = {
   args: {isIndeterminate: true},
-  name: 'isIndeterminate: true',
+  name: 'Is Indeterminate True',
   render: (args) => renderProgressBar(args)
 };
 
@@ -134,74 +179,116 @@ export const IsIndeterminateTrueSizeS: ProgressBarStory = {
     isIndeterminate: true,
     size: 'S'
   },
-  name: 'isIndeterminate: true, size: S',
+  name: 'Is Indeterminate True Size S',
   render: (args) => renderProgressBar(args)
 };
 
+export const VariantOverBackground: ProgressBarStory = {
+  args: {
+    variant: 'overBackground'
+  },
+  name: 'Variant Over Background',
+  render: (args) => renderProgressBar(args, grayedBoxStyle)
+};
+
+export const StaticColorWhite: ProgressBarStory = {
+  args: {
+    staticColor: 'white'
+  },
+  name: 'Static Color White',
+  render: (args) => renderProgressBar(args, grayedBoxStyle)
+};
+
+export const StaticColorBlack: ProgressBarStory = {
+  args: {
+    staticColor: 'black'
+  },
+  name: 'Static Color Black',
+  render: (args) => renderProgressBar(args, lightBoxStyle)
+};
+
 export const ParentWidth100: ProgressBarStory = {
-  name: 'parent width 100%',
+  name: 'Parent Width 100',
   render: (args) => renderProgressBar(args, {width: '100%'})
 };
 
 export const ParentWidth100Px: ProgressBarStory = {
-  name: 'parent width 100px',
+  name: 'Parent Width 100 Px',
   render: (args) => renderProgressBar(args, {width: '100px'})
 };
 
 export const Width300Px: ProgressBarStory = {
-  args: {value: 100},
-  name: 'width: 300px',
-  render: (args) => renderProgressBar(args, {width: '300px'})
+  args: {
+    width: '300px',
+    value: 100
+  },
+  name: 'Width 300 Px',
+  render: (args) => renderProgressBar(args)
 };
 
 export const Width300PxIsIndeterminateTrue: ProgressBarStory = {
-  args: {isIndeterminate: true},
-  name: 'width: 300px, isIndeterminate: true',
-  render: (args) => renderProgressBar(args, {width: '300px'})
+  args: {
+    width: '300px',
+    isIndeterminate: true
+  },
+  name: 'Width 300 Px Is Indeterminate True',
+  render: (args) => renderProgressBar(args)
 };
 
 export const Width300PxLabelPositionSide: ProgressBarStory = {
-  args: {labelPosition: 'side'},
-  name: 'width: 300px, labelPosition: side',
-  render: (args) => renderProgressBar(args, {width: '300px'})
+  args: {
+    width: '300px',
+    labelPosition: 'side'
+  },
+  name: 'Width 300 Px Label Position Side',
+  render: (args) => renderProgressBar(args)
 };
 
 export const Width300PxLabelPositionSideIsIndeterminateTrue: ProgressBarStory = {
   args: {
+    width: '300px',
     labelPosition: 'side',
     isIndeterminate: true
   },
-  name: 'width: 300px, labelPosition: side, isIndeterminate: true',
-  render: (args) => renderProgressBar(args, {width: '300px'})
+  name: 'Width 300 Px Label Position Side Is Indeterminate True',
+  render: (args) => renderProgressBar(args)
 };
 
 export const Width30Px: ProgressBarStory = {
-  name: 'width: 30px',
-  render: (args) => renderProgressBar(args, {width: '30px'})
+  args: {
+    width: '30px'
+  },
+  name: 'Width 30 Px',
+  render: (args) => renderProgressBar(args)
 };
 
 export const Width30PxSizeS: ProgressBarStory = {
-  args: {size: 'S'},
-  name: 'width: 30px, size: S',
-  render: (args) => renderProgressBar(args, {width: '30px'})
+  args: {
+    width: '30px',
+    size: 'S'
+  },
+  name: 'Width 30 Px Size S',
+  render: (args) => renderProgressBar(args)
 };
 
 export const Width30PxLabelPositionSideLongLabel: ProgressBarStory = {
   args: {
+    width: '30px',
     labelPosition: 'side',
     label: 'Super long progress bar label. Sample label copy. Loading...'
   },
-  name: 'width: 30px, labelPosition: side, long label',
-  render: (args) => renderProgressBar(args, {width: '30px'})
+  name: 'Width 30 Px Label Position Side Long Label',
+  render: (args) => renderProgressBar(args)
 };
 
 export const Width30PxLabelPositionSideIsIndeterminateTrueLongLabelButtonOnRight: ProgressBarStory = {
   args: {
+    width: '30px',
     labelPosition: 'side',
     isIndeterminate: true,
     label: 'Super long progress bar label. Sample label copy. Loading...'
   },
-  name: 'width: 30px, labelPosition: side, isIndeterminate: true, long label, button on right',
+  name: 'Width 30 Px Label Position Side Is Indeterminate True Long Label Button On Right',
   render: (args) => ({
     components: {ProgressBar},
     setup() {
@@ -209,9 +296,7 @@ export const Width30PxLabelPositionSideIsIndeterminateTrueLongLabelButtonOnRight
     },
     template: `
       <div style="display: flex; gap: 12px; align-items: center;">
-        <div style="width: 30px;">
-          <ProgressBar v-bind="args" />
-        </div>
+        <ProgressBar v-bind="args" />
         <button type="button">Confirm</button>
       </div>
     `
@@ -225,6 +310,18 @@ export const UsingRawValuesForMinValueMaxValueAndValue: ProgressBarStory = {
     maxValue: 2147483648,
     value: 715827883
   },
-  name: 'Using raw values for minValue, maxValue, and value',
+  name: 'Using Raw Values For Min Value Max Value And Value',
+  render: (args) => renderProgressBar(args)
+};
+
+export const UsingRawValuesWithNumberFormatter: ProgressBarStory = {
+  args: {
+    showValueLabel: true,
+    labelPosition: 'top',
+    maxValue: 2147483648,
+    value: 715827883,
+    formatOptions
+  },
+  name: 'Using Raw Values With Number Formatter',
   render: (args) => renderProgressBar(args)
 };

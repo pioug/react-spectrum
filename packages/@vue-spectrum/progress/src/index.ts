@@ -27,8 +27,12 @@ export const ProgressBar = defineComponent({
       type: Boolean,
       default: false
     },
+    formatOptions: {
+      type: Object as PropType<Intl.NumberFormatOptions | undefined>,
+      default: undefined
+    },
     label: {
-      type: String,
+      type: String as PropType<string | null>,
       default: ''
     },
     labelPosition: {
@@ -43,6 +47,10 @@ export const ProgressBar = defineComponent({
       type: Number,
       default: 0
     },
+    staticColor: {
+      type: String as PropType<'black' | 'white' | undefined>,
+      default: undefined
+    },
     showValueLabel: {
       type: Boolean as PropType<boolean | undefined>,
       default: undefined
@@ -54,6 +62,18 @@ export const ProgressBar = defineComponent({
     value: {
       type: Number,
       default: 0
+    },
+    valueLabel: {
+      type: String as PropType<string | undefined>,
+      default: undefined
+    },
+    variant: {
+      type: String as PropType<'overBackground' | undefined>,
+      default: undefined
+    },
+    width: {
+      type: [Number, String] as PropType<number | string | undefined>,
+      default: undefined
     }
   },
   setup(props, {attrs, slots}) {
@@ -64,6 +84,21 @@ export const ProgressBar = defineComponent({
         return 0;
       }
       return ((clampedValue.value - props.minValue) / (props.maxValue - props.minValue)) * 100;
+    });
+    let formatter = computed(() => props.formatOptions ? new Intl.NumberFormat(undefined, props.formatOptions) : null);
+    let defaultValueLabel = computed(() => {
+      if (formatter.value) {
+        return formatter.value.format(clampedValue.value);
+      }
+
+      return `${Math.round(percentage.value)}%`;
+    });
+    let valueLabel = computed(() => {
+      if (props.isIndeterminate) {
+        return '';
+      }
+
+      return props.valueLabel ?? defaultValueLabel.value;
     });
 
     return () => h('div', {
@@ -76,19 +111,26 @@ export const ProgressBar = defineComponent({
             'spectrum-BarLoader--indeterminate': props.isIndeterminate,
             'spectrum-BarLoader--large': props.size === 'L',
             'spectrum-BarLoader--sideLabel': props.labelPosition === 'side',
-            'spectrum-BarLoader--small': props.size === 'S'
+            'spectrum-BarLoader--small': props.size === 'S',
+            'spectrum-BarLoader--overBackground': props.variant === 'overBackground',
+            'spectrum-BarLoader--staticWhite': props.staticColor === 'white',
+            'spectrum-BarLoader--staticBlack': props.staticColor === 'black'
           }
         ),
         'vs-progress-bar',
         attrs.class
       ],
+      style: {
+        ...((attrs.style as Record<string, unknown>) ?? {}),
+        width: props.width ?? (attrs.style as Record<string, unknown> | undefined)?.width
+      },
       role: 'progressbar',
       'aria-label': props.ariaLabel || attrs['aria-label'],
       'aria-labelledby': props.ariaLabelledby || attrs['aria-labelledby'],
       'aria-valuemin': props.isIndeterminate ? undefined : props.minValue,
       'aria-valuemax': props.isIndeterminate ? undefined : props.maxValue,
       'aria-valuenow': props.isIndeterminate ? undefined : clampedValue.value,
-      'aria-valuetext': props.isIndeterminate ? undefined : `${Math.round(percentage.value)}%`,
+      'aria-valuetext': props.isIndeterminate ? undefined : valueLabel.value,
       'data-vac': ''
     }, [
       props.label
@@ -99,7 +141,7 @@ export const ProgressBar = defineComponent({
       showValueLabel.value
         ? h('div', {
           class: classNames(barStyles, 'spectrum-BarLoader-percentage')
-        }, props.isIndeterminate ? '' : `${Math.round(percentage.value)}%`)
+        }, valueLabel.value)
         : null,
       h('div', {
         class: classNames(barStyles, 'spectrum-BarLoader-track')

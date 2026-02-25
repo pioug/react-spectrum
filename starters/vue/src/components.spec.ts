@@ -1095,6 +1095,42 @@ describe('Vue migration primitives', () => {
     expect(bar.attributes('role')).toBe('progressbar');
     expect(bar.attributes('aria-valuenow')).toBe('35');
 
+    let formattedBar = mount(ProgressBar, {
+      props: {
+        label: 'Loading assets',
+        showValueLabel: true,
+        formatOptions: {
+          style: 'currency',
+          currency: 'JPY'
+        },
+        value: 25
+      }
+    });
+    expect(formattedBar.find('.spectrum-BarLoader-percentage').text()).not.toContain('%');
+
+    let explicitValueLabel = mount(ProgressBar, {
+      props: {
+        label: 'Loading assets',
+        showValueLabel: true,
+        value: 25,
+        valueLabel: '1 of 4'
+      }
+    });
+    expect(explicitValueLabel.find('.spectrum-BarLoader-percentage').text()).toBe('1 of 4');
+    expect(explicitValueLabel.attributes('aria-valuetext')).toBe('1 of 4');
+
+    let overBackground = mount(ProgressBar, {
+      props: {
+        label: 'Loading assets',
+        variant: 'overBackground',
+        staticColor: 'white',
+        width: '300px'
+      }
+    });
+    expect(overBackground.classes()).toContain('spectrum-BarLoader--overBackground');
+    expect(overBackground.classes()).toContain('spectrum-BarLoader--staticWhite');
+    expect((overBackground.element as HTMLElement).style.width).toBe('300px');
+
     let circle = mount(ProgressCircle, {
       props: {
         value: 60,
