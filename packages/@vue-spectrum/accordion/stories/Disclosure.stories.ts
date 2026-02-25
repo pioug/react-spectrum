@@ -54,17 +54,3 @@ export const WrappingTitle: DisclosureStory = {
     `
   })
 };
-
-export const Disabled: DisclosureStory = {
-  ...Default,
-  args: {
-    isDisabled: true
-  }
-};
-
-export const Quiet: DisclosureStory = {
-  ...Default,
-  args: {
-    isQuiet: true
-  }
-};
