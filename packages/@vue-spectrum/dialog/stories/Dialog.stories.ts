@@ -28,6 +28,7 @@ const LONG_PARAGRAPHS = [
 const meta: Meta<typeof Dialog> = {
   title: 'Dialog',
   component: Dialog,
+  excludeStories: ['singleParagraph'],
   argTypes: {
     dismissable: {control: 'boolean'},
     isDismissable: {control: 'boolean'},
@@ -56,7 +57,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function singleParagraph() {
+export function singleParagraph() {
   return 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus. In sit amet suscipit lorem.';
 }
 
