@@ -1,5 +1,5 @@
-import {ref} from 'vue';
-import {useModal} from '@vue-aria/overlays';
+import {onMounted, ref} from 'vue';
+import {OverlayContainer, OverlayProvider, useModal} from '@vue-aria/overlays';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 const meta = {
@@ -9,62 +9,122 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function renderModalStory(args: {containerId?: string, disabled?: boolean, showNestedWarning?: boolean}) {
+function renderAppStory(useAlternateContainer = false) {
   return {
+    components: {
+      OverlayContainer,
+      OverlayProvider
+    },
     setup() {
-      let open = ref(false);
-      let modal = useModal({
-        isDisabled: args.disabled
+      let showModal = ref(false);
+      let modal = useModal();
+      let alternateContainer = ref<HTMLElement | null>(null);
+
+      onMounted(() => {
+        alternateContainer.value = document.getElementById('alternateContainer');
       });
 
       let toggle = () => {
-        open.value = !open.value;
+        showModal.value = !showModal.value;
       };
 
       return {
-        containerId: args.containerId ?? 'default',
         modalProps: modal.modalProps,
-        open,
-        showNestedWarning: Boolean(args.showNestedWarning),
-        toggle
+        alternateContainer,
+        showModal,
+        toggle,
+        useAlternateContainer
       };
     },
     template: `
-      <div style="display: grid; gap: 12px; max-width: 520px;">
+      <div style="display: grid; gap: 8px;">
         <button type="button" @click="toggle">Toggle</button>
-        <div :id="containerId" style="border: 1px dashed #aaa; padding: 8px;">
-          Container: {{containerId}}
-          <div
-            v-if="open"
-            v-bind="modalProps"
-            style="margin-top: 8px; border: 1px solid #999; background: #fff; padding: 12px;">
-            The Modal
-          </div>
+        <div id="alternateContainer" data-testid="alternate-container" style="border: 1px dashed #aaa; padding: 8px;">
+          <OverlayProvider data-testid="root-provider">
+            This is the root provider.
+            <OverlayContainer
+              v-if="showModal"
+              :portal-container="useAlternateContainer ? alternateContainer : undefined"
+              data-testid="modal-provider">
+              <div data-testid="modal" v-bind="modalProps">The Modal</div>
+            </OverlayContainer>
+          </OverlayProvider>
         </div>
-        <p v-if="showNestedWarning" style="margin: 0; color: #b54708;">
-          This story intentionally models a bad nested container configuration.
-        </p>
+      </div>
+    `
+  };
+}
+
+function renderBadContainerStory() {
+  return {
+    components: {
+      OverlayContainer,
+      OverlayProvider
+    },
+    setup() {
+      let showOuter = ref(false);
+      let showInner = ref(false);
+      let innerModal = useModal();
+      let nestedContainer = ref<HTMLElement | null>(null);
+
+      onMounted(() => {
+        nestedContainer.value = document.getElementById('nestedContainer');
+      });
+
+      let toggleOuter = () => {
+        showOuter.value = !showOuter.value;
+      };
+
+      let toggleInner = () => {
+        showInner.value = !showInner.value;
+      };
+
+      return {
+        innerModalProps: innerModal.modalProps,
+        nestedContainer,
+        showInner,
+        showOuter,
+        toggleInner,
+        toggleOuter
+      };
+    },
+    template: `
+      <div id="alternateContainer" data-testid="alternate-container" style="display: grid; gap: 8px;">
+        <button type="button" @click="toggleOuter">Toggle 1</button>
+        <OverlayProvider v-if="showOuter" data-testid="root-provider">
+          <div style="display: grid; gap: 8px;">
+            This is the root provider.
+            <div id="nestedContainer"></div>
+            <button type="button" @click="toggleInner">Toggle 2</button>
+            <OverlayContainer
+              v-if="showInner"
+              :portal-container="nestedContainer"
+              data-testid="inner-modal-provider">
+              <div data-testid="inner-modal" v-bind="innerModalProps">Inner</div>
+            </OverlayContainer>
+          </div>
+        </OverlayProvider>
       </div>
     `
   };
 }
 
 export const DefaultContainer: Story = {
-  render: () => renderModalStory({containerId: 'default'}),
+  render: () => renderAppStory(false),
   name: 'default container'
 };
 
 export const DifferentContainer: Story = {
-  render: () => renderModalStory({containerId: 'alternateContainer'}),
+  render: () => renderAppStory(true),
   name: 'different container'
 };
 
 export const BadContainer: Story = {
-  render: () => renderModalStory({containerId: 'nestedContainer', showNestedWarning: true}),
+  render: () => renderBadContainerStory(),
   name: 'bad container',
   parameters: {
     description: {
-      data: 'This story models the nested container configuration that should crash in React.'
+      data: 'this story should crash'
     }
   }
 };
