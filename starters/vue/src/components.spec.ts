@@ -11,7 +11,7 @@ import {Button, ToggleButton} from '@vue-spectrum/button';
 import {ButtonGroup} from '@vue-spectrum/buttongroup';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {Calendar, RangeCalendar} from '@vue-spectrum/calendar';
-import {Card, CardView} from '@vue-spectrum/card';
+import {Card, CardView, GalleryLayout, WaterfallLayout} from '@vue-spectrum/card';
 import {Checkbox, CheckboxGroup} from '@vue-spectrum/checkbox';
 import {ComboBox} from '@vue-spectrum/combobox';
 import {ColorField, ColorPicker, ColorSwatchPicker} from '@vue-spectrum/color';
@@ -1458,6 +1458,26 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('action')?.[0]).toEqual([{id: 'overview', title: 'Overview'}]);
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['overview']]);
     expect(wrapper.emitted('selectionChange')?.[0]).toEqual([['overview']]);
+  });
+
+  it('resolves card view layout constructors to gallery and waterfall classes', () => {
+    let gallery = mount(CardView, {
+      props: {
+        items: [{id: 'overview', title: 'Overview'}],
+        layout: GalleryLayout
+      }
+    });
+
+    expect(gallery.get('.vs-card-view__item').classes()).toContain('spectrum-Card--gallery');
+
+    let waterfall = mount(CardView, {
+      props: {
+        items: [{id: 'quality', title: 'Quality'}],
+        layout: WaterfallLayout
+      }
+    });
+
+    expect(waterfall.get('.vs-card-view__item').classes()).toContain('spectrum-Card--waterfall');
   });
 
   it('renders loading and empty rows for card view states', () => {
