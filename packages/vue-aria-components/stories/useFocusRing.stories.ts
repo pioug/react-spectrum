@@ -1,18 +1,77 @@
-import {computed, ref} from 'vue';
+import {addWindowFocusTracking} from '@vue-aria/interactions';
+import {computed, defineComponent, onBeforeUnmount, onMounted, ref} from 'vue';
+import {mergeProps} from '@vue-aria/utils';
+import {SearchField} from '@vue-spectrum/searchfield';
+import {TableView} from '@vue-spectrum/table';
+import {useButton} from '@vue-aria/button';
 import {useFocusRing} from '@vue-aria/focus';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const manyColumns = Array.from({length: 10}, (_, index) => ({
-  key: `C${index}`,
-  name: index === 0 ? 'Column name' : `Column ${index}`
-}));
+type TableColumn = {
+  key: string,
+  label: string
+};
 
-const manyRows = Array.from({length: 50}, (_, rowIndex) => {
-  let row: Record<string, string> = {};
-  for (let columnIndex = 0; columnIndex < manyColumns.length; columnIndex++) {
+type TableRow = {
+  id: string,
+  [key: string]: string
+};
+
+let manyColumns: TableColumn[] = [];
+for (let index = 0; index < 100; index++) {
+  manyColumns.push(
+    index === 0
+      ? {key: 'C0', label: 'Column name'}
+      : {key: `C${index}`, label: `Column ${index}`}
+  );
+}
+
+let manyRows: TableRow[] = [];
+for (let rowIndex = 0; rowIndex < 1000; rowIndex++) {
+  let row: TableRow = {id: `R${rowIndex}`};
+  for (let columnIndex = 0; columnIndex < 100; columnIndex++) {
     row[`C${columnIndex}`] = columnIndex === 0 ? `Row ${rowIndex}` : `${rowIndex}, ${columnIndex}`;
   }
-  return row;
+
+  manyRows.push(row);
+}
+
+const FocusStatusButton = defineComponent({
+  props: {
+    trackWindowFocus: {
+      type: Boolean,
+      default: false
+    }
+  },
+  setup(props) {
+    let buttonRef = ref<HTMLElement | null>(null);
+    let focusRing = useFocusRing();
+    let button = useButton();
+    let stopWindowTracking = () => {};
+
+    onMounted(() => {
+      if (props.trackWindowFocus && buttonRef.value) {
+        stopWindowTracking = addWindowFocusTracking(buttonRef.value);
+      }
+    });
+
+    onBeforeUnmount(() => {
+      stopWindowTracking();
+    });
+
+    return {
+      buttonRef,
+      isFocused: focusRing.isFocused,
+      isFocusVisible: focusRing.isFocusVisible,
+      mergedProps: computed(() => mergeProps(focusRing.focusProps.value, button.buttonProps.value))
+    };
+  },
+  template: `
+    <button ref="buttonRef" v-bind="mergedProps">
+      Focus Visible: {{isFocusVisible ? 'true' : 'false'}}<br>
+      Focused: {{isFocused ? 'true' : 'false'}}
+    </button>
+  `
 });
 
 const meta = {
@@ -24,77 +83,90 @@ type Story = StoryObj<typeof meta>;
 
 export const SearchTableview: Story = {
   render: () => ({
+    components: {
+      SearchField,
+      TableView
+    },
     setup() {
-      let query = ref('');
-      let {focusProps, isFocusVisible, isFocused} = useFocusRing({within: true});
-      let items = computed(() => {
-        if (!query.value) {
-          return manyRows;
-        }
-
-        let needle = query.value.toLowerCase();
-        return manyRows.filter((row) => row.C0.toLowerCase().includes(needle));
-      });
+      let items = ref([...manyRows]);
+      let onChange = (value: string) => {
+        let lowerValue = value.toLowerCase();
+        items.value = manyRows.filter((item) => item.C0.toLowerCase().includes(lowerValue));
+      };
 
       return {
-        focusProps,
-        isFocused,
-        isFocusVisible,
         items,
         manyColumns,
-        query
+        onChange
       };
     },
     template: `
       <div>
-        <label>
-          Search
-          <input v-model="query" aria-label="table searchfield" />
-        </label>
-        <div
-          v-bind="focusProps"
-          tabindex="0"
-          :style="{marginTop: '8px', border: isFocusVisible ? '2px solid #2680eb' : '1px solid #c6c6c6', padding: '8px'}">
-          <div>Focus Visible: {{isFocusVisible ? 'true' : 'false'}} | Focused: {{isFocused ? 'true' : 'false'}}</div>
-          <div style="max-height: 300px; overflow: auto; margin-top: 8px;">
-            <table border="1" cellpadding="4" cellspacing="0">
-              <thead>
-                <tr>
-                  <th v-for="column in manyColumns" :key="column.key">{{column.name}}</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr v-for="(item, rowIndex) in items" :key="rowIndex">
-                  <td v-for="column in manyColumns" :key="column.key">{{item[column.key]}}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        <SearchField aria-label="table searchfield" @change="onChange" />
+        <div style="margin-top: 8px; width: 700px; height: 500px; overflow: auto;">
+          <TableView
+            aria-label="Searchable table with many columns and rows"
+            selection-mode="multiple"
+            :columns="manyColumns"
+            :rows="items" />
         </div>
       </div>
     `
   }),
-  name: 'search + tableview'
+  name: 'search + tableview',
+  parameters: {
+    a11y: {
+      config: {
+        rules: [{id: 'aria-required-children', selector: '*:not([role="grid"])'}]
+      }
+    }
+  }
 };
 
 export const IFrame: Story = {
   render: () => ({
+    components: {
+      FocusStatusButton
+    },
     setup() {
-      let frameContent = '<html><body style="font-family: sans-serif; padding: 8px;"><button>Frame button 1</button><button>Frame button 2</button></body></html>';
-      let {focusProps, isFocusVisible, isFocused} = useFocusRing();
+      let iframeRef = ref<HTMLIFrameElement | null>(null);
+      let iframeBody = ref<HTMLElement | null>(null);
+      let frameContent = '<!doctype html><html><body style="font-family: sans-serif; padding: 8px;"></body></html>';
+
+      let updateFrameBody = () => {
+        iframeBody.value = iframeRef.value?.contentDocument?.body ?? null;
+      };
+
+      onMounted(() => {
+        if (!iframeRef.value) {
+          return;
+        }
+
+        iframeRef.value.addEventListener('load', updateFrameBody);
+        updateFrameBody();
+      });
+
+      onBeforeUnmount(() => {
+        iframeRef.value?.removeEventListener('load', updateFrameBody);
+      });
+
       return {
-        focusProps,
         frameContent,
-        isFocused,
-        isFocusVisible
+        iframeBody,
+        iframeRef
       };
     },
     template: `
       <div style="display: grid; gap: 8px;">
-        <button v-bind="focusProps">
-          Focus Visible: {{isFocusVisible ? 'true' : 'false'}} | Focused: {{isFocused ? 'true' : 'false'}}
-        </button>
-        <iframe :srcdoc="frameContent" style="width: 100%; height: 180px; border: 1px solid #c6c6c6;" />
+        <FocusStatusButton />
+        <iframe ref="iframeRef" :srcdoc="frameContent" style="width: 100%; height: 180px; border: 1px solid #c6c6c6;" />
+        <Teleport v-if="iframeBody" :to="iframeBody">
+          <div style="display: grid; gap: 8px;">
+            <FocusStatusButton :trackWindowFocus="true" />
+            <FocusStatusButton />
+            <FocusStatusButton />
+          </div>
+        </Teleport>
       </div>
     `
   }),

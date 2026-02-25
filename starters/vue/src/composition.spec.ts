@@ -4808,6 +4808,31 @@ describe('Vue migration composition components', () => {
     }
   });
 
+  it('tracks focus visibility when merging vue-aria focus ring and button props', () => {
+    let focusRing = useFocusRing();
+    let button = useButton();
+    let mergedProps = ariaMergeProps(focusRing.focusProps.value, button.buttonProps.value);
+    let element = document.createElement('button');
+    document.body.append(element);
+
+    try {
+      if (mergedProps.onFocus) {
+        element.addEventListener('focus', mergedProps.onFocus as EventListener);
+      }
+      if (mergedProps.onBlur) {
+        element.addEventListener('blur', mergedProps.onBlur as EventListener);
+      }
+
+      element.dispatchEvent(new FocusEvent('focus', {bubbles: true}));
+      expect(focusRing.isFocused.value).toBe(true);
+
+      element.dispatchEvent(new FocusEvent('blur', {bubbles: true}));
+      expect(focusRing.isFocused.value).toBe(false);
+    } finally {
+      document.body.removeChild(element);
+    }
+  });
+
   it('preserves default link behavior when vue-aria usePress handles click', () => {
     let presses = 0;
     let defaultPrevented: boolean | null = null;
