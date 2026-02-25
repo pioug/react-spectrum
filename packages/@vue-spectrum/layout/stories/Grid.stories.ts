@@ -34,7 +34,6 @@ for (let color of baseColors) {
 }
 
 export const ExplicitGrid: Story = {
-  name: 'Explicit grid',
   render: () => ({
     components: {Grid, View},
     template: `
@@ -63,7 +62,6 @@ export const ExplicitGrid: Story = {
 };
 
 export const ImplicitGrid: Story = {
-  name: 'Implicit grid',
   render: () => ({
     components: {Grid, View},
     setup() {
@@ -89,7 +87,6 @@ export const ImplicitGrid: Story = {
 };
 
 export const Responsive: Story = {
-  name: 'responsive',
   render: () => ({
     components: {Grid, View},
     setup() {

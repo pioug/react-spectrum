@@ -58,8 +58,7 @@ export const Default: Story = {
 };
 
 export const WithAction: Story = {
-  render: (args) => renderToastContainer(args, true),
-  name: 'With action'
+  render: (args) => renderToastContainer(args, true)
 };
 
 export const WithTestId: Story = {
@@ -70,8 +69,7 @@ export const WithTestId: Story = {
       return {args, queue};
     },
     template: '<ToastContainer v-bind="args" data-testid="hello i am a test id" :queue="queue" />'
-  }),
-  name: 'With test id'
+  })
 };
 
 export const WithDialog: Story = {
@@ -88,8 +86,7 @@ export const WithDialog: Story = {
         <ToastContainer v-bind="args" :queue="queue" />
       </div>
     `
-  }),
-  name: 'With dialog'
+  })
 };
 
 export const MultipleToastContainers: Story = {
@@ -108,8 +105,7 @@ export const MultipleToastContainers: Story = {
         <ToastContainer v-bind="args" :queue="secondQueue" />
       </div>
     `
-  }),
-  name: 'multiple ToastContainers'
+  })
 };
 
 export const ProgrammaticallyClosing: Story = {
@@ -143,8 +139,7 @@ export const ProgrammaticallyClosing: Story = {
         <ToastContainer v-bind="args" :queue="queue" />
       </div>
     `
-  }),
-  name: 'programmatically closing'
+  })
 };
 
 export const WithIframe: Story = {
@@ -160,8 +155,7 @@ export const WithIframe: Story = {
         <ToastContainer v-bind="args" :queue="queue" />
       </div>
     `
-  }),
-  name: 'with iframe'
+  })
 };
 
 export const withFullscreen: Story = {

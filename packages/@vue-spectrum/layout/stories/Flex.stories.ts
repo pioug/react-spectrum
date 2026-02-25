@@ -97,13 +97,11 @@ function renderBlocks(args: FlexStoryArgs, style = '', blocks = [
 }
 
 export const VerticalStackWithGap: Story = {
-  render: () => renderBlocks({direction: 'column', gap: 'size-100'}, 'width: 200px;'),
-  name: 'Vertical stack with gap'
+  render: () => renderBlocks({direction: 'column', gap: 'size-100'}, 'width: 200px;')
 };
 
 export const HorizontalStackWithGap: Story = {
-  render: () => renderBlocks({direction: 'row', gap: 'size-100'}, 'height: 80px;'),
-  name: 'Horizontal stack with gap'
+  render: () => renderBlocks({direction: 'row', gap: 'size-100'}, 'height: 80px;')
 };
 
 export const WrappingWithGap: Story = {
@@ -111,8 +109,7 @@ export const WrappingWithGap: Story = {
     {direction: 'row', gap: 'size-100', wrap: true},
     'max-width: 80%; border: 1px solid var(--spectrum-global-color-gray-700); padding: 8px;',
     colors.map((color) => ({color, width: '80px', height: '80px'}))
-  ),
-  name: 'Wrapping with gap'
+  )
 };
 
 export const NestedFlexWithGap: Story = {
@@ -129,8 +126,7 @@ export const NestedFlexWithGap: Story = {
         <div style="background: var(--spectrum-global-color-magenta-600); height: 80px;" />
       </Flex>
     `
-  }),
-  name: 'Nested flex with gap'
+  })
 };
 
 export const AlignCenter: Story = {
@@ -142,8 +138,7 @@ export const AlignCenter: Story = {
       {color: 'blue-600', width: '80px', height: '200px'},
       {color: 'magenta-600', width: '80px', height: '80px'}
     ]
-  ),
-  name: 'Align center'
+  )
 };
 
 export const AlignEnd: Story = {
@@ -155,38 +150,31 @@ export const AlignEnd: Story = {
       {color: 'blue-600', width: '80px', height: '200px'},
       {color: 'magenta-600', width: '80px', height: '80px'}
     ]
-  ),
-  name: 'Align end'
+  )
 };
 
 export const JustifyStart: Story = {
-  render: () => renderBlocks({direction: 'row', gap: 'size-100', justifyContent: 'start'}, 'width: 80%;'),
-  name: 'Justify start'
+  render: () => renderBlocks({direction: 'row', gap: 'size-100', justifyContent: 'start'}, 'width: 80%;')
 };
 
 export const JustifyCenter: Story = {
-  render: () => renderBlocks({direction: 'row', gap: 'size-100', justifyContent: 'center'}, 'width: 80%;'),
-  name: 'Justify center'
+  render: () => renderBlocks({direction: 'row', gap: 'size-100', justifyContent: 'center'}, 'width: 80%;')
 };
 
 export const JustifyEnd: Story = {
-  render: () => renderBlocks({direction: 'row', gap: 'size-100', justifyContent: 'end'}, 'width: 80%;'),
-  name: 'Justify end'
+  render: () => renderBlocks({direction: 'row', gap: 'size-100', justifyContent: 'end'}, 'width: 80%;')
 };
 
 export const JustifySpaceAround: Story = {
-  render: () => renderBlocks({direction: 'row', gap: 'size-100', justifyContent: 'space-around'}, 'width: 80%;'),
-  name: 'Justify space-around'
+  render: () => renderBlocks({direction: 'row', gap: 'size-100', justifyContent: 'space-around'}, 'width: 80%;')
 };
 
 export const JustifySpaceBetween: Story = {
-  render: () => renderBlocks({direction: 'row', gap: 'size-100', justifyContent: 'space-between'}, 'width: 80%;'),
-  name: 'Justify space-between'
+  render: () => renderBlocks({direction: 'row', gap: 'size-100', justifyContent: 'space-between'}, 'width: 80%;')
 };
 
 export const JustifySpaceEvenly: Story = {
-  render: () => renderBlocks({direction: 'row', gap: 'size-100', justifyContent: 'space-evenly'}, 'width: 80%;'),
-  name: 'Justify space-evenly'
+  render: () => renderBlocks({direction: 'row', gap: 'size-100', justifyContent: 'space-evenly'}, 'width: 80%;')
 };
 
 export const Ordered: Story = {
@@ -198,8 +186,7 @@ export const Ordered: Story = {
       {color: 'blue-600', width: '80px', height: '80px'},
       {color: 'magenta-600', width: '80px', height: '80px', order: 1}
     ]
-  ),
-  name: 'ordered'
+  )
 };
 
 export const Responsive: Story = {
@@ -212,6 +199,5 @@ export const Responsive: Story = {
         <div style="background: var(--spectrum-global-color-magenta-600); width: 80px; height: 80px;" />
       </Flex>
     `
-  }),
-  name: 'responsive'
+  })
 };

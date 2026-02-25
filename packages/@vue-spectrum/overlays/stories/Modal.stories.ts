@@ -153,11 +153,9 @@ function renderUnmountingTrigger(args: Record<string, unknown>) {
 }
 
 export const Default: Story = {
-  render: (args) => renderDefaultModal(args),
-  name: 'default'
+  render: (args) => renderDefaultModal(args)
 };
 
 export const _UnmountingTrigger: Story = {
-  render: (args) => renderUnmountingTrigger(args),
-  name: 'unmounting trigger'
+  render: (args) => renderUnmountingTrigger(args)
 };

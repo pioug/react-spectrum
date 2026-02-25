@@ -14,7 +14,6 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const LargeDefault: Story = {
-  name: 'Large (Default)',
   render: () => ({
     components: {Divider},
     template: `
@@ -54,17 +53,14 @@ export const Small: Story = {
 };
 
 export const VerticalLargeDefault: Story = {
-  name: 'Vertical, Large (Default)',
   render: () => renderVertical()
 };
 
 export const VerticalMedium: Story = {
-  name: 'Vertical, Medium',
   render: () => renderVertical({size: 'M'})
 };
 
 export const VerticalSmall: Story = {
-  name: 'Vertical, Small',
   render: () => renderVertical({size: 'S'})
 };
 
