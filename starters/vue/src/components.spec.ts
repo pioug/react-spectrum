@@ -1012,6 +1012,35 @@ describe('Vue migration primitives', () => {
       }
     });
     expect(positive.find('.vs-meter__track').classes()).toContain('is-positive');
+
+    let formatted = mount(Meter, {
+      props: {
+        formatOptions: {currency: 'JPY', style: 'currency'},
+        label: 'Meter',
+        showValueLabel: true,
+        value: 25
+      }
+    });
+    expect(formatted.find('.vs-meter__value').text()).not.toContain('%');
+
+    let explicitValueLabel = mount(Meter, {
+      props: {
+        label: 'Meter',
+        showValueLabel: true,
+        value: 25,
+        valueLabel: '1 of 4'
+      }
+    });
+    expect(explicitValueLabel.find('.vs-meter__value').text()).toBe('1 of 4');
+
+    let rawValues = mount(Meter, {
+      props: {
+        label: 'Meter',
+        maxValue: 2147483648,
+        value: 715827883
+      }
+    });
+    expect(rawValues.find('.vs-meter__track').attributes('aria-valuemax')).toBe('2147483648');
   });
 
   it('maps statuslight variant and disabled classes', () => {
