@@ -125,22 +125,22 @@ export const RangeWithAriaLabel: Story = {
   name: 'Range With Aria Label'
 };
 
-export const ThreeThumbs: Story = {
+export const _3Thumbs: Story = {
   render: () => renderMultiThumb({values: [10, 40, 80]}),
   name: '3 Thumbs'
 };
 
-export const ThreeThumbsWithDisabled: Story = {
+export const _3ThumbsWithDisabled: Story = {
   render: () => renderMultiThumb({values: [10, 40, 80], disabledIndices: [1]}),
   name: '3 Thumbs With Disabled'
 };
 
-export const EightThumbsWithDisabled: Story = {
+export const _8ThumbsWithDisabled: Story = {
   render: () => renderMultiThumb({values: [5, 10, 15, 30, 35, 40, 50, 75], disabledIndices: [0, 3, 4, 7]}),
   name: '8 Thumbs With Disabled'
 };
 
-export const ThreeThumbsWithAriaLabel: Story = {
+export const _3ThumbsWithAriaLabel: Story = {
   render: () => renderMultiThumb({ariaLabel: 'Three thumbs', values: [10, 40, 80]}),
   name: '3 Thumbs With Aria Label'
 };

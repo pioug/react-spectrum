@@ -83,27 +83,27 @@ export const Default: Story = {
   name: 'Default'
 };
 
-export const Draggable: Story = {
+export const DraggableStory: Story = {
   render: () => renderDnD({description: 'Draggable elements enabled.'}),
   name: 'Draggable'
 };
 
-export const DraggableIsDisabled: Story = {
+export const DraggableDisabled: Story = {
   render: () => renderDnD({description: 'Draggable isDisabled state.', showToggle: true}),
   name: 'Draggable isDisabled'
 };
 
-export const DraggableEnableDisableControl: Story = {
+export const DraggableEnabledDisabledControl: Story = {
   render: () => renderDnD({description: 'Toggle draggable state.', showToggle: true}),
   name: 'Draggable Enable/Disable control'
 };
 
-export const Droppable: Story = {
+export const DroppableStory: Story = {
   render: () => renderDnD({description: 'Droppable target regions.'}),
   name: 'Droppable'
 };
 
-export const DroppableEnableDisableControl: Story = {
+export const DroppableEnabledDisabledControl: Story = {
   render: () => renderDnD({description: 'Toggle droppable state.', showToggle: true}),
   name: 'Droppable Enable/Disable control'
 };

@@ -674,6 +674,88 @@ export const VirtualizedListBox: Story = {
   }
 };
 
+export const VirtualizedListBoxEmpty: Story = {
+  render: () => ({
+    template: `
+      <div
+        class="v7C2Sq_menu"
+        data-rac=""
+        aria-label="virtualized listbox"
+        role="listbox"
+        tabindex="0"
+        data-layout="stack"
+        data-orientation="vertical"
+        style="margin-top: 4px; width: 150px; max-width: 100%; height: 400px; border: 1px solid gray; background: lightgray; overflow: auto;">
+        <div style="padding: 8px 10px;">Empty</div>
+      </div>
+    `
+  })
+};
+
+export const VirtualizedListBoxDnd: Story = {
+  render: () => ({
+    setup() {
+      return {
+        virtualizedListBoxGridVisibleItems
+      };
+    },
+    template: `
+      <div
+        class="v7C2Sq_menu"
+        data-rac=""
+        aria-label="virtualized listbox dnd"
+        aria-multiselectable="true"
+        role="listbox"
+        tabindex="0"
+        data-layout="grid"
+        data-orientation="vertical"
+        style="margin-top: 4px; width: 400px; max-width: 100%; height: 400px; border: 1px solid gray; background: lightgray; overflow: auto;">
+        <div role="presentation" style="width: 400px; height: 244382px; pointer-events: auto; position: relative;">
+          <div
+            v-for="(item, index) in virtualizedListBoxGridVisibleItems"
+            :key="'virtualized-dnd-' + item"
+            role="presentation"
+            :style="{position: 'absolute', overflow: 'visible', opacity: '1', zIndex: '0', contain: 'size layout style', top: (18 + (Math.floor(index / 4) * 45)) + 'px', left: (15 + ((index % 4) * 96)) + 'px', width: '82px', height: '27px'}">
+            <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" draggable="true" data-allows-dragging="true" data-selection-mode="multiple" style="word-break: break-word; height: 100%; border: 1px solid; box-sizing: border-box; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">{{ item }}</div>
+          </div>
+        </div>
+      </div>
+    `
+  })
+};
+
+export const VirtualizedListBoxDndOnAction: Story = {
+  render: () => ({
+    setup() {
+      return {
+        virtualizedListBoxGridVisibleItems
+      };
+    },
+    template: `
+      <div
+        class="v7C2Sq_menu"
+        data-rac=""
+        aria-label="virtualized listbox dnd on action"
+        aria-multiselectable="true"
+        role="listbox"
+        tabindex="0"
+        data-layout="grid"
+        data-orientation="vertical"
+        style="margin-top: 4px; width: 400px; max-width: 100%; height: 400px; border: 1px solid gray; background: lightgray; overflow: auto;">
+        <div role="presentation" style="width: 400px; height: 244382px; pointer-events: auto; position: relative;">
+          <div
+            v-for="(item, index) in virtualizedListBoxGridVisibleItems"
+            :key="'virtualized-dnd-action-' + item"
+            role="presentation"
+            :style="{position: 'absolute', overflow: 'visible', opacity: '1', zIndex: '0', contain: 'size layout style', top: (18 + (Math.floor(index / 4) * 45)) + 'px', left: (15 + ((index % 4) * 96)) + 'px', width: '82px', height: '27px'}">
+            <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" draggable="true" data-allows-dragging="true" data-selection-mode="multiple" style="word-break: break-word; height: 100%; border: 1px solid; box-sizing: border-box; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">{{ item }}</div>
+          </div>
+        </div>
+      </div>
+    `
+  })
+};
+
 
 export const VirtualizedListBoxGrid: Story = {
   render: () => ({
