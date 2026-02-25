@@ -1,20 +1,25 @@
 import {DropZone} from '../src';
+import {FileTrigger} from '@vue-spectrum/filetrigger';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 const meta: Meta<typeof DropZone> = {
-  title: 'FileTrigger',
+  title: 'DropZone/FileTrigger',
   component: DropZone,
   args: {
-    label: 'Example'
+    accept: 'image/*',
+    acceptedFileTypes: ['image/png', 'image/jpeg'],
+    disabled: false,
+    label: 'Upload files',
+    multiple: true
   },
   argTypes: {
     accept: {
       control: 'text'
     },
-    disabled: {
-      control: 'boolean'
+    acceptedFileTypes: {
+      control: 'object'
     },
-    isFilled: {
+    disabled: {
       control: 'boolean'
     },
     label: {
@@ -22,9 +27,6 @@ const meta: Meta<typeof DropZone> = {
     },
     multiple: {
       control: 'boolean'
-    },
-    replaceMessage: {
-      control: 'text'
     }
   }
 };
@@ -35,31 +37,47 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: (args) => ({
-    components: {DropZone},
+    components: {DropZone, FileTrigger},
     setup() {
       return {args};
     },
-    template: '<DropZone v-bind="args">Example</DropZone>'
+    template: `
+      <div style="display: grid; gap: 12px; max-width: 360px;">
+        <DropZone
+          :accept="args.accept"
+          :disabled="args.disabled"
+          :label="args.label"
+          :multiple="args.multiple" />
+        <FileTrigger
+          :accepted-file-types="args.acceptedFileTypes"
+          :allows-multiple="args.multiple"
+          :disabled="args.disabled">
+          Browse files
+        </FileTrigger>
+      </div>
+    `
   })
 };
 
-export const CustomLabel: Story = {
+export const SingleFile: Story = {
   ...Default,
   args: {
-    label: 'Choose files'
+    multiple: false
   }
 };
 
-export const Disabled: Story = {
+export const DisabledState: Story = {
   ...Default,
   args: {
     disabled: true
   }
 };
 
-export const AlternateLabel: Story = {
+export const DocumentFiles: Story = {
   ...Default,
   args: {
-    label: 'Alternate label'
+    accept: '.pdf,.doc,.docx',
+    acceptedFileTypes: ['.pdf', '.doc', '.docx'],
+    label: 'Upload documents'
   }
 };
