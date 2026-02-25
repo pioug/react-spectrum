@@ -994,6 +994,27 @@ describe('Vue migration primitives', () => {
     expect(wrapper.classes()).toContain('is-hovered');
     await wrapper.trigger('focus');
     expect(wrapper.classes()).toContain('focus-ring');
+
+    let childAnchor = mount(Link, {
+      slots: {
+        default: () => h('a', {
+          href: '//example.com',
+          onClick: (event: MouseEvent) => {
+            event.preventDefault();
+          },
+          target: '_self'
+        }, 'This is a React Spectrum Link')
+      }
+    });
+
+    expect(childAnchor.element.tagName).toBe('A');
+    expect(childAnchor.classes()).toContain('spectrum-Link');
+    expect(childAnchor.attributes('href')).toBe('//example.com');
+    expect(childAnchor.attributes('target')).toBe('_self');
+
+    await childAnchor.trigger('click');
+    let clickEvent = childAnchor.emitted('click')?.[0]?.[0] as MouseEvent;
+    expect(clickEvent?.defaultPrevented).toBe(true);
   });
 
   it('maps meter variant state classes', () => {

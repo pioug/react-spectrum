@@ -5,21 +5,15 @@ const meta: Meta<typeof Link> = {
   title: 'Link',
   component: Link,
   argTypes: {
-    href: {
-      control: 'text'
+    onPress: {
+      action: 'press'
     },
-    isQuiet: {
-      control: 'boolean'
+    onPressStart: {
+      action: 'pressstart'
     },
-    rel: {
-      control: 'text'
+    onPressEnd: {
+      action: 'pressend'
     },
-    target: {
-      control: 'text'
-    },
-    variant: {
-      control: 'text'
-    }
   }
 };
 
@@ -33,28 +27,91 @@ export const Default: Story = {
     setup() {
       return {args};
     },
-    template: '<Link v-bind="args">Example</Link>'
+    template: '<Link v-bind="args">This is a React Spectrum Link</Link>'
+  }),
+  args: {}
+};
+
+export const Secondary: Story = {
+  ...Default,
+  args: {
+    ...Default.args,
+    variant: 'secondary'
+  },
+  name: 'variant: secondary'
+};
+
+export const OverBackground: Story = {
+  ...Default,
+  render: (args) => ({
+    components: {Link},
+    setup() {
+      return {args};
+    },
+    template: '<div style="background-color: rgb(15, 121, 125); color: rgb(15, 121, 125); padding: 15px 20px; display: inline-block;"><Link v-bind="args">This is a React Spectrum Link</Link></div>'
+  }),
+  args: {
+    ...Default.args,
+    variant: 'overBackground'
+  },
+  name: 'variant: overBackground'
+};
+
+export const IsQuiet: Story = {
+  ...Default,
+  args: {
+    ...Default.args,
+    isQuiet: true
+  },
+  name: 'isQuiet: true'
+};
+
+export const IsQuietSecondary: Story = {
+  ...Default,
+  args: {
+    ...Default.args,
+    isQuiet: true,
+    variant: 'secondary'
+  },
+  name: 'isQuiet: true, variant: secondary'
+};
+
+export const WithHref: Story = {
+  ...Default,
+  args: {
+    ...Default.args,
+    href: '//example.com'
+  },
+  name: 'href'
+};
+
+export const WithChildren: Story = {
+  render: (args) => ({
+    components: {Link},
+    setup() {
+      return {args};
+    },
+    template: '<Link v-bind="args"><a href="//example.com" target="_self">This is a React Spectrum Link</a></Link>'
+  }),
+  name: 'children: a'
+};
+
+export const BlockNavigation: Story = {
+  render: (args) => ({
+    components: {Link},
+    setup() {
+      return {args};
+    },
+    template: '<Link v-bind="args"><a href="//example.com" target="_self" @click.prevent>This is a React Spectrum Link</a></Link>'
   })
 };
 
-export const Quiet: Story = {
+export const OnClick: Story = {
   ...Default,
-  args: {
-    isQuiet: true
-  }
-};
-
-export const External: Story = {
-  ...Default,
-  args: {
-    target: '_blank',
-    rel: 'noreferrer'
-  }
-};
-
-export const NeutralVariant: Story = {
-  ...Default,
-  args: {
-    variant: 'neutral'
-  }
+  argTypes: {
+    onClick: {
+      action: 'deprecatedOnClick'
+    }
+  },
+  name: 'onClick'
 };

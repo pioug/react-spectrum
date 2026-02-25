@@ -1,6 +1,6 @@
 import '@adobe/spectrum-css-temp/components/link/vars.css';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, type PropType, ref} from 'vue';
+import {cloneVNode, computed, defineComponent, h, isVNode, mergeProps, type PropType, ref} from 'vue';
 import {getEventTarget} from '@vue-aria/utils';
 const styles: {[key: string]: string} = {};
 
@@ -35,7 +35,10 @@ export const Link = defineComponent({
   emits: {
     blur: (event: FocusEvent) => event instanceof FocusEvent,
     click: (event: MouseEvent) => event instanceof MouseEvent,
-    focus: (event: FocusEvent) => event instanceof FocusEvent
+    focus: (event: FocusEvent) => event instanceof FocusEvent,
+    press: (event: MouseEvent) => event instanceof MouseEvent,
+    pressend: (event: KeyboardEvent | MouseEvent) => event instanceof KeyboardEvent || event instanceof MouseEvent,
+    pressstart: (event: KeyboardEvent | MouseEvent) => event instanceof KeyboardEvent || event instanceof MouseEvent
   },
   setup(props, {slots, emit, attrs}) {
     let isHovered = ref(false);
@@ -53,19 +56,33 @@ export const Link = defineComponent({
     ));
 
     return () => {
-      let tag = props.href ? 'a' : 'span';
-      return h(tag, {
-        ...attrs,
+      let baseProps = {
         class: [className.value, 'vs-link', attrs.class],
         'data-vac': '',
-        href: props.href || undefined,
-        target: props.target,
-        rel: props.rel,
+        ...(props.href ? {href: props.href} : {}),
+        ...(props.target ? {target: props.target} : {}),
+        ...(props.rel ? {rel: props.rel} : {}),
         onMouseenter: () => {
           isHovered.value = true;
         },
         onMouseleave: () => {
           isHovered.value = false;
+        },
+        onMousedown: (event: MouseEvent) => {
+          emit('pressstart', event);
+        },
+        onMouseup: (event: MouseEvent) => {
+          emit('pressend', event);
+        },
+        onKeydown: (event: KeyboardEvent) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            emit('pressstart', event);
+          }
+        },
+        onKeyup: (event: KeyboardEvent) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            emit('pressend', event);
+          }
         },
         onFocus: (event: FocusEvent) => {
           let target = getEventTarget(event);
@@ -80,8 +97,22 @@ export const Link = defineComponent({
           isFocusVisible.value = false;
           emit('blur', event);
         },
-        onClick: (event: MouseEvent) => emit('click', event)
-      }, slots.default ? slots.default() : (props.href || 'Link'));
+        onClick: (event: MouseEvent) => {
+          emit('press', event);
+          emit('click', event);
+        }
+      };
+
+      let contentNodes = slots.default ? slots.default() : [];
+      if (!props.href && contentNodes.length === 1 && isVNode(contentNodes[0])) {
+        let wrappedChild = contentNodes[0];
+        if (typeof wrappedChild.type === 'string') {
+          return cloneVNode(wrappedChild, mergeProps(wrappedChild.props ?? {}, attrs, baseProps));
+        }
+      }
+
+      let tag = props.href ? 'a' : 'span';
+      return h(tag, mergeProps(attrs, baseProps), contentNodes.length > 0 ? contentNodes : (props.href || 'Link'));
     };
   }
 });
