@@ -6,48 +6,22 @@ const meta: Meta<typeof Tooltip> = {
   component: Tooltip,
   args: {
     isOpen: true,
-    placement: 'top',
-    variant: 'neutral',
-    showIcon: false
+    children: 'This is a tooltip'
   },
   argTypes: {
-    ariaLabel: {
-      control: 'text'
-    },
-    ariaLabelledby: {
-      control: 'text'
-    },
-    id: {
-      control: 'text'
-    },
-    isOpen: {
-      control: 'boolean'
-    },
     placement: {
-      control: 'select',
-      options: [
-        'top',
-        'right',
-        'bottom',
-        'left'
-      ]
+      control: 'radio',
+      options: ['top', 'bottom', 'left', 'right']
+    },
+    variant: {
+      control: 'radio',
+      options: [undefined, 'neutral', 'info', 'positive', 'negative']
     },
     showIcon: {
       control: 'boolean'
     },
-    state: {
-      table: {
-        disable: true
-      }
-    },
-    variant: {
-      control: 'select',
-      options: [
-        'neutral',
-        'info',
-        'positive',
-        'negative'
-      ]
+    isOpen: {
+      control: {disable: true}
     }
   }
 };
@@ -62,30 +36,19 @@ export const Default: Story = {
     setup() {
       return {args};
     },
-    template: '<Tooltip v-bind="args">Tooltip content</Tooltip>'
+    template: '<Tooltip v-bind="args">{{ args.children }}</Tooltip>'
   })
 };
 
-export const PositiveWithIcon: Story = {
-  ...Default,
+export const LongContent: Story = {
   args: {
-    variant: 'positive',
-    showIcon: true
-  }
-};
-
-export const NegativeRight: Story = {
-  ...Default,
-  args: {
-    variant: 'negative',
-    placement: 'right',
-    showIcon: true
-  }
-};
-
-export const BottomPlacement: Story = {
-  ...Default,
-  args: {
-    placement: 'bottom'
+    children: `
+      Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
+      Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero
+      sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.
+      Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed,
+      commodo vitae, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros
+      ipsum rutrum orci, sagittis tempus lacus enim ac dui.
+    `
   }
 };
