@@ -10,6 +10,9 @@ const CONTROLLED_VALUE = '02:35';
 const meta: Meta<typeof TimeField> = {
   title: 'Date and Time/TimeField',
   component: TimeField,
+  excludeStories: [
+    'render'
+  ],
   args: {
     label: 'Time',
     step: 60
@@ -107,7 +110,6 @@ function renderEvents(args: StoryArgs) {
 
 export const Default: Story = {
   render: () => render(),
-  name: 'default'
 };
 
 export const DefaultValue: Story = {
@@ -115,12 +117,10 @@ export const DefaultValue: Story = {
     ...args,
     modelValue: '20:24'
   }),
-  name: 'defaultValue'
 };
 
 export const ControlledValue: Story = {
   render: (args) => renderControlledValue(args),
-  name: 'controlled value'
 };
 
 export const GranularitySecond: Story = {
@@ -128,7 +128,6 @@ export const GranularitySecond: Story = {
     ...args,
     step: 1
   }),
-  name: 'granularity: second'
 };
 
 export const HourCycle12: Story = {
@@ -137,7 +136,6 @@ export const HourCycle12: Story = {
     modelValue: '00:00',
     description: 'hourCycle: 12'
   }),
-  name: 'hourCycle: 12'
 };
 
 export const HourCycle24: Story = {
@@ -146,7 +144,6 @@ export const HourCycle24: Story = {
     modelValue: '00:00',
     description: 'hourCycle: 24'
   }),
-  name: 'hourCycle: 24'
 };
 
 export const HourCycle12GranularityHour: Story = {
@@ -155,7 +152,6 @@ export const HourCycle12GranularityHour: Story = {
     step: 3600,
     description: 'hourCycle: 12, granularity: hour'
   }),
-  name: 'hourCycle: 12, granularity: hour'
 };
 
 export const HourCycle24GranularityHour: Story = {
@@ -164,7 +160,6 @@ export const HourCycle24GranularityHour: Story = {
     step: 3600,
     description: 'hourCycle: 24, granularity: hour'
   }),
-  name: 'hourCycle: 24, granularity: hour'
 };
 
 export const Zoned: Story = {
@@ -173,7 +168,6 @@ export const Zoned: Story = {
     modelValue: '00:45',
     description: 'zoned'
   }),
-  name: 'zoned'
 };
 
 export const ZonedPlaceholder: Story = {
@@ -181,7 +175,6 @@ export const ZonedPlaceholder: Story = {
     ...args,
     placeholder: '00:45 America/Los_Angeles'
   }),
-  name: 'zoned placeholder'
 };
 
 export const HideTimeZone: Story = {
@@ -190,7 +183,6 @@ export const HideTimeZone: Story = {
     modelValue: '00:45',
     description: 'hideTimeZone'
   }),
-  name: 'hideTimeZone'
 };
 
 export const ForceLeadingZeros: Story = {
@@ -199,7 +191,6 @@ export const ForceLeadingZeros: Story = {
     modelValue: '08:00',
     description: 'shouldForceLeadingZeros'
   }),
-  name: 'shouldForceLeadingZeros'
 };
 
 export const IsDisabled: Story = {
@@ -208,7 +199,6 @@ export const IsDisabled: Story = {
     isDisabled: true,
     modelValue: CONTROLLED_VALUE
   }),
-  name: 'isDisabled'
 };
 
 export const IsQuietIsDisabled: Story = {
@@ -218,7 +208,6 @@ export const IsQuietIsDisabled: Story = {
     isDisabled: true,
     modelValue: CONTROLLED_VALUE
   }),
-  name: 'isQuiet, isDisabled'
 };
 
 export const IsReadOnly: Story = {
@@ -227,7 +216,6 @@ export const IsReadOnly: Story = {
     isReadOnly: true,
     modelValue: CONTROLLED_VALUE
   }),
-  name: 'isReadOnly'
 };
 
 export const AutoFocus: Story = {
@@ -235,7 +223,6 @@ export const AutoFocus: Story = {
     ...args,
     autoFocus: true
   }),
-  name: 'autoFocus'
 };
 
 export const ValidationStateInvalid: Story = {
@@ -244,7 +231,6 @@ export const ValidationStateInvalid: Story = {
     validationState: 'invalid',
     modelValue: CONTROLLED_VALUE
   }),
-  name: 'validationState: invalid'
 };
 
 export const ValidationStateValid: Story = {
@@ -253,7 +239,6 @@ export const ValidationStateValid: Story = {
     validationState: 'valid',
     modelValue: CONTROLLED_VALUE
   }),
-  name: 'validationState: valid'
 };
 
 export const PlaceholderValue8Am: Story = {
@@ -261,7 +246,6 @@ export const PlaceholderValue8Am: Story = {
     ...args,
     placeholder: '08:00'
   }),
-  name: 'placeholderValue: 8 AM'
 };
 
 export const PlaceholderValue1980118AmZoned: Story = {
@@ -269,7 +253,6 @@ export const PlaceholderValue1980118AmZoned: Story = {
     ...args,
     placeholder: '1980/1/1 08:00 America/Los_Angeles'
   }),
-  name: 'placeholderValue: 1980/1/1 8AM, zoned'
 };
 
 export const MinValue8Am: Story = {
@@ -277,7 +260,6 @@ export const MinValue8Am: Story = {
     ...args,
     min: '08:00'
   }),
-  name: 'minValue: 8 AM'
 };
 
 export const MaxValue8Pm: Story = {
@@ -285,7 +267,6 @@ export const MaxValue8Pm: Story = {
     ...args,
     max: '20:00'
   }),
-  name: 'maxValue: 8 PM'
 };
 
 export const MinValue8AmMaxValue8Pm: Story = {
@@ -294,10 +275,8 @@ export const MinValue8AmMaxValue8Pm: Story = {
     min: '08:00',
     max: '20:00'
   }),
-  name: 'minValue: 8 AM, maxValue: 8 PM'
 };
 
 export const AllTheEvents: Story = {
   render: (args) => renderEvents(args),
-  name: 'all the events'
 };

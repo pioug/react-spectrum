@@ -59,6 +59,9 @@ const LOCALE_PREFERENCES = [
 const meta: Meta<typeof DateRangePicker> = {
   title: 'Date and Time/DateRangePicker',
   component: DateRangePicker,
+  excludeStories: [
+    'render'
+  ],
   args: {
     label: 'Date range'
   },
@@ -297,77 +300,62 @@ function renderCalendarPreferencesExample(args: StoryArgs, note = '') {
 
 export const Default: Story = {
   render: (args) => render(args),
-  name: 'default'
 };
 
 export const DefaultValue: Story = {
   render: (args) => render(withRange(args, DEFAULT_RANGE)),
-  name: 'defaultValue'
 };
 
 export const ControlledValue: Story = {
   render: (args) => renderControlledExample(args),
-  name: 'controlled value'
 };
 
 export const DefaultValueZoned: Story = {
   render: (args) => render(withRange(args, DEFAULT_ZONED_RANGE)),
-  name: 'defaultValue, zoned'
 };
 
 export const GranularityMinute: Story = {
   render: (args) => render({...args, description: 'Granularity: minute'}),
-  name: 'granularity: minute'
 };
 
 export const GranularitySecond: Story = {
   render: (args) => render({...args, description: 'Granularity: second'}),
-  name: 'granularity: second'
 };
 
 export const HourCycle12: Story = {
   render: (args) => render({...args, description: 'Hour cycle: 12'}),
-  name: 'hourCycle: 12'
 };
 
 export const HourCycle24: Story = {
   render: (args) => render({...args, description: 'Hour cycle: 24'}),
-  name: 'hourCycle: 24'
 };
 
 export const ForceLeadingZeros: Story = {
   render: (args) => render(withRange({...args, description: 'Forces leading zeros in segment formatting.'}, DEFAULT_RANGE)),
-  name: 'shouldForceLeadingZeros'
 };
 
 export const IsDisabled: Story = {
   render: (args) => render(withRange({...args, isDisabled: true}, DEFAULT_RANGE)),
-  name: 'isDisabled'
 };
 
 export const IsQuietIsDisabled: Story = {
   render: (args) => render(withRange({...args, isDisabled: true, isQuiet: true}, DEFAULT_RANGE)),
-  name: 'isQuiet, isDisabled'
 };
 
 export const IsReadOnly: Story = {
   render: (args) => render(withRange({...args, isReadOnly: true}, DEFAULT_RANGE)),
-  name: 'isReadOnly'
 };
 
 export const AutoFocus: Story = {
   render: (args) => render({...args, autoFocus: true}),
-  name: 'autoFocus'
 };
 
 export const ValidationStateInvalid: Story = {
   render: (args) => render(withRange({...args, validationState: 'invalid'}, DEFAULT_RANGE)),
-  name: 'validationState: invalid'
 };
 
 export const ValidationStateValid: Story = {
   render: (args) => render(withRange({...args, validationState: 'valid'}, DEFAULT_RANGE)),
-  name: 'validationState: valid'
 };
 
 export const MinDate201011MaxDate202011: Story = {
@@ -376,12 +364,10 @@ export const MinDate201011MaxDate202011: Story = {
     min: '2010-01-01',
     max: '2020-01-01'
   }),
-  name: 'minDate: 2010/1/1, maxDate: 2020/1/1'
 };
 
 export const IsDateUnavailable: Story = {
   render: (args) => renderUnavailableDatesExample(args),
-  name: 'isDateUnavailable'
 };
 
 export const IsDateAvailableAllowsNonContiguousRanges: Story = {
@@ -389,7 +375,6 @@ export const IsDateAvailableAllowsNonContiguousRanges: Story = {
     ...args,
     description: 'Allows non-contiguous ranges while treating weekends as unavailable.'
   }),
-  name: 'isDateAvailable, allowsNonContiguousRanges'
 };
 
 export const PlaceholderValue198011: Story = {
@@ -397,7 +382,6 @@ export const PlaceholderValue198011: Story = {
     ...args,
     placeholder: '1980-01-01'
   }),
-  name: 'placeholderValue: 1980/1/1'
 };
 
 export const MaxVisibleMonths2: Story = {
@@ -405,7 +389,6 @@ export const MaxVisibleMonths2: Story = {
     ...args,
     description: 'Max visible months: 2'
   }),
-  name: 'maxVisibleMonths: 2'
 };
 
 export const MaxVisibleMonths3: Story = {
@@ -413,7 +396,6 @@ export const MaxVisibleMonths3: Story = {
     ...args,
     description: 'Max visible months: 3'
   }),
-  name: 'maxVisibleMonths: 3'
 };
 
 export const ShowFormatHelpText: Story = {
@@ -421,15 +403,12 @@ export const ShowFormatHelpText: Story = {
     ...args,
     description: 'Help text: expected input format is YYYY-MM-DD.'
   }),
-  name: 'showFormatHelpText'
 };
 
 export const AllTheEvents: Story = {
   render: (args) => renderEventExample(args),
-  name: 'all the events'
 };
 
 export const CustomCalendar: Story = {
   render: (args) => renderCalendarPreferencesExample(args, 'Custom 4-5-4 calendar scenario preview'),
-  name: 'custom calendar'
 };
