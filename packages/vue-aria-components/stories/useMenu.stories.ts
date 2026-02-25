@@ -1,7 +1,8 @@
 import {action} from '@storybook/addon-actions';
-import {computed, ref} from 'vue';
-import {useMenu, useMenuItem} from '@vue-aria/menu';
+import {computed, ref, type Ref} from 'vue';
 import {useInteractOutside} from '@vue-aria/interactions';
+import {useMenu, useMenuItem, useMenuTrigger} from '@vue-aria/menu';
+import {useOverlay} from '@vue-aria/overlays';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type MenuOption = {
@@ -22,90 +23,120 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function createMenu(menuLabel: string) {
+function createMenuState(
+  label: string,
+  onInteractOutsideName: string,
+  overlayRef: Ref<HTMLElement | null>
+) {
+  let menuTrigger = useMenuTrigger();
   let menu = useMenu({
-    'aria-label': menuLabel,
-    onAction: action(`${menuLabel} onAction`)
+    'aria-label': label,
+    onAction: action(`${label} onAction`)
   });
 
-  let itemHooks = menuOptions.map((option) => {
-    let item = useMenuItem({key: option.key}, menu);
-    return computed(() => ({
-      key: option.key,
-      label: option.label,
-      props: item.menuItemProps.value,
-      isFocused: item.isFocused.value,
-      isSelected: item.isSelected.value
-    }));
+  useInteractOutside({
+    ref: overlayRef,
+    onInteractOutside: action(onInteractOutsideName)
   });
+
+  let overlay = useOverlay({
+    isDismissable: true,
+    isOpen: menuTrigger.isOpen,
+    onClose: () => {
+      menuTrigger.close();
+    },
+    overlayRef,
+    shouldCloseOnBlur: true
+  });
+
+  let itemMap = new Map(menuOptions.map((option) => [
+    option.key,
+    useMenuItem({
+      key: option.key,
+      onAction: () => {
+        menuTrigger.close();
+      }
+    }, menu)
+  ]));
 
   return {
-    menuProps: menu.menuProps,
-    items: computed(() => itemHooks.map((item) => item.value))
+    isOpen: menuTrigger.isOpen,
+    menuProps: computed(() => ({
+      ...menu.menuProps.value,
+      ...menuTrigger.menuProps.value,
+      ...overlay.overlayProps.value
+    })),
+    menuTriggerProps: menuTrigger.menuTriggerProps,
+    getItemProps: (key: string) => itemMap.get(key)?.menuItemProps.value,
+    isFocused: (key: string) => Boolean(itemMap.get(key)?.isFocused.value)
   };
 }
 
 export const DoubleMenuFiresOnInteractOutside: Story = {
   render: () => ({
     setup() {
-      let firstMenuRef = ref<HTMLElement | null>(null);
-      let secondMenuRef = ref<HTMLElement | null>(null);
+      let firstOverlayRef = ref<HTMLElement | null>(null);
+      let secondOverlayRef = ref<HTMLElement | null>(null);
 
-      useInteractOutside({
-        ref: firstMenuRef,
-        onInteractOutside: action('menu 1 onInteractOutside')
-      });
-      useInteractOutside({
-        ref: secondMenuRef,
-        onInteractOutside: action('menu 2 onInteractOutside')
-      });
-
-      let firstMenu = createMenu('Actions');
-      let secondMenu = createMenu('Actions2');
+      let firstMenu = createMenuState('Actions', 'onInteractOutside', firstOverlayRef);
+      let secondMenu = createMenuState('Actions2', 'onInteractOutside', secondOverlayRef);
 
       return {
         firstMenu,
-        firstMenuRef,
+        firstOverlayRef,
+        menuOptions,
         secondMenu,
-        secondMenuRef
+        secondOverlayRef
       };
     },
     template: `
-      <div style="display: grid; gap: 12px; max-width: 420px;">
+      <div style="display: grid; gap: 8px;">
         <div>
           This should just be there to show that onInteractOutside fires when clicking on another trigger.
         </div>
         <div style="display: flex; gap: 12px;">
-          <div ref="firstMenuRef" style="display: inline-block;">
-            <button type="button" aria-haspopup="menu">Actions</button>
-            <ul
-              v-bind="firstMenu.menuProps"
-              style="margin-top: 6px; border: 1px solid #8f8f8f; list-style: none; padding: 4px;">
-              <li
-                v-for="item in firstMenu.items"
-                :key="item.key"
-                v-bind="item.props"
-                :style="{padding: '4px 8px', cursor: 'pointer', background: item.isFocused ? '#e5e5e5' : 'transparent'}">
-                {{item.label}}
-              </li>
-            </ul>
+          <div style="position: relative; display: inline-block;">
+            <button v-bind="firstMenu.menuTriggerProps" type="button" style="height: 30px; font-size: 14px;">
+              Actions
+              <span aria-hidden="true" style="padding-left: 5px;">▼</span>
+            </button>
+            <div v-if="firstMenu.isOpen" ref="firstOverlayRef">
+              <ul
+                v-bind="firstMenu.menuProps"
+                style="position: absolute; width: 100%; margin: 4px 0 0 0; padding: 0; list-style: none; border: 1px solid gray; background: lightgray;">
+                <li
+                  v-for="option in menuOptions"
+                  :key="option.key"
+                  v-bind="firstMenu.getItemProps(option.key)"
+                  :style="{background: firstMenu.isFocused(option.key) ? 'gray' : 'transparent', color: firstMenu.isFocused(option.key) ? 'white' : 'black', padding: '2px 5px', outline: 'none', cursor: 'pointer'}"
+                  tabindex="0">
+                  {{option.label}}
+                </li>
+              </ul>
+            </div>
           </div>
-          <div ref="secondMenuRef" style="display: inline-block;">
-            <button type="button" aria-haspopup="menu">Actions2</button>
-            <ul
-              v-bind="secondMenu.menuProps"
-              style="margin-top: 6px; border: 1px solid #8f8f8f; list-style: none; padding: 4px;">
-              <li
-                v-for="item in secondMenu.items"
-                :key="item.key"
-                v-bind="item.props"
-                :style="{padding: '4px 8px', cursor: 'pointer', background: item.isFocused ? '#e5e5e5' : 'transparent'}">
-                {{item.label}}
-              </li>
-            </ul>
+          <div style="position: relative; display: inline-block;">
+            <button v-bind="secondMenu.menuTriggerProps" type="button" style="height: 30px; font-size: 14px;">
+              Actions2
+              <span aria-hidden="true" style="padding-left: 5px;">▼</span>
+            </button>
+            <div v-if="secondMenu.isOpen" ref="secondOverlayRef">
+              <ul
+                v-bind="secondMenu.menuProps"
+                style="position: absolute; width: 100%; margin: 4px 0 0 0; padding: 0; list-style: none; border: 1px solid gray; background: lightgray;">
+                <li
+                  v-for="option in menuOptions"
+                  :key="option.key"
+                  v-bind="secondMenu.getItemProps(option.key)"
+                  :style="{background: secondMenu.isFocused(option.key) ? 'gray' : 'transparent', color: secondMenu.isFocused(option.key) ? 'white' : 'black', padding: '2px 5px', outline: 'none', cursor: 'pointer'}"
+                  tabindex="0">
+                  {{option.label}}
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
-        <input aria-label="input after" />
+        <input aria-label="input after">
       </div>
     `
   }),
