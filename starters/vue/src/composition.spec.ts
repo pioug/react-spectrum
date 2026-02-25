@@ -3299,6 +3299,46 @@ describe('Vue migration composition components', () => {
     expect(manager.focusedKey).toBe('item-3');
   });
 
+  it('supports selectable-list disallow-empty and replace behaviors', () => {
+    let singleSelectedKeys = ref(new Set<string>(['react']));
+    let singleList = useAriaSelectableList({
+      disallowEmptySelection: true,
+      selectedKeys: singleSelectedKeys,
+      selectionMode: 'single'
+    });
+
+    singleList.selectionManager.select('react');
+    expect(Array.from(singleSelectedKeys.value)).toEqual(['react']);
+
+    singleList.selectionManager.select('vue');
+    expect(Array.from(singleSelectedKeys.value)).toEqual(['vue']);
+
+    let singleToggleList = useAriaSelectableList({
+      selectedKeys: singleSelectedKeys,
+      selectionMode: 'single'
+    });
+    singleToggleList.selectionManager.select('vue');
+    expect(Array.from(singleSelectedKeys.value)).toEqual([]);
+
+    let replaceSelectedKeys = ref(new Set<string>(['react', 'svelte']));
+    let replaceList = useAriaSelectableList({
+      selectedKeys: replaceSelectedKeys,
+      selectionBehavior: 'replace',
+      selectionMode: 'multiple'
+    });
+    replaceList.selectionManager.select('vue');
+    expect(Array.from(replaceSelectedKeys.value)).toEqual(['vue']);
+
+    let disallowEmptyKeys = ref(new Set<string>(['vue']));
+    let disallowEmptyMultiList = useAriaSelectableList({
+      disallowEmptySelection: true,
+      selectedKeys: disallowEmptyKeys,
+      selectionMode: 'multiple'
+    });
+    disallowEmptyMultiList.selectionManager.select('vue');
+    expect(Array.from(disallowEmptyKeys.value)).toEqual(['vue']);
+  });
+
   it('computes vue-aria separator role and orientation semantics', () => {
     let verticalSeparator = useAriaSeparator({
       orientation: 'vertical'
