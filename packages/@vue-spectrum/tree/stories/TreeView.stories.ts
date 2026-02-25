@@ -184,7 +184,7 @@ export const WithLinks: Story = {
       }))
     }))
   },
-  name: 'Tree with links'
+  name: 'With Links'
 };
 
 export const EmptyTree: Story = {

@@ -93,28 +93,23 @@ function renderDropZone(baseArgs: Record<string, unknown> = {}, includeDraggable
 }
 
 export const WithDraggable: Story = {
-  render: renderDropZone({}, true),
-  name: 'with Draggable'
+  render: renderDropZone({}, true)
 };
 
 export const CustomAriaLabel: Story = {
-  render: renderDropZone({'aria-label': 'custom label'}, true),
-  name: 'custom Aria Label'
+  render: renderDropZone({'aria-label': 'custom label'}, true)
 };
 
 export const WithButton: Story = {
-  render: renderDropZone({}, false, true),
-  name: 'with Button'
+  render: renderDropZone({}, false, true)
 };
 
 export const CustomBannerMessage: Story = {
-  render: renderDropZone({replaceMessage: 'This is a custom message'}),
-  name: 'custom Banner Message'
+  render: renderDropZone({replaceMessage: 'This is a custom message'})
 };
 
 export const AcceptsMultiple: Story = {
-  render: renderDropZone({multiple: true}),
-  name: 'accepts Multiple'
+  render: renderDropZone({multiple: true})
 };
 
 export const FilledDropzone: Story = {
@@ -125,7 +120,6 @@ export const FilledDropzone: Story = {
     },
     template: '<DropZone v-bind="args"><img alt="a starry sky" src="https://i.imgur.com/DhygPot.jpg" style="max-width: 100%; border-radius: 4px;" /></DropZone>'
   }),
-  name: 'filled Dropzone',
   args: {
     isFilled: true
   }
