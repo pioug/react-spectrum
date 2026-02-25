@@ -29,6 +29,9 @@ export interface GridElementProps {
   'aria-multiselectable'?: 'true',
   'aria-rowcount'?: number,
   id: string,
+  onFocusin: () => void,
+  onFocusout: (event: FocusEvent) => void,
+  onKeyDown: (event: KeyboardEvent) => void,
   role: 'grid',
   tabindex?: -1 | 0
 }
@@ -120,6 +123,89 @@ export function useGrid(options: AriaGridOptions): GridAria {
     focusedKey.value = key;
   };
 
+  let getRowKey = (key: GridKey): GridKey | null => {
+    let row = collection.value.rows.find((entry) => entry.key === key);
+    if (row) {
+      return row.key;
+    }
+
+    for (let candidate of collection.value.rows) {
+      if (candidate.cells.some((cell) => cell.key === key)) {
+        return candidate.key;
+      }
+    }
+
+    return null;
+  };
+
+  let onKeyDown = (event: KeyboardEvent) => {
+    let delegate = keyboardDelegate.value;
+    let currentKey = focusedKey.value;
+    let nextKey: GridKey | null = null;
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        nextKey = currentKey != null ? delegate.getKeyBelow(currentKey) : delegate.getFirstKey();
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        nextKey = currentKey != null ? delegate.getKeyAbove(currentKey) : delegate.getLastKey();
+        break;
+      case 'ArrowLeft':
+        event.preventDefault();
+        nextKey = currentKey != null ? delegate.getKeyLeftOf(currentKey) : delegate.getFirstKey();
+        break;
+      case 'ArrowRight':
+        event.preventDefault();
+        nextKey = currentKey != null ? delegate.getKeyRightOf(currentKey) : delegate.getFirstKey();
+        break;
+      case 'Home':
+        event.preventDefault();
+        nextKey = delegate.getFirstKey();
+        break;
+      case 'End':
+        event.preventDefault();
+        nextKey = delegate.getLastKey();
+        break;
+      case ' ':
+      case 'Spacebar': {
+        event.preventDefault();
+        if (selectionMode.value === 'none' || currentKey == null) {
+          return;
+        }
+
+        let rowKey = getRowKey(currentKey);
+        if (rowKey != null) {
+          toggleSelection(rowKey);
+        }
+        return;
+      }
+      default:
+        return;
+    }
+
+    if (nextKey != null) {
+      setFocused(true);
+      setFocusedKey(nextKey);
+    }
+  };
+
+  let onFocusin = () => {
+    setFocused(true);
+    if (focusedKey.value == null) {
+      setFocusedKey(keyboardDelegate.value.getFirstKey());
+    }
+  };
+
+  let onFocusout = (event: FocusEvent) => {
+    let currentTarget = event.currentTarget as HTMLElement | null;
+    let relatedTarget = event.relatedTarget as Node | null;
+    if (!currentTarget || !relatedTarget || !currentTarget.contains(relatedTarget)) {
+      setFocused(false);
+    }
+  };
+
   let triggerRowAction = (key: GridKey) => {
     options.onRowAction?.(key);
   };
@@ -133,9 +219,9 @@ export function useGrid(options: AriaGridOptions): GridAria {
     let rows = collection.value.rows;
     let resolvedColumnCount = collection.value.columnCount
       ?? rows.reduce((max, row) => Math.max(max, row.cells.length), 0);
-    let tabIndex: -1 | 0 | undefined;
-    if (rows.length === 0) {
-      tabIndex = hasTabbableChild.value ? -1 : 0;
+    let tabIndex: -1 | 0 | undefined = hasTabbableChild.value ? -1 : 0;
+    if (rows.length === 0 && hasTabbableChild.value) {
+      tabIndex = -1;
     }
 
     return {
@@ -146,7 +232,10 @@ export function useGrid(options: AriaGridOptions): GridAria {
       'aria-multiselectable': selectionMode.value === 'multiple' ? 'true' : undefined,
       'aria-rowcount': isVirtualized.value ? rows.length : undefined,
       'aria-colcount': isVirtualized.value ? resolvedColumnCount : undefined,
-      tabindex: tabIndex
+      tabindex: tabIndex,
+      onKeyDown,
+      onFocusin,
+      onFocusout
     };
   });
 

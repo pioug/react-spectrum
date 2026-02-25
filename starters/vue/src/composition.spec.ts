@@ -2482,6 +2482,59 @@ describe('Vue migration composition components', () => {
     expect(rowGroup.rowGroupProps.value.role).toBe('rowgroup');
   });
 
+  it('moves vue-aria grid focus and toggles row selection from keyboard input', () => {
+    let selectedKeys = ref(new Set<string>());
+    let collection = {
+      columnCount: 2,
+      rows: [
+        {
+          key: 'row-1',
+          index: 0,
+          textValue: 'Alpha',
+          cells: [
+            {key: 'row-1-cell-1', colIndex: 0, textValue: 'Alpha'},
+            {key: 'row-1-cell-2', colIndex: 1, textValue: 'Open'}
+          ]
+        },
+        {
+          key: 'row-2',
+          index: 1,
+          textValue: 'Delta',
+          cells: [
+            {key: 'row-2-cell-1', colIndex: 0, textValue: 'Delta'},
+            {key: 'row-2-cell-2', colIndex: 1, textValue: 'Closed'}
+          ]
+        }
+      ]
+    };
+
+    let grid = useGrid({
+      ariaLabel: 'Tickets',
+      collection,
+      focusMode: 'cell',
+      selectedKeys,
+      selectionMode: 'multiple'
+    });
+
+    grid.gridProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
+    expect(grid.focusedKey.value).toBe('row-1-cell-1');
+
+    grid.gridProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowRight'}));
+    expect(grid.focusedKey.value).toBe('row-1-cell-2');
+
+    grid.gridProps.value.onKeyDown(new KeyboardEvent('keydown', {key: ' '}));
+    expect(Array.from(selectedKeys.value)).toEqual(['row-1']);
+
+    grid.gridProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
+    expect(grid.focusedKey.value).toBe('row-2-cell-2');
+
+    grid.gridProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Home'}));
+    expect(grid.focusedKey.value).toBe('row-1-cell-1');
+
+    grid.gridProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'End'}));
+    expect(grid.focusedKey.value).toBe('row-2-cell-2');
+  });
+
   it('builds vue-aria grid descriptions, announcements, and keyboard navigation', () => {
     let collection = {
       columnCount: 2,
