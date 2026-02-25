@@ -534,6 +534,31 @@ describe('Vue migration composition components', () => {
     expect(selectedDate.value?.getDate()).toBe(10);
   });
 
+  it('pages vue-aria calendar by visible duration unless pageBehavior is single', () => {
+    let visibleByDuration = ref(new Date(2025, 0, 1));
+    let durationCalendar = useCalendar({
+      visibleDate: visibleByDuration,
+      visibleDuration: {months: 2}
+    });
+
+    durationCalendar.nextPage();
+    expect(visibleByDuration.value.getMonth()).toBe(2);
+    durationCalendar.prevPage();
+    expect(visibleByDuration.value.getMonth()).toBe(0);
+
+    let visibleSingle = ref(new Date(2025, 0, 1));
+    let singleBehaviorCalendar = useCalendar({
+      pageBehavior: 'single',
+      visibleDate: visibleSingle,
+      visibleDuration: {months: 2}
+    });
+
+    singleBehaviorCalendar.nextPage();
+    expect(visibleSingle.value.getMonth()).toBe(1);
+    singleBehaviorCalendar.prevPage();
+    expect(visibleSingle.value.getMonth()).toBe(0);
+  });
+
   it('builds calendar grid and cell selection for date and range flows', () => {
     let visibleDate = ref(new Date(2025, 0, 1));
     let calendar = useCalendar({visibleDate});
