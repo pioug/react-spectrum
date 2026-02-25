@@ -76,7 +76,7 @@ const ActionBarExample = defineComponent({
     };
 
     let handleAction = (key: string) => {
-      if (key === 'Delete') {
+      if (key === 'delete') {
         let selected = new Set(selectedKeys.value);
         rows.value = rows.value.filter((row) => !selected.has(row.id));
         selectedKeys.value = [];
@@ -180,6 +180,6 @@ export const DisabledKeysStory: ActionBarStory = {
     setup() {
       return {args};
     },
-    template: '<ActionBarExample v-bind="args" :disabled-keys="[\'Edit\']" />'
+    template: '<ActionBarExample v-bind="args" :disabled-keys="[\'edit\']" />'
   })
 };

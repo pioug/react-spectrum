@@ -4,6 +4,7 @@ import {nextTick} from 'vue';
 import {Avatar} from '@vue-spectrum/avatar';
 import {Badge} from '@vue-spectrum/badge';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
+import {ActionBar} from '@vue-spectrum/actionbar';
 import {Breadcrumbs} from '@vue-spectrum/breadcrumbs';
 import {Button, ToggleButton} from '@vue-spectrum/button';
 import {ButtonGroup} from '@vue-spectrum/buttongroup';
@@ -643,6 +644,23 @@ describe('Vue migration primitives', () => {
       getBoundingClientRectSpy.mockRestore();
       vi.unstubAllGlobals();
     }
+  });
+
+  it('normalizes actionbar action keys and disabled key mapping', async () => {
+    let wrapper = mount(ActionBar, {
+      props: {
+        selectedItemCount: 1,
+        items: ['Edit', 'Copy'],
+        disabledKeys: ['edit']
+      }
+    });
+
+    let actionButtons = wrapper.findAll('button.vs-action-group__item');
+    expect(actionButtons).toHaveLength(2);
+    expect(actionButtons[0].attributes('disabled')).toBeDefined();
+
+    await actionButtons[1].trigger('click');
+    expect(wrapper.emitted('action')?.[0]).toEqual(['copy']);
   });
 
   it('maps breadcrumbs hovered/focus-ring/disabled states', async () => {
@@ -1534,6 +1552,34 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('sortChange')?.[0]).toEqual([{column: 'name', direction: 'descending'}]);
     expect(wrapper.find('.vs-table__insertion-indicator').exists()).toBe(true);
     expect(wrapper.find('[hidden][aria-hidden=\"true\"]').exists()).toBe(true);
+  });
+
+  it('renders selection checkbox column and select-all behavior in multiple mode', async () => {
+    let wrapper = mount(Table, {
+      props: {
+        selectionMode: 'multiple',
+        modelValue: [],
+        columns: [
+          {key: 'name', label: 'Name'},
+          {key: 'license', label: 'License'}
+        ],
+        rows: [
+          {id: 1, name: 'Vue', license: 'MIT'},
+          {id: 2, name: 'React', license: 'MIT'}
+        ]
+      }
+    });
+
+    let selectAll = wrapper.get('thead input.vs-table__selection-checkbox');
+    let rowSelection = wrapper.findAll('tbody.vs-table__body input.vs-table__selection-checkbox');
+    expect(rowSelection).toHaveLength(2);
+    expect(wrapper.findAll('th.vs-table__head-cell--selection')).toHaveLength(1);
+
+    await selectAll.setValue(true);
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([[1, 2]]);
+
+    await rowSelection[0].setValue(true);
+    expect(wrapper.emitted('update:modelValue')?.[1]).toEqual([[1]]);
   });
 
   it('updates model value from calendar date input', async () => {

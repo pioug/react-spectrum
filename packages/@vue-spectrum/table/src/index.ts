@@ -180,6 +180,30 @@ export const Table = defineComponent({
 
     let selectedSet = computed(() => new Set(normalizeSelectedValue(props.modelValue)));
     let openSet = computed(() => new Set(props.openKeys));
+    let hasMultipleSelection = computed(() => props.selectionMode === 'multiple');
+    let selectionColumnOffset = computed(() => hasMultipleSelection.value ? 1 : 0);
+    let selectableRowIds = computed(() => props.rows.reduce<Array<number | string>>((acc, row, rowIndex) => {
+      if (props.isDisabled || row.disabled) {
+        return acc;
+      }
+
+      acc.push(getRowId(row, rowIndex, props.rowKey));
+      return acc;
+    }, []));
+    let allRowsSelected = computed(() => {
+      if (!hasMultipleSelection.value || selectableRowIds.value.length === 0) {
+        return false;
+      }
+
+      return selectableRowIds.value.every((rowId) => selectedSet.value.has(rowId));
+    });
+    let someRowsSelected = computed(() => {
+      if (!hasMultipleSelection.value || selectableRowIds.value.length === 0 || allRowsSelected.value) {
+        return false;
+      }
+
+      return selectableRowIds.value.some((rowId) => selectedSet.value.has(rowId));
+    });
 
     let onSelectRow = (row: TableRow, rowId: number | string) => {
       if (props.isDisabled || row.disabled || props.selectionMode === 'none') {
@@ -236,6 +260,19 @@ export const Table = defineComponent({
       });
     };
 
+    let onToggleSelectAll = (isChecked: boolean) => {
+      if (!hasMultipleSelection.value) {
+        return;
+      }
+
+      if (!isChecked) {
+        emit('update:modelValue', []);
+        return;
+      }
+
+      emit('update:modelValue', selectableRowIds.value.slice());
+    };
+
     return () => {
       let rootClassName = classNames(
         styles,
@@ -266,7 +303,45 @@ export const Table = defineComponent({
             h('tr', {
               class: [classNames(styles, 'spectrum-Table-head'), 'vs-table__head-row'],
               role: 'row'
-            }, props.columns.map((column, columnIndex) => {
+            }, [
+              hasMultipleSelection.value
+                ? h('th', {
+                  key: '__selection__',
+                  role: 'columnheader',
+                  class: [
+                    classNames(styles, 'spectrum-Table-headCell', 'spectrum-Table-checkboxCell'),
+                    'vs-table__head-cell',
+                    'vs-table__head-cell--selection'
+                  ],
+                  'aria-colindex': 1
+                }, [
+                  h('input', {
+                    class: 'vs-table__selection-checkbox',
+                    type: 'checkbox',
+                    checked: allRowsSelected.value,
+                    disabled: props.isDisabled || selectableRowIds.value.length === 0,
+                    'aria-label': 'Select all',
+                    ref: (element: Element | null) => {
+                      if (element instanceof HTMLInputElement) {
+                        element.indeterminate = someRowsSelected.value && !allRowsSelected.value;
+                      }
+                    },
+                    onClick: (event: Event) => {
+                      event.stopPropagation();
+                    },
+                    onMousedown: (event: Event) => {
+                      event.stopPropagation();
+                    },
+                    onChange: (event: Event) => {
+                      let target = event.target;
+                      if (target instanceof HTMLInputElement) {
+                        onToggleSelectAll(target.checked);
+                      }
+                    }
+                  })
+                ])
+                : null,
+              ...props.columns.map((column, columnIndex) => {
               let isResizable = column.resizable || props.resizableColumns.includes(column.key);
               let isSortable = !!column.sortable;
               let isSortedAsc = props.sortDescriptor?.column === column.key && props.sortDescriptor.direction === 'ascending';
@@ -301,7 +376,7 @@ export const Table = defineComponent({
                 key: column.key,
                 role: 'columnheader',
                 class: [headerClassName, alignClassName, 'vs-table__head-cell'],
-                'aria-colindex': columnIndex + 1,
+                'aria-colindex': columnIndex + 1 + selectionColumnOffset.value,
                 'aria-colspan': column.colspan,
                 'aria-level': column.level,
                 'aria-posinset': column.posInSet,
@@ -338,7 +413,8 @@ export const Table = defineComponent({
                   })
                   : null
               ]);
-            }))
+            })
+            ])
           ]),
           h('tbody', {class: 'vs-table__body', role: 'rowgroup'}, props.rows.length > 0
             ? props.rows.map((row, rowIndex) => {
@@ -415,7 +491,37 @@ export const Table = defineComponent({
                   activeRow.value = null;
                   onSelectRow(row, rowId);
                 }
-              }, props.columns.map((column, columnIndex) => {
+              }, [
+                hasMultipleSelection.value
+                  ? h('td', {
+                    key: `${String(rowId)}-selection`,
+                    role: 'gridcell',
+                    class: [
+                      classNames(styles, 'spectrum-Table-cell', 'spectrum-Table-checkboxCell'),
+                      'vs-table__cell',
+                      'vs-table__cell--selection'
+                    ],
+                    'aria-colindex': 1
+                  }, [
+                    h('input', {
+                      class: 'vs-table__selection-checkbox',
+                      type: 'checkbox',
+                      checked: isRowSelected,
+                      disabled: isRowDisabled,
+                      'aria-label': `Select row ${rowIndex + 1}`,
+                      onClick: (event: Event) => {
+                        event.stopPropagation();
+                      },
+                      onMousedown: (event: Event) => {
+                        event.stopPropagation();
+                      },
+                      onChange: () => {
+                        onSelectRow(row, rowId);
+                      }
+                    })
+                  ])
+                  : null,
+                ...props.columns.map((column, columnIndex) => {
                 let cellVisibility = row.visible === false ? 'hidden' : 'visible';
                 let alignClassName = column.align
                   ? `react-spectrum-Table-cell--align${column.align[0].toUpperCase()}${column.align.slice(1)}`
@@ -426,7 +532,7 @@ export const Table = defineComponent({
                   key: `${String(rowId)}-${column.key}`,
                   role: 'gridcell',
                   class: [classNames(styles, 'spectrum-Table-cell'), alignClassName, 'vs-table__cell'],
-                  'aria-colindex': columnIndex + 1,
+                  'aria-colindex': columnIndex + 1 + selectionColumnOffset.value,
                   'aria-colspan': column.colspan,
                   hidden: isCellHidden,
                   'aria-hidden': isCellHidden ? 'true' : undefined,
@@ -447,14 +553,15 @@ export const Table = defineComponent({
                     : null,
                   h('span', {class: 'vs-table__cell-text'}, getCellTextValue(row, column.key))
                 ]);
-              }));
+              })
+              ]);
             })
             : [
               h('tr', {class: ['vs-table__row', 'is-empty'], role: 'row', key: 'empty'}, [
                 h('td', {
                   class: ['vs-table__cell', classNames(styles, 'spectrum-Table-cell')],
                   role: 'gridcell',
-                  'aria-colspan': Math.max(1, props.columns.length)
+                  'aria-colspan': Math.max(1, props.columns.length + selectionColumnOffset.value)
                 }, 'No rows')
               ])
             ]),
@@ -469,7 +576,7 @@ export const Table = defineComponent({
             }, [
               h('td', {
                 role: 'gridcell',
-                'aria-colspan': Math.max(1, props.columns.length),
+                'aria-colspan': Math.max(1, props.columns.length + selectionColumnOffset.value),
                 'aria-selected': 'false'
               }, [
                 h('div', {

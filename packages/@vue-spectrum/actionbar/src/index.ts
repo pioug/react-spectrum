@@ -3,6 +3,10 @@ import {ActionButton} from '@vue-spectrum/button';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
 import {computed, defineComponent, h, type PropType} from 'vue';
 
+function normalizeActionKey(value: string): string {
+  return value.trim().toLowerCase().replace(/\s+/g, '');
+}
+
 export const ActionBar = defineComponent({
   name: 'VueActionBar',
   inheritAttrs: false,
@@ -68,6 +72,14 @@ export const ActionBar = defineComponent({
       }
     ]);
 
+    let resolvedDisabledKeys = computed(() => {
+      let disabledKeys = new Set(props.disabledKeys);
+      let normalizedDisabledKeys = new Set(props.disabledKeys.map((key) => normalizeActionKey(key)));
+      return props.items.filter((item) => {
+        return disabledKeys.has(item) || normalizedDisabledKeys.has(normalizeActionKey(item));
+      });
+    });
+
     return () => {
       if (!isOpen.value) {
         return null;
@@ -84,9 +96,9 @@ export const ActionBar = defineComponent({
           overflowMode: 'collapse',
           buttonLabelBehavior: props.buttonLabelBehavior,
           staticColor: isEmphasized.value ? 'white' : undefined,
-          disabledKeys: props.disabledKeys,
+          disabledKeys: resolvedDisabledKeys.value,
           disabled: false,
-          onAction: (key: string) => emit('action', key)
+          onAction: (key: string) => emit('action', normalizeActionKey(key))
         }, {
           item: ({item}: {item: string}) => h('span', {
             class: 'vs-action-bar__action'
