@@ -25,6 +25,14 @@ import {
   AutocompleteWithListbox,
   AutocompleteWithVirtualizedListbox
 } from '../../../packages/vue-aria-components/stories/Autocomplete.stories';
+import {
+  AsyncVirtualizedCollectionRenderSelect,
+  SelectExample,
+  SelectManyItems,
+  SelectRenderProps,
+  SelectWithTagGroup,
+  VirtualizedSelect
+} from '../../../packages/vue-aria-components/stories/Select.stories';
 
 function expectExcluded(meta: unknown, storyName: string) {
   let excludeStories = (meta as {excludeStories?: string[]}).excludeStories;
@@ -169,5 +177,49 @@ describe('Vue storybook helper parity', () => {
     let dynamicDialogStory = AutocompleteMenuInPopoverDialogTrigger.render?.({}) as ReturnType<Exclude<typeof AutocompleteMenuInPopoverDialogTrigger.render, undefined>>;
     let dynamicDialogWrapper = mount(dynamicDialogStory);
     expect(dynamicDialogWrapper.text()).toContain('Command Palette');
+  });
+
+  it('renders select stories with live open and selection behavior', async () => {
+    let selectStory = SelectExample({selectionMode: 'single'});
+    let selectWrapper = mount(selectStory);
+    expect(selectWrapper.find('.menu').exists()).toBe(false);
+
+    await selectWrapper.get('button.react-aria-Button').trigger('click');
+    expect(selectWrapper.find('.menu').exists()).toBe(true);
+    await selectWrapper.findAll('.item')[1].trigger('click');
+    await nextTick();
+    expect(selectWrapper.get('.react-aria-SelectValue').text()).toBe('Bar');
+
+    let renderPropsStory = SelectRenderProps({selectionMode: 'multiple'});
+    let renderPropsWrapper = mount(renderPropsStory);
+    await renderPropsWrapper.get('button.react-aria-Button').trigger('click');
+    await renderPropsWrapper.findAll('.item')[0].trigger('click');
+    await renderPropsWrapper.findAll('.item')[1].trigger('click');
+    expect(renderPropsWrapper.get('.react-aria-SelectValue').text()).toBe('2 selected items');
+    expect(renderPropsWrapper.get('button.react-aria-Button').text()).toContain('▲');
+
+    let tagGroupStory = SelectWithTagGroup({selectionMode: 'multiple'});
+    let tagGroupWrapper = mount(tagGroupStory);
+    await tagGroupWrapper.get('button.react-aria-Button').trigger('click');
+    await tagGroupWrapper.findAll('.item')[0].trigger('click');
+    await tagGroupWrapper.findAll('.item')[1].trigger('click');
+    expect(tagGroupWrapper.findAll('.react-aria-Tag')).toHaveLength(2);
+
+    let manyItemsStory = SelectManyItems({selectionMode: 'single'});
+    let manyItemsWrapper = mount(manyItemsStory);
+    await manyItemsWrapper.get('button.react-aria-Button').trigger('click');
+    expect(manyItemsWrapper.findAll('.item').length).toBeGreaterThan(40);
+
+    let virtualizedStory = VirtualizedSelect({selectionMode: 'single'});
+    let virtualizedWrapper = mount(virtualizedStory);
+    await virtualizedWrapper.get('button.react-aria-Button').trigger('click');
+    expect(virtualizedWrapper.findAll('.item').length).toBeGreaterThan(80);
+
+    let asyncStory = AsyncVirtualizedCollectionRenderSelect.render?.({delay: 0}) as ReturnType<Exclude<typeof AsyncVirtualizedCollectionRenderSelect.render, undefined>>;
+    let asyncWrapper = mount(asyncStory);
+    await asyncWrapper.get('button.react-aria-Button').trigger('click');
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    await nextTick();
+    expect(asyncWrapper.findAll('.item').length).toBeGreaterThan(0);
   });
 });
