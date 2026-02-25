@@ -169,9 +169,19 @@ const LINK_ITEMS = [
   {key: 'google', label: 'Google (https://google.com)'}
 ];
 
+const UNAVAILABLE_ITEMS = [
+  {key: '1', label: 'One'},
+  {key: 'foo', label: 'Two (unavailable)'},
+  {key: 'baz', label: 'Two point five (unavailable)'},
+  {key: '3', label: 'Three'},
+  {key: 'bar', label: 'Four (unavailable)'},
+  {key: '5', label: 'Five'}
+];
+
 const meta: Meta<typeof MenuTrigger> = {
   title: 'MenuTrigger',
   component: MenuTrigger,
+  excludeStories: ['render'],
   args: {
     label: 'Menu trigger',
     items: SIMPLE_ITEMS,
@@ -234,6 +244,10 @@ function renderMenu(args: StoryArgs) {
     },
     template: '<MenuTrigger v-bind="args" />'
   };
+}
+
+export function render(args: StoryArgs) {
+  return renderMenu(args);
 }
 
 function renderMenuWithNote(args: StoryArgs, note: string) {
@@ -734,6 +748,58 @@ export const WithTranslations: Story = {
     items: TRANSLATED_ITEMS
   },
   name: 'with translations'
+};
+
+export const MenuItemUnavailable: Story = {
+  render: (args) => renderMenuWithNote(args, 'Unavailable item parity scenario'),
+  args: {
+    label: 'Menu',
+    items: UNAVAILABLE_ITEMS
+  }
+};
+
+export const MenuItemUnavailableWithSelection: Story = {
+  render: (args) => renderMenuWithNote(args, 'Unavailable items with selection parity scenario'),
+  args: {
+    label: 'Menu',
+    items: UNAVAILABLE_ITEMS,
+    selectionMode: 'multiple'
+  }
+};
+
+export const MenuItemUnavailableDynamic: Story = {
+  render: (args) => renderMenuWithNote(args, 'Unavailable dynamic items parity scenario'),
+  args: {
+    label: 'Menu',
+    items: FLAT_MENU_ITEMS.map((item) => item === 'Kangaroo' ? `${item} (unavailable)` : item)
+  }
+};
+
+export const MenuItemUnavailableToggling: Story = {
+  render: () => ({
+    components: {ActionButton, MenuTrigger},
+    setup() {
+      let unavailable = ref(false);
+      return {
+        unavailable
+      };
+    },
+    template: `
+      <div style="display: grid; gap: 10px;">
+        <ActionButton @press="unavailable = !unavailable">
+          {{unavailable ? 'Set item two available' : 'Set item two unavailable'}}
+        </ActionButton>
+        <MenuTrigger
+          label="Menu"
+          :items="[
+            {key: '1', label: 'One'},
+            {key: '2', label: unavailable ? 'Two (unavailable)' : 'Two'},
+            {key: '3', label: 'Three'}
+          ]"
+        />
+      </div>
+    `
+  })
 };
 
 export const MenuWithLinks: Story = {
