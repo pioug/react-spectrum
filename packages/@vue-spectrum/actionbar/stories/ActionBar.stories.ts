@@ -179,7 +179,7 @@ export const Default: ActionBarStory = {
   }
 };
 
-export const FullWidth: ActionBarStory = {
+export const FullWidthStory: ActionBarStory = {
   ...Default,
   render: (args) => ({
     components: {ActionBarExample},
@@ -191,7 +191,7 @@ export const FullWidth: ActionBarStory = {
   })
 };
 
-export const DisabledKeys: ActionBarStory = {
+export const DisabledKeysStory: ActionBarStory = {
   ...Default,
   render: (args) => ({
     components: {ActionBarExample},
@@ -200,11 +200,4 @@ export const DisabledKeys: ActionBarStory = {
     },
     template: '<ActionBarExample v-bind="args" :disabled-keys="[\'edit\']" />'
   })
-};
-
-export const Emphasized: ActionBarStory = {
-  ...Default,
-  args: {
-    isEmphasized: true
-  }
 };
