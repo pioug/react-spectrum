@@ -4,7 +4,7 @@
 
 1. React packages are in maintenance mode while Vue migration ports continue.
 2. Storybook parity is still in progress and must be validated manually.
-3. Vue Storybook must stay scoped to `packages/vue-aria-components/stories` parity sources (do not include `@vue-spectrum/*/stories`).
+3. Vue Storybook includes both `@vue-spectrum/*/stories` and `packages/vue-aria-components/stories` sources for parity navigation coverage.
 4. Script-driven parity and migration completion gates were removed.
 5. Completion is not inferred from scripts or checklists.
 

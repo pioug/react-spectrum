@@ -1,7 +1,8 @@
 import type {StorybookConfig} from '@storybook/vue3-vite';
 
-// Keep Vue Storybook scoped to parity stories only.
+// Keep Vue Storybook aligned with top-level Spectrum + React Aria Component parity navigation.
 export const VUE_STORYBOOK_STORY_GLOBS = [
+  '../../../packages/@vue-spectrum/*/stories/*.stories.{js,jsx,ts,tsx}',
   '../../../packages/vue-aria-components/stories/*.stories.{js,jsx,ts,tsx}'
 ];
 
