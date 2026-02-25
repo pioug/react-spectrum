@@ -312,7 +312,13 @@ export const LabelledBy: Story = {
           @update:model-value="selected = $event" />
       </div>
     `
-  })
+  }),
+  name: 'no visible label combination story',
+  parameters: {
+    description: {
+      data: 'Use controls to add/remove a visible label, aria-label, and toggle the aria-labelledby on/off'
+    }
+  }
 };
 
 export const ContextualHelpPicker: Story = {
