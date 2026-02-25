@@ -49,3 +49,10 @@ export const Quiet: Story = {
     isQuiet: true
   }
 };
+
+export const Disabled: Story = {
+  ...Default,
+  args: {
+    disabled: true
+  }
+};

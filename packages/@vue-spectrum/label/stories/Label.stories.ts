@@ -58,3 +58,11 @@ export const Required: Story = {
     isRequired: true
   }
 };
+
+export const AccessibilityIndicator: Story = {
+  ...Default,
+  args: {
+    includeNecessityIndicatorInAccessibilityName: true,
+    isRequired: true
+  }
+};

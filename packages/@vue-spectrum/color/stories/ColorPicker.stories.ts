@@ -49,3 +49,10 @@ export const Disabled: Story = {
     isDisabled: true
   }
 };
+
+export const Open: Story = {
+  ...Default,
+  args: {
+    isOpen: true
+  }
+};

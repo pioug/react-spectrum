@@ -45,3 +45,10 @@ export const CustomScale: Story = {
     scale: 'Story variant'
   }
 };
+
+export const DarkScheme: Story = {
+  ...Default,
+  args: {
+    colorScheme: 'dark'
+  }
+};

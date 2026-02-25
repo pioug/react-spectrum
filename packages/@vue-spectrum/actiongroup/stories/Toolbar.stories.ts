@@ -186,3 +186,11 @@ export const DisabledKeys: ToolbarStory = {
     template: '<ToolbarExample v-bind="args" />'
   })
 };
+
+export const Vertical: ToolbarStory = {
+  ...Default,
+  args: {
+    scenario: 'default',
+    orientation: 'vertical'
+  }
+};

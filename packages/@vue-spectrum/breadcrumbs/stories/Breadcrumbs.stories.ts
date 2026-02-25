@@ -39,3 +39,10 @@ export const Disabled: Story = {
     disabled: true
   }
 };
+
+export const WithCurrent: Story = {
+  ...Default,
+  args: {
+    current: 'Copy'
+  }
+};

@@ -49,3 +49,11 @@ export const CustomLabel: Story = {
     label: 'Story variant'
   }
 };
+
+export const ValueLabel: Story = {
+  ...Default,
+  args: {
+    showValueLabel: true,
+    value: 75
+  }
+};

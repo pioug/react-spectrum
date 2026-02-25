@@ -78,3 +78,10 @@ export const Dismissable: Story = {
     dismissable: true
   }
 };
+
+export const Open: Story = {
+  ...Default,
+  args: {
+    isOpen: true
+  }
+};

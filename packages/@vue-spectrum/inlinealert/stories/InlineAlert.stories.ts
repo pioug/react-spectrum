@@ -43,3 +43,10 @@ export const CustomLabel: Story = {
     label: 'Story variant'
   }
 };
+
+export const CustomTitle: Story = {
+  ...Default,
+  args: {
+    title: 'Story variant'
+  }
+};

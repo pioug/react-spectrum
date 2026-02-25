@@ -31,3 +31,10 @@ export const CustomRole: Story = {
     role: 'Story variant'
   }
 };
+
+export const RegionRole: Story = {
+  ...Default,
+  args: {
+    role: 'region'
+  }
+};

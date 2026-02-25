@@ -42,3 +42,10 @@ export const Disabled: Story = {
     isDisabled: true
   }
 };
+
+export const DisabledAlias: Story = {
+  ...Default,
+  args: {
+    disabled: true
+  }
+};

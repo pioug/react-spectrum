@@ -41,3 +41,11 @@ export const AlternateValidationBehavior: Story = {
     validationBehavior: 'native'
   }
 };
+
+export const SideLabels: Story = {
+  ...Default,
+  args: {
+    labelPosition: 'side',
+    labelAlign: 'end'
+  }
+};

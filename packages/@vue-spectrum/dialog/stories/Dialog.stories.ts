@@ -60,3 +60,10 @@ export const CustomTitle: Story = {
     title: 'Story variant'
   }
 };
+
+export const Open: Story = {
+  ...Default,
+  args: {
+    isOpen: true
+  }
+};

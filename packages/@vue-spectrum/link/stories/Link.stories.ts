@@ -43,3 +43,11 @@ export const Quiet: Story = {
     isQuiet: true
   }
 };
+
+export const External: Story = {
+  ...Default,
+  args: {
+    target: '_blank',
+    rel: 'noreferrer'
+  }
+};

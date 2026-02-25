@@ -44,3 +44,11 @@ export const Hidden: Story = {
     hidden: true
   }
 };
+
+export const CoverFit: Story = {
+  ...Default,
+  args: {
+    fit: 'cover',
+    borderRadius: '8px'
+  }
+};

@@ -44,3 +44,10 @@ export const AlternateVariant: Story = {
     variant: 'info'
   }
 };
+
+export const CustomTitle: Story = {
+  ...Default,
+  args: {
+    title: 'Story variant'
+  }
+};

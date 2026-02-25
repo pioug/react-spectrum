@@ -52,3 +52,10 @@ export const CustomLabel: Story = {
     label: 'Story variant'
   }
 };
+
+export const Disabled: Story = {
+  ...Default,
+  args: {
+    disabled: true
+  }
+};
