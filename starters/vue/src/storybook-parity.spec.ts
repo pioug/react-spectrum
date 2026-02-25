@@ -1,8 +1,15 @@
+import {mount} from '@vue/test-utils';
+import {nextTick} from 'vue';
 import {describe, expect, it} from 'vitest';
 import gridListMeta, {MyGridListItem} from '../../../packages/vue-aria-components/stories/GridList.stories';
 import listBoxMeta, {MyListBoxLoaderIndicator} from '../../../packages/vue-aria-components/stories/ListBox.stories';
 import tableMeta, {DndTable, makePromise, MyCheckbox} from '../../../packages/vue-aria-components/stories/Table.stories';
-import tagGroupMeta, {MyTag} from '../../../packages/vue-aria-components/stories/TagGroup.stories';
+import tagGroupMeta, {
+  EmptyTagGroup,
+  MyTag,
+  TagGroupExample,
+  TagGroupExampleWithRemove
+} from '../../../packages/vue-aria-components/stories/TagGroup.stories';
 import treeMeta, {TreeExampleStaticRender} from '../../../packages/vue-aria-components/stories/Tree.stories';
 
 function expectExcluded(meta: unknown, storyName: string) {
@@ -39,5 +46,27 @@ describe('Vue storybook helper parity', () => {
 
     expect(MyTag({href: 'https://example.com'}).cursor).toBe('pointer');
     expect(TreeExampleStaticRender().template).toContain('tree-item');
+  });
+
+  it('renders live tag group stories with selection, removal, and empty-state roles', async () => {
+    let interactiveStory = TagGroupExample.render?.({selectionMode: 'single'}) as ReturnType<Exclude<typeof TagGroupExample.render, undefined>>;
+    let interactiveWrapper = mount(interactiveStory);
+    let tags = interactiveWrapper.findAll('.react-aria-Tag');
+    expect(tags).toHaveLength(4);
+    expect(interactiveWrapper.get('.react-aria-TagList').attributes('role')).toBe('grid');
+    expect(interactiveWrapper.find('a[href="https://nytimes.com"]').exists()).toBe(true);
+    expect(tags[0].attributes('role')).toBe('row');
+
+    let removableStory = TagGroupExampleWithRemove.render?.({selectionMode: 'none'}) as ReturnType<Exclude<typeof TagGroupExampleWithRemove.render, undefined>>;
+    let removableWrapper = mount(removableStory);
+    expect(removableWrapper.findAll('button[slot="remove"]')).toHaveLength(4);
+    await removableWrapper.find('button[slot="remove"]').trigger('click');
+    await nextTick();
+    expect(removableWrapper.findAll('.react-aria-Tag')).toHaveLength(3);
+
+    let emptyStory = EmptyTagGroup.render?.({selectionMode: 'none'}) as ReturnType<Exclude<typeof EmptyTagGroup.render, undefined>>;
+    let emptyWrapper = mount(emptyStory);
+    expect(emptyWrapper.get('.react-aria-TagList').attributes('role')).toBe('group');
+    expect(emptyWrapper.text()).toContain('No categories.');
   });
 });

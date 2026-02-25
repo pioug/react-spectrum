@@ -1,4 +1,13 @@
+import {action} from '@storybook/addon-actions';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
+import {computed, defineComponent, ref, type PropType} from 'vue';
+import {type TagGroupAria, type TagGroupItemNode, useTag, useTagGroup} from '@vue-aria/tag';
+
+type TagStoryItem = {
+  href?: string,
+  key: string,
+  label: string
+};
 
 const meta = {
   title: 'React Aria Components/TagGroup',
@@ -22,103 +31,189 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export function MyTag(props: {href?: string} = {}) {
+export function MyTag(props: {href?: string, isSelected?: boolean} = {}) {
   return {
+    background: props.isSelected ? 'black' : '',
+    border: '1px solid gray',
+    borderRadius: '4px',
+    color: props.isSelected ? 'white' : '',
     cursor: props.href ? 'pointer' : 'default',
-    style: 'border: 1px solid gray; border-radius: 4px; padding: 0 4px;'
+    padding: '0 4px'
   };
 }
 
-export const TagGroupExample: Story = {
-  render: () => ({
+const TagRow = defineComponent({
+  name: 'TagRow',
+  props: {
+    item: {
+      type: Object as PropType<TagStoryItem | undefined>,
+      default: undefined
+    },
+    node: {
+      type: Object as PropType<TagGroupItemNode>,
+      required: true
+    },
+    removable: {
+      type: Boolean,
+      default: false
+    },
+    tagGroup: {
+      type: Object as PropType<TagGroupAria>,
+      required: true
+    }
+  },
+  setup(props) {
+    let tag = useTag({
+      item: computed(() => props.node),
+      tagGroup: props.tagGroup
+    });
+
+    let href = computed(() => props.item?.href);
+    let label = computed(() => props.item?.label ?? props.node.textValue ?? props.node.key);
+    let tagStyle = computed(() => MyTag({
+      href: href.value,
+      isSelected: tag.isSelected.value
+    }));
+    let onRemovePress = () => {
+      tag.removeButtonProps.value.onPress();
+    };
+
+    return {
+      href,
+      label,
+      onRemovePress,
+      tag,
+      tagStyle
+    };
+  },
+  template: `
+    <div
+      v-bind="tag.rowProps.value"
+      class="react-aria-Tag"
+      data-rac=""
+      :aria-label="label"
+      :style="tagStyle">
+      <div v-bind="tag.gridCellProps.value" :aria-colindex="1" style="display: contents;">
+        <a v-if="href" :href="href">{{ label }}</a>
+        <template v-else>{{ label }}</template>
+        <button
+          v-if="removable && tag.allowsRemoving.value"
+          :id="tag.removeButtonProps.value.id"
+          class="react-aria-Button"
+          data-rac=""
+          :aria-label="tag.removeButtonProps.value['aria-label']"
+          :aria-labelledby="tag.removeButtonProps.value['aria-labelledby']"
+          :disabled="tag.removeButtonProps.value.isDisabled"
+          tabindex="0"
+          type="button"
+          slot="remove"
+          @click="onRemovePress">
+          X
+        </button>
+      </div>
+    </div>
+  `
+});
+
+interface TagGroupStoryOptions {
+  ariaLabel?: string,
+  items: TagStoryItem[],
+  label?: string,
+  removable?: boolean
+}
+
+function createTagGroupStory(args: {selectionMode?: 'multiple' | 'none' | 'single'}, options: TagGroupStoryOptions) {
+  return {
+    components: {
+      TagRow
+    },
+    setup() {
+      let items = ref(options.items.map((item) => ({...item})));
+      let selectedKeys = ref(new Set<string>());
+      let itemByKey = computed(() => new Map(items.value.map((item) => [item.key, item])));
+      let tagGroup = useTagGroup({
+        ariaLabel: computed(() => options.ariaLabel),
+        label: computed(() => options.label),
+        items: computed(() => items.value.map((item) => ({
+          key: item.key,
+          textValue: item.label
+        }))),
+        onRemove: options.removable
+          ? (keys) => {
+            let removedKeys = new Set(Array.from(keys));
+            items.value = items.value.filter((item) => !removedKeys.has(item.key));
+            action('onRemove')(Array.from(removedKeys));
+          }
+          : undefined,
+        selectedKeys,
+        selectionMode: computed(() => args.selectionMode ?? 'none')
+      });
+      let rows = computed(() => tagGroup.collection.value.items.map((node) => ({
+        item: itemByKey.value.get(node.key),
+        node
+      })));
+
+      return {
+        labelText: options.label,
+        removable: options.removable === true,
+        rows,
+        tagGroup
+      };
+    },
     template: `
       <div class="react-aria-TagGroup">
-        <span class="react-aria-Label">Categories</span>
+        <span v-if="labelText" v-bind="tagGroup.labelProps.value" class="react-aria-Label">{{ labelText }}</span>
         <div
+          v-bind="tagGroup.gridProps.value"
           class="react-aria-TagList"
           data-rac=""
-          role="grid"
-          tabindex="0"
           style="display: flex; gap: 4px;">
-          <div class="react-aria-Tag" data-rac="" tabindex="0" role="row" aria-label="News" style="border: 1px solid gray; border-radius: 4px; padding: 0 4px; cursor: pointer;">
-            <div role="gridcell" aria-colindex="1" style="display: contents;">News</div>
-          </div>
-          <div class="react-aria-Tag" data-rac="" tabindex="0" role="row" aria-label="Travel" style="border: 1px solid gray; border-radius: 4px; padding: 0 4px; cursor: default;">
-            <div role="gridcell" aria-colindex="1" style="display: contents;">Travel</div>
-          </div>
-          <div class="react-aria-Tag" data-rac="" tabindex="0" role="row" aria-label="Gaming" style="border: 1px solid gray; border-radius: 4px; padding: 0 4px; cursor: default;">
-            <div role="gridcell" aria-colindex="1" style="display: contents;">Gaming</div>
-          </div>
-          <div class="react-aria-Tag" data-rac="" tabindex="0" role="row" aria-label="Shopping" style="border: 1px solid gray; border-radius: 4px; padding: 0 4px; cursor: default;">
-            <div role="gridcell" aria-colindex="1" style="display: contents;">Shopping</div>
-          </div>
+          <TagRow
+            v-for="row in rows"
+            :key="row.node.key"
+            :item="row.item"
+            :node="row.node"
+            :removable="removable"
+            :tag-group="tagGroup" />
+          <template v-if="rows.length === 0">No categories.</template>
         </div>
       </div>
     `
+  };
+}
+
+const standardItems: TagStoryItem[] = [
+  {key: 'news', label: 'News', href: 'https://nytimes.com'},
+  {key: 'travel', label: 'Travel'},
+  {key: 'gaming', label: 'Gaming'},
+  {key: 'shopping', label: 'Shopping'}
+];
+
+const removableItems: TagStoryItem[] = [
+  {key: 'marsupial', label: 'Marsupial'},
+  {key: 'animal', label: 'Animal'},
+  {key: 'mammal', label: 'Mammal'},
+  {key: 'chordate', label: 'Chordate'}
+];
+
+export const TagGroupExample: Story = {
+  render: (args) => createTagGroupStory(args, {
+    items: standardItems,
+    label: 'Categories'
   })
 };
 
 export const TagGroupExampleWithRemove: Story = {
-  render: () => ({
-    template: `
-      <div class="react-aria-TagGroup">
-        <span class="react-aria-Label">Categories</span>
-        <div
-          class="react-aria-TagList"
-          data-rac=""
-          role="grid"
-          tabindex="0"
-          style="display: flex; gap: 4px;">
-          <div
-            class="react-aria-Tag"
-            data-rac=""
-            tabindex="0"
-            role="row"
-            data-allows-removing="true"
-            style="border: 1px solid gray; border-radius: 4px; padding: 0 4px; cursor: default;">
-            <div role="gridcell" aria-colindex="1" style="display: contents;">Marsupial<button class="react-aria-Button" data-rac="" type="button" tabindex="0" slot="remove">X</button></div>
-          </div>
-          <div
-            class="react-aria-Tag"
-            data-rac=""
-            tabindex="0"
-            role="row"
-            data-allows-removing="true"
-            style="border: 1px solid gray; border-radius: 4px; padding: 0 4px; cursor: default;">
-            <div role="gridcell" aria-colindex="1" style="display: contents;">Animal<button class="react-aria-Button" data-rac="" type="button" tabindex="0" slot="remove">X</button></div>
-          </div>
-          <div
-            class="react-aria-Tag"
-            data-rac=""
-            tabindex="0"
-            role="row"
-            data-allows-removing="true"
-            style="border: 1px solid gray; border-radius: 4px; padding: 0 4px; cursor: default;">
-            <div role="gridcell" aria-colindex="1" style="display: contents;">Mammal<button class="react-aria-Button" data-rac="" type="button" tabindex="0" slot="remove">X</button></div>
-          </div>
-          <div
-            class="react-aria-Tag"
-            data-rac=""
-            tabindex="0"
-            role="row"
-            data-allows-removing="true"
-            style="border: 1px solid gray; border-radius: 4px; padding: 0 4px; cursor: default;">
-            <div role="gridcell" aria-colindex="1" style="display: contents;">Chordate<button class="react-aria-Button" data-rac="" type="button" tabindex="0" slot="remove">X</button></div>
-          </div>
-        </div>
-      </div>
-    `
+  render: (args) => createTagGroupStory(args, {
+    items: removableItems,
+    label: 'Categories',
+    removable: true
   })
 };
 
 export const EmptyTagGroup: Story = {
-  render: () => ({
-    template: `
-      <div class="react-aria-TagGroup">
-        <div class="react-aria-TagList" data-rac="" aria-label="Categories" role="group" tabindex="0" aria-atomic="false" aria-relevant="additions" aria-live="off" data-empty="true">
-          No categories.
-        </div>
-      </div>
-    `
+  render: (args) => createTagGroupStory(args, {
+    ariaLabel: 'Categories',
+    items: []
   })
 };
