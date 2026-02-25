@@ -255,23 +255,28 @@ export function FocusExample(_args: ListBoxStoryArgs = {}) {
 }
 
 export const DefaultListBox: Story = {
-  render: renderListBox()
+  render: renderListBox(),
+  name: 'Default ListBox'
 };
 
 export const ListBoxWSections: Story = {
-  render: renderListBox({items: [...sectionItems]})
+  render: renderListBox({items: [...sectionItems]}),
+  name: 'ListBox w/ sections'
 };
 
 export const ListBoxWManySectionsAndSelection: Story = {
-  render: renderListBox({items: [...manySectionItems], modelValue: 'Section 2 / Option 3'})
+  render: renderListBox({items: [...manySectionItems], modelValue: 'Section 2 / Option 3'}),
+  name: 'ListBox w/ many sections and selection'
 };
 
 export const ListBoxWSectionsAndFalsyIds: Story = {
-  render: renderListBox({items: ['', '0', 'Section / Option 2', 'Section / Option 3']})
+  render: renderListBox({items: ['', '0', 'Section / Option 2', 'Section / Option 3']}),
+  name: 'ListBox w/ sections and falsy ids'
 };
 
 export const ListBoxWSectionsAndNoTitle: Story = {
-  render: renderListBox({items: ['Option 1', 'Option 2', 'Option 3', 'Option 4']})
+  render: renderListBox({items: ['Option 1', 'Option 2', 'Option 3', 'Option 4']}),
+  name: 'ListBox w/ sections and no title'
 };
 
 export const Static: Story = {
@@ -283,57 +288,67 @@ export const StaticWithSectionsAndSelection: Story = {
     label: 'Static with sections',
     items: [...sectionItems],
     modelValue: 'Section 2 / Option 2'
-  })
+  }),
+  name: 'Static with sections and selection'
 };
 
 export const StaticWithSectionsAndNoTitle: Story = {
-  render: renderListBox({label: '', items: [...sectionItems]})
+  render: renderListBox({label: '', items: [...sectionItems]}),
+  name: 'Static with sections and no title'
 };
 
 export const WithDefaultSelectedOption: Story = {
-  render: renderListBox({modelValue: 'Option 2'})
+  render: renderListBox({modelValue: 'Option 2'}),
+  name: 'with default selected option'
 };
 
 export const SingleSelectionWithDefaultSelectedOption: Story = {
-  render: renderListBox({selectionMode: 'single', modelValue: 'Option 2'})
+  render: renderListBox({selectionMode: 'single', modelValue: 'Option 2'}),
+  name: 'single selection with default selected option'
 };
 
 export const StaticWithDefaultSelectedOptions: Story = {
   render: renderListBox({
     selectionMode: 'multiple',
     modelValue: ['Option 2', 'Option 4']
-  })
+  }),
+  name: 'static with default selected options'
 };
 
 export const WithSelectedOptionsControlled: Story = {
   render: () => ({
     components: {ControlledSelectionListBox},
     template: '<ControlledSelectionListBox />'
-  })
+  }),
+  name: 'with selected options (controlled)'
 };
 
 export const StaticWithSelectedOptionsControlled: Story = {
   render: () => ({
     components: {ControlledSelectionListBox},
     template: '<ControlledSelectionListBox :multiple="true" />'
-  })
+  }),
+  name: 'static with selected options (controlled)'
 };
 
 export const WithDisabledOptions: Story = {
   render: renderListBox({
     items: ['Option 1 (enabled)', 'Option 2 (disabled in React)', 'Option 3 (enabled)']
-  })
+  }),
+  name: 'with disabled options'
 };
 
 export const StaticWithDisabledOptions: Story = {
   render: renderListBox({
     label: 'Static with disabled options',
     items: ['Option 1 (enabled)', 'Option 2 (disabled in React)', 'Option 3 (enabled)']
-  })
+  }),
+  name: 'static with disabled options'
 };
 
 export const MultipleSelection: Story = {
-  render: renderListBox({selectionMode: 'multiple'})
+  render: renderListBox({selectionMode: 'multiple'}),
+  name: 'Multiple selection'
 };
 
 export const MultipleSelectionStatic: Story = {
@@ -341,54 +356,63 @@ export const MultipleSelectionStatic: Story = {
     selectionMode: 'multiple',
     label: 'Multiple selection static',
     modelValue: ['Option 1', 'Option 3']
-  })
+  }),
+  name: 'Multiple selection, static'
 };
 
 export const NoSelectionAllowed: Story = {
-  render: renderListBox({selectionMode: 'none'})
+  render: renderListBox({selectionMode: 'none'}),
+  name: 'No selection allowed'
 };
 
 export const NoSelectionAllowedStatic: Story = {
   render: renderListBox({
     selectionMode: 'none',
     label: 'No selection allowed static'
-  })
+  }),
+  name: 'No selection allowed, static'
 };
 
 export const ListBoxWithAutoFocusTrue: Story = {
   render: renderListBox({
     items: ['Auto focus 1', 'Auto focus 2', 'Auto focus 3'],
     modelValue: 'Auto focus 1'
-  })
+  }),
+  name: 'ListBox with autoFocus=true'
 };
 
 export const ListBoxWithAutoFocusComplex: Story = {
   render: renderListBox({
     items: ['Complex 1', 'Complex 2', 'Complex 3', 'Complex 4', 'Complex 5'],
     modelValue: 'Complex 3'
-  })
+  }),
+  name: 'ListBox with autoFocus=true, selectionMode=single, default selected key (uncontrolled)'
 };
 
 export const ListBoxWithAutoFocusFirst: Story = {
-  render: renderListBox({modelValue: 'Option 1'})
+  render: renderListBox({modelValue: 'Option 1'}),
+  name: 'ListBox with autoFocus="first"'
 };
 
 export const ListBoxWithAutoFocusLast: Story = {
-  render: renderListBox({modelValue: 'Option 5'})
+  render: renderListBox({modelValue: 'Option 5'}),
+  name: 'ListBox with autoFocus="last"'
 };
 
 export const ListBoxWithKeyboardSelectionWrapping: Story = {
   render: renderListBox({
     items: ['Wrap 1', 'Wrap 2', 'Wrap 3', 'Wrap 4'],
     modelValue: 'Wrap 2'
-  })
+  }),
+  name: 'ListBox with keyboard selection wrapping'
 };
 
 export const WithSemanticElementsStatic: Story = {
   render: renderListBox({
     items: ['Article', 'Section', 'Heading', 'Paragraph'],
     label: 'Semantic elements'
-  })
+  }),
+  name: 'with semantic elements (static)'
 };
 
 export const WithSemanticElementsGenerativeMultipleSelection: Story = {
@@ -397,7 +421,8 @@ export const WithSemanticElementsGenerativeMultipleSelection: Story = {
     selectionMode: 'multiple',
     modelValue: ['Article', 'Paragraph'],
     label: 'Semantic elements (multiple)'
-  })
+  }),
+  name: 'with semantic elements (generative), multiple selection'
 };
 
 export const IsLoading: Story = {
@@ -405,28 +430,32 @@ export const IsLoading: Story = {
     items: [],
     label: 'Loading listbox',
     ariaLabel: 'Loading listbox'
-  }, 'max-width: 280px;')
+  }, 'max-width: 280px;'),
+  name: 'isLoading'
 };
 
 export const IsLoadingMore: Story = {
   render: renderListBox({
     items: ['Loaded item 1', 'Loaded item 2'],
     label: 'Loading more...'
-  })
+  }),
+  name: 'isLoading more'
 };
 
 export const AsyncLoading: Story = {
   render: () => ({
     components: {AsyncLoadingListBox},
     template: '<AsyncLoadingListBox />'
-  })
+  }),
+  name: 'async loading'
 };
 
 export const AsyncLoadingResizable: Story = {
   render: () => ({
     components: {AsyncLoadingListBox},
     template: '<AsyncLoadingListBox :resizable="true" />'
-  })
+  }),
+  name: 'async loading, resizable'
 };
 
 export const ListboxContainers: Story = {
@@ -444,18 +473,21 @@ export const ListboxContainers: Story = {
         <ListBox aria-label="Right container" label="Right" :items="rightItems" />
       </div>
     `
-  })
+  }),
+  name: 'listbox containers'
 };
 
 export const RestoreFocusExample: Story = {
-  render: (args) => FocusExample(args)
+  render: (args) => FocusExample(args),
+  name: 'restore focus after deleting selected items'
 };
 
 export const WithTranslations: Story = {
   render: renderListBox({
     items: ['English', 'Espanol', 'Deutsch', 'Francais', 'Italiano'],
     label: 'Translations'
-  })
+  }),
+  name: 'with translations'
 };
 
 export const Links: Story = {

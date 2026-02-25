@@ -293,7 +293,8 @@ export const AutocompleteSearchfield: AutocompleteStory = {
 export const AutocompleteMenuDynamic: AutocompleteStory = {
   render: () => ({
     template: `<input><div>${createAutocompleteField({idPrefix: 'autocomplete-menu-dynamic', useSearchField: true})}${dynamicMenuMarkup}</div><input>`
-  })
+  }),
+  name: 'Autocomplete, dynamic menu'
 };
 
 export const AutocompleteOnActionOnMenuItems: AutocompleteStory = {
@@ -304,7 +305,8 @@ export const AutocompleteOnActionOnMenuItems: AutocompleteStory = {
         ${createSimpleMenu({id: 'autocomplete-on-action-listbox'})}
       </div>
     `
-  })
+  }),
+  name: 'Autocomplete, onAction on menu items'
 };
 
 export const AutocompleteDisabledKeys: AutocompleteStory = {
@@ -315,11 +317,13 @@ export const AutocompleteDisabledKeys: AutocompleteStory = {
         ${createSimpleMenu({id: 'autocomplete-disabled-keys-listbox', disabledBar: true})}
       </div>
     `
-  })
+  }),
+  name: 'Autocomplete, disabled key'
 };
 
 export const AutocompleteAsyncLoadingExample: AutocompleteStory = {
-  render: (args) => AsyncExample(args as StoryArgs)
+  render: (args) => AsyncExample(args as StoryArgs),
+  name: 'Autocomplete, useAsync level filtering with load state'
 };
 
 export const AutocompleteCaseSensitive: AutocompleteStory = {
@@ -330,27 +334,33 @@ export const AutocompleteCaseSensitive: AutocompleteStory = {
         ${createSimpleMenu({id: 'autocomplete-case-sensitive-listbox'})}
       </div>
     `
-  })
+  }),
+  name: 'Autocomplete, case sensitive filter'
 };
 
 export const AutocompleteWithListbox: AutocompleteStory = {
-  render: () => createClosedPopoverStory()
+  render: () => createClosedPopoverStory(),
+  name: 'Autocomplete with ListBox + Popover'
 };
 
 export const AutocompleteWithVirtualizedListbox: AutocompleteStory = {
-  render: () => createClosedPopoverStory()
+  render: () => createClosedPopoverStory(),
+  name: 'Autocomplete with ListBox + Popover, virtualized'
 };
 
 export const AutocompleteInPopover: AutocompleteStory = {
-  render: () => createClosedPopoverStory()
+  render: () => createClosedPopoverStory(),
+  name: 'Autocomplete in popover (menu trigger), shell example'
 };
 
 export const AutocompleteInPopoverDialogTrigger: AutocompleteStory = {
-  render: () => createClosedPopoverStory()
+  render: () => createClosedPopoverStory(),
+  name: 'Autocomplete in popover (dialog trigger), shell example'
 };
 
 export const AutocompleteMenuInPopoverDialogTrigger: AutocompleteStory = {
-  render: () => createClosedPopoverStory()
+  render: () => createClosedPopoverStory(),
+  name: 'Autocomplete in popover (dialog trigger), rendering dynamic autocomplete menu'
 };
 
 export const AutocompleteSelect = () => ({
@@ -562,7 +572,8 @@ export const AutocompletePreserveFirstSectionStory: AutocompleteStory = {
         ${dynamicMenuMarkup}
       </div>
     `
-  })
+  }),
+  name: 'Autocomplete, per node filtering'
 };
 
 export const AutocompleteUserCustomFiltering: AutocompleteStory = {
