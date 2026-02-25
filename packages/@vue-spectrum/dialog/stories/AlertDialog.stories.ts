@@ -1,6 +1,8 @@
 import {AlertDialog} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
+type StoryArgs = Record<string, unknown>;
+
 const meta: Meta<typeof AlertDialog> = {
   title: 'Dialog/Alert',
   component: AlertDialog,
@@ -71,33 +73,117 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  render: (args) => ({
+function baseAlertArgs(overrides: StoryArgs = {}): StoryArgs {
+  return {
+    isOpen: true,
+    variant: 'error',
+    title: 'Error: Danger Will Robinson',
+    primaryActionLabel: 'Accept',
+    secondaryActionLabel: 'Secondary button',
+    cancelLabel: 'Cancel',
+    ...overrides
+  };
+}
+
+function renderAlert(args: StoryArgs, note?: string) {
+  return {
     components: {AlertDialog},
     setup() {
-      return {args};
+      return {args, note};
     },
-    template: '<AlertDialog v-bind="args">Example</AlertDialog>'
-  })
+    template: `
+      <div style="display: grid; gap: 8px; width: 420px;">
+        <div v-if="note">{{note}}</div>
+        <AlertDialog v-bind="args">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus.
+        </AlertDialog>
+      </div>
+    `
+  };
+}
+
+export const Destructive: Story = {
+  render: (args) => renderAlert(args),
+  args: baseAlertArgs({
+    variant: 'destructive',
+    title: 'Warning Destructive'
+  }),
+  name: 'destructive'
 };
 
-export const CustomTitle: Story = {
-  ...Default,
-  args: {
-    title: 'Delete item'
-  }
+export const Confirmation: Story = {
+  render: (args) => renderAlert(args),
+  args: baseAlertArgs({
+    variant: 'confirmation',
+    title: 'Confirmation Required'
+  }),
+  name: 'confirmation'
 };
 
-export const Open: Story = {
-  ...Default,
-  args: {
-    isOpen: true
-  }
+export const Information: Story = {
+  render: (args) => renderAlert(args),
+  args: baseAlertArgs({
+    variant: 'information',
+    title: 'Informative Alert'
+  }),
+  name: 'information'
 };
 
-export const AlternateTitle: Story = {
-  ...Default,
-  args: {
-    title: 'Unsaved changes'
-  }
+export const Error: Story = {
+  render: (args) => renderAlert(args),
+  args: baseAlertArgs({
+    variant: 'error',
+    title: 'Error: Danger Will Robinson'
+  }),
+  name: 'error'
+};
+
+export const Warning: Story = {
+  render: (args) => renderAlert(args),
+  args: baseAlertArgs({
+    variant: 'warning',
+    title: 'This is a warning'
+  }),
+  name: 'warning'
+};
+
+export const PrimaryDisabled: Story = {
+  render: (args) => renderAlert(args),
+  args: baseAlertArgs({
+    isPrimaryActionDisabled: true
+  }),
+  name: 'primary disabled'
+};
+
+export const AutoFocusPrimary: Story = {
+  render: (args) => renderAlert(args),
+  args: baseAlertArgs({
+    autoFocusButton: 'primary'
+  }),
+  name: 'autoFocus primary'
+};
+
+export const SecondaryDisabled: Story = {
+  render: (args) => renderAlert(args),
+  args: baseAlertArgs({
+    isSecondaryActionDisabled: true
+  }),
+  name: 'secondary disabled'
+};
+
+export const AutoFocusSecondary: Story = {
+  render: (args) => renderAlert(args),
+  args: baseAlertArgs({
+    autoFocusButton: 'secondary'
+  }),
+  name: 'autoFocus secondary'
+};
+
+export const AutoFocusCancel: Story = {
+  render: (args) => renderAlert(args),
+  args: baseAlertArgs({
+    autoFocusButton: 'cancel',
+    dataTestid: 'alert-dialog'
+  }),
+  name: 'autoFocus cancel'
 };
