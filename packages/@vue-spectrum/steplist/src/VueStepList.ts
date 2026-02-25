@@ -1,8 +1,10 @@
-import {computed, defineComponent, h, inject, type InjectionKey, type PropType, provide, ref, unref, watch} from 'vue';
-import {useSelectableList as createSelectableList, type SelectionKey} from '@vue-aria/selection';
-import {useStepList as createStepList, useStepListItem as createStepListItem, type StepListState} from '@vue-aria/steplist';
+import {computed, defineComponent, h, inject, type InjectionKey, type PropType, provide, ref, watch} from 'vue';
+import {useStepList as createStepList, useStepListItem as createStepListItem} from '@vue-aria/steplist';
+import type {SelectionKey} from '@vue-aria/selection';
+import {useStepListState as createStepListState, type StepListState} from '@vue-stately/steplist';
 
 export type StepListValue = SelectionKey | null;
+type StepListSize = 'S' | 'M' | 'L' | 'XL';
 
 export interface StepListItemData {
   disabled?: boolean,
@@ -11,11 +13,14 @@ export interface StepListItemData {
 }
 
 interface StepListContextValue {
-  getItemIndex: (key: SelectionKey) => number,
-  state: StepListState
+  state: StepListState<StepListItemData>
 }
 
 const stepListContextKey: InjectionKey<StepListContextValue> = Symbol('VueStepListContext');
+
+function isStepListValue(value: unknown): value is StepListValue {
+  return value === null || typeof value === 'string' || typeof value === 'number';
+}
 
 const VueStepListRow = defineComponent({
   name: 'VueStepListRow',
@@ -33,11 +38,13 @@ const VueStepListRow = defineComponent({
 
     let stepItem = createStepListItem({key: props.item.key}, context.state);
     let itemIndex = computed(() => {
-      let index = context.getItemIndex(props.item.key);
+      let index = context.state.collection.getItem(props.item.key)?.index ?? 0;
       return index >= 0 ? index : 0;
     });
-    let isSelected = computed(() => unref(context.state.selectedKey) === props.item.key);
-    let isDisabled = computed(() => !context.state.isSelectable(props.item.key));
+    let isSelected = computed(() => context.state.selectedKey.value === props.item.key);
+    let isCompleted = computed(() => context.state.isCompleted(props.item.key));
+    let isSelectable = computed(() => context.state.isSelectable(props.item.key));
+    let isDisabled = computed(() => !isSelectable.value);
 
     return () => {
       let stepProps = stepItem.stepProps.value;
@@ -45,6 +52,8 @@ const VueStepListRow = defineComponent({
       return h('li', {
         class: [
           'vs-steplist__item',
+          isCompleted.value ? 'is-completed' : null,
+          isSelectable.value ? 'is-selectable' : null,
           isSelected.value ? 'is-selected' : null,
           isDisabled.value ? 'is-disabled' : null
         ]
@@ -58,12 +67,14 @@ const VueStepListRow = defineComponent({
           'aria-selected': stepProps['aria-selected'],
           class: [
             'vs-steplist__link',
+            isCompleted.value ? 'is-completed' : null,
+            isSelectable.value ? 'is-selectable' : null,
             isSelected.value ? 'is-selected' : null,
             isDisabled.value ? 'is-disabled' : null
           ],
           onClick: (event: MouseEvent) => {
             event.preventDefault();
-            stepProps.onClick();
+            stepProps.onClick?.();
           },
           onKeydown: stepProps.onKeyDown
         }, [
@@ -95,74 +106,132 @@ export const VueStepList = defineComponent({
       type: Array as PropType<StepListItemData[]>,
       default: () => []
     },
-    modelValue: {
+    defaultLastCompletedStep: {
       type: [String, Number] as PropType<StepListValue>,
       default: null
+    },
+    defaultSelectedKey: {
+      type: [String, Number] as PropType<StepListValue>,
+      default: undefined
+    },
+    isDisabled: {
+      type: Boolean,
+      default: false
+    },
+    isEmphasized: {
+      type: Boolean,
+      default: false
+    },
+    isReadOnly: {
+      type: Boolean,
+      default: false
+    },
+    lastCompletedStep: {
+      type: [String, Number] as PropType<StepListValue | undefined>,
+      default: undefined
+    },
+    modelValue: {
+      type: [String, Number] as PropType<StepListValue | undefined>,
+      default: undefined
+    },
+    onLastCompletedStepChange: {
+      type: Function as PropType<((value: StepListValue) => void) | undefined>,
+      default: undefined
+    },
+    onSelectionChange: {
+      type: Function as PropType<((value: StepListValue) => void) | undefined>,
+      default: undefined
     },
     orientation: {
       type: String as PropType<'horizontal' | 'vertical'>,
       default: 'horizontal'
+    },
+    selectedKey: {
+      type: [String, Number] as PropType<StepListValue | undefined>,
+      default: undefined
+    },
+    size: {
+      type: String as PropType<StepListSize>,
+      default: 'M'
     }
   },
   emits: {
-    'update:modelValue': (value: StepListValue) => value === null || typeof value === 'number' || typeof value === 'string',
-    change: (value: StepListValue) => value === null || typeof value === 'number' || typeof value === 'string'
+    change: (value: StepListValue) => isStepListValue(value),
+    lastCompletedStepChange: (value: StepListValue) => isStepListValue(value),
+    selectionChange: (value: StepListValue) => isStepListValue(value),
+    'update:lastCompletedStep': (value: StepListValue) => isStepListValue(value),
+    'update:modelValue': (value: StepListValue) => isStepListValue(value),
+    'update:selectedKey': (value: StepListValue) => isStepListValue(value)
   },
   setup(props, {attrs, emit}) {
-    let selectedKeys = ref(new Set<SelectionKey>());
-    let disabledKeySet = computed(() => {
-      let keys = new Set<SelectionKey>(props.disabledKeys);
-      for (let item of props.items) {
-        if (item.disabled) {
-          keys.add(item.key);
-        }
+    let selectedKeyRef = ref<StepListValue>(props.defaultSelectedKey ?? null);
+    let lastCompletedStepRef = ref<StepListValue | undefined>(undefined);
+    let disabledKeySet = new Set<SelectionKey>(props.disabledKeys);
+    for (let item of props.items) {
+      if (item.disabled) {
+        disabledKeySet.add(item.key);
+      }
+    }
+
+    watch(() => [props.modelValue, props.selectedKey], ([modelValue, selectedKey]) => {
+      let controlledValue = selectedKey !== undefined ? selectedKey : modelValue;
+      if (controlledValue === undefined) {
+        return;
       }
 
-      return keys;
-    });
-    let selectableList = createSelectableList({
-      selectedKeys,
-      selectionMode: 'single'
-    });
-    let selectedKey = computed(() => props.modelValue ?? null);
+      selectedKeyRef.value = controlledValue ?? null;
+    }, {immediate: true});
 
-    let state: StepListState = {
-      isSelectable: (key) => !disabledKeySet.value.has(key),
-      selectedKey,
-      selectionManager: selectableList.selectionManager as StepListState['selectionManager']
-    };
+    watch(() => props.lastCompletedStep, (value) => {
+      lastCompletedStepRef.value = value;
+    }, {immediate: true});
+
+    let state = createStepListState<StepListItemData>({
+      collection: computed(() => props.items.map((item) => ({
+        key: item.key,
+        rendered: item.label,
+        textValue: item.label,
+        type: 'item',
+        value: item
+      }))),
+      defaultLastCompletedStep: props.defaultLastCompletedStep,
+      defaultSelectedKey: props.defaultSelectedKey ?? null,
+      disabledKeys: disabledKeySet,
+      isDisabled: computed(() => props.isDisabled),
+      isReadOnly: computed(() => props.isReadOnly),
+      lastCompletedStep: lastCompletedStepRef,
+      onLastCompletedStepChange: (key) => {
+        let value = key ?? null;
+        props.onLastCompletedStepChange?.(value);
+        emit('update:lastCompletedStep', value);
+        emit('lastCompletedStepChange', value);
+      },
+      onSelectionChange: (key) => {
+        let value = key ?? null;
+        props.onSelectionChange?.(value);
+        emit('update:modelValue', value);
+        emit('update:selectedKey', value);
+        emit('change', value);
+        emit('selectionChange', value);
+      },
+      selectedKey: selectedKeyRef
+    });
+
     let stepList = createStepList(state, {
       ariaLabel: computed(() => props.ariaLabel)
     });
 
-    watch(() => props.modelValue, (value) => {
-      if (value === null || value === undefined) {
-        selectedKeys.value = new Set();
-        return;
-      }
-
-      selectedKeys.value = new Set([value]);
-    }, {immediate: true});
-
-    watch(selectedKeys, (next) => {
-      let selection = next.values().next();
-      let value: StepListValue = selection.done ? null : selection.value;
-
-      if (value === (props.modelValue ?? null)) {
-        return;
-      }
-
-      emit('update:modelValue', value);
-      emit('change', value);
-    }, {deep: true});
-
     provide(stepListContextKey, {
-      state,
-      getItemIndex: (key: SelectionKey) => props.items.findIndex((item) => item.key === key)
+      state
     });
 
     let classes = computed(() => ([
       'vs-steplist',
+      props.isEmphasized ? 'vs-steplist--emphasized' : null,
+      props.size === 'S' ? 'vs-steplist--small' : null,
+      props.size === 'M' ? 'vs-steplist--medium' : null,
+      props.size === 'L' ? 'vs-steplist--large' : null,
+      props.size === 'XL' ? 'vs-steplist--xlarge' : null,
       props.orientation === 'vertical' ? 'vs-steplist--vertical' : 'vs-steplist--horizontal'
     ]));
 

@@ -1319,11 +1319,12 @@ describe('Vue migration primitives', () => {
     expect(disabled.classes()).toContain('is-disabled');
   });
 
-  it('emits model updates and applies aria semantics for step list interactions', async () => {
+  it('emits selection updates and applies aria semantics for step list interactions', async () => {
     let wrapper = mount(StepList, {
       props: {
         ariaLabel: 'Checkout steps',
-        modelValue: 'shipping',
+        defaultLastCompletedStep: 'shipping',
+        defaultSelectedKey: 'payment',
         items: [
           {key: 'shipping', label: 'Shipping'},
           {key: 'payment', label: 'Payment'},
@@ -1336,12 +1337,80 @@ describe('Vue migration primitives', () => {
     expect(wrapper.attributes('role')).toBe('list');
     expect(wrapper.attributes('aria-label')).toBe('Checkout steps');
     expect(links).toHaveLength(3);
-    expect(links[0].attributes('aria-current')).toBe('step');
+    expect(links[0].attributes('aria-current')).toBeUndefined();
+    expect(links[0].classes()).toContain('is-completed');
+    expect(links[1].attributes('aria-current')).toBe('step');
     expect(links[2].attributes('aria-disabled')).toBe('true');
 
-    await links[1].trigger('click');
-    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['payment']);
-    expect(wrapper.emitted('change')?.[0]).toEqual(['payment']);
+    await links[0].trigger('click');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['shipping']);
+    expect(wrapper.emitted('update:selectedKey')?.[0]).toEqual(['shipping']);
+    expect(wrapper.emitted('change')?.[0]).toEqual(['shipping']);
+    expect(wrapper.emitted('selectionChange')?.[0]).toEqual(['shipping']);
+  });
+
+  it('respects disabled/readonly gating and emits completion changes for controlled updates', async () => {
+    let readOnly = mount(StepList, {
+      props: {
+        ariaLabel: 'Read only steps',
+        defaultLastCompletedStep: 'payment',
+        defaultSelectedKey: 'review',
+        isReadOnly: true,
+        items: [
+          {key: 'shipping', label: 'Shipping'},
+          {key: 'payment', label: 'Payment'},
+          {key: 'review', label: 'Review'}
+        ]
+      }
+    });
+
+    let readOnlyLinks = readOnly.findAll('a.vs-steplist__link');
+    expect(readOnlyLinks).toHaveLength(3);
+    expect(readOnlyLinks[0].attributes('aria-disabled')).toBe('true');
+    expect(readOnlyLinks[1].attributes('aria-disabled')).toBe('true');
+    expect(readOnlyLinks[2].attributes('aria-disabled')).toBe('true');
+
+    await readOnlyLinks[0].trigger('click');
+    expect(readOnly.emitted('update:modelValue')).toBeUndefined();
+
+    let disabled = mount(StepList, {
+      props: {
+        ariaLabel: 'Disabled steps',
+        defaultLastCompletedStep: 'payment',
+        defaultSelectedKey: 'review',
+        isDisabled: true,
+        items: [
+          {key: 'shipping', label: 'Shipping'},
+          {key: 'payment', label: 'Payment'},
+          {key: 'review', label: 'Review'}
+        ]
+      }
+    });
+
+    let disabledLinks = disabled.findAll('a.vs-steplist__link');
+    expect(disabledLinks).toHaveLength(3);
+    expect(disabledLinks[0].attributes('aria-disabled')).toBe('true');
+    expect(disabledLinks[1].attributes('aria-disabled')).toBe('true');
+    expect(disabledLinks[2].attributes('aria-disabled')).toBe('true');
+
+    await disabledLinks[1].trigger('click');
+    expect(disabled.emitted('update:modelValue')).toBeUndefined();
+
+    let controlled = mount(StepList, {
+      props: {
+        ariaLabel: 'Controlled steps',
+        selectedKey: 'shipping',
+        items: [
+          {key: 'shipping', label: 'Shipping'},
+          {key: 'payment', label: 'Payment'},
+          {key: 'review', label: 'Review'}
+        ]
+      }
+    });
+
+    await controlled.setProps({selectedKey: 'review'});
+    expect(controlled.emitted('update:lastCompletedStep')?.[0]).toEqual(['payment']);
+    expect(controlled.emitted('lastCompletedStepChange')?.[0]).toEqual(['payment']);
   });
 
   it('updates tab selection and panel content from tab interactions', async () => {
