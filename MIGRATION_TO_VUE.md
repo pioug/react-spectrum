@@ -15,6 +15,7 @@
 4. Scaffold placeholders are temporary only and must be replaced by real parity stories before a component is considered complete.
 5. Record reviewed scope, gaps, and evidence in commit/PR notes.
 6. Commit and push frequently in small, reviewable increments.
+7. Do not sign off parity from only one Storybook namespace when a component exists in multiple namespaces (for example `Button/*` and `React Aria Components/Button/*`).
 
 ## Session execution mode (required)
 
@@ -28,17 +29,19 @@
 
 1. Build auditable Storybook outputs before gap analysis (use current React Storybook build artifact and a fresh Vue Storybook build).
 2. Compare the exact same story id in both iframes (`iframe.html?id=<story-id>&viewMode=story`).
-3. Confirm story source structure, grouping, names, and featured scenario coverage match React.
-4. Capture baseline DOM snapshots for the canonical interactive node (tag, class, role, `data-*`, `aria-*`, `tabindex`, and other critical attributes).
-5. Run a deterministic interaction probe sequence: keyboard focus (`Tab`), hover, pointer down/up, keyboard activation (`Space`/`Enter`), then story-specific interactions.
-6. Capture post-step snapshots after each probe and diff React vs Vue state attributes and class/state transitions.
-7. Treat contract drift as a gap: missing attributes, extra attributes, wrong classes, mismatched ARIA state, or divergent interaction transitions.
-8. Validate computed styles only on critical states and representative nodes; avoid screenshot-only judgments.
-9. If direct cross-framework story imports fail in tests due workspace resolution, use browser-level probes against built Storybook output rather than blocking discovery.
-10. Inspect React and Vue internals for the divergent code paths and fix one gap cluster at a time.
-11. Add or update regression tests for each fixed gap.
-12. Rerun the validation gate and only then move to the next component.
-13. Use screenshots only as final confirmation after structure, styles, and behavior already match.
+3. If the component exists in multiple Storybook namespaces, run parity for each namespace before marking the component complete.
+4. Confirm story source structure, grouping, names, and featured scenario coverage match React.
+5. Capture baseline DOM snapshots for the canonical interactive node (tag, class, role, `data-*`, `aria-*`, `tabindex`, and other critical attributes).
+6. Always include native-button contract checks in the baseline and diffs: `disabled`, `aria-disabled`, `tabindex`, and `data-react-aria-pressable`.
+7. Run a deterministic interaction probe sequence with real browser input: keyboard focus (`Tab`), hover, pointer down/up, keyboard activation (`Space`/`Enter`), then story-specific interactions.
+8. Capture post-step snapshots after each probe and diff React vs Vue state attributes and class/state transitions.
+9. Treat contract drift as a gap: missing attributes, extra attributes, wrong classes, mismatched ARIA state, or divergent interaction transitions.
+10. Validate computed styles only on critical states and representative nodes; avoid screenshot-only judgments.
+11. If direct cross-framework story imports fail in tests due workspace resolution, use browser-level probes against built Storybook output rather than blocking discovery.
+12. Inspect React and Vue internals for the divergent code paths and fix one gap cluster at a time.
+13. Add or update regression tests for each fixed gap, including at least one assertion for the canonical DOM contract in Vue tests.
+14. Rerun the validation gate and only then move to the next component.
+15. Use screenshots only as final confirmation after structure, styles, and behavior already match.
 
 ## Style handling policy (required)
 
@@ -54,5 +57,6 @@
 2. Run `yarn test:vue`.
 3. Build Vue Storybook with `yarn build:vue:storybook`.
 4. Run Storybook index parity check (React vs Vue story id diff must be zero for the targeted scope).
-5. Manually review React and Vue Storybook side by side for structure, key attributes, computed styles, and interactions.
-6. Confirm regression tests cover fixed gaps and evidence is captured in commit/PR notes.
+5. Capture and review DOM-contract diffs for canonical stories in each relevant namespace before sign-off.
+6. Manually review React and Vue Storybook side by side for structure, key attributes, computed styles, and interactions.
+7. Confirm regression tests cover fixed gaps and evidence is captured in commit/PR notes.
