@@ -78,8 +78,6 @@ const listBoxScrollMarginItems = Array.from({length: 100}, (_, id) => ({
 }));
 const listBoxSmoothScrollItems = Array.from({length: 100}, (_, id) => `Item ${id}`);
 const virtualizedListBoxVisibleItems = Array.from({length: 22}, (_, id) => `Section 0, Item ${id}`);
-const virtualizedListBoxDndVisibleItems = Array.from({length: 18}, (_, id) => `Item ${id}`);
-const virtualizedListBoxDndOnActionVisibleItems = Array.from({length: 20}, (_, id) => `Item ${id}`);
 const virtualizedListBoxGridVisibleItems = Array.from({length: 48}, (_, id) => `Item ${id}`);
 const virtualizedListBoxWaterfallVisibleItems = [
   'Lorem ipsum',
@@ -658,65 +656,6 @@ export const VirtualizedListBox: Story = {
   }
 };
 
-export const VirtualizedListBoxEmpty: Story = {
-  render: () => ({
-    template: `
-      <div
-        class="v7C2Sq_menu"
-        data-rac=""
-        aria-label="virtualized listbox"
-        role="listbox"
-        tabindex="0"
-        data-empty="true"
-        data-layout="stack"
-        data-orientation="vertical"
-        style="margin-top: 4px; width: 150px; max-width: 100%; height: 400px; border: 1px solid gray; background: lightgray; overflow: auto;">
-        <div role="presentation" style="width: 150px; height: 0px; pointer-events: auto; position: relative;">
-          <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 0px; left: 0px; width: 150px; height: 0px;">
-            <div inert="" style="position: relative; width: 0px; height: 0px;">
-              <div data-testid="loadMoreSentinel" style="position: absolute; height: 1px; width: 1px;"></div>
-            </div>
-          </div>
-        </div>
-        <div role="option" style="display: contents;">Empty</div>
-      </div>
-    `
-  })
-};
-
-export const VirtualizedListBoxDnd: Story = {
-  render: () => ({
-    setup() {
-      return {
-        virtualizedListBoxDndVisibleItems
-      };
-    },
-    template: `
-      <div style="height: 400px; width: 400px; resize: both; padding: 40px; overflow: hidden;">
-        <div
-          class="v7C2Sq_menu"
-          data-rac=""
-          aria-label="virtualized listbox"
-          aria-multiselectable="true"
-          role="listbox"
-          tabindex="0"
-          data-layout="stack"
-          data-orientation="vertical"
-          style="margin-top: 4px; width: 100%; height: 100%; border: 1px solid gray; background: lightgray; overflow: auto;">
-          <div role="presentation" style="width: 400px; height: 329992px; pointer-events: auto; position: relative;">
-            <div
-              v-for="(item, index) in virtualizedListBoxDndVisibleItems"
-              :key="item"
-              role="presentation"
-              :style="{position: 'absolute', overflow: 'visible', opacity: '1', zIndex: '0', contain: 'size layout style', top: (index * 33) + 'px', left: '0px', width: '400px', height: '25px'}">
-              <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" draggable="true" data-allows-dragging="true" data-selection-mode="multiple" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">{{ item }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    `
-  })
-};
 
 export const VirtualizedListBoxGrid: Story = {
   render: () => ({
@@ -970,50 +909,6 @@ export const ListBoxSmoothScroll: Story = {
           role="option"
           tabindex="-1"
           style="word-break: break-word; min-height: 32px; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">{{ item }}</div>
-      </div>
-    `
-  })
-};
-
-export const VirtualizedListBoxDndOnAction: Story = {
-  render: () => ({
-    setup() {
-      return {
-        virtualizedListBoxDndOnActionVisibleItems
-      };
-    },
-    template: `
-      <div style="display: flex; flex-direction: column; gap: 20px; align-items: center;">
-        <div style="padding: 20px; background: rgb(240, 240, 240); border-radius: 8px; max-width: 600px;">
-          <h3 style="margin: 0px 0px 10px;">Instructions:</h3>
-          <ul style="margin: 0px; padding-left: 20px;">
-            <li><strong>Enter:</strong> Triggers onAction</li>
-            <li><strong>Alt+Enter:</strong> Starts drag mode</li>
-            <li><strong>Space:</strong> Toggles selection</li>
-          </ul>
-        </div>
-        <div style="height: 400px; width: 300px; resize: both; padding: 20px; overflow: hidden; border: 2px solid rgb(204, 204, 204); border-radius: 8px;">
-          <div
-            class="v7C2Sq_menu"
-            data-rac=""
-            aria-label="Virtualized listbox with drag and drop and onAction"
-            aria-multiselectable="true"
-            role="listbox"
-            tabindex="0"
-            data-layout="stack"
-            data-orientation="vertical"
-            style="margin-top: 4px; width: 100%; height: 100%; border: 1px solid gray; background: lightgray; overflow: auto;">
-            <div role="presentation" style="width: 300px; height: 2896px; pointer-events: auto; position: relative;">
-              <div
-                v-for="(item, index) in virtualizedListBoxDndOnActionVisibleItems"
-                :key="item"
-                role="presentation"
-                :style="{position: 'absolute', overflow: 'visible', opacity: '1', zIndex: '0', contain: 'size layout style', top: (index * 29) + 'px', left: '0px', width: '300px', height: '25px'}">
-                <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" draggable="true" data-allows-dragging="true" data-selection-mode="multiple" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">{{ item }}</div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     `
   })
