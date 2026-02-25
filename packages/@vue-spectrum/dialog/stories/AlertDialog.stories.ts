@@ -107,8 +107,7 @@ export const Destructive: Story = {
   args: baseAlertArgs({
     variant: 'destructive',
     title: 'Warning Destructive'
-  }),
-  name: 'destructive'
+  })
 };
 
 export const Confirmation: Story = {
@@ -116,8 +115,7 @@ export const Confirmation: Story = {
   args: baseAlertArgs({
     variant: 'confirmation',
     title: 'Confirmation Required'
-  }),
-  name: 'confirmation'
+  })
 };
 
 export const Information: Story = {
@@ -125,8 +123,7 @@ export const Information: Story = {
   args: baseAlertArgs({
     variant: 'information',
     title: 'Informative Alert'
-  }),
-  name: 'information'
+  })
 };
 
 export const Error: Story = {
@@ -134,8 +131,7 @@ export const Error: Story = {
   args: baseAlertArgs({
     variant: 'error',
     title: 'Error: Danger Will Robinson'
-  }),
-  name: 'error'
+  })
 };
 
 export const Warning: Story = {
@@ -143,40 +139,35 @@ export const Warning: Story = {
   args: baseAlertArgs({
     variant: 'warning',
     title: 'This is a warning'
-  }),
-  name: 'warning'
+  })
 };
 
 export const PrimaryDisabled: Story = {
   render: (args) => renderAlert(args),
   args: baseAlertArgs({
     isPrimaryActionDisabled: true
-  }),
-  name: 'primary disabled'
+  })
 };
 
 export const AutoFocusPrimary: Story = {
   render: (args) => renderAlert(args),
   args: baseAlertArgs({
     autoFocusButton: 'primary'
-  }),
-  name: 'autoFocus primary'
+  })
 };
 
 export const SecondaryDisabled: Story = {
   render: (args) => renderAlert(args),
   args: baseAlertArgs({
     isSecondaryActionDisabled: true
-  }),
-  name: 'secondary disabled'
+  })
 };
 
 export const AutoFocusSecondary: Story = {
   render: (args) => renderAlert(args),
   args: baseAlertArgs({
     autoFocusButton: 'secondary'
-  }),
-  name: 'autoFocus secondary'
+  })
 };
 
 export const AutoFocusCancel: Story = {
@@ -184,6 +175,5 @@ export const AutoFocusCancel: Story = {
   args: baseAlertArgs({
     autoFocusButton: 'cancel',
     dataTestid: 'alert-dialog'
-  }),
-  name: 'autoFocus cancel'
+  })
 };

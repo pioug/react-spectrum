@@ -68,8 +68,7 @@ export const Default: Story = {
       return {args};
     },
     template: '<DialogContainer v-bind="args">Dialog content</DialogContainer>'
-  }),
-  name: 'default'
+  })
 };
 
 export const InAMenu: Story = {
@@ -85,40 +84,35 @@ export const InAMenu: Story = {
         <DialogContainer v-bind="args">Dialog content from menu</DialogContainer>
       </div>
     `
-  }),
-  name: 'in a menu'
+  })
 };
 
 export const TypeFullscreen: Story = {
   ...Default,
   args: {
     type: 'fullscreen'
-  },
-  name: 'type: fullscreen'
+  }
 };
 
 export const TypeFullscreenTakeover: Story = {
   ...Default,
   args: {
     type: 'fullscreenTakeover'
-  },
-  name: 'type: fullscreenTakeover'
+  }
 };
 
 export const IsDismissable: Story = {
   ...Default,
   args: {
     isDismissable: true
-  },
-  name: 'isDismissable'
+  }
 };
 
 export const IsKeyboardDismissDisabled: Story = {
   ...Default,
   args: {
     isKeyboardDismissDisabled: true
-  },
-  name: 'isKeyboardDismissDisabled'
+  }
 };
 
 export const NestedDialogContainers: Story = {

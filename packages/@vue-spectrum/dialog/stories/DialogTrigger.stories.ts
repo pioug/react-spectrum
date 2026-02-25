@@ -82,8 +82,7 @@ function renderDialog(args: StoryArgs, content = 'Dialog content') {
 }
 
 export const Default: Story = {
-  render: (args) => renderDialog(args, 'Dialog content'),
-  name: 'default'
+  render: (args) => renderDialog(args, 'Dialog content')
 };
 
 export const TypePopover: Story = {
@@ -91,16 +90,14 @@ export const TypePopover: Story = {
   args: {
     type: 'popover',
     size: 'S'
-  },
-  name: 'type: popover'
+  }
 };
 
 export const TypeModal: Story = {
   ...Default,
   args: {
     type: 'modal'
-  },
-  name: 'type: modal'
+  }
 };
 
 export const TypeModalIsDismissable: Story = {
@@ -108,64 +105,56 @@ export const TypeModalIsDismissable: Story = {
   args: {
     type: 'modal',
     isDismissable: true
-  },
-  name: 'type: modal isDismissable'
+  }
 };
 
 export const TypeFullscreen: Story = {
   ...Default,
   args: {
     type: 'fullscreen'
-  },
-  name: 'type: fullscreen'
+  }
 };
 
 export const TypeFullscreenTakeover: Story = {
   ...Default,
   args: {
     type: 'fullscreenTakeover'
-  },
-  name: 'type: fullscreenTakeover'
+  }
 };
 
 export const TypeTray: Story = {
   ...Default,
   args: {
     type: 'tray'
-  },
-  name: 'type: tray'
+  }
 };
 
 export const MobileTypeFullscreen: Story = {
   render: (args) => renderDialog(args, 'mobileType="fullscreen" parity scenario'),
   args: {
     type: 'modal'
-  },
-  name: 'mobileType: fullscreen'
+  }
 };
 
 export const MobileTypeFullscreenTakeover: Story = {
   render: (args) => renderDialog(args, 'mobileType="fullscreenTakeover" parity scenario'),
   args: {
     type: 'modal'
-  },
-  name: 'mobileType: fullscreenTakeover'
+  }
 };
 
 export const PopoverWithMobileTypeModal: Story = {
   render: (args) => renderDialog(args, 'popover with mobileType="modal" parity scenario'),
   args: {
     type: 'popover'
-  },
-  name: 'popover with mobileType: modal'
+  }
 };
 
 export const PopoverWithMobileTypeTray: Story = {
   render: (args) => renderDialog(args, 'popover with mobileType="tray" parity scenario'),
   args: {
     type: 'popover'
-  },
-  name: 'popover with mobileType: tray'
+  }
 };
 
 export const NestedModals: Story = {
@@ -183,8 +172,7 @@ export const NestedModals: Story = {
         </DialogTrigger>
       </div>
     `
-  }),
-  name: 'nested modals'
+  })
 };
 
 export const NestedModalsFullscreentakeover: Story = {
@@ -199,8 +187,7 @@ export const NestedModalsFullscreentakeover: Story = {
         </DialogTrigger>
       </DialogTrigger>
     `
-  }),
-  name: 'nested modals, fullscreentakeover'
+  })
 };
 
 export const WithMenuTrigger: Story = {
@@ -216,8 +203,7 @@ export const WithMenuTrigger: Story = {
         </ul>
       </DialogTrigger>
     `
-  }),
-  name: 'with menu trigger'
+  })
 };
 
 export const NestedPopovers: Story = {
@@ -234,8 +220,7 @@ export const NestedPopovers: Story = {
         </DialogTrigger>
       </div>
     `
-  }),
-  name: 'nested popovers'
+  })
 };
 
 export const PopoverInsideScrollView: Story = {
@@ -255,8 +240,7 @@ export const PopoverInsideScrollView: Story = {
         </div>
       </div>
     `
-  }),
-  name: 'popover inside scroll view'
+  })
 };
 
 export const ShouldFlipWithWidth: Story = {
@@ -272,8 +256,7 @@ export const ShouldFlipWithWidth: Story = {
         </DialogTrigger>
       </div>
     `
-  }),
-  name: 'shouldFlip with width'
+  })
 };
 
 export const CloseFunctionWithButtonPopover: Story = {
@@ -298,8 +281,7 @@ export const CloseFunctionWithButtonPopover: Story = {
         </DialogTrigger>
       </div>
     `
-  }),
-  name: 'Close function with button: popover'
+  })
 };
 
 export const TargetRef: Story = {
@@ -316,8 +298,7 @@ export const TargetRef: Story = {
         <span style="margin-inline-start: 200px;">Popover appears over here</span>
       </div>
     `
-  }),
-  name: 'targetRef'
+  })
 };
 
 export const _AlertDialog: Story = {
@@ -333,8 +314,7 @@ export const _AlertDialog: Story = {
         Fine! No, absolutely fine. It's not like this place is about to explode.
       </AlertDialog>
     `
-  }),
-  name: 'alert dialog'
+  })
 };
 
 export const CrossoffsetExamples: Story = {
@@ -356,8 +336,7 @@ export const CrossoffsetExamples: Story = {
         </div>
       </div>
     `
-  }),
-  name: 'crossoffset examples'
+  })
 };
 
 export const TriggerVisibleThroughUnderlay: Story = {
@@ -377,8 +356,7 @@ export const TriggerVisibleThroughUnderlay: Story = {
         </DialogTrigger>
       </div>
     `
-  }),
-  name: 'trigger visible through underlay'
+  })
 };
 
 export const _2Popovers: Story = {
@@ -394,8 +372,7 @@ export const _2Popovers: Story = {
         </DialogTrigger>
       </div>
     `
-  }),
-  name: '2 popovers'
+  })
 };
 
 export const _AdjustableDialog: Story = {
@@ -441,8 +418,7 @@ export const _AdjustableDialog: Story = {
         </DialogTrigger>
       </div>
     `
-  }),
-  name: 'adjustable dialog'
+  })
 };
 
 export const WithTooltip: Story = {
@@ -461,8 +437,7 @@ export const WithTooltip: Story = {
         </DialogTrigger>
       </div>
     `
-  }),
-  name: 'with tooltip inside'
+  })
 };
 
 export const WithTooltipTrigger: Story = {
@@ -489,8 +464,7 @@ export const WithTooltipTrigger: Story = {
         </DialogTrigger>
       </div>
     `
-  }),
-  name: 'with tooltip wrapper'
+  })
 };
 
 export const WithTranslations: Story = {
@@ -519,8 +493,7 @@ export const WithTranslations: Story = {
         </DialogTrigger>
       </div>
     `
-  }),
-  name: 'with translations'
+  })
 };
 
 export const TriggersOnEdges: Story = {
@@ -557,6 +530,5 @@ export const TriggersOnEdges: Story = {
         </div>
       </div>
     `
-  }),
-  name: 'popover triggers on edges'
+  })
 };

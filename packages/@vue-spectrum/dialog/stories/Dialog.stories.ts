@@ -200,83 +200,67 @@ function renderThreeButtonsFooter(args: StoryArgs = {}) {
 }
 
 export const Default: Story = {
-  render: (args) => renderDialog(args),
-  name: 'default'
+  render: (args) => renderDialog(args)
 };
 
 export const IsDismissable: Story = {
-  render: (args) => renderDialog(args, {isDismissable: true, buttons: 'none'}),
-  name: 'isDismissable'
+  render: (args) => renderDialog(args, {isDismissable: true, buttons: 'none'})
 };
 
 export const LongContent: Story = {
-  render: (args) => renderDialog(args, {content: 'long'}),
-  name: 'long content'
+  render: (args) => renderDialog(args, {content: 'long'})
 };
 
 export const WithHero: Story = {
-  render: (args) => renderDialog(args, {hero: true}),
-  name: 'with hero'
+  render: (args) => renderDialog(args, {hero: true})
 };
 
 export const WithHeroIsDimissable: Story = {
-  render: (args) => renderDialog(args, {hero: true, isDismissable: true, buttons: 'none'}),
-  name: 'with hero, isDimissable'
+  render: (args) => renderDialog(args, {hero: true, isDismissable: true, buttons: 'none'})
 };
 
 export const WithFooter: Story = {
-  render: (args) => renderDialog(args, {footer: true}),
-  name: 'with footer'
+  render: (args) => renderDialog(args, {footer: true})
 };
 
 export const Small: Story = {
-  render: (args) => renderDialog(args, {size: 'S'}),
-  name: 'small'
+  render: (args) => renderDialog(args, {size: 'S'})
 };
 
 export const Medium: Story = {
-  render: (args) => renderDialog(args, {size: 'M'}),
-  name: 'medium'
+  render: (args) => renderDialog(args, {size: 'M'})
 };
 
 export const Large: Story = {
-  render: (args) => renderDialog(args, {size: 'L'}),
-  name: 'large'
+  render: (args) => renderDialog(args, {size: 'L'})
 };
 
 export const _Form: Story = {
-  render: (args) => renderDialog(args, {content: 'form'}),
-  name: 'form'
+  render: (args) => renderDialog(args, {content: 'form'})
 };
 
 export const FullscreenTakeoverForm: Story = {
-  render: (args) => renderDialog(args, {content: 'form', type: 'fullscreenTakeover'}),
-  name: 'fullscreenTakeover form'
+  render: (args) => renderDialog(args, {content: 'form', type: 'fullscreenTakeover'})
 };
 
 export const ThreeButtons: Story = {
-  render: (args) => renderDialog(args, {buttons: 'three'}),
-  name: 'three buttons'
+  render: (args) => renderDialog(args, {buttons: 'three'})
 };
 
 export const ThreeButtonsVerticalOrientation: Story = {
-  render: (args) => renderDialog(args, {buttons: 'three-vertical'}),
-  name: 'three buttons, vertical orientation'
+  render: (args) => renderDialog(args, {buttons: 'three-vertical'})
 };
 
 export const ThreeButtonsFooter: Story = {
-  render: (args) => renderThreeButtonsFooter(args),
-  name: 'three buttons, footer'
+  render: (args) => renderThreeButtonsFooter(args)
 };
 
 export const ClearedContent: Story = {
-  render: (args) => renderDialog(args, {withContentDivider: true}),
-  name: 'cleared content'
+  render: (args) => renderDialog(args, {withContentDivider: true})
 };
 
 export const WithIframe: Story = {
-  render: (args) => renderDialog(args, {content: 'iframe'}),
-  name: 'with iframe'
+  render: (args) => renderDialog(args, {content: 'iframe'})
 };
 
 export const HorizontalScrolling: Story = {

@@ -270,8 +270,7 @@ export const DefaultMenuStatic: Story = {
   args: {
     label: 'Menu',
     items: SIMPLE_ITEMS
-  },
-  name: 'default menu (static)'
+  }
 };
 
 export const DefaultMenuGenerative: Story = {
@@ -279,8 +278,7 @@ export const DefaultMenuGenerative: Story = {
   args: {
     label: 'Menu',
     items: FLAT_MENU_ITEMS
-  },
-  name: 'default menu (generative)'
+  }
 };
 
 export const DefaultMenuWSectionStatic: Story = {
@@ -288,8 +286,7 @@ export const DefaultMenuWSectionStatic: Story = {
   args: {
     label: 'Menu',
     items: SECTION_STATIC_ITEMS
-  },
-  name: 'default menu w/ section (static)'
+  }
 };
 
 export const DefaultMenuWSectionGenerative: Story = {
@@ -297,8 +294,7 @@ export const DefaultMenuWSectionGenerative: Story = {
   args: {
     label: 'Menu',
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'default menu w/ section (generative)'
+  }
 };
 
 export const DefaultMenuWSectionGenerativeManyItems: Story = {
@@ -306,32 +302,28 @@ export const DefaultMenuWSectionGenerativeManyItems: Story = {
   args: {
     label: 'Menu',
     items: SECTION_GENERATIVE_MANY_ITEMS
-  },
-  name: 'default menu w/ section (generative), many items per section'
+  }
 };
 
 export const DefaultMenuWTitlelessSectionsStatic: Story = {
   render: (args) => renderMenu(args),
   args: {
     items: TITLELESS_SECTION_ITEMS
-  },
-  name: 'default menu w/ titleless sections (static)'
+  }
 };
 
 export const DefaultMenuWTitlelessSectionsGenerative: Story = {
   render: (args) => renderMenu(args),
   args: {
     items: TITLELESS_SECTION_ITEMS
-  },
-  name: 'default menu w/ titleless sections (generative)'
+  }
 };
 
 export const WithFalsyItemKeys: Story = {
   render: (args) => renderMenu(args),
   args: {
     items: FALSY_ITEM_KEYS
-  },
-  name: 'with falsy item keys'
+  }
 };
 
 export const SingleSelectedKeyControlledStatic: Story = {
@@ -340,8 +332,7 @@ export const SingleSelectedKeyControlledStatic: Story = {
     items: SELECTION_STATIC_ITEMS,
     selectionMode: 'single',
     modelValue: '2'
-  },
-  name: 'single selected key (controlled, static)'
+  }
 };
 
 export const SingleSelectedKeyControlledGenerative: Story = {
@@ -350,8 +341,7 @@ export const SingleSelectedKeyControlledGenerative: Story = {
     items: SECTION_GENERATIVE_ITEMS,
     selectionMode: 'single',
     modelValue: 'Kangaroo'
-  },
-  name: 'single selected key (controlled, generative)'
+  }
 };
 
 export const SingleDefaultSelectedKeyUncontrolledStatic: Story = {
@@ -360,8 +350,7 @@ export const SingleDefaultSelectedKeyUncontrolledStatic: Story = {
     items: SELECTION_STATIC_ITEMS,
     selectionMode: 'single',
     modelValue: '2'
-  },
-  name: 'single default selected key (uncontrolled, static)'
+  }
 };
 
 export const SingleDefaultSelectedKeyUncontrolledGenerative: Story = {
@@ -370,8 +359,7 @@ export const SingleDefaultSelectedKeyUncontrolledGenerative: Story = {
     items: SECTION_GENERATIVE_ITEMS,
     selectionMode: 'single',
     modelValue: 'Kangaroo'
-  },
-  name: 'single default selected key (uncontrolled, generative)'
+  }
 };
 
 export const MultipleDefaultSelectedKeyControlledStatic: Story = {
@@ -380,8 +368,7 @@ export const MultipleDefaultSelectedKeyControlledStatic: Story = {
     items: SELECTION_STATIC_ITEMS,
     selectionMode: 'multiple',
     modelValue: ['2', '5']
-  },
-  name: 'multiple default selected key (controlled, static)'
+  }
 };
 
 export const MultipleSelectedKeyControlledGenerative: Story = {
@@ -390,8 +377,7 @@ export const MultipleSelectedKeyControlledGenerative: Story = {
     items: SECTION_GENERATIVE_ITEMS,
     selectionMode: 'multiple',
     modelValue: ['Kangaroo', 'Devon']
-  },
-  name: 'multiple selected key (controlled, generative)'
+  }
 };
 
 export const MultipleDefaultSelectedKeyUncontrolledStatic: Story = {
@@ -400,8 +386,7 @@ export const MultipleDefaultSelectedKeyUncontrolledStatic: Story = {
     items: SELECTION_STATIC_ITEMS,
     selectionMode: 'multiple',
     modelValue: ['2', '5']
-  },
-  name: 'multiple default selected key (uncontrolled, static)'
+  }
 };
 
 export const MultipleDefaultSelectedKeyUncontrolledGenerative: Story = {
@@ -410,24 +395,21 @@ export const MultipleDefaultSelectedKeyUncontrolledGenerative: Story = {
     items: SECTION_GENERATIVE_ITEMS,
     selectionMode: 'multiple',
     modelValue: ['Kangaroo', 'Devon']
-  },
-  name: 'multiple default selected key (uncontrolled, generative)'
+  }
 };
 
 export const MenuWithAutoFocusTrue: Story = {
   render: (args) => renderMenuWithNote(args, 'autoFocus=true parity scenario'),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'Menu with autoFocus=true'
+  }
 };
 
 export const MenuWithAutoFocusFalse: Story = {
   render: (args) => renderMenuWithNote(args, 'autoFocus=false parity scenario'),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'Menu with autoFocus=false'
+  }
 };
 
 export const MenuWithAutoFocusTrueDefaultSelectedKeyUncontrolledSelectionModeSingle: Story = {
@@ -436,128 +418,112 @@ export const MenuWithAutoFocusTrueDefaultSelectedKeyUncontrolledSelectionModeSin
     items: SECTION_GENERATIVE_ITEMS,
     selectionMode: 'single',
     modelValue: 'Kangaroo'
-  },
-  name: 'Menu with autoFocus=true, default selected key (uncontrolled), selectionMode single'
+  }
 };
 
 export const MenuWithAutoFocusFirst: Story = {
   render: (args) => renderMenuWithNote(args, 'autoFocus="first" parity scenario'),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'Menu with autoFocus="first"'
+  }
 };
 
 export const MenuWithAutoFocusLast: Story = {
   render: (args) => renderMenuWithNote(args, 'autoFocus="last" parity scenario'),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'Menu with autoFocus="last"'
+  }
 };
 
 export const MenuWithKeyboardSelectionWrappingFalse: Story = {
   render: (args) => renderMenuWithNote(args, 'Keyboard wrapping disabled parity scenario'),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'Menu with keyboard selection wrapping false'
+  }
 };
 
 export const AlignEnd: Story = {
   render: (args) => renderMenuWithNote(args, 'align="end" parity scenario'),
   args: {
     items: SIMPLE_ITEMS
-  },
-  name: 'align="end"'
+  }
 };
 
 export const DirectionTop: Story = {
   render: (args) => renderMenuWithNote(args, 'direction="top" parity scenario'),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'direction="top"'
+  }
 };
 
 export const DirectionBottom: Story = {
   render: (args) => renderMenuWithNote(args, 'direction="bottom" parity scenario'),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'direction="bottom"'
+  }
 };
 
 export const DirectionStart: Story = {
   render: (args) => renderMenuWithNote(args, 'direction="start" parity scenario'),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'direction="start"'
+  }
 };
 
 export const DirectionStartAlignEnd: Story = {
   render: (args) => renderMenuWithNote(args, 'direction="start", align="end" parity scenario'),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'direction="start", align="end"'
+  }
 };
 
 export const DirectionEnd: Story = {
   render: (args) => renderMenuWithNote(args, 'direction="end" parity scenario'),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'direction="end"'
+  }
 };
 
 export const DirectionEndAlignEnd: Story = {
   render: (args) => renderMenuWithNote(args, 'direction="end", align="end" parity scenario'),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'direction="end", align="end"'
+  }
 };
 
 export const DirectionLeft: Story = {
   render: (args) => renderMenuWithNote(args, 'direction="left" parity scenario'),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'direction="left"'
+  }
 };
 
 export const DirectionLeftAlignEnd: Story = {
   render: (args) => renderMenuWithNote(args, 'direction="left", align="end" parity scenario'),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'direction="left", align="end"'
+  }
 };
 
 export const DirectionRight: Story = {
   render: (args) => renderMenuWithNote(args, 'direction="right" parity scenario'),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'direction="right"'
+  }
 };
 
 export const DirectionRightAlignEnd: Story = {
   render: (args) => renderMenuWithNote(args, 'direction="right", align="end" parity scenario'),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'direction="right", align="end"'
+  }
 };
 
 export const ShouldFlip: Story = {
   render: (args) => renderMenuWithNote(args, 'shouldFlip parity scenario'),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'shouldFlip'
+  }
 };
 
 export const IsOpen: Story = {
@@ -565,8 +531,7 @@ export const IsOpen: Story = {
   args: {
     items: SECTION_GENERATIVE_ITEMS,
     isExpanded: true
-  },
-  name: 'isOpen'
+  }
 };
 
 export const DefaultOpen: Story = {
@@ -574,8 +539,7 @@ export const DefaultOpen: Story = {
   args: {
     items: SECTION_GENERATIVE_ITEMS,
     isExpanded: true
-  },
-  name: 'defaultOpen'
+  }
 };
 
 export const DisabledButton: Story = {
@@ -583,8 +547,7 @@ export const DisabledButton: Story = {
   args: {
     items: SECTION_GENERATIVE_ITEMS,
     isDisabled: true
-  },
-  name: 'disabled button'
+  }
 };
 
 export const MultiselectMenu: Story = {
@@ -592,8 +555,7 @@ export const MultiselectMenu: Story = {
   args: {
     items: SECTION_GENERATIVE_ITEMS,
     selectionMode: 'multiple'
-  },
-  name: 'multiselect menu'
+  }
 };
 
 export const NoSelectionAllowedMenu: Story = {
@@ -601,16 +563,14 @@ export const NoSelectionAllowedMenu: Story = {
   args: {
     items: SECTION_GENERATIVE_ITEMS,
     selectionMode: 'none'
-  },
-  name: 'no selection allowed menu'
+  }
 };
 
 export const CloseOnSelectFalse: Story = {
   render: (args) => renderMenuWithNote(args, 'closeOnSelect=false parity scenario'),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'closeOnSelect=false'
+  }
 };
 
 export const CloseOnSelectTrueMultiselectMenu: Story = {
@@ -618,8 +578,7 @@ export const CloseOnSelectTrueMultiselectMenu: Story = {
   args: {
     items: SECTION_GENERATIVE_ITEMS,
     selectionMode: 'multiple'
-  },
-  name: 'closeOnSelect=true, multiselect menu'
+  }
 };
 
 export const MenuWithSemanticElementsStatic: Story = {
@@ -627,8 +586,7 @@ export const MenuWithSemanticElementsStatic: Story = {
   args: {
     items: SEMANTIC_ITEMS,
     label: 'Menu'
-  },
-  name: 'menu with semantic elements (static)'
+  }
 };
 
 export const MenuWithSemanticElementsGenerative: Story = {
@@ -636,8 +594,7 @@ export const MenuWithSemanticElementsGenerative: Story = {
   args: {
     items: [...SEMANTIC_ITEMS],
     label: 'Menu'
-  },
-  name: 'menu with semantic elements (generative)'
+  }
 };
 
 export const MenuShouldPreventScrolling: Story = {
@@ -658,8 +615,7 @@ export const MenuShouldPreventScrolling: Story = {
   }),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'menu should prevent scrolling'
+  }
 };
 
 export const MenuClosesOnBlur: Story = {
@@ -688,8 +644,7 @@ export const MenuClosesOnBlur: Story = {
         </div>
       </div>
     `
-  }),
-  name: 'menu closes on blur'
+  })
 };
 
 export const WithFalsyKey: Story = {
@@ -699,16 +654,14 @@ export const WithFalsyKey: Story = {
       {key: 0, label: 'Key = 0'},
       {key: 1, label: 'Key = 1'}
     ]
-  },
-  name: 'with falsy key'
+  }
 };
 
 export const MenuTriggerWithTriggerLongPress: Story = {
   render: (args) => renderMenuWithNote(args, 'trigger="longPress" parity scenario'),
   args: {
     items: SECTION_GENERATIVE_ITEMS
-  },
-  name: 'MenuTrigger with trigger="longPress"'
+  }
 };
 
 export const ControlledIsOpen: Story = {
@@ -737,8 +690,7 @@ export const ControlledIsOpen: Story = {
         />
       </div>
     `
-  }),
-  name: 'controlled isOpen'
+  })
 };
 
 export const WithTranslations: Story = {
@@ -746,8 +698,7 @@ export const WithTranslations: Story = {
   args: {
     label: 'Languages',
     items: TRANSLATED_ITEMS
-  },
-  name: 'with translations'
+  }
 };
 
 export const MenuItemUnavailable: Story = {
@@ -807,6 +758,5 @@ export const MenuWithLinks: Story = {
   args: {
     label: 'Menu',
     items: LINK_ITEMS
-  },
-  name: 'Menu with links'
+  }
 };
