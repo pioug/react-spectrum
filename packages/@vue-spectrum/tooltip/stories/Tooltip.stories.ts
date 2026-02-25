@@ -3,7 +3,53 @@ import {Tooltip} from '../src';
 
 const meta: Meta<typeof Tooltip> = {
   title: 'Tooltip',
-  component: Tooltip
+  component: Tooltip,
+  args: {
+    isOpen: true,
+    placement: 'top',
+    variant: 'neutral',
+    showIcon: false
+  },
+  argTypes: {
+    ariaLabel: {
+      control: 'text'
+    },
+    ariaLabelledby: {
+      control: 'text'
+    },
+    id: {
+      control: 'text'
+    },
+    isOpen: {
+      control: 'boolean'
+    },
+    placement: {
+      control: 'select',
+      options: [
+        'top',
+        'right',
+        'bottom',
+        'left'
+      ]
+    },
+    showIcon: {
+      control: 'boolean'
+    },
+    state: {
+      table: {
+        disable: true
+      }
+    },
+    variant: {
+      control: 'select',
+      options: [
+        'neutral',
+        'info',
+        'positive',
+        'negative'
+      ]
+    }
+  }
 };
 
 export default meta;
@@ -16,16 +62,30 @@ export const Default: Story = {
     setup() {
       return {args};
     },
-    template: '<Tooltip v-bind="args">Example</Tooltip>'
+    template: '<Tooltip v-bind="args">Tooltip content</Tooltip>'
   })
 };
 
-export const AlternateContent: Story = {
-  render: (args) => ({
-    components: {Tooltip},
-    setup() {
-      return {args};
-    },
-    template: '<Tooltip v-bind="args">Story variant</Tooltip>'
-  })
+export const PositiveWithIcon: Story = {
+  ...Default,
+  args: {
+    variant: 'positive',
+    showIcon: true
+  }
+};
+
+export const NegativeRight: Story = {
+  ...Default,
+  args: {
+    variant: 'negative',
+    placement: 'right',
+    showIcon: true
+  }
+};
+
+export const BottomPlacement: Story = {
+  ...Default,
+  args: {
+    placement: 'bottom'
+  }
 };
