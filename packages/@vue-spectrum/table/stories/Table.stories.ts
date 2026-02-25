@@ -77,6 +77,7 @@ const NESTED_COLUMNS: TableColumn[] = [
 ];
 
 const RESIZABLE_COLUMNS = BASE_COLUMNS.map((column) => column.key);
+export let columns = BASE_COLUMNS;
 
 const meta: Meta<typeof Table> = {
   title: 'TableView',
@@ -163,6 +164,10 @@ function renderTable(args: StoryArgs) {
     },
     template: '<Table v-bind="args" />'
   };
+}
+
+export function EmptyStateTable(args: StoryArgs) {
+  return renderTable(args);
 }
 
 function renderTableWithNote(args: StoryArgs, note: string) {
@@ -584,7 +589,7 @@ export const Filtering: Story = {
 };
 
 export const EmptyStateStory: Story = {
-  render: (args) => renderTableWithNote(args, 'Empty state parity scenario'),
+  render: (args) => EmptyStateTable(args),
   args: {
     columns: BASE_COLUMNS,
     rows: []
@@ -901,5 +906,14 @@ export const AsyncLoadOverflowWrapReproStory: Story = {
     columns: BASE_COLUMNS,
     rows: [],
     overflowMode: 'wrap'
+  }
+};
+
+export const Performance: Story = {
+  render: (args) => renderTableWithNote(args, 'Performance parity scenario'),
+  args: {
+    ariaLabel: 'TableView with many columns and rows',
+    columns: MANY_COLUMNS,
+    rows: MANY_ROWS
   }
 };
