@@ -43,9 +43,16 @@ export const Disabled: Story = {
   }
 };
 
-export const DisabledAlias: Story = {
+export const DisabledProp: Story = {
   ...Default,
   args: {
     disabled: true
+  }
+};
+
+export const SelectedValue: Story = {
+  ...Default,
+  args: {
+    modelValue: '#1473e6'
   }
 };

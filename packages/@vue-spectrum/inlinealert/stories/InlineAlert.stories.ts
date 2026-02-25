@@ -50,3 +50,10 @@ export const CustomTitle: Story = {
     title: 'System notice'
   }
 };
+
+export const AlternateLabel: Story = {
+  ...Default,
+  args: {
+    label: 'Maintenance notice'
+  }
+};

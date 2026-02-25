@@ -56,3 +56,10 @@ export const Disabled: Story = {
     disabled: true
   }
 };
+
+export const AlternateLabel: Story = {
+  ...Default,
+  args: {
+    label: 'Alternate label'
+  }
+};

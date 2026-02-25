@@ -56,3 +56,10 @@ export const Emphasized: Story = {
     isEmphasized: true
   }
 };
+
+export const DisabledProp: Story = {
+  ...Default,
+  args: {
+    disabled: true
+  }
+};

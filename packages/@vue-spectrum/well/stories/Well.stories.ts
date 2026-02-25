@@ -38,3 +38,10 @@ export const RegionRole: Story = {
     role: 'region'
   }
 };
+
+export const AlertRole: Story = {
+  ...Default,
+  args: {
+    role: 'alert'
+  }
+};

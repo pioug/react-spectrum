@@ -56,3 +56,10 @@ export const Disabled: Story = {
     disabled: true
   }
 };
+
+export const CustomTitle: Story = {
+  ...Default,
+  args: {
+    title: 'Sample title'
+  }
+};

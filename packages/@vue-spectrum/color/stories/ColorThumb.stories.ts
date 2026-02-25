@@ -53,3 +53,10 @@ export const CustomLabel: Story = {
     label: 'Thumb sample'
   }
 };
+
+export const AlternateLabel: Story = {
+  ...Default,
+  args: {
+    label: 'Selection thumb'
+  }
+};

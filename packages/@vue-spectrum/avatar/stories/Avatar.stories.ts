@@ -56,3 +56,10 @@ export const CustomLabel: Story = {
     label: 'Product avatar'
   }
 };
+
+export const AlternateLabel: Story = {
+  ...Default,
+  args: {
+    label: 'Alternate label'
+  }
+};

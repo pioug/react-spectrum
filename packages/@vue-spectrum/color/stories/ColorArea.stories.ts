@@ -52,3 +52,10 @@ export const CustomLabel: Story = {
     label: 'Color area'
   }
 };
+
+export const DisabledProp: Story = {
+  ...Default,
+  args: {
+    disabled: true
+  }
+};

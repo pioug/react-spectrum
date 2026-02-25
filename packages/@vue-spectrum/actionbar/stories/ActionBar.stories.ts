@@ -1,13 +1,13 @@
 import {action} from '@storybook/addon-actions';
 import {ActionBar, ActionBarContainer, type SpectrumActionBarProps} from '../src';
+import {computed, defineComponent, type PropType, ref} from 'vue';
 import Copy from '@spectrum-icons-vue/workflow/Copy';
 import Delete from '@spectrum-icons-vue/workflow/Delete';
 import Duplicate from '@spectrum-icons-vue/workflow/Duplicate';
 import Edit from '@spectrum-icons-vue/workflow/Edit';
-import {computed, defineComponent, ref, type PropType} from 'vue';
+import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import Move from '@spectrum-icons-vue/workflow/Move';
 import {Table} from '@vue-spectrum/table';
-import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type TableRow = {
   id: string,
@@ -179,7 +179,7 @@ export const Default: ActionBarStory = {
   }
 };
 
-export const FullWidthStory: ActionBarStory = {
+export const FullWidth: ActionBarStory = {
   ...Default,
   render: (args) => ({
     components: {ActionBarExample},
@@ -191,7 +191,7 @@ export const FullWidthStory: ActionBarStory = {
   })
 };
 
-export const DisabledKeysStory: ActionBarStory = {
+export const DisabledKeys: ActionBarStory = {
   ...Default,
   render: (args) => ({
     components: {ActionBarExample},
@@ -200,4 +200,11 @@ export const DisabledKeysStory: ActionBarStory = {
     },
     template: '<ActionBarExample v-bind="args" :disabled-keys="[\'edit\']" />'
   })
+};
+
+export const Emphasized: ActionBarStory = {
+  ...Default,
+  args: {
+    isEmphasized: true
+  }
 };

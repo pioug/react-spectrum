@@ -51,3 +51,10 @@ export const External: Story = {
     rel: 'noreferrer'
   }
 };
+
+export const NeutralVariant: Story = {
+  ...Default,
+  args: {
+    variant: 'neutral'
+  }
+};

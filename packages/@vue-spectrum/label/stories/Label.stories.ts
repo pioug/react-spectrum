@@ -66,3 +66,10 @@ export const AccessibilityIndicator: Story = {
     isRequired: true
   }
 };
+
+export const RequiredProp: Story = {
+  ...Default,
+  args: {
+    required: true
+  }
+};

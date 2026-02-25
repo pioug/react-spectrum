@@ -68,3 +68,10 @@ export const Invalid: Story = {
     isInvalid: true
   }
 };
+
+export const DisabledProp: Story = {
+  ...Default,
+  args: {
+    disabled: true
+  }
+};

@@ -52,3 +52,10 @@ export const CoverFit: Story = {
     borderRadius: '8px'
   }
 };
+
+export const ContainFit: Story = {
+  ...Default,
+  args: {
+    fit: 'contain'
+  }
+};

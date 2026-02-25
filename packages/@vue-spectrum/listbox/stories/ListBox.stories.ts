@@ -55,3 +55,10 @@ export const CustomLabel: Story = {
     label: 'Select an option'
   }
 };
+
+export const AlternateLabel: Story = {
+  ...Default,
+  args: {
+    label: 'Choose category'
+  }
+};

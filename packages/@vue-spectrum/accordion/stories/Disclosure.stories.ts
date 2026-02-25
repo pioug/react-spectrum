@@ -61,3 +61,10 @@ export const Disabled: DisclosureStory = {
     isDisabled: true
   }
 };
+
+export const Quiet: DisclosureStory = {
+  ...Default,
+  args: {
+    isQuiet: true
+  }
+};

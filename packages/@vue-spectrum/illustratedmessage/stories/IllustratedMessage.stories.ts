@@ -51,3 +51,10 @@ export const CustomTitle: Story = {
     title: 'No results found'
   }
 };
+
+export const Hidden: Story = {
+  ...Default,
+  args: {
+    hidden: true
+  }
+};

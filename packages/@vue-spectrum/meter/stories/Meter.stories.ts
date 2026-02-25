@@ -57,3 +57,10 @@ export const ValueLabel: Story = {
     value: 75
   }
 };
+
+export const AlternateLabel: Story = {
+  ...Default,
+  args: {
+    label: 'Throughput'
+  }
+};

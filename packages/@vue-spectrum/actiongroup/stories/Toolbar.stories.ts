@@ -194,3 +194,11 @@ export const Vertical: ToolbarStory = {
     orientation: 'vertical'
   }
 };
+
+export const VerticalDisabledKeys: ToolbarStory = {
+  ...Default,
+  args: {
+    orientation: 'vertical',
+    scenario: 'disabledKeys'
+  }
+};

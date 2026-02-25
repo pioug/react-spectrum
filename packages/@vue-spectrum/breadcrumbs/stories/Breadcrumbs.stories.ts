@@ -46,3 +46,10 @@ export const WithCurrent: Story = {
     current: 'Copy'
   }
 };
+
+export const CurrentItem: Story = {
+  ...Default,
+  args: {
+    current: 'Current item'
+  }
+};

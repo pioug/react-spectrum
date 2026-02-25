@@ -94,3 +94,10 @@ export const Open: Story = {
     isOpen: true
   }
 };
+
+export const AlternateTitle: Story = {
+  ...Default,
+  args: {
+    title: 'Unsaved changes'
+  }
+};

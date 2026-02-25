@@ -64,3 +64,10 @@ export const CustomLabel: Story = {
     label: 'Price range'
   }
 };
+
+export const DisabledProp: Story = {
+  ...Default,
+  args: {
+    disabled: true
+  }
+};

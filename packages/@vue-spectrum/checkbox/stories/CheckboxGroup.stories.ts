@@ -61,3 +61,10 @@ export const Invalid: Story = {
     isInvalid: true
   }
 };
+
+export const InvalidProp: Story = {
+  ...Default,
+  args: {
+    invalid: true
+  }
+};

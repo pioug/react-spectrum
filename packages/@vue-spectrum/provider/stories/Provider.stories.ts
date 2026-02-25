@@ -52,3 +52,11 @@ export const DarkScheme: Story = {
     colorScheme: 'dark'
   }
 };
+
+export const RightToLeft: Story = {
+  ...Default,
+  args: {
+    dir: 'rtl',
+    locale: 'ar-AE'
+  }
+};

@@ -48,3 +48,10 @@ export const Invalid: Story = {
     isInvalid: true
   }
 };
+
+export const ValidState: Story = {
+  ...Default,
+  args: {
+    validationState: 'valid'
+  }
+};

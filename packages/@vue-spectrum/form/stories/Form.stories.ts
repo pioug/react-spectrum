@@ -49,3 +49,10 @@ export const SideLabels: Story = {
     labelAlign: 'end'
   }
 };
+
+export const NativeValidation: Story = {
+  ...Default,
+  args: {
+    validationBehavior: 'aria'
+  }
+};

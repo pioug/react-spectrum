@@ -1,11 +1,11 @@
-import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {Button} from '@vue-spectrum/button';
-import {Provider} from '@vue-spectrum/provider';
 import {theme as defaultTheme} from '@vue-spectrum/theme-default';
+import type {Meta, StoryObj} from '@storybook/vue3-vite';
+import {Provider} from '@vue-spectrum/provider';
 
 type ButtonStoryArgs = {
-  variant: 'cta' | 'primary' | 'secondary';
-  disabled: boolean;
+  variant: 'cta' | 'primary' | 'secondary',
+  disabled: boolean
 };
 
 const meta = {
@@ -61,5 +61,11 @@ export const Disabled: Story = {
 export const Secondary: Story = {
   args: {
     variant: 'secondary'
+  }
+};
+
+export const Primary: Story = {
+  args: {
+    variant: 'primary'
   }
 };

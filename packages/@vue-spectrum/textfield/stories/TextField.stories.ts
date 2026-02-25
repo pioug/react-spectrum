@@ -1,13 +1,13 @@
+import {theme as defaultTheme} from '@vue-spectrum/theme-default';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {Provider} from '@vue-spectrum/provider';
 import {TextField} from '@vue-spectrum/textfield';
-import {theme as defaultTheme} from '@vue-spectrum/theme-default';
 
 type TextFieldStoryArgs = {
-  modelValue: string;
-  validationState?: 'invalid' | 'valid';
-  description: string;
-  disabled: boolean;
+  modelValue: string,
+  validationState?: 'invalid' | 'valid',
+  description: string,
+  disabled: boolean
 };
 
 const meta = {
@@ -76,5 +76,12 @@ export const Invalid: Story = {
 export const Disabled: Story = {
   args: {
     disabled: true
+  }
+};
+
+export const Valid: Story = {
+  args: {
+    modelValue: 'Avery',
+    validationState: 'valid'
   }
 };

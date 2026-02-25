@@ -53,3 +53,10 @@ export const CustomLabel: Story = {
     label: 'Brand swatch'
   }
 };
+
+export const AlternateLabel: Story = {
+  ...Default,
+  args: {
+    label: 'Accent swatch'
+  }
+};

@@ -56,3 +56,10 @@ export const Open: Story = {
     isOpen: true
   }
 };
+
+export const DisabledProp: Story = {
+  ...Default,
+  args: {
+    disabled: true
+  }
+};

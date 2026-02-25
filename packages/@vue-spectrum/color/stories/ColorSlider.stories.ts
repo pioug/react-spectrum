@@ -68,3 +68,10 @@ export const CustomLabel: Story = {
     label: 'Saturation'
   }
 };
+
+export const DisabledProp: Story = {
+  ...Default,
+  args: {
+    disabled: true
+  }
+};
