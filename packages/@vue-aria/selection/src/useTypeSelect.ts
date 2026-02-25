@@ -1,4 +1,5 @@
 import {computed, type ComputedRef} from 'vue';
+import {getFocusedKey} from './selectionManagerAccess';
 import type {KeyboardDelegate, SelectionManager} from './types';
 
 const TYPEAHEAD_DEBOUNCE_WAIT_MS = 1000;
@@ -41,7 +42,7 @@ export function useTypeSelect(options: AriaTypeSelectOptions): TypeSelectAria {
 
     state.search += character;
 
-    let key = options.keyboardDelegate.getKeyForSearch?.(state.search, options.selectionManager.focusedKey.value);
+    let key = options.keyboardDelegate.getKeyForSearch?.(state.search, getFocusedKey(options.selectionManager));
     if (key == null) {
       key = options.keyboardDelegate.getKeyForSearch?.(state.search);
     }

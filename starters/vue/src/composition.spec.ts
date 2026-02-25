@@ -3229,11 +3229,14 @@ describe('Vue migration composition components', () => {
       selectionManager: selectableList.selectionManager
     });
 
-    selectableList.selectionManager.setFocusedKey('react');
+    selectableCollection.collectionProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
+    expect(selectableList.selectionManager.focusedKey.value).toBe('react');
+    expect(Array.from(selectableList.selectionManager.selectedKeys.value)).toEqual(['react']);
+
     selectableCollection.collectionProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
     expect(selectableList.selectionManager.focusedKey.value).toBe('vue');
     expect(Array.from(selectableList.selectionManager.selectedKeys.value)).toEqual(['vue']);
-    expect(selectionEvents.length).toBe(1);
+    expect(selectionEvents.length).toBe(2);
 
     let selectableItem = useAriaSelectableItem({
       key: 'vue'
@@ -3251,6 +3254,49 @@ describe('Vue migration composition components', () => {
     typeSelect.typeSelectProps.value.onKeyDownCapture(new KeyboardEvent('keydown', {key: 'r'}));
     expect(selectableList.selectionManager.focusedKey.value).toBe('react');
     expect(typeSelectEvents).toEqual(['react']);
+  });
+
+  it('supports vue-stately selection manager values in vue-aria selection hooks', () => {
+    let nodes: StatelyListNode<{label: string}>[] = [
+      {key: 'item-1', textValue: 'First', type: 'item', value: {label: 'First'}},
+      {key: 'item-2', textValue: 'Second', type: 'item', value: {label: 'Second'}},
+      {key: 'item-3', textValue: 'Third', type: 'item', value: {label: 'Third'}}
+    ];
+
+    let state = useStatelyMultipleSelectionState({
+      selectionMode: 'single'
+    });
+    let manager = new StatelySelectionManager(new StatelyListCollection(nodes), state);
+    let keyboardDelegate = new VueListKeyboardDelegate(nodes.map((node) => ({
+      key: node.key,
+      textValue: node.textValue ?? String(node.key)
+    })));
+
+    let selectableCollection = useAriaSelectableCollection({
+      keyboardDelegate,
+      selectionManager: manager
+    });
+
+    selectableCollection.collectionProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowUp'}));
+    expect(manager.focusedKey).toBe('item-3');
+    expect(Array.from(manager.selectedKeys)).toEqual(['item-3']);
+
+    selectableCollection.collectionProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
+    expect(manager.focusedKey).toBe('item-1');
+    expect(Array.from(manager.selectedKeys)).toEqual(['item-1']);
+
+    let selectableItem = useAriaSelectableItem({
+      key: 'item-1'
+    }, manager);
+    expect(selectableItem.states.value.isFocused).toBe(true);
+    expect(selectableItem.itemProps.value['aria-selected']).toBe(true);
+
+    let typeSelect = useAriaTypeSelect({
+      keyboardDelegate,
+      selectionManager: manager
+    });
+    typeSelect.typeSelectProps.value.onKeyDownCapture(new KeyboardEvent('keydown', {key: 't'}));
+    expect(manager.focusedKey).toBe('item-3');
   });
 
   it('computes vue-aria separator role and orientation semantics', () => {

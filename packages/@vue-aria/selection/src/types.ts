@@ -2,6 +2,8 @@ import type {ComputedRef, Ref} from 'vue';
 
 export type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
 export type SelectionKey = string | number;
+export type SelectionMode = 'multiple' | 'none' | 'single';
+export type SelectionValue<T> = T | Ref<T> | ComputedRef<T>;
 
 export interface SelectionItem {
   disabled?: boolean,
@@ -18,9 +20,9 @@ export interface KeyboardDelegate {
 }
 
 export interface SelectionManager {
-  focusedKey: Ref<SelectionKey | null>,
-  selectionMode: 'multiple' | 'none' | 'single',
-  selectedKeys: Ref<Set<SelectionKey>>,
-  setFocusedKey: (key: SelectionKey | null) => void,
-  select: (key: SelectionKey) => void
+  focusedKey: SelectionValue<SelectionKey | null>,
+  selectionMode: SelectionValue<SelectionMode>,
+  selectedKeys: SelectionValue<Set<SelectionKey>>,
+  setFocusedKey: (key: SelectionKey | null, ...args: unknown[]) => void,
+  select: (key: SelectionKey, event?: {shiftKey?: boolean}) => void
 }

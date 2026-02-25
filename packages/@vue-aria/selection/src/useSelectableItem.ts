@@ -1,4 +1,5 @@
 import {computed, type ComputedRef, unref} from 'vue';
+import {getFocusedKey, getSelectedKeys} from './selectionManagerAccess';
 import type {MaybeRef, SelectionKey, SelectionManager} from './types';
 
 export interface SelectableItemStates {
@@ -36,7 +37,7 @@ export function useSelectableItem(
 ): SelectableItemAria {
   let key = computed(() => unref(options.key));
   let isDisabled = computed(() => Boolean(unref(states.isDisabled)));
-  let isSelected = computed(() => unref(states.isSelected) ?? selectionManager.selectedKeys.value.has(key.value));
+  let isSelected = computed(() => unref(states.isSelected) ?? getSelectedKeys(selectionManager).has(key.value));
   let isPressed = computed(() => Boolean(unref(states.isPressed)));
   let allowsSelection = computed(() => unref(states.allowsSelection) ?? true);
 
@@ -61,7 +62,7 @@ export function useSelectableItem(
     states: computed(() => ({
       allowsSelection: allowsSelection.value,
       isDisabled: isDisabled.value,
-      isFocused: selectionManager.focusedKey.value === key.value,
+      isFocused: getFocusedKey(selectionManager) === key.value,
       isPressed: isPressed.value,
       isSelected: isSelected.value
     }))

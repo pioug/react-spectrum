@@ -1,46 +1,60 @@
-import {ref} from 'vue';
+import {computed, ref} from 'vue';
+import {useSelectableCollection, useSelectableItem} from '@vue-aria/selection';
+import {type Key, type TreeNode, type TreeState, useTreeState} from '@vue-stately/tree';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-type TreeNode = {
-  children?: TreeNode[],
-  key: string,
-  label: string
-};
+type StoryTreeNode = TreeNode<Record<string, never>>;
 
-const nodes: TreeNode[] = [
+const treeNodes: StoryTreeNode[] = [
   {
-    key: 'animals',
-    label: 'Animals',
-    children: [
-      {key: 'aardvark', label: 'Aardvark'},
+    childNodes: [
+      {key: 'aardvark', textValue: 'Aardvark'},
       {
+        childNodes: [
+          {key: 'black-bear', textValue: 'Black Bear'},
+          {key: 'brown-bear', textValue: 'Brown Bear'}
+        ],
         key: 'bear',
-        label: 'Bear',
-        children: [
-          {key: 'black-bear', label: 'Black Bear'},
-          {key: 'brown-bear', label: 'Brown Bear'}
-        ]
+        textValue: 'Bear'
       },
-      {key: 'kangaroo', label: 'Kangaroo'},
-      {key: 'snake', label: 'Snake'}
-    ]
+      {key: 'kangaroo', textValue: 'Kangaroo'},
+      {key: 'snake', textValue: 'Snake'}
+    ],
+    key: 'animals',
+    textValue: 'Animals'
   },
   {
-    key: 'fruits',
-    label: 'Fruits',
-    children: [
-      {key: 'apple', label: 'Apple'},
-      {key: 'orange', label: 'Orange'},
+    childNodes: [
+      {key: 'apple', textValue: 'Apple'},
+      {key: 'orange', textValue: 'Orange'},
       {
+        childNodes: [
+          {key: 'golden-kiwi', textValue: 'Golden Kiwi'},
+          {key: 'fuzzy-kiwi', textValue: 'Fuzzy Kiwi'}
+        ],
         key: 'kiwi',
-        label: 'Kiwi',
-        children: [
-          {key: 'golden-kiwi', label: 'Golden Kiwi'},
-          {key: 'fuzzy-kiwi', label: 'Fuzzy Kiwi'}
-        ]
+        textValue: 'Kiwi'
       }
-    ]
+    ],
+    key: 'fruits',
+    textValue: 'Fruits'
   }
+];
+
+const allKeys = [
+  'animals',
+  'aardvark',
+  'bear',
+  'black-bear',
+  'brown-bear',
+  'kangaroo',
+  'snake',
+  'fruits',
+  'apple',
+  'orange',
+  'kiwi',
+  'golden-kiwi',
+  'fuzzy-kiwi'
 ];
 
 const meta = {
@@ -50,63 +64,170 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+class TreeKeyboardDelegate {
+  private collator: Intl.Collator;
+  private state: TreeState<Record<string, never>>;
+
+  constructor(state: TreeState<Record<string, never>>) {
+    this.collator = new Intl.Collator('en');
+    this.state = state;
+  }
+
+  getKeyAbove(key: Key): Key | null {
+    let keyBefore = this.state.collection.getKeyBefore(key);
+    while (keyBefore != null) {
+      if (!this.state.disabledKeys.has(keyBefore)) {
+        return keyBefore;
+      }
+
+      keyBefore = this.state.collection.getKeyBefore(keyBefore);
+    }
+
+    return null;
+  }
+
+  getKeyBelow(key: Key): Key | null {
+    let keyBelow = this.state.collection.getKeyAfter(key);
+    while (keyBelow != null) {
+      if (!this.state.disabledKeys.has(keyBelow)) {
+        return keyBelow;
+      }
+
+      keyBelow = this.state.collection.getKeyAfter(keyBelow);
+    }
+
+    return null;
+  }
+
+  getFirstKey(): Key | null {
+    let key = this.state.collection.getFirstKey();
+    while (key != null) {
+      if (!this.state.disabledKeys.has(key)) {
+        return key;
+      }
+
+      key = this.state.collection.getKeyAfter(key);
+    }
+
+    return null;
+  }
+
+  getLastKey(): Key | null {
+    let key = this.state.collection.getLastKey();
+    while (key != null) {
+      if (!this.state.disabledKeys.has(key)) {
+        return key;
+      }
+
+      key = this.state.collection.getKeyBefore(key);
+    }
+
+    return null;
+  }
+
+  getKeyForSearch(search: string, fromKey: Key | null = this.getFirstKey()): Key | null {
+    let key = fromKey;
+    while (key != null) {
+      let item = this.state.collection.getItem(key);
+      if (item?.textValue && this.collator.compare(search, item.textValue.slice(0, search.length)) === 0) {
+        return key;
+      }
+
+      key = this.getKeyBelow(key);
+    }
+
+    return null;
+  }
+}
+
 export const KeyboardNavigation: Story = {
   render: () => ({
     setup() {
-      let expanded = ref(new Set<string>(['animals', 'fruits', 'bear', 'kiwi']));
-      let selected = ref<string | null>(null);
+      let treeRef = ref<HTMLElement | null>(null);
+      let treeState = useTreeState({
+        items: treeNodes,
+        selectionMode: 'single'
+      });
+      let keyboardDelegate = new TreeKeyboardDelegate(treeState);
+      let selectableCollection = useSelectableCollection({
+        keyboardDelegate,
+        selectionManager: treeState.selectionManager
+      });
 
-      let toggle = (key: string) => {
-        let next = new Set(expanded.value);
-        if (next.has(key)) {
-          next.delete(key);
-        } else {
-          next.add(key);
+      let selectableItems = new Map(
+        allKeys.map((key) => [key, useSelectableItem({key}, treeState.selectionManager)])
+      );
+
+      let visibleNodes = computed(() => {
+        return Array.from(treeState.collection.getKeys())
+          .map((key) => treeState.collection.getItem(key))
+          .filter((node): node is StoryTreeNode => node != null);
+      });
+
+      let getDepth = (node: StoryTreeNode): number => {
+        let depth = 0;
+        let parentKey = node.parentKey ?? null;
+        while (parentKey != null) {
+          depth += 1;
+          parentKey = treeState.collection.getItem(parentKey)?.parentKey ?? null;
         }
-        expanded.value = next;
+
+        return depth;
       };
 
-      let select = (key: string) => {
-        selected.value = key;
+      let getItemProps = (key: string) => {
+        return selectableItems.get(key)?.itemProps.value;
+      };
+
+      let getItemStates = (key: string) => {
+        return selectableItems.get(key)?.states.value;
+      };
+
+      let onItemClick = (node: StoryTreeNode) => {
+        getItemProps(String(node.key))?.onClick();
+        if (node.hasChildNodes) {
+          treeState.toggleKey(node.key);
+        }
       };
 
       return {
-        expanded,
-        nodes,
-        select,
-        selected,
-        toggle
+        collectionProps: selectableCollection.collectionProps,
+        getDepth,
+        getItemStates,
+        onItemClick,
+        treeRef,
+        treeState,
+        visibleNodes
       };
     },
     template: `
-      <div>
-        <div style="font-size: 12px; color: #666; margin-bottom: 6px;">Use keyboard arrows to navigate the tree.</div>
-        <ul role="tree" tabindex="0" style="list-style: none; padding-left: 0; max-width: 320px;">
-          <li v-for="section in nodes" :key="section.key" role="treeitem" :aria-expanded="expanded.has(section.key)">
-            <button type="button" @click="toggle(section.key)">{{expanded.has(section.key) ? '▾' : '▸'}} {{section.label}}</button>
-            <ul v-if="expanded.has(section.key)" role="group" style="list-style: none; padding-left: 18px;">
-              <li
-                v-for="item in section.children"
-                :key="item.key"
-                role="treeitem"
-                :aria-expanded="item.children ? expanded.has(item.key) : undefined"
-                :aria-selected="selected === item.key">
-                <button type="button" @click="item.children ? toggle(item.key) : select(item.key)">
-                  <span v-if="item.children">{{expanded.has(item.key) ? '▾' : '▸'}} </span>{{item.label}}
-                </button>
-                <ul v-if="item.children && expanded.has(item.key)" role="group" style="list-style: none; padding-left: 18px;">
-                  <li
-                    v-for="child in item.children"
-                    :key="child.key"
-                    role="treeitem"
-                    :aria-selected="selected === child.key">
-                    <button type="button" @click="select(child.key)">{{child.label}}</button>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </li>
-        </ul>
+      <div style="display: grid; gap: 8px;">
+        <div style="font-size: 12px; color: #666;">Keyboard arrows should move focus through visible tree nodes.</div>
+        <div
+          ref="treeRef"
+          role="tree"
+          v-bind="collectionProps"
+          style="max-width: 360px; border: 1px solid #ddd; padding: 6px;">
+          <div
+            v-for="node in visibleNodes"
+            :key="node.key"
+            role="treeitem"
+            :aria-expanded="node.hasChildNodes ? treeState.expandedKeys.has(node.key) : undefined"
+            :aria-selected="getItemStates(String(node.key))?.isSelected"
+            :style="{
+              padding: '4px 6px',
+              marginLeft: (getDepth(node) * 16) + 'px',
+              background: getItemStates(String(node.key))?.isFocused ? '#e8e8e8' : 'transparent',
+              fontWeight: getItemStates(String(node.key))?.isFocused ? '600' : '400',
+              cursor: 'pointer'
+            }"
+            @click="onItemClick(node)">
+            <span v-if="node.hasChildNodes" aria-hidden="true" style="display: inline-block; width: 14px;">
+              {{treeState.expandedKeys.has(node.key) ? '▾' : '▸'}}
+            </span>
+            <span>{{node.textValue}}</span>
+          </div>
+        </div>
       </div>
     `
   }),

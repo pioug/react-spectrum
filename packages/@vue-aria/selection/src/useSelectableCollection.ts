@@ -1,4 +1,5 @@
 import {computed, type ComputedRef, unref} from 'vue';
+import {getFocusedKey, getSelectedKeys, getSelectionMode} from './selectionManagerAccess';
 import type {KeyboardDelegate, MaybeRef, SelectionKey, SelectionManager} from './types';
 
 export interface AriaSelectableCollectionOptions {
@@ -26,13 +27,15 @@ export function useSelectableCollection(options: AriaSelectableCollectionOptions
 
     if (event.key === 'ArrowDown') {
       event.preventDefault();
-      let fromKey = options.selectionManager.focusedKey.value ?? options.keyboardDelegate.getFirstKey();
-      let nextKey = fromKey == null ? null : options.keyboardDelegate.getKeyBelow(fromKey);
+      let focusedKey = getFocusedKey(options.selectionManager);
+      let nextKey = focusedKey != null
+        ? options.keyboardDelegate.getKeyBelow(focusedKey)
+        : options.keyboardDelegate.getFirstKey();
       if (nextKey != null) {
         options.selectionManager.setFocusedKey(nextKey);
-        if (options.selectionManager.selectionMode !== 'none') {
+        if (getSelectionMode(options.selectionManager) !== 'none') {
           options.selectionManager.select(nextKey);
-          options.onSelectionChange?.(new Set(options.selectionManager.selectedKeys.value));
+          options.onSelectionChange?.(new Set(getSelectedKeys(options.selectionManager)));
         }
       }
       return;
@@ -40,13 +43,15 @@ export function useSelectableCollection(options: AriaSelectableCollectionOptions
 
     if (event.key === 'ArrowUp') {
       event.preventDefault();
-      let fromKey = options.selectionManager.focusedKey.value ?? options.keyboardDelegate.getLastKey();
-      let previousKey = fromKey == null ? null : options.keyboardDelegate.getKeyAbove(fromKey);
+      let focusedKey = getFocusedKey(options.selectionManager);
+      let previousKey = focusedKey != null
+        ? options.keyboardDelegate.getKeyAbove(focusedKey)
+        : options.keyboardDelegate.getLastKey();
       if (previousKey != null) {
         options.selectionManager.setFocusedKey(previousKey);
-        if (options.selectionManager.selectionMode !== 'none') {
+        if (getSelectionMode(options.selectionManager) !== 'none') {
           options.selectionManager.select(previousKey);
-          options.onSelectionChange?.(new Set(options.selectionManager.selectedKeys.value));
+          options.onSelectionChange?.(new Set(getSelectedKeys(options.selectionManager)));
         }
       }
     }
