@@ -82,6 +82,11 @@ export let columns = BASE_COLUMNS;
 const meta: Meta<typeof Table> = {
   title: 'TableView',
   component: Table,
+  excludeStories: [
+    'columns',
+    'renderEmptyState',
+    'EmptyStateTable'
+  ],
   args: {
     ariaLabel: 'Files',
     columns: BASE_COLUMNS,
@@ -906,14 +911,5 @@ export const AsyncLoadOverflowWrapReproStory: Story = {
     columns: BASE_COLUMNS,
     rows: [],
     overflowMode: 'wrap'
-  }
-};
-
-export const Performance: Story = {
-  render: (args) => renderTableWithNote(args, 'Performance parity scenario'),
-  args: {
-    ariaLabel: 'TableView with many columns and rows',
-    columns: MANY_COLUMNS,
-    rows: MANY_ROWS
   }
 };

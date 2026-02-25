@@ -1,26 +1,22 @@
-import {ColorSwatch} from '../src';
+import {ColorSwatch, parseColor} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 const meta: Meta<typeof ColorSwatch> = {
   title: 'ColorThumb',
   component: ColorSwatch,
-  args: {
-    label: 'Example'
-  },
   argTypes: {
-    bordered: {
-      control: 'boolean'
-    },
     color: {
-      control: 'text'
+      table: {
+        disable: true
+      }
     },
     isDisabled: {
       control: 'boolean'
     },
-    label: {
-      control: 'text'
+    isDragging: {
+      control: 'boolean'
     },
-    selected: {
+    isFocused: {
       control: 'boolean'
     }
   }
@@ -31,32 +27,21 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  args: {
+    color: parseColor('#f00')
+  },
   render: (args) => ({
     components: {ColorSwatch},
     setup() {
       return {args};
     },
-    template: '<ColorSwatch v-bind="args">Example</ColorSwatch>'
+    template: '<ColorSwatch v-bind="args" label="Color thumb" />'
   })
 };
 
-export const Disabled: Story = {
+export const Alpha: Story = {
   ...Default,
   args: {
-    isDisabled: true
-  }
-};
-
-export const CustomLabel: Story = {
-  ...Default,
-  args: {
-    label: 'Thumb sample'
-  }
-};
-
-export const AlternateLabel: Story = {
-  ...Default,
-  args: {
-    label: 'Selection thumb'
+    color: parseColor('hsla(0, 100%, 100%, 0)')
   }
 };
