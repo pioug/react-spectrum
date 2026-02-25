@@ -708,7 +708,7 @@ export const MenuTriggerWithTriggerLongPress: Story = {
   args: {
     items: SECTION_GENERATIVE_ITEMS
   },
-  name: 'menu trigger with trigger=longPress'
+  name: 'MenuTrigger with trigger="longPress"'
 };
 
 export const ControlledIsOpen: Story = {
@@ -808,5 +808,5 @@ export const MenuWithLinks: Story = {
     label: 'Menu',
     items: LINK_ITEMS
   },
-  name: 'menu with links'
+  name: 'Menu with links'
 };
