@@ -3,7 +3,7 @@ import {FileTrigger} from '@vue-spectrum/filetrigger';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 const meta: Meta<typeof DropZone> = {
-  title: 'DropZone/FileTrigger',
+  title: 'DropZone/WithFileTrigger',
   component: DropZone,
   args: {
     accept: 'image/*',
