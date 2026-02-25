@@ -262,12 +262,14 @@ import {
 
 function createPointerEvent(
   type: string,
-  init: {button?: number, pointerId?: number, pointerType?: 'mouse' | 'pen' | 'touch'} = {}
+  init: {button?: number, clientX?: number, clientY?: number, pageX?: number, pageY?: number, pointerId?: number, pointerType?: 'mouse' | 'pen' | 'touch'} = {}
 ): PointerEvent {
   if (typeof PointerEvent !== 'undefined') {
     return new PointerEvent(type, {
       bubbles: true,
       button: init.button ?? 0,
+      clientX: init.clientX ?? init.pageX ?? 0,
+      clientY: init.clientY ?? init.pageY ?? 0,
       pointerId: init.pointerId ?? 1,
       pointerType: init.pointerType ?? 'mouse'
     });
@@ -275,9 +277,13 @@ function createPointerEvent(
 
   let event = new MouseEvent(type, {
     bubbles: true,
-    button: init.button ?? 0
+    button: init.button ?? 0,
+    clientX: init.clientX ?? init.pageX ?? 0,
+    clientY: init.clientY ?? init.pageY ?? 0
   }) as unknown as PointerEvent;
   Object.defineProperty(event, 'pointerId', {value: init.pointerId ?? 1});
+  Object.defineProperty(event, 'pageX', {value: init.pageX ?? init.clientX ?? 0});
+  Object.defineProperty(event, 'pageY', {value: init.pageY ?? init.clientY ?? 0});
   Object.defineProperty(event, 'pointerType', {value: init.pointerType ?? 'mouse'});
   return event;
 }
@@ -5036,6 +5042,46 @@ describe('Vue migration composition components', () => {
       stopInteractOutside();
       document.body.removeChild(container);
       document.body.removeChild(outside);
+    }
+  });
+
+  it('fires vue-aria move pointer events with deltas and end state', () => {
+    let moveEvents: Array<{type: string, x?: number, y?: number}> = [];
+    let container = document.createElement('div');
+    document.body.append(container);
+
+    let move = useMove({
+      onMove: (event) => {
+        moveEvents.push({
+          type: event.type,
+          x: event.deltaX,
+          y: event.deltaY
+        });
+      },
+      onMoveEnd: (event) => {
+        moveEvents.push({type: event.type});
+      },
+      onMoveStart: (event) => {
+        moveEvents.push({type: event.type});
+      }
+    });
+
+    try {
+      if (move.moveProps.value.onPointerDown) {
+        container.addEventListener('pointerdown', move.moveProps.value.onPointerDown as EventListener);
+      }
+
+      container.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 7, pageX: 20, pageY: 30}));
+      window.dispatchEvent(createPointerEvent('pointermove', {pointerId: 7, pageX: 26, pageY: 24}));
+      window.dispatchEvent(createPointerEvent('pointerup', {pointerId: 7, pageX: 26, pageY: 24}));
+
+      expect(moveEvents).toEqual([
+        {type: 'movestart'},
+        {type: 'move', x: 6, y: -6},
+        {type: 'moveend'}
+      ]);
+    } finally {
+      document.body.removeChild(container);
     }
   });
 
