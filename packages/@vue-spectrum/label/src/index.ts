@@ -54,6 +54,10 @@ export const Label = defineComponent({
     required: {
       type: Boolean,
       default: false
+    },
+    width: {
+      type: String as PropType<string | undefined>,
+      default: undefined
     }
   },
   setup(props, {slots, attrs}) {
@@ -86,6 +90,7 @@ export const Label = defineComponent({
         ...attrs,
         class: [className.value, 'vs-label', resolvedIsRequired.value ? 'is-required' : null, attrs.class],
         for: tag === 'label' ? htmlFor : undefined,
+        style: [{width: props.width}, attrs.style],
         'data-vac': ''
       }, [
         slots.default ? slots.default() : 'Label',

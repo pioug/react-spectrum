@@ -395,7 +395,8 @@ describe('Vue migration primitives', () => {
     let wrapper = mount(Label, {
       props: {
         forId: 'field-name',
-        required: true
+        required: true,
+        width: '80px'
       },
       slots: {
         default: 'Name'
@@ -407,6 +408,7 @@ describe('Vue migration primitives', () => {
     expect(wrapper.find('.vs-label__required').exists()).toBe(true);
     expect(wrapper.classes()).toContain('spectrum-FieldLabel');
     expect(wrapper.get('.vs-label__required').attributes('aria-hidden')).toBe('true');
+    expect((wrapper.element as HTMLElement).style.width).toBe('80px');
   });
 
   it('maps help text disabled/invalid states and field aria wiring', () => {

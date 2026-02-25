@@ -1,39 +1,32 @@
 import {Label} from '../src';
+import {TextField} from '@vue-spectrum/textfield';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 const meta: Meta<typeof Label> = {
   title: 'Label',
   component: Label,
+  args: {
+    width: '100%',
+    htmlFor: 'test'
+  },
   argTypes: {
-    elementType: {
-      control: 'text'
+    labelAlign: {
+      control: 'radio',
+      options: ['end', 'start']
     },
-    for: {
-      control: 'text'
+    labelPosition: {
+      control: 'radio',
+      options: ['side', 'top']
     },
-    forId: {
-      control: 'text'
-    },
-    htmlFor: {
-      control: 'text'
-    },
-    includeNecessityIndicatorInAccessibilityName: {
-      control: 'boolean'
+    necessityIndicator: {
+      control: 'radio',
+      options: ['icon', 'label']
     },
     isRequired: {
       control: 'boolean'
     },
-    labelAlign: {
-      control: 'text'
-    },
-    labelPosition: {
-      control: 'text'
-    },
-    necessityIndicator: {
-      control: 'text'
-    },
-    required: {
-      control: 'boolean'
+    htmlFor: {
+      control: {disable: true}
     }
   }
 };
@@ -44,32 +37,28 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: (args) => ({
-    components: {Label},
+    components: {Label, TextField},
     setup() {
       return {args};
     },
-    template: '<Label v-bind="args">Example</Label>'
+    template: `
+      <div style="white-space: nowrap;">
+        <Label v-bind="args">Test</Label>
+        <TextField :id="args.htmlFor" :is-required="args.isRequired" />
+      </div>
+    `
   })
 };
 
-export const Required: Story = {
-  ...Default,
+export const WidthForLabelAlignSide: Story = {
   args: {
-    isRequired: true
-  }
-};
-
-export const AccessibilityIndicator: Story = {
-  ...Default,
-  args: {
-    includeNecessityIndicatorInAccessibilityName: true,
-    isRequired: true
-  }
-};
-
-export const RequiredProp: Story = {
-  ...Default,
-  args: {
-    required: true
-  }
+    width: '80px',
+    labelPosition: 'side'
+  },
+  argTypes: {
+    labelPosition: {
+      control: {disable: true}
+    }
+  },
+  render: Default.render
 };
