@@ -3,7 +3,7 @@ import {ActionButton} from '@vue-spectrum/button';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
 import {computed, defineComponent, h, type PropType} from 'vue';
 
-function normalizeActionKey(value: string): string {
+function normalizeActionKeyForComparison(value: string): string {
   return value.trim().toLowerCase().replace(/\s+/g, '');
 }
 
@@ -74,9 +74,9 @@ export const ActionBar = defineComponent({
 
     let resolvedDisabledKeys = computed(() => {
       let disabledKeys = new Set(props.disabledKeys);
-      let normalizedDisabledKeys = new Set(props.disabledKeys.map((key) => normalizeActionKey(key)));
+      let normalizedDisabledKeys = new Set(props.disabledKeys.map((key) => normalizeActionKeyForComparison(key)));
       return props.items.filter((item) => {
-        return disabledKeys.has(item) || normalizedDisabledKeys.has(normalizeActionKey(item));
+        return disabledKeys.has(item) || normalizedDisabledKeys.has(normalizeActionKeyForComparison(item));
       });
     });
 
@@ -104,7 +104,7 @@ export const ActionBar = defineComponent({
           staticColor: isEmphasized.value ? 'white' : undefined,
           disabledKeys: resolvedDisabledKeys.value,
           disabled: false,
-          onAction: (key: string) => emit('action', normalizeActionKey(key))
+          onAction: (key: string) => emit('action', key)
         }, {
           item: renderItem
         });
