@@ -3,7 +3,54 @@ import {TreeView} from '../src';
 
 const meta: Meta<typeof TreeView> = {
   title: 'TreeView',
-  component: TreeView
+  component: TreeView,
+  args: {
+    items: [
+      {
+        id: 'projects',
+        label: 'Projects',
+        children: [
+          {
+            id: 'alpha',
+            label: 'Alpha'
+          },
+          {
+            id: 'beta',
+            label: 'Beta'
+          }
+        ]
+      },
+      {
+        id: 'settings',
+        label: 'Settings'
+      }
+    ]
+  },
+  argTypes: {
+    childrenKey: {
+      control: 'text'
+    },
+    defaultExpanded: {
+      control: 'boolean'
+    },
+    hidden: {
+      control: 'boolean'
+    },
+    idKey: {
+      control: 'text'
+    },
+    items: {
+      table: {
+        disable: true
+      }
+    },
+    labelKey: {
+      control: 'text'
+    },
+    modelValue: {
+      control: 'text'
+    }
+  }
 };
 
 export default meta;
@@ -16,16 +63,27 @@ export const Default: Story = {
     setup() {
       return {args};
     },
-    template: '<TreeView v-bind="args">Example</TreeView>'
+    template: '<TreeView v-bind="args"></TreeView>'
   })
 };
 
-export const AlternateContent: Story = {
-  render: (args) => ({
-    components: {TreeView},
-    setup() {
-      return {args};
-    },
-    template: '<TreeView v-bind="args">Story variant</TreeView>'
-  })
+export const Collapsed: Story = {
+  ...Default,
+  args: {
+    defaultExpanded: false
+  }
+};
+
+export const Selected: Story = {
+  ...Default,
+  args: {
+    modelValue: 'projects'
+  }
+};
+
+export const Hidden: Story = {
+  ...Default,
+  args: {
+    hidden: true
+  }
 };

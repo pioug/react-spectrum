@@ -3,7 +3,73 @@ import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 const meta: Meta<typeof DatePicker> = {
   title: 'Date and Time/DatePicker',
-  component: DatePicker
+  component: DatePicker,
+  args: {
+    label: 'Example'
+  },
+  argTypes: {
+    autoFocus: {
+      control: 'boolean'
+    },
+    description: {
+      control: 'text'
+    },
+    disabled: {
+      control: 'boolean'
+    },
+    id: {
+      control: 'text'
+    },
+    invalid: {
+      control: 'boolean'
+    },
+    isDisabled: {
+      control: 'boolean'
+    },
+    isInvalid: {
+      control: 'boolean'
+    },
+    isQuiet: {
+      control: 'boolean'
+    },
+    isReadOnly: {
+      control: 'boolean'
+    },
+    isRequired: {
+      control: 'boolean'
+    },
+    label: {
+      control: 'text'
+    },
+    max: {
+      control: 'text'
+    },
+    min: {
+      control: 'text'
+    },
+    modelValue: {
+      control: 'text'
+    },
+    placeholder: {
+      control: 'text'
+    },
+    readOnly: {
+      control: 'boolean'
+    },
+    required: {
+      control: 'boolean'
+    },
+    step: {
+      control: 'number'
+    },
+    validationState: {
+      control: 'select',
+      options: [
+        'invalid',
+        'valid'
+      ]
+    }
+  }
 };
 
 export default meta;
@@ -16,16 +82,28 @@ export const Default: Story = {
     setup() {
       return {args};
     },
-    template: '<DatePicker v-bind="args">Example</DatePicker>'
+    template: '<DatePicker v-bind="args"></DatePicker>'
   })
 };
 
-export const AlternateContent: Story = {
-  render: (args) => ({
-    components: {DatePicker},
-    setup() {
-      return {args};
-    },
-    template: '<DatePicker v-bind="args">Story variant</DatePicker>'
-  })
+export const Disabled: Story = {
+  ...Default,
+  args: {
+    isDisabled: true
+  }
+};
+
+export const Quiet: Story = {
+  ...Default,
+  args: {
+    isQuiet: true
+  }
+};
+
+export const Invalid: Story = {
+  ...Default,
+  args: {
+    isInvalid: true,
+    validationState: 'invalid'
+  }
 };
