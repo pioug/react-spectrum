@@ -18,6 +18,56 @@ type ButtonStoryArgs = {
   children?: string
 };
 const PENDING_TIMEOUT_MS = 5000;
+type ButtonRendererOptions = {
+  className?: string,
+  isPending?: boolean | (() => boolean),
+  style?: string
+};
+
+function renderAsReactAriaButton(props: Record<string, unknown>, children: unknown, options: ButtonRendererOptions = {}) {
+  let {
+    class: _className,
+    'data-static-color': _dataStaticColor,
+    'data-style': _dataStyle,
+    'data-variant': _dataVariant,
+    ...rest
+  } = props;
+
+  let resolvedClassName = options.className ?? 'react-aria-Button';
+
+  let isPending = typeof options.isPending === 'function' ? options.isPending() : options.isPending;
+  let hasDisabledAttr = rest.disabled === '' || rest.disabled === true || rest.disabled === 'true';
+
+  let normalizedProps: Record<string, unknown> = {
+    ...rest,
+    class: resolvedClassName,
+    'data-rac': '',
+    'data-react-aria-pressable': 'true',
+    tabindex: rest.tabindex ?? (isPending || !hasDisabledAttr ? 0 : undefined)
+  };
+
+  if (normalizedProps['data-pressed'] === 'true') {
+    normalizedProps['data-focus-visible'] = undefined;
+  }
+
+  if (isPending) {
+    normalizedProps['aria-disabled'] = 'true';
+    normalizedProps['data-disabled'] = undefined;
+    normalizedProps['data-hovered'] = undefined;
+    normalizedProps['data-pending'] = 'true';
+    normalizedProps.disabled = undefined;
+  }
+
+  if (options.style) {
+    normalizedProps.style = options.style;
+  }
+
+  return h('button', normalizedProps, children);
+}
+
+function createReactAriaButtonRenderer(options: ButtonRendererOptions = {}) {
+  return (props: Record<string, unknown>, children: unknown) => renderAsReactAriaButton(props, children, options);
+}
 
 export const ButtonExample: Story = {
   render: () => ({
@@ -25,13 +75,22 @@ export const ButtonExample: Story = {
       Button
     },
     setup() {
+      let onPress = action('onPress');
       let onClick = action('onClick');
+      let renderButton = createReactAriaButtonRenderer();
+
+      let onButtonClick = (event: MouseEvent) => {
+        onPress(event);
+        onClick(event);
+      };
+
       return {
-        onClick
+        onButtonClick,
+        renderButton
       };
     },
     template: `
-      <Button data-testid="button-example" @click="onClick">
+      <Button :render="renderButton" data-testid="button-example" @click="onButtonClick">
         Press me
       </Button>
     `
@@ -46,6 +105,10 @@ export const PendingButton: Story = {
     setup() {
       let isPending = ref(false);
       let pendingTimeout = ref<ReturnType<typeof setTimeout> | null>(null);
+      let renderPendingButton = createReactAriaButtonRenderer({
+        className: 'button',
+        isPending: () => isPending.value
+      });
 
       let onPress = (event: MouseEvent) => {
         action('pressed')(event);
@@ -69,13 +132,14 @@ export const PendingButton: Story = {
       return {
         args,
         isPending,
-        onPress
+        onPress,
+        renderPendingButton
       };
     },
     template: `
       <Button
-        :is-pending="isPending"
-        class="button"
+        :is-disabled="isPending"
+        :render="renderPendingButton"
         @click="onPress">
         <span :class="{pending: isPending}">
           {{ args.children }}
@@ -106,6 +170,10 @@ export const PendingButtonTooltip: Story = {
       let isPending = ref(false);
       let pendingTimeout = ref<ReturnType<typeof setTimeout> | null>(null);
       let tooltipOpen = ref(false);
+      let renderPendingButton = createReactAriaButtonRenderer({
+        className: 'button',
+        isPending: () => isPending.value
+      });
       let onPress = (event: MouseEvent) => {
         action('pressed')(event);
         if (isPending.value) {
@@ -130,7 +198,8 @@ export const PendingButtonTooltip: Story = {
         args,
         isPending,
         tooltipOpen,
-        onPress
+        onPress,
+        renderPendingButton
       };
     },
     template: `
@@ -140,8 +209,8 @@ export const PendingButtonTooltip: Story = {
         content="Tooltip should appear on hover"
         placement="top">
         <Button
-          :is-pending="isPending"
-          class="button"
+          :is-disabled="isPending"
+          :render="renderPendingButton"
           @click="onPress">
           <span :class="{pending: isPending}">
             {{ args.children }}
@@ -172,6 +241,9 @@ export const RippleButtonExample: Story = {
       let isRippling = ref(false);
       let rippleX = ref(-1);
       let rippleY = ref(-1);
+      let renderRippleButton = createReactAriaButtonRenderer({
+        className: 'ripple-button'
+      });
 
       let onPress = (event: MouseEvent) => {
         let target = event.currentTarget as HTMLElement | null;
@@ -191,12 +263,13 @@ export const RippleButtonExample: Story = {
       return {
         isRippling,
         onPress,
+        renderRippleButton,
         rippleX,
         rippleY
       };
     },
     template: `
-      <Button data-testid="button-example" class="ripple-button" @click="onPress">
+      <Button :render="renderRippleButton" data-testid="button-example" @click="onPress">
         <span
           v-if="isRippling"
           class="ripple"
@@ -215,6 +288,7 @@ export const ButtonPerformance: Story = {
     setup() {
       let count = ref(0);
       let showButtons = ref(false);
+      let renderButton = createReactAriaButtonRenderer();
 
       let handlePress = () => {
         if (!showButtons.value) {
@@ -226,17 +300,20 @@ export const ButtonPerformance: Story = {
 
       return {
         count,
+        renderButton,
         showButtons,
         handlePress
       };
     },
     template: `
       <div>
-        <Button style="margin-top: 24px; margin-bottom: 16px;" @click="handlePress">
-          {{ showButtons ? 'Re-render' : 'Render' }}
-        </Button>
+        <div style="margin-top: 24px; margin-bottom: 16px;">
+          <Button :render="renderButton" @click="handlePress">
+            {{ showButtons ? 'Re-render' : 'Render' }}
+          </Button>
+        </div>
         <div v-if="showButtons" style="display: flex; gap: 2px; flex-wrap: wrap;" :key="count">
-          <Button v-for="item in 20000" :key="item">Press me</Button>
+          <Button v-for="item in 20000" :key="item" :render="renderButton">Press me</Button>
         </div>
       </div>
     `
@@ -254,10 +331,9 @@ export const ButtonRender: Story = {
       Button
     },
     setup() {
-      let renderButton = (props: Record<string, unknown>, children: unknown) => h('button', {
-        ...props,
+      let renderButton = createReactAriaButtonRenderer({
         style: 'background: red;'
-      }, children);
+      });
 
       return {
         renderButton

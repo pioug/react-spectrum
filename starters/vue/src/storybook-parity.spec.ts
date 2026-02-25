@@ -35,6 +35,7 @@ import {
 } from '../../../packages/vue-aria-components/stories/Select.stories';
 import {
   ButtonExample,
+  ButtonPerformance,
   ButtonRender,
   PendingButton,
   PendingButtonTooltip,
@@ -192,8 +193,12 @@ describe('Vue storybook helper parity', () => {
     let buttonWrapper = mount(buttonStory);
     let button = buttonWrapper.get('button');
     expect(button.text()).toContain('Press me');
-    expect(button.attributes('data-variant')).toBe('primary');
-    expect(button.attributes('data-style')).toBeDefined();
+    expect(button.classes()).toContain('react-aria-Button');
+    expect(button.attributes('data-rac')).toBe('');
+    expect(button.attributes('data-react-aria-pressable')).toBe('true');
+    expect(button.attributes('tabindex')).toBe('0');
+    expect(button.attributes('data-style')).toBeUndefined();
+    expect(button.attributes('data-variant')).toBeUndefined();
 
     vi.useFakeTimers();
     try {
@@ -201,15 +206,20 @@ describe('Vue storybook helper parity', () => {
       let pendingWrapper = mount(pendingStory);
       let pendingButton = pendingWrapper.get('button');
       expect(pendingButton.attributes('aria-disabled')).toBeUndefined();
+      expect(pendingButton.classes()).toContain('button');
       await pendingButton.trigger('click');
       await nextTick();
       expect(pendingButton.attributes('aria-disabled')).toBe('true');
+      expect(pendingButton.attributes('data-pending')).toBe('true');
+      expect(pendingButton.attributes('data-hovered')).toBeUndefined();
+      expect(pendingButton.attributes('disabled')).toBeUndefined();
       expect(pendingWrapper.get('.pending').exists()).toBe(true);
       expect(pendingWrapper.get('.spinner-pending').exists()).toBe(true);
 
       vi.advanceTimersByTime(5000);
       await nextTick();
       expect(pendingButton.attributes('aria-disabled')).toBeUndefined();
+      expect(pendingButton.attributes('data-pending')).toBeUndefined();
       expect(pendingWrapper.find('.spinner-pending').exists()).toBe(false);
       pendingWrapper.unmount();
     } finally {
@@ -222,15 +232,27 @@ describe('Vue storybook helper parity', () => {
     await pendingTooltipWrapper.get('button').trigger('click');
     await nextTick();
     expect(pendingTooltipWrapper.get('button').attributes('aria-disabled')).toBe('true');
+    expect(pendingTooltipWrapper.get('button').attributes('data-pending')).toBe('true');
+    expect(pendingTooltipWrapper.get('button').attributes('data-hovered')).toBeUndefined();
 
     let rippleStory = RippleButtonExample.render?.({}) as ReturnType<Exclude<typeof RippleButtonExample.render, undefined>>;
     let rippleWrapper = mount(rippleStory);
+    expect(rippleWrapper.get('button').classes()).toContain('ripple-button');
     await rippleWrapper.get('button').trigger('click', {clientX: 15, clientY: 15});
     await nextTick();
     expect(rippleWrapper.find('.ripple').exists()).toBe(true);
 
+    let performanceStory = ButtonPerformance.render?.({}) as ReturnType<Exclude<typeof ButtonPerformance.render, undefined>>;
+    let performanceWrapper = mount(performanceStory);
+    let performanceTrigger = performanceWrapper.get('button');
+    expect(performanceTrigger.classes()).toContain('react-aria-Button');
+    expect(performanceTrigger.attributes('data-rac')).toBe('');
+    expect(performanceTrigger.attributes('data-style')).toBeUndefined();
+
     let renderStory = ButtonRender.render?.({}) as ReturnType<Exclude<typeof ButtonRender.render, undefined>>;
     let renderWrapper = mount(renderStory);
+    expect(renderWrapper.get('button').classes()).toContain('react-aria-Button');
+    expect(renderWrapper.get('button').attributes('data-rac')).toBe('');
     expect(renderWrapper.get('button').attributes('style')?.replace(/\s/g, '')).toContain('background:red');
   });
 
