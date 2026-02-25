@@ -296,6 +296,16 @@ describe('Vue migration primitives', () => {
     expect(hidden.attributes('hidden')).toBeDefined();
   });
 
+  it('supports illustrated message rendering with illustration only', () => {
+    let wrapper = mount(IllustratedMessage, {
+      slots: {
+        illustration: () => h('svg', {'aria-label': 'No Results'})
+      }
+    });
+
+    expect(wrapper.find('svg[aria-label=\"No Results\"]').exists()).toBe(true);
+  });
+
   it('renders icon variants with expected accessibility and classes', () => {
     let wrapper = mount(Icon, {
       props: {
