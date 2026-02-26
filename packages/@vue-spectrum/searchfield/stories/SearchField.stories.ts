@@ -72,7 +72,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function renderSearchField(baseArgs: Partial<SearchFieldStoryArgs> = {}, withSearchRole = false, wrapperStyle?: string) {
+function renderSearchField(baseArgs: Partial<SearchFieldStoryArgs> = {}, withSearchRole = false, fieldStyle?: string) {
   return (args: SearchFieldStoryArgs) => ({
     components: {SearchField},
     setup() {
@@ -98,8 +98,9 @@ function renderSearchField(baseArgs: Partial<SearchFieldStoryArgs> = {}, withSea
         onClear: action('clear')
       };
     },
-    template: `
-      <div ${wrapperStyle ? `style="${wrapperStyle}"` : ''} ${withSearchRole ? 'role="search"' : ''}>
+    template: withSearchRole
+      ? `
+      <div role="search">
         <SearchField
           :aria-label="mergedArgs.ariaLabel"
           :auto-focus="mergedArgs.autoFocus"
@@ -117,6 +118,7 @@ function renderSearchField(baseArgs: Partial<SearchFieldStoryArgs> = {}, withSea
           :model-value="value"
           :necessity-indicator="mergedArgs.necessityIndicator"
           :placeholder="mergedArgs.placeholder"
+          ${fieldStyle ? `style="${fieldStyle}"` : ''}
           :validation-state="mergedArgs.validationState"
           class="custom_classname"
           @change="onChange"
@@ -124,6 +126,32 @@ function renderSearchField(baseArgs: Partial<SearchFieldStoryArgs> = {}, withSea
           @submit="onSubmit"
           @update:model-value="value = $event" />
       </div>
+    `
+      : `
+      <SearchField
+        :aria-label="mergedArgs.ariaLabel"
+        :auto-focus="mergedArgs.autoFocus"
+        :contextual-help="mergedArgs.contextualHelp"
+        :description="mergedArgs.description"
+        :error-message="mergedArgs.errorMessage"
+        :icon="mergedArgs.icon"
+        :is-disabled="mergedArgs.isDisabled"
+        :is-quiet="mergedArgs.isQuiet"
+        :is-read-only="mergedArgs.isReadOnly"
+        :is-required="mergedArgs.isRequired"
+        :label="mergedArgs.label"
+        :label-align="mergedArgs.labelAlign"
+        :label-position="mergedArgs.labelPosition"
+        :model-value="value"
+        :necessity-indicator="mergedArgs.necessityIndicator"
+        :placeholder="mergedArgs.placeholder"
+        ${fieldStyle ? `style="${fieldStyle}"` : ''}
+        :validation-state="mergedArgs.validationState"
+        class="custom_classname"
+        @change="onChange"
+        @clear="onClear"
+        @submit="onSubmit"
+        @update:model-value="value = $event" />
     `
   });
 }

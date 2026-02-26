@@ -592,7 +592,10 @@ export const SearchField = defineComponent({
               {
                 'is-disabled': isDisabled.value
               }
-            )
+            ),
+            style: {
+              gridArea: 'helpText'
+            }
           }, [
             h('div', {
               id: helpTextId.value,
