@@ -9,6 +9,7 @@ import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type NumberFieldStoryArgs = {
   autoFocus?: boolean,
+  defaultValue?: number,
   description?: string,
   errorMessage?: string,
   hideStepper?: boolean,
@@ -17,13 +18,19 @@ type NumberFieldStoryArgs = {
   isQuiet?: boolean,
   isReadOnly?: boolean,
   isRequired?: boolean,
+  labelAlign?: 'start' | 'end',
   label?: string,
+  labelPosition?: 'top' | 'side',
   max?: number,
+  maxValue?: number,
   min?: number,
+  minValue?: number,
   modelValue?: number | null,
+  necessityIndicator?: 'icon' | 'label',
   placeholder?: string,
   step?: number,
-  validationState?: 'invalid' | 'valid'
+  validationState?: 'invalid' | 'valid',
+  value?: number
 };
 
 const NumberFieldControlled = defineComponent({
@@ -251,252 +258,189 @@ export const Default: Story = {
 };
 
 export const DefaultValue10: Story = {
-  ...Default,
-  args: {modelValue: 10}
+  render: renderNumberField({defaultValue: 10})
 };
 
 export const Value10: Story = {
-  ...Default,
-  args: {modelValue: 10}
+  render: renderNumberField({value: 10})
 };
 
 export const MaximumFractionDigits0: Story = {
-  ...Default,
-  args: {
-    modelValue: 10,
-    step: 1
-  }
+  render: renderNumberField({step: 1})
 };
 
 export const Currency: Story = {
-  ...Default,
-  args: {
-    label: 'Price',
-    modelValue: 10
-  }
+  render: renderNumberField({label: 'Price'})
 };
 
 export const Percent: Story = {
-  ...Default,
-  args: {
-    label: 'Tax',
-    modelValue: 10
-  }
+  render: renderNumberField({label: 'Tax'})
 };
 
 export const PercentMaxFractionDigits2NoMinFractionDigits: Story = {
-  ...Default,
-  args: {
+  render: renderNumberField({
     label: 'Tax',
-    modelValue: 10,
     step: 0.01
-  }
+  })
 };
 
 export const PercentMin2Max2FractionDigits: Story = {
-  ...Default,
-  args: {
+  render: renderNumberField({
     label: 'Tax',
-    modelValue: 10,
     step: 0.01
-  }
+  })
 };
 
 export const PercentMin2Max3FractionDigits: Story = {
-  ...Default,
-  args: {
+  render: renderNumberField({
     label: 'Tax',
-    modelValue: 10,
     step: 0.001
-  }
+  })
 };
 
 export const MinValue00FractionDigits: Story = {
-  ...Default,
-  args: {
-    min: 0,
+  render: renderNumberField({
+    minValue: 0,
     step: 1
-  }
+  })
 };
 
 export const PercentUsingSign: Story = {
-  ...Default,
-  args: {
-    label: 'Tax',
-    modelValue: 10,
-    description: 'Sign display: always'
-  }
+  render: renderNumberField({label: 'Tax'})
 };
 
 export const Disabled: Story = {
-  ...Default,
-  args: {isDisabled: true}
+  render: renderNumberField({isDisabled: true})
 };
 
 export const Readonly: Story = {
-  ...Default,
-  args: {
+  render: renderNumberField({
     isReadOnly: true,
-    modelValue: 10
-  }
+    defaultValue: 10
+  })
 };
 
 export const IsQuiet: Story = {
-  ...Default,
-  args: {isQuiet: true}
+  render: renderNumberField({isQuiet: true})
 };
 
 export const QuietDisabled: Story = {
-  ...Default,
-  args: {
+  render: renderNumberField({
     isQuiet: true,
     isDisabled: true,
-    modelValue: 10
-  }
+    defaultValue: 10
+  })
 };
 
 export const QuietReadonly: Story = {
-  ...Default,
-  args: {
+  render: renderNumberField({
     isQuiet: true,
     isReadOnly: true,
-    modelValue: 10
-  }
+    defaultValue: 10
+  })
 };
 
 export const ValidationStateInvalid: Story = {
-  ...Default,
-  args: {validationState: 'invalid'}
+  render: renderNumberField({validationState: 'invalid'})
 };
 
 export const ValidationStateValid: Story = {
-  ...Default,
-  args: {validationState: 'valid'}
+  render: renderNumberField({validationState: 'valid'})
 };
 
 export const ValidationStateInvalidIsQuiet: Story = {
-  ...Default,
-  args: {
+  render: renderNumberField({
     validationState: 'invalid',
     isQuiet: true
-  }
+  })
 };
 
 export const ValidationStateValidIsQuiet: Story = {
-  ...Default,
-  args: {
+  render: renderNumberField({
     validationState: 'valid',
     isQuiet: true
-  }
+  })
 };
 
 export const MinValue0MaxValue20: Story = {
-  ...Default,
-  args: {
-    min: 0,
-    max: 20
-  }
+  render: renderNumberField({minValue: 0, maxValue: 20})
 };
 
 export const MinValue0MaxValue20Quiet: Story = {
-  ...Default,
-  args: {
+  render: renderNumberField({
     isQuiet: true,
-    min: 0,
-    max: 20
-  }
+    minValue: 0,
+    maxValue: 20
+  })
 };
 
 export const MinValue50MaxValue20: Story = {
-  ...Default,
-  args: {
-    min: -50,
-    max: -20
-  }
+  render: renderNumberField({minValue: -50, maxValue: -20})
 };
 
 export const MinValue20MaxValue50: Story = {
-  ...Default,
-  args: {
-    min: 20,
-    max: 50
-  }
+  render: renderNumberField({minValue: 20, maxValue: 50})
 };
 
 export const MinValue0DefaultValue0: Story = {
-  ...Default,
-  args: {
-    min: 0,
-    modelValue: 0
-  }
+  render: renderNumberField({minValue: 0, defaultValue: 0})
 };
 
 export const Step5: Story = {
-  ...Default,
-  args: {step: 5}
+  render: renderNumberField({step: 5})
 };
 
 export const Step3WithMin2Max21: Story = {
-  ...Default,
-  args: {
+  render: renderNumberField({
     step: 3,
-    min: 2,
-    max: 21
-  }
+    minValue: 2,
+    maxValue: 21
+  })
 };
 
 export const AutoFocus: Story = {
-  ...Default,
-  args: {autoFocus: true}
+  render: renderNumberField({autoFocus: true})
 };
 
 export const HideStepper: Story = {
-  ...Default,
-  args: {hideStepper: true}
+  render: renderNumberField({hideStepper: true})
 };
 
 export const IsQuietHideStepper: Story = {
-  ...Default,
-  args: {
+  render: renderNumberField({
     isQuiet: true,
     hideStepper: true
-  }
+  })
 };
 
 export const Required: Story = {
-  ...Default,
-  args: {isRequired: true}
+  render: renderNumberField({isRequired: true})
 };
 
 export const Optional: Story = {
-  ...Default,
-  args: {
-    description: 'Optional'
-  }
+  render: renderNumberField({necessityIndicator: 'label'})
 };
 
 export const RequiredWithLabel: Story = {
-  ...Default,
-  args: {
+  render: renderNumberField({
     isRequired: true,
-    description: 'Required with label'
-  }
+    necessityIndicator: 'label'
+  })
 };
 
 export const LabelTopEnd: Story = {
-  ...Default,
-  args: {
+  render: renderNumberField({
     isRequired: true,
-    description: 'labelPosition: top, labelAlign: end'
-  }
+    labelPosition: 'top',
+    labelAlign: 'end'
+  })
 };
 
 export const LabelSide: Story = {
-  ...Default,
-  args: {
+  render: renderNumberField({
     isRequired: true,
-    description: 'labelPosition: side'
-  }
+    labelPosition: 'side'
+  })
 };
 
 export const NoVisibleLabel: Story = {
@@ -543,12 +487,11 @@ export const WithDescriptionNoVisibleLabel: Story = {
 };
 
 export const WithErrorMessageLabelPositionSide: Story = {
-  ...Default,
-  args: {
-    description: 'labelPosition: side',
+  render: renderNumberField({
+    labelPosition: 'side',
     errorMessage: 'Please enter a positive number.',
     validationState: 'invalid'
-  }
+  })
 };
 
 export const _ContextualHelp: Story = {
