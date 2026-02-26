@@ -190,10 +190,18 @@ function renderButtonPair(args: ButtonStoryArgs, defaultChildren: unknown[], dis
   ]);
 }
 
-function makePairRenderer(defaultChildren: unknown[], disabledChildren: unknown[]) {
+function makePairRenderer(
+  defaultChildren: unknown[],
+  disabledChildren: unknown[],
+  defaultProps: Partial<ButtonStoryArgs> = {}
+) {
   return (args: ButtonStoryArgs) => ({
     render() {
-      return wrapInProvider(args, renderButtonPair(args, defaultChildren, disabledChildren));
+      let mergedArgs = {
+        ...defaultProps,
+        ...args
+      };
+      return wrapInProvider(mergedArgs, renderButtonPair(mergedArgs, defaultChildren, disabledChildren));
     }
   });
 }
@@ -301,30 +309,27 @@ export const IconOnly: Story = {
 };
 
 export const AnchorElement: Story = {
-  render: makePairRenderer(['Default'], ['Disabled']),
-  args: {
+  render: makePairRenderer(['Default'], ['Disabled'], {
     elementType: 'a'
-  },
+  }),
   name: 'element: a'
 };
 
 export const AnchorElementWithSelf: Story = {
-  render: makePairRenderer(['Default'], ['Disabled']),
-  args: {
+  render: makePairRenderer(['Default'], ['Disabled'], {
     elementType: 'a',
     href: '//example.com',
     target: '_self'
-  },
+  }),
   name: 'element: a, href: \'//example.com\', target: \'_self\''
 };
 
 export const AnchorElementNoRefferer: Story = {
-  render: makePairRenderer(['Default'], ['Disabled']),
-  args: {
+  render: makePairRenderer(['Default'], ['Disabled'], {
     elementType: 'a',
     href: '//example.com',
     rel: 'noopener noreferrer'
-  },
+  }),
   name: 'element: a, rel: \'noopener noreferrer\''
 };
 

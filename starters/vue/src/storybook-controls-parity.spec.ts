@@ -1739,8 +1739,7 @@ describe('Vue Storybook controls parity', () => {
       'onPress',
       'onPressEnd',
       'onPressStart',
-      'staticColor',
-      'variant'
+      'staticColor'
     ]);
 
     let disabledControls = ['onPress', 'onPressStart', 'onPressEnd', 'staticColor'];
@@ -1752,7 +1751,6 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.isQuiet.control as string)).toBe('boolean');
     expect((argTypes.isEmphasized.control as string)).toBe('boolean');
     expect((argTypes.isDisabled.control as string)).toBe('boolean');
-    expect((argTypes.variant.control as string)).toBe('text');
 
     expect(argTypes).not.toHaveProperty('onClick');
     expect(args).not.toHaveProperty('onClick');

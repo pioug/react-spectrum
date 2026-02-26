@@ -229,9 +229,6 @@ const meta = {
     },
     autoFocus: {
       control: 'boolean'
-    },
-    variant: {
-      control: 'text'
     }
   }
 } satisfies Meta<typeof ToggleButton>;
@@ -276,7 +273,7 @@ export const StaticBlack: Story = {
 };
 
 export const WHCM: Story = {
-  render: makePairRenderer(
+  render: () => makePairRenderer(
     [
       {},
       {isEmphasized: true},
@@ -284,27 +281,22 @@ export const WHCM: Story = {
       {isEmphasized: true, isQuiet: true}
     ],
     'rgb(255, 216, 64)'
-  ),
+  )({}),
   name: 'styles to check WHCM support'
 };
 
 export const Controlled: Story = {
-  render: (args: ToggleButtonStoryArgs) => ({
+  render: () => ({
     setup() {
       let selected = ref(false);
-      let onChange = action('change');
-      let buttonProps = pickToggleButtonProps(args);
-      let pressHandlers = createPressActionHandlers(args);
+      let onChange = (value: boolean) => {
+        selected.value = value;
+      };
 
       return () => wrapInProvider(h('div', [
         h(ToggleButton, {
-          ...buttonProps,
-          ...pressHandlers,
           modelValue: selected.value,
-          'onUpdate:modelValue': (value: boolean) => {
-            selected.value = value;
-            onChange(value);
-          }
+          'onUpdate:modelValue': onChange
         }, {
           default: () => ['Press Me']
         }),
