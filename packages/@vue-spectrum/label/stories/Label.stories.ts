@@ -6,6 +6,7 @@ const meta: Meta<typeof Label> = {
   title: 'Label',
   component: Label,
   args: {
+    children: 'Test',
     width: '100%',
     htmlFor: 'test'
   },
@@ -43,7 +44,7 @@ export const Default: Story = {
     },
     template: `
       <div style="white-space: nowrap;">
-        <Label v-bind="args">Test</Label>
+        <Label v-bind="args">{{args.children}}</Label>
         <TextField :id="args.htmlFor" :is-required="args.isRequired" />
       </div>
     `

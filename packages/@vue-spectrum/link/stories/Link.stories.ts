@@ -27,9 +27,11 @@ export const Default: Story = {
     setup() {
       return {args};
     },
-    template: '<Link v-bind="args">This is a React Spectrum Link</Link>'
+    template: '<Link v-bind="args">{{args.children}}</Link>'
   }),
-  args: {}
+  args: {
+    children: 'This is a React Spectrum Link'
+  }
 };
 
 export const Secondary: Story = {

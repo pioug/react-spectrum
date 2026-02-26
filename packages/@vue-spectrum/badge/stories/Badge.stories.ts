@@ -23,6 +23,7 @@ type BadgeStory = StoryObj<typeof meta>;
 
 export const Default: BadgeStory = {
   args: {
+    children: 'Licensed',
     variant: 'positive'
   },
   name: 'Default',
@@ -31,7 +32,7 @@ export const Default: BadgeStory = {
     setup() {
       return {args};
     },
-    template: '<Badge v-bind="args">Licensed</Badge>'
+    template: '<Badge v-bind="args">{{args.children}}</Badge>'
   })
 };
 
@@ -102,6 +103,7 @@ export const IconOnly: BadgeStory = {
 
 export const Overflow: BadgeStory = {
   args: {
+    children: '24 days left in trial',
     variant: 'positive',
     UNSAFE_style: {
       width: '74px'
@@ -112,6 +114,6 @@ export const Overflow: BadgeStory = {
     setup() {
       return {args};
     },
-    template: '<Badge v-bind="args">24 days left in trial</Badge>'
+    template: '<Badge v-bind="args">{{args.children}}</Badge>'
   })
 };

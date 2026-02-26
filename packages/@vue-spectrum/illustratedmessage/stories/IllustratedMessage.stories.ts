@@ -43,6 +43,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const _NotFound: Story = {
+  args: {
+    children: 'Not Found illustration'
+  },
   render: () => ({
     setup() {
       return () => h(IllustratedMessage, null, {
@@ -58,6 +61,9 @@ export const _NotFound: Story = {
 };
 
 export const NoHeadingOrDescription: Story = {
+  args: {
+    children: 'No Results illustration'
+  },
   render: () => ({
     setup() {
       return () => h(IllustratedMessage, null, {

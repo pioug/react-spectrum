@@ -31,9 +31,11 @@ export const Default: Story = {
     setup() {
       return {args};
     },
-    template: '<Switch v-bind="args">Switch Label</Switch>'
+    template: '<Switch v-bind="args">{{args.children}}</Switch>'
   }),
-  args: {}
+  args: {
+    children: 'Switch Label'
+  }
 };
 
 export const DefaultSelectedTrue: Story = {
@@ -144,7 +146,7 @@ export const ControlledImplementation: Story = {
 
       return {args, checked, onChange};
     },
-    template: '<Switch v-bind="args" :is-selected="checked" @change="onChange">Switch Label</Switch>'
+    template: '<Switch v-bind="args" :is-selected="checked" @change="onChange">{{args.children}}</Switch>'
   })
 };
 

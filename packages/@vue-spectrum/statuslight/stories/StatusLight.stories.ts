@@ -39,6 +39,7 @@ type StatusLightStory = StoryObj<typeof meta>;
 
 export const Default: StatusLightStory = {
   args: {
+    children: 'Status light of love',
     variant: 'positive'
   },
   name: 'Default',
@@ -47,6 +48,6 @@ export const Default: StatusLightStory = {
     setup() {
       return {args};
     },
-    template: '<StatusLight v-bind="args">Status light of love</StatusLight>'
+    template: '<StatusLight v-bind="args">{{args.children}}</StatusLight>'
   })
 };
