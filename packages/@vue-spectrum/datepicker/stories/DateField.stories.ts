@@ -8,31 +8,137 @@ type StoryArgs = Record<string, unknown>;
 const meta: Meta<typeof DateField> = {
   title: 'Date and Time/DateField',
   component: DateField,
+  parameters: {
+    actions: {
+      argTypesRegex: '^$'
+    }
+  },
   args: {
-    label: 'Date'
+    onChange: action('onChange')
   },
   argTypes: {
-    autoFocus: {control: 'boolean'},
-    description: {control: 'text'},
-    disabled: {control: 'boolean'},
-    id: {control: 'text'},
-    invalid: {control: 'boolean'},
-    isDisabled: {control: 'boolean'},
-    isInvalid: {control: 'boolean'},
-    isQuiet: {control: 'boolean'},
-    isReadOnly: {control: 'boolean'},
-    isRequired: {control: 'boolean'},
-    label: {control: 'text'},
-    max: {control: 'text'},
-    min: {control: 'text'},
-    modelValue: {control: 'text'},
-    placeholder: {control: 'text'},
-    readOnly: {control: 'boolean'},
-    required: {control: 'boolean'},
-    step: {control: 'number'},
+    onChange: {
+      table: {
+        disable: true
+      }
+    },
+    defaultValue: {
+      table: {
+        disable: true
+      }
+    },
+    value: {
+      table: {
+        disable: true
+      }
+    },
+    minValue: {
+      table: {
+        disable: true
+      }
+    },
+    maxValue: {
+      table: {
+        disable: true
+      }
+    },
+    placeholderValue: {
+      table: {
+        disable: true
+      }
+    },
+    onBlur: {
+      table: {
+        disable: true
+      }
+    },
+    onFocus: {
+      table: {
+        disable: true
+      }
+    },
+    onFocusChange: {
+      table: {
+        disable: true
+      }
+    },
+    onKeyDown: {
+      table: {
+        disable: true
+      }
+    },
+    onKeyUp: {
+      table: {
+        disable: true
+      }
+    },
+    contextualHelp: {
+      table: {
+        disable: true
+      }
+    },
+    label: {
+      control: 'text'
+    },
+    granularity: {
+      control: 'select',
+      options: ['day', 'hour', 'minute', 'second']
+    },
+    hourCycle: {
+      control: 'select',
+      options: [12, 24]
+    },
+    hideTimeZone: {
+      control: 'boolean'
+    },
+    shouldForceLeadingZeros: {
+      control: 'boolean'
+    },
+    isDisabled: {
+      control: 'boolean'
+    },
+    isQuiet: {
+      control: 'boolean'
+    },
+    isReadOnly: {
+      control: 'boolean'
+    },
+    isRequired: {
+      control: 'boolean'
+    },
+    necessityIndicator: {
+      control: 'select',
+      options: ['icon', 'label']
+    },
     validationState: {
       control: 'select',
-      options: ['invalid', 'valid']
+      options: [null, 'valid', 'invalid']
+    },
+    description: {
+      control: 'text'
+    },
+    errorMessage: {
+      control: 'text'
+    },
+    labelAlign: {
+      control: 'select',
+      options: ['end', 'start']
+    },
+    labelPosition: {
+      control: 'select',
+      options: ['top', 'side']
+    },
+    autoFocus: {
+      control: 'boolean'
+    },
+    showFormatHelpText: {
+      control: 'boolean'
+    },
+    'aria-label': {
+      control: 'text'
+    },
+    width: {
+      control: 'text'
     }
   }
 };
@@ -45,12 +151,9 @@ function render(args: StoryArgs = {}) {
   return {
     components: {DateField},
     setup() {
-      return {
-        args,
-        onChange: action('onChange')
-      };
+      return {args};
     },
-    template: '<DateField v-bind="args" style="max-width: calc(100vw - 40px);" @change="onChange($event)" />'
+    template: '<DateField label="Date" v-bind="args" style="max-width: calc(100vw - 40px);" />'
   };
 }
 

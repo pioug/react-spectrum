@@ -6,6 +6,8 @@ import buttonMeta from '../../../packages/@vue-spectrum/button/stories/Button.st
 import checkboxMeta from '../../../packages/@vue-spectrum/checkbox/stories/Checkbox.stories';
 import checkboxGroupMeta from '../../../packages/@vue-spectrum/checkbox/stories/CheckboxGroup.stories';
 import comboBoxMeta from '../../../packages/@vue-spectrum/combobox/stories/ComboBox.stories';
+import dateFieldMeta from '../../../packages/@vue-spectrum/datepicker/stories/DateField.stories';
+import datePickerMeta from '../../../packages/@vue-spectrum/datepicker/stories/DatePicker.stories';
 import dateRangePickerMeta from '../../../packages/@vue-spectrum/datepicker/stories/DateRangePicker.stories';
 import timeFieldMeta from '../../../packages/@vue-spectrum/datepicker/stories/TimeField.stories';
 import dividerMeta from '../../../packages/@vue-spectrum/divider/stories/Divider.stories';
@@ -287,6 +289,165 @@ describe('Vue Storybook controls parity', () => {
 
     expect(Object.keys(args)).toEqual([]);
     expect(Object.keys(argTypes)).toEqual([]);
+  });
+
+  it('matches top-level DateField controls contract with React stories', () => {
+    let args = (dateFieldMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (dateFieldMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual(['onChange']);
+    expect(typeof args.onChange).toBe('function');
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'aria-label',
+      'autoFocus',
+      'contextualHelp',
+      'defaultValue',
+      'description',
+      'errorMessage',
+      'granularity',
+      'hideTimeZone',
+      'hourCycle',
+      'isDisabled',
+      'isQuiet',
+      'isReadOnly',
+      'isRequired',
+      'label',
+      'labelAlign',
+      'labelPosition',
+      'maxValue',
+      'minValue',
+      'necessityIndicator',
+      'onBlur',
+      'onChange',
+      'onFocus',
+      'onFocusChange',
+      'onKeyDown',
+      'onKeyUp',
+      'placeholderValue',
+      'shouldForceLeadingZeros',
+      'showFormatHelpText',
+      'validationState',
+      'value',
+      'width'
+    ]);
+    expect((argTypes.onChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.defaultValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.value.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.minValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.maxValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.placeholderValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.contextualHelp.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onBlur.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onFocus.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onFocusChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onKeyDown.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onKeyUp.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.label.control as string)).toBe('text');
+    expect((argTypes.granularity.control as string)).toBe('select');
+    expect((argTypes.granularity.options as unknown[])).toEqual(['day', 'hour', 'minute', 'second']);
+    expect((argTypes.hourCycle.control as string)).toBe('select');
+    expect((argTypes.hourCycle.options as unknown[])).toEqual([12, 24]);
+    expect((argTypes.hideTimeZone.control as string)).toBe('boolean');
+    expect((argTypes.shouldForceLeadingZeros.control as string)).toBe('boolean');
+    expect((argTypes.necessityIndicator.control as string)).toBe('select');
+    expect((argTypes.necessityIndicator.options as unknown[])).toEqual(['icon', 'label']);
+    expect((argTypes.validationState.control as string)).toBe('select');
+    expect((argTypes.validationState.options as unknown[])).toEqual([null, 'valid', 'invalid']);
+    expect((argTypes.labelAlign.control as string)).toBe('select');
+    expect((argTypes.labelAlign.options as unknown[])).toEqual(['end', 'start']);
+    expect((argTypes.labelPosition.control as string)).toBe('select');
+    expect((argTypes.labelPosition.options as unknown[])).toEqual(['top', 'side']);
+    expect((argTypes.autoFocus.control as string)).toBe('boolean');
+    expect((argTypes.showFormatHelpText.control as string)).toBe('boolean');
+    expect((argTypes['aria-label'].control as string)).toBe('text');
+    expect((argTypes.width.control as string)).toBe('text');
+  });
+
+  it('matches top-level DatePicker controls contract with React stories', () => {
+    let args = (datePickerMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (datePickerMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual(['onChange']);
+    expect(typeof args.onChange).toBe('function');
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'aria-label',
+      'autoFocus',
+      'contextualHelp',
+      'defaultOpen',
+      'defaultValue',
+      'description',
+      'errorMessage',
+      'firstDayOfWeek',
+      'granularity',
+      'hideTimeZone',
+      'hourCycle',
+      'isDateUnavailable',
+      'isDisabled',
+      'isOpen',
+      'isQuiet',
+      'isReadOnly',
+      'isRequired',
+      'label',
+      'labelAlign',
+      'labelPosition',
+      'maxValue',
+      'maxVisibleMonths',
+      'minValue',
+      'necessityIndicator',
+      'onBlur',
+      'onChange',
+      'onFocus',
+      'onFocusChange',
+      'onKeyDown',
+      'onKeyUp',
+      'onOpenChange',
+      'placeholderValue',
+      'shouldFlip',
+      'shouldForceLeadingZeros',
+      'showFormatHelpText',
+      'validationState',
+      'value',
+      'width'
+    ]);
+    expect((argTypes.onChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.defaultValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.value.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.minValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.maxValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.placeholderValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.contextualHelp.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.isDateUnavailable.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onBlur.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onFocus.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onFocusChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onKeyDown.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onKeyUp.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onOpenChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.label.control as string)).toBe('text');
+    expect((argTypes.granularity.control as string)).toBe('select');
+    expect((argTypes.granularity.options as unknown[])).toEqual(['day', 'hour', 'minute', 'second']);
+    expect((argTypes.hourCycle.control as string)).toBe('select');
+    expect((argTypes.hourCycle.options as unknown[])).toEqual([12, 24]);
+    expect((argTypes.hideTimeZone.control as string)).toBe('boolean');
+    expect((argTypes.shouldForceLeadingZeros.control as string)).toBe('boolean');
+    expect((argTypes.necessityIndicator.control as string)).toBe('select');
+    expect((argTypes.necessityIndicator.options as unknown[])).toEqual(['icon', 'label']);
+    expect((argTypes.validationState.control as string)).toBe('select');
+    expect((argTypes.validationState.options as unknown[])).toEqual([null, 'valid', 'invalid']);
+    expect((argTypes.labelAlign.control as string)).toBe('select');
+    expect((argTypes.labelAlign.options as unknown[])).toEqual(['end', 'start']);
+    expect((argTypes.labelPosition.control as string)).toBe('select');
+    expect((argTypes.labelPosition.options as unknown[])).toEqual(['top', 'side']);
+    expect((argTypes.autoFocus.control as string)).toBe('boolean');
+    expect((argTypes.showFormatHelpText.control as string)).toBe('boolean');
+    expect((argTypes['aria-label'].control as string)).toBe('text');
+    expect((argTypes.width.control as string)).toBe('text');
+    expect((argTypes.maxVisibleMonths.control as string)).toBe('number');
+    expect((argTypes.shouldFlip.control as string)).toBe('boolean');
+    expect((argTypes.defaultOpen.control as string)).toBe('boolean');
+    expect((argTypes.isOpen.control as string)).toBe('boolean');
+    expect((argTypes.firstDayOfWeek.control as string)).toBe('select');
+    expect((argTypes.firstDayOfWeek.options as unknown[])).toEqual([undefined, 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']);
   });
 
   it('matches top-level TimeField controls contract with React stories', () => {
