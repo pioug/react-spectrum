@@ -516,7 +516,7 @@ describe('Vue migration primitives', () => {
     expect(field.attributes('aria-labelledby')).toBeTruthy();
   });
 
-  it('renders labeled value with list-formatted content', () => {
+  it('maps labeled value DOM contract and list formatting to react parity', () => {
     let wrapper = mount(LabeledValue, {
       props: {
         label: 'Libraries',
@@ -524,11 +524,34 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    expect(wrapper.classes()).toContain('vs-labeled-value');
-    expect(wrapper.get('.vs-labeled-value__label').text()).toBe('Libraries');
-    let value = wrapper.get('.vs-labeled-value__value').text();
+    expect(wrapper.classes()).toContain('spectrum-Field');
+    expect(wrapper.classes()).toContain('spectrum-LabeledValue');
+    expect(wrapper.classes()).toContain('spectrum-Field--positionTop');
+    expect(wrapper.get('.spectrum-FieldLabel').text()).toBe('Libraries');
+    let value = wrapper.get('.spectrum-Field-field').text();
     expect(value).toContain('Vue Spectrum');
     expect(value).toContain('React Spectrum');
+  });
+
+  it('maps labeled value width, side-label, and contextual help classes to react parity', () => {
+    let wrapper = mount(LabeledValue, {
+      props: {
+        contextualHelp: h('button', {type: 'button'}, 'Help'),
+        label: 'Count',
+        labelAlign: 'end',
+        labelPosition: 'side',
+        value: {start: 10, end: 20},
+        width: '300px'
+      }
+    });
+
+    expect(wrapper.classes()).toContain('spectrum-Field--positionSide');
+    expect(wrapper.classes()).toContain('spectrum-Field--alignEnd');
+    expect(wrapper.classes()).toContain('spectrum-Field--hasContextualHelp');
+    expect(wrapper.find('.spectrum-Field-contextualHelp').exists()).toBe(true);
+    expect((wrapper.element as HTMLElement).style.width).toBe('300px');
+    expect(wrapper.get('.spectrum-Field-field').text()).toContain('10');
+    expect(wrapper.get('.spectrum-Field-field').text()).toContain('20');
   });
 
   it('renders text element, variant, and emphasis classes', () => {

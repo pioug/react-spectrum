@@ -6,6 +6,7 @@ import buttonMeta from '../../../packages/@vue-spectrum/button/stories/Button.st
 import dividerMeta from '../../../packages/@vue-spectrum/divider/stories/Divider.stories';
 import fileTriggerMeta from '../../../packages/@vue-spectrum/filetrigger/stories/FileTrigger.stories';
 import imageMeta from '../../../packages/@vue-spectrum/image/stories/Image.stories';
+import labeledValueMeta from '../../../packages/@vue-spectrum/labeledvalue/stories/LabeledValue.stories';
 import logicButtonMeta from '../../../packages/@vue-spectrum/button/stories/LogicButton.stories';
 import toggleButtonMeta from '../../../packages/@vue-spectrum/button/stories/ToggleButton.stories';
 import viewMeta from '../../../packages/@vue-spectrum/view/stories/View.stories';
@@ -72,6 +73,27 @@ describe('Vue Storybook controls parity', () => {
 
     expect(Object.keys(args).sort()).toEqual(['backgroundColor', 'colorVersion']);
     expect(Object.keys(argTypes)).toEqual([]);
+  });
+
+  it('matches top-level LabeledValue controls contract with React stories', () => {
+    let args = (labeledValueMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (labeledValueMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'labelAlign',
+      'labelPosition',
+      'width'
+    ]);
+
+    expect((argTypes.labelPosition.control as {type?: string}).type).toBe('radio');
+    expect((argTypes.labelPosition.options as unknown[])).toEqual([null, 'top', 'side']);
+
+    expect((argTypes.labelAlign.control as {type?: string}).type).toBe('radio');
+    expect((argTypes.labelAlign.options as unknown[])).toEqual(['start', 'end']);
+
+    expect((argTypes.width.control as {type?: string}).type).toBe('radio');
+    expect((argTypes.width.options as unknown[])).toEqual([null, '300px', '600px']);
   });
 
   it('matches top-level Button controls contract with React stories', () => {
