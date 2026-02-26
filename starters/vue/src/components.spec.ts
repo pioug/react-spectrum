@@ -2744,7 +2744,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    await wrapper.get('.vs-number-field__control').trigger('mouseenter');
+    await wrapper.get('.spectrum-Stepper').trigger('mouseenter');
     expect(wrapper.find('.spectrum-Stepper').classes()).toContain('is-hovered');
 
     let numberInput = wrapper.get('input.spectrum-Stepper-input');
@@ -2755,11 +2755,16 @@ describe('Vue migration primitives', () => {
 
     await numberInput.trigger('focus');
     expect(wrapper.find('.spectrum-Stepper').classes()).toContain('is-focused');
-    expect(wrapper.find('.spectrum-Stepper').classes()).toContain('focus-ring');
 
-    await wrapper.get('button.vs-number-field__stepper--up').trigger('mousedown');
-    expect(wrapper.get('button.vs-number-field__stepper--up').classes()).toContain('is-active');
-    await wrapper.get('button.vs-number-field__stepper--up').trigger('click');
+    let stepUp = wrapper.get('div.spectrum-Stepper-button--stepUp');
+    expect(stepUp.attributes('role')).toBe('button');
+    expect(stepUp.attributes('tabindex')).toBe('-1');
+    expect(stepUp.attributes('data-react-aria-pressable')).toBe('true');
+    expect(stepUp.attributes('aria-label')).toBe('Increase Estimate');
+    expect(stepUp.attributes('aria-controls')).toBe(numberInput.attributes('id'));
+    await stepUp.trigger('mousedown');
+    expect(stepUp.classes()).toContain('is-active');
+    await stepUp.trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([4]);
 
     let hiddenInput = wrapper.find('input[type="hidden"][name="estimate"]');

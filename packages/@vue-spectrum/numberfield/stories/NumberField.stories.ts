@@ -185,82 +185,7 @@ const NumberFieldControlledStateReset = defineComponent({
 
 const meta: Meta<typeof NumberField> = {
   title: 'NumberField',
-  component: NumberField,
-  args: {
-    label: 'Width'
-  },
-  argTypes: {
-    autoFocus: {
-      control: 'boolean'
-    },
-    description: {
-      control: 'text'
-    },
-    errorMessage: {
-      control: 'text'
-    },
-    disabled: {
-      control: 'boolean'
-    },
-    form: {
-      control: 'text'
-    },
-    hideStepper: {
-      control: 'boolean'
-    },
-    id: {
-      control: 'text'
-    },
-    invalid: {
-      control: 'boolean'
-    },
-    isDisabled: {
-      control: 'boolean'
-    },
-    isInvalid: {
-      control: 'boolean'
-    },
-    isQuiet: {
-      control: 'boolean'
-    },
-    isReadOnly: {
-      control: 'boolean'
-    },
-    isRequired: {
-      control: 'boolean'
-    },
-    label: {
-      control: 'text'
-    },
-    max: {
-      control: 'number'
-    },
-    min: {
-      control: 'number'
-    },
-    modelValue: {
-      control: 'number'
-    },
-    name: {
-      control: 'text'
-    },
-    placeholder: {
-      control: 'text'
-    },
-    readOnly: {
-      control: 'boolean'
-    },
-    required: {
-      control: 'boolean'
-    },
-    step: {
-      control: 'number'
-    },
-    validationState: {
-      control: 'select',
-      options: [undefined, 'invalid', 'valid']
-    }
-  }
+  component: NumberField
 };
 
 export default meta;
@@ -271,7 +196,7 @@ function renderNumberField(baseArgs: NumberFieldStoryArgs = {}, styleValue?: str
   return (args: NumberFieldStoryArgs) => ({
     components: {NumberField},
     setup() {
-      let mergedArgs = computed(() => ({...args, ...baseArgs}));
+      let mergedArgs = computed(() => ({label: 'Width', ...args, ...baseArgs}));
       return {
         mergedArgs,
         onBlur: action('onBlur'),
