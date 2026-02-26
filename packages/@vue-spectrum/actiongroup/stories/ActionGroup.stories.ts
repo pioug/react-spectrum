@@ -1,7 +1,7 @@
 import {action} from '@storybook/addon-actions';
 import {ActionGroup, type SpectrumActionGroupProps} from '../src';
 import Book from '@spectrum-icons-vue/workflow/Book';
-import {type Component, computed, defineComponent, type PropType, ref} from 'vue';
+import {type Component, computed, defineComponent, h, type PropType, ref} from 'vue';
 import Copy from '@spectrum-icons-vue/workflow/Copy';
 import Delete from '@spectrum-icons-vue/workflow/Delete';
 import Draw from '@spectrum-icons-vue/workflow/Draw';
@@ -11,6 +11,7 @@ import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import Move from '@spectrum-icons-vue/workflow/Move';
 import MoveTo from '@spectrum-icons-vue/workflow/MoveTo';
 import Properties from '@spectrum-icons-vue/workflow/Properties';
+import Text from '@spectrum-icons-vue/workflow/Text';
 import ViewCard from '@spectrum-icons-vue/workflow/ViewCard';
 import ViewGrid from '@spectrum-icons-vue/workflow/ViewGrid';
 import ViewList from '@spectrum-icons-vue/workflow/ViewList';
@@ -344,7 +345,6 @@ const meta: Meta<SpectrumActionGroupProps> = {
   title: 'ActionGroup',
   component: ActionGroup,
   args: {
-    items: viewItems,
     onAction: action('onAction'),
     onSelectionChange: action('onSelectionChange')
   },
@@ -356,6 +356,9 @@ export default meta;
 type ActionGroupStory = StoryObj<typeof meta>;
 
 export const Default: ActionGroupStory = {
+  args: {
+    items: viewItems
+  },
   render: (args) => ({
     components: {ActionGroupDisplayExample},
     setup() {
@@ -394,13 +397,18 @@ export const SomeKeysDisabled: ActionGroupStory = {
 export const StaticColorWhite: ActionGroupStory = {
   args: {
     staticColor: 'white',
-    modelValue: ['1'],
+    defaultSelectedKeys: ['1'],
     items: viewItems
   },
   render: (args) => ({
     components: {ActionGroupDisplayExample},
     setup() {
-      return {args};
+      return {
+        args: {
+          ...args,
+          modelValue: Array.isArray(args.defaultSelectedKeys) ? args.defaultSelectedKeys as string[] : []
+        }
+      };
     },
     template: `
       <div style="background-color: var(--spectrum-global-color-static-blue-700); padding: var(--spectrum-global-dimension-size-1000);">
@@ -414,13 +422,18 @@ export const StaticColorWhite: ActionGroupStory = {
 export const StaticColorBlack: ActionGroupStory = {
   args: {
     staticColor: 'black',
-    modelValue: ['1'],
+    defaultSelectedKeys: ['1'],
     items: viewItems
   },
   render: (args) => ({
     components: {ActionGroupDisplayExample},
     setup() {
-      return {args};
+      return {
+        args: {
+          ...args,
+          modelValue: Array.isArray(args.defaultSelectedKeys) ? args.defaultSelectedKeys as string[] : []
+        }
+      };
     },
     template: `
       <div style="background-color: var(--spectrum-global-color-static-yellow-400); padding: var(--spectrum-global-dimension-size-1000);">
@@ -450,29 +463,44 @@ export const WithTooltips: ActionGroupStory = {
 
 export const Overflow: ActionGroupStory = {
   args: {
-    disabledKeys: ['Edit', 'Duplicate'],
-    items: overflowItems,
-    overflowMode: 'collapse',
-    buttonLabelBehavior: 'collapse'
+    disabledKeys: ['1', '5']
   },
   render: (args) => ({
     components: {OverflowActionGroupExample},
     setup() {
-      return {args};
+      return {
+        args: {
+          ...args,
+          buttonLabelBehavior: 'collapse',
+          overflowMode: 'collapse'
+        },
+        overflowItems
+      };
     },
-    template: '<OverflowActionGroupExample :args="args" :items="args.items || []" />'
+    template: '<OverflowActionGroupExample :args="args" :items="overflowItems" />'
   }),
   name: 'overflowMode'
 };
 
 export const SummaryIcon: ActionGroupStory = {
-  ...Overflow,
   args: {
-    disabledKeys: ['Edit', 'Duplicate'],
-    items: overflowItems,
-    overflowMode: 'collapse',
-    buttonLabelBehavior: 'collapse'
+    disabledKeys: ['1', '5'],
+    summaryIcon: h(Text)
   },
+  render: (args) => ({
+    components: {OverflowActionGroupExample},
+    setup() {
+      return {
+        args: {
+          ...args,
+          buttonLabelBehavior: 'collapse',
+          overflowMode: 'collapse'
+        },
+        overflowItems
+      };
+    },
+    template: '<OverflowActionGroupExample :args="args" :items="overflowItems" />'
+  }),
   name: 'summary icon overflow'
 };
 
