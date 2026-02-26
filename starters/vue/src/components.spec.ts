@@ -2747,7 +2747,13 @@ describe('Vue migration primitives', () => {
     await wrapper.get('.vs-number-field__control').trigger('mouseenter');
     expect(wrapper.find('.spectrum-Stepper').classes()).toContain('is-hovered');
 
-    await wrapper.get('input.vs-number-field__input').trigger('focus');
+    let numberInput = wrapper.get('input.spectrum-Stepper-input');
+    expect(numberInput.classes()).toContain('spectrum-Textfield-input');
+    expect(numberInput.classes()).toContain('i18nFontFamily');
+    expect(numberInput.classes()).not.toContain('vs-number-field__input');
+    expect(numberInput.attributes('tabindex')).toBe('0');
+
+    await numberInput.trigger('focus');
     expect(wrapper.find('.spectrum-Stepper').classes()).toContain('is-focused');
     expect(wrapper.find('.spectrum-Stepper').classes()).toContain('focus-ring');
 

@@ -1,4 +1,5 @@
 import '@adobe/spectrum-css-temp/components/stepper/vars.css';
+import '@adobe/spectrum-css-temp/components/textfield/vars.css';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, type PropType, ref} from 'vue';
 import {getEventTarget} from '@vue-aria/utils';
@@ -220,6 +221,8 @@ export const NumberField = defineComponent({
     let inputClassName = computed(() => classNames(
       stepperStyles,
       'spectrum-Stepper-input',
+      'spectrum-Textfield-input',
+      'i18nFontFamily',
       {
         'is-disabled': isDisabled.value,
         'is-focused': isFocused.value
@@ -309,10 +312,11 @@ export const NumberField = defineComponent({
           h('div', {class: fieldClassName.value}, [
             h('input', {
               id: inputId.value,
-              class: [inputClassName.value, 'vs-number-field__input'],
+              class: inputClassName.value,
               type: 'text',
               inputmode: 'decimal',
               value: currentValue.value ?? '',
+              tabindex: isDisabled.value ? undefined : attrs.tabindex ?? 0,
               placeholder: props.placeholder || undefined,
               disabled: isDisabled.value,
               readonly: isReadOnly.value || undefined,

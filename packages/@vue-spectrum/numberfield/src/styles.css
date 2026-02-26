@@ -114,3 +114,7 @@
 .vs-number-field__description.is-invalid {
   color: #d31510;
 }
+
+.spectrum-Stepper-input.spectrum-Textfield-input {
+  display: block;
+}
