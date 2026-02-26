@@ -257,41 +257,7 @@ function cloneItems(items: MenuItem[]) {
 const meta: Meta<typeof SubmenuTrigger> = {
   title: 'MenuTrigger/Submenu',
   component: SubmenuTrigger,
-  excludeStories: ['SubmenuStaticRender', 'SubmenuDynamicRender', 'ComplexRender', 'TabBehaviorRender'],
-  args: {
-    label: 'Submenu',
-    items: cloneItems(STATIC_ITEMS),
-    selectionMode: 'single',
-    isExpanded: true,
-    openKeys: ['lvl1-2', 'lvl2-3']
-  },
-  argTypes: {
-    ariaLabel: {control: 'text'},
-    ariaLabelledby: {control: 'text'},
-    dataTestid: {control: 'text'},
-    isDisabled: {control: 'boolean'},
-    isExpanded: {control: 'boolean'},
-    items: {
-      table: {
-        disable: true
-      }
-    },
-    label: {control: 'text'},
-    modelValue: {
-      table: {
-        disable: true
-      }
-    },
-    openKeys: {
-      table: {
-        disable: true
-      }
-    },
-    selectionMode: {
-      control: 'select',
-      options: ['none', 'single', 'multiple']
-    }
-  }
+  excludeStories: ['SubmenuStaticRender', 'SubmenuDynamicRender', 'ComplexRender', 'TabBehaviorRender']
 };
 
 export default meta;

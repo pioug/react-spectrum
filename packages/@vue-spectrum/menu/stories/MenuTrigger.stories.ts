@@ -181,55 +181,7 @@ const UNAVAILABLE_ITEMS = [
 const meta: Meta<typeof MenuTrigger> = {
   title: 'MenuTrigger',
   component: MenuTrigger,
-  excludeStories: ['render'],
-  args: {
-    label: 'Menu trigger',
-    items: SIMPLE_ITEMS,
-    selectionMode: 'single'
-  },
-  argTypes: {
-    ariaLabel: {
-      control: 'text'
-    },
-    ariaLabelledby: {
-      control: 'text'
-    },
-    dataTestid: {
-      control: 'text'
-    },
-    isDisabled: {
-      control: 'boolean'
-    },
-    isExpanded: {
-      control: 'boolean'
-    },
-    items: {
-      table: {
-        disable: true
-      }
-    },
-    label: {
-      control: 'text'
-    },
-    modelValue: {
-      table: {
-        disable: true
-      }
-    },
-    openKeys: {
-      table: {
-        disable: true
-      }
-    },
-    selectionMode: {
-      control: 'select',
-      options: [
-        'none',
-        'single',
-        'multiple'
-      ]
-    }
-  }
+  excludeStories: ['render']
 };
 
 export default meta;
@@ -266,342 +218,303 @@ function renderMenuWithNote(args: StoryArgs, note: string) {
 }
 
 export const DefaultMenuStatic: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     label: 'Menu',
     items: SIMPLE_ITEMS
-  }
+  })
 };
 
 export const DefaultMenuGenerative: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     label: 'Menu',
     items: FLAT_MENU_ITEMS
-  }
+  })
 };
 
 export const DefaultMenuWSectionStatic: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     label: 'Menu',
     items: SECTION_STATIC_ITEMS
-  }
+  })
 };
 
 export const DefaultMenuWSectionGenerative: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     label: 'Menu',
     items: SECTION_GENERATIVE_ITEMS
-  }
+  })
 };
 
 export const DefaultMenuWSectionGenerativeManyItems: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     label: 'Menu',
     items: SECTION_GENERATIVE_MANY_ITEMS
-  }
+  })
 };
 
 export const DefaultMenuWTitlelessSectionsStatic: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     items: TITLELESS_SECTION_ITEMS
-  }
+  })
 };
 
 export const DefaultMenuWTitlelessSectionsGenerative: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     items: TITLELESS_SECTION_ITEMS
-  }
+  })
 };
 
 export const WithFalsyItemKeys: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     items: FALSY_ITEM_KEYS
-  }
+  })
 };
 
 export const SingleSelectedKeyControlledStatic: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     items: SELECTION_STATIC_ITEMS,
     selectionMode: 'single',
     modelValue: '2'
-  }
+  })
 };
 
 export const SingleSelectedKeyControlledGenerative: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     items: SECTION_GENERATIVE_ITEMS,
     selectionMode: 'single',
     modelValue: 'Kangaroo'
-  }
+  })
 };
 
 export const SingleDefaultSelectedKeyUncontrolledStatic: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     items: SELECTION_STATIC_ITEMS,
     selectionMode: 'single',
     modelValue: '2'
-  }
+  })
 };
 
 export const SingleDefaultSelectedKeyUncontrolledGenerative: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     items: SECTION_GENERATIVE_ITEMS,
     selectionMode: 'single',
     modelValue: 'Kangaroo'
-  }
+  })
 };
 
 export const MultipleDefaultSelectedKeyControlledStatic: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     items: SELECTION_STATIC_ITEMS,
     selectionMode: 'multiple',
     modelValue: ['2', '5']
-  }
+  })
 };
 
 export const MultipleSelectedKeyControlledGenerative: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     items: SECTION_GENERATIVE_ITEMS,
     selectionMode: 'multiple',
     modelValue: ['Kangaroo', 'Devon']
-  }
+  })
 };
 
 export const MultipleDefaultSelectedKeyUncontrolledStatic: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     items: SELECTION_STATIC_ITEMS,
     selectionMode: 'multiple',
     modelValue: ['2', '5']
-  }
+  })
 };
 
 export const MultipleDefaultSelectedKeyUncontrolledGenerative: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     items: SECTION_GENERATIVE_ITEMS,
     selectionMode: 'multiple',
     modelValue: ['Kangaroo', 'Devon']
-  }
+  })
 };
 
 export const MenuWithAutoFocusTrue: Story = {
-  render: (args) => renderMenuWithNote(args, 'autoFocus=true parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS
-  }
+  }, 'autoFocus=true parity scenario')
 };
 
 export const MenuWithAutoFocusFalse: Story = {
-  render: (args) => renderMenuWithNote(args, 'autoFocus=false parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS
-  }
+  }, 'autoFocus=false parity scenario')
 };
 
 export const MenuWithAutoFocusTrueDefaultSelectedKeyUncontrolledSelectionModeSingle: Story = {
-  render: (args) => renderMenuWithNote(args, 'autoFocus=true with uncontrolled default selected key parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS,
     selectionMode: 'single',
     modelValue: 'Kangaroo'
-  }
+  }, 'autoFocus=true with uncontrolled default selected key parity scenario')
 };
 
 export const MenuWithAutoFocusFirst: Story = {
-  render: (args) => renderMenuWithNote(args, 'autoFocus="first" parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS
-  }
+  }, 'autoFocus="first" parity scenario')
 };
 
 export const MenuWithAutoFocusLast: Story = {
-  render: (args) => renderMenuWithNote(args, 'autoFocus="last" parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS
-  }
+  }, 'autoFocus="last" parity scenario')
 };
 
 export const MenuWithKeyboardSelectionWrappingFalse: Story = {
-  render: (args) => renderMenuWithNote(args, 'Keyboard wrapping disabled parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS
-  }
+  }, 'Keyboard wrapping disabled parity scenario')
 };
 
 export const AlignEnd: Story = {
-  render: (args) => renderMenuWithNote(args, 'align="end" parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SIMPLE_ITEMS
-  }
+  }, 'align="end" parity scenario')
 };
 
 export const DirectionTop: Story = {
-  render: (args) => renderMenuWithNote(args, 'direction="top" parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS
-  }
+  }, 'direction="top" parity scenario')
 };
 
 export const DirectionBottom: Story = {
-  render: (args) => renderMenuWithNote(args, 'direction="bottom" parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS
-  }
+  }, 'direction="bottom" parity scenario')
 };
 
 export const DirectionStart: Story = {
-  render: (args) => renderMenuWithNote(args, 'direction="start" parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS
-  }
+  }, 'direction="start" parity scenario')
 };
 
 export const DirectionStartAlignEnd: Story = {
-  render: (args) => renderMenuWithNote(args, 'direction="start", align="end" parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS
-  }
+  }, 'direction="start", align="end" parity scenario')
 };
 
 export const DirectionEnd: Story = {
-  render: (args) => renderMenuWithNote(args, 'direction="end" parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS
-  }
+  }, 'direction="end" parity scenario')
 };
 
 export const DirectionEndAlignEnd: Story = {
-  render: (args) => renderMenuWithNote(args, 'direction="end", align="end" parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS
-  }
+  }, 'direction="end", align="end" parity scenario')
 };
 
 export const DirectionLeft: Story = {
-  render: (args) => renderMenuWithNote(args, 'direction="left" parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS
-  }
+  }, 'direction="left" parity scenario')
 };
 
 export const DirectionLeftAlignEnd: Story = {
-  render: (args) => renderMenuWithNote(args, 'direction="left", align="end" parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS
-  }
+  }, 'direction="left", align="end" parity scenario')
 };
 
 export const DirectionRight: Story = {
-  render: (args) => renderMenuWithNote(args, 'direction="right" parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS
-  }
+  }, 'direction="right" parity scenario')
 };
 
 export const DirectionRightAlignEnd: Story = {
-  render: (args) => renderMenuWithNote(args, 'direction="right", align="end" parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS
-  }
+  }, 'direction="right", align="end" parity scenario')
 };
 
 export const ShouldFlip: Story = {
-  render: (args) => renderMenuWithNote(args, 'shouldFlip parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS
-  }
+  }, 'shouldFlip parity scenario')
 };
 
 export const IsOpen: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     items: SECTION_GENERATIVE_ITEMS,
     isExpanded: true
-  }
+  })
 };
 
 export const DefaultOpen: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     items: SECTION_GENERATIVE_ITEMS,
     isExpanded: true
-  }
+  })
 };
 
 export const DisabledButton: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     items: SECTION_GENERATIVE_ITEMS,
     isDisabled: true
-  }
+  })
 };
 
 export const MultiselectMenu: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     items: SECTION_GENERATIVE_ITEMS,
     selectionMode: 'multiple'
-  }
+  })
 };
 
 export const NoSelectionAllowedMenu: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     items: SECTION_GENERATIVE_ITEMS,
     selectionMode: 'none'
-  }
+  })
 };
 
 export const CloseOnSelectFalse: Story = {
-  render: (args) => renderMenuWithNote(args, 'closeOnSelect=false parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS
-  }
+  }, 'closeOnSelect=false parity scenario')
 };
 
 export const CloseOnSelectTrueMultiselectMenu: Story = {
-  render: (args) => renderMenuWithNote(args, 'closeOnSelect=true with multiselect parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS,
     selectionMode: 'multiple'
-  }
+  }, 'closeOnSelect=true with multiselect parity scenario')
 };
 
 export const MenuWithSemanticElementsStatic: Story = {
-  render: (args) => renderMenuWithNote(args, 'Semantic labels and shortcut text (static)'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SEMANTIC_ITEMS,
     label: 'Menu'
-  }
+  }, 'Semantic labels and shortcut text (static)')
 };
 
 export const MenuWithSemanticElementsGenerative: Story = {
-  render: (args) => renderMenuWithNote(args, 'Semantic labels and shortcut text (generative)'),
-  args: {
+  render: () => renderMenuWithNote({
     items: [...SEMANTIC_ITEMS],
     label: 'Menu'
-  }
+  }, 'Semantic labels and shortcut text (generative)')
 };
 
 export const MenuShouldPreventScrolling: Story = {
-  render: (args) => ({
+  render: () => ({
     components: {MenuTrigger},
     setup() {
-      return {args};
+      return {
+        args: {
+          items: SECTION_GENERATIVE_ITEMS
+        }
+      };
     },
     template: `
       <div style="height: 200px; overflow: auto; border: 1px solid #d4d4d8; padding: 12px;">
@@ -612,10 +525,7 @@ export const MenuShouldPreventScrolling: Story = {
         </div>
       </div>
     `
-  }),
-  args: {
-    items: SECTION_GENERATIVE_ITEMS
-  }
+  })
 };
 
 export const MenuClosesOnBlur: Story = {
@@ -648,20 +558,18 @@ export const MenuClosesOnBlur: Story = {
 };
 
 export const WithFalsyKey: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     items: [
       {key: 0, label: 'Key = 0'},
       {key: 1, label: 'Key = 1'}
     ]
-  }
+  })
 };
 
 export const MenuTriggerWithTriggerLongPress: Story = {
-  render: (args) => renderMenuWithNote(args, 'trigger="longPress" parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     items: SECTION_GENERATIVE_ITEMS
-  }
+  }, 'trigger="longPress" parity scenario')
 };
 
 export const ControlledIsOpen: Story = {
@@ -694,36 +602,32 @@ export const ControlledIsOpen: Story = {
 };
 
 export const WithTranslations: Story = {
-  render: (args) => renderMenu(args),
-  args: {
+  render: () => renderMenu({
     label: 'Languages',
     items: TRANSLATED_ITEMS
-  }
+  })
 };
 
 export const MenuItemUnavailable: Story = {
-  render: (args) => renderMenuWithNote(args, 'Unavailable item parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     label: 'Menu',
     items: UNAVAILABLE_ITEMS
-  }
+  }, 'Unavailable item parity scenario')
 };
 
 export const MenuItemUnavailableWithSelection: Story = {
-  render: (args) => renderMenuWithNote(args, 'Unavailable items with selection parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     label: 'Menu',
     items: UNAVAILABLE_ITEMS,
     selectionMode: 'multiple'
-  }
+  }, 'Unavailable items with selection parity scenario')
 };
 
 export const MenuItemUnavailableDynamic: Story = {
-  render: (args) => renderMenuWithNote(args, 'Unavailable dynamic items parity scenario'),
-  args: {
+  render: () => renderMenuWithNote({
     label: 'Menu',
     items: FLAT_MENU_ITEMS.map((item) => item === 'Kangaroo' ? `${item} (unavailable)` : item)
-  }
+  }, 'Unavailable dynamic items parity scenario')
 };
 
 export const MenuItemUnavailableToggling: Story = {
@@ -754,9 +658,20 @@ export const MenuItemUnavailableToggling: Story = {
 };
 
 export const MenuWithLinks: Story = {
-  render: (args) => renderMenuWithNote(args, 'Includes link-like menu items'),
-  args: {
+  render: (args) => renderMenuWithNote({
     label: 'Menu',
-    items: LINK_ITEMS
+    items: LINK_ITEMS,
+    ...args
+  }, 'Includes link-like menu items'),
+  args: {
+    selectionMode: 'none'
+  },
+  argTypes: {
+    selectionMode: {
+      control: {
+        type: 'inline-radio',
+        options: ['none', 'single', 'multiple']
+      }
+    }
   }
 };
