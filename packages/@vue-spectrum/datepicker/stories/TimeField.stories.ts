@@ -12,35 +12,7 @@ const meta: Meta<typeof TimeField> = {
   component: TimeField,
   excludeStories: [
     'render'
-  ],
-  args: {
-    label: 'Time',
-    step: 60
-  },
-  argTypes: {
-    autoFocus: {control: 'boolean'},
-    description: {control: 'text'},
-    disabled: {control: 'boolean'},
-    id: {control: 'text'},
-    invalid: {control: 'boolean'},
-    isDisabled: {control: 'boolean'},
-    isInvalid: {control: 'boolean'},
-    isQuiet: {control: 'boolean'},
-    isReadOnly: {control: 'boolean'},
-    isRequired: {control: 'boolean'},
-    label: {control: 'text'},
-    max: {control: 'text'},
-    min: {control: 'text'},
-    modelValue: {control: 'text'},
-    placeholder: {control: 'text'},
-    readOnly: {control: 'boolean'},
-    required: {control: 'boolean'},
-    step: {control: 'number'},
-    validationState: {
-      control: 'select',
-      options: ['invalid', 'valid']
-    }
-  }
+  ]
 };
 
 export default meta;
@@ -56,7 +28,7 @@ export function render(args: StoryArgs = {}) {
         onChange: action('change')
       };
     },
-    template: '<TimeField v-bind="args" style="max-width: calc(100vw - 40px);" @change="onChange($event)" />'
+    template: '<TimeField label="Time" v-bind="args" style="max-width: calc(100vw - 40px);" @change="onChange($event)" />'
   };
 }
 

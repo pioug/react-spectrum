@@ -61,37 +61,7 @@ const meta: Meta<typeof DateRangePicker> = {
   component: DateRangePicker,
   excludeStories: [
     'render'
-  ],
-  args: {
-    label: 'Date range'
-  },
-  argTypes: {
-    autoFocus: {control: 'boolean'},
-    description: {control: 'text'},
-    disabled: {control: 'boolean'},
-    id: {control: 'text'},
-    invalid: {control: 'boolean'},
-    isDisabled: {control: 'boolean'},
-    isInvalid: {control: 'boolean'},
-    isQuiet: {control: 'boolean'},
-    isReadOnly: {control: 'boolean'},
-    isRequired: {control: 'boolean'},
-    label: {control: 'text'},
-    max: {control: 'text'},
-    min: {control: 'text'},
-    modelValue: {
-      table: {
-        disable: true
-      }
-    },
-    placeholder: {control: 'text'},
-    readOnly: {control: 'boolean'},
-    required: {control: 'boolean'},
-    validationState: {
-      control: 'select',
-      options: ['invalid', 'valid']
-    }
-  }
+  ]
 };
 
 export default meta;
@@ -136,7 +106,7 @@ export function render(args: StoryArgs = {}) {
     },
     template: `
       <div>
-        <DateRangePicker v-bind="args" style="max-width: calc(100vw - 40px);" />
+        <DateRangePicker label="Date range" v-bind="args" style="max-width: calc(100vw - 40px);" />
       </div>
     `
   };

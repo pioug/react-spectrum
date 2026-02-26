@@ -6,6 +6,8 @@ import buttonMeta from '../../../packages/@vue-spectrum/button/stories/Button.st
 import checkboxMeta from '../../../packages/@vue-spectrum/checkbox/stories/Checkbox.stories';
 import checkboxGroupMeta from '../../../packages/@vue-spectrum/checkbox/stories/CheckboxGroup.stories';
 import comboBoxMeta from '../../../packages/@vue-spectrum/combobox/stories/ComboBox.stories';
+import dateRangePickerMeta from '../../../packages/@vue-spectrum/datepicker/stories/DateRangePicker.stories';
+import timeFieldMeta from '../../../packages/@vue-spectrum/datepicker/stories/TimeField.stories';
 import dividerMeta from '../../../packages/@vue-spectrum/divider/stories/Divider.stories';
 import dialogTriggerMeta from '../../../packages/@vue-spectrum/dialog/stories/DialogTrigger.stories';
 import fileTriggerMeta from '../../../packages/@vue-spectrum/filetrigger/stories/FileTrigger.stories';
@@ -282,6 +284,22 @@ describe('Vue Storybook controls parity', () => {
   it('matches top-level NumberField controls contract with React stories', () => {
     let args = (numberFieldMeta as {args?: Record<string, unknown>}).args ?? {};
     let argTypes = (numberFieldMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes)).toEqual([]);
+  });
+
+  it('matches top-level TimeField controls contract with React stories', () => {
+    let args = (timeFieldMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (timeFieldMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes)).toEqual([]);
+  });
+
+  it('matches top-level DateRangePicker controls contract with React stories', () => {
+    let args = (dateRangePickerMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (dateRangePickerMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
 
     expect(Object.keys(args)).toEqual([]);
     expect(Object.keys(argTypes)).toEqual([]);
