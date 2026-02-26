@@ -3,9 +3,17 @@ import {h} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type HorizontalCardStoryArgs = {
+  children?: unknown,
   layout?: 'gallery' | 'grid' | 'waterfall',
   orientation?: 'horizontal' | 'vertical'
 };
+
+type HorizontalCardRenderProps = Omit<HorizontalCardStoryArgs, 'children'>;
+
+function pickCardProps(args: HorizontalCardStoryArgs): HorizontalCardRenderProps {
+  let {children: _children, ...cardProps} = args;
+  return cardProps;
+}
 
 const images = [
   {src: 'https://i.imgur.com/Z7AzH2c.jpg'},
@@ -35,8 +43,10 @@ function renderPreview(index: number) {
 }
 
 function renderCard(args: HorizontalCardStoryArgs, index: number) {
+  let cardProps = pickCardProps(args);
+
   return h(Card, {
-    ...args,
+    ...cardProps,
     description: 'Description',
     detail: 'PNG',
     key: `${index}-${getImage(index)}`,
@@ -50,10 +60,12 @@ const meta: Meta<typeof Card> = {
   title: 'Card/horizontal',
   component: Card,
   args: {
+    children: {},
     orientation: 'horizontal'
   },
   argTypes: {
     children: {
+      control: 'object',
       table: {
         disable: true
       }

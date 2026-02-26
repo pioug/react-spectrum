@@ -272,14 +272,13 @@ export const Card = defineComponent({
 
     return () => h('div', {
       ...attrs,
-      class: [className.value, 'vs-card', attrs.class],
+      class: [className.value, attrs.class],
       role: typeof attrs.role === 'string' ? attrs.role : 'article',
       tabindex: isDisabled.value ? -1 : 0,
       'aria-disabled': isDisabled.value ? 'true' : undefined,
       'aria-label': typeof attrs['aria-label'] === 'string' ? attrs['aria-label'] : (hasTitle.value ? undefined : props.title || undefined),
       'aria-labelledby': titleId.value,
       'aria-describedby': descriptionId.value,
-      'data-vac': '',
       onMouseenter: () => {
         if (!isDisabled.value) {
           isHovered.value = true;
@@ -313,9 +312,9 @@ export const Card = defineComponent({
         hasPreview.value
           ? h('div', {class: classNames(styles, 'spectrum-Card-image')}, previewNodes.value)
           : null,
-        hasTitle.value ? h('span', {id: titleId.value, class: ['vs-card__title', classNames(styles, 'spectrum-Card-heading')]}, titleNodes.value) : null,
-        hasDetail.value ? h('span', {class: ['vs-card__detail', classNames(styles, 'spectrum-Card-detail')]}, detailNodes.value) : null,
-        hasContent.value ? h('span', {id: descriptionId.value, class: ['vs-card__description', classNames(styles, 'spectrum-Card-content')]}, contentNodes.value) : null,
+        hasTitle.value ? h('span', {id: titleId.value, class: classNames(styles, 'spectrum-Card-heading')}, titleNodes.value) : null,
+        hasDetail.value ? h('span', {class: classNames(styles, 'spectrum-Card-detail')}, detailNodes.value) : null,
+        hasContent.value ? h('span', {id: descriptionId.value, class: classNames(styles, 'spectrum-Card-content')}, contentNodes.value) : null,
         h('div', {class: classNames(styles, 'spectrum-Card-decoration'), 'aria-hidden': 'true'})
       ])
     ]);

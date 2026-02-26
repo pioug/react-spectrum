@@ -3,10 +3,18 @@ import {h} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type QuietCardStoryArgs = {
+  children?: unknown,
   isQuiet?: boolean,
   layout?: 'gallery' | 'grid' | 'waterfall',
   orientation?: 'horizontal' | 'vertical'
 };
+
+type QuietCardRenderProps = Omit<QuietCardStoryArgs, 'children'>;
+
+function pickCardProps(args: QuietCardStoryArgs): QuietCardRenderProps {
+  let {children: _children, ...cardProps} = args;
+  return cardProps;
+}
 
 const MESSY_TEXT = 'Rechtsschutzversicherungsgesellschaften Nahrungsmittelunverträglichkeit Unabhängigkeitserklärungen Freundschaftsbeziehungen';
 const LONG_TITLE = 'This is a long title about how dinosaurs used to rule the earth before a meteor came and wiped them all out';
@@ -83,12 +91,13 @@ function renderCard(
   let description = options.description ?? 'Description';
   let withPreview = options.withPreview ?? true;
   let previewType = options.previewType ?? 'image';
+  let cardProps = pickCardProps(args);
   let slots = withPreview
     ? {preview: previewType === 'illustration' ? renderIllustrationPreview(index) : renderImagePreview(index)}
     : undefined;
 
   return h(Card, {
-    ...args,
+    ...cardProps,
     description,
     detail,
     isQuiet: true,
@@ -101,10 +110,12 @@ const meta: Meta<typeof Card> = {
   title: 'Card/quiet',
   component: Card,
   args: {
+    children: {},
     isQuiet: true
   },
   argTypes: {
     children: {
+      control: 'object',
       table: {
         disable: true
       }

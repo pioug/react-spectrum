@@ -3,10 +3,18 @@ import {h, ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type CardStoryArgs = {
+  children?: unknown,
   isQuiet?: boolean,
   layout?: 'gallery' | 'grid' | 'waterfall',
   orientation?: 'horizontal' | 'vertical'
 };
+
+type CardRenderProps = Omit<CardStoryArgs, 'children'>;
+
+function pickCardProps(args: CardStoryArgs): CardRenderProps {
+  let {children: _children, ...cardProps} = args;
+  return cardProps;
+}
 
 const MESSY_TEXT = 'Rechtsschutzversicherungsgesellschaften Nahrungsmittelunverträglichkeit Unabhängigkeitserklärungen Freundschaftsbeziehungen';
 const images = [
@@ -60,9 +68,10 @@ function renderCard(
   let detail = options.detail ?? 'PNG';
   let description = options.description ?? 'Description';
   let withPreview = options.withPreview ?? true;
+  let cardProps = pickCardProps(args);
 
   return h(Card, {
-    ...args,
+    ...cardProps,
     description,
     detail,
     title
@@ -72,8 +81,12 @@ function renderCard(
 const meta: Meta<typeof Card> = {
   title: 'Card/default',
   component: Card,
+  args: {
+    children: {}
+  },
   argTypes: {
     children: {
+      control: 'object',
       table: {
         disable: true
       }
