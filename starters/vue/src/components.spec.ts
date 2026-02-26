@@ -483,9 +483,9 @@ describe('Vue migration primitives', () => {
 
     expect(wrapper.attributes('for')).toBe('field-name');
     expect(wrapper.text()).toContain('Name');
-    expect(wrapper.find('.vs-label__required').exists()).toBe(true);
+    expect(wrapper.find('.spectrum-FieldLabel-requiredIcon').exists()).toBe(true);
     expect(wrapper.classes()).toContain('spectrum-FieldLabel');
-    expect(wrapper.get('.vs-label__required').attributes('aria-hidden')).toBe('true');
+    expect(wrapper.get('.spectrum-FieldLabel-requiredIcon').attributes('aria-hidden')).toBe('true');
     expect((wrapper.element as HTMLElement).style.width).toBe('80px');
   });
 

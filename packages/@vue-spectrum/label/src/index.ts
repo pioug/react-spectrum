@@ -62,6 +62,7 @@ export const Label = defineComponent({
   },
   setup(props, {slots, attrs}) {
     let resolvedIsRequired = computed(() => props.isRequired ?? props.required);
+    let resolvedLabelAlign = computed<LabelAlign>(() => props.labelAlign ?? (props.labelPosition === 'side' ? 'start' : null));
     let resolvedNecessityIndicator = computed<NecessityIndicator>(() => {
       if (props.necessityIndicator !== null) {
         return props.necessityIndicator;
@@ -75,7 +76,7 @@ export const Label = defineComponent({
       'spectrum-FieldLabel',
       {
         'spectrum-FieldLabel--positionSide': props.labelPosition === 'side',
-        'spectrum-FieldLabel--alignEnd': props.labelAlign === 'end'
+        'spectrum-FieldLabel--alignEnd': resolvedLabelAlign.value === 'end'
       }
     ));
 
@@ -85,26 +86,32 @@ export const Label = defineComponent({
       let necessityLabel = resolvedIsRequired.value ? '(required)' : '(optional)';
       let showNecessityLabel = resolvedNecessityIndicator.value === 'label';
       let showNecessityIcon = resolvedNecessityIndicator.value === 'icon' && resolvedIsRequired.value;
+      let children: Array<unknown> = [slots.default ? slots.default() : 'Label'];
+
+      if (showNecessityLabel || showNecessityIcon) {
+        children.push(' \u200b');
+      }
+
+      if (showNecessityLabel) {
+        children.push(h('span', {
+          'aria-hidden': (!props.includeNecessityIndicatorInAccessibilityName && resolvedIsRequired.value) ? 'true' : undefined
+        }, necessityLabel));
+      }
+
+      if (showNecessityIcon) {
+        children.push(h('span', {
+          class: classNames(fieldLabelStyles, 'spectrum-FieldLabel-requiredIcon'),
+          'aria-hidden': props.includeNecessityIndicatorInAccessibilityName ? undefined : 'true',
+          'aria-label': props.includeNecessityIndicatorInAccessibilityName ? '(required)' : undefined
+        }, '*'));
+      }
 
       return h(tag, {
         ...attrs,
-        class: [className.value, 'vs-label', resolvedIsRequired.value ? 'is-required' : null, attrs.class],
+        class: [className.value, attrs.class],
         for: tag === 'label' ? htmlFor : undefined,
-        style: [{width: props.width}, attrs.style],
-        'data-vac': ''
-      }, [
-        slots.default ? slots.default() : 'Label',
-        h('span', {
-          class: 'vs-label__necessity-label',
-          hidden: !showNecessityLabel,
-          'aria-hidden': (!props.includeNecessityIndicatorInAccessibilityName && resolvedIsRequired.value) ? 'true' : undefined
-        }, necessityLabel),
-        h('span', {
-          class: [classNames(fieldLabelStyles, 'spectrum-FieldLabel-requiredIcon'), 'vs-label__required'],
-          hidden: !showNecessityIcon,
-          'aria-hidden': showNecessityIcon ? 'true' : undefined
-        }, '*')
-      ]);
+        style: [{width: props.width}, attrs.style]
+      }, children);
     };
   }
 });
