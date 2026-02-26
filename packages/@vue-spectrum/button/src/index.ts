@@ -1,6 +1,6 @@
 import '@adobe/spectrum-css-temp/components/button/vars.css';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, type ComputedRef, defineComponent, h, onBeforeUnmount, type PropType, ref, watch} from 'vue';
+import {computed, type ComputedRef, defineComponent, h, isVNode, onBeforeUnmount, type PropType, ref, Text as VueText, watch} from 'vue';
 import {getEventTarget} from '@vue-aria/utils';
 const styles: {[key: string]: string} = {};
 
@@ -85,6 +85,30 @@ function hasVisibleTextChild(value: unknown): boolean {
   return false;
 }
 
+function isTextOnlyChild(value: unknown): boolean {
+  if (value == null || typeof value === 'boolean') {
+    return true;
+  }
+
+  if (typeof value === 'string' || typeof value === 'number') {
+    return true;
+  }
+
+  if (Array.isArray(value)) {
+    return value.every(isTextOnlyChild);
+  }
+
+  if (isVNode(value)) {
+    if (value.type !== VueText) {
+      return false;
+    }
+
+    return isTextOnlyChild(value.children);
+  }
+
+  return false;
+}
+
 function mergePressedUserSelectStyle(styleValue: unknown): unknown {
   if (styleValue == null) {
     return {userSelect: 'none'};
@@ -162,6 +186,9 @@ function useInteractionState(isDisabled: ComputedRef<boolean>) {
     }
 
     if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
+      if (isFocused.value) {
+        isFocusVisible.value = true;
+      }
       isPressed.value = true;
     }
   };
@@ -267,6 +294,11 @@ function useBaseButtonSemantics(
 
     if (interaction.isPressed.value) {
       propsForElement.style = mergePressedUserSelectStyle(attrs.style);
+    } else {
+      propsForElement.style = attrs.style ?? null;
+      if (propsForElement.style === '') {
+        propsForElement.style = null;
+      }
     }
 
     if (elementType.value === 'button') {
@@ -504,33 +536,39 @@ export const ActionButton = defineComponent({
       (event) => emit('click', event)
     );
 
-    let actionClass = computed(() => classNames(
-      styles,
-      'spectrum-ActionButton',
-      {
-        'focus-ring': state.interaction.isFocusVisible.value,
-        'is-active': state.interaction.isPressed.value,
-        'is-disabled': state.isDisabled.value,
-        'is-hovered': state.interaction.isHovered.value,
-        'spectrum-ActionButton--quiet': props.isQuiet,
-        'spectrum-ActionButton--staticBlack': props.staticColor === 'black',
-        'spectrum-ActionButton--staticColor': !!props.staticColor,
-        'spectrum-ActionButton--staticWhite': props.staticColor === 'white'
-      }
-    ));
+    return () => {
+      let children = slots.default ? slots.default() : ['Action'];
+      let renderedChildren = children.every(isTextOnlyChild)
+        ? [h('span', {
+          class: classNames(styles, 'spectrum-ActionButton-label')
+        }, children)]
+        : children;
 
-    return () => h(state.elementType.value, {
-      ...state.domProps.value,
-      class: [
-        actionClass.value,
-        'vs-button',
-        'vs-button--secondary',
-        'vs-button--medium',
-        state.isDisabled.value ? 'is-disabled' : null,
-        attrs.class
-      ],
-      'data-vac': ''
-    }, slots.default ? slots.default() : 'Action');
+      return h(state.elementType.value, {
+        ...state.domProps.value,
+        class: [
+          classNames(
+            styles,
+            'i18nFontFamily',
+            'spectrum-ActionButton',
+            'spectrum-BaseButton',
+            'spectrum-FocusRing',
+            'spectrum-FocusRing-ring',
+            {
+              'focus-ring': state.interaction.isFocusVisible.value,
+              'is-active': state.interaction.isPressed.value,
+              'is-disabled': state.isDisabled.value,
+              'is-hovered': state.interaction.isHovered.value,
+              'spectrum-ActionButton--quiet': props.isQuiet,
+              'spectrum-ActionButton--staticBlack': props.staticColor === 'black',
+              'spectrum-ActionButton--staticColor': !!props.staticColor,
+              'spectrum-ActionButton--staticWhite': props.staticColor === 'white'
+            }
+          ),
+          attrs.class
+        ]
+      }, renderedChildren);
+    };
   }
 });
 

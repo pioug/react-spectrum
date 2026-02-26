@@ -11,12 +11,83 @@ type ActionButtonStoryArgs = {
   href?: string,
   isDisabled?: boolean,
   isQuiet?: boolean,
-  onClick?: (event: MouseEvent) => void,
+  onPress?: (event: MouseEvent | KeyboardEvent) => void,
+  onPressEnd?: (event: MouseEvent | KeyboardEvent) => void,
+  onPressStart?: (event: MouseEvent | KeyboardEvent) => void,
   rel?: string,
   staticColor?: 'black' | 'white',
   target?: string,
   type?: 'button' | 'reset' | 'submit'
 };
+
+type ActionButtonRenderProps = Omit<ActionButtonStoryArgs, 'onPress' | 'onPressEnd' | 'onPressStart'>;
+
+function pickActionButtonProps(args: ActionButtonStoryArgs): ActionButtonRenderProps {
+  let {
+    onPress: _onPress,
+    onPressEnd: _onPressEnd,
+    onPressStart: _onPressStart,
+    ...buttonProps
+  } = args;
+
+  return buttonProps;
+}
+
+function createPressActionHandlers(args: ActionButtonStoryArgs) {
+  let isPressed = false;
+
+  return {
+    onBlur: (event: FocusEvent) => {
+      if (isPressed) {
+        args.onPressEnd?.(event as unknown as KeyboardEvent);
+        isPressed = false;
+      }
+    },
+    onClick: (event: MouseEvent) => {
+      args.onPress?.(event);
+    },
+    onKeydown: (event: KeyboardEvent) => {
+      if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') {
+        return;
+      }
+
+      args.onPressStart?.(event);
+      isPressed = true;
+    },
+    onKeyup: (event: KeyboardEvent) => {
+      if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') {
+        return;
+      }
+
+      if (isPressed) {
+        args.onPressEnd?.(event);
+        isPressed = false;
+      }
+    },
+    onPointercancel: () => {
+      isPressed = false;
+    },
+    onPointerdown: (event: PointerEvent) => {
+      if (event.button !== 0) {
+        return;
+      }
+
+      args.onPressStart?.(event as unknown as MouseEvent);
+      isPressed = true;
+    },
+    onPointerleave: () => {
+      isPressed = false;
+    },
+    onPointerup: (event: PointerEvent) => {
+      if (event.button !== 0 || !isPressed) {
+        return;
+      }
+
+      args.onPressEnd?.(event as unknown as MouseEvent);
+      isPressed = false;
+    }
+  };
+}
 
 function renderAddIcon() {
   return h('svg', {
@@ -44,16 +115,19 @@ function wrapInProvider(content: ReturnType<typeof h>) {
 }
 
 function renderActionPair(args: ActionButtonStoryArgs, defaultChildren: unknown[], disabledChildren: unknown[]) {
+  let buttonProps = pickActionButtonProps(args);
+  let pressHandlers = createPressActionHandlers(args);
+
   return h('div', {
     style: {
       display: 'flex',
       gap: '8px'
     }
   }, [
-    h(ActionButton, {...args}, {
+    h(ActionButton, {...buttonProps, ...pressHandlers}, {
       default: () => defaultChildren
     }),
-    h(ActionButton, {...args, isDisabled: true}, {
+    h(ActionButton, {...buttonProps, isDisabled: true}, {
       default: () => disabledChildren
     })
   ]);
@@ -81,10 +155,22 @@ const meta = {
   title: 'Button/ActionButton',
   component: ActionButton,
   args: {
-    onClick: action('click')
+    onPress: action('press'),
+    onPressStart: action('pressstart'),
+    onPressEnd: action('pressend')
   },
   argTypes: {
-    onClick: {
+    onPress: {
+      table: {
+        disable: true
+      }
+    },
+    onPressStart: {
+      table: {
+        disable: true
+      }
+    },
+    onPressEnd: {
       table: {
         disable: true
       }
@@ -120,6 +206,9 @@ export const WithIcon: Story = {
 export const IconOnly: Story = {
   render: (args: ActionButtonStoryArgs) => ({
     render() {
+      let buttonProps = pickActionButtonProps(args);
+      let pressHandlers = createPressActionHandlers(args);
+
       return wrapInProvider(h('div', {
         style: {
           display: 'flex',
@@ -127,13 +216,14 @@ export const IconOnly: Story = {
         }
       }, [
         h(ActionButton, {
-          ...args,
+          ...buttonProps,
+          ...pressHandlers,
           'aria-label': 'Add button'
         }, {
           default: () => [renderAddIcon()]
         }),
         h(ActionButton, {
-          ...args,
+          ...buttonProps,
           isDisabled: true,
           'aria-label': 'Disabled add button'
         }, {
@@ -147,6 +237,14 @@ export const IconOnly: Story = {
 export const StaticWhite: Story = {
   args: {
     staticColor: 'white'
+  },
+  argTypes: {
+    staticColor: {
+      control: 'text',
+      table: {
+        disable: true
+      }
+    }
   },
   render: (args: ActionButtonStoryArgs) => ({
     render() {
@@ -163,6 +261,14 @@ export const StaticWhite: Story = {
 export const StaticBlack: Story = {
   args: {
     staticColor: 'black'
+  },
+  argTypes: {
+    staticColor: {
+      control: 'text',
+      table: {
+        disable: true
+      }
+    }
   },
   render: (args: ActionButtonStoryArgs) => ({
     render() {

@@ -550,23 +550,47 @@ describe('Vue migration primitives', () => {
     expect(wrapper.attributes('data-react-aria-pressable')).toBe('true');
   });
 
-  it('maps action button quiet/static classes and emits click', async () => {
+  it('maps action button DOM contract, classes, and keyboard focus-ring parity', async () => {
     let wrapper = mount(ActionButton, {
       props: {
         isQuiet: true,
         staticColor: 'white'
       },
       slots: {
-        default: () => [
-          h('span', {class: 'spectrum-ActionButton-label'}, 'Action')
-        ]
+        default: 'Action'
       }
     });
 
+    expect(wrapper.get('.spectrum-ActionButton-label').text()).toBe('Action');
     expect(wrapper.classes()).toContain('spectrum-ActionButton');
+    expect(wrapper.classes()).toContain('spectrum-BaseButton');
+    expect(wrapper.classes()).toContain('i18nFontFamily');
+    expect(wrapper.classes()).toContain('spectrum-FocusRing');
+    expect(wrapper.classes()).toContain('spectrum-FocusRing-ring');
     expect(wrapper.classes()).toContain('spectrum-ActionButton--quiet');
     expect(wrapper.classes()).toContain('spectrum-ActionButton--staticColor');
     expect(wrapper.classes()).toContain('spectrum-ActionButton--staticWhite');
+    expect(wrapper.attributes('data-react-aria-pressable')).toBe('true');
+    expect(wrapper.attributes('tabindex')).toBe('0');
+    expect(wrapper.attributes('data-vac')).toBeUndefined();
+
+    await wrapper.trigger('pointerdown', {button: 0});
+    expect(wrapper.classes()).toContain('is-active');
+    expect(wrapper.attributes('style')).toContain('user-select: none');
+    await wrapper.trigger('pointerup');
+    expect(wrapper.classes()).not.toContain('is-active');
+    expect(wrapper.attributes('style')).toBeUndefined();
+
+    window.dispatchEvent(new MouseEvent('mousedown'));
+    await wrapper.trigger('focus');
+    expect(wrapper.classes()).not.toContain('focus-ring');
+
+    await wrapper.trigger('keydown', {key: ' ', code: 'Space', keyCode: 32});
+    expect(wrapper.classes()).toContain('focus-ring');
+    expect(wrapper.classes()).toContain('is-active');
+    await wrapper.trigger('keyup', {key: ' ', code: 'Space', keyCode: 32});
+    expect(wrapper.classes()).not.toContain('is-active');
+    expect(wrapper.classes()).toContain('focus-ring');
 
     await wrapper.trigger('click');
     expect(wrapper.emitted('click')).toHaveLength(1);
