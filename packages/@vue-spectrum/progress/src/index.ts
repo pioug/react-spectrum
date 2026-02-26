@@ -1,5 +1,6 @@
 import '@adobe/spectrum-css-temp/components/barloader/vars.css';
 import '@adobe/spectrum-css-temp/components/circleloader/vars.css';
+import {useProgressBar} from '@vue-aria/progress';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, type CSSProperties, defineComponent, h, type PropType} from 'vue';
 import type {SpectrumProgressBarProps, SpectrumProgressCircleProps} from '@vue-types/progress';
@@ -15,14 +16,6 @@ export const ProgressBar = defineComponent({
   name: 'VueSpectrumProgressBar',
   inheritAttrs: false,
   props: {
-    ariaLabel: {
-      type: String,
-      default: ''
-    },
-    ariaLabelledby: {
-      type: String,
-      default: ''
-    },
     isIndeterminate: {
       type: Boolean,
       default: false
@@ -32,8 +25,8 @@ export const ProgressBar = defineComponent({
       default: undefined
     },
     label: {
-      type: String as PropType<string | null>,
-      default: ''
+      type: String as PropType<string | null | undefined>,
+      default: undefined
     },
     labelPosition: {
       type: String as PropType<'side' | 'top'>,
@@ -76,83 +69,94 @@ export const ProgressBar = defineComponent({
       default: undefined
     }
   },
-  setup(props, {attrs, slots}) {
+  setup(props, {attrs}) {
+    let resolvedValue = computed(() => clamp(props.value, props.minValue, props.maxValue));
+    let ariaLabel = computed(() => {
+      let value = attrs['aria-label'];
+      return typeof value === 'string' ? value : undefined;
+    });
+    let ariaLabelledby = computed(() => {
+      let value = attrs['aria-labelledby'];
+      return typeof value === 'string' ? value : undefined;
+    });
+    let progress = useProgressBar({
+      id: computed(() => typeof attrs.id === 'string' ? attrs.id : undefined),
+      label: computed(() => props.label ?? undefined),
+      value: resolvedValue,
+      minValue: computed(() => props.minValue),
+      maxValue: computed(() => props.maxValue),
+      isIndeterminate: computed(() => props.isIndeterminate),
+      valueLabel: computed(() => props.valueLabel),
+      formatOptions: computed(() => props.formatOptions),
+      'aria-label': ariaLabel,
+      'aria-labelledby': ariaLabelledby
+    });
     let showValueLabel = computed(() => props.showValueLabel ?? !!props.label);
-    let clampedValue = computed(() => clamp(props.value, props.minValue, props.maxValue));
-    let percentage = computed(() => {
-      if (props.maxValue <= props.minValue) {
-        return 0;
-      }
-      return ((clampedValue.value - props.minValue) / (props.maxValue - props.minValue)) * 100;
-    });
-    let formatter = computed(() => props.formatOptions ? new Intl.NumberFormat(undefined, props.formatOptions) : null);
-    let defaultValueLabel = computed(() => {
-      if (formatter.value) {
-        return formatter.value.format(clampedValue.value);
-      }
-
-      return `${Math.round(percentage.value)}%`;
-    });
-    let valueLabel = computed(() => {
+    let fillStyle = computed<CSSProperties>(() => {
       if (props.isIndeterminate) {
-        return '';
+        return {};
       }
 
-      return props.valueLabel ?? defaultValueLabel.value;
+      let percentage = (resolvedValue.value - props.minValue) / (props.maxValue - props.minValue);
+      return {
+        width: `${Math.round(percentage * 100)}%`
+      };
     });
 
-    return () => h('div', {
-      ...attrs,
-      class: [
-        classNames(
-          barStyles,
-          'spectrum-BarLoader',
-          {
-            'spectrum-BarLoader--indeterminate': props.isIndeterminate,
-            'spectrum-BarLoader--large': props.size === 'L',
-            'spectrum-BarLoader--sideLabel': props.labelPosition === 'side',
-            'spectrum-BarLoader--small': props.size === 'S',
-            'spectrum-BarLoader--overBackground': props.variant === 'overBackground',
-            'spectrum-BarLoader--staticWhite': props.staticColor === 'white',
-            'spectrum-BarLoader--staticBlack': props.staticColor === 'black'
-          }
-        ),
-        'vs-progress-bar',
-        attrs.class
-      ],
-      style: {
-        ...((attrs.style as Record<string, unknown>) ?? {}),
-        width: props.width ?? (attrs.style as Record<string, unknown> | undefined)?.width
-      },
-      role: 'progressbar',
-      'aria-label': props.ariaLabel || attrs['aria-label'],
-      'aria-labelledby': props.ariaLabelledby || attrs['aria-labelledby'],
-      'aria-valuemin': props.isIndeterminate ? undefined : props.minValue,
-      'aria-valuemax': props.isIndeterminate ? undefined : props.maxValue,
-      'aria-valuenow': props.isIndeterminate ? undefined : clampedValue.value,
-      'aria-valuetext': props.isIndeterminate ? undefined : valueLabel.value,
-      'data-vac': ''
-    }, [
-      props.label
-        ? h('span', {
-          class: classNames(barStyles, 'spectrum-BarLoader-label')
-        }, props.label)
-        : null,
-      showValueLabel.value
-        ? h('div', {
-          class: classNames(barStyles, 'spectrum-BarLoader-percentage')
-        }, valueLabel.value)
-        : null,
-      h('div', {
-        class: classNames(barStyles, 'spectrum-BarLoader-track')
+    return () => {
+      let progressBarProps = progress.progressBarProps.value;
+      let labelProps = progress.labelProps.value;
+
+      if (!props.label && !progressBarProps['aria-label'] && !progressBarProps['aria-labelledby'] && process.env.NODE_ENV !== 'production') {
+        console.warn('If you do not provide a visible label via children, you must specify an aria-label or aria-labelledby attribute for accessibility');
+      }
+
+      return h('div', {
+        ...progressBarProps,
+        class: [
+          classNames(
+            barStyles,
+            'spectrum-BarLoader',
+            {
+              'spectrum-BarLoader--small': props.size === 'S',
+              'spectrum-BarLoader--large': props.size === 'L',
+              'spectrum-BarLoader--indeterminate': props.isIndeterminate,
+              'spectrum-BarLoader--sideLabel': props.labelPosition === 'side',
+              'spectrum-BarLoader--overBackground': props.variant === 'overBackground',
+              'spectrum-BarLoader--staticWhite': props.staticColor === 'white',
+              'spectrum-BarLoader--staticBlack': props.staticColor === 'black'
+            }
+          ),
+          attrs.className,
+          attrs.class
+        ],
+        style: [
+          {minWidth: '-moz-fit-content'},
+          attrs.style,
+          props.width != null ? ({width: props.width} as CSSProperties) : undefined
+        ]
       }, [
+        props.label
+          ? h('span', {
+            ...labelProps,
+            class: classNames(barStyles, 'spectrum-BarLoader-label')
+          }, props.label)
+          : null,
+        showValueLabel.value
+          ? h('div', {
+            class: classNames(barStyles, 'spectrum-BarLoader-percentage')
+          }, progressBarProps['aria-valuetext'])
+          : null,
         h('div', {
-          class: classNames(barStyles, 'spectrum-BarLoader-fill'),
-          style: props.isIndeterminate ? undefined : ({width: `${Math.round(percentage.value)}%`} as CSSProperties)
-        })
-      ]),
-      slots.default ? h('span', {class: 'vs-progress-bar__content'}, slots.default()) : null
-    ]);
+          class: classNames(barStyles, 'spectrum-BarLoader-track')
+        }, [
+          h('div', {
+            class: classNames(barStyles, 'spectrum-BarLoader-fill'),
+            style: fillStyle.value
+          })
+        ])
+      ]);
+    };
   }
 });
 
@@ -163,14 +167,6 @@ export const ProgressCircle = defineComponent({
   name: 'VueSpectrumProgressCircle',
   inheritAttrs: false,
   props: {
-    ariaLabel: {
-      type: String,
-      default: ''
-    },
-    ariaLabelledby: {
-      type: String,
-      default: ''
-    },
     isIndeterminate: {
       type: Boolean,
       default: false
@@ -201,103 +197,110 @@ export const ProgressCircle = defineComponent({
     }
   },
   setup(props, {attrs}) {
-    let clampedValue = computed(() => clamp(props.value, props.minValue, props.maxValue));
-    let percentage = computed(() => {
-      if (props.isIndeterminate || props.maxValue <= props.minValue) {
-        return 0;
-      }
-
-      return ((clampedValue.value - props.minValue) / (props.maxValue - props.minValue)) * 100;
+    let resolvedValue = computed(() => clamp(props.value, props.minValue, props.maxValue));
+    let ariaLabel = computed(() => {
+      let value = attrs['aria-label'];
+      return typeof value === 'string' ? value : undefined;
+    });
+    let ariaLabelledby = computed(() => {
+      let value = attrs['aria-labelledby'];
+      return typeof value === 'string' ? value : undefined;
+    });
+    let progress = useProgressBar({
+      id: computed(() => typeof attrs.id === 'string' ? attrs.id : undefined),
+      value: resolvedValue,
+      minValue: computed(() => props.minValue),
+      maxValue: computed(() => props.maxValue),
+      isIndeterminate: computed(() => props.isIndeterminate),
+      'aria-label': ariaLabel,
+      'aria-labelledby': ariaLabelledby
     });
 
     let fillSubMask1Style = computed<CSSProperties>(() => {
+      let style: CSSProperties = {};
       if (props.isIndeterminate) {
-        return {};
+        return style;
       }
 
-      if (percentage.value > 0 && percentage.value <= 50) {
-        let angle = -180 + (percentage.value / 50) * 180;
-        return {
-          transform: `rotate(${angle}deg)`
-        };
+      let percentage = ((resolvedValue.value - props.minValue) / (props.maxValue - props.minValue)) * 100;
+      if (percentage > 0 && percentage <= 50) {
+        let angle = -180 + (percentage / 50) * 180;
+        style.transform = `rotate(${angle}deg)`;
+      }
+      if (percentage > 50) {
+        style.transform = 'rotate(0deg)';
       }
 
-      if (percentage.value > 50) {
-        return {
-          transform: 'rotate(0deg)'
-        };
-      }
-
-      return {
-        transform: 'rotate(-180deg)'
-      };
+      return style;
     });
 
     let fillSubMask2Style = computed<CSSProperties>(() => {
+      let style: CSSProperties = {};
       if (props.isIndeterminate) {
-        return {};
+        return style;
       }
 
-      if (percentage.value > 50) {
-        let angle = -180 + ((percentage.value - 50) / 50) * 180;
-        return {
-          transform: `rotate(${angle}deg)`
-        };
+      let percentage = ((resolvedValue.value - props.minValue) / (props.maxValue - props.minValue)) * 100;
+      if (percentage > 50) {
+        let angle = -180 + ((percentage - 50) / 50) * 180;
+        style.transform = `rotate(${angle}deg)`;
+      } else if (percentage > 0 && percentage <= 50) {
+        style.transform = 'rotate(-180deg)';
       }
 
-      return {
-        transform: 'rotate(-180deg)'
-      };
+      return style;
     });
 
-    return () => h('div', {
-      ...attrs,
-      class: [
-        classNames(
-          circleStyles,
-          'spectrum-CircleLoader',
-          {
-            'spectrum-CircleLoader--indeterminate': props.isIndeterminate,
-            'spectrum-CircleLoader--large': props.size === 'L',
-            'spectrum-CircleLoader--overBackground': props.variant === 'overBackground',
-            'spectrum-CircleLoader--small': props.size === 'S',
-            'spectrum-CircleLoader--staticBlack': props.staticColor === 'black',
-            'spectrum-CircleLoader--staticWhite': props.staticColor === 'white'
-          }
-        ),
-        'vs-progress-circle',
-        attrs.class
-      ],
-      role: 'progressbar',
-      'aria-label': props.ariaLabel || attrs['aria-label'],
-      'aria-labelledby': props.ariaLabelledby || attrs['aria-labelledby'],
-      'aria-valuemin': props.isIndeterminate ? undefined : props.minValue,
-      'aria-valuemax': props.isIndeterminate ? undefined : props.maxValue,
-      'aria-valuenow': props.isIndeterminate ? undefined : clampedValue.value,
-      'data-vac': ''
-    }, [
-      h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-track')}),
-      h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-fills')}, [
-        h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-fillMask1')}, [
-          h('div', {
-            class: classNames(circleStyles, 'spectrum-CircleLoader-fillSubMask1'),
-            'data-testid': 'fillSubMask1',
-            style: fillSubMask1Style.value
-          }, [
-            h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-fill')})
-          ])
-        ]),
-        h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-fillMask2')}, [
-          h('div', {
-            class: classNames(circleStyles, 'spectrum-CircleLoader-fillSubMask2'),
-            'data-testid': 'fillSubMask2',
-            style: fillSubMask2Style.value
-          }, [
-            h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-fill')})
+    return () => {
+      let progressBarProps = progress.progressBarProps.value;
+
+      if (!progressBarProps['aria-label'] && !progressBarProps['aria-labelledby'] && process.env.NODE_ENV !== 'production') {
+        console.warn('ProgressCircle requires an aria-label or aria-labelledby attribute for accessibility');
+      }
+
+      return h('div', {
+        ...progressBarProps,
+        class: [
+          classNames(
+            circleStyles,
+            'spectrum-CircleLoader',
+            {
+              'spectrum-CircleLoader--indeterminate': props.isIndeterminate,
+              'spectrum-CircleLoader--small': props.size === 'S',
+              'spectrum-CircleLoader--large': props.size === 'L',
+              'spectrum-CircleLoader--overBackground': props.variant === 'overBackground',
+              'spectrum-CircleLoader--staticWhite': props.staticColor === 'white',
+              'spectrum-CircleLoader--staticBlack': props.staticColor === 'black'
+            }
+          ),
+          attrs.className,
+          attrs.class
+        ],
+        style: attrs.style
+      }, [
+        h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-track')}),
+        h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-fills')}, [
+          h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-fillMask1')}, [
+            h('div', {
+              class: classNames(circleStyles, 'spectrum-CircleLoader-fillSubMask1'),
+              'data-testid': 'fillSubMask1',
+              style: fillSubMask1Style.value
+            }, [
+              h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-fill')})
+            ])
+          ]),
+          h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-fillMask2')}, [
+            h('div', {
+              class: classNames(circleStyles, 'spectrum-CircleLoader-fillSubMask2'),
+              'data-testid': 'fillSubMask2',
+              style: fillSubMask2Style.value
+            }, [
+              h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-fill')})
+            ])
           ])
         ])
-      ])
-    ]);
+      ]);
+    };
   }
 });
 

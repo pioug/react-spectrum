@@ -32,7 +32,7 @@
 1. Build auditable Storybook outputs before gap analysis (use current React Storybook build artifact and a fresh Vue Storybook build).
 2. Compare the exact same story id in both iframes (`iframe.html?id=<story-id>&viewMode=story`).
 3. If the component exists in multiple Storybook namespaces, run parity for each namespace before marking the component complete.
-4. Confirm story source structure, grouping, names, and featured scenario coverage match React.
+4. Confirm story source structure, grouping, names, and featured scenario coverage match React. Use built `index.json` entries as the source of truth for story labels/names because Storybook may normalize names differently than source `story.name` declarations.
 5. Compare story meta/controls contract for canonical stories: `args`, `argTypes`, control type/options/defaults, hidden/disabled rows, and story-level control/action parameter overrides.
 6. Capture baseline DOM snapshots for the canonical interactive node (tag, class, role, `data-*`, `aria-*`, `tabindex`, and other critical attributes).
 7. Always include native-button contract checks in the baseline and diffs: `disabled`, `aria-disabled`, `tabindex`, and `data-react-aria-pressable`.

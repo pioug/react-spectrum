@@ -1538,7 +1538,7 @@ describe('Vue migration primitives', () => {
     warn.mockRestore();
   });
 
-  it('maps progress bar and progress circle spectrum classes and aria wiring', () => {
+  it('maps progress bar DOM contract, value label contract, and warnings to react parity', () => {
     let bar = mount(ProgressBar, {
       props: {
         label: 'Loading assets',
@@ -1548,9 +1548,14 @@ describe('Vue migration primitives', () => {
       }
     });
 
+    expect(bar.element.tagName).toBe('DIV');
     expect(bar.classes()).toContain('spectrum-BarLoader');
+    expect(bar.classes()).not.toContain('vs-progress-bar');
+    expect(bar.attributes('data-vac')).toBeUndefined();
     expect(bar.attributes('role')).toBe('progressbar');
     expect(bar.attributes('aria-valuenow')).toBe('35');
+    expect((bar.element as HTMLElement).style.minWidth).toBe('-moz-fit-content');
+    expect(bar.get('.spectrum-BarLoader-label').text()).toBe('Loading assets');
 
     let formattedBar = mount(ProgressBar, {
       props: {
@@ -1588,16 +1593,44 @@ describe('Vue migration primitives', () => {
     expect(overBackground.classes()).toContain('spectrum-BarLoader--staticWhite');
     expect((overBackground.element as HTMLElement).style.width).toBe('300px');
 
-    let circle = mount(ProgressCircle, {
+    let noLabelWarn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    mount(ProgressBar, {
       props: {
-        value: 60,
-        ariaLabel: 'Upload progress'
+        value: 5
       }
     });
+    expect(noLabelWarn).toHaveBeenCalledWith('If you do not provide a visible label via children, you must specify an aria-label or aria-labelledby attribute for accessibility');
+    noLabelWarn.mockRestore();
+  });
+
+  it('maps progress circle DOM contract, transforms, and warnings to react parity', () => {
+    let circle = mount(ProgressCircle, {
+      props: {
+        value: 60
+      },
+      attrs: {
+        'aria-label': 'Upload progress'
+      }
+    });
+    expect(circle.element.tagName).toBe('DIV');
     expect(circle.classes()).toContain('spectrum-CircleLoader');
+    expect(circle.classes()).not.toContain('vs-progress-circle');
+    expect(circle.attributes('data-vac')).toBeUndefined();
     expect(circle.attributes('aria-label')).toBe('Upload progress');
+    expect(circle.attributes('role')).toBe('progressbar');
+    expect(circle.get('[data-testid=\"fillSubMask1\"]').attributes('style')).toContain('rotate(0deg)');
+    expect(circle.get('[data-testid=\"fillSubMask2\"]').attributes('style')).toContain('rotate(-144deg)');
     expect(circle.get('[data-testid=\"fillSubMask1\"]').exists()).toBe(true);
     expect(circle.get('[data-testid=\"fillSubMask2\"]').exists()).toBe(true);
+
+    let circleWarn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    mount(ProgressCircle, {
+      props: {
+        value: 60
+      }
+    });
+    expect(circleWarn).toHaveBeenCalledWith('ProgressCircle requires an aria-label or aria-labelledby attribute for accessibility');
+    circleWarn.mockRestore();
   });
 
   it('updates model value from textfield input', async () => {

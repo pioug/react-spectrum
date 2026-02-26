@@ -15,6 +15,8 @@ import labeledValueMeta from '../../../packages/@vue-spectrum/labeledvalue/stori
 import linkMeta from '../../../packages/@vue-spectrum/link/stories/Link.stories';
 import logicButtonMeta from '../../../packages/@vue-spectrum/button/stories/LogicButton.stories';
 import meterMeta from '../../../packages/@vue-spectrum/meter/stories/Meter.stories';
+import progressBarMeta from '../../../packages/@vue-spectrum/progress/stories/ProgressBar.stories';
+import progressCircleMeta from '../../../packages/@vue-spectrum/progress/stories/ProgressCircle.stories';
 import statusLightMeta from '../../../packages/@vue-spectrum/statuslight/stories/StatusLight.stories';
 import toggleButtonMeta from '../../../packages/@vue-spectrum/button/stories/ToggleButton.stories';
 import viewMeta from '../../../packages/@vue-spectrum/view/stories/View.stories';
@@ -218,6 +220,30 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.showValueLabel.control as string)).toBe('boolean');
     expect((argTypes.labelPosition.control as string)).toBe('radio');
     expect((argTypes.labelPosition.options as string[])).toEqual(['top', 'side']);
+  });
+
+  it('matches top-level ProgressBar controls contract with React stories', () => {
+    let args = (progressBarMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (progressBarMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual(['value']);
+    expect(args.value).toBe(32);
+    expect(Object.keys(argTypes)).toEqual(['value']);
+    expect((argTypes.value.control as {type?: string}).type).toBe('range');
+    expect((argTypes.value.control as {min?: number}).min).toBe(0);
+    expect((argTypes.value.control as {max?: number}).max).toBe(100);
+  });
+
+  it('matches top-level ProgressCircle controls contract with React stories', () => {
+    let args = (progressCircleMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (progressCircleMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual(['value']);
+    expect(args.value).toBe(32);
+    expect(Object.keys(argTypes)).toEqual(['value']);
+    expect((argTypes.value.control as {type?: string}).type).toBe('range');
+    expect((argTypes.value.control as {min?: number}).min).toBe(0);
+    expect((argTypes.value.control as {max?: number}).max).toBe(100);
   });
 
   it('matches top-level Button controls contract with React stories', () => {

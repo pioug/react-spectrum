@@ -1,22 +1,10 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {ProgressCircle} from '../src';
 
-function renderProgressCircle(args: Record<string, unknown>, wrapperStyle?: Record<string, string>) {
-  return {
-    components: {ProgressCircle},
-    setup() {
-      return {args, wrapperStyle};
-    },
-    template: wrapperStyle
-      ? '<div :style="wrapperStyle"><ProgressCircle v-bind="args" /></div>'
-      : '<ProgressCircle v-bind="args" />'
-  };
-}
-
 const grayedBoxStyle = {
   width: '100px',
   height: '100px',
-  backgroundColor: 'rgba(0, 0, 0, 0.4)',
+  backgroundColor: 'rgba(0,0,0,0.4)',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center'
@@ -32,13 +20,23 @@ const staticBlackBackgroundStyle = {
   backgroundColor: 'rgb(206, 247, 243)'
 };
 
+function render(props: Record<string, unknown> = {}, wrapperStyle?: Record<string, string>) {
+  return {
+    components: {ProgressCircle},
+    setup() {
+      return {props, wrapperStyle};
+    },
+    template: wrapperStyle
+      ? '<div :style="wrapperStyle"><ProgressCircle aria-label="Loading…" v-bind="props" /></div>'
+      : '<ProgressCircle aria-label="Loading…" v-bind="props" />'
+  };
+}
+
 const meta: Meta<typeof ProgressCircle> = {
   title: 'Progress/ProgressCircle',
   component: ProgressCircle,
-  args: {
-    value: 32,
-    ariaLabel: 'Loading…'
-  },
+  providerSwitcher: {status: 'positive'},
+  args: {value: 32},
   argTypes: {
     value: {
       control: {
@@ -46,101 +44,65 @@ const meta: Meta<typeof ProgressCircle> = {
         min: 0,
         max: 100
       }
-    },
-    size: {
-      control: 'radio',
-      options: ['S', 'M', 'L']
-    },
-    isIndeterminate: {
-      control: 'boolean'
-    },
-    staticColor: {
-      control: 'radio',
-      options: ['white', 'black']
-    },
-    variant: {
-      control: 'radio',
-      options: ['overBackground']
     }
   }
 };
 
 export default meta;
-
 type ProgressCircleStory = StoryObj<typeof meta>;
 
 export const Default: ProgressCircleStory = {
-  render: (args) => renderProgressCircle(args)
+  render: (args) => render(args as Record<string, unknown>)
 };
 
 export const Value50: ProgressCircleStory = {
-  args: {value: 50},
-  render: (args) => renderProgressCircle(args)
+  render: () => render({value: 50})
 };
 
 export const Value100: ProgressCircleStory = {
-  args: {value: 100},
-  render: (args) => renderProgressCircle(args)
+  render: () => render({value: 100})
 };
 
 export const SizeS: ProgressCircleStory = {
-  args: {size: 'S'},
-  render: (args) => renderProgressCircle(args)
+  render: (args) => render({...(args as Record<string, unknown>), size: 'S'})
 };
 
 export const SizeL: ProgressCircleStory = {
-  args: {size: 'L'},
-  render: (args) => renderProgressCircle(args)
+  render: (args) => render({...(args as Record<string, unknown>), size: 'L'})
 };
 
 export const VariantOverBackground: ProgressCircleStory = {
-  args: {variant: 'overBackground'},
-  render: (args) => renderProgressCircle(args, grayedBoxStyle)
+  render: (args) => render({...(args as Record<string, unknown>), variant: 'overBackground'}, grayedBoxStyle)
 };
 
 export const StaticColorWhite: ProgressCircleStory = {
-  args: {staticColor: 'white'},
-  render: (args) => renderProgressCircle(args, staticWhiteBackgroundStyle)
+  render: (args) => render({...(args as Record<string, unknown>), staticColor: 'white'}, staticWhiteBackgroundStyle)
 };
 
 export const StaticColorBlack: ProgressCircleStory = {
-  args: {staticColor: 'black'},
-  render: (args) => renderProgressCircle(args, staticBlackBackgroundStyle)
+  render: (args) => render({...(args as Record<string, unknown>), staticColor: 'black'}, staticBlackBackgroundStyle)
 };
 
 export const UsingRawValuesForMinValueMaxValueAndValue: ProgressCircleStory = {
-  args: {
+  render: () => render({
+    labelPosition: 'top',
     maxValue: 2147483648,
     value: 715827883
-  },
-  render: (args) => renderProgressCircle(args)
+  })
 };
 
 export const IsIndeterminateTrue: ProgressCircleStory = {
-  args: {isIndeterminate: true},
-  render: (args) => renderProgressCircle(args)
+  render: () => render({isIndeterminate: true})
 };
 
 export const IsIndeterminateTrueSizeS: ProgressCircleStory = {
-  args: {
-    isIndeterminate: true,
-    size: 'S'
-  },
-  render: (args) => renderProgressCircle(args)
+  render: () => render({isIndeterminate: true, size: 'S'})
 };
 
 export const IsIndeterminateTrueSizeL: ProgressCircleStory = {
-  args: {
-    isIndeterminate: true,
-    size: 'L'
-  },
-  render: (args) => renderProgressCircle(args)
+  render: () => render({isIndeterminate: true, size: 'L'})
 };
 
 export const IsIndeterminateTrueVariantOverBackground: ProgressCircleStory = {
-  args: {
-    isIndeterminate: true,
-    variant: 'overBackground'
-  },
-  render: (args) => renderProgressCircle(args, grayedBoxStyle)
+  render: () => render({isIndeterminate: true, variant: 'overBackground'}, grayedBoxStyle)
 };
