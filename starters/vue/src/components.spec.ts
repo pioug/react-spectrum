@@ -1236,10 +1236,21 @@ describe('Vue migration primitives', () => {
     });
 
     expect(wrapper.classes()).toContain('spectrum-Link--secondary');
+    expect(wrapper.attributes('tabindex')).toBe('0');
+    expect(wrapper.attributes('data-react-aria-pressable')).toBe('true');
+    expect(wrapper.attributes('role')).toBeUndefined();
     await wrapper.trigger('mouseenter');
     expect(wrapper.classes()).toContain('is-hovered');
-    await wrapper.trigger('focus');
-    expect(wrapper.classes()).toContain('focus-ring');
+
+    let noHref = mount(Link, {
+      slots: {
+        default: 'Standalone link'
+      }
+    });
+    expect(noHref.element.tagName).toBe('SPAN');
+    expect(noHref.attributes('role')).toBe('link');
+    expect(noHref.attributes('tabindex')).toBe('0');
+    expect(noHref.attributes('data-react-aria-pressable')).toBe('true');
 
     let childAnchor = mount(Link, {
       slots: {
@@ -1257,6 +1268,9 @@ describe('Vue migration primitives', () => {
     expect(childAnchor.classes()).toContain('spectrum-Link');
     expect(childAnchor.attributes('href')).toBe('//example.com');
     expect(childAnchor.attributes('target')).toBe('_self');
+    expect(childAnchor.attributes('tabindex')).toBe('0');
+    expect(childAnchor.attributes('data-react-aria-pressable')).toBe('true');
+    expect(childAnchor.attributes('role')).toBeUndefined();
 
     await childAnchor.trigger('click');
     let clickEvent = childAnchor.emitted('click')?.[0]?.[0] as MouseEvent;

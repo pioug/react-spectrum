@@ -56,9 +56,17 @@ export const Link = defineComponent({
     ));
 
     return () => {
+      let contentNodes = slots.default ? slots.default() : [];
+      let wrappedChild = !props.href && contentNodes.length === 1 && isVNode(contentNodes[0]) ? contentNodes[0] : null;
+      let wrappedChildType = wrappedChild && typeof wrappedChild.type === 'string' ? wrappedChild.type : null;
+      let isWrappedAnchor = wrappedChildType === 'a';
+      let tabIndex = attrs.tabindex ?? 0;
+
       let baseProps = {
-        class: [className.value, 'vs-link', attrs.class],
-        'data-vac': '',
+        class: [className.value, attrs.class],
+        'data-react-aria-pressable': 'true',
+        tabindex: tabIndex,
+        role: !props.href && !isWrappedAnchor ? 'link' : undefined,
         ...(props.href ? {href: props.href} : {}),
         ...(props.target ? {target: props.target} : {}),
         ...(props.rel ? {rel: props.rel} : {}),
@@ -89,7 +97,7 @@ export const Link = defineComponent({
           if (target instanceof HTMLElement && target.matches(':focus-visible')) {
             isFocusVisible.value = true;
           } else {
-            isFocusVisible.value = true;
+            isFocusVisible.value = false;
           }
           emit('focus', event);
         },
@@ -103,12 +111,8 @@ export const Link = defineComponent({
         }
       };
 
-      let contentNodes = slots.default ? slots.default() : [];
-      if (!props.href && contentNodes.length === 1 && isVNode(contentNodes[0])) {
-        let wrappedChild = contentNodes[0];
-        if (typeof wrappedChild.type === 'string') {
-          return cloneVNode(wrappedChild, mergeProps(wrappedChild.props ?? {}, attrs, baseProps));
-        }
+      if (wrappedChild && wrappedChildType) {
+        return cloneVNode(wrappedChild, mergeProps(wrappedChild.props ?? {}, attrs, baseProps));
       }
 
       let tag = props.href ? 'a' : 'span';

@@ -7,6 +7,7 @@ import dividerMeta from '../../../packages/@vue-spectrum/divider/stories/Divider
 import fileTriggerMeta from '../../../packages/@vue-spectrum/filetrigger/stories/FileTrigger.stories';
 import imageMeta from '../../../packages/@vue-spectrum/image/stories/Image.stories';
 import labeledValueMeta from '../../../packages/@vue-spectrum/labeledvalue/stories/LabeledValue.stories';
+import linkMeta from '../../../packages/@vue-spectrum/link/stories/Link.stories';
 import logicButtonMeta from '../../../packages/@vue-spectrum/button/stories/LogicButton.stories';
 import toggleButtonMeta from '../../../packages/@vue-spectrum/button/stories/ToggleButton.stories';
 import viewMeta from '../../../packages/@vue-spectrum/view/stories/View.stories';
@@ -94,6 +95,17 @@ describe('Vue Storybook controls parity', () => {
 
     expect((argTypes.width.control as {type?: string}).type).toBe('radio');
     expect((argTypes.width.options as unknown[])).toEqual([null, '300px', '600px']);
+  });
+
+  it('matches top-level Link controls contract with React stories', () => {
+    let args = (linkMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (linkMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes).sort()).toEqual(['onPress', 'onPressEnd', 'onPressStart']);
+    expect(argTypes.onPress.action).toBe('press');
+    expect(argTypes.onPressStart.action).toBe('pressstart');
+    expect(argTypes.onPressEnd.action).toBe('pressend');
   });
 
   it('matches top-level Button controls contract with React stories', () => {
