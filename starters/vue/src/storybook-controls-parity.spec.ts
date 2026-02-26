@@ -3,6 +3,7 @@ import avatarMeta from '../../../packages/@vue-spectrum/avatar/stories/Avatar.st
 import badgeMeta from '../../../packages/@vue-spectrum/badge/stories/Badge.stories';
 import actionButtonMeta from '../../../packages/@vue-spectrum/button/stories/ActionButton.stories';
 import buttonMeta from '../../../packages/@vue-spectrum/button/stories/Button.stories';
+import checkboxMeta from '../../../packages/@vue-spectrum/checkbox/stories/Checkbox.stories';
 import dividerMeta from '../../../packages/@vue-spectrum/divider/stories/Divider.stories';
 import fileTriggerMeta from '../../../packages/@vue-spectrum/filetrigger/stories/FileTrigger.stories';
 import formMeta from '../../../packages/@vue-spectrum/form/stories/Form.stories';
@@ -77,6 +78,35 @@ describe('Vue Storybook controls parity', () => {
 
     expect(Object.keys(args)).toEqual([]);
     expect(Object.keys(argTypes)).toEqual([]);
+  });
+
+  it('matches top-level Checkbox controls contract with React stories', () => {
+    let args = (checkboxMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (checkboxMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual(['onChange']);
+    expect(typeof args.onChange).toBe('function');
+
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'autoFocus',
+      'defaultSelected',
+      'isDisabled',
+      'isEmphasized',
+      'isIndeterminate',
+      'isInvalid',
+      'isReadOnly',
+      'isSelected',
+      'onChange'
+    ]);
+    expect((argTypes.onChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.defaultSelected.control as string)).toBe('boolean');
+    expect((argTypes.isSelected.control as string)).toBe('boolean');
+    expect((argTypes.isIndeterminate.control as string)).toBe('boolean');
+    expect((argTypes.isEmphasized.control as string)).toBe('boolean');
+    expect((argTypes.isDisabled.control as string)).toBe('boolean');
+    expect((argTypes.isReadOnly.control as string)).toBe('boolean');
+    expect((argTypes.autoFocus.control as string)).toBe('boolean');
+    expect((argTypes.isInvalid.control as string)).toBe('boolean');
   });
 
   it('matches top-level Divider controls contract with React stories', () => {

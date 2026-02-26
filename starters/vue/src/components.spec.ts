@@ -1832,9 +1832,25 @@ describe('Vue migration primitives', () => {
       }
     });
 
+    expect(wrapper.element.tagName).toBe('LABEL');
+    expect(wrapper.classes()).toContain('spectrum-Checkbox');
+    expect(wrapper.classes()).not.toContain('vs-checkbox');
+    expect(wrapper.attributes('data-vac')).toBeUndefined();
+
     await wrapper.get('input').setValue(true);
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([true]);
     expect(wrapper.emitted('change')?.[0]).toEqual([true]);
+    expect(wrapper.get('input').attributes('data-react-aria-pressable')).toBe('true');
+    expect(wrapper.get('input').attributes('tabindex')).toBe('0');
+
+    let noLabel = mount(Checkbox, {
+      attrs: {
+        'aria-label': 'checkbox with no visible label'
+      }
+    });
+    expect(noLabel.attributes('aria-label')).toBeUndefined();
+    expect(noLabel.get('input').attributes('aria-label')).toBe('checkbox with no visible label');
+    expect(noLabel.find('.spectrum-Checkbox-label').exists()).toBe(false);
   });
 
   it('maps checkbox checked, indeterminate, hovered, focus-ring, and invalid states', async () => {
@@ -1852,8 +1868,20 @@ describe('Vue migration primitives', () => {
 
     await wrapper.trigger('mouseenter');
     expect(wrapper.classes()).toContain('is-hovered');
-    await wrapper.get('input.vs-checkbox__input').trigger('focus');
+    let input = wrapper.get('input.spectrum-Checkbox-input');
+    let inputElement = input.element as HTMLInputElement;
+    let originalMatches = inputElement.matches.bind(inputElement);
+    let matchesSpy = vi.spyOn(inputElement, 'matches').mockImplementation((selector: string) => {
+      if (selector === ':focus-visible') {
+        return true;
+      }
+
+      return originalMatches(selector);
+    });
+    await input.trigger('focus');
+    matchesSpy.mockRestore();
     expect(wrapper.classes()).toContain('focus-ring');
+    expect(wrapper.find('.spectrum-Checkbox-box svg.spectrum-UIIcon-DashSmall').exists()).toBe(true);
 
     let disabledInvalid = mount(Checkbox, {
       props: {
