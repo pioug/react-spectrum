@@ -167,36 +167,7 @@ const RestoreFocusPreview = defineComponent({
 const meta: Meta<typeof ListBox> = {
   title: 'ListBox',
   component: ListBox,
-  excludeStories: ['FocusExample'],
-  args: {
-    ariaLabel: 'Listbox example',
-    items: [...defaultItems],
-    label: 'Example',
-    selectionMode: 'single'
-  },
-  argTypes: {
-    ariaLabel: {
-      control: 'text'
-    },
-    isDisabled: {
-      control: 'boolean'
-    },
-    items: {
-      table: {
-        disable: true
-      }
-    },
-    label: {
-      control: 'text'
-    },
-    modelValue: {
-      control: 'text'
-    },
-    selectionMode: {
-      control: 'select',
-      options: ['single', 'multiple', 'none']
-    }
-  }
+  excludeStories: ['FocusExample']
 };
 
 export default meta;
@@ -207,7 +178,14 @@ function renderListBox(baseArgs: Partial<ListBoxStoryArgs> = {}, wrapperStyle?: 
   return (args: ListBoxStoryArgs) => ({
     components: {ListBox},
     setup() {
-      let mergedArgs = computed<ListBoxStoryArgs>(() => ({...args, ...baseArgs}));
+      let mergedArgs = computed<ListBoxStoryArgs>(() => ({
+        ariaLabel: 'Listbox example',
+        items: [...defaultItems],
+        label: 'Example',
+        selectionMode: 'single',
+        ...baseArgs,
+        ...args
+      }));
       let selectedValue = ref<string | string[]>('');
 
       watch(mergedArgs, (nextArgs) => {
@@ -494,7 +472,18 @@ export const Links: Story = {
   render: renderListBox({
     items: ['https://adobe.com', 'https://react-spectrum.adobe.com', 'https://vuejs.org'],
     label: 'Links'
-  })
+  }),
+  args: {
+    selectionMode: 'none'
+  },
+  argTypes: {
+    selectionMode: {
+      control: {
+        type: 'radio',
+        options: ['none', 'single', 'multiple']
+      }
+    }
+  }
 };
 
 export const WithAvatars: Story = {
