@@ -1903,21 +1903,31 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let input = wrapper.get('input.vs-combobox__input');
-    expect(input.attributes('aria-haspopup')).toBe('listbox');
+    let input = wrapper.get('input.spectrum-Textfield-input.spectrum-InputGroup-input');
+    expect(input.attributes('aria-haspopup')).toBeUndefined();
     expect(input.attributes('aria-labelledby')).toBeTruthy();
-    expect(input.classes()).toContain('is-placeholder');
+    expect(input.attributes('autocomplete')).toBe('off');
+    expect(input.attributes('autocorrect')).toBe('off');
+    expect(input.attributes('spellcheck')).toBe('false');
+    expect(input.attributes('tabindex')).toBe('0');
 
-    await wrapper.get('.vs-combobox__control').trigger('mouseenter');
+    await wrapper.get('.spectrum-InputGroup').trigger('mouseenter');
     expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('is-hovered');
     await input.trigger('focus');
     expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('is-focused');
     expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('focus-ring');
 
-    await wrapper.get('button.vs-combobox__button').trigger('mousedown');
-    await wrapper.get('button.vs-combobox__button').trigger('click');
-    expect(wrapper.find('button.vs-combobox__button').classes()).toContain('is-active');
+    let trigger = wrapper.get('button.spectrum-FieldButton');
+    expect(trigger.attributes('tabindex')).toBe('-1');
+    expect(trigger.attributes('aria-label')).toBe('Show suggestions');
+    expect(trigger.attributes('data-react-aria-pressable')).toBe('true');
+
+    await trigger.trigger('mousedown');
+    await trigger.trigger('click');
+    expect(wrapper.find('button.spectrum-FieldButton').classes()).toContain('is-active');
     expect(wrapper.emitted('open')).toHaveLength(1);
+    expect(wrapper.find('[role="listbox"]').classes()).toContain('spectrum-Menu');
+    expect(wrapper.find('.spectrum-InputGroup-popover').exists()).toBe(true);
 
     let disabledInvalidWrapper = mount(ComboBox, {
       props: {
@@ -1942,6 +1952,31 @@ describe('Vue migration primitives', () => {
     expect(hiddenInput.exists()).toBe(true);
     expect(hiddenInput.attributes('hidden')).toBeDefined();
     expect(hiddenInput.element.getAttribute('value')).toBe('vue');
+  });
+
+  it('keeps combobox style wiring bound to Spectrum field/inputgroup/menu/popover styles', () => {
+    let source = readFileSync(
+      resolve(process.cwd(), '../../packages/@vue-spectrum/combobox/src/index.ts'),
+      'utf8'
+    );
+
+    expect(source).toContain("@adobe/spectrum-css-temp/components/fieldlabel/vars.css");
+    expect(source).toContain("@adobe/spectrum-css-temp/components/inputgroup/vars.css");
+    expect(source).toContain("@adobe/spectrum-css-temp/components/menu/vars.css");
+    expect(source).toContain("@adobe/spectrum-css-temp/components/popover/vars.css");
+    expect(source).toContain("@adobe/spectrum-css-temp/components/textfield/vars.css");
+    expect(source).toContain("./stateClassOverrides.css");
+    expect(source).toContain("'spectrum-InputGroup'");
+    expect(source).toContain("'spectrum-Textfield-wrapper'");
+    expect(source).toContain("'spectrum-Menu'");
+    expect(source).toContain("'spectrum-InputGroup-popover'");
+
+    let overrides = readFileSync(
+      resolve(process.cwd(), '../../packages/@vue-spectrum/combobox/src/stateClassOverrides.css'),
+      'utf8'
+    );
+    expect(overrides).toContain('.spectrum-InputGroup .spectrum-Textfield-input:focus-visible:not(:active)');
+    expect(overrides).toContain('box-shadow: none');
   });
 
   it('updates model value from checkbox change', async () => {

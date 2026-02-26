@@ -1,16 +1,21 @@
 import '@adobe/spectrum-css-temp/components/button/vars.css';
 import '@adobe/spectrum-css-temp/components/fieldlabel/vars.css';
 import '@adobe/spectrum-css-temp/components/inputgroup/vars.css';
+import '@adobe/spectrum-css-temp/components/menu/vars.css';
+import '@adobe/spectrum-css-temp/components/popover/vars.css';
 import '@adobe/spectrum-css-temp/components/search/vars.css';
 import '@adobe/spectrum-css-temp/components/textfield/vars.css';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, type PropType, ref, watch} from 'vue';
 import './combobox.css';
+import './stateClassOverrides.css';
 import {getEventTarget} from '@vue-aria/utils';
 
 const buttonStyles: {[key: string]: string} = {};
-const fieldLabelStyles: {[key: string]: string} = {};
+const fieldStyles: {[key: string]: string} = {};
 const inputGroupStyles: {[key: string]: string} = {};
+const menuStyles: {[key: string]: string} = {};
+const popoverStyles: {[key: string]: string} = {};
 const textfieldStyles: {[key: string]: string} = {};
 
 type OptionKey = string | number;
@@ -222,12 +227,12 @@ export const ComboBox = defineComponent({
     let selectedKeysRef = ref<Set<string>>(new Set());
 
     let inputId = computed(() => props.id ?? generatedId);
+    let buttonId = computed(() => `${inputId.value}-button`);
     let labelId = computed(() => props.label ? `${inputId.value}-label` : undefined);
     let listId = computed(() => `${inputId.value}-list`);
     let isDisabled = computed(() => props.isDisabled ?? props.disabled);
     let isInvalid = computed(() => (props.isInvalid || props.invalid || props.validationState === 'invalid') && !isDisabled.value);
     let isValid = computed(() => props.validationState === 'valid' && !isDisabled.value);
-    let isPlaceholder = computed(() => props.modelValue === '');
     let resolvedFormValue = computed<FormValue>(() => props.allowsCustomValue ? 'text' : props.formValue);
     let itemHeight = computed(() => Math.max(1, props.estimatedItemHeight));
     let maximumVisibleItems = computed(() => Math.max(1, props.visibleItemCount));
@@ -277,12 +282,22 @@ export const ComboBox = defineComponent({
         return fromAttrs;
       }
 
-      return props.label || undefined;
+      return undefined;
     });
+
+    let rootClassName = computed(() => classNames(
+      fieldStyles,
+      'spectrum-Field',
+      'spectrum-Field--positionTop'
+    ));
 
     let controlClassName = computed(() => classNames(
       inputGroupStyles,
       'spectrum-InputGroup',
+      'spectrum-FocusRing',
+      'spectrum-FocusRing-ring',
+      fieldStyles,
+      'spectrum-Field-field',
       {
         'spectrum-InputGroup--quiet': props.isQuiet,
         'spectrum-InputGroup--invalid': isInvalid.value,
@@ -290,28 +305,43 @@ export const ComboBox = defineComponent({
         'is-focused': isFocused.value,
         'is-hovered': isHovered.value && !isDisabled.value,
         'focus-ring': isFocusVisible.value
-      },
-      'mobile-combobox'
+      }
     ));
 
     let inputWrapperClassName = computed(() => classNames(
+      fieldStyles,
+      'spectrum-Field',
+      'spectrum-Field--positionTop',
+      inputGroupStyles,
+      'spectrum-InputGroup-field',
+      textfieldStyles,
+      'spectrum-Textfield-wrapper',
+      {
+        'spectrum-Textfield-wrapper--quiet': props.isQuiet
+      }
+    ));
+
+    let textfieldClassName = computed(() => classNames(
       textfieldStyles,
       'spectrum-Textfield',
+      'spectrum-FocusRing',
+      'spectrum-FocusRing-ring',
+      fieldStyles,
+      'spectrum-Field-field',
       {
         'spectrum-Textfield--invalid': isInvalid.value,
         'spectrum-Textfield--valid': isValid.value,
         'spectrum-Textfield--quiet': props.isQuiet
-      },
-      classNames(inputGroupStyles, 'spectrum-InputGroup-field')
+      }
     ));
 
     let inputClassName = computed(() => classNames(
       textfieldStyles,
       'spectrum-Textfield-input',
+      'i18nFontFamily',
       {
         'is-disabled': isDisabled.value,
-        'is-hovered': isHovered.value && !isDisabled.value,
-        'is-placeholder': isPlaceholder.value
+        'is-hovered': isHovered.value && !isDisabled.value
       },
       classNames(inputGroupStyles, 'spectrum-InputGroup-input')
     ));
@@ -319,6 +349,10 @@ export const ComboBox = defineComponent({
     let triggerClassName = computed(() => classNames(
       buttonStyles,
       'spectrum-FieldButton',
+      'spectrum-BaseButton',
+      'i18nFontFamily',
+      'spectrum-FocusRing',
+      'spectrum-FocusRing-ring',
       {
         'spectrum-FieldButton--quiet': props.isQuiet,
         'spectrum-FieldButton--invalid': isInvalid.value,
@@ -342,7 +376,6 @@ export const ComboBox = defineComponent({
       return normalizedOptions.value.filter((option) => option.textValue.toLocaleLowerCase().includes(query));
     });
 
-    let noResultsHidden = computed(() => !isExpanded.value || filteredOptions.value.length > 0);
     let virtualizationEnabled = computed(() => props.virtualized && filteredOptions.value.length > maximumVisibleItems.value);
     let startIndex = computed(() => {
       if (!virtualizationEnabled.value) {
@@ -470,6 +503,7 @@ export const ComboBox = defineComponent({
       isExpanded.value = false;
       activeOptionKey.value = null;
       hasEmittedLoadMore.value = false;
+      isHovered.value = false;
       emit('close');
     };
 
@@ -571,61 +605,95 @@ export const ComboBox = defineComponent({
     };
 
     let rootAttrs = computed(() => {
-      let next: Record<string, unknown> = {...attrs};
-      delete next.class;
+      let next: Record<string, unknown> = {};
+      for (let [key, value] of Object.entries(attrs)) {
+        if (
+          key === 'aria-label' ||
+          key === 'aria-labelledby' ||
+          key === 'autofocus' ||
+          key === 'class' ||
+          key === 'onBlur' ||
+          key === 'onFocus' ||
+          key === 'onInputChange' ||
+          key === 'onOpenChange' ||
+          key === 'onSelectionChange' ||
+          key === 'style'
+        ) {
+          continue;
+        }
+
+        next[key] = value;
+      }
       return next;
     });
 
-    let renderOption = (option: NormalizedOption, absoluteIndex: number) => h('div', {
-      id: `${inputId.value}-option-${option.id}`,
-      key: option.id,
-      role: 'option',
-      'aria-selected': selectedKeysRef.value.has(option.id) ? 'true' : 'false',
-      class: [
-        'vs-combobox__option',
-        'react-aria-ListBoxItem',
-        props.listBoxItemClassName,
-        {
-          'is-selected': selectedKeysRef.value.has(option.id),
-          'is-focused': activeOptionKey.value === option.id
+    let renderOption = (option: NormalizedOption, absoluteIndex: number) => {
+      let labelTextId = `${inputId.value}-option-${option.id}-label`;
+      return h('div', {
+        id: `${inputId.value}-option-${option.id}`,
+        key: option.id,
+        role: 'option',
+        'aria-labelledby': labelTextId,
+        'aria-posinset': String(absoluteIndex + 1),
+        'aria-selected': selectedKeysRef.value.has(option.id) ? 'true' : 'false',
+        'aria-setsize': String(filteredOptions.value.length),
+        'data-key': option.id,
+        'data-react-aria-pressable': 'true',
+        class: [
+          classNames(
+            menuStyles,
+            'spectrum-Menu-item',
+            {
+              'is-focused': activeOptionKey.value === option.id,
+              'is-selected': selectedKeysRef.value.has(option.id),
+              'is-selectable': true
+            }
+          ),
+          props.listBoxItemClassName
+        ],
+        style: virtualizationEnabled.value
+          ? {
+            boxSizing: 'border-box',
+            height: `${itemHeight.value}px`,
+            left: '0',
+            lineHeight: `${itemHeight.value}px`,
+            position: 'absolute',
+            right: '0',
+            top: `${absoluteIndex * itemHeight.value}px`
+          }
+          : undefined,
+        onMouseenter: () => {
+          activeOptionKey.value = option.id;
+        },
+        onMousedown: (event: MouseEvent) => {
+          handleOptionMouseDown(event, option);
         }
-      ],
-      style: virtualizationEnabled.value
-        ? {
-          boxSizing: 'border-box',
-          height: `${itemHeight.value}px`,
-          left: '0',
-          lineHeight: `${itemHeight.value}px`,
-          position: 'absolute',
-          right: '0',
-          top: `${absoluteIndex * itemHeight.value}px`
-        }
-        : undefined,
-      onMouseenter: () => {
-        activeOptionKey.value = option.id;
-      },
-      onMousedown: (event: MouseEvent) => {
-        handleOptionMouseDown(event, option);
-      }
-    }, option.textValue);
+      }, [
+        h('div', {
+          class: classNames(menuStyles, 'spectrum-Menu-itemGrid')
+        }, [
+          h('span', {
+            id: labelTextId,
+            role: 'none',
+            class: classNames(menuStyles, 'spectrum-Menu-itemLabel')
+          }, option.textValue)
+        ])
+      ]);
+    };
 
     return () => h('div', {
       ...rootAttrs.value,
-      class: ['react-aria-ComboBox', attrs.class],
-      'data-disabled': isDisabled.value || undefined,
-      'data-invalid': isInvalid.value || undefined,
-      'data-open': isExpanded.value || undefined,
-      'data-vac': ''
+      class: [rootClassName.value, attrs.class]
     }, [
       props.label
         ? h('label', {
           id: labelId.value,
           for: inputId.value,
-          class: [classNames(fieldLabelStyles, 'spectrum-FieldLabel'), 'vs-combobox__label']
+          class: classNames(fieldStyles, 'spectrum-FieldLabel')
         }, props.label)
         : null,
       h('div', {
-        class: [controlClassName.value, 'vs-combobox__control'],
+        class: controlClassName.value,
         onMouseenter: () => {
           if (isDisabled.value) {
             return;
@@ -634,114 +702,131 @@ export const ComboBox = defineComponent({
           isHovered.value = true;
         },
         onMouseleave: () => {
+          if (isExpanded.value) {
+            return;
+          }
+
           isHovered.value = false;
           isPressed.value = false;
         }
       }, [
         h('div', {
-          class: [inputWrapperClassName.value, 'vs-combobox__field']
+          class: inputWrapperClassName.value
         }, [
-          h('input', {
-            ref: inputRef,
-            id: inputId.value,
-            class: [inputClassName.value, 'vs-combobox__input', 'react-aria-Input'],
-            type: 'text',
-            value: props.modelValue,
-            placeholder: props.placeholder || undefined,
-            disabled: isDisabled.value,
-            readonly: props.isReadOnly || undefined,
-            name: resolvedFormValue.value === 'text' ? props.name : undefined,
-            form: props.form || undefined,
-            role: 'combobox',
-            'aria-activedescendant': isExpanded.value ? activeDescendant.value : undefined,
-            'aria-autocomplete': 'list',
-            'aria-controls': listId.value,
-            'aria-expanded': isExpanded.value ? 'true' : 'false',
-            'aria-haspopup': 'listbox',
-            'aria-invalid': isInvalid.value ? 'true' : undefined,
-            'aria-label': ariaLabel.value,
-            'aria-labelledby': ariaLabelledBy.value,
-            autofocus: props.autoFocus || attrs.autofocus || undefined,
-            onInput: (event: Event) => {
-              let target = event.currentTarget as HTMLInputElement | null;
-              emitValue(target?.value ?? '');
-              openMenu('first');
-              setActiveKey('first');
-            },
-            onFocus: (event: FocusEvent) => {
-              isFocused.value = true;
-              let target = getEventTarget(event);
-              if (target instanceof HTMLElement && target.matches(':focus-visible')) {
-                isFocusVisible.value = true;
-              } else {
-                isFocusVisible.value = true;
-              }
-              emit('focus', event);
-            },
-            onBlur: (event: FocusEvent) => {
-              isFocused.value = false;
-              isFocusVisible.value = false;
-              closeMenu();
-              emit('blur', event);
-            },
-            onKeydown: (event: KeyboardEvent) => {
-              if (event.key === 'ArrowDown') {
-                event.preventDefault();
-                if (!isExpanded.value) {
-                  openMenu('first');
+          h('div', {
+            class: textfieldClassName.value
+          }, [
+            h('input', {
+              ref: inputRef,
+              id: inputId.value,
+              class: inputClassName.value,
+              type: 'text',
+              value: props.modelValue,
+              placeholder: props.placeholder || undefined,
+              disabled: isDisabled.value,
+              readonly: props.isReadOnly || undefined,
+              name: resolvedFormValue.value === 'text' ? props.name : undefined,
+              form: props.form || undefined,
+              role: 'combobox',
+              tabindex: 0,
+              autocomplete: 'off',
+              autocorrect: 'off',
+              spellcheck: 'false',
+              'aria-activedescendant': isExpanded.value ? activeDescendant.value : undefined,
+              'aria-autocomplete': 'list',
+              'aria-controls': isExpanded.value ? listId.value : undefined,
+              'aria-expanded': isExpanded.value ? 'true' : 'false',
+              'aria-invalid': isInvalid.value ? 'true' : undefined,
+              'aria-label': ariaLabel.value,
+              'aria-labelledby': ariaLabelledBy.value,
+              autofocus: props.autoFocus || attrs.autofocus || undefined,
+              onInput: (event: Event) => {
+                let target = event.currentTarget as HTMLInputElement | null;
+                emitValue(target?.value ?? '');
+                openMenu('first');
+                setActiveKey('first');
+              },
+              onFocus: (event: FocusEvent) => {
+                isFocused.value = true;
+                let target = getEventTarget(event);
+                if (target instanceof HTMLElement && target.matches(':focus-visible')) {
+                  isFocusVisible.value = true;
                 } else {
-                  moveActiveOption(1);
+                  isFocusVisible.value = true;
                 }
-                return;
-              }
-
-              if (event.key === 'ArrowUp') {
-                event.preventDefault();
-                if (!isExpanded.value) {
-                  openMenu('last');
-                } else {
-                  moveActiveOption(-1);
-                }
-                return;
-              }
-
-              if (event.key === 'Enter' && isExpanded.value && activeOptionKey.value) {
-                let activeOption = filteredOptions.value.find((option) => option.id === activeOptionKey.value);
-                if (activeOption) {
-                  event.preventDefault();
-                  selectOption(activeOption);
-                }
-                return;
-              }
-
-              if (event.key === 'Escape') {
+                emit('focus', event);
+              },
+              onBlur: (event: FocusEvent) => {
+                isFocused.value = false;
+                isFocusVisible.value = false;
                 closeMenu();
+                emit('blur', event);
+              },
+              onKeydown: (event: KeyboardEvent) => {
+                if (event.key === 'ArrowDown') {
+                  event.preventDefault();
+                  if (!isExpanded.value) {
+                    openMenu('first');
+                  } else {
+                    moveActiveOption(1);
+                  }
+                  return;
+                }
+
+                if (event.key === 'ArrowUp') {
+                  event.preventDefault();
+                  if (!isExpanded.value) {
+                    openMenu('last');
+                  } else {
+                    moveActiveOption(-1);
+                  }
+                  return;
+                }
+
+                if (event.key === 'Enter' && isExpanded.value && activeOptionKey.value) {
+                  let activeOption = filteredOptions.value.find((option) => option.id === activeOptionKey.value);
+                  if (activeOption) {
+                    event.preventDefault();
+                    selectOption(activeOption);
+                  }
+                  return;
+                }
+
+                if (event.key === 'Escape') {
+                  closeMenu();
+                }
               }
-            }
-          }),
-          isInvalid.value
-            ? h('span', {
-              class: classNames(textfieldStyles, 'spectrum-Textfield-validationIcon'),
-              'aria-hidden': 'true'
-            }, '!')
-            : null
+            }),
+            isInvalid.value
+              ? h('span', {
+                class: classNames(textfieldStyles, 'spectrum-Textfield-validationIcon'),
+                'aria-hidden': 'true'
+              }, '!')
+              : null
+          ])
         ]),
         h('button', {
           ref: triggerRef,
-          class: [triggerClassName.value, 'vs-combobox__button', 'react-aria-Button'],
+          id: buttonId.value,
+          class: triggerClassName.value,
           type: 'button',
+          tabindex: -1,
           disabled: isDisabled.value,
-          'aria-controls': listId.value,
+          'data-react-aria-pressable': 'true',
+          'aria-controls': isExpanded.value ? listId.value : undefined,
           'aria-expanded': isExpanded.value ? 'true' : 'false',
           'aria-haspopup': 'listbox',
-          'aria-label': ariaLabel.value,
-          'aria-labelledby': ariaLabelledBy.value,
-          onMousedown: () => {
+          'aria-label': 'Show suggestions',
+          'aria-labelledby': [buttonId.value, labelId.value].filter((part): part is string => Boolean(part)).join(' ') || undefined,
+          onMousedown: (event: MouseEvent) => {
+            event.preventDefault();
             if (isDisabled.value || props.isReadOnly) {
               return;
             }
 
             isPressed.value = true;
+            isFocusVisible.value = false;
+            inputRef.value?.focus();
           },
           onMouseup: () => {
             isPressed.value = false;
@@ -761,21 +846,54 @@ export const ComboBox = defineComponent({
             }
           }
         }, [
-          h('span', {
-            class: classNames(inputGroupStyles, 'spectrum-Dropdown-chevron'),
-            'aria-hidden': 'true'
-          }, '\u25bc')
-        ]),
-        isExpanded.value
-          ? h('div', {
+          h('svg', {
+            class: [
+              classNames(inputGroupStyles, 'spectrum-Icon'),
+              classNames(inputGroupStyles, 'spectrum-Dropdown-chevron'),
+              'spectrum-UIIcon-ChevronDownMedium'
+            ],
+            viewBox: '0 0 10 6',
+            focusable: 'false',
+            'aria-hidden': 'true',
+            role: 'img'
+          }, [
+            h('path', {
+              d: 'M9.99 1.01A1 1 0 0 0 8.283.303L5 3.586 1.717.303A1 1 0 1 0 .303 1.717l3.99 3.98a1 1 0 0 0 1.414 0l3.99-3.98a.997.997 0 0 0 .293-.707z'
+            })
+          ])
+        ])
+      ]),
+      isExpanded.value
+        ? h('div', {
+          class: [
+            classNames(popoverStyles, 'spectrum-Popover'),
+            'spectrum-overlay',
+            'spectrum-Popover--bottom',
+            'is-open',
+            'spectrum-overlay--open',
+            'is-open--bottom',
+            'spectrum-overlay--bottom--open',
+            classNames(inputGroupStyles, 'spectrum-InputGroup-popover')
+          ],
+          role: 'presentation',
+          style: {
+            maxHeight: '410px',
+            minWidth: listBoxWidth.value ?? undefined,
+            width: listBoxWidth.value ?? undefined
+          }
+        }, [
+          h('div', {
             id: listId.value,
             ref: listBoxRef,
             role: 'listbox',
-            class: ['vs-combobox__listbox', 'react-aria-ListBox', props.listBoxClassName],
+            class: [classNames(menuStyles, 'spectrum-Menu'), props.listBoxClassName],
+            'aria-label': 'Suggestions',
+            'aria-labelledby': [listId.value, labelId.value].filter((part): part is string => Boolean(part)).join(' ') || undefined,
             'aria-multiselectable': props.selectionMode === 'multiple' ? 'true' : undefined,
             style: {
               maxHeight: maxListHeight.value,
-              overflow: 'auto',
+              overflow: 'hidden auto',
+              padding: '0px',
               position: 'relative',
               width: listBoxWidth.value ?? undefined
             },
@@ -790,8 +908,8 @@ export const ComboBox = defineComponent({
               }, visibleOptions.value.map((option, index) => renderOption(option, startIndex.value + index)))
             ]
             : visibleOptions.value.map((option, index) => renderOption(option, index)))
-          : null
-      ]),
+        ])
+        : null,
       hiddenFormValues.value.map((value, index) => h('input', {
         key: `${props.name ?? 'combobox'}-hidden-${index}`,
         type: 'hidden',
@@ -800,11 +918,6 @@ export const ComboBox = defineComponent({
         form: props.form || undefined,
         value
       })),
-      h('span', {
-        class: ['no-results', 'vs-combobox__empty'],
-        hidden: noResultsHidden.value,
-        'aria-hidden': noResultsHidden.value ? 'true' : 'false'
-      }, 'No results'),
       props.selectionMode === 'multiple' && selectedItems.value.length > 0
         ? h('div', {
           class: 'vs-combobox__selection',

@@ -1,0 +1,3 @@
+.spectrum-InputGroup .spectrum-Textfield-input:focus-visible:not(:active) {
+  box-shadow: none;
+}
