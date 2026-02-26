@@ -6,30 +6,7 @@ const SRC_URL_2 = 'https://i.imgur.com/xIe7Wlb.png';
 
 const meta: Meta<typeof Avatar> = {
   title: 'Avatar',
-  component: Avatar,
-  args: {
-    src: SRC_URL_1
-  },
-  argTypes: {
-    alt: {
-      control: 'text'
-    },
-    isDisabled: {
-      control: 'boolean'
-    },
-    label: {
-      control: 'text'
-    },
-    shape: {
-      control: 'text'
-    },
-    size: {
-      control: 'text'
-    },
-    src: {
-      control: 'text'
-    }
-  }
+  component: Avatar
 };
 
 export default meta;
@@ -37,18 +14,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: (args) => ({
-    components: {Avatar},
-    setup() {
-      return {args};
-    },
-    template: '<Avatar v-bind="args" />'
-  }),
+  args: {src: SRC_URL_1},
   name: 'default'
 };
 
 export const Disabled: Story = {
-  ...Default,
   args: {
     isDisabled: true,
     src: SRC_URL_1
@@ -57,7 +27,6 @@ export const Disabled: Story = {
 };
 
 export const WithAltText: Story = {
-  ...Default,
   args: {
     alt: 'Pensive',
     src: SRC_URL_2
@@ -66,7 +35,6 @@ export const WithAltText: Story = {
 };
 
 export const CustomSize: Story = {
-  ...Default,
   args: {
     ...WithAltText.args,
     size: 'avatar-size-700'

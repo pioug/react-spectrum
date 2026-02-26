@@ -1,8 +1,33 @@
 import '@adobe/spectrum-css-temp/components/avatar/vars.css';
-import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h} from 'vue';
+import {classNames, filterDOMProps} from '@vue-spectrum/utils';
+import {defineComponent, h} from 'vue';
 const styles: {[key: string]: string} = {};
 
+const DEFAULT_SIZE = 'avatar-size-100';
+const SIZE_RE = /^size-\d+/;
+const UNIT_RE = /(%|px|em|rem|vw|vh|auto|cm|mm|in|pt|pc|ex|ch|rem|vmin|vmax|fr)$/;
+const FUNC_RE = /^\s*\w+\(/;
+const SPECTRUM_VARIABLE_RE = /(static-)?size-\d+|single-line-(height|width)/g;
+
+function toDimensionValue(value: string | number | null | undefined): string | undefined {
+  if (typeof value === 'number') {
+    return `${value}px`;
+  }
+
+  if (!value) {
+    return undefined;
+  }
+
+  if (UNIT_RE.test(value)) {
+    return value;
+  }
+
+  if (FUNC_RE.test(value)) {
+    return value.replace(SPECTRUM_VARIABLE_RE, 'var(--spectrum-global-dimension-$&, var(--spectrum-alias-$&))');
+  }
+
+  return `var(--spectrum-global-dimension-${value}, var(--spectrum-alias-${value}))`;
+}
 
 export const Avatar = defineComponent({
   name: 'VueAvatar',
@@ -16,17 +41,9 @@ export const Avatar = defineComponent({
       type: Boolean,
       default: false
     },
-    label: {
-      type: String,
-      default: ''
-    },
-    shape: {
-      type: String as () => 'circle' | 'square',
-      default: 'circle'
-    },
     size: {
-      type: String as () => 's' | 'm' | 'l',
-      default: 'm'
+      type: [String, Number],
+      default: DEFAULT_SIZE
     },
     src: {
       type: String,
@@ -34,37 +51,26 @@ export const Avatar = defineComponent({
     }
   },
   setup(props, {attrs}) {
-    let fallbackLabel = computed(() => {
-      if (!props.label) {
-        return '?';
-      }
+    return () => {
+      let domProps = filterDOMProps(attrs as Record<string, unknown>, {labelable: true}) as Record<string, unknown>;
+      let size = props.size;
+      let sizeValue = typeof size !== 'number' && (SIZE_RE.test(String(size)) || !isNaN(size as number))
+        ? toDimensionValue(DEFAULT_SIZE)
+        : toDimensionValue(size || DEFAULT_SIZE);
+      let style = [domProps.style, sizeValue ? {height: sizeValue, width: sizeValue} : undefined];
 
-      return props.label.trim().slice(0, 2).toUpperCase();
-    });
-
-    return () => h('span', {
-      ...attrs,
-      class: [
-        classNames(styles, 'spectrum-Avatar', {'is-disabled': props.isDisabled}),
-        'vs-avatar',
-        `vs-avatar--${props.size}`,
-        `vs-avatar--${props.shape}`,
-        attrs.class
-      ],
-      'data-vac': ''
-    }, [
-      props.src
-        ? h('img', {
-          class: 'vs-avatar__image',
-          src: props.src,
-          alt: props.alt || props.label || 'Avatar',
-          'aria-hidden': props.isDisabled ? 'true' : undefined
-        })
-        : h('span', {
-          class: 'vs-avatar__fallback',
-          'aria-hidden': 'true'
-        }, fallbackLabel.value)
-    ]);
+      return h('img', {
+        ...domProps,
+        alt: props.alt,
+        class: [
+          classNames(styles, 'spectrum-Avatar', {'is-disabled': props.isDisabled}),
+          domProps.class,
+          domProps.className
+        ],
+        src: props.src,
+        style
+      });
+    };
   }
 });
 

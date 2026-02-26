@@ -1,10 +1,21 @@
 import {describe, expect, it} from 'vitest';
+import avatarMeta from '../../../packages/@vue-spectrum/avatar/stories/Avatar.stories';
 import actionButtonMeta from '../../../packages/@vue-spectrum/button/stories/ActionButton.stories';
 import buttonMeta from '../../../packages/@vue-spectrum/button/stories/Button.stories';
 import logicButtonMeta from '../../../packages/@vue-spectrum/button/stories/LogicButton.stories';
 import toggleButtonMeta from '../../../packages/@vue-spectrum/button/stories/ToggleButton.stories';
 
 describe('Vue Storybook controls parity', () => {
+  it('matches top-level Avatar controls contract with React stories', () => {
+    let args = (avatarMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (avatarMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes)).toEqual([]);
+    expect(argTypes).not.toHaveProperty('label');
+    expect(argTypes).not.toHaveProperty('shape');
+  });
+
   it('matches top-level Button controls contract with React stories', () => {
     let args = (buttonMeta as {args?: Record<string, unknown>}).args ?? {};
     let argTypes = (buttonMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};

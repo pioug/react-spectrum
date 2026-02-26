@@ -55,25 +55,38 @@ import {theme as expressTheme} from '@vue-spectrum/theme-express';
 import {theme as lightTheme} from '@vue-spectrum/theme-light';
 
 describe('Vue migration primitives', () => {
-  it('renders avatar fallback initials', () => {
+  it('maps avatar DOM contract and size semantics to react parity', () => {
     let wrapper = mount(Avatar, {
       props: {
-        label: 'Vue Spectrum',
-        size: 'l'
+        src: 'https://example.com/avatar.png'
       }
     });
 
-    expect(wrapper.text()).toContain('VU');
-    expect(wrapper.classes()).toContain('vs-avatar--l');
+    expect(wrapper.element.tagName).toBe('IMG');
+    expect(wrapper.classes()).toContain('spectrum-Avatar');
+    expect(wrapper.attributes('src')).toBe('https://example.com/avatar.png');
+    expect(wrapper.attributes('alt')).toBe('');
+    expect(wrapper.attributes('style')).toContain('height: var(--spectrum-global-dimension-avatar-size-100');
+    expect(wrapper.attributes('style')).toContain('width: var(--spectrum-global-dimension-avatar-size-100');
 
     let disabled = mount(Avatar, {
       props: {
-        label: 'Disabled',
+        src: 'https://example.com/avatar.png',
         isDisabled: true
       }
     });
+
     expect(disabled.classes()).toContain('spectrum-Avatar');
     expect(disabled.classes()).toContain('is-disabled');
+
+    let sized = mount(Avatar, {
+      props: {
+        src: 'https://example.com/avatar.png',
+        size: 'avatar-size-700'
+      }
+    });
+    expect(sized.attributes('style')).toContain('height: var(--spectrum-global-dimension-avatar-size-700');
+    expect(sized.attributes('style')).toContain('width: var(--spectrum-global-dimension-avatar-size-700');
   });
 
   it('renders badge variants and slot content', () => {
