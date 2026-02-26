@@ -1772,7 +1772,7 @@ describe('Vue migration primitives', () => {
 
     expect(wrapper.find('.spectrum-Search').classes()).toContain('is-quiet');
     expect(wrapper.get('[data-testid="searchicon"]').exists()).toBe(true);
-    await wrapper.get('button.vs-search-field__clear').trigger('click');
+    await wrapper.get('button.spectrum-ClearButton').trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['']);
     expect(wrapper.emitted('clear')).toHaveLength(1);
 

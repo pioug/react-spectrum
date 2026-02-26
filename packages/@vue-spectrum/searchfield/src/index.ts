@@ -82,6 +82,7 @@ export const SearchField = defineComponent({
     let isHovered = ref(false);
 
     let inputId = computed(() => props.id ?? generatedId);
+    let labelId = computed(() => props.label ? `${inputId.value}-label` : undefined);
     let isDisabled = computed(() => props.isDisabled ?? props.disabled);
     let isInvalid = computed(() => (props.isInvalid || props.invalid || props.validationState === 'invalid') && !isDisabled.value);
     let isValid = computed(() => props.validationState === 'valid' && !isDisabled.value);
@@ -101,7 +102,9 @@ export const SearchField = defineComponent({
 
     let inputClassName = computed(() => classNames(
       searchStyles,
+      'i18nFontFamily',
       'spectrum-Textfield-input',
+      'spectrum-Textfield-inputIcon',
       'spectrum-Search-input',
       {
         'is-hovered': isHovered.value && !isDisabled.value
@@ -114,7 +117,16 @@ export const SearchField = defineComponent({
         return fromAttrs;
       }
 
-      return props.label || undefined;
+      return undefined;
+    });
+
+    let ariaLabelledBy = computed(() => {
+      let fromAttrs = attrs['aria-labelledby'];
+      if (typeof fromAttrs === 'string' && fromAttrs.length > 0) {
+        return fromAttrs;
+      }
+
+      return labelId.value;
     });
 
     let emitValue = (value: string) => {
@@ -124,29 +136,34 @@ export const SearchField = defineComponent({
 
     return () => h('label', {
       ...attrs,
-      class: ['vs-search-field', attrs.class],
-      'data-vac': ''
+      class: attrs.class
     }, [
-      props.label ? h('span', {class: 'vs-search-field__label'}, props.label) : null,
+      props.label
+        ? h('span', {
+          id: labelId.value
+        }, props.label)
+        : null,
       h('div', {
-        class: [rootClassName.value, 'vs-search-field__control']
+        class: rootClassName.value
       }, [
         h('span', {
-          class: 'vs-search-field__icon',
+          class: classNames(searchStyles, 'spectrum-Icon', 'spectrum-Search-icon'),
           'aria-hidden': 'true',
           'data-testid': 'searchicon'
         }, '\ud83d\udd0d'),
         h('input', {
           id: inputId.value,
-          class: [inputClassName.value, 'vs-search-field__input'],
+          class: inputClassName.value,
           type: 'search',
           value: props.modelValue,
           placeholder: props.placeholder || undefined,
           disabled: isDisabled.value,
           readonly: props.isReadOnly || undefined,
           required: props.required || undefined,
+          tabindex: isDisabled.value ? undefined : attrs.tabindex ?? 0,
           'aria-invalid': isInvalid.value ? 'true' : undefined,
           'aria-label': ariaLabel.value,
+          'aria-labelledby': ariaLabelledBy.value,
           'aria-describedby': descriptionId.value,
           autofocus: props.autoFocus || attrs.autofocus || undefined,
           onInput: (event: Event) => {
@@ -171,7 +188,7 @@ export const SearchField = defineComponent({
         }),
         props.modelValue !== '' && !isDisabled.value && !props.isReadOnly
           ? h('button', {
-            class: [classNames(searchStyles, 'spectrum-ClearButton'), 'vs-search-field__clear'],
+            class: classNames(searchStyles, 'spectrum-ClearButton'),
             type: 'button',
             'aria-label': 'Clear search',
             onClick: () => {
@@ -184,7 +201,7 @@ export const SearchField = defineComponent({
       props.description
         ? h('span', {
           id: descriptionId.value,
-          class: 'vs-search-field__description'
+          class: classNames(searchStyles, 'spectrum-Field-description')
         }, props.description)
         : null
     ]);
