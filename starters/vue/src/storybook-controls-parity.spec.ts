@@ -26,6 +26,7 @@ import progressCircleMeta from '../../../packages/@vue-spectrum/progress/stories
 import radioGroupMeta from '../../../packages/@vue-spectrum/radio/stories/Radio.stories';
 import rangeSliderMeta from '../../../packages/@vue-spectrum/slider/stories/RangeSlider.stories';
 import searchFieldMeta from '../../../packages/@vue-spectrum/searchfield/stories/SearchField.stories';
+import searchAutocompleteMeta from '../../../packages/@vue-spectrum/autocomplete/stories/SearchAutocomplete.stories';
 import sliderMeta from '../../../packages/@vue-spectrum/slider/stories/Slider.stories';
 import statusLightMeta from '../../../packages/@vue-spectrum/statuslight/stories/StatusLight.stories';
 import switchMeta from '../../../packages/@vue-spectrum/switch/stories/Switch.stories';
@@ -427,6 +428,107 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.shouldFlip.control as {type?: string}).type).toBe('boolean');
     expect((argTypes.isKeyboardDismissDisabled.control as {type?: string}).type).toBe('boolean');
     expect((argTypes.containerPadding.control as {type?: string}).type).toBe('number');
+  });
+
+  it('matches top-level SearchAutocomplete controls contract with React stories', () => {
+    let args = (searchAutocompleteMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (searchAutocompleteMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual([
+      'label',
+      'onBlur',
+      'onClear',
+      'onFocus',
+      'onInputChange',
+      'onOpenChange',
+      'onSelectionChange',
+      'onSubmit'
+    ]);
+    expect(args.label).toBe('Search with Autocomplete');
+    expect(typeof args.onOpenChange).toBe('function');
+    expect(typeof args.onInputChange).toBe('function');
+    expect(typeof args.onSelectionChange).toBe('function');
+    expect(typeof args.onBlur).toBe('function');
+    expect(typeof args.onFocus).toBe('function');
+    expect(typeof args.onSubmit).toBe('function');
+    expect(typeof args.onClear).toBe('function');
+
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'align',
+      'aria-label',
+      'autoFocus',
+      'contextualHelp',
+      'defaultInputValue',
+      'defaultItems',
+      'defaultSelectedKey',
+      'description',
+      'direction',
+      'disabledKeys',
+      'errorMessage',
+      'inputValue',
+      'isDisabled',
+      'isQuiet',
+      'isReadOnly',
+      'isRequired',
+      'label',
+      'labelAlign',
+      'labelPosition',
+      'loadingState',
+      'menuTrigger',
+      'menuWidth',
+      'necessityIndicator',
+      'onBlur',
+      'onFocus',
+      'onInputChange',
+      'onOpenChange',
+      'onSelectionChange',
+      'selectedKey',
+      'validationState',
+      'width'
+    ]);
+
+    expect((argTypes.defaultItems.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.contextualHelp.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onOpenChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.disabledKeys.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.inputValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.defaultInputValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.defaultSelectedKey.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.selectedKey.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onInputChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onSelectionChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onBlur.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onFocus.table as {disable?: boolean}).disable).toBe(true);
+
+    expect((argTypes.label.control as string)).toBe('text');
+    expect((argTypes['aria-label'].control as string)).toBe('text');
+    expect((argTypes.isDisabled.control as string)).toBe('boolean');
+    expect((argTypes.isQuiet.control as string)).toBe('boolean');
+    expect((argTypes.isReadOnly.control as string)).toBe('boolean');
+    expect((argTypes.autoFocus.control as string)).toBe('boolean');
+    expect((argTypes.isRequired.control as string)).toBe('boolean');
+    expect((argTypes.necessityIndicator.control as string)).toBe('select');
+    expect((argTypes.necessityIndicator.options as string[])).toEqual(['icon', 'label']);
+    expect((argTypes.labelAlign.control as string)).toBe('select');
+    expect((argTypes.labelAlign.options as string[])).toEqual(['end', 'start']);
+    expect((argTypes.labelPosition.control as string)).toBe('select');
+    expect((argTypes.labelPosition.options as string[])).toEqual(['top', 'side']);
+    expect((argTypes.loadingState.control as string)).toBe('select');
+    expect((argTypes.loadingState.options as string[])).toEqual(['idle', 'loading', 'loadingMore', 'filtering']);
+    expect((argTypes.validationState.control as string)).toBe('select');
+    expect((argTypes.validationState.options as unknown[])).toEqual([null, 'valid', 'invalid']);
+    expect((argTypes.description.control as string)).toBe('text');
+    expect((argTypes.errorMessage.control as string)).toBe('text');
+    expect((argTypes.menuTrigger.control as string)).toBe('select');
+    expect((argTypes.menuTrigger.options as string[])).toEqual(['focus', 'manual']);
+    expect((argTypes.direction.control as string)).toBe('radio');
+    expect((argTypes.direction.options as string[])).toEqual(['top', 'bottom']);
+    expect((argTypes.align.control as string)).toBe('radio');
+    expect((argTypes.align.options as string[])).toEqual(['start', 'end']);
+    expect((argTypes.width.control as {type?: string}).type).toBe('radio');
+    expect((argTypes.width.control as {options?: unknown[]}).options).toEqual([null, '100px', '480px', 'size-4600']);
+    expect((argTypes.menuWidth.control as {type?: string}).type).toBe('radio');
+    expect((argTypes.menuWidth.control as {options?: unknown[]}).options).toEqual([null, '100px', '480px', 'size-4600']);
   });
 
   it('matches top-level Modal controls contract with React stories', () => {

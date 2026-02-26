@@ -1,3 +1,4 @@
+import {action} from '@storybook/addon-actions';
 import {onMounted, ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {SearchAutocomplete} from '../src';
@@ -32,26 +33,82 @@ const meta: Meta<typeof SearchAutocomplete> = {
   component: SearchAutocomplete,
   args: {
     label: 'Search with Autocomplete',
-    options: BASE_OPTIONS,
-    placeholder: 'Search discipline'
+    onOpenChange: action('onOpenChange'),
+    onInputChange: action('onInputChange'),
+    onSelectionChange: action('onSelectionChange'),
+    onBlur: action('onBlur'),
+    onFocus: action('onFocus'),
+    onSubmit: action('onSubmit'),
+    onClear: action('onClear')
   },
   argTypes: {
-    autoFocus: {
-      control: 'boolean'
+    defaultItems: {
+      table: {
+        disable: true
+      }
     },
-    disabled: {
-      control: 'boolean'
+    contextualHelp: {
+      table: {
+        disable: true
+      }
     },
-    id: {
+    onOpenChange: {
+      table: {
+        disable: true
+      }
+    },
+    disabledKeys: {
+      table: {
+        disable: true
+      }
+    },
+    inputValue: {
+      table: {
+        disable: true
+      }
+    },
+    defaultInputValue: {
+      table: {
+        disable: true
+      }
+    },
+    defaultSelectedKey: {
+      table: {
+        disable: true
+      }
+    },
+    selectedKey: {
+      table: {
+        disable: true
+      }
+    },
+    onInputChange: {
+      table: {
+        disable: true
+      }
+    },
+    onSelectionChange: {
+      table: {
+        disable: true
+      }
+    },
+    onBlur: {
+      table: {
+        disable: true
+      }
+    },
+    onFocus: {
+      table: {
+        disable: true
+      }
+    },
+    label: {
       control: 'text'
     },
-    invalid: {
-      control: 'boolean'
+    'aria-label': {
+      control: 'text'
     },
     isDisabled: {
-      control: 'boolean'
-    },
-    isInvalid: {
       control: 'boolean'
     },
     isQuiet: {
@@ -60,23 +117,61 @@ const meta: Meta<typeof SearchAutocomplete> = {
     isReadOnly: {
       control: 'boolean'
     },
-    label: {
-      control: 'text'
+    autoFocus: {
+      control: 'boolean'
     },
-    modelValue: {
-      control: 'text'
+    isRequired: {
+      control: 'boolean'
     },
-    options: {
-      table: {
-        disable: true
-      }
+    necessityIndicator: {
+      control: 'select',
+      options: ['icon', 'label']
     },
-    placeholder: {
-      control: 'text'
+    labelAlign: {
+      control: 'select',
+      options: ['end', 'start']
+    },
+    labelPosition: {
+      control: 'select',
+      options: ['top', 'side']
+    },
+    loadingState: {
+      control: 'select',
+      options: ['idle', 'loading', 'loadingMore', 'filtering']
     },
     validationState: {
       control: 'select',
-      options: ['valid', 'invalid']
+      options: [null, 'valid', 'invalid']
+    },
+    description: {
+      control: 'text'
+    },
+    errorMessage: {
+      control: 'text'
+    },
+    menuTrigger: {
+      control: 'select',
+      options: ['focus', 'manual']
+    },
+    direction: {
+      control: 'radio',
+      options: ['top', 'bottom']
+    },
+    align: {
+      control: 'radio',
+      options: ['start', 'end']
+    },
+    width: {
+      control: {
+        type: 'radio',
+        options: [null, '100px', '480px', 'size-4600']
+      }
+    },
+    menuWidth: {
+      control: {
+        type: 'radio',
+        options: [null, '100px', '480px', 'size-4600']
+      }
     }
   }
 };
