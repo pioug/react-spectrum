@@ -42,6 +42,11 @@ function renderResizable(contentTemplate: string) {
 const meta: Meta<typeof TagGroup> = {
   title: 'TagGroup',
   component: TagGroup,
+  parameters: {
+    actions: {
+      argTypesRegex: '^$'
+    }
+  },
   excludeStories: [
     'baseItems',
     'manyItems',
@@ -49,16 +54,8 @@ const meta: Meta<typeof TagGroup> = {
     'renderTagGroup',
     'renderOnRemove'
   ],
-  args: {
-    items: baseItems
-  },
   argTypes: {
     items: {
-      table: {
-        disable: true
-      }
-    },
-    modelValue: {
       table: {
         disable: true
       }
@@ -72,6 +69,38 @@ const meta: Meta<typeof TagGroup> = {
       table: {
         disable: true
       }
+    },
+    maxRows: {
+      type: 'number'
+    },
+    contextualHelp: {
+      table: {
+        disable: true
+      }
+    },
+    isRequired: {
+      control: 'boolean'
+    },
+    necessityIndicator: {
+      control: 'select',
+      options: ['icon', 'label']
+    },
+    labelPosition: {
+      control: 'select',
+      options: ['top', 'side']
+    },
+    labelAlign: {
+      control: 'select',
+      options: ['start', 'end']
+    },
+    isInvalid: {
+      control: 'boolean'
+    },
+    description: {
+      control: 'text'
+    },
+    errorMessage: {
+      control: 'text'
     }
   }
 };
@@ -80,7 +109,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function renderTagGroup(baseArgs: Partial<TagGroupStoryArgs> = {}, wrapperTemplate?: string) {
+function renderTagGroup(baseArgs: Partial<TagGroupStoryArgs> = {items: baseItems}, wrapperTemplate?: string) {
   return (args: TagGroupStoryArgs) => ({
     components: {TagGroup},
     setup() {

@@ -35,55 +35,7 @@ const NESTED_ITEMS: MenuItem[] = [
 
 const meta: Meta<typeof ActionMenu> = {
   title: 'ActionMenu',
-  component: ActionMenu,
-  args: {
-    label: 'Actions',
-    items: DEFAULT_ITEMS,
-    selectionMode: 'none'
-  },
-  argTypes: {
-    ariaLabel: {
-      control: 'text'
-    },
-    ariaLabelledby: {
-      control: 'text'
-    },
-    dataTestid: {
-      control: 'text'
-    },
-    isDisabled: {
-      control: 'boolean'
-    },
-    isExpanded: {
-      control: 'boolean'
-    },
-    items: {
-      table: {
-        disable: true
-      }
-    },
-    label: {
-      control: 'text'
-    },
-    modelValue: {
-      table: {
-        disable: true
-      }
-    },
-    openKeys: {
-      table: {
-        disable: true
-      }
-    },
-    selectionMode: {
-      control: 'select',
-      options: [
-        'none',
-        'single',
-        'multiple'
-      ]
-    }
-  }
+  component: ActionMenu
 };
 
 export default meta;
@@ -98,16 +50,18 @@ function renderActionMenu(args: StoryArgs = {}, options: RenderOptions = {}) {
   return {
     components: {ActionMenu},
     setup() {
+      let onAction = action('action');
       return {
         args,
         items,
-        note
+        note,
+        onAction
       };
     },
     template: `
       <div style="display: grid; gap: 8px; width: 280px;">
         <div v-if="note">{{note}}</div>
-        <ActionMenu v-bind="args" :items="items"></ActionMenu>
+        <ActionMenu v-bind="args" :items="items" @action="onAction($event)"></ActionMenu>
       </div>
     `
   };

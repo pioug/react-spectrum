@@ -2,6 +2,7 @@ import {describe, expect, it} from 'vitest';
 import avatarMeta from '../../../packages/@vue-spectrum/avatar/stories/Avatar.stories';
 import badgeMeta from '../../../packages/@vue-spectrum/badge/stories/Badge.stories';
 import actionButtonMeta from '../../../packages/@vue-spectrum/button/stories/ActionButton.stories';
+import actionMenuMeta from '../../../packages/@vue-spectrum/menu/stories/ActionMenu.stories';
 import buttonMeta from '../../../packages/@vue-spectrum/button/stories/Button.stories';
 import checkboxMeta from '../../../packages/@vue-spectrum/checkbox/stories/Checkbox.stories';
 import checkboxGroupMeta from '../../../packages/@vue-spectrum/checkbox/stories/CheckboxGroup.stories';
@@ -38,6 +39,7 @@ import searchAutocompleteMeta from '../../../packages/@vue-spectrum/autocomplete
 import sliderMeta from '../../../packages/@vue-spectrum/slider/stories/Slider.stories';
 import statusLightMeta from '../../../packages/@vue-spectrum/statuslight/stories/StatusLight.stories';
 import switchMeta from '../../../packages/@vue-spectrum/switch/stories/Switch.stories';
+import tagGroupMeta from '../../../packages/@vue-spectrum/tag/stories/TagGroup.stories';
 import textAreaMeta from '../../../packages/@vue-spectrum/textfield/stories/TextArea.stories';
 import textFieldMeta from '../../../packages/@vue-spectrum/textfield/stories/TextField.stories';
 import toggleButtonMeta from '../../../packages/@vue-spectrum/button/stories/ToggleButton.stories';
@@ -291,6 +293,14 @@ describe('Vue Storybook controls parity', () => {
   it('matches top-level NumberField controls contract with React stories', () => {
     let args = (numberFieldMeta as {args?: Record<string, unknown>}).args ?? {};
     let argTypes = (numberFieldMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes)).toEqual([]);
+  });
+
+  it('matches top-level ActionMenu controls contract with React stories', () => {
+    let args = (actionMenuMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (actionMenuMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
 
     expect(Object.keys(args)).toEqual([]);
     expect(Object.keys(argTypes)).toEqual([]);
@@ -557,6 +567,42 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.autoFocus.control as string)).toBe('boolean');
     expect((argTypes.isOpen.control as string)).toBe('boolean');
     expect((argTypes.defaultOpen.control as string)).toBe('boolean');
+  });
+
+  it('matches top-level TagGroup controls contract with React stories', () => {
+    let args = (tagGroupMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (tagGroupMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'contextualHelp',
+      'description',
+      'errorMessage',
+      'isInvalid',
+      'isRequired',
+      'items',
+      'labelAlign',
+      'labelPosition',
+      'maxRows',
+      'necessityIndicator',
+      'onAction',
+      'onRemove'
+    ]);
+    expect((argTypes.onRemove.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onAction.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.items.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.contextualHelp.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.maxRows.type as string)).toBe('number');
+    expect((argTypes.isRequired.control as string)).toBe('boolean');
+    expect((argTypes.necessityIndicator.control as string)).toBe('select');
+    expect((argTypes.necessityIndicator.options as unknown[])).toEqual(['icon', 'label']);
+    expect((argTypes.labelPosition.control as string)).toBe('select');
+    expect((argTypes.labelPosition.options as unknown[])).toEqual(['top', 'side']);
+    expect((argTypes.labelAlign.control as string)).toBe('select');
+    expect((argTypes.labelAlign.options as unknown[])).toEqual(['start', 'end']);
+    expect((argTypes.isInvalid.control as string)).toBe('boolean');
+    expect((argTypes.description.control as string)).toBe('text');
+    expect((argTypes.errorMessage.control as string)).toBe('text');
   });
 
   it('matches top-level DateField controls contract with React stories', () => {
