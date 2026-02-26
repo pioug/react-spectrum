@@ -8,6 +8,7 @@ import checkboxGroupMeta from '../../../packages/@vue-spectrum/checkbox/stories/
 import colorFieldMeta from '../../../packages/@vue-spectrum/color/stories/ColorField.stories';
 import colorSliderMeta from '../../../packages/@vue-spectrum/color/stories/ColorSlider.stories';
 import comboBoxMeta from '../../../packages/@vue-spectrum/combobox/stories/ComboBox.stories';
+import contextualHelpMeta from '../../../packages/@vue-spectrum/contextualhelp/stories/ContextualHelp.stories';
 import dateFieldMeta from '../../../packages/@vue-spectrum/datepicker/stories/DateField.stories';
 import datePickerMeta from '../../../packages/@vue-spectrum/datepicker/stories/DatePicker.stories';
 import dateRangePickerMeta from '../../../packages/@vue-spectrum/datepicker/stories/DateRangePicker.stories';
@@ -40,6 +41,7 @@ import switchMeta from '../../../packages/@vue-spectrum/switch/stories/Switch.st
 import textAreaMeta from '../../../packages/@vue-spectrum/textfield/stories/TextArea.stories';
 import textFieldMeta from '../../../packages/@vue-spectrum/textfield/stories/TextField.stories';
 import toggleButtonMeta from '../../../packages/@vue-spectrum/button/stories/ToggleButton.stories';
+import tooltipTriggerMeta from '../../../packages/@vue-spectrum/tooltip/stories/TooltipTrigger.stories';
 import viewMeta from '../../../packages/@vue-spectrum/view/stories/View.stories';
 import wellMeta from '../../../packages/@vue-spectrum/well/stories/Well.stories';
 
@@ -380,6 +382,117 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.colorSpace.options as unknown[])).toEqual(['rgb', 'hsl', 'hsb']);
     expect((argTypes.channel.control as string)).toBe('select');
     expect((argTypes.channel.options as unknown[])).toEqual([null, 'red', 'green', 'blue', 'hue', 'saturation', 'lightness', 'brightness']);
+  });
+
+  it('matches top-level ContextualHelp controls contract with React stories', () => {
+    let args = (contextualHelpMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (contextualHelpMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'children',
+      'containerPadding',
+      'crossOffset',
+      'offset',
+      'onOpenChange',
+      'placement',
+      'shouldFlip',
+      'variant'
+    ]);
+    expect(argTypes.onOpenChange.action).toBe('openChange');
+    expect((argTypes.onOpenChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.placement.control as string)).toBe('select');
+    expect((argTypes.placement.options as unknown[])).toEqual([
+      'bottom',
+      'bottom left',
+      'bottom right',
+      'bottom start',
+      'bottom end',
+      'top',
+      'top left',
+      'top right',
+      'top start',
+      'top end',
+      'left',
+      'left top',
+      'left bottom',
+      'start',
+      'start top',
+      'start bottom',
+      'right',
+      'right top',
+      'right bottom',
+      'end',
+      'end top',
+      'end bottom'
+    ]);
+    expect((argTypes.variant.control as string)).toBe('select');
+    expect((argTypes.variant.defaultValue as string)).toBe('help');
+    expect((argTypes.variant.options as unknown[])).toEqual(['help', 'info']);
+    expect((argTypes.offset.control as string)).toBe('number');
+    expect((argTypes.crossOffset.control as string)).toBe('number');
+    expect((argTypes.containerPadding.control as string)).toBe('number');
+    expect((argTypes.shouldFlip.control as string)).toBe('boolean');
+    expect((argTypes.children.table as {disable?: boolean}).disable).toBe(true);
+  });
+
+  it('matches top-level TooltipTrigger controls contract with React stories', () => {
+    let args = (tooltipTriggerMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (tooltipTriggerMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual(['children', 'onOpenChange', 'shouldCloseOnPress']);
+    expect(Array.isArray(args.children)).toBe(true);
+    expect(typeof args.onOpenChange).toBe('function');
+    expect(args.shouldCloseOnPress).toBe(true);
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'children',
+      'closeDelay',
+      'containerPadding',
+      'crossOffset',
+      'delay',
+      'isDisabled',
+      'offset',
+      'placement',
+      'shouldCloseOnPress',
+      'shouldFlip',
+      'trigger'
+    ]);
+    expect((argTypes.placement.control as string)).toBe('select');
+    expect((argTypes.placement.options as unknown[])).toEqual([
+      'bottom',
+      'bottom left',
+      'bottom right',
+      'bottom start',
+      'bottom end',
+      'top',
+      'top left',
+      'top right',
+      'top start',
+      'top end',
+      'left',
+      'left top',
+      'left bottom',
+      'start',
+      'start top',
+      'start bottom',
+      'right',
+      'right top',
+      'right bottom',
+      'end',
+      'end top',
+      'end bottom'
+    ]);
+    expect((argTypes.delay.control as string)).toBe('number');
+    expect((argTypes.closeDelay.control as string)).toBe('number');
+    expect((argTypes.offset.control as string)).toBe('number');
+    expect((argTypes.crossOffset.control as string)).toBe('number');
+    expect((argTypes.containerPadding.control as string)).toBe('number');
+    expect((argTypes.isDisabled.control as string)).toBe('boolean');
+    expect((argTypes.shouldFlip.control as string)).toBe('boolean');
+    expect((argTypes.trigger.control as string)).toBe('radio');
+    expect((argTypes.trigger.options as unknown[])).toEqual([undefined, 'focus']);
+    expect((argTypes.children.control as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.shouldCloseOnPress.control as string)).toBe('boolean');
   });
 
   it('matches top-level Picker controls contract with React stories', () => {

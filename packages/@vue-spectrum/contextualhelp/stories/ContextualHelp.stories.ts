@@ -4,30 +4,67 @@ import type {Meta, StoryObj} from '@storybook/vue3-vite';
 const meta: Meta<typeof ContextualHelp> = {
   title: 'ContextualHelp',
   component: ContextualHelp,
-  args: {
-    label: 'Example'
-  },
   argTypes: {
-    disabled: {
-      control: 'boolean'
-    },
-    dismissable: {
-      control: 'boolean'
-    },
-    label: {
-      control: 'text'
-    },
-    modelValue: {
-      control: 'boolean'
+    onOpenChange: {
+      action: 'openChange',
+      table: {
+        disable: true
+      }
     },
     placement: {
-      control: 'text'
-    },
-    title: {
-      control: 'text'
+      control: 'select',
+      options: [
+        'bottom',
+        'bottom left',
+        'bottom right',
+        'bottom start',
+        'bottom end',
+        'top',
+        'top left',
+        'top right',
+        'top start',
+        'top end',
+        'left',
+        'left top',
+        'left bottom',
+        'start',
+        'start top',
+        'start bottom',
+        'right',
+        'right top',
+        'right bottom',
+        'end',
+        'end top',
+        'end bottom'
+      ]
     },
     variant: {
-      control: 'text'
+      control: 'select',
+      defaultValue: 'help',
+      options: ['help', 'info']
+    },
+    offset: {
+      control: 'number',
+      min: -500,
+      max: 500
+    },
+    crossOffset: {
+      control: 'number',
+      min: -500,
+      max: 500
+    },
+    containerPadding: {
+      control: 'number',
+      min: -500,
+      max: 500
+    },
+    shouldFlip: {
+      control: 'boolean'
+    },
+    children: {
+      table: {
+        disable: true
+      }
     }
   }
 };
@@ -37,6 +74,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
+  args: {
+    children: {
+      title: 'Help title',
+      body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus.'
+    }
+  },
   render: (args) => ({
     components: {ContextualHelp},
     setup() {

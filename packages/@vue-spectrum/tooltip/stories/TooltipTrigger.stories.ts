@@ -4,8 +4,8 @@ import {TooltipTrigger} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type TooltipTriggerStoryArgs = {
+  children?: unknown[],
   closeDelay?: number,
-  content?: string,
   defaultOpen?: boolean,
   delay?: number,
   isDisabled?: boolean,
@@ -18,6 +18,8 @@ type TooltipTriggerStoryArgs = {
   trigger?: 'focus' | 'focus hover',
   variant?: 'neutral' | 'positive' | 'negative' | 'info'
 };
+
+const DEFAULT_CHILDREN = ['Edit Name', 'Change Name'];
 
 const multipleTooltipItems = [{
   id: 'neutral',
@@ -41,29 +43,44 @@ const meta: Meta<typeof TooltipTrigger> = {
   title: 'TooltipTrigger',
   component: TooltipTrigger,
   excludeStories: [
+    'DEFAULT_CHILDREN',
     'multipleTooltipItems',
     'renderTrigger',
     'renderMultipleTooltips',
     'renderControlledMultipleTooltips'
   ],
   args: {
-    content: 'Change Name',
+    children: [...DEFAULT_CHILDREN],
     onOpenChange: action('openChange'),
-    placement: 'top',
     shouldCloseOnPress: true
   },
   argTypes: {
-    closeDelay: {
-      control: 'number',
-      min: 0,
-      max: 50000,
-      step: 500
-    },
-    content: {
-      control: 'text'
-    },
-    defaultOpen: {
-      control: 'boolean'
+    placement: {
+      control: 'select',
+      options: [
+        'bottom',
+        'bottom left',
+        'bottom right',
+        'bottom start',
+        'bottom end',
+        'top',
+        'top left',
+        'top right',
+        'top start',
+        'top end',
+        'left',
+        'left top',
+        'left bottom',
+        'start',
+        'start top',
+        'start bottom',
+        'right',
+        'right top',
+        'right bottom',
+        'end',
+        'end top',
+        'end bottom'
+      ]
     },
     delay: {
       control: 'number',
@@ -71,39 +88,44 @@ const meta: Meta<typeof TooltipTrigger> = {
       max: 50000,
       step: 500
     },
+    closeDelay: {
+      control: 'number',
+      min: 0,
+      max: 50000,
+      step: 500
+    },
+    offset: {
+      control: 'number',
+      min: -500,
+      max: 500
+    },
+    crossOffset: {
+      control: 'number',
+      min: -500,
+      max: 500
+    },
+    containerPadding: {
+      control: 'number',
+      min: -500,
+      max: 500
+    },
     isDisabled: {
       control: 'boolean'
     },
-    isOpen: {
-      control: 'boolean'
-    },
-    modelValue: {
-      table: {
-        disable: true
-      }
-    },
-    onOpenChange: {
-      table: {
-        disable: true
-      }
-    },
-    placement: {
-      control: 'select',
-      options: ['bottom', 'left', 'right', 'top']
-    },
-    shouldCloseOnPress: {
-      control: 'boolean'
-    },
-    showIcon: {
+    shouldFlip: {
       control: 'boolean'
     },
     trigger: {
       control: 'radio',
       options: [undefined, 'focus']
     },
-    variant: {
-      control: 'select',
-      options: ['neutral', 'positive', 'negative', 'info']
+    children: {
+      control: {
+        disable: true
+      }
+    },
+    shouldCloseOnPress: {
+      control: 'boolean'
     }
   }
 };
@@ -113,8 +135,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 function renderTrigger(
-  triggerTemplate = "{{ isOpen ? 'Tooltip open' : 'Hover or focus me' }}",
-  tooltipTemplate = '{{ args.content }}',
+  triggerTemplate = "{{ isOpen ? 'Tooltip open' : triggerText }}",
+  tooltipTemplate = '{{ tooltipText }}',
   baseArgs: Partial<TooltipTriggerStoryArgs> = {}
 ) {
   return (args: TooltipTriggerStoryArgs) => ({
@@ -124,7 +146,18 @@ function renderTrigger(
         ...args,
         ...baseArgs
       }));
-      return {args: mergedArgs};
+      let triggerText = computed(() => (
+        Array.isArray(mergedArgs.value.children) && typeof mergedArgs.value.children[0] === 'string'
+          ? mergedArgs.value.children[0]
+          : 'Hover or focus me'
+      ));
+      let tooltipText = computed(() => (
+        Array.isArray(mergedArgs.value.children) && typeof mergedArgs.value.children[1] === 'string'
+          ? mergedArgs.value.children[1]
+          : 'Change Name'
+      ));
+
+      return {args: mergedArgs, tooltipText, triggerText};
     },
     template: `
       <TooltipTrigger v-bind="args">
