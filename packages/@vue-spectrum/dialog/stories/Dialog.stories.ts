@@ -27,30 +27,7 @@ const LONG_PARAGRAPHS = [
 
 const meta: Meta<typeof Dialog> = {
   title: 'Dialog',
-  component: Dialog,
-  excludeStories: ['singleParagraph'],
-  argTypes: {
-    dismissable: {control: 'boolean'},
-    isDismissable: {control: 'boolean'},
-    isHidden: {control: 'boolean'},
-    isOpen: {control: 'boolean'},
-    onDismiss: {
-      table: {
-        disable: true
-      }
-    },
-    open: {control: 'boolean'},
-    role: {control: 'text'},
-    size: {
-      control: 'select',
-      options: ['S', 'M', 'L']
-    },
-    title: {control: 'text'},
-    type: {
-      control: 'select',
-      options: ['modal', 'fullscreenTakeover']
-    }
-  }
+  excludeStories: ['singleParagraph']
 };
 
 export default meta;

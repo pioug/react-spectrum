@@ -13,6 +13,8 @@ import contextualHelpMeta from '../../../packages/@vue-spectrum/contextualhelp/s
 import dateFieldMeta from '../../../packages/@vue-spectrum/datepicker/stories/DateField.stories';
 import datePickerMeta from '../../../packages/@vue-spectrum/datepicker/stories/DatePicker.stories';
 import dateRangePickerMeta from '../../../packages/@vue-spectrum/datepicker/stories/DateRangePicker.stories';
+import dialogMeta from '../../../packages/@vue-spectrum/dialog/stories/Dialog.stories';
+import dialogContainerMeta from '../../../packages/@vue-spectrum/dialog/stories/DialogContainer.stories';
 import timeFieldMeta from '../../../packages/@vue-spectrum/datepicker/stories/TimeField.stories';
 import dividerMeta from '../../../packages/@vue-spectrum/divider/stories/Divider.stories';
 import dialogTriggerMeta from '../../../packages/@vue-spectrum/dialog/stories/DialogTrigger.stories';
@@ -921,6 +923,22 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.shouldFlip.control as {type?: string}).type).toBe('boolean');
     expect((argTypes.isKeyboardDismissDisabled.control as {type?: string}).type).toBe('boolean');
     expect((argTypes.containerPadding.control as {type?: string}).type).toBe('number');
+  });
+
+  it('matches top-level Dialog controls contract with React stories', () => {
+    let args = (dialogMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (dialogMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes)).toEqual([]);
+  });
+
+  it('matches top-level DialogContainer controls contract with React stories', () => {
+    let args = (dialogContainerMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (dialogContainerMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes)).toEqual([]);
   });
 
   it('matches top-level SearchAutocomplete controls contract with React stories', () => {
