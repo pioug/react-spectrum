@@ -2714,6 +2714,26 @@ describe('Vue migration primitives', () => {
     expect(changed.map((file) => file.name)).toEqual(['alpha.txt', 'beta.txt']);
   });
 
+  it('maps file trigger DOM contract and forwards child press to hidden input', async () => {
+    let wrapper = mount(FileTrigger, {
+      slots: {
+        default: () => h('button', {type: 'button'}, 'Upload')
+      }
+    });
+
+    expect(wrapper.find('.vs-file-trigger').exists()).toBe(false);
+
+    let input = wrapper.get('input[type="file"]');
+    expect(input.attributes('class')).toBe('');
+    expect(input.attributes('data-rac')).toBe('');
+    expect(input.attributes('style')).toContain('display: none');
+
+    let clickSpy = vi.spyOn(input.element as HTMLInputElement, 'click').mockImplementation(() => undefined);
+    await wrapper.get('button').trigger('click');
+    expect(clickSpy).toHaveBeenCalledTimes(1);
+    clickSpy.mockRestore();
+  });
+
   it('maps tree hidden visibility signal and emits item actions', async () => {
     let hidden = mount(Tree, {
       props: {

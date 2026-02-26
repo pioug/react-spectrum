@@ -1,10 +1,11 @@
-import {computed, defineComponent, h, type PropType, ref} from 'vue';
-import {getSpectrumContext} from '../context';
+import {chain, filterDOMProps} from '@vue-aria/utils';
+import {cloneVNode, computed, defineComponent, h, isVNode, type PropType, ref} from 'vue';
 
 type DefaultCamera = 'user' | 'environment';
 
 export const VueFileTrigger = defineComponent({
   name: 'VueFileTrigger',
+  inheritAttrs: false,
   props: {
     accept: {
       type: String,
@@ -40,12 +41,7 @@ export const VueFileTrigger = defineComponent({
     change: (files: File[]) => Array.isArray(files)
   },
   setup(props, {slots, attrs, emit}) {
-    let context = getSpectrumContext();
     let inputRef = ref<HTMLInputElement | null>(null);
-    let classes = computed(() => ([
-      'vs-file-trigger',
-      context.value.scale === 'large' ? 'vs-file-trigger--large' : 'vs-file-trigger--medium'
-    ]));
 
     let acceptValue = computed(() => {
       if (props.acceptedFileTypes.length > 0) {
@@ -63,22 +59,37 @@ export const VueFileTrigger = defineComponent({
       emit('change', files);
     };
 
+    let openPicker = () => {
+      if (inputRef.value?.value) {
+        inputRef.value.value = '';
+      }
+
+      inputRef.value?.click();
+    };
+
     return function render() {
-      return h('div', {
-        ...attrs,
-        class: [classes.value, attrs.class],
-        'data-vac': ''
-      }, [
-        h('button', {
-          class: 'vs-file-trigger__button',
-          type: 'button',
-          disabled: props.disabled,
-          onClick: () => inputRef.value?.click()
-        }, slots.default ? slots.default() : 'Choose file'),
+      let domProps = filterDOMProps(attrs as Record<string, unknown>, {global: true}) as Record<string, unknown>;
+      let {style: domStyle, ...restDomProps} = domProps;
+      let children = slots.default ? slots.default() : [];
+      let triggers = children.map((child) => {
+        if (!isVNode(child)) {
+          return child;
+        }
+
+        return cloneVNode(child, {
+          onClick: chain((child.props as {onClick?: ((event: Event) => void)} | undefined)?.onClick, openPicker)
+        });
+      });
+
+      return [
+        ...triggers,
         h('input', {
+          ...restDomProps,
           ref: inputRef,
-          class: 'vs-file-trigger__input',
+          class: '',
+          'data-rac': '',
           type: 'file',
+          style: [{display: 'none'}, domStyle],
           accept: acceptValue.value,
           multiple: allowsMultiple.value,
           capture: props.defaultCamera,
@@ -88,12 +99,9 @@ export const VueFileTrigger = defineComponent({
           onChange: (event: Event) => {
             let target = event.currentTarget as HTMLInputElement | null;
             emitFiles(target?.files ?? null);
-            if (target) {
-              target.value = '';
-            }
           }
         })
-      ]);
+      ];
     };
   }
 });
