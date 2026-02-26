@@ -13,6 +13,8 @@ type FormStoryArgs = {
   labelAlign?: 'end' | 'start',
   labelPosition?: 'side' | 'top',
   necessityIndicator?: 'icon' | 'label',
+  onSubmit?: (event: Event) => void,
+  showSubmit?: boolean,
   validationBehavior?: 'aria' | 'native',
   validationState?: 'invalid' | 'valid',
   width?: number
@@ -43,34 +45,48 @@ function renderForm(baseArgs: FormStoryArgs = {}, width?: number, rtl = false) {
         validationBehavior: mergedArgs.value.validationBehavior
       }));
       let fieldDescription = computed(() => mergedArgs.value.isEmphasized ? 'Emphasized fields preview' : 'Please fill out this field.');
+      let handleSubmit = (event: Event) => {
+        if (typeof mergedArgs.value.onSubmit === 'function') {
+          mergedArgs.value.onSubmit(event);
+          return;
+        }
+
+        action('onSubmit')(event);
+      };
 
       return {
         formProps,
         fieldDescription,
+        handleSubmit,
         mergedArgs,
         onChange: action('onChange')
       };
     },
     template: `
       <div :style="{maxWidth: '${width ?? 0}px'}" :dir="${rtl ? "'rtl'" : "'ltr'"}">
-        <Form v-bind="formProps">
-          <TextField
-            label="Name"
-            :description="fieldDescription"
-            :is-disabled="Boolean(mergedArgs.isDisabled)"
-            :is-quiet="Boolean(mergedArgs.isQuiet)"
-            :is-required="Boolean(mergedArgs.isRequired)"
-            :validation-state="mergedArgs.validationState"
-            @change="onChange" />
-          <NumberField
-            label="Quantity"
-            :description="fieldDescription"
-            :is-disabled="Boolean(mergedArgs.isDisabled)"
-            :is-quiet="Boolean(mergedArgs.isQuiet)"
-            :is-required="Boolean(mergedArgs.isRequired)"
-            :validation-state="mergedArgs.validationState"
-            @change="onChange" />
-        </Form>
+        <form @submit.prevent="handleSubmit">
+          <Form v-bind="formProps">
+            <TextField
+              label="Name"
+              :description="fieldDescription"
+              :is-disabled="Boolean(mergedArgs.isDisabled)"
+              :is-quiet="Boolean(mergedArgs.isQuiet)"
+              :is-required="Boolean(mergedArgs.isRequired)"
+              :validation-state="mergedArgs.validationState"
+              @change="onChange" />
+            <NumberField
+              label="Quantity"
+              :description="fieldDescription"
+              :is-disabled="Boolean(mergedArgs.isDisabled)"
+              :is-quiet="Boolean(mergedArgs.isQuiet)"
+              :is-required="Boolean(mergedArgs.isRequired)"
+              :validation-state="mergedArgs.validationState"
+              @change="onChange" />
+          </Form>
+          <div v-if="mergedArgs.showSubmit" style="margin-top: 8px;">
+            <button type="submit">Submit</button>
+          </div>
+        </form>
       </div>
     `
   });
@@ -82,26 +98,45 @@ export const Default: Story = {
 
 export const LabelPositionSide: Story = {
   render: renderForm({labelPosition: 'side'}),
+  args: {
+    labelPosition: 'side'
+  },
   name: 'labelPosition: side'
 };
 
 export const CustomWidth: Story = {
   render: renderForm({}, 400),
+  args: {
+    width: 400
+  },
   name: 'custom width'
 };
 
 export const CustomWidthLabelPositionSide: Story = {
   render: renderForm({labelPosition: 'side'}, 400),
+  args: {
+    width: 400,
+    labelPosition: 'side'
+  },
   name: 'custom width, labelPosition: side'
 };
 
 export const LabelAlignEnd: Story = {
   render: renderForm({labelAlign: 'end'}, 400),
+  args: {
+    width: 400,
+    labelAlign: 'end'
+  },
   name: 'labelAlign: end'
 };
 
 export const LabelPositionSideLabelAlignEnd: Story = {
   render: renderForm({labelPosition: 'side', labelAlign: 'end'}, 400),
+  args: {
+    width: 400,
+    labelPosition: 'side',
+    labelAlign: 'end'
+  },
   name: 'labelPosition: side, labelAlign: end'
 };
 
@@ -148,56 +183,94 @@ export const FieldsWithAutoCompleteProperty: Story = {
 
 export const IsRequiredTrue: Story = {
   render: renderForm({isRequired: true}),
+  args: {
+    isRequired: true
+  },
   name: 'isRequired: true'
 };
 
 export const IsRequiredTrueNecessityIndicatorLabel: Story = {
   render: renderForm({isRequired: true, necessityIndicator: 'label'}),
+  args: {
+    isRequired: true,
+    necessityIndicator: 'label'
+  },
   name: 'isRequired: true, necessityIndicator: label'
 };
 
 export const IsRequiredFalseNecessityIndicatorLabel: Story = {
   render: renderForm({isRequired: false, necessityIndicator: 'label'}),
+  args: {
+    isRequired: false,
+    necessityIndicator: 'label'
+  },
   name: 'isRequired: false, necessityIndicator: label'
 };
 
 export const IsDisabled: Story = {
   render: renderForm({isDisabled: true}),
+  args: {
+    isDisabled: true
+  },
   name: 'isDisabled'
 };
 
 export const IsQuiet: Story = {
   render: renderForm({isQuiet: true}),
+  args: {
+    isQuiet: true
+  },
   name: 'isQuiet'
 };
 
 export const IsQuietLabelPositionSide: Story = {
   render: renderForm({isQuiet: true, labelPosition: 'side'}),
+  args: {
+    isQuiet: true,
+    labelPosition: 'side'
+  },
   name: 'isQuiet, labelPosition: side'
 };
 
 export const IsEmphasized: Story = {
   render: renderForm({isEmphasized: true}),
+  args: {
+    isEmphasized: true
+  },
   name: 'isEmphasized'
 };
 
 export const ValidationStateInvalid: Story = {
   render: renderForm({validationState: 'invalid'}),
+  args: {
+    validationState: 'invalid'
+  },
   name: 'validationState: invalid'
 };
 
 export const ValidationStateValid: Story = {
   render: renderForm({validationState: 'valid'}),
+  args: {
+    validationState: 'valid'
+  },
   name: 'validationState: valid'
 };
 
 export const ValidationStateInvalidIsQuietTrue: Story = {
   render: renderForm({validationState: 'invalid', isQuiet: true}),
+  args: {
+    validationState: 'invalid',
+    isQuiet: true
+  },
   name: 'validationState: invalid, isQuiet: true'
 };
 
 export const ValidationStateValidIsQuietTrue: Story = {
   render: renderForm({validationState: 'valid', isQuiet: true}),
+  args: {
+    validationState: 'valid',
+    isQuiet: true
+  },
   name: 'validationState: valid, isQuiet: true'
 };
 
@@ -269,7 +342,22 @@ export const WithTranslations: Story = {
 };
 
 export const NativeValidation: Story = {
-  render: renderForm({validationBehavior: 'native'})
+  render: renderForm({validationBehavior: 'native'}),
+  args: {
+    isRequired: true,
+    validationBehavior: 'native',
+    showSubmit: true,
+    onSubmit: (event: Event) => {
+      event.preventDefault();
+      let form = event.target as HTMLFormElement | null;
+      if (form) {
+        action('onSubmit')(Object.fromEntries(new FormData(form).entries()));
+        return;
+      }
+
+      action('onSubmit')(event);
+    }
+  }
 };
 
 export const ServerValidation: Story = {
