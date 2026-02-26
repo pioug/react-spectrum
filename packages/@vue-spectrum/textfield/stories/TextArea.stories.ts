@@ -54,14 +54,35 @@ const meta = {
     isDisabled: false,
     isReadOnly: false,
     isRequired: false,
+    necessityIndicator: 'icon',
+    labelPosition: 'top',
+    labelAlign: 'start',
     validationState: undefined
   },
   argTypes: {
+    labelPosition: {
+      control: {
+        type: 'radio',
+        options: ['top', 'side']
+      }
+    },
+    necessityIndicator: {
+      control: {
+        type: 'radio',
+        options: ['icon', 'label']
+      }
+    },
+    labelAlign: {
+      control: {
+        type: 'radio',
+        options: ['start', 'end']
+      }
+    },
     validationState: {
       control: {
         type: 'radio'
       },
-      options: [undefined, 'valid', 'invalid']
+      options: [null, 'valid', 'invalid']
     }
   }
 } satisfies Meta<typeof TextArea>;
