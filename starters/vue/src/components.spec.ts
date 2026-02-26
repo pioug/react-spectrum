@@ -1893,9 +1893,16 @@ describe('Vue migration primitives', () => {
       }
     });
 
+    expect(wrapper.element.tagName).toBe('LABEL');
+    expect(wrapper.classes()).toContain('spectrum-ToggleSwitch');
+    expect(wrapper.classes()).not.toContain('vs-switch');
+    expect(wrapper.attributes('data-vac')).toBeUndefined();
+
     await wrapper.get('input').setValue(true);
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([true]);
     expect(wrapper.emitted('change')?.[0]).toEqual([true]);
+    expect(wrapper.get('input').attributes('data-react-aria-pressable')).toBe('true');
+    expect(wrapper.get('input').attributes('tabindex')).toBe('0');
 
     let uncontrolled = mount(Switch, {
       props: {
@@ -1913,6 +1920,14 @@ describe('Vue migration primitives', () => {
     await readOnly.get('input').setValue(false);
     expect(readOnly.emitted('update:modelValue')).toBeUndefined();
     expect((readOnly.get('input').element as HTMLInputElement).checked).toBe(true);
+
+    let noLabel = mount(Switch, {
+      attrs: {
+        'aria-label': 'This switch has no visible label'
+      }
+    });
+    expect(noLabel.attributes('aria-label')).toBeUndefined();
+    expect(noLabel.get('input').attributes('aria-label')).toBe('This switch has no visible label');
   });
 
   it('maps switch hovered, focus-ring, and disabled states', async () => {
@@ -1924,7 +1939,18 @@ describe('Vue migration primitives', () => {
 
     await wrapper.trigger('mouseenter');
     expect(wrapper.classes()).toContain('is-hovered');
-    await wrapper.get('input.vs-switch__input').trigger('focus');
+    let input = wrapper.get('input.spectrum-ToggleSwitch-input');
+    let inputElement = input.element as HTMLInputElement;
+    let originalMatches = inputElement.matches.bind(inputElement);
+    let matchesSpy = vi.spyOn(inputElement, 'matches').mockImplementation((selector: string) => {
+      if (selector === ':focus-visible') {
+        return true;
+      }
+
+      return originalMatches(selector);
+    });
+    await input.trigger('focus');
+    matchesSpy.mockRestore();
     expect(wrapper.classes()).toContain('focus-ring');
 
     let disabled = mount(Switch, {

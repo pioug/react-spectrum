@@ -1,7 +1,7 @@
 import '@adobe/spectrum-css-temp/components/toggle/vars.css';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, type PropType, ref} from 'vue';
-import {getEventTarget} from '@vue-aria/utils';
+import {filterDOMProps} from '@vue-aria/utils';
 const styles: {[key: string]: string} = {};
 
 
@@ -58,7 +58,11 @@ export const Switch = defineComponent({
     let uncontrolledSelected = ref(props.defaultSelected);
     let isDisabled = computed(() => props.isDisabled ?? props.disabled);
     let isSelected = computed(() => props.isSelected ?? props.modelValue ?? uncontrolledSelected.value);
-    let hasLabel = computed(() => !!slots.default || !!props.label);
+    let hasVisibleLabel = computed(() => !!slots.default || !!props.label);
+    let ariaLabel = computed(() => {
+      let value = attrs['aria-label'];
+      return typeof value === 'string' ? value : undefined;
+    });
 
     let className = computed(() => classNames(
       styles,
@@ -71,69 +75,79 @@ export const Switch = defineComponent({
       }
     ));
 
-    return () => h('label', {
-      ...attrs,
-      class: [className.value, 'vs-switch', attrs.class],
-      'data-vac': '',
-      onMouseenter: () => {
-        if (isDisabled.value) {
-          return;
-        }
+    return () => {
+      let domProps = filterDOMProps(attrs as Record<string, unknown>) as Record<string, unknown>;
+      let {
+        class: domClass,
+        className: domClassName,
+        style: domStyle,
+        ...otherDomProps
+      } = domProps;
+      delete otherDomProps['aria-label'];
+      delete otherDomProps['aria-labelledby'];
 
-        isHovered.value = true;
-      },
-      onMouseleave: () => {
-        isHovered.value = false;
-      }
-    }, [
-      h('input', {
-        class: [classNames(styles, 'spectrum-ToggleSwitch-input'), 'vs-switch__input'],
-        type: 'checkbox',
-        role: 'switch',
-        checked: isSelected.value,
-        disabled: isDisabled.value,
-        readonly: props.isReadOnly || undefined,
-        autofocus: props.autoFocus || attrs.autofocus || undefined,
-        onChange: (event: Event) => {
-          let target = event.currentTarget as HTMLInputElement | null;
-          if (!target) {
-            return;
+      return h('label', {
+        ...otherDomProps,
+        class: [className.value, domClassName, domClass],
+        style: domStyle,
+        onMouseenter: () => {
+          if (!isDisabled.value) {
+            isHovered.value = true;
           }
-
-          if (isDisabled.value || props.isReadOnly) {
-            target.checked = isSelected.value;
-            return;
-          }
-
-          let checked = target.checked;
-          if (props.isSelected === undefined && props.modelValue === undefined) {
-            uncontrolledSelected.value = checked;
-          }
-
-          emit('update:modelValue', checked);
-          emit('change', checked);
         },
-        onFocus: (event: FocusEvent) => {
-          let target = getEventTarget(event);
-          if (target instanceof HTMLElement && target.matches(':focus-visible')) {
-            isFocusVisible.value = true;
-          } else {
-            isFocusVisible.value = true;
-          }
-          emit('focus', event);
-        },
-        onBlur: (event: FocusEvent) => {
-          isFocusVisible.value = false;
-          emit('blur', event);
+        onMouseleave: () => {
+          isHovered.value = false;
         }
-      }),
-      h('span', {class: [classNames(styles, 'spectrum-ToggleSwitch-switch'), 'vs-switch__track'], 'aria-hidden': 'true'}, [
-        h('span', {class: 'vs-switch__thumb'})
-      ]),
-      hasLabel.value
-        ? h('span', {class: [classNames(styles, 'spectrum-ToggleSwitch-label'), 'vs-switch__label']}, slots.default ? slots.default() : props.label)
-        : null
-    ]);
+      }, [
+        h('input', {
+          class: classNames(styles, 'spectrum-ToggleSwitch-input'),
+          type: 'checkbox',
+          role: 'switch',
+          'data-react-aria-pressable': 'true',
+          tabindex: isDisabled.value ? undefined : 0,
+          checked: isSelected.value,
+          disabled: isDisabled.value,
+          readonly: props.isReadOnly || undefined,
+          autofocus: props.autoFocus || attrs.autofocus || undefined,
+          'aria-label': !hasVisibleLabel.value ? ariaLabel.value : undefined,
+          'aria-labelledby': hasVisibleLabel.value ? attrs['aria-labelledby'] : undefined,
+          onChange: (event: Event) => {
+            let target = event.currentTarget as HTMLInputElement | null;
+            if (!target) {
+              return;
+            }
+
+            if (isDisabled.value || props.isReadOnly) {
+              target.checked = isSelected.value;
+              return;
+            }
+
+            let checked = target.checked;
+            if (props.isSelected === undefined && props.modelValue === undefined) {
+              uncontrolledSelected.value = checked;
+            }
+
+            emit('update:modelValue', checked);
+            emit('change', checked);
+          },
+          onFocus: (event: FocusEvent) => {
+            let target = event.currentTarget as HTMLElement | null;
+            isFocusVisible.value = Boolean(target?.matches(':focus-visible'));
+            emit('focus', event);
+          },
+          onBlur: (event: FocusEvent) => {
+            isFocusVisible.value = false;
+            emit('blur', event);
+          }
+        }),
+        h('span', {
+          class: classNames(styles, 'spectrum-ToggleSwitch-switch')
+        }),
+        hasVisibleLabel.value
+          ? h('span', {class: classNames(styles, 'spectrum-ToggleSwitch-label')}, slots.default ? slots.default() : props.label)
+          : null
+      ]);
+    };
   }
 });
 

@@ -18,6 +18,7 @@ import meterMeta from '../../../packages/@vue-spectrum/meter/stories/Meter.stori
 import progressBarMeta from '../../../packages/@vue-spectrum/progress/stories/ProgressBar.stories';
 import progressCircleMeta from '../../../packages/@vue-spectrum/progress/stories/ProgressCircle.stories';
 import statusLightMeta from '../../../packages/@vue-spectrum/statuslight/stories/StatusLight.stories';
+import switchMeta from '../../../packages/@vue-spectrum/switch/stories/Switch.stories';
 import toggleButtonMeta from '../../../packages/@vue-spectrum/button/stories/ToggleButton.stories';
 import viewMeta from '../../../packages/@vue-spectrum/view/stories/View.stories';
 import wellMeta from '../../../packages/@vue-spectrum/well/stories/Well.stories';
@@ -108,6 +109,18 @@ describe('Vue Storybook controls parity', () => {
 
     expect(Object.keys(args)).toEqual([]);
     expect(Object.keys(argTypes)).toEqual([]);
+  });
+
+  it('matches top-level Switch controls contract with React stories', () => {
+    let args = (switchMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (switchMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual(['isEmphasized']);
+    expect(args.isEmphasized).toBe(false);
+    expect(Object.keys(argTypes).sort()).toEqual(['onBlur', 'onChange', 'onFocus']);
+    expect(argTypes.onChange.action).toBe('change');
+    expect(argTypes.onFocus.action).toBe('focus');
+    expect(argTypes.onBlur.action).toBe('blur');
   });
 
   it('matches top-level LabeledValue controls contract with React stories', () => {
