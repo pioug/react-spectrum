@@ -5143,6 +5143,7 @@ describe('Vue migration composition components', () => {
   it('emits close events from dismissable dialog controls', async () => {
     let wrapper = mount(Dialog, {
       props: {
+        isDismissable: true,
         open: true,
         title: 'Confirm changes'
       },
@@ -5152,8 +5153,8 @@ describe('Vue migration composition components', () => {
     });
 
     await wrapper.get('button.vs-dialog__close').trigger('click');
-    await wrapper.get('button.vs-dialog-layer__backdrop').trigger('click');
-    expect(wrapper.emitted('close')).toHaveLength(2);
+    expect(wrapper.find('button.vs-dialog-layer__backdrop').exists()).toBe(false);
+    expect(wrapper.emitted('close')).toHaveLength(1);
   });
 
   it('emits close from popover backdrop and applies placement class', async () => {

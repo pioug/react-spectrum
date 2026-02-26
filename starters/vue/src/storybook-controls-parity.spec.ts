@@ -17,6 +17,7 @@ import labeledValueMeta from '../../../packages/@vue-spectrum/labeledvalue/stori
 import linkMeta from '../../../packages/@vue-spectrum/link/stories/Link.stories';
 import logicButtonMeta from '../../../packages/@vue-spectrum/button/stories/LogicButton.stories';
 import meterMeta from '../../../packages/@vue-spectrum/meter/stories/Meter.stories';
+import modalMeta from '../../../packages/@vue-spectrum/overlays/stories/Modal.stories';
 import numberFieldMeta from '../../../packages/@vue-spectrum/numberfield/stories/NumberField.stories';
 import progressBarMeta from '../../../packages/@vue-spectrum/progress/stories/ProgressBar.stories';
 import progressCircleMeta from '../../../packages/@vue-spectrum/progress/stories/ProgressCircle.stories';
@@ -278,6 +279,14 @@ describe('Vue Storybook controls parity', () => {
   it('matches top-level NumberField controls contract with React stories', () => {
     let args = (numberFieldMeta as {args?: Record<string, unknown>}).args ?? {};
     let argTypes = (numberFieldMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes)).toEqual([]);
+  });
+
+  it('matches top-level Modal controls contract with React stories', () => {
+    let args = (modalMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (modalMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
 
     expect(Object.keys(args)).toEqual([]);
     expect(Object.keys(argTypes)).toEqual([]);

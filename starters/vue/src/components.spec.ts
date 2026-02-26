@@ -19,6 +19,7 @@ import {Checkbox, CheckboxGroup} from '@vue-spectrum/checkbox';
 import {ComboBox} from '@vue-spectrum/combobox';
 import {ColorField, ColorPicker, ColorSwatchPicker} from '@vue-spectrum/color';
 import {DatePicker, DateRangePicker, TimeField} from '@vue-spectrum/datepicker';
+import {Dialog} from '@vue-spectrum/dialog';
 import {Divider} from '@vue-spectrum/divider';
 import {DropZone} from '@vue-spectrum/dropzone';
 import {FileTrigger} from '@vue-spectrum/filetrigger';
@@ -36,6 +37,7 @@ import {ListView} from '@vue-spectrum/list';
 import {Menu} from '@vue-spectrum/menu';
 import {Meter} from '@vue-spectrum/meter';
 import {NumberField} from '@vue-spectrum/numberfield';
+import {Modal} from '@vue-spectrum/overlays';
 import {Picker} from '@vue-spectrum/picker';
 import {Provider} from '@vue-spectrum/provider';
 import {ProgressBar, ProgressCircle} from '@vue-spectrum/progress';
@@ -2780,6 +2782,49 @@ describe('Vue migration primitives', () => {
     });
     expect(disabledInvalid.find('.spectrum-Stepper').classes()).toContain('is-disabled');
     expect(disabledInvalid.find('.spectrum-Stepper').classes()).not.toContain('is-invalid');
+  });
+
+  it('maps modal underlay and dialog surface contract to react parity', async () => {
+    let wrapper = mount({
+      components: {Button, Dialog, Divider, Modal},
+      template: `
+        <Modal :is-open="true">
+          <Dialog>
+            <template #heading>Title</template>
+            <template #divider><Divider /></template>
+            <span role="none">I am a dialog</span>
+            <template #buttonGroup>
+              <Button variant="cta">Close</Button>
+            </template>
+          </Dialog>
+        </Modal>
+      `
+    });
+
+    await nextTick();
+
+    let underlay = document.body.querySelector('[data-testid=\"underlay\"]');
+    expect(underlay).not.toBeNull();
+    expect(underlay?.classList.contains('spectrum-Underlay')).toBe(true);
+    expect(underlay?.classList.contains('spectrum-overlay')).toBe(true);
+    expect(underlay?.classList.contains('is-open')).toBe(true);
+    expect(underlay?.classList.contains('spectrum-overlay--open')).toBe(true);
+
+    let modal = document.body.querySelector('[data-testid=\"modal\"]');
+    expect(modal).not.toBeNull();
+    expect(modal?.classList.contains('spectrum-Modal')).toBe(true);
+    expect(modal?.classList.contains('spectrum-overlay')).toBe(true);
+    expect(modal?.classList.contains('is-open')).toBe(true);
+    expect(modal?.classList.contains('spectrum-overlay--open')).toBe(true);
+
+    let dialog = document.body.querySelector('[role=\"dialog\"]');
+    expect(dialog).not.toBeNull();
+    expect(dialog?.classList.contains('spectrum-Dialog')).toBe(true);
+    expect(dialog?.hasAttribute('aria-modal')).toBe(false);
+    expect(document.body.querySelector('.vs-dialog-layer')).toBeNull();
+    expect(document.body.querySelector('.vs-dialog-layer__backdrop')).toBeNull();
+
+    wrapper.unmount();
   });
 
   it('emits model updates and change events from picker selections', async () => {

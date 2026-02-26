@@ -1,5 +1,6 @@
 import {ActionButton, Button} from '@vue-spectrum/button';
 import {Dialog} from '@vue-spectrum/dialog';
+import {Divider} from '@vue-spectrum/divider';
 import {ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {Modal} from '../src';
@@ -9,58 +10,6 @@ const meta: Meta<typeof Modal> = {
   component: Modal,
   parameters: {
     providerSwitcher: {status: 'notice'}
-  },
-  argTypes: {
-    dismissable: {
-      control: 'boolean'
-    },
-    isDismissable: {
-      control: 'boolean'
-    },
-    isOpen: {
-      control: 'boolean'
-    },
-    onEnter: {
-      table: {
-        disable: true
-      }
-    },
-    onEntered: {
-      table: {
-        disable: true
-      }
-    },
-    onEntering: {
-      table: {
-        disable: true
-      }
-    },
-    onExit: {
-      table: {
-        disable: true
-      }
-    },
-    onExited: {
-      table: {
-        disable: true
-      }
-    },
-    onExiting: {
-      table: {
-        disable: true
-      }
-    },
-    open: {
-      control: 'boolean'
-    },
-    state: {
-      table: {
-        disable: true
-      }
-    },
-    type: {
-      control: 'text'
-    }
   }
 };
 
@@ -68,9 +17,9 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function renderDefaultModal(args: Record<string, unknown>) {
+function renderDefaultModal() {
   return {
-    components: {ActionButton, Button, Dialog, Modal},
+    components: {ActionButton, Button, Dialog, Divider, Modal},
     setup() {
       let isOpen = ref(false);
       let openModal = () => {
@@ -81,31 +30,32 @@ function renderDefaultModal(args: Record<string, unknown>) {
       };
 
       return {
-        args,
         closeModal,
         isOpen,
         openModal
       };
     },
     template: `
-      <div style="display: grid; gap: 12px;">
-        <ActionButton @click="openModal">Open modal</ActionButton>
-        <Modal v-bind="args" :is-open="isOpen" @close="closeModal">
-          <Dialog title="Title" :is-dismissable="true" @close="closeModal">
-            <p>I am a dialog</p>
+      <ActionButton @click="openModal">Open modal</ActionButton>
+      <Modal :is-open="isOpen" @close="closeModal">
+          <Dialog>
+            <template #heading>Title</template>
+            <template #divider>
+              <Divider />
+            </template>
+            <span role="none">I am a dialog</span>
             <template #buttonGroup>
-              <Button variant="primary" @click="closeModal">Close</Button>
+              <Button variant="cta" @click="closeModal">Close</Button>
             </template>
           </Dialog>
         </Modal>
-      </div>
     `
   };
 }
 
-function renderUnmountingTrigger(args: Record<string, unknown>) {
+function renderUnmountingTrigger() {
   return {
-    components: {ActionButton, Button, Dialog, Modal},
+    components: {ActionButton, Button, Dialog, Divider, Modal},
     setup() {
       let isModalOpen = ref(false);
       let isPopoverOpen = ref(false);
@@ -122,7 +72,6 @@ function renderUnmountingTrigger(args: Record<string, unknown>) {
       };
 
       return {
-        args,
         closeModal,
         isModalOpen,
         isPopoverOpen,
@@ -139,11 +88,15 @@ function renderUnmountingTrigger(args: Record<string, unknown>) {
           <p style="margin: 0;">I am a dialog</p>
           <ActionButton @click="openModalFromPopover">Open modal</ActionButton>
         </div>
-        <Modal v-bind="args" :is-open="isModalOpen" @close="closeModal">
-          <Dialog title="Title" :is-dismissable="true" @close="closeModal">
-            <p>I am a dialog</p>
+        <Modal :is-open="isModalOpen" @close="closeModal">
+          <Dialog>
+            <template #heading>Title</template>
+            <template #divider>
+              <Divider />
+            </template>
+            <span role="none">I am a dialog</span>
             <template #buttonGroup>
-              <Button variant="primary" @click="closeModal">Close</Button>
+              <Button variant="cta" @click="closeModal">Close</Button>
             </template>
           </Dialog>
         </Modal>
@@ -153,9 +106,9 @@ function renderUnmountingTrigger(args: Record<string, unknown>) {
 }
 
 export const Default: Story = {
-  render: (args) => renderDefaultModal(args)
+  render: () => renderDefaultModal()
 };
 
 export const _UnmountingTrigger: Story = {
-  render: (args) => renderUnmountingTrigger(args)
+  render: () => renderUnmountingTrigger()
 };

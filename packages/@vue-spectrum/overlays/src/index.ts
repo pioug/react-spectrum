@@ -170,7 +170,7 @@ export const Overlay = defineComponent({
   props: {
     container: {
       type: [String, Object] as PropType<OverlayContainer>,
-      default: 'body'
+      default: undefined
     },
     isOpen: {
       type: Boolean as PropType<boolean | undefined>,
@@ -206,6 +206,18 @@ export const Overlay = defineComponent({
     }
   },
   setup(props, {attrs, slots}) {
+    let resolvedContainer = computed<OverlayContainer>(() => {
+      if (props.container !== undefined && props.container !== null) {
+        return props.container;
+      }
+
+      if (typeof document === 'undefined') {
+        return 'body';
+      }
+
+      return document.querySelector('.vs-provider') ?? 'body';
+    });
+
     let resolvedIsOpen = computed(() => resolveOpenState(props));
     let exited = ref(!resolvedIsOpen.value);
     let exitTimer: ReturnType<typeof setTimeout> | null = null;
@@ -270,7 +282,7 @@ export const Overlay = defineComponent({
         ]
       }, slots.default ? slots.default() : []);
 
-      return h(Teleport, {to: props.container ?? 'body'}, [content]);
+      return h(Teleport, {to: resolvedContainer.value ?? 'body'}, [content]);
     };
   }
 });
@@ -301,11 +313,11 @@ export const Underlay = defineComponent({
       return h('div', {
         ...attrs,
         class: [
-          classNames(underlayStyles, 'spectrum-Underlay', {
+          classNames(underlayStyles, 'spectrum-Underlay', 'spectrum-overlay', {
             'is-open': props.isOpen,
+            'spectrum-overlay--open': props.isOpen,
             'spectrum-Underlay--transparent': props.isTransparent
           }),
-          'vs-overlay__underlay',
           attrs.class
         ],
         'data-testid': 'underlay',
@@ -326,7 +338,7 @@ export const Modal = defineComponent({
   props: {
     container: {
       type: [String, Object] as PropType<OverlayContainer>,
-      default: 'body'
+      default: undefined
     },
     dismissable: {
       type: Boolean,
@@ -394,8 +406,10 @@ export const Modal = defineComponent({
     let modalClassName = computed(() => classNames(
       modalStyles,
       'spectrum-Modal',
+      'spectrum-overlay',
       {
-        'is-open': isOpen.value
+        'is-open': isOpen.value,
+        'spectrum-overlay--open': isOpen.value
       },
       classNames({}, 'spectrum-Modal', 'react-spectrum-Modal'),
       {
@@ -452,7 +466,7 @@ export const Tray = defineComponent({
   props: {
     container: {
       type: [String, Object] as PropType<OverlayContainer>,
-      default: 'body'
+      default: undefined
     },
     isFixedHeight: {
       type: Boolean,
@@ -560,7 +574,7 @@ export const Popover = defineComponent({
   props: {
     container: {
       type: [String, Object] as PropType<OverlayContainer>,
-      default: 'body'
+      default: undefined
     },
     dismissable: {
       type: Boolean,

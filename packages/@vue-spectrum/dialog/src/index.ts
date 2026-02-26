@@ -17,6 +17,8 @@ interface DialogContainerContextValue {
   type: DialogType
 }
 
+let dialogId = 0;
+
 let sizeMap: Record<DialogSize, string> = {
   S: 'small',
   M: 'medium',
@@ -67,7 +69,7 @@ export const Dialog = defineComponent({
   props: {
     dismissable: {
       type: Boolean,
-      default: true
+      default: false
     },
     isDismissable: {
       type: Boolean as PropType<boolean | undefined>,
@@ -110,6 +112,7 @@ export const Dialog = defineComponent({
     close: () => true
   },
   setup(props, {attrs, emit, slots}) {
+    let generatedDialogId = `vs-dialog-${++dialogId}`;
     let isOpen = useResolvedOpenState(computed(() => props.isOpen), computed(() => props.open));
     let isDismissable = useResolvedDismissableState(computed(() => props.isDismissable), computed(() => props.dismissable));
 
@@ -168,6 +171,15 @@ export const Dialog = defineComponent({
     let gridClassName = computed(() => classNames(styles, 'spectrum-Dialog-grid'));
     let typeIconClassName = computed(() => classNames(styles, 'spectrum-Dialog-typeIcon'));
     let closeButtonClassName = computed(() => classNames(styles, 'spectrum-Dialog-closeButton'));
+    let titleId = computed(() => hasHeading.value ? `${generatedDialogId}-title` : undefined);
+    let ariaLabelledBy = computed(() => {
+      let value = attrs['aria-labelledby'];
+      if (typeof value === 'string' && value.length > 0) {
+        return value;
+      }
+
+      return titleId.value;
+    });
 
     let closeDialog = () => {
       if (!isDismissable.value) {
@@ -185,9 +197,15 @@ export const Dialog = defineComponent({
 
       let headingNode = null;
       if (slots.heading) {
-        headingNode = h('div', {class: [headingClassName.value, 'vs-dialog__title']}, slots.heading());
+        headingNode = h('div', {
+          id: titleId.value,
+          class: [headingClassName.value, 'vs-dialog__title']
+        }, slots.heading());
       } else if (props.title) {
-        headingNode = h('h2', {class: [headingClassName.value, 'vs-dialog__title']}, props.title);
+        headingNode = h('h2', {
+          id: titleId.value,
+          class: [headingClassName.value, 'vs-dialog__title']
+        }, props.title);
       }
 
       let typeIconNode = slots.typeIcon
@@ -228,34 +246,22 @@ export const Dialog = defineComponent({
 
       let hidden = props.isHidden || attrs.hidden === '' || attrs.hidden === true;
 
-      return h('div', {
-        class: 'vs-dialog-layer',
+      return h('section', {
+        ...attrs,
+        class: [dialogClassName.value, 'vs-dialog', attrs.class],
+        role: props.role,
+        tabindex: -1,
+        'aria-labelledby': ariaLabelledBy.value,
+        hidden: hidden || undefined,
         'data-vac': ''
       }, [
-        isDismissable.value
-          ? h('button', {
-            class: 'vs-dialog-layer__backdrop',
-            type: 'button',
-            'aria-label': 'Dismiss dialog',
-            onClick: closeDialog
-          })
-          : null,
-        h('section', {
-          ...attrs,
-          class: [dialogClassName.value, 'vs-dialog', attrs.class],
-          role: props.role,
-          'aria-modal': props.role === 'dialog' || props.role === 'alertdialog' ? 'true' : undefined,
-          hidden: hidden || undefined,
-          'data-vac': ''
-        }, [
-          h('div', {class: [gridClassName.value, 'vs-dialog__grid']}, [
-            headerNode,
-            dividerNode,
-            h('div', {class: [contentClassName.value, 'vs-dialog__body']}, slots.default ? slots.default() : []),
-            footerNode,
-            buttonGroupNode,
-            closeButton
-          ])
+        h('div', {class: [gridClassName.value, 'vs-dialog__grid']}, [
+          headerNode,
+          dividerNode,
+          h('div', {class: [contentClassName.value, 'vs-dialog__body']}, slots.default ? slots.default() : []),
+          footerNode,
+          buttonGroupNode,
+          closeButton
         ])
       ]);
     };
