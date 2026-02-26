@@ -1,5 +1,5 @@
 import {ColorSwatchPicker} from '../src';
-import {ref} from 'vue';
+import {ref, watch} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type StoryArgs = Record<string, unknown>;
@@ -16,11 +16,10 @@ const DEFAULT_ITEMS: SwatchItem[] = [
   {id: '#00f', color: '#00f', label: '#00f'}
 ];
 
-const MANY_ITEMS: SwatchItem[] = Array.from({length: 24}).map((_, index) => {
-  let hue = Math.round((index / 24) * 360);
-  let color = `hsl(${hue}, 80%, 50%)`;
+const MANY_ITEMS: SwatchItem[] = Array.from({length: 24}).map(() => {
+  let color = `#${Math.floor(Math.random() * 0xffffff).toString(16).padStart(6, '0')}`;
   return {
-    id: `swatch-${index}`,
+    id: color,
     color,
     label: color
   };
@@ -29,24 +28,26 @@ const MANY_ITEMS: SwatchItem[] = Array.from({length: 24}).map((_, index) => {
 const meta: Meta<typeof ColorSwatchPicker> = {
   title: 'ColorSwatchPicker',
   component: ColorSwatchPicker,
-  args: {
-    items: DEFAULT_ITEMS,
-    modelValue: '#f00'
+  parameters: {
+    actions: {
+      argTypesRegex: '^$'
+    }
   },
   argTypes: {
-    disabled: {
-      control: 'boolean'
+    value: {
+      control: 'color'
     },
-    isDisabled: {
-      control: 'boolean'
+    rounding: {
+      control: 'radio',
+      options: ['none', 'default', 'full']
     },
-    items: {
-      table: {
-        disable: true
-      }
+    size: {
+      control: 'radio',
+      options: ['XS', 'S', 'M', 'L']
     },
-    modelValue: {
-      control: 'text'
+    density: {
+      control: 'radio',
+      options: ['compact', 'regular', 'spacious']
     }
   }
 };
@@ -55,13 +56,21 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function renderSwatchPicker(args: StoryArgs, maxWidth?: string) {
+function renderSwatchPicker(args: StoryArgs, items = DEFAULT_ITEMS, defaultColor = '#f00', maxWidth?: string) {
   return {
     components: {ColorSwatchPicker},
     setup() {
-      let selected = ref(typeof args.modelValue === 'string' ? args.modelValue : '');
+      let selected = ref(typeof args.value === 'string' ? args.value : defaultColor);
+
+      watch(() => args.value, (nextValue) => {
+        if (typeof nextValue === 'string') {
+          selected.value = nextValue;
+        }
+      });
+
       return {
         args,
+        items,
         maxWidth,
         selected
       };
@@ -70,6 +79,7 @@ function renderSwatchPicker(args: StoryArgs, maxWidth?: string) {
       <div :style="maxWidth ? {maxWidth} : undefined">
         <ColorSwatchPicker
           v-bind="args"
+          :items="items"
           :model-value="selected"
           @update:model-value="selected = $event" />
       </div>
@@ -82,9 +92,5 @@ export const Default: Story = {
 };
 
 export const ManySwatches: Story = {
-  render: (args) => renderSwatchPicker(args, '360px'),
-  args: {
-    items: MANY_ITEMS,
-    modelValue: 'swatch-0'
-  }
+  render: (args) => renderSwatchPicker(args, MANY_ITEMS, '')
 };

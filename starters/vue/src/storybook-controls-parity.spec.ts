@@ -7,7 +7,9 @@ import buttonMeta from '../../../packages/@vue-spectrum/button/stories/Button.st
 import checkboxMeta from '../../../packages/@vue-spectrum/checkbox/stories/Checkbox.stories';
 import checkboxGroupMeta from '../../../packages/@vue-spectrum/checkbox/stories/CheckboxGroup.stories';
 import colorFieldMeta from '../../../packages/@vue-spectrum/color/stories/ColorField.stories';
+import colorPickerMeta from '../../../packages/@vue-spectrum/color/stories/ColorPicker.stories';
 import colorSliderMeta from '../../../packages/@vue-spectrum/color/stories/ColorSlider.stories';
+import colorSwatchPickerMeta from '../../../packages/@vue-spectrum/color/stories/ColorSwatchPicker.stories';
 import comboBoxMeta from '../../../packages/@vue-spectrum/combobox/stories/ComboBox.stories';
 import contextualHelpMeta from '../../../packages/@vue-spectrum/contextualhelp/stories/ContextualHelp.stories';
 import dateFieldMeta from '../../../packages/@vue-spectrum/datepicker/stories/DateField.stories';
@@ -395,6 +397,35 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.colorSpace.options as unknown[])).toEqual(['rgb', 'hsl', 'hsb']);
     expect((argTypes.channel.control as string)).toBe('select');
     expect((argTypes.channel.options as unknown[])).toEqual([null, 'red', 'green', 'blue', 'hue', 'saturation', 'lightness', 'brightness']);
+  });
+
+  it('matches top-level ColorPicker controls contract with React stories', () => {
+    let args = (colorPickerMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (colorPickerMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes).sort()).toEqual(['label', 'rounding', 'size', 'value']);
+    expect((argTypes.value.control as string)).toBe('color');
+    expect((argTypes.label.control as string)).toBe('text');
+    expect((argTypes.rounding.control as string)).toBe('radio');
+    expect((argTypes.rounding.options as unknown[])).toEqual(['default', 'none', 'full']);
+    expect((argTypes.size.control as string)).toBe('radio');
+    expect((argTypes.size.options as unknown[])).toEqual(['XS', 'S', 'M', 'L']);
+  });
+
+  it('matches top-level ColorSwatchPicker controls contract with React stories', () => {
+    let args = (colorSwatchPickerMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (colorSwatchPickerMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes).sort()).toEqual(['density', 'rounding', 'size', 'value']);
+    expect((argTypes.value.control as string)).toBe('color');
+    expect((argTypes.rounding.control as string)).toBe('radio');
+    expect((argTypes.rounding.options as unknown[])).toEqual(['none', 'default', 'full']);
+    expect((argTypes.size.control as string)).toBe('radio');
+    expect((argTypes.size.options as unknown[])).toEqual(['XS', 'S', 'M', 'L']);
+    expect((argTypes.density.control as string)).toBe('radio');
+    expect((argTypes.density.options as unknown[])).toEqual(['compact', 'regular', 'spacious']);
   });
 
   it('matches top-level ContextualHelp controls contract with React stories', () => {

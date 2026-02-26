@@ -1,5 +1,5 @@
 import {ColorArea, ColorEditor, ColorPicker, ColorSwatchPicker, ColorWheel} from '../src';
-import {ref} from 'vue';
+import {ref, watch} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type StoryArgs = Record<string, unknown>;
@@ -10,7 +10,7 @@ type SwatchItem = {
 };
 
 const DEFAULT_SWATCH_ITEMS: SwatchItem[] = [
-  {id: '#a00', color: '#a00', label: '#A00'},
+  {id: '#A00', color: '#A00', label: '#A00'},
   {id: '#f80', color: '#f80', label: '#F80'},
   {id: '#080', color: '#080', label: '#080'},
   {id: '#08f', color: '#08f', label: '#08F'},
@@ -21,22 +21,25 @@ const DEFAULT_SWATCH_ITEMS: SwatchItem[] = [
 const meta: Meta<typeof ColorPicker> = {
   title: 'ColorPicker',
   component: ColorPicker,
-  args: {
-    label: 'Example',
-    modelValue: '#f00'
+  parameters: {
+    actions: {
+      argTypesRegex: '^$'
+    }
   },
   argTypes: {
-    disabled: {
-      control: 'boolean'
-    },
-    isDisabled: {
-      control: 'boolean'
+    value: {
+      control: 'color'
     },
     label: {
       control: 'text'
     },
-    modelValue: {
-      control: 'color'
+    rounding: {
+      control: 'radio',
+      options: ['default', 'none', 'full']
+    },
+    size: {
+      control: 'radio',
+      options: ['XS', 'S', 'M', 'L']
     }
   }
 };
@@ -49,7 +52,14 @@ function renderDefault(args: StoryArgs) {
   return {
     components: {ColorEditor, ColorPicker},
     setup() {
-      let color = ref(typeof args.modelValue === 'string' ? args.modelValue : '#f00');
+      let color = ref(typeof args.value === 'string' ? args.value : '#f00');
+
+      watch(() => args.value, (nextValue) => {
+        if (typeof nextValue === 'string') {
+          color.value = nextValue;
+        }
+      });
+
       return {
         args,
         color
@@ -73,7 +83,14 @@ function renderCustom(args: StoryArgs) {
   return {
     components: {ColorArea, ColorPicker, ColorWheel},
     setup() {
-      let color = ref(typeof args.modelValue === 'string' ? args.modelValue : '#f00');
+      let color = ref(typeof args.value === 'string' ? args.value : '#f00');
+
+      watch(() => args.value, (nextValue) => {
+        if (typeof nextValue === 'string') {
+          color.value = nextValue;
+        }
+      });
+
       return {
         args,
         color
@@ -100,7 +117,14 @@ function renderSwatches(args: StoryArgs) {
   return {
     components: {ColorPicker, ColorSwatchPicker},
     setup() {
-      let color = ref(typeof args.modelValue === 'string' ? args.modelValue : '#a00');
+      let color = ref(typeof args.value === 'string' ? args.value : '#A00');
+
+      watch(() => args.value, (nextValue) => {
+        if (typeof nextValue === 'string') {
+          color.value = nextValue;
+        }
+      });
+
       return {
         args,
         color,
@@ -131,8 +155,5 @@ export const Custom: Story = {
 };
 
 export const Swatches: Story = {
-  render: (args) => renderSwatches(args),
-  args: {
-    modelValue: '#a00'
-  }
+  render: (args) => renderSwatches(args)
 };
