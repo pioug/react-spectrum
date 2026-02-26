@@ -10,8 +10,6 @@ type SelectionStoryArgs = {
   disabledType?: 'file' | 'folder',
   isQuiet?: boolean,
   items?: ListItemRecord[],
-  onAction?: (key: number | string) => void,
-  onSelectionChange?: (value: Array<number | string>) => void,
   overflowMode?: 'truncate' | 'wrap',
   selectionMode?: 'multiple' | 'none' | 'single',
   selectionStyle?: 'checkbox' | 'highlight',
@@ -62,8 +60,6 @@ const meta: Meta<typeof ListView> = {
     density: 'regular',
     disabledBehavior: 'selection',
     isQuiet: false,
-    onAction: action('onAction'),
-    onSelectionChange: action('onSelectionChange'),
     overflowMode: 'truncate',
     selectionMode: 'multiple',
     selectionStyle: 'checkbox'
@@ -91,21 +87,6 @@ const meta: Meta<typeof ListView> = {
     disabledBehavior: {
       control: 'radio',
       options: ['selection', 'all']
-    },
-    items: {
-      table: {
-        disable: true
-      }
-    },
-    onAction: {
-      table: {
-        disable: true
-      }
-    },
-    onSelectionChange: {
-      table: {
-        disable: true
-      }
     }
   }
 };
@@ -119,6 +100,8 @@ function renderSelectionStory(baseArgs: Partial<SelectionStoryArgs> = {}) {
     components: {ListView},
     setup() {
       let selectedKeys = ref<Array<number | string>>([]);
+      let onAction = action('onAction');
+      let onSelectionChange = action('onSelectionChange');
       let merged = computed(() => ({
         ...args,
         ...baseArgs
@@ -128,11 +111,11 @@ function renderSelectionStory(baseArgs: Partial<SelectionStoryArgs> = {}) {
       let handleSelectionChange = (value: number | string | Array<number | string>) => {
         let values = Array.isArray(value) ? value : [value];
         selectedKeys.value = values;
-        merged.value.onSelectionChange?.(values);
+        onSelectionChange(values);
       };
 
       let handleAction = (key: number | string) => {
-        merged.value.onAction?.(key);
+        onAction(key);
       };
 
       return {
@@ -170,6 +153,8 @@ function renderNavigationStory(baseArgs: Partial<SelectionStoryArgs> = {}) {
         ...args,
         ...baseArgs
       }));
+      let onAction = action('onAction');
+      let onSelectionChange = action('onSelectionChange');
       let selectedKeys = ref<Array<number | string>>([]);
       let breadcrumbs = ref<Array<ListItemRecord>>([{
         key: 'root',
@@ -192,7 +177,7 @@ function renderNavigationStory(baseArgs: Partial<SelectionStoryArgs> = {}) {
 
       let handleAction = (key: number | string) => {
         let item = currentItems.value.find((entry) => entry.key === key);
-        merged.value.onAction?.(key);
+        onAction(key);
         if (item?.type === 'folder' && Array.isArray(item.children)) {
           breadcrumbs.value = [...breadcrumbs.value, item];
           selectedKeys.value = [];
@@ -202,7 +187,7 @@ function renderNavigationStory(baseArgs: Partial<SelectionStoryArgs> = {}) {
       let handleSelectionChange = (value: number | string | Array<number | string>) => {
         let values = Array.isArray(value) ? value : [value];
         selectedKeys.value = values;
-        merged.value.onSelectionChange?.(values);
+        onSelectionChange(values);
       };
 
       let onBreadcrumbAction = (key: number | string) => {

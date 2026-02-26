@@ -113,18 +113,35 @@ const meta: Meta<typeof RangeCalendar> = {
     isDisabled: {
       control: 'boolean'
     },
+    isReadOnly: {
+      control: 'boolean'
+    },
     allowsNonContiguousRanges: {
+      control: 'boolean'
+    },
+    autoFocus: {
       control: 'boolean'
     },
     visibleMonths: {
       control: 'number'
     },
+    pageBehavior: {
+      control: 'select',
+      options: [null, 'single', 'visible']
+    },
     firstDayOfWeek: {
       control: 'select',
       options: [undefined, 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
     },
+    isInvalid: {
+      control: 'boolean'
+    },
     errorMessage: {
       control: 'text'
+    },
+    selectionAlignment: {
+      control: 'select',
+      options: ['start', 'center', 'end']
     }
   }
 };

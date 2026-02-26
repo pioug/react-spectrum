@@ -107,18 +107,35 @@ const meta: Meta<typeof Calendar> = {
     isDisabled: {
       control: 'boolean'
     },
+    isReadOnly: {
+      control: 'boolean'
+    },
+    autoFocus: {
+      control: 'boolean'
+    },
     visibleMonths: {
       control: 'number'
+    },
+    pageBehavior: {
+      control: 'select',
+      options: [null, 'single', 'visible']
     },
     firstDayOfWeek: {
       control: 'select',
       options: [undefined, 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+    },
+    isInvalid: {
+      control: 'boolean'
     },
     'aria-label': {
       control: 'text'
     },
     errorMessage: {
       control: 'text'
+    },
+    selectionAlignment: {
+      control: 'select',
+      options: ['start', 'center', 'end']
     }
   }
 };

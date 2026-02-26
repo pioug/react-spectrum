@@ -4,6 +4,7 @@ import badgeMeta from '../../../packages/@vue-spectrum/badge/stories/Badge.stori
 import actionButtonMeta from '../../../packages/@vue-spectrum/button/stories/ActionButton.stories';
 import actionMenuMeta from '../../../packages/@vue-spectrum/menu/stories/ActionMenu.stories';
 import buttonMeta from '../../../packages/@vue-spectrum/button/stories/Button.stories';
+import calendarMeta from '../../../packages/@vue-spectrum/calendar/stories/Calendar.stories';
 import checkboxMeta from '../../../packages/@vue-spectrum/checkbox/stories/Checkbox.stories';
 import checkboxGroupMeta from '../../../packages/@vue-spectrum/checkbox/stories/CheckboxGroup.stories';
 import colorFieldMeta from '../../../packages/@vue-spectrum/color/stories/ColorField.stories';
@@ -31,6 +32,7 @@ import inlineAlertMeta from '../../../packages/@vue-spectrum/inlinealert/stories
 import labeledValueMeta from '../../../packages/@vue-spectrum/labeledvalue/stories/LabeledValue.stories';
 import linkMeta from '../../../packages/@vue-spectrum/link/stories/Link.stories';
 import listViewMeta from '../../../packages/@vue-spectrum/list/stories/ListView.stories';
+import listViewSelectionMeta from '../../../packages/@vue-spectrum/list/stories/ListViewSelection.stories';
 import logicButtonMeta from '../../../packages/@vue-spectrum/button/stories/LogicButton.stories';
 import meterMeta from '../../../packages/@vue-spectrum/meter/stories/Meter.stories';
 import modalMeta from '../../../packages/@vue-spectrum/overlays/stories/Modal.stories';
@@ -40,6 +42,7 @@ import progressBarMeta from '../../../packages/@vue-spectrum/progress/stories/Pr
 import progressCircleMeta from '../../../packages/@vue-spectrum/progress/stories/ProgressCircle.stories';
 import radioGroupMeta from '../../../packages/@vue-spectrum/radio/stories/Radio.stories';
 import rangeSliderMeta from '../../../packages/@vue-spectrum/slider/stories/RangeSlider.stories';
+import rangeCalendarMeta from '../../../packages/@vue-spectrum/calendar/stories/RangeCalendar.stories';
 import searchFieldMeta from '../../../packages/@vue-spectrum/searchfield/stories/SearchField.stories';
 import searchAutocompleteMeta from '../../../packages/@vue-spectrum/autocomplete/stories/SearchAutocomplete.stories';
 import sliderMeta from '../../../packages/@vue-spectrum/slider/stories/Slider.stories';
@@ -615,6 +618,46 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.disabledBehavior.options as unknown[])).toEqual(['selection', 'all']);
   });
 
+  it('matches top-level ListView/Selection controls contract with React stories', () => {
+    let args = (listViewSelectionMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (listViewSelectionMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual([
+      'density',
+      'disabledBehavior',
+      'isQuiet',
+      'overflowMode',
+      'selectionMode',
+      'selectionStyle'
+    ]);
+    expect(args.isQuiet).toBe(false);
+    expect(args.density).toBe('regular');
+    expect(args.selectionMode).toBe('multiple');
+    expect(args.selectionStyle).toBe('checkbox');
+    expect(args.overflowMode).toBe('truncate');
+    expect(args.disabledBehavior).toBe('selection');
+
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'density',
+      'disabledBehavior',
+      'isQuiet',
+      'overflowMode',
+      'selectionMode',
+      'selectionStyle'
+    ]);
+    expect((argTypes.selectionMode.control as string)).toBe('radio');
+    expect((argTypes.selectionMode.options as unknown[])).toEqual(['none', 'single', 'multiple']);
+    expect((argTypes.selectionStyle.control as string)).toBe('radio');
+    expect((argTypes.selectionStyle.options as unknown[])).toEqual(['checkbox', 'highlight']);
+    expect((argTypes.isQuiet.control as string)).toBe('boolean');
+    expect((argTypes.density.control as string)).toBe('select');
+    expect((argTypes.density.options as unknown[])).toEqual(['compact', 'regular', 'spacious']);
+    expect((argTypes.overflowMode.control as string)).toBe('radio');
+    expect((argTypes.overflowMode.options as unknown[])).toEqual(['truncate', 'wrap']);
+    expect((argTypes.disabledBehavior.control as string)).toBe('radio');
+    expect((argTypes.disabledBehavior.options as unknown[])).toEqual(['selection', 'all']);
+  });
+
   it('matches top-level Tabs controls contract with React stories', () => {
     let args = (tabsMeta as {args?: Record<string, unknown>}).args ?? {};
     let argTypes = (tabsMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
@@ -748,6 +791,94 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.orientation.control as {options?: unknown[]}).options).toEqual(['horizontal', 'vertical']);
     expect((argTypes.size.control as {type?: string}).type).toBe('inline-radio');
     expect((argTypes.size.control as {options?: unknown[]}).options).toEqual(['S', 'M', 'L', 'XL']);
+  });
+
+  it('matches top-level Date and Time/Calendar controls contract with React stories', () => {
+    let args = (calendarMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (calendarMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual(['onChange']);
+    expect(typeof args.onChange).toBe('function');
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'aria-label',
+      'autoFocus',
+      'defaultFocusedValue',
+      'defaultValue',
+      'errorMessage',
+      'firstDayOfWeek',
+      'isDisabled',
+      'isInvalid',
+      'isReadOnly',
+      'maxValue',
+      'minValue',
+      'onChange',
+      'pageBehavior',
+      'selectionAlignment',
+      'value',
+      'visibleMonths'
+    ]);
+    expect((argTypes.onChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.defaultValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.minValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.value.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.maxValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.defaultFocusedValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.isDisabled.control as string)).toBe('boolean');
+    expect((argTypes.isReadOnly.control as string)).toBe('boolean');
+    expect((argTypes.autoFocus.control as string)).toBe('boolean');
+    expect((argTypes.visibleMonths.control as string)).toBe('number');
+    expect((argTypes.pageBehavior.control as string)).toBe('select');
+    expect((argTypes.pageBehavior.options as unknown[])).toEqual([null, 'single', 'visible']);
+    expect((argTypes.firstDayOfWeek.control as string)).toBe('select');
+    expect((argTypes.firstDayOfWeek.options as unknown[])).toEqual([undefined, 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']);
+    expect((argTypes.isInvalid.control as string)).toBe('boolean');
+    expect((argTypes['aria-label'].control as string)).toBe('text');
+    expect((argTypes.errorMessage.control as string)).toBe('text');
+    expect((argTypes.selectionAlignment.control as string)).toBe('select');
+    expect((argTypes.selectionAlignment.options as unknown[])).toEqual(['start', 'center', 'end']);
+  });
+
+  it('matches top-level Date and Time/RangeCalendar controls contract with React stories', () => {
+    let args = (rangeCalendarMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (rangeCalendarMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual(['onChange']);
+    expect(typeof args.onChange).toBe('function');
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'allowsNonContiguousRanges',
+      'autoFocus',
+      'defaultValue',
+      'errorMessage',
+      'firstDayOfWeek',
+      'isDisabled',
+      'isInvalid',
+      'isReadOnly',
+      'maxValue',
+      'minValue',
+      'onChange',
+      'pageBehavior',
+      'selectionAlignment',
+      'value',
+      'visibleMonths'
+    ]);
+    expect((argTypes.onChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.defaultValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.minValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.value.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.maxValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.isDisabled.control as string)).toBe('boolean');
+    expect((argTypes.isReadOnly.control as string)).toBe('boolean');
+    expect((argTypes.allowsNonContiguousRanges.control as string)).toBe('boolean');
+    expect((argTypes.autoFocus.control as string)).toBe('boolean');
+    expect((argTypes.visibleMonths.control as string)).toBe('number');
+    expect((argTypes.pageBehavior.control as string)).toBe('select');
+    expect((argTypes.pageBehavior.options as unknown[])).toEqual([null, 'single', 'visible']);
+    expect((argTypes.firstDayOfWeek.control as string)).toBe('select');
+    expect((argTypes.firstDayOfWeek.options as unknown[])).toEqual([undefined, 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']);
+    expect((argTypes.isInvalid.control as string)).toBe('boolean');
+    expect((argTypes.errorMessage.control as string)).toBe('text');
+    expect((argTypes.selectionAlignment.control as string)).toBe('select');
+    expect((argTypes.selectionAlignment.options as unknown[])).toEqual(['start', 'center', 'end']);
   });
 
   it('matches top-level DateField controls contract with React stories', () => {
