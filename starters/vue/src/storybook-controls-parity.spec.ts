@@ -8,6 +8,7 @@ import fileTriggerMeta from '../../../packages/@vue-spectrum/filetrigger/stories
 import imageMeta from '../../../packages/@vue-spectrum/image/stories/Image.stories';
 import logicButtonMeta from '../../../packages/@vue-spectrum/button/stories/LogicButton.stories';
 import toggleButtonMeta from '../../../packages/@vue-spectrum/button/stories/ToggleButton.stories';
+import viewMeta from '../../../packages/@vue-spectrum/view/stories/View.stories';
 
 describe('Vue Storybook controls parity', () => {
   it('matches top-level Avatar controls contract with React stories', () => {
@@ -62,6 +63,14 @@ describe('Vue Storybook controls parity', () => {
     let argTypes = (fileTriggerMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
 
     expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes)).toEqual([]);
+  });
+
+  it('matches top-level View controls contract with React stories', () => {
+    let args = (viewMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (viewMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual(['backgroundColor', 'colorVersion']);
     expect(Object.keys(argTypes)).toEqual([]);
   });
 

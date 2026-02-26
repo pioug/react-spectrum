@@ -39,8 +39,7 @@ import {
   Content,
   Footer,
   Header,
-  View,
-  VueView
+  View
 } from '@vue-spectrum/view';
 import {
   ActionMenu,
@@ -121,11 +120,14 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(Collection).toBe(VueTree);
   });
 
-  it('aliases view exports to VueView', () => {
-    expect(View).toBe(VueView);
-    expect(Header).toBe(VueView);
-    expect(Content).toBe(VueView);
-    expect(Footer).toBe(VueView);
+  it('exports view primitives with semantic wrappers', () => {
+    expect(View).not.toBeUndefined();
+    expect(Header).not.toBeUndefined();
+    expect(Content).not.toBeUndefined();
+    expect(Footer).not.toBeUndefined();
+    expect(Header).not.toBe(View);
+    expect(Content).not.toBe(View);
+    expect(Footer).not.toBe(View);
   });
 
   it('aliases menu exports to VueMenu', () => {

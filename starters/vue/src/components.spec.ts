@@ -50,7 +50,7 @@ import {Text} from '@vue-spectrum/text';
 import {createToastQueue, ToastContainer} from '@vue-spectrum/toast';
 import {Tooltip, TooltipTrigger} from '@vue-spectrum/tooltip';
 import {Tree} from '@vue-spectrum/tree';
-import {View} from '@vue-spectrum/view';
+import {Content, Footer, Header, View} from '@vue-spectrum/view';
 import {Well} from '@vue-spectrum/well';
 import {theme as darkTheme} from '@vue-spectrum/theme-dark';
 import {theme as expressTheme} from '@vue-spectrum/theme-express';
@@ -206,12 +206,13 @@ describe('Vue migration primitives', () => {
     warn.mockRestore();
   });
 
-  it('renders view with dynamic element type and classes', () => {
+  it('maps view element type and style props to react parity', () => {
     let wrapper = mount(View, {
       props: {
         elementType: 'section',
-        border: true,
-        padding: 'l'
+        width: 'single-line-width',
+        height: 'size-500',
+        backgroundColor: 'blue-400'
       },
       slots: {
         default: 'View content'
@@ -219,9 +220,24 @@ describe('Vue migration primitives', () => {
     });
 
     expect(wrapper.element.tagName).toBe('SECTION');
-    expect(wrapper.classes()).toContain('vs-view--bordered');
-    expect(wrapper.classes()).toContain('vs-view--padding-l');
+    expect(wrapper.attributes('style')).toContain('width: var(--spectrum-global-dimension-single-line-width');
+    expect(wrapper.attributes('style')).toContain('height: var(--spectrum-global-dimension-size-500');
+    expect(wrapper.attributes('style')).toContain('background-color: var(--spectrum-alias-background-color-blue-400');
     expect(wrapper.text()).toContain('View content');
+  });
+
+  it('maps header/content/footer semantic element defaults', () => {
+    let header = mount(Header, {slots: {default: 'Header text'}});
+    expect(header.element.tagName).toBe('HEADER');
+    expect(header.text()).toBe('Header text');
+
+    let content = mount(Content, {slots: {default: 'Main content'}});
+    expect(content.element.tagName).toBe('SECTION');
+    expect(content.text()).toBe('Main content');
+
+    let footer = mount(Footer, {slots: {default: 'Footer text'}});
+    expect(footer.element.tagName).toBe('FOOTER');
+    expect(footer.text()).toBe('Footer text');
   });
 
   it('renders flex layout styles from props', () => {
