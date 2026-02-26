@@ -1432,19 +1432,25 @@ describe('Vue migration primitives', () => {
   it('maps meter variant state classes', () => {
     let warning = mount(Meter, {
       props: {
+        label: 'Meter',
         value: 60,
         variant: 'warning'
       }
     });
-    expect(warning.find('.vs-meter__track').classes()).toContain('is-warning');
+    expect(warning.classes()).toContain('spectrum-BarLoader');
+    expect(warning.classes()).toContain('is-warning');
+    expect(warning.attributes('role')).toBe('meter progressbar');
+    expect(warning.classes()).not.toContain('vs-meter');
+    expect(warning.attributes('data-vac')).toBeUndefined();
 
     let positive = mount(Meter, {
       props: {
+        label: 'Meter',
         value: 90,
         variant: 'positive'
       }
     });
-    expect(positive.find('.vs-meter__track').classes()).toContain('is-positive');
+    expect(positive.classes()).toContain('is-positive');
 
     let formatted = mount(Meter, {
       props: {
@@ -1454,7 +1460,7 @@ describe('Vue migration primitives', () => {
         value: 25
       }
     });
-    expect(formatted.find('.vs-meter__value').text()).not.toContain('%');
+    expect(formatted.find('.spectrum-BarLoader-percentage').text()).not.toContain('%');
 
     let explicitValueLabel = mount(Meter, {
       props: {
@@ -1464,7 +1470,7 @@ describe('Vue migration primitives', () => {
         valueLabel: '1 of 4'
       }
     });
-    expect(explicitValueLabel.find('.vs-meter__value').text()).toBe('1 of 4');
+    expect(explicitValueLabel.find('.spectrum-BarLoader-percentage').text()).toBe('1 of 4');
 
     let rawValues = mount(Meter, {
       props: {
@@ -1473,7 +1479,18 @@ describe('Vue migration primitives', () => {
         value: 715827883
       }
     });
-    expect(rawValues.find('.vs-meter__track').attributes('aria-valuemax')).toBe('2147483648');
+    expect(rawValues.attributes('aria-valuemax')).toBe('2147483648');
+    expect(rawValues.find('.spectrum-BarLoader-fill').attributes('style')).toContain('width: 33%');
+
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+    mount(Meter, {
+      props: {
+        label: null,
+        value: 10
+      }
+    });
+    expect(warn).toHaveBeenCalledWith('If you do not provide a visible label via children, you must specify an aria-label or aria-labelledby attribute for accessibility');
+    warn.mockRestore();
   });
 
   it('maps statuslight variant and disabled classes', () => {

@@ -1,10 +1,15 @@
 import '@adobe/spectrum-css-temp/components/barloader/vars.css';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, type PropType} from 'vue';
+import {filterDOMProps, mergeIds, useId} from '@vue-aria/utils';
+import {computed, type CSSProperties, defineComponent, h, type PropType} from 'vue';
 const styles: {[key: string]: string} = {};
 
 
 type Variant = 'critical' | 'informative' | 'positive' | 'warning';
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(max, Math.max(min, value));
+}
 
 export const Meter = defineComponent({
   name: 'VueMeter',
@@ -18,17 +23,9 @@ export const Meter = defineComponent({
       type: String as PropType<string | null>,
       default: ''
     },
-    max: {
-      type: Number as PropType<number | undefined>,
-      default: undefined
-    },
     maxValue: {
       type: Number,
       default: 100
-    },
-    min: {
-      type: Number as PropType<number | undefined>,
-      default: undefined
     },
     minValue: {
       type: Number,
@@ -64,15 +61,15 @@ export const Meter = defineComponent({
     }
   },
   setup(props, {attrs}) {
-    let resolvedMin = computed(() => props.min ?? props.minValue);
-    let resolvedMax = computed(() => props.max ?? props.maxValue);
+    let meterId = useId(typeof attrs.id === 'string' ? attrs.id : undefined);
+    let labelId = useId();
     let showValueLabel = computed(() => props.showValueLabel ?? !!props.label);
-    let clampedValue = computed(() => Math.min(resolvedMax.value, Math.max(resolvedMin.value, props.value)));
+    let clampedValue = computed(() => clamp(props.value, props.minValue, props.maxValue));
     let percentage = computed(() => {
-      if (resolvedMax.value <= resolvedMin.value) {
+      if (props.maxValue <= props.minValue) {
         return 0;
       }
-      return ((clampedValue.value - resolvedMin.value) / (resolvedMax.value - resolvedMin.value)) * 100;
+      return ((clampedValue.value - props.minValue) / (props.maxValue - props.minValue)) * 100;
     });
     let formatter = computed(() => props.formatOptions ? new Intl.NumberFormat(undefined, props.formatOptions) : null);
     let defaultValueLabel = computed(() => {
@@ -84,57 +81,90 @@ export const Meter = defineComponent({
     });
     let valueLabel = computed(() => props.valueLabel ?? defaultValueLabel.value);
 
-    let barClassName = computed(() => classNames(
-      styles,
-      {
-        'is-positive': props.variant === 'positive',
-        'is-warning': props.variant === 'warning',
-        'is-critical': props.variant === 'critical'
-      }
-    ));
+    return () => {
+      let ariaLabel = attrs['aria-label'];
+      let ariaLabelledby = attrs['aria-labelledby'];
+      let hasLabel = !!props.label;
 
-    return () => h('div', {
-      ...attrs,
-      class: [
-        classNames(
-          styles,
-          'spectrum-BarLoader',
-          {
-            'spectrum-BarLoader--large': props.size === 'L',
-            'spectrum-BarLoader--sideLabel': props.labelPosition === 'side',
-            'spectrum-BarLoader--small': props.size === 'S'
-          }
-        ),
-        'vs-meter',
-        attrs.class
-      ],
-      style: {
-        ...((attrs.style as Record<string, unknown>) ?? {}),
-        width: props.width ?? (attrs.style as Record<string, unknown> | undefined)?.width
-      },
-      'data-vac': ''
-    }, [
-      props.label || showValueLabel.value
-        ? h('div', {class: 'vs-meter__header'}, [
-          props.label ? h('span', {class: ['vs-meter__label', classNames(styles, 'spectrum-BarLoader-label')]}, props.label) : null,
-          showValueLabel.value ? h('span', {class: ['vs-meter__value', classNames(styles, 'spectrum-BarLoader-percentage')]}, valueLabel.value) : null
-        ])
-        : null,
-      h('div', {
-        class: ['vs-meter__track', classNames(styles, 'spectrum-BarLoader-track'), barClassName.value],
-        role: 'meter',
-        'aria-label': props.label || attrs['aria-label'] || undefined,
-        'aria-valuemin': resolvedMin.value,
-        'aria-valuemax': resolvedMax.value,
+      if (!hasLabel && !ariaLabel && !ariaLabelledby && process.env.NODE_ENV !== 'production') {
+        console.warn('If you do not provide a visible label via children, you must specify an aria-label or aria-labelledby attribute for accessibility');
+      }
+
+      let domProps = filterDOMProps(attrs as Record<string, unknown>, {labelable: true}) as Record<string, unknown>;
+      let {
+        class: domClass,
+        className: domClassName,
+        style: domStyle,
+        ...otherDomProps
+      } = domProps;
+      delete otherDomProps.id;
+      delete otherDomProps.role;
+      delete otherDomProps['aria-label'];
+      delete otherDomProps['aria-labelledby'];
+      delete otherDomProps['aria-valuemin'];
+      delete otherDomProps['aria-valuemax'];
+      delete otherDomProps['aria-valuenow'];
+      delete otherDomProps['aria-valuetext'];
+
+      let valueFillStyle: CSSProperties = {
+        width: `${Math.round(percentage.value)}%`
+      };
+
+      return h('div', {
+        ...otherDomProps,
+        id: meterId,
+        role: 'meter progressbar',
+        'aria-label': !hasLabel && typeof ariaLabel === 'string' ? ariaLabel : undefined,
+        'aria-labelledby': hasLabel
+          ? mergeIds(labelId, typeof ariaLabelledby === 'string' ? ariaLabelledby : undefined)
+          : (typeof ariaLabelledby === 'string' ? ariaLabelledby : undefined),
+        'aria-valuemin': props.minValue,
+        'aria-valuemax': props.maxValue,
         'aria-valuenow': clampedValue.value,
-        'aria-valuetext': valueLabel.value
+        'aria-valuetext': valueLabel.value,
+        class: [
+          classNames(
+            styles,
+            'spectrum-BarLoader',
+            {
+              'spectrum-BarLoader--large': props.size === 'L',
+              'spectrum-BarLoader--small': props.size === 'S',
+              'spectrum-BarLoader--sideLabel': props.labelPosition === 'side',
+              'is-positive': props.variant === 'positive',
+              'is-warning': props.variant === 'warning',
+              'is-critical': props.variant === 'critical'
+            }
+          ),
+          domClassName,
+          domClass
+        ],
+        style: [
+          {minWidth: '-moz-fit-content'},
+          domStyle,
+          props.width != null ? ({width: props.width} as CSSProperties) : undefined
+        ]
       }, [
+        props.label
+          ? h('span', {
+            id: labelId,
+            class: classNames(styles, 'spectrum-BarLoader-label')
+          }, props.label)
+          : null,
+        showValueLabel.value
+          ? h('div', {
+            class: classNames(styles, 'spectrum-BarLoader-percentage')
+          }, valueLabel.value)
+          : null,
         h('div', {
-          class: ['vs-meter__fill', classNames(styles, 'spectrum-BarLoader-fill')],
-          style: {width: `${percentage.value}%`}
-        })
-      ])
-    ]);
+          class: classNames(styles, 'spectrum-BarLoader-track')
+        }, [
+          h('div', {
+            class: classNames(styles, 'spectrum-BarLoader-fill'),
+            style: valueFillStyle
+          })
+        ])
+      ]);
+    };
   }
 });
 

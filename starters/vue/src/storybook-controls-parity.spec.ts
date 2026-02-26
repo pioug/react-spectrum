@@ -14,6 +14,7 @@ import inlineAlertMeta from '../../../packages/@vue-spectrum/inlinealert/stories
 import labeledValueMeta from '../../../packages/@vue-spectrum/labeledvalue/stories/LabeledValue.stories';
 import linkMeta from '../../../packages/@vue-spectrum/link/stories/Link.stories';
 import logicButtonMeta from '../../../packages/@vue-spectrum/button/stories/LogicButton.stories';
+import meterMeta from '../../../packages/@vue-spectrum/meter/stories/Meter.stories';
 import statusLightMeta from '../../../packages/@vue-spectrum/statuslight/stories/StatusLight.stories';
 import toggleButtonMeta from '../../../packages/@vue-spectrum/button/stories/ToggleButton.stories';
 import viewMeta from '../../../packages/@vue-spectrum/view/stories/View.stories';
@@ -194,6 +195,29 @@ describe('Vue Storybook controls parity', () => {
       'indigo',
       'seafoam'
     ]);
+  });
+
+  it('matches top-level Meter controls contract with React stories', () => {
+    let args = (meterMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (meterMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual(['variant']);
+    expect(args.variant).toBe('informative');
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'labelPosition',
+      'showValueLabel',
+      'size',
+      'value',
+      'variant'
+    ]);
+    expect((argTypes.value.control as {type?: string}).type).toBe('range');
+    expect((argTypes.variant.control as {type?: string}).type).toBe('radio');
+    expect((argTypes.variant.control as {options?: string[]}).options).toEqual(['informative', 'positive', 'warning', 'critical']);
+    expect((argTypes.size.control as {type?: string}).type).toBe('radio');
+    expect((argTypes.size.control as {options?: string[]}).options).toEqual(['S', 'L']);
+    expect((argTypes.showValueLabel.control as string)).toBe('boolean');
+    expect((argTypes.labelPosition.control as string)).toBe('radio');
+    expect((argTypes.labelPosition.options as string[])).toEqual(['top', 'side']);
   });
 
   it('matches top-level Button controls contract with React stories', () => {
