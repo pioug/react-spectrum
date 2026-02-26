@@ -10,6 +10,7 @@ import colorFieldMeta from '../../../packages/@vue-spectrum/color/stories/ColorF
 import colorPickerMeta from '../../../packages/@vue-spectrum/color/stories/ColorPicker.stories';
 import colorSliderMeta from '../../../packages/@vue-spectrum/color/stories/ColorSlider.stories';
 import colorSwatchPickerMeta from '../../../packages/@vue-spectrum/color/stories/ColorSwatchPicker.stories';
+import colorWheelMeta from '../../../packages/@vue-spectrum/color/stories/ColorWheel.stories';
 import comboBoxMeta from '../../../packages/@vue-spectrum/combobox/stories/ComboBox.stories';
 import contextualHelpMeta from '../../../packages/@vue-spectrum/contextualhelp/stories/ContextualHelp.stories';
 import dateFieldMeta from '../../../packages/@vue-spectrum/datepicker/stories/DateField.stories';
@@ -49,6 +50,7 @@ import textAreaMeta from '../../../packages/@vue-spectrum/textfield/stories/Text
 import textFieldMeta from '../../../packages/@vue-spectrum/textfield/stories/TextField.stories';
 import toggleButtonMeta from '../../../packages/@vue-spectrum/button/stories/ToggleButton.stories';
 import tooltipTriggerMeta from '../../../packages/@vue-spectrum/tooltip/stories/TooltipTrigger.stories';
+import toastMeta from '../../../packages/@vue-spectrum/toast/stories/Toast.stories';
 import viewMeta from '../../../packages/@vue-spectrum/view/stories/View.stories';
 import wellMeta from '../../../packages/@vue-spectrum/well/stories/Well.stories';
 
@@ -428,6 +430,21 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.density.options as unknown[])).toEqual(['compact', 'regular', 'spacious']);
   });
 
+  it('matches top-level ColorWheel controls contract with React stories', () => {
+    let args = (colorWheelMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (colorWheelMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual(['onChange', 'onChangeEnd']);
+    expect(typeof args.onChange).toBe('function');
+    expect(typeof args.onChangeEnd).toBe('function');
+    expect(Object.keys(argTypes).sort()).toEqual(['defaultValue', 'isDisabled', 'onChange', 'onChangeEnd', 'size']);
+    expect((argTypes.onChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onChangeEnd.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.defaultValue.control as string)).toBe('text');
+    expect((argTypes.isDisabled.control as string)).toBe('boolean');
+    expect((argTypes.size.control as string)).toBe('text');
+  });
+
   it('matches top-level ContextualHelp controls contract with React stories', () => {
     let args = (contextualHelpMeta as {args?: Record<string, unknown>}).args ?? {};
     let argTypes = (contextualHelpMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
@@ -537,6 +554,23 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.trigger.options as unknown[])).toEqual([undefined, 'focus']);
     expect((argTypes.children.control as {disable?: boolean}).disable).toBe(true);
     expect((argTypes.shouldCloseOnPress.control as string)).toBe('boolean');
+  });
+
+  it('matches top-level Toast controls contract with React stories', () => {
+    let args = (toastMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (toastMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual(['placement', 'shouldCloseOnAction', 'timeout']);
+    expect(args.shouldCloseOnAction).toBe(false);
+    expect(args.placement).toBeUndefined();
+    expect(args.timeout).toBeUndefined();
+
+    expect(Object.keys(argTypes).sort()).toEqual(['placement', 'shouldCloseOnAction', 'timeout']);
+    expect((argTypes.shouldCloseOnAction.control as string)).toBe('boolean');
+    expect((argTypes.timeout.control as string)).toBe('radio');
+    expect((argTypes.timeout.options as unknown[])).toEqual([undefined, 5000]);
+    expect((argTypes.placement.control as string)).toBe('select');
+    expect((argTypes.placement.options as unknown[])).toEqual([undefined, 'top', 'top end', 'bottom', 'bottom end']);
   });
 
   it('matches top-level Picker controls contract with React stories', () => {
