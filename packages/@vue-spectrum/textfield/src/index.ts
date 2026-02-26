@@ -1,40 +1,45 @@
+import '@adobe/spectrum-css-temp/components/fieldlabel/vars.css';
+import '@adobe/spectrum-css-temp/components/helptext/vars.css';
 import '@adobe/spectrum-css-temp/components/textfield/vars.css';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, type PropType, ref, watch} from 'vue';
 import {getEventTarget} from '@vue-aria/utils';
 import type {SpectrumTextAreaProps, SpectrumTextFieldProps} from '@vue-types/textfield';
-const styles: {[key: string]: string} = {};
 
+const fieldStyles: {[key: string]: string} = {};
+const helpTextStyles: {[key: string]: string} = {};
+const textfieldStyles: {[key: string]: string} = {};
 
-type ValidationState = 'invalid' | 'valid';
 type FieldKind = 'input' | 'textarea';
+type LabelAlign = 'end' | 'start';
+type LabelPosition = 'side' | 'top';
+type NecessityIndicator = 'icon' | 'label';
+type ValidationState = 'invalid' | 'valid';
+
+const ALERT_PATH = 'M8.564 1.289L.2 16.256A.5.5 0 0 0 .636 17h16.728a.5.5 0 0 0 .436-.744L9.436 1.289a.5.5 0 0 0-.872 0zM10 14.75a.25.25 0 0 1-.25.25h-1.5a.25.25 0 0 1-.25-.25v-1.5a.25.25 0 0 1 .25-.25h1.5a.25.25 0 0 1 .25.25zm0-3a.25.25 0 0 1-.25.25h-1.5a.25.25 0 0 1-.25-.25v-6a.25.25 0 0 1 .25-.25h1.5a.25.25 0 0 1 .25.25z';
+const CHECKMARK_PATH = 'M4.5 10a1.022 1.022 0 0 1-.799-.384l-2.488-3a1 1 0 0 1 1.576-1.233L4.5 7.376l4.712-5.991a1 1 0 1 1 1.576 1.23l-5.51 7A.978.978 0 0 1 4.5 10z';
 
 let inputIdCounter = 0;
 let textAreaIdCounter = 0;
 
-function resolveIsDisabled(props: {disabled?: boolean, isDisabled?: boolean | undefined}) {
-  if (props.isDisabled !== undefined) {
-    return props.isDisabled;
+function resolveBoolean(primary: boolean | undefined, fallback: boolean) {
+  if (primary !== undefined) {
+    return primary;
   }
 
-  return Boolean(props.disabled);
+  return fallback;
 }
 
-function resolveIsInvalid(props: {
-  invalid?: boolean,
-  isInvalid?: boolean,
-  validationState?: ValidationState | undefined
-}, isDisabled: boolean) {
-  let invalid = Boolean(props.invalid || props.isInvalid || props.validationState === 'invalid');
-  return invalid && !isDisabled;
-}
-
-function resolveIsRequired(props: {required?: boolean, isRequired?: boolean | undefined}) {
-  if (props.isRequired !== undefined) {
-    return props.isRequired;
-  }
-
-  return Boolean(props.required);
+function renderValidationIcon(className: string, path: string, attrs: Record<string, unknown> = {}) {
+  return h('svg', {
+    class: className,
+    focusable: 'false',
+    'aria-hidden': 'true',
+    role: 'img',
+    ...attrs
+  }, [
+    h('path', {d: path})
+  ]);
 }
 
 function buildField(
@@ -49,11 +54,15 @@ function buildField(
         type: Boolean,
         default: false
       },
-      description: {
+      contextualHelp: {
+        type: null as unknown as PropType<unknown>,
+        default: undefined
+      },
+      defaultValue: {
         type: String,
         default: ''
       },
-      defaultValue: {
+      description: {
         type: String,
         default: ''
       },
@@ -101,15 +110,23 @@ function buildField(
         type: String,
         default: ''
       },
-      contextualHelp: {
-        type: String,
-        default: ''
+      labelAlign: {
+        type: String as PropType<LabelAlign>,
+        default: 'start'
+      },
+      labelPosition: {
+        type: String as PropType<LabelPosition>,
+        default: 'top'
       },
       modelValue: {
         type: String as PropType<string | undefined>,
         default: undefined
       },
-      value: {
+      necessityIndicator: {
+        type: String as PropType<NecessityIndicator | undefined>,
+        default: undefined
+      },
+      pattern: {
         type: String as PropType<string | undefined>,
         default: undefined
       },
@@ -117,9 +134,9 @@ function buildField(
         type: String,
         default: ''
       },
-      pattern: {
-        type: String as PropType<string | undefined>,
-        default: undefined
+      readOnly: {
+        type: Boolean,
+        default: false
       },
       required: {
         type: Boolean,
@@ -129,13 +146,17 @@ function buildField(
         type: Number,
         default: 3
       },
+      type: {
+        type: String,
+        default: 'text'
+      },
       validationState: {
         type: String as PropType<ValidationState | undefined>,
         default: undefined
       },
-      type: {
-        type: String,
-        default: 'text'
+      value: {
+        type: String as PropType<string | undefined>,
+        default: undefined
       },
       width: {
         type: [Number, String] as PropType<number | string | undefined>,
@@ -151,19 +172,13 @@ function buildField(
     setup(props, {attrs, emit}) {
       let generatedId = idFactory();
       let inputId = computed(() => props.id ?? generatedId);
+      let inputRef = ref<HTMLInputElement | HTMLTextAreaElement | null>(null);
 
       let isHovered = ref(false);
       let isFocusVisible = ref(false);
-
-      let isDisabled = computed(() => resolveIsDisabled(props));
-      let isInvalid = computed(() => resolveIsInvalid(props, isDisabled.value));
-      let isRequired = computed(() => resolveIsRequired(props));
-      let isValid = computed(() => !isInvalid.value && props.validationState === 'valid');
-
       let uncontrolledValue = ref(props.defaultValue);
-      let currentValue = computed(() => props.value ?? props.modelValue ?? uncontrolledValue.value);
 
-      watch(() => [props.modelValue, props.value], ([modelValue, value]) => {
+      watch(() => [props.value, props.modelValue], ([value, modelValue]) => {
         if (typeof value === 'string') {
           uncontrolledValue.value = value;
           return;
@@ -174,81 +189,188 @@ function buildField(
         }
       }, {immediate: true});
 
-      let descriptionId = computed(() => props.description ? `${inputId.value}-description` : undefined);
-      let errorMessageId = computed(() => props.errorMessage ? `${inputId.value}-error` : undefined);
-      let describedBy = computed(() => {
-        if (isInvalid.value && props.errorMessage) {
-          return errorMessageId.value;
+      let isDisabled = computed(() => resolveBoolean(props.isDisabled, props.disabled));
+      let isReadOnly = computed(() => props.isReadOnly || props.readOnly);
+      let isRequired = computed(() => resolveBoolean(props.isRequired, props.required));
+      let necessityIndicator = computed<NecessityIndicator | undefined>(() => {
+        if (props.necessityIndicator) {
+          return props.necessityIndicator;
         }
 
-        return descriptionId.value;
+        return isRequired.value ? 'icon' : undefined;
+      });
+      let effectiveValidationState = computed<ValidationState | undefined>(() => {
+        if (props.validationState) {
+          return props.validationState;
+        }
+
+        if (props.isInvalid || props.invalid) {
+          return 'invalid';
+        }
+
+        return undefined;
+      });
+      let isInvalid = computed(() => effectiveValidationState.value === 'invalid' && !isDisabled.value);
+      let isValid = computed(() => effectiveValidationState.value === 'valid' && !isDisabled.value);
+      let currentValue = computed(() => props.value ?? props.modelValue ?? uncontrolledValue.value);
+
+      let labelId = computed(() => props.label ? `${inputId.value}-label` : undefined);
+      let helpText = computed(() => {
+        if (isInvalid.value && props.errorMessage) {
+          return props.errorMessage;
+        }
+
+        return props.description;
+      });
+      let helpTextId = computed(() => {
+        if (!helpText.value) {
+          return undefined;
+        }
+
+        return isInvalid.value ? `${inputId.value}-error` : `${inputId.value}-description`;
+      });
+      let validIconId = computed(() => isValid.value ? `${inputId.value}-valid` : undefined);
+      let describedBy = computed(() => {
+        let ids: string[] = [];
+        if (helpTextId.value) {
+          ids.push(helpTextId.value);
+        }
+        if (validIconId.value) {
+          ids.push(validIconId.value);
+        }
+        return ids.length > 0 ? ids.join(' ') : undefined;
       });
 
-      let wrapperClassName = computed(() => classNames(
-        styles,
+      let rootClassName = computed(() => classNames(
+        fieldStyles,
+        'spectrum-Field',
+        {
+          'spectrum-Field--positionTop': props.labelPosition !== 'side',
+          'spectrum-Field--positionSide': props.labelPosition === 'side',
+          'spectrum-Field--alignEnd': props.labelAlign === 'end',
+          'spectrum-Field--hasContextualHelp': !!props.contextualHelp
+        },
+        textfieldStyles,
         'spectrum-Textfield-wrapper',
         {
           'spectrum-Textfield-wrapper--quiet': props.isQuiet
         }
       ));
 
-      let containerClassName = computed(() => classNames(
-        styles,
-        'spectrum-Textfield',
+      let labelClassName = computed(() => classNames(
+        fieldStyles,
+        'spectrum-FieldLabel',
         {
-            'spectrum-Textfield--invalid': isInvalid.value,
-            'is-valid': isValid.value,
-            'spectrum-Textfield--quiet': props.isQuiet,
-            'spectrum-Textfield--multiline': kind === 'textarea',
-            'focus-ring': isFocusVisible.value
+          'spectrum-FieldLabel--positionSide': props.labelPosition === 'side',
+          'spectrum-FieldLabel--alignEnd': props.labelAlign === 'end'
+        }
+      ));
+
+      let controlClassName = computed(() => classNames(
+        textfieldStyles,
+        'spectrum-Textfield',
+        'spectrum-FocusRing',
+        'spectrum-FocusRing-ring',
+        fieldStyles,
+        'spectrum-Field-field',
+        {
+          'spectrum-Textfield--invalid': isInvalid.value,
+          'spectrum-Textfield--valid': isValid.value,
+          'spectrum-Textfield--quiet': props.isQuiet,
+          'spectrum-Textfield--multiline': kind === 'textarea',
+          'focus-ring': isFocusVisible.value
         }
       ));
 
       let inputClassName = computed(() => classNames(
-        styles,
+        textfieldStyles,
         'spectrum-Textfield-input',
+        'i18nFontFamily',
         {
-          'is-hovered': isHovered.value,
-          'vs-text-field__input--multiline': kind === 'textarea'
+          'spectrum-Textfield-inputIcon': !!props.icon,
+          'is-hovered': isHovered.value && !isDisabled.value
         }
       ));
 
-      let ariaLabel = computed(() => {
-        let fromAttrs = attrs['aria-label'];
-        if (typeof fromAttrs === 'string' && fromAttrs.length > 0) {
-          return fromAttrs;
-        }
+      let iconClassName = computed(() => classNames(
+        textfieldStyles,
+        'spectrum-Icon',
+        'spectrum-Textfield-icon'
+      ));
 
-        return props.label || undefined;
+      let passthroughRootAttrs = computed(() => {
+        let next: Record<string, unknown> = {};
+        for (let [key, value] of Object.entries(attrs)) {
+          if (
+            key === 'aria-label' ||
+            key === 'aria-labelledby' ||
+            key === 'autofocus' ||
+            key === 'class' ||
+            key === 'data-testid' ||
+            key === 'name' ||
+            key === 'style' ||
+            key === 'tabindex'
+          ) {
+            continue;
+          }
+
+          next[key] = value;
+        }
+        return next;
       });
 
-      let onInput = (event: Event) => {
-        let target = event.currentTarget as HTMLInputElement | HTMLTextAreaElement | null;
-        let value = target?.value ?? '';
-        uncontrolledValue.value = value;
-        emit('update:modelValue', value);
-        emit('change', value);
+      let ariaLabel = computed(() => {
+        let attrLabel = attrs['aria-label'];
+        if (typeof attrLabel === 'string' && attrLabel.length > 0) {
+          return attrLabel;
+        }
+
+        return undefined;
+      });
+
+      let ariaLabelledBy = computed(() => {
+        let attrLabelledBy = attrs['aria-labelledby'];
+        if (typeof attrLabelledBy === 'string' && attrLabelledBy.length > 0) {
+          return attrLabelledBy;
+        }
+
+        return labelId.value;
+      });
+
+      let setValue = (nextValue: string) => {
+        if (props.value === undefined && props.modelValue === undefined) {
+          uncontrolledValue.value = nextValue;
+        }
+
+        emit('update:modelValue', nextValue);
+        emit('change', nextValue);
       };
 
       return () => {
-        let inputTag = kind === 'textarea' ? 'textarea' : 'input';
-
-        let inputNode = h(inputTag, {
+        let inputNode = h(kind === 'textarea' ? 'textarea' : 'input', {
+          ref: inputRef,
           id: inputId.value,
-          class: [inputClassName.value, 'vs-text-field__input'],
+          class: inputClassName.value,
           value: currentValue.value,
           type: kind === 'textarea' ? undefined : props.type,
-          pattern: kind === 'textarea' ? undefined : props.pattern,
-          placeholder: props.placeholder || undefined,
-          disabled: isDisabled.value,
-          required: isRequired.value || undefined,
-          readonly: props.isReadOnly || undefined,
           rows: kind === 'textarea' ? props.rows : undefined,
-          'aria-invalid': isInvalid.value ? 'true' : undefined,
-          'aria-describedby': describedBy.value,
-          'aria-label': ariaLabel.value,
+          pattern: kind === 'textarea' ? undefined : props.pattern,
+          name: typeof attrs.name === 'string' ? attrs.name : undefined,
+          tabindex: isDisabled.value ? undefined : attrs.tabindex ?? 0,
+          placeholder: props.placeholder || undefined,
+          disabled: isDisabled.value || undefined,
+          readonly: isReadOnly.value || undefined,
+          required: isRequired.value || undefined,
           autofocus: props.autoFocus || attrs.autofocus || undefined,
-          onInput,
+          'aria-invalid': isInvalid.value ? 'true' : undefined,
+          'aria-label': ariaLabel.value,
+          'aria-labelledby': ariaLabel.value ? undefined : ariaLabelledBy.value,
+          'aria-describedby': describedBy.value,
+          'data-testid': typeof attrs['data-testid'] === 'string' ? attrs['data-testid'] : undefined,
+          onInput: (event: Event) => {
+            let target = event.currentTarget as HTMLInputElement | HTMLTextAreaElement | null;
+            setValue(target?.value ?? '');
+          },
           onFocus: (event: FocusEvent) => {
             let target = getEventTarget(event);
             if (target instanceof HTMLElement && target.matches(':focus-visible')) {
@@ -264,66 +386,101 @@ function buildField(
             emit('blur', event);
           },
           onMouseenter: () => {
-            if (isDisabled.value) {
-              return;
+            if (!isDisabled.value) {
+              isHovered.value = true;
             }
-
-            isHovered.value = true;
           },
           onMouseleave: () => {
             isHovered.value = false;
           }
         });
 
-        return h('label', {
-          ...attrs,
-          class: [wrapperClassName.value, 'vs-text-field', attrs.class],
-          style: {
-            ...((attrs.style as Record<string, unknown>) ?? {}),
-            width: props.width ?? (attrs.style as Record<string, unknown> | undefined)?.width
-          },
-          'data-vac': ''
+        let iconNode: unknown = null;
+        if (props.icon !== undefined) {
+          if (typeof props.icon === 'string') {
+            iconNode = h('span', {
+              class: iconClassName.value,
+              'aria-hidden': 'true'
+            }, props.icon);
+          } else {
+            iconNode = h('span', {
+              class: iconClassName.value,
+              'aria-hidden': 'true'
+            }, [props.icon as never]);
+          }
+        }
+
+        let validationNode = isInvalid.value
+          ? renderValidationIcon(
+            classNames(textfieldStyles, 'spectrum-Icon', 'spectrum-UIIcon-AlertMedium', 'spectrum-Textfield-validationIcon'),
+            ALERT_PATH
+          )
+          : isValid.value
+            ? renderValidationIcon(
+              classNames(textfieldStyles, 'spectrum-Icon', 'spectrum-UIIcon-CheckmarkMedium', 'spectrum-Textfield-validationIcon'),
+              CHECKMARK_PATH,
+              {
+                id: validIconId.value,
+                'aria-label': 'Valid'
+              }
+            )
+            : null;
+
+        return h('div', {
+          ...passthroughRootAttrs.value,
+          class: [rootClassName.value, attrs.class],
+          style: [{width: props.width}, attrs.style]
         }, [
-          props.label || props.contextualHelp
-            ? h('div', {class: 'vs-text-field__label-row'}, [
-              props.label ? h('span', {class: 'vs-text-field__label'}, props.label) : null,
-              props.contextualHelp
-                ? h('span', {class: 'vs-text-field__contextual-help'}, props.contextualHelp)
+          props.label
+            ? h('label', {
+              id: labelId.value,
+              class: labelClassName.value,
+              for: inputId.value
+            }, [
+              props.label,
+              (necessityIndicator.value === 'label' || necessityIndicator.value === 'icon') && isRequired.value ? ' \u200b' : null,
+              necessityIndicator.value === 'label' && isRequired.value
+                ? h('span', {'aria-hidden': 'true'}, '(required)')
+                : null,
+              necessityIndicator.value === 'icon' && isRequired.value
+                ? h('span', {
+                  class: classNames(fieldStyles, 'spectrum-FieldLabel-requiredIcon'),
+                  'aria-hidden': 'true'
+                }, '*')
                 : null
             ])
             : null,
+          props.label && props.contextualHelp
+            ? h('span', {
+              class: classNames(fieldStyles, 'spectrum-Field-contextualHelp')
+            }, typeof props.contextualHelp === 'string' ? props.contextualHelp : [props.contextualHelp as never])
+            : null,
           h('div', {
-            class: [containerClassName.value, 'vs-text-field__container']
+            class: controlClassName.value
           }, [
-            props.icon
-              ? h('span', {
-                class: 'vs-text-field__icon',
-                'aria-hidden': 'true'
-              }, typeof props.icon === 'string' ? props.icon : [props.icon as never])
-              : null,
             inputNode,
-            isInvalid.value
-              ? h('span', {
-                class: classNames(styles, 'spectrum-Textfield-validationIcon'),
-                'aria-hidden': 'true'
-              }, '!')
-              : isValid.value
-                ? h('span', {
-                  class: classNames(styles, 'spectrum-Textfield-validationIcon'),
-                  'aria-hidden': 'true'
-                }, '\u2713')
-              : null
+            iconNode,
+            validationNode
           ]),
-          isInvalid.value && props.errorMessage
-            ? h('span', {
-              id: errorMessageId.value,
-              class: 'vs-text-field__error'
-            }, props.errorMessage)
-            : props.description
-            ? h('span', {
-              id: descriptionId.value,
-              class: 'vs-text-field__description'
-            }, props.description)
+          helpText.value
+            ? h('div', {
+              class: classNames(
+                helpTextStyles,
+                'spectrum-HelpText',
+                `spectrum-HelpText--${isInvalid.value ? 'negative' : 'neutral'}`,
+                {
+                  'is-disabled': isDisabled.value
+                }
+              ),
+              style: {
+                gridArea: 'helpText'
+              }
+            }, [
+              h('div', {
+                id: helpTextId.value,
+                class: classNames(helpTextStyles, 'spectrum-HelpText-text')
+              }, helpText.value)
+            ])
             : null
         ]);
       };

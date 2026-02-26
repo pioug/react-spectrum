@@ -1711,7 +1711,7 @@ describe('Vue migration primitives', () => {
         errorMessage: 'Please enter a valid street address.'
       }
     });
-    expect(invalid.find('.vs-text-field__error').text()).toContain('valid street address');
+    expect(invalid.find('.spectrum-HelpText-text').text()).toContain('valid street address');
     expect(invalid.attributes('aria-describedby')).toBeUndefined();
     expect(invalid.get('input').attributes('aria-describedby')).toContain('error');
 
@@ -1721,12 +1721,13 @@ describe('Vue migration primitives', () => {
         validationState: 'valid',
         width: '300px',
         icon: 'i',
+        label: 'Street address',
         contextualHelp: 'Segment help text'
       }
     });
-    expect(valid.find('.spectrum-Textfield').classes()).toContain('is-valid');
-    expect(valid.find('.vs-text-field__icon').exists()).toBe(true);
-    expect(valid.find('.vs-text-field__contextual-help').text()).toContain('Segment help');
+    expect(valid.find('.spectrum-Textfield').classes()).toContain('spectrum-Textfield--valid');
+    expect(valid.find('.spectrum-Textfield-icon').exists()).toBe(true);
+    expect(valid.find('.spectrum-Field-contextualHelp').text()).toContain('Segment help');
     expect((valid.element as HTMLElement).style.width).toBe('300px');
   });
 
@@ -1754,7 +1755,7 @@ describe('Vue migration primitives', () => {
     expect(wrapper.find('.spectrum-Textfield').classes()).toContain('spectrum-Textfield--multiline');
     expect(wrapper.find('.spectrum-Textfield').classes()).toContain('spectrum-Textfield--quiet');
     expect(wrapper.find('textarea.spectrum-Textfield-input').exists()).toBe(true);
-    expect(wrapper.find('.vs-text-field__input--multiline').exists()).toBe(true);
+    expect(wrapper.find('.vs-text-field__input--multiline').exists()).toBe(false);
     expect(wrapper.get('textarea').attributes('rows')).toBe('5');
 
     await wrapper.get('textarea').trigger('mouseenter');
