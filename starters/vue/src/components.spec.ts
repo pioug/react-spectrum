@@ -1,6 +1,8 @@
 import {mount} from '@vue/test-utils';
 import {describe, expect, it, vi} from 'vitest';
 import {h, nextTick} from 'vue';
+import {readFileSync} from 'node:fs';
+import {resolve} from 'node:path';
 import EditWorkflow from '@spectrum-icons-vue/workflow/Edit';
 import CheckmarkCircle from '@spectrum-icons-vue/workflow/CheckmarkCircle';
 import {Avatar} from '@vue-spectrum/avatar';
@@ -777,6 +779,15 @@ describe('Vue migration primitives', () => {
 
     await wrapper.trigger('pointerdown', {button: 0});
     expect(wrapper.classes()).not.toContain('focus-ring');
+  });
+
+  it('keeps button focus-ring state class style overrides wired for parity', () => {
+    let cssPath = resolve(process.cwd(), '../../packages/@vue-spectrum/button/src/stateClassOverrides.css');
+    let css = readFileSync(cssPath, 'utf8');
+
+    expect(css).toContain(".spectrum-FocusRing.focus-ring:after");
+    expect(css).toContain(".spectrum-Button.focus-ring[data-style='fill']");
+    expect(css).toContain('--spectrum-button-color-key-focus');
   });
 
   it('keeps native disabled button attrs aligned with react', () => {

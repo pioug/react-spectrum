@@ -1,4 +1,5 @@
 import '@adobe/spectrum-css-temp/components/button/vars.css';
+import './stateClassOverrides.css';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, type ComputedRef, defineComponent, h, isVNode, onBeforeUnmount, type PropType, ref, Text as VueText, watch} from 'vue';
 import {getEventTarget} from '@vue-aria/utils';
