@@ -1487,8 +1487,38 @@ describe('Vue migration primitives', () => {
       }
     });
 
+    expect(wrapper.element.tagName).toBe('DIV');
+    expect(wrapper.classes()).toContain('spectrum-StatusLight');
     expect(wrapper.classes()).toContain('spectrum-StatusLight--positive');
     expect(wrapper.classes()).toContain('is-disabled');
+    expect(wrapper.classes()).not.toContain('vs-status-light');
+    expect(wrapper.attributes('data-vac')).toBeUndefined();
+    expect(wrapper.attributes('role')).toBeUndefined();
+  });
+
+  it('warns when statuslight labelling contract is invalid', () => {
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+
+    mount(StatusLight, {
+      props: {
+        variant: 'positive'
+      }
+    });
+    expect(warn).toHaveBeenCalledWith('If no children are provided, an aria-label must be specified');
+
+    mount(StatusLight, {
+      props: {
+        variant: 'positive'
+      },
+      attrs: {
+        'aria-label': 'Connection'
+      },
+      slots: {
+        default: 'Connected'
+      }
+    });
+    expect(warn).toHaveBeenCalledWith('A labelled StatusLight must have a role.');
+    warn.mockRestore();
   });
 
   it('maps progress bar and progress circle spectrum classes and aria wiring', () => {

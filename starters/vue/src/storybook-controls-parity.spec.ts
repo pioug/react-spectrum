@@ -14,6 +14,7 @@ import inlineAlertMeta from '../../../packages/@vue-spectrum/inlinealert/stories
 import labeledValueMeta from '../../../packages/@vue-spectrum/labeledvalue/stories/LabeledValue.stories';
 import linkMeta from '../../../packages/@vue-spectrum/link/stories/Link.stories';
 import logicButtonMeta from '../../../packages/@vue-spectrum/button/stories/LogicButton.stories';
+import statusLightMeta from '../../../packages/@vue-spectrum/statuslight/stories/StatusLight.stories';
 import toggleButtonMeta from '../../../packages/@vue-spectrum/button/stories/ToggleButton.stories';
 import viewMeta from '../../../packages/@vue-spectrum/view/stories/View.stories';
 
@@ -168,6 +169,31 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.variant.options as unknown[])).toEqual(['neutral', 'info', 'positive', 'notice', 'negative']);
     expect((argTypes.title.control as string)).toBe('text');
     expect((argTypes.content.control as string)).toBe('text');
+  });
+
+  it('matches top-level StatusLight controls contract with React stories', () => {
+    let args = (statusLightMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (statusLightMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes).sort()).toEqual(['isDisabled', 'variant']);
+    expect((argTypes.isDisabled.control as string)).toBe('boolean');
+    expect((argTypes.variant.control as {type?: string}).type).toBe('select');
+    expect((argTypes.variant.control as {options?: string[]}).options).toEqual([
+      'positive',
+      'negative',
+      'notice',
+      'info',
+      'neutral',
+      'celery',
+      'chartreuse',
+      'yellow',
+      'magenta',
+      'fuchsia',
+      'purple',
+      'indigo',
+      'seafoam'
+    ]);
   });
 
   it('matches top-level Button controls contract with React stories', () => {
