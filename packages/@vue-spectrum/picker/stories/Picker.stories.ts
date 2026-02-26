@@ -1,5 +1,6 @@
 import {ContextualHelp} from '@vue-spectrum/contextualhelp';
 import {Picker} from '../src';
+import {action} from '@storybook/addon-actions';
 import {computed, defineComponent, ref, watch} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
@@ -121,23 +122,56 @@ const meta: Meta<typeof Picker> = {
   title: 'Picker',
   component: Picker,
   args: {
-    label: 'Example',
-    items: [...baseItems]
+    label: 'Test',
+    onSelectionChange: action('onSelectionChange'),
+    onOpenChange: action('onOpenChange')
   },
   argTypes: {
-    autoFocus: {
-      control: 'boolean'
+    layout: {
+      table: {
+        disable: true
+      }
+    },
+    children: {
+      table: {
+        disable: true
+      }
+    },
+    onSelectionChange: {
+      table: {
+        disable: true
+      }
+    },
+    onOpenChange: {
+      table: {
+        disable: true
+      }
+    },
+    label: {
+      control: 'text'
     },
     description: {
       control: 'text'
     },
-    disabled: {
-      control: 'boolean'
-    },
-    id: {
+    errorMessage: {
       control: 'text'
     },
     isDisabled: {
+      control: 'boolean'
+    },
+    labelAlign: {
+      control: 'radio',
+      options: ['end', 'start']
+    },
+    labelPosition: {
+      control: 'radio',
+      options: ['side', 'top']
+    },
+    necessityIndicator: {
+      control: 'radio',
+      options: ['icon', 'label']
+    },
+    isRequired: {
       control: 'boolean'
     },
     isInvalid: {
@@ -146,22 +180,37 @@ const meta: Meta<typeof Picker> = {
     isQuiet: {
       control: 'boolean'
     },
-    items: {
-      table: {
-        disable: true
+    direction: {
+      control: 'radio',
+      options: ['top', 'bottom']
+    },
+    align: {
+      control: 'radio',
+      options: ['start', 'end']
+    },
+    width: {
+      control: {
+        type: 'radio',
+        options: [null, '100px', '480px', 'size-4600']
       }
     },
-    label: {
-      control: 'text'
+    menuWidth: {
+      control: {
+        type: 'radio',
+        options: [null, '100px', '480px', 'size-4600']
+      }
     },
-    modelValue: {
-      control: 'text'
+    isLoading: {
+      control: 'boolean'
     },
-    placeholder: {
-      control: 'text'
+    autoFocus: {
+      control: 'boolean'
     },
-    validationState: {
-      control: 'text'
+    isOpen: {
+      control: 'boolean'
+    },
+    defaultOpen: {
+      control: 'boolean'
     }
   }
 };

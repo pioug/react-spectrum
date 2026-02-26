@@ -25,6 +25,7 @@ import logicButtonMeta from '../../../packages/@vue-spectrum/button/stories/Logi
 import meterMeta from '../../../packages/@vue-spectrum/meter/stories/Meter.stories';
 import modalMeta from '../../../packages/@vue-spectrum/overlays/stories/Modal.stories';
 import numberFieldMeta from '../../../packages/@vue-spectrum/numberfield/stories/NumberField.stories';
+import pickerMeta from '../../../packages/@vue-spectrum/picker/stories/Picker.stories';
 import progressBarMeta from '../../../packages/@vue-spectrum/progress/stories/ProgressBar.stories';
 import progressCircleMeta from '../../../packages/@vue-spectrum/progress/stories/ProgressCircle.stories';
 import radioGroupMeta from '../../../packages/@vue-spectrum/radio/stories/Radio.stories';
@@ -289,6 +290,70 @@ describe('Vue Storybook controls parity', () => {
 
     expect(Object.keys(args)).toEqual([]);
     expect(Object.keys(argTypes)).toEqual([]);
+  });
+
+  it('matches top-level Picker controls contract with React stories', () => {
+    let args = (pickerMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (pickerMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual(['label', 'onOpenChange', 'onSelectionChange']);
+    expect(args.label).toBe('Test');
+    expect(typeof args.onSelectionChange).toBe('function');
+    expect(typeof args.onOpenChange).toBe('function');
+
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'align',
+      'autoFocus',
+      'children',
+      'defaultOpen',
+      'description',
+      'direction',
+      'errorMessage',
+      'isDisabled',
+      'isInvalid',
+      'isLoading',
+      'isOpen',
+      'isQuiet',
+      'isRequired',
+      'label',
+      'labelAlign',
+      'labelPosition',
+      'layout',
+      'menuWidth',
+      'necessityIndicator',
+      'onOpenChange',
+      'onSelectionChange',
+      'width'
+    ]);
+    expect((argTypes.layout.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.children.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onSelectionChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onOpenChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.label.control as string)).toBe('text');
+    expect((argTypes.description.control as string)).toBe('text');
+    expect((argTypes.errorMessage.control as string)).toBe('text');
+    expect((argTypes.isDisabled.control as string)).toBe('boolean');
+    expect((argTypes.isInvalid.control as string)).toBe('boolean');
+    expect((argTypes.isQuiet.control as string)).toBe('boolean');
+    expect((argTypes.isRequired.control as string)).toBe('boolean');
+    expect((argTypes.labelAlign.control as string)).toBe('radio');
+    expect((argTypes.labelAlign.options as unknown[])).toEqual(['end', 'start']);
+    expect((argTypes.labelPosition.control as string)).toBe('radio');
+    expect((argTypes.labelPosition.options as unknown[])).toEqual(['side', 'top']);
+    expect((argTypes.necessityIndicator.control as string)).toBe('radio');
+    expect((argTypes.necessityIndicator.options as unknown[])).toEqual(['icon', 'label']);
+    expect((argTypes.direction.control as string)).toBe('radio');
+    expect((argTypes.direction.options as unknown[])).toEqual(['top', 'bottom']);
+    expect((argTypes.align.control as string)).toBe('radio');
+    expect((argTypes.align.options as unknown[])).toEqual(['start', 'end']);
+    expect((argTypes.width.control as {type?: string}).type).toBe('radio');
+    expect((argTypes.width.control as {options?: unknown[]}).options).toEqual([null, '100px', '480px', 'size-4600']);
+    expect((argTypes.menuWidth.control as {type?: string}).type).toBe('radio');
+    expect((argTypes.menuWidth.control as {options?: unknown[]}).options).toEqual([null, '100px', '480px', 'size-4600']);
+    expect((argTypes.isLoading.control as string)).toBe('boolean');
+    expect((argTypes.autoFocus.control as string)).toBe('boolean');
+    expect((argTypes.isOpen.control as string)).toBe('boolean');
+    expect((argTypes.defaultOpen.control as string)).toBe('boolean');
   });
 
   it('matches top-level DateField controls contract with React stories', () => {
