@@ -1738,6 +1738,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
+    expect(wrapper.get('textarea').attributes('rows')).toBe('1');
     await wrapper.get('textarea').setValue('Ada Lovelace');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Ada Lovelace']);
     expect(wrapper.emitted('change')?.[0]).toEqual(['Ada Lovelace']);

@@ -144,7 +144,7 @@ function buildField(
       },
       rows: {
         type: Number,
-        default: 3
+        default: kind === 'textarea' ? 1 : 3
       },
       type: {
         type: String,
