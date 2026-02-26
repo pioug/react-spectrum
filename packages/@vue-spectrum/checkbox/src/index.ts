@@ -1,5 +1,7 @@
 import '@adobe/spectrum-css-temp/components/checkbox/vars.css';
 import '@adobe/spectrum-css-temp/components/fieldgroup/vars.css';
+import '@adobe/spectrum-css-temp/components/fieldlabel/vars.css';
+import '@adobe/spectrum-css-temp/components/helptext/vars.css';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, inject, type InjectionKey, type PropType, provide, ref, type Ref} from 'vue';
 import {filterDOMProps} from '@vue-aria/utils';
@@ -13,8 +15,11 @@ type CheckboxValue = string | number;
 
 interface CheckboxGroupContextValue {
   disabled: Ref<boolean>,
+  isEmphasized: Ref<boolean>,
+  isReadOnly: Ref<boolean>,
   invalid: Ref<boolean>,
   modelValue: Ref<CheckboxValue[]>,
+  name: Ref<string | undefined>,
   setChecked: (value: CheckboxValue, checked: boolean) => void
 }
 
@@ -50,6 +55,10 @@ export const Checkbox = defineComponent({
       default: undefined
     },
     isIndeterminate: {
+      type: Boolean,
+      default: false
+    },
+    isReadOnly: {
       type: Boolean,
       default: false
     },
@@ -96,6 +105,16 @@ export const Checkbox = defineComponent({
     });
 
     let isDisabled = computed(() => (props.isDisabled ?? props.disabled) || (group ? group.disabled.value : false));
+    let isReadOnly = computed(() => props.isReadOnly || (group ? group.isReadOnly.value : false));
+    let isEmphasized = computed(() => props.isEmphasized ?? (group ? group.isEmphasized.value : false));
+    let inputName = computed(() => {
+      if (group) {
+        return group.name.value;
+      }
+
+      let value = attrs.name;
+      return typeof value === 'string' ? value : undefined;
+    });
     let isInvalid = computed(() => {
       let ownInvalid = props.isInvalid || props.invalid || props.validationState === 'invalid';
       let groupInvalid = group ? group.invalid.value : false;
@@ -115,7 +134,7 @@ export const Checkbox = defineComponent({
       {
         'is-checked': isChecked.value,
         'is-indeterminate': props.isIndeterminate,
-        'spectrum-Checkbox--quiet': !(props.isEmphasized ?? false),
+        'spectrum-Checkbox--quiet': !isEmphasized.value,
         'is-invalid': isInvalid.value,
         'is-disabled': isDisabled.value,
         'is-hovered': isHovered.value && !isDisabled.value,
@@ -164,6 +183,7 @@ export const Checkbox = defineComponent({
         h('input', {
           class: classNames(checkboxStyles, 'spectrum-Checkbox-input'),
           type: 'checkbox',
+          name: inputName.value,
           value: props.value,
           checked: isChecked.value,
           disabled: isDisabled.value,
@@ -178,7 +198,7 @@ export const Checkbox = defineComponent({
               return;
             }
 
-            if (isDisabled.value) {
+            if (isDisabled.value || isReadOnly.value) {
               target.checked = isChecked.value;
               return;
             }
@@ -236,7 +256,19 @@ export const CheckboxGroup = defineComponent({
   name: 'VueCheckboxGroup',
   inheritAttrs: false,
   props: {
+    contextualHelp: {
+      type: [String, Number, Object, Function, Array] as PropType<unknown>,
+      default: undefined
+    },
+    defaultValue: {
+      type: Array as PropType<CheckboxValue[] | undefined>,
+      default: undefined
+    },
     description: {
+      type: String,
+      default: ''
+    },
+    errorMessage: {
       type: String,
       default: ''
     },
@@ -248,17 +280,53 @@ export const CheckboxGroup = defineComponent({
       type: Boolean,
       default: false
     },
+    isEmphasized: {
+      type: Boolean,
+      default: false
+    },
     isInvalid: {
       type: Boolean,
       default: false
+    },
+    isReadOnly: {
+      type: Boolean,
+      default: false
+    },
+    isRequired: {
+      type: Boolean,
+      default: false
+    },
+    labelAlign: {
+      type: String as PropType<'start' | 'end' | undefined>,
+      default: undefined
+    },
+    labelPosition: {
+      type: String as PropType<'top' | 'side' | undefined>,
+      default: undefined
     },
     label: {
       type: String,
       default: ''
     },
+    name: {
+      type: String as PropType<string | undefined>,
+      default: undefined
+    },
     modelValue: {
-      type: Array as PropType<CheckboxValue[]>,
-      default: () => []
+      type: Array as PropType<CheckboxValue[] | undefined>,
+      default: undefined
+    },
+    orientation: {
+      type: String as PropType<'horizontal' | 'vertical'>,
+      default: 'vertical'
+    },
+    showErrorIcon: {
+      type: Boolean,
+      default: false
+    },
+    value: {
+      type: Array as PropType<CheckboxValue[] | undefined>,
+      default: undefined
     },
     validationState: {
       type: String as PropType<ValidationState | undefined>,
@@ -271,46 +339,121 @@ export const CheckboxGroup = defineComponent({
   },
   setup(props, {attrs, slots, emit}) {
     let groupId = `vs-checkbox-group-${++checkboxGroupId}`;
-    let descriptionId = computed(() => props.description ? `${groupId}-description` : undefined);
+    let uncontrolledValue = ref<CheckboxValue[]>(props.defaultValue ? [...props.defaultValue] : []);
+    let selectedValues = computed(() => props.value ?? props.modelValue ?? uncontrolledValue.value);
+    let labelId = computed(() => props.label ? `${groupId}-label` : undefined);
+    let helpTextId = computed(() => (props.description || props.errorMessage) ? `${groupId}-helptext` : undefined);
+    let groupName = computed(() => props.name);
     let isInvalid = computed(() => (props.isInvalid || props.invalid || props.validationState === 'invalid') && !props.isDisabled);
+    let showErrorMessage = computed(() => isInvalid.value && !!props.errorMessage);
+    let helpText = computed(() => showErrorMessage.value ? props.errorMessage : props.description);
 
     provide(checkboxGroupContextKey, {
       disabled: computed(() => props.isDisabled),
+      isEmphasized: computed(() => props.isEmphasized),
+      isReadOnly: computed(() => props.isReadOnly),
       invalid: isInvalid,
-      modelValue: computed(() => props.modelValue),
+      modelValue: computed(() => selectedValues.value),
+      name: groupName,
       setChecked: (value: CheckboxValue, checked: boolean) => {
-        let values = new Set(props.modelValue);
+        if (props.isDisabled || props.isReadOnly) {
+          return;
+        }
+
+        let values = new Set(selectedValues.value ?? []);
         if (checked) {
           values.add(value);
         } else {
           values.delete(value);
         }
         let next = Array.from(values);
+        if (props.value === undefined && props.modelValue === undefined) {
+          uncontrolledValue.value = next;
+        }
         emit('update:modelValue', next);
         emit('change', next);
       }
     });
 
-    return () => h('fieldset', {
-      ...attrs,
-      class: [
-        classNames(fieldgroupStyles, 'spectrum-FieldGroup'),
-        'vs-checkbox-group',
-        attrs.class
-      ],
-      'data-vac': '',
-      disabled: props.isDisabled || undefined,
-      'aria-invalid': isInvalid.value ? 'true' : undefined,
-      'aria-describedby': descriptionId.value
-    }, [
-      props.label ? h('legend', {class: 'vs-checkbox-group__label'}, props.label) : null,
-      h('div', {
-        class: [classNames(fieldgroupStyles, 'spectrum-FieldGroup-group'), 'vs-checkbox-group__content']
-      }, slots.default ? slots.default() : []),
-      props.description
-        ? h('div', {id: descriptionId.value, class: 'vs-checkbox-group__description'}, props.description)
-        : null
-    ]);
+    return () => {
+      let domProps = filterDOMProps(attrs as Record<string, unknown>) as Record<string, unknown>;
+      let {
+        class: domClass,
+        className: domClassName,
+        style: domStyle,
+        ...otherDomProps
+      } = domProps;
+      let ariaLabel = typeof attrs['aria-label'] === 'string' ? attrs['aria-label'] : undefined;
+      delete otherDomProps['aria-label'];
+      delete otherDomProps['aria-labelledby'];
+
+      return h('div', {
+        ...otherDomProps,
+        class: [
+          classNames(
+            fieldgroupStyles,
+            'spectrum-Field',
+            'spectrum-FieldGroup',
+            {
+              'spectrum-Field--positionTop': (props.labelPosition ?? 'top') !== 'side',
+              'spectrum-Field--positionSide': props.labelPosition === 'side',
+              'spectrum-Field--alignEnd': props.labelAlign === 'end',
+              'spectrum-Field--hasContextualHelp': !!props.contextualHelp
+            }
+          ),
+          domClassName,
+          domClass
+        ],
+        style: domStyle
+      }, [
+        props.label
+          ? h('span', {
+            id: labelId.value,
+            class: classNames(fieldgroupStyles, 'spectrum-FieldLabel')
+          }, props.label)
+          : null,
+        props.contextualHelp
+          ? h('span', {class: classNames(fieldgroupStyles, 'spectrum-Field-contextualHelp')}, props.contextualHelp as never)
+          : null,
+        h('div', {
+          id: groupId,
+          role: 'group',
+          class: classNames(
+            fieldgroupStyles,
+            'spectrum-FieldGroup-group',
+            'spectrum-Field-field',
+            {
+              'spectrum-FieldGroup-group--horizontal': props.orientation === 'horizontal'
+            }
+          ),
+          'aria-labelledby': labelId.value,
+          'aria-label': !props.label ? ariaLabel : undefined,
+          'aria-describedby': helpTextId.value,
+          'aria-invalid': isInvalid.value ? 'true' : undefined,
+          'aria-disabled': props.isDisabled ? 'true' : undefined,
+          'aria-required': props.isRequired ? 'true' : undefined
+        }, slots.default ? slots.default() : []),
+        helpText.value
+          ? h('div', {
+            id: helpTextId.value,
+            class: classNames(
+              fieldgroupStyles,
+              'spectrum-HelpText',
+              `spectrum-HelpText--${showErrorMessage.value ? 'negative' : 'neutral'}`,
+              {'is-disabled': props.isDisabled}
+            )
+          }, [
+            showErrorMessage.value && props.showErrorIcon
+              ? h('span', {
+                class: classNames(fieldgroupStyles, 'spectrum-HelpText-validationIcon'),
+                'aria-hidden': 'true'
+              }, '!')
+              : null,
+            h('div', {class: classNames(fieldgroupStyles, 'spectrum-HelpText-text')}, helpText.value)
+          ])
+          : null
+      ]);
+    };
   }
 });
 

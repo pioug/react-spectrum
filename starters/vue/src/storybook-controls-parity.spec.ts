@@ -4,6 +4,7 @@ import badgeMeta from '../../../packages/@vue-spectrum/badge/stories/Badge.stori
 import actionButtonMeta from '../../../packages/@vue-spectrum/button/stories/ActionButton.stories';
 import buttonMeta from '../../../packages/@vue-spectrum/button/stories/Button.stories';
 import checkboxMeta from '../../../packages/@vue-spectrum/checkbox/stories/Checkbox.stories';
+import checkboxGroupMeta from '../../../packages/@vue-spectrum/checkbox/stories/CheckboxGroup.stories';
 import dividerMeta from '../../../packages/@vue-spectrum/divider/stories/Divider.stories';
 import fileTriggerMeta from '../../../packages/@vue-spectrum/filetrigger/stories/FileTrigger.stories';
 import formMeta from '../../../packages/@vue-spectrum/form/stories/Form.stories';
@@ -107,6 +108,59 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.isReadOnly.control as string)).toBe('boolean');
     expect((argTypes.autoFocus.control as string)).toBe('boolean');
     expect((argTypes.isInvalid.control as string)).toBe('boolean');
+  });
+
+  it('matches top-level CheckboxGroup controls contract with React stories', () => {
+    let args = (checkboxGroupMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (checkboxGroupMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual(['label', 'onChange']);
+    expect(args.label).toBe('Pets');
+    expect(typeof args.onChange).toBe('function');
+
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'aria-label',
+      'contextualHelp',
+      'defaultValue',
+      'description',
+      'errorMessage',
+      'isDisabled',
+      'isEmphasized',
+      'isInvalid',
+      'isReadOnly',
+      'isRequired',
+      'labelAlign',
+      'labelPosition',
+      'name',
+      'necessityIndicator',
+      'onChange',
+      'orientation',
+      'showErrorIcon',
+      'value'
+    ]);
+
+    expect((argTypes.onChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.contextualHelp.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.defaultValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.value.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.isEmphasized.control as string)).toBe('boolean');
+    expect((argTypes.isDisabled.control as string)).toBe('boolean');
+    expect((argTypes.isReadOnly.control as string)).toBe('boolean');
+    expect((argTypes.isRequired.control as string)).toBe('boolean');
+    expect((argTypes.necessityIndicator.control as string)).toBe('select');
+    expect((argTypes.necessityIndicator.options as string[])).toEqual(['icon', 'label']);
+    expect((argTypes.labelPosition.control as string)).toBe('select');
+    expect((argTypes.labelPosition.options as string[])).toEqual(['top', 'side']);
+    expect((argTypes.labelAlign.control as string)).toBe('select');
+    expect((argTypes.labelAlign.options as string[])).toEqual(['start', 'end']);
+    expect((argTypes.isInvalid.control as string)).toBe('boolean');
+    expect((argTypes.description.control as string)).toBe('text');
+    expect((argTypes.errorMessage.control as string)).toBe('text');
+    expect((argTypes.showErrorIcon.control as string)).toBe('boolean');
+    expect((argTypes.orientation.control as string)).toBe('select');
+    expect((argTypes.orientation.options as string[])).toEqual(['horizontal', 'vertical']);
+    expect((argTypes['aria-label'].control as string)).toBe('text');
+    expect((argTypes.name.control as string)).toBe('text');
   });
 
   it('matches top-level Divider controls contract with React stories', () => {

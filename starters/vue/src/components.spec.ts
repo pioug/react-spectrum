@@ -1910,6 +1910,15 @@ describe('Vue migration primitives', () => {
       `
     });
 
+    let groupRoot = wrapper.get('.spectrum-Field.spectrum-FieldGroup');
+    expect(groupRoot.element.tagName).toBe('DIV');
+    let groupControl = wrapper.get('[role="group"]');
+    expect(groupControl.classes()).toContain('spectrum-FieldGroup-group');
+    expect(groupControl.classes()).toContain('spectrum-Field-field');
+    expect(wrapper.find('fieldset').exists()).toBe(false);
+    expect(wrapper.find('.vs-checkbox-group').exists()).toBe(false);
+    expect(wrapper.get('input[value="react"]').attributes('name')).toBeUndefined();
+
     await wrapper.get('input[value="react"]').setValue(true);
     expect((wrapper.vm as unknown as {selected: string[]}).selected).toEqual(['vue', 'react']);
   });
