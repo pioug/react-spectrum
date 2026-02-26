@@ -431,32 +431,80 @@ describe('Vue migration primitives', () => {
   it('renders icon variants with expected accessibility and classes', () => {
     let wrapper = mount(Icon, {
       props: {
-        label: 'Direction',
         size: 'l'
       },
+      attrs: {
+        'aria-label': 'Direction'
+      },
       slots: {
-        default: '<svg viewBox="0 0 24 24"><path d="M5 12h14" /></svg>'
+        default: () => h('svg', {viewBox: '0 0 24 24'}, [h('path', {d: 'M5 12h14'})])
       }
     });
 
-    expect(wrapper.classes()).toContain('vs-icon--l');
-    expect(wrapper.attributes('aria-label')).toBe('Direction');
+    expect(wrapper.element.tagName).toBe('svg');
     expect(wrapper.classes()).toContain('spectrum-Icon');
+    expect(wrapper.classes()).toContain('spectrum-Icon--sizeL');
+    expect(wrapper.attributes('aria-label')).toBe('Direction');
+    expect(wrapper.attributes('aria-hidden')).toBeUndefined();
+    expect(wrapper.attributes('focusable')).toBe('false');
+    expect(wrapper.attributes('role')).toBe('img');
+
+    let unlabeled = mount(Icon, {
+      slots: {
+        default: () => h('svg', {viewBox: '0 0 24 24'}, [h('path', {d: 'M5 12h14'})])
+      }
+    });
+    expect(unlabeled.attributes('aria-hidden')).toBe('true');
 
     let uiIcon = mount(UIIcon, {
+      attrs: {
+        'aria-label': 'Status'
+      },
       slots: {
-        default: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" /></svg>'
+        default: () => h('svg', {viewBox: '0 0 24 24'}, [h('circle', {cx: '12', cy: '12', r: '8'})])
       }
     });
-    expect(uiIcon.classes()).toContain('vs-ui-icon');
+    expect(uiIcon.element.tagName).toBe('svg');
+    expect(uiIcon.classes()).toContain('spectrum-Icon');
+    expect(uiIcon.attributes('aria-label')).toBe('Status');
+    expect(uiIcon.attributes('aria-hidden')).toBeUndefined();
 
     let illustration = mount(Illustration, {
       slots: {
-        default: '<svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" /></svg>'
+        default: () => h('svg', {viewBox: '0 0 24 24'}, [h('rect', {x: '4', y: '4', width: '16', height: '16'})])
       }
     });
-    expect(illustration.classes()).toContain('vs-illustration');
-    expect(illustration.attributes('aria-hidden')).toBe('true');
+    expect(illustration.element.tagName).toBe('svg');
+    expect(illustration.attributes('aria-hidden')).toBeUndefined();
+    expect(illustration.attributes('role')).toBeUndefined();
+
+    let labelledIllustration = mount(Illustration, {
+      attrs: {
+        'aria-label': 'No Results'
+      },
+      slots: {
+        default: () => h('svg', {viewBox: '0 0 24 24'}, [h('rect', {x: '4', y: '4', width: '16', height: '16'})])
+      }
+    });
+    expect(labelledIllustration.attributes('role')).toBe('img');
+    expect(labelledIllustration.attributes('aria-label')).toBe('No Results');
+  });
+
+  it('renders icon size from provider scale when explicit size is not passed', () => {
+    let wrapper = mount(Provider, {
+      props: {
+        scale: 'large'
+      },
+      slots: {
+        default: () => h(Icon, null, {
+          default: () => h('svg', {viewBox: '0 0 24 24'}, [h('path', {d: 'M5 12h14'})])
+        })
+      }
+    });
+
+    let icon = wrapper.get('svg');
+    expect(icon.classes()).toContain('spectrum-Icon');
+    expect(icon.classes()).toContain('spectrum-Icon--sizeL');
   });
 
   it('renders vue workflow icon markup without react wrappers', () => {

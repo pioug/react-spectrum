@@ -1,60 +1,69 @@
 import '@adobe/spectrum-css-temp/components/icon/vars.css';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, type PropType} from 'vue';
+import {cloneVNode, computed, defineComponent, isVNode, mergeProps, type PropType, type VNode} from 'vue';
+import {filterDOMProps} from '@vue-aria/utils';
+import {useProvider} from '@vue-spectrum/provider';
 const styles: {[key: string]: string} = {};
 
 
 type IconScaleSize = 'L' | 'M';
 type IconSize = 'XXL' | 'XXS' | 'XL' | 'XS' | 'L' | 'M' | 'S' | 'l' | 'm' | 's' | 'xl' | 'xs' | 'xxl' | 'xxs';
 
-function resolveSize(size: IconSize | undefined): {scale: IconScaleSize, token: Exclude<IconSize, 'l' | 'm' | 's' | 'xl' | 'xs' | 'xxl' | 'xxs'>} {
-  if (!size) {
-    return {
-      scale: 'M',
-      token: 'M'
-    };
-  }
-
-  let normalized = size.toUpperCase() as Exclude<IconSize, 'l' | 'm' | 's' | 'xl' | 'xs' | 'xxl' | 'xxs'>;
-  let scale: IconScaleSize = normalized === 'L' || normalized === 'XL' || normalized === 'XXL' ? 'L' : 'M';
-  return {
-    scale,
-    token: normalized
-  };
+function resolveSize(size: IconSize): Exclude<IconSize, 'l' | 'm' | 's' | 'xl' | 'xs' | 'xxl' | 'xxs'> {
+  return size.toUpperCase() as Exclude<IconSize, 'l' | 'm' | 's' | 'xl' | 'xs' | 'xxl' | 'xxs'>;
 }
 
-function resolveAriaHidden(hasLabel: boolean, hidden: boolean, explicitAriaHidden: unknown): string | undefined {
-  if (hidden) {
+function normalizeAriaHidden(explicitAriaHidden: unknown): string | undefined {
+  if (explicitAriaHidden === true || explicitAriaHidden === 'true') {
     return 'true';
   }
 
-  if (typeof explicitAriaHidden === 'string') {
-    return explicitAriaHidden;
+  if (explicitAriaHidden === 'false') {
+    return 'false';
   }
 
-  if (typeof explicitAriaHidden === 'boolean') {
-    return explicitAriaHidden ? 'true' : 'false';
+  return undefined;
+}
+
+function resolveIconAriaHidden(hasLabel: boolean, explicitAriaHidden: unknown): string | undefined {
+  let normalized = normalizeAriaHidden(explicitAriaHidden);
+  if (hasLabel) {
+    return normalized;
   }
 
-  return hasLabel ? undefined : 'true';
+  return 'true';
+}
+
+function getSingleVNodeChild(slot: (() => unknown[]) | undefined): VNode | null {
+  let nodes = slot ? slot() : [];
+  for (let node of nodes) {
+    if (isVNode(node)) {
+      return node;
+    }
+  }
+
+  return null;
+}
+
+function getVNodeDisplayName(node: VNode): string | undefined {
+  let type = node.type;
+  if (typeof type === 'object' && type != null) {
+    let namedType = type as {displayName?: string, name?: string};
+    return namedType.displayName || namedType.name;
+  }
+
+  if (typeof type === 'function') {
+    let namedType = type as {displayName?: string, name?: string};
+    return namedType.displayName || namedType.name;
+  }
+
+  return undefined;
 }
 
 const iconProps = {
   color: {
-    type: String,
-    default: 'currentColor'
-  },
-  elementType: {
-    type: String,
-    default: 'span'
-  },
-  hidden: {
-    type: Boolean,
-    default: false
-  },
-  label: {
-    type: String,
-    default: ''
+    type: String as PropType<string | undefined>,
+    default: undefined
   },
   size: {
     type: String as PropType<IconSize | undefined>,
@@ -67,31 +76,42 @@ export const Icon = defineComponent({
   inheritAttrs: false,
   props: iconProps,
   setup(props, {attrs, slots}) {
-    let resolvedSize = computed(() => resolveSize(props.size));
+    let provider = useProvider();
+    let providerScale = computed<IconScaleSize>(() => provider.scale === 'large' ? 'L' : 'M');
+    let resolvedSize = computed(() => props.size ? resolveSize(props.size) : providerScale.value);
 
     return () => {
-      let ariaLabel = props.label || attrs['aria-label'];
-      let ariaLabelledby = attrs['aria-labelledby'];
-      let hasLabel = !!ariaLabel || !!ariaLabelledby;
-      let ariaHidden = resolveAriaHidden(hasLabel, props.hidden, attrs['aria-hidden']);
+      let child = getSingleVNodeChild(slots.default);
+      if (!child) {
+        return null;
+      }
 
-      return h(props.elementType, {
-        ...attrs,
+      let ariaLabel = attrs['aria-label'];
+      let hasLabel = typeof ariaLabel === 'string' && ariaLabel.length > 0;
+      let domProps = filterDOMProps(attrs as Record<string, unknown>) as Record<string, unknown>;
+      let {
+        class: domClass,
+        className: domClassName,
+        style: domStyle,
+        ...otherDomProps
+      } = domProps;
+
+      return cloneVNode(child, mergeProps(child.props ?? {}, otherDomProps, {
         class: [
-          classNames(styles, 'spectrum-Icon', `spectrum-Icon--size${resolvedSize.value.token}`),
-          'vs-icon',
-          `vs-icon--${String(resolvedSize.value.token).toLowerCase()}`,
-          attrs.class
+          classNames(styles, 'spectrum-Icon', `spectrum-Icon--size${resolvedSize.value}`),
+          child.props?.class,
+          domClassName,
+          domClass
         ],
-        style: [{color: props.color}, attrs.style],
+        style: [
+          domStyle,
+          props.color ? {color: props.color} : undefined
+        ],
+        focusable: 'false',
         role: 'img',
-        hidden: props.hidden || undefined,
         'aria-label': typeof ariaLabel === 'string' ? ariaLabel : undefined,
-        'aria-labelledby': typeof ariaLabelledby === 'string' ? ariaLabelledby : undefined,
-        'aria-hidden': ariaHidden,
-        'data-scale': resolvedSize.value.scale,
-        'data-vac': ''
-      }, slots.default ? slots.default() : []);
+        'aria-hidden': resolveIconAriaHidden(hasLabel, attrs['aria-hidden'])
+      }));
     };
   }
 });
@@ -99,50 +119,84 @@ export const Icon = defineComponent({
 export const UIIcon = defineComponent({
   name: 'VueUIIcon',
   inheritAttrs: false,
-  props: iconProps,
-  setup(props, {attrs, slots}) {
-    return () => h(Icon, {
-      ...attrs,
-      ...props,
-      class: ['vs-ui-icon', attrs.class]
-    }, slots);
+  setup(_props, {attrs, slots}) {
+    let provider = useProvider();
+    let providerScale = computed<IconScaleSize>(() => provider.scale === 'large' ? 'L' : 'M');
+
+    return () => {
+      let child = getSingleVNodeChild(slots.default);
+      if (!child) {
+        return null;
+      }
+
+      let ariaLabel = attrs['aria-label'];
+      let hasLabel = typeof ariaLabel === 'string' && ariaLabel.length > 0;
+      let domProps = filterDOMProps(attrs as Record<string, unknown>) as Record<string, unknown>;
+      let {
+        class: domClass,
+        className: domClassName,
+        style: domStyle,
+        ...otherDomProps
+      } = domProps;
+      let iconName = getVNodeDisplayName(child);
+
+      return cloneVNode(child, mergeProps(child.props ?? {}, otherDomProps, {
+        class: [
+          classNames(
+            styles,
+            'spectrum-Icon',
+            {
+              [`spectrum-UIIcon-${iconName}`]: Boolean(iconName)
+            }
+          ),
+          child.props?.class,
+          domClassName,
+          domClass
+        ],
+        style: domStyle,
+        scale: providerScale.value,
+        focusable: 'false',
+        role: 'img',
+        'aria-label': typeof ariaLabel === 'string' ? ariaLabel : undefined,
+        'aria-hidden': resolveIconAriaHidden(hasLabel, attrs['aria-hidden'])
+      }));
+    };
   }
 });
 
 export const Illustration = defineComponent({
   name: 'VueIllustration',
   inheritAttrs: false,
-  props: {
-    elementType: {
-      type: String,
-      default: 'div'
-    },
-    hidden: {
-      type: Boolean,
-      default: false
-    },
-    label: {
-      type: String,
-      default: ''
-    }
-  },
-  setup(props, {attrs, slots}) {
+  setup(_props, {attrs, slots}) {
     return () => {
-      let ariaLabel = props.label || attrs['aria-label'];
-      let ariaLabelledby = attrs['aria-labelledby'];
-      let hasLabel = !!ariaLabel || !!ariaLabelledby;
-      let ariaHidden = resolveAriaHidden(hasLabel, props.hidden, attrs['aria-hidden']);
+      let child = getSingleVNodeChild(slots.default);
+      if (!child) {
+        return null;
+      }
 
-      return h(props.elementType, {
-        ...attrs,
-        class: ['vs-illustration', attrs.class],
+      let domProps = filterDOMProps(attrs as Record<string, unknown>) as Record<string, unknown>;
+      let {
+        class: domClass,
+        className: domClassName,
+        style: domStyle,
+        ...otherDomProps
+      } = domProps;
+      let ariaLabel = attrs['aria-label'];
+      let ariaLabelledby = attrs['aria-labelledby'];
+      let hasLabel = Boolean(
+        (typeof ariaLabel === 'string' && ariaLabel.length > 0)
+        || (typeof ariaLabelledby === 'string' && ariaLabelledby.length > 0)
+      );
+
+      return cloneVNode(child, mergeProps(child.props ?? {}, otherDomProps, {
+        class: [child.props?.class, domClassName, domClass],
+        style: domStyle,
+        focusable: 'false',
         role: hasLabel ? 'img' : undefined,
-        hidden: props.hidden || undefined,
         'aria-label': typeof ariaLabel === 'string' ? ariaLabel : undefined,
         'aria-labelledby': typeof ariaLabelledby === 'string' ? ariaLabelledby : undefined,
-        'aria-hidden': ariaHidden,
-        'data-vac': ''
-      }, slots.default ? slots.default() : []);
+        'aria-hidden': normalizeAriaHidden(attrs['aria-hidden'])
+      }));
     };
   }
 });

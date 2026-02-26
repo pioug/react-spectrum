@@ -1,10 +1,11 @@
 import {Icon} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-const meta: Meta<typeof Icon> = {
+const meta = {
   title: 'Icons/Custom',
-  component: Icon
-};
+  component: Icon,
+  providerSwitcher: {status: 'positive'}
+} as Meta<typeof Icon>;
 
 export default meta;
 
