@@ -51,7 +51,7 @@ export const WithIcon: BadgeStory = {
     template: `
       <Badge v-bind="args">
         <CheckmarkCircle aria-label="Done" />
-        <span>Licensed</span>
+        Licensed
       </Badge>
     `
   })
@@ -72,7 +72,7 @@ export const WithIconReverseOrder: BadgeStory = {
     },
     template: `
       <Badge v-bind="args">
-        <span>Licensed</span>
+        Licensed
         <CheckmarkCircle aria-label="Done" />
       </Badge>
     `

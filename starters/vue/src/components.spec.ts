@@ -2,6 +2,7 @@ import {mount} from '@vue/test-utils';
 import {describe, expect, it, vi} from 'vitest';
 import {h, nextTick} from 'vue';
 import EditWorkflow from '@spectrum-icons-vue/workflow/Edit';
+import CheckmarkCircle from '@spectrum-icons-vue/workflow/CheckmarkCircle';
 import {Avatar} from '@vue-spectrum/avatar';
 import {Badge} from '@vue-spectrum/badge';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -99,8 +100,31 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    expect(wrapper.text()).toContain('Ready for review');
-    expect(wrapper.classes()).toContain('vs-badge--positive');
+    expect(wrapper.classes()).toContain('spectrum-Badge');
+    expect(wrapper.classes()).toContain('spectrum-Badge--positive');
+    expect(wrapper.attributes('role')).toBe('presentation');
+    expect(wrapper.find('.spectrum-Badge-label').text()).toContain('Ready for review');
+  });
+
+  it('maps badge icon slot classes and icon sizing to react parity', () => {
+    let wrapper = mount(Badge, {
+      props: {
+        variant: 'positive'
+      },
+      slots: {
+        default: () => [
+          h(CheckmarkCircle, {'aria-label': 'Done'}),
+          'Licensed'
+        ]
+      }
+    });
+
+    expect(wrapper.attributes('role')).toBe('presentation');
+    expect(wrapper.find('.spectrum-Badge-label').text()).toBe('Licensed');
+
+    let icon = wrapper.get('svg');
+    expect(icon.classes()).toContain('spectrum-Badge-icon');
+    expect(icon.classes()).toContain('spectrum-Icon--sizeS');
   });
 
   it('applies provider theme classes and metadata for token variants', () => {

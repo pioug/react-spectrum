@@ -1,5 +1,6 @@
 import {describe, expect, it} from 'vitest';
 import avatarMeta from '../../../packages/@vue-spectrum/avatar/stories/Avatar.stories';
+import badgeMeta from '../../../packages/@vue-spectrum/badge/stories/Badge.stories';
 import actionButtonMeta from '../../../packages/@vue-spectrum/button/stories/ActionButton.stories';
 import buttonMeta from '../../../packages/@vue-spectrum/button/stories/Button.stories';
 import logicButtonMeta from '../../../packages/@vue-spectrum/button/stories/LogicButton.stories';
@@ -14,6 +15,27 @@ describe('Vue Storybook controls parity', () => {
     expect(Object.keys(argTypes)).toEqual([]);
     expect(argTypes).not.toHaveProperty('label');
     expect(argTypes).not.toHaveProperty('shape');
+  });
+
+  it('matches top-level Badge controls contract with React stories', () => {
+    let args = (badgeMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (badgeMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes)).toEqual(['variant']);
+    expect((argTypes.variant.control as {type?: string}).type).toBe('select');
+    expect((argTypes.variant.control as {options?: string[]}).options).toEqual([
+      'positive',
+      'negative',
+      'neutral',
+      'info',
+      'indigo',
+      'yellow',
+      'magenta',
+      'fuchsia',
+      'purple',
+      'seafoam'
+    ]);
   });
 
   it('matches top-level Button controls contract with React stories', () => {
