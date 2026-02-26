@@ -1,0 +1,7 @@
+.spectrum-Search .spectrum-Textfield-icon {
+  pointer-events: none;
+}
+
+.spectrum-Search .spectrum-Textfield-input:focus-visible:not(:active) {
+  box-shadow: none;
+}

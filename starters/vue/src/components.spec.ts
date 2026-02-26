@@ -1761,7 +1761,7 @@ describe('Vue migration primitives', () => {
     expect(wrapper.find('textarea').classes()).toContain('is-hovered');
   });
 
-  it('maps searchfield disabled/quiet states and clear behavior', async () => {
+  it('maps searchfield field contract, aria wiring, icon variants, and clear behavior', async () => {
     let wrapper = mount(SearchField, {
       props: {
         modelValue: 'Ada',
@@ -1770,19 +1770,123 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    expect(wrapper.find('.spectrum-Search').classes()).toContain('is-quiet');
-    expect(wrapper.get('[data-testid="searchicon"]').exists()).toBe(true);
-    await wrapper.get('button.spectrum-ClearButton').trigger('click');
+    expect(wrapper.element.tagName).toBe('DIV');
+    expect(wrapper.classes()).toContain('spectrum-Field');
+    expect(wrapper.classes()).toContain('spectrum-Search');
+    expect(wrapper.classes()).toContain('spectrum-Textfield');
+    expect(wrapper.classes()).toContain('spectrum-Textfield-wrapper');
+    expect(wrapper.classes()).toContain('is-quiet');
+
+    let label = wrapper.get('label.spectrum-FieldLabel');
+    let input = wrapper.get('input[type="search"]');
+    expect(label.attributes('for')).toBe(input.attributes('id'));
+    expect(input.attributes('aria-labelledby')).toBe(label.attributes('id'));
+    expect(input.attributes('tabindex')).toBe('0');
+    expect(wrapper.get('.spectrum-Textfield.spectrum-Field-field').exists()).toBe(true);
+    expect(input.classes()).toContain('spectrum-Textfield-input');
+    expect(input.classes()).toContain('i18nFontFamily');
+    expect(input.classes()).toContain('spectrum-Textfield-inputIcon');
+    expect(input.classes()).toContain('spectrum-Search-input');
+
+    let searchIcon = wrapper.get('[data-testid="searchicon"]');
+    expect(searchIcon.element.tagName).toBe('svg');
+    expect(searchIcon.classes()).toContain('spectrum-Textfield-icon');
+    expect(searchIcon.classes()).toContain('spectrum-UIIcon-Magnifier');
+
+    let clearButton = wrapper.get('div.spectrum-ClearButton[role="button"]');
+    expect(clearButton.attributes('data-react-aria-pressable')).toBe('true');
+
+    await clearButton.trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['']);
     expect(wrapper.emitted('clear')).toHaveLength(1);
+    expect(wrapper.get('input[type="search"]').attributes('aria-labelledby')).toBe(label.attributes('id'));
+
+    await input.trigger('keydown', {key: 'Enter'});
+    expect(wrapper.emitted('submit')?.[0]).toEqual(['Ada']);
 
     let disabled = mount(SearchField, {
       props: {
-        modelValue: '',
+        modelValue: 'Ada',
         isDisabled: true
       }
     });
-    expect(disabled.find('.spectrum-Search').classes()).toContain('is-disabled');
+    expect(disabled.classes()).toContain('is-disabled');
+    expect(disabled.get('div.spectrum-ClearButton').classes()).toContain('is-disabled');
+    await disabled.get('div.spectrum-ClearButton').trigger('click');
+    expect(disabled.emitted('clear')).toBeUndefined();
+
+    let noVisibleLabel = mount(SearchField, {
+      props: {
+        label: ''
+      },
+      attrs: {
+        'aria-label': 'Street address'
+      }
+    });
+    expect(noVisibleLabel.find('label.spectrum-FieldLabel').exists()).toBe(false);
+    expect(noVisibleLabel.attributes('aria-label')).toBeUndefined();
+    expect(noVisibleLabel.get('input[type="search"]').attributes('aria-label')).toBe('Street address');
+
+    let invalid = mount(SearchField, {
+      props: {
+        label: 'Search',
+        validationState: 'invalid',
+        errorMessage: 'Remove special characters.'
+      }
+    });
+    expect(invalid.classes()).toContain('spectrum-Search--invalid');
+    expect(invalid.get('.spectrum-Textfield.spectrum-Field-field').classes()).toContain('spectrum-Textfield--invalid');
+    expect(invalid.get('.spectrum-HelpText').classes()).toContain('spectrum-HelpText--negative');
+    expect(invalid.get('.spectrum-HelpText-text').text()).toContain('Remove special characters');
+    expect(invalid.get('input[type="search"]').attributes('aria-describedby')).toContain('-error');
+
+    let iconNull = mount(SearchField, {
+      props: {
+        label: 'Search',
+        modelValue: 'React',
+        icon: null
+      }
+    });
+    expect(iconNull.find('[data-testid="searchicon"]').exists()).toBe(false);
+    expect(iconNull.get('input[type="search"]').classes()).not.toContain('spectrum-Textfield-inputIcon');
+
+    let refreshIcon = mount(SearchField, {
+      props: {
+        label: 'Search',
+        modelValue: 'React',
+        icon: 'refresh'
+      }
+    });
+    let refreshSvg = refreshIcon.get('.spectrum-Textfield-icon');
+    expect(refreshSvg.attributes('viewBox')).toBe('0 0 36 36');
+    expect(refreshSvg.classes()).toContain('spectrum-Icon--sizeS');
+  });
+
+  it('keeps searchfield style wiring bound to Spectrum field/textfield/button styles', () => {
+    let source = readFileSync(
+      resolve(process.cwd(), '../../packages/@vue-spectrum/searchfield/src/index.ts'),
+      'utf8'
+    );
+
+    expect(source).toContain("@adobe/spectrum-css-temp/components/fieldlabel/vars.css");
+    expect(source).toContain("@adobe/spectrum-css-temp/components/helptext/vars.css");
+    expect(source).toContain("@adobe/spectrum-css-temp/components/textfield/vars.css");
+    expect(source).toContain("@adobe/spectrum-css-temp/components/button/vars.css");
+    expect(source).toContain("./stateClassOverrides.css");
+    expect(source).toContain("'spectrum-Field'");
+    expect(source).toContain("'spectrum-Textfield-wrapper'");
+    expect(source).toContain("'spectrum-Field-field'");
+    expect(source).toContain("'spectrum-Textfield-inputIcon'");
+    expect(source).toContain("'spectrum-ClearButton'");
+
+    let overrides = readFileSync(
+      resolve(process.cwd(), '../../packages/@vue-spectrum/searchfield/src/stateClassOverrides.css'),
+      'utf8'
+    );
+    expect(overrides).toContain('.spectrum-Search .spectrum-Textfield-icon');
+    expect(overrides).toContain('pointer-events: none');
+    expect(overrides).toContain('.spectrum-Search .spectrum-Textfield-input:focus-visible:not(:active)');
+    expect(overrides).toContain('box-shadow: none');
   });
 
   it('maps combobox interaction states, aria wiring, and hidden key input', async () => {

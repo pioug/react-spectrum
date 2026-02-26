@@ -7,7 +7,10 @@ import type {Meta, StoryObj} from '@storybook/vue3-vite';
 type SearchFieldStoryArgs = {
   ariaLabel?: string,
   autoFocus?: boolean,
+  contextualHelp?: unknown,
   description?: string,
+  errorMessage?: string,
+  icon?: unknown,
   isDisabled?: boolean,
   isQuiet?: boolean,
   isReadOnly?: boolean,
@@ -100,19 +103,25 @@ function renderSearchField(baseArgs: Partial<SearchFieldStoryArgs> = {}, withSea
         <SearchField
           :aria-label="mergedArgs.ariaLabel"
           :auto-focus="mergedArgs.autoFocus"
+          :contextual-help="mergedArgs.contextualHelp"
           :description="mergedArgs.description"
+          :error-message="mergedArgs.errorMessage"
+          :icon="mergedArgs.icon"
           :is-disabled="mergedArgs.isDisabled"
           :is-quiet="mergedArgs.isQuiet"
           :is-read-only="mergedArgs.isReadOnly"
+          :is-required="mergedArgs.isRequired"
           :label="mergedArgs.label"
+          :label-align="mergedArgs.labelAlign"
+          :label-position="mergedArgs.labelPosition"
           :model-value="value"
+          :necessity-indicator="mergedArgs.necessityIndicator"
           :placeholder="mergedArgs.placeholder"
-          :required="mergedArgs.isRequired"
           :validation-state="mergedArgs.validationState"
           class="custom_classname"
           @change="onChange"
           @clear="onClear"
-          @keydown.enter="onSubmit"
+          @submit="onSubmit"
           @update:model-value="value = $event" />
       </div>
     `
@@ -135,12 +144,12 @@ export const ValueControlled: Story = {
 };
 
 export const IconRefresh: Story = {
-  render: renderSearchField({modelValue: 'React', description: 'Icon variant: refresh'}, true),
+  render: renderSearchField({modelValue: 'React', icon: 'refresh'}, true),
   parameters: {info}
 };
 
 export const IconNull: Story = {
-  render: renderSearchField({modelValue: 'React', description: 'Icon variant: null'}, true),
+  render: renderSearchField({modelValue: 'React', icon: null}, true),
   parameters: {info}
 };
 
@@ -163,7 +172,7 @@ export const WithDescription: Story = {
 };
 
 export const WithErrorMessage: Story = {
-  render: renderSearchField({description: 'Remove special characters.', validationState: 'invalid'})
+  render: renderSearchField({errorMessage: 'Remove special characters.', validationState: 'invalid'})
 };
 
 export const _ContextualHelp: Story = {
