@@ -178,17 +178,26 @@ describe('Vue migration primitives', () => {
         role: 'group'
       },
       attrs: {
-        'aria-label': 'Migration block details'
+        'aria-label': 'Migration block details',
+        class: 'custom-well',
+        style: {
+          width: '300px'
+        }
       },
       slots: {
         default: 'Migration block'
       }
     });
 
+    expect(wrapper.element.tagName).toBe('DIV');
     expect(wrapper.text()).toContain('Migration block');
     expect(wrapper.classes()).toContain('spectrum-Well');
+    expect(wrapper.classes()).toContain('custom-well');
+    expect(wrapper.classes()).not.toContain('vs-spectrum-well');
+    expect(wrapper.attributes('data-vac')).toBeUndefined();
     expect(wrapper.attributes('role')).toBe('group');
     expect(wrapper.attributes('aria-label')).toBe('Migration block details');
+    expect((wrapper.element as HTMLElement).style.width).toBe('300px');
   });
 
   it('removes aria labels from well without a role', () => {

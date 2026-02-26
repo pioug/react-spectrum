@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@adobe/spectrum-css-temp": "3.0.0-alpha.1",
+    "@vue-aria/utils": "workspace:*",
     "@vue-types/well": "^3.3.22",
     "vue-aria-components": "workspace:*"
   },

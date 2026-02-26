@@ -1,8 +1,6 @@
 import '@adobe/spectrum-css-temp/components/well/vars.css';
-import {classNames} from '@vue-spectrum/utils';
+import {filterDOMProps} from '@vue-aria/utils';
 import {defineComponent, h, type PropType} from 'vue';
-import './styles.css';
-const wellStyles: {[key: string]: string} = {};
 const WELL_LABEL_WARNING = 'A labelled Well must have a role.';
 
 export const Well = defineComponent({
@@ -15,22 +13,24 @@ export const Well = defineComponent({
     }
   },
   setup(props, {attrs, slots}) {
-    if (!props.role && (attrs['aria-label'] || attrs['aria-labelledby'])) {
-      console.warn(WELL_LABEL_WARNING);
-    }
-
     return () => {
-      let domAttrs: Record<string, unknown> = {...attrs};
-      if (!props.role) {
-        delete domAttrs['aria-label'];
-        delete domAttrs['aria-labelledby'];
+      if (!props.role && (attrs['aria-label'] || attrs['aria-labelledby']) && process.env.NODE_ENV !== 'production') {
+        console.warn(WELL_LABEL_WARNING);
       }
 
+      let domAttrs = filterDOMProps(attrs as Record<string, unknown>, {labelable: !!props.role}) as Record<string, unknown>;
+      let {
+        class: domClass,
+        className: domClassName,
+        style: domStyle,
+        ...otherDomAttrs
+      } = domAttrs;
+
       return h('div', {
-        ...domAttrs,
+        ...otherDomAttrs,
         role: props.role || undefined,
-        class: [classNames(wellStyles, 'spectrum-Well'), 'vs-spectrum-well', domAttrs.class],
-        'data-vac': ''
+        class: ['spectrum-Well', domClassName, domClass],
+        style: domStyle
       }, slots.default ? slots.default() : []);
     };
   }
