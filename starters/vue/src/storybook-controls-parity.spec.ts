@@ -5,6 +5,7 @@ import actionButtonMeta from '../../../packages/@vue-spectrum/button/stories/Act
 import buttonMeta from '../../../packages/@vue-spectrum/button/stories/Button.stories';
 import dividerMeta from '../../../packages/@vue-spectrum/divider/stories/Divider.stories';
 import fileTriggerMeta from '../../../packages/@vue-spectrum/filetrigger/stories/FileTrigger.stories';
+import formMeta from '../../../packages/@vue-spectrum/form/stories/Form.stories';
 import helpTextMeta from '../../../packages/@vue-spectrum/label/stories/HelpText.stories';
 import imageMeta from '../../../packages/@vue-spectrum/image/stories/Image.stories';
 import labeledValueMeta from '../../../packages/@vue-spectrum/labeledvalue/stories/LabeledValue.stories';
@@ -128,6 +129,14 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.validationState.options as unknown[])).toEqual(['invalid', 'valid']);
     expect((argTypes.labelAlign.options as unknown[])).toEqual(['end', 'start']);
     expect((argTypes.labelPosition.options as unknown[])).toEqual(['side', 'top']);
+  });
+
+  it('matches top-level Form controls contract with React stories', () => {
+    let args = (formMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (formMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes)).toEqual([]);
   });
 
   it('matches top-level Button controls contract with React stories', () => {

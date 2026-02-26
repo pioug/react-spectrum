@@ -20,6 +20,7 @@ import {DatePicker, DateRangePicker, TimeField} from '@vue-spectrum/datepicker';
 import {Divider} from '@vue-spectrum/divider';
 import {DropZone} from '@vue-spectrum/dropzone';
 import {FileTrigger} from '@vue-spectrum/filetrigger';
+import {Form} from '@vue-spectrum/form';
 import {Image} from '@vue-spectrum/image';
 import {Icon, Illustration, UIIcon} from '@vue-spectrum/icon';
 import {IllustratedMessage} from '@vue-spectrum/illustratedmessage';
@@ -467,6 +468,42 @@ describe('Vue migration primitives', () => {
     expect(vertical.classes()).toContain('spectrum-Rule--vertical');
     expect(vertical.attributes('role')).toBe('separator');
     expect(vertical.attributes('aria-orientation')).toBe('vertical');
+  });
+
+  it('maps form element semantics and native validation toggle to react parity', () => {
+    let wrapper = mount(Form, {
+      props: {
+        labelAlign: 'end',
+        labelPosition: 'side'
+      },
+      attrs: {
+        action: '/submit',
+        method: 'post'
+      },
+      slots: {
+        default: '<div />'
+      }
+    });
+
+    expect(wrapper.element.tagName).toBe('FORM');
+    expect(wrapper.classes()).toContain('spectrum-Form');
+    expect(wrapper.classes()).toContain('spectrum-Form--positionSide');
+    expect(wrapper.classes()).not.toContain('spectrum-Form--positionTop');
+    expect(wrapper.attributes('action')).toBe('/submit');
+    expect(wrapper.attributes('method')).toBe('post');
+    expect(wrapper.attributes('novalidate')).toBeDefined();
+
+    let native = mount(Form, {
+      props: {
+        validationBehavior: 'native'
+      },
+      slots: {
+        default: '<div />'
+      }
+    });
+
+    expect(native.classes()).toContain('spectrum-Form--positionTop');
+    expect(native.attributes('novalidate')).toBeUndefined();
   });
 
   it('renders label content and required indicator', () => {

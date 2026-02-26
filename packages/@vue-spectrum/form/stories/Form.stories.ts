@@ -20,22 +20,7 @@ type FormStoryArgs = {
 
 const meta: Meta<typeof Form> = {
   title: 'Form',
-  component: Form,
-  argTypes: {
-    labelPosition: {
-      control: 'text'
-    },
-    labelAlign: {
-      control: 'text'
-    },
-    necessityIndicator: {
-      control: 'text'
-    },
-    validationBehavior: {
-      control: 'select',
-      options: ['aria', 'native']
-    }
-  }
+  component: Form
 };
 
 export default meta;
