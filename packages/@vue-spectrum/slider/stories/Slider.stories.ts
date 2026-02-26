@@ -9,19 +9,16 @@ const meta: Meta<typeof Slider> = {
   component: Slider,
   args: {
     label: 'Label',
-    isDisabled: false
+    isDisabled: false,
+    labelPosition: 'top'
   },
   argTypes: {
-    description: {control: 'text'},
-    disabled: {control: 'boolean'},
-    id: {control: 'text'},
-    isDisabled: {control: 'boolean'},
-    label: {control: 'text'},
-    max: {control: 'number'},
-    min: {control: 'number'},
-    modelValue: {control: 'number'},
-    showValue: {control: 'boolean'},
-    step: {control: 'number'}
+    labelPosition: {
+      control: {
+        type: 'radio',
+        options: ['top', 'side']
+      }
+    }
   }
 };
 

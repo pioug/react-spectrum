@@ -13,39 +13,14 @@ const meta: Meta<typeof RangeSlider> = {
   args: {
     isDisabled: false,
     label: 'Label',
-    modelValue: {start: 25, end: 75}
+    labelPosition: 'top'
   },
   argTypes: {
-    disabled: {
-      control: 'boolean'
-    },
-    isDisabled: {
-      control: 'boolean'
-    },
-    label: {
-      control: 'text'
-    },
-    max: {
-      control: 'number'
-    },
-    min: {
-      control: 'number'
-    },
-    modelValue: {
-      table: {
-        disable: true
+    labelPosition: {
+      control: {
+        type: 'radio',
+        options: ['top', 'side']
       }
-    },
-    showValueLabel: {
-      table: {
-        disable: true
-      }
-    },
-    showValue: {
-      control: 'boolean'
-    },
-    step: {
-      control: 'number'
     }
   }
 };

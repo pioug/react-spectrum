@@ -19,6 +19,9 @@ import logicButtonMeta from '../../../packages/@vue-spectrum/button/stories/Logi
 import meterMeta from '../../../packages/@vue-spectrum/meter/stories/Meter.stories';
 import progressBarMeta from '../../../packages/@vue-spectrum/progress/stories/ProgressBar.stories';
 import progressCircleMeta from '../../../packages/@vue-spectrum/progress/stories/ProgressCircle.stories';
+import rangeSliderMeta from '../../../packages/@vue-spectrum/slider/stories/RangeSlider.stories';
+import searchFieldMeta from '../../../packages/@vue-spectrum/searchfield/stories/SearchField.stories';
+import sliderMeta from '../../../packages/@vue-spectrum/slider/stories/Slider.stories';
 import statusLightMeta from '../../../packages/@vue-spectrum/statuslight/stories/StatusLight.stories';
 import switchMeta from '../../../packages/@vue-spectrum/switch/stories/Switch.stories';
 import toggleButtonMeta from '../../../packages/@vue-spectrum/button/stories/ToggleButton.stories';
@@ -350,6 +353,75 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.value.control as {type?: string}).type).toBe('range');
     expect((argTypes.value.control as {min?: number}).min).toBe(0);
     expect((argTypes.value.control as {max?: number}).max).toBe(100);
+  });
+
+  it('matches top-level SearchField controls contract with React stories', () => {
+    let args = (searchFieldMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (searchFieldMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual([
+      'isDisabled',
+      'isQuiet',
+      'isReadOnly',
+      'isRequired',
+      'label',
+      'labelAlign',
+      'labelPosition',
+      'necessityIndicator',
+      'validationState'
+    ]);
+    expect(args.label).toBe('Search');
+    expect(args.isQuiet).toBe(false);
+    expect(args.isDisabled).toBe(false);
+    expect(args.isReadOnly).toBe(false);
+    expect(args.isRequired).toBe(false);
+    expect(args.necessityIndicator).toBe('icon');
+    expect(args.labelPosition).toBe('top');
+    expect(args.labelAlign).toBe('start');
+    expect(args.validationState).toBeUndefined();
+
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'labelAlign',
+      'labelPosition',
+      'necessityIndicator',
+      'validationState'
+    ]);
+    expect((argTypes.labelPosition.control as {type?: string}).type).toBe('radio');
+    expect((argTypes.labelPosition.control as {options?: unknown[]}).options).toEqual(['top', 'side']);
+    expect((argTypes.necessityIndicator.control as {type?: string}).type).toBe('radio');
+    expect((argTypes.necessityIndicator.control as {options?: unknown[]}).options).toEqual(['icon', 'label']);
+    expect((argTypes.labelAlign.control as {type?: string}).type).toBe('radio');
+    expect((argTypes.labelAlign.control as {options?: unknown[]}).options).toEqual(['start', 'end']);
+    expect((argTypes.validationState.control as {type?: string}).type).toBe('radio');
+    expect((argTypes.validationState.control as {options?: unknown[]}).options).toEqual([null, 'valid', 'invalid']);
+  });
+
+  it('matches top-level Slider controls contract with React stories', () => {
+    let args = (sliderMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (sliderMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual(['isDisabled', 'label', 'labelPosition']);
+    expect(args.label).toBe('Label');
+    expect(args.isDisabled).toBe(false);
+    expect(args.labelPosition).toBe('top');
+
+    expect(Object.keys(argTypes)).toEqual(['labelPosition']);
+    expect((argTypes.labelPosition.control as {type?: string}).type).toBe('radio');
+    expect((argTypes.labelPosition.control as {options?: unknown[]}).options).toEqual(['top', 'side']);
+  });
+
+  it('matches top-level RangeSlider controls contract with React stories', () => {
+    let args = (rangeSliderMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (rangeSliderMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual(['isDisabled', 'label', 'labelPosition']);
+    expect(args.label).toBe('Label');
+    expect(args.isDisabled).toBe(false);
+    expect(args.labelPosition).toBe('top');
+
+    expect(Object.keys(argTypes)).toEqual(['labelPosition']);
+    expect((argTypes.labelPosition.control as {type?: string}).type).toBe('radio');
+    expect((argTypes.labelPosition.control as {options?: unknown[]}).options).toEqual(['top', 'side']);
   });
 
   it('matches top-level Button controls contract with React stories', () => {

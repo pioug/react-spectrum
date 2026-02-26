@@ -11,11 +11,14 @@ type SearchFieldStoryArgs = {
   isDisabled?: boolean,
   isQuiet?: boolean,
   isReadOnly?: boolean,
+  isRequired?: boolean,
   label?: string,
+  labelAlign?: 'end' | 'start',
+  labelPosition?: 'side' | 'top',
   modelValue?: string,
+  necessityIndicator?: 'icon' | 'label',
   placeholder?: string,
-  required?: boolean,
-  validationState?: 'invalid' | 'valid'
+  validationState?: 'invalid' | 'valid' | null
 };
 
 const info = 'A containing element with role="search" has been added to define a search landmark region.';
@@ -28,54 +31,36 @@ const meta: Meta<typeof SearchField> = {
     isQuiet: false,
     isDisabled: false,
     isReadOnly: false,
-    required: false,
+    isRequired: false,
+    necessityIndicator: 'icon',
+    labelPosition: 'top',
+    labelAlign: 'start',
     validationState: undefined
   },
   argTypes: {
-    autoFocus: {
-      control: 'boolean'
+    labelPosition: {
+      control: {
+        type: 'radio',
+        options: ['top', 'side']
+      }
     },
-    description: {
-      control: 'text'
+    necessityIndicator: {
+      control: {
+        type: 'radio',
+        options: ['icon', 'label']
+      }
     },
-    disabled: {
-      control: 'boolean'
-    },
-    id: {
-      control: 'text'
-    },
-    invalid: {
-      control: 'boolean'
-    },
-    isDisabled: {
-      control: 'boolean'
-    },
-    isInvalid: {
-      control: 'boolean'
-    },
-    isQuiet: {
-      control: 'boolean'
-    },
-    isReadOnly: {
-      control: 'boolean'
-    },
-    label: {
-      control: 'text'
-    },
-    modelValue: {
-      control: 'text'
-    },
-    placeholder: {
-      control: 'text'
-    },
-    required: {
-      control: 'boolean'
+    labelAlign: {
+      control: {
+        type: 'radio',
+        options: ['start', 'end']
+      }
     },
     validationState: {
       control: {
-        type: 'radio'
-      },
-      options: [undefined, 'valid', 'invalid']
+        type: 'radio',
+        options: [null, 'valid', 'invalid']
+      }
     }
   }
 };
@@ -122,7 +107,7 @@ function renderSearchField(baseArgs: Partial<SearchFieldStoryArgs> = {}, withSea
           :label="mergedArgs.label"
           :model-value="value"
           :placeholder="mergedArgs.placeholder"
-          :required="mergedArgs.required"
+          :required="mergedArgs.isRequired"
           :validation-state="mergedArgs.validationState"
           class="custom_classname"
           @change="onChange"
