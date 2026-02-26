@@ -5,6 +5,7 @@ import actionButtonMeta from '../../../packages/@vue-spectrum/button/stories/Act
 import buttonMeta from '../../../packages/@vue-spectrum/button/stories/Button.stories';
 import checkboxMeta from '../../../packages/@vue-spectrum/checkbox/stories/Checkbox.stories';
 import checkboxGroupMeta from '../../../packages/@vue-spectrum/checkbox/stories/CheckboxGroup.stories';
+import comboBoxMeta from '../../../packages/@vue-spectrum/combobox/stories/ComboBox.stories';
 import dividerMeta from '../../../packages/@vue-spectrum/divider/stories/Divider.stories';
 import fileTriggerMeta from '../../../packages/@vue-spectrum/filetrigger/stories/FileTrigger.stories';
 import formMeta from '../../../packages/@vue-spectrum/form/stories/Form.stories';
@@ -282,6 +283,100 @@ describe('Vue Storybook controls parity', () => {
 
     expect(Object.keys(args)).toEqual([]);
     expect(Object.keys(argTypes)).toEqual([]);
+  });
+
+  it('matches top-level ComboBox controls contract with React stories', () => {
+    let args = (comboBoxMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (comboBoxMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual([
+      'label',
+      'onBlur',
+      'onFocus',
+      'onInputChange',
+      'onOpenChange',
+      'onSelectionChange'
+    ]);
+    expect(args.label).toBe('Combobox');
+    expect(typeof args.onOpenChange).toBe('function');
+    expect(typeof args.onInputChange).toBe('function');
+    expect(typeof args.onSelectionChange).toBe('function');
+    expect(typeof args.onBlur).toBe('function');
+    expect(typeof args.onFocus).toBe('function');
+
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'align',
+      'allowsCustomValue',
+      'aria-label',
+      'autoFocus',
+      'contextualHelp',
+      'defaultInputValue',
+      'defaultItems',
+      'defaultSelectedKey',
+      'description',
+      'direction',
+      'disabledKeys',
+      'errorMessage',
+      'inputValue',
+      'isDisabled',
+      'isQuiet',
+      'isReadOnly',
+      'isRequired',
+      'label',
+      'labelAlign',
+      'labelPosition',
+      'menuTrigger',
+      'menuWidth',
+      'necessityIndicator',
+      'onBlur',
+      'onFocus',
+      'onInputChange',
+      'onOpenChange',
+      'onSelectionChange',
+      'selectedKey',
+      'validationState',
+      'width'
+    ]);
+    expect((argTypes.defaultItems.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.contextualHelp.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onOpenChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.disabledKeys.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.inputValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.defaultInputValue.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.defaultSelectedKey.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.selectedKey.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onInputChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onSelectionChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onBlur.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onFocus.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.label.control as string)).toBe('text');
+    expect((argTypes['aria-label'].control as string)).toBe('text');
+    expect((argTypes.isDisabled.control as string)).toBe('boolean');
+    expect((argTypes.isQuiet.control as string)).toBe('boolean');
+    expect((argTypes.isReadOnly.control as string)).toBe('boolean');
+    expect((argTypes.autoFocus.control as string)).toBe('boolean');
+    expect((argTypes.isRequired.control as string)).toBe('boolean');
+    expect((argTypes.necessityIndicator.control as string)).toBe('select');
+    expect((argTypes.necessityIndicator.options as string[])).toEqual(['icon', 'label']);
+    expect((argTypes.labelAlign.control as string)).toBe('select');
+    expect((argTypes.labelAlign.options as string[])).toEqual(['end', 'start']);
+    expect((argTypes.labelPosition.control as string)).toBe('select');
+    expect((argTypes.labelPosition.options as string[])).toEqual(['top', 'side']);
+    expect((argTypes.validationState.control as string)).toBe('select');
+    expect((argTypes.validationState.options as unknown[])).toEqual([null, 'valid', 'invalid']);
+    expect((argTypes.description.control as string)).toBe('text');
+    expect((argTypes.errorMessage.control as string)).toBe('text');
+    expect((argTypes.menuTrigger.control as string)).toBe('select');
+    expect((argTypes.menuTrigger.options as string[])).toEqual(['focus', 'manual']);
+    expect((argTypes.direction.control as string)).toBe('radio');
+    expect((argTypes.direction.options as string[])).toEqual(['top', 'bottom']);
+    expect((argTypes.align.control as string)).toBe('radio');
+    expect((argTypes.align.options as string[])).toEqual(['start', 'end']);
+    expect((argTypes.allowsCustomValue.control as string)).toBe('boolean');
+    expect((argTypes.width.control as {type?: string}).type).toBe('radio');
+    expect((argTypes.width.control as {options?: unknown[]}).options).toEqual([null, '100px', '480px', 'size-4600']);
+    expect((argTypes.menuWidth.control as {type?: string}).type).toBe('radio');
+    expect((argTypes.menuWidth.control as {options?: unknown[]}).options).toEqual([null, '100px', '480px', 'size-4600']);
   });
 
   it('matches top-level Modal controls contract with React stories', () => {

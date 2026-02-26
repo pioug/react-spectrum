@@ -1,3 +1,4 @@
+import {action} from '@storybook/addon-actions';
 import {Button} from '@vue-spectrum/button';
 import {ComboBox} from '../src';
 import {computed, onBeforeUnmount, ref, watch} from 'vue';
@@ -89,43 +90,81 @@ const meta: Meta<typeof ComboBox> = {
   title: 'ComboBox',
   component: ComboBox,
   args: {
-    label: 'Combobox'
+    label: 'Combobox',
+    onOpenChange: action('onOpenChange'),
+    onInputChange: action('onInputChange'),
+    onSelectionChange: action('onSelectionChange'),
+    onBlur: action('onBlur'),
+    onFocus: action('onFocus')
   },
   argTypes: {
-    allowsCustomValue: {
-      control: 'boolean'
+    defaultItems: {
+      table: {
+        disable: true
+      }
     },
-    allowsEmptyCollection: {
-      control: 'boolean'
+    contextualHelp: {
+      table: {
+        disable: true
+      }
     },
-    autoFocus: {
-      control: 'boolean'
+    onOpenChange: {
+      table: {
+        disable: true
+      }
     },
-    disableLocalFilter: {
-      control: 'boolean'
+    disabledKeys: {
+      table: {
+        disable: true
+      }
     },
-    disabled: {
-      control: 'boolean'
+    inputValue: {
+      table: {
+        disable: true
+      }
     },
-    estimatedItemHeight: {
-      control: 'number'
+    defaultInputValue: {
+      table: {
+        disable: true
+      }
     },
-    form: {
+    defaultSelectedKey: {
+      table: {
+        disable: true
+      }
+    },
+    selectedKey: {
+      table: {
+        disable: true
+      }
+    },
+    onInputChange: {
+      table: {
+        disable: true
+      }
+    },
+    onSelectionChange: {
+      table: {
+        disable: true
+      }
+    },
+    onBlur: {
+      table: {
+        disable: true
+      }
+    },
+    onFocus: {
+      table: {
+        disable: true
+      }
+    },
+    label: {
       control: 'text'
     },
-    formValue: {
+    'aria-label': {
       control: 'text'
-    },
-    id: {
-      control: 'text'
-    },
-    invalid: {
-      control: 'boolean'
     },
     isDisabled: {
-      control: 'boolean'
-    },
-    isInvalid: {
       control: 'boolean'
     },
     isQuiet: {
@@ -134,48 +173,60 @@ const meta: Meta<typeof ComboBox> = {
     isReadOnly: {
       control: 'boolean'
     },
-    label: {
-      control: 'text'
-    },
-    listBoxClassName: {
-      control: 'text'
-    },
-    listBoxItemClassName: {
-      control: 'text'
-    },
-    modelValue: {
-      control: 'text'
-    },
-    name: {
-      control: 'text'
-    },
-    options: {
-      table: {
-        disable: true
-      }
-    },
-    placeholder: {
-      control: 'text'
-    },
-    selectedKey: {
-      control: 'text'
-    },
-    selectedKeys: {
-      table: {
-        disable: true
-      }
-    },
-    selectionMode: {
-      control: 'text'
-    },
-    validationState: {
-      control: 'text'
-    },
-    virtualized: {
+    autoFocus: {
       control: 'boolean'
     },
-    visibleItemCount: {
-      control: 'number'
+    isRequired: {
+      control: 'boolean'
+    },
+    necessityIndicator: {
+      control: 'select',
+      options: ['icon', 'label']
+    },
+    labelAlign: {
+      control: 'select',
+      options: ['end', 'start']
+    },
+    labelPosition: {
+      control: 'select',
+      options: ['top', 'side']
+    },
+    validationState: {
+      control: 'select',
+      options: [null, 'valid', 'invalid']
+    },
+    description: {
+      control: 'text'
+    },
+    errorMessage: {
+      control: 'text'
+    },
+    menuTrigger: {
+      control: 'select',
+      options: ['focus', 'manual']
+    },
+    direction: {
+      control: 'radio',
+      options: ['top', 'bottom']
+    },
+    align: {
+      control: 'radio',
+      options: ['start', 'end']
+    },
+    allowsCustomValue: {
+      control: 'boolean'
+    },
+    width: {
+      control: {
+        type: 'radio',
+        options: [null, '100px', '480px', 'size-4600']
+      }
+    },
+    menuWidth: {
+      control: {
+        type: 'radio',
+        options: [null, '100px', '480px', 'size-4600']
+      }
     }
   }
 };
