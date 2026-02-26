@@ -6,6 +6,8 @@ import {TagGroup, type TagItemData} from '../src';
 type TagGroupStoryArgs = {
   actionLabel?: string,
   allowsRemoving?: boolean,
+  contextualHelp?: unknown,
+  description?: string,
   emptyStateLabel?: string,
   items?: TagItemData[],
   label?: string,
@@ -13,6 +15,7 @@ type TagGroupStoryArgs = {
   modelValue?: string[],
   onAction?: () => void,
   onRemove?: (keys: string[]) => void,
+  renderEmptyState?: () => unknown,
   selectionMode?: 'multiple' | 'none' | 'single'
 };
 
@@ -29,6 +32,29 @@ const manyItems: TagItemData[] = Array.from({length: 50}, (_, index) => ({
   key: String(index + 1),
   label: `Tag ${index + 1}`
 }));
+
+const CONTEXTUAL_HELP_ARG = {
+  key: null,
+  ref: null,
+  type: {},
+  props: {
+    children: [{
+      key: null,
+      ref: null,
+      type: {},
+      props: {
+        children: 'What are these tags?'
+      }
+    }, {
+      key: null,
+      ref: null,
+      type: {},
+      props: {
+        children: 'Here is more information about the tag group.'
+      }
+    }]
+  }
+};
 
 function renderResizable(contentTemplate: string) {
   return `
@@ -164,6 +190,20 @@ export const Default: Story = {
 };
 
 export const WithIcons: Story = {
+  args: {
+    items: [
+      {key: '1', label: 'Cool Tag 1'},
+      {key: '2', label: 'Cool Tag 2'}
+    ]
+  },
+  argTypes: {
+    items: {
+      control: 'object',
+      table: {
+        disable: true
+      }
+    }
+  },
   render: renderTagGroup({
     items: [
       {key: '1', label: '🔊 Cool Tag 1'},
@@ -209,6 +249,9 @@ export const LabelTruncation: Story = {
 };
 
 export const MaxRows: Story = {
+  args: {
+    maxRows: 2
+  },
   render: renderTagGroup({
     maxRows: 2
   }, renderResizable(`
@@ -221,6 +264,9 @@ export const MaxRows: Story = {
 };
 
 export const MaxRowsManyTags: Story = {
+  args: {
+    maxRows: 2
+  },
   render: renderTagGroup({
     items: manyItems,
     maxRows: 2
@@ -234,6 +280,9 @@ export const MaxRowsManyTags: Story = {
 };
 
 export const MaxRowsOnRemove: Story = {
+  args: {
+    maxRows: 2
+  },
   render: renderOnRemove({
     maxRows: 2,
     onRemove: action('onRemove')
@@ -242,6 +291,20 @@ export const MaxRowsOnRemove: Story = {
 };
 
 export const WithAvatar: Story = {
+  args: {
+    items: [
+      {key: '1', label: 'Cool Person 1'},
+      {key: '2', label: 'Cool Person 2'}
+    ]
+  },
+  argTypes: {
+    items: {
+      control: 'object',
+      table: {
+        disable: true
+      }
+    }
+  },
   render: renderTagGroup({
     items: [
       {key: '1', label: '👤 Cool Person 1'},
@@ -263,6 +326,10 @@ export const WithAvatarOnRemove: Story = {
 };
 
 export const WithAction: Story = {
+  args: {
+    actionLabel: 'Clear',
+    onAction: action('clear')
+  },
   render: renderTagGroup({
     onAction: action('clear'),
     actionLabel: 'Clear'
@@ -279,6 +346,11 @@ export const WithAction: Story = {
 };
 
 export const WithActionAndMaxRows: Story = {
+  args: {
+    actionLabel: 'Clear',
+    maxRows: 2,
+    onAction: action('clear')
+  },
   render: renderTagGroup({
     maxRows: 2,
     onAction: action('clear'),
@@ -296,6 +368,19 @@ export const WithActionAndMaxRows: Story = {
 };
 
 export const WithLabelDescriptionContextualHelp: Story = {
+  args: {
+    contextualHelp: CONTEXTUAL_HELP_ARG,
+    description: 'Here is a description about the tag group.',
+    label: 'Some sample tags'
+  },
+  argTypes: {
+    contextualHelp: {
+      control: 'object',
+      table: {
+        disable: true
+      }
+    }
+  },
   render: renderTagGroup({
     label: 'Some sample tags'
   }, renderResizable(`
@@ -312,6 +397,21 @@ export const WithLabelDescriptionContextualHelp: Story = {
 };
 
 export const WithLabelDescriptionContextualHelpAndAction: Story = {
+  args: {
+    actionLabel: 'Clear',
+    contextualHelp: CONTEXTUAL_HELP_ARG,
+    description: 'Here is a description about the tag group.',
+    label: 'Some sample tags',
+    onAction: action('clear')
+  },
+  argTypes: {
+    contextualHelp: {
+      control: 'object',
+      table: {
+        disable: true
+      }
+    }
+  },
   render: renderTagGroup({
     label: 'Some sample tags',
     onAction: action('clear'),
@@ -339,9 +439,12 @@ export const EmptyState: Story = {
 };
 
 export const CustomEmptyState: Story = {
+  argTypes: {
+    renderEmptyState: {}
+  },
   render: renderTagGroup({
     items: [],
-    emptyStateLabel: 'No tags. Click here to add some.'
+    renderEmptyState: () => 'No tags. Click here to add some.'
   }),
   name: 'Custom empty state'
 };
