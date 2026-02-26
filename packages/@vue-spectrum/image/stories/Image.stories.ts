@@ -16,7 +16,7 @@ export const Default: Story = {
     setup() {
       return {args};
     },
-    template: '<Image v-bind="args" :style="{width: \'500px\', height: \'500px\'}" src="https://i.imgur.com/Z7AzH2c.png" alt="Sky and roof" />'
+    template: '<Image v-bind="args" width="500px" height="500px" src="https://i.imgur.com/Z7AzH2c.png" alt="Sky and roof" />'
   }),
   parameters: {
     description: {
@@ -44,7 +44,7 @@ export const ImageOnError: Story = {
         onErrorHandler
       };
     },
-    template: '<Image v-bind="args" :style="{width: \'500px\', height: \'500px\'}" :src="isImageMissing ? DEFAULT_IMAGE : BROKEN_IMAGE" alt="starry sky" :onError="onErrorHandler" />'
+    template: '<Image v-bind="args" width="500px" height="500px" :src="isImageMissing ? DEFAULT_IMAGE : BROKEN_IMAGE" alt="starry sky" :onError="onErrorHandler" />'
   }),
   parameters: {
     description: {

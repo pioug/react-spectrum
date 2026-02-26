@@ -395,7 +395,9 @@ describe('Vue migration primitives', () => {
       props: {
         src: 'https://example.com/image.png',
         alt: 'Preview',
-        objectFit: 'contain'
+        objectFit: 'contain',
+        width: '500px',
+        height: '500px'
       }
     });
 
@@ -403,15 +405,15 @@ describe('Vue migration primitives', () => {
     expect(image.attributes('src')).toBe('https://example.com/image.png');
     expect(image.attributes('alt')).toBe('Preview');
     expect((image.element as HTMLImageElement).style.objectFit).toBe('contain');
-    expect(wrapper.classes()).toContain('spectrum-Image');
+    expect(wrapper.attributes('style')).toContain('overflow: hidden');
+    expect(wrapper.attributes('style')).toContain('width: 500px');
+    expect(wrapper.attributes('style')).toContain('height: 500px');
 
     let onError = vi.fn();
     let fallback = mount(Image, {
       props: {
         src: 'https://example.com/hidden.png',
-        alt: 'Fallback image'
-      },
-      attrs: {
+        alt: 'Fallback image',
         onError
       }
     });
