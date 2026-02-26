@@ -8,9 +8,80 @@ import type {Meta, StoryObj} from '@storybook/vue3-vite';
 type LogicButtonStoryArgs = {
   autoFocus?: boolean,
   isDisabled?: boolean,
-  onClick?: (event: MouseEvent) => void,
-  variant?: 'and' | 'or'
+  onPress?: (event: MouseEvent | KeyboardEvent) => void,
+  onPressEnd?: (event: MouseEvent | KeyboardEvent) => void,
+  onPressStart?: (event: MouseEvent | KeyboardEvent) => void,
+  variant?: 'and' | 'or' | undefined
 };
+
+type LogicButtonRenderProps = Omit<LogicButtonStoryArgs, 'onPress' | 'onPressEnd' | 'onPressStart'>;
+
+function pickLogicButtonProps(args: LogicButtonStoryArgs): LogicButtonRenderProps {
+  let {
+    onPress: _onPress,
+    onPressEnd: _onPressEnd,
+    onPressStart: _onPressStart,
+    ...buttonProps
+  } = args;
+
+  return buttonProps;
+}
+
+function createPressActionHandlers(args: LogicButtonStoryArgs) {
+  let isPressed = false;
+
+  return {
+    onBlur: (event: FocusEvent) => {
+      if (isPressed) {
+        args.onPressEnd?.(event as unknown as KeyboardEvent);
+        isPressed = false;
+      }
+    },
+    onClick: (event: MouseEvent) => {
+      args.onPress?.(event);
+    },
+    onKeydown: (event: KeyboardEvent) => {
+      if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') {
+        return;
+      }
+
+      args.onPressStart?.(event);
+      isPressed = true;
+    },
+    onKeyup: (event: KeyboardEvent) => {
+      if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') {
+        return;
+      }
+
+      if (isPressed) {
+        args.onPressEnd?.(event);
+        isPressed = false;
+      }
+    },
+    onPointercancel: () => {
+      isPressed = false;
+    },
+    onPointerdown: (event: PointerEvent) => {
+      if (event.button !== 0) {
+        return;
+      }
+
+      args.onPressStart?.(event as unknown as MouseEvent);
+      isPressed = true;
+    },
+    onPointerleave: () => {
+      isPressed = false;
+    },
+    onPointerup: (event: PointerEvent) => {
+      if (event.button !== 0 || !isPressed) {
+        return;
+      }
+
+      args.onPressEnd?.(event as unknown as MouseEvent);
+      isPressed = false;
+    }
+  };
+}
 
 function wrapInProvider(content: ReturnType<typeof h>) {
   return h(Provider, {
@@ -23,12 +94,15 @@ function wrapInProvider(content: ReturnType<typeof h>) {
 }
 
 function renderLogicButtons(args: LogicButtonStoryArgs) {
+  let buttonProps = pickLogicButtonProps(args);
+  let pressHandlers = createPressActionHandlers(args);
+
   return h('div', [
-    h(LogicButton, {...args}, {
+    h(LogicButton, {...buttonProps, ...pressHandlers}, {
       default: () => ['Default']
     }),
     h(LogicButton, {
-      ...args,
+      ...buttonProps,
       isDisabled: true,
       style: {marginInlineStart: '10px'}
     }, {
@@ -41,10 +115,22 @@ const meta = {
   title: 'Button/LogicButton',
   component: LogicButton,
   args: {
-    onClick: action('click')
+    onPress: action('press'),
+    onPressStart: action('pressstart'),
+    onPressEnd: action('pressend')
   },
   argTypes: {
-    onClick: {
+    onPress: {
+      table: {
+        disable: true
+      }
+    },
+    onPressStart: {
+      table: {
+        disable: true
+      }
+    },
+    onPressEnd: {
       table: {
         disable: true
       }
@@ -54,7 +140,8 @@ const meta = {
     },
     variant: {
       control: 'select',
-      options: ['and', 'or']
+      options: ['and', 'or'],
+      defaultValue: 'and'
     }
   }
 } satisfies Meta<typeof LogicButton>;

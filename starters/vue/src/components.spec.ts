@@ -634,6 +634,20 @@ describe('Vue migration primitives', () => {
   });
 
   it('maps logic button variant class and disabled semantics', async () => {
+    let neutral = mount(LogicButton, {
+      slots: {
+        default: 'Neutral'
+      }
+    });
+
+    expect(neutral.classes()).toContain('spectrum-LogicButton');
+    expect(neutral.classes()).toContain('spectrum-BaseButton');
+    expect(neutral.classes()).toContain('i18nFontFamily');
+    expect(neutral.classes()).not.toContain('spectrum-LogicButton--and');
+    expect(neutral.find('.spectrum-Button-label').text()).toBe('Neutral');
+    expect(neutral.attributes('data-react-aria-pressable')).toBe('true');
+    expect(neutral.attributes('data-vac')).toBeUndefined();
+
     let enabled = mount(LogicButton, {
       props: {
         variant: 'and'
@@ -645,6 +659,7 @@ describe('Vue migration primitives', () => {
 
     expect(enabled.classes()).toContain('spectrum-LogicButton');
     expect(enabled.classes()).toContain('spectrum-LogicButton--and');
+    expect(enabled.find('.spectrum-Button-label').text()).toBe('Enabled');
 
     await enabled.trigger('click');
     expect(enabled.emitted('click')).toHaveLength(1);

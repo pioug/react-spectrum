@@ -716,8 +716,8 @@ export const LogicButton = defineComponent({
   props: {
     ...sharedButtonProps,
     variant: {
-      type: String as PropType<LogicButtonVariant>,
-      default: 'and'
+      type: String as PropType<LogicButtonVariant | undefined>,
+      default: undefined
     }
   },
   emits: {
@@ -730,23 +730,35 @@ export const LogicButton = defineComponent({
       (event) => emit('click', event)
     );
 
-    let logicClass = computed(() => classNames(
-      styles,
-      'spectrum-LogicButton',
-      {
-        'focus-ring': state.interaction.isFocusVisible.value,
-        'is-active': state.interaction.isPressed.value,
-        'is-disabled': state.isDisabled.value,
-        'is-hovered': state.interaction.isHovered.value,
-        [`spectrum-LogicButton--${props.variant}`]: true
-      }
-    ));
+    return () => {
+      let children = slots.default ? slots.default() : [props.variant?.toUpperCase() ?? 'LOGIC'];
 
-    return () => h(state.elementType.value, {
-      ...state.domProps.value,
-      class: [logicClass.value, attrs.class],
-      'data-vac': ''
-    }, slots.default ? slots.default() : props.variant.toUpperCase());
+      return h(state.elementType.value, {
+        ...state.domProps.value,
+        class: [
+          classNames(
+            styles,
+            'i18nFontFamily',
+            'spectrum-LogicButton',
+            'spectrum-BaseButton',
+            'spectrum-FocusRing',
+            'spectrum-FocusRing-ring',
+            {
+              'focus-ring': state.interaction.isFocusVisible.value,
+              'is-active': state.interaction.isPressed.value,
+              'is-disabled': state.isDisabled.value,
+              'is-hovered': state.interaction.isHovered.value,
+              [`spectrum-LogicButton--${props.variant}`]: !!props.variant
+            }
+          ),
+          attrs.class
+        ]
+      }, [
+        h('span', {
+          class: classNames(styles, 'spectrum-Button-label')
+        }, children)
+      ]);
+    };
   }
 });
 
