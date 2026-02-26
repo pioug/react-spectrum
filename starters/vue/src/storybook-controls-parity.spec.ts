@@ -7,6 +7,7 @@ import checkboxMeta from '../../../packages/@vue-spectrum/checkbox/stories/Check
 import checkboxGroupMeta from '../../../packages/@vue-spectrum/checkbox/stories/CheckboxGroup.stories';
 import comboBoxMeta from '../../../packages/@vue-spectrum/combobox/stories/ComboBox.stories';
 import dividerMeta from '../../../packages/@vue-spectrum/divider/stories/Divider.stories';
+import dialogTriggerMeta from '../../../packages/@vue-spectrum/dialog/stories/DialogTrigger.stories';
 import fileTriggerMeta from '../../../packages/@vue-spectrum/filetrigger/stories/FileTrigger.stories';
 import formMeta from '../../../packages/@vue-spectrum/form/stories/Form.stories';
 import helpTextMeta from '../../../packages/@vue-spectrum/label/stories/HelpText.stories';
@@ -377,6 +378,55 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.width.control as {options?: unknown[]}).options).toEqual([null, '100px', '480px', 'size-4600']);
     expect((argTypes.menuWidth.control as {type?: string}).type).toBe('radio');
     expect((argTypes.menuWidth.control as {options?: unknown[]}).options).toEqual([null, '100px', '480px', 'size-4600']);
+  });
+
+  it('matches top-level DialogTrigger controls contract with React stories', () => {
+    let args = (dialogTriggerMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (dialogTriggerMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'buttonHeight',
+      'buttonWidth',
+      'containerPadding',
+      'crossOffset',
+      'isKeyboardDismissDisabled',
+      'offset',
+      'placement',
+      'shouldFlip'
+    ]);
+    expect((argTypes.crossOffset.control as {type?: string}).type).toBe('number');
+    expect((argTypes.offset.control as {type?: string}).type).toBe('number');
+    expect((argTypes.placement.control as {type?: string}).type).toBe('select');
+    expect((argTypes.placement.options as unknown[])).toEqual([
+      'bottom',
+      'bottom left',
+      'bottom right',
+      'bottom start',
+      'bottom end',
+      'top',
+      'top left',
+      'top right',
+      'top start',
+      'top end',
+      'left',
+      'left top',
+      'left bottom',
+      'start',
+      'start top',
+      'start bottom',
+      'right',
+      'right top',
+      'right bottom',
+      'end',
+      'end top',
+      'end bottom'
+    ]);
+    expect((argTypes.buttonHeight.control as {type?: string}).type).toBe('number');
+    expect((argTypes.buttonWidth.control as {type?: string}).type).toBe('number');
+    expect((argTypes.shouldFlip.control as {type?: string}).type).toBe('boolean');
+    expect((argTypes.isKeyboardDismissDisabled.control as {type?: string}).type).toBe('boolean');
+    expect((argTypes.containerPadding.control as {type?: string}).type).toBe('number');
   });
 
   it('matches top-level Modal controls contract with React stories', () => {

@@ -9,56 +9,67 @@ type StoryArgs = Record<string, unknown>;
 const meta: Meta<typeof DialogTrigger> = {
   title: 'DialogTrigger',
   component: DialogTrigger,
-  args: {
-    title: 'Example dialog',
-    type: 'modal'
-  },
   argTypes: {
-    dismissable: {
-      control: 'boolean'
-    },
-    isDismissable: {
-      control: 'boolean'
-    },
-    isHidden: {
-      control: 'boolean'
-    },
-    isOpen: {
-      control: 'boolean'
-    },
-    onDismiss: {
-      table: {
-        disable: true
+    crossOffset: {
+      control: {
+        type: 'number'
       }
     },
-    open: {
-      control: 'boolean'
+    offset: {
+      control: {
+        type: 'number'
+      }
     },
-    role: {
-      control: 'text'
-    },
-    size: {
-      control: 'select',
+    placement: {
+      control: {
+        type: 'select'
+      },
+      defaultValue: 'top',
       options: [
-        'S',
-        'M',
-        'L',
-        'fullscreen',
-        'fullscreenTakeover'
+        'bottom',
+        'bottom left',
+        'bottom right',
+        'bottom start',
+        'bottom end',
+        'top',
+        'top left',
+        'top right',
+        'top start',
+        'top end',
+        'left',
+        'left top',
+        'left bottom',
+        'start',
+        'start top',
+        'start bottom',
+        'right',
+        'right top',
+        'right bottom',
+        'end',
+        'end top',
+        'end bottom'
       ]
     },
-    title: {
-      control: 'text'
+    buttonHeight: {
+      control: {
+        type: 'number'
+      }
     },
-    type: {
-      control: 'select',
-      options: [
-        'modal',
-        'popover',
-        'tray',
-        'fullscreen',
-        'fullscreenTakeover'
-      ]
+    buttonWidth: {
+      control: {
+        type: 'number'
+      }
+    },
+    shouldFlip: {
+      control: {type: 'boolean'}
+    },
+    isKeyboardDismissDisabled: {
+      control: {type: 'boolean'}
+    },
+    containerPadding: {
+      control: {
+        type: 'number'
+      }
     }
   }
 };
