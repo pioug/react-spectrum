@@ -23,42 +23,7 @@ const colors = [
 ];
 
 const meta: Meta<typeof Flex> = {
-  title: 'Flex',
-  component: Flex,
-  args: {
-    direction: 'row',
-    gap: 'size-100',
-    alignItems: 'center',
-    justifyContent: 'start',
-    wrap: false,
-    reverse: false
-  },
-  argTypes: {
-    alignItems: {
-      control: 'select',
-      options: ['start', 'center', 'end', 'stretch', 'baseline']
-    },
-    direction: {
-      control: 'select',
-      options: ['row', 'column']
-    },
-    elementType: {
-      control: 'text'
-    },
-    gap: {
-      control: 'text'
-    },
-    justifyContent: {
-      control: 'select',
-      options: ['start', 'center', 'end', 'space-between', 'space-around', 'space-evenly']
-    },
-    reverse: {
-      control: 'boolean'
-    },
-    wrap: {
-      control: 'boolean'
-    }
-  }
+  title: 'Flex'
 };
 
 export default meta;

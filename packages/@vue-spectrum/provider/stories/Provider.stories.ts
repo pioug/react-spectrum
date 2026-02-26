@@ -17,27 +17,7 @@ import {Provider} from '../src';
 const CUSTOM_THEME = defaultTheme;
 
 const meta: Meta<typeof Provider> = {
-  title: 'Provider',
-  component: Provider,
-  argTypes: {
-    theme: {
-      table: {
-        disable: true
-      }
-    },
-    scale: {
-      control: 'text'
-    },
-    colorScheme: {
-      control: 'text'
-    },
-    locale: {
-      control: 'text'
-    },
-    dir: {
-      control: 'text'
-    }
-  }
+  title: 'Provider'
 };
 
 export default meta;

@@ -6,29 +6,7 @@ import type {Meta, StoryObj} from '@storybook/vue3-vite';
 const meta: Meta<typeof DropZone> = {
   title: 'DropZone',
   component: DropZone,
-  args: {
-    label: 'Example'
-  },
-  argTypes: {
-    accept: {
-      control: 'text'
-    },
-    disabled: {
-      control: 'boolean'
-    },
-    isFilled: {
-      control: 'boolean'
-    },
-    label: {
-      control: 'text'
-    },
-    multiple: {
-      control: 'boolean'
-    },
-    replaceMessage: {
-      control: 'text'
-    }
-  }
+  argTypes: {}
 };
 
 export default meta;
