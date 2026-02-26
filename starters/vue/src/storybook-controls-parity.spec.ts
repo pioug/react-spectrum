@@ -5,6 +5,7 @@ import actionButtonMeta from '../../../packages/@vue-spectrum/button/stories/Act
 import buttonMeta from '../../../packages/@vue-spectrum/button/stories/Button.stories';
 import dividerMeta from '../../../packages/@vue-spectrum/divider/stories/Divider.stories';
 import fileTriggerMeta from '../../../packages/@vue-spectrum/filetrigger/stories/FileTrigger.stories';
+import helpTextMeta from '../../../packages/@vue-spectrum/label/stories/HelpText.stories';
 import imageMeta from '../../../packages/@vue-spectrum/image/stories/Image.stories';
 import labeledValueMeta from '../../../packages/@vue-spectrum/labeledvalue/stories/LabeledValue.stories';
 import linkMeta from '../../../packages/@vue-spectrum/link/stories/Link.stories';
@@ -106,6 +107,27 @@ describe('Vue Storybook controls parity', () => {
     expect(argTypes.onPress.action).toBe('press');
     expect(argTypes.onPressStart.action).toBe('pressstart');
     expect(argTypes.onPressEnd.action).toBe('pressend');
+  });
+
+  it('matches top-level HelpText controls contract with React stories', () => {
+    let args = (helpTextMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (helpTextMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual(['description', 'label']);
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'description',
+      'errorMessage',
+      'isDisabled',
+      'label',
+      'labelAlign',
+      'labelPosition',
+      'validationState',
+      'width'
+    ]);
+    expect((argTypes.validationState.control as string)).toBe('radio');
+    expect((argTypes.validationState.options as unknown[])).toEqual(['invalid', 'valid']);
+    expect((argTypes.labelAlign.options as unknown[])).toEqual(['end', 'start']);
+    expect((argTypes.labelPosition.options as unknown[])).toEqual(['side', 'top']);
   });
 
   it('matches top-level Button controls contract with React stories', () => {
