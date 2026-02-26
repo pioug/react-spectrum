@@ -260,29 +260,7 @@ const ControlledSelection = defineComponent({
 
 const meta: Meta<typeof Tabs> = {
   title: 'Tabs',
-  component: Tabs,
-  args: {
-    ariaLabel: 'Tab example',
-    items: cloneItems(baseItems),
-    orientation: 'horizontal'
-  },
-  argTypes: {
-    ariaLabel: {
-      control: 'text'
-    },
-    items: {
-      table: {
-        disable: true
-      }
-    },
-    modelValue: {
-      control: 'text'
-    },
-    orientation: {
-      control: 'select',
-      options: ['horizontal', 'vertical']
-    }
-  }
+  component: Tabs
 };
 
 export default meta;
@@ -293,7 +271,13 @@ function renderTabs(baseArgs: Partial<TabsStoryArgs> = {}, wrapperStyle?: string
   return (args: TabsStoryArgs) => ({
     components: {Tabs},
     setup() {
-      let mergedArgs = computed<TabsStoryArgs>(() => ({...args, ...baseArgs}));
+      let mergedArgs = computed<TabsStoryArgs>(() => ({
+        ariaLabel: 'Tab example',
+        items: cloneItems(baseItems),
+        orientation: 'horizontal',
+        ...args,
+        ...baseArgs
+      }));
       let selectedKey = ref<string | null>(null);
       let onSelectionChange = action('onSelectionChange');
 

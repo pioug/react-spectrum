@@ -39,32 +39,27 @@ const meta: Meta<typeof ListView> = {
   component: ListView,
   args: {
     density: 'regular',
+    disabledBehavior: 'selection',
     isQuiet: false,
+    overflowMode: 'truncate',
     selectionMode: 'multiple',
     selectionStyle: 'checkbox'
   },
   argTypes: {
-    ariaLabel: {
-      control: 'text'
-    },
     density: {
       control: 'select',
       options: ['compact', 'regular', 'spacious']
     },
-    isDisabled: {
-      control: 'boolean'
-    },
     isQuiet: {
       control: 'boolean'
     },
-    items: {
-      table: {
-        disable: true
-      }
+    overflowMode: {
+      control: 'radio',
+      options: ['truncate', 'wrap']
     },
-    loadingState: {
-      control: 'select',
-      options: ['idle', 'loading', 'loadingMore']
+    disabledBehavior: {
+      control: 'radio',
+      options: ['selection', 'all']
     },
     selectionMode: {
       control: 'radio',

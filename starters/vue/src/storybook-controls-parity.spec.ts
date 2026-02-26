@@ -30,6 +30,7 @@ import illustratedMessageMeta from '../../../packages/@vue-spectrum/illustratedm
 import inlineAlertMeta from '../../../packages/@vue-spectrum/inlinealert/stories/InlineAlert.stories';
 import labeledValueMeta from '../../../packages/@vue-spectrum/labeledvalue/stories/LabeledValue.stories';
 import linkMeta from '../../../packages/@vue-spectrum/link/stories/Link.stories';
+import listViewMeta from '../../../packages/@vue-spectrum/list/stories/ListView.stories';
 import logicButtonMeta from '../../../packages/@vue-spectrum/button/stories/LogicButton.stories';
 import meterMeta from '../../../packages/@vue-spectrum/meter/stories/Meter.stories';
 import modalMeta from '../../../packages/@vue-spectrum/overlays/stories/Modal.stories';
@@ -45,6 +46,7 @@ import sliderMeta from '../../../packages/@vue-spectrum/slider/stories/Slider.st
 import stepListMeta from '../../../packages/@vue-spectrum/steplist/stories/StepList.stories';
 import statusLightMeta from '../../../packages/@vue-spectrum/statuslight/stories/StatusLight.stories';
 import switchMeta from '../../../packages/@vue-spectrum/switch/stories/Switch.stories';
+import tabsMeta from '../../../packages/@vue-spectrum/tabs/stories/Tabs.stories';
 import tagGroupMeta from '../../../packages/@vue-spectrum/tag/stories/TagGroup.stories';
 import textAreaMeta from '../../../packages/@vue-spectrum/textfield/stories/TextArea.stories';
 import textFieldMeta from '../../../packages/@vue-spectrum/textfield/stories/TextField.stories';
@@ -571,6 +573,54 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.timeout.options as unknown[])).toEqual([undefined, 5000]);
     expect((argTypes.placement.control as string)).toBe('select');
     expect((argTypes.placement.options as unknown[])).toEqual([undefined, 'top', 'top end', 'bottom', 'bottom end']);
+  });
+
+  it('matches top-level ListView controls contract with React stories', () => {
+    let args = (listViewMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (listViewMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual([
+      'density',
+      'disabledBehavior',
+      'isQuiet',
+      'overflowMode',
+      'selectionMode',
+      'selectionStyle'
+    ]);
+    expect(args.isQuiet).toBe(false);
+    expect(args.density).toBe('regular');
+    expect(args.selectionMode).toBe('multiple');
+    expect(args.selectionStyle).toBe('checkbox');
+    expect(args.overflowMode).toBe('truncate');
+    expect(args.disabledBehavior).toBe('selection');
+
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'density',
+      'disabledBehavior',
+      'isQuiet',
+      'overflowMode',
+      'selectionMode',
+      'selectionStyle'
+    ]);
+    expect((argTypes.selectionMode.control as string)).toBe('radio');
+    expect((argTypes.selectionMode.options as unknown[])).toEqual(['none', 'single', 'multiple']);
+    expect((argTypes.selectionStyle.control as string)).toBe('radio');
+    expect((argTypes.selectionStyle.options as unknown[])).toEqual(['checkbox', 'highlight']);
+    expect((argTypes.isQuiet.control as string)).toBe('boolean');
+    expect((argTypes.density.control as string)).toBe('select');
+    expect((argTypes.density.options as unknown[])).toEqual(['compact', 'regular', 'spacious']);
+    expect((argTypes.overflowMode.control as string)).toBe('radio');
+    expect((argTypes.overflowMode.options as unknown[])).toEqual(['truncate', 'wrap']);
+    expect((argTypes.disabledBehavior.control as string)).toBe('radio');
+    expect((argTypes.disabledBehavior.options as unknown[])).toEqual(['selection', 'all']);
+  });
+
+  it('matches top-level Tabs controls contract with React stories', () => {
+    let args = (tabsMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (tabsMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes)).toEqual([]);
   });
 
   it('matches top-level Picker controls contract with React stories', () => {
