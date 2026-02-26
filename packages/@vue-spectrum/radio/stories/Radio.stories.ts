@@ -1,20 +1,29 @@
 import {action} from '@storybook/addon-actions';
-import {ContextualHelp} from '@vue-spectrum/contextualhelp';
 import {Provider} from '@vue-spectrum/provider';
 import {Radio, RadioGroup} from '../src';
-import {computed, defineComponent, ref, watch} from 'vue';
+import {computed, defineComponent, ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type RadioStoryArgs = {
+  contextualHelp?: string,
+  defaultValue?: string,
   description?: string,
+  errorMessage?: string,
   isDisabled?: boolean,
   isEmphasized?: boolean,
   isInvalid?: boolean,
+  isReadOnly?: boolean,
+  isRequired?: boolean,
   label?: string,
+  labelAlign?: 'end' | 'start',
+  labelPosition?: 'side' | 'top',
   modelValue?: string,
   name?: string,
+  necessityIndicator?: 'icon' | 'label',
   orientation?: 'horizontal' | 'vertical',
+  showErrorIcon?: boolean,
   validationState?: 'invalid' | 'valid'
+  value?: string
 };
 
 type RadioOptionOverride = {
@@ -59,9 +68,26 @@ const meta: Meta<typeof RadioGroup> = {
     label: 'Favorite pet',
     isEmphasized: false,
     isDisabled: false,
+    isReadOnly: false,
+    isRequired: false,
+    necessityIndicator: 'icon',
+    labelPosition: 'top',
+    labelAlign: 'start',
     isInvalid: false
   },
   argTypes: {
+    labelPosition: {
+      control: 'radio',
+      options: ['top', 'side']
+    },
+    necessityIndicator: {
+      control: 'radio',
+      options: ['icon', 'label']
+    },
+    labelAlign: {
+      control: 'radio',
+      options: ['start', 'end']
+    },
     orientation: {
       control: 'radio',
       options: ['horizontal', 'vertical']
@@ -78,11 +104,6 @@ function renderRadioGroup(baseArgs: Partial<RadioStoryArgs> = {}, radioProps: Pa
     components: {Radio, RadioGroup},
     setup() {
       let mergedArgs = computed<RadioStoryArgs>(() => ({...args, ...baseArgs}));
-      let selectedValue = ref('');
-
-      watch(mergedArgs, (nextArgs) => {
-        selectedValue.value = nextArgs.modelValue ?? '';
-      }, {deep: true, immediate: true});
 
       let options: RadioOptionOverride[] = [
         {label: 'Dogs', value: 'dogs', ...radioProps[0]},
@@ -91,28 +112,37 @@ function renderRadioGroup(baseArgs: Partial<RadioStoryArgs> = {}, radioProps: Pa
       ];
 
       let onChange = (value: string) => {
-        selectedValue.value = value;
         action('onChange')(value);
       };
 
       return {
         mergedArgs,
         options,
-        onChange,
-        selectedValue
+        onChange
       };
     },
     template: `
       <RadioGroup
+        :contextual-help="mergedArgs.contextualHelp"
+        :default-value="mergedArgs.defaultValue"
         :description="mergedArgs.description"
+        :error-message="mergedArgs.errorMessage"
         :is-disabled="mergedArgs.isDisabled"
         :is-emphasized="mergedArgs.isEmphasized"
         :is-invalid="mergedArgs.isInvalid"
+        :is-read-only="mergedArgs.isReadOnly"
+        :is-required="mergedArgs.isRequired"
         :label="mergedArgs.label"
-        :model-value="selectedValue"
+        :label-align="mergedArgs.labelAlign"
+        :label-position="mergedArgs.labelPosition"
+        :model-value="mergedArgs.modelValue"
         :name="mergedArgs.name ?? 'favorite-pet-group'"
+        :necessity-indicator="mergedArgs.necessityIndicator"
         :orientation="mergedArgs.orientation"
+        :show-error-icon="mergedArgs.showErrorIcon"
         :validation-state="mergedArgs.validationState"
+        :value="mergedArgs.value"
+        @change="onChange"
         @update:model-value="onChange">
         <Radio
           v-for="item in options"
@@ -130,11 +160,11 @@ export const Default: Story = {
 };
 
 export const DefaultValueDragons: Story = {
-  render: renderRadioGroup({modelValue: 'dragons'})
+  render: renderRadioGroup({defaultValue: 'dragons'})
 };
 
 export const ControlledDragons: Story = {
-  render: renderRadioGroup({modelValue: 'dragons'})
+  render: renderRadioGroup({value: 'dragons'})
 };
 
 export const IsDisabledOnOneRadio: Story = {
@@ -147,17 +177,16 @@ export const WithDescription: Story = {
 
 export const WithErrorMessage: Story = {
   render: renderRadioGroup({
-    description: 'Please select a pet.',
-    isInvalid: true,
-    validationState: 'invalid'
+    errorMessage: 'Please select a pet.',
+    isInvalid: true
   })
 };
 
 export const WithErrorMessageAndErrorIcon: Story = {
   render: renderRadioGroup({
-    description: 'Please select a pet. (error icon variant)',
+    errorMessage: 'Please select a pet.',
     isInvalid: true,
-    validationState: 'invalid'
+    showErrorIcon: true
   })
 };
 
@@ -180,9 +209,11 @@ export const WithDescriptionErrorMessageAndValidationFixedWidth: Story = {
       <div style="width: 480px;">
         <RadioGroup
           aria-label="Favorite pet"
-          :description="isInvalid ? errorMessage : 'Please select a pet.'"
+          :description="'Please select a pet.'"
+          :error-message="errorMessage"
           :is-invalid="isInvalid"
           :model-value="selected"
+          @change="onChange"
           @update:model-value="selected = $event; onChange($event)">
           <Radio value="dogs">Dogs</Radio>
           <Radio value="cats">Cats</Radio>
@@ -194,32 +225,8 @@ export const WithDescriptionErrorMessageAndValidationFixedWidth: Story = {
 };
 
 export const _ContextualHelp: Story = {
-  render: (args: RadioStoryArgs) => ({
-    components: {ContextualHelp, Radio, RadioGroup},
-    setup() {
-      let selected = ref(args.modelValue ?? '');
-      return {
-        args,
-        selected,
-        onChange: action('onChange')
-      };
-    },
-    template: `
-      <div style="display: flex; align-items: end; gap: 8px;">
-        <RadioGroup
-          v-bind="args"
-          label="Favorite pet"
-          :model-value="selected"
-          @update:model-value="selected = $event; onChange($event)">
-          <Radio value="dogs">Dogs</Radio>
-          <Radio value="cats">Cats</Radio>
-          <Radio value="dragons">Dragons</Radio>
-        </RadioGroup>
-        <ContextualHelp title="What is a segment?">
-          Segments identify who your visitors are, what devices and services they use, where they navigated from, and much more.
-        </ContextualHelp>
-      </div>
-    `
+  render: renderRadioGroup({
+    contextualHelp: 'What is a segment? Segments identify who your visitors are, what devices and services they use, where they navigated from, and much more.'
   })
 };
 

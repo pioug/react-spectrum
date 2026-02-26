@@ -19,6 +19,7 @@ import logicButtonMeta from '../../../packages/@vue-spectrum/button/stories/Logi
 import meterMeta from '../../../packages/@vue-spectrum/meter/stories/Meter.stories';
 import progressBarMeta from '../../../packages/@vue-spectrum/progress/stories/ProgressBar.stories';
 import progressCircleMeta from '../../../packages/@vue-spectrum/progress/stories/ProgressCircle.stories';
+import radioGroupMeta from '../../../packages/@vue-spectrum/radio/stories/Radio.stories';
 import rangeSliderMeta from '../../../packages/@vue-spectrum/slider/stories/RangeSlider.stories';
 import searchFieldMeta from '../../../packages/@vue-spectrum/searchfield/stories/SearchField.stories';
 import sliderMeta from '../../../packages/@vue-spectrum/slider/stories/Slider.stories';
@@ -396,6 +397,47 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.labelAlign.control as {options?: unknown[]}).options).toEqual(['start', 'end']);
     expect((argTypes.validationState.control as {type?: string}).type).toBe('radio');
     expect((argTypes.validationState.control as {options?: unknown[]}).options).toEqual([null, 'valid', 'invalid']);
+  });
+
+  it('matches top-level RadioGroup controls contract with React stories', () => {
+    let args = (radioGroupMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (radioGroupMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual([
+      'isDisabled',
+      'isEmphasized',
+      'isInvalid',
+      'isReadOnly',
+      'isRequired',
+      'label',
+      'labelAlign',
+      'labelPosition',
+      'necessityIndicator'
+    ]);
+    expect(args.label).toBe('Favorite pet');
+    expect(args.isEmphasized).toBe(false);
+    expect(args.isDisabled).toBe(false);
+    expect(args.isReadOnly).toBe(false);
+    expect(args.isRequired).toBe(false);
+    expect(args.necessityIndicator).toBe('icon');
+    expect(args.labelPosition).toBe('top');
+    expect(args.labelAlign).toBe('start');
+    expect(args.isInvalid).toBe(false);
+
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'labelAlign',
+      'labelPosition',
+      'necessityIndicator',
+      'orientation'
+    ]);
+    expect((argTypes.labelPosition.control as string)).toBe('radio');
+    expect((argTypes.labelPosition.options as unknown[])).toEqual(['top', 'side']);
+    expect((argTypes.necessityIndicator.control as string)).toBe('radio');
+    expect((argTypes.necessityIndicator.options as unknown[])).toEqual(['icon', 'label']);
+    expect((argTypes.labelAlign.control as string)).toBe('radio');
+    expect((argTypes.labelAlign.options as unknown[])).toEqual(['start', 'end']);
+    expect((argTypes.orientation.control as string)).toBe('radio');
+    expect((argTypes.orientation.options as unknown[])).toEqual(['horizontal', 'vertical']);
   });
 
   it('matches top-level TextField controls contract with React stories', () => {

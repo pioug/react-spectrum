@@ -3248,11 +3248,11 @@ describe('Vue migration primitives', () => {
     expect((wrapper.vm as unknown as {value: string}).value).toBe('react');
   });
 
-  it('maps radio disabled, invalid, hovered, and focus-ring classes', async () => {
+  it('maps radio group field contract and radio state classes', async () => {
     let wrapper = mount({
       components: {Radio, RadioGroup},
       template: `
-        <RadioGroup v-model="value" :is-invalid="true">
+        <RadioGroup v-model="value" label="Framework" :is-invalid="true" description="Choose one.">
           <Radio value="vue">Vue</Radio>
         </RadioGroup>
       `,
@@ -3263,13 +3263,23 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let radio = wrapper.get('label.vs-radio');
+    let field = wrapper.get('.spectrum-Field.spectrum-FieldGroup');
+    expect(field.classes()).not.toContain('vs-radio-group');
+    let group = field.get('[role="radiogroup"]');
+    expect(group.classes()).toContain('spectrum-FieldGroup-group');
+    expect(group.classes()).toContain('spectrum-Field-field');
+    expect(group.attributes('aria-invalid')).toBe('true');
+    expect(wrapper.find('.spectrum-HelpText-text').text()).toContain('Choose one.');
+
+    let radio = wrapper.get('label.spectrum-Radio');
     await radio.trigger('mouseenter');
     expect(radio.classes()).toContain('is-hovered');
     expect(radio.classes()).toContain('is-invalid');
+    expect(radio.classes()).not.toContain('vs-radio');
 
-    await wrapper.get('input.vs-radio__input').trigger('focus');
+    await wrapper.get('input.spectrum-Radio-input').trigger('focus');
     expect(radio.classes()).toContain('focus-ring');
+    expect(wrapper.get('input.spectrum-Radio-input').attributes('tabindex')).toBe('0');
 
     let disabled = mount({
       components: {Radio, RadioGroup},
@@ -3284,7 +3294,8 @@ describe('Vue migration primitives', () => {
         };
       }
     });
-    expect(disabled.get('label.vs-radio').classes()).toContain('is-disabled');
+    expect(disabled.get('label.spectrum-Radio').classes()).toContain('is-disabled');
+    expect(disabled.get('input.spectrum-Radio-input').attributes('disabled')).toBeDefined();
   });
 
   it('maps accordion disclosure state classes and hidden/aria-hidden panel signals', async () => {
