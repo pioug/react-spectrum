@@ -10,11 +10,83 @@ type ToggleButtonStoryArgs = {
   isDisabled?: boolean,
   isEmphasized?: boolean,
   isQuiet?: boolean,
-  onClick?: (event: MouseEvent) => void,
-  staticColor?: 'black' | 'white'
+  onPress?: (event: MouseEvent | KeyboardEvent) => void,
+  onPressEnd?: (event: MouseEvent | KeyboardEvent) => void,
+  onPressStart?: (event: MouseEvent | KeyboardEvent) => void,
+  staticColor?: 'black' | 'white',
+  variant?: 'accent' | 'cta' | 'negative' | 'overBackground' | 'primary' | 'secondary'
 };
 
-type RowProps = Omit<ToggleButtonStoryArgs, 'onClick'>;
+type RowProps = Omit<ToggleButtonStoryArgs, 'onPress' | 'onPressEnd' | 'onPressStart'>;
+
+type ToggleButtonRenderProps = Omit<ToggleButtonStoryArgs, 'onPress' | 'onPressEnd' | 'onPressStart'>;
+
+function pickToggleButtonProps(args: ToggleButtonStoryArgs): ToggleButtonRenderProps {
+  let {
+    onPress: _onPress,
+    onPressEnd: _onPressEnd,
+    onPressStart: _onPressStart,
+    ...buttonProps
+  } = args;
+
+  return buttonProps;
+}
+
+function createPressActionHandlers(args: ToggleButtonStoryArgs) {
+  let isPressed = false;
+
+  return {
+    onBlur: (event: FocusEvent) => {
+      if (isPressed) {
+        args.onPressEnd?.(event as unknown as KeyboardEvent);
+        isPressed = false;
+      }
+    },
+    onClick: (event: MouseEvent) => {
+      args.onPress?.(event);
+    },
+    onKeydown: (event: KeyboardEvent) => {
+      if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') {
+        return;
+      }
+
+      args.onPressStart?.(event);
+      isPressed = true;
+    },
+    onKeyup: (event: KeyboardEvent) => {
+      if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') {
+        return;
+      }
+
+      if (isPressed) {
+        args.onPressEnd?.(event);
+        isPressed = false;
+      }
+    },
+    onPointercancel: () => {
+      isPressed = false;
+    },
+    onPointerdown: (event: PointerEvent) => {
+      if (event.button !== 0) {
+        return;
+      }
+
+      args.onPressStart?.(event as unknown as MouseEvent);
+      isPressed = true;
+    },
+    onPointerleave: () => {
+      isPressed = false;
+    },
+    onPointerup: (event: PointerEvent) => {
+      if (event.button !== 0 || !isPressed) {
+        return;
+      }
+
+      args.onPressEnd?.(event as unknown as MouseEvent);
+      isPressed = false;
+    }
+  };
+}
 
 function renderAddIcon() {
   return h('svg', {
@@ -65,41 +137,49 @@ function makePairRenderer(rowVariants: RowProps[], backgroundColor?: string) {
       let onChange = action('change');
 
       return () => {
+        let buttonProps = pickToggleButtonProps(args);
         let renderedRows = h('div', {
           style: {
             display: 'flex',
             flexDirection: 'column',
             rowGap: '12px'
           }
-        }, rowVariants.map((rowProps, index) => h('div', {
-          style: {
-            display: 'flex',
-            gap: '8px'
-          }
-        }, [
-          h(ToggleButton, {
-            ...args,
-            ...rowProps,
-            modelValue: rows[index].firstSelected.value,
-            'onUpdate:modelValue': (value: boolean) => {
-              rows[index].firstSelected.value = value;
-              onChange(value);
+        }, rowVariants.map((rowProps, index) => {
+          let firstPressHandlers = createPressActionHandlers(args);
+          let secondPressHandlers = createPressActionHandlers(args);
+
+          return h('div', {
+            style: {
+              display: 'flex',
+              gap: '8px'
             }
-          }, {
-            default: () => renderToggleContent('Default')
-          }),
-          h(ToggleButton, {
-            ...args,
-            ...rowProps,
-            modelValue: rows[index].secondSelected.value,
-            'onUpdate:modelValue': (value: boolean) => {
-              rows[index].secondSelected.value = value;
-              onChange(value);
-            }
-          }, {
-            default: () => renderToggleContent('Selected')
-          })
-        ])));
+          }, [
+            h(ToggleButton, {
+              ...buttonProps,
+              ...rowProps,
+              ...firstPressHandlers,
+              modelValue: rows[index].firstSelected.value,
+              'onUpdate:modelValue': (value: boolean) => {
+                rows[index].firstSelected.value = value;
+                onChange(value);
+              }
+            }, {
+              default: () => renderToggleContent('Default')
+            }),
+            h(ToggleButton, {
+              ...buttonProps,
+              ...rowProps,
+              ...secondPressHandlers,
+              modelValue: rows[index].secondSelected.value,
+              'onUpdate:modelValue': (value: boolean) => {
+                rows[index].secondSelected.value = value;
+                onChange(value);
+              }
+            }, {
+              default: () => renderToggleContent('Selected')
+            })
+          ]);
+        }));
 
         let content = backgroundColor ? renderBackground(backgroundColor, renderedRows) : renderedRows;
         return wrapInProvider(content);
@@ -112,10 +192,23 @@ const meta = {
   title: 'Button/ToggleButton',
   component: ToggleButton,
   args: {
-    onClick: action('press')
+    onPress: action('press'),
+    onPressStart: action('pressstart'),
+    onPressEnd: action('pressend'),
+    variant: 'cta'
   },
   argTypes: {
-    onClick: {
+    onPress: {
+      table: {
+        disable: true
+      }
+    },
+    onPressStart: {
+      table: {
+        disable: true
+      }
+    },
+    onPressEnd: {
       table: {
         disable: true
       }
@@ -136,6 +229,9 @@ const meta = {
     },
     autoFocus: {
       control: 'boolean'
+    },
+    variant: {
+      control: 'text'
     }
   }
 } satisfies Meta<typeof ToggleButton>;
@@ -151,6 +247,14 @@ export const StaticWhite: Story = {
   args: {
     staticColor: 'white'
   },
+  argTypes: {
+    staticColor: {
+      control: 'text',
+      table: {
+        disable: true
+      }
+    }
+  },
   render: makePairRenderer([{}], 'rgb(9, 90, 186)'),
   name: 'staticColor: white'
 };
@@ -158,6 +262,14 @@ export const StaticWhite: Story = {
 export const StaticBlack: Story = {
   args: {
     staticColor: 'black'
+  },
+  argTypes: {
+    staticColor: {
+      control: 'text',
+      table: {
+        disable: true
+      }
+    }
   },
   render: makePairRenderer([{}], 'rgb(255, 216, 64)'),
   name: 'staticColor: black'
@@ -181,10 +293,13 @@ export const Controlled: Story = {
     setup() {
       let selected = ref(false);
       let onChange = action('change');
+      let buttonProps = pickToggleButtonProps(args);
+      let pressHandlers = createPressActionHandlers(args);
 
       return () => wrapInProvider(h('div', [
         h(ToggleButton, {
-          ...args,
+          ...buttonProps,
+          ...pressHandlers,
           modelValue: selected.value,
           'onUpdate:modelValue': (value: boolean) => {
             selected.value = value;

@@ -2,6 +2,7 @@ import {describe, expect, it} from 'vitest';
 import actionButtonMeta from '../../../packages/@vue-spectrum/button/stories/ActionButton.stories';
 import buttonMeta from '../../../packages/@vue-spectrum/button/stories/Button.stories';
 import logicButtonMeta from '../../../packages/@vue-spectrum/button/stories/LogicButton.stories';
+import toggleButtonMeta from '../../../packages/@vue-spectrum/button/stories/ToggleButton.stories';
 
 describe('Vue Storybook controls parity', () => {
   it('matches top-level Button controls contract with React stories', () => {
@@ -116,6 +117,44 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.autoFocus.control as string)).toBe('boolean');
     expect((argTypes.variant.control as string)).toBe('select');
     expect((argTypes.variant.options as unknown[])).toEqual(['and', 'or']);
+
+    expect(argTypes).not.toHaveProperty('onClick');
+    expect(args).not.toHaveProperty('onClick');
+  });
+
+  it('matches top-level ToggleButton controls contract with React stories', () => {
+    let args = (toggleButtonMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (toggleButtonMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual([
+      'onPress',
+      'onPressEnd',
+      'onPressStart',
+      'variant'
+    ]);
+
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'autoFocus',
+      'isDisabled',
+      'isEmphasized',
+      'isQuiet',
+      'onPress',
+      'onPressEnd',
+      'onPressStart',
+      'staticColor',
+      'variant'
+    ]);
+
+    let disabledControls = ['onPress', 'onPressStart', 'onPressEnd', 'staticColor'];
+    for (let key of disabledControls) {
+      expect((argTypes[key].table as {disable?: boolean})?.disable).toBe(true);
+    }
+
+    expect((argTypes.autoFocus.control as string)).toBe('boolean');
+    expect((argTypes.isQuiet.control as string)).toBe('boolean');
+    expect((argTypes.isEmphasized.control as string)).toBe('boolean');
+    expect((argTypes.isDisabled.control as string)).toBe('boolean');
+    expect((argTypes.variant.control as string)).toBe('text');
 
     expect(argTypes).not.toHaveProperty('onClick');
     expect(args).not.toHaveProperty('onClick');

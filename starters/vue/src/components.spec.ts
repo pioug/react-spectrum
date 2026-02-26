@@ -625,8 +625,14 @@ describe('Vue migration primitives', () => {
       }
     });
 
+    expect(wrapper.classes()).toContain('spectrum-ActionButton');
+    expect(wrapper.classes()).toContain('spectrum-BaseButton');
+    expect(wrapper.classes()).toContain('i18nFontFamily');
+    expect(wrapper.find('.spectrum-ActionButton-label').text()).toBe('Toggle me');
     expect(wrapper.attributes('aria-pressed')).toBe('true');
     expect(wrapper.classes()).toContain('is-selected');
+    expect(wrapper.attributes('data-react-aria-pressable')).toBe('true');
+    expect(wrapper.attributes('data-vac')).toBeUndefined();
 
     await wrapper.trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([false]);

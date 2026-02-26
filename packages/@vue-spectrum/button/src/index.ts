@@ -593,6 +593,10 @@ export const ToggleButton = defineComponent({
       type: Boolean as PropType<boolean | undefined>,
       default: undefined
     },
+    variant: {
+      type: String as PropType<ButtonVariant | undefined>,
+      default: undefined
+    },
     staticColor: {
       type: String as PropType<StaticColor | undefined>,
       default: undefined
@@ -616,37 +620,42 @@ export const ToggleButton = defineComponent({
       }
     );
 
-    let toggleClass = computed(() => classNames(
-      styles,
-      'spectrum-ActionButton',
-      {
-        'focus-ring': state.interaction.isFocusVisible.value,
-        'is-active': state.interaction.isPressed.value,
-        'is-disabled': state.isDisabled.value,
-        'is-hovered': state.interaction.isHovered.value,
-        'is-selected': selected.value,
-        'spectrum-ActionButton--emphasized': props.isEmphasized,
-        'spectrum-ActionButton--quiet': props.isQuiet,
-        'spectrum-ActionButton--staticBlack': props.staticColor === 'black',
-        'spectrum-ActionButton--staticColor': !!props.staticColor,
-        'spectrum-ActionButton--staticWhite': props.staticColor === 'white'
-      }
-    ));
+    return () => {
+      let children = slots.default ? slots.default() : ['Toggle'];
+      let renderedChildren = children.every(isTextOnlyChild)
+        ? [h('span', {
+          class: classNames(styles, 'spectrum-ActionButton-label')
+        }, children)]
+        : children;
 
-    return () => h(state.elementType.value, {
-      ...state.domProps.value,
-      'aria-pressed': selected.value ? 'true' : 'false',
-      class: [
-        toggleClass.value,
-        'vs-button',
-        'vs-button--secondary',
-        'vs-button--medium',
-        state.isDisabled.value ? 'is-disabled' : null,
-        selected.value ? 'is-selected' : null,
-        attrs.class
-      ],
-      'data-vac': ''
-    }, slots.default ? slots.default() : 'Toggle');
+      return h(state.elementType.value, {
+        ...state.domProps.value,
+        'aria-pressed': selected.value ? 'true' : 'false',
+        class: [
+          classNames(
+            styles,
+            'i18nFontFamily',
+            'spectrum-ActionButton',
+            'spectrum-BaseButton',
+            'spectrum-FocusRing',
+            'spectrum-FocusRing-ring',
+            {
+              'focus-ring': state.interaction.isFocusVisible.value,
+              'is-active': state.interaction.isPressed.value,
+              'is-disabled': state.isDisabled.value,
+              'is-hovered': state.interaction.isHovered.value,
+              'is-selected': selected.value,
+              'spectrum-ActionButton--emphasized': props.isEmphasized,
+              'spectrum-ActionButton--quiet': props.isQuiet,
+              'spectrum-ActionButton--staticBlack': props.staticColor === 'black',
+              'spectrum-ActionButton--staticColor': !!props.staticColor,
+              'spectrum-ActionButton--staticWhite': props.staticColor === 'white'
+            }
+          ),
+          attrs.class
+        ]
+      }, renderedChildren);
+    };
   }
 });
 
