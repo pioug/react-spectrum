@@ -1,4 +1,5 @@
 import {ColorField} from '../src';
+import {action} from '@storybook/addon-actions';
 import {ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
@@ -8,44 +9,75 @@ const meta: Meta<typeof ColorField> = {
   title: 'ColorField',
   component: ColorField,
   args: {
+    onChange: action('onChange'),
     label: 'Primary Color'
   },
   argTypes: {
-    ariaLabel: {
-      control: 'text'
+    onChange: {
+      table: {
+        disable: true
+      }
     },
-    ariaLabelledby: {
-      control: 'text'
-    },
-    description: {
-      control: 'text'
-    },
-    disabled: {
-      control: 'boolean'
-    },
-    form: {
-      control: 'text'
-    },
-    id: {
-      control: 'text'
-    },
-    isDisabled: {
-      control: 'boolean'
-    },
-    isInvalid: {
-      control: 'boolean'
+    contextualHelp: {
+      table: {
+        disable: true
+      }
     },
     label: {
       control: 'text'
     },
-    modelValue: {
+    'aria-label': {
       control: 'text'
     },
-    name: {
+    isQuiet: {
+      control: 'boolean'
+    },
+    isReadOnly: {
+      control: 'boolean'
+    },
+    isDisabled: {
+      control: 'boolean'
+    },
+    autoFocus: {
+      control: 'boolean'
+    },
+    isRequired: {
+      control: 'boolean'
+    },
+    necessityIndicator: {
+      control: 'select',
+      options: ['icon', 'label']
+    },
+    labelAlign: {
+      control: 'select',
+      options: ['end', 'start']
+    },
+    labelPosition: {
+      control: 'select',
+      options: ['top', 'side']
+    },
+    isInvalid: {
+      control: 'boolean'
+    },
+    isWheelDisabled: {
+      control: 'boolean'
+    },
+    description: {
       control: 'text'
     },
-    placeholder: {
+    errorMessage: {
       control: 'text'
+    },
+    width: {
+      control: 'text'
+    },
+    colorSpace: {
+      control: 'select',
+      options: ['rgb', 'hsl', 'hsb']
+    },
+    channel: {
+      control: 'select',
+      options: [null, 'red', 'green', 'blue', 'hue', 'saturation', 'lightness', 'brightness']
     }
   }
 };

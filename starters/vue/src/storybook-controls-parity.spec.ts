@@ -5,6 +5,8 @@ import actionButtonMeta from '../../../packages/@vue-spectrum/button/stories/Act
 import buttonMeta from '../../../packages/@vue-spectrum/button/stories/Button.stories';
 import checkboxMeta from '../../../packages/@vue-spectrum/checkbox/stories/Checkbox.stories';
 import checkboxGroupMeta from '../../../packages/@vue-spectrum/checkbox/stories/CheckboxGroup.stories';
+import colorFieldMeta from '../../../packages/@vue-spectrum/color/stories/ColorField.stories';
+import colorSliderMeta from '../../../packages/@vue-spectrum/color/stories/ColorSlider.stories';
 import comboBoxMeta from '../../../packages/@vue-spectrum/combobox/stories/ComboBox.stories';
 import dateFieldMeta from '../../../packages/@vue-spectrum/datepicker/stories/DateField.stories';
 import datePickerMeta from '../../../packages/@vue-spectrum/datepicker/stories/DatePicker.stories';
@@ -290,6 +292,94 @@ describe('Vue Storybook controls parity', () => {
 
     expect(Object.keys(args)).toEqual([]);
     expect(Object.keys(argTypes)).toEqual([]);
+  });
+
+  it('matches top-level ColorSlider controls contract with React stories', () => {
+    let args = (colorSliderMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (colorSliderMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual(['onChange', 'onChangeEnd']);
+    expect(typeof args.onChange).toBe('function');
+    expect(typeof args.onChangeEnd).toBe('function');
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'aria-label',
+      'channel',
+      'contextualHelp',
+      'height',
+      'isDisabled',
+      'label',
+      'onChange',
+      'onChangeEnd',
+      'orientation',
+      'showValueLabel',
+      'width'
+    ]);
+    expect((argTypes.onChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onChangeEnd.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.contextualHelp.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.channel.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.label.control as string)).toBe('text');
+    expect((argTypes['aria-label'].control as string)).toBe('text');
+    expect((argTypes.isDisabled.control as string)).toBe('boolean');
+    expect((argTypes.showValueLabel.control as string)).toBe('boolean');
+    expect((argTypes.orientation.control as string)).toBe('select');
+    expect((argTypes.orientation.options as unknown[])).toEqual(['horizontal', 'vertical']);
+    expect((argTypes.width.control as string)).toBe('text');
+    expect((argTypes.height.control as string)).toBe('text');
+  });
+
+  it('matches top-level ColorField controls contract with React stories', () => {
+    let args = (colorFieldMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (colorFieldMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual(['label', 'onChange']);
+    expect(args.label).toBe('Primary Color');
+    expect(typeof args.onChange).toBe('function');
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'aria-label',
+      'autoFocus',
+      'channel',
+      'colorSpace',
+      'contextualHelp',
+      'description',
+      'errorMessage',
+      'isDisabled',
+      'isInvalid',
+      'isQuiet',
+      'isReadOnly',
+      'isRequired',
+      'isWheelDisabled',
+      'label',
+      'labelAlign',
+      'labelPosition',
+      'necessityIndicator',
+      'onChange',
+      'width'
+    ]);
+    expect((argTypes.onChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.contextualHelp.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.label.control as string)).toBe('text');
+    expect((argTypes['aria-label'].control as string)).toBe('text');
+    expect((argTypes.isQuiet.control as string)).toBe('boolean');
+    expect((argTypes.isReadOnly.control as string)).toBe('boolean');
+    expect((argTypes.isDisabled.control as string)).toBe('boolean');
+    expect((argTypes.autoFocus.control as string)).toBe('boolean');
+    expect((argTypes.isRequired.control as string)).toBe('boolean');
+    expect((argTypes.necessityIndicator.control as string)).toBe('select');
+    expect((argTypes.necessityIndicator.options as unknown[])).toEqual(['icon', 'label']);
+    expect((argTypes.labelAlign.control as string)).toBe('select');
+    expect((argTypes.labelAlign.options as unknown[])).toEqual(['end', 'start']);
+    expect((argTypes.labelPosition.control as string)).toBe('select');
+    expect((argTypes.labelPosition.options as unknown[])).toEqual(['top', 'side']);
+    expect((argTypes.isInvalid.control as string)).toBe('boolean');
+    expect((argTypes.isWheelDisabled.control as string)).toBe('boolean');
+    expect((argTypes.description.control as string)).toBe('text');
+    expect((argTypes.errorMessage.control as string)).toBe('text');
+    expect((argTypes.width.control as string)).toBe('text');
+    expect((argTypes.colorSpace.control as string)).toBe('select');
+    expect((argTypes.colorSpace.options as unknown[])).toEqual(['rgb', 'hsl', 'hsb']);
+    expect((argTypes.channel.control as string)).toBe('select');
+    expect((argTypes.channel.options as unknown[])).toEqual([null, 'red', 'green', 'blue', 'hue', 'saturation', 'lightness', 'brightness']);
   });
 
   it('matches top-level Picker controls contract with React stories', () => {

@@ -1,49 +1,60 @@
 import {ColorSlider, ColorSwatch} from '../src';
+import {action} from '@storybook/addon-actions';
 import {computed, ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type StoryArgs = Record<string, unknown>;
+type SliderChannel = 'red' | 'green' | 'blue' | 'hue' | 'saturation' | 'lightness' | 'brightness' | 'alpha';
 
 const meta: Meta<typeof ColorSlider> = {
   title: 'ColorSlider',
   component: ColorSlider,
   args: {
-    channel: 'red',
-    label: 'Red',
-    max: 255,
-    min: 0,
-    modelValue: 128
+    onChange: action('onChange'),
+    onChangeEnd: action('onChangeEnd')
   },
   argTypes: {
+    onChange: {
+      table: {
+        disable: true
+      }
+    },
+    onChangeEnd: {
+      table: {
+        disable: true
+      }
+    },
+    contextualHelp: {
+      table: {
+        disable: true
+      }
+    },
     channel: {
+      table: {
+        disable: true
+      }
+    },
+    label: {
       control: 'text'
     },
-    description: {
-      control: 'text'
-    },
-    disabled: {
-      control: 'boolean'
-    },
-    id: {
+    'aria-label': {
       control: 'text'
     },
     isDisabled: {
       control: 'boolean'
     },
-    label: {
+    showValueLabel: {
+      control: 'boolean'
+    },
+    orientation: {
+      control: 'select',
+      options: ['horizontal', 'vertical']
+    },
+    width: {
       control: 'text'
     },
-    max: {
-      control: 'number'
-    },
-    min: {
-      control: 'number'
-    },
-    modelValue: {
-      control: 'number'
-    },
-    step: {
-      control: 'number'
+    height: {
+      control: 'text'
     }
   }
 };
@@ -52,13 +63,99 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+function resolveChannelRange(channel: SliderChannel): {max: number, min: number} {
+  if (channel === 'red' || channel === 'green' || channel === 'blue') {
+    return {min: 0, max: 255};
+  }
+
+  if (channel === 'alpha' || channel === 'saturation' || channel === 'lightness' || channel === 'brightness') {
+    return {min: 0, max: 100};
+  }
+
+  return {min: 0, max: 360};
+}
+
+function parseHexColor(value: string): {blue: number, green: number, red: number} | null {
+  let normalized = value.trim();
+  if (/^#[0-9a-f]{3}$/i.test(normalized)) {
+    normalized = `#${normalized.slice(1).split('').map((char) => `${char}${char}`).join('')}`;
+  }
+
+  if (!/^#[0-9a-f]{6}$/i.test(normalized)) {
+    return null;
+  }
+
+  return {
+    red: Number.parseInt(normalized.slice(1, 3), 16),
+    green: Number.parseInt(normalized.slice(3, 5), 16),
+    blue: Number.parseInt(normalized.slice(5, 7), 16)
+  };
+}
+
+function resolveChannelValue(value: unknown, channel: SliderChannel): number | undefined {
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return value;
+  }
+
+  if (typeof value === 'string') {
+    let parsedHex = parseHexColor(value);
+    if (parsedHex) {
+      if (channel === 'red') {
+        return parsedHex.red;
+      }
+      if (channel === 'green') {
+        return parsedHex.green;
+      }
+      if (channel === 'blue') {
+        return parsedHex.blue;
+      }
+    }
+  }
+
+  return undefined;
+}
+
+function toSliderProps(args: StoryArgs): StoryArgs {
+  let channel = (typeof args.channel === 'string' ? args.channel : 'hue') as SliderChannel;
+  let range = resolveChannelRange(channel);
+  let min = typeof args.min === 'number' && Number.isFinite(args.min) ? args.min : range.min;
+  let max = typeof args.max === 'number' && Number.isFinite(args.max) ? args.max : range.max;
+  let derivedValue = resolveChannelValue(args.modelValue ?? args.value ?? args.defaultValue, channel);
+  let modelValue = typeof derivedValue === 'number' ? derivedValue : Math.round((min + max) / 2);
+
+  return {
+    channel,
+    description: typeof args.description === 'string' ? args.description : '',
+    disabled: Boolean(args.disabled),
+    id: typeof args.id === 'string' ? args.id : undefined,
+    isDisabled: typeof args.isDisabled === 'boolean' ? args.isDisabled : undefined,
+    label: typeof args.label === 'string' ? args.label : '',
+    max,
+    min,
+    modelValue,
+    step: typeof args.step === 'number' && Number.isFinite(args.step) ? args.step : 1
+  };
+}
+
 function renderColorSlider(args: StoryArgs) {
   return {
     components: {ColorSlider},
     setup() {
-      return {args};
+      let sliderArgs = computed(() => toSliderProps(args));
+      let onChange = (value: number) => {
+        if (typeof args.onChange === 'function') {
+          args.onChange(value);
+        }
+      };
+      let onChangeEnd = (value: number) => {
+        if (typeof args.onChangeEnd === 'function') {
+          args.onChangeEnd(value);
+        }
+      };
+
+      return {onChange, onChangeEnd, sliderArgs};
     },
-    template: '<ColorSlider v-bind="args" />'
+    template: '<ColorSlider v-bind="sliderArgs" @update:model-value="onChange($event)" @change="onChangeEnd($event)" />'
   };
 }
 
@@ -66,7 +163,9 @@ function renderControlled(args: StoryArgs) {
   return {
     components: {ColorSlider},
     setup() {
-      let value = ref(typeof args.modelValue === 'number' ? args.modelValue : 128);
+      let channel = (typeof args.channel === 'string' ? args.channel : 'hue') as SliderChannel;
+      let resolvedValue = resolveChannelValue(args.modelValue ?? args.value ?? args.defaultValue, channel);
+      let value = ref(typeof resolvedValue === 'number' ? resolvedValue : 128);
       return {
         args,
         value
@@ -216,21 +315,26 @@ function renderHSBA(args: StoryArgs) {
 }
 
 export const Default: Story = {
-  render: (args) => renderColorSlider(args)
+  render: (args) => renderColorSlider(args),
+  args: {
+    defaultValue: '#800000',
+    channel: 'red'
+  }
 };
 
 export const Controlled: Story = {
-  render: (args) => renderControlled(args)
+  render: (args) => renderControlled(args),
+  args: {
+    value: '#800000',
+    channel: 'red'
+  }
 };
 
 export const ContextualHelpStory: Story = {
   render: (args) => renderContextualHelp(args),
   args: {
     channel: 'hue',
-    label: 'Hue',
-    max: 360,
-    min: 0,
-    modelValue: 180
+    defaultValue: 'hsb(0, 100%, 50%)'
   },
   name: 'contextual help'
 };
