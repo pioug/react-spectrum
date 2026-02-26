@@ -1,4 +1,5 @@
 import {ActionMenu} from '../src';
+import {action} from '@storybook/addon-actions';
 import {ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
@@ -72,19 +73,31 @@ export const Default: Story = {
 };
 
 export const AriaLabel: Story = {
-  render: (args) => renderActionMenu({...args, ariaLabel: 'Some more actions'})
+  render: (args) => renderActionMenu(args),
+  args: {
+    'aria-label': 'Some more actions'
+  }
 };
 
 export const DOMId: Story = {
-  render: (args) => renderActionMenu({...args, id: 'my-action-menu'})
+  render: (args) => renderActionMenu(args),
+  args: {
+    id: 'my-action-menu'
+  }
 };
 
 export const Quiet: Story = {
-  render: (args) => renderActionMenu(args, {note: 'Quiet parity scenario'})
+  render: (args) => renderActionMenu(args, {note: 'Quiet parity scenario'}),
+  args: {
+    isQuiet: true
+  }
 };
 
 export const Disabled: Story = {
-  render: (args) => renderActionMenu({...args, isDisabled: true})
+  render: (args) => renderActionMenu(args),
+  args: {
+    isDisabled: true
+  }
 };
 
 export const DisabledKeys: Story = {
@@ -94,15 +107,25 @@ export const DisabledKeys: Story = {
       {key: 'two', label: 'Two', disabled: true},
       {key: 'three', label: 'Three'}
     ]
-  })
+  }),
+  args: {
+    disabledKeys: ['two']
+  }
 };
 
 export const AutoFocus: Story = {
-  render: (args) => renderActionMenu({...args, autoFocus: true}, {note: 'Auto focus parity scenario'})
+  render: (args) => renderActionMenu(args, {note: 'Auto focus parity scenario'}),
+  args: {
+    autoFocus: true
+  }
 };
 
 export const DefaultOpen: Story = {
-  render: (args) => renderActionMenu({...args, items: NESTED_ITEMS, openKeys: ['view']})
+  render: (args) => renderActionMenu({...args, items: NESTED_ITEMS, openKeys: ['view']}),
+  args: {
+    defaultOpen: true,
+    onOpenChange: action('onOpenChange')
+  }
 };
 
 export const ControlledOpen: Story = {
