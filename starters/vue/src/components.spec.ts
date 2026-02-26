@@ -388,25 +388,30 @@ describe('Vue migration primitives', () => {
     wrapper.unmount();
   });
 
-  it('renders illustrated message title, description, and variant class', () => {
+  it('maps illustrated message DOM contract and structure to react parity', () => {
     let wrapper = mount(IllustratedMessage, {
-      props: {
-        title: 'Empty state',
-        description: 'No migration tasks found.',
-        variant: 'info'
+      slots: {
+        default: () => [
+          h('svg', {focusable: 'false'}),
+          h('h3', {class: 'spectrum-IllustratedMessage-heading'}, 'Empty state'),
+          h('section', {class: 'spectrum-IllustratedMessage-description'}, 'No migration tasks found.')
+        ]
       }
     });
 
-    expect(wrapper.classes()).toContain('vs-illustrated-message');
-    expect(wrapper.classes()).toContain('vs-illustrated-message--info');
+    expect(wrapper.element.tagName).toBe('DIV');
+    expect(wrapper.classes()).toContain('flex');
     expect(wrapper.classes()).toContain('spectrum-IllustratedMessage');
-    expect(wrapper.get('.vs-illustrated-message__heading').text()).toBe('Empty state');
-    expect(wrapper.get('.vs-illustrated-message__description').text()).toBe('No migration tasks found.');
+    expect(wrapper.classes()).not.toContain('vs-illustrated-message');
+    expect(wrapper.attributes('role')).toBeUndefined();
+    expect(wrapper.attributes('data-vac')).toBeUndefined();
+    expect(wrapper.get('.spectrum-IllustratedMessage-heading').element.tagName).toBe('H3');
+    expect(wrapper.get('.spectrum-IllustratedMessage-description').element.tagName).toBe('SECTION');
+    expect(wrapper.get('.spectrum-IllustratedMessage-heading').text()).toBe('Empty state');
+    expect(wrapper.get('.spectrum-IllustratedMessage-description').text()).toBe('No migration tasks found.');
 
     let hidden = mount(IllustratedMessage, {
-      props: {
-        hidden: true
-      }
+      attrs: {hidden: true}
     });
     expect(hidden.attributes('hidden')).toBeDefined();
   });
@@ -414,11 +419,13 @@ describe('Vue migration primitives', () => {
   it('supports illustrated message rendering with illustration only', () => {
     let wrapper = mount(IllustratedMessage, {
       slots: {
-        illustration: () => h('svg', {'aria-label': 'No Results'})
+        default: () => h('svg', {'aria-label': 'No Results', role: 'img'})
       }
     });
 
     expect(wrapper.find('svg[aria-label=\"No Results\"]').exists()).toBe(true);
+    expect(wrapper.find('.spectrum-IllustratedMessage-heading').exists()).toBe(false);
+    expect(wrapper.find('.spectrum-IllustratedMessage-description').exists()).toBe(false);
   });
 
   it('renders icon variants with expected accessibility and classes', () => {

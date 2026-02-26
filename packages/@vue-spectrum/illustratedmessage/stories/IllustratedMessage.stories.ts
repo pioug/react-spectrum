@@ -1,5 +1,37 @@
 import {IllustratedMessage} from '../src';
+import {h} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
+
+type SvgProps = Record<string, string>;
+
+function renderNotFoundIllustration(extraProps: SvgProps = {}) {
+  return h('svg', {
+    width: '135.321',
+    height: '87',
+    focusable: 'false',
+    ...extraProps
+  }, [
+    h('g', {
+      fill: 'none',
+      'stroke-linecap': 'round',
+      'stroke-linejoin': 'round',
+      'stroke-miterlimit': '10'
+    }, [
+      h('path', {
+        d: 'M11.821 60.5v23a2.006 2.006 0 002 2h118a2.006 2.006 0 002-2v-80a2.006 2.006 0 00-2-2h-118a2.006 2.006 0 00-2 2v27',
+        'stroke-width': '3'
+      }),
+      h('path', {
+        d: 'M133.721 14h-122M29.721 8h-10',
+        'stroke-width': '2'
+      }),
+      h('path', {
+        d: 'M2.121 55.1l19.3-19.2M21.421 55.1l-19.3-19.2',
+        'stroke-width': '3'
+      })
+    ])
+  ]);
+}
 
 const meta: Meta<typeof IllustratedMessage> = {
   title: 'IllustratedMessage',
@@ -11,52 +43,31 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const _NotFound: Story = {
-  render: (args) => ({
-    components: {IllustratedMessage},
+  render: () => ({
     setup() {
-      return {args};
-    },
-    template: `
-      <IllustratedMessage v-bind="args">
-        <template #illustration>
-          <svg
-            aria-label="No Results"
-            viewBox="0 0 72 72"
-            width="72"
-            height="72"
-            role="img">
-            <circle cx="36" cy="36" r="32" fill="var(--spectrum-global-color-gray-200)" />
-            <path d="M22 36h28M36 22v28" stroke="var(--spectrum-global-color-gray-700)" stroke-width="4" stroke-linecap="round" />
-          </svg>
-        </template>
-        <template #heading>Error 404: Page not found</template>
-        This page isn’t available. Try checking the URL or visit a different page.
-      </IllustratedMessage>
-    `
+      return () => h(IllustratedMessage, null, {
+        default: () => [
+          renderNotFoundIllustration(),
+          h('h3', {class: 'spectrum-IllustratedMessage-heading'}, 'Error 404: Page not found'),
+          h('section', {class: 'spectrum-IllustratedMessage-description'}, 'This page isn’t available. Try checking the URL or visit a different page.')
+        ]
+      });
+    }
   }),
   name: 'Not Found'
 };
 
 export const NoHeadingOrDescription: Story = {
-  render: (args) => ({
-    components: {IllustratedMessage},
+  render: () => ({
     setup() {
-      return {args};
-    },
-    template: `
-      <IllustratedMessage v-bind="args">
-        <template #illustration>
-          <svg
-            aria-label="No Results"
-            viewBox="0 0 72 72"
-            width="72"
-            height="72"
-            role="img">
-            <circle cx="36" cy="36" r="32" fill="var(--spectrum-global-color-gray-200)" />
-            <path d="M22 36h28M36 22v28" stroke="var(--spectrum-global-color-gray-700)" stroke-width="4" stroke-linecap="round" />
-          </svg>
-        </template>
-      </IllustratedMessage>
-    `
+      return () => h(IllustratedMessage, null, {
+        default: () => [
+          renderNotFoundIllustration({
+            'aria-label': 'No Results',
+            role: 'img'
+          })
+        ]
+      });
+    }
   })
 };
