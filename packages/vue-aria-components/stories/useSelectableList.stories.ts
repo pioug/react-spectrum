@@ -190,7 +190,6 @@ function renderSimpleSelectableList(args: SelectableListArgs) {
 
 export const StaticUlStaticSubUl: Story = {
   render: () => renderGroupedSelectableList({isUlRelativelyPositioned: false, isSubUlRelativelyPositioned: false}),
-  name: 'Static ul, static sub ul',
   parameters: {
     description: {
       data: 'Built to test if focusing an element scrolls into view.'
@@ -199,41 +198,33 @@ export const StaticUlStaticSubUl: Story = {
 };
 
 export const StaticUlRelativeSubUl: Story = {
-  render: () => renderGroupedSelectableList({isUlRelativelyPositioned: false, isSubUlRelativelyPositioned: true}),
-  name: 'Static ul, relative sub ul'
+  render: () => renderGroupedSelectableList({isUlRelativelyPositioned: false, isSubUlRelativelyPositioned: true})
 };
 
 export const RelativeUlStaticSubUl: Story = {
-  render: () => renderGroupedSelectableList({isUlRelativelyPositioned: true, isSubUlRelativelyPositioned: false}),
-  name: 'Relative ul, static sub ul'
+  render: () => renderGroupedSelectableList({isUlRelativelyPositioned: true, isSubUlRelativelyPositioned: false})
 };
 
 export const RelativeUlRelativeSubUl: Story = {
-  render: () => renderGroupedSelectableList({isUlRelativelyPositioned: true, isSubUlRelativelyPositioned: true}),
-  name: 'Relative ul, relative sub ul'
+  render: () => renderGroupedSelectableList({isUlRelativelyPositioned: true, isSubUlRelativelyPositioned: true})
 };
 
 export const SingleSelectAllowEmptySelectOnFocus: Story = {
-  render: () => renderSimpleSelectableList({selectionMode: 'single'}),
-  name: 'single select, allow empty, select on focus'
+  render: () => renderSimpleSelectableList({selectionMode: 'single'})
 };
 
 export const SingleSelectDisallowEmptySelectionSelectOnFocus: Story = {
-  render: () => renderSimpleSelectableList({selectionMode: 'single', disallowEmptySelection: true}),
-  name: 'single select, disallow empty selection, select on focus'
+  render: () => renderSimpleSelectableList({selectionMode: 'single', disallowEmptySelection: true})
 };
 
 export const MultiSelectReplaceOnPressSelectOnFocus: Story = {
-  render: () => renderSimpleSelectableList({selectionMode: 'multiple', selectionBehavior: 'replace'}),
-  name: 'multi select, replace on press, select on focus'
+  render: () => renderSimpleSelectableList({selectionMode: 'multiple', selectionBehavior: 'replace'})
 };
 
 export const MultiSelectAllowEmptySelectOnFocus: Story = {
-  render: () => renderSimpleSelectableList({selectionMode: 'multiple'}),
-  name: 'multi select, allow empty, select on focus'
+  render: () => renderSimpleSelectableList({selectionMode: 'multiple'})
 };
 
 export const MultiSelectDisallowEmptySelectOnFocus: Story = {
-  render: () => renderSimpleSelectableList({selectionMode: 'multiple', disallowEmptySelection: true}),
-  name: 'multi select, disallow empty, select on focus'
+  render: () => renderSimpleSelectableList({selectionMode: 'multiple', disallowEmptySelection: true})
 };
