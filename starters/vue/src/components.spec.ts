@@ -282,48 +282,108 @@ describe('Vue migration primitives', () => {
     expect(fitContent('240px')).toBe('fit-content(240px)');
   });
 
-  it('renders inline alert title, content, and variant class', () => {
+  it('maps inline alert DOM contract and variant class to react parity', () => {
     let wrapper = mount(InlineAlert, {
       props: {
-        variant: 'notice',
-        title: 'Attention'
+        variant: 'notice'
       },
       slots: {
-        default: 'Action required.'
+        default: () => [
+          h('h3', {class: 'spectrum-InLineAlert-heading'}, 'Attention'),
+          h('section', {class: 'spectrum-InLineAlert-content'}, 'Action required.')
+        ]
       }
     });
 
-    expect(wrapper.get('.vs-inline-alert__title').text()).toBe('Attention');
-    expect(wrapper.text()).toContain('Action required.');
-    expect(wrapper.classes()).toContain('vs-inline-alert--notice');
+    expect(wrapper.element.tagName).toBe('DIV');
+    expect(wrapper.classes()).toContain('spectrum-InLineAlert');
+    expect(wrapper.classes()).toContain('spectrum-FocusRing');
+    expect(wrapper.classes()).toContain('spectrum-FocusRing-ring');
     expect(wrapper.classes()).toContain('spectrum-InLineAlert--notice');
     expect(wrapper.attributes('role')).toBe('alert');
+    expect(wrapper.classes()).not.toContain('vs-inline-alert');
+    expect(wrapper.attributes('data-vac')).toBeUndefined();
+    expect(wrapper.attributes('aria-label')).toBeUndefined();
+    expect(wrapper.get('.spectrum-InLineAlert-heading').element.tagName).toBe('H3');
+    expect(wrapper.get('.spectrum-InLineAlert-content').element.tagName).toBe('SECTION');
   });
 
-  it('maps inline alert focus-ring class', async () => {
-    let wrapper = mount(InlineAlert, {
+  it('maps inline alert icon contract for semantic variants', () => {
+    let infoWrapper = mount(InlineAlert, {
       props: {
-        title: 'Notice'
+        variant: 'info'
+      },
+      slots: {
+        default: () => [
+          h('h3', {class: 'spectrum-InLineAlert-heading'}, 'Title'),
+          h('section', {class: 'spectrum-InLineAlert-content'}, 'Content')
+        ]
       }
+    });
+
+    let infoIcon = infoWrapper.get('.spectrum-InLineAlert-icon');
+    expect(infoIcon.element.tagName.toLowerCase()).toBe('svg');
+    expect(infoIcon.classes()).toContain('spectrum-Icon');
+    expect(infoIcon.classes()).toContain('spectrum-UIIcon-InfoMedium');
+    expect(infoIcon.attributes('aria-label')).toBe('Information');
+
+    let negativeWrapper = mount(InlineAlert, {
+      props: {
+        variant: 'negative'
+      },
+      slots: {
+        default: () => [
+          h('h3', {class: 'spectrum-InLineAlert-heading'}, 'Title'),
+          h('section', {class: 'spectrum-InLineAlert-content'}, 'Content')
+        ]
+      }
+    });
+    let negativeIcon = negativeWrapper.get('.spectrum-InLineAlert-icon');
+    expect(negativeIcon.classes()).toContain('spectrum-UIIcon-AlertMedium');
+    expect(negativeIcon.attributes('aria-label')).toBe('Error');
+  });
+
+  it('maps inline alert focus-ring class on focus-visible', async () => {
+    let wrapper = mount(InlineAlert, {
+      slots: {
+        default: () => [
+          h('h3', {class: 'spectrum-InLineAlert-heading'}, 'Title'),
+          h('section', {class: 'spectrum-InLineAlert-content'}, 'Content')
+        ]
+      }
+    });
+    let element = wrapper.element as HTMLElement;
+    let originalMatches = element.matches.bind(element);
+    let matchesSpy = vi.spyOn(element, 'matches').mockImplementation((selector: string) => {
+      if (selector === ':focus-visible') {
+        return true;
+      }
+      return originalMatches(selector);
     });
 
     await wrapper.trigger('focus');
     expect(wrapper.classes()).toContain('focus-ring');
+    await wrapper.trigger('blur');
+    expect(wrapper.classes()).not.toContain('focus-ring');
+    matchesSpy.mockRestore();
   });
 
   it('autofocuses inline alert when autoFocus is true', async () => {
     let wrapper = mount(InlineAlert, {
       attachTo: document.body,
       props: {
-        autoFocus: true,
-        title: 'Notice'
+        autoFocus: true
       },
       slots: {
-        default: 'Alert details'
+        default: () => [
+          h('h3', {class: 'spectrum-InLineAlert-heading'}, 'Notice'),
+          h('section', {class: 'spectrum-InLineAlert-content'}, 'Alert details')
+        ]
       }
     });
 
     await nextTick();
+    expect(wrapper.attributes('tabindex')).toBe('-1');
     expect(document.activeElement).toBe(wrapper.element);
     wrapper.unmount();
   });

@@ -8,6 +8,7 @@ import fileTriggerMeta from '../../../packages/@vue-spectrum/filetrigger/stories
 import formMeta from '../../../packages/@vue-spectrum/form/stories/Form.stories';
 import helpTextMeta from '../../../packages/@vue-spectrum/label/stories/HelpText.stories';
 import imageMeta from '../../../packages/@vue-spectrum/image/stories/Image.stories';
+import inlineAlertMeta from '../../../packages/@vue-spectrum/inlinealert/stories/InlineAlert.stories';
 import labeledValueMeta from '../../../packages/@vue-spectrum/labeledvalue/stories/LabeledValue.stories';
 import linkMeta from '../../../packages/@vue-spectrum/link/stories/Link.stories';
 import logicButtonMeta from '../../../packages/@vue-spectrum/button/stories/LogicButton.stories';
@@ -137,6 +138,18 @@ describe('Vue Storybook controls parity', () => {
 
     expect(Object.keys(args)).toEqual([]);
     expect(Object.keys(argTypes)).toEqual([]);
+  });
+
+  it('matches top-level InlineAlert controls contract with React stories', () => {
+    let args = (inlineAlertMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (inlineAlertMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual(['content', 'title']);
+    expect(Object.keys(argTypes).sort()).toEqual(['content', 'title', 'variant']);
+    expect((argTypes.variant.control as string)).toBe('select');
+    expect((argTypes.variant.options as unknown[])).toEqual(['neutral', 'info', 'positive', 'notice', 'negative']);
+    expect((argTypes.title.control as string)).toBe('text');
+    expect((argTypes.content.control as string)).toBe('text');
   });
 
   it('matches top-level Button controls contract with React stories', () => {

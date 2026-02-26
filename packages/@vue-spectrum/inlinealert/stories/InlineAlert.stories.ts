@@ -1,8 +1,23 @@
+import {Button} from '@vue-spectrum/button';
 import {InlineAlert} from '../src';
-import {ref} from 'vue';
+import {h, ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type StoryArgs = InstanceType<typeof InlineAlert>['$props'] & {content: string, title: string};
+
+function renderAlertChildren(args: StoryArgs) {
+  return [
+    h('h3', {class: 'spectrum-InLineAlert-heading'}, args.title),
+    h('section', {class: 'spectrum-InLineAlert-content'}, args.content)
+  ];
+}
+
+function pickInlineAlertProps(args: StoryArgs) {
+  return {
+    autoFocus: args.autoFocus,
+    variant: args.variant
+  };
+}
 
 const meta: Meta<StoryArgs> = {
   title: 'InlineAlert',
@@ -31,17 +46,17 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: (args) => ({
-    components: {InlineAlert},
     setup() {
-      return {args};
-    },
-    template: '<InlineAlert v-bind="args" :title="args.title">{{ args.content }}</InlineAlert>'
+      return () => h(InlineAlert, pickInlineAlertProps(args), {
+        default: () => renderAlertChildren(args)
+      });
+    }
   })
 };
 
 export const Dynamic: Story = {
   render: (args) => ({
-    components: {InlineAlert},
+    components: {Button, InlineAlert},
     setup() {
       let shown = ref(false);
       let onToggle = () => {
@@ -51,16 +66,18 @@ export const Dynamic: Story = {
       return {
         args,
         onToggle,
+        pickInlineAlertProps,
         shown
       };
     },
     template: `
       <div>
-        <button type="button" @click="onToggle">
+        <Button variant="primary" @click="onToggle">
           {{ shown ? 'Hide Alert' : 'Show Alert' }}
-        </button>
-        <InlineAlert v-if="shown" v-bind="args" :title="args.title" auto-focus style="margin-top: 12px;">
-          {{ args.content }}
+        </Button>
+        <InlineAlert v-if="shown" v-bind="pickInlineAlertProps(args)" auto-focus>
+          <h3 class="spectrum-InLineAlert-heading">{{ args.title }}</h3>
+          <section class="spectrum-InLineAlert-content">{{ args.content }}</section>
         </InlineAlert>
       </div>
     `
