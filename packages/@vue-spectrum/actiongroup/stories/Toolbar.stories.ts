@@ -15,6 +15,44 @@ type ToolbarOrientation = 'horizontal' | 'vertical';
 const manageItems = ['edit', 'copy', 'delete'];
 const viewItems = ['grid', 'list', 'card'];
 const inspectItems = ['properties', 'info'];
+const DEFAULT_CHILDREN = {
+  key: null,
+  ref: null,
+  props: {
+    children: [{
+      type: {},
+      key: null,
+      ref: null,
+      props: {
+        items: [
+          {id: 'edit', textValue: 'Edit'},
+          {id: 'copy', textValue: 'Copy'},
+          {id: 'delete', textValue: 'Delete'}
+        ],
+        'aria-label': 'manage',
+        selectionMode: 'single'
+      }
+    }, {
+      type: {},
+      key: null,
+      ref: null,
+      props: {}
+    }, {
+      type: {},
+      key: null,
+      ref: null,
+      props: {
+        items: [
+          {id: 'grid', textValue: 'Grid view'},
+          {id: 'list', textValue: 'List view'},
+          {id: 'card', textValue: 'Gallery view'}
+        ],
+        'aria-label': 'view',
+        selectionMode: 'single'
+      }
+    }]
+  }
+};
 
 const labelMap: Record<string, string> = {
   edit: 'Edit',
@@ -52,9 +90,13 @@ const ToolbarExample = defineComponent({
       type: String as PropType<ToolbarOrientation>,
       default: 'horizontal'
     },
-    scenario: {
-      type: String as PropType<'default' | 'disabledKeys'>,
-      default: 'default'
+    isDisabledKeysExample: {
+      type: Boolean,
+      default: false
+    },
+    children: {
+      type: Object as PropType<unknown>,
+      default: undefined
     }
   },
   setup(props) {
@@ -81,8 +123,8 @@ const ToolbarExample = defineComponent({
         backgroundColor: 'var(--spectrum-global-color-gray-300)'
       });
 
-    let manageDisabledKeys = computed(() => props.scenario === 'disabledKeys' ? ['copy'] : []);
-    let viewDisabled = computed(() => props.scenario === 'disabledKeys');
+    let manageDisabledKeys = computed(() => props.isDisabledKeysExample ? ['copy'] : []);
+    let viewDisabled = computed(() => props.isDisabledKeysExample);
 
     return {
       dividerStyle,
@@ -129,7 +171,7 @@ const ToolbarExample = defineComponent({
           <component :is="iconMap[item]" :aria-label="labelMap[item]" />
         </template>
       </ActionGroup>
-      <template v-if="props.scenario === 'disabledKeys'">
+      <template v-if="props.isDisabledKeysExample">
         <div aria-hidden="true" :style="dividerStyle" />
         <ActionGroup
           aria-label="inspect"
@@ -146,10 +188,17 @@ const ToolbarExample = defineComponent({
   `
 });
 
-const meta: Meta<typeof ToolbarExample> = {
+const meta: Meta = {
   title: 'Toolbar',
-  component: ToolbarExample,
+  args: {
+    children: DEFAULT_CHILDREN
+  },
   argTypes: {
+    children: {
+      table: {
+        disable: true
+      }
+    },
     orientation: {
       control: 'radio',
       options: ['horizontal', 'vertical']
@@ -161,28 +210,25 @@ export default meta;
 type ToolbarStory = StoryObj<typeof meta>;
 
 export const Default: ToolbarStory = {
-  args: {
-    scenario: 'default'
-  },
   render: (args) => ({
     components: {ToolbarExample},
     setup() {
       return {args};
     },
-    template: '<ToolbarExample v-bind="args" />'
+    template: '<ToolbarExample :orientation="args.orientation" />'
   })
 };
 
 export const DisabledKeys: ToolbarStory = {
   args: {
     'aria-label': 'The big toolbar',
-    scenario: 'disabledKeys'
+    children: DEFAULT_CHILDREN
   },
   render: (args) => ({
     components: {ToolbarExample},
     setup() {
       return {args};
     },
-    template: '<ToolbarExample v-bind="args" />'
+    template: '<ToolbarExample :aria-label="args[\'aria-label\']" :orientation="args.orientation" is-disabled-keys-example />'
   })
 };

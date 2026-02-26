@@ -7,6 +7,14 @@ const meta: Meta<typeof ColorSwatch> = {
   argTypes: {
     color: {
       control: 'color'
+    },
+    rounding: {
+      control: 'radio',
+      options: ['default', 'none', 'full']
+    },
+    size: {
+      control: 'radio',
+      options: ['XS', 'S', 'M', 'L']
     }
   }
 };

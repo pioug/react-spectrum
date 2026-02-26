@@ -78,11 +78,55 @@ function renderCard(
   }, withPreview ? {preview: renderPreview(index)} : undefined);
 }
 
+const DEFAULT_CHILDREN = {
+  key: null,
+  ref: null,
+  props: {
+    children: [{
+      type: {},
+      key: null,
+      ref: null,
+      props: {
+        src: 'https://i.imgur.com/Z7AzH2c.jpg'
+      }
+    }, {
+      type: {},
+      key: null,
+      ref: null,
+      props: {
+        src: 'https://mir-s3-cdn-cf.behance.net/project_modules/disp/690bc6105945313.5f84bfc9de488.png'
+      }
+    }, {
+      type: {},
+      key: null,
+      ref: null,
+      props: {
+        children: 'Title'
+      }
+    }, {
+      type: {},
+      key: null,
+      ref: null,
+      props: {
+        slot: 'detail',
+        children: 'PNG'
+      }
+    }, {
+      type: {},
+      key: null,
+      ref: null,
+      props: {
+        children: 'Description'
+      }
+    }]
+  }
+};
+
 const meta: Meta<typeof Card> = {
   title: 'Card/default',
   component: Card,
   args: {
-    children: {}
+    children: DEFAULT_CHILDREN
   },
   argTypes: {
     children: {

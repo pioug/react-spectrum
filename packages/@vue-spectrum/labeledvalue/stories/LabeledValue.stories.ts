@@ -25,21 +25,21 @@ const meta: Meta<typeof LabeledValue> = {
   argTypes: {
     labelAlign: {
       control: {
-        type: 'radio'
-      },
-      options: ['start', 'end']
+        type: 'radio',
+        options: ['start', 'end']
+      }
     },
     labelPosition: {
       control: {
-        type: 'radio'
-      },
-      options: [null, 'top', 'side']
+        type: 'radio',
+        options: [null, 'top', 'side']
+      }
     },
     width: {
       control: {
-        type: 'radio'
-      },
-      options: [null, '300px', '600px']
+        type: 'radio',
+        options: [null, '300px', '600px']
+      }
     }
   }
 };

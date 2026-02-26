@@ -7,6 +7,11 @@ const meta: Meta<typeof View> = {
   args: {
     colorVersion: 5,
     backgroundColor: 'blue-400'
+  },
+  argTypes: {
+    backgroundColor: {
+      control: 'text'
+    }
   }
 };
 

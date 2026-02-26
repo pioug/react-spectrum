@@ -1,12 +1,8 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {RangeCalendar} from '../src';
 
-const meta: Meta<typeof RangeCalendar> = {
-  title: 'Date and Time/RangeCalendar/cell',
-  component: RangeCalendar,
-  args: {
-    label: 'Example'
-  }
+const meta: Meta = {
+  title: 'Date and Time/RangeCalendar/cell'
 };
 
 export default meta;
@@ -14,11 +10,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render: (args) => ({
+  render: () => ({
     components: {RangeCalendar},
-    setup() {
-      return {args};
-    },
-    template: '<RangeCalendar v-bind="args"></RangeCalendar>'
+    template: '<RangeCalendar />'
   })
 };

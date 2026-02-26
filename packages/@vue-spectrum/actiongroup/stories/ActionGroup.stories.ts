@@ -15,7 +15,16 @@ import ViewCard from '@spectrum-icons-vue/workflow/ViewCard';
 import ViewGrid from '@spectrum-icons-vue/workflow/ViewGrid';
 import ViewList from '@spectrum-icons-vue/workflow/ViewList';
 
-const viewItems = ['Grid view', 'List view', 'Gallery view'];
+type ActionItem = string | {
+  children: string,
+  name: string
+};
+
+const viewItems: ActionItem[] = [
+  {children: 'Grid view', name: '1'},
+  {children: 'List view', name: '2'},
+  {children: 'Gallery view', name: '3'}
+];
 const overflowItems = ['Edit', 'Copy', 'Delete', 'Move', 'Duplicate'];
 const toolItems = ['Select', 'Brush', 'Heal', 'Draw', 'Vector draw', 'Sampler'];
 
@@ -122,6 +131,7 @@ const ActionGroupDisplayExample = defineComponent({
     let textSelection = ref<string[]>([]);
     let bothSelection = ref<string[]>([]);
     let iconSelection = ref<string[]>([]);
+    let getLabel = (item: ActionItem) => typeof item === 'string' ? item : item.children;
 
     let forwardSelection = (keys: string[]) => {
       props.args.onSelectionChange?.(keys);
@@ -130,6 +140,7 @@ const ActionGroupDisplayExample = defineComponent({
     return {
       bothSelection,
       iconMap,
+      getLabel,
       iconSelection,
       textSelection,
       viewItems,
@@ -146,7 +157,7 @@ const ActionGroupDisplayExample = defineComponent({
         @action="props.args.onAction"
         @change="forwardSelection">
         <template #item="{item}">
-          <span class="spectrum-ActionButton-label">{{ item }}</span>
+          <span class="spectrum-ActionButton-label">{{ getLabel(item) }}</span>
         </template>
       </ActionGroup>
       <ActionGroup
@@ -156,8 +167,8 @@ const ActionGroupDisplayExample = defineComponent({
         @action="props.args.onAction"
         @change="forwardSelection">
         <template #item="{item, hideButtonText}">
-          <component :is="iconMap[item]" />
-          <span v-if="!hideButtonText" class="spectrum-ActionButton-label">{{ item }}</span>
+          <component :is="iconMap[getLabel(item)]" />
+          <span v-if="!hideButtonText" class="spectrum-ActionButton-label">{{ getLabel(item) }}</span>
         </template>
       </ActionGroup>
       <ActionGroup
@@ -167,7 +178,7 @@ const ActionGroupDisplayExample = defineComponent({
         @action="props.args.onAction"
         @change="forwardSelection">
         <template #item="{item}">
-          <component :is="iconMap[item]" />
+          <component :is="iconMap[getLabel(item)]" />
         </template>
       </ActionGroup>
     </div>
@@ -198,7 +209,7 @@ const OverflowActionGroupExample = defineComponent({
       })
     },
     items: {
-      type: Array as PropType<string[]>,
+      type: Array as PropType<ActionItem[]>,
       default: () => overflowItems.slice()
     },
     selectionMode: {
@@ -209,12 +220,14 @@ const OverflowActionGroupExample = defineComponent({
   setup(props) {
     let selected = ref<string[]>([]);
     let resolvedSelectionMode = computed(() => props.args.selectionMode ?? props.selectionMode);
+    let getLabel = (item: ActionItem) => typeof item === 'string' ? item : item.children;
 
     let forwardSelection = (keys: string[]) => {
       props.args.onSelectionChange?.(keys);
     };
 
     return {
+      getLabel,
       iconMap,
       props,
       selected,
@@ -232,8 +245,8 @@ const OverflowActionGroupExample = defineComponent({
         @action="props.args.onAction"
         @change="forwardSelection">
         <template #item="{item, hideButtonText}">
-          <component :is="iconMap[item]" />
-          <span v-if="!hideButtonText" class="spectrum-ActionButton-label">{{ item }}</span>
+          <component :is="iconMap[getLabel(item)]" />
+          <span v-if="!hideButtonText" class="spectrum-ActionButton-label">{{ getLabel(item) }}</span>
         </template>
       </ActionGroup>
     </div>
@@ -365,7 +378,7 @@ export const FalsyKeys: ActionGroupStory = {
 export const AllKeysDisabled: ActionGroupStory = {
   ...Default,
   args: {
-    disabledKeys: viewItems,
+    disabledKeys: ['1', '2', '3'],
     items: viewItems
   }
 };
@@ -373,7 +386,7 @@ export const AllKeysDisabled: ActionGroupStory = {
 export const SomeKeysDisabled: ActionGroupStory = {
   ...Default,
   args: {
-    disabledKeys: ['Grid view', 'List view'],
+    disabledKeys: ['1', '2'],
     items: viewItems
   }
 };
@@ -381,7 +394,7 @@ export const SomeKeysDisabled: ActionGroupStory = {
 export const StaticColorWhite: ActionGroupStory = {
   args: {
     staticColor: 'white',
-    modelValue: ['Grid view'],
+    modelValue: ['1'],
     items: viewItems
   },
   render: (args) => ({
@@ -401,7 +414,7 @@ export const StaticColorWhite: ActionGroupStory = {
 export const StaticColorBlack: ActionGroupStory = {
   args: {
     staticColor: 'black',
-    modelValue: ['Grid view'],
+    modelValue: ['1'],
     items: viewItems
   },
   render: (args) => ({

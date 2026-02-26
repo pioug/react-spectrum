@@ -1,6 +1,89 @@
 import {ContextualHelp} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
+const DEFAULT_HELP_TITLE = 'Help title';
+const DEFAULT_HELP_BODY = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus. In sit amet suscipit lorem.';
+const DEFAULT_CHILDREN = {
+  key: null,
+  ref: null,
+  props: {
+    children: [{
+      type: {},
+      key: null,
+      ref: null,
+      props: {
+        children: DEFAULT_HELP_TITLE
+      }
+    }, {
+      type: {},
+      key: null,
+      ref: null,
+      props: {
+        children: {
+          type: {},
+          key: null,
+          ref: null,
+          props: {
+            children: DEFAULT_HELP_BODY
+          }
+        }
+      }
+    }]
+  }
+};
+
+function getDefaultTitle(children: unknown): string {
+  if (
+    children &&
+    typeof children === 'object' &&
+    'props' in children &&
+    children.props &&
+    typeof children.props === 'object' &&
+    'children' in children.props &&
+    Array.isArray(children.props.children) &&
+    children.props.children[0] &&
+    typeof children.props.children[0] === 'object' &&
+    'props' in children.props.children[0] &&
+    children.props.children[0].props &&
+    typeof children.props.children[0].props === 'object' &&
+    'children' in children.props.children[0].props &&
+    typeof children.props.children[0].props.children === 'string'
+  ) {
+    return children.props.children[0].props.children;
+  }
+
+  return DEFAULT_HELP_TITLE;
+}
+
+function getDefaultBody(children: unknown): string {
+  if (
+    children &&
+    typeof children === 'object' &&
+    'props' in children &&
+    children.props &&
+    typeof children.props === 'object' &&
+    'children' in children.props &&
+    Array.isArray(children.props.children) &&
+    children.props.children[1] &&
+    typeof children.props.children[1] === 'object' &&
+    'props' in children.props.children[1] &&
+    children.props.children[1].props &&
+    typeof children.props.children[1].props === 'object' &&
+    'children' in children.props.children[1].props &&
+    children.props.children[1].props.children &&
+    typeof children.props.children[1].props.children === 'object' &&
+    'props' in children.props.children[1].props.children &&
+    children.props.children[1].props.children.props &&
+    typeof children.props.children[1].props.children.props === 'object' &&
+    'children' in children.props.children[1].props.children.props &&
+    typeof children.props.children[1].props.children.props.children === 'string'
+  ) {
+    return children.props.children[1].props.children.props.children;
+  }
+
+  return DEFAULT_HELP_BODY;
+}
+
 const meta: Meta<typeof ContextualHelp> = {
   title: 'ContextualHelp',
   component: ContextualHelp,
@@ -75,20 +158,21 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: {
-      title: 'Help title',
-      body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus.'
-    }
+    children: DEFAULT_CHILDREN
   },
   render: (args) => ({
     components: {ContextualHelp},
     setup() {
-      return {args};
+      return {
+        args,
+        defaultBody: getDefaultBody(args.children),
+        defaultTitle: getDefaultTitle(args.children)
+      };
     },
     template: `
       <ContextualHelp v-bind="args">
-        <h3 style="margin: 0 0 8px 0;">Help title</h3>
-        <p style="margin: 0;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus.</p>
+        <h3 style="margin: 0 0 8px 0;">{{ defaultTitle }}</h3>
+        <p style="margin: 0;">{{ defaultBody }}</p>
       </ContextualHelp>
     `
   })

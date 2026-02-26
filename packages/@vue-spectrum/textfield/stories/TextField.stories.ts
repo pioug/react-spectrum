@@ -71,9 +71,9 @@ const meta = {
     },
     validationState: {
       control: {
-        type: 'radio'
-      },
-      options: [null, 'valid', 'invalid']
+        type: 'radio',
+        options: [null, 'valid', 'invalid']
+      }
     }
   }
 } satisfies Meta<typeof TextField>;

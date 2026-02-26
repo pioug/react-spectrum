@@ -218,7 +218,8 @@ describe('Vue Storybook controls parity', () => {
     let argTypes = (viewMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
 
     expect(Object.keys(args).sort()).toEqual(['backgroundColor', 'colorVersion']);
-    expect(Object.keys(argTypes)).toEqual([]);
+    expect(Object.keys(argTypes)).toEqual(['backgroundColor']);
+    expect((argTypes.backgroundColor.control as string)).toBe('text');
   });
 
   it('matches top-level Well controls contract with React stories', () => {
@@ -226,7 +227,8 @@ describe('Vue Storybook controls parity', () => {
     let argTypes = (wellMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
 
     expect(Object.keys(args)).toEqual([]);
-    expect(Object.keys(argTypes)).toEqual([]);
+    expect(Object.keys(argTypes)).toEqual(['children']);
+    expect((argTypes.children.control as string)).toBe('object');
   });
 
   it('matches top-level Switch controls contract with React stories', () => {
@@ -235,7 +237,8 @@ describe('Vue Storybook controls parity', () => {
 
     expect(Object.keys(args)).toEqual(['isEmphasized']);
     expect(args.isEmphasized).toBe(false);
-    expect(Object.keys(argTypes).sort()).toEqual(['onBlur', 'onChange', 'onFocus']);
+    expect(Object.keys(argTypes).sort()).toEqual(['children', 'onBlur', 'onChange', 'onFocus']);
+    expect((argTypes.children.control as string)).toBe('object');
     expect(argTypes.onChange.action).toBe('change');
     expect(argTypes.onFocus.action).toBe('focus');
     expect(argTypes.onBlur.action).toBe('blur');
@@ -253,13 +256,13 @@ describe('Vue Storybook controls parity', () => {
     ]);
 
     expect((argTypes.labelPosition.control as {type?: string}).type).toBe('radio');
-    expect((argTypes.labelPosition.options as unknown[])).toEqual([null, 'top', 'side']);
+    expect((argTypes.labelPosition.control as {options?: unknown[]}).options).toEqual([null, 'top', 'side']);
 
     expect((argTypes.labelAlign.control as {type?: string}).type).toBe('radio');
-    expect((argTypes.labelAlign.options as unknown[])).toEqual(['start', 'end']);
+    expect((argTypes.labelAlign.control as {options?: unknown[]}).options).toEqual(['start', 'end']);
 
     expect((argTypes.width.control as {type?: string}).type).toBe('radio');
-    expect((argTypes.width.options as unknown[])).toEqual([null, '300px', '600px']);
+    expect((argTypes.width.control as {options?: unknown[]}).options).toEqual([null, '300px', '600px']);
   });
 
   it('matches top-level Link controls contract with React stories', () => {
@@ -1528,7 +1531,7 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.labelAlign.control as {type?: string}).type).toBe('radio');
     expect((argTypes.labelAlign.control as {options?: unknown[]}).options).toEqual(['start', 'end']);
     expect((argTypes.validationState.control as {type?: string}).type).toBe('radio');
-    expect((argTypes.validationState.options as unknown[])).toEqual([null, 'valid', 'invalid']);
+    expect((argTypes.validationState.control as {options?: unknown[]}).options).toEqual([null, 'valid', 'invalid']);
   });
 
   it('matches top-level TextArea controls contract with React stories', () => {
@@ -1569,7 +1572,7 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.labelAlign.control as {type?: string}).type).toBe('radio');
     expect((argTypes.labelAlign.control as {options?: unknown[]}).options).toEqual(['start', 'end']);
     expect((argTypes.validationState.control as {type?: string}).type).toBe('radio');
-    expect((argTypes.validationState.options as unknown[])).toEqual([null, 'valid', 'invalid']);
+    expect((argTypes.validationState.control as {options?: unknown[]}).options).toEqual([null, 'valid', 'invalid']);
   });
 
   it('matches top-level Slider controls contract with React stories', () => {

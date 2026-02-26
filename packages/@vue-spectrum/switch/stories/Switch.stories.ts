@@ -2,6 +2,26 @@ import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {ref} from 'vue';
 import {Switch} from '../src';
 
+function resolveLabel(children: unknown): string {
+  if (typeof children === 'string') {
+    return children;
+  }
+
+  if (
+    children &&
+    typeof children === 'object' &&
+    'props' in children &&
+    children.props &&
+    typeof children.props === 'object' &&
+    'children' in children.props &&
+    typeof children.props.children === 'string'
+  ) {
+    return children.props.children;
+  }
+
+  return 'Switch Label';
+}
+
 const meta: Meta<typeof Switch> = {
   title: 'Switch',
   component: Switch,
@@ -17,6 +37,9 @@ const meta: Meta<typeof Switch> = {
     },
     onBlur: {
       action: 'blur'
+    },
+    children: {
+      control: 'object'
     }
   }
 };
@@ -29,12 +52,18 @@ export const Default: Story = {
   render: (args) => ({
     components: {Switch},
     setup() {
-      return {args};
+      return {args, resolveLabel};
     },
-    template: '<Switch v-bind="args">{{args.children}}</Switch>'
+    template: '<Switch v-bind="args">{{ resolveLabel(args.children) }}</Switch>'
   }),
   args: {
-    children: 'Switch Label'
+    children: {
+      key: null,
+      ref: null,
+      props: {
+        children: 'Switch Label'
+      }
+    }
   }
 };
 
@@ -144,9 +173,9 @@ export const ControlledImplementation: Story = {
         checked.value = value;
       };
 
-      return {args, checked, onChange};
+      return {args, checked, onChange, resolveLabel};
     },
-    template: '<Switch v-bind="args" :is-selected="checked" @change="onChange">{{args.children}}</Switch>'
+    template: '<Switch v-bind="args" :is-selected="checked" @change="onChange">{{ resolveLabel(args.children) }}</Switch>'
   })
 };
 

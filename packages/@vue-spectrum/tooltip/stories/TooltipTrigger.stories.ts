@@ -19,7 +19,26 @@ type TooltipTriggerStoryArgs = {
   variant?: 'neutral' | 'positive' | 'negative' | 'info'
 };
 
-const DEFAULT_CHILDREN = ['Edit Name', 'Change Name'];
+const DEFAULT_CHILDREN = [{
+  type: {},
+  key: null,
+  ref: null,
+  props: {
+    'aria-label': 'Edit Name',
+    children: {
+      key: null,
+      ref: null,
+      props: {}
+    }
+  }
+}, {
+  type: {},
+  key: null,
+  ref: null,
+  props: {
+    children: 'Change Name'
+  }
+}];
 
 const multipleTooltipItems = [{
   id: 'neutral',
@@ -134,6 +153,40 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+function getTriggerLabel(children: unknown[] | undefined): string {
+  let firstChild = Array.isArray(children) ? children[0] : undefined;
+
+  if (typeof firstChild === 'string') {
+    return firstChild;
+  }
+
+  if (firstChild && typeof firstChild === 'object' && 'props' in firstChild) {
+    let props = firstChild.props;
+    if (props && typeof props === 'object' && 'aria-label' in props && typeof props['aria-label'] === 'string') {
+      return props['aria-label'];
+    }
+  }
+
+  return 'Hover or focus me';
+}
+
+function getTooltipText(children: unknown[] | undefined): string {
+  let secondChild = Array.isArray(children) ? children[1] : undefined;
+
+  if (typeof secondChild === 'string') {
+    return secondChild;
+  }
+
+  if (secondChild && typeof secondChild === 'object' && 'props' in secondChild) {
+    let props = secondChild.props;
+    if (props && typeof props === 'object' && 'children' in props && typeof props.children === 'string') {
+      return props.children;
+    }
+  }
+
+  return 'Change Name';
+}
+
 function renderTrigger(
   triggerTemplate = "{{ isOpen ? 'Tooltip open' : triggerText }}",
   tooltipTemplate = '{{ tooltipText }}',
@@ -146,16 +199,8 @@ function renderTrigger(
         ...args,
         ...baseArgs
       }));
-      let triggerText = computed(() => (
-        Array.isArray(mergedArgs.value.children) && typeof mergedArgs.value.children[0] === 'string'
-          ? mergedArgs.value.children[0]
-          : 'Hover or focus me'
-      ));
-      let tooltipText = computed(() => (
-        Array.isArray(mergedArgs.value.children) && typeof mergedArgs.value.children[1] === 'string'
-          ? mergedArgs.value.children[1]
-          : 'Change Name'
-      ));
+      let triggerText = computed(() => getTriggerLabel(mergedArgs.value.children));
+      let tooltipText = computed(() => getTooltipText(mergedArgs.value.children));
 
       return {args: mergedArgs, tooltipText, triggerText};
     },
