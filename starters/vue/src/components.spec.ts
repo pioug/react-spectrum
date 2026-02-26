@@ -17,6 +17,7 @@ import {Checkbox, CheckboxGroup} from '@vue-spectrum/checkbox';
 import {ComboBox} from '@vue-spectrum/combobox';
 import {ColorField, ColorPicker, ColorSwatchPicker} from '@vue-spectrum/color';
 import {DatePicker, DateRangePicker, TimeField} from '@vue-spectrum/datepicker';
+import {Divider} from '@vue-spectrum/divider';
 import {DropZone} from '@vue-spectrum/dropzone';
 import {FileTrigger} from '@vue-spectrum/filetrigger';
 import {Image} from '@vue-spectrum/image';
@@ -428,6 +429,28 @@ describe('Vue migration primitives', () => {
     });
     expect(warn).toHaveBeenCalledWith(expect.stringContaining('The `alt` prop was not provided to an image.'));
     warn.mockRestore();
+  });
+
+  it('maps divider element semantics and size classes to react parity', () => {
+    let horizontal = mount(Divider);
+    expect(horizontal.element.tagName).toBe('HR');
+    expect(horizontal.classes()).toContain('spectrum-Rule');
+    expect(horizontal.classes()).toContain('spectrum-Rule--large');
+    expect(horizontal.classes()).toContain('spectrum-Rule--horizontal');
+    expect(horizontal.attributes('role')).toBeUndefined();
+    expect(horizontal.attributes('aria-orientation')).toBeUndefined();
+
+    let vertical = mount(Divider, {
+      props: {
+        orientation: 'vertical',
+        size: 'S'
+      }
+    });
+    expect(vertical.element.tagName).toBe('DIV');
+    expect(vertical.classes()).toContain('spectrum-Rule--small');
+    expect(vertical.classes()).toContain('spectrum-Rule--vertical');
+    expect(vertical.attributes('role')).toBe('separator');
+    expect(vertical.attributes('aria-orientation')).toBe('vertical');
   });
 
   it('renders label content and required indicator', () => {

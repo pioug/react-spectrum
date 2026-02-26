@@ -23,7 +23,8 @@ export const LargeDefault: Story = {
         <p>Page or Section Titles.</p>
       </section>
     `
-  })
+  }),
+  name: 'Large (Default)'
 };
 
 export const Medium: Story = {
@@ -53,15 +54,18 @@ export const Small: Story = {
 };
 
 export const VerticalLargeDefault: Story = {
-  render: () => renderVertical()
+  render: () => renderVertical(),
+  name: 'Vertical, Large (Default)'
 };
 
 export const VerticalMedium: Story = {
-  render: () => renderVertical({size: 'M'})
+  render: () => renderVertical({size: 'M'}),
+  name: 'Vertical, Medium'
 };
 
 export const VerticalSmall: Story = {
-  render: () => renderVertical({size: 'S'})
+  render: () => renderVertical({size: 'S'}),
+  name: 'Vertical, Small'
 };
 
 function renderVertical(args: Record<string, unknown> = {}) {

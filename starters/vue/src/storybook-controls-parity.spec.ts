@@ -3,6 +3,7 @@ import avatarMeta from '../../../packages/@vue-spectrum/avatar/stories/Avatar.st
 import badgeMeta from '../../../packages/@vue-spectrum/badge/stories/Badge.stories';
 import actionButtonMeta from '../../../packages/@vue-spectrum/button/stories/ActionButton.stories';
 import buttonMeta from '../../../packages/@vue-spectrum/button/stories/Button.stories';
+import dividerMeta from '../../../packages/@vue-spectrum/divider/stories/Divider.stories';
 import imageMeta from '../../../packages/@vue-spectrum/image/stories/Image.stories';
 import logicButtonMeta from '../../../packages/@vue-spectrum/button/stories/LogicButton.stories';
 import toggleButtonMeta from '../../../packages/@vue-spectrum/button/stories/ToggleButton.stories';
@@ -42,6 +43,14 @@ describe('Vue Storybook controls parity', () => {
   it('matches top-level Image controls contract with React stories', () => {
     let args = (imageMeta as {args?: Record<string, unknown>}).args ?? {};
     let argTypes = (imageMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes)).toEqual([]);
+  });
+
+  it('matches top-level Divider controls contract with React stories', () => {
+    let args = (dividerMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (dividerMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
 
     expect(Object.keys(args)).toEqual([]);
     expect(Object.keys(argTypes)).toEqual([]);
