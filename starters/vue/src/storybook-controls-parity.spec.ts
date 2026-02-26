@@ -39,6 +39,7 @@ import rangeSliderMeta from '../../../packages/@vue-spectrum/slider/stories/Rang
 import searchFieldMeta from '../../../packages/@vue-spectrum/searchfield/stories/SearchField.stories';
 import searchAutocompleteMeta from '../../../packages/@vue-spectrum/autocomplete/stories/SearchAutocomplete.stories';
 import sliderMeta from '../../../packages/@vue-spectrum/slider/stories/Slider.stories';
+import stepListMeta from '../../../packages/@vue-spectrum/steplist/stories/StepList.stories';
 import statusLightMeta from '../../../packages/@vue-spectrum/statuslight/stories/StatusLight.stories';
 import switchMeta from '../../../packages/@vue-spectrum/switch/stories/Switch.stories';
 import tagGroupMeta from '../../../packages/@vue-spectrum/tag/stories/TagGroup.stories';
@@ -605,6 +606,33 @@ describe('Vue Storybook controls parity', () => {
     expect((argTypes.isInvalid.control as string)).toBe('boolean');
     expect((argTypes.description.control as string)).toBe('text');
     expect((argTypes.errorMessage.control as string)).toBe('text');
+  });
+
+  it('matches top-level StepList controls contract with React stories', () => {
+    let args = (stepListMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (stepListMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args).sort()).toEqual(['onLastCompletedStepChange', 'onSelectionChange']);
+    expect(typeof args.onSelectionChange).toBe('function');
+    expect(typeof args.onLastCompletedStepChange).toBe('function');
+    expect(Object.keys(argTypes).sort()).toEqual([
+      'children',
+      'isEmphasized',
+      'isReadOnly',
+      'onLastCompletedStepChange',
+      'onSelectionChange',
+      'orientation',
+      'size'
+    ]);
+    expect((argTypes.children.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.isEmphasized.control as string)).toBe('boolean');
+    expect((argTypes.isReadOnly.control as string)).toBe('boolean');
+    expect((argTypes.onSelectionChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.onLastCompletedStepChange.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.orientation.control as {type?: string}).type).toBe('inline-radio');
+    expect((argTypes.orientation.control as {options?: unknown[]}).options).toEqual(['horizontal', 'vertical']);
+    expect((argTypes.size.control as {type?: string}).type).toBe('inline-radio');
+    expect((argTypes.size.control as {options?: unknown[]}).options).toEqual(['S', 'M', 'L', 'XL']);
   });
 
   it('matches top-level DateField controls contract with React stories', () => {

@@ -53,36 +53,20 @@ const meta: Meta<typeof StepList> = {
     'renderControlled'
   ],
   args: {
-    ariaLabel: 'Step list',
-    items: options,
     onSelectionChange: action('onSelectionChange'),
     onLastCompletedStepChange: action('onLastCompletedStepChange')
   },
   argTypes: {
-    defaultLastCompletedStep: {
+    children: {
       table: {
         disable: true
       }
     },
-    defaultSelectedKey: {
-      table: {
-        disable: true
-      }
+    isEmphasized: {
+      control: 'boolean'
     },
-    items: {
-      table: {
-        disable: true
-      }
-    },
-    lastCompletedStep: {
-      table: {
-        disable: true
-      }
-    },
-    modelValue: {
-      table: {
-        disable: true
-      }
+    isReadOnly: {
+      control: 'boolean'
     },
     onLastCompletedStepChange: {
       table: {
@@ -94,33 +78,17 @@ const meta: Meta<typeof StepList> = {
         disable: true
       }
     },
-    selectedKey: {
-      table: {
-        disable: true
-      }
-    },
-    width: {
-      table: {
-        disable: true
-      }
-    },
-    isEmphasized: {
-      control: 'boolean'
-    },
-    isReadOnly: {
-      control: 'boolean'
-    },
     orientation: {
       control: {
-        type: 'inline-radio'
-      },
-      options: ['horizontal', 'vertical']
+        type: 'inline-radio',
+        options: ['horizontal', 'vertical']
+      }
     },
     size: {
       control: {
-        type: 'inline-radio'
-      },
-      options: ['S', 'M', 'L', 'XL']
+        type: 'inline-radio',
+        options: ['S', 'M', 'L', 'XL']
+      }
     }
   }
 };
