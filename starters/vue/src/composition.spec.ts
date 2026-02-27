@@ -5365,6 +5365,79 @@ describe('Vue migration composition components', () => {
     }
   });
 
+  it('ignores emulated mouse hover immediately after touch pointerup in vue-aria useHover', () => {
+    vi.useFakeTimers();
+    let hoverEvents: string[] = [];
+    let hover = useHover({
+      onHoverEnd: () => {
+        hoverEvents.push('end');
+      },
+      onHoverStart: () => {
+        hoverEvents.push('start');
+      }
+    });
+    let button = document.createElement('button');
+    document.body.append(button);
+
+    try {
+      if (hover.hoverProps.value.onPointerEnter) {
+        button.addEventListener('pointerenter', hover.hoverProps.value.onPointerEnter as EventListener);
+      }
+      if (hover.hoverProps.value.onPointerLeave) {
+        button.addEventListener('pointerleave', hover.hoverProps.value.onPointerLeave as EventListener);
+      }
+
+      if (typeof PointerEvent !== 'undefined') {
+        button.dispatchEvent(createPointerEvent('pointerup', {pointerType: 'touch'}));
+      } else {
+        button.dispatchEvent(new Event('touchend', {bubbles: true}));
+      }
+      button.dispatchEvent(createPointerEvent('pointerenter', {pointerType: 'mouse'}));
+      button.dispatchEvent(createPointerEvent('pointerleave', {pointerType: 'mouse'}));
+      expect(hoverEvents).toEqual([]);
+
+      vi.advanceTimersByTime(60);
+      button.dispatchEvent(createPointerEvent('pointerenter', {pointerType: 'mouse'}));
+      button.dispatchEvent(createPointerEvent('pointerleave', {pointerType: 'mouse'}));
+      expect(hoverEvents).toEqual(['start', 'end']);
+    } finally {
+      vi.useRealTimers();
+      document.body.removeChild(button);
+    }
+  });
+
+  it('ends vue-aria hover state when pointer moves outside without pointerleave', () => {
+    let hoverEvents: string[] = [];
+    let hover = useHover({
+      onHoverEnd: () => {
+        hoverEvents.push('end');
+      },
+      onHoverStart: () => {
+        hoverEvents.push('start');
+      }
+    });
+    let container = document.createElement('div');
+    document.body.append(container);
+
+    try {
+      if (hover.hoverProps.value.onPointerEnter) {
+        container.addEventListener('pointerenter', hover.hoverProps.value.onPointerEnter as EventListener);
+      }
+      if (hover.hoverProps.value.onPointerLeave) {
+        container.addEventListener('pointerleave', hover.hoverProps.value.onPointerLeave as EventListener);
+      }
+
+      container.dispatchEvent(createPointerEvent('pointerenter', {pointerType: 'mouse'}));
+      expect(hover.isHovered.value).toBe(true);
+
+      document.body.dispatchEvent(createPointerEvent('pointerover', {pointerType: 'mouse'}));
+      expect(hover.isHovered.value).toBe(false);
+      expect(hoverEvents).toEqual(['start', 'end']);
+    } finally {
+      document.body.removeChild(container);
+    }
+  });
+
   it('fires vue-aria interact-outside and keyboard move events', () => {
     let outsideEvents: string[] = [];
     let moveEvents: Array<{type: string, x?: number, y?: number}> = [];

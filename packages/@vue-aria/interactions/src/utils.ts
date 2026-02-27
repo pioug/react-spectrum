@@ -14,12 +14,19 @@ export function getEventTarget(event: Event): EventTarget | null {
     }
   }
 
-  let typedEvent = event as Event & {srcElement?: EventTarget | null};
-  return typedEvent.srcElement ?? null;
+  let typedEvent = event as Event & {srcElement?: EventTarget | null, target?: EventTarget | null};
+  return typedEvent.target ?? typedEvent.srcElement ?? null;
 }
 
 export function nodeContains(target: EventTarget | null, node: EventTarget | null): boolean {
-  if (!(target instanceof Node) || !(node instanceof Node)) {
+  if (
+    target == null ||
+    node == null ||
+    typeof target !== 'object' ||
+    typeof node !== 'object' ||
+    !('nodeType' in target) ||
+    !('nodeType' in node)
+  ) {
     return false;
   }
 
@@ -27,5 +34,13 @@ export function nodeContains(target: EventTarget | null, node: EventTarget | nul
     return true;
   }
 
-  return Boolean(target.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY);
+  if (typeof (target as Node).contains === 'function') {
+    return (target as Node).contains(node as Node);
+  }
+
+  if (typeof (target as Node).compareDocumentPosition === 'function') {
+    return Boolean((target as Node).compareDocumentPosition(node as Node) & 16);
+  }
+
+  return false;
 }

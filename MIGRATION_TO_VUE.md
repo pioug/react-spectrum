@@ -358,13 +358,31 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — Systemic hover interaction parity remediation (`@vue-aria/interactions`)
+
+1. Aligned shared `useHover` behavior with React interaction semantics:
+   - added global emulated-mouse suppression window after touch interactions (Safari/iOS parity behavior),
+   - added hover-end recovery when `pointerleave` is skipped (pointer transitions outside target via global `pointerover` capture),
+   - aligned disabled-state teardown to force hover-end callbacks/state reset when hover is active.
+2. Hardened shared interaction utilities used by hover/focus paths:
+   - updated `getEventTarget` fallback to include native `event.target` semantics,
+   - made `nodeContains` realm-safe so iframe/cross-realm node checks do not fail on strict `instanceof` boundaries.
+3. Added regression coverage in `starters/vue/src/composition.spec.ts` for:
+   - emulated mouse-hover suppression timing immediately after touch end,
+   - hover-end dispatch when pointer exits target without native `pointerleave`.
+4. Validation after fix:
+   - targeted hover slice: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "hover|focus-within|emulated mouse|pointer moves outside without pointerleave"`,
+   - full Vue tests: `yarn test:vue` (472 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 470 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 472 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).
