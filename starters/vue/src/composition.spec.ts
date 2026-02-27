@@ -3223,6 +3223,10 @@ describe('Vue migration composition components', () => {
     expect(numberField.inputProps.value.role).toBe('spinbutton');
     expect(numberField.inputProps.value['aria-valuenow']).toBe(4);
     expect(numberField.inputProps.value['aria-labelledby']).toBe(numberField.labelProps.value.id);
+    expect(numberField.incrementButtonProps.value['aria-label']).toBe('Increase Story points');
+    expect(numberField.decrementButtonProps.value['aria-label']).toBe('Decrease Story points');
+    expect(numberField.incrementButtonProps.value['aria-controls']).toBe(numberField.inputProps.value.id);
+    expect(numberField.decrementButtonProps.value['aria-controls']).toBe(numberField.inputProps.value.id);
 
     numberField.increment();
     expect(numberField.numberValue.value).toBe(6);
@@ -3242,6 +3246,39 @@ describe('Vue migration composition components', () => {
     expect(numberField.inputValue.value).toContain('8');
     expect(numberField.isInvalid.value).toBe(false);
     expect(changedValues).toEqual([6, 4, 10, 8]);
+  });
+
+  it('composes vue-aria number field labelledby ownership and stepper labelling parity', () => {
+    let composedLabelNumberField = useAriaNumberField({
+      'aria-label': 'Estimate',
+      'aria-labelledby': 'external-estimate-label',
+      label: 'Story points',
+      id: 'estimate-input',
+      value: ref(1)
+    });
+
+    let inputLabelledByIds = composedLabelNumberField.inputProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(inputLabelledByIds).toContain('estimate-input-label');
+    expect(inputLabelledByIds).toContain('external-estimate-label');
+    expect(inputLabelledByIds).toContain('estimate-input');
+    expect(composedLabelNumberField.inputProps.value['aria-label']).toBe('Estimate');
+
+    expect(composedLabelNumberField.incrementButtonProps.value['aria-label']).toBe('Increase Estimate');
+    expect(composedLabelNumberField.incrementButtonProps.value.id).toBeUndefined();
+    expect(composedLabelNumberField.incrementButtonProps.value['aria-labelledby']).toBeUndefined();
+
+    let labelledByOnlyNumberField = useAriaNumberField({
+      'aria-labelledby': 'external-estimate-label',
+      id: 'estimate-no-label',
+      value: ref(1)
+    });
+
+    expect(labelledByOnlyNumberField.incrementButtonProps.value['aria-label']).toBe('Increase');
+    expect(labelledByOnlyNumberField.decrementButtonProps.value['aria-label']).toBe('Decrease');
+    expect(labelledByOnlyNumberField.incrementButtonProps.value.id).toBe('estimate-no-label-increment');
+    expect(labelledByOnlyNumberField.decrementButtonProps.value.id).toBe('estimate-no-label-decrement');
+    expect(labelledByOnlyNumberField.incrementButtonProps.value['aria-labelledby']).toBe('estimate-no-label-increment external-estimate-label');
+    expect(labelledByOnlyNumberField.decrementButtonProps.value['aria-labelledby']).toBe('estimate-no-label-decrement external-estimate-label');
   });
 
   it('computes vue-aria overlay trigger, popover, modal, and scroll lock semantics', () => {

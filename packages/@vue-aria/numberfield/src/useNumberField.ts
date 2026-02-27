@@ -29,8 +29,11 @@ export interface NumberFieldAria {
   commit: () => void,
   decrement: () => void,
   decrementButtonProps: ComputedRef<{
+    'aria-controls'?: string,
     'aria-label': string,
+    'aria-labelledby'?: string,
     disabled?: true,
+    id?: string,
     onClick: () => void,
     type: 'button'
   }>,
@@ -46,8 +49,11 @@ export interface NumberFieldAria {
   }>,
   increment: () => void,
   incrementButtonProps: ComputedRef<{
+    'aria-controls'?: string,
     'aria-label': string,
+    'aria-labelledby'?: string,
     disabled?: true,
+    id?: string,
     onClick: () => void,
     type: 'button'
   }>,
@@ -124,6 +130,11 @@ function resolveStepValue(stepValue: number | undefined): number {
   }
 
   return stepValue;
+}
+
+function formatStepperLabel(prefix: string, fieldLabel: string): string {
+  let joined = `${prefix} ${fieldLabel}`.trim();
+  return joined.length > 0 ? joined : prefix;
 }
 
 export function useNumberField(options: AriaNumberFieldOptions = {}): NumberFieldAria {
@@ -278,6 +289,37 @@ export function useNumberField(options: AriaNumberFieldOptions = {}): NumberFiel
 
   let ariaLabel = computed(() => resolveOptionalString(options.ariaLabel) ?? resolveOptionalString(options['aria-label']));
   let ariaLabelledby = computed(() => resolveOptionalString(options.ariaLabelledby) ?? resolveOptionalString(options['aria-labelledby']));
+  let combinedAriaLabelledBy = computed(() => {
+    let ids = new Set<string>();
+    if (labelId.value) {
+      ids.add(labelId.value);
+    }
+
+    let labelledBy = ariaLabelledby.value;
+    if (labelledBy) {
+      for (let id of labelledBy.trim().split(/\s+/)) {
+        if (id) {
+          ids.add(id);
+        }
+      }
+    }
+
+    if (ariaLabel.value && ids.size > 0) {
+      ids.add(inputId.value);
+    }
+
+    return ids.size > 0 ? Array.from(ids).join(' ') : undefined;
+  });
+  let fieldLabel = computed(() => ariaLabel.value ?? label.value ?? '');
+  let stepperAriaLabelledBy = computed(() => {
+    if (fieldLabel.value) {
+      return undefined;
+    }
+
+    return labelId.value ?? ariaLabelledby.value;
+  });
+  let incrementButtonId = computed(() => `${inputId.value}-increment`);
+  let decrementButtonId = computed(() => `${inputId.value}-decrement`);
   let describedBy = computed(() => [descriptionId.value, errorId.value].filter(Boolean).join(' ') || undefined);
 
   let onInput = (valueOrEvent: Event | string) => {
@@ -316,7 +358,15 @@ export function useNumberField(options: AriaNumberFieldOptions = {}): NumberFiel
     decrement,
     decrementButtonProps: computed(() => ({
       type: 'button' as const,
-      'aria-label': resolveOptionalString(options.decrementAriaLabel) ?? 'Decrease value',
+      'aria-label': resolveOptionalString(options.decrementAriaLabel)
+        ?? formatStepperLabel('Decrease', fieldLabel.value),
+      id: stepperAriaLabelledBy.value && !resolveOptionalString(options.decrementAriaLabel)
+        ? decrementButtonId.value
+        : undefined,
+      'aria-labelledby': stepperAriaLabelledBy.value && !resolveOptionalString(options.decrementAriaLabel)
+        ? `${decrementButtonId.value} ${stepperAriaLabelledBy.value}`
+        : undefined,
+      'aria-controls': inputId.value,
       disabled: canDecrement.value ? undefined : true,
       onClick: decrement
     })),
@@ -333,7 +383,15 @@ export function useNumberField(options: AriaNumberFieldOptions = {}): NumberFiel
     increment,
     incrementButtonProps: computed(() => ({
       type: 'button' as const,
-      'aria-label': resolveOptionalString(options.incrementAriaLabel) ?? 'Increase value',
+      'aria-label': resolveOptionalString(options.incrementAriaLabel)
+        ?? formatStepperLabel('Increase', fieldLabel.value),
+      id: stepperAriaLabelledBy.value && !resolveOptionalString(options.incrementAriaLabel)
+        ? incrementButtonId.value
+        : undefined,
+      'aria-labelledby': stepperAriaLabelledBy.value && !resolveOptionalString(options.incrementAriaLabel)
+        ? `${incrementButtonId.value} ${stepperAriaLabelledBy.value}`
+        : undefined,
+      'aria-controls': inputId.value,
       disabled: canIncrement.value ? undefined : true,
       onClick: increment
     })),
@@ -348,7 +406,7 @@ export function useNumberField(options: AriaNumberFieldOptions = {}): NumberFiel
       required: isRequired.value,
       step: step.value,
       'aria-label': ariaLabel.value,
-      'aria-labelledby': ariaLabelledby.value ?? labelId.value,
+      'aria-labelledby': combinedAriaLabelledBy.value,
       'aria-describedby': describedBy.value,
       'aria-invalid': isInvalid.value ? true : undefined,
       'aria-valuemin': minValue.value,

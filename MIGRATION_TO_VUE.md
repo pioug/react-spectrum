@@ -914,13 +914,28 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — Shared `useNumberField` ARIA + stepper-labelling parity (`@vue-aria/numberfield`)
+
+1. Aligned numberfield input labelling semantics with React dual-label behavior:
+   - visible label id now composes with external `aria-labelledby`,
+   - input id now participates in `aria-labelledby` when `aria-label` coexists with labelledby sources.
+2. Aligned stepper button labelling semantics with React:
+   - default button names now derive from field label ownership (`Increase <fieldLabel>` / `Decrease <fieldLabel>`),
+   - labelledby-only flows now generate stepper button ids and compose `aria-labelledby` as `"<button-id> <field-labelledby>"`,
+   - both stepper buttons now expose `aria-controls` pointing at the input id.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: numberfield assertions for composed input `aria-labelledby` ownership and stepper button aria-label/labelledby/controls behavior.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "number field"`,
+   - full Vue tests: `yarn test:vue` (529 passed).
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 528 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 529 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).
