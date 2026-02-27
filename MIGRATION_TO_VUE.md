@@ -431,13 +431,36 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — Systemic focus-visible modality parity remediation (`@vue-aria/interactions`)
+
+1. Aligned shared `useFocusVisible` global-modality tracking with React interaction semantics:
+   - added virtual-click detection (`click` with `detail === 0`) to drive virtual modality updates,
+   - ignored untrusted/global focus targets for virtual-modality inference (`window`/`document` focus edge cases),
+   - added pointer/mouse move + up modality tracking to prevent stale keyboard modality after pointer movement,
+   - added per-window `HTMLElement.prototype.focus` patching to mark pre-focus input activity, with teardown restore.
+2. Hardened global listener lifecycle for tracked windows:
+   - added `beforeunload` cleanup to remove iframe/window listeners deterministically,
+   - aligned teardown to remove all newly introduced listeners and restore patched focus behavior.
+3. Closed handler-leak parity gaps:
+   - added scope-dispose cleanup for reactive `useInteractionModality` subscribers,
+   - added scope-dispose cleanup for `useFocusVisibleListener` subscribers.
+4. Added regression coverage in `starters/vue/src/composition.spec.ts` for:
+   - virtual-click modality behavior in `useFocusVisible`,
+   - iframe `beforeunload` teardown behavior for cross-window focus tracking,
+   - reactive interaction-modality handler cleanup on Vue scope disposal.
+5. Validation after fix:
+   - targeted focus-visible slice: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "focus ring modality|virtual clicks|beforeunload|interaction-modality handlers|focus-visible"`,
+   - full Vue tests: `yarn test:vue` (481 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 478 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 481 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

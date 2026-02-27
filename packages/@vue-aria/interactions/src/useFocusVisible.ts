@@ -1,6 +1,6 @@
 import {getActiveElement} from './utils';
 import type {MaybeRef, PointerType} from './types';
-import {ref, type Ref, unref} from 'vue';
+import {getCurrentScope, onScopeDispose, ref, type Ref, unref} from 'vue';
 
 export type Modality = 'keyboard' | 'pointer' | 'virtual';
 type FocusVisibleEvent = FocusEvent | KeyboardEvent | MouseEvent | PointerEvent | TouchEvent | null;
@@ -19,12 +19,19 @@ export interface FocusVisibleResult {
 
 interface ListenerData {
   document: Document,
+  onBeforeUnload: () => void,
   onBlur: () => void,
+  onClick: (event: MouseEvent) => void,
   onFocus: (event: FocusEvent) => void,
   onKeyDown: (event: KeyboardEvent) => void,
   onKeyUp: (event: KeyboardEvent) => void,
   onMouseDown: (event: MouseEvent) => void,
+  onMouseMove: (event: MouseEvent) => void,
+  onMouseUp: (event: MouseEvent) => void,
   onPointerDown: (event: PointerEvent) => void,
+  onPointerMove: (event: PointerEvent) => void,
+  onPointerUp: (event: PointerEvent) => void,
+  originalFocus: typeof HTMLElement.prototype.focus,
   onTouchStart: (event: TouchEvent) => void,
   window: Window
 }
@@ -57,6 +64,10 @@ function triggerChangeHandlers(modality: Modality, event: FocusVisibleEvent): vo
   }
 }
 
+function isVirtualClick(event: MouseEvent): boolean {
+  return event.detail === 0;
+}
+
 function isValidKey(event: KeyboardEvent): boolean {
   return !(event.metaKey || event.ctrlKey || event.altKey || event.key === 'Control' || event.key === 'Shift' || event.key === 'Meta');
 }
@@ -77,6 +88,11 @@ function setPointerModality(pointerType: PointerType, event: FocusVisibleEvent):
   currentModality = 'pointer';
   currentPointerType = pointerType;
   triggerChangeHandlers('pointer', event);
+}
+
+function updatePointerModality(pointerType: PointerType): void {
+  currentModality = 'pointer';
+  currentPointerType = pointerType;
 }
 
 function isTextInputElement(element: Element | null): boolean {
@@ -114,6 +130,12 @@ function setupGlobalFocusEvents(windowObject: Window, documentObject: Document):
     return;
   }
 
+  let originalFocus = windowObject.HTMLElement.prototype.focus;
+  windowObject.HTMLElement.prototype.focus = function (...args: Parameters<typeof originalFocus>) {
+    hasEventBeforeFocus = true;
+    return originalFocus.apply(this, args);
+  };
+
   let onKeyDown = (event: KeyboardEvent) => {
     setKeyboardModality(event);
   };
@@ -122,7 +144,23 @@ function setupGlobalFocusEvents(windowObject: Window, documentObject: Document):
     setKeyboardModality(event);
   };
 
+  let onClick = (event: MouseEvent) => {
+    if (!isVirtualClick(event)) {
+      return;
+    }
+
+    hasEventBeforeFocus = true;
+    currentModality = 'virtual';
+    currentPointerType = 'virtual';
+    triggerChangeHandlers('virtual', event);
+  };
+
   let onFocus = (event: FocusEvent) => {
+    let target = event.target;
+    if (target === windowObject || target === documentObject || event.isTrusted === false) {
+      return;
+    }
+
     if (!hasEventBeforeFocus && !hasBlurredWindowRecently) {
       currentModality = 'virtual';
       currentPointerType = 'virtual';
@@ -148,34 +186,80 @@ function setupGlobalFocusEvents(windowObject: Window, documentObject: Document):
     setPointerModality(pointerType, event);
   };
 
+  let onPointerMove = (event: PointerEvent) => {
+    let pointerType = event.pointerType;
+    if (pointerType !== 'pen' && pointerType !== 'touch') {
+      updatePointerModality('mouse');
+      return;
+    }
+
+    updatePointerModality(pointerType);
+  };
+
+  let onPointerUp = (event: PointerEvent) => {
+    let pointerType = event.pointerType;
+    if (pointerType !== 'pen' && pointerType !== 'touch') {
+      updatePointerModality('mouse');
+      return;
+    }
+
+    updatePointerModality(pointerType);
+  };
+
   let onMouseDown = (event: MouseEvent) => {
     setPointerModality('mouse', event);
+  };
+
+  let onMouseMove = () => {
+    updatePointerModality('mouse');
+  };
+
+  let onMouseUp = () => {
+    updatePointerModality('mouse');
   };
 
   let onTouchStart = (event: TouchEvent) => {
     setPointerModality('touch', event);
   };
 
+  let onBeforeUnload = () => {
+    tearDownWindowFocusTracking(windowObject);
+  };
+
   documentObject.addEventListener('keydown', onKeyDown, true);
   documentObject.addEventListener('keyup', onKeyUp, true);
+  documentObject.addEventListener('click', onClick, true);
   windowObject.addEventListener('focus', onFocus, true);
   windowObject.addEventListener('blur', onBlur, false);
 
   if ('PointerEvent' in windowObject) {
     documentObject.addEventListener('pointerdown', onPointerDown, true);
+    documentObject.addEventListener('pointermove', onPointerMove, true);
+    documentObject.addEventListener('pointerup', onPointerUp, true);
   } else {
     documentObject.addEventListener('mousedown', onMouseDown, true);
+    documentObject.addEventListener('mousemove', onMouseMove, true);
+    documentObject.addEventListener('mouseup', onMouseUp, true);
     documentObject.addEventListener('touchstart', onTouchStart, true);
   }
 
+  windowObject.addEventListener('beforeunload', onBeforeUnload, {once: true});
+
   hasSetupGlobalListeners.set(windowObject, {
     document: documentObject,
+    onBeforeUnload,
     onBlur,
+    onClick,
     onFocus,
     onKeyDown,
     onKeyUp,
     onMouseDown,
+    onMouseMove,
+    onMouseUp,
     onPointerDown,
+    onPointerMove,
+    onPointerUp,
+    originalFocus,
     onTouchStart,
     window: windowObject
   });
@@ -190,13 +274,20 @@ function tearDownWindowFocusTracking(windowObject: Window): void {
   let {document: documentObject} = listenerData;
   documentObject.removeEventListener('keydown', listenerData.onKeyDown, true);
   documentObject.removeEventListener('keyup', listenerData.onKeyUp, true);
+  documentObject.removeEventListener('click', listenerData.onClick, true);
   windowObject.removeEventListener('focus', listenerData.onFocus, true);
   windowObject.removeEventListener('blur', listenerData.onBlur, false);
+  windowObject.removeEventListener('beforeunload', listenerData.onBeforeUnload);
+  windowObject.HTMLElement.prototype.focus = listenerData.originalFocus;
 
   if ('PointerEvent' in windowObject) {
     documentObject.removeEventListener('pointerdown', listenerData.onPointerDown, true);
+    documentObject.removeEventListener('pointermove', listenerData.onPointerMove, true);
+    documentObject.removeEventListener('pointerup', listenerData.onPointerUp, true);
   } else {
     documentObject.removeEventListener('mousedown', listenerData.onMouseDown, true);
+    documentObject.removeEventListener('mousemove', listenerData.onMouseMove, true);
+    documentObject.removeEventListener('mouseup', listenerData.onMouseUp, true);
     documentObject.removeEventListener('touchstart', listenerData.onTouchStart, true);
   }
 
@@ -254,6 +345,11 @@ export function useInteractionModality(options?: {reactive?: boolean}): Modality
   };
 
   changeHandlers.add(handler);
+  if (getCurrentScope()) {
+    onScopeDispose(() => {
+      changeHandlers.delete(handler);
+    });
+  }
   return modality;
 }
 
@@ -302,6 +398,11 @@ export function useFocusVisibleListener(
   };
 
   changeHandlers.add(handler);
+  if (getCurrentScope()) {
+    onScopeDispose(() => {
+      changeHandlers.delete(handler);
+    });
+  }
   return () => {
     changeHandlers.delete(handler);
   };

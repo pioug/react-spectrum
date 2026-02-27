@@ -140,6 +140,7 @@ import {
   useFocusWithin,
   useHover,
   useInteractOutside,
+  useInteractionModality,
   useKeyboard,
   useLongPress,
   useMove,
@@ -1474,6 +1475,66 @@ describe('Vue migration composition components', () => {
     expect(withinFocusRing.isFocused.value).toBe(true);
     withinFocusRing.focusProps.value.onFocusout?.(new FocusEvent('focusout'));
     expect(withinFocusRing.isFocused.value).toBe(false);
+  });
+
+  it('treats virtual clicks as vue-aria virtual modality for focus-visible state', () => {
+    let focusVisible = useFocusVisible();
+    setInteractionModality('pointer');
+    expect(focusVisible.isFocusVisible.value).toBe(false);
+
+    document.body.dispatchEvent(new MouseEvent('click', {bubbles: true, detail: 0}));
+    expect(focusVisible.isFocusVisible.value).toBe(true);
+  });
+
+  it('tears down vue-aria focus-visible listeners on iframe beforeunload', () => {
+    let focusVisible = useFocusVisible();
+    let iframe = document.createElement('iframe');
+    document.body.appendChild(iframe);
+    let iframeWindow = iframe.contentWindow;
+    let iframeDocument = iframe.contentWindow?.document;
+    expect(iframeWindow).toBeTruthy();
+    expect(iframeDocument).toBeTruthy();
+    let root = iframeDocument!.createElement('div');
+    iframeDocument!.body.appendChild(root);
+
+    try {
+      addWindowFocusTracking(root);
+
+      setInteractionModality('keyboard');
+      expect(focusVisible.isFocusVisible.value).toBe(true);
+      if (typeof iframeWindow!.PointerEvent !== 'undefined') {
+        iframeDocument!.body.dispatchEvent(new iframeWindow!.PointerEvent('pointerdown', {bubbles: true, pointerType: 'mouse'}));
+      } else {
+        iframeDocument!.body.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+      }
+      expect(focusVisible.isFocusVisible.value).toBe(false);
+
+      setInteractionModality('keyboard');
+      iframeWindow!.dispatchEvent(new Event('beforeunload'));
+      expect(focusVisible.isFocusVisible.value).toBe(true);
+      if (typeof iframeWindow!.PointerEvent !== 'undefined') {
+        iframeDocument!.body.dispatchEvent(new iframeWindow!.PointerEvent('pointerdown', {bubbles: true, pointerType: 'mouse'}));
+      } else {
+        iframeDocument!.body.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+      }
+      expect(focusVisible.isFocusVisible.value).toBe(true);
+    } finally {
+      iframe.remove();
+    }
+  });
+
+  it('cleans up vue-aria reactive interaction-modality handlers when scope is disposed', () => {
+    setInteractionModality('keyboard');
+    let scope = effectScope();
+    let modality: {value: 'keyboard' | 'pointer' | 'virtual' | null} | null = null;
+    scope.run(() => {
+      modality = useInteractionModality({reactive: true}) as {value: 'keyboard' | 'pointer' | 'virtual' | null};
+    });
+
+    expect(modality?.value).toBe('keyboard');
+    scope.stop();
+    setInteractionModality('pointer');
+    expect(modality?.value).toBe('keyboard');
   });
 
   it('detects vue-aria tabbable child state and updates after mutations', async () => {
