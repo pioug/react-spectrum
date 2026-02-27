@@ -3311,9 +3311,16 @@ describe('Vue migration primitives', () => {
       }
     });
 
+    await wrapper.get('select.vs-picker__select').trigger('focus');
+    expect(wrapper.emitted('openChange')?.at(-1)).toEqual([true]);
+
     await wrapper.get('select.vs-picker__select').setValue('Q3');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Q3']);
     expect(wrapper.emitted('change')?.[0]).toEqual(['Q3']);
+    expect(wrapper.emitted('selectionChange')?.[0]).toEqual(['Q3']);
+
+    await wrapper.get('select.vs-picker__select').trigger('blur');
+    expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
   });
 
   it('maps picker disabled, invalid, hovered, and placeholder classes', async () => {

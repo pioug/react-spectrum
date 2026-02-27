@@ -99,6 +99,8 @@ export const Picker = defineComponent({
     change: (value: string) => typeof value === 'string',
     close: () => true,
     open: () => true,
+    openChange: (value: boolean) => typeof value === 'boolean',
+    selectionChange: (value: string | null) => value == null || typeof value === 'string',
     'update:modelValue': (value: string) => typeof value === 'string'
   },
   setup(props, {attrs, emit}) {
@@ -168,6 +170,7 @@ export const Picker = defineComponent({
       let value = target?.value ?? '';
       emit('update:modelValue', value);
       emit('change', value);
+      emit('selectionChange', value === '' ? null : value);
     };
 
     return () => h('label', {
@@ -200,10 +203,12 @@ export const Picker = defineComponent({
           onBlur: () => {
             isHovered.value = false;
             emit('close');
+            emit('openChange', false);
           },
           onChange: emitSelection,
           onFocus: () => {
             emit('open');
+            emit('openChange', true);
           }
         }, [
           h('option', {
