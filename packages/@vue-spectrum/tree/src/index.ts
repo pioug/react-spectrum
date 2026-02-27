@@ -1,3 +1,4 @@
+import {Collection} from '@vue-stately/collections';
 import {computed, defineComponent, h, ref, type VNode, watch} from 'vue';
 
 type TreeNode = Record<string, unknown>;
@@ -154,7 +155,7 @@ export const Tree = defineComponent({
 export const TreeView = Tree;
 export const TreeViewItem = Tree;
 export const TreeViewItemContent = Tree;
-export const Collection = Tree;
+export {Collection};
 export {Tree as VueTree};
 
 export type SpectrumTreeViewProps<T = unknown> = {

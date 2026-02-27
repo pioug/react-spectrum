@@ -23,7 +23,8 @@
     "url": "https://github.com/adobe/react-spectrum"
   },
   "dependencies": {
-    "@vue-aria/tabs": "workspace:*"
+    "@vue-aria/tabs": "workspace:*",
+    "@vue-stately/collections": "workspace:*"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

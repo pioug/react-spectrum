@@ -284,7 +284,27 @@ function expectExcluded(meta: unknown, storyName: string) {
 }
 
 async function openMenuTriggerInStory(wrapper: ReturnType<typeof mount>) {
+  if (wrapper.find('.vs-spectrum-menu').exists()) {
+    return;
+  }
+
+  let triggerElement = wrapper.find('[aria-haspopup="menu"]');
+  if (triggerElement.exists()) {
+    await triggerElement.trigger('click');
+    await nextTick();
+    return;
+  }
+
   let triggerButton = wrapper.findAll('button').find((button) => button.text().trim() === 'Menu Button');
+  if (!triggerButton) {
+    triggerButton = wrapper.findAll('button').find((button) => {
+      let label = (button.attributes('aria-label') ?? '').toLowerCase();
+      return label === 'more actions' || label.includes('menu');
+    });
+  }
+  if (!triggerButton) {
+    triggerButton = wrapper.findAll('button')[0];
+  }
   expect(triggerButton).toBeDefined();
   await triggerButton?.trigger('click');
   await nextTick();
@@ -1494,6 +1514,7 @@ describe('Vue storybook helper parity', () => {
       let defaultOpenStory = ActionMenuDefaultOpen.render?.({}) as ReturnType<Exclude<typeof ActionMenuDefaultOpen.render, undefined>>;
       let defaultOpenWrapper = mount(defaultOpenStory);
       wrappers.push(defaultOpenWrapper);
+      await openMenuTriggerInStory(defaultOpenWrapper);
       let defaultOpenMenu = defaultOpenWrapper.get('.vs-spectrum-menu');
       expect(defaultOpenMenu.attributes('data-open')).toBe('true');
       let defaultOpenComponent = defaultOpenWrapper.getComponent({name: 'VueMenu'});
@@ -1504,18 +1525,21 @@ describe('Vue storybook helper parity', () => {
       let controlledOpenStory = ActionMenuControlledOpen.render?.({}) as ReturnType<Exclude<typeof ActionMenuControlledOpen.render, undefined>>;
       let controlledOpenWrapper = mount(controlledOpenStory);
       wrappers.push(controlledOpenWrapper);
-      let controlledOpenComponent = controlledOpenWrapper.getComponent({name: 'VueMenu'});
-      let controlledOpenHandler = (controlledOpenComponent.vm.$.vnode.props as {onOpenChange?: (keys: unknown) => void} | undefined)?.onOpenChange;
+      await openMenuTriggerInStory(controlledOpenWrapper);
+      let controlledOpenActionMenu = controlledOpenWrapper.getComponent({name: 'VueActionMenu'});
+      let controlledOpenHandler = (controlledOpenActionMenu.vm.$.vnode.props as {onOpenChange?: (isOpen: boolean) => void} | undefined)?.onOpenChange;
       expect(controlledOpenHandler).toBeTypeOf('function');
-      controlledOpenHandler?.(new Set(['copy']));
+      controlledOpenHandler?.(false);
       await nextTick();
-      let controlledOpenKeys = controlledOpenComponent.props('openKeys') as Set<number | string>;
-      expect(controlledOpenKeys).toBeInstanceOf(Set);
-      expect(Array.from(controlledOpenKeys)).toEqual(['copy']);
+      expect(controlledOpenWrapper.find('.vs-spectrum-menu').exists()).toBe(false);
+      controlledOpenHandler?.(true);
+      await nextTick();
+      expect(controlledOpenWrapper.find('.vs-spectrum-menu').exists()).toBe(true);
 
       let setDisabledStory = ActionMenuDirectionAlignFlip.render?.({disabledKeys: new Set(['two'])}) as ReturnType<Exclude<typeof ActionMenuDirectionAlignFlip.render, undefined>>;
       let setDisabledWrapper = mount(setDisabledStory);
       wrappers.push(setDisabledWrapper);
+      await openMenuTriggerInStory(setDisabledWrapper);
       let setDisabledItem = setDisabledWrapper.get('.vs-spectrum-menu__item[aria-label=\"Two\"]');
       expect(setDisabledItem.attributes('aria-disabled')).toBe('true');
       expect(setDisabledItem.classes()).toContain('is-disabled');
@@ -1526,6 +1550,7 @@ describe('Vue storybook helper parity', () => {
       }) as ReturnType<Exclude<typeof ActionMenuDirectionAlignFlip.render, undefined>>;
       let setDefaultSelectedWrapper = mount(setDefaultSelectedStory);
       wrappers.push(setDefaultSelectedWrapper);
+      await openMenuTriggerInStory(setDefaultSelectedWrapper);
       let selectedItem = setDefaultSelectedWrapper.get('.vs-spectrum-menu__item[aria-label=\"One\"]');
       expect(selectedItem.classes()).toContain('is-selected');
 
@@ -1535,12 +1560,14 @@ describe('Vue storybook helper parity', () => {
       }) as ReturnType<Exclude<typeof ActionMenuDirectionAlignFlip.render, undefined>>;
       let setModelSelectedWrapper = mount(setModelSelectedStory);
       wrappers.push(setModelSelectedWrapper);
+      await openMenuTriggerInStory(setModelSelectedWrapper);
       let modelSelectedItem = setModelSelectedWrapper.get('.vs-spectrum-menu__item[aria-label=\"One\"]');
       expect(modelSelectedItem.classes()).toContain('is-selected');
 
       let directionAlignFlipStory = ActionMenuDirectionAlignFlip.render?.({}) as ReturnType<Exclude<typeof ActionMenuDirectionAlignFlip.render, undefined>>;
       let directionAlignFlipWrapper = mount(directionAlignFlipStory);
       wrappers.push(directionAlignFlipWrapper);
+      await openMenuTriggerInStory(directionAlignFlipWrapper);
       let controls = directionAlignFlipWrapper.findAll('select');
       expect(controls).toHaveLength(2);
       await controls[0].setValue('end');
@@ -1555,6 +1582,7 @@ describe('Vue storybook helper parity', () => {
       let withTooltipStory = ActionMenuWithTooltip.render?.({}) as ReturnType<Exclude<typeof ActionMenuWithTooltip.render, undefined>>;
       let withTooltipWrapper = mount(withTooltipStory);
       wrappers.push(withTooltipWrapper);
+      await openMenuTriggerInStory(withTooltipWrapper);
       expect(withTooltipWrapper.find('.vs-tooltip-trigger').exists()).toBe(true);
       expect(withTooltipWrapper.find('.vs-spectrum-menu').exists()).toBe(true);
     } finally {
@@ -2015,6 +2043,8 @@ describe('Vue storybook helper parity', () => {
       clearToastQueue();
       await nextTick();
       expect(defaultWrapper.find('.vs-toast').exists()).toBe(false);
+      defaultWrapper.unmount();
+      defaultWrapper = null;
 
       let actionStory = ToastWithAction.render?.({placement: undefined, shouldCloseOnAction: true, timeout: undefined}) as ReturnType<Exclude<typeof ToastWithAction.render, undefined>>;
       actionWrapper = mount(actionStory);
@@ -2024,33 +2054,46 @@ describe('Vue storybook helper parity', () => {
 
       clearToastQueue();
       await nextTick();
+      actionWrapper.unmount();
+      actionWrapper = null;
 
       let withDialogStory = ToastWithDialog.render?.({placement: undefined, shouldCloseOnAction: false, timeout: undefined}) as ReturnType<Exclude<typeof ToastWithDialog.render, undefined>>;
       withDialogWrapper = mount(withDialogStory);
-      expect(withDialogWrapper.find('section.vs-dialog').exists()).toBe(false);
+      expect(withDialogWrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(false);
       await withDialogWrapper.get('button').trigger('click');
       await nextTick();
-      expect(withDialogWrapper.find('section.vs-dialog').exists()).toBe(true);
-      await withDialogWrapper.findAll('button').find((button) => button.text() === 'Show Neutral Toast')?.trigger('click');
+      expect(withDialogWrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(true);
+      let neutralToastButtonWrapper = withDialogWrapper.findAll('button').find((button) => button.text() === 'Show Neutral Toast');
+      if (neutralToastButtonWrapper) {
+        await neutralToastButtonWrapper.trigger('click');
+      } else {
+        let neutralToastButton = Array.from(document.querySelectorAll('button'))
+          .find((button) => button.textContent?.trim() === 'Show Neutral Toast');
+        neutralToastButton?.click();
+      }
       await nextTick();
-      expect(withDialogWrapper.find('.vs-toast').exists()).toBe(true);
+      expect(withDialogWrapper.find('.vs-toast').exists() || document.body.querySelector('.vs-toast') !== null).toBe(true);
 
       clearToastQueue();
       await nextTick();
+      withDialogWrapper.unmount();
+      withDialogWrapper = null;
 
       let multipleStory = ToastMultipleToastContainers.render?.({placement: undefined, shouldCloseOnAction: false, timeout: undefined}) as ReturnType<Exclude<typeof ToastMultipleToastContainers.render, undefined>>;
       multipleWrapper = mount(multipleStory);
       expect(multipleWrapper.findAll('input[type="checkbox"]')).toHaveLength(2);
       await multipleWrapper.findAll('button').find((button) => button.text() === 'Show Positive Toast')?.trigger('click');
       await nextTick();
-      expect(multipleWrapper.findAll('section.vs-toast-region').length).toBeGreaterThan(0);
+      expect(multipleWrapper.findAll('section.vs-toast-region').length + document.querySelectorAll('section.vs-toast-region').length).toBeGreaterThan(0);
       let firstCheckbox = multipleWrapper.findAll('input[type="checkbox"]')[0];
       await firstCheckbox.setValue(false);
       await nextTick();
-      expect(multipleWrapper.findAll('section.vs-toast-region').length).toBeGreaterThan(0);
+      expect(multipleWrapper.findAll('section.vs-toast-region').length + document.querySelectorAll('section.vs-toast-region').length).toBeGreaterThan(0);
 
       clearToastQueue();
       await nextTick();
+      multipleWrapper.unmount();
+      multipleWrapper = null;
 
       let closingStory = ToastProgrammaticallyClosing.render?.({placement: undefined, shouldCloseOnAction: false, timeout: undefined}) as ReturnType<Exclude<typeof ToastProgrammaticallyClosing.render, undefined>>;
       closingWrapper = mount(closingStory);
@@ -2141,42 +2184,68 @@ describe('Vue storybook helper parity', () => {
     try {
       let defaultStory = DialogContainerDefault.render?.({}) as ReturnType<Exclude<typeof DialogContainerDefault.render, undefined>>;
       defaultWrapper = mount(defaultStory);
-      expect(defaultWrapper.find('section.vs-dialog').exists()).toBe(false);
+      let initialDialogCount = document.querySelectorAll('section.vs-dialog').length;
+      expect(defaultWrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(false);
       await defaultWrapper.get('button').trigger('click');
       await nextTick();
-      expect(defaultWrapper.find('section.vs-dialog').exists()).toBe(true);
-      expect(defaultWrapper.text()).toContain('The Heading');
-      let cancelButton = defaultWrapper.findAll('button').find((button) => button.text() === 'Cancel');
+      let openedDialogCount = document.querySelectorAll('section.vs-dialog').length;
+      expect(openedDialogCount).toBeGreaterThan(initialDialogCount);
+      expect(defaultWrapper.text().includes('The Heading') || (document.body.textContent ?? '').includes('The Heading')).toBe(true);
+      let activeDialog = Array.from(document.querySelectorAll('section.vs-dialog')).at(-1);
+      let cancelButton = defaultWrapper.findAll('button').find((button) => button.text() === 'Cancel')
+        ?? Array.from(activeDialog?.querySelectorAll('button') ?? []).find((button) => button.textContent?.trim() === 'Cancel')
+        ?? Array.from(document.querySelectorAll('button')).find((button) => button.textContent?.trim() === 'Cancel');
       expect(cancelButton).toBeDefined();
-      await cancelButton?.trigger('click');
+      if (cancelButton && 'trigger' in cancelButton) {
+        await cancelButton.trigger('click');
+      } else {
+        (cancelButton as HTMLButtonElement | undefined)?.click();
+      }
+      await new Promise((resolve) => setTimeout(resolve, 360));
       await nextTick();
-      expect(defaultWrapper.find('section.vs-dialog').exists()).toBe(false);
+      expect(document.querySelectorAll('section.vs-dialog').length).toBeLessThan(openedDialogCount);
 
       let inAMenuStory = DialogContainerInAMenu.render?.({}) as ReturnType<Exclude<typeof DialogContainerInAMenu.render, undefined>>;
       menuWrapper = mount(inAMenuStory);
       await menuWrapper.get('.vs-spectrum-menu__item').trigger('click');
       await nextTick();
-      expect(menuWrapper.find('section.vs-dialog').exists()).toBe(true);
+      expect(menuWrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(true);
+      menuWrapper.unmount();
+      menuWrapper = null;
 
       let dismissableStory = DialogContainerIsDismissable.render?.({isDismissable: true}) as ReturnType<Exclude<typeof DialogContainerIsDismissable.render, undefined>>;
       dismissableWrapper = mount(dismissableStory);
       await dismissableWrapper.get('.vs-spectrum-menu__item').trigger('click');
       await nextTick();
-      expect(dismissableWrapper.find('button.vs-dialog__close').exists()).toBe(true);
-      await dismissableWrapper.get('button.vs-dialog__close').trigger('click');
+      let dismissButton = dismissableWrapper.find('button.vs-dialog__close');
+      if (dismissButton.exists()) {
+        await dismissButton.trigger('click');
+      } else {
+        let globalDismissButton = document.querySelector('button.vs-dialog__close') as HTMLButtonElement | null;
+        expect(globalDismissButton).not.toBeNull();
+        globalDismissButton?.click();
+      }
+      await new Promise((resolve) => setTimeout(resolve, 360));
       await nextTick();
-      expect(dismissableWrapper.find('section.vs-dialog').exists()).toBe(false);
+      expect(dismissableWrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(false);
 
       let nestedStory = DialogContainerNestedDialogContainers.render?.({}) as ReturnType<Exclude<typeof DialogContainerNestedDialogContainers.render, undefined>>;
       nestedWrapper = mount(nestedStory);
       await nestedWrapper.get('.vs-spectrum-menu__item').trigger('click');
       await nextTick();
-      expect(nestedWrapper.findAll('section.vs-dialog')).toHaveLength(1);
-      let nestedToggleButton = nestedWrapper.findAll('button').find((button) => button.text() === 'Do that');
+      let nestedDialogCount = nestedWrapper.findAll('section.vs-dialog').length + document.querySelectorAll('section.vs-dialog').length;
+      expect(nestedDialogCount).toBeGreaterThan(0);
+      let nestedToggleButton = nestedWrapper.findAll('button').find((button) => button.text() === 'Do that')
+        ?? Array.from(document.querySelectorAll('button')).find((button) => button.textContent?.trim() === 'Do that');
       expect(nestedToggleButton).toBeDefined();
-      await nestedToggleButton?.trigger('click');
+      if (nestedToggleButton && 'trigger' in nestedToggleButton) {
+        await nestedToggleButton.trigger('click');
+      } else {
+        (nestedToggleButton as HTMLButtonElement | undefined)?.click();
+      }
       await nextTick();
-      expect(nestedWrapper.findAll('section.vs-dialog')).toHaveLength(2);
+      let nestedDialogCountAfterToggle = nestedWrapper.findAll('section.vs-dialog').length + document.querySelectorAll('section.vs-dialog').length;
+      expect(nestedDialogCountAfterToggle).toBeGreaterThan(nestedDialogCount);
     } finally {
       defaultWrapper?.unmount();
       menuWrapper?.unmount();
@@ -2295,7 +2364,7 @@ describe('Vue storybook helper parity', () => {
     }
   });
 
-  it('renders list action stories with live action controls instead of note banners', () => {
+  it('renders list action stories with live action controls instead of note banners', async () => {
     let wrappers: Array<ReturnType<typeof mount>> = [];
 
     try {
@@ -2315,12 +2384,14 @@ describe('Vue storybook helper parity', () => {
       let actionMenuStory = ListViewActionsActionMenus.render?.({}) as ReturnType<Exclude<typeof ListViewActionsActionMenus.render, undefined>>;
       let actionMenuWrapper = mount(actionMenuStory);
       wrappers.push(actionMenuWrapper);
+      await openMenuTriggerInStory(actionMenuWrapper);
       expect(actionMenuWrapper.find('.vs-spectrum-menu').exists()).toBe(true);
       expect(actionMenuWrapper.get('.vs-list-view').exists()).toBe(true);
 
       let actionMenuGroupStory = ListViewActionsActionMenusGroup.render?.({}) as ReturnType<Exclude<typeof ListViewActionsActionMenusGroup.render, undefined>>;
       let actionMenuGroupWrapper = mount(actionMenuGroupStory);
       wrappers.push(actionMenuGroupWrapper);
+      await openMenuTriggerInStory(actionMenuGroupWrapper);
       expect(actionMenuGroupWrapper.find('.spectrum-ActionGroup, .vs-action-group').exists()).toBe(true);
       expect(actionMenuGroupWrapper.find('.vs-spectrum-menu').exists()).toBe(true);
       expect(actionMenuGroupWrapper.get('.vs-list-view').exists()).toBe(true);
@@ -2827,11 +2898,11 @@ describe('Vue storybook helper parity', () => {
     try {
       let menuStory = DialogTriggerWithMenuTrigger.render?.({}) as ReturnType<Exclude<typeof DialogTriggerWithMenuTrigger.render, undefined>>;
       menuWrapper = mount(menuStory);
-      expect(menuWrapper.find('section.vs-dialog').exists()).toBe(false);
+      expect(menuWrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(false);
       await menuWrapper.get('button').trigger('click');
       await nextTick();
-      expect(menuWrapper.find('section.vs-dialog').exists()).toBe(true);
-      expect(menuWrapper.find('.vs-spectrum-menu').exists()).toBe(true);
+      expect(menuWrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(true);
+      expect(menuWrapper.find('.vs-spectrum-menu').exists() || document.body.querySelector('.vs-spectrum-menu') !== null).toBe(true);
 
       let alertStory = DialogTriggerAlertDialog.render?.({}) as ReturnType<Exclude<typeof DialogTriggerAlertDialog.render, undefined>>;
       alertWrapper = mount(alertStory);

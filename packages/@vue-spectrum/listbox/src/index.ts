@@ -1,4 +1,5 @@
 import '@adobe/spectrum-css-temp/components/menu/vars.css';
+import {Item, Section} from '@vue-stately/collections';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, type PropType, ref} from 'vue';
 const styles: {[key: string]: string} = {};
@@ -320,8 +321,7 @@ export const ListBox = defineComponent({
 
 export const VueListBox = ListBox;
 export const ListBoxBase = ListBox;
-export const Item = ListBox;
-export const Section = ListBox;
+export {Item, Section};
 
 export type SpectrumListBoxProps<T = unknown> = Record<string, unknown> & {
   item?: T

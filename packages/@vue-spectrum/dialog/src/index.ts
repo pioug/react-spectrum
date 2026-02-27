@@ -1,7 +1,8 @@
 import '@adobe/spectrum-css-temp/components/dialog/vars.css';
 import {Button} from '@vue-spectrum/button';
+import {Modal, Popover, Tray} from '@vue-spectrum/overlays';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, type ComputedRef, defineComponent, getCurrentInstance, h, inject, provide, type InjectionKey, type PropType} from 'vue';
+import {computed, type ComputedRef, defineComponent, getCurrentInstance, h, inject, provide, ref, type InjectionKey, type PropType, type VNode, watch} from 'vue';
 const styles: {[key: string]: string} = {};
 
 
@@ -452,8 +453,327 @@ export const AlertDialog = defineComponent({
   }
 });
 
-export const DialogTrigger = Dialog;
-export const DialogContainer = Dialog;
+function normalizePopoverPlacement(value: string | undefined): 'bottom' | 'left' | 'right' | 'top' {
+  let placement = value?.split(' ')[0];
+  if (placement === 'top' || placement === 'left' || placement === 'right') {
+    return placement;
+  }
+
+  return 'bottom';
+}
+
+function hasRenderableNodes(nodes: VNode[] | undefined): boolean {
+  return Boolean(nodes && nodes.some((node) => node != null));
+}
+
+export const DialogTrigger = defineComponent({
+  name: 'VueDialogTrigger',
+  inheritAttrs: false,
+  props: {
+    defaultOpen: {
+      type: Boolean,
+      default: false
+    },
+    dismissable: {
+      type: Boolean,
+      default: false
+    },
+    isDismissable: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
+    },
+    isHidden: {
+      type: Boolean,
+      default: false
+    },
+    isOpen: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
+    },
+    hideArrow: {
+      type: Boolean,
+      default: false
+    },
+    mobileType: {
+      type: String as PropType<DialogType | undefined>,
+      default: undefined
+    },
+    onDismiss: {
+      type: Function as PropType<EventHandler>,
+      default: undefined
+    },
+    open: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
+    },
+    placement: {
+      type: String,
+      default: 'bottom'
+    },
+    role: {
+      type: String,
+      default: 'dialog'
+    },
+    size: {
+      type: String as PropType<DialogSize | undefined>,
+      default: undefined
+    },
+    title: {
+      type: String,
+      default: ''
+    },
+    type: {
+      type: String as PropType<DialogType>,
+      default: 'modal'
+    }
+  },
+  emits: {
+    close: () => true,
+    openChange: (isOpen: boolean) => typeof isOpen === 'boolean'
+  },
+  setup(props, {attrs, emit, slots}) {
+    let uncontrolledOpen = ref(Boolean(props.defaultOpen));
+    let isOpenControlled = computed(() => props.isOpen !== undefined || props.open !== undefined);
+    let isOpen = computed(() => {
+      if (props.isOpen !== undefined) {
+        return props.isOpen;
+      }
+
+      if (props.open !== undefined) {
+        return props.open;
+      }
+
+      return uncontrolledOpen.value;
+    });
+    let isDismissable = useResolvedDismissableState(computed(() => props.isDismissable), computed(() => props.dismissable));
+    let resolvedType = computed(() => props.mobileType ?? props.type);
+
+    let setOpen = (nextValue: boolean) => {
+      if (isOpen.value === nextValue) {
+        return;
+      }
+
+      if (!isOpenControlled.value) {
+        uncontrolledOpen.value = nextValue;
+      }
+
+      emit('openChange', nextValue);
+    };
+
+    let close = () => {
+      invoke(props.onDismiss);
+      setOpen(false);
+    };
+
+    watch(isOpen, (nextValue, previousValue) => {
+      if (previousValue && !nextValue) {
+        emit('close');
+      }
+    });
+
+    let dialogSlots = {
+      buttonGroup: slots.buttonGroup ? () => slots.buttonGroup?.() : undefined,
+      default: slots.default ? () => slots.default?.() : undefined,
+      divider: slots.divider ? () => slots.divider?.() : undefined,
+      footer: slots.footer ? () => slots.footer?.() : undefined,
+      header: slots.header ? () => slots.header?.() : undefined,
+      heading: slots.heading ? () => slots.heading?.() : undefined,
+      typeIcon: slots.typeIcon ? () => slots.typeIcon?.() : undefined
+    };
+
+    let renderDialog = () => h(Dialog, {
+      dismissable: props.dismissable,
+      isDismissable: props.isDismissable,
+      isHidden: props.isHidden,
+      isOpen: true,
+      onDismiss: close,
+      role: props.role,
+      size: props.size,
+      title: props.title,
+      type: resolvedType.value,
+      onClose: close
+    }, dialogSlots);
+
+    let renderOverlay = () => {
+      if (!isOpen.value) {
+        return null;
+      }
+
+      if (resolvedType.value === 'popover') {
+        return h(Popover, {
+          isDismissable: isDismissable.value,
+          isOpen: true,
+          hideArrow: props.hideArrow,
+          placement: normalizePopoverPlacement(props.placement),
+          onClose: close
+        }, {
+          default: () => [renderDialog()]
+        });
+      }
+
+      if (resolvedType.value === 'tray') {
+        return h(Tray, {
+          isOpen: true,
+          onClose: close
+        }, {
+          default: () => [renderDialog()]
+        });
+      }
+
+      return h(Modal, {
+        isDismissable: resolvedType.value === 'modal' ? isDismissable.value : false,
+        isOpen: true,
+        type: resolvedType.value === 'modal' || resolvedType.value === 'fullscreen' || resolvedType.value === 'fullscreenTakeover'
+          ? resolvedType.value
+          : 'modal',
+        onClose: close
+      }, {
+        default: () => [renderDialog()]
+      });
+    };
+
+    return () => {
+      let triggerContent = slots.trigger?.({
+        close,
+        isOpen: isOpen.value,
+        open: () => setOpen(true),
+        toggle: () => setOpen(!isOpen.value)
+      });
+      let overlayContent = renderOverlay();
+
+      if (!hasRenderableNodes(triggerContent)) {
+        return overlayContent;
+      }
+
+      return h('div', {
+        ...attrs,
+        class: ['vs-dialog-trigger', attrs.class],
+        'data-vac': ''
+      }, [
+        h('div', {
+          class: 'vs-dialog-trigger__trigger'
+        }, triggerContent),
+        overlayContent
+      ]);
+    };
+  }
+});
+
+export const DialogContainer = defineComponent({
+  name: 'VueDialogContainer',
+  inheritAttrs: false,
+  props: {
+    dismissable: {
+      type: Boolean,
+      default: true
+    },
+    isDismissable: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
+    },
+    isOpen: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
+    },
+    onDismiss: {
+      type: Function as PropType<EventHandler>,
+      default: undefined
+    },
+    open: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
+    },
+    type: {
+      type: String as PropType<DialogType>,
+      default: 'modal'
+    }
+  },
+  emits: {
+    close: () => true,
+    openChange: (isOpen: boolean) => typeof isOpen === 'boolean'
+  },
+  setup(props, {attrs, emit, slots}) {
+    let lastContent = ref<VNode[] | undefined>(undefined);
+    let isDismissable = useResolvedDismissableState(computed(() => props.isDismissable), computed(() => props.dismissable));
+    let currentChildren = computed(() => slots.default?.());
+    let isOpen = computed(() => {
+      if (props.isOpen !== undefined) {
+        return props.isOpen;
+      }
+
+      if (props.open !== undefined) {
+        return props.open;
+      }
+
+      return hasRenderableNodes(currentChildren.value);
+    });
+
+    let dismiss = () => {
+      invoke(props.onDismiss);
+      emit('close');
+      emit('openChange', false);
+    };
+
+    provide(dialogContainerContextKey, {
+      close: dismiss,
+      get type() {
+        return props.type;
+      }
+    });
+
+    watch(currentChildren, (nextChildren) => {
+      if (!hasRenderableNodes(nextChildren)) {
+        return;
+      }
+
+      lastContent.value = nextChildren;
+    }, {immediate: true});
+
+    let modalType = computed<'fullscreen' | 'fullscreenTakeover' | 'modal'>(() => {
+      if (props.type === 'fullscreen' || props.type === 'fullscreenTakeover') {
+        return props.type;
+      }
+
+      return 'modal';
+    });
+
+    return () => {
+      let dialogAttrs: Record<string, unknown> = {...attrs};
+      delete dialogAttrs.class;
+      delete dialogAttrs.style;
+
+      let dialogSlots = {
+        buttonGroup: slots.buttonGroup ? () => slots.buttonGroup?.() : undefined,
+        default: () => lastContent.value ?? currentChildren.value ?? [],
+        divider: slots.divider ? () => slots.divider?.() : undefined,
+        footer: slots.footer ? () => slots.footer?.() : undefined,
+        header: slots.header ? () => slots.header?.() : undefined,
+        heading: slots.heading ? () => slots.heading?.() : undefined,
+        typeIcon: slots.typeIcon ? () => slots.typeIcon?.() : undefined
+      };
+
+      return h(Modal, {
+        isDismissable: modalType.value === 'modal' ? isDismissable.value : false,
+        isOpen: isOpen.value,
+        type: modalType.value,
+        onClose: dismiss
+      }, {
+        default: () => [
+          h(Dialog, {
+            ...dialogAttrs,
+            dismissable: props.dismissable,
+            isDismissable: props.isDismissable,
+            isOpen: true,
+            onDismiss: dismiss,
+            type: props.type,
+            onClose: dismiss
+          }, dialogSlots)
+        ]
+      });
+    };
+  }
+});
+
 export const VueDialog = Dialog;
 
 export interface DialogContainerValue {
@@ -463,23 +783,14 @@ export interface DialogContainerValue {
 }
 
 export function useDialogContainer(): DialogContainerValue {
-  let fallbackContext: DialogContainerContextValue = {
-    close: () => {},
-    type: 'modal'
-  };
-
   if (!getCurrentInstance()) {
-    return {
-      close: fallbackContext.close,
-      dismiss: fallbackContext.close,
-      type: fallbackContext.type
-    };
+    throw new Error('Cannot call useDialogContext outside a <DialogTrigger> or <DialogContainer>.');
   }
 
-  let context = inject(dialogContainerContextKey, {
-    close: fallbackContext.close,
-    type: fallbackContext.type
-  });
+  let context = inject(dialogContainerContextKey, null);
+  if (!context) {
+    throw new Error('Cannot call useDialogContext outside a <DialogTrigger> or <DialogContainer>.');
+  }
 
   return {
     close: context.close,
@@ -488,7 +799,7 @@ export function useDialogContainer(): DialogContainerValue {
   };
 }
 
-export type SpectrumDialogProps = Record<string, unknown>;
-export type SpectrumAlertDialogProps = SpectrumDialogProps;
-export type SpectrumDialogTriggerProps = SpectrumDialogProps;
-export type SpectrumDialogContainerProps = SpectrumDialogProps;
+export type SpectrumDialogProps = InstanceType<typeof Dialog>['$props'];
+export type SpectrumAlertDialogProps = InstanceType<typeof AlertDialog>['$props'];
+export type SpectrumDialogTriggerProps = InstanceType<typeof DialogTrigger>['$props'];
+export type SpectrumDialogContainerProps = InstanceType<typeof DialogContainer>['$props'];

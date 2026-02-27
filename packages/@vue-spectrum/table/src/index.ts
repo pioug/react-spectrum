@@ -1,5 +1,18 @@
 import '@adobe/spectrum-css-temp/components/table/vars.css';
 import './table.css';
+import {
+  Cell as StatelyCell,
+  Column as StatelyColumn,
+  Row as StatelyRow,
+  Section as StatelySection,
+  TableBody as StatelyTableBody,
+  TableHeader as StatelyTableHeader,
+  type CellProps as VueStatelyCellProps,
+  type ColumnProps as VueStatelyColumnProps,
+  type RowProps as VueStatelyRowProps,
+  type TableBodyProps as VueStatelyTableBodyProps,
+  type TableHeaderProps as VueStatelyTableHeaderProps
+} from '@vue-stately/table';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, type PropType, ref} from 'vue';
 const styles: {[key: string]: string} = {};
@@ -768,16 +781,16 @@ export const Table = defineComponent({
 
 export const VueTable = Table;
 export const TableView = Table;
-export const TableHeader = Table;
-export const TableBody = Table;
-export const Column = Table;
-export const Row = Table;
-export const Cell = Table;
-export const Section = Table;
+export const TableHeader = StatelyTableHeader;
+export const TableBody = StatelyTableBody;
+export const Column = StatelyColumn;
+export const Row = StatelyRow;
+export const Cell = StatelyCell;
+export const Section = StatelySection;
 
 export type SpectrumTableProps = InstanceType<typeof Table>['$props'];
-export type SpectrumColumnProps = SpectrumTableProps;
-export type TableHeaderProps<T = unknown> = SpectrumTableProps & {item?: T};
-export type TableBodyProps<T = unknown> = SpectrumTableProps & {item?: T};
-export type RowProps<T = unknown> = SpectrumTableProps & {item?: T};
-export type CellProps<T = unknown> = SpectrumTableProps & {item?: T};
+export type SpectrumColumnProps<T = unknown> = VueStatelyColumnProps<T>;
+export type TableHeaderProps<T = unknown> = VueStatelyTableHeaderProps<T>;
+export type TableBodyProps<T = unknown> = VueStatelyTableBodyProps<T>;
+export type RowProps<T = unknown> = VueStatelyRowProps<T>;
+export type CellProps<T = unknown> = VueStatelyCellProps<T>;

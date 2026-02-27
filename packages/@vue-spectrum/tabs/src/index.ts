@@ -1,9 +1,10 @@
+import {Item} from '@vue-stately/collections';
 import {VueTabs} from './VueTabs';
 
 export const Tabs = VueTabs;
 export const TabList = VueTabs;
 export const TabPanels = VueTabs;
-export const Item = VueTabs;
+export {Item};
 export {VueTabs};
 export type {TabItemData, TabsValue} from './VueTabs';
 

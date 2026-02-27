@@ -91,33 +91,31 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(ToggleButton).not.toBeUndefined();
   });
 
-  it('aliases dialog exports and returns a dialog container controller', () => {
+  it('exports dialog trigger/container as controllers and enforces dialog context', () => {
     expect(Dialog).toBe(VueDialog);
     expect(AlertDialog).not.toBeUndefined();
-    expect(DialogTrigger).toBe(VueDialog);
-    expect(DialogContainer).toBe(VueDialog);
-
-    let controller = useDialogContainer();
-    expect(typeof controller.close).toBe('function');
+    expect(DialogTrigger).not.toBe(VueDialog);
+    expect(DialogContainer).not.toBe(VueDialog);
+    expect(() => useDialogContainer()).toThrow('Cannot call useDialogContext outside a <DialogTrigger> or <DialogContainer>.');
   });
 
-  it('aliases table exports to VueTable', () => {
+  it('exports table view as VueTable and collection primitives separately', () => {
     expect(Table).toBe(VueTable);
     expect(TableView).toBe(VueTable);
-    expect(TableHeader).toBe(VueTable);
-    expect(TableBody).toBe(VueTable);
-    expect(Column).toBe(VueTable);
-    expect(Row).toBe(VueTable);
-    expect(Cell).toBe(VueTable);
-    expect(Section).toBe(VueTable);
+    expect(TableHeader).not.toBe(VueTable);
+    expect(TableBody).not.toBe(VueTable);
+    expect(Column).not.toBe(VueTable);
+    expect(Row).not.toBe(VueTable);
+    expect(Cell).not.toBe(VueTable);
+    expect(Section).not.toBe(VueTable);
   });
 
-  it('aliases tree exports to VueTree', () => {
+  it('keeps tree primitives exported and collection as a dedicated primitive', () => {
     expect(Tree).toBe(VueTree);
     expect(TreeView).toBe(VueTree);
     expect(TreeViewItem).toBe(VueTree);
     expect(TreeViewItemContent).toBe(VueTree);
-    expect(Collection).toBe(VueTree);
+    expect(Collection).not.toBe(VueTree);
   });
 
   it('exports view primitives with semantic wrappers', () => {
@@ -130,29 +128,29 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(Footer).not.toBe(View);
   });
 
-  it('aliases menu exports to VueMenu', () => {
+  it('exports menu controllers/collection primitives separately from VueMenu', () => {
     expect(Menu).toBe(VueMenu);
-    expect(ActionMenu).toBe(VueMenu);
+    expect(ActionMenu).not.toBe(VueMenu);
     expect(MenuTrigger).not.toBeUndefined();
     expect(MenuTrigger).not.toBe(VueMenu);
-    expect(SubmenuTrigger).toBe(VueMenu);
-    expect(ContextualHelpTrigger).toBe(VueMenu);
-    expect(MenuItem).toBe(VueMenu);
-    expect(MenuSection).toBe(VueMenu);
+    expect(SubmenuTrigger).toBe(MenuTrigger);
+    expect(ContextualHelpTrigger).toBe(MenuTrigger);
+    expect(MenuItem).not.toBe(VueMenu);
+    expect(MenuSection).not.toBe(VueMenu);
   });
 
-  it('aliases listbox exports to VueListBox and exposes useListBoxLayout', () => {
+  it('exports listbox base and collection primitives separately', () => {
     expect(ListBox).toBe(VueListBox);
     expect(ListBoxBase).toBe(VueListBox);
-    expect(ListBoxItem).toBe(VueListBox);
-    expect(ListBoxSection).toBe(VueListBox);
+    expect(ListBoxItem).not.toBe(VueListBox);
+    expect(ListBoxSection).not.toBe(VueListBox);
     expect(useListBoxLayout()).toEqual({layout: 'stack'});
   });
 
-  it('aliases text exports to VueText', () => {
-    expect(Text).toBe(VueText);
-    expect(Heading).toBe(VueText);
-    expect(Keyboard).toBe(VueText);
+  it('exports semantic text primitives on top of VueText', () => {
+    expect(Text).not.toBe(VueText);
+    expect(Heading).not.toBe(VueText);
+    expect(Keyboard).not.toBe(VueText);
   });
 
   it('keeps icon exports wired to Vue icon primitives', () => {
@@ -161,10 +159,10 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(Illustration).toBe(VueIllustration);
   });
 
-  it('aliases tabs exports to VueTabs', () => {
+  it('exports tabs collection item separately from VueTabs', () => {
     expect(Tabs).toBe(VueTabs);
     expect(TabList).toBe(VueTabs);
     expect(TabPanels).toBe(VueTabs);
-    expect(TabItem).toBe(VueTabs);
+    expect(TabItem).not.toBe(VueTabs);
   });
 });

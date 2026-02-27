@@ -1,5 +1,7 @@
 import '@adobe/spectrum-css-temp/components/contextualhelp/vars.css';
 import '@adobe/spectrum-css-temp/components/menu/vars.css';
+import {ActionButton} from '@vue-spectrum/button';
+import {Item, Section} from '@vue-stately/collections';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, type PropType, ref, type VNode, watch} from 'vue';
 const contextualHelpStyles: {[key: string]: string} = {};
@@ -1240,11 +1242,164 @@ export const MenuTrigger = defineComponent({
 });
 
 export const VueMenu = Menu;
-export const ActionMenu = Menu;
-export const SubmenuTrigger = Menu;
-export const ContextualHelpTrigger = Menu;
-export const Item = Menu;
-export const Section = Menu;
+export const ActionMenu = defineComponent({
+  name: 'VueActionMenu',
+  inheritAttrs: false,
+  props: {
+    align: {
+      type: String as PropType<AlignMode>,
+      default: 'start'
+    },
+    ariaLabel: {
+      type: String,
+      default: ''
+    },
+    ariaLabelledby: {
+      type: String,
+      default: ''
+    },
+    autoFocus: {
+      type: [Boolean, String] as PropType<AutoFocusMode | false | undefined>,
+      default: undefined
+    },
+    closeOnSelect: {
+      type: Boolean,
+      default: true
+    },
+    dataTestid: {
+      type: String,
+      default: 'menu-wrapper'
+    },
+    defaultOpen: {
+      type: Boolean,
+      default: false
+    },
+    defaultSelectedKeys: {
+      type: [Array, Set] as PropType<Iterable<number | string>>,
+      default: () => []
+    },
+    direction: {
+      type: String as PropType<DirectionMode>,
+      default: 'bottom'
+    },
+    disabledKeys: {
+      type: [Array, Set] as PropType<Iterable<number | string>>,
+      default: () => []
+    },
+    isDisabled: {
+      type: Boolean,
+      default: false
+    },
+    isOpen: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
+    },
+    isQuiet: {
+      type: Boolean,
+      default: false
+    },
+    items: {
+      type: Array as PropType<Array<MenuItemRecord | string>>,
+      default: () => []
+    },
+    label: {
+      type: String,
+      default: ''
+    },
+    modelValue: {
+      type: [String, Number, Array, Set] as PropType<SelectionValue | undefined>,
+      default: undefined
+    },
+    openKeys: {
+      type: [Array, Set] as PropType<Iterable<number | string>>,
+      default: () => []
+    },
+    shouldFlip: {
+      type: Boolean,
+      default: true
+    },
+    shouldFocusWrap: {
+      type: Boolean,
+      default: true
+    },
+    selectionMode: {
+      type: String as PropType<SelectionMode>,
+      default: 'none'
+    },
+    trigger: {
+      type: String,
+      default: 'press'
+    }
+  },
+  emits: {
+    action: (key: number | string) => typeof key === 'number' || typeof key === 'string',
+    dismiss: () => true,
+    menuOpenChange: (keys: Iterable<SelectionKey>) => isSelectionIterable(keys),
+    openChange: (isOpen: boolean) => isBoolean(isOpen),
+    select: (value: SelectionValue) => isSelectionValue(value),
+    'update:modelValue': (value: SelectionValue) => isSelectionValue(value)
+  },
+  setup(props, {attrs, emit, slots}) {
+    let triggerAriaLabel = computed(() => props.ariaLabel || attrs['aria-label'] || 'More actions');
+
+    return () => h(MenuTrigger, {
+      align: props.align,
+      ariaLabel: props.ariaLabel,
+      ariaLabelledby: props.ariaLabelledby,
+      autoFocus: props.autoFocus,
+      closeOnSelect: props.closeOnSelect,
+      dataTestid: props.dataTestid,
+      defaultOpen: props.defaultOpen,
+      defaultSelectedKeys: props.defaultSelectedKeys,
+      direction: props.direction,
+      disabledKeys: props.disabledKeys,
+      isDisabled: props.isDisabled,
+      isOpen: props.isOpen,
+      items: props.items,
+      label: props.label,
+      modelValue: props.modelValue,
+      openKeys: props.openKeys,
+      selectionMode: props.selectionMode,
+      shouldFlip: props.shouldFlip,
+      shouldFocusWrap: props.shouldFocusWrap,
+      trigger: props.trigger,
+      onAction: (key: SelectionKey) => {
+        emit('action', key);
+      },
+      onDismiss: () => {
+        emit('dismiss');
+      },
+      onMenuOpenChange: (keys: Iterable<SelectionKey>) => {
+        emit('menuOpenChange', keys);
+      },
+      onOpenChange: (isOpen: boolean) => {
+        emit('openChange', isOpen);
+      },
+      onSelect: (value: SelectionValue) => {
+        emit('select', value);
+      },
+      'onUpdate:modelValue': (value: SelectionValue) => {
+        emit('update:modelValue', value);
+      }
+    }, {
+      trigger: (slotProps: {isOpen: boolean, toggle: () => void}) => (
+        slots.trigger?.(slotProps) ?? [
+          h(ActionButton, {
+            isDisabled: props.isDisabled,
+            isQuiet: props.isQuiet,
+            'aria-label': triggerAriaLabel.value
+          }, {
+            default: () => '⋯'
+          })
+        ]
+      )
+    });
+  }
+});
+
+export const SubmenuTrigger = MenuTrigger;
+export const ContextualHelpTrigger = MenuTrigger;
+export {Item, Section};
 
 export type SpectrumMenuProps<T = unknown> = Record<string, unknown> & {
   item?: T

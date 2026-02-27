@@ -25,6 +25,7 @@
   "dependencies": {
     "@adobe/spectrum-css-temp": "3.0.0-alpha.1",
     "@vue-spectrum/button": "workspace:*",
+    "@vue-spectrum/overlays": "workspace:*",
     "@vue-spectrum/utils": "workspace:*"
   },
   "peerDependencies": {

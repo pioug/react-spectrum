@@ -5,7 +5,6 @@ import {ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type StoryArgs = Record<string, unknown>;
-type StoryOpenKeyValue = Iterable<number | string> | number | string;
 type MenuItem = string | {
   children?: MenuItem[],
   disabled?: boolean,
@@ -43,30 +42,6 @@ const meta: Meta<typeof ActionMenu> = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
-
-function normalizeStoryOpenKeys(value: unknown): Set<number | string> {
-  if (typeof value === 'number' || typeof value === 'string') {
-    return new Set([value]);
-  }
-
-  if (value == null) {
-    return new Set();
-  }
-
-  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
-  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
-    return new Set();
-  }
-
-  let normalized = new Set<number | string>();
-  for (let entry of value as Iterable<unknown>) {
-    if (typeof entry === 'number' || typeof entry === 'string') {
-      normalized.add(entry);
-    }
-  }
-
-  return normalized;
-}
 
 function renderActionMenu(args: StoryArgs = {}, options: RenderOptions = {}) {
   let {items = DEFAULT_ITEMS} = options;
@@ -152,24 +127,24 @@ export const ControlledOpen: Story = {
   render: (args) => ({
     components: {ActionMenu},
     setup() {
-      let openKeys = ref<Set<number | string>>(new Set());
+      let isOpen = ref(false);
 
-      let onOpenChange = (keys: StoryOpenKeyValue) => {
-        openKeys.value = normalizeStoryOpenKeys(keys);
+      let onOpenChange = (value: boolean) => {
+        isOpen.value = value;
       };
 
       return {
         args,
+        isOpen,
         items: [
           {key: 'cut', label: 'Cut'},
           {key: 'copy', label: 'Copy'},
           {key: 'paste', label: 'Paste'}
         ],
-        onOpenChange,
-        openKeys
+        onOpenChange
       };
     },
-    template: '<ActionMenu v-bind="args" :items="items" :open-keys="openKeys" @open-change="onOpenChange" />'
+    template: '<ActionMenu v-bind="args" :is-open="isOpen" :items="items" @open-change="onOpenChange" />'
   })
 };
 

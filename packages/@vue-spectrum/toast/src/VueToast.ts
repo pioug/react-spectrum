@@ -1,5 +1,5 @@
 import {type QueuedToast as AriaQueuedToast, useToast as createToast, useToastRegion as createToastRegion} from '@vue-aria/toast';
-import {computed, defineComponent, h, type PropType, ref, type Ref} from 'vue';
+import {computed, defineComponent, h, onBeforeUnmount, onMounted, type PropType, ref, type Ref} from 'vue';
 
 export type ToastPlacement = 'top' | 'top end' | 'bottom' | 'bottom end';
 export type ToastVariant = 'info' | 'negative' | 'neutral' | 'positive';
@@ -190,6 +190,22 @@ export function createToastQueue(options: CreateToastQueueOptions = {}): Spectru
 }
 
 let globalToastQueue: SpectrumToastQueue | null = null;
+let toastContainerTokens = new Set<symbol>();
+let activeToastContainerToken = ref<symbol | null>(null);
+
+function syncActiveToastContainer() {
+  activeToastContainerToken.value = toastContainerTokens.values().next().value ?? null;
+}
+
+function registerToastContainer(token: symbol): void {
+  toastContainerTokens.add(token);
+  syncActiveToastContainer();
+}
+
+function unregisterToastContainer(token: symbol): void {
+  toastContainerTokens.delete(token);
+  syncActiveToastContainer();
+}
 
 function getGlobalToastQueue(): SpectrumToastQueue {
   if (!globalToastQueue) {
@@ -305,7 +321,9 @@ export const VueToastContainer = defineComponent({
     }
   },
   setup(props, {attrs}) {
+    let containerToken = Symbol('vue-toast-container');
     let activeQueue = computed(() => props.queue ?? getGlobalToastQueue());
+    let isActiveContainer = computed(() => activeToastContainerToken.value === containerToken);
     let toastRegion = createToastRegion({
       ariaLabel: props.ariaLabel
     }, {
@@ -320,9 +338,17 @@ export const VueToastContainer = defineComponent({
       }
     });
 
+    onMounted(() => {
+      registerToastContainer(containerToken);
+    });
+
+    onBeforeUnmount(() => {
+      unregisterToastContainer(containerToken);
+    });
+
     return () => {
       let toasts = activeQueue.value.visibleToasts.value;
-      if (toasts.length === 0) {
+      if (!isActiveContainer.value || toasts.length === 0) {
         return null;
       }
 
