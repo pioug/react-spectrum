@@ -247,6 +247,7 @@ export const Menu = defineComponent({
     action: (key: number | string) => typeof key === 'number' || typeof key === 'string',
     dismiss: () => true,
     openChange: (keys: Iterable<SelectionKey>) => isSelectionIterable(keys),
+    selectionChange: (value: SelectionValue) => isSelectionValue(value),
     select: (value: SelectionValue) => {
       return isSelectionValue(value);
     },
@@ -521,6 +522,7 @@ export const Menu = defineComponent({
         internalSelectedKeys.value = [item.key];
         emit('update:modelValue', item.key);
         emit('select', item.key);
+        emit('selectionChange', item.key);
         if (props.closeOnSelect && internalOpenKeys.value.length > 0) {
           internalOpenKeys.value = [];
           emit('openChange', new Set<SelectionKey>());
@@ -539,6 +541,7 @@ export const Menu = defineComponent({
       internalSelectedKeys.value = values;
       emit('update:modelValue', new Set(next));
       emit('select', new Set(next));
+      emit('selectionChange', new Set(next));
       if (props.closeOnSelect && internalOpenKeys.value.length > 0) {
         internalOpenKeys.value = [];
         emit('openChange', new Set<SelectionKey>());

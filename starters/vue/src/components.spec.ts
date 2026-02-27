@@ -3784,6 +3784,7 @@ describe('Vue migration primitives', () => {
     await menuItems[0].trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['edit']);
     expect(wrapper.emitted('select')?.[0]).toEqual(['edit']);
+    expect(wrapper.emitted('selectionChange')?.[0]).toEqual(['edit']);
   });
 
   it('accepts menu iterable defaultSelectedKeys and openKeys sets', async () => {
@@ -3813,6 +3814,9 @@ describe('Vue migration primitives', () => {
     let emittedSelect = wrapper.emitted('select')?.[0]?.[0] as unknown;
     expect(emittedSelect).toBeInstanceOf(Set);
     expect(Array.from(emittedSelect as Set<number | string>)).toEqual([]);
+    let emittedSelectionChange = wrapper.emitted('selectionChange')?.[0]?.[0] as unknown;
+    expect(emittedSelectionChange).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelectionChange as Set<number | string>)).toEqual([]);
   });
 
   it('accepts menu iterable modelValue in multiple selection mode', async () => {
@@ -3839,6 +3843,9 @@ describe('Vue migration primitives', () => {
     let emittedSelect = wrapper.emitted('select')?.[0]?.[0] as unknown;
     expect(emittedSelect).toBeInstanceOf(Set);
     expect(Array.from(emittedSelect as Set<number | string>)).toEqual(['edit', 'delete']);
+    let emittedSelectionChange = wrapper.emitted('selectionChange')?.[0]?.[0] as unknown;
+    expect(emittedSelectionChange).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelectionChange as Set<number | string>)).toEqual(['edit', 'delete']);
   });
 
   it('maps menu trigger parity props, disabled keys, and close-on-select submenu behavior', async () => {
@@ -3885,6 +3892,7 @@ describe('Vue migration primitives', () => {
     await wrapper.get('.vs-spectrum-menu__submenu .vs-spectrum-menu__item[aria-label="Copy link"]').trigger('click');
     await nextTick();
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['copy']);
+    expect(wrapper.emitted('selectionChange')?.[0]).toEqual(['copy']);
     let emittedClosedOpen = wrapper.emitted('openChange')?.[1]?.[0] as unknown;
     expect(emittedClosedOpen).toBeInstanceOf(Set);
     expect(Array.from(emittedClosedOpen as Set<number | string>)).toEqual([]);
