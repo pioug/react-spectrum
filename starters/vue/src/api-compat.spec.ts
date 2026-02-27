@@ -77,6 +77,11 @@ import {
   VueProgressBar
 } from '@vue-spectrum/progress';
 import {
+  TextField,
+  TextFieldBase,
+  VueTextField
+} from '@vue-spectrum/textfield';
+import {
   Icon,
   Illustration,
   UIIcon,
@@ -123,7 +128,7 @@ describe('Vue Spectrum API compatibility aliases', () => {
 
   it('keeps tree primitives exported and collection as a dedicated primitive', () => {
     expect(Tree).toBe(VueTree);
-    expect(TreeView).toBe(VueTree);
+    expect(TreeView).not.toBe(VueTree);
     expect(TreeViewItem).not.toBe(VueTree);
     expect(TreeViewItemContent).not.toBe(VueTree);
     expect(Collection).not.toBe(VueTree);
@@ -173,6 +178,11 @@ describe('Vue Spectrum API compatibility aliases', () => {
   it('exports a dedicated ProgressBarBase wrapper', () => {
     expect(ProgressBar).toBe(VueProgressBar);
     expect(ProgressBarBase).not.toBe(VueProgressBar);
+  });
+
+  it('exports a dedicated TextFieldBase wrapper', () => {
+    expect(TextField).toBe(VueTextField);
+    expect(TextFieldBase).not.toBe(VueTextField);
   });
 
   it('keeps icon exports wired to Vue icon primitives', () => {

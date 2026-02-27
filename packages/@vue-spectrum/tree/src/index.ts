@@ -152,7 +152,15 @@ export const Tree = defineComponent({
   }
 });
 
-export const TreeView = Tree;
+export const TreeView = defineComponent({
+  name: 'VueTreeView',
+  inheritAttrs: false,
+  setup(_, {attrs, slots}) {
+    return () => h(Tree, {
+      ...attrs
+    }, slots);
+  }
+});
 export const TreeViewItem = defineComponent({
   name: 'VueTreeViewItem',
   inheritAttrs: false,

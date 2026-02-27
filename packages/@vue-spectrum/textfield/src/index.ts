@@ -485,7 +485,17 @@ function buildField(
 }
 
 export const TextField = buildField('input', () => `vs-text-field-${++inputIdCounter}`);
-export const TextFieldBase = TextField;
+export const TextFieldBase = defineComponent({
+  name: 'VueTextFieldBase',
+  inheritAttrs: false,
+  props: TextField.props,
+  setup(props, {attrs, slots}) {
+    return () => h(TextField, {
+      ...attrs,
+      ...props
+    }, slots);
+  }
+});
 export const VueTextField = TextField;
 
 export const TextArea = buildField('textarea', () => `vs-text-area-${++textAreaIdCounter}`);
