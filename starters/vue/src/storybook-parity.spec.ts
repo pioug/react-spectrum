@@ -134,6 +134,12 @@ import {
   Default as SpectrumNumberFieldDefault,
   NoVisibleLabel as SpectrumNumberFieldNoVisibleLabel
 } from '../../../packages/@vue-spectrum/numberfield/stories/NumberField.stories';
+import {
+  Default as SpectrumSearchFieldDefault
+} from '../../../packages/@vue-spectrum/searchfield/stories/SearchField.stories';
+import {
+  Default as SpectrumTextFieldDefault
+} from '../../../packages/@vue-spectrum/textfield/stories/TextField.stories';
 import {WithExpandedKeys as AccordionWithExpandedKeys} from '../../../packages/@vue-spectrum/accordion/stories/Accordion.stories';
 import {Default as ActionBarDefaultStory} from '../../../packages/@vue-spectrum/actionbar/stories/ActionBar.stories';
 import {
@@ -981,6 +987,44 @@ describe('Vue storybook helper parity', () => {
       expect(labelledByInput.attributes('aria-labelledby')).toBe('label');
       expect(labelledByInput.attributes('aria-label')).toBeUndefined();
       expect(labelledByWrapper.get('.custom_classname').attributes('aria-labelledby')).toBeUndefined();
+    } finally {
+      for (let wrapper of wrappers) {
+        wrapper.unmount();
+      }
+    }
+  });
+
+  it('renders spectrum textfield and searchfield stories with input-level aria labelling parity', () => {
+    let wrappers: Array<ReturnType<typeof mount>> = [];
+
+    try {
+      let textFieldDefaultStory = SpectrumTextFieldDefault.render?.({label: 'Street address'}) as ReturnType<Exclude<typeof SpectrumTextFieldDefault.render, undefined>>;
+      let textFieldDefaultWrapper = mount(textFieldDefaultStory);
+      wrappers.push(textFieldDefaultWrapper);
+      let textFieldDefaultInput = textFieldDefaultWrapper.get('input.spectrum-Textfield-input');
+      expect(textFieldDefaultInput.attributes('aria-labelledby')).toBeTruthy();
+      expect(textFieldDefaultInput.attributes('aria-label')).toBeUndefined();
+
+      let textFieldNoVisibleLabelStory = SpectrumTextFieldDefault.render?.({label: '', 'aria-label': 'Street address'}) as ReturnType<Exclude<typeof SpectrumTextFieldDefault.render, undefined>>;
+      let textFieldNoVisibleLabelWrapper = mount(textFieldNoVisibleLabelStory);
+      wrappers.push(textFieldNoVisibleLabelWrapper);
+      let textFieldNoVisibleLabelInput = textFieldNoVisibleLabelWrapper.get('input.spectrum-Textfield-input');
+      expect(textFieldNoVisibleLabelInput.attributes('aria-label')).toBe('Street address');
+      expect(textFieldNoVisibleLabelInput.attributes('aria-labelledby')).toBeUndefined();
+
+      let searchFieldDefaultStory = SpectrumSearchFieldDefault.render?.({label: 'Search'}) as ReturnType<Exclude<typeof SpectrumSearchFieldDefault.render, undefined>>;
+      let searchFieldDefaultWrapper = mount(searchFieldDefaultStory);
+      wrappers.push(searchFieldDefaultWrapper);
+      let searchFieldDefaultInput = searchFieldDefaultWrapper.get('input[type="search"]');
+      expect(searchFieldDefaultInput.attributes('aria-labelledby')).toBeTruthy();
+      expect(searchFieldDefaultInput.attributes('aria-label')).toBeUndefined();
+
+      let searchFieldNoVisibleLabelStory = SpectrumSearchFieldDefault.render?.({label: '', ariaLabel: 'Street address'}) as ReturnType<Exclude<typeof SpectrumSearchFieldDefault.render, undefined>>;
+      let searchFieldNoVisibleLabelWrapper = mount(searchFieldNoVisibleLabelStory);
+      wrappers.push(searchFieldNoVisibleLabelWrapper);
+      let searchFieldNoVisibleLabelInput = searchFieldNoVisibleLabelWrapper.get('input[type="search"]');
+      expect(searchFieldNoVisibleLabelInput.attributes('aria-label')).toBe('Street address');
+      expect(searchFieldNoVisibleLabelInput.attributes('aria-labelledby')).toBeUndefined();
     } finally {
       for (let wrapper of wrappers) {
         wrapper.unmount();

@@ -346,22 +346,27 @@ export const SearchField = defineComponent({
       return next;
     });
 
+    let externalAriaLabelledBy = computed(() => {
+      let value = attrs['aria-labelledby'];
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    });
+
+    let ariaLabelledBy = computed(() => {
+      let parts = [labelId.value, externalAriaLabelledBy.value].filter((part): part is string => Boolean(part));
+      return parts.length > 0 ? parts.join(' ') : undefined;
+    });
+
     let ariaLabel = computed(() => {
+      if (ariaLabelledBy.value) {
+        return undefined;
+      }
+
       let attrLabel = attrs['aria-label'];
       if (typeof attrLabel === 'string' && attrLabel.length > 0) {
         return attrLabel;
       }
 
       return undefined;
-    });
-
-    let ariaLabelledBy = computed(() => {
-      let attrLabelledBy = attrs['aria-labelledby'];
-      if (typeof attrLabelledBy === 'string' && attrLabelledBy.length > 0) {
-        return attrLabelledBy;
-      }
-
-      return labelId.value;
     });
 
     let setValue = (nextValue: string) => {
@@ -481,7 +486,7 @@ export const SearchField = defineComponent({
             autofocus: props.autoFocus || attrs.autofocus || undefined,
             'aria-invalid': isInvalid.value ? 'true' : undefined,
             'aria-label': ariaLabel.value,
-            'aria-labelledby': ariaLabel.value ? undefined : ariaLabelledBy.value,
+            'aria-labelledby': ariaLabelledBy.value,
             'aria-describedby': describedBy.value,
             'data-testid': typeof attrs['data-testid'] === 'string' ? attrs['data-testid'] : undefined,
             onInput: (event: Event) => {

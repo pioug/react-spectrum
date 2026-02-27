@@ -1915,6 +1915,40 @@ describe('Vue migration primitives', () => {
     expect((valid.element as HTMLElement).style.width).toBe('300px');
   });
 
+  it('maps textfield aria label and labelledby precedence to react parity', () => {
+    let labelledByWrapper = mount(TextField, {
+      attrs: {
+        'aria-labelledby': 'external-textfield-label'
+      },
+      props: {
+        label: 'Street address',
+        modelValue: ''
+      }
+    });
+
+    let visibleLabel = labelledByWrapper.get('label.spectrum-FieldLabel');
+    let labelledByInput = labelledByWrapper.get('input.spectrum-Textfield-input');
+    expect(labelledByInput.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
+    expect(labelledByInput.attributes('aria-labelledby')).toContain('external-textfield-label');
+    expect(labelledByInput.attributes('aria-label')).toBeUndefined();
+    expect(labelledByWrapper.attributes('aria-labelledby')).toBeUndefined();
+
+    let ariaLabelWrapper = mount(TextField, {
+      attrs: {
+        'aria-label': 'Street address'
+      },
+      props: {
+        label: '',
+        modelValue: ''
+      }
+    });
+
+    let ariaLabelInput = ariaLabelWrapper.get('input.spectrum-Textfield-input');
+    expect(ariaLabelInput.attributes('aria-label')).toBe('Street address');
+    expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
+    expect(ariaLabelWrapper.attributes('aria-label')).toBeUndefined();
+  });
+
   it('updates model value from textarea input', async () => {
     let wrapper = mount(TextArea, {
       props: {
@@ -2046,6 +2080,40 @@ describe('Vue migration primitives', () => {
     let refreshSvg = refreshIcon.get('.spectrum-Textfield-icon');
     expect(refreshSvg.attributes('viewBox')).toBe('0 0 36 36');
     expect(refreshSvg.classes()).toContain('spectrum-Icon--sizeS');
+  });
+
+  it('maps searchfield aria label and labelledby precedence to react parity', () => {
+    let labelledByWrapper = mount(SearchField, {
+      attrs: {
+        'aria-labelledby': 'external-searchfield-label'
+      },
+      props: {
+        label: 'Search',
+        modelValue: ''
+      }
+    });
+
+    let visibleLabel = labelledByWrapper.get('label.spectrum-FieldLabel');
+    let labelledByInput = labelledByWrapper.get('input[type="search"]');
+    expect(labelledByInput.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
+    expect(labelledByInput.attributes('aria-labelledby')).toContain('external-searchfield-label');
+    expect(labelledByInput.attributes('aria-label')).toBeUndefined();
+    expect(labelledByWrapper.attributes('aria-labelledby')).toBeUndefined();
+
+    let ariaLabelWrapper = mount(SearchField, {
+      attrs: {
+        'aria-label': 'Search'
+      },
+      props: {
+        label: '',
+        modelValue: ''
+      }
+    });
+
+    let ariaLabelInput = ariaLabelWrapper.get('input[type="search"]');
+    expect(ariaLabelInput.attributes('aria-label')).toBe('Search');
+    expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
+    expect(ariaLabelWrapper.attributes('aria-label')).toBeUndefined();
   });
 
   it('keeps searchfield style wiring bound to Spectrum field/textfield/button styles', () => {
