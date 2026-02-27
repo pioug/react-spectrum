@@ -135,6 +135,7 @@ import {
   disableTextSelection,
   FocusableProvider,
   focusSafely,
+  Pressable,
   PressResponder,
   restoreTextSelection,
   setInteractionModality,
@@ -5480,6 +5481,35 @@ describe('Vue migration composition components', () => {
     } finally {
       clearFocusableProvider();
       document.body.removeChild(button);
+    }
+  });
+
+  it('merges vue-aria pressable with focusable props for non-native targets', () => {
+    let pressEvents: string[] = [];
+    let pressable = Pressable({
+      onPress: () => {
+        pressEvents.push('press');
+      }
+    });
+    let target = document.createElement('div');
+    document.body.append(target);
+
+    try {
+      if (pressable.pressProps.value.onKeyDown) {
+        target.addEventListener('keydown', pressable.pressProps.value.onKeyDown as EventListener);
+      }
+      if (pressable.pressProps.value.onKeyUp) {
+        target.addEventListener('keyup', pressable.pressProps.value.onKeyUp as EventListener);
+      }
+
+      target.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'Enter'}));
+      target.dispatchEvent(new KeyboardEvent('keyup', {bubbles: true, key: 'Enter'}));
+
+      expect(pressable.pressProps.value.tabindex).toBe(0);
+      expect(pressable.pressProps.value.onFocus).toBeTypeOf('function');
+      expect(pressEvents).toEqual(['press']);
+    } finally {
+      document.body.removeChild(target);
     }
   });
 

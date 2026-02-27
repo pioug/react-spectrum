@@ -42,10 +42,12 @@ export interface PressHookProps extends PressProps {
 export interface PressDOMProps {
   onBlur?: (event: FocusEvent) => void,
   onClick?: (event: MouseEvent) => void,
+  onFocus?: (event: FocusEvent) => void,
   onKeyDown?: (event: KeyboardEvent) => void,
   onKeyUp?: (event: KeyboardEvent) => void,
   onPointerDown?: (event: PointerEvent) => void,
-  onPointerLeave?: (event: PointerEvent) => void
+  onPointerLeave?: (event: PointerEvent) => void,
+  tabindex?: number
 }
 
 export interface PressResult {
