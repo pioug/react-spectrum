@@ -181,6 +181,11 @@ import {
   DefaultSelectedKey as ComboBoxDefaultSelectedKeyStory,
   DisabledKeys as ComboBoxDisabledKeysStory
 } from '../../../packages/@vue-spectrum/combobox/stories/ComboBox.stories';
+import {
+  AriaLabelledyBy as ContextualHelpAriaLabelledBy,
+  Default as ContextualHelpDefault,
+  WithButton as ContextualHelpWithButton
+} from '../../../packages/@vue-spectrum/contextualhelp/stories/ContextualHelp.stories';
 import {DragOut as ListViewDnDDragOut} from '../../../packages/@vue-spectrum/list/stories/ListViewDnD.stories';
 import {DragOut as ListViewDnDUtilDragOut} from '../../../packages/@vue-spectrum/list/stories/ListViewDnDUtil.stories';
 import {Disabled as PickerDisabledKeysStory} from '../../../packages/@vue-spectrum/picker/stories/Picker.stories';
@@ -2085,6 +2090,33 @@ describe('Vue storybook helper parity', () => {
     expect((ComboBoxControlledInputValueBySelectedKeyStory as {args?: Record<string, unknown>}).args).toMatchObject({
       disabledKeys: ['2', '6']
     });
+  });
+
+  it('renders contextual help stories with trigger aria and class parity contracts', () => {
+    let infoStory = ContextualHelpDefault.render?.({
+      ...((ContextualHelpDefault as {args?: Record<string, unknown>}).args ?? {}),
+      variant: 'info'
+    }) as ReturnType<Exclude<typeof ContextualHelpDefault.render, undefined>>;
+    let infoWrapper = mount(infoStory);
+    let withButtonStory = ContextualHelpWithButton.render?.({
+      ...((ContextualHelpWithButton as {args?: Record<string, unknown>}).args ?? {})
+    }) as ReturnType<Exclude<typeof ContextualHelpWithButton.render, undefined>>;
+    let withButtonWrapper = mount(withButtonStory);
+    let labelledByStory = ContextualHelpAriaLabelledBy.render?.({}) as ReturnType<Exclude<typeof ContextualHelpAriaLabelledBy.render, undefined>>;
+    let labelledByWrapper = mount(labelledByStory);
+
+    try {
+      expect(infoWrapper.get('button.vs-contextual-help__trigger').attributes('aria-label')).toBe('Information');
+      expect(withButtonWrapper.get('button.vs-contextual-help__trigger').classes()).toContain('foo');
+
+      let labelledByTrigger = labelledByWrapper.get('button.vs-contextual-help__trigger');
+      expect(labelledByTrigger.attributes('aria-labelledby')).toBe('foo');
+      expect(labelledByTrigger.attributes('aria-label')).toBeUndefined();
+    } finally {
+      infoWrapper.unmount();
+      withButtonWrapper.unmount();
+      labelledByWrapper.unmount();
+    }
   });
 
   it('renders steplist disabled key story with disabled step contract', () => {

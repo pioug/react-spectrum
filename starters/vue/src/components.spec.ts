@@ -2321,6 +2321,50 @@ describe('Vue migration primitives', () => {
     expect(wrapper.find('.vs-contextual-help__dialog').exists()).toBe(false);
   });
 
+  it('maps contextual help trigger aria labeling and class forwarding to react parity', () => {
+    let defaultWrapper = mount(ContextualHelp, {
+      slots: {
+        default: () => 'Details'
+      }
+    });
+    expect(defaultWrapper.get('button.vs-contextual-help__trigger').attributes('aria-label')).toBe('Help');
+
+    let infoWrapper = mount(ContextualHelp, {
+      props: {
+        variant: 'info'
+      },
+      slots: {
+        default: () => 'Details'
+      }
+    });
+    expect(infoWrapper.get('button.vs-contextual-help__trigger').attributes('aria-label')).toBe('Information');
+
+    let customLabelWrapper = mount(ContextualHelp, {
+      attrs: {
+        'aria-label': 'Read more details'
+      },
+      slots: {
+        default: () => 'Details'
+      }
+    });
+    expect(customLabelWrapper.get('button.vs-contextual-help__trigger').attributes('aria-label')).toBe('Read more details');
+
+    let labelledByWrapper = mount(ContextualHelp, {
+      attrs: {
+        'aria-labelledby': 'contextual-help-label',
+        class: 'foo'
+      },
+      slots: {
+        default: () => 'Details'
+      }
+    });
+    let trigger = labelledByWrapper.get('button.vs-contextual-help__trigger');
+    expect(trigger.attributes('aria-labelledby')).toBe('contextual-help-label');
+    expect(trigger.attributes('aria-label')).toBeUndefined();
+    expect(trigger.classes()).toContain('foo');
+    expect(labelledByWrapper.classes()).not.toContain('foo');
+  });
+
   it('accepts combobox selectedKeys as a Set iterable in multiple selection mode', async () => {
     let wrapper = mount(ComboBox, {
       props: {

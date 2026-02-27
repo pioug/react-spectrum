@@ -73,12 +73,30 @@ export const ContextualHelp = defineComponent({
       internalOpen.value = value;
     });
 
+    let labelledBy = computed(() => {
+      let value = attrs['aria-labelledby'];
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    });
+
+    let explicitAriaLabel = computed(() => {
+      let value = attrs['aria-label'];
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    });
+
     let triggerLabel = computed(() => {
+      if (explicitAriaLabel.value) {
+        return explicitAriaLabel.value;
+      }
+
+      if (labelledBy.value) {
+        return undefined;
+      }
+
       if (props.label) {
         return props.label;
       }
 
-      return props.variant === 'info' ? 'Info' : 'Help';
+      return props.variant === 'info' ? 'Information' : 'Help';
     });
 
     let dialogTitle = computed(() => {
@@ -118,21 +136,36 @@ export const ContextualHelp = defineComponent({
       emit('openChange', nextValue);
     };
 
+    let triggerAttrs = computed(() => {
+      let filteredAttrs: Record<string, unknown> = {};
+      for (let [key, value] of Object.entries(attrs)) {
+        if (key === 'aria-label' || key === 'aria-labelledby' || key === 'children' || key === 'class') {
+          continue;
+        }
+
+        filteredAttrs[key] = value;
+      }
+
+      return filteredAttrs;
+    });
+
     return () => h('div', {
-      ...attrs,
-      class: ['vs-contextual-help', attrs.class],
+      class: 'vs-contextual-help',
       'data-vac': ''
     }, [
       h(ActionButton, {
+        ...triggerAttrs.value,
         ref: triggerRef,
         class: [
           classNames(helpStyles, 'react-spectrum-ContextualHelp-button'),
           'vs-contextual-help__trigger',
-          props.variant === 'info' ? 'vs-contextual-help__trigger--info' : 'vs-contextual-help__trigger--help'
+          props.variant === 'info' ? 'vs-contextual-help__trigger--info' : 'vs-contextual-help__trigger--help',
+          attrs.class
         ],
         'aria-haspopup': 'dialog',
         'aria-expanded': internalOpen.value ? 'true' : 'false',
         'aria-label': triggerLabel.value,
+        'aria-labelledby': labelledBy.value,
         isDisabled: props.disabled,
         isQuiet: true,
         onClick: () => setOpen(!internalOpen.value),

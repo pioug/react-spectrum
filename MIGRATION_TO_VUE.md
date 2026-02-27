@@ -599,13 +599,30 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `ContextualHelp` trigger-labeling/class parity (`@vue-spectrum/contextualhelp`)
+
+1. Closed trigger-labeling and attribute-target drift in `ContextualHelp` internals:
+   - default info trigger label now matches React contract (`aria-label="Information"`),
+   - trigger `aria-label` now defers to explicit `aria-labelledby` when provided,
+   - user-provided `aria-label` overrides default labels on the trigger.
+2. Closed custom class forwarding drift:
+   - component-level `class` now lands on the trigger button (React-like behavior), not the wrapper shell.
+3. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: direct parity assertions for default/custom trigger labeling and class forwarding,
+   - `starters/vue/src/storybook-parity.spec.ts`: story-level assertions for info label, `aria-labelledby`, and `with button` class forwarding.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "contextual help"` and `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts -t "contextual help"`,
+   - full Vue tests: `yarn test:vue` (502 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 500 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 502 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).
