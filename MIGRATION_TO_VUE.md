@@ -246,6 +246,7 @@
    - keyboard `Escape` close path,
    - outside pointer dismissal path,
    - emitted `openChange` contract on both paths.
+3. Added integration regression coverage in `starters/vue/src/storybook-parity.spec.ts` for combobox story-level Escape and outside-dismiss behavior.
 
 ### February 27, 2026 — Remaining package-surface parity closure (`dnd`, `virtualizer`)
 

@@ -2024,6 +2024,32 @@ describe('Vue storybook helper parity', () => {
     }
   });
 
+  it('dismisses combobox stories on Escape and outside pointer interactions', async () => {
+    let disabledArgs = (ComboBoxDisabledKeysStory as {args?: Record<string, unknown>}).args ?? {};
+    let story = ComboBoxDisabledKeysStory.render?.({...disabledArgs}) as ReturnType<Exclude<typeof ComboBoxDisabledKeysStory.render, undefined>>;
+    let wrapper = mount(story, {attachTo: document.body});
+
+    try {
+      let trigger = wrapper.get('button.spectrum-FieldButton');
+      await trigger.trigger('mousedown');
+      await trigger.trigger('click');
+      expect(wrapper.find('[role="listbox"]').exists()).toBe(true);
+
+      let input = wrapper.get('input.spectrum-Textfield-input.spectrum-InputGroup-input');
+      await input.trigger('keydown', {key: 'Escape'});
+      expect(wrapper.find('[role="listbox"]').exists()).toBe(false);
+
+      await trigger.trigger('mousedown');
+      await trigger.trigger('click');
+      expect(wrapper.find('[role="listbox"]').exists()).toBe(true);
+      document.body.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+      await nextTick();
+      expect(wrapper.find('[role="listbox"]').exists()).toBe(false);
+    } finally {
+      wrapper.unmount();
+    }
+  });
+
   it('keeps combobox controlled/default stories wired with disabledKeys parity args', () => {
     expect((ComboBoxControlledInputValueStory as {args?: Record<string, unknown>}).args).toMatchObject({
       disabledKeys: ['2', '6']
