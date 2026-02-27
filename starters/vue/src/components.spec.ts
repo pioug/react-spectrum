@@ -3429,6 +3429,63 @@ describe('Vue migration primitives', () => {
     }]);
   });
 
+  it('maps date range picker aria label and labelledby precedence to react parity', () => {
+    let labelledByWrapper = mount(DateRangePicker, {
+      props: {
+        modelValue: {
+          start: '2026-02-20',
+          end: '2026-02-24'
+        },
+        label: ''
+      },
+      attrs: {
+        'aria-labelledby': 'external-date-range-label'
+      }
+    });
+
+    let labelledByStart = labelledByWrapper.get('input[data-testid="start-date"]');
+    let labelledByEnd = labelledByWrapper.get('input[data-testid="end-date"]');
+    expect(labelledByWrapper.attributes('aria-labelledby')).toBe('external-date-range-label');
+    expect(labelledByWrapper.attributes('aria-label')).toBeUndefined();
+    expect(labelledByStart.attributes('aria-labelledby')).toBe('external-date-range-label');
+    expect(labelledByEnd.attributes('aria-labelledby')).toBe('external-date-range-label');
+    expect(labelledByStart.attributes('aria-label')).toBe('Start date');
+    expect(labelledByEnd.attributes('aria-label')).toBe('End date');
+
+    let visibleLabelWrapper = mount(DateRangePicker, {
+      props: {
+        modelValue: {
+          start: '2026-02-20',
+          end: '2026-02-24'
+        },
+        label: 'Date range picker'
+      }
+    });
+
+    let legend = visibleLabelWrapper.get('legend.vs-date-range-picker__label');
+    let visibleLabelStart = visibleLabelWrapper.get('input[data-testid="start-date"]');
+    expect(visibleLabelWrapper.attributes('aria-labelledby')).toContain(legend.attributes('id'));
+    expect(visibleLabelStart.attributes('aria-labelledby')).toContain(legend.attributes('id'));
+
+    let ariaLabelWrapper = mount(DateRangePicker, {
+      props: {
+        modelValue: {
+          start: '2026-02-20',
+          end: '2026-02-24'
+        },
+        label: ''
+      },
+      attrs: {
+        'aria-label': 'Booking window'
+      }
+    });
+
+    let ariaLabelStart = ariaLabelWrapper.get('input[data-testid="start-date"]');
+    expect(ariaLabelWrapper.attributes('aria-label')).toBe('Booking window');
+    expect(ariaLabelWrapper.attributes('aria-labelledby')).toBeUndefined();
+    expect(ariaLabelStart.attributes('aria-labelledby')).toBe(ariaLabelWrapper.attributes('id'));
+  });
+
   it('maps daterange read-only and dash aria-hidden states', async () => {
     let wrapper = mount(DateRangePicker, {
       props: {

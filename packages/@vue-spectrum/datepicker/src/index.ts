@@ -674,6 +674,50 @@ export const DateRangePicker = defineComponent({
       classNames(inputGroupStyles, 'spectrum-FieldButton')
     ));
 
+    let rootAttrs = computed(() => {
+      let next: Record<string, unknown> = {};
+      for (let [key, value] of Object.entries(attrs)) {
+        if (key === 'aria-label' || key === 'aria-labelledby' || key === 'autofocus') {
+          continue;
+        }
+
+        next[key] = value;
+      }
+
+      return next;
+    });
+
+    let externalAriaLabel = computed(() => {
+      let value = attrs['aria-label'];
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    });
+
+    let externalAriaLabelledBy = computed(() => {
+      let value = attrs['aria-labelledby'];
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    });
+
+    let fieldAriaLabelledBy = computed(() => {
+      let parts = [externalAriaLabelledBy.value, labelId.value].filter((part): part is string => Boolean(part));
+      return parts.length > 0 ? parts.join(' ') : undefined;
+    });
+
+    let fieldAriaLabel = computed(() => {
+      if (fieldAriaLabelledBy.value) {
+        return undefined;
+      }
+
+      return externalAriaLabel.value;
+    });
+
+    let inputAriaLabelledBy = computed(() => {
+      if (fieldAriaLabel.value) {
+        return pickerId.value;
+      }
+
+      return fieldAriaLabelledBy.value;
+    });
+
     let setFocusState = (event: FocusEvent, focused: boolean) => {
       isFocused.value = focused;
       if (focused) {
@@ -758,10 +802,13 @@ export const DateRangePicker = defineComponent({
     });
 
     return () => h('fieldset', {
-      ...attrs,
+      ...rootAttrs.value,
       ref: rootRef,
+      id: pickerId.value,
       class: ['vs-date-range-picker', attrs.class],
       disabled: isDisabled.value,
+      'aria-label': fieldAriaLabel.value,
+      'aria-labelledby': fieldAriaLabelledBy.value,
       'data-vac': ''
     }, [
       props.label
@@ -800,7 +847,7 @@ export const DateRangePicker = defineComponent({
             required: isRequired.value || undefined,
             placeholder: props.placeholder || undefined,
             'aria-label': 'Start date',
-            'aria-labelledby': labelId.value,
+            'aria-labelledby': inputAriaLabelledBy.value,
             'aria-describedby': descriptionId.value,
             'aria-invalid': isInvalid.value ? 'true' : undefined,
             'data-testid': 'start-date',
@@ -835,7 +882,7 @@ export const DateRangePicker = defineComponent({
             required: isRequired.value || undefined,
             placeholder: props.placeholder || undefined,
             'aria-label': 'End date',
-            'aria-labelledby': labelId.value,
+            'aria-labelledby': inputAriaLabelledBy.value,
             'aria-describedby': descriptionId.value,
             'aria-invalid': isInvalid.value ? 'true' : undefined,
             'data-testid': 'end-date',

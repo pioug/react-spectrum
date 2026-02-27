@@ -1929,6 +1929,9 @@ describe('Vue storybook helper parity', () => {
       wrappers.push(dateRangePickerWrapper);
       expect(dateRangePickerWrapper.findAll('select').length).toBeGreaterThanOrEqual(2);
       expect(dateRangePickerWrapper.get('.vs-date-range-picker').exists()).toBe(true);
+      let dateRangeStartInput = dateRangePickerWrapper.get('.vs-date-range-picker input[data-testid="start-date"]');
+      expect(dateRangeStartInput.attributes('aria-labelledby')).toBeTruthy();
+      expect(dateRangeStartInput.attributes('aria-label')).toBe('Start date');
       expect(dateRangePickerWrapper.text()).toContain('Custom 4-5-4 calendar');
       expect(dateRangePickerWrapper.text()).toContain('Locale:');
       expect(dateRangePickerWrapper.text()).not.toContain('scenario preview');

@@ -650,6 +650,23 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `DateRangePicker` aria-labelling ownership parity (`@vue-spectrum/datepicker`)
+
+1. Closed date-range labeling ownership drift in component internals:
+   - added explicit field-level aria contract (`aria-label` or `aria-labelledby`) on the root fieldset from external props/visible label context,
+   - start/end inputs now derive `aria-labelledby` from the same field-level label source instead of label-only wiring,
+   - preserved semantic start/end input labels (`aria-label="Start date"` / `aria-label="End date"`).
+2. Hardened root attribute passthrough:
+   - filtered `aria-label`, `aria-labelledby`, and `autofocus` from blind wrapper passthrough to avoid duplicate/leaked contracts.
+3. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: DateRangePicker aria precedence/ownership assertions for visible label, external `aria-labelledby`, and external `aria-label`,
+   - `starters/vue/src/storybook-parity.spec.ts`: DateRangePicker custom-calendar story asserts labelledby ownership and semantic start-label contract.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "date range picker aria"` and `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts -t "date picker custom calendar stories"`,
+   - full Vue tests: `yarn test:vue` (506 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
