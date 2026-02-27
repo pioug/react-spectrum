@@ -263,7 +263,8 @@
    - `packages/@vue-stately/table/src/index.ts` imported `buildHeaderRows` from `TableCollection.ts`,
    - `TableCollection.ts` did not export `buildHeaderRows`, causing Vite/Rollup build failure.
 2. Added a concrete `buildHeaderRows` export in `TableCollection.ts` to satisfy the package index contract and restore build-time symbol resolution.
-3. Validation after fix:
+3. Added regression coverage in `starters/vue/src/composition.spec.ts` for `buildHeaderRows` output shape from column definitions.
+4. Validation after fix:
    - `CI=1 yarn build:vue:storybook` passed again (build artifacts emitted to `starters/vue/dist/storybook`),
    - Vue test gate still passed (`yarn test:vue`).
 

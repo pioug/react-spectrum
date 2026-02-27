@@ -240,6 +240,7 @@ import {useSelectState as useStatelySelectState} from '@vue-stately/select';
 import {useSliderState as useStatelySliderState} from '@vue-stately/slider';
 import {useStepListState as useStatelyStepListState} from '@vue-stately/steplist';
 import {
+  buildHeaderRows as buildStatelyTableHeaderRows,
   TableCollection as StatelyTableCollection,
   UNSTABLE_useFilteredTableState as useStatelyFilteredTableState,
   useTableState as useStatelyTableState
@@ -2132,6 +2133,18 @@ describe('Vue migration composition components', () => {
     });
     expect(filteredState.collection.size).toBe(1);
     expect(filteredState.collection.getFirstKey()).toBe('row-2');
+  });
+
+  it('builds vue-stately table header rows from column definitions', () => {
+    let headerRows = buildStatelyTableHeaderRows([
+      {key: 'title', title: 'Title'},
+      {key: 'status', title: 'Status'}
+    ]);
+
+    expect(headerRows).toHaveLength(1);
+    expect(headerRows[0].key).toBe('header-row-0');
+    expect(headerRows[0].cells.map((cell) => cell.key)).toEqual(['title', 'status']);
+    expect(headerRows[0].cells.map((cell) => cell.textValue)).toEqual(['Title', 'Status']);
   });
 
   it('manages vue-stately tab list selection and focused-tab synchronization', async () => {
