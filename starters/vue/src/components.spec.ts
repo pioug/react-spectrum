@@ -2263,6 +2263,57 @@ describe('Vue migration primitives', () => {
     expect(hiddenInput.element.getAttribute('value')).toBe('vue');
   });
 
+  it('maps combobox aria label and labelledby precedence to react parity', () => {
+    let labelledByWrapper = mount(ComboBox, {
+      attrs: {
+        'aria-labelledby': 'external-combobox-label'
+      },
+      props: {
+        label: '',
+        modelValue: '',
+        options: ['Vue', 'React']
+      }
+    });
+
+    let labelledByInput = labelledByWrapper.get('input.spectrum-Textfield-input.spectrum-InputGroup-input');
+    expect(labelledByInput.attributes('aria-labelledby')).toBe('external-combobox-label');
+    expect(labelledByInput.attributes('aria-label')).toBeUndefined();
+    expect(labelledByWrapper.attributes('aria-labelledby')).toBeUndefined();
+
+    let visibleLabelWrapper = mount(ComboBox, {
+      attrs: {
+        'aria-labelledby': 'external-combobox-label'
+      },
+      props: {
+        label: 'Framework',
+        modelValue: '',
+        options: ['Vue', 'React']
+      }
+    });
+
+    let visibleLabel = visibleLabelWrapper.get('label.spectrum-FieldLabel');
+    let visibleLabelInput = visibleLabelWrapper.get('input.spectrum-Textfield-input.spectrum-InputGroup-input');
+    expect(visibleLabelInput.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
+    expect(visibleLabelInput.attributes('aria-labelledby')).toContain('external-combobox-label');
+    expect(visibleLabelInput.attributes('aria-label')).toBeUndefined();
+
+    let ariaLabelWrapper = mount(ComboBox, {
+      attrs: {
+        'aria-label': 'Framework'
+      },
+      props: {
+        label: '',
+        modelValue: '',
+        options: ['Vue', 'React']
+      }
+    });
+
+    let ariaLabelInput = ariaLabelWrapper.get('input.spectrum-Textfield-input.spectrum-InputGroup-input');
+    expect(ariaLabelInput.attributes('aria-label')).toBe('Framework');
+    expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
+    expect(ariaLabelWrapper.attributes('aria-label')).toBeUndefined();
+  });
+
   it('maps combobox disabledKeys to disabled option state and blocked selection', async () => {
     let wrapper = mount(ComboBox, {
       props: {

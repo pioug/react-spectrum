@@ -735,13 +735,27 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `ComboBox` aria-label precedence parity (`@vue-spectrum/combobox`)
+
+1. Closed `ComboBox` aria precedence drift when visible label ids are present:
+   - `aria-label` is now suppressed whenever computed `aria-labelledby` exists (visible label and/or external `aria-labelledby`),
+   - input-level ownership now mirrors React precedence for external label ids, visible label ids, and explicit `aria-label`.
+2. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: direct `ComboBox` aria precedence/ownership assertions for external `aria-labelledby`, visible-label composition, and `aria-label` fallback,
+   - `starters/vue/src/storybook-parity.spec.ts`: `UserProvidedLabel` story now asserts input-level combined labelledby ownership and no wrapper-level aria leakage.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "combobox aria label and labelledby precedence"` and `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts -t "combobox"`,
+   - full Vue tests: `yarn test:vue` (515 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 513 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 515 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

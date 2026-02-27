@@ -324,7 +324,7 @@ export const ComboBox = defineComponent({
     });
 
     let ariaLabel = computed(() => {
-      if (externalAriaLabelledBy.value) {
+      if (ariaLabelledBy.value) {
         return undefined;
       }
 

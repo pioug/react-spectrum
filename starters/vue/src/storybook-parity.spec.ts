@@ -191,7 +191,8 @@ import {
   DefaultInputAndKey as ComboBoxDefaultInputAndKeyStory,
   DefaultInputValue as ComboBoxDefaultInputValueStory,
   DefaultSelectedKey as ComboBoxDefaultSelectedKeyStory,
-  DisabledKeys as ComboBoxDisabledKeysStory
+  DisabledKeys as ComboBoxDisabledKeysStory,
+  UserProvidedLabel as ComboBoxUserProvidedLabelStory
 } from '../../../packages/@vue-spectrum/combobox/stories/ComboBox.stories';
 import {
   AriaLabelledyBy as ContextualHelpAriaLabelledBy,
@@ -2199,6 +2200,25 @@ describe('Vue storybook helper parity', () => {
       document.body.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
       await nextTick();
       expect(wrapper.find('[role="listbox"]').exists()).toBe(false);
+    } finally {
+      wrapper.unmount();
+    }
+  });
+
+  it('renders combobox user-provided label story with input-level aria labelling parity', () => {
+    let userProvidedLabelStory = ComboBoxUserProvidedLabelStory.render?.({
+      ...((ComboBoxUserProvidedLabelStory as {args?: Record<string, unknown>}).args ?? {})
+    }) as ReturnType<Exclude<typeof ComboBoxUserProvidedLabelStory.render, undefined>>;
+    let wrapper = mount(userProvidedLabelStory);
+
+    try {
+      let input = wrapper.get('input.spectrum-Textfield-input.spectrum-InputGroup-input');
+      let visibleLabel = wrapper.get('label.spectrum-FieldLabel');
+
+      expect(input.attributes('aria-labelledby')).toContain('test-label');
+      expect(input.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
+      expect(input.attributes('aria-label')).toBeUndefined();
+      expect(wrapper.get('.spectrum-Field.spectrum-Field--positionTop').attributes('aria-labelledby')).toBeUndefined();
     } finally {
       wrapper.unmount();
     }
