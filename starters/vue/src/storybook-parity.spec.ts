@@ -188,7 +188,10 @@ import {
 } from '../../../packages/@vue-spectrum/contextualhelp/stories/ContextualHelp.stories';
 import {DragOut as ListViewDnDDragOut} from '../../../packages/@vue-spectrum/list/stories/ListViewDnD.stories';
 import {DragOut as ListViewDnDUtilDragOut} from '../../../packages/@vue-spectrum/list/stories/ListViewDnDUtil.stories';
-import {Disabled as PickerDisabledKeysStory} from '../../../packages/@vue-spectrum/picker/stories/Picker.stories';
+import {
+  Disabled as PickerDisabledKeysStory,
+  LabelledBy as PickerLabelledByStory
+} from '../../../packages/@vue-spectrum/picker/stories/Picker.stories';
 import {
   Links as SpectrumListBoxLinks,
   ListBoxWManySectionsAndSelection as SpectrumListBoxManySectionsAndSelection,
@@ -1991,6 +1994,20 @@ describe('Vue storybook helper parity', () => {
     } finally {
       disabledWrapper.unmount();
       disabledSetWrapper.unmount();
+    }
+  });
+
+  it('renders picker labelledby story with select-level aria labelling parity', () => {
+    let labelledByStory = PickerLabelledByStory.render?.({}) as ReturnType<Exclude<typeof PickerLabelledByStory.render, undefined>>;
+    let wrapper = mount(labelledByStory);
+
+    try {
+      let select = wrapper.get('select.vs-picker__select');
+      expect(select.attributes('aria-labelledby')).toContain('picker-label');
+      expect(select.attributes('aria-label')).toBeUndefined();
+      expect(wrapper.attributes('aria-labelledby')).toBeUndefined();
+    } finally {
+      wrapper.unmount();
     }
   });
 

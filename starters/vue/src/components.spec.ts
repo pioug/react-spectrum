@@ -3791,6 +3791,52 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
   });
 
+  it('maps picker aria label and labelledby precedence to react parity', () => {
+    let labelledByWrapper = mount(Picker, {
+      props: {
+        items: ['option-1'],
+        label: '',
+        modelValue: 'option-1'
+      },
+      attrs: {
+        'aria-labelledby': 'external-picker-label'
+      }
+    });
+
+    let labelledBySelect = labelledByWrapper.get('select.vs-picker__select');
+    expect(labelledBySelect.attributes('aria-labelledby')).toBe('external-picker-label');
+    expect(labelledBySelect.attributes('aria-label')).toBeUndefined();
+    expect(labelledByWrapper.attributes('aria-labelledby')).toBeUndefined();
+
+    let visibleLabelWrapper = mount(Picker, {
+      props: {
+        items: ['option-1'],
+        label: 'Roadmap milestone',
+        modelValue: 'option-1'
+      }
+    });
+
+    let visibleLabel = visibleLabelWrapper.get('span.vs-picker__label');
+    let visibleLabelSelect = visibleLabelWrapper.get('select.vs-picker__select');
+    expect(visibleLabelSelect.attributes('aria-labelledby')).toBe(visibleLabel.attributes('id'));
+    expect(visibleLabelSelect.attributes('aria-label')).toBeUndefined();
+
+    let ariaLabelWrapper = mount(Picker, {
+      props: {
+        items: ['option-1'],
+        label: '',
+        modelValue: 'option-1'
+      },
+      attrs: {
+        'aria-label': 'Roadmap milestone'
+      }
+    });
+
+    let ariaLabelSelect = ariaLabelWrapper.get('select.vs-picker__select');
+    expect(ariaLabelSelect.attributes('aria-label')).toBe('Roadmap milestone');
+    expect(ariaLabelSelect.attributes('aria-labelledby')).toBeUndefined();
+  });
+
   it('maps picker disabled, invalid, hovered, and placeholder classes', async () => {
     let disabledInvalidWrapper = mount(Picker, {
       props: {

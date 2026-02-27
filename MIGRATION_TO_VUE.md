@@ -616,13 +616,30 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `Picker` aria-labelling ownership parity (`@vue-spectrum/picker`)
+
+1. Closed picker trigger-labelling drift so accessibility attributes land on the interactive control:
+   - `aria-labelledby` now applies to the internal `<select>` (not the wrapper shell),
+   - visible label wiring now uses a deterministic label id and contributes to `aria-labelledby`,
+   - `aria-label` is suppressed when any `aria-labelledby` source exists.
+2. Hardened root-attribute passthrough:
+   - prevented `aria-label`, `aria-labelledby`, and `autofocus` from being duplicated on the wrapper label element.
+3. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: picker aria-label vs aria-labelledby precedence and ownership assertions,
+   - `starters/vue/src/storybook-parity.spec.ts`: `LabelledBy` story now asserts select-level `aria-labelledby` parity.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "picker aria"` and `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts -t "picker labelledby"`,
+   - full Vue tests: `yarn test:vue` (504 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 502 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 504 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

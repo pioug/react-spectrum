@@ -108,6 +108,7 @@ export const Picker = defineComponent({
     let isHovered = ref(false);
 
     let pickerIdValue = computed(() => props.id ?? generatedId);
+    let labelId = computed(() => props.label ? `${pickerIdValue.value}-label` : undefined);
     let options = computed(() => props.items.map((item) => normalizeOption(item)));
     let disabledKeySet = computed(() => new Set(Array.from(props.disabledKeys)));
     let selectedItem = computed(() => options.value.find((option) => option.id === props.modelValue));
@@ -156,13 +157,40 @@ export const Picker = defineComponent({
 
     let pickerFieldClassName = computed(() => classNames(styles, 'spectrum-Field'));
 
+    let rootAttrs = computed(() => {
+      let next: Record<string, unknown> = {};
+      for (let [key, value] of Object.entries(attrs)) {
+        if (key === 'aria-label' || key === 'aria-labelledby' || key === 'autofocus') {
+          continue;
+        }
+
+        next[key] = value;
+      }
+
+      return next;
+    });
+
+    let externalAriaLabelledBy = computed(() => {
+      let value = attrs['aria-labelledby'];
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    });
+
+    let ariaLabelledBy = computed(() => {
+      let parts = [labelId.value, externalAriaLabelledBy.value].filter((part): part is string => Boolean(part));
+      return parts.length > 0 ? parts.join(' ') : undefined;
+    });
+
     let ariaLabel = computed(() => {
+      if (ariaLabelledBy.value) {
+        return undefined;
+      }
+
       let fromAttrs = attrs['aria-label'];
       if (typeof fromAttrs === 'string' && fromAttrs.length > 0) {
         return fromAttrs;
       }
 
-      return props.label || undefined;
+      return undefined;
     });
 
     let emitSelection = (event: Event) => {
@@ -174,11 +202,11 @@ export const Picker = defineComponent({
     };
 
     return () => h('label', {
-      ...attrs,
+      ...rootAttrs.value,
       class: [pickerFieldClassName.value, 'vs-picker', attrs.class],
       'data-vac': ''
     }, [
-      props.label ? h('span', {class: 'vs-picker__label'}, props.label) : null,
+      props.label ? h('span', {id: labelId.value, class: 'vs-picker__label'}, props.label) : null,
       h('div', {
         class: [dropdownClassName.value, 'vs-picker__dropdown'],
         onMouseenter: () => {
@@ -196,6 +224,7 @@ export const Picker = defineComponent({
           id: pickerIdValue.value,
           'aria-describedby': descriptionId.value,
           'aria-label': ariaLabel.value,
+          'aria-labelledby': ariaLabelledBy.value,
           class: ['vs-picker__select', triggerClassName.value, labelClassName.value],
           disabled: isDisabled.value,
           autofocus: props.autoFocus || attrs.autofocus || undefined,
