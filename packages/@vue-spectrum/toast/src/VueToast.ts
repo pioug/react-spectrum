@@ -323,7 +323,7 @@ export const VueToastContainer = defineComponent({
   setup(props, {attrs}) {
     let containerToken = Symbol('vue-toast-container');
     let activeQueue = computed(() => props.queue ?? getGlobalToastQueue());
-    let isActiveContainer = computed(() => activeToastContainerToken.value === containerToken);
+    let isActiveContainer = computed(() => props.queue != null || activeToastContainerToken.value === containerToken);
     let toastRegion = createToastRegion({
       ariaLabel: props.ariaLabel
     }, {
