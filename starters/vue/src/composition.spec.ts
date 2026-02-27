@@ -5568,6 +5568,86 @@ describe('Vue migration composition components', () => {
     }
   });
 
+  it('focuses vue-aria press targets on pointer interaction by default', () => {
+    let button = document.createElement('button');
+    let other = document.createElement('button');
+    document.body.append(button, other);
+    let press = usePress();
+
+    try {
+      if (press.pressProps.value.onPointerDown) {
+        button.addEventListener('pointerdown', press.pressProps.value.onPointerDown as EventListener);
+      }
+
+      other.focus();
+      expect(document.activeElement).toBe(other);
+      button.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 80}));
+      expect(document.activeElement).toBe(button);
+      window.dispatchEvent(createPointerEvent('pointerup', {pointerId: 80}));
+    } finally {
+      button.remove();
+      other.remove();
+    }
+  });
+
+  it('does not focus vue-aria press targets when preventFocusOnPress is enabled', () => {
+    let button = document.createElement('button');
+    let other = document.createElement('button');
+    document.body.append(button, other);
+    let press = usePress({
+      preventFocusOnPress: true
+    });
+
+    try {
+      if (press.pressProps.value.onPointerDown) {
+        button.addEventListener('pointerdown', press.pressProps.value.onPointerDown as EventListener);
+      }
+
+      other.focus();
+      expect(document.activeElement).toBe(other);
+      button.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 81}));
+      expect(document.activeElement).toBe(other);
+      window.dispatchEvent(createPointerEvent('pointerup', {pointerId: 81}));
+    } finally {
+      button.remove();
+      other.remove();
+    }
+  });
+
+  it('does not fire vue-aria press or click callbacks when disabled', () => {
+    let presses = 0;
+    let clicks = 0;
+    let button = document.createElement('button');
+    document.body.append(button);
+    let press = usePress({
+      isDisabled: true,
+      onClick: () => {
+        clicks += 1;
+      },
+      onPress: () => {
+        presses += 1;
+      }
+    });
+
+    try {
+      if (press.pressProps.value.onPointerDown) {
+        button.addEventListener('pointerdown', press.pressProps.value.onPointerDown as EventListener);
+      }
+      if (press.pressProps.value.onClick) {
+        button.addEventListener('click', press.pressProps.value.onClick as EventListener);
+      }
+
+      button.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 82}));
+      window.dispatchEvent(createPointerEvent('pointerup', {pointerId: 82}));
+      button.dispatchEvent(new MouseEvent('click', {bubbles: true, cancelable: true}));
+
+      expect(presses).toBe(0);
+      expect(clicks).toBe(0);
+    } finally {
+      button.remove();
+    }
+  });
+
   it('cancels vue-aria press when pointer exits and cancellation is enabled', () => {
     let events: string[] = [];
     let press = usePress({

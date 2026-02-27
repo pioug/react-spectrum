@@ -385,8 +385,6 @@ export function usePress(props: PressHookProps = {}): PressResult {
   };
 
   let onClick = (event: MouseEvent) => {
-    props.onClick?.(event);
-
     if (isDisabled.value) {
       event.preventDefault();
       return;
@@ -396,6 +394,8 @@ export function usePress(props: PressHookProps = {}): PressResult {
       ignoreNextClick.value = false;
       return;
     }
+
+    props.onClick?.(event);
 
     let target = getTargetFromEvent(event, unref(props.ref) ?? null);
     if (!target) {
