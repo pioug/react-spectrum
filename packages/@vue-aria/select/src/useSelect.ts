@@ -227,6 +227,51 @@ export function useSelect(options: AriaSelectOptions = {}): SelectAria {
 
   let ariaLabel = computed(() => resolveOptionalString(options.ariaLabel) ?? resolveOptionalString(options['aria-label']));
   let ariaLabelledby = computed(() => resolveOptionalString(options.ariaLabelledby) ?? resolveOptionalString(options['aria-labelledby']));
+  let combinedLabelledBy = computed(() => {
+    let ids = new Set<string>();
+    if (labelId.value) {
+      ids.add(labelId.value);
+    }
+
+    if (ariaLabelledby.value) {
+      for (let id of ariaLabelledby.value.trim().split(/\s+/)) {
+        if (id) {
+          ids.add(id);
+        }
+      }
+    }
+
+    if (ariaLabel.value && ids.size > 0) {
+      ids.add(triggerId.value);
+    }
+
+    return ids.size > 0 ? Array.from(ids).join(' ') : undefined;
+  });
+  let triggerAriaLabelledBy = computed(() => {
+    let ids = new Set<string>([valueId]);
+    if (combinedLabelledBy.value) {
+      for (let id of combinedLabelledBy.value.split(/\s+/)) {
+        if (id) {
+          ids.add(id);
+        }
+      }
+    } else if (ariaLabel.value) {
+      ids.add(triggerId.value);
+    }
+
+    return ids.size > 0 ? Array.from(ids).join(' ') : undefined;
+  });
+  let menuAriaLabelledBy = computed(() => {
+    if (combinedLabelledBy.value) {
+      return combinedLabelledBy.value;
+    }
+
+    if (ariaLabel.value) {
+      return triggerId.value;
+    }
+
+    return undefined;
+  });
 
   return {
     close,
@@ -253,7 +298,7 @@ export function useSelect(options: AriaSelectOptions = {}): SelectAria {
       id: menuId,
       role: 'listbox' as const,
       hidden: !isOpen.value,
-      'aria-labelledby': ariaLabelledby.value ?? labelId.value,
+      'aria-labelledby': menuAriaLabelledBy.value,
       onSelect: selectKey
     })),
     open,
@@ -268,7 +313,7 @@ export function useSelect(options: AriaSelectOptions = {}): SelectAria {
       'aria-expanded': isOpen.value,
       'aria-controls': isOpen.value ? menuId : undefined,
       'aria-label': ariaLabel.value,
-      'aria-labelledby': [valueId, ariaLabelledby.value ?? labelId.value].filter(Boolean).join(' ') || undefined,
+      'aria-labelledby': triggerAriaLabelledBy.value,
       'aria-invalid': isInvalid.value ? true : undefined,
       disabled: isDisabled.value ? true : undefined,
       onClick: toggle,

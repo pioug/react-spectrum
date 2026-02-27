@@ -3686,6 +3686,36 @@ describe('Vue migration composition components', () => {
     expect(hiddenSelect.selectProps.value.value).toBe('react');
     hiddenSelect.selectProps.value.onChange('vue');
     expect(selectedKey.value).toBe('vue');
+
+    let composedLabelSelect = useAriaSelect({
+      'aria-label': 'Framework picker',
+      'aria-labelledby': 'framework-label',
+      id: 'framework-trigger',
+      label: 'Framework',
+      options,
+      selectedKey: ref<string | null>('react')
+    });
+    let composedTriggerLabelledBy = composedLabelSelect.triggerProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    let composedMenuLabelledBy = composedLabelSelect.menuProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(composedLabelSelect.triggerProps.value['aria-label']).toBe('Framework picker');
+    expect(composedTriggerLabelledBy).toContain(composedLabelSelect.valueProps.value.id);
+    expect(composedTriggerLabelledBy).toContain(composedLabelSelect.labelProps.value.id as string);
+    expect(composedTriggerLabelledBy).toContain('framework-label');
+    expect(composedTriggerLabelledBy).toContain('framework-trigger');
+    expect(composedMenuLabelledBy).toContain(composedLabelSelect.labelProps.value.id as string);
+    expect(composedMenuLabelledBy).toContain('framework-label');
+    expect(composedMenuLabelledBy).toContain('framework-trigger');
+
+    let ariaLabelOnlySelect = useAriaSelect({
+      'aria-label': 'Framework picker',
+      id: 'framework-trigger-no-label',
+      options,
+      selectedKey: ref<string | null>('react')
+    });
+    let ariaLabelOnlyTriggerLabelledBy = ariaLabelOnlySelect.triggerProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(ariaLabelOnlyTriggerLabelledBy).toContain(ariaLabelOnlySelect.valueProps.value.id);
+    expect(ariaLabelOnlyTriggerLabelledBy).toContain('framework-trigger-no-label');
+    expect(ariaLabelOnlySelect.menuProps.value['aria-labelledby']).toBe('framework-trigger-no-label');
   });
 
   it('computes vue-aria selection delegate, list, and typeahead behavior', () => {

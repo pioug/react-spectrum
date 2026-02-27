@@ -883,6 +883,22 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — Shared `useSelect` ARIA labelling parity (`@vue-aria/select`)
+
+1. Aligned trigger/menu labelling semantics with React dual-label behavior:
+   - composed visible label ids with external `aria-labelledby`,
+   - added trigger-id participation when `aria-label` and labelledby sources coexist,
+   - aligned aria-label-only flows so trigger/menu `aria-labelledby` still reference trigger ownership.
+2. Preserved select interaction contracts:
+   - open/toggle/keyboard/selection behavior unchanged while labelling ownership was corrected.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: explicit `useSelect` assertions for combined `label` + `aria-label` + `aria-labelledby` and aria-label-only ownership contracts.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria select trigger, menu selection, and hidden select wiring"`,
+   - full Vue tests: `yarn test:vue` (528 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
