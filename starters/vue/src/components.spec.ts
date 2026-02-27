@@ -63,6 +63,7 @@ import {Well} from '@vue-spectrum/well';
 import {theme as darkTheme} from '@vue-spectrum/theme-dark';
 import {theme as expressTheme} from '@vue-spectrum/theme-express';
 import {theme as lightTheme} from '@vue-spectrum/theme-light';
+import {VueDropZone as RacDropZone} from '../../../packages/vue-aria-components/src/components/VueDropZone';
 
 describe('Vue migration primitives', () => {
   it('maps avatar DOM contract and size semantics to react parity', () => {
@@ -4836,6 +4837,18 @@ describe('Vue migration primitives', () => {
 
     await input.trigger('input');
     expect(wrapper.emitted('filesDrop')?.[0]?.[0]?.[0]?.name).toBe('asset.txt');
+  });
+
+  it('does not emit drop events from disabled rac drop zone', async () => {
+    let wrapper = mount(RacDropZone, {
+      props: {
+        isDisabled: true
+      }
+    });
+
+    let dropZone = wrapper.get('.react-aria-DropZone');
+    await dropZone.trigger('drop');
+    expect(wrapper.emitted('drop')).toBeUndefined();
   });
 
   it('emits selected files from file trigger input', async () => {

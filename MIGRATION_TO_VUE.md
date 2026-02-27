@@ -584,18 +584,18 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
-### February 27, 2026 — `DropZone` focus-visible modality reset parity (`vue-aria-components`)
+### February 27, 2026 — `DropZone` modality + disabled-drop parity (`vue-aria-components`)
 
-1. Closed focus-visible modality drift in `VueDropZone`:
+1. Closed shared dropzone interaction drift in `VueDropZone`:
    - keyboard modality now resets on pointer/mouse down,
-   - pointer-focused drop zones no longer keep stale keyboard `data-focus-visible` state.
-2. Added regression coverage in story parity:
-   - `starters/vue/src/storybook-parity.spec.ts` now asserts `data-focus-visible` appears after keyboard focus and clears after pointer interaction + refocus for RAC dropzone stories.
+   - pointer-focused drop zones no longer keep stale keyboard `data-focus-visible` state,
+   - disabled RAC dropzones no longer emit `drop` events.
+2. Added regression coverage:
+   - `starters/vue/src/storybook-parity.spec.ts` asserts `data-focus-visible` appears after keyboard focus and clears after pointer interaction + refocus for RAC dropzone stories,
+   - `starters/vue/src/components.spec.ts` asserts disabled RAC dropzones do not emit `drop`.
 3. Validation after fix:
-   - targeted dropzone/file-trigger assertions:
-     - `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "drop zone|file trigger"`
-     - `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts -t "dropzone stories|file trigger stories"`
-   - full Vue tests: `yarn test:vue` (499 passed),
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "drop zone|file trigger"` and `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts -t "dropzone stories|file trigger stories"`,
+   - full Vue tests: `yarn test:vue` (500 passed),
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
@@ -605,7 +605,7 @@
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 499 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 500 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

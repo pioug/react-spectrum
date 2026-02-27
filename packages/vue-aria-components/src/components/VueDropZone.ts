@@ -154,11 +154,11 @@ export const VueDropZone = defineComponent({
           emit('dropExit', event);
         },
         onDrop: (event: DragEvent) => {
-          emit('drop', event);
           if (!allowsDrop(event)) {
             return;
           }
 
+          emit('drop', event);
           event.preventDefault();
           isOver.value = false;
           emitFiles(event.dataTransfer?.files ?? null);
