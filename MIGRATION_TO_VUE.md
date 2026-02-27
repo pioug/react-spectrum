@@ -584,6 +584,21 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `DropZone` focus-visible modality reset parity (`vue-aria-components`)
+
+1. Closed focus-visible modality drift in `VueDropZone`:
+   - keyboard modality now resets on pointer/mouse down,
+   - pointer-focused drop zones no longer keep stale keyboard `data-focus-visible` state.
+2. Added regression coverage in story parity:
+   - `starters/vue/src/storybook-parity.spec.ts` now asserts `data-focus-visible` appears after keyboard focus and clears after pointer interaction + refocus for RAC dropzone stories.
+3. Validation after fix:
+   - targeted dropzone/file-trigger assertions:
+     - `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "drop zone|file trigger"`
+     - `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts -t "dropzone stories|file trigger stories"`
+   - full Vue tests: `yarn test:vue` (499 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

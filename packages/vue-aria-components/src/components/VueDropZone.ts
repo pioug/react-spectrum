@@ -111,6 +111,12 @@ export const VueDropZone = defineComponent({
             isFocusVisible.value = true;
           }
         },
+        onMousedown: () => {
+          isKeyboardModality.value = false;
+        },
+        onPointerdown: () => {
+          isKeyboardModality.value = false;
+        },
         onClick: (event: MouseEvent) => {
           if (isDisabled.value) {
             event.preventDefault();

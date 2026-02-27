@@ -738,9 +738,19 @@ describe('Vue storybook helper parity', () => {
       await nextTick();
       expect(dropZone.attributes('data-focused')).toBe('true');
 
+      await dropZone.trigger('keydown', {key: 'Tab'});
+      await dropZone.trigger('focus');
+      await nextTick();
+      expect(dropZone.attributes('data-focus-visible')).toBe('true');
+
       await dropZone.trigger('blur');
       await nextTick();
       expect(dropZone.attributes('data-focused')).toBeUndefined();
+
+      await dropZone.trigger('pointerdown');
+      await dropZone.trigger('focus');
+      await nextTick();
+      expect(dropZone.attributes('data-focus-visible')).toBeUndefined();
 
       let renderPropsStory = RacDropzoneWithRenderProps.render?.({isDisabled: true}) as ReturnType<Exclude<typeof RacDropzoneWithRenderProps.render, undefined>>;
       let renderPropsWrapper = mount(renderPropsStory);
