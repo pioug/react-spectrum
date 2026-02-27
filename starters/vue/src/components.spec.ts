@@ -3865,6 +3865,54 @@ describe('Vue migration primitives', () => {
     expect(disabledInvalid.find('.spectrum-Stepper').classes()).not.toContain('is-invalid');
   });
 
+  it('maps numberfield aria label and labelledby precedence to react parity', () => {
+    let labelledByWrapper = mount(NumberField, {
+      attrs: {
+        'aria-labelledby': 'external-numberfield-label'
+      },
+      props: {
+        label: '',
+        modelValue: 10
+      }
+    });
+
+    let labelledByInput = labelledByWrapper.get('input.spectrum-Stepper-input');
+    expect(labelledByInput.attributes('aria-labelledby')).toBe('external-numberfield-label');
+    expect(labelledByInput.attributes('aria-label')).toBeUndefined();
+    expect(labelledByWrapper.attributes('aria-labelledby')).toBeUndefined();
+
+    let visibleLabelWrapper = mount(NumberField, {
+      attrs: {
+        'aria-labelledby': 'external-numberfield-label'
+      },
+      props: {
+        label: 'Width',
+        modelValue: 10
+      }
+    });
+
+    let visibleLabel = visibleLabelWrapper.get('label.spectrum-FieldLabel');
+    let visibleLabelInput = visibleLabelWrapper.get('input.spectrum-Stepper-input');
+    expect(visibleLabelInput.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
+    expect(visibleLabelInput.attributes('aria-labelledby')).toContain('external-numberfield-label');
+    expect(visibleLabelInput.attributes('aria-label')).toBeUndefined();
+
+    let ariaLabelWrapper = mount(NumberField, {
+      attrs: {
+        'aria-label': 'Width'
+      },
+      props: {
+        label: '',
+        modelValue: 10
+      }
+    });
+
+    let ariaLabelInput = ariaLabelWrapper.get('input.spectrum-Stepper-input');
+    expect(ariaLabelInput.attributes('aria-label')).toBe('Width');
+    expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
+    expect(ariaLabelWrapper.attributes('aria-label')).toBeUndefined();
+  });
+
   it('maps modal underlay and dialog surface contract to react parity', async () => {
     let wrapper = mount({
       components: {Button, Dialog, Divider, Modal},

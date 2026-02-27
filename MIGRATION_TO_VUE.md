@@ -720,13 +720,28 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `NumberField` aria-labelling ownership parity (`@vue-spectrum/numberfield`)
+
+1. Closed `NumberField` accessibility ownership drift:
+   - visible labels now contribute through input-level `aria-labelledby`,
+   - external `aria-labelledby` now composes with visible label ids,
+   - explicit `aria-label` is only applied when no `aria-labelledby` source exists.
+2. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: NumberField aria precedence/ownership assertions for external `aria-labelledby`, visible label + external composition, and `aria-label` fallback,
+   - `starters/vue/src/storybook-parity.spec.ts`: Spectrum NumberField stories now assert labelled/default/no-visible-label ARIA contracts.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "numberfield aria label and labelledby precedence"` and `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts -t "spectrum numberfield stories with input-level aria labelling parity"`,
+   - full Vue tests: `yarn test:vue` (513 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 511 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 513 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

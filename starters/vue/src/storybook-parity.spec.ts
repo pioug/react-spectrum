@@ -129,6 +129,11 @@ import {
   Default as SpectrumColorFieldDefault
 } from '../../../packages/@vue-spectrum/color/stories/ColorField.stories';
 import {Default as SpectrumColorSliderDefault} from '../../../packages/@vue-spectrum/color/stories/ColorSlider.stories';
+import {
+  AriaLabelledby as SpectrumNumberFieldAriaLabelledby,
+  Default as SpectrumNumberFieldDefault,
+  NoVisibleLabel as SpectrumNumberFieldNoVisibleLabel
+} from '../../../packages/@vue-spectrum/numberfield/stories/NumberField.stories';
 import {WithExpandedKeys as AccordionWithExpandedKeys} from '../../../packages/@vue-spectrum/accordion/stories/Accordion.stories';
 import {Default as ActionBarDefaultStory} from '../../../packages/@vue-spectrum/actionbar/stories/ActionBar.stories';
 import {
@@ -941,6 +946,38 @@ describe('Vue storybook helper parity', () => {
       expect(ariaLabelInput.attributes('aria-label')).toBe('Hue');
       expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
       expect(ariaLabelWrapper.get('label.vs-color-slider').attributes('aria-label')).toBeUndefined();
+    } finally {
+      for (let wrapper of wrappers) {
+        wrapper.unmount();
+      }
+    }
+  });
+
+  it('renders spectrum numberfield stories with input-level aria labelling parity', () => {
+    let wrappers: Array<ReturnType<typeof mount>> = [];
+
+    try {
+      let defaultStory = SpectrumNumberFieldDefault.render?.({}) as ReturnType<Exclude<typeof SpectrumNumberFieldDefault.render, undefined>>;
+      let defaultWrapper = mount(defaultStory);
+      wrappers.push(defaultWrapper);
+      let defaultInput = defaultWrapper.get('input.spectrum-Stepper-input');
+      expect(defaultInput.attributes('aria-labelledby')).toBeTruthy();
+      expect(defaultInput.attributes('aria-label')).toBeUndefined();
+
+      let noVisibleLabelStory = SpectrumNumberFieldNoVisibleLabel.render?.({}) as ReturnType<Exclude<typeof SpectrumNumberFieldNoVisibleLabel.render, undefined>>;
+      let noVisibleLabelWrapper = mount(noVisibleLabelStory);
+      wrappers.push(noVisibleLabelWrapper);
+      let noVisibleLabelInput = noVisibleLabelWrapper.get('input.spectrum-Stepper-input');
+      expect(noVisibleLabelInput.attributes('aria-label')).toBe('Width');
+      expect(noVisibleLabelInput.attributes('aria-labelledby')).toBeUndefined();
+
+      let labelledByStory = SpectrumNumberFieldAriaLabelledby.render?.({}) as ReturnType<Exclude<typeof SpectrumNumberFieldAriaLabelledby.render, undefined>>;
+      let labelledByWrapper = mount(labelledByStory);
+      wrappers.push(labelledByWrapper);
+      let labelledByInput = labelledByWrapper.get('input.spectrum-Stepper-input');
+      expect(labelledByInput.attributes('aria-labelledby')).toBe('label');
+      expect(labelledByInput.attributes('aria-label')).toBeUndefined();
+      expect(labelledByWrapper.get('.custom_classname').attributes('aria-labelledby')).toBeUndefined();
     } finally {
       for (let wrapper of wrappers) {
         wrapper.unmount();

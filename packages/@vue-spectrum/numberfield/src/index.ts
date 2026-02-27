@@ -448,8 +448,8 @@ export const NumberField = defineComponent({
       return next;
     });
 
-    let ariaLabel = computed(() => {
-      let value = attrs['aria-label'];
+    let externalAriaLabelledBy = computed(() => {
+      let value = attrs['aria-labelledby'];
       if (typeof value === 'string' && value.length > 0) {
         return value;
       }
@@ -458,12 +458,21 @@ export const NumberField = defineComponent({
     });
 
     let ariaLabelledBy = computed(() => {
-      let value = attrs['aria-labelledby'];
+      let parts = [labelId.value, externalAriaLabelledBy.value].filter((part): part is string => Boolean(part));
+      return parts.length > 0 ? parts.join(' ') : undefined;
+    });
+
+    let ariaLabel = computed(() => {
+      if (ariaLabelledBy.value) {
+        return undefined;
+      }
+
+      let value = attrs['aria-label'];
       if (typeof value === 'string' && value.length > 0) {
         return value;
       }
 
-      return labelId.value;
+      return undefined;
     });
 
     let emitValue = (value: number | null) => {
