@@ -214,6 +214,7 @@ export const ActionGroup = defineComponent({
   emits: {
     action: (key: string) => typeof key === 'string',
     change: (value: ActionGroupSelectionValue) => isActionGroupSelectionValue(value),
+    selectionChange: (value: ActionGroupSelectionValue) => isActionGroupSelectionValue(value),
     'update:modelValue': (value: ActionGroupSelectionValue) => isActionGroupSelectionValue(value)
   },
   setup(props, {emit, attrs, slots}) {
@@ -301,6 +302,7 @@ export const ActionGroup = defineComponent({
         let next = new Set([itemKey]);
         emit('update:modelValue', next);
         emit('change', next);
+        emit('selectionChange', next);
         return;
       }
 
@@ -312,6 +314,7 @@ export const ActionGroup = defineComponent({
       }
       emit('update:modelValue', new Set(next));
       emit('change', new Set(next));
+      emit('selectionChange', new Set(next));
     };
 
     let updateOverflow = async () => {

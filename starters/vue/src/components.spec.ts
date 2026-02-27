@@ -1078,6 +1078,9 @@ describe('Vue migration primitives', () => {
     let emittedChange = wrapper.emitted('change')?.[0]?.[0] as unknown;
     expect(emittedChange).toBeInstanceOf(Set);
     expect(Array.from(emittedChange as Set<string>)).toEqual(['One', 'Two']);
+    let emittedSelectionChange = wrapper.emitted('selectionChange')?.[0]?.[0] as unknown;
+    expect(emittedSelectionChange).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelectionChange as Set<string>)).toEqual(['One', 'Two']);
     expect(wrapper.get('.vs-action-group__hidden-marker').attributes('hidden')).toBeDefined();
   });
 
@@ -1099,6 +1102,7 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('action')).toBeUndefined();
     expect(wrapper.emitted('update:modelValue')).toBeUndefined();
     expect(wrapper.emitted('change')).toBeUndefined();
+    expect(wrapper.emitted('selectionChange')).toBeUndefined();
 
     await items[0].trigger('click');
     expect(wrapper.emitted('action')?.[0]).toEqual(['One']);
@@ -1108,6 +1112,9 @@ describe('Vue migration primitives', () => {
     let emittedChange = wrapper.emitted('change')?.[0]?.[0] as unknown;
     expect(emittedChange).toBeInstanceOf(Set);
     expect(Array.from(emittedChange as Set<string>)).toEqual(['One']);
+    let emittedSelectionChange = wrapper.emitted('selectionChange')?.[0]?.[0] as unknown;
+    expect(emittedSelectionChange).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelectionChange as Set<string>)).toEqual(['One']);
   });
 
   it('accepts actiongroup modelValue as a Set iterable in multiple selection mode', async () => {
@@ -1131,6 +1138,9 @@ describe('Vue migration primitives', () => {
     let emittedChange = wrapper.emitted('change')?.[0]?.[0] as unknown;
     expect(emittedChange).toBeInstanceOf(Set);
     expect(Array.from(emittedChange as Set<string>)).toEqual(['One', 'Two']);
+    let emittedSelectionChange = wrapper.emitted('selectionChange')?.[0]?.[0] as unknown;
+    expect(emittedSelectionChange).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelectionChange as Set<string>)).toEqual(['One', 'Two']);
   });
 
   it('collapses overflowing action group items into a menu trigger', async () => {
@@ -2539,6 +2549,7 @@ describe('Vue migration primitives', () => {
     expect(wrapper.get('[role=\"tabpanel\"]').text()).toContain('Details panel');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['details']);
     expect(wrapper.emitted('change')?.[0]).toEqual(['details']);
+    expect(wrapper.emitted('selectionChange')?.[0]).toEqual(['details']);
   });
 
   it('selects and removes tags within tag group interactions', async () => {
@@ -3432,6 +3443,7 @@ describe('Vue migration primitives', () => {
     await items[1].trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['React']);
     expect(wrapper.emitted('select')?.[0]).toEqual(['React']);
+    expect(wrapper.emitted('selectionChange')?.[0]).toEqual(['React']);
   });
 
   it('maps listbox disabled key iterable to disabled option classes and blocked selection', async () => {
@@ -3455,6 +3467,7 @@ describe('Vue migration primitives', () => {
     await items[1].trigger('click');
     expect(wrapper.emitted('update:modelValue')).toBeUndefined();
     expect(wrapper.emitted('select')).toBeUndefined();
+    expect(wrapper.emitted('selectionChange')).toBeUndefined();
   });
 
   it('accepts listbox modelValue as a Set iterable in multiple selection mode', async () => {
@@ -3477,6 +3490,9 @@ describe('Vue migration primitives', () => {
     let emittedSelection = wrapper.emitted('select')?.[0]?.[0] as unknown;
     expect(emittedSelection).toBeInstanceOf(Set);
     expect(Array.from(emittedSelection as Set<string>)).toEqual(['Aardvark', 'Kangaroo']);
+    let emittedSelectionChange = wrapper.emitted('selectionChange')?.[0]?.[0] as unknown;
+    expect(emittedSelectionChange).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelectionChange as Set<string>)).toEqual(['Aardvark', 'Kangaroo']);
   });
 
   it('renders listbox link-backed items as anchors and keeps disabled-link contracts', async () => {

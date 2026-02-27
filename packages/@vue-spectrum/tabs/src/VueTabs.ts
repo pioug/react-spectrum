@@ -88,7 +88,8 @@ export const VueTabs = defineComponent({
   },
   emits: {
     'update:modelValue': (value: TabsValue) => value === null || typeof value === 'string',
-    change: (value: TabsValue) => value === null || typeof value === 'string'
+    change: (value: TabsValue) => value === null || typeof value === 'string',
+    selectionChange: (value: TabsValue) => value === null || typeof value === 'string'
   },
   setup(props, {attrs, emit, slots}) {
     let selectedKey = ref<string | null>(null);
@@ -107,6 +108,7 @@ export const VueTabs = defineComponent({
       onSelectionChange: (key) => {
         emit('update:modelValue', key);
         emit('change', key);
+        emit('selectionChange', key);
       }
     });
     let tabPanel = createTabPanel({}, tabList.state);

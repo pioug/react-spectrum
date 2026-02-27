@@ -153,6 +153,7 @@ export const ListBox = defineComponent({
   },
   emits: {
     select: (value: SelectionValue) => isSelectionValue(value),
+    selectionChange: (value: SelectionValue) => isSelectionValue(value),
     'update:modelValue': (value: SelectionValue) => isSelectionValue(value)
   },
   setup(props, {attrs, emit, slots}) {
@@ -177,6 +178,7 @@ export const ListBox = defineComponent({
       if (props.selectionMode === 'single') {
         emit('update:modelValue', itemKey);
         emit('select', itemKey);
+        emit('selectionChange', itemKey);
         return;
       }
 
@@ -189,6 +191,7 @@ export const ListBox = defineComponent({
 
       emit('update:modelValue', new Set(next));
       emit('select', new Set(next));
+      emit('selectionChange', new Set(next));
     };
 
     let renderItem = (item: ListBoxLeafItem, index: number, keyScope?: string) => {
