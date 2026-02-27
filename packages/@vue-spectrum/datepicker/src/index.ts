@@ -176,6 +176,7 @@ function buildSingleField(
       close: () => true,
       focus: (event: FocusEvent) => event instanceof FocusEvent,
       open: () => true,
+      openChange: (value: boolean) => typeof value === 'boolean',
       'update:modelValue': (value: string) => typeof value === 'string'
     },
     setup(props, {attrs, emit}) {
@@ -276,6 +277,7 @@ function buildSingleField(
 
         isOpen.value = true;
         emit('open');
+        emit('openChange', true);
       };
 
       let closePopover = () => {
@@ -285,6 +287,7 @@ function buildSingleField(
 
         isOpen.value = false;
         emit('close');
+        emit('openChange', false);
       };
 
       return () => h('label', {
@@ -533,6 +536,7 @@ export const DateRangePicker = defineComponent({
     close: () => true,
     focus: (event: FocusEvent) => event instanceof FocusEvent,
     open: () => true,
+    openChange: (value: boolean) => typeof value === 'boolean',
     'update:modelValue': (value: DateRangeValue) => typeof value === 'object' && value !== null
   },
   setup(props, {attrs, emit}) {
@@ -629,6 +633,7 @@ export const DateRangePicker = defineComponent({
 
       isOpen.value = true;
       emit('open');
+      emit('openChange', true);
     };
 
     let closePopover = () => {
@@ -638,6 +643,7 @@ export const DateRangePicker = defineComponent({
 
       isOpen.value = false;
       emit('close');
+      emit('openChange', false);
     };
 
     return () => h('fieldset', {

@@ -3042,7 +3042,10 @@ describe('Vue migration primitives', () => {
     expect(dialog.attributes('aria-hidden')).toBe('true');
     await wrapper.get('button.spectrum-FieldButton').trigger('click');
     expect(wrapper.emitted('open')).toHaveLength(1);
+    expect(wrapper.emitted('openChange')?.[0]).toEqual([true]);
     expect(wrapper.get('.react-spectrum-Datepicker-dialog').attributes('aria-hidden')).toBe('false');
+    await wrapper.get('input.vs-date-picker__input').trigger('blur');
+    expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
   });
 
   it('emits structured range updates from date range picker inputs', async () => {
