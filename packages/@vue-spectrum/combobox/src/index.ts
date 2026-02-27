@@ -248,8 +248,10 @@ export const ComboBox = defineComponent({
     change: (value: string) => typeof value === 'string',
     close: () => true,
     focus: (event: FocusEvent) => event instanceof FocusEvent,
+    inputChange: (value: string) => typeof value === 'string',
     loadMore: () => true,
     open: () => true,
+    openChange: (value: boolean) => typeof value === 'boolean',
     selectionChange: (value: SelectionChangeValue) => isSelectionChangeValue(value),
     'update:modelValue': (value: string) => typeof value === 'string',
     'update:selectedKey': (value: OptionKey | undefined | null) => value == null || typeof value === 'string' || typeof value === 'number',
@@ -468,6 +470,7 @@ export const ComboBox = defineComponent({
     let emitValue = (value: string) => {
       emit('update:modelValue', value);
       emit('change', value);
+      emit('inputChange', value);
     };
 
     let updateListBoxWidth = () => {
@@ -543,6 +546,7 @@ export const ComboBox = defineComponent({
         updateListBoxWidth();
       });
       emit('open');
+      emit('openChange', true);
     };
 
     let closeMenu = () => {
@@ -555,6 +559,7 @@ export const ComboBox = defineComponent({
       hasEmittedLoadMore.value = false;
       isHovered.value = false;
       emit('close');
+      emit('openChange', false);
     };
 
     let selectOption = (option: NormalizedOption) => {

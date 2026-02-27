@@ -2066,8 +2066,14 @@ describe('Vue migration primitives', () => {
     await trigger.trigger('click');
     expect(wrapper.find('button.spectrum-FieldButton').classes()).toContain('is-active');
     expect(wrapper.emitted('open')).toHaveLength(1);
+    expect(wrapper.emitted('openChange')?.[0]).toEqual([true]);
     expect(wrapper.find('[role="listbox"]').classes()).toContain('spectrum-Menu');
     expect(wrapper.find('.spectrum-InputGroup-popover').exists()).toBe(true);
+
+    await input.setValue('Vue');
+    expect(wrapper.emitted('inputChange')?.at(-1)).toEqual(['Vue']);
+    await input.trigger('blur');
+    expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
 
     let disabledInvalidWrapper = mount(ComboBox, {
       props: {
