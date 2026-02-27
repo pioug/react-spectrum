@@ -2167,6 +2167,8 @@ describe('Vue migration primitives', () => {
 
     expect(wrapper.find('.vs-contextual-help__dialog').exists()).toBe(false);
     let trigger = wrapper.get('button.vs-contextual-help__trigger');
+    expect(trigger.find('svg').exists()).toBe(true);
+    expect(trigger.text()).not.toContain('?');
     let focusSpy = vi.spyOn(trigger.element as HTMLButtonElement, 'focus');
 
     await trigger.trigger('click');

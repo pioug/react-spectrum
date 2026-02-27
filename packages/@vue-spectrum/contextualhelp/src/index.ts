@@ -1,5 +1,7 @@
 import '@adobe/spectrum-css-temp/components/contextualhelp/vars.css';
 import {ActionButton} from '@vue-spectrum/button';
+import HelpOutline from '@spectrum-icons-vue/workflow/HelpOutline';
+import InfoOutline from '@spectrum-icons-vue/workflow/InfoOutline';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, nextTick, type PropType, ref, watch} from 'vue';
 const helpStyles: {[key: string]: string} = {};
@@ -87,6 +89,7 @@ export const ContextualHelp = defineComponent({
       return props.variant === 'info' ? 'Information' : 'Help';
     });
 
+    let triggerIcon = computed(() => props.variant === 'info' ? InfoOutline : HelpOutline);
     let placementSide = computed(() => normalizePlacement(props.placement));
 
     let setOpen = (nextValue: boolean) => {
@@ -139,14 +142,14 @@ export const ContextualHelp = defineComponent({
             setOpen(false);
           }
         }
-      }, {
-        default: () => [
-          h('span', {
-            class: 'vs-contextual-help__trigger-icon',
-            'aria-hidden': 'true'
-          }, props.variant === 'info' ? 'i' : '?')
-        ]
-      }),
+        }, {
+          default: () => [
+            h(triggerIcon.value, {
+              class: 'vs-contextual-help__trigger-icon',
+              'aria-hidden': 'true'
+            })
+          ]
+        }),
       internalOpen.value
         ? h('div', {class: 'vs-contextual-help__layer'}, [
           props.dismissable
