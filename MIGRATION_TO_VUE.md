@@ -257,6 +257,16 @@
    - `starters/vue/src/api-compat.spec.ts` (`dnd` export contract),
    - `starters/vue/src/composition.spec.ts` (`virtualizer` helper + wrapper behavior).
 
+### February 27, 2026 — Storybook build-gate blocker remediation (`@vue-stately/table`)
+
+1. Unblocked Vue Storybook production build by fixing an export-contract gap in `@vue-stately/table`:
+   - `packages/@vue-stately/table/src/index.ts` imported `buildHeaderRows` from `TableCollection.ts`,
+   - `TableCollection.ts` did not export `buildHeaderRows`, causing Vite/Rollup build failure.
+2. Added a concrete `buildHeaderRows` export in `TableCollection.ts` to satisfy the package index contract and restore build-time symbol resolution.
+3. Validation after fix:
+   - `CI=1 yarn build:vue:storybook` passed again (build artifacts emitted to `starters/vue/dist/storybook`),
+   - Vue test gate still passed (`yarn test:vue`).
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

@@ -59,6 +59,20 @@ function toGridRows<T>(rows: NormalizedTableRow<T>[]): GridRow<T>[] {
   }));
 }
 
+export function buildHeaderRows<T>(columns: TableColumn[]): TableRow<T>[] {
+  if (columns.length === 0) {
+    return [];
+  }
+
+  return [{
+    key: 'header-row-0',
+    cells: columns.map((column, index) => ({
+      key: column.key ?? `column-${index}`,
+      textValue: column.title ?? String(column.key)
+    }))
+  }];
+}
+
 /**
  * Table collection baseline with row/cell nodes and optional text filtering.
  */
