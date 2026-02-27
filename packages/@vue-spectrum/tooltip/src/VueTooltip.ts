@@ -158,6 +158,7 @@ export const VueTooltipTrigger = defineComponent({
   },
   emits: {
     change: (value: boolean) => typeof value === 'boolean',
+    openChange: (value: boolean) => typeof value === 'boolean',
     'update:isOpen': (value: boolean) => typeof value === 'boolean',
     'update:modelValue': (value: boolean) => typeof value === 'boolean'
   },
@@ -180,6 +181,7 @@ export const VueTooltipTrigger = defineComponent({
         emit('update:isOpen', nextOpen);
         emit('update:modelValue', nextOpen);
         emit('change', nextOpen);
+        emit('openChange', nextOpen);
       },
       shouldCloseOnPress: computed(() => props.shouldCloseOnPress),
       trigger: computed(() => props.trigger),

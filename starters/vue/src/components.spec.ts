@@ -2673,9 +2673,11 @@ describe('Vue migration primitives', () => {
     let modelUpdates = wrapper.emitted('update:modelValue') ?? [];
     let openUpdates = wrapper.emitted('update:isOpen') ?? [];
     let changeEvents = wrapper.emitted('change') ?? [];
+    let openChangeEvents = wrapper.emitted('openChange') ?? [];
     expect(modelUpdates[modelUpdates.length - 1]).toEqual([false]);
     expect(openUpdates[openUpdates.length - 1]).toEqual([false]);
     expect(changeEvents[changeEvents.length - 1]).toEqual([false]);
+    expect(openChangeEvents[openChangeEvents.length - 1]).toEqual([false]);
   });
 
   it('supports defaultOpen and isOpen control aliases on tooltip trigger', async () => {
