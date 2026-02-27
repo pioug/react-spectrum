@@ -49,6 +49,10 @@ export function useLabels(
     }
   }
 
+  if (label && labelledBy.size > 0) {
+    labelledBy.add(id);
+  }
+
   let labelledByValue = labelledBy.size > 0 ? Array.from(labelledBy).join(' ') : undefined;
   if (labelledByValue) {
     labelledByValue = labelledByValue.trim().split(/\s+/).join(' ');

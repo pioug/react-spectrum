@@ -868,6 +868,21 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — Shared `useLabels`/`useLabel` parity remediation (`@vue-aria/utils`, `@vue-aria/label`)
+
+1. Aligned shared ARIA label-composition semantics with React:
+   - `useLabels` now composes the element id into `aria-labelledby` when both `aria-label` and `aria-labelledby` are present,
+   - preserved default-label fallback behavior only when both `aria-label` and `aria-labelledby` are absent.
+2. Aligned `useLabel` field prop behavior with shared semantics:
+   - `useLabel` now routes final field labeling through `useLabels`, preserving visible-label id composition plus React-like self-id inclusion for dual-label cases.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: explicit assertions for composed `useLabel` field semantics and shared `useLabels` id-composition behavior.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria label and field accessibility relationships|computes vue-aria utility helpers"`,
+   - full Vue tests: `yarn test:vue` (528 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

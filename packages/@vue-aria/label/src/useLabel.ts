@@ -1,4 +1,5 @@
 import {computed, type ComputedRef, type Ref, unref} from 'vue';
+import {useLabels} from '@vue-aria/utils';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
 
@@ -81,10 +82,16 @@ export function useLabel(props: LabelAriaProps = {}): LabelAria {
       console.warn('If you do not provide a visible label, you must specify an aria-label or aria-labelledby attribute for accessibility');
     }
 
-    return {
+    let mergedLabelProps = useLabels({
       id: fieldId.value,
       'aria-label': ariaLabel,
       'aria-labelledby': ariaLabelledby
+    });
+
+    return {
+      id: mergedLabelProps.id as string,
+      'aria-label': mergedLabelProps['aria-label'],
+      'aria-labelledby': mergedLabelProps['aria-labelledby']
     };
   });
 

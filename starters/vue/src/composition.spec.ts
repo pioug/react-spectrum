@@ -2921,6 +2921,17 @@ describe('Vue migration composition components', () => {
     expect(ariaOnlyLabel.labelProps.value.id).toBeUndefined();
     expect(ariaOnlyLabel.fieldProps.value['aria-label']).toBe('Support code');
 
+    let composedLabel = useLabel({
+      'aria-label': 'Support code',
+      'aria-labelledby': 'support-code-label',
+      label: 'Support'
+    });
+    let composedLabelledBy = composedLabel.fieldProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(composedLabel.fieldProps.value['aria-label']).toBe('Support code');
+    expect(composedLabelledBy).toContain('support-code-label');
+    expect(composedLabelledBy).toContain(composedLabel.labelProps.value.id as string);
+    expect(composedLabelledBy).toContain(composedLabel.fieldProps.value.id);
+
     let field = useField({
       ariaDescribedby: 'legacy-help',
       description: 'Provide your strongest password.',
@@ -4514,7 +4525,8 @@ describe('Vue migration composition components', () => {
       }
     );
     expect(labels['aria-label']).toBe('Expand row');
-    expect(labels['aria-labelledby']).toBe('row-label');
+    expect(labels['aria-labelledby']?.split(/\s+/)).toContain('row-label');
+    expect(labels['aria-labelledby']?.split(/\s+/)).toContain(labels.id);
   });
 
   it('computes vue-aria visually hidden props and focus reveal behavior', () => {
