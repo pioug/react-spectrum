@@ -27,6 +27,7 @@ interface RadioGroupContextValue {
 }
 
 const radioGroupContextKey: InjectionKey<RadioGroupContextValue> = Symbol('vue-spectrum-radio-group-context');
+let radioId = 0;
 let radioGroupId = 0;
 
 export const RadioGroup = defineComponent({
@@ -158,7 +159,19 @@ export const RadioGroup = defineComponent({
 
       return `${groupName.value}-${showErrorMessage.value ? 'error' : 'description'}`;
     });
+    let externalAriaLabelledBy = computed(() => {
+      let value = attrs['aria-labelledby'];
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    });
+    let ariaLabelledBy = computed(() => {
+      let parts = [labelId.value, externalAriaLabelledBy.value].filter((part): part is string => Boolean(part));
+      return parts.length > 0 ? parts.join(' ') : undefined;
+    });
     let ariaLabel = computed(() => {
+      if (ariaLabelledBy.value) {
+        return undefined;
+      }
+
       let value = attrs['aria-label'];
       return typeof value === 'string' ? value : undefined;
     });
@@ -255,8 +268,8 @@ export const RadioGroup = defineComponent({
               'spectrum-FieldGroup-group--horizontal': props.orientation === 'horizontal'
             }
           ),
-          'aria-labelledby': labelId.value,
-          'aria-label': !props.label ? ariaLabel.value : undefined,
+          'aria-labelledby': ariaLabelledBy.value,
+          'aria-label': ariaLabel.value,
           'aria-describedby': helpTextId.value,
           'aria-invalid': isInvalid.value ? 'true' : undefined,
           'aria-disabled': isDisabled.value ? 'true' : undefined,
@@ -344,6 +357,7 @@ export const Radio = defineComponent({
     'update:modelValue': (value: string) => typeof value === 'string'
   },
   setup(props, {attrs, emit, slots}) {
+    let generatedId = `vs-radio-${++radioId}`;
     let group = inject(radioGroupContextKey, null);
 
     let isDisabled = computed(() => (props.isDisabled ?? props.disabled) || (group ? group.disabled.value : false));
@@ -362,7 +376,20 @@ export const Radio = defineComponent({
     });
     let inputName = computed(() => group ? group.name.value : props.name);
     let hasVisibleLabel = computed(() => !!slots.default || !!props.label);
+    let labelId = computed(() => hasVisibleLabel.value ? `${generatedId}-label` : undefined);
+    let externalAriaLabelledBy = computed(() => {
+      let value = attrs['aria-labelledby'];
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    });
+    let ariaLabelledBy = computed(() => {
+      let parts = [labelId.value, externalAriaLabelledBy.value].filter((part): part is string => Boolean(part));
+      return parts.length > 0 ? parts.join(' ') : undefined;
+    });
     let ariaLabel = computed(() => {
+      if (ariaLabelledBy.value) {
+        return undefined;
+      }
+
       let value = attrs['aria-label'];
       return typeof value === 'string' ? value : undefined;
     });
@@ -416,8 +443,8 @@ export const Radio = defineComponent({
           readonly: isReadOnly.value || undefined,
           tabindex: isDisabled.value ? undefined : 0,
           autofocus: props.autoFocus || attrs.autofocus || undefined,
-          'aria-label': !hasVisibleLabel.value ? ariaLabel.value : undefined,
-          'aria-labelledby': hasVisibleLabel.value ? attrs['aria-labelledby'] : undefined,
+          'aria-label': ariaLabel.value,
+          'aria-labelledby': ariaLabelledBy.value,
           onChange: (event: Event) => {
             let target = event.currentTarget as HTMLInputElement | null;
             if (!target?.checked) {
@@ -448,7 +475,7 @@ export const Radio = defineComponent({
         }),
         h('span', {class: classNames(radioStyles, 'spectrum-Radio-button')}),
         hasVisibleLabel.value
-          ? h('span', {class: classNames(radioStyles, 'spectrum-Radio-label')}, slots.default ? slots.default() : props.label)
+          ? h('span', {id: labelId.value, class: classNames(radioStyles, 'spectrum-Radio-label')}, slots.default ? slots.default() : props.label)
           : null
       ]);
     };

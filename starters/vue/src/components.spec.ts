@@ -2622,6 +2622,68 @@ describe('Vue migration primitives', () => {
     expect(noLabel.find('.spectrum-Checkbox-label').exists()).toBe(false);
   });
 
+  it('maps checkbox aria label and labelledby precedence to react parity', () => {
+    let labelledByWrapper = mount(Checkbox, {
+      attrs: {
+        'aria-labelledby': 'external-checkbox-label'
+      },
+      slots: {
+        default: 'Agree'
+      }
+    });
+
+    let labelledByInput = labelledByWrapper.get('input.spectrum-Checkbox-input');
+    let visibleLabel = labelledByWrapper.get('.spectrum-Checkbox-label');
+    expect(labelledByInput.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
+    expect(labelledByInput.attributes('aria-labelledby')).toContain('external-checkbox-label');
+    expect(labelledByInput.attributes('aria-label')).toBeUndefined();
+    expect(labelledByWrapper.attributes('aria-labelledby')).toBeUndefined();
+
+    let ariaLabelWrapper = mount(Checkbox, {
+      attrs: {
+        'aria-label': 'Agree'
+      },
+      props: {
+        label: ''
+      }
+    });
+
+    let ariaLabelInput = ariaLabelWrapper.get('input.spectrum-Checkbox-input');
+    expect(ariaLabelInput.attributes('aria-label')).toBe('Agree');
+    expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
+    expect(ariaLabelWrapper.attributes('aria-label')).toBeUndefined();
+  });
+
+  it('maps checkbox group aria label and labelledby precedence to react parity', () => {
+    let labelledByWrapper = mount(CheckboxGroup, {
+      attrs: {
+        'aria-labelledby': 'external-checkbox-group-label'
+      },
+      props: {
+        label: 'Framework'
+      }
+    });
+
+    let visibleLabel = labelledByWrapper.get('.spectrum-FieldLabel');
+    let group = labelledByWrapper.get('[role="group"]');
+    expect(group.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
+    expect(group.attributes('aria-labelledby')).toContain('external-checkbox-group-label');
+    expect(group.attributes('aria-label')).toBeUndefined();
+
+    let ariaLabelWrapper = mount(CheckboxGroup, {
+      attrs: {
+        'aria-label': 'Framework'
+      },
+      props: {
+        label: ''
+      }
+    });
+
+    let ariaLabelGroup = ariaLabelWrapper.get('[role="group"]');
+    expect(ariaLabelGroup.attributes('aria-label')).toBe('Framework');
+    expect(ariaLabelGroup.attributes('aria-labelledby')).toBeUndefined();
+  });
+
   it('maps checkbox checked, indeterminate, hovered, focus-ring, and invalid states', async () => {
     let wrapper = mount(Checkbox, {
       props: {
@@ -5603,6 +5665,72 @@ describe('Vue migration primitives', () => {
     });
     expect(disabled.get('label.spectrum-Radio').classes()).toContain('is-disabled');
     expect(disabled.get('input.spectrum-Radio-input').attributes('disabled')).toBeDefined();
+  });
+
+  it('maps radio aria label and labelledby precedence to react parity', () => {
+    let labelledByWrapper = mount(Radio, {
+      attrs: {
+        'aria-labelledby': 'external-radio-label'
+      },
+      props: {
+        value: 'vue'
+      },
+      slots: {
+        default: 'Vue'
+      }
+    });
+
+    let labelledByInput = labelledByWrapper.get('input.spectrum-Radio-input');
+    let visibleLabel = labelledByWrapper.get('.spectrum-Radio-label');
+    expect(labelledByInput.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
+    expect(labelledByInput.attributes('aria-labelledby')).toContain('external-radio-label');
+    expect(labelledByInput.attributes('aria-label')).toBeUndefined();
+    expect(labelledByWrapper.attributes('aria-labelledby')).toBeUndefined();
+
+    let ariaLabelWrapper = mount(Radio, {
+      attrs: {
+        'aria-label': 'Vue'
+      },
+      props: {
+        label: '',
+        value: 'vue'
+      }
+    });
+
+    let ariaLabelInput = ariaLabelWrapper.get('input.spectrum-Radio-input');
+    expect(ariaLabelInput.attributes('aria-label')).toBe('Vue');
+    expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
+    expect(ariaLabelWrapper.attributes('aria-label')).toBeUndefined();
+  });
+
+  it('maps radio group aria label and labelledby precedence to react parity', () => {
+    let labelledByWrapper = mount(RadioGroup, {
+      attrs: {
+        'aria-labelledby': 'external-radio-group-label'
+      },
+      props: {
+        label: 'Framework'
+      }
+    });
+
+    let visibleLabel = labelledByWrapper.get('.spectrum-FieldLabel');
+    let group = labelledByWrapper.get('[role="radiogroup"]');
+    expect(group.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
+    expect(group.attributes('aria-labelledby')).toContain('external-radio-group-label');
+    expect(group.attributes('aria-label')).toBeUndefined();
+
+    let ariaLabelWrapper = mount(RadioGroup, {
+      attrs: {
+        'aria-label': 'Framework'
+      },
+      props: {
+        label: ''
+      }
+    });
+
+    let ariaLabelGroup = ariaLabelWrapper.get('[role="radiogroup"]');
+    expect(ariaLabelGroup.attributes('aria-label')).toBe('Framework');
+    expect(ariaLabelGroup.attributes('aria-labelledby')).toBeUndefined();
   });
 
   it('maps accordion disclosure state classes and hidden/aria-hidden panel signals', async () => {

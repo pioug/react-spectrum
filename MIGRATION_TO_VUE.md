@@ -784,13 +784,30 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `Checkbox`/`Radio` label composition parity (`@vue-spectrum/checkbox`, `@vue-spectrum/radio`)
+
+1. Closed individual control labelling drift:
+   - visible checkbox/radio labels now get deterministic ids,
+   - input-level `aria-labelledby` now composes visible-label ids with external `aria-labelledby`,
+   - explicit `aria-label` is now only used when no composed `aria-labelledby` source exists.
+2. Closed group-level label composition drift:
+   - `CheckboxGroup` and `RadioGroup` now compose visible group-label ids with external `aria-labelledby` on the interactive group node (`role="group"` / `role="radiogroup"`),
+   - group `aria-label` now defers when a composed `aria-labelledby` exists.
+3. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: parity assertions for individual and group controls across checkbox/radio, including visible label + external `aria-labelledby` composition and `aria-label` fallback.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "checkbox aria label and labelledby precedence|checkbox group aria label and labelledby precedence|radio aria label and labelledby precedence|radio group aria label and labelledby precedence"`,
+   - full Vue tests: `yarn test:vue` (525 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 521 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 525 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).
