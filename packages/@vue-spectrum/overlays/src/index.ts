@@ -35,8 +35,32 @@ let modalTypeMap: Record<ModalType, string | undefined> = {
   modal: undefined
 };
 
+const overlaySurfaceSelector = '[data-vs-overlay-surface="true"]';
+
 function invokeLifecycle(handler: LifecycleHandler) {
   handler?.();
+}
+
+function getEventTarget(event: Event): EventTarget | null {
+  let path = typeof event.composedPath === 'function' ? event.composedPath() : [];
+  if (path.length > 0) {
+    return path[0] ?? null;
+  }
+
+  return event.target;
+}
+
+function isTopMostOverlaySurface(surface: HTMLElement | null): boolean {
+  if (!surface || typeof document === 'undefined') {
+    return false;
+  }
+
+  let surfaces = Array.from(document.querySelectorAll<HTMLElement>(overlaySurfaceSelector));
+  if (surfaces.length === 0) {
+    return false;
+  }
+
+  return surfaces[surfaces.length - 1] === surface;
 }
 
 function useViewportHeight() {
@@ -396,6 +420,7 @@ export const Modal = defineComponent({
     let isOpen = computed(() => resolveOpenState(props));
     let isDismissable = computed(() => resolveDismissableState(props));
     let viewportHeight = useViewportHeight();
+    let modalRef = ref<HTMLElement | null>(null);
 
     let wrapperClassName = computed(() => classNames(
       modalStyles,
@@ -421,6 +446,28 @@ export const Modal = defineComponent({
       props.state?.close?.();
       emit('close');
     };
+
+    let onDocumentKeydown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented || event.key !== 'Escape' || !isOpen.value || !isDismissable.value) {
+        return;
+      }
+
+      if (!isTopMostOverlaySurface(modalRef.value)) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      close();
+    };
+
+    onMounted(() => {
+      document.addEventListener('keydown', onDocumentKeydown);
+    });
+
+    onBeforeUnmount(() => {
+      document.removeEventListener('keydown', onDocumentKeydown);
+    });
 
     return () => h(Overlay, {
       container: props.container,
@@ -450,7 +497,9 @@ export const Modal = defineComponent({
           }, [
             h('div', {
               ...attrs,
+              ref: modalRef,
               class: [modalClassName.value, 'vs-modal', attrs.class],
+              'data-vs-overlay-surface': 'true',
               'data-testid': 'modal'
             }, slots.default ? slots.default() : [])
           ])
@@ -515,6 +564,7 @@ export const Tray = defineComponent({
   setup(props, {attrs, emit, slots}) {
     let isOpen = computed(() => resolveOpenState(props));
     let viewportHeight = useViewportHeight();
+    let trayRef = ref<HTMLElement | null>(null);
 
     let wrapperClassName = computed(() => classNames(trayStyles, 'spectrum-Tray-wrapper'));
 
@@ -532,6 +582,28 @@ export const Tray = defineComponent({
       props.state?.close?.();
       emit('close');
     };
+
+    let onDocumentKeydown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented || event.key !== 'Escape' || !isOpen.value) {
+        return;
+      }
+
+      if (!isTopMostOverlaySurface(trayRef.value)) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      close();
+    };
+
+    onMounted(() => {
+      document.addEventListener('keydown', onDocumentKeydown);
+    });
+
+    onBeforeUnmount(() => {
+      document.removeEventListener('keydown', onDocumentKeydown);
+    });
 
     return () => h(Overlay, {
       container: props.container,
@@ -558,7 +630,9 @@ export const Tray = defineComponent({
           }, [
             h('div', {
               ...attrs,
+              ref: trayRef,
               class: [trayClassName.value, 'vs-tray', attrs.class],
+              'data-vs-overlay-surface': 'true',
               'data-testid': 'tray'
             }, slots.default ? slots.default() : [])
           ])
@@ -643,6 +717,7 @@ export const Popover = defineComponent({
   setup(props, {attrs, emit, slots}) {
     let isOpen = computed(() => resolveOpenState(props));
     let isDismissable = computed(() => resolveDismissableState(props));
+    let popoverRef = ref<HTMLElement | null>(null);
 
     let popoverClassName = computed(() => classNames(
       popoverStyles,
@@ -666,6 +741,55 @@ export const Popover = defineComponent({
       emit('close');
     };
 
+    let onDocumentKeydown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented || event.key !== 'Escape' || !isOpen.value || !isDismissable.value) {
+        return;
+      }
+
+      if (!isTopMostOverlaySurface(popoverRef.value)) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      close();
+    };
+
+    let onDocumentPointerDown = (event: MouseEvent | PointerEvent | TouchEvent) => {
+      if (event.defaultPrevented || !props.isNonModal || !isDismissable.value || !isOpen.value) {
+        return;
+      }
+
+      if (!isTopMostOverlaySurface(popoverRef.value)) {
+        return;
+      }
+
+      let target = getEventTarget(event);
+      if (!(target instanceof Node)) {
+        return;
+      }
+
+      if (popoverRef.value?.contains(target)) {
+        return;
+      }
+
+      close();
+    };
+
+    onMounted(() => {
+      document.addEventListener('keydown', onDocumentKeydown);
+      document.addEventListener('mousedown', onDocumentPointerDown, true);
+      document.addEventListener('pointerdown', onDocumentPointerDown, true);
+      document.addEventListener('touchstart', onDocumentPointerDown, true);
+    });
+
+    onBeforeUnmount(() => {
+      document.removeEventListener('keydown', onDocumentKeydown);
+      document.removeEventListener('mousedown', onDocumentPointerDown, true);
+      document.removeEventListener('pointerdown', onDocumentPointerDown, true);
+      document.removeEventListener('touchstart', onDocumentPointerDown, true);
+    });
+
     return () => h(Overlay, {
       container: props.container,
       isOpen: isOpen.value,
@@ -688,7 +812,9 @@ export const Popover = defineComponent({
             : null,
           h('section', {
             ...attrs,
+            ref: popoverRef,
             class: [popoverClassName.value, 'vs-popover', `vs-popover--${props.placement}`, attrs.class],
+            'data-vs-overlay-surface': 'true',
             'data-testid': 'popover',
             'data-vac': '',
             role: 'presentation'

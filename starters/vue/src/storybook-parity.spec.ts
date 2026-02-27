@@ -147,6 +147,7 @@ import {
 import {Default as DialogContainerDefault, InAMenu as DialogContainerInAMenu, IsDismissable as DialogContainerIsDismissable, NestedDialogContainers as DialogContainerNestedDialogContainers} from '../../../packages/@vue-spectrum/dialog/stories/DialogContainer.stories';
 import {
   _AlertDialog as DialogTriggerAlertDialog,
+  TypeModalIsDismissable as DialogTriggerTypeModalIsDismissable,
   WithMenuTrigger as DialogTriggerWithMenuTrigger,
   MobileTypeFullscreen as DialogTriggerMobileTypeFullscreen,
   MobileTypeFullscreenTakeover as DialogTriggerMobileTypeFullscreenTakeover,
@@ -2916,6 +2917,39 @@ describe('Vue storybook helper parity', () => {
     } finally {
       menuWrapper?.unmount();
       alertWrapper?.unmount();
+    }
+  });
+
+  it('dismisses modal dialog trigger stories from Escape and underlay interactions', async () => {
+    let dismissableStory = DialogTriggerTypeModalIsDismissable.render?.({
+      isDismissable: true,
+      type: 'modal'
+    }) as ReturnType<Exclude<typeof DialogTriggerTypeModalIsDismissable.render, undefined>>;
+    let wrapper = mount(dismissableStory);
+
+    try {
+      let triggerButton = wrapper.get('button');
+      expect(wrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(false);
+
+      await triggerButton.trigger('click');
+      await nextTick();
+      expect(wrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(true);
+
+      document.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'Escape'}));
+      await nextTick();
+      expect(wrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(false);
+
+      await triggerButton.trigger('click');
+      await nextTick();
+      expect(wrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(true);
+
+      let underlay = document.body.querySelector('[data-testid="underlay"]');
+      expect(underlay).not.toBeNull();
+      underlay?.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+      await nextTick();
+      expect(wrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(false);
+    } finally {
+      wrapper.unmount();
     }
   });
 

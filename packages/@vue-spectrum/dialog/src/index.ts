@@ -2,7 +2,7 @@ import '@adobe/spectrum-css-temp/components/dialog/vars.css';
 import {Button} from '@vue-spectrum/button';
 import {Modal, Popover, Tray} from '@vue-spectrum/overlays';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, type ComputedRef, defineComponent, getCurrentInstance, h, inject, provide, ref, type InjectionKey, type PropType, type VNode, watch} from 'vue';
+import {computed, type ComputedRef, defineComponent, getCurrentInstance, h, inject, nextTick, provide, ref, type InjectionKey, type PropType, type VNode, watch} from 'vue';
 const styles: {[key: string]: string} = {};
 
 
@@ -532,6 +532,9 @@ export const DialogTrigger = defineComponent({
     openChange: (isOpen: boolean) => typeof isOpen === 'boolean'
   },
   setup(props, {attrs, emit, slots}) {
+    let triggerRootRef = ref<HTMLElement | null>(null);
+    let lastFocusedElement = ref<HTMLElement | null>(null);
+    let pendingDismissClose = ref(false);
     let uncontrolledOpen = ref(Boolean(props.defaultOpen));
     let isOpenControlled = computed(() => props.isOpen !== undefined || props.open !== undefined);
     let isOpen = computed(() => {
@@ -553,6 +556,13 @@ export const DialogTrigger = defineComponent({
         return;
       }
 
+      if (nextValue && typeof document !== 'undefined') {
+        let activeElement = document.activeElement;
+        if (activeElement instanceof HTMLElement) {
+          lastFocusedElement.value = activeElement;
+        }
+      }
+
       if (!isOpenControlled.value) {
         uncontrolledOpen.value = nextValue;
       }
@@ -561,13 +571,61 @@ export const DialogTrigger = defineComponent({
     };
 
     let close = () => {
+      if (!isOpen.value) {
+        return;
+      }
+
       invoke(props.onDismiss);
+      pendingDismissClose.value = true;
       setOpen(false);
+      if (isOpenControlled.value) {
+        emit('close');
+      }
+    };
+
+    let restoreFocusToTrigger = () => {
+      if (typeof document === 'undefined') {
+        return;
+      }
+
+      let triggerContainer = triggerRootRef.value?.querySelector('.vs-dialog-trigger__trigger');
+      let candidate = lastFocusedElement.value;
+      if (!candidate || !candidate.isConnected || !triggerContainer?.contains(candidate)) {
+        candidate = triggerContainer?.querySelector<HTMLElement>('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])') ?? null;
+      }
+
+      if (!candidate || !candidate.isConnected) {
+        return;
+      }
+
+      candidate.focus();
     };
 
     watch(isOpen, (nextValue, previousValue) => {
+      if (!previousValue && nextValue) {
+        pendingDismissClose.value = false;
+      }
+
+      if (!previousValue && nextValue && typeof document !== 'undefined') {
+        let activeElement = document.activeElement;
+        if (activeElement instanceof HTMLElement) {
+          lastFocusedElement.value = activeElement;
+        }
+      }
+
       if (previousValue && !nextValue) {
-        emit('close');
+        if (pendingDismissClose.value) {
+          pendingDismissClose.value = false;
+          if (!isOpenControlled.value) {
+            emit('close');
+          }
+        } else {
+          emit('close');
+        }
+
+        nextTick(() => {
+          restoreFocusToTrigger();
+        });
       }
     });
 
@@ -647,6 +705,7 @@ export const DialogTrigger = defineComponent({
 
       return h('div', {
         ...attrs,
+        ref: triggerRootRef,
         class: ['vs-dialog-trigger', attrs.class],
         'data-vac': ''
       }, [

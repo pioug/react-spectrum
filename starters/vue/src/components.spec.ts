@@ -21,7 +21,7 @@ import {ContextualHelp} from '@vue-spectrum/contextualhelp';
 import {SearchAutocomplete} from '@vue-spectrum/autocomplete';
 import {ColorField, ColorPicker, ColorSwatchPicker} from '@vue-spectrum/color';
 import {DatePicker, DateRangePicker, TimeField} from '@vue-spectrum/datepicker';
-import {Dialog} from '@vue-spectrum/dialog';
+import {Dialog, DialogTrigger} from '@vue-spectrum/dialog';
 import {Divider} from '@vue-spectrum/divider';
 import {DropZone} from '@vue-spectrum/dropzone';
 import {FileTrigger} from '@vue-spectrum/filetrigger';
@@ -39,7 +39,7 @@ import {ListView} from '@vue-spectrum/list';
 import {Menu, MenuTrigger} from '@vue-spectrum/menu';
 import {Meter} from '@vue-spectrum/meter';
 import {NumberField} from '@vue-spectrum/numberfield';
-import {Modal} from '@vue-spectrum/overlays';
+import {Modal, Popover, Tray} from '@vue-spectrum/overlays';
 import {Picker} from '@vue-spectrum/picker';
 import {Provider} from '@vue-spectrum/provider';
 import {ProgressBar, ProgressCircle} from '@vue-spectrum/progress';
@@ -3356,6 +3356,115 @@ describe('Vue migration primitives', () => {
     expect(dialog?.hasAttribute('aria-modal')).toBe(false);
     expect(document.body.querySelector('.vs-dialog-layer')).toBeNull();
     expect(document.body.querySelector('.vs-dialog-layer__backdrop')).toBeNull();
+
+    wrapper.unmount();
+  });
+
+  it('closes dismissable overlays on Escape and keeps non-dismissable modal open', async () => {
+    let modal = mount(Modal, {
+      props: {
+        isDismissable: true,
+        isOpen: true
+      },
+      slots: {
+        default: () => h('div', 'Modal content')
+      }
+    });
+
+    document.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'Escape'}));
+    await nextTick();
+    expect(modal.emitted('close')).toHaveLength(1);
+    modal.unmount();
+
+    let nonDismissableModal = mount(Modal, {
+      props: {
+        isDismissable: false,
+        isOpen: true
+      },
+      slots: {
+        default: () => h('div', 'Modal content')
+      }
+    });
+
+    document.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'Escape'}));
+    await nextTick();
+    expect(nonDismissableModal.emitted('close')).toBeUndefined();
+    nonDismissableModal.unmount();
+
+    let tray = mount(Tray, {
+      props: {
+        isOpen: true
+      },
+      slots: {
+        default: () => h('div', 'Tray content')
+      }
+    });
+
+    document.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'Escape'}));
+    await nextTick();
+    expect(tray.emitted('close')).toHaveLength(1);
+    tray.unmount();
+
+    let popover = mount(Popover, {
+      props: {
+        isDismissable: true,
+        isNonModal: true,
+        isOpen: true
+      },
+      slots: {
+        default: () => h('button', {class: 'inside-popover', type: 'button'}, 'Inside')
+      }
+    });
+
+    let insidePopoverButton = document.body.querySelector('button.inside-popover') as HTMLButtonElement | null;
+    expect(insidePopoverButton).not.toBeNull();
+    insidePopoverButton?.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+    await nextTick();
+    expect(popover.emitted('close')).toBeUndefined();
+
+    document.body.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+    await nextTick();
+    expect(popover.emitted('close')).toHaveLength(1);
+    popover.unmount();
+  });
+
+  it('restores trigger focus when dialog trigger closes from Escape', async () => {
+    let wrapper = mount({
+      components: {DialogTrigger},
+      template: `
+        <DialogTrigger type="modal" :isDismissable="true" title="Parity dialog">
+          <template #trigger="{open}">
+            <button class="vs-dialog-trigger-test" type="button" @click="open">Open dialog</button>
+          </template>
+          <button class="vs-dialog-inside-test" type="button">Focusable inside</button>
+        </DialogTrigger>
+      `
+    }, {
+      attachTo: document.body
+    });
+
+    let triggerButton = wrapper.get('button.vs-dialog-trigger-test');
+    triggerButton.element.focus();
+    expect(document.activeElement).toBe(triggerButton.element);
+
+    await triggerButton.trigger('click');
+    await nextTick();
+    expect(document.body.querySelector('[role="dialog"]')).not.toBeNull();
+
+    let insideButton = document.body.querySelector('button.vs-dialog-inside-test') as HTMLButtonElement | null;
+    expect(insideButton).not.toBeNull();
+    insideButton?.focus();
+    expect(document.activeElement).toBe(insideButton);
+
+    document.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'Escape'}));
+    await nextTick();
+    await nextTick();
+
+    let dialogTrigger = wrapper.getComponent(DialogTrigger);
+    expect(document.body.querySelector('[role="dialog"]')).toBeNull();
+    expect(dialogTrigger.emitted('openChange')?.[0]).toEqual([true]);
+    expect(dialogTrigger.emitted('openChange')?.at(-1)).toEqual([false]);
+    expect(document.activeElement).toBe(triggerButton.element);
 
     wrapper.unmount();
   });

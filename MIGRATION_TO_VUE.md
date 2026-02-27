@@ -200,6 +200,20 @@
    - removed story-owned trigger behavior hacks,
    - aligned `openChange` trigger semantics and added explicit regressions.
 
+### February 27, 2026 — Overlay/Dialog dismissal parity remediation
+
+1. Closed shared overlay parity gaps in `@vue-spectrum/overlays`:
+   - added `Escape` dismissal handling for dismissable `Modal`, `Tray`, and `Popover`,
+   - added outside pointer-dismiss behavior for non-modal dismissable `Popover`,
+   - prevented nested-overlay dismissal collisions by scoping dismissal to the topmost overlay surface.
+2. Closed controlled `DialogTrigger` close-contract drift in `@vue-spectrum/dialog`:
+   - ensured dismiss requests emit `close` in controlled mode (matching story/controller expectations),
+   - prevented duplicate close emissions when parent also drives `open` state updates.
+3. Added trigger focus restoration on `DialogTrigger` close to align controller-owned focus lifecycle with React expectations.
+4. Added regression coverage in:
+   - `starters/vue/src/components.spec.ts` for overlay Escape/outside-dismiss and `DialogTrigger` focus restore,
+   - `starters/vue/src/storybook-parity.spec.ts` for dismissable modal `DialogTrigger` Escape/underlay dismissal flows.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
