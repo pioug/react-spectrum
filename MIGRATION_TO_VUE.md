@@ -285,13 +285,31 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — Systemic overlay dismissal parity remediation (`@vue-aria/overlays`)
+
+1. Aligned shared `useOverlay` behavior with React interaction semantics:
+   - added composing-aware Escape handling (do not dismiss while IME composition is active),
+   - switched outside dismissal to press-start/press-end semantics with top-layer race protection,
+   - added non-pointer fallback outside handling (`mousedown`/`mouseup`/`touchstart`/`touchend`) for environments without `PointerEvent`,
+   - bound global listeners to the overlay owner document instead of always using global `document`,
+   - registered scope-disposal cleanup for watcher/listener lifecycle parity.
+2. Added regression coverage in `starters/vue/src/composition.spec.ts` for:
+   - composing Escape non-dismiss behavior,
+   - outside dismissal behavior across pointer/non-pointer paths,
+   - owner-document listener attachment for iframe overlays.
+3. Validation after fix:
+   - targeted overlay slice: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "overlay trigger, popover|composing Escape|owner document|interact-outside"`,
+   - full Vue tests: `yarn test:vue` (461 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 459 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 461 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

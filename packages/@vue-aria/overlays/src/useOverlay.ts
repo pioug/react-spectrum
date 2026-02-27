@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, ref, type Ref, unref, watch} from 'vue';
+import {computed, type ComputedRef, getCurrentScope, onScopeDispose, ref, type Ref, unref, watch} from 'vue';
 import {getEventTarget, nodeContains} from './utils';
 import type {MaybeRef} from './types';
 
@@ -52,7 +52,8 @@ export function useOverlay(options: AriaOverlayOptions = {}): OverlayAria {
   };
 
   let onKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'Escape' && !isKeyboardDismissDisabled.value) {
+    if (event.key === 'Escape' && !isKeyboardDismissDisabled.value && !event.isComposing) {
+      event.stopPropagation();
       event.preventDefault();
       close();
     }
@@ -82,9 +83,37 @@ export function useOverlay(options: AriaOverlayOptions = {}): OverlayAria {
       }
 
       openOverlayStack.push(overlayId);
+      let documentObject = overlayRef.value?.ownerDocument ?? (typeof document !== 'undefined' ? document : null);
+      let isPointerDown = false;
+      let ignoreEmulatedMouseEvents = false;
+      let lastTopOverlayOnPressStart: number | null = null;
 
-      let onDocumentPointerDown = (event: PointerEvent) => {
+      let onOutsidePressStart = (event: MouseEvent | PointerEvent | TouchEvent) => {
         if (!isDismissable.value || !isTopMostOverlay()) {
+          isPointerDown = false;
+          lastTopOverlayOnPressStart = null;
+          return;
+        }
+
+        if (!shouldCloseOnOutsideInteraction(getEventTarget(event))) {
+          isPointerDown = false;
+          lastTopOverlayOnPressStart = null;
+          return;
+        }
+
+        isPointerDown = true;
+        lastTopOverlayOnPressStart = openOverlayStack[openOverlayStack.length - 1] ?? null;
+        event.stopPropagation();
+        event.preventDefault();
+      };
+
+      let onOutsidePressEnd = (event: MouseEvent | PointerEvent | TouchEvent) => {
+        if (!isPointerDown) {
+          return;
+        }
+
+        isPointerDown = false;
+        if (!isDismissable.value) {
           return;
         }
 
@@ -92,8 +121,35 @@ export function useOverlay(options: AriaOverlayOptions = {}): OverlayAria {
           return;
         }
 
-        event.preventDefault();
-        close();
+        if (isTopMostOverlay()) {
+          event.stopPropagation();
+          event.preventDefault();
+        }
+
+        if (lastTopOverlayOnPressStart === overlayId) {
+          close();
+        }
+        lastTopOverlayOnPressStart = null;
+      };
+
+      let onDocumentClick = (event: MouseEvent) => {
+        onOutsidePressEnd(event);
+      };
+
+      let onDocumentMouseUp = (event: MouseEvent) => {
+        if (ignoreEmulatedMouseEvents) {
+          ignoreEmulatedMouseEvents = false;
+          isPointerDown = false;
+          lastTopOverlayOnPressStart = null;
+          return;
+        }
+
+        onOutsidePressEnd(event);
+      };
+
+      let onDocumentTouchEnd = (event: TouchEvent) => {
+        ignoreEmulatedMouseEvents = true;
+        onOutsidePressEnd(event);
       };
 
       let onDocumentFocusIn = (event: FocusEvent) => {
@@ -116,19 +172,38 @@ export function useOverlay(options: AriaOverlayOptions = {}): OverlayAria {
         onKeyDown(event);
       };
 
-      if (typeof document !== 'undefined') {
-        document.addEventListener('pointerdown', onDocumentPointerDown, true);
-        document.addEventListener('focusin', onDocumentFocusIn, true);
-        document.addEventListener('keydown', onDocumentKeyDown, true);
+      if (documentObject) {
+        if (typeof PointerEvent !== 'undefined') {
+          documentObject.addEventListener('pointerdown', onOutsidePressStart as EventListener, true);
+          documentObject.addEventListener('click', onDocumentClick, true);
+        } else {
+          documentObject.addEventListener('mousedown', onOutsidePressStart as EventListener, true);
+          documentObject.addEventListener('mouseup', onDocumentMouseUp, true);
+          documentObject.addEventListener('touchstart', onOutsidePressStart as EventListener, true);
+          documentObject.addEventListener('touchend', onDocumentTouchEnd, true);
+        }
+        documentObject.addEventListener('focusin', onDocumentFocusIn, true);
+        documentObject.addEventListener('keydown', onDocumentKeyDown, true);
       }
 
       onCleanup(() => {
-        if (typeof document !== 'undefined') {
-          document.removeEventListener('pointerdown', onDocumentPointerDown, true);
-          document.removeEventListener('focusin', onDocumentFocusIn, true);
-          document.removeEventListener('keydown', onDocumentKeyDown, true);
+        if (documentObject) {
+          if (typeof PointerEvent !== 'undefined') {
+            documentObject.removeEventListener('pointerdown', onOutsidePressStart as EventListener, true);
+            documentObject.removeEventListener('click', onDocumentClick, true);
+          } else {
+            documentObject.removeEventListener('mousedown', onOutsidePressStart as EventListener, true);
+            documentObject.removeEventListener('mouseup', onDocumentMouseUp, true);
+            documentObject.removeEventListener('touchstart', onOutsidePressStart as EventListener, true);
+            documentObject.removeEventListener('touchend', onDocumentTouchEnd, true);
+          }
+          documentObject.removeEventListener('focusin', onDocumentFocusIn, true);
+          documentObject.removeEventListener('keydown', onDocumentKeyDown, true);
         }
 
+        isPointerDown = false;
+        ignoreEmulatedMouseEvents = false;
+        lastTopOverlayOnPressStart = null;
         openOverlayStack = openOverlayStack.filter((id) => id !== overlayId);
       });
     },
@@ -137,12 +212,16 @@ export function useOverlay(options: AriaOverlayOptions = {}): OverlayAria {
       flush: 'sync'
     }
   );
+  let dispose = () => {
+    stopWatch();
+    openOverlayStack = openOverlayStack.filter((id) => id !== overlayId);
+  };
+  if (getCurrentScope()) {
+    onScopeDispose(dispose);
+  }
 
   return {
-    dispose: () => {
-      stopWatch();
-      openOverlayStack = openOverlayStack.filter((id) => id !== overlayId);
-    },
+    dispose,
     overlayProps: computed(() => ({
       onKeyDown
     })),

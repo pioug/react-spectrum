@@ -3236,6 +3236,95 @@ describe('Vue migration composition components', () => {
     document.body.innerHTML = previousMarkup;
   });
 
+  it('keeps composing Escape open and dismisses overlays via outside interactions', () => {
+    let overlayElement = document.createElement('div');
+    let outsideElement = document.createElement('button');
+    document.body.append(overlayElement, outsideElement);
+
+    let isOpen = ref(true);
+    let closeCount = 0;
+    let overlay = useAriaOverlay({
+      isDismissable: true,
+      isOpen,
+      onClose: () => {
+        closeCount += 1;
+        isOpen.value = false;
+      },
+      overlayRef: ref(overlayElement)
+    });
+
+    try {
+      let composingEscape = new KeyboardEvent('keydown', {key: 'Escape'});
+      Object.defineProperty(composingEscape, 'isComposing', {value: true});
+      overlay.overlayProps.value.onKeyDown(composingEscape);
+      expect(closeCount).toBe(0);
+      expect(isOpen.value).toBe(true);
+
+      overlay.overlayProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
+      expect(closeCount).toBe(1);
+      expect(isOpen.value).toBe(false);
+
+      isOpen.value = true;
+      if (typeof PointerEvent !== 'undefined') {
+        outsideElement.dispatchEvent(createPointerEvent('pointerdown'));
+        outsideElement.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+      } else {
+        outsideElement.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+        outsideElement.dispatchEvent(new MouseEvent('mouseup', {bubbles: true}));
+      }
+
+      expect(closeCount).toBe(2);
+      expect(isOpen.value).toBe(false);
+    } finally {
+      overlay.dispose();
+      document.body.removeChild(overlayElement);
+      document.body.removeChild(outsideElement);
+    }
+  });
+
+  it('binds overlay listeners to the overlay owner document', () => {
+    let iframe = document.createElement('iframe');
+    document.body.appendChild(iframe);
+    let iframeDocument = iframe.contentWindow?.document;
+    expect(iframeDocument).toBeTruthy();
+    let overlayElement = iframeDocument!.createElement('div');
+    iframeDocument!.body.appendChild(overlayElement);
+    let addListenerOnIframe = vi.spyOn(iframeDocument!, 'addEventListener');
+    let addListenerOnDocument = vi.spyOn(document, 'addEventListener');
+
+    let overlay = useAriaOverlay({
+      isDismissable: true,
+      isOpen: ref(true),
+      overlayRef: ref(overlayElement)
+    });
+
+    try {
+      let iframeEventTypes = addListenerOnIframe.mock.calls.map(([type]) => type as string);
+      let documentEventTypes = addListenerOnDocument.mock.calls.map(([type]) => type as string);
+
+      expect(iframeEventTypes).toEqual(expect.arrayContaining(['focusin', 'keydown']));
+      expect(documentEventTypes).not.toContain('focusin');
+      expect(documentEventTypes).not.toContain('keydown');
+
+      if (typeof PointerEvent !== 'undefined') {
+        expect(iframeEventTypes).toEqual(expect.arrayContaining(['pointerdown', 'click']));
+        expect(documentEventTypes).not.toContain('pointerdown');
+        expect(documentEventTypes).not.toContain('click');
+      } else {
+        expect(iframeEventTypes).toEqual(expect.arrayContaining(['mousedown', 'mouseup', 'touchstart', 'touchend']));
+        expect(documentEventTypes).not.toContain('mousedown');
+        expect(documentEventTypes).not.toContain('mouseup');
+        expect(documentEventTypes).not.toContain('touchstart');
+        expect(documentEventTypes).not.toContain('touchend');
+      }
+    } finally {
+      overlay.dispose();
+      addListenerOnIframe.mockRestore();
+      addListenerOnDocument.mockRestore();
+      iframe.remove();
+    }
+  });
+
   it('computes vue-aria progress semantics for determinate and indeterminate bars', () => {
     let progressBar = useAriaProgressBar({
       label: 'Upload progress',
