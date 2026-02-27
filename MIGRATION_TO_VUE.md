@@ -929,13 +929,27 @@
    - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "number field"`,
    - full Vue tests: `yarn test:vue` (529 passed).
 
+### February 27, 2026 — Shared `useRadioGroup`/`useRadio` ARIA composition parity (`@vue-aria/radio`)
+
+1. Aligned radio-group labeling semantics with React dual-label behavior:
+   - visible group label id now composes with external `aria-labelledby`,
+   - group id now participates in `aria-labelledby` when `aria-label` coexists with labelledby sources.
+2. Closed shared radio input prop-surface drift:
+   - `useRadio` now accepts and forwards `aria-labelledby` on the input, matching React radio input labeling support.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: radio-group assertions for composed `aria-labelledby` ownership and radio input `aria-labelledby` passthrough.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "radio group|radio input labelling"`,
+   - full Vue tests: `yarn test:vue` (530 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 529 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 530 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

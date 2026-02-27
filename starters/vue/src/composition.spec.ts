@@ -3625,6 +3625,7 @@ describe('Vue migration composition components', () => {
     expect(reactRadio.inputProps.value.tabIndex).toBe(0);
     expect(vueRadio.inputProps.value.tabIndex).toBe(-1);
     expect(disabledRadio.inputProps.value.disabled).toBe(true);
+    expect(radioGroup.radioGroupProps.value['aria-labelledby']).toBe(radioGroup.labelProps.value.id);
 
     reactRadio.inputProps.value.onChange();
     expect(selectedValue.value).toBe('react');
@@ -3652,6 +3653,30 @@ describe('Vue migration composition components', () => {
     reactRadio.dispose();
     vueRadio.dispose();
     disabledRadio.dispose();
+  });
+
+  it('composes vue-aria radio group and radio input labelling parity', () => {
+    let selectedValue = ref<string | null>('react');
+    let radioGroup = useAriaRadioGroup({
+      'aria-label': 'Framework',
+      'aria-labelledby': 'external-radio-group-label',
+      label: 'Library',
+      id: 'framework-group',
+      selectedValue
+    });
+
+    let groupLabelledByIds = radioGroup.radioGroupProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(groupLabelledByIds).toContain('framework-group-label');
+    expect(groupLabelledByIds).toContain('external-radio-group-label');
+    expect(groupLabelledByIds).toContain('framework-group');
+    expect(radioGroup.radioGroupProps.value['aria-label']).toBe('Framework');
+
+    let reactRadio = useAriaRadio({
+      'aria-labelledby': 'external-react-radio-label',
+      value: 'react'
+    }, radioGroup);
+    expect(reactRadio.inputProps.value['aria-labelledby']).toBe('external-react-radio-label');
+    reactRadio.dispose();
   });
 
   it('computes vue-aria search field submit and clear behavior', () => {

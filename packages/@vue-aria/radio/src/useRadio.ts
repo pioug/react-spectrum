@@ -5,6 +5,7 @@ import type {RadioGroupAria} from './useRadioGroup';
 export interface AriaRadioOptions {
   'aria-describedby'?: MaybeRef<string | undefined>,
   'aria-label'?: MaybeRef<string | undefined>,
+  'aria-labelledby'?: MaybeRef<string | undefined>,
   isDisabled?: MaybeRef<boolean>,
   onChange?: (value: string) => void,
   value: MaybeRef<string>
@@ -15,6 +16,7 @@ export interface RadioAria {
   inputProps: ComputedRef<{
     'aria-describedby'?: string,
     'aria-label'?: string,
+    'aria-labelledby'?: string,
     checked: boolean,
     disabled: boolean,
     name: string,
@@ -135,6 +137,7 @@ export function useRadio(options: AriaRadioOptions, group: RadioGroupAria): Radi
       required: group.isRequired.value,
       tabIndex: tabIndex.value,
       'aria-label': resolveOptionalString(options['aria-label']),
+      'aria-labelledby': resolveOptionalString(options['aria-labelledby']),
       'aria-describedby': ariaDescribedBy.value,
       onChange: select,
       onMouseDown: () => {
