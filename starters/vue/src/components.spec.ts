@@ -17,6 +17,7 @@ import {Calendar, RangeCalendar} from '@vue-spectrum/calendar';
 import {Card, CardView, GalleryLayout, WaterfallLayout} from '@vue-spectrum/card';
 import {Checkbox, CheckboxGroup} from '@vue-spectrum/checkbox';
 import {ComboBox} from '@vue-spectrum/combobox';
+import {ContextualHelp} from '@vue-spectrum/contextualhelp';
 import {SearchAutocomplete} from '@vue-spectrum/autocomplete';
 import {ColorField, ColorPicker, ColorSwatchPicker} from '@vue-spectrum/color';
 import {DatePicker, DateRangePicker, TimeField} from '@vue-spectrum/datepicker';
@@ -2142,6 +2143,28 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('update:selectedKey')?.[0]).toEqual(['Kangaroo']);
     expect(wrapper.emitted('selectionChange')?.[0]).toEqual(['Kangaroo']);
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Kangaroo']);
+  });
+
+  it('emits contextual help openChange lifecycle events', async () => {
+    let wrapper = mount(ContextualHelp, {
+      props: {
+        title: 'Help'
+      },
+      slots: {
+        default: () => 'Details'
+      }
+    });
+
+    expect(wrapper.find('.vs-contextual-help__dialog').exists()).toBe(false);
+    await wrapper.get('button.vs-contextual-help__trigger').trigger('click');
+    expect(wrapper.emitted('open')).toHaveLength(1);
+    expect(wrapper.emitted('openChange')?.[0]).toEqual([true]);
+    expect(wrapper.find('.vs-contextual-help__dialog').exists()).toBe(true);
+
+    await wrapper.get('button.vs-contextual-help__backdrop').trigger('click');
+    expect(wrapper.emitted('close')).toHaveLength(1);
+    expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
+    expect(wrapper.find('.vs-contextual-help__dialog').exists()).toBe(false);
   });
 
   it('accepts combobox selectedKeys as a Set iterable in multiple selection mode', async () => {

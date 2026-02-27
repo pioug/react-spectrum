@@ -60,6 +60,7 @@ export const ContextualHelp = defineComponent({
   emits: {
     close: () => true,
     open: () => true,
+    openChange: (value: boolean) => typeof value === 'boolean',
     'update:modelValue': (value: boolean) => typeof value === 'boolean'
   },
   setup(props, {attrs, emit, slots}) {
@@ -99,6 +100,7 @@ export const ContextualHelp = defineComponent({
       } else {
         emit('close');
       }
+      emit('openChange', nextValue);
     };
 
     return () => h('div', {
