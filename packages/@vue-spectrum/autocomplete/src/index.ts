@@ -81,6 +81,10 @@ export const SearchAutocomplete = defineComponent({
     change: (value: string) => typeof value === 'string',
     clear: () => true,
     focus: (event: FocusEvent) => event instanceof FocusEvent,
+    inputChange: (value: string) => typeof value === 'string',
+    openChange: (value: boolean) => typeof value === 'boolean',
+    selectionChange: (key: string | null) => key == null || typeof key === 'string',
+    submit: (value: string, key: string | null) => typeof value === 'string' && (key == null || typeof key === 'string'),
     'update:modelValue': (value: string) => typeof value === 'string'
   },
   setup(props, {attrs, emit}) {
@@ -167,6 +171,11 @@ export const SearchAutocomplete = defineComponent({
     let emitValue = (value: string) => {
       emit('update:modelValue', value);
       emit('change', value);
+      emit('inputChange', value);
+    };
+
+    let resolveSelectionKey = (value: string): string | null => {
+      return props.options.includes(value) ? value : null;
     };
 
     return () => h('label', {
@@ -215,16 +224,27 @@ export const SearchAutocomplete = defineComponent({
               let target = event.currentTarget as HTMLInputElement | null;
               emitValue(target?.value ?? '');
             },
+            onChange: (event: Event) => {
+              let target = event.currentTarget as HTMLInputElement | null;
+              emit('selectionChange', resolveSelectionKey(target?.value ?? ''));
+            },
             onFocus: (event: FocusEvent) => {
               isFocused.value = true;
               let target = getEventTarget(event);
               isFocusVisible.value = target instanceof HTMLElement ? target.matches(':focus-visible') : false;
+              emit('openChange', true);
               emit('focus', event);
             },
             onBlur: (event: FocusEvent) => {
               isFocused.value = false;
               isFocusVisible.value = false;
+              emit('openChange', false);
               emit('blur', event);
+            },
+            onKeydown: (event: KeyboardEvent) => {
+              if (event.key === 'Enter') {
+                emit('submit', props.modelValue, resolveSelectionKey(props.modelValue));
+              }
             }
           }),
           props.modelValue !== '' && !isDisabled.value && !props.isReadOnly
@@ -234,6 +254,9 @@ export const SearchAutocomplete = defineComponent({
               'aria-label': 'Clear search',
               onClick: () => {
                 emit('update:modelValue', '');
+                emit('change', '');
+                emit('inputChange', '');
+                emit('selectionChange', null);
                 emit('clear');
               }
             }, '\u00d7')

@@ -1977,6 +1977,7 @@ describe('Vue migration primitives', () => {
     expect(wrapper.get('input[type="search"]').attributes('list')).toContain('-list');
     await wrapper.get('input[type="search"]').trigger('focus');
     expect(wrapper.find('.spectrum-InputGroup').classes()).not.toContain('focus-ring');
+    expect(wrapper.emitted('openChange')?.[0]).toEqual([true]);
 
     let autocompleteInput = wrapper.get('input[type="search"]').element as HTMLInputElement;
     let originalMatches = autocompleteInput.matches.bind(autocompleteInput);
@@ -1990,9 +1991,21 @@ describe('Vue migration primitives', () => {
     await wrapper.get('input[type="search"]').trigger('focus');
     expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('focus-ring');
     matchesSpy.mockRestore();
+    await wrapper.get('input[type="search"]').trigger('blur');
+    expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
+
+    await wrapper.get('input[type="search"]').setValue('Mechanical');
+    expect(wrapper.emitted('inputChange')?.some((call) => call[0] === 'Mechanical')).toBe(true);
+    expect(wrapper.emitted('selectionChange')?.at(-1)).toEqual(['Mechanical']);
+
+    await wrapper.setProps({modelValue: 'Mechanical'});
+    await wrapper.get('input[type="search"]').trigger('keydown', {key: 'Enter'});
+    expect(wrapper.emitted('submit')?.at(-1)).toEqual(['Mechanical', 'Mechanical']);
 
     await wrapper.get('button.vs-combobox__clear').trigger('click');
-    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['']);
+    expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual(['']);
+    expect(wrapper.emitted('inputChange')?.at(-1)).toEqual(['']);
+    expect(wrapper.emitted('selectionChange')?.at(-1)).toEqual([null]);
     expect(wrapper.emitted('clear')).toHaveLength(1);
 
     let noIcon = mount(SearchAutocomplete, {
