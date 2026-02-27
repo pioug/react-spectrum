@@ -5596,6 +5596,89 @@ describe('Vue migration composition components', () => {
     }
   });
 
+  it('binds vue-aria move global pointer listeners to the owner window', () => {
+    let iframe = document.createElement('iframe');
+    document.body.appendChild(iframe);
+    let iframeWindow = iframe.contentWindow;
+    let iframeDocument = iframeWindow?.document;
+    expect(iframeWindow).toBeTruthy();
+    expect(iframeDocument).toBeTruthy();
+    let container = iframeDocument!.createElement('div');
+    iframeDocument!.body.appendChild(container);
+    let moveEvents: Array<{type: string, x?: number, y?: number}> = [];
+
+    let move = useMove({
+      onMove: (event) => {
+        moveEvents.push({type: event.type, x: event.deltaX, y: event.deltaY});
+      },
+      onMoveEnd: (event) => {
+        moveEvents.push({type: event.type});
+      },
+      onMoveStart: (event) => {
+        moveEvents.push({type: event.type});
+      }
+    });
+
+    let addMainWindowListener = vi.spyOn(window, 'addEventListener');
+    let addIframeWindowListener = vi.spyOn(iframeWindow!, 'addEventListener');
+    let removeIframeWindowListener = vi.spyOn(iframeWindow!, 'removeEventListener');
+
+    try {
+      if (move.moveProps.value.onPointerDown) {
+        container.addEventListener('pointerdown', move.moveProps.value.onPointerDown as EventListener);
+      }
+
+      container.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 31, pageX: 10, pageY: 10}));
+      let iframeListenerTypes = addIframeWindowListener.mock.calls.map(([type]) => type as string);
+      let mainWindowListenerTypes = addMainWindowListener.mock.calls.map(([type]) => type as string);
+      expect(iframeListenerTypes).toEqual(expect.arrayContaining(['pointermove', 'pointerup', 'pointercancel']));
+      expect(mainWindowListenerTypes).not.toContain('pointermove');
+      expect(mainWindowListenerTypes).not.toContain('pointerup');
+      expect(mainWindowListenerTypes).not.toContain('pointercancel');
+
+      iframeWindow!.dispatchEvent(createPointerEvent('pointermove', {pointerId: 31, pageX: 15, pageY: 8}));
+      iframeWindow!.dispatchEvent(createPointerEvent('pointerup', {pointerId: 31, pageX: 15, pageY: 8}));
+      expect(moveEvents).toEqual([
+        {type: 'movestart'},
+        {type: 'move', x: 5, y: -2},
+        {type: 'moveend'}
+      ]);
+
+      let removedIframeTypes = removeIframeWindowListener.mock.calls.map(([type]) => type as string);
+      expect(removedIframeTypes).toEqual(expect.arrayContaining(['pointermove', 'pointerup', 'pointercancel']));
+    } finally {
+      addMainWindowListener.mockRestore();
+      addIframeWindowListener.mockRestore();
+      removeIframeWindowListener.mockRestore();
+      iframe.remove();
+    }
+  });
+
+  it('cleans up vue-aria move pointer listeners when scope is disposed mid-move', () => {
+    let container = document.createElement('div');
+    document.body.appendChild(container);
+    let removeWindowListener = vi.spyOn(window, 'removeEventListener');
+
+    let scope = effectScope();
+    scope.run(() => {
+      let move = useMove();
+      if (move.moveProps.value.onPointerDown) {
+        container.addEventListener('pointerdown', move.moveProps.value.onPointerDown as EventListener);
+      }
+    });
+
+    try {
+      container.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 42, pageX: 2, pageY: 2}));
+      scope.stop();
+      let removedTypes = removeWindowListener.mock.calls.map(([type]) => type as string);
+      expect(removedTypes).toEqual(expect.arrayContaining(['pointermove', 'pointerup', 'pointercancel']));
+    } finally {
+      scope.stop();
+      removeWindowListener.mockRestore();
+      document.body.removeChild(container);
+    }
+  });
+
   it('triggers vue-aria long press callbacks after threshold', () => {
     vi.useFakeTimers();
     let longPressEvents: string[] = [];

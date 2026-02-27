@@ -1,4 +1,4 @@
-import {computed, type ComputedRef} from 'vue';
+import {computed, getCurrentScope, onScopeDispose, type ComputedRef} from 'vue';
 import {disableTextSelection, restoreTextSelection} from './textSelection';
 import type {PointerType} from './types';
 
@@ -58,12 +58,37 @@ function normalizePointerType(event: PointerEvent): PointerType {
   return 'mouse';
 }
 
+function isElementNode(value: unknown): value is Element {
+  return Boolean(value && typeof value === 'object' && 'nodeType' in (value as Record<string, unknown>) && (value as {nodeType?: unknown}).nodeType === 1);
+}
+
 export function useMove(props: MoveEvents = {}): MoveResult {
   let didMove = false;
   let activePointerId: number | null = null;
   let lastPosition: {x: number, y: number} | null = null;
   let activeTarget: Element | null = null;
   let removeGlobalListeners = () => {};
+
+  let getOwnerWindow = (target: Element | null): Window | null => {
+    if (target?.ownerDocument?.defaultView) {
+      return target.ownerDocument.defaultView;
+    }
+
+    if (typeof window !== 'undefined') {
+      return window;
+    }
+
+    return null;
+  };
+
+  let resetMove = () => {
+    restoreTextSelection(activeTarget);
+    didMove = false;
+    activePointerId = null;
+    activeTarget = null;
+    lastPosition = null;
+    removeGlobalListeners();
+  };
 
   let triggerMoveStart = (event: KeyboardEvent | PointerEvent, pointerType: PointerType) => {
     if (didMove) {
@@ -100,8 +125,6 @@ export function useMove(props: MoveEvents = {}): MoveResult {
   };
 
   let triggerMoveEnd = (event: KeyboardEvent | PointerEvent, pointerType: PointerType) => {
-    restoreTextSelection(activeTarget);
-
     if (didMove) {
       props.onMoveEnd?.({
         pointerType,
@@ -110,22 +133,22 @@ export function useMove(props: MoveEvents = {}): MoveResult {
       });
     }
 
-    didMove = false;
-    activePointerId = null;
-    activeTarget = null;
-    lastPosition = null;
-    removeGlobalListeners();
+    resetMove();
   };
 
   let onPointerDown = (event: PointerEvent) => {
-    if (event.button !== 0 || activePointerId != null || typeof window === 'undefined') {
+    if (event.button !== 0 || activePointerId != null) {
       return;
     }
 
     event.preventDefault();
     event.stopPropagation();
 
-    activeTarget = event.currentTarget instanceof Element ? event.currentTarget : null;
+    activeTarget = isElementNode(event.currentTarget) ? event.currentTarget : null;
+    let ownerWindow = getOwnerWindow(activeTarget);
+    if (!ownerWindow) {
+      return;
+    }
     disableTextSelection(activeTarget);
 
     activePointerId = event.pointerId;
@@ -157,14 +180,14 @@ export function useMove(props: MoveEvents = {}): MoveResult {
       triggerMoveEnd(upEvent, normalizePointerType(upEvent));
     };
 
-    window.addEventListener('pointermove', onPointerMove, false);
-    window.addEventListener('pointerup', onPointerUpOrCancel, false);
-    window.addEventListener('pointercancel', onPointerUpOrCancel, false);
+    ownerWindow.addEventListener('pointermove', onPointerMove, false);
+    ownerWindow.addEventListener('pointerup', onPointerUpOrCancel, false);
+    ownerWindow.addEventListener('pointercancel', onPointerUpOrCancel, false);
 
     removeGlobalListeners = () => {
-      window.removeEventListener('pointermove', onPointerMove, false);
-      window.removeEventListener('pointerup', onPointerUpOrCancel, false);
-      window.removeEventListener('pointercancel', onPointerUpOrCancel, false);
+      ownerWindow.removeEventListener('pointermove', onPointerMove, false);
+      ownerWindow.removeEventListener('pointerup', onPointerUpOrCancel, false);
+      ownerWindow.removeEventListener('pointercancel', onPointerUpOrCancel, false);
       removeGlobalListeners = () => {};
     };
   };
@@ -188,12 +211,17 @@ export function useMove(props: MoveEvents = {}): MoveResult {
     event.preventDefault();
     event.stopPropagation();
 
-    activeTarget = event.currentTarget instanceof Element ? event.currentTarget : null;
+    activeTarget = isElementNode(event.currentTarget) ? event.currentTarget : null;
     disableTextSelection(activeTarget);
 
     triggerMove(event, 'keyboard', deltaX, deltaY);
     triggerMoveEnd(event, 'keyboard');
   };
+  if (getCurrentScope()) {
+    onScopeDispose(() => {
+      resetMove();
+    });
+  }
 
   return {
     moveProps: computed<MoveDOMProps>(() => ({
