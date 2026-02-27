@@ -3196,6 +3196,34 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
   });
 
+  it('closes datepicker popover on Escape and outside pointer interactions', async () => {
+    let wrapper = mount(DatePicker, {
+      attachTo: document.body,
+      props: {
+        modelValue: '2026-02-19',
+        label: 'Date picker'
+      }
+    });
+
+    let trigger = wrapper.get('button.spectrum-FieldButton');
+    await trigger.trigger('click');
+    expect(wrapper.emitted('openChange')?.[0]).toEqual([true]);
+    expect(wrapper.get('.react-spectrum-Datepicker-dialog').attributes('aria-hidden')).toBe('false');
+
+    document.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'Escape'}));
+    await nextTick();
+    expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
+    expect(wrapper.get('.react-spectrum-Datepicker-dialog').attributes('aria-hidden')).toBe('true');
+    expect(document.activeElement).toBe(trigger.element);
+
+    await trigger.trigger('click');
+    expect(wrapper.get('.react-spectrum-Datepicker-dialog').attributes('aria-hidden')).toBe('false');
+    document.body.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+    await nextTick();
+    expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
+    expect(wrapper.get('.react-spectrum-Datepicker-dialog').attributes('aria-hidden')).toBe('true');
+  });
+
   it('emits structured range updates from date range picker inputs', async () => {
     let wrapper = mount(DateRangePicker, {
       props: {
@@ -3234,6 +3262,37 @@ describe('Vue migration primitives', () => {
     expect(inputs[0].classes()).toContain('is-read-only');
     expect(inputs[1].classes()).toContain('is-read-only');
     expect(wrapper.get('[data-testid=\"date-range-dash\"]').attributes('aria-hidden')).toBe('true');
+  });
+
+  it('closes date range popover on Escape and outside pointer interactions', async () => {
+    let wrapper = mount(DateRangePicker, {
+      attachTo: document.body,
+      props: {
+        modelValue: {
+          start: '2026-02-20',
+          end: '2026-02-24'
+        },
+        label: 'Date range picker'
+      }
+    });
+
+    let trigger = wrapper.get('button.spectrum-FieldButton');
+    await trigger.trigger('click');
+    expect(wrapper.emitted('openChange')?.[0]).toEqual([true]);
+    expect(wrapper.get('.react-spectrum-Datepicker-dialog').attributes('aria-hidden')).toBe('false');
+
+    document.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'Escape'}));
+    await nextTick();
+    expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
+    expect(wrapper.get('.react-spectrum-Datepicker-dialog').attributes('aria-hidden')).toBe('true');
+    expect(document.activeElement).toBe(trigger.element);
+
+    await trigger.trigger('click');
+    expect(wrapper.get('.react-spectrum-Datepicker-dialog').attributes('aria-hidden')).toBe('false');
+    document.body.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+    await nextTick();
+    expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
+    expect(wrapper.get('.react-spectrum-Datepicker-dialog').attributes('aria-hidden')).toBe('true');
   });
 
   it('emits update and change events from time field inputs', async () => {

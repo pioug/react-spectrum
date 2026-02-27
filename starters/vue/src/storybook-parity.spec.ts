@@ -162,8 +162,14 @@ import {
   Destructive as AlertDialogDestructive,
   PrimaryDisabled as AlertDialogPrimaryDisabled
 } from '../../../packages/@vue-spectrum/dialog/stories/AlertDialog.stories';
-import {CustomCalendar as DatePickerCustomCalendarStory} from '../../../packages/@vue-spectrum/datepicker/stories/DatePicker.stories';
-import {CustomCalendar as DateRangePickerCustomCalendarStory} from '../../../packages/@vue-spectrum/datepicker/stories/DateRangePicker.stories';
+import {
+  CustomCalendar as DatePickerCustomCalendarStory,
+  Default as DatePickerDefaultStory
+} from '../../../packages/@vue-spectrum/datepicker/stories/DatePicker.stories';
+import {
+  CustomCalendar as DateRangePickerCustomCalendarStory,
+  Default as DateRangePickerDefaultStory
+} from '../../../packages/@vue-spectrum/datepicker/stories/DateRangePicker.stories';
 import {
   AllControlled as ComboBoxAllControlledStory,
   ControlledInputDefaultKey as ComboBoxControlledInputDefaultKeyStory,
@@ -1909,6 +1915,46 @@ describe('Vue storybook helper parity', () => {
       for (let wrapper of wrappers) {
         wrapper.unmount();
       }
+    }
+  });
+
+  it('dismisses date picker stories on Escape and outside pointer interactions', async () => {
+    let datePickerStory = DatePickerDefaultStory.render?.({}) as ReturnType<Exclude<typeof DatePickerDefaultStory.render, undefined>>;
+    let dateRangePickerStory = DateRangePickerDefaultStory.render?.({}) as ReturnType<Exclude<typeof DateRangePickerDefaultStory.render, undefined>>;
+    let datePickerWrapper = mount(datePickerStory, {attachTo: document.body});
+    let dateRangePickerWrapper = mount(dateRangePickerStory, {attachTo: document.body});
+
+    try {
+      let datePickerTrigger = datePickerWrapper.get('.vs-date-picker button.spectrum-FieldButton');
+      await datePickerTrigger.trigger('click');
+      expect(datePickerWrapper.get('.vs-date-picker .react-spectrum-Datepicker-dialog').attributes('aria-hidden')).toBe('false');
+
+      document.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'Escape'}));
+      await nextTick();
+      expect(datePickerWrapper.get('.vs-date-picker .react-spectrum-Datepicker-dialog').attributes('aria-hidden')).toBe('true');
+
+      await datePickerTrigger.trigger('click');
+      expect(datePickerWrapper.get('.vs-date-picker .react-spectrum-Datepicker-dialog').attributes('aria-hidden')).toBe('false');
+      document.body.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+      await nextTick();
+      expect(datePickerWrapper.get('.vs-date-picker .react-spectrum-Datepicker-dialog').attributes('aria-hidden')).toBe('true');
+
+      let dateRangeTrigger = dateRangePickerWrapper.get('.vs-date-range-picker button.spectrum-FieldButton');
+      await dateRangeTrigger.trigger('click');
+      expect(dateRangePickerWrapper.get('.vs-date-range-picker .react-spectrum-Datepicker-dialog').attributes('aria-hidden')).toBe('false');
+
+      document.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'Escape'}));
+      await nextTick();
+      expect(dateRangePickerWrapper.get('.vs-date-range-picker .react-spectrum-Datepicker-dialog').attributes('aria-hidden')).toBe('true');
+
+      await dateRangeTrigger.trigger('click');
+      expect(dateRangePickerWrapper.get('.vs-date-range-picker .react-spectrum-Datepicker-dialog').attributes('aria-hidden')).toBe('false');
+      document.body.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+      await nextTick();
+      expect(dateRangePickerWrapper.get('.vs-date-range-picker .react-spectrum-Datepicker-dialog').attributes('aria-hidden')).toBe('true');
+    } finally {
+      datePickerWrapper.unmount();
+      dateRangePickerWrapper.unmount();
     }
   });
 

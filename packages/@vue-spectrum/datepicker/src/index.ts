@@ -3,7 +3,7 @@ import '@adobe/spectrum-css-temp/components/fieldlabel/vars.css';
 import '@adobe/spectrum-css-temp/components/textfield/vars.css';
 import '@adobe/spectrum-css-temp/components/inputgroup/vars.css';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, type PropType, ref} from 'vue';
+import {computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, type PropType, ref} from 'vue';
 import './styles.css';
 import {getEventTarget} from '@vue-aria/utils';
 const buttonStyles: {[key: string]: string} = {};
@@ -196,6 +196,8 @@ function buildSingleField(
       let isFocusVisible = ref(false);
       let isHovered = ref(false);
       let isOpen = ref(false);
+      let rootRef = ref<HTMLElement | null>(null);
+      let triggerRef = ref<HTMLButtonElement | null>(null);
 
       let groupClassName = computed(() => classNames(
         inputGroupStyles,
@@ -280,7 +282,7 @@ function buildSingleField(
         emit('openChange', true);
       };
 
-      let closePopover = () => {
+      let closePopover = (restoreFocus = false) => {
         if (!options.includeButton || !isOpen.value) {
           return;
         }
@@ -288,10 +290,61 @@ function buildSingleField(
         isOpen.value = false;
         emit('close');
         emit('openChange', false);
+        if (restoreFocus) {
+          void nextTick(() => {
+            triggerRef.value?.focus();
+          });
+        }
       };
+
+      let onDocumentKeydown = (event: KeyboardEvent) => {
+        if (!options.includeButton || event.defaultPrevented || event.key !== 'Escape' || !isOpen.value) {
+          return;
+        }
+
+        event.preventDefault();
+        event.stopPropagation();
+        closePopover(true);
+      };
+
+      let onDocumentPointerDown = (event: MouseEvent | PointerEvent | TouchEvent) => {
+        if (!options.includeButton || !isOpen.value) {
+          return;
+        }
+
+        let target = getEventTarget(event);
+        if (target instanceof Node && rootRef.value?.contains(target)) {
+          return;
+        }
+
+        closePopover();
+      };
+
+      onMounted(() => {
+        if (!options.includeButton) {
+          return;
+        }
+
+        document.addEventListener('keydown', onDocumentKeydown);
+        document.addEventListener('mousedown', onDocumentPointerDown, true);
+        document.addEventListener('pointerdown', onDocumentPointerDown, true);
+        document.addEventListener('touchstart', onDocumentPointerDown, true);
+      });
+
+      onBeforeUnmount(() => {
+        if (!options.includeButton) {
+          return;
+        }
+
+        document.removeEventListener('keydown', onDocumentKeydown);
+        document.removeEventListener('mousedown', onDocumentPointerDown, true);
+        document.removeEventListener('pointerdown', onDocumentPointerDown, true);
+        document.removeEventListener('touchstart', onDocumentPointerDown, true);
+      });
 
       return () => h('label', {
         ...attrs,
+        ref: rootRef,
         class: [
           singleFieldClassPrefix,
           attrs.class
@@ -373,6 +426,7 @@ function buildSingleField(
           ]),
           options.includeButton
             ? h('button', {
+              ref: triggerRef,
               class: triggerClassName.value,
               type: 'button',
               disabled: isDisabled.value,
@@ -554,6 +608,8 @@ export const DateRangePicker = defineComponent({
     let isFocusVisible = ref(false);
     let isHovered = ref(false);
     let isOpen = ref(false);
+    let rootRef = ref<HTMLElement | null>(null);
+    let triggerRef = ref<HTMLButtonElement | null>(null);
 
     let groupClassName = computed(() => classNames(
       inputGroupStyles,
@@ -636,7 +692,7 @@ export const DateRangePicker = defineComponent({
       emit('openChange', true);
     };
 
-    let closePopover = () => {
+    let closePopover = (restoreFocus = false) => {
       if (!isOpen.value) {
         return;
       }
@@ -644,10 +700,53 @@ export const DateRangePicker = defineComponent({
       isOpen.value = false;
       emit('close');
       emit('openChange', false);
+      if (restoreFocus) {
+        void nextTick(() => {
+          triggerRef.value?.focus();
+        });
+      }
     };
+
+    let onDocumentKeydown = (event: KeyboardEvent) => {
+      if (event.defaultPrevented || event.key !== 'Escape' || !isOpen.value) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+      closePopover(true);
+    };
+
+    let onDocumentPointerDown = (event: MouseEvent | PointerEvent | TouchEvent) => {
+      if (!isOpen.value) {
+        return;
+      }
+
+      let target = getEventTarget(event);
+      if (target instanceof Node && rootRef.value?.contains(target)) {
+        return;
+      }
+
+      closePopover();
+    };
+
+    onMounted(() => {
+      document.addEventListener('keydown', onDocumentKeydown);
+      document.addEventListener('mousedown', onDocumentPointerDown, true);
+      document.addEventListener('pointerdown', onDocumentPointerDown, true);
+      document.addEventListener('touchstart', onDocumentPointerDown, true);
+    });
+
+    onBeforeUnmount(() => {
+      document.removeEventListener('keydown', onDocumentKeydown);
+      document.removeEventListener('mousedown', onDocumentPointerDown, true);
+      document.removeEventListener('pointerdown', onDocumentPointerDown, true);
+      document.removeEventListener('touchstart', onDocumentPointerDown, true);
+    });
 
     return () => h('fieldset', {
       ...attrs,
+      ref: rootRef,
       class: ['vs-date-range-picker', attrs.class],
       disabled: isDisabled.value,
       'data-vac': ''
@@ -740,6 +839,7 @@ export const DateRangePicker = defineComponent({
           })
         ]),
         h('button', {
+          ref: triggerRef,
           type: 'button',
           class: triggerClassName.value,
           disabled: isDisabled.value,
