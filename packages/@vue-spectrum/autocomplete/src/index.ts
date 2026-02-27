@@ -94,6 +94,7 @@ export const SearchAutocomplete = defineComponent({
     let isFocusVisible = ref(false);
 
     let inputId = computed(() => props.id ?? generatedId);
+    let labelId = computed(() => props.label ? `${inputId.value}-label` : undefined);
     let listId = computed(() => `${inputId.value}-list`);
 
     let isDisabled = computed(() => props.isDisabled ?? props.disabled);
@@ -138,13 +139,40 @@ export const SearchAutocomplete = defineComponent({
       }
     ));
 
+    let rootAttrs = computed(() => {
+      let next: Record<string, unknown> = {};
+      for (let [key, value] of Object.entries(attrs)) {
+        if (key === 'aria-label' || key === 'aria-labelledby' || key === 'autofocus') {
+          continue;
+        }
+
+        next[key] = value;
+      }
+
+      return next;
+    });
+
+    let externalAriaLabelledBy = computed(() => {
+      let value = attrs['aria-labelledby'];
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    });
+
+    let ariaLabelledBy = computed(() => {
+      let parts = [labelId.value, externalAriaLabelledBy.value].filter((part): part is string => Boolean(part));
+      return parts.length > 0 ? parts.join(' ') : undefined;
+    });
+
     let ariaLabel = computed(() => {
+      if (ariaLabelledBy.value) {
+        return undefined;
+      }
+
       let fromAttrs = attrs['aria-label'];
       if (typeof fromAttrs === 'string' && fromAttrs.length > 0) {
         return fromAttrs;
       }
 
-      return props.label || undefined;
+      return undefined;
     });
 
     let iconText = computed(() => {
@@ -179,11 +207,11 @@ export const SearchAutocomplete = defineComponent({
     };
 
     return () => h('label', {
-      ...attrs,
+      ...rootAttrs.value,
       class: ['vs-combobox', attrs.class],
       'data-vac': ''
     }, [
-      props.label ? h('span', {class: 'vs-combobox__label'}, props.label) : null,
+      props.label ? h('span', {id: labelId.value, class: 'vs-combobox__label'}, props.label) : null,
       h('div', {
         class: controlClassName.value,
         onMouseenter: () => {
@@ -218,6 +246,7 @@ export const SearchAutocomplete = defineComponent({
             readonly: props.isReadOnly || undefined,
             'aria-invalid': isInvalid.value ? 'true' : undefined,
             'aria-label': ariaLabel.value,
+            'aria-labelledby': ariaLabelledBy.value,
             'aria-haspopup': 'listbox',
             autofocus: props.autoFocus || attrs.autofocus || undefined,
             onInput: (event: Event) => {

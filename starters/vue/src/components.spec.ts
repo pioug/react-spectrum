@@ -2132,6 +2132,57 @@ describe('Vue migration primitives', () => {
     expect(noIcon.find('[data-testid="searchicon"]').exists()).toBe(false);
   });
 
+  it('maps search autocomplete aria label and labelledby precedence to react parity', () => {
+    let labelledByWrapper = mount(SearchAutocomplete, {
+      attrs: {
+        'aria-labelledby': 'external-search-autocomplete-label'
+      },
+      props: {
+        label: '',
+        modelValue: '',
+        options: ['Aerospace']
+      }
+    });
+
+    let labelledByInput = labelledByWrapper.get('input[type="search"]');
+    expect(labelledByInput.attributes('aria-labelledby')).toBe('external-search-autocomplete-label');
+    expect(labelledByInput.attributes('aria-label')).toBeUndefined();
+    expect(labelledByWrapper.attributes('aria-labelledby')).toBeUndefined();
+
+    let visibleLabelWrapper = mount(SearchAutocomplete, {
+      attrs: {
+        'aria-labelledby': 'external-search-autocomplete-label'
+      },
+      props: {
+        label: 'Search with Autocomplete',
+        modelValue: '',
+        options: ['Aerospace']
+      }
+    });
+
+    let visibleLabel = visibleLabelWrapper.get('.vs-combobox__label');
+    let visibleLabelInput = visibleLabelWrapper.get('input[type="search"]');
+    expect(visibleLabelInput.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
+    expect(visibleLabelInput.attributes('aria-labelledby')).toContain('external-search-autocomplete-label');
+    expect(visibleLabelInput.attributes('aria-label')).toBeUndefined();
+
+    let ariaLabelWrapper = mount(SearchAutocomplete, {
+      attrs: {
+        'aria-label': 'Search Autocomplete'
+      },
+      props: {
+        label: '',
+        modelValue: '',
+        options: ['Aerospace']
+      }
+    });
+
+    let ariaLabelInput = ariaLabelWrapper.get('input[type="search"]');
+    expect(ariaLabelInput.attributes('aria-label')).toBe('Search Autocomplete');
+    expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
+    expect(ariaLabelWrapper.attributes('aria-label')).toBeUndefined();
+  });
+
   it('maps combobox interaction states, aria wiring, and hidden key input', async () => {
     let wrapper = mount(ComboBox, {
       props: {
