@@ -270,6 +270,7 @@ export const ComboBox = defineComponent({
     let listBoxRef = ref<HTMLElement | null>(null);
     let listBoxWidth = ref<string | null>(null);
     let listBoxScrollTop = ref(0);
+    let rootRef = ref<HTMLElement | null>(null);
     let triggerRef = ref<HTMLButtonElement | null>(null);
     let selectedKeysRef = ref<Set<string>>(new Set());
 
@@ -488,10 +489,16 @@ export const ComboBox = defineComponent({
     onMounted(() => {
       updateListBoxWidth();
       window.addEventListener('resize', updateListBoxWidth);
+      document.addEventListener('mousedown', onDocumentPointerDown, true);
+      document.addEventListener('pointerdown', onDocumentPointerDown, true);
+      document.addEventListener('touchstart', onDocumentPointerDown, true);
     });
 
     onBeforeUnmount(() => {
       window.removeEventListener('resize', updateListBoxWidth);
+      document.removeEventListener('mousedown', onDocumentPointerDown, true);
+      document.removeEventListener('pointerdown', onDocumentPointerDown, true);
+      document.removeEventListener('touchstart', onDocumentPointerDown, true);
     });
 
     let updateSelection = (nextSelection: Set<string>) => {
@@ -674,6 +681,19 @@ export const ComboBox = defineComponent({
       selectOption(option);
     };
 
+    let onDocumentPointerDown = (event: MouseEvent | PointerEvent | TouchEvent) => {
+      if (!isExpanded.value) {
+        return;
+      }
+
+      let target = getEventTarget(event);
+      if (target instanceof Node && rootRef.value?.contains(target)) {
+        return;
+      }
+
+      closeMenu();
+    };
+
     let rootAttrs = computed(() => {
       let next: Record<string, unknown> = {};
       for (let [key, value] of Object.entries(attrs)) {
@@ -765,6 +785,7 @@ export const ComboBox = defineComponent({
 
     return () => h('div', {
       ...rootAttrs.value,
+      ref: rootRef,
       class: [rootClassName.value, attrs.class]
     }, [
       props.label

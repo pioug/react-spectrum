@@ -237,6 +237,16 @@
    - `starters/vue/src/components.spec.ts` for Escape/outside-close behavior and focus restoration,
    - `starters/vue/src/storybook-parity.spec.ts` for default DatePicker/DateRangePicker story dismissal flows.
 
+### February 27, 2026 — `ComboBox` outside-dismiss parity remediation
+
+1. Closed outside-dismiss parity gap in `@vue-spectrum/combobox` by moving pointer dismissal ownership into component internals:
+   - added document-level outside pointer capture handling (`mousedown`/`pointerdown`/`touchstart`) while expanded,
+   - ignored in-component targets so trigger/list interactions are not incorrectly dismissed.
+2. Added regression coverage in `starters/vue/src/components.spec.ts` for:
+   - keyboard `Escape` close path,
+   - outside pointer dismissal path,
+   - emitted `openChange` contract on both paths.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

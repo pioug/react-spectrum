@@ -2254,6 +2254,36 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Kangaroo']);
   });
 
+  it('closes combobox popover on Escape and outside pointer interactions', async () => {
+    let wrapper = mount(ComboBox, {
+      attachTo: document.body,
+      props: {
+        label: 'Framework',
+        modelValue: '',
+        options: ['Vue', 'React']
+      }
+    });
+
+    let trigger = wrapper.get('button.spectrum-FieldButton');
+    await trigger.trigger('mousedown');
+    await trigger.trigger('click');
+    expect(wrapper.emitted('openChange')?.[0]).toEqual([true]);
+    expect(wrapper.find('[role="listbox"]').exists()).toBe(true);
+
+    let input = wrapper.get('input.spectrum-Textfield-input.spectrum-InputGroup-input');
+    await input.trigger('keydown', {key: 'Escape'});
+    expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
+    expect(wrapper.find('[role="listbox"]').exists()).toBe(false);
+
+    await trigger.trigger('mousedown');
+    await trigger.trigger('click');
+    expect(wrapper.find('[role="listbox"]').exists()).toBe(true);
+    document.body.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+    await nextTick();
+    expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
+    expect(wrapper.find('[role="listbox"]').exists()).toBe(false);
+  });
+
   it('emits contextual help openChange lifecycle events', async () => {
     let wrapper = mount(ContextualHelp, {
       props: {
