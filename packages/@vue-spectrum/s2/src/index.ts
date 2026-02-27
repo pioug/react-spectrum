@@ -2,6 +2,8 @@ import './font-faces.css';
 import './Toast.module.css';
 import type {App, Plugin} from 'vue';
 
+export * from './compat';
+
 export {Accordion} from '@vue-spectrum/accordion';
 export {ActionBar} from '@vue-spectrum/actionbar';
 export {ActionGroup} from '@vue-spectrum/actiongroup';
@@ -58,5 +60,3 @@ export const Spectrum2Plugin: Plugin = {
     // Aggregation-only compatibility plugin.
   }
 };
-
-export * from './compat';
