@@ -128,6 +128,7 @@ import {
   AriaLabelledBy as SpectrumColorFieldAriaLabelledBy,
   Default as SpectrumColorFieldDefault
 } from '../../../packages/@vue-spectrum/color/stories/ColorField.stories';
+import {Default as SpectrumColorSliderDefault} from '../../../packages/@vue-spectrum/color/stories/ColorSlider.stories';
 import {WithExpandedKeys as AccordionWithExpandedKeys} from '../../../packages/@vue-spectrum/accordion/stories/Accordion.stories';
 import {Default as ActionBarDefaultStory} from '../../../packages/@vue-spectrum/actionbar/stories/ActionBar.stories';
 import {
@@ -915,6 +916,31 @@ describe('Vue storybook helper parity', () => {
       expect(ariaLabelInput.attributes('aria-label')).toBe('Primary Color');
       expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
       expect(ariaLabelWrapper.get('label.vs-color-field').attributes('aria-label')).toBeUndefined();
+    } finally {
+      for (let wrapper of wrappers) {
+        wrapper.unmount();
+      }
+    }
+  });
+
+  it('renders spectrum color slider stories with input-level aria labelling parity', () => {
+    let wrappers: Array<ReturnType<typeof mount>> = [];
+
+    try {
+      let defaultStory = SpectrumColorSliderDefault.render?.({channel: 'hue', label: 'Hue'}) as ReturnType<Exclude<typeof SpectrumColorSliderDefault.render, undefined>>;
+      let defaultWrapper = mount(defaultStory);
+      wrappers.push(defaultWrapper);
+      let defaultInput = defaultWrapper.get('input.vs-color-slider__input');
+      expect(defaultInput.attributes('aria-labelledby')).toBeTruthy();
+      expect(defaultInput.attributes('aria-label')).toBeUndefined();
+
+      let ariaLabelStory = SpectrumColorSliderDefault.render?.({channel: 'hue', label: '', 'aria-label': 'Hue'}) as ReturnType<Exclude<typeof SpectrumColorSliderDefault.render, undefined>>;
+      let ariaLabelWrapper = mount(ariaLabelStory);
+      wrappers.push(ariaLabelWrapper);
+      let ariaLabelInput = ariaLabelWrapper.get('input.vs-color-slider__input');
+      expect(ariaLabelInput.attributes('aria-label')).toBe('Hue');
+      expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
+      expect(ariaLabelWrapper.get('label.vs-color-slider').attributes('aria-label')).toBeUndefined();
     } finally {
       for (let wrapper of wrappers) {
         wrapper.unmount();

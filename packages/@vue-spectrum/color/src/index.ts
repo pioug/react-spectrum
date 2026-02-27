@@ -431,11 +431,44 @@ export const ColorSlider = defineComponent({
   setup(props, {emit, attrs}) {
     let generatedId = `vs-color-slider-${++colorSliderId}`;
     let sliderId = computed(() => props.id ?? generatedId);
+    let sliderLabelId = computed(() => props.label ? `${sliderId.value}-label` : undefined);
 
     let disabled = computed(() => resolveDisabled(props.disabled, props.isDisabled));
     let minimum = computed(() => Math.min(props.min, props.max));
     let maximum = computed(() => Math.max(props.min, props.max));
     let sliderValue = computed(() => clamp(props.modelValue, minimum.value, maximum.value));
+
+    let rootAttrs = computed(() => {
+      let next: Record<string, unknown> = {};
+      for (let [key, value] of Object.entries(attrs)) {
+        if (key === 'aria-label' || key === 'aria-labelledby' || key === 'autofocus') {
+          continue;
+        }
+
+        next[key] = value;
+      }
+
+      return next;
+    });
+
+    let externalAriaLabelledBy = computed(() => {
+      let value = attrs['aria-labelledby'];
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    });
+
+    let ariaLabelledBy = computed(() => {
+      let parts = [sliderLabelId.value, externalAriaLabelledBy.value].filter((part): part is string => Boolean(part));
+      return parts.length > 0 ? parts.join(' ') : undefined;
+    });
+
+    let ariaLabel = computed(() => {
+      if (ariaLabelledBy.value) {
+        return undefined;
+      }
+
+      let value = attrs['aria-label'];
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    });
 
     let trackBackground = computed(() => {
       if (props.channel === 'hue') {
@@ -454,7 +487,7 @@ export const ColorSlider = defineComponent({
     };
 
     return () => h('label', {
-      ...attrs,
+      ...rootAttrs.value,
       class: [
         classNames(colorSliderStyles, 'spectrum-ColorSlider', {
           'is-disabled': disabled.value
@@ -466,7 +499,7 @@ export const ColorSlider = defineComponent({
     }, [
       props.label
         ? h('span', {class: 'vs-color-slider__header'}, [
-          h('span', {class: 'vs-color-slider__label'}, props.label),
+          h('span', {id: sliderLabelId.value, class: 'vs-color-slider__label'}, props.label),
           h('span', {class: 'vs-color-slider__value'}, `${sliderValue.value}`)
         ])
         : null,
@@ -479,7 +512,8 @@ export const ColorSlider = defineComponent({
         step: props.step,
         value: sliderValue.value,
         disabled: disabled.value,
-        'aria-label': attrs['aria-label'] || props.label || undefined,
+        'aria-label': ariaLabel.value,
+        'aria-labelledby': ariaLabelledBy.value,
         style: {
           background: trackBackground.value
         },

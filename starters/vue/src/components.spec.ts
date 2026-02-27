@@ -20,7 +20,7 @@ import {Checkbox, CheckboxGroup} from '@vue-spectrum/checkbox';
 import {ComboBox} from '@vue-spectrum/combobox';
 import {ContextualHelp} from '@vue-spectrum/contextualhelp';
 import {SearchAutocomplete} from '@vue-spectrum/autocomplete';
-import {ColorField, ColorPicker, ColorSwatchPicker} from '@vue-spectrum/color';
+import {ColorField, ColorPicker, ColorSlider, ColorSwatchPicker} from '@vue-spectrum/color';
 import {DatePicker, DateRangePicker, TimeField} from '@vue-spectrum/datepicker';
 import {Dialog, DialogTrigger} from '@vue-spectrum/dialog';
 import {Divider} from '@vue-spectrum/divider';
@@ -3351,6 +3351,57 @@ describe('Vue migration primitives', () => {
 
     let ariaLabelInput = ariaLabelWrapper.get('input.vs-color-field__input');
     expect(ariaLabelInput.attributes('aria-label')).toBe('Primary Color');
+    expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
+    expect(ariaLabelWrapper.attributes('aria-label')).toBeUndefined();
+  });
+
+  it('maps color slider aria label and labelledby precedence to react parity', () => {
+    let labelledByWrapper = mount(ColorSlider, {
+      attrs: {
+        'aria-labelledby': 'external-color-slider-label'
+      },
+      props: {
+        channel: 'hue',
+        label: '',
+        modelValue: 220
+      }
+    });
+
+    let labelledByInput = labelledByWrapper.get('input.vs-color-slider__input');
+    expect(labelledByInput.attributes('aria-labelledby')).toBe('external-color-slider-label');
+    expect(labelledByInput.attributes('aria-label')).toBeUndefined();
+    expect(labelledByWrapper.attributes('aria-labelledby')).toBeUndefined();
+
+    let visibleLabelWrapper = mount(ColorSlider, {
+      attrs: {
+        'aria-labelledby': 'external-color-slider-label'
+      },
+      props: {
+        channel: 'hue',
+        label: 'Hue',
+        modelValue: 220
+      }
+    });
+
+    let visibleLabel = visibleLabelWrapper.get('.vs-color-slider__label');
+    let visibleLabelInput = visibleLabelWrapper.get('input.vs-color-slider__input');
+    expect(visibleLabelInput.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
+    expect(visibleLabelInput.attributes('aria-labelledby')).toContain('external-color-slider-label');
+    expect(visibleLabelInput.attributes('aria-label')).toBeUndefined();
+
+    let ariaLabelWrapper = mount(ColorSlider, {
+      attrs: {
+        'aria-label': 'Hue'
+      },
+      props: {
+        channel: 'hue',
+        label: '',
+        modelValue: 220
+      }
+    });
+
+    let ariaLabelInput = ariaLabelWrapper.get('input.vs-color-slider__input');
+    expect(ariaLabelInput.attributes('aria-label')).toBe('Hue');
     expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
     expect(ariaLabelWrapper.attributes('aria-label')).toBeUndefined();
   });

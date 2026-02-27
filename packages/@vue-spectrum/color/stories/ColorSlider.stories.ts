@@ -124,6 +124,8 @@ function toSliderProps(args: StoryArgs): StoryArgs {
   let modelValue = typeof derivedValue === 'number' ? derivedValue : Math.round((min + max) / 2);
 
   return {
+    'aria-label': typeof args['aria-label'] === 'string' ? args['aria-label'] : undefined,
+    'aria-labelledby': typeof args['aria-labelledby'] === 'string' ? args['aria-labelledby'] : undefined,
     channel,
     description: typeof args.description === 'string' ? args.description : '',
     disabled: Boolean(args.disabled),
