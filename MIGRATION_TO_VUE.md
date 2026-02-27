@@ -306,13 +306,30 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — Systemic press interaction parity remediation (`@vue-aria/interactions`)
+
+1. Aligned shared `usePress` behavior with React owner-window semantics:
+   - switched pointer-up/cancel global listeners from fixed `window` to the press target owner window,
+   - added scope-disposal cleanup so active pointer listeners are removed if composables are disposed mid-press.
+2. Hardened cross-realm (iframe) target resolution in `usePress`:
+   - replaced strict `instanceof Element/Node` checks with realm-safe node detection,
+   - preserved press start/end/up dispatch semantics for iframe-hosted targets.
+3. Added regression coverage in `starters/vue/src/composition.spec.ts` for:
+   - owner-window pointer listener binding for iframe targets,
+   - listener cleanup on scope disposal while press is active.
+4. Validation after fix:
+   - targeted press slice: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "press global pointer listeners|scope is disposed mid-press|pointer exits and cancellation|handles vue-aria interactions focus, keyboard, and press callbacks"`,
+   - full Vue tests: `yarn test:vue` (466 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 464 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 466 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

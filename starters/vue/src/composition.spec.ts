@@ -5210,6 +5210,77 @@ describe('Vue migration composition components', () => {
     }
   });
 
+  it('binds vue-aria press global pointer listeners to the owner window', () => {
+    let iframe = document.createElement('iframe');
+    document.body.appendChild(iframe);
+    let iframeWindow = iframe.contentWindow;
+    let iframeDocument = iframeWindow?.document;
+    expect(iframeWindow).toBeTruthy();
+    expect(iframeDocument).toBeTruthy();
+    let button = iframeDocument!.createElement('button');
+    iframeDocument!.body.appendChild(button);
+    let presses = 0;
+    let press = usePress({
+      onPress: () => {
+        presses += 1;
+      }
+    });
+
+    let addMainWindowListener = vi.spyOn(window, 'addEventListener');
+    let addIframeWindowListener = vi.spyOn(iframeWindow!, 'addEventListener');
+    let removeIframeWindowListener = vi.spyOn(iframeWindow!, 'removeEventListener');
+
+    try {
+      if (press.pressProps.value.onPointerDown) {
+        button.addEventListener('pointerdown', press.pressProps.value.onPointerDown as EventListener);
+      }
+
+      button.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 11}));
+
+      let iframeListenerTypes = addIframeWindowListener.mock.calls.map(([type]) => type as string);
+      let mainWindowListenerTypes = addMainWindowListener.mock.calls.map(([type]) => type as string);
+      expect(iframeListenerTypes).toEqual(expect.arrayContaining(['pointerup', 'pointercancel']));
+      expect(mainWindowListenerTypes).not.toContain('pointerup');
+      expect(mainWindowListenerTypes).not.toContain('pointercancel');
+
+      button.dispatchEvent(createPointerEvent('pointerup', {pointerId: 11}));
+      expect(presses).toBe(1);
+
+      let removedIframeTypes = removeIframeWindowListener.mock.calls.map(([type]) => type as string);
+      expect(removedIframeTypes).toEqual(expect.arrayContaining(['pointerup', 'pointercancel']));
+    } finally {
+      addMainWindowListener.mockRestore();
+      addIframeWindowListener.mockRestore();
+      removeIframeWindowListener.mockRestore();
+      iframe.remove();
+    }
+  });
+
+  it('cleans up vue-aria press pointer listeners when scope is disposed mid-press', () => {
+    let button = document.createElement('button');
+    document.body.appendChild(button);
+    let removeWindowListener = vi.spyOn(window, 'removeEventListener');
+
+    let scope = effectScope();
+    scope.run(() => {
+      let press = usePress();
+      if (press.pressProps.value.onPointerDown) {
+        button.addEventListener('pointerdown', press.pressProps.value.onPointerDown as EventListener);
+      }
+    });
+
+    try {
+      button.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 17}));
+      scope.stop();
+      let removedTypes = removeWindowListener.mock.calls.map(([type]) => type as string);
+      expect(removedTypes).toEqual(expect.arrayContaining(['pointerup', 'pointercancel']));
+    } finally {
+      scope.stop();
+      removeWindowListener.mockRestore();
+      document.body.removeChild(button);
+    }
+  });
+
   it('tracks vue-aria hover/focus-within and global focus-visible state', () => {
     let hoverChanges: boolean[] = [];
     let focusWithinChanges: boolean[] = [];

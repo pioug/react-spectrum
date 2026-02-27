@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, ref, unref} from 'vue';
+import {computed, getCurrentScope, onScopeDispose, type ComputedRef, ref, unref} from 'vue';
 import {disableTextSelection, restoreTextSelection} from './textSelection';
 import {getEventTarget, nodeContains} from './utils';
 import type {MaybeRef, PointerType} from './types';
@@ -109,7 +109,7 @@ function normalizePointerType(event: PointerEvent): PointerType {
 }
 
 function getTargetFromEvent(event: Event, fallbackTarget: Element | null): Element | null {
-  if (event.currentTarget instanceof Element) {
+  if (isElementNode(event.currentTarget)) {
     return event.currentTarget;
   }
 
@@ -118,11 +118,23 @@ function getTargetFromEvent(event: Event, fallbackTarget: Element | null): Eleme
   }
 
   let eventTarget = getEventTarget(event);
-  return eventTarget instanceof Element ? eventTarget : null;
+  return isElementNode(eventTarget) ? eventTarget : null;
 }
 
 function isKeyboardPressKey(key: string): boolean {
   return key === 'Enter' || key === ' ' || key === 'Spacebar';
+}
+
+function isElementNode(value: unknown): value is Element {
+  return Boolean(value && typeof value === 'object' && 'nodeType' in (value as Record<string, unknown>) && (value as {nodeType?: unknown}).nodeType === 1);
+}
+
+function isNode(value: unknown): value is Node {
+  return Boolean(value && typeof value === 'object' && 'nodeType' in (value as Record<string, unknown>) && typeof (value as {nodeType?: unknown}).nodeType === 'number');
+}
+
+function isFocusableElement(value: unknown): value is HTMLElement {
+  return isElementNode(value) && typeof (value as {focus?: unknown}).focus === 'function';
 }
 
 export function usePress(props: PressHookProps = {}): PressResult {
@@ -132,9 +144,22 @@ export function usePress(props: PressHookProps = {}): PressResult {
   let activePointerId = ref<number | null>(null);
   let activePointerType = ref<PointerType>('mouse');
   let activeTarget = ref<Element | null>(null);
+  let activeWindow = ref<Window | null>(null);
   let didFirePressStart = ref(false);
   let ignoreNextClick = ref(false);
   let removeGlobalListeners = () => {};
+
+  let getOwnerWindow = (target: Element | null): Window | null => {
+    if (target?.ownerDocument?.defaultView) {
+      return target.ownerDocument.defaultView;
+    }
+
+    if (typeof window !== 'undefined') {
+      return window;
+    }
+
+    return null;
+  };
 
   let triggerPressStart = (event: Event, pointerType: PointerType): boolean => {
     if (isDisabled.value || didFirePressStart.value) {
@@ -209,23 +234,29 @@ export function usePress(props: PressHookProps = {}): PressResult {
     restoreTextSelection(restoreSelectionTarget);
     activePointerId.value = null;
     activeTarget.value = null;
+    activeWindow.value = null;
     removeGlobalListeners();
   };
 
   let onPointerDown = (event: PointerEvent) => {
-    if (isDisabled.value || event.button !== 0 || activePointerId.value != null || typeof window === 'undefined') {
+    if (isDisabled.value || event.button !== 0 || activePointerId.value != null) {
       return;
     }
 
+    activeTarget.value = getTargetFromEvent(event, unref(props.ref) ?? null);
+    let ownerWindow = getOwnerWindow(activeTarget.value);
+    if (!ownerWindow) {
+      return;
+    }
     activePointerId.value = event.pointerId;
     activePointerType.value = normalizePointerType(event);
-    activeTarget.value = getTargetFromEvent(event, unref(props.ref) ?? null);
+    activeWindow.value = ownerWindow;
 
     if (!unref(props.allowTextSelectionOnPress)) {
       disableTextSelection(activeTarget.value);
     }
 
-    if (!unref(props.preventFocusOnPress) && activeTarget.value instanceof HTMLElement) {
+    if (!unref(props.preventFocusOnPress) && isFocusableElement(activeTarget.value)) {
       activeTarget.value.focus({preventScroll: true});
     }
 
@@ -242,7 +273,7 @@ export function usePress(props: PressHookProps = {}): PressResult {
       if (activeTarget.value) {
         if (upEvent.composedPath().includes(activeTarget.value)) {
           shouldTriggerPress = true;
-        } else if (getEventTarget(upEvent) instanceof Node) {
+        } else if (isNode(getEventTarget(upEvent))) {
           shouldTriggerPress = nodeContains(activeTarget.value, getEventTarget(upEvent));
         }
       }
@@ -261,12 +292,12 @@ export function usePress(props: PressHookProps = {}): PressResult {
       cleanupPress();
     };
 
-    window.addEventListener('pointerup', onPointerUp, false);
-    window.addEventListener('pointercancel', onPointerCancel, false);
+    ownerWindow.addEventListener('pointerup', onPointerUp, false);
+    ownerWindow.addEventListener('pointercancel', onPointerCancel, false);
 
     removeGlobalListeners = () => {
-      window.removeEventListener('pointerup', onPointerUp, false);
-      window.removeEventListener('pointercancel', onPointerCancel, false);
+      ownerWindow.removeEventListener('pointerup', onPointerUp, false);
+      ownerWindow.removeEventListener('pointercancel', onPointerCancel, false);
       removeGlobalListeners = () => {};
     };
   };
@@ -335,6 +366,11 @@ export function usePress(props: PressHookProps = {}): PressResult {
     triggerPressUp(event, 'virtual');
     triggerPressEnd(event, 'virtual', true);
   };
+  if (getCurrentScope()) {
+    onScopeDispose(() => {
+      cleanupPress(unref(props.ref) ?? activeTarget.value);
+    });
+  }
 
   return {
     isPressed: computed(() => {
