@@ -3,6 +3,7 @@ import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, type PropType, ref} from 'vue';
 import {filterDOMProps} from '@vue-aria/utils';
 const styles: {[key: string]: string} = {};
+let switchId = 0;
 
 
 export const Switch = defineComponent({
@@ -53,13 +54,27 @@ export const Switch = defineComponent({
     'update:modelValue': (value: boolean) => typeof value === 'boolean'
   },
   setup(props, {emit, slots, attrs}) {
+    let generatedId = `vs-switch-${++switchId}`;
     let isHovered = ref(false);
     let isFocusVisible = ref(false);
     let uncontrolledSelected = ref(props.defaultSelected);
     let isDisabled = computed(() => props.isDisabled ?? props.disabled);
     let isSelected = computed(() => props.isSelected ?? props.modelValue ?? uncontrolledSelected.value);
     let hasVisibleLabel = computed(() => !!slots.default || !!props.label);
+    let labelId = computed(() => hasVisibleLabel.value ? `${generatedId}-label` : undefined);
+    let externalAriaLabelledBy = computed(() => {
+      let value = attrs['aria-labelledby'];
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    });
+    let ariaLabelledBy = computed(() => {
+      let parts = [labelId.value, externalAriaLabelledBy.value].filter((part): part is string => Boolean(part));
+      return parts.length > 0 ? parts.join(' ') : undefined;
+    });
     let ariaLabel = computed(() => {
+      if (ariaLabelledBy.value) {
+        return undefined;
+      }
+
       let value = attrs['aria-label'];
       return typeof value === 'string' ? value : undefined;
     });
@@ -109,8 +124,8 @@ export const Switch = defineComponent({
           disabled: isDisabled.value,
           readonly: props.isReadOnly || undefined,
           autofocus: props.autoFocus || attrs.autofocus || undefined,
-          'aria-label': !hasVisibleLabel.value ? ariaLabel.value : undefined,
-          'aria-labelledby': hasVisibleLabel.value ? attrs['aria-labelledby'] : undefined,
+          'aria-label': ariaLabel.value,
+          'aria-labelledby': ariaLabelledBy.value,
           onChange: (event: Event) => {
             let target = event.currentTarget as HTMLInputElement | null;
             if (!target) {
@@ -144,7 +159,7 @@ export const Switch = defineComponent({
           class: classNames(styles, 'spectrum-ToggleSwitch-switch')
         }),
         hasVisibleLabel.value
-          ? h('span', {class: classNames(styles, 'spectrum-ToggleSwitch-label')}, slots.default ? slots.default() : props.label)
+          ? h('span', {id: labelId.value, class: classNames(styles, 'spectrum-ToggleSwitch-label')}, slots.default ? slots.default() : props.label)
           : null
       ]);
     };

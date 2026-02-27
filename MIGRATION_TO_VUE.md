@@ -801,13 +801,29 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `Switch` label composition parity (`@vue-spectrum/switch`)
+
+1. Closed switch input-labelling drift:
+   - visible switch labels now get deterministic ids and contribute to input-level `aria-labelledby`,
+   - external `aria-labelledby` now composes with visible label ids on the input,
+   - explicit `aria-label` is now only applied when no composed `aria-labelledby` exists.
+2. Hardened ownership target behavior:
+   - filtered `aria-label`/`aria-labelledby` from wrapper passthrough so accessibility ownership remains on the interactive switch input.
+3. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: direct switch parity assertions for visible label + external `aria-labelledby` composition and no-visible-label `aria-label` fallback.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "switch aria label and labelledby precedence|updates model value from switch change|maps switch hovered, focus-ring, and disabled states"`,
+   - full Vue tests: `yarn test:vue` (526 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 525 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 526 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

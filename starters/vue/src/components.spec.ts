@@ -2798,6 +2798,43 @@ describe('Vue migration primitives', () => {
     expect(noLabel.get('input').attributes('aria-label')).toBe('This switch has no visible label');
   });
 
+  it('maps switch aria label and labelledby precedence to react parity', () => {
+    let externalLabelId = 'switch-external-label';
+    let withVisibleLabel = mount(Switch, {
+      attrs: {
+        'aria-label': 'fallback label',
+        'aria-labelledby': externalLabelId
+      },
+      slots: {
+        default: 'Switch label'
+      }
+    });
+    let withVisibleLabelInput = withVisibleLabel.get('input');
+    let withVisibleLabelBy = withVisibleLabelInput.attributes('aria-labelledby');
+    let withVisibleLabelSpan = withVisibleLabel.get('.spectrum-ToggleSwitch-label');
+    expect(withVisibleLabelBy).toBeTruthy();
+    expect(withVisibleLabelBy?.split(/\s+/)).toContain(externalLabelId);
+    expect(withVisibleLabelBy?.split(/\s+/)).toContain(withVisibleLabelSpan.attributes('id'));
+    expect(withVisibleLabelInput.attributes('aria-label')).toBeUndefined();
+
+    let noVisibleLabelWithLabelledBy = mount(Switch, {
+      attrs: {
+        'aria-label': 'fallback label',
+        'aria-labelledby': externalLabelId
+      }
+    });
+    expect(noVisibleLabelWithLabelledBy.get('input').attributes('aria-labelledby')).toBe(externalLabelId);
+    expect(noVisibleLabelWithLabelledBy.get('input').attributes('aria-label')).toBeUndefined();
+
+    let noVisibleLabelWithAriaLabel = mount(Switch, {
+      attrs: {
+        'aria-label': 'No visible switch label'
+      }
+    });
+    expect(noVisibleLabelWithAriaLabel.get('input').attributes('aria-labelledby')).toBeUndefined();
+    expect(noVisibleLabelWithAriaLabel.get('input').attributes('aria-label')).toBe('No visible switch label');
+  });
+
   it('maps switch hovered, focus-ring, and disabled states', async () => {
     let wrapper = mount(Switch, {
       props: {
