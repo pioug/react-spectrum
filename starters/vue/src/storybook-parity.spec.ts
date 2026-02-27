@@ -1917,6 +1917,9 @@ describe('Vue storybook helper parity', () => {
       wrappers.push(datePickerWrapper);
       expect(datePickerWrapper.findAll('select').length).toBeGreaterThanOrEqual(2);
       expect(datePickerWrapper.get('.vs-date-picker').exists()).toBe(true);
+      let datePickerInput = datePickerWrapper.get('.vs-date-picker input.vs-date-picker__input');
+      expect(datePickerInput.attributes('aria-labelledby')).toBeTruthy();
+      expect(datePickerInput.attributes('aria-label')).toBeUndefined();
       expect(datePickerWrapper.text()).toContain('Custom 4-5-4 calendar');
       expect(datePickerWrapper.text()).toContain('Locale:');
       expect(datePickerWrapper.text()).not.toContain('scenario preview');

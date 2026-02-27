@@ -251,6 +251,19 @@ function buildSingleField(
         classNames(inputGroupStyles, 'spectrum-FieldButton')
       ));
 
+      let rootAttrs = computed(() => {
+        let next: Record<string, unknown> = {};
+        for (let [key, value] of Object.entries(attrs)) {
+          if (key === 'aria-label' || key === 'aria-labelledby' || key === 'autofocus') {
+            continue;
+          }
+
+          next[key] = value;
+        }
+
+        return next;
+      });
+
       let externalAriaLabelledBy = computed(() => {
         let value = attrs['aria-labelledby'];
         return typeof value === 'string' && value.length > 0 ? value : undefined;
@@ -260,7 +273,7 @@ function buildSingleField(
         return parts.length > 0 ? parts.join(' ') : undefined;
       });
       let ariaLabel = computed(() => {
-        if (externalAriaLabelledBy.value) {
+        if (ariaLabelledBy.value) {
           return undefined;
         }
 
@@ -269,7 +282,7 @@ function buildSingleField(
           return fromAttrs;
         }
 
-        return props.label || undefined;
+        return undefined;
       });
 
       let openPopover = () => {
@@ -343,7 +356,7 @@ function buildSingleField(
       });
 
       return () => h('label', {
-        ...attrs,
+        ...rootAttrs.value,
         ref: rootRef,
         class: [
           singleFieldClassPrefix,

@@ -3298,6 +3298,46 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('change')?.[0]).toEqual(['2026-02-20']);
   });
 
+  it('maps datepicker aria label and labelledby precedence to react parity', () => {
+    let labelledByWrapper = mount(DatePicker, {
+      props: {
+        modelValue: '2026-02-19',
+        label: ''
+      },
+      attrs: {
+        'aria-labelledby': 'external-date-label'
+      }
+    });
+    let labelledByInput = labelledByWrapper.get('input.vs-date-picker__input');
+    expect(labelledByInput.attributes('aria-labelledby')).toBe('external-date-label');
+    expect(labelledByInput.attributes('aria-label')).toBeUndefined();
+    expect(labelledByWrapper.attributes('aria-labelledby')).toBeUndefined();
+
+    let visibleLabelWrapper = mount(DatePicker, {
+      props: {
+        modelValue: '2026-02-19',
+        label: 'Date picker'
+      }
+    });
+    let visibleLabel = visibleLabelWrapper.get('span.vs-date-picker__label');
+    let visibleLabelInput = visibleLabelWrapper.get('input.vs-date-picker__input');
+    expect(visibleLabelInput.attributes('aria-labelledby')).toBe(visibleLabel.attributes('id'));
+    expect(visibleLabelInput.attributes('aria-label')).toBeUndefined();
+
+    let ariaLabelWrapper = mount(DatePicker, {
+      props: {
+        modelValue: '2026-02-19',
+        label: ''
+      },
+      attrs: {
+        'aria-label': 'Birth date'
+      }
+    });
+    let ariaLabelInput = ariaLabelWrapper.get('input.vs-date-picker__input');
+    expect(ariaLabelInput.attributes('aria-label')).toBe('Birth date');
+    expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
+  });
+
   it('maps datepicker spectrum interaction and visibility state classes', async () => {
     let wrapper = mount(DatePicker, {
       props: {
