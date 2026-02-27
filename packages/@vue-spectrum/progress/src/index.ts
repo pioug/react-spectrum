@@ -160,7 +160,17 @@ export const ProgressBar = defineComponent({
   }
 });
 
-export const ProgressBarBase = ProgressBar;
+export const ProgressBarBase = defineComponent({
+  name: 'VueSpectrumProgressBarBase',
+  inheritAttrs: false,
+  props: ProgressBar.props,
+  setup(props, {attrs, slots}) {
+    return () => h(ProgressBar, {
+      ...attrs,
+      ...props
+    }, slots);
+  }
+});
 export const VueProgressBar = ProgressBar;
 
 export const ProgressCircle = defineComponent({

@@ -72,6 +72,11 @@ import {
   VueText
 } from '@vue-spectrum/text';
 import {
+  ProgressBar,
+  ProgressBarBase,
+  VueProgressBar
+} from '@vue-spectrum/progress';
+import {
   Icon,
   Illustration,
   UIIcon,
@@ -163,6 +168,11 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(Text).not.toBe(VueText);
     expect(Heading).not.toBe(VueText);
     expect(Keyboard).not.toBe(VueText);
+  });
+
+  it('exports a dedicated ProgressBarBase wrapper', () => {
+    expect(ProgressBar).toBe(VueProgressBar);
+    expect(ProgressBarBase).not.toBe(VueProgressBar);
   });
 
   it('keeps icon exports wired to Vue icon primitives', () => {
