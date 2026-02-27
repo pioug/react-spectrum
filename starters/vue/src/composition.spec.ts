@@ -133,6 +133,7 @@ import {
   addWindowFocusTracking,
   ClearPressResponder,
   disableTextSelection,
+  FocusableProvider,
   focusSafely,
   PressResponder,
   restoreTextSelection,
@@ -5430,6 +5431,7 @@ describe('Vue migration composition components', () => {
   });
 
   it('auto-focuses vue-aria focusable elements when the ref resolves on next tick', async () => {
+    setInteractionModality('keyboard');
     let elementRef = ref<HTMLElement | null>(null);
     useFocusable({
       autoFocus: true
@@ -5442,6 +5444,41 @@ describe('Vue migration composition components', () => {
       await nextTick();
       expect(document.activeElement).toBe(button);
     } finally {
+      document.body.removeChild(button);
+    }
+  });
+
+  it('skips vue-aria focusable provider handlers when focusable is disabled', () => {
+    let contextEvents: string[] = [];
+    let clearFocusableProvider = FocusableProvider({
+      onFocus: () => {
+        contextEvents.push('focus');
+      },
+      onKeyDown: () => {
+        contextEvents.push('keydown');
+      }
+    });
+    let button = document.createElement('button');
+    document.body.append(button);
+    let focusable = useFocusable({
+      isDisabled: true
+    }, ref(button));
+
+    try {
+      if (focusable.focusableProps.value.onFocus) {
+        button.addEventListener('focus', focusable.focusableProps.value.onFocus as EventListener);
+      }
+      if (focusable.focusableProps.value.onKeyDown) {
+        button.addEventListener('keydown', focusable.focusableProps.value.onKeyDown as EventListener);
+      }
+
+      button.dispatchEvent(new FocusEvent('focus', {bubbles: true}));
+      button.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'Enter'}));
+
+      expect(contextEvents).toEqual([]);
+      expect(focusable.focusableProps.value.tabindex).toBeUndefined();
+    } finally {
+      clearFocusableProvider();
       document.body.removeChild(button);
     }
   });

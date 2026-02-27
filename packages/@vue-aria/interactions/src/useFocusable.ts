@@ -95,7 +95,7 @@ export function useFocusable<T extends FocusableElement = FocusableElement>(
 
   return {
     focusableProps: computed<FocusableDOMProps>(() => {
-      let context = FocusableContext;
+      let context = unref(props.isDisabled) === true ? null : FocusableContext;
       let focus = focusProps.value;
       let keyboard = keyboardProps.value;
 

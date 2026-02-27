@@ -495,13 +495,26 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `useFocusable` disabled-context parity remediation (`@vue-aria/interactions`)
+
+1. Closed shared disabled-state context drift in `useFocusable`:
+   - context-provided focus/keyboard handlers from `FocusableProvider` are now skipped when `isDisabled` is true, matching React’s disabled interaction contract.
+2. Added regression coverage in `starters/vue/src/composition.spec.ts`:
+   - disabled focusables no longer trigger provider context handlers,
+   - disabled focusables keep undefined tab stop semantics.
+3. Validation after fix:
+   - targeted focusable slice: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "auto-focuses vue-aria focusable|skips vue-aria focusable provider handlers|falls back to vue-aria mouse move|falls back to vue-aria touch move|move global listeners"`,
+   - full Vue tests: `yarn test:vue` (488 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 487 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 488 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).
