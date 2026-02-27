@@ -133,7 +133,8 @@ describe('Vue Spectrum API compatibility aliases', () => {
   it('aliases menu exports to VueMenu', () => {
     expect(Menu).toBe(VueMenu);
     expect(ActionMenu).toBe(VueMenu);
-    expect(MenuTrigger).toBe(VueMenu);
+    expect(MenuTrigger).not.toBeUndefined();
+    expect(MenuTrigger).not.toBe(VueMenu);
     expect(SubmenuTrigger).toBe(VueMenu);
     expect(ContextualHelpTrigger).toBe(VueMenu);
     expect(MenuItem).toBe(VueMenu);

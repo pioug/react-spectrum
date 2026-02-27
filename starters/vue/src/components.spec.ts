@@ -17,6 +17,7 @@ import {Calendar, RangeCalendar} from '@vue-spectrum/calendar';
 import {Card, CardView, GalleryLayout, WaterfallLayout} from '@vue-spectrum/card';
 import {Checkbox, CheckboxGroup} from '@vue-spectrum/checkbox';
 import {ComboBox} from '@vue-spectrum/combobox';
+import {SearchAutocomplete} from '@vue-spectrum/autocomplete';
 import {ColorField, ColorPicker, ColorSwatchPicker} from '@vue-spectrum/color';
 import {DatePicker, DateRangePicker, TimeField} from '@vue-spectrum/datepicker';
 import {Dialog} from '@vue-spectrum/dialog';
@@ -34,7 +35,7 @@ import {LabeledValue} from '@vue-spectrum/labeledvalue';
 import {Link} from '@vue-spectrum/link';
 import {ListBox} from '@vue-spectrum/listbox';
 import {ListView} from '@vue-spectrum/list';
-import {Menu} from '@vue-spectrum/menu';
+import {Menu, MenuTrigger} from '@vue-spectrum/menu';
 import {Meter} from '@vue-spectrum/meter';
 import {NumberField} from '@vue-spectrum/numberfield';
 import {Modal} from '@vue-spectrum/overlays';
@@ -1070,9 +1071,65 @@ describe('Vue migration primitives', () => {
     expect(items[1].classes()).toContain('is-hovered');
     await items[1].trigger('click');
     expect(wrapper.emitted('action')?.[0]).toEqual(['Two']);
-    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['One', 'Two']]);
-    expect(wrapper.emitted('change')?.[0]).toEqual([['One', 'Two']]);
+    let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+    expect(emittedModelValue).toBeInstanceOf(Set);
+    expect(Array.from(emittedModelValue as Set<string>)).toEqual(['One', 'Two']);
+    let emittedChange = wrapper.emitted('change')?.[0]?.[0] as unknown;
+    expect(emittedChange).toBeInstanceOf(Set);
+    expect(Array.from(emittedChange as Set<string>)).toEqual(['One', 'Two']);
     expect(wrapper.get('.vs-action-group__hidden-marker').attributes('hidden')).toBeDefined();
+  });
+
+  it('accepts actiongroup disabledKeys as a Set and blocks disabled actions', async () => {
+    let wrapper = mount(ActionGroup, {
+      props: {
+        items: ['One', 'Two'],
+        selectionMode: 'multiple',
+        disabledKeys: new Set(['Two'])
+      }
+    });
+
+    let items = wrapper.findAll('button.vs-action-group__item');
+    expect(items).toHaveLength(2);
+    expect(items[1].attributes('disabled')).toBeDefined();
+    expect(items[1].attributes('aria-disabled')).toBe('true');
+
+    await items[1].trigger('click');
+    expect(wrapper.emitted('action')).toBeUndefined();
+    expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+    expect(wrapper.emitted('change')).toBeUndefined();
+
+    await items[0].trigger('click');
+    expect(wrapper.emitted('action')?.[0]).toEqual(['One']);
+    let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+    expect(emittedModelValue).toBeInstanceOf(Set);
+    expect(Array.from(emittedModelValue as Set<string>)).toEqual(['One']);
+    let emittedChange = wrapper.emitted('change')?.[0]?.[0] as unknown;
+    expect(emittedChange).toBeInstanceOf(Set);
+    expect(Array.from(emittedChange as Set<string>)).toEqual(['One']);
+  });
+
+  it('accepts actiongroup modelValue as a Set iterable in multiple selection mode', async () => {
+    let wrapper = mount(ActionGroup, {
+      props: {
+        items: ['One', 'Two'],
+        selectionMode: 'multiple',
+        modelValue: new Set(['One'])
+      }
+    });
+
+    let items = wrapper.findAll('button.vs-action-group__item');
+    expect(items).toHaveLength(2);
+    expect(items[0].classes()).toContain('is-selected');
+    expect(items[0].attributes('aria-pressed')).toBe('true');
+
+    await items[1].trigger('click');
+    let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+    expect(emittedModelValue).toBeInstanceOf(Set);
+    expect(Array.from(emittedModelValue as Set<string>)).toEqual(['One', 'Two']);
+    let emittedChange = wrapper.emitted('change')?.[0]?.[0] as unknown;
+    expect(emittedChange).toBeInstanceOf(Set);
+    expect(Array.from(emittedChange as Set<string>)).toEqual(['One', 'Two']);
   });
 
   it('collapses overflowing action group items into a menu trigger', async () => {
@@ -1320,7 +1377,7 @@ describe('Vue migration primitives', () => {
       props: {
         selectedItemCount: 1,
         items: ['Edit', 'Copy'],
-        disabledKeys: ['edit']
+        disabledKeys: new Set(['edit'])
       }
     });
 
@@ -1893,6 +1950,34 @@ describe('Vue migration primitives', () => {
     expect(overrides).toContain('box-shadow: none');
   });
 
+  it('maps search autocomplete icon variants and clear behavior', async () => {
+    let wrapper = mount(SearchAutocomplete, {
+      props: {
+        icon: 'filter',
+        label: 'Search with Autocomplete',
+        modelValue: 'Aerospace',
+        options: ['Aerospace', 'Mechanical']
+      }
+    });
+
+    expect(wrapper.get('[data-testid="searchicon"]').text()).toBe('🔎');
+    expect(wrapper.get('input[type="search"]').attributes('list')).toContain('-list');
+    await wrapper.get('button.vs-combobox__clear').trigger('click');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['']);
+    expect(wrapper.emitted('clear')).toHaveLength(1);
+
+    let noIcon = mount(SearchAutocomplete, {
+      props: {
+        icon: null,
+        label: 'Search with Autocomplete',
+        modelValue: '',
+        options: ['Aerospace']
+      }
+    });
+
+    expect(noIcon.find('[data-testid="searchicon"]').exists()).toBe(false);
+  });
+
   it('maps combobox interaction states, aria wiring, and hidden key input', async () => {
     let wrapper = mount(ComboBox, {
       props: {
@@ -1952,6 +2037,84 @@ describe('Vue migration primitives', () => {
     expect(hiddenInput.exists()).toBe(true);
     expect(hiddenInput.attributes('hidden')).toBeDefined();
     expect(hiddenInput.element.getAttribute('value')).toBe('vue');
+  });
+
+  it('maps combobox disabledKeys to disabled option state and blocked selection', async () => {
+    let wrapper = mount(ComboBox, {
+      props: {
+        label: 'Animals',
+        modelValue: '',
+        options: [
+          {id: 'Aardvark', textValue: 'Aardvark'},
+          {id: 'Kangaroo', textValue: 'Kangaroo'},
+          {id: 'Snake', textValue: 'Snake'}
+        ],
+        disabledKeys: new Set(['Aardvark', 'Snake'])
+      }
+    });
+
+    let trigger = wrapper.get('button.spectrum-FieldButton');
+    await trigger.trigger('mousedown');
+    await trigger.trigger('click');
+
+    let options = wrapper.findAll('[role="option"].spectrum-Menu-item');
+    let aardvark = options.find((option) => option.attributes('data-key') === 'Aardvark');
+    let kangaroo = options.find((option) => option.attributes('data-key') === 'Kangaroo');
+    let snake = options.find((option) => option.attributes('data-key') === 'Snake');
+
+    expect(aardvark).toBeDefined();
+    expect(kangaroo).toBeDefined();
+    expect(snake).toBeDefined();
+    expect(aardvark!.classes()).toContain('is-disabled');
+    expect(aardvark!.attributes('aria-disabled')).toBe('true');
+    expect(snake!.classes()).toContain('is-disabled');
+    expect(snake!.attributes('aria-disabled')).toBe('true');
+    expect(kangaroo!.classes()).toContain('is-focused');
+
+    await snake!.trigger('mouseenter');
+    expect(snake!.classes()).not.toContain('is-focused');
+    await snake!.trigger('mousedown');
+    expect(wrapper.emitted('update:selectedKey')).toBeUndefined();
+    expect(wrapper.emitted('selectionChange')).toBeUndefined();
+
+    await kangaroo!.trigger('mousedown');
+    expect(wrapper.emitted('update:selectedKey')?.[0]).toEqual(['Kangaroo']);
+    expect(wrapper.emitted('selectionChange')?.[0]).toEqual(['Kangaroo']);
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Kangaroo']);
+  });
+
+  it('accepts combobox selectedKeys as a Set iterable in multiple selection mode', async () => {
+    let wrapper = mount(ComboBox, {
+      props: {
+        label: 'Animals',
+        selectionMode: 'multiple',
+        selectedKeys: new Set(['Aardvark']),
+        options: [
+          {id: 'Aardvark', textValue: 'Aardvark'},
+          {id: 'Kangaroo', textValue: 'Kangaroo'},
+          {id: 'Snake', textValue: 'Snake'}
+        ],
+        modelValue: ''
+      }
+    });
+
+    let trigger = wrapper.get('button.spectrum-FieldButton');
+    await trigger.trigger('mousedown');
+    await trigger.trigger('click');
+
+    let aardvark = wrapper.get('[role="option"][data-key="Aardvark"]');
+    let kangaroo = wrapper.get('[role="option"][data-key="Kangaroo"]');
+    expect(aardvark.attributes('aria-selected')).toBe('true');
+    expect(aardvark.classes()).toContain('is-selected');
+
+    await kangaroo.trigger('mousedown');
+    let emittedSelectedKeys = wrapper.emitted('update:selectedKeys')?.[0]?.[0] as unknown;
+    expect(emittedSelectedKeys).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelectedKeys as Set<string>)).toEqual(['Aardvark', 'Kangaroo']);
+    let emittedSelectionChange = wrapper.emitted('selectionChange')?.[0]?.[0] as unknown;
+    expect(emittedSelectionChange).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelectionChange as Set<string>)).toEqual(['Aardvark', 'Kangaroo']);
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['']);
   });
 
   it('keeps combobox style wiring bound to Spectrum field/inputgroup/menu/popover styles', () => {
@@ -2247,6 +2410,30 @@ describe('Vue migration primitives', () => {
     expect(controlled.emitted('lastCompletedStepChange')?.[0]).toEqual(['payment']);
   });
 
+  it('accepts step list disabledKeys as a Set iterable', async () => {
+    let wrapper = mount(StepList, {
+      props: {
+        ariaLabel: 'Checkout steps',
+        defaultLastCompletedStep: 'shipping',
+        defaultSelectedKey: 'shipping',
+        disabledKeys: new Set(['payment']),
+        items: [
+          {key: 'shipping', label: 'Shipping'},
+          {key: 'payment', label: 'Payment'},
+          {key: 'review', label: 'Review'}
+        ]
+      }
+    });
+
+    let links = wrapper.findAll('a.vs-steplist__link');
+    expect(links).toHaveLength(3);
+    expect(links[1].attributes('aria-disabled')).toBe('true');
+
+    await links[1].trigger('click');
+    expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+    expect(wrapper.emitted('selectionChange')).toBeUndefined();
+  });
+
   it('updates tab selection and panel content from tab interactions', async () => {
     let wrapper = mount(Tabs, {
       props: {
@@ -2294,7 +2481,38 @@ describe('Vue migration primitives', () => {
     expect(wrapper.findAll('button.vs-tag-group__remove')).toHaveLength(3);
 
     await wrapper.findAll('button.vs-tag-group__remove')[0].trigger('click');
+    let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+    expect(emittedModelValue).toBeInstanceOf(Set);
+    expect(Array.from(emittedModelValue as Set<string>)).toEqual([]);
+    let emittedChange = wrapper.emitted('change')?.[0]?.[0] as unknown;
+    expect(emittedChange).toBeInstanceOf(Set);
+    expect(Array.from(emittedChange as Set<string>)).toEqual([]);
     expect(wrapper.emitted('remove')?.[0]).toEqual([['react']]);
+  });
+
+  it('accepts tag group modelValue as a Set iterable in multiple selection mode', async () => {
+    let wrapper = mount(TagGroup, {
+      props: {
+        label: 'Framework tags',
+        selectionMode: 'multiple',
+        modelValue: new Set(['react']),
+        items: [
+          {key: 'react', label: 'React'},
+          {key: 'vue', label: 'Vue'},
+          {key: 'svelte', label: 'Svelte'}
+        ]
+      }
+    });
+
+    let tags = wrapper.findAll('.vs-tag-group__tag');
+    expect(tags).toHaveLength(3);
+    expect(tags[0].classes()).toContain('is-selected');
+    expect(tags[1].classes()).not.toContain('is-selected');
+
+    await wrapper.setProps({modelValue: new Set(['vue'])});
+    tags = wrapper.findAll('.vs-tag-group__tag');
+    expect(tags[0].classes()).not.toContain('is-selected');
+    expect(tags[1].classes()).toContain('is-selected');
   });
 
   it('renders queued toasts and supports action + dismiss interactions', async () => {
@@ -2510,10 +2728,10 @@ describe('Vue migration primitives', () => {
     expect(wrapper.findAll('[role=\"row\"]')[1].attributes('aria-rowindex')).toBe('2');
   });
 
-  it('supports card view disabledKeys and multiple selection mode', async () => {
+  it('supports card view disabledKeys iterable and multiple selection mode', async () => {
     let wrapper = mount(CardView, {
       props: {
-        disabledKeys: ['quality'],
+        disabledKeys: new Set(['quality']),
         items: [
           {id: 'overview', title: 'Overview'},
           {id: 'quality', title: 'Quality'}
@@ -2532,8 +2750,93 @@ describe('Vue migration primitives', () => {
 
     await cards[0].trigger('click');
     expect(wrapper.emitted('action')?.[0]).toEqual([{id: 'overview', title: 'Overview'}]);
-    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['overview']]);
-    expect(wrapper.emitted('selectionChange')?.[0]).toEqual([['overview']]);
+    let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+    expect(emittedModelValue).toBeInstanceOf(Set);
+    expect(Array.from(emittedModelValue as Set<string>)).toEqual(['overview']);
+    let emittedSelectionChange = wrapper.emitted('selectionChange')?.[0]?.[0] as unknown;
+    expect(emittedSelectionChange).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelectionChange as Set<string>)).toEqual(['overview']);
+  });
+
+  it('accepts card view modelValue as a Set iterable in multiple selection mode', async () => {
+    let wrapper = mount(CardView, {
+      props: {
+        modelValue: new Set(['overview']),
+        items: [
+          {id: 'overview', title: 'Overview'},
+          {id: 'quality', title: 'Quality'}
+        ],
+        selectionMode: 'multiple'
+      }
+    });
+
+    let cards = wrapper.findAll('.vs-card-view__item');
+    expect(cards).toHaveLength(2);
+    expect(cards[0].classes()).toContain('is-selected');
+    expect(cards[1].classes()).not.toContain('is-selected');
+
+    await cards[1].trigger('click');
+    let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+    expect(emittedModelValue).toBeInstanceOf(Set);
+    expect(Array.from(emittedModelValue as Set<string>)).toEqual(['overview', 'quality']);
+    let emittedChange = wrapper.emitted('change')?.[0]?.[0] as unknown;
+    expect(emittedChange).toBeInstanceOf(Set);
+    expect(Array.from(emittedChange as Set<string>)).toEqual(['overview', 'quality']);
+    let emittedSelectionChange = wrapper.emitted('selectionChange')?.[0]?.[0] as unknown;
+    expect(emittedSelectionChange).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelectionChange as Set<string>)).toEqual(['overview', 'quality']);
+  });
+
+  it('accepts card view numeric modelValue for numeric item ids', async () => {
+    let wrapper = mount(CardView, {
+      props: {
+        modelValue: 0,
+        items: [
+          {id: 0, title: 'Bob 1'},
+          {id: 1, title: 'Joe 1'}
+        ],
+        selectionMode: 'single'
+      }
+    });
+
+    let cards = wrapper.findAll('.vs-card-view__item');
+    expect(cards).toHaveLength(2);
+    expect(cards[0].classes()).toContain('is-selected');
+    expect(cards[1].classes()).not.toContain('is-selected');
+
+    await cards[1].trigger('click');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([1]);
+    expect(wrapper.emitted('change')?.[0]).toEqual([1]);
+    expect(wrapper.emitted('selectionChange')?.[0]).toEqual([[1]]);
+  });
+
+  it('emits numeric keys for card view multiple-selection updates with numeric ids', async () => {
+    let wrapper = mount(CardView, {
+      props: {
+        modelValue: new Set([0]),
+        items: [
+          {id: 0, title: 'Bob 1'},
+          {id: 1, title: 'Joe 1'}
+        ],
+        selectionMode: 'multiple'
+      }
+    });
+
+    let cards = wrapper.findAll('.vs-card-view__item');
+    expect(cards).toHaveLength(2);
+    expect(cards[0].classes()).toContain('is-selected');
+    expect(cards[1].classes()).not.toContain('is-selected');
+
+    await cards[1].trigger('click');
+    let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+    expect(emittedModelValue).toBeInstanceOf(Set);
+    expect(Array.from(emittedModelValue as Set<number>)).toEqual([0, 1]);
+    let emittedChange = wrapper.emitted('change')?.[0]?.[0] as unknown;
+    expect(emittedChange).toBeInstanceOf(Set);
+    expect(Array.from(emittedChange as Set<number>)).toEqual([0, 1]);
+    let emittedSelectionChange = wrapper.emitted('selectionChange')?.[0]?.[0] as unknown;
+    expect(emittedSelectionChange).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelectionChange as Set<number>)).toEqual([0, 1]);
   });
 
   it('resolves card view layout constructors to gallery and waterfall classes', () => {
@@ -2772,6 +3075,62 @@ describe('Vue migration primitives', () => {
     expect(wrapper.findAll('input[type="hidden"]').length).toBeGreaterThanOrEqual(2);
   });
 
+  it('maps slider value-label formatting, side labels, fill track, gradient, and contextual help contract', () => {
+    let wrapper = mount(Slider, {
+      props: {
+        label: 'Exposure',
+        labelPosition: 'side',
+        minValue: -7,
+        maxValue: 5,
+        modelValue: 0,
+        formatOptions: {style: 'unit', unit: 'centimeter'},
+        isFilled: true,
+        fillOffset: 0,
+        trackGradient: ['blue', 'red']
+      },
+      slots: {
+        'contextual-help': () => h('button', {type: 'button', 'aria-label': 'Help'}, '?')
+      }
+    });
+
+    expect(wrapper.classes()).toContain('spectrum-Slider--positionSide');
+    expect(wrapper.find('.spectrum-Slider-valueLabelContainer .vs-slider__value').text()).toContain('cm');
+    expect(wrapper.find('.spectrum-Slider-contextualHelp button[aria-label="Help"]').exists()).toBe(true);
+    expect(wrapper.find('.spectrum-Slider-fill').exists()).toBe(true);
+    expect(wrapper.attributes('style')).toContain('--spectrum-slider-track-gradient');
+  });
+
+  it('renders unlabeled slider and range slider top value labels for default story parity', () => {
+    let slider = mount(Slider, {
+      props: {
+        label: '',
+        modelValue: 40
+      },
+      attrs: {
+        'aria-label': 'Label'
+      }
+    });
+
+    expect(slider.find('.spectrum-Slider-labelContainer').exists()).toBe(true);
+    expect(slider.find('output.vs-slider__value').exists()).toBe(true);
+
+    let rangeSlider = mount(RangeSlider, {
+      props: {
+        label: undefined,
+        modelValue: {
+          start: 20,
+          end: 80
+        }
+      },
+      attrs: {
+        'aria-label': 'Label'
+      }
+    });
+
+    expect(rangeSlider.find('.spectrum-Slider-labelContainer').exists()).toBe(true);
+    expect(rangeSlider.find('output.vs-slider__value').exists()).toBe(true);
+  });
+
   it('maps numberfield stepper interaction classes and hidden key input', async () => {
     let wrapper = mount(NumberField, {
       props: {
@@ -2904,6 +3263,28 @@ describe('Vue migration primitives', () => {
     expect(interactiveWrapper.get('select.vs-picker__select').classes()).toContain('is-hovered');
   });
 
+  it('maps picker disabledKeys to disabled option contracts', async () => {
+    let wrapper = mount(Picker, {
+      props: {
+        items: [
+          {id: 'option-1', label: 'Option 1'},
+          {id: 'option-2', label: 'Option 2'},
+          {id: 'option-3', label: 'Option 3'}
+        ],
+        disabledKeys: new Set(['option-2']),
+        modelValue: 'option-1'
+      }
+    });
+
+    let options = wrapper.findAll('select.vs-picker__select option');
+    let disabledOption = options.find((option) => option.attributes('value') === 'option-2');
+    expect(disabledOption?.attributes('disabled')).toBeDefined();
+
+    await wrapper.get('select.vs-picker__select').setValue('option-3');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['option-3']);
+    expect(wrapper.emitted('change')?.[0]).toEqual(['option-3']);
+  });
+
   it('maps listbox option interaction and selectable/selected classes', async () => {
     let wrapper = mount(ListBox, {
       props: {
@@ -2919,6 +3300,7 @@ describe('Vue migration primitives', () => {
     expect(items[0].classes()).toContain('is-selected');
     expect(items[0].classes()).toContain('is-selectable');
     expect(items[0].attributes('aria-label')).toBe('Vue');
+    expect(items[0].attributes('data-key')).toBe('Vue');
 
     await items[1].trigger('mouseenter');
     expect(items[1].classes()).toContain('is-hovered');
@@ -2928,6 +3310,200 @@ describe('Vue migration primitives', () => {
     await items[1].trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['React']);
     expect(wrapper.emitted('select')?.[0]).toEqual(['React']);
+  });
+
+  it('maps listbox disabled key iterable to disabled option classes and blocked selection', async () => {
+    let wrapper = mount(ListBox, {
+      props: {
+        items: ['Aardvark', 'Kangaroo', 'Snake'],
+        disabledKeys: new Set(['Kangaroo']),
+        modelValue: 'Aardvark',
+        selectionMode: 'single'
+      }
+    });
+
+    let items = wrapper.findAll('button.vs-listbox__item');
+    expect(items).toHaveLength(3);
+    expect(items[1].classes()).toContain('is-disabled');
+    expect(items[1].attributes('disabled')).toBeDefined();
+    expect(items[1].attributes('aria-disabled')).toBe('true');
+
+    await items[1].trigger('mouseenter');
+    expect(items[1].classes()).not.toContain('is-hovered');
+    await items[1].trigger('click');
+    expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+    expect(wrapper.emitted('select')).toBeUndefined();
+  });
+
+  it('accepts listbox modelValue as a Set iterable in multiple selection mode', async () => {
+    let wrapper = mount(ListBox, {
+      props: {
+        items: ['Aardvark', 'Kangaroo', 'Snake'],
+        modelValue: new Set(['Aardvark']),
+        selectionMode: 'multiple'
+      }
+    });
+
+    let items = wrapper.findAll('button.vs-listbox__item');
+    expect(items[0].classes()).toContain('is-selected');
+    expect(items[1].classes()).not.toContain('is-selected');
+
+    await items[1].trigger('click');
+    let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+    expect(emittedModelValue).toBeInstanceOf(Set);
+    expect(Array.from(emittedModelValue as Set<string>)).toEqual(['Aardvark', 'Kangaroo']);
+    let emittedSelection = wrapper.emitted('select')?.[0]?.[0] as unknown;
+    expect(emittedSelection).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelection as Set<string>)).toEqual(['Aardvark', 'Kangaroo']);
+  });
+
+  it('renders listbox link-backed items as anchors and keeps disabled-link contracts', async () => {
+    let wrapper = mount(ListBox, {
+      props: {
+        items: [
+          {id: 'adobe', textValue: 'Adobe', href: 'https://adobe.com/'},
+          {id: 'google', textValue: 'Google', href: 'https://google.com/'},
+          {id: 'disabled-link', textValue: 'Disabled link', href: 'https://example.com/'},
+          {id: 'non-link', textValue: 'Non link'}
+        ],
+        disabledKeys: new Set(['disabled-link']),
+        selectionMode: 'none'
+      }
+    });
+
+    let links = wrapper.findAll('a.vs-listbox__item');
+    expect(links).toHaveLength(3);
+    expect(links[0].attributes('href')).toBe('https://adobe.com/');
+    expect(links[1].attributes('href')).toBe('https://google.com/');
+    expect(links[2].attributes('aria-disabled')).toBe('true');
+
+    await links[2].trigger('click');
+    expect(wrapper.emitted('select')).toBeUndefined();
+
+    let buttons = wrapper.findAll('button.vs-listbox__item');
+    expect(buttons).toHaveLength(1);
+    expect(buttons[0].text()).toBe('Non link');
+  });
+
+  it('renders listbox section items with group headings and multiple selection updates', async () => {
+    let wrapper = mount(ListBox, {
+      props: {
+        ariaLabel: 'List organisms',
+        items: [
+          {
+            id: 'people',
+            title: 'People',
+            items: [
+              {id: 'David', textValue: 'David'},
+              {id: 'Sam', textValue: 'Sam'}
+            ]
+          },
+          {
+            id: 'animals',
+            title: 'Animals',
+            items: [
+              {id: 'Kangaroo', textValue: 'Kangaroo'},
+              {id: 'Snake', textValue: 'Snake'}
+            ]
+          }
+        ],
+        selectionMode: 'multiple',
+        modelValue: new Set(['Sam'])
+      }
+    });
+
+    expect(wrapper.findAll('.vs-listbox__section')).toHaveLength(2);
+    expect(wrapper.findAll('.vs-listbox__section-heading').map((heading) => heading.text())).toEqual(['People', 'Animals']);
+    expect(wrapper.findAll('button.vs-listbox__item.is-selected').map((item) => item.text())).toEqual(['Sam']);
+
+    let kangarooOption = wrapper.findAll('button.vs-listbox__item').find((item) => item.text() === 'Kangaroo');
+    expect(kangarooOption).toBeDefined();
+    await kangarooOption?.trigger('click');
+    let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+    expect(emittedModelValue).toBeInstanceOf(Set);
+    expect(Array.from(emittedModelValue as Set<string>)).toEqual(['Sam', 'Kangaroo']);
+    let emittedSelection = wrapper.emitted('select')?.[0]?.[0] as unknown;
+    expect(emittedSelection).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelection as Set<string>)).toEqual(['Sam', 'Kangaroo']);
+  });
+
+  it('uses section item ids for keyed listbox selection and disabled contracts', async () => {
+    let wrapper = mount(ListBox, {
+      props: {
+        items: [
+          {
+            id: 'section-1',
+            title: 'Section 1',
+            items: [
+              {id: '2', textValue: 'Two'},
+              {id: '3', textValue: 'Three'}
+            ]
+          },
+          {
+            id: 'section-2',
+            title: 'Section 2',
+            items: [
+              {id: '5', textValue: 'Five'}
+            ]
+          }
+        ],
+        selectionMode: 'multiple',
+        modelValue: new Set(['2']),
+        disabledKeys: new Set(['3'])
+      }
+    });
+
+    expect(wrapper.findAll('.vs-listbox__section').map((section) => section.attributes('data-key'))).toEqual(['section-1', 'section-2']);
+
+    let selectedTwo = wrapper.get('button.vs-listbox__item[data-key="2"]');
+    let disabledThree = wrapper.get('button.vs-listbox__item[data-key="3"]');
+    let selectableFive = wrapper.get('button.vs-listbox__item[data-key="5"]');
+
+    expect(selectedTwo.classes()).toContain('is-selected');
+    expect(disabledThree.classes()).toContain('is-disabled');
+    expect(disabledThree.attributes('disabled')).toBeDefined();
+    expect(disabledThree.attributes('aria-disabled')).toBe('true');
+
+    await selectableFive.trigger('click');
+    let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+    expect(emittedModelValue).toBeInstanceOf(Set);
+    expect(Array.from(emittedModelValue as Set<string>)).toEqual(['2', '5']);
+    let emittedSelection = wrapper.emitted('select')?.[0]?.[0] as unknown;
+    expect(emittedSelection).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelection as Set<string>)).toEqual(['2', '5']);
+
+    await disabledThree.trigger('click');
+    expect(wrapper.emitted('update:modelValue')).toHaveLength(1);
+    expect(wrapper.emitted('select')).toHaveLength(1);
+  });
+
+  it('renders listbox sections without headings when only aria labels are provided', () => {
+    let wrapper = mount(ListBox, {
+      props: {
+        items: [
+          {
+            id: 'animals',
+            ariaLabel: 'Animals',
+            items: [
+              {id: 'Aardvark', textValue: 'Aardvark'},
+              {id: 'Kangaroo', textValue: 'Kangaroo'}
+            ]
+          },
+          {
+            id: 'people',
+            ariaLabel: 'People',
+            items: [
+              {id: 'Danni', textValue: 'Danni'},
+              {id: 'Devon', textValue: 'Devon'}
+            ]
+          }
+        ]
+      }
+    });
+
+    expect(wrapper.findAll('.vs-listbox__section')).toHaveLength(2);
+    expect(wrapper.findAll('.vs-listbox__section-heading')).toHaveLength(0);
+    expect(wrapper.findAll('.vs-listbox__section').map((section) => section.attributes('aria-label'))).toEqual(['Animals', 'People']);
   });
 
   it('maps list view item state classes and hidden insertion indicators', async () => {
@@ -2961,7 +3537,7 @@ describe('Vue migration primitives', () => {
         ],
         selectionMode: 'multiple',
         selectedKeys: ['a'],
-        disabledKeys: ['b'],
+        disabledKeys: new Set(['b']),
         disabledBehavior: 'selection',
         overflowMode: 'wrap',
         onAction,
@@ -2978,8 +3554,13 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('update:selectedKeys')).toBeUndefined();
 
     await items[0].trigger('click');
-    expect(wrapper.emitted('update:selectedKeys')?.[0]).toEqual([[]]);
-    expect(onSelectionChange).toHaveBeenCalledWith([]);
+    let emittedSelectedKeys = wrapper.emitted('update:selectedKeys')?.[0]?.[0] as unknown;
+    expect(emittedSelectedKeys).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelectedKeys as Set<string>)).toEqual([]);
+    expect(onSelectionChange).toHaveBeenCalledTimes(1);
+    let onSelectionChangeValue = onSelectionChange.mock.calls[0]?.[0] as unknown;
+    expect(onSelectionChangeValue).toBeInstanceOf(Set);
+    expect(Array.from(onSelectionChangeValue as Set<string>)).toEqual([]);
 
     let allDisabled = mount(ListView, {
       props: {
@@ -2987,7 +3568,7 @@ describe('Vue migration primitives', () => {
           {key: 'a', name: 'Adobe Photoshop'},
           {key: 'b', name: 'Documents'}
         ],
-        disabledKeys: ['b'],
+        disabledKeys: new Set(['b']),
         disabledBehavior: 'all',
         onAction
       }
@@ -2997,12 +3578,53 @@ describe('Vue migration primitives', () => {
     expect(onAction).toHaveBeenCalledTimes(2);
   });
 
+  it('accepts list view iterable modelValue and selectedKeys sets', async () => {
+    let modelValueWrapper = mount(ListView, {
+      props: {
+        items: [
+          {key: 'a', name: 'Adobe Photoshop'},
+          {key: 'b', name: 'Documents'}
+        ],
+        selectionMode: 'multiple',
+        modelValue: new Set(['a'])
+      }
+    });
+
+    let modelItems = modelValueWrapper.findAll('button.vs-listbox__item');
+    expect(modelItems[0].classes()).toContain('is-selected');
+    expect(modelItems[1].classes()).not.toContain('is-selected');
+
+    await modelItems[1].trigger('click');
+    let emittedModelValue = modelValueWrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+    expect(emittedModelValue).toBeInstanceOf(Set);
+    expect(Array.from(emittedModelValue as Set<string>)).toEqual(['a', 'b']);
+    let emittedSelectedKeys = modelValueWrapper.emitted('update:selectedKeys')?.[0]?.[0] as unknown;
+    expect(emittedSelectedKeys).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelectedKeys as Set<string>)).toEqual(['a', 'b']);
+
+    let selectedKeysWrapper = mount(ListView, {
+      props: {
+        items: [
+          {key: 'a', name: 'Adobe Photoshop'},
+          {key: 'b', name: 'Documents'}
+        ],
+        selectionMode: 'multiple',
+        selectedKeys: new Set(['b'])
+      }
+    });
+
+    let selectedItems = selectedKeysWrapper.findAll('button.vs-listbox__item');
+    expect(selectedItems[0].classes()).not.toContain('is-selected');
+    expect(selectedItems[1].classes()).toContain('is-selected');
+  });
+
   it('maps menu selectable/open/expanded states and aria visibility signals', async () => {
     let wrapper = mount(Menu, {
       props: {
         label: 'Actions',
         isExpanded: true,
-        openKeys: ['share'],
+        selectionMode: 'single',
+        openKeys: new Set(['share']),
         modelValue: 'edit',
         items: [
           {key: 'edit', label: 'Edit'},
@@ -3015,15 +3637,354 @@ describe('Vue migration primitives', () => {
     expect(wrapper.classes()).toContain('is-expanded');
     expect(wrapper.attributes('data-testid')).toBe('menu-wrapper');
 
-    let menuItems = wrapper.findAll('button.vs-menu__item');
+    let menuItems = wrapper.findAll('.vs-spectrum-menu__item');
     expect(menuItems[0].classes()).toContain('is-selected');
     expect(menuItems[0].classes()).toContain('is-selectable');
     expect(menuItems[1].classes()).toContain('is-open');
-    expect(wrapper.find('.vs-menu__submenu').attributes('aria-hidden')).toBe('false');
+    expect(wrapper.find('.vs-spectrum-menu__submenu').attributes('aria-hidden')).toBe('false');
 
     await menuItems[0].trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['edit']);
     expect(wrapper.emitted('select')?.[0]).toEqual(['edit']);
+  });
+
+  it('accepts menu iterable defaultSelectedKeys and openKeys sets', async () => {
+    let wrapper = mount(Menu, {
+      props: {
+        label: 'Actions',
+        selectionMode: 'multiple',
+        defaultSelectedKeys: new Set(['edit']),
+        openKeys: new Set(['share']),
+        items: [
+          {key: 'edit', label: 'Edit'},
+          {key: 'share', label: 'Share', children: [{key: 'copy', label: 'Copy link'}]}
+        ]
+      }
+    });
+
+    let editButton = wrapper.get('.vs-spectrum-menu__item[aria-label="Edit"]');
+    let shareButton = wrapper.get('.vs-spectrum-menu__item[aria-label="Share"]');
+    expect(editButton.classes()).toContain('is-selected');
+    expect(shareButton.classes()).toContain('is-open');
+    expect(wrapper.get('.vs-spectrum-menu__submenu').attributes('aria-hidden')).toBe('false');
+
+    await editButton.trigger('click');
+    let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+    expect(emittedModelValue).toBeInstanceOf(Set);
+    expect(Array.from(emittedModelValue as Set<number | string>)).toEqual([]);
+    let emittedSelect = wrapper.emitted('select')?.[0]?.[0] as unknown;
+    expect(emittedSelect).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelect as Set<number | string>)).toEqual([]);
+  });
+
+  it('accepts menu iterable modelValue in multiple selection mode', async () => {
+    let wrapper = mount(Menu, {
+      props: {
+        selectionMode: 'multiple',
+        modelValue: new Set(['edit']),
+        items: [
+          {key: 'edit', label: 'Edit'},
+          {key: 'delete', label: 'Delete'}
+        ]
+      }
+    });
+
+    let editButton = wrapper.get('.vs-spectrum-menu__item[aria-label="Edit"]');
+    let deleteButton = wrapper.get('.vs-spectrum-menu__item[aria-label="Delete"]');
+    expect(editButton.classes()).toContain('is-selected');
+    expect(editButton.attributes('aria-checked')).toBe('true');
+
+    await deleteButton.trigger('click');
+    let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+    expect(emittedModelValue).toBeInstanceOf(Set);
+    expect(Array.from(emittedModelValue as Set<number | string>)).toEqual(['edit', 'delete']);
+    let emittedSelect = wrapper.emitted('select')?.[0]?.[0] as unknown;
+    expect(emittedSelect).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelect as Set<number | string>)).toEqual(['edit', 'delete']);
+  });
+
+  it('maps menu trigger parity props, disabled keys, and close-on-select submenu behavior', async () => {
+    let wrapper = mount(Menu, {
+      props: {
+        align: 'end',
+        autoFocus: 'first',
+        closeOnSelect: true,
+        direction: 'left',
+        disabledKeys: new Set(['delete']),
+        selectionMode: 'single',
+        items: [
+          {key: 'edit', label: 'Edit'},
+          {key: 'delete', label: 'Delete'},
+          {key: 'share', label: 'Share', children: [{key: 'copy', label: 'Copy link'}]}
+        ],
+        shouldFlip: false,
+        shouldFocusWrap: false,
+        trigger: 'longPress'
+      }
+    });
+
+    expect(wrapper.attributes('data-align')).toBe('end');
+    expect(wrapper.attributes('data-auto-focus')).toBe('first');
+    expect(wrapper.attributes('data-direction')).toBe('left');
+    expect(wrapper.attributes('data-should-flip')).toBe('false');
+    expect(wrapper.attributes('data-should-focus-wrap')).toBe('false');
+    expect(wrapper.attributes('data-trigger')).toBe('longPress');
+    expect(wrapper.attributes('data-close-on-select')).toBe('true');
+
+    let disabledButton = wrapper.get('.vs-spectrum-menu__item[aria-label="Delete"]');
+    expect(disabledButton.attributes('aria-disabled')).toBe('true');
+    await disabledButton.trigger('click');
+    expect(wrapper.emitted('action')).toBeUndefined();
+
+    let submenuTrigger = wrapper.get('.vs-spectrum-menu__item[aria-label="Share"]');
+    await submenuTrigger.trigger('click');
+    await nextTick();
+    expect(wrapper.get('.vs-spectrum-menu__submenu').attributes('aria-hidden')).toBe('false');
+    let emittedOpen = wrapper.emitted('openChange')?.[0]?.[0] as unknown;
+    expect(emittedOpen).toBeInstanceOf(Set);
+    expect(Array.from(emittedOpen as Set<number | string>)).toEqual(['share']);
+
+    await wrapper.get('.vs-spectrum-menu__submenu .vs-spectrum-menu__item[aria-label="Copy link"]').trigger('click');
+    await nextTick();
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['copy']);
+    let emittedClosedOpen = wrapper.emitted('openChange')?.[1]?.[0] as unknown;
+    expect(emittedClosedOpen).toBeInstanceOf(Set);
+    expect(Array.from(emittedClosedOpen as Set<number | string>)).toEqual([]);
+    expect(wrapper.get('.vs-spectrum-menu__submenu').attributes('aria-hidden')).toBe('true');
+  });
+
+  it('supports keyboard navigation within menu items', async () => {
+    let wrapper = mount(Menu, {
+      attachTo: document.body,
+      props: {
+        shouldFocusWrap: false,
+        items: [
+          {key: 'one', label: 'One'},
+          {key: 'two', label: 'Two', disabled: true},
+          {key: 'three', label: 'Three'}
+        ]
+      }
+    });
+
+    let one = wrapper.get('.vs-spectrum-menu__item[aria-label="One"]');
+    let three = wrapper.get('.vs-spectrum-menu__item[aria-label="Three"]');
+
+    await one.trigger('focus');
+    await one.trigger('keydown', {key: 'ArrowDown'});
+    expect(document.activeElement).toBe(three.element);
+
+    await three.trigger('keydown', {key: 'ArrowDown'});
+    expect(document.activeElement).toBe(three.element);
+
+    await three.trigger('keydown', {key: 'Home'});
+    expect(document.activeElement).toBe(one.element);
+
+    await one.trigger('keydown', {key: 'End'});
+    expect(document.activeElement).toBe(three.element);
+
+    wrapper.unmount();
+  });
+
+  it('supports keyboard open/close for submenu items', async () => {
+    let wrapper = mount(Menu, {
+      attachTo: document.body,
+      props: {
+        items: [
+          {key: 'share', label: 'Share', children: [{key: 'copy', label: 'Copy link'}]},
+          {key: 'delete', label: 'Delete'}
+        ]
+      }
+    });
+
+    let share = wrapper.get('.vs-spectrum-menu__item[aria-label="Share"]');
+    await share.trigger('focus');
+    await share.trigger('keydown', {key: 'ArrowRight'});
+    await nextTick();
+
+    expect(wrapper.get('.vs-spectrum-menu__submenu').attributes('aria-hidden')).toBe('false');
+    let copy = wrapper.get('.vs-spectrum-menu__submenu .vs-spectrum-menu__item[aria-label="Copy link"]');
+    expect(document.activeElement).toBe(copy.element);
+
+    await copy.trigger('keydown', {key: 'ArrowLeft'});
+    await nextTick();
+    expect(wrapper.get('.vs-spectrum-menu__submenu').attributes('aria-hidden')).toBe('true');
+    expect(document.activeElement).toBe(share.element);
+
+    wrapper.unmount();
+  });
+
+  it('emits dismiss on Escape from top-level menu items', async () => {
+    let wrapper = mount(Menu, {
+      attachTo: document.body,
+      props: {
+        openKeys: new Set(['share']),
+        items: [
+          {key: 'share', label: 'Share', children: [{key: 'copy', label: 'Copy link'}]},
+          {key: 'delete', label: 'Delete'}
+        ]
+      }
+    });
+
+    let deleteItem = wrapper.get('.vs-spectrum-menu__item[aria-label="Delete"]');
+    await deleteItem.trigger('focus');
+    await deleteItem.trigger('keydown', {key: 'Escape'});
+    await nextTick();
+
+    expect(wrapper.emitted('dismiss')).toHaveLength(1);
+    let emittedOpenKeys = wrapper.emitted('openChange')?.[0]?.[0] as unknown;
+    expect(emittedOpenKeys).toBeInstanceOf(Set);
+    expect(Array.from(emittedOpenKeys as Set<number | string>)).toEqual([]);
+
+    wrapper.unmount();
+  });
+
+  it('emits dismiss on outside click when menu is expanded', async () => {
+    let wrapper = mount(Menu, {
+      attachTo: document.body,
+      props: {
+        isExpanded: true,
+        items: [
+          {key: 'one', label: 'One'},
+          {key: 'two', label: 'Two'}
+        ]
+      }
+    });
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    document.body.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    await nextTick();
+
+    expect(wrapper.emitted('dismiss')).toHaveLength(1);
+    let emittedOpenKeys = wrapper.emitted('openChange')?.[0]?.[0] as unknown;
+    expect(emittedOpenKeys).toBeInstanceOf(Set);
+    expect(Array.from(emittedOpenKeys as Set<number | string>)).toEqual([]);
+
+    wrapper.unmount();
+  });
+
+  it('opens and dismisses menu trigger from Escape and outside clicks', async () => {
+    let wrapper = mount(MenuTrigger, {
+      attachTo: document.body,
+      props: {
+        items: [
+          {key: 'one', label: 'One'},
+          {key: 'two', label: 'Two'},
+          {key: 'three', label: 'Three'}
+        ]
+      },
+      slots: {
+        trigger: () => h(ActionButton, null, {default: () => 'Menu Button'})
+      }
+    });
+
+    let triggerButton = wrapper.find('button');
+    await triggerButton.trigger('click');
+    await nextTick();
+    expect(wrapper.find('.vs-spectrum-menu').exists()).toBe(true);
+    expect(wrapper.findAll('.vs-spectrum-menu__item.is-selected')).toHaveLength(0);
+    expect((document.activeElement as HTMLElement | null)?.getAttribute('aria-label')).not.toBe('One');
+
+    document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true}));
+    await nextTick();
+    expect(wrapper.find('.vs-spectrum-menu').exists()).toBe(false);
+    expect(document.activeElement).toBe(triggerButton.element);
+
+    await triggerButton.trigger('click');
+    await nextTick();
+    expect(wrapper.find('.vs-spectrum-menu').exists()).toBe(true);
+
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    document.body.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    await nextTick();
+    expect(wrapper.find('.vs-spectrum-menu').exists()).toBe(false);
+
+    wrapper.unmount();
+  });
+
+  it('opens menu trigger from arrow keys with first and last focus strategies', async () => {
+    let wrapper = mount(MenuTrigger, {
+      attachTo: document.body,
+      props: {
+        items: [
+          {key: 'one', label: 'One'},
+          {key: 'two', label: 'Two'},
+          {key: 'three', label: 'Three'}
+        ]
+      },
+      slots: {
+        trigger: () => h(ActionButton, null, {default: () => 'Menu Button'})
+      }
+    });
+
+    let triggerButton = wrapper.find('button');
+    await triggerButton.trigger('focus');
+    await triggerButton.trigger('keydown', {key: 'ArrowDown'});
+    await nextTick();
+    expect(wrapper.find('.vs-spectrum-menu').exists()).toBe(true);
+    expect((document.activeElement as HTMLElement | null)?.getAttribute('aria-label')).toBe('One');
+
+    document.dispatchEvent(new KeyboardEvent('keydown', {key: 'Escape', bubbles: true}));
+    await nextTick();
+    await triggerButton.trigger('focus');
+    await triggerButton.trigger('keydown', {key: 'ArrowUp'});
+    await nextTick();
+    expect(wrapper.find('.vs-spectrum-menu').exists()).toBe(true);
+    expect((document.activeElement as HTMLElement | null)?.getAttribute('aria-label')).toBe('Three');
+
+    wrapper.unmount();
+  });
+
+  it('closes menu trigger when clicking trigger while open', async () => {
+    let wrapper = mount(MenuTrigger, {
+      attachTo: document.body,
+      props: {
+        items: [
+          {key: 'one', label: 'One'},
+          {key: 'two', label: 'Two'},
+          {key: 'three', label: 'Three'}
+        ]
+      },
+      slots: {
+        trigger: () => h(ActionButton, null, {default: () => 'Menu Button'})
+      }
+    });
+
+    let triggerButton = wrapper.find('button');
+    await triggerButton.trigger('click');
+    await nextTick();
+    expect(wrapper.find('.vs-spectrum-menu').exists()).toBe(true);
+
+    await triggerButton.trigger('click');
+    await nextTick();
+    expect(wrapper.find('.vs-spectrum-menu').exists()).toBe(false);
+
+    wrapper.unmount();
+  });
+
+  it('renders menu link items as anchors and applies disabled link contracts', async () => {
+    let wrapper = mount(Menu, {
+      props: {
+        selectionMode: 'none',
+        disabledKeys: new Set(['apple']),
+        items: [
+          {key: 'adobe', label: 'Adobe', href: 'https://adobe.com'},
+          {key: 'apple', label: 'Apple', href: 'https://apple.com'}
+        ]
+      }
+    });
+
+    let links = wrapper.findAll('a.vs-spectrum-menu__item');
+    expect(links).toHaveLength(2);
+    expect(wrapper.findAll('div.vs-spectrum-menu__item')).toHaveLength(0);
+    expect(links[0].attributes('href')).toBe('https://adobe.com');
+    expect(links[1].attributes('href')).toBe('https://apple.com');
+    expect(links[0].attributes('aria-disabled')).toBeUndefined();
+    expect(links[1].attributes('aria-disabled')).toBe('true');
+    expect(links[1].classes()).toContain('is-disabled');
+
+    await links[1].trigger('click');
+    expect(wrapper.emitted('action')).toBeUndefined();
+    expect(wrapper.emitted('select')).toBeUndefined();
   });
 
   it('maps table state classes, aria metadata, and hidden drop indicators', async () => {
@@ -3038,6 +3999,7 @@ describe('Vue migration primitives', () => {
           column: 'name',
           direction: 'ascending'
         },
+        openKeys: new Set([2]),
         columns: [
           {key: 'name', label: 'Name', sortable: true, resizable: true},
           {key: 'license', label: 'License'}
@@ -3061,11 +4023,17 @@ describe('Vue migration primitives', () => {
     expect(rows[0].classes()).toContain('is-selected');
     expect(rows[0].attributes('aria-rowindex')).toBe('1');
     expect(rows[0].attributes('aria-selected')).toBe('true');
+    expect(rows[1].classes()).toContain('is-open');
+    expect(rows[1].get('.vs-table__open-toggle').classes()).toContain('is-open');
 
     await rows[1].trigger('mouseenter');
     expect(rows[1].classes()).toContain('is-hovered');
     await rows[1].trigger('mousedown');
     expect(rows[1].classes()).toContain('is-active');
+    await rows[1].get('.vs-table__open-toggle').trigger('click');
+    let emittedOpenKeys = wrapper.emitted('openChange')?.[0]?.[0] as unknown;
+    expect(emittedOpenKeys).toBeInstanceOf(Set);
+    expect(Array.from(emittedOpenKeys as Set<number | string>)).toEqual([]);
 
     await wrapper.get('button.vs-table__sort-button').trigger('click');
     expect(wrapper.emitted('sortChange')?.[0]).toEqual([{column: 'name', direction: 'descending'}]);
@@ -3096,10 +4064,104 @@ describe('Vue migration primitives', () => {
     expect(selectAll.classes()).toContain('spectrum-Table-checkbox');
 
     await selectAll.setValue(true);
-    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([[1, 2]]);
+    let selectAllUpdate = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+    expect(selectAllUpdate).toBeInstanceOf(Set);
+    expect(Array.from(selectAllUpdate as Set<number | string>)).toEqual([1, 2]);
 
     await rowSelection[0].setValue(true);
-    expect(wrapper.emitted('update:modelValue')?.[1]).toEqual([[1]]);
+    let rowToggleUpdate = wrapper.emitted('update:modelValue')?.[1]?.[0] as unknown;
+    expect(rowToggleUpdate).toBeInstanceOf(Set);
+    expect(Array.from(rowToggleUpdate as Set<number | string>)).toEqual([1]);
+  });
+
+  it('maps table disabledKeys iterable rows to disabled contracts and blocked selection/action', async () => {
+    let wrapper = mount(Table, {
+      props: {
+        selectionMode: 'multiple',
+        modelValue: [],
+        disabledKeys: new Set([2]),
+        columns: [
+          {key: 'name', label: 'Name'},
+          {key: 'license', label: 'License'}
+        ],
+        rows: [
+          {id: 1, name: 'Vue', license: 'MIT'},
+          {id: 2, name: 'React', license: 'MIT'},
+          {id: 3, name: 'Angular', license: 'MIT'}
+        ]
+      }
+    });
+
+    let rows = wrapper.findAll('tbody.vs-table__body tr.vs-table__row');
+    expect(rows[1].classes()).toContain('is-disabled');
+    expect(rows[1].attributes('tabindex')).toBe('-1');
+
+    let rowSelection = wrapper.findAll('tbody.vs-table__body input.vs-table__selection-checkbox');
+    expect(rowSelection[1].attributes('disabled')).toBeDefined();
+
+    let selectAll = wrapper.get('thead input.vs-table__selection-checkbox');
+    await selectAll.setValue(true);
+    let disabledSelectAllUpdate = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+    expect(disabledSelectAllUpdate).toBeInstanceOf(Set);
+    expect(Array.from(disabledSelectAllUpdate as Set<number | string>)).toEqual([1, 3]);
+
+    await rows[1].trigger('click');
+    expect((wrapper.emitted('update:modelValue') ?? []).length).toBe(1);
+    expect(wrapper.emitted('rowAction')).toBeUndefined();
+  });
+
+  it('accepts table modelValue as a Set iterable in multiple selection mode', async () => {
+    let wrapper = mount(Table, {
+      props: {
+        selectionMode: 'multiple',
+        modelValue: new Set([1, 3]),
+        columns: [
+          {key: 'name', label: 'Name'},
+          {key: 'license', label: 'License'}
+        ],
+        rows: [
+          {id: 1, name: 'Vue', license: 'MIT'},
+          {id: 2, name: 'React', license: 'MIT'},
+          {id: 3, name: 'Angular', license: 'MIT'}
+        ]
+      }
+    });
+
+    let rows = wrapper.findAll('tbody.vs-table__body tr.vs-table__row');
+    expect(rows[0].classes()).toContain('is-selected');
+    expect(rows[1].classes()).not.toContain('is-selected');
+    expect(rows[2].classes()).toContain('is-selected');
+
+    await rows[1].trigger('click');
+    let emittedSelection = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+    expect(emittedSelection).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelection as Set<number | string>)).toEqual(expect.arrayContaining([1, 2, 3]));
+  });
+
+  it('maps table loadingState, divider width columns, and url cell rendering to parity contracts', () => {
+    let wrapper = mount(Table, {
+      props: {
+        loadingState: 'loadingMore',
+        columns: [
+          {key: 'name', label: 'Name', showDivider: true, width: 240},
+          {key: 'link', label: 'Link'},
+          {key: 'date', label: 'Date', align: 'end'}
+        ],
+        rows: [
+          {id: 1, name: 'React Spectrum', link: 'https://react-spectrum.adobe.com', date: '2026-02-20'}
+        ]
+      }
+    });
+
+    expect(wrapper.attributes('data-loading-state')).toBe('loadingMore');
+    expect(wrapper.findAll('.spectrum-Table-cell--divider').length).toBeGreaterThan(0);
+    expect(wrapper.get('th.vs-table__head-cell').attributes('style') ?? '').toContain('width: 240px');
+
+    let link = wrapper.get('a.vs-table__cell-link');
+    expect(link.attributes('href')).toBe('https://react-spectrum.adobe.com');
+    expect(link.attributes('target')).toBe('_blank');
+
+    expect(wrapper.text()).toContain('Loading more…');
   });
 
   it('updates model value from calendar date input', async () => {
@@ -3439,7 +4501,8 @@ describe('Vue migration primitives', () => {
 
     await secondTrigger.trigger('click');
     await nextTick();
-    expect((wrapper.vm as unknown as {expanded: string[]}).expanded).toEqual(['one', 'two']);
+    let expandedKeys = (wrapper.vm as unknown as {expanded: Iterable<string>}).expanded;
+    expect(Array.from(expandedKeys)).toEqual(['one', 'two']);
     expect(wrapper.get('#two-panel').attributes('aria-hidden')).toBe('false');
   });
 
@@ -3447,7 +4510,7 @@ describe('Vue migration primitives', () => {
     let wrapper = mount({
       components: {Accordion, Disclosure, DisclosurePanel, DisclosureTitle},
       template: `
-        <Accordion :default-expanded-keys="['files']" is-disabled>
+        <Accordion :default-expanded-keys="new Set(['files'])" is-disabled>
           <Disclosure id="files">
             <DisclosureTitle>Files</DisclosureTitle>
             <DisclosurePanel>Files content</DisclosurePanel>
@@ -3474,5 +4537,32 @@ describe('Vue migration primitives', () => {
     await peopleTrigger.trigger('click');
     await nextTick();
     expect(wrapper.get('#people-panel').attributes('aria-hidden')).toBe('true');
+  });
+
+  it('accepts accordion expandedKeys as a Set iterable in controlled mode', async () => {
+    let wrapper = mount({
+      components: {Accordion, Disclosure, DisclosurePanel, DisclosureTitle},
+      data() {
+        return {
+          expandedSet: new Set(['two'])
+        };
+      },
+      template: `
+        <Accordion :expanded-keys="expandedSet">
+          <Disclosure id="one">
+            <DisclosureTitle>One</DisclosureTitle>
+            <DisclosurePanel>Panel one</DisclosurePanel>
+          </Disclosure>
+          <Disclosure id="two">
+            <DisclosureTitle>Two</DisclosureTitle>
+            <DisclosurePanel>Panel two</DisclosurePanel>
+          </Disclosure>
+        </Accordion>
+      `
+    });
+
+    let items = wrapper.findAll('.spectrum-Accordion-item');
+    expect(items[0].classes()).not.toContain('is-expanded');
+    expect(items[1].classes()).toContain('is-expanded');
   });
 });

@@ -73,3 +73,140 @@
 7. Capture and review controls/argTypes parity evidence for canonical stories in each relevant namespace before sign-off.
 8. Manually review React and Vue Storybook side by side for structure, controls, key attributes, computed styles, and interactions.
 9. Confirm regression tests cover fixed gaps and evidence is captured in commit/PR notes.
+
+## Systematic parity review strategy (component-owned behavior)
+
+### 1. Root-cause class to eliminate everywhere
+
+1. Treat this as a blocking anti-pattern: story-level code implementing behavior that should live in Vue component internals.
+2. Treat this as a blocking anti-pattern: Vue exports that alias multiple React concepts into one primitive when React has distinct trigger/controller components.
+3. For each component family, parity review must explicitly answer: "What behavior is owned by React component internals vs story scaffolding?"
+
+### 2. Repository-wide audit pass (before fixes)
+
+1. Build a migration audit table with one row per Vue component family (`@vue-spectrum/*` + relevant `vue-aria-components` stories):
+   - React owner components (source files in `packages/@react-spectrum/*/src`).
+   - Vue owner components (source files in `packages/@vue-spectrum/*/src`).
+   - Story-level behavior found (open/close state, keyboard routing, dismiss handlers, focus management, positioning logic).
+   - Risk tier.
+2. Assign risk tiers to prioritize work:
+   - Tier 1: trigger/overlay/controller patterns (`*Trigger`, popover/tray/menu/dialog/select/picker/combobox).
+   - Tier 2: composite controls with selection/open state (`ListBox`, `Table`, `Tree`, `Tabs`, `ActionGroup`).
+   - Tier 3: mostly presentational/stateless primitives.
+3. For each Tier 1 row, verify whether Vue still has alias exports hiding missing architecture (for example `MenuTrigger = Menu`-style patterns). These rows are first to fix.
+
+### 3. Per-component execution loop (repeat until all components are covered)
+
+1. Extract React contract from source and tests:
+   - internal state ownership,
+   - event contract (`openChange`, `dismiss`, selection events),
+   - keyboard/pointer/focus behavior,
+   - overlay/dismiss semantics (Escape, outside click/press, focus restore).
+2. Write/expand failing Vue regressions first for that contract:
+   - component-level tests (`components.spec.ts`) for behavior ownership,
+   - story-level parity tests (`storybook-parity.spec.ts`) for integration expectations,
+   - API-compat tests when exports/events change.
+3. Move behavior from stories into Vue component internals:
+   - keep stories declarative and scenario-focused,
+   - remove workaround wrappers used only to simulate missing component architecture.
+4. Reconcile event and prop contracts with React:
+   - align payload shapes and naming semantics where required,
+   - keep compatibility aliases only where they do not hide missing behavior.
+5. Re-run validation gate and only then mark that component row complete.
+
+### 4. Mandatory parity assertions per component
+
+1. Open/close lifecycle:
+   - trigger click toggles correctly,
+   - no reopen race,
+   - no layout shift from menu/overlay mount.
+2. Dismiss lifecycle:
+   - Escape closes from expected focus locations,
+   - outside click/press closes reliably,
+   - focus restore behavior matches React expectations.
+3. Keyboard lifecycle:
+   - Arrow/Home/End navigation where applicable,
+   - trigger ArrowDown/ArrowUp open strategy where applicable,
+   - submenu keyboard open/close where applicable.
+4. Visual state lifecycle:
+   - no unintended hovered/focused/selected state on open,
+   - focus-visible styles only when keyboard modality requires them.
+5. Story contract:
+   - stories do not own component behavior,
+   - controls/args/argTypes parity remains aligned.
+
+### 5. Completion criteria for each component row
+
+1. Vue component internals own the same behavior class as React.
+2. No story-level workaround code remains for missing core behavior.
+3. Regression tests fail without the fix and pass with the fix.
+4. Validation gate passes (`typecheck`, Vue tests, Storybook build, parity checks).
+5. Evidence is logged with exact files changed, behaviors fixed, and validation commands.
+
+### 6. Execution cadence and governance
+
+1. Run this workflow component-by-component in priority order; do not batch unrelated families in one change.
+2. Keep each change scoped to one behavior cluster and one component family where possible.
+3. After each component row is complete, append a dated evidence entry before moving to the next row.
+4. Do not rely on user manual QA to discover regressions; test coverage must discover the known failure classes automatically.
+
+## Evidence log (cleaned)
+
+### February 26, 2026
+
+1. Converted scaffolded stories to live behavior and removed placeholder migration wording across key Storybook surfaces.
+2. Closed early core parity gaps in `ActionGroup` and `ListBox` internals (including disabled/selection contracts and semantic labeling).
+3. Added regression coverage in `starters/vue/src/storybook-parity.spec.ts` and `starters/vue/src/components.spec.ts` for the migrated clusters.
+4. Validation snapshots passed repeatedly during these changes:
+   - typecheck: `yarn typecheck:vue`
+   - full tests: `yarn test:vue` (up to 367 tests by end of day)
+   - Storybook build: `yarn build:vue:storybook`
+5. Story/index parity remained zero-diff for this scope (`react_ids=1467`, `vue_ids=1467`, `only_react=0`, `only_vue=0`; no title/name/args/argTypes drift reported).
+
+### February 27, 2026 — Core contract parity (`@vue-spectrum/*`)
+
+1. Completed broad iterable-key/value and selection contract hardening across component internals, including these families:
+   - `accordion`, `actionbar`, `actiongroup`, `card`, `combobox`, `list`, `listbox`, `menu`, `picker`, `steplist`, `table`, `tag`.
+2. Closed event-payload parity gaps so emitted values/sets align with React behavior for canonical interaction paths.
+3. Closed numeric-key and disabled-key edge cases where Vue behavior diverged from React in controlled and uncontrolled scenarios.
+4. Updated stories in affected families to consume real iterable/controlled contracts instead of ad hoc story-only normalization.
+5. Each cluster was covered by targeted regression additions in:
+   - `starters/vue/src/components.spec.ts`
+   - `starters/vue/src/storybook-parity.spec.ts`
+   - `starters/vue/src/api-compat.spec.ts` when export semantics changed.
+
+### February 27, 2026 — Story parity and fixture-removal pass
+
+1. Migrated remaining fixture/template-only stories to live stateful stories across `packages/vue-aria-components/stories` and `packages/@vue-spectrum/*/stories`.
+2. Removed stale scaffold wording and static shells from RAC and Spectrum story files, replacing them with real component wiring and interaction coverage.
+3. Closed parity gaps across RAC story areas including (non-exhaustive): `Switch`, `SearchField`, `Form`, `Disclosure`, `Dropzone`, `TextField`, `TimeField`, `Meter`, `ProgressBar`, `RadioGroup`, `NumberField`, `Popover`, `Tooltip`, `FileTrigger`, color components, `Slider`, `Link`, `Autocomplete`, `Select`, `GridList`, `Modal`, `Table`, and `DatePicker`.
+4. Re-ran parity-focused test slices after each migration cluster, then re-ran full Vue validation gate.
+
+### February 27, 2026 — `Menu`/`MenuTrigger` parity remediation
+
+1. Resolved visual and behavior parity drift reported during side-by-side React/Vue review for `MenuTrigger` stories (layout shift, hover/focus state, selected-on-open drift, dismiss semantics, keyboard gaps, reopen race).
+2. Aligned menu DOM/class/state contracts with React expectations and fixed link/unavailable/submenu behavior in `@vue-spectrum/menu` internals and stories.
+3. Added missing keyboard and dismiss behaviors:
+   - top-level `Escape` dismiss,
+   - outside click dismiss,
+   - submenu keyboard open/close focus restoration,
+   - trigger `ArrowDown`/`ArrowUp` open-focus strategies.
+4. Fixed race/regression sequence discovered during review:
+   - reopen-on-close race,
+   - immediate-close-on-open suppression timing,
+   - unintended first-item hover/focus appearance.
+5. Final architectural correction:
+   - replaced `MenuTrigger = Menu` aliasing with a real Vue `MenuTrigger` component that owns trigger/open/dismiss/focus behavior (React-like ownership),
+   - removed story-owned trigger behavior hacks,
+   - aligned `openChange` trigger semantics and added explicit regressions.
+
+### Validation summary (end of current evidence window)
+
+1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
+   - latest typecheck run: `yarn typecheck:vue`
+   - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
+   - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
+   - full Vue tests: `yarn test:vue` (latest logged: 439 tests passed)
+   - latest Storybook build run: `yarn build:vue:storybook`
+2. Story/index parity checks remained zero-diff where logged against the React artifact.
+3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).
