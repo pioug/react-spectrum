@@ -5,6 +5,7 @@ import InfoOutline from '@spectrum-icons-vue/workflow/InfoOutline';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, nextTick, type PropType, ref, watch} from 'vue';
 const helpStyles: {[key: string]: string} = {};
+let contextualHelpId = 0;
 
 
 type ContextualHelpVariant = 'help' | 'info';
@@ -66,14 +67,16 @@ export const ContextualHelp = defineComponent({
     'update:modelValue': (value: boolean) => typeof value === 'boolean'
   },
   setup(props, {attrs, emit, slots}) {
+    let generatedId = `vs-contextual-help-${++contextualHelpId}`;
     let internalOpen = ref(props.modelValue);
     let triggerRef = ref<HTMLElement | {$el?: Element} | null>(null);
+    let triggerId = computed(() => typeof attrs.id === 'string' && attrs.id.length > 0 ? attrs.id : generatedId);
 
     watch(() => props.modelValue, (value) => {
       internalOpen.value = value;
     });
 
-    let labelledBy = computed(() => {
+    let externalLabelledBy = computed(() => {
       let value = attrs['aria-labelledby'];
       return typeof value === 'string' && value.length > 0 ? value : undefined;
     });
@@ -88,7 +91,7 @@ export const ContextualHelp = defineComponent({
         return explicitAriaLabel.value;
       }
 
-      if (labelledBy.value) {
+      if (externalLabelledBy.value) {
         return undefined;
       }
 
@@ -97,6 +100,18 @@ export const ContextualHelp = defineComponent({
       }
 
       return props.variant === 'info' ? 'Information' : 'Help';
+    });
+    let labelledBy = computed(() => {
+      if (!externalLabelledBy.value) {
+        return undefined;
+      }
+
+      let ids = new Set<string>(externalLabelledBy.value.trim().split(/\s+/).filter(Boolean));
+      if (triggerLabel.value) {
+        ids.add(triggerId.value);
+      }
+
+      return ids.size > 0 ? Array.from(ids).join(' ') : undefined;
     });
 
     let dialogTitle = computed(() => {
@@ -139,7 +154,7 @@ export const ContextualHelp = defineComponent({
     let triggerAttrs = computed(() => {
       let filteredAttrs: Record<string, unknown> = {};
       for (let [key, value] of Object.entries(attrs)) {
-        if (key === 'aria-label' || key === 'aria-labelledby' || key === 'children' || key === 'class') {
+        if (key === 'aria-label' || key === 'aria-labelledby' || key === 'children' || key === 'class' || key === 'id') {
           continue;
         }
 
@@ -156,6 +171,7 @@ export const ContextualHelp = defineComponent({
       h(ActionButton, {
         ...triggerAttrs.value,
         ref: triggerRef,
+        id: triggerId.value,
         class: [
           classNames(helpStyles, 'react-spectrum-ContextualHelp-button'),
           'vs-contextual-help__trigger',

@@ -2623,6 +2623,22 @@ describe('Vue migration primitives', () => {
     expect(trigger.attributes('aria-label')).toBeUndefined();
     expect(trigger.classes()).toContain('foo');
     expect(labelledByWrapper.classes()).not.toContain('foo');
+
+    let explicitAndLabelledByWrapper = mount(ContextualHelp, {
+      attrs: {
+        id: 'contextual-help-trigger',
+        'aria-label': 'Read more details',
+        'aria-labelledby': 'contextual-help-label'
+      },
+      slots: {
+        default: () => 'Details'
+      }
+    });
+    let explicitAndLabelledByTrigger = explicitAndLabelledByWrapper.get('button.vs-contextual-help__trigger');
+    let explicitAndLabelledByIds = explicitAndLabelledByTrigger.attributes('aria-labelledby')?.split(/\s+/) ?? [];
+    expect(explicitAndLabelledByTrigger.attributes('aria-label')).toBe('Read more details');
+    expect(explicitAndLabelledByIds).toContain('contextual-help-label');
+    expect(explicitAndLabelledByIds).toContain('contextual-help-trigger');
   });
 
   it('accepts combobox selectedKeys as a Set iterable in multiple selection mode', async () => {

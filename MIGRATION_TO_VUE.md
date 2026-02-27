@@ -851,6 +851,23 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `ContextualHelp` useLabels parity (`@vue-spectrum/contextualhelp`)
+
+1. Closed `aria-label` + `aria-labelledby` composition drift on the help trigger:
+   - when both are provided, trigger `aria-labelledby` now composes the trigger id with external ids (React `useLabels` parity),
+   - trigger id is now explicit and stable (user-provided `id` honored, generated fallback otherwise).
+2. Preserved existing trigger-label contracts:
+   - default `Help`/`Information` labels remain unchanged,
+   - `aria-labelledby`-only usage still suppresses `aria-label`.
+3. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: explicit `aria-label` + `aria-labelledby` + `id` composition assertions on ContextualHelp trigger,
+   - `starters/vue/src/storybook-parity.spec.ts`: contextual help story parity now asserts the same composed trigger labeling contract.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "contextual help trigger aria labeling and class forwarding"` and `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts -t "contextual help stories with trigger aria and class parity contracts"`,
+   - full Vue tests: `yarn test:vue` (528 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

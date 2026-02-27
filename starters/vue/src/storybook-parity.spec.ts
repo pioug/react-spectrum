@@ -2364,6 +2364,13 @@ describe('Vue storybook helper parity', () => {
     let withButtonWrapper = mount(withButtonStory);
     let labelledByStory = ContextualHelpAriaLabelledBy.render?.({}) as ReturnType<Exclude<typeof ContextualHelpAriaLabelledBy.render, undefined>>;
     let labelledByWrapper = mount(labelledByStory);
+    let explicitAndLabelledByStory = ContextualHelpDefault.render?.({
+      ...((ContextualHelpDefault as {args?: Record<string, unknown>}).args ?? {}),
+      id: 'contextual-help-trigger',
+      'aria-label': 'Read more details',
+      'aria-labelledby': 'contextual-help-label'
+    }) as ReturnType<Exclude<typeof ContextualHelpDefault.render, undefined>>;
+    let explicitAndLabelledByWrapper = mount(explicitAndLabelledByStory);
 
     try {
       expect(infoWrapper.get('button.vs-contextual-help__trigger').attributes('aria-label')).toBe('Information');
@@ -2372,10 +2379,17 @@ describe('Vue storybook helper parity', () => {
       let labelledByTrigger = labelledByWrapper.get('button.vs-contextual-help__trigger');
       expect(labelledByTrigger.attributes('aria-labelledby')).toBe('foo');
       expect(labelledByTrigger.attributes('aria-label')).toBeUndefined();
+
+      let explicitAndLabelledByTrigger = explicitAndLabelledByWrapper.get('button.vs-contextual-help__trigger');
+      let explicitAndLabelledByIds = explicitAndLabelledByTrigger.attributes('aria-labelledby')?.split(/\s+/) ?? [];
+      expect(explicitAndLabelledByTrigger.attributes('aria-label')).toBe('Read more details');
+      expect(explicitAndLabelledByIds).toContain('contextual-help-label');
+      expect(explicitAndLabelledByIds).toContain('contextual-help-trigger');
     } finally {
       infoWrapper.unmount();
       withButtonWrapper.unmount();
       labelledByWrapper.unmount();
+      explicitAndLabelledByWrapper.unmount();
     }
   });
 
