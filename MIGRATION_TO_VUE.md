@@ -570,13 +570,27 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `FileTrigger` directory-attribute contract parity (`vue-aria-components`, `@vue-spectrum/filetrigger`)
+
+1. Closed hidden-input directory attribute drift in `VueFileTrigger`:
+   - `webkitdirectory` now follows boolean-attribute parity (`""` when enabled),
+   - removed Vue-only `directory` attribute that React does not emit.
+2. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: explicit `acceptDirectory` DOM-contract assertions for hidden file input,
+   - `starters/vue/src/storybook-parity.spec.ts`: React-aria story parity now asserts boolean `webkitdirectory` contract.
+3. Validation after fix:
+   - targeted file-trigger assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "file trigger"`,
+   - full Vue tests: `yarn test:vue` (499 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 498 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 499 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

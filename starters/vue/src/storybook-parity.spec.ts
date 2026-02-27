@@ -780,7 +780,7 @@ describe('Vue storybook helper parity', () => {
       let directoriesWrapper = mount(directoriesStory);
       wrappers.push(directoriesWrapper);
       let directoriesInput = directoriesWrapper.get('input[type="file"]');
-      expect(directoriesInput.attributes('webkitdirectory')).toBe('true');
+      expect(directoriesInput.attributes('webkitdirectory')).toBe('');
       expect(directoriesWrapper.findAll('ul li')).toHaveLength(0);
 
       let linkStory = RacFileTriggerLinkAllowsMultiple({});

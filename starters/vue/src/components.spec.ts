@@ -4885,6 +4885,21 @@ describe('Vue migration primitives', () => {
     clickSpy.mockRestore();
   });
 
+  it('maps file trigger directory contract to react parity', () => {
+    let wrapper = mount(FileTrigger, {
+      props: {
+        acceptDirectory: true
+      },
+      slots: {
+        default: () => h('button', {type: 'button'}, 'Upload directory')
+      }
+    });
+
+    let input = wrapper.get('input[type="file"]');
+    expect(input.attributes('webkitdirectory')).toBe('');
+    expect(input.attributes('directory')).toBeUndefined();
+  });
+
   it('maps tree hidden visibility signal and emits item actions', async () => {
     let hidden = mount(Tree, {
       props: {

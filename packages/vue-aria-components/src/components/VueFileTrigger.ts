@@ -94,8 +94,7 @@ export const VueFileTrigger = defineComponent({
           multiple: allowsMultiple.value,
           capture: props.defaultCamera,
           disabled: props.disabled,
-          webkitdirectory: props.acceptDirectory ? 'true' : undefined,
-          directory: props.acceptDirectory ? 'true' : undefined,
+          webkitdirectory: props.acceptDirectory ? '' : undefined,
           onChange: (event: Event) => {
             let target = event.currentTarget as HTMLInputElement | null;
             emitFiles(target?.files ?? null);
