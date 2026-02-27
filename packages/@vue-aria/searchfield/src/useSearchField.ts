@@ -117,6 +117,26 @@ export function useSearchField(options: AriaSearchFieldOptions = {}): SearchFiel
 
   let ariaLabel = computed(() => resolveOptionalString(options.ariaLabel) ?? resolveOptionalString(options['aria-label']));
   let ariaLabelledby = computed(() => resolveOptionalString(options.ariaLabelledby) ?? resolveOptionalString(options['aria-labelledby']));
+  let combinedAriaLabelledBy = computed(() => {
+    let ids = new Set<string>();
+    if (labelId.value) {
+      ids.add(labelId.value);
+    }
+
+    if (ariaLabelledby.value) {
+      for (let id of ariaLabelledby.value.trim().split(/\s+/)) {
+        if (id) {
+          ids.add(id);
+        }
+      }
+    }
+
+    if (ariaLabel.value && ids.size > 0) {
+      ids.add(inputId.value);
+    }
+
+    return ids.size > 0 ? Array.from(ids).join(' ') : undefined;
+  });
   let ariaDescribedby = computed(() => {
     let ids: string[] = [];
     if (descriptionId.value) {
@@ -193,7 +213,7 @@ export function useSearchField(options: AriaSearchFieldOptions = {}): SearchFiel
       required: isRequired.value,
       placeholder: resolveOptionalString(options.placeholder),
       'aria-label': ariaLabel.value,
-      'aria-labelledby': ariaLabelledby.value ?? labelId.value,
+      'aria-labelledby': combinedAriaLabelledBy.value,
       'aria-describedby': ariaDescribedby.value,
       'aria-invalid': isInvalid.value ? true : undefined,
       onInput,

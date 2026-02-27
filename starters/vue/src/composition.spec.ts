@@ -3646,6 +3646,27 @@ describe('Vue migration composition components', () => {
     searchField.clearButtonProps.value.onClick();
     expect(inputValue.value).toBe('');
 
+    let composedLabelSearchField = useAriaSearchField({
+      'aria-label': 'Search query',
+      'aria-labelledby': 'search-label',
+      inputValue: ref(''),
+      label: 'Search docs'
+    });
+    let composedLabelledByIds = composedLabelSearchField.inputProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(composedLabelSearchField.inputProps.value['aria-label']).toBe('Search query');
+    expect(composedLabelledByIds).toContain(composedLabelSearchField.labelProps.value.id as string);
+    expect(composedLabelledByIds).toContain('search-label');
+    expect(composedLabelledByIds).toContain(composedLabelSearchField.inputProps.value.id);
+
+    let ariaLabelOnlySearchField = useAriaSearchField({
+      'aria-label': 'Search query',
+      'aria-labelledby': 'search-label',
+      inputValue: ref('')
+    });
+    let ariaLabelOnlyIds = ariaLabelOnlySearchField.inputProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(ariaLabelOnlyIds).toContain('search-label');
+    expect(ariaLabelOnlyIds).toContain(ariaLabelOnlySearchField.inputProps.value.id);
+
     let requiredSearchField = useAriaSearchField({
       inputValue: ref(''),
       isRequired: true

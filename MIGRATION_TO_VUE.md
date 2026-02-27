@@ -899,6 +899,21 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — Shared `useSearchField` ARIA labelling parity (`@vue-aria/searchfield`)
+
+1. Aligned searchfield input labelling semantics with React dual-label behavior:
+   - visible label ids now compose with external `aria-labelledby`,
+   - input id now participates in `aria-labelledby` when `aria-label` coexists with labelledby sources.
+2. Preserved search interaction contracts:
+   - submit/clear/readOnly/required behavior unchanged; only ownership and aria composition updated.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: explicit `useSearchField` assertions for combined `label` + `aria-label` + `aria-labelledby` and no-visible-label dual-label flows.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria search field submit and clear behavior"`,
+   - full Vue tests: `yarn test:vue` (528 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
