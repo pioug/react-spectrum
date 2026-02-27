@@ -268,13 +268,30 @@
    - `CI=1 yarn build:vue:storybook` passed again (build artifacts emitted to `starters/vue/dist/storybook`),
    - Vue test gate still passed (`yarn test:vue`).
 
+### February 27, 2026 — Systemic outside-interaction parity remediation (`@vue-aria/interactions`)
+
+1. Aligned `useInteractOutside` behavior with React reference implementation in shared interaction internals:
+   - added owner-document listener binding (`ref` document instead of always global `document`),
+   - added non-pointer fallback listeners (`mousedown`/`mouseup`/`touchstart`/`touchend`) for environments without `PointerEvent`,
+   - added touch emulated-mouse suppression parity (`ignoreEmulatedMouseEvents`),
+   - registered automatic cleanup on Vue scope disposal while preserving explicit stop-function returns.
+2. Added regression coverage in `starters/vue/src/composition.spec.ts` for:
+   - pointer-disabled fallback behavior,
+   - owner-document listener attachment for iframe-bound refs,
+   - listener cleanup on scope disposal.
+3. Validation after fix:
+   - targeted interact-outside slice: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "interact-outside|PointerEvent|owner document|scope is disposed|keyboard move events"`,
+   - full Vue tests: `yarn test:vue` (459 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 439 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 459 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

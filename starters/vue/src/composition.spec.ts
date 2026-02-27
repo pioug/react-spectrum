@@ -1,5 +1,5 @@
 import {mount} from '@vue/test-utils';
-import {computed, defineComponent, h, nextTick, ref} from 'vue';
+import {computed, defineComponent, effectScope, h, nextTick, ref} from 'vue';
 import {describe, expect, it, vi} from 'vitest';
 import {useActionGroup, useActionGroupItem} from '@vue-aria/actiongroup';
 import {useAutocomplete, useSearchAutocomplete} from '@vue-aria/autocomplete';
@@ -5123,8 +5123,13 @@ describe('Vue migration composition components', () => {
         container.addEventListener('keydown', move.moveProps.value.onKeyDown as EventListener);
       }
 
-      outside.dispatchEvent(createPointerEvent('pointerdown'));
-      outside.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+      if (typeof PointerEvent !== 'undefined') {
+        outside.dispatchEvent(createPointerEvent('pointerdown'));
+        outside.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+      } else {
+        outside.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+        outside.dispatchEvent(new MouseEvent('mouseup', {bubbles: true}));
+      }
       container.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'ArrowRight'}));
 
       expect(outsideEvents).toEqual(['start', 'outside']);
@@ -5135,6 +5140,135 @@ describe('Vue migration composition components', () => {
       ]);
     } finally {
       stopInteractOutside();
+      document.body.removeChild(container);
+      document.body.removeChild(outside);
+    }
+  });
+
+  it('falls back to mouse and touch events when PointerEvent is unavailable', () => {
+    let outsideEvents: string[] = [];
+    let container = document.createElement('div');
+    let outside = document.createElement('button');
+    document.body.append(container, outside);
+
+    let originalPointerEvent = globalThis.PointerEvent;
+    Object.defineProperty(globalThis, 'PointerEvent', {
+      configurable: true,
+      value: undefined
+    });
+
+    let stopInteractOutside = useInteractOutside({
+      onInteractOutside: () => {
+        outsideEvents.push('outside');
+      },
+      onInteractOutsideStart: () => {
+        outsideEvents.push('start');
+      },
+      ref: ref(container)
+    });
+
+    try {
+      outside.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+      outside.dispatchEvent(new MouseEvent('mouseup', {bubbles: true}));
+
+      outside.dispatchEvent(new Event('touchstart', {bubbles: true}));
+      outside.dispatchEvent(new Event('touchend', {bubbles: true}));
+      // Ignore emulated mouseup that follows touchend.
+      outside.dispatchEvent(new MouseEvent('mouseup', {bubbles: true}));
+
+      expect(outsideEvents).toEqual(['start', 'outside', 'start', 'outside']);
+    } finally {
+      stopInteractOutside();
+      Object.defineProperty(globalThis, 'PointerEvent', {
+        configurable: true,
+        value: originalPointerEvent
+      });
+      document.body.removeChild(container);
+      document.body.removeChild(outside);
+    }
+  });
+
+  it('listens on the ref owner document for iframe interactions', () => {
+    let iframe = document.createElement('iframe');
+    document.body.appendChild(iframe);
+    let iframeWindow = iframe.contentWindow;
+    let iframeDocument = iframe.contentWindow?.document;
+    expect(iframeDocument).toBeTruthy();
+    expect(iframeWindow).toBeTruthy();
+    let container = iframeDocument!.createElement('div');
+    iframeDocument!.body.appendChild(container);
+    let addListenerOnIframe = vi.spyOn(iframeDocument!, 'addEventListener');
+    let addListenerOnDocument = vi.spyOn(document, 'addEventListener');
+
+    let stopInteractOutside = useInteractOutside({
+      onInteractOutside: () => {},
+      onInteractOutsideStart: () => {},
+      ref: ref(container)
+    });
+
+    try {
+      let iframeEventTypes = addListenerOnIframe.mock.calls.map(([type]) => type as string);
+      let documentEventTypes = addListenerOnDocument.mock.calls.map(([type]) => type as string);
+      if (typeof PointerEvent !== 'undefined') {
+        expect(iframeEventTypes).toEqual(expect.arrayContaining(['pointerdown', 'click']));
+        expect(documentEventTypes).not.toContain('pointerdown');
+        expect(documentEventTypes).not.toContain('click');
+      } else {
+        expect(iframeEventTypes).toEqual(expect.arrayContaining(['mousedown', 'mouseup', 'touchstart', 'touchend']));
+        expect(documentEventTypes).not.toContain('mousedown');
+        expect(documentEventTypes).not.toContain('mouseup');
+        expect(documentEventTypes).not.toContain('touchstart');
+        expect(documentEventTypes).not.toContain('touchend');
+      }
+    } finally {
+      stopInteractOutside();
+      addListenerOnIframe.mockRestore();
+      addListenerOnDocument.mockRestore();
+      iframe.remove();
+    }
+  });
+
+  it('cleans up interact-outside listeners when the scope is disposed', () => {
+    let outsideEvents: string[] = [];
+    let container = document.createElement('div');
+    let outside = document.createElement('button');
+    document.body.append(container, outside);
+
+    let scope = effectScope();
+    scope.run(() => {
+      useInteractOutside({
+        onInteractOutside: () => {
+          outsideEvents.push('outside');
+        },
+        onInteractOutsideStart: () => {
+          outsideEvents.push('start');
+        },
+        ref: ref(container)
+      });
+    });
+
+    try {
+      if (typeof PointerEvent !== 'undefined') {
+        outside.dispatchEvent(createPointerEvent('pointerdown'));
+        outside.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+      } else {
+        outside.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+        outside.dispatchEvent(new MouseEvent('mouseup', {bubbles: true}));
+      }
+      expect(outsideEvents).toEqual(['start', 'outside']);
+
+      scope.stop();
+
+      if (typeof PointerEvent !== 'undefined') {
+        outside.dispatchEvent(createPointerEvent('pointerdown'));
+        outside.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+      } else {
+        outside.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+        outside.dispatchEvent(new MouseEvent('mouseup', {bubbles: true}));
+      }
+      expect(outsideEvents).toEqual(['start', 'outside']);
+    } finally {
+      scope.stop();
       document.body.removeChild(container);
       document.body.removeChild(outside);
     }
