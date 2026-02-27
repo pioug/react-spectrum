@@ -1735,7 +1735,20 @@ describe('Vue migration primitives', () => {
     await wrapper.get('input').trigger('mouseenter');
     expect(wrapper.find('.spectrum-Textfield-input').classes()).toContain('is-hovered');
     await wrapper.get('input').trigger('focus');
+    expect(wrapper.find('.spectrum-Textfield').classes()).not.toContain('focus-ring');
+
+    let textfieldElement = wrapper.get('input').element as HTMLInputElement;
+    let originalMatches = textfieldElement.matches.bind(textfieldElement);
+    let matchesSpy = vi.spyOn(textfieldElement, 'matches').mockImplementation((selector: string) => {
+      if (selector === ':focus-visible') {
+        return true;
+      }
+      return originalMatches(selector);
+    });
+
+    await wrapper.get('input').trigger('focus');
     expect(wrapper.find('.spectrum-Textfield').classes()).toContain('focus-ring');
+    matchesSpy.mockRestore();
   });
 
   it('supports textfield controlled aliases and validation display props', async () => {
@@ -1962,6 +1975,22 @@ describe('Vue migration primitives', () => {
 
     expect(wrapper.get('[data-testid="searchicon"]').text()).toBe('🔎');
     expect(wrapper.get('input[type="search"]').attributes('list')).toContain('-list');
+    await wrapper.get('input[type="search"]').trigger('focus');
+    expect(wrapper.find('.spectrum-InputGroup').classes()).not.toContain('focus-ring');
+
+    let autocompleteInput = wrapper.get('input[type="search"]').element as HTMLInputElement;
+    let originalMatches = autocompleteInput.matches.bind(autocompleteInput);
+    let matchesSpy = vi.spyOn(autocompleteInput, 'matches').mockImplementation((selector: string) => {
+      if (selector === ':focus-visible') {
+        return true;
+      }
+      return originalMatches(selector);
+    });
+
+    await wrapper.get('input[type="search"]').trigger('focus');
+    expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('focus-ring');
+    matchesSpy.mockRestore();
+
     await wrapper.get('button.vs-combobox__clear').trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['']);
     expect(wrapper.emitted('clear')).toHaveLength(1);
@@ -2000,7 +2029,20 @@ describe('Vue migration primitives', () => {
     expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('is-hovered');
     await input.trigger('focus');
     expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('is-focused');
+    expect(wrapper.find('.spectrum-InputGroup').classes()).not.toContain('focus-ring');
+
+    let comboInput = input.element as HTMLInputElement;
+    let comboOriginalMatches = comboInput.matches.bind(comboInput);
+    let comboMatchesSpy = vi.spyOn(comboInput, 'matches').mockImplementation((selector: string) => {
+      if (selector === ':focus-visible') {
+        return true;
+      }
+      return comboOriginalMatches(selector);
+    });
+
+    await input.trigger('focus');
     expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('focus-ring');
+    comboMatchesSpy.mockRestore();
 
     let trigger = wrapper.get('button.spectrum-FieldButton');
     expect(trigger.attributes('tabindex')).toBe('-1');
@@ -2638,7 +2680,20 @@ describe('Vue migration primitives', () => {
     expect(wrapper.classes()).toContain('is-hovered');
     await wrapper.trigger('focus');
     expect(wrapper.classes()).toContain('is-focused');
+    expect(wrapper.classes()).not.toContain('focus-ring');
+
+    let cardElement = wrapper.element as HTMLElement;
+    let originalMatches = cardElement.matches.bind(cardElement);
+    let matchesSpy = vi.spyOn(cardElement, 'matches').mockImplementation((selector: string) => {
+      if (selector === ':focus-visible') {
+        return true;
+      }
+      return originalMatches(selector);
+    });
+
+    await wrapper.trigger('focus');
     expect(wrapper.classes()).toContain('focus-ring');
+    matchesSpy.mockRestore();
   });
 
   it('maps card layout and no-preview classes', () => {
@@ -2948,7 +3003,20 @@ describe('Vue migration primitives', () => {
     await wrapper.get('.vs-date-picker__control').trigger('mouseenter');
     expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('is-hovered');
     await wrapper.get('input.vs-date-picker__input').trigger('focus');
+    expect(wrapper.find('.spectrum-InputGroup').classes()).not.toContain('focus-ring');
+
+    let datePickerInput = wrapper.get('input.vs-date-picker__input').element as HTMLInputElement;
+    let datePickerOriginalMatches = datePickerInput.matches.bind(datePickerInput);
+    let datePickerMatchesSpy = vi.spyOn(datePickerInput, 'matches').mockImplementation((selector: string) => {
+      if (selector === ':focus-visible') {
+        return true;
+      }
+      return datePickerOriginalMatches(selector);
+    });
+
+    await wrapper.get('input.vs-date-picker__input').trigger('focus');
     expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('focus-ring');
+    datePickerMatchesSpy.mockRestore();
 
     let dialog = wrapper.get('.react-spectrum-Datepicker-dialog');
     expect(dialog.attributes('hidden')).toBeDefined();
@@ -4431,7 +4499,20 @@ describe('Vue migration primitives', () => {
     expect(radio.classes()).not.toContain('vs-radio');
 
     await wrapper.get('input.spectrum-Radio-input').trigger('focus');
+    expect(radio.classes()).not.toContain('focus-ring');
+
+    let radioInput = wrapper.get('input.spectrum-Radio-input').element as HTMLInputElement;
+    let radioOriginalMatches = radioInput.matches.bind(radioInput);
+    let radioMatchesSpy = vi.spyOn(radioInput, 'matches').mockImplementation((selector: string) => {
+      if (selector === ':focus-visible') {
+        return true;
+      }
+      return radioOriginalMatches(selector);
+    });
+
+    await wrapper.get('input.spectrum-Radio-input').trigger('focus');
     expect(radio.classes()).toContain('focus-ring');
+    radioMatchesSpy.mockRestore();
     expect(wrapper.get('input.spectrum-Radio-input').attributes('tabindex')).toBe('0');
 
     let disabled = mount({

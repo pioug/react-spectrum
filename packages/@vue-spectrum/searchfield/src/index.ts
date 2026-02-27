@@ -490,11 +490,7 @@ export const SearchField = defineComponent({
             },
             onFocus: (event: FocusEvent) => {
               let target = getEventTarget(event);
-              if (target instanceof HTMLElement && target.matches(':focus-visible')) {
-                isFocusVisible.value = true;
-              } else {
-                isFocusVisible.value = true;
-              }
+              isFocusVisible.value = target instanceof HTMLElement ? target.matches(':focus-visible') : false;
 
               emit('focus', event);
             },
@@ -557,11 +553,7 @@ export const SearchField = defineComponent({
               },
               onFocus: (event: FocusEvent) => {
                 let target = getEventTarget(event);
-                if (target instanceof HTMLElement && target.matches(':focus-visible')) {
-                  isClearFocusVisible.value = true;
-                } else {
-                  isClearFocusVisible.value = true;
-                }
+                isClearFocusVisible.value = target instanceof HTMLElement ? target.matches(':focus-visible') : false;
               },
               onBlur: () => {
                 isClearFocusVisible.value = false;

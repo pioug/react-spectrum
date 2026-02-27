@@ -323,11 +323,7 @@ export const Card = defineComponent({
       onFocus: (event: FocusEvent) => {
         isFocused.value = true;
         let target = getEventTarget(event);
-        if (target instanceof HTMLElement && target.matches(':focus-visible')) {
-          isFocusVisible.value = true;
-        } else {
-          isFocusVisible.value = true;
-        }
+        isFocusVisible.value = target instanceof HTMLElement ? target.matches(':focus-visible') : false;
         emit('focus', event);
       },
       onBlur: (event: FocusEvent) => {

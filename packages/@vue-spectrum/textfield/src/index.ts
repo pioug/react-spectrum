@@ -373,11 +373,7 @@ function buildField(
           },
           onFocus: (event: FocusEvent) => {
             let target = getEventTarget(event);
-            if (target instanceof HTMLElement && target.matches(':focus-visible')) {
-              isFocusVisible.value = true;
-            } else {
-              isFocusVisible.value = true;
-            }
+            isFocusVisible.value = target instanceof HTMLElement ? target.matches(':focus-visible') : false;
 
             emit('focus', event);
           },
