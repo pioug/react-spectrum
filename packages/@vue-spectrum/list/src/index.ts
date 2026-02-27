@@ -17,7 +17,7 @@ export type ListItemRecord = {
 
 type SelectionMode = 'multiple' | 'none' | 'single';
 type SelectionStyle = 'checkbox' | 'highlight';
-type SelectionValue = number | string | Array<number | string>;
+type SelectionValue = number | string | Iterable<number | string>;
 type DisabledBehavior = 'all' | 'selection';
 
 type NormalizedListItem = {
@@ -50,19 +50,53 @@ function normalizeItem(item: ListItemRecord | string, index: number): Normalized
 }
 
 function normalizeSelection(value: SelectionValue | undefined): Array<number | string> {
-  if (Array.isArray(value)) {
-    return value.filter((entry): entry is number | string => typeof entry === 'number' || typeof entry === 'string');
-  }
-
   if (typeof value === 'number' || typeof value === 'string') {
     return [value];
   }
 
-  return [];
+  if (value == null || typeof value === 'string') {
+    return [];
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return [];
+  }
+
+  return Array.from(value as Iterable<unknown>).filter((entry): entry is number | string => typeof entry === 'number' || typeof entry === 'string');
 }
 
-function hasKey(collection: Array<number | string>, key: number | string): boolean {
-  return collection.some((entry) => entry === key);
+function isSelectionValue(value: SelectionValue): boolean {
+  if (typeof value === 'number' || typeof value === 'string') {
+    return true;
+  }
+
+  if (value == null || typeof value === 'string') {
+    return false;
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return false;
+  }
+
+  for (let entry of value as Iterable<unknown>) {
+    if (typeof entry !== 'number' && typeof entry !== 'string') {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function hasKey(collection: Iterable<number | string>, key: number | string): boolean {
+  for (let entry of collection) {
+    if (entry === key) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 function toBooleanString(value: boolean): 'false' | 'true' {
@@ -86,7 +120,7 @@ export const ListView = defineComponent({
       default: 'selection'
     },
     disabledKeys: {
-      type: Array as PropType<Array<number | string>>,
+      type: [Array, Set] as PropType<Iterable<number | string>>,
       default: () => []
     },
     isDisabled: {
@@ -110,7 +144,7 @@ export const ListView = defineComponent({
       default: 'idle'
     },
     modelValue: {
-      type: [String, Number, Array] as PropType<SelectionValue | undefined>,
+      type: [String, Number, Array, Set] as PropType<SelectionValue | undefined>,
       default: undefined
     },
     onAction: {
@@ -126,7 +160,7 @@ export const ListView = defineComponent({
       default: 'truncate'
     },
     selectedKeys: {
-      type: [String, Number, Array] as PropType<SelectionValue | undefined>,
+      type: [String, Number, Array, Set] as PropType<SelectionValue | undefined>,
       default: undefined
     },
     selectionMode: {
@@ -141,32 +175,16 @@ export const ListView = defineComponent({
   emits: {
     action: (key: number | string) => typeof key === 'number' || typeof key === 'string',
     select: (value: SelectionValue) => {
-      if (typeof value === 'number' || typeof value === 'string') {
-        return true;
-      }
-
-      return Array.isArray(value);
+      return isSelectionValue(value);
     },
     selectionChange: (value: SelectionValue) => {
-      if (typeof value === 'number' || typeof value === 'string') {
-        return true;
-      }
-
-      return Array.isArray(value);
+      return isSelectionValue(value);
     },
     'update:selectedKeys': (value: SelectionValue) => {
-      if (typeof value === 'number' || typeof value === 'string') {
-        return true;
-      }
-
-      return Array.isArray(value);
+      return isSelectionValue(value);
     },
     'update:modelValue': (value: SelectionValue) => {
-      if (typeof value === 'number' || typeof value === 'string') {
-        return true;
-      }
-
-      return Array.isArray(value);
+      return isSelectionValue(value);
     }
   },
   setup(props, {emit, attrs, slots}) {
@@ -215,8 +233,7 @@ export const ListView = defineComponent({
         next.add(item.key);
       }
 
-      let values = Array.from(next);
-      emitSelection(values);
+      emitSelection(new Set(next));
     };
 
     return () => {

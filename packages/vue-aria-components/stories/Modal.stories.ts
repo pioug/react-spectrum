@@ -15,7 +15,8 @@ export const ModalExample: Story = {
   render: () => ({
     components: {
       VueButton,
-      VueDialog
+      VueDialog,
+      VueTextField
     },
     setup() {
       let open = ref(false);
@@ -28,16 +29,12 @@ export const ModalExample: Story = {
       };
     },
     template: `
-      <button class="react-aria-Button" type="button" @click="open = true">Open modal</button>
+      <button class="react-aria-Button" data-rac="" data-react-aria-pressable="true" type="button" @click="open = true">Open modal</button>
       <VueDialog :open="open" title="Sign up" @close="close">
         <form style="display: flex; flex-direction: column; gap: 8px;">
-          <label>
-            First Name: <input placeholder="John">
-          </label>
-          <label>
-            Last Name: <input placeholder="Smith">
-          </label>
-          <VueButton @click="close">Submit</VueButton>
+          <VueTextField label="First Name" />
+          <VueTextField label="Last Name" />
+          <VueButton data-rac="" data-react-aria-pressable="true" @click="close">Submit</VueButton>
         </form>
       </VueDialog>
     `
@@ -62,11 +59,11 @@ export const InertTestStory: Story = {
       };
     },
     template: `
-      <button class="react-aria-Button" type="button" @click="open = true">Open modal</button>
+      <button class="react-aria-Button" data-rac="" data-react-aria-pressable="true" type="button" @click="open = true">Open modal</button>
       <VueDialog :open="open" title="Inert test" @close="close">
         <div style="display: flex; flex-direction: column; gap: 10px;">
           <VueTextField label="First name" />
-          <VueButton>Combobox Trigger</VueButton>
+          <VueButton data-rac="" data-react-aria-pressable="true">Combobox Trigger</VueButton>
         </div>
       </VueDialog>
     `
@@ -98,7 +95,7 @@ export const DateRangePickerInsideModalStory: Story = {
       };
     },
     template: `
-      <button class="react-aria-Button" type="button" @click="open = true">Open modal</button>
+      <button class="react-aria-Button" data-rac="" data-react-aria-pressable="true" type="button" @click="open = true">Open modal</button>
       <VueDialog :open="open" title="Date range picker" @close="close">
         <VueDateRangePicker v-model="range" label="Date range" />
       </VueDialog>

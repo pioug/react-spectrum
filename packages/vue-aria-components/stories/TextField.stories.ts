@@ -1,5 +1,8 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
-import {VueTextField} from 'vue-aria-components';
+import {computed, ref} from 'vue';
+import {VueForm, VueTextField} from 'vue-aria-components';
+import '../../react-aria-components/example/index.css';
+import '../../react-aria-components/stories/styles.css';
 
 const meta = {
   title: 'React Aria Components/TextField',
@@ -12,11 +15,20 @@ type Story = StoryObj<typeof meta>;
 
 export const TextfieldExample: Story = {
   render: () => ({
+    components: {
+      VueTextField
+    },
+    setup() {
+      let value = ref('');
+      return {
+        value
+      };
+    },
     template: `
-      <div data-testid="textfield-example" class="react-aria-TextField" data-rac="">
-        <label class="react-aria-Label">First name</label>
-        <input class="react-aria-Input" data-rac="" type="text" value="" title="" />
-      </div>
+      <VueTextField
+        data-testid="textfield-example"
+        v-model="value"
+        label="First name" />
     `
   })
 };
@@ -38,16 +50,57 @@ export const TextFieldSubmitExample: Story = {
     }
   },
   render: (args: {isInvalid?: boolean}) => ({
-    setup: () => ({args}),
+    components: {
+      VueForm,
+      VueTextField
+    },
+    setup() {
+      let value = ref('');
+      let isSubmitted = ref(false);
+      let isControlledInvalid = computed(() => Boolean(args.isInvalid));
+      let hasClientError = computed(() => {
+        if (!isSubmitted.value) {
+          return false;
+        }
+
+        return !value.value.includes('@');
+      });
+      let showErrorMessage = computed(() => !isControlledInvalid.value && hasClientError.value);
+      let isInvalid = computed(() => isControlledInvalid.value || hasClientError.value);
+
+      let onSubmit = (event: Event) => {
+        event.preventDefault();
+        isSubmitted.value = true;
+      };
+
+      let onReset = (event: Event) => {
+        event.preventDefault();
+        value.value = '';
+        isSubmitted.value = false;
+      };
+
+      return {
+        isInvalid,
+        onReset,
+        onSubmit,
+        showErrorMessage,
+        value
+      };
+    },
     template: `
-      <form class="react-aria-Form">
-        <div class="react-aria-TextField" data-rac="" data-required="true" style="display: flex; flex-direction: column;">
-          <label class="react-aria-Label">Email</label>
-          <input class="react-aria-Input" data-rac="" required type="email" value="" name="email" title="" />
-        </div>
-        <button class="react-aria-Button" data-rac="" type="submit">Submit</button>
-        <button class="react-aria-Button" data-rac="" type="reset">Reset</button>
-      </form>
+      <VueForm @submit="onSubmit" @reset="onReset">
+        <VueTextField
+          class="textfieldExample"
+          name="email"
+          type="email"
+          required
+          :invalid="isInvalid"
+          v-model="value"
+          label="Email" />
+        <span v-if="showErrorMessage" class="errorMessage">Constraints not satisfied</span>
+        <button class="react-aria-Button" data-rac="" type="submit" tabindex="0" data-react-aria-pressable="true">Submit</button>
+        <button class="react-aria-Button" data-rac="" type="reset" tabindex="0" data-react-aria-pressable="true">Reset</button>
+      </VueForm>
     `
   })
 };

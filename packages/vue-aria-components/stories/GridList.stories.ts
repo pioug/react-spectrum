@@ -628,14 +628,25 @@ export let TagGroupInsideGridList: GridListStory = () => ({
   },
   setup() {
     let selected = ref('');
+    let removableTagsOne = ref(['Tag 1', 'Tag 2', 'Tag 3']);
+    let removableTagsTwo = ref(['Tag 1', 'Tag 2', 'Tag 3']);
+    let readonlyTags = ref(['Tag 1', 'Tag 2', 'Tag 3']);
     let items = [
       {id: 'tags-with-remove', name: '1,1', kind: 'tags-with-remove'},
       {id: 'actions', name: '1,2', kind: 'actions'},
       {id: 'tags', name: '1,3', kind: 'tags'}
     ];
+    let removeTag = (tags: typeof removableTagsOne, tag: string) => {
+      tags.value = tags.value.filter((entry) => entry !== tag);
+    };
+
     return {
       items,
       myGridListItemStyle,
+      readonlyTags,
+      removableTagsOne,
+      removableTagsTwo,
+      removeTag,
       selected,
     };
   },
@@ -658,16 +669,16 @@ export let TagGroupInsideGridList: GridListStory = () => ({
           <span>1,1</span>
           <div class="react-aria-TagGroup">
             <div aria-label="Tag group 1" class="react-aria-TagList" role="grid" style="display: flex; gap: 10px;">
-              <div class="react-aria-Tag" role="row">Tag 1<button class="react-aria-Button" slot="remove" type="button">X</button></div>
-              <div class="react-aria-Tag" role="row">Tag 2<button class="react-aria-Button" slot="remove" type="button">X</button></div>
-              <div class="react-aria-Tag" role="row">Tag 3<button class="react-aria-Button" slot="remove" type="button">X</button></div>
+              <div v-for="tag in removableTagsOne" :key="'group-1-' + tag" class="react-aria-Tag" role="row">
+                {{ tag }}<button class="react-aria-Button" slot="remove" type="button" @click.stop="removeTag(removableTagsOne, tag)">X</button>
+              </div>
             </div>
           </div>
           <div class="react-aria-TagGroup">
             <div aria-label="Tag group 2" class="react-aria-TagList" role="grid" style="display: flex; gap: 10px;">
-              <div class="react-aria-Tag" role="row">Tag 1<button class="react-aria-Button" slot="remove" type="button">X</button></div>
-              <div class="react-aria-Tag" role="row">Tag 2<button class="react-aria-Button" slot="remove" type="button">X</button></div>
-              <div class="react-aria-Tag" role="row">Tag 3<button class="react-aria-Button" slot="remove" type="button">X</button></div>
+              <div v-for="tag in removableTagsTwo" :key="'group-2-' + tag" class="react-aria-Tag" role="row">
+                {{ tag }}<button class="react-aria-Button" slot="remove" type="button" @click.stop="removeTag(removableTagsTwo, tag)">X</button>
+              </div>
             </div>
           </div>
         </template>
@@ -678,9 +689,7 @@ export let TagGroupInsideGridList: GridListStory = () => ({
           <span>1,3</span>
           <div class="react-aria-TagGroup">
             <div aria-label="Tag group" class="react-aria-TagList" role="grid" style="display: flex; gap: 10px;">
-              <div class="react-aria-Tag" role="row">Tag 1</div>
-              <div class="react-aria-Tag" role="row">Tag 2</div>
-              <div class="react-aria-Tag" role="row">Tag 3</div>
+              <div v-for="tag in readonlyTags" :key="'readonly-' + tag" class="react-aria-Tag" role="row">{{ tag }}</div>
             </div>
           </div>
         </template>

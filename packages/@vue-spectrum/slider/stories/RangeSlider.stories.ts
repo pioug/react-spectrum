@@ -1,9 +1,9 @@
-import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {RangeSlider} from '../src';
+import {action} from '@storybook/addon-actions';
+import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type StoryArgs = Record<string, unknown>;
 type RenderOptions = {
-  note?: string,
   width?: string
 };
 
@@ -30,23 +30,21 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 function renderRangeSlider(args: StoryArgs = {}, options: RenderOptions = {}) {
-  let {
-    note,
-    width
-  } = options;
+  let {width} = options;
+
   return {
     components: {RangeSlider},
     setup() {
       return {
         args,
-        note,
+        onChange: action('change'),
+        onChangeEnd: action('changeEnd'),
         width
       };
     },
     template: `
       <div :style="{display: 'grid', gap: '8px', width: width || undefined}">
-        <div v-if="note">{{note}}</div>
-        <RangeSlider v-bind="args" />
+        <RangeSlider v-bind="args" @change="onChange($event)" @change-end="onChangeEnd($event)" />
       </div>
     `
   };
@@ -68,40 +66,67 @@ export const LabelOverflow: Story = {
   render: (args) => renderRangeSlider({
     ...args,
     label: 'This is a rather long label for this narrow slider element.',
-    max: 1000
+    maxValue: 1000
   }, {width: '300px'})
 };
 
 export const ShowValueLabelFalse: Story = {
-  render: (args) => renderRangeSlider({...args, showValue: false})
+  render: (args) => renderRangeSlider({...args, showValueLabel: false})
 };
 
 export const FormatOptionsPercent: Story = {
-  render: (args) => renderRangeSlider({...args, min: 0, max: 1, step: 0.01})
+  render: (args) => renderRangeSlider({
+    ...args,
+    minValue: 0,
+    maxValue: 1,
+    step: 0.01,
+    formatOptions: {style: 'percent'}
+  })
 };
 
 export const FormatOptionsCentimeter: Story = {
-  render: (args) => renderRangeSlider({...args, max: 1000})
+  render: (args) => renderRangeSlider({
+    ...args,
+    maxValue: 1000,
+    formatOptions: {style: 'unit', unit: 'centimeter'}
+  })
 };
 
 export const CustomValueLabel: Story = {
-  render: (args) => renderRangeSlider(args, {note: 'custom valueLabel parity scenario'})
+  render: (args) => renderRangeSlider({
+    ...args,
+    getValueLabel: (value: {start: number, end: number}) => `${value.start} <-> ${value.end}`
+  })
 };
 
 export const CustomValueLabelWithLabelOverflow: Story = {
   render: (args) => renderRangeSlider({
     ...args,
-    label: 'This is a rather long label for this narrow slider element.'
-  }, {
-    note: 'custom valueLabel with label overflow parity scenario',
-    width: '300px'
-  })
+    label: 'This is a rather long label for this narrow slider element.',
+    getValueLabel: (value: {start: number, end: number}) => `${value.start} <-> ${value.end}`
+  }, {width: '300px'})
 };
 
 export const MinMax: Story = {
-  render: (args) => renderRangeSlider({...args, min: 30, max: 70})
+  render: (args) => renderRangeSlider({...args, minValue: 30, maxValue: 70})
 };
 
 export const _ContextualHelp: Story = {
-  render: (args) => renderRangeSlider(args, {note: 'contextual help parity scenario'})
+  render: (args) => ({
+    components: {RangeSlider},
+    setup() {
+      return {
+        args,
+        onChange: action('change'),
+        onChangeEnd: action('changeEnd')
+      };
+    },
+    template: `
+      <RangeSlider v-bind="args" @change="onChange($event)" @change-end="onChangeEnd($event)">
+        <template #contextual-help>
+          <button type="button" aria-label="Help">?</button>
+        </template>
+      </RangeSlider>
+    `
+  })
 };

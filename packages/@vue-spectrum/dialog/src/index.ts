@@ -1,7 +1,7 @@
 import '@adobe/spectrum-css-temp/components/dialog/vars.css';
 import {Button} from '@vue-spectrum/button';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, type ComputedRef, defineComponent, getCurrentInstance, h, inject, type InjectionKey, type PropType} from 'vue';
+import {computed, type ComputedRef, defineComponent, getCurrentInstance, h, inject, provide, type InjectionKey, type PropType} from 'vue';
 const styles: {[key: string]: string} = {};
 
 
@@ -181,13 +181,24 @@ export const Dialog = defineComponent({
       return titleId.value;
     });
 
+    let dismissDialog = () => {
+      invoke(props.onDismiss);
+      emit('close');
+    };
+
+    provide(dialogContainerContextKey, {
+      close: dismissDialog,
+      get type() {
+        return props.type;
+      }
+    });
+
     let closeDialog = () => {
       if (!isDismissable.value) {
         return;
       }
 
-      invoke(props.onDismiss);
-      emit('close');
+      dismissDialog();
     };
 
     return () => {
@@ -212,12 +223,16 @@ export const Dialog = defineComponent({
         ? h('div', {class: [typeIconClassName.value, 'vs-dialog__type-icon']}, slots.typeIcon())
         : null;
 
-      let headerContent = slots.header
-        ? slots.header()
+      let headerContent = (slots.header
+        ? [
+          ...slots.header(),
+          typeIconNode,
+          headingNode
+        ]
         : [
           typeIconNode,
           headingNode
-        ];
+        ]).filter((node) => node !== null);
 
       let headerNode = (slots.header || headingNode || typeIconNode)
         ? h('header', {class: [headerClassName.value, 'vs-dialog__header']}, headerContent)

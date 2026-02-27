@@ -6,7 +6,7 @@ import {computed, ref} from 'vue';
 type SelectionStoryArgs = {
   density?: 'compact' | 'regular' | 'spacious',
   disabledBehavior?: 'all' | 'selection',
-  disabledKeys?: Array<number | string>,
+  disabledKeys?: Iterable<number | string>,
   disabledType?: 'file' | 'folder',
   isQuiet?: boolean,
   items?: ListItemRecord[],
@@ -15,6 +15,32 @@ type SelectionStoryArgs = {
   selectionStyle?: 'checkbox' | 'highlight',
   showActions?: boolean
 };
+
+type StorySelectionValue = Iterable<number | string> | number | string;
+
+function normalizeStorySelectionValue(value: unknown): Set<number | string> {
+  if (typeof value === 'number' || typeof value === 'string') {
+    return new Set([value]);
+  }
+
+  if (value == null) {
+    return new Set();
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return new Set();
+  }
+
+  let normalized = new Set<number | string>();
+  for (let entry of value as Iterable<unknown>) {
+    if (typeof entry === 'number' || typeof entry === 'string') {
+      normalized.add(entry);
+    }
+  }
+
+  return normalized;
+}
 
 const baseItems: ListItemRecord[] = [
   {key: 'a', name: 'Adobe Photoshop', type: 'file'},
@@ -99,7 +125,7 @@ function renderSelectionStory(baseArgs: Partial<SelectionStoryArgs> = {}) {
   return (args: SelectionStoryArgs) => ({
     components: {ListView},
     setup() {
-      let selectedKeys = ref<Array<number | string>>([]);
+      let selectedKeys = ref<Set<number | string>>(new Set());
       let onAction = action('onAction');
       let onSelectionChange = action('onSelectionChange');
       let merged = computed(() => ({
@@ -108,10 +134,10 @@ function renderSelectionStory(baseArgs: Partial<SelectionStoryArgs> = {}) {
       }));
       let resolvedItems = computed(() => merged.value.items ?? baseItems);
 
-      let handleSelectionChange = (value: number | string | Array<number | string>) => {
-        let values = Array.isArray(value) ? value : [value];
+      let handleSelectionChange = (value: StorySelectionValue) => {
+        let values = normalizeStorySelectionValue(value);
         selectedKeys.value = values;
-        onSelectionChange(values);
+        onSelectionChange(Array.from(values));
       };
 
       let handleAction = (key: number | string) => {
@@ -155,7 +181,7 @@ function renderNavigationStory(baseArgs: Partial<SelectionStoryArgs> = {}) {
       }));
       let onAction = action('onAction');
       let onSelectionChange = action('onSelectionChange');
-      let selectedKeys = ref<Array<number | string>>([]);
+      let selectedKeys = ref<Set<number | string>>(new Set());
       let breadcrumbs = ref<Array<ListItemRecord>>([{
         key: 'root',
         name: 'Root',
@@ -180,21 +206,21 @@ function renderNavigationStory(baseArgs: Partial<SelectionStoryArgs> = {}) {
         onAction(key);
         if (item?.type === 'folder' && Array.isArray(item.children)) {
           breadcrumbs.value = [...breadcrumbs.value, item];
-          selectedKeys.value = [];
+          selectedKeys.value = new Set();
         }
       };
 
-      let handleSelectionChange = (value: number | string | Array<number | string>) => {
-        let values = Array.isArray(value) ? value : [value];
+      let handleSelectionChange = (value: StorySelectionValue) => {
+        let values = normalizeStorySelectionValue(value);
         selectedKeys.value = values;
-        onSelectionChange(values);
+        onSelectionChange(Array.from(values));
       };
 
       let onBreadcrumbAction = (key: number | string) => {
         let index = breadcrumbs.value.findIndex((item) => item.key === key);
         if (index >= 0) {
           breadcrumbs.value = breadcrumbs.value.slice(0, index + 1);
-          selectedKeys.value = [];
+          selectedKeys.value = new Set();
         }
       };
 
@@ -217,7 +243,7 @@ function renderNavigationStory(baseArgs: Partial<SelectionStoryArgs> = {}) {
             v-for="crumb in breadcrumbs"
             :key="String(crumb.key)"
             type="button"
-            @click="onBreadcrumbAction(crumb.key as number | string)">
+            @click="onBreadcrumbAction(crumb.key)">
             {{ crumb.name }}
           </button>
         </div>

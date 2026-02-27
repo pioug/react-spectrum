@@ -8,6 +8,7 @@ type PickerStoryArgs = {
   ariaLabel?: string,
   autoFocus?: boolean,
   description?: string,
+  disabledKeys?: Iterable<string>,
   isDisabled?: boolean,
   isInvalid?: boolean,
   isQuiet?: boolean,
@@ -241,6 +242,7 @@ function renderPicker(baseArgs: Partial<PickerStoryArgs> = {}, wrapperStyle?: st
           :aria-label="mergedArgs.ariaLabel"
           :auto-focus="mergedArgs.autoFocus"
           :description="mergedArgs.description"
+          :disabled-keys="mergedArgs.disabledKeys"
           :is-disabled="mergedArgs.isDisabled"
           :is-invalid="mergedArgs.isInvalid"
           :is-quiet="mergedArgs.isQuiet"
@@ -263,9 +265,10 @@ export const Disabled: Story = {
   render: renderPicker({
     items: [
       {id: 'option-1', label: 'Option 1'},
-      {id: 'option-2', label: 'Option 2 (disabled in React)'},
+      {id: 'option-2', label: 'Option 2'},
       {id: 'option-3', label: 'Option 3'}
-    ]
+    ],
+    disabledKeys: ['option-2']
   }),
   name: 'disabled keys'
 };
@@ -282,6 +285,9 @@ export const Sections: Story = {
 
 export const Dynamic: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {DynamicPicker},
     template: '<DynamicPicker />'
   }),
@@ -290,6 +296,9 @@ export const Dynamic: Story = {
 
 export const DynamicSections: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {DynamicPicker},
     template: '<DynamicPicker :sections="true" />'
   }),
@@ -411,6 +420,9 @@ export const Loading: Story = {
 
 export const AsyncLoading: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {AsyncLoadingPicker},
     template: '<AsyncLoadingPicker />'
   }),

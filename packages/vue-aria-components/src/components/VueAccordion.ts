@@ -70,8 +70,8 @@ export const VueAccordion = defineComponent({
     return function render() {
       return h('div', {
         ...attrs,
-        class: [classes.value, attrs.class],
-        'data-vac': ''
+        class: ['react-aria-DisclosureGroup', classes.value, attrs.class],
+        'data-rac': ''
       }, slots.default ? slots.default() : []);
     };
   }
@@ -88,6 +88,10 @@ export const VueDisclosure = defineComponent({
       type: Boolean,
       default: false
     },
+    expanded: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
+    },
     disabled: {
       type: Boolean,
       default: false
@@ -98,16 +102,17 @@ export const VueDisclosure = defineComponent({
     }
   },
   emits: {
-    toggle: (expanded: boolean) => typeof expanded === 'boolean'
+    toggle: (expanded: boolean) => typeof expanded === 'boolean',
+    'update:expanded': (expanded: boolean) => typeof expanded === 'boolean'
   },
   setup(props, {emit, slots, attrs}) {
     let accordion = inject(accordionContextKey, null);
     let generatedId = `vs-disclosure-${++disclosureId}`;
     let disclosureKey = computed(() => props.id ?? generatedId);
-    let localExpanded = ref(props.defaultExpanded);
+    let localExpanded = ref(props.expanded ?? props.defaultExpanded);
     let expanded = computed(() => accordion
       ? accordion.expandedKeys.value.includes(disclosureKey.value)
-      : localExpanded.value);
+      : (props.expanded ?? localExpanded.value));
     let isQuiet = computed(() => accordion ? accordion.isQuiet.value : props.quiet);
 
     let toggle = () => {
@@ -119,8 +124,11 @@ export const VueDisclosure = defineComponent({
       if (accordion) {
         accordion.toggleKey(disclosureKey.value);
       } else {
-        localExpanded.value = nextValue;
+        if (props.expanded === undefined) {
+          localExpanded.value = nextValue;
+        }
       }
+      emit('update:expanded', nextValue);
       emit('toggle', nextValue);
     };
 
@@ -135,13 +143,16 @@ export const VueDisclosure = defineComponent({
       return h('section', {
         ...attrs,
         class: [
+          'react-aria-Disclosure',
           'vs-accordion__item',
           expanded.value ? 'is-expanded' : null,
           props.disabled ? 'is-disabled' : null,
           isQuiet.value ? 'is-quiet' : null,
           attrs.class
         ],
-        'data-vac': ''
+        'data-rac': '',
+        'data-expanded': expanded.value ? 'true' : undefined,
+        'data-disabled': props.disabled ? 'true' : undefined
       }, slots.default ? slots.default() : []);
     };
   }
@@ -166,24 +177,22 @@ export const VueDisclosureTitle = defineComponent({
       if (!disclosure) {
         return h(headingTag.value, {
           ...attrs,
-          class: ['vs-disclosure__heading', attrs.class],
-          'data-vac': ''
+          class: ['react-aria-Heading', 'vs-disclosure__heading', attrs.class],
+          'data-rac': ''
         }, slots.default ? slots.default() : []);
       }
 
-      return h(headingTag.value, {class: 'vs-disclosure__heading'}, [
+      return h(headingTag.value, {class: ['react-aria-Heading', 'vs-disclosure__heading']}, [
         h('button', {
           ...attrs,
-          class: ['vs-disclosure__trigger', attrs.class],
+          class: ['react-aria-Button', 'vs-disclosure__trigger', attrs.class],
           type: 'button',
           disabled: disclosure.disabled.value,
           'aria-expanded': disclosure.expanded.value ? 'true' : 'false',
           onClick: disclosure.toggle,
-          'data-vac': ''
-        }, [
-          h('span', {class: 'vs-disclosure__label'}, slots.default ? slots.default() : 'Section'),
-          h('span', {class: 'vs-disclosure__indicator', 'aria-hidden': 'true'}, '›')
-        ])
+          'data-rac': '',
+          'data-react-aria-pressable': 'true'
+        }, slots.default ? slots.default() : 'Section')
       ]);
     };
   }
@@ -201,9 +210,9 @@ export const VueDisclosurePanel = defineComponent({
 
       return h('div', {
         ...attrs,
-        class: ['vs-disclosure__panel', disclosure?.isQuiet.value ? 'is-quiet' : null, attrs.class],
+        class: ['react-aria-DisclosurePanel', 'vs-disclosure__panel', disclosure?.isQuiet.value ? 'is-quiet' : null, attrs.class],
         role: 'region',
-        'data-vac': ''
+        'data-rac': ''
       }, slots.default ? slots.default() : []);
     };
   }

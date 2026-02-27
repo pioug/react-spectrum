@@ -1,6 +1,7 @@
 import {action} from '@storybook/addon-actions';
 import type {Meta, StoryFn} from '@storybook/vue3-vite';
 import {VueDateField} from 'vue-aria-components';
+import {computed, ref} from 'vue';
 
 const meta = {
   title: 'React Aria Components/DateField',
@@ -45,6 +46,22 @@ const meta = {
 
 export default meta;
 
+function toDateInputValue(value: unknown): string {
+  if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
+    return value;
+  }
+
+  if (value instanceof Date && !Number.isNaN(value.getTime())) {
+    return value.toISOString().slice(0, 10);
+  }
+
+  if (typeof value === 'number' && Number.isFinite(value)) {
+    return new Date(value).toISOString().slice(0, 10);
+  }
+
+  return '';
+}
+
 export const DateFieldExample: StoryFn<typeof VueDateField> = (props: {
   onChange?: (value: string) => void,
   minValue?: number,
@@ -53,21 +70,47 @@ export const DateFieldExample: StoryFn<typeof VueDateField> = (props: {
   isInvalid?: boolean,
   isDisabled?: boolean
 }) => ({
+  components: {
+    VueDateField
+  },
+  setup() {
+    let value = ref('2024-01-01');
+    let isDisabled = computed(() => Boolean(props.isDisabled));
+    let min = computed(() => toDateInputValue(props.minValue));
+    let max = computed(() => toDateInputValue(props.maxValue));
+
+    let onChange = (nextValue: string) => {
+      props.onChange?.(nextValue);
+      action('OnChange')(nextValue);
+    };
+
+    return {
+      isDisabled,
+      max,
+      min,
+      onChange,
+      value
+    };
+  },
   template: `
     <div data-testid="date-field-example" style="width: 219.61px;">
-      <span style="display: block;">Date</span>
-      <div
-        role="group"
-        style="unicode-bidi: isolate; border: 1px solid rgb(128, 128, 128); border-radius: 2px; background: rgb(255, 255, 255); color: rgb(0, 0, 0); font-size: 14px; font-variant-numeric: tabular-nums; line-height: 21px; padding: 2px 4px;">
-        <span style="padding: 0 2px;">1</span><span style="padding: 0 2px;">/</span><span style="padding: 0 2px;">1</span><span style="padding: 0 2px;">/</span><span style="padding: 0 2px;">2024</span><span style="padding: 0 2px;">, </span><span style="padding: 0 2px;">⁦</span><span style="padding: 0 2px;">9</span><span style="padding: 0 2px;">:</span><span style="padding: 0 2px;">01</span><span style="padding: 0 2px;">⁩</span><span style="padding: 0 2px;"> </span><span style="padding: 0 2px;">AM</span><span aria-hidden="true" style="padding: 0 2px;" v-text="' '"></span><span role="textbox" aria-readonly="true" tabindex="0" style="padding: 0 2px; caret-color: transparent;">GMT+8</span>
-      </div>
-      <input hidden type="text" value="2024-01-01T09:01:00+08:00[Asia/Singapore]">
+      <VueDateField
+        v-model="value"
+        label="Date"
+        :disabled="isDisabled"
+        :min="min"
+        :max="max"
+        @change="onChange" />
     </div>
   `
 });
 
 export const DateFieldAutoFill: StoryFn<typeof VueDateField> = () => ({
+  components: {
+    VueDateField
+  },
   setup() {
+    let value = ref('2021-04-08');
     let onSubmit = (event: SubmitEvent) => {
       let form = event.target as HTMLFormElement | null;
       let entries = form ? Object.fromEntries(new FormData(form).entries()) : {};
@@ -76,6 +119,7 @@ export const DateFieldAutoFill: StoryFn<typeof VueDateField> = () => ({
     };
 
     return {
+      value,
       onSubmit
     };
   },
@@ -86,13 +130,10 @@ export const DateFieldAutoFill: StoryFn<typeof VueDateField> = () => ({
         <input id="name" name="name" type="text" autocomplete="name" style="width: 145px;">
       </div>
       <div data-testid="date-field-example">
-        <span style="display: block;">Date</span>
-        <div
-          role="group"
-          style="unicode-bidi: isolate; border: 1px solid rgb(128, 128, 128); border-radius: 2px; background: rgb(255, 255, 255); color: rgb(0, 0, 0); font-size: 14px; font-variant-numeric: tabular-nums; line-height: 21px; padding: 2px 4px;">
-          <span style="padding: 0 2px;">4</span><span style="padding: 0 2px;">/</span><span style="padding: 0 2px;">8</span><span style="padding: 0 2px;">/</span><span style="padding: 0 2px;">2021</span><span style="padding: 0 2px;">, </span><span style="padding: 0 2px;">⁦</span><span style="padding: 0 2px;">2</span><span style="padding: 0 2px;">:</span><span style="padding: 0 2px;">45</span><span style="padding: 0 2px;">⁩</span><span style="padding: 0 2px;"> </span><span style="padding: 0 2px;">AM</span><span aria-hidden="true" style="padding: 0 2px;" v-text="' '"></span><span role="textbox" aria-readonly="true" tabindex="0" style="padding: 0 2px; caret-color: transparent;">GMT+8</span>
-        </div>
-        <input type="hidden" name="bday" value="2021-04-08T02:45:22+08:00[Asia/Singapore]">
+        <VueDateField
+          v-model="value"
+          label="Date" />
+        <input type="hidden" name="bday" :value="value">
       </div>
       <button type="submit">Submit</button>
     </form>

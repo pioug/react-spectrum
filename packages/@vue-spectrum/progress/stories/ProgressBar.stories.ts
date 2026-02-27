@@ -188,6 +188,9 @@ export const Width30PxLabelPositionSideLongLabel: ProgressBarStory = {
 
 export const Width30PxLabelPositionSideIsIndeterminateTrueLongLabelButtonOnRight: ProgressBarStory = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {ProgressBar},
     template: `
       <ProgressBar

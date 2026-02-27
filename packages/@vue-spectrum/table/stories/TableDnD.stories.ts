@@ -75,7 +75,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function renderTableDnD(args: StoryArgs, note: string, options: RenderOptions = {}) {
+function renderTableDnD(args: StoryArgs, options: RenderOptions = {}) {
   let {
     includeDropTarget = false,
     rows = BASE_ROWS,
@@ -88,7 +88,6 @@ function renderTableDnD(args: StoryArgs, note: string, options: RenderOptions = 
         args,
         columns: COLUMNS,
         includeDropTarget,
-        note,
         rows,
         secondRows: SECOND_ROWS,
         twoTables
@@ -96,9 +95,13 @@ function renderTableDnD(args: StoryArgs, note: string, options: RenderOptions = 
     },
     template: `
       <div style="display: grid; gap: 8px;">
-        <div>{{note}}</div>
-        <div v-if="includeDropTarget" style="border: 1px dashed #9ca3af; border-radius: 6px; padding: 6px 8px; width: 360px;">
-          Droppable placeholder
+        <div
+          v-if="includeDropTarget"
+          role="region"
+          aria-label="Drop target"
+          data-testid="drop-target"
+          style="border: 1px dashed #9ca3af; border-radius: 6px; padding: 6px 8px; width: 360px;">
+          Drop target
         </div>
         <Table v-bind="args" :columns="columns" :rows="rows" />
         <Table
@@ -113,32 +116,32 @@ function renderTableDnD(args: StoryArgs, note: string, options: RenderOptions = 
 }
 
 export const DragOutOfTable: Story = {
-  render: (args) => renderTableDnD(args, 'Drag out of table', {includeDropTarget: true}),
+  render: (args) => renderTableDnD(args, {includeDropTarget: true}),
   name: 'Drag out of table'
 };
 
 export const DragOutOfTableWithoutTableHeader: Story = {
-  render: (args) => renderTableDnD(args, 'Drag out of table without table header', {includeDropTarget: true}),
+  render: (args) => renderTableDnD(args, {includeDropTarget: true}),
   name: 'Drag out of table without table header'
 };
 
 export const CustomDragPreview: Story = {
-  render: (args) => renderTableDnD(args, 'Custom drag preview', {includeDropTarget: true}),
+  render: (args) => renderTableDnD(args, {includeDropTarget: true}),
   name: 'Custom drag preview'
 };
 
 export const DragWithinTable: Story = {
-  render: (args) => renderTableDnD(args, 'Drag within table (reorder)'),
+  render: (args) => renderTableDnD(args),
   name: 'Drag within table (Reorder)'
 };
 
 export const DragWithinTableManyItems: Story = {
-  render: (args) => renderTableDnD(args, 'Drag within table many items', {rows: MANY_ROWS}),
+  render: (args) => renderTableDnD(args, {rows: MANY_ROWS}),
   name: 'Drag within table many items'
 };
 
 export const DragOntoRow: Story = {
-  render: (args) => renderTableDnD(args, 'Drag onto row'),
+  render: (args) => renderTableDnD(args),
   name: 'Drag onto row',
   parameters: {
     description: {
@@ -148,17 +151,17 @@ export const DragOntoRow: Story = {
 };
 
 export const DragBetweenTables: Story = {
-  render: (args) => renderTableDnD(args, 'Drag between tables', {twoTables: true}),
+  render: (args) => renderTableDnD(args, {twoTables: true}),
   name: 'Drag between tables'
 };
 
 export const DragBetweenTablesRootOnly: Story = {
-  render: (args) => renderTableDnD(args, 'Drag between tables (root only)', {twoTables: true}),
+  render: (args) => renderTableDnD(args, {twoTables: true}),
   name: 'Drag between tables (Root only)'
 };
 
 export const DraggableRowsCopyLink: Story = {
-  render: (args) => renderTableDnD(args, 'draggable rows, allow copy and link', {includeDropTarget: true}),
+  render: (args) => renderTableDnD(args, {includeDropTarget: true}),
   name: 'draggable rows, allow copy and link',
   parameters: {
     description: {

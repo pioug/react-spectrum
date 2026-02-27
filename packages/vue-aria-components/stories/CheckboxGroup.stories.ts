@@ -16,12 +16,23 @@ export const CheckboxGroupExample: CheckboxGroupStory = {
     components: {
       VueCheckbox
     },
+    setup() {
+      let soccer = ref(false);
+      let baseball = ref(false);
+      let basketball = ref(false);
+
+      return {
+        baseball,
+        basketball,
+        soccer
+      };
+    },
     template: `
       <div class="react-aria-CheckboxGroup" data-rac="" role="group" aria-labelledby="favorite-sports-label">
         <span class="react-aria-Label" id="favorite-sports-label">Favorite sports</span>
-        <VueCheckbox value="soccer"><div class="checkbox" aria-hidden="true"><svg viewBox="0 0 18 18"><polyline points="1 9 7 14 15 4" /></svg></div>Soccer</VueCheckbox>
-        <VueCheckbox value="baseball"><div class="checkbox" aria-hidden="true"><svg viewBox="0 0 18 18"><polyline points="1 9 7 14 15 4" /></svg></div>Baseball</VueCheckbox>
-        <VueCheckbox value="basketball"><div class="checkbox" aria-hidden="true"><svg viewBox="0 0 18 18"><polyline points="1 9 7 14 15 4" /></svg></div>Basketball</VueCheckbox>
+        <VueCheckbox v-model="soccer"><div class="checkbox" aria-hidden="true"><svg viewBox="0 0 18 18"><polyline points="1 9 7 14 15 4" /></svg></div>Soccer</VueCheckbox>
+        <VueCheckbox v-model="baseball"><div class="checkbox" aria-hidden="true"><svg viewBox="0 0 18 18"><polyline points="1 9 7 14 15 4" /></svg></div>Baseball</VueCheckbox>
+        <VueCheckbox v-model="basketball"><div class="checkbox" aria-hidden="true"><svg viewBox="0 0 18 18"><polyline points="1 9 7 14 15 4" /></svg></div>Basketball</VueCheckbox>
       </div>
     `
   })

@@ -1,6 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {computed, ref} from 'vue';
 import {useToolbar as useAriaToolbar} from '@vue-aria/toolbar';
+import {VueCheckbox, VueListBox} from 'vue-aria-components';
 import '../../react-aria-components/stories/styles.css';
 
 const meta = {
@@ -16,6 +17,9 @@ export const ToolbarExample: ToolbarStory = {
     orientation: 'horizontal'
   },
   render: (args: {orientation?: 'horizontal' | 'vertical'}) => ({
+    components: {
+      VueCheckbox
+    },
     setup() {
       let isNightMode = ref(false);
       let pressed = ref({
@@ -57,17 +61,14 @@ export const ToolbarExample: ToolbarStory = {
             <button class="v7C2Sq_toggleButtonExample" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" :aria-pressed="String(pressed.underline)" @click="toggleStyle('underline')"><div style="text-decoration: underline;">U</div></button>
             <button class="v7C2Sq_toggleButtonExample" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" :aria-pressed="String(pressed.italic)" @click="toggleStyle('italic')"><i>I</i></button>
           </div>
-          <label data-react-aria-pressable="true" class="react-aria-Checkbox" data-rac="">
-            <span style="border: 0; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; white-space: nowrap;">
-              <input data-react-aria-pressable="true" tabindex="0" type="checkbox" title="" v-model="isNightMode">
-            </span>
+          <VueCheckbox v-model="isNightMode">
             <div class="checkbox">
               <svg viewBox="0 0 18 18" aria-hidden="true">
                 <polyline points="1 9 7 14 15 4"></polyline>
               </svg>
             </div>
             Night Mode
-          </label>
+          </VueCheckbox>
           <a class="react-aria-Link" data-rac="" href="https://google.com" tabindex="0" data-react-aria-pressable="true">Help</a>
         </div>
         <label for="after">Input After Toolbar</label>
@@ -82,6 +83,9 @@ export const SelectSupport: ToolbarStory = {
     orientation: 'horizontal'
   },
   render: (args: {orientation?: 'horizontal' | 'vertical'}) => ({
+    components: {
+      VueListBox
+    },
     setup() {
       let selectedAnimal = ref('');
       let isOpen = ref(false);
@@ -149,18 +153,15 @@ export const SelectSupport: ToolbarStory = {
             <span aria-hidden="true">▼</span>
           </button>
           <div v-if="isOpen" class="react-aria-Popover" data-rac="" data-trigger="Select" style="position: absolute; z-index: 5; max-height: 355px; background: Canvas; color: CanvasText; border: 1px solid gray;">
-            <div class="react-aria-ListBox" data-rac="" role="listbox">
-              <div
-                v-for="animal in animals"
-                :key="animal"
-                class="react-aria-ListBoxItem"
-                data-rac=""
-                role="option"
-                :aria-selected="String(selectedAnimal === animal)"
-                @click="selectAnimal(animal)">
-                {{ animal }}
-              </div>
-            </div>
+            <VueListBox
+              v-model="selectedAnimal"
+              aria-label="Favorite Animal"
+              class="react-aria-ListBox"
+              collection-class="react-aria-ListBox"
+              item-class="react-aria-ListBoxItem"
+              selection-mode="single"
+              :items="animals"
+              @select="selectAnimal" />
           </div>
         </div>
         <div role="separator" aria-orientation="vertical" class="react-aria-Separator"></div>

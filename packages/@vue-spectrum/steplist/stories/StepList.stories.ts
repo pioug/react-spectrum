@@ -8,7 +8,7 @@ type StepListStoryArgs = {
   ariaLabel?: string,
   defaultLastCompletedStep?: StepListValue,
   defaultSelectedKey?: StepListValue,
-  disabledKeys?: Array<string | number>,
+  disabledKeys?: Iterable<string | number>,
   isDisabled?: boolean,
   isEmphasized?: boolean,
   isReadOnly?: boolean,
@@ -318,7 +318,7 @@ export const DisabledKey: Story = {
   render: renderDefault({
     defaultLastCompletedStep: 'select-offers',
     defaultSelectedKey: 'select-offers',
-    disabledKeys: ['select-offers']
+    disabledKeys: new Set(['select-offers'])
   }),
   name: 'disabledKeys'
 };

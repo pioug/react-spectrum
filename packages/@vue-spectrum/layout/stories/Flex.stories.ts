@@ -79,6 +79,9 @@ export const WrappingWithGap: Story = {
 
 export const NestedFlexWithGap: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {Flex},
     template: `
       <Flex direction="column" gap="size-150">
@@ -156,6 +159,9 @@ export const Ordered: Story = {
 
 export const Responsive: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {Flex},
     template: `
       <Flex direction="row" gap="size-100" style="flex-wrap: wrap;">

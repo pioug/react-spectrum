@@ -7,10 +7,15 @@ import {Table} from '../src';
 type StoryArgs = Record<string, unknown>;
 type TableColumn = {
   align?: 'center' | 'end' | 'start',
+  hideHeader?: boolean,
   key: string,
   label: string,
+  maxWidth?: number | string,
+  minWidth?: number | string,
   resizable?: boolean,
+  showDivider?: boolean,
   sortable?: boolean
+  width?: number | string
 };
 type TableRow = {
   disabled?: boolean,
@@ -114,6 +119,11 @@ const meta: Meta<typeof Table> = {
       control: 'select',
       options: ['compact', 'regular', 'spacious']
     },
+    disabledKeys: {
+      table: {
+        disable: true
+      }
+    },
     isDisabled: {
       control: 'boolean'
     },
@@ -175,16 +185,19 @@ export function EmptyStateTable(args: StoryArgs) {
   return renderTable(args);
 }
 
-function renderTableWithNote(args: StoryArgs, note: string) {
+function renderFocusableTable(args: StoryArgs) {
   return {
     components: {Table},
     setup() {
-      return {args, note};
+      return {args};
     },
     template: `
       <div style="display: grid; gap: 8px;">
-        <div>{{note}}</div>
+        <label for="focus-before">Focus before</label>
+        <input id="focus-before" />
         <Table v-bind="args" />
+        <label for="focus-after">Focus after</label>
+        <input id="focus-after" />
       </div>
     `
   };
@@ -313,15 +326,16 @@ export const DynamicWithDisabledKeys: Story = {
   render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS,
-    rows: BASE_ROWS.map((row, index) => ({...row, disabled: index === 1 || index === 3}))
+    rows: BASE_ROWS,
+    disabledKeys: new Set([1, 3])
   }
 };
 
 export const DynamicShowDividers: Story = {
   name: 'dynamic showDividers',
-  render: (args) => renderTableWithNote(args, 'Divider visibility parity scenario'),
+  render: (args) => renderTable(args),
   args: {
-    columns: BASE_COLUMNS,
+    columns: BASE_COLUMNS.map((column, index) => ({...column, showDivider: index < BASE_COLUMNS.length - 1})),
     rows: BASE_ROWS
   }
 };
@@ -333,7 +347,7 @@ export const DynamicSelectedKeys: Story = {
     columns: BASE_COLUMNS,
     rows: BASE_ROWS,
     selectionMode: 'multiple',
-    modelValue: [1, 3]
+    modelValue: new Set([1, 3])
   }
 };
 
@@ -390,7 +404,7 @@ export const TableCellColSpanWithVariousSpansExample: Story = {
 
 export const FocusableCells: Story = {
   name: 'focusable cells',
-  render: (args) => renderTableWithNote(args, 'Focusable cells parity scenario'),
+  render: (args) => renderFocusableTable(args),
   args: {
     columns: BASE_COLUMNS,
     rows: BASE_ROWS
@@ -427,11 +441,14 @@ export const ShouldFillCellWidth: Story = {
 
 export const ColumnWidthsAndDividers: Story = {
   name: 'column widths and dividers',
-  render: (args) => renderTableWithNote(args, 'Column width and divider parity scenario'),
+  render: (args) => renderTable(args),
   args: {
-    columns: MANY_COLUMNS.slice(0, 6),
-    rows: MANY_ROWS.slice(0, 6),
-    resizableColumns: MANY_COLUMNS.slice(0, 6).map((column) => column.key)
+    columns: [
+      {key: 'name', label: 'Name', width: 250, showDivider: true},
+      {key: 'type', label: 'Type'},
+      {key: 'date', label: 'Date Modified', align: 'end'}
+    ],
+    rows: BASE_ROWS
   }
 };
 
@@ -567,19 +584,21 @@ export const HidingColumnsExample: Story = {
 
 export const IsLoading: Story = {
   name: 'isLoading',
-  render: (args) => renderTableWithNote(args, 'Loading state parity scenario'),
+  render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS,
-    rows: []
+    rows: [],
+    loadingState: 'loading'
   }
 };
 
 export const IsLoadingMore: Story = {
   name: 'isLoading more',
-  render: (args) => renderTableWithNote(args, 'Loading more parity scenario'),
+  render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS,
-    rows: BASE_ROWS.slice(0, 2)
+    rows: BASE_ROWS.slice(0, 2),
+    loadingState: 'loadingMore'
   }
 };
 
@@ -626,7 +645,7 @@ export const EmptyStateStory: Story = {
 
 export const AsyncLoading: Story = {
   name: 'async loading',
-  render: (args) => renderAsyncTable(args, 'Async loading parity scenario'),
+  render: (args) => renderAsyncTable(args, 'Async loading'),
   args: {
     columns: BASE_COLUMNS,
     rows: []
@@ -635,7 +654,7 @@ export const AsyncLoading: Story = {
 
 export const AsyncLoadingQuarryTest: Story = {
   name: 'async reload on sort',
-  render: (args) => renderAsyncTable(args, 'Async loading quarry test parity scenario'),
+  render: (args) => renderAsyncTable(args, 'Async loading quarry test'),
   args: {
     columns: BASE_COLUMNS,
     rows: []
@@ -654,7 +673,7 @@ export const HideHeader: Story = {
 
 export const AsyncLoadingClientFiltering: Story = {
   name: 'async client side filter loading',
-  render: (args) => renderAsyncTable(args, 'Async loading with client filtering parity scenario'),
+  render: (args) => renderAsyncTable(args, 'Async loading with client filtering'),
   args: {
     columns: BASE_COLUMNS,
     rows: []
@@ -663,7 +682,7 @@ export const AsyncLoadingClientFiltering: Story = {
 
 export const AsyncLoadingServerFiltering: Story = {
   name: 'async server side filter loading',
-  render: (args) => renderAsyncTable(args, 'Async loading with server filtering parity scenario'),
+  render: (args) => renderAsyncTable(args, 'Async loading with server filtering'),
   args: {
     columns: BASE_COLUMNS,
     rows: []
@@ -672,7 +691,7 @@ export const AsyncLoadingServerFiltering: Story = {
 
 export const AsyncLoadingServerFilteringLoadMore: Story = {
   name: 'loads more on scroll when contentSize.height < rect.height * 2',
-  render: (args) => renderAsyncTable(args, 'Async loading server filtering + load more parity scenario', true),
+  render: (args) => renderAsyncTable(args, 'Async loading server filtering + load more', true),
   args: {
     columns: BASE_COLUMNS,
     rows: []
@@ -690,7 +709,7 @@ export const WithDialogTrigger: Story = {
       <div style="display: grid; gap: 12px;">
         <Table v-bind="args" />
         <DialogTrigger type="modal" title="Row details">
-          <p>Dialog trigger parity scenario.</p>
+          <p>Dialog trigger.</p>
         </DialogTrigger>
       </div>
     `
@@ -723,7 +742,7 @@ export const WithBreadcrumbNavigation: Story = {
 
 export const ResizingUncontrolledDynamicWidths: Story = {
   name: 'allowsResizing, uncontrolled, dynamic widths',
-  render: (args) => renderTableWithNote(args, 'Uncontrolled resizing with dynamic widths parity scenario'),
+  render: (args) => renderTable(args),
   args: {
     columns: MANY_COLUMNS.slice(0, 8),
     rows: MANY_ROWS.slice(0, 12),
@@ -733,9 +752,13 @@ export const ResizingUncontrolledDynamicWidths: Story = {
 
 export const ResizingUncontrolledStaticWidths: Story = {
   name: 'allowsResizing, uncontrolled, static widths',
-  render: (args) => renderTableWithNote(args, 'Uncontrolled resizing with static widths parity scenario'),
+  render: (args) => renderTable(args),
   args: {
-    columns: BASE_COLUMNS,
+    columns: [
+      {key: 'name', label: 'Name', width: 240},
+      {key: 'type', label: 'Type', width: 160},
+      {key: 'date', label: 'Date Modified', align: 'end', width: 200}
+    ],
     rows: BASE_ROWS,
     resizableColumns: RESIZABLE_COLUMNS
   }
@@ -743,9 +766,9 @@ export const ResizingUncontrolledStaticWidths: Story = {
 
 export const ResizingUncontrolledColumnDivider: Story = {
   name: 'allowsResizing, uncontrolled, column divider',
-  render: (args) => renderTableWithNote(args, 'Uncontrolled resizing with column dividers parity scenario'),
+  render: (args) => renderTable(args),
   args: {
-    columns: BASE_COLUMNS,
+    columns: BASE_COLUMNS.map((column, index) => ({...column, showDivider: index < BASE_COLUMNS.length - 1})),
     rows: BASE_ROWS,
     resizableColumns: RESIZABLE_COLUMNS
   }
@@ -753,9 +776,13 @@ export const ResizingUncontrolledColumnDivider: Story = {
 
 export const ResizingUncontrolledMinMax: Story = {
   name: 'allowsResizing, uncontrolled, min/max widths',
-  render: (args) => renderTableWithNote(args, 'Uncontrolled resizing min/max parity scenario'),
+  render: (args) => renderTable(args),
   args: {
-    columns: BASE_COLUMNS,
+    columns: [
+      {key: 'name', label: 'Name', minWidth: 180, maxWidth: 360},
+      {key: 'type', label: 'Type', minWidth: 120, maxWidth: 220},
+      {key: 'date', label: 'Date Modified', align: 'end', minWidth: 160, maxWidth: 280}
+    ],
     rows: BASE_ROWS,
     resizableColumns: RESIZABLE_COLUMNS
   }
@@ -763,7 +790,7 @@ export const ResizingUncontrolledMinMax: Story = {
 
 export const ResizingUncontrolledSomeNotAllowed: Story = {
   name: 'allowsResizing, uncontrolled, some columns not allowed resizing',
-  render: (args) => renderTableWithNote(args, 'Only some columns resizable parity scenario'),
+  render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS,
     rows: BASE_ROWS,
@@ -773,7 +800,7 @@ export const ResizingUncontrolledSomeNotAllowed: Story = {
 
 export const ResizingUncontrolledNoHeightWidth: Story = {
   name: 'allowsResizing, uncontrolled, undefined table width and height',
-  render: (args) => renderTableWithNote(args, 'Uncontrolled resizing with no explicit height/width parity scenario'),
+  render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS,
     rows: BASE_ROWS,
@@ -856,7 +883,7 @@ export const ResizingZoom: Story = {
 
 export const ResizingControlledNoInitialWidths: Story = {
   name: 'allowsResizing, controlled, no widths',
-  render: (args) => renderTableWithNote(args, 'Controlled resizing without initial widths parity scenario'),
+  render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS,
     rows: BASE_ROWS,
@@ -866,9 +893,13 @@ export const ResizingControlledNoInitialWidths: Story = {
 
 export const ResizingControlledSomeInitialWidths: Story = {
   name: 'allowsResizing, controlled, some widths',
-  render: (args) => renderTableWithNote(args, 'Controlled resizing with some initial widths parity scenario'),
+  render: (args) => renderTable(args),
   args: {
-    columns: BASE_COLUMNS,
+    columns: [
+      {key: 'name', label: 'Name', width: 220},
+      {key: 'type', label: 'Type'},
+      {key: 'date', label: 'Date Modified', align: 'end', width: 180}
+    ],
     rows: BASE_ROWS,
     resizableColumns: RESIZABLE_COLUMNS
   }
@@ -876,9 +907,13 @@ export const ResizingControlledSomeInitialWidths: Story = {
 
 export const ResizingControlledAllInitialWidths: Story = {
   name: 'allowsResizing, controlled, all widths',
-  render: (args) => renderTableWithNote(args, 'Controlled resizing with all initial widths parity scenario'),
+  render: (args) => renderTable(args),
   args: {
-    columns: BASE_COLUMNS,
+    columns: [
+      {key: 'name', label: 'Name', width: 220},
+      {key: 'type', label: 'Type', width: 180},
+      {key: 'date', label: 'Date Modified', align: 'end', width: 200}
+    ],
     rows: BASE_ROWS,
     resizableColumns: RESIZABLE_COLUMNS
   }
@@ -915,7 +950,7 @@ export const TypeaheadWithDialog: Story = {
         <input v-model="query" type="text" placeholder="Typeahead query" />
         <Table v-bind="args" :rows="filteredRows" />
         <DialogTrigger title="Typeahead details">
-          <p>Typeahead with dialog parity scenario.</p>
+          <p>Typeahead with dialog.</p>
         </DialogTrigger>
       </div>
     `
@@ -927,7 +962,7 @@ export const TypeaheadWithDialog: Story = {
 };
 
 export const Links: Story = {
-  render: (args) => renderTableWithNote(args, 'Rows include link-like values'),
+  render: (args) => renderTable(args),
   args: {
     columns: [
       {key: 'name', label: 'Name'},
@@ -944,7 +979,7 @@ export const Links: Story = {
 
 export const ColumnHeaderFocusRingTable: Story = {
   name: 'column header focus after loading',
-  render: (args) => renderTableWithNote(args, 'Column header focus ring parity scenario'),
+  render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS.map((column) => ({...column, sortable: true})),
     rows: BASE_ROWS
@@ -953,7 +988,7 @@ export const ColumnHeaderFocusRingTable: Story = {
 
 export const AsyncLoadOverflowWrapReproStory: Story = {
   name: 'async, overflow wrap scroll jumping reproduction',
-  render: (args) => renderAsyncTable(args, 'Async load overflow wrap repro parity scenario', false, true),
+  render: (args) => renderAsyncTable(args, 'Async load overflow wrap repro', false, true),
   args: {
     columns: BASE_COLUMNS,
     rows: [],

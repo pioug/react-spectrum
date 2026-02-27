@@ -410,6 +410,9 @@ export const Resizeable: Story = {
 
 export const CollapseBehavior: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {DynamicTabs},
     template: '<DynamicTabs />'
   })
@@ -417,6 +420,9 @@ export const CollapseBehavior: Story = {
 
 export const CollapseBehaviorIsQuiet: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {DynamicTabs},
     template: '<DynamicTabs annotation="isQuiet variant" />'
   })
@@ -424,6 +430,9 @@ export const CollapseBehaviorIsQuiet: Story = {
 
 export const CollapseBehaviorDensityCompact: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {DynamicTabs},
     template: '<DynamicTabs annotation="density: compact variant" />'
   })
@@ -431,6 +440,9 @@ export const CollapseBehaviorDensityCompact: Story = {
 
 export const CollapseBehaviorDensityCompactIsQuiet: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {DynamicTabs},
     template: '<DynamicTabs annotation="density: compact, isQuiet variant" />'
   })
@@ -438,6 +450,9 @@ export const CollapseBehaviorDensityCompactIsQuiet: Story = {
 
 export const CollapseBehaviorIsEmphasizedTrue: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {DynamicTabs},
     template: '<DynamicTabs annotation="isEmphasized: true variant" />'
   })
@@ -445,6 +460,9 @@ export const CollapseBehaviorIsEmphasizedTrue: Story = {
 
 export const _OrientationFlip: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {OrientationFlip},
     template: '<OrientationFlip />'
   })
@@ -485,6 +503,9 @@ export const TransitionBetweenTabSizes: Story = {
 
 export const TabWithFlexContainerInBetween: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {DynamicTabsWithDecoration},
     template: '<DynamicTabsWithDecoration />'
   })
@@ -628,6 +649,9 @@ export const ChangingTabTitles: Story = {
 
 export const ChangingSelectionProgrammatically: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {ControlledSelection},
     template: '<ControlledSelection />'
   })

@@ -55,6 +55,9 @@ type Story = StoryObj<typeof meta>;
 export const FlatLandmarks: Story = {
   render: () => ({
     components: {LandmarkNode, TextField},
+    setup() {
+      return {};
+    },
     template: `
       <div>
         <LandmarkNode element-type="nav" role="navigation" aria-label="Rainbow lookout">
@@ -77,6 +80,9 @@ export const FlatLandmarks: Story = {
 export const NestedLandmarks: Story = {
   render: () => ({
     components: {LandmarkNode, TextField},
+    setup() {
+      return {};
+    },
     template: `
       <div>
         <LandmarkNode element-type="main" role="main" aria-label="Danni's unicorn corral">
@@ -95,6 +101,9 @@ export const NestedLandmarks: Story = {
 export const TableLandmark: Story = {
   render: () => ({
     components: {LandmarkNode},
+    setup() {
+      return {};
+    },
     template: `
       <div>
         <LandmarkNode element-type="nav" role="navigation" aria-label="Rainbow lookout">
@@ -128,6 +137,9 @@ export const TableLandmark: Story = {
 export const ApplicationWithLandmarks: Story = {
   render: () => ({
     components: {LandmarkNode},
+    setup() {
+      return {};
+    },
     template: `
       <div style="display: grid; grid-template-columns: 220px 1fr 220px; gap: 10px;">
         <LandmarkNode element-type="article" role="region" aria-label="Global header" style="grid-column: 1 / -1;">
@@ -163,6 +175,9 @@ export const ApplicationWithLandmarks: Story = {
 export const DuplicateRolesWithLabels: Story = {
   render: () => ({
     components: {LandmarkNode, TextField},
+    setup() {
+      return {};
+    },
     template: `
       <div>
         <LandmarkNode element-type="nav" role="navigation" aria-label="First Nav">
@@ -182,6 +197,9 @@ export const DuplicateRolesWithLabels: Story = {
 export const DuplicateRolesWithNoLabels: Story = {
   render: () => ({
     components: {LandmarkNode, TextField},
+    setup() {
+      return {};
+    },
     template: `
       <div>
         <LandmarkNode element-type="nav" role="navigation">
@@ -201,6 +219,9 @@ export const DuplicateRolesWithNoLabels: Story = {
 export const DuplicateRolesWithSameLabels: Story = {
   render: () => ({
     components: {LandmarkNode, TextField},
+    setup() {
+      return {};
+    },
     template: `
       <div>
         <LandmarkNode element-type="nav" role="navigation" aria-label="First Nav">
@@ -220,6 +241,9 @@ export const DuplicateRolesWithSameLabels: Story = {
 export const OneWithNoFocusableChildren: Story = {
   render: () => ({
     components: {LandmarkNode, TextField},
+    setup() {
+      return {};
+    },
     template: `
       <div>
         <TextField label="First Name" />
@@ -236,6 +260,9 @@ export const OneWithNoFocusableChildren: Story = {
 export const AllWithNoFocusableChildren: Story = {
   render: () => ({
     components: {LandmarkNode, TextField},
+    setup() {
+      return {};
+    },
     template: `
       <div>
         <LandmarkNode element-type="article" role="region" aria-label="The greens">

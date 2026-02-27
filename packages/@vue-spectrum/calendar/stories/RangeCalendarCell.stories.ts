@@ -11,6 +11,9 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {RangeCalendar},
     template: '<RangeCalendar />'
   })

@@ -181,6 +181,9 @@ export const ControlledImplementation: Story = {
 
 export const WHCMTest: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {Switch},
     template: `
       <div style="display: flex; flex-direction: column; gap: 16px;">

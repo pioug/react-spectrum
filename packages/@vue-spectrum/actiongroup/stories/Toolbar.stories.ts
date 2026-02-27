@@ -6,6 +6,7 @@ import Draw from '@spectrum-icons-vue/workflow/Draw';
 import Info from '@spectrum-icons-vue/workflow/Info';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import Properties from '@spectrum-icons-vue/workflow/Properties';
+import {TooltipTrigger} from '@vue-spectrum/tooltip';
 import ViewCard from '@spectrum-icons-vue/workflow/ViewCard';
 import ViewGrid from '@spectrum-icons-vue/workflow/ViewGrid';
 import ViewList from '@spectrum-icons-vue/workflow/ViewList';
@@ -79,7 +80,8 @@ const iconMap: Record<string, Component> = {
 const ToolbarExample = defineComponent({
   name: 'ToolbarExample',
   components: {
-    ActionGroup
+    ActionGroup,
+    TooltipTrigger
   },
   props: {
     ariaLabel: {
@@ -123,7 +125,9 @@ const ToolbarExample = defineComponent({
         backgroundColor: 'var(--spectrum-global-color-gray-300)'
       });
 
-    let manageDisabledKeys = computed(() => props.isDisabledKeysExample ? ['copy'] : []);
+    let manageDisabledKeys = computed(() => props.isDisabledKeysExample ? new Set(['copy']) : new Set<string>());
+    let manageSelectionMode = computed(() => props.isDisabledKeysExample ? 'multiple' : 'single');
+    let viewSelectionMode = computed(() => props.isDisabledKeysExample ? 'none' : 'single');
     let viewDisabled = computed(() => props.isDisabledKeysExample);
 
     return {
@@ -134,11 +138,13 @@ const ToolbarExample = defineComponent({
       labelMap,
       manageDisabledKeys,
       manageItems,
+      manageSelectionMode,
       manageSelection,
       props,
       toolbarStyle,
       viewDisabled,
       viewItems,
+      viewSelectionMode,
       viewSelection
     };
   },
@@ -150,19 +156,24 @@ const ToolbarExample = defineComponent({
       :aria-label="props.ariaLabel">
       <ActionGroup
         aria-label="manage"
-        selection-mode="single"
+        :selection-mode="manageSelectionMode"
         :orientation="props.orientation"
         :items="manageItems"
         :disabled-keys="manageDisabledKeys"
         v-model="manageSelection">
         <template #item="{item}">
-          <component :is="iconMap[item]" :aria-label="labelMap[item]" />
+          <TooltipTrigger :delay="0" trigger="hover">
+            <component :is="iconMap[item]" :aria-label="labelMap[item]" />
+            <template #tooltip>
+              {{ labelMap[item] }}
+            </template>
+          </TooltipTrigger>
         </template>
       </ActionGroup>
       <div aria-hidden="true" :style="dividerStyle" />
       <ActionGroup
         aria-label="view"
-        selection-mode="single"
+        :selection-mode="viewSelectionMode"
         :orientation="props.orientation"
         :items="viewItems"
         :is-disabled="viewDisabled"

@@ -43,6 +43,36 @@ let falsyItems = [
   {id: 2, width: 182, height: 1009, src: 'https://i.imgur.com/L7RTlvI.png', title: 'Jane 1'}
 ];
 
+type StorySelectionValue = 'all' | Set<number | string>;
+
+function normalizeStorySelectionValue(value: unknown): StorySelectionValue {
+  if (value === 'all') {
+    return 'all';
+  }
+
+  if (typeof value === 'number' || typeof value === 'string') {
+    return new Set([value]);
+  }
+
+  if (value == null) {
+    return new Set();
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return new Set();
+  }
+
+  let normalized = new Set<number | string>();
+  for (let entry of value as Iterable<unknown>) {
+    if (typeof entry === 'number' || typeof entry === 'string') {
+      normalized.add(entry);
+    }
+  }
+
+  return normalized;
+}
+
 function GridLayout() {
   return {layoutType: 'grid'};
 }
@@ -51,12 +81,7 @@ function actionHandlers() {
   return {
     onAction: action('action'),
     onSelectionChange: (keys: unknown) => {
-      if (Array.isArray(keys)) {
-        action('onSelectionChange')(keys);
-        return;
-      }
-
-      action('onSelectionChange')([keys]);
+      action('onSelectionChange')(normalizeStorySelectionValue(keys));
     }
   };
 }
@@ -263,7 +288,7 @@ export const ControlledCards: Story = {
     setup() {
       let removeIndex = ref('');
       let controlledItems = ref(items.slice());
-      let selectedKeys = ref<'all' | string[]>('all');
+      let selectedKeys = ref<StorySelectionValue>('all');
       let onRemove = () => {
         controlledItems.value = removeNthItem(removeIndex.value, controlledItems.value);
       };
@@ -324,10 +349,9 @@ export const ControlledCards: Story = {
           selectedKeys: this.selectedKeys,
           style: {height: '100%', width: '100%'},
           onSelectionChange: (keys: unknown) => {
-            if (Array.isArray(keys)) {
-              this.selectedKeys = keys;
-              action('onSelectionChange')(keys);
-            }
+            let nextSelection = normalizeStorySelectionValue(keys);
+            this.selectedKeys = nextSelection;
+            action('onSelectionChange')(nextSelection);
           }
         })
       ]);

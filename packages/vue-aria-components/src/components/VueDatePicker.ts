@@ -177,11 +177,27 @@ export const VueTimeField = defineComponent({
       type: String,
       default: ''
     },
+    name: {
+      type: String,
+      default: ''
+    },
     step: {
       type: Number,
       default: 60
     },
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    readOnly: {
+      type: Boolean,
+      default: false
+    },
+    required: {
+      type: Boolean,
+      default: false
+    },
+    invalid: {
       type: Boolean,
       default: false
     }
@@ -191,33 +207,45 @@ export const VueTimeField = defineComponent({
     change: (value: string) => typeof value === 'string'
   },
   setup(props, {emit, attrs}) {
-    let context = getSpectrumContext();
     let generatedId = `vs-time-field-${++timeFieldId}`;
 
     let inputId = computed(() => props.id ?? generatedId);
-    let inputClasses = computed(() => ([
-      'vs-time-field__input',
-      context.value.scale === 'large' ? 'vs-time-field__input--large' : 'vs-time-field__input--medium'
-    ]));
+    let descriptionId = computed(() => props.description ? `${inputId.value}-description` : undefined);
 
     return function render() {
-      return h('label', {
+      return h('div', {
         ...attrs,
-        class: ['vs-time-field', attrs.class],
-        'data-vac': ''
+        class: ['react-aria-TimeField', attrs.class],
+        'data-rac': '',
+        'data-disabled': props.disabled ? 'true' : undefined,
+        'data-invalid': props.invalid ? 'true' : undefined,
+        'data-readonly': props.readOnly ? 'true' : undefined,
+        'data-required': props.required ? 'true' : undefined
       }, [
-        props.label ? h('span', {class: 'vs-time-field__label'}, props.label) : null,
-        h('input', {
-          id: inputId.value,
-          class: inputClasses.value,
-          type: 'time',
-          value: props.modelValue,
-          disabled: props.disabled,
-          step: props.step,
-          onInput: (event: Event) => emit('update:modelValue', readInputValue(event)),
-          onChange: (event: Event) => emit('change', readInputValue(event))
-        }),
-        props.description ? h('span', {class: 'vs-time-field__description'}, props.description) : null
+        props.label ? h('label', {class: 'react-aria-Label', for: inputId.value}, props.label) : null,
+        h('div', {
+          class: 'field',
+          role: 'group',
+          'data-rac': '',
+          'data-react-aria-pressable': 'true'
+        }, [
+          h('input', {
+            id: inputId.value,
+            class: 'react-aria-Input',
+            type: 'time',
+            name: props.name || undefined,
+            value: props.modelValue,
+            disabled: props.disabled,
+            readonly: props.readOnly || undefined,
+            required: props.required,
+            step: props.step,
+            'aria-invalid': props.invalid ? 'true' : undefined,
+            'aria-describedby': descriptionId.value,
+            onInput: (event: Event) => emit('update:modelValue', readInputValue(event)),
+            onChange: (event: Event) => emit('change', readInputValue(event))
+          })
+        ]),
+        props.description ? h('span', {id: descriptionId.value, class: 'react-aria-Text'}, props.description) : null
       ]);
     };
   }

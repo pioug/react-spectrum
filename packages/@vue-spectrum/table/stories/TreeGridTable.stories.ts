@@ -10,6 +10,27 @@ type RowItem = {
   bar: string,
   baz: string
 };
+type OpenKey = string | number;
+
+function normalizeOpenKeys(value: unknown): Set<OpenKey> {
+  if (value == null || typeof value === 'string') {
+    return new Set();
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return new Set();
+  }
+
+  return new Set(
+    Array.from(value as Iterable<unknown>)
+      .filter((entry): entry is OpenKey => typeof entry === 'number' || typeof entry === 'string')
+  );
+}
+
+function normalizeRows(value: unknown): RowItem[] {
+  return Array.isArray(value) ? value as RowItem[] : [];
+}
 
 const COLUMNS = [
   {key: 'foo', label: 'Foo'},
@@ -71,7 +92,7 @@ const meta: Meta<typeof Table> = {
   args: {
     ariaLabel: 'TableView with static expandable rows',
     columns: COLUMNS,
-    openKeys: ['row-1'],
+    openKeys: new Set(['row-1']),
     rowKey: 'id',
     rows: NESTED_ROWS
   },
@@ -148,18 +169,18 @@ function renderExpandableTable(args: StoryArgs, showButtons = false, startEmpty 
   return {
     components: {Table},
     setup() {
-      let rows = ref<RowItem[]>(startEmpty ? [] : (args.rows as RowItem[]));
-      let openKeys = ref<Array<string | number>>(Array.isArray(args.openKeys) ? args.openKeys as Array<string | number> : []);
+      let rows = ref<RowItem[]>(startEmpty ? [] : normalizeRows(args.rows));
+      let openKeys = ref<Set<OpenKey>>(normalizeOpenKeys(args.openKeys));
 
       let expandAll = () => {
-        openKeys.value = rows.value.map((row) => row.id);
+        openKeys.value = new Set(rows.value.map((row) => row.id));
       };
       let collapseAll = () => {
-        openKeys.value = [];
+        openKeys.value = new Set();
       };
       let loadRows = () => {
         rows.value = NESTED_ROWS;
-        openKeys.value = ['row-1'];
+        openKeys.value = new Set(['row-1']);
       };
 
       return {
@@ -194,7 +215,7 @@ export const StaticExpandableRows: Story = {
     ariaLabel: 'TableView with static expandable rows',
     columns: COLUMNS,
     rows: NESTED_ROWS,
-    openKeys: ['row-1'],
+    openKeys: new Set(['row-1']),
     rowKey: 'id'
   },
   name: 'static with expandable rows'
@@ -206,7 +227,7 @@ export const DynamicExpandableRowsStory: Story = {
     ariaLabel: 'TableView with dynamic expandable rows',
     columns: COLUMNS,
     rows: NESTED_ROWS,
-    openKeys: ['row-1'],
+    openKeys: new Set(['row-1']),
     rowKey: 'id'
   },
   name: 'dynamic with expandable rows'
@@ -218,7 +239,7 @@ export const UserSetRowHeader: Story = {
     ariaLabel: 'TableView with expandable rows and multiple row headers',
     columns: COLUMNS,
     rows: NESTED_ROWS,
-    openKeys: ['row-1'],
+    openKeys: new Set(['row-1']),
     rowKey: 'id'
   },
   name: 'multiple user set row headers'
@@ -230,7 +251,7 @@ export const ManyExpandableRowsStory: Story = {
     ariaLabel: 'TableView with many dynamic expandable rows',
     columns: COLUMNS,
     rows: makeManyRows(6),
-    openKeys: ['many-1', 'many-2', 'many-3'],
+    openKeys: new Set(['many-1', 'many-2', 'many-3']),
     rowKey: 'id'
   },
   name: 'many expandable rows'
@@ -242,7 +263,7 @@ export const EmptyTreeGridStory: Story = {
     ariaLabel: 'TableView with empty state',
     columns: COLUMNS,
     rows: [],
-    openKeys: [],
+    openKeys: new Set(),
     rowKey: 'id'
   },
   name: 'empty state'
@@ -254,7 +275,7 @@ export const LoadingTreeGridStory: Story = {
     ariaLabel: 'TableView with loading',
     columns: COLUMNS,
     rows: [],
-    openKeys: [],
+    openKeys: new Set(),
     rowKey: 'id'
   },
   name: 'isLoading'
@@ -270,7 +291,7 @@ export const NestedColumnsStory: Story = {
       {key: 'baz', label: 'Group 2 / Baz'}
     ],
     rows: NESTED_ROWS,
-    openKeys: ['row-1'],
+    openKeys: new Set(['row-1']),
     rowKey: 'id'
   },
   name: 'with nested columns'
@@ -282,7 +303,7 @@ export const ResizableColumnsStory: Story = {
     ariaLabel: 'TableView with resizable columns',
     columns: COLUMNS,
     rows: NESTED_ROWS,
-    openKeys: ['row-1'],
+    openKeys: new Set(['row-1']),
     resizableColumns: ['foo', 'bar', 'baz'],
     rowKey: 'id'
   },

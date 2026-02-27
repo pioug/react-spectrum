@@ -10,6 +10,6 @@ export type SpectrumTagGroupProps = {
   emptyStateLabel?: string,
   items?: TagItemData[],
   label?: string,
-  modelValue?: string[],
+  modelValue?: Iterable<string>,
   selectionMode?: 'multiple' | 'none' | 'single'
 };

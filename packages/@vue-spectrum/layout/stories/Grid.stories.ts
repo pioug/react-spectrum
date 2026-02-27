@@ -35,6 +35,9 @@ for (let color of baseColors) {
 
 export const ExplicitGrid: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {Grid, View},
     template: `
       <Grid

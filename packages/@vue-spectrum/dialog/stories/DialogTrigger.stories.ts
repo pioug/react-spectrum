@@ -1,10 +1,13 @@
 import {ActionButton, Button} from '@vue-spectrum/button';
 import {AlertDialog, DialogTrigger} from '../src';
+import {Menu} from '@vue-spectrum/menu';
 import {TooltipTrigger} from '@vue-spectrum/tooltip';
+import {action} from '@storybook/addon-actions';
 import {ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type StoryArgs = Record<string, unknown>;
+const DIALOG_BODY_TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus. In sit amet suscipit lorem. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.';
 
 const meta: Meta<typeof DialogTrigger> = {
   title: 'DialogTrigger',
@@ -80,14 +83,46 @@ type Story = StoryObj<typeof meta>;
 
 function renderDialog(args: StoryArgs, content = 'Dialog content') {
   return {
-    components: {DialogTrigger},
+    components: {ActionButton, Button, DialogTrigger},
     setup() {
-      return {args, content};
+      let isOpen = ref(false);
+      let openDialog = () => {
+        isOpen.value = true;
+        action('open change')(true);
+      };
+      let closeDialog = () => {
+        isOpen.value = false;
+        action('open change')(false);
+      };
+      let cancel = () => {
+        action('cancel')();
+        closeDialog();
+      };
+      let confirm = () => {
+        action('confirm')();
+        closeDialog();
+      };
+      return {args, cancel, closeDialog, confirm, content, isOpen, openDialog};
     },
     template: `
-      <DialogTrigger v-bind="args">
-        <p>{{content}}</p>
-      </DialogTrigger>
+      <div style="display: flex; width: auto; margin: 100px 0;">
+        <ActionButton
+          @click="openDialog"
+          :style="{
+            height: args.buttonHeight ? args.buttonHeight + 'px' : undefined,
+            width: args.buttonWidth ? args.buttonWidth + 'px' : undefined
+          }">Trigger</ActionButton>
+        <DialogTrigger v-bind="args" :open="isOpen" @close="closeDialog">
+          <template #heading><h2>The Heading</h2></template>
+          <template #header><div>The Header</div></template>
+          <template #divider><hr /></template>
+          <p>{{content}}</p>
+          <template v-if="args.type !== 'popover' && args.type !== 'tray' && !args.isDismissable" #buttonGroup>
+            <Button variant="secondary" @click="cancel">Cancel</Button>
+            <Button variant="cta" @click="confirm">Confirm</Button>
+          </template>
+        </DialogTrigger>
+      </div>
     `
   };
 }
@@ -141,35 +176,42 @@ export const TypeTray: Story = {
 };
 
 export const MobileTypeFullscreen: Story = {
-  render: (args) => renderDialog(args, 'mobileType="fullscreen" parity scenario'),
+  render: (args) => renderDialog(args, 'Dialog content'),
   args: {
+    mobileType: 'fullscreen',
     type: 'modal'
   }
 };
 
 export const MobileTypeFullscreenTakeover: Story = {
-  render: (args) => renderDialog(args, 'mobileType="fullscreenTakeover" parity scenario'),
+  render: (args) => renderDialog(args, 'Dialog content'),
   args: {
+    mobileType: 'fullscreenTakeover',
     type: 'modal'
   }
 };
 
 export const PopoverWithMobileTypeModal: Story = {
-  render: (args) => renderDialog(args, 'popover with mobileType="modal" parity scenario'),
+  render: (args) => renderDialog(args, 'Dialog content'),
   args: {
+    mobileType: 'modal',
     type: 'popover'
   }
 };
 
 export const PopoverWithMobileTypeTray: Story = {
-  render: (args) => renderDialog(args, 'popover with mobileType="tray" parity scenario'),
+  render: (args) => renderDialog(args, 'Dialog content'),
   args: {
+    mobileType: 'tray',
     type: 'popover'
   }
 };
 
 export const NestedModals: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {ActionButton, DialogTrigger},
     template: `
       <div style="display: grid; gap: 12px; padding-top: 40px;">
@@ -188,6 +230,9 @@ export const NestedModals: Story = {
 
 export const NestedModalsFullscreentakeover: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {ActionButton, DialogTrigger},
     template: `
       <DialogTrigger type="fullscreenTakeover" title="The Heading">
@@ -203,22 +248,38 @@ export const NestedModalsFullscreentakeover: Story = {
 
 export const WithMenuTrigger: Story = {
   render: () => ({
-    components: {DialogTrigger},
+    components: {ActionButton, DialogTrigger, Menu},
+    setup() {
+      let isOpen = ref(false);
+      return {
+        isOpen,
+        menuItems: [
+          {key: 'one', label: 'Item 1'},
+          {key: 'two', label: 'Item 2'},
+          {key: 'three', label: 'Item 3'}
+        ],
+        onClose: () => {
+          isOpen.value = false;
+        }
+      };
+    },
     template: `
-      <DialogTrigger type="popover" title="The Heading">
-        <p>Menu trigger content</p>
-        <ul style="margin: 0; padding-left: 18px;">
-          <li>Item 1</li>
-          <li>Item 2</li>
-          <li>Item 3</li>
-        </ul>
-      </DialogTrigger>
+      <div style="display: flex; margin: 100px 0;">
+        <ActionButton @click="isOpen = true">Trigger</ActionButton>
+        <DialogTrigger type="popover" title="The Heading" :open="isOpen" @close="onClose">
+          <ActionButton variant="secondary">Test</ActionButton>
+          <Menu :items="menuItems" />
+        </DialogTrigger>
+      </div>
     `
   })
 };
 
 export const NestedPopovers: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {ActionButton, DialogTrigger},
     template: `
       <div style="padding-top: 40px;">
@@ -236,6 +297,9 @@ export const NestedPopovers: Story = {
 
 export const PopoverInsideScrollView: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {DialogTrigger},
     template: `
       <div style="height: 140px; display: flex; gap: 16px;">
@@ -262,8 +326,8 @@ export const ShouldFlipWithWidth: Story = {
     },
     template: `
       <div style="display: flex; width: calc(100vh - 100px); margin: 40px 0;">
-        <DialogTrigger v-bind="args" type="popover" title="Popover width scenario">
-          <p>shouldFlip with width parity scenario</p>
+        <DialogTrigger v-bind="args" type="popover" title="Popover width constrained">
+          <p>Dialog content constrained by viewport width.</p>
         </DialogTrigger>
       </div>
     `
@@ -287,7 +351,7 @@ export const CloseFunctionWithButtonPopover: Story = {
           title="The Heading"
           :open="open"
           @close="open = false">
-          <p>Close function with button parity scenario.</p>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus.</p>
           <Button variant="secondary" @click="open = false">Cancel</Button>
         </DialogTrigger>
       </div>
@@ -303,8 +367,8 @@ export const TargetRef: Story = {
     },
     template: `
       <div style="display: flex; align-items: center; gap: 24px;">
-        <DialogTrigger v-bind="args" type="popover" title="TargetRef parity">
-          <p>Popover target parity scenario.</p>
+        <DialogTrigger v-bind="args" type="popover" title="TargetRef">
+          <p>Popover target example.</p>
         </DialogTrigger>
         <span style="margin-inline-start: 200px;">Popover appears over here</span>
       </div>
@@ -314,22 +378,55 @@ export const TargetRef: Story = {
 
 export const _AlertDialog: Story = {
   render: () => ({
-    components: {AlertDialog},
+    components: {ActionButton, AlertDialog},
+    setup() {
+      let isOpen = ref(false);
+      let closeDialog = () => {
+        isOpen.value = false;
+      };
+      return {
+        closeDialog,
+        isOpen,
+        onCancel: () => {
+          action('cancel')();
+          closeDialog();
+        },
+        onPrimary: () => {
+          action('primary')();
+          closeDialog();
+        },
+        onSecondary: () => {
+          action('secondary')();
+          closeDialog();
+        }
+      };
+    },
     template: `
-      <AlertDialog
-        title="Alert! Danger!"
-        variant="error"
-        primary-action-label="Accept"
-        secondary-action-label="Whoa"
-        cancel-label="Cancel">
-        Fine! No, absolutely fine. It's not like this place is about to explode.
-      </AlertDialog>
+      <div style="display: flex; width: auto; margin: 100px 0;">
+        <ActionButton @click="isOpen = true">Trigger</ActionButton>
+        <AlertDialog
+          title="Alert! Danger!"
+          variant="error"
+          :is-open="isOpen"
+          primary-action-label="Accept"
+          secondary-action-label="Whoa"
+          cancel-label="Cancel"
+          @close="closeDialog"
+          @cancel="onCancel"
+          @primary-action="onPrimary"
+          @secondary-action="onSecondary">
+          <p>${DIALOG_BODY_TEXT}</p>
+        </AlertDialog>
+      </div>
     `
   })
 };
 
 export const CrossoffsetExamples: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {DialogTrigger},
     template: `
       <div style="display: flex; gap: 16px;">
@@ -362,8 +459,8 @@ export const TriggerVisibleThroughUnderlay: Story = {
           action button should not get events through underlay.
         </div>
         <ActionButton variant="primary">Trigger</ActionButton>
-        <DialogTrigger v-bind="args" is-dismissable title="Underlay scenario">
-          <p>trigger visible through underlay parity scenario</p>
+        <DialogTrigger v-bind="args" is-dismissable title="Underlay visibility">
+          <p>Dialog content visible with an active underlay.</p>
         </DialogTrigger>
       </div>
     `
@@ -372,6 +469,9 @@ export const TriggerVisibleThroughUnderlay: Story = {
 
 export const _2Popovers: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {DialogTrigger},
     template: `
       <div style="display: flex; gap: 16px;">
@@ -434,6 +534,9 @@ export const _AdjustableDialog: Story = {
 
 export const WithTooltip: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {Button, DialogTrigger, TooltipTrigger},
     template: `
       <div style="display: flex; width: auto; margin: 40px 0;">
@@ -453,6 +556,9 @@ export const WithTooltip: Story = {
 
 export const WithTooltipTrigger: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {ActionButton, Button, DialogTrigger, TooltipTrigger},
     template: `
       <div style="display: flex; flex-wrap: wrap; gap: 10px;">
@@ -535,7 +641,7 @@ export const TriggersOnEdges: Story = {
             v-for="placement in placements"
             :key="placement"
             type="popover"
-            title="Placement scenario">
+            title="Placement">
             <p>Placement {{placement}}</p>
           </DialogTrigger>
         </div>

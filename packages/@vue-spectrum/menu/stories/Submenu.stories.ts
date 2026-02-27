@@ -1,4 +1,4 @@
-import {ActionButton} from '@vue-spectrum/button';
+import {ToggleButton} from '@vue-spectrum/button';
 import {SubmenuTrigger} from '../src';
 import {action} from '@storybook/addon-actions';
 import {computed, ref} from 'vue';
@@ -264,13 +264,12 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function renderSubmenu(args: StoryArgs, note = '') {
+function renderSubmenu(args: StoryArgs) {
   return {
     components: {SubmenuTrigger},
     setup() {
       return {
         args,
-        note,
         onAction: action('onAction'),
         onOpenChange: action('onOpenChange'),
         onSelect: action('onSelectionChange')
@@ -278,7 +277,6 @@ function renderSubmenu(args: StoryArgs, note = '') {
     },
     template: `
       <div style="display: grid; gap: 8px;">
-        <div v-if="note">{{note}}</div>
         <SubmenuTrigger
           v-bind="args"
           @action="onAction($event)"
@@ -311,22 +309,29 @@ function renderTabBehavior(args: StoryArgs) {
 
 function renderConditionalSubmenu(args: StoryArgs) {
   return {
-    components: {ActionButton, SubmenuTrigger},
+    components: {SubmenuTrigger, ToggleButton},
     setup() {
       let unavailable = ref(false);
       let items = computed<MenuItem[]>(() => {
-        return [
-          {key: 'conditional-1', label: 'Lvl 1 Item 1'},
-          {
+        let conditionalItem = unavailable.value
+          ? {
             key: 'conditional-2',
-            label: unavailable.value ? 'Lvl 1 Item 2 (unavailable)' : 'Lvl 1 Item 2',
-            disabled: unavailable.value,
+            label: 'Lvl 1 Item 2',
+            disabled: true
+          }
+          : {
+            key: 'conditional-2',
+            label: 'Lvl 1 Item 2',
             children: [
               {key: 'conditional-2-1', label: 'Lvl 2 Item 1'},
               {key: 'conditional-2-2', label: 'Lvl 2 Item 2'},
               {key: 'conditional-2-3', label: 'Lvl 2 Item 3'}
             ]
-          },
+          };
+
+        return [
+          {key: 'conditional-1', label: 'Lvl 1 Item 1'},
+          conditionalItem,
           {key: 'conditional-3', label: 'Lvl 1 Item 3'}
         ];
       });
@@ -339,7 +344,7 @@ function renderConditionalSubmenu(args: StoryArgs) {
     },
     template: `
       <div style="display: grid; gap: 12px;">
-        <ActionButton @press="unavailable = !unavailable">Toggle item 2 unavailable</ActionButton>
+        <ToggleButton v-model="unavailable">Toggle item 2 unavailable</ToggleButton>
         <SubmenuTrigger v-bind="args" :items="items" />
       </div>
     `
@@ -350,7 +355,7 @@ export const SubmenuStaticRender = (args: StoryArgs = {}) => renderSubmenu({
   label: 'Menu Button',
   items: cloneItems(STATIC_ITEMS),
   isExpanded: true,
-  openKeys: ['lvl1-2', 'lvl2-3'],
+  openKeys: new Set(['lvl1-2', 'lvl2-3']),
   ...args
 });
 
@@ -363,7 +368,7 @@ export const SubmenuDynamicRender = (args: StoryArgs = {}) => renderSubmenu({
   label: 'Menu Button',
   items: cloneItems(DYNAMIC_ITEMS),
   isExpanded: true,
-  openKeys: ['d-2', 'd-2-3'],
+  openKeys: new Set(['d-2', 'd-2-3']),
   ...args
 });
 
@@ -377,7 +382,7 @@ export const SubmenuManyItems: Story = {
     label: 'Menu Button',
     items: cloneItems(MANY_ITEMS),
     isExpanded: true,
-    openKeys: ['many-2', 'many-2-31'],
+    openKeys: new Set(['many-2', 'many-2-31']),
     ...args
   }),
   name: 'dynamic submenu with many items'
@@ -388,7 +393,7 @@ export const SubmenuStaticSections: Story = {
     label: 'Menu Button',
     items: cloneItems(STATIC_SECTIONS_ITEMS),
     isExpanded: true,
-    openKeys: ['section-1', 's1-2'],
+    openKeys: new Set(['section-1', 's1-2']),
     ...args
   }),
   name: 'static submenu items with sections'
@@ -399,7 +404,7 @@ export const SubmenuDynamicSections: Story = {
     label: 'Menu Button',
     items: cloneItems(DYNAMIC_SECTIONS_ITEMS),
     isExpanded: true,
-    openKeys: ['dynamic-section-1', 'ds1-2', 'dss1-3'],
+    openKeys: new Set(['dynamic-section-1', 'ds1-2', 'dss1-3']),
     ...args
   }),
   name: 'dynamic submenu items with sections'
@@ -410,7 +415,7 @@ export const MainSectionsSubNoSections: Story = {
     label: 'Menu Button',
     items: cloneItems(MAIN_SECTION_SUB_NO_SECTION_ITEMS),
     isExpanded: true,
-    openKeys: ['msn-1', 'msn-1-2', 'msn-1-2-3'],
+    openKeys: new Set(['msn-1', 'msn-1-2', 'msn-1-2-3']),
     ...args
   }),
   name: 'dynamic, main menu w/ sections, sub menu no sections'
@@ -421,7 +426,7 @@ export const MainNoSectionsSubSections: Story = {
     label: 'Menu Button',
     items: cloneItems(MAIN_NO_SECTION_SUB_SECTION_ITEMS),
     isExpanded: true,
-    openKeys: ['mns-2', 'mns-2-s1', 'mns-2-s1-3'],
+    openKeys: new Set(['mns-2', 'mns-2-s1', 'mns-2-s1-3']),
     ...args
   }),
   name: 'dynamic, main menu no sections, sub menu w/ sections'
@@ -432,7 +437,7 @@ export const MixedSections: Story = {
     label: 'Menu Button',
     items: cloneItems(MIXED_SECTIONS_ITEMS),
     isExpanded: true,
-    openKeys: ['mix-2', 'mix-2-s1', 'mix-2-s1-3', 'mix-2-s1-3-1'],
+    openKeys: new Set(['mix-2', 'mix-2-s1', 'mix-2-s1-3', 'mix-2-s1-3-1']),
     ...args
   }),
   name: 'dynamic, mix of menus w/ sections and w/o sections'
@@ -442,7 +447,7 @@ export const ComplexRender = (args: StoryArgs = {}) => renderSubmenu({
   label: 'Menu Button',
   items: cloneItems(COMPLEX_ITEMS),
   isExpanded: true,
-  openKeys: ['font', 'baseline'],
+  openKeys: new Set(['font', 'baseline']),
   ...args
 });
 
@@ -456,7 +461,7 @@ export const SubmenuActions: Story = {
     label: 'Menu Button',
     items: cloneItems(STATIC_ITEMS),
     isExpanded: true,
-    openKeys: ['lvl1-2', 'lvl2-3'],
+    openKeys: new Set(['lvl1-2', 'lvl2-3']),
     ...args
   }, 'Each level reports actions independently via onAction / onOpenChange.'),
   name: 'submenu onAction and onClose'
@@ -467,9 +472,9 @@ export const SubmenuSelection: Story = {
     label: 'Menu Button',
     items: cloneItems(STATIC_ITEMS),
     selectionMode: 'multiple',
-    modelValue: ['lvl1-1', 'lvl3-2'],
+    modelValue: new Set(['lvl1-1', 'lvl3-2']),
     isExpanded: true,
-    openKeys: ['lvl1-2', 'lvl2-3'],
+    openKeys: new Set(['lvl1-2', 'lvl2-3']),
     ...args
   }),
   name: 'submenu selectionMode and onSelectionChange'
@@ -492,7 +497,7 @@ export const DisabledSubmenuTrigger: Story = {
       {key: 'd3', label: 'Lvl 1 Item 3'}
     ],
     isExpanded: true,
-    openKeys: ['d2'],
+    openKeys: new Set(['d2']),
     ...args
   }),
   name: 'disabled submenu trigger'
@@ -526,16 +531,32 @@ export const UnavailableWithSubmenu: Story = {
         key: 'u2',
         label: 'Lvl 1 Item 2',
         children: [
-          {key: 'u2-1', label: 'Lvl 2 Item 1', disabled: true},
-          {key: 'u2-2', label: 'Lvl 2 Item 2'},
-          {key: 'u2-3', label: 'Lvl 2 Item 3', children: [{key: 'u3-1', label: 'Lvl 3 Item 1'}, {key: 'u3-2', label: 'Lvl 3 Item 2'}]}
+          {key: 'u2-1', label: 'Lvl 2.2 Item 1', disabled: true},
+          {key: 'u2-2', label: 'Lvl 2.2 Item 2'},
+          {
+            key: 'u2-3',
+            label: 'Lvl 2.2 Item 3',
+            children: [
+              {key: 'u3-1', label: 'Lvl 3 Item 1'},
+              {key: 'u3-2', label: 'Lvl 3 Item 2'},
+              {key: 'u3-3', label: 'Lvl 3 Item 3'}
+            ]
+          }
         ]
       },
       {key: 'u3', label: 'Lvl 1 Item 3', disabled: true},
-      {key: 'u4', label: 'Lvl 1 Item 4', children: [{key: 'u4-1', label: 'Lvl 2.4 Item 1'}, {key: 'u4-2', label: 'Lvl 2.4 Item 2'}]}
+      {
+        key: 'u4',
+        label: 'Lvl 1 Item 4',
+        children: [
+          {key: 'u4-1', label: 'Lvl 2.4 Item 1'},
+          {key: 'u4-2', label: 'Lvl 2.4 Item 2'},
+          {key: 'u4-3', label: 'Lvl 2.4 Item 3'}
+        ]
+      }
     ],
     isExpanded: true,
-    openKeys: ['u2', 'u2-3'],
+    openKeys: new Set(['u2', 'u2-3']),
     ...args
   }),
   name: 'with unavailable menu item'
@@ -545,7 +566,7 @@ export const TabBehaviorRender = (args: StoryArgs = {}) => renderTabBehavior({
   label: 'Menu Button',
   items: cloneItems(TAB_ITEMS),
   isExpanded: true,
-  openKeys: ['tab-2'],
+  openKeys: new Set(['tab-2']),
   ...args
 });
 

@@ -20,7 +20,7 @@ export const ActionBar = defineComponent({
       default: 'Clear selection'
     },
     disabledKeys: {
-      type: Array as PropType<string[]>,
+      type: [Array, Set] as PropType<Iterable<string>>,
       default: () => []
     },
     emphasized: {
@@ -73,10 +73,11 @@ export const ActionBar = defineComponent({
     ]);
 
     let resolvedDisabledKeys = computed(() => {
-      let disabledKeys = new Set(props.disabledKeys);
-      let normalizedDisabledKeys = new Set(props.disabledKeys.map((key) => normalizeActionKeyForComparison(key)));
+      let disabledKeys = Array.from(props.disabledKeys);
+      let disabledKeySet = new Set(disabledKeys);
+      let normalizedDisabledKeys = new Set(disabledKeys.map((key) => normalizeActionKeyForComparison(key)));
       return props.items.filter((item) => {
-        return disabledKeys.has(item) || normalizedDisabledKeys.has(normalizeActionKeyForComparison(item));
+        return disabledKeySet.has(item) || normalizedDisabledKeys.has(normalizeActionKeyForComparison(item));
       });
     });
 

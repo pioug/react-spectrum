@@ -1,3 +1,6 @@
+import {ActionButton} from '@vue-spectrum/button';
+import {ActionGroup} from '@vue-spectrum/actiongroup';
+import {ActionMenu} from '@vue-spectrum/menu';
 import {ListView} from '../src';
 import {ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
@@ -22,6 +25,11 @@ const FOCUS_ITEMS = [
   {id: 8, label: 'Adobe Premiere Pro'},
   {id: 9, label: 'Adobe Fresco'},
   {id: 10, label: 'Adobe Dreamweaver'}
+];
+
+const ACTION_TOOL_ITEMS = [
+  {key: 'copy', label: 'Copy'},
+  {key: 'delete', label: 'Delete'}
 ];
 
 const meta: Meta<typeof ListView> = {
@@ -67,46 +75,61 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function renderActionsExample(args: StoryArgs, note: string) {
+function renderActionsExample(args: StoryArgs, variant: 'ActionButton' | 'ActionGroup' | 'ActionGroup + ActionMenu' | 'ActionMenu') {
   return {
-    components: {ListView},
+    components: {ActionButton, ActionGroup, ActionMenu, ListView},
     setup() {
-      return {args, note};
+      let listItems = ACTION_ITEMS.map((item) => item.label);
+      return {
+        actionItems: ACTION_TOOL_ITEMS,
+        args,
+        listItems,
+        variant
+      };
     },
     template: `
       <div style="display: grid; gap: 8px; width: 300px;">
-        <div>{{note}}</div>
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <ActionButton v-if="variant === 'ActionButton'" aria-label="Copy">Copy</ActionButton>
+          <ActionGroup
+            v-else-if="variant === 'ActionGroup'"
+            :items="actionItems"
+            selection-mode="none" />
+          <ActionMenu
+            v-else-if="variant === 'ActionMenu'"
+            :items="actionItems"
+            aria-label="Row actions" />
+          <template v-else>
+            <ActionGroup :items="[{key: 'info', label: 'Info'}]" selection-mode="none" />
+            <ActionMenu :items="actionItems" aria-label="Row actions" />
+          </template>
+        </div>
         <ListView
           v-bind="args"
           aria-label="render actions ListView"
-          :items="[
-            'Utilities',
-            'Adobe Photoshop',
-            'Adobe Illustrator',
-            'Adobe XD'
-          ]" />
+          :items="listItems" />
       </div>
     `
   };
 }
 
 export const ActionButtons: Story = {
-  render: (args) => renderActionsExample(args, 'ActionButton parity scenario'),
+  render: (args) => renderActionsExample(args, 'ActionButton'),
   name: 'ActionButton'
 };
 
 export const ActionGroups: Story = {
-  render: (args) => renderActionsExample(args, 'ActionGroup parity scenario'),
+  render: (args) => renderActionsExample(args, 'ActionGroup'),
   name: 'ActionGroup'
 };
 
 export const ActionMenus: Story = {
-  render: (args) => renderActionsExample(args, 'ActionMenu parity scenario'),
+  render: (args) => renderActionsExample(args, 'ActionMenu'),
   name: 'ActionMenu'
 };
 
 export const ActionMenusGroup: Story = {
-  render: (args) => renderActionsExample(args, 'ActionGroup + ActionMenu parity scenario'),
+  render: (args) => renderActionsExample(args, 'ActionGroup + ActionMenu'),
   name: 'ActionGroup + ActionMenu'
 };
 

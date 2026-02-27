@@ -348,6 +348,10 @@ function renderCalendarPreferenceExample(args: StoryArgs) {
         }
         calendar.value = pref.ordering.split(' ')[0];
       };
+      let readLocaleValue = (event: Event) => {
+        let target = event.target;
+        return target instanceof HTMLSelectElement ? target.value : LOCALE_PREFERENCES[0].locale;
+      };
 
       return {
         args,
@@ -356,6 +360,7 @@ function renderCalendarPreferenceExample(args: StoryArgs) {
         localePreferences: LOCALE_PREFERENCES,
         otherCalendars,
         preferredCalendars,
+        readLocaleValue,
         updateLocale
       };
     },
@@ -364,7 +369,7 @@ function renderCalendarPreferenceExample(args: StoryArgs) {
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
           <label style="display: grid; gap: 4px;">
             <span>Locale</span>
-            <select :value="locale" @change="updateLocale(($event.target as HTMLSelectElement).value)">
+            <select :value="locale" @change="updateLocale(readLocaleValue($event))">
               <option v-for="item in localePreferences" :key="item.locale" :value="item.locale">{{item.label}}</option>
             </select>
           </label>
@@ -380,7 +385,10 @@ function renderCalendarPreferenceExample(args: StoryArgs) {
             </select>
           </label>
         </div>
-        <DatePicker v-bind="args" description="Custom 4-5-4 calendar scenario preview." />
+        <DatePicker
+          v-bind="args"
+          label="Custom 4-5-4 calendar"
+          :description="'Locale: ' + (locale || 'default') + ', calendar: ' + calendar" />
       </div>
     `
   };

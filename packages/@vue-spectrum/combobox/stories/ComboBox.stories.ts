@@ -56,12 +56,12 @@ const AVATAR_OPTIONS: ComboOption[] = [
 ];
 
 const DISABLED_KEYS_OPTIONS: ComboOption[] = [
-  {id: '1', textValue: 'Aardvark'},
-  {id: '2', textValue: 'Kangaroo'},
-  {id: '3', textValue: 'Snake (disabled in React story)'},
-  {id: '4', textValue: 'Danni'},
-  {id: '5', textValue: 'Devon'},
-  {id: '6', textValue: 'Ross (disabled in React story)'}
+  {id: 'Aardvark', textValue: 'Aardvark'},
+  {id: 'Kangaroo', textValue: 'Kangaroo'},
+  {id: 'Snake', textValue: 'Snake'},
+  {id: 'Danni', textValue: 'Danni'},
+  {id: 'Devon', textValue: 'Devon'},
+  {id: 'Ross', textValue: 'Ross'}
 ];
 
 const CUSTOM_FILTER_ITEMS: ComboOption[] = [
@@ -358,7 +358,8 @@ export const UserProvidedLabel: Story = {
 
 export const DisabledKeys: Story = {
   args: {
-    label: 'Combobox'
+    label: 'Combobox',
+    disabledKeys: ['Snake', 'Ross']
   },
   render: (args) => renderStatic(args, DISABLED_KEYS_OPTIONS)
 };
@@ -432,7 +433,8 @@ export const SmallDiv: Story = {
 
 export const ControlledInputValueStory: Story = {
   args: {
-    modelValue: 'Snake'
+    modelValue: 'Snake',
+    disabledKeys: ['2', '6']
   },
   render: (args) => ({
     components: {Button, ComboBox},
@@ -471,7 +473,8 @@ export const ControlledInputValueStory: Story = {
 
 export const DefaultInputValue: Story = {
   args: {
-    modelValue: 'Item Three'
+    modelValue: 'Item Three',
+    disabledKeys: ['two']
   },
   render: (args) => renderStatic(args, STATIC_OPTIONS),
   name: 'defaultInputValue (uncontrolled)'
@@ -479,7 +482,8 @@ export const DefaultInputValue: Story = {
 
 export const ControlledSelectedKey: Story = {
   args: {
-    selectedKey: '4'
+    selectedKey: '4',
+    disabledKeys: ['2', '6']
   },
   render: (args) => ({
     components: {Button, ComboBox},
@@ -518,7 +522,8 @@ export const ControlledSelectedKey: Story = {
 
 export const DefaultSelectedKey: Story = {
   args: {
-    selectedKey: 'two'
+    selectedKey: 'two',
+    disabledKeys: ['one']
   },
   render: (args) => renderStatic(args, STATIC_OPTIONS),
   name: 'defaultSelectedKey (uncontrolled)'
@@ -527,7 +532,8 @@ export const DefaultSelectedKey: Story = {
 export const AllControlled: Story = {
   args: {
     selectedKey: '2',
-    modelValue: 'Kangaroo'
+    modelValue: 'Kangaroo',
+    disabledKeys: ['2', '6']
   },
   render: (args) => ({
     components: {Button, ComboBox},
@@ -596,7 +602,8 @@ export const AllControlled: Story = {
 export const DefaultInputAndKey: Story = {
   args: {
     modelValue: 'Item Two',
-    selectedKey: 'two'
+    selectedKey: 'two',
+    disabledKeys: ['two']
   },
   render: (args) => renderStatic(args, STATIC_OPTIONS),
   name: 'defaultInputValue and defaultSelectedKey (uncontrolled)'
@@ -605,7 +612,8 @@ export const DefaultInputAndKey: Story = {
 export const ControlledInputDefaultKey: Story = {
   args: {
     modelValue: 'K',
-    selectedKey: 'two'
+    selectedKey: 'two',
+    disabledKeys: ['2', '6']
   },
   render: (args) => ({
     components: {ComboBox},
@@ -637,7 +645,8 @@ export const ControlledInputDefaultKey: Story = {
 export const ControlledInputValue: Story = {
   args: {
     modelValue: 'Blah',
-    selectedKey: '2'
+    selectedKey: '2',
+    disabledKeys: ['2', '6']
   },
   render: (args) => ({
     components: {ComboBox},

@@ -246,6 +246,9 @@ export const KeyboardNavigationInsidePortalNoContain: Story = {
 export const IgnoreRestoreFocus: Story = {
   render: () => ({
     components: {IgnoreRestoreFocusExample},
+    setup() {
+      return {};
+    },
     template: '<IgnoreRestoreFocusExample />'
   })
 };
@@ -253,6 +256,9 @@ export const IgnoreRestoreFocus: Story = {
 export const FocusableFirstInScope: Story = {
   render: () => ({
     components: {FocusableFirstInScopeExample},
+    setup() {
+      return {};
+    },
     template: '<FocusableFirstInScopeExample />'
   })
 };

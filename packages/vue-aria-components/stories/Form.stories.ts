@@ -1,5 +1,8 @@
 import type {Meta, StoryFn} from '@storybook/vue3-vite';
-import {VueForm} from 'vue-aria-components';
+import {action} from '@storybook/addon-actions';
+import {ref} from 'vue';
+import {VueForm, VueTextField} from 'vue-aria-components';
+import '../../react-aria-components/stories/styles.css';
 
 const meta = {
   title: 'React Aria Components/Form',
@@ -9,46 +12,80 @@ const meta = {
 export default meta;
 
 export const FormAutoFillExample: StoryFn<typeof VueForm> = () => ({
+  components: {
+    VueForm,
+    VueTextField
+  },
+  setup() {
+    let streetAddress = ref('');
+    let city = ref('');
+    let state = ref('');
+    let zip = ref('');
+    let country = ref('');
+    let onSubmit = (event: SubmitEvent) => {
+      let form = event.target as HTMLFormElement | null;
+      if (form) {
+        action('onSubmit')(Object.fromEntries(new FormData(form).entries()));
+      }
+      event.preventDefault();
+    };
+
+    return {
+      city,
+      country,
+      onSubmit,
+      state,
+      streetAddress,
+      zip
+    };
+  },
   template: `
-    <form aria-label="Shipping information" class="react-aria-Form">
-      <div class="react-aria-TextField" data-rac="">
-        <label class="react-aria-Label" for="streetAddress">Address</label>
-        <input autocomplete="shipping street-address" tabindex="0" id="streetAddress" class="react-aria-Input" data-rac="" type="text" value="" name="streetAddress" title="">
-      </div>
-      <div class="react-aria-TextField" data-rac="">
-        <label class="react-aria-Label" for="city">City</label>
-        <input autocomplete="shipping address-level2" tabindex="0" id="city" class="react-aria-Input" data-rac="" type="text" value="" name="city" title="">
-      </div>
-      <div class="react-aria-TextField" data-rac="">
-        <label class="react-aria-Label" for="state">State</label>
-        <input autocomplete="shipping address-level1" tabindex="0" id="state" class="react-aria-Input" data-rac="" type="text" value="" name="state" title="">
-      </div>
-      <div class="react-aria-TextField" data-rac="">
-        <label class="react-aria-Label" for="city">Zip</label>
-        <input autocomplete="shipping postal-code" tabindex="0" id="city" class="react-aria-Input" data-rac="" type="text" value="" name="city" title="">
-      </div>
-      <template data-react-aria-hidden="true"></template>
+    <VueForm
+      aria-label="Shipping information"
+      @submit="onSubmit">
+      <VueTextField
+        id="streetAddress"
+        v-model="streetAddress"
+        autocomplete="shipping street-address"
+        label="Address"
+        name="streetAddress" />
+      <VueTextField
+        id="city"
+        v-model="city"
+        autocomplete="shipping address-level2"
+        label="City"
+        name="city" />
+      <VueTextField
+        id="state"
+        v-model="state"
+        autocomplete="shipping address-level1"
+        label="State"
+        name="state" />
+      <VueTextField
+        id="zip"
+        v-model="zip"
+        autocomplete="shipping postal-code"
+        label="Zip"
+        name="zip" />
       <div class="react-aria-Select" data-rac="">
-        <span class="react-aria-Label">Country</span>
-        <button id="country" class="react-aria-Button" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" aria-haspopup="listbox" aria-expanded="false">
-          <span class="react-aria-SelectValue" data-rac="" data-placeholder="true">Select an item</span>
-          <span aria-hidden="true">▼</span>
-        </button>
-        <div aria-hidden="true" data-react-aria-prevent-focus="true" data-a11y-ignore="aria-hidden-focus" data-testid="hidden-select-container" style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: fixed; width: 1px; white-space: nowrap; top: 0px; left: 0px;">
-          <label>
-            <select tabindex="-1" autocomplete="shipping country" name="country" title="">
-              <option></option>
-              <option value="react-aria-1">Greece</option>
-              <option value="react-aria-2">Italy</option>
-              <option value="react-aria-3">Spain</option>
-              <option value="react-aria-4">Mexico</option>
-              <option value="react-aria-5">Canada</option>
-              <option value="react-aria-6">United States</option>
-            </select>
-          </label>
-        </div>
+        <label class="react-aria-Label" for="country">Country</label>
+        <select
+          id="country"
+          v-model="country"
+          class="react-aria-Input"
+          autocomplete="shipping country"
+          name="country"
+          title="">
+          <option value="">Select an item</option>
+          <option value="react-aria-1">Greece</option>
+          <option value="react-aria-2">Italy</option>
+          <option value="react-aria-3">Spain</option>
+          <option value="react-aria-4">Mexico</option>
+          <option value="react-aria-5">Canada</option>
+          <option value="react-aria-6">United States</option>
+        </select>
       </div>
       <button class="react-aria-Button" data-rac="" type="submit" tabindex="0" data-react-aria-pressable="true">Submit</button>
-    </form>
+    </VueForm>
   `
 });

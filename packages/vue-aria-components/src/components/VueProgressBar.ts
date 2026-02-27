@@ -1,5 +1,4 @@
-import {computed, defineComponent, h} from 'vue';
-import {getSpectrumContext} from '../context';
+import {computed, defineComponent, h, type PropType} from 'vue';
 
 export const VueProgressBar = defineComponent({
   name: 'VueProgressBar',
@@ -11,6 +10,14 @@ export const VueProgressBar = defineComponent({
     value: {
       type: Number,
       default: 0
+    },
+    minValue: {
+      type: Number as PropType<number | undefined>,
+      default: undefined
+    },
+    maxValue: {
+      type: Number as PropType<number | undefined>,
+      default: undefined
     },
     min: {
       type: Number,
@@ -30,47 +37,49 @@ export const VueProgressBar = defineComponent({
     }
   },
   setup(props, {attrs}) {
-    let context = getSpectrumContext();
+    let resolvedMin = computed(() => props.minValue ?? props.min);
+    let resolvedMax = computed(() => props.maxValue ?? props.max);
+    let clampedValue = computed(() => Math.min(resolvedMax.value, Math.max(resolvedMin.value, props.value)));
 
     let normalizedValue = computed(() => {
       if (props.indeterminate) {
         return 0;
       }
 
-      let clampedValue = Math.min(props.max, Math.max(props.min, props.value));
-      if (props.max <= props.min) {
+      if (resolvedMax.value <= resolvedMin.value) {
         return 0;
       }
 
-      return ((clampedValue - props.min) / (props.max - props.min)) * 100;
+      return ((clampedValue.value - resolvedMin.value) / (resolvedMax.value - resolvedMin.value)) * 100;
     });
-
-    let classes = computed(() => ([
-      'vs-progress-bar',
-      context.value.scale === 'large' ? 'vs-progress-bar--large' : 'vs-progress-bar--medium',
-      props.indeterminate ? 'is-indeterminate' : null
-    ]));
+    let valueText = computed(() => `${Math.round(normalizedValue.value)}%`);
 
     return function render() {
-      return h('div', {class: [classes.value, attrs.class], 'data-vac': ''}, [
+      return h('div', {
+        ...attrs,
+        class: ['react-aria-ProgressBar', attrs.class],
+        role: 'progressbar',
+        'data-rac': '',
+        'data-indeterminate': props.indeterminate ? 'true' : undefined,
+        'aria-label': props.label || undefined,
+        'aria-valuemin': props.indeterminate ? undefined : resolvedMin.value,
+        'aria-valuemax': props.indeterminate ? undefined : resolvedMax.value,
+        'aria-valuenow': props.indeterminate ? undefined : clampedValue.value,
+        'aria-valuetext': props.indeterminate ? undefined : valueText.value
+      }, [
         props.label || props.showValueLabel
-          ? h('div', {class: 'vs-progress-bar__header'}, [
-            props.label ? h('span', {class: 'vs-progress-bar__label'}, props.label) : null,
+          ? h('div', {class: 'react-aria-LabelRow'}, [
+            props.label ? h('span', {class: 'react-aria-Label'}, props.label) : null,
             props.showValueLabel && !props.indeterminate
-              ? h('span', {class: 'vs-progress-bar__value'}, `${Math.round(normalizedValue.value)}%`)
+              ? h('span', {class: 'value'}, valueText.value)
               : null
           ])
           : null,
         h('div', {
-          class: 'vs-progress-bar__track',
-          role: 'progressbar',
-          'aria-label': props.label || undefined,
-          'aria-valuemin': props.indeterminate ? undefined : props.min,
-          'aria-valuemax': props.indeterminate ? undefined : props.max,
-          'aria-valuenow': props.indeterminate ? undefined : props.value
+          class: 'bar'
         }, [
           h('div', {
-            class: 'vs-progress-bar__fill',
+            class: 'fill',
             style: {width: props.indeterminate ? '40%' : `${normalizedValue.value}%`}
           })
         ])

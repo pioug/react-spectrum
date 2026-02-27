@@ -136,7 +136,7 @@ import {ActionGroup} from '@vue-spectrum/actiongroup';
 import {SearchAutocomplete} from '@vue-spectrum/autocomplete';
 import {Breadcrumbs} from '@vue-spectrum/breadcrumbs';
 import {ContextualHelp} from '@vue-spectrum/contextualhelp';
-import {Dialog} from '@vue-spectrum/dialog';
+import {Dialog, useDialogContainer} from '@vue-spectrum/dialog';
 import {ListView} from '@vue-spectrum/list';
 import {Menu} from '@vue-spectrum/menu';
 import {Popover} from '@vue-spectrum/overlays';
@@ -5157,6 +5157,34 @@ describe('Vue migration composition components', () => {
     expect(wrapper.emitted('close')).toHaveLength(1);
   });
 
+  it('provides dialog container dismiss context to nested content', async () => {
+    let DialogDismissControl = defineComponent({
+      name: 'DialogDismissControl',
+      setup() {
+        let container = useDialogContainer();
+        return {
+          dismiss: container.dismiss,
+          type: container.type
+        };
+      },
+      template: '<button type="button" class="dialog-dismiss-control" @click="dismiss">Dismiss {{type}}</button>'
+    });
+
+    let wrapper = mount(Dialog, {
+      props: {
+        open: true,
+        type: 'fullscreenTakeover'
+      },
+      slots: {
+        default: () => h(DialogDismissControl)
+      }
+    });
+
+    expect(wrapper.get('button.dialog-dismiss-control').text()).toContain('fullscreenTakeover');
+    await wrapper.get('button.dialog-dismiss-control').trigger('click');
+    expect(wrapper.emitted('close')).toHaveLength(1);
+  });
+
   it('emits close from popover backdrop and applies placement class', async () => {
     let wrapper = mount(Popover, {
       props: {
@@ -5206,12 +5234,13 @@ describe('Vue migration composition components', () => {
     let wrapper = mount(Menu, {
       props: {
         modelValue: 'Forms',
+        selectionMode: 'single',
         label: 'Category',
         items: ['Forms', 'Navigation', 'Overlays']
       }
     });
 
-    await wrapper.findAll('button.vs-menu__item')[1].trigger('click');
+    await wrapper.findAll('.vs-spectrum-menu__item')[1].trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Navigation']);
     expect(wrapper.emitted('select')?.[0]).toEqual(['Navigation']);
   });
@@ -5228,6 +5257,25 @@ describe('Vue migration composition components', () => {
     await wrapper.findAll('button.vs-listbox__item')[2].trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Tailwind CSS']);
     expect(wrapper.emitted('select')?.[0]).toEqual(['Tailwind CSS']);
+  });
+
+  it('emits set-backed multiple selection updates from list view item clicks', async () => {
+    let wrapper = mount(ListView, {
+      props: {
+        modelValue: new Set(['Vue Spectrum']),
+        selectionMode: 'multiple',
+        label: 'Library',
+        items: ['Vue Spectrum', 'React Spectrum', 'Tailwind CSS']
+      }
+    });
+
+    await wrapper.findAll('button.vs-listbox__item')[2].trigger('click');
+    let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+    expect(emittedModelValue).toBeInstanceOf(Set);
+    expect(Array.from(emittedModelValue as Set<string>)).toEqual(['Vue Spectrum', 'Tailwind CSS']);
+    let emittedSelection = wrapper.emitted('select')?.[0]?.[0] as unknown;
+    expect(emittedSelection).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelection as Set<string>)).toEqual(['Vue Spectrum', 'Tailwind CSS']);
   });
 
   it('emits model updates and change events from search autocomplete input', async () => {
@@ -5294,7 +5342,9 @@ describe('Vue migration composition components', () => {
 
     await wrapper.findAll('button.vs-action-group__item')[1].trigger('click');
     expect(wrapper.emitted('action')?.[0]).toEqual(['Delete']);
-    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['Edit', 'Delete']]);
+    let emittedSelection = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+    expect(emittedSelection).toBeInstanceOf(Set);
+    expect(Array.from(emittedSelection as Set<string>)).toEqual(['Edit', 'Delete']);
   });
 
   it('emits action when breadcrumb links are activated', async () => {
@@ -5333,8 +5383,10 @@ describe('Vue migration composition components', () => {
     expect(panels[0].attributes('aria-hidden')).toBe('false');
     expect(panels[1].attributes('aria-hidden')).toBe('true');
     await wrapper.findAll('button.spectrum-Accordion-itemHeader')[0].trigger('click');
-    expect((wrapper.vm as unknown as {expanded: string[]}).expanded).toEqual([]);
+    let expandedAfterCollapse = (wrapper.vm as unknown as {expanded: Iterable<string>}).expanded;
+    expect(Array.from(expandedAfterCollapse)).toEqual([]);
     await wrapper.findAll('button.spectrum-Accordion-itemHeader')[1].trigger('click');
-    expect((wrapper.vm as unknown as {expanded: string[]}).expanded).toEqual(['composition']);
+    let expandedAfterSelect = (wrapper.vm as unknown as {expanded: Iterable<string>}).expanded;
+    expect(Array.from(expandedAfterSelect)).toEqual(['composition']);
   });
 });

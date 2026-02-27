@@ -9,7 +9,6 @@ type SearchItem = {
   name: string
 };
 type RenderOptions = {
-  note?: string,
   options?: string[],
   showResult?: boolean
 };
@@ -182,7 +181,6 @@ type Story = StoryObj<typeof meta>;
 
 function renderStory(args: StoryArgs, renderOptions: RenderOptions = {}) {
   let {
-    note,
     options = BASE_OPTIONS,
     showResult = false
   } = renderOptions;
@@ -198,7 +196,6 @@ function renderStory(args: StoryArgs, renderOptions: RenderOptions = {}) {
       return {
         args,
         modelValue,
-        note,
         options,
         showResult,
         submit,
@@ -207,7 +204,6 @@ function renderStory(args: StoryArgs, renderOptions: RenderOptions = {}) {
     },
     template: `
       <div style="display: grid; gap: 8px; width: 320px;">
-        <div v-if="note">{{note}}</div>
         <SearchAutocomplete v-bind="args" v-model="modelValue" :options="options" />
         <button v-if="showResult" type="button" @click="submit">Submit search</button>
         <div v-if="showResult">Search results for: {{submittedValue}}</div>
@@ -266,20 +262,22 @@ export const customOnSubmit: Story = {
 };
 
 export const iconFilter: Story = {
-  render: (args) => renderStory(args, {note: 'icon: Filter parity scenario'}),
+  render: (args) => renderStory({...args, icon: 'filter'}),
   name: 'icon: Filter'
 };
 
 export const iconNull: Story = {
-  render: (args) => renderStory(args, {note: 'icon: null parity scenario'}),
+  render: (args) => renderStory({...args, icon: null}),
   name: 'icon: null'
 };
 
 export const WithAvatars: Story = {
   render: (args) => renderStory(args, {
-    note: 'With avatars parity scenario',
-    options: ['User 1', 'User 2', 'User 3', 'User 4']
-  })
+    options: ['👤 User 1', '👤 User 2', '👤 User 3', '👤 User 4']
+  }),
+  args: {
+    label: 'Search users'
+  }
 };
 
 export const AsyncList: Story = {

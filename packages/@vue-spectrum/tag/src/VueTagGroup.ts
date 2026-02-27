@@ -22,6 +22,7 @@ interface TagGroupContextValue {
 }
 
 const tagGroupContextKey: InjectionKey<TagGroupContextValue> = Symbol('VueTagGroupContext');
+type TagGroupSelectionValue = Iterable<string>;
 
 function hasSameKeys(a: Set<string>, b: Set<string>): boolean {
   if (a.size !== b.size) {
@@ -30,6 +31,38 @@ function hasSameKeys(a: Set<string>, b: Set<string>): boolean {
 
   for (let key of a) {
     if (!b.has(key)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function normalizeTagGroupSelection(value: TagGroupSelectionValue | undefined): string[] {
+  if (value == null || typeof value === 'string') {
+    return [];
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return [];
+  }
+
+  return Array.from(value as Iterable<unknown>).filter((entry): entry is string => typeof entry === 'string');
+}
+
+function isTagGroupSelectionValue(value: unknown): value is TagGroupSelectionValue {
+  if (value == null || typeof value === 'string') {
+    return false;
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return false;
+  }
+
+  for (let entry of value as Iterable<unknown>) {
+    if (typeof entry !== 'string') {
       return false;
     }
   }
@@ -112,7 +145,7 @@ export const VueTagGroup = defineComponent({
       default: ''
     },
     modelValue: {
-      type: Array as PropType<string[]>,
+      type: [Array, Set] as PropType<TagGroupSelectionValue>,
       default: () => []
     },
     selectionMode: {
@@ -121,8 +154,8 @@ export const VueTagGroup = defineComponent({
     }
   },
   emits: {
-    'update:modelValue': (value: string[]) => Array.isArray(value),
-    change: (value: string[]) => Array.isArray(value),
+    'update:modelValue': (value: TagGroupSelectionValue) => isTagGroupSelectionValue(value),
+    change: (value: TagGroupSelectionValue) => isTagGroupSelectionValue(value),
     remove: (value: string[]) => Array.isArray(value)
   },
   setup(props, {attrs, emit}) {
@@ -157,17 +190,17 @@ export const VueTagGroup = defineComponent({
         : undefined
     });
 
-    watch(() => props.modelValue.join('|'), () => {
-      selectedKeys.value = new Set(props.modelValue.map((key) => String(key)));
+    watch(() => normalizeTagGroupSelection(props.modelValue).join('|'), () => {
+      selectedKeys.value = new Set(normalizeTagGroupSelection(props.modelValue));
     }, {immediate: true});
 
     watch(selectedKeys, (nextSelection) => {
-      let nextKeys = Array.from(nextSelection);
-      let propKeys = new Set(props.modelValue.map((key) => String(key)));
+      let propKeys = new Set(normalizeTagGroupSelection(props.modelValue));
       if (hasSameKeys(nextSelection, propKeys)) {
         return;
       }
 
+      let nextKeys = new Set(nextSelection);
       emit('update:modelValue', nextKeys);
       emit('change', nextKeys);
     }, {deep: true});

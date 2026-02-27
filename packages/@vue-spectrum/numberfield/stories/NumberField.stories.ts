@@ -562,6 +562,9 @@ export const CurrencySwitcher: Story = {
 
 export const Flexed: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {NumberField},
     template: `
       <div style="display: flex; width: 100%; align-items: end; gap: var(--spectrum-global-dimension-size-200);">
@@ -649,6 +652,9 @@ export const InputDomEvents: Story = {
 
 export const ResetControlledStateToBlankWithNull: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {NumberFieldControlledStateReset},
     template: '<NumberFieldControlledStateReset />'
   })

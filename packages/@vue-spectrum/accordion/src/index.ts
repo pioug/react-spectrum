@@ -24,12 +24,39 @@ const accordionContextKey: InjectionKey<AccordionContextValue> = Symbol('vue-spe
 const disclosureContextKey: InjectionKey<DisclosureContextValue> = Symbol('vue-spectrum-disclosure-context');
 let disclosureId = 0;
 
+function normalizeExpandedKeys(value: Iterable<string> | undefined): string[] {
+  if (!value) {
+    return [];
+  }
+
+  return Array.from(value).filter((key): key is string => typeof key === 'string');
+}
+
+function isExpandedKeyIterable(value: unknown): value is Iterable<string> {
+  if (value == null || typeof value === 'string') {
+    return false;
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return false;
+  }
+
+  for (let entry of value as Iterable<unknown>) {
+    if (typeof entry !== 'string') {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 export const Accordion = defineComponent({
   name: 'VueAccordion',
   inheritAttrs: false,
   props: {
     defaultExpandedKeys: {
-      type: Array as PropType<string[]>,
+      type: [Array, Set] as PropType<Iterable<string>>,
       default: () => []
     },
     disabled: {
@@ -37,7 +64,7 @@ export const Accordion = defineComponent({
       default: false
     },
     expandedKeys: {
-      type: Array as PropType<string[] | undefined>,
+      type: [Array, Set] as PropType<Iterable<string> | undefined>,
       default: undefined
     },
     isDisabled: {
@@ -49,7 +76,7 @@ export const Accordion = defineComponent({
       default: undefined
     },
     modelValue: {
-      type: Array as PropType<string[] | undefined>,
+      type: [Array, Set] as PropType<Iterable<string> | undefined>,
       default: undefined
     },
     multiple: {
@@ -62,12 +89,12 @@ export const Accordion = defineComponent({
     }
   },
   emits: {
-    'update:expandedKeys': (value: string[]) => Array.isArray(value),
-    'update:modelValue': (value: string[]) => Array.isArray(value)
+    'update:expandedKeys': (value: Iterable<string>) => isExpandedKeyIterable(value),
+    'update:modelValue': (value: Iterable<string>) => isExpandedKeyIterable(value)
   },
   setup(props, {emit, slots, attrs}) {
-    let internalExpandedKeys = ref([...props.defaultExpandedKeys]);
-    let expandedKeys = computed(() => props.modelValue ?? props.expandedKeys ?? internalExpandedKeys.value);
+    let internalExpandedKeys = ref(normalizeExpandedKeys(props.defaultExpandedKeys));
+    let expandedKeys = computed(() => normalizeExpandedKeys(props.modelValue ?? props.expandedKeys ?? internalExpandedKeys.value));
     let isDisabled = computed(() => props.isDisabled || props.disabled);
     let resolvedQuiet = computed(() => props.isQuiet ?? props.quiet);
 
@@ -87,8 +114,9 @@ export const Accordion = defineComponent({
         internalExpandedKeys.value = nextExpanded;
       }
 
-      emit('update:modelValue', nextExpanded);
-      emit('update:expandedKeys', nextExpanded);
+      let nextExpandedKeys = new Set(nextExpanded);
+      emit('update:modelValue', nextExpandedKeys);
+      emit('update:expandedKeys', nextExpandedKeys);
     };
 
     provide(accordionContextKey, {

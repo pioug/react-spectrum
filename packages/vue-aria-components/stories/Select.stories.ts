@@ -1,6 +1,6 @@
 import {action} from '@storybook/addon-actions';
 import type {Meta, StoryFn, StoryObj} from '@storybook/vue3-vite';
-import {VuePicker} from 'vue-aria-components';
+import {VueListBox, VuePicker} from 'vue-aria-components';
 import {computed, ref} from 'vue';
 
 type SelectionMode = 'single' | 'multiple';
@@ -121,14 +121,20 @@ interface LiveSelectStoryOptions {
 
 function createLiveSelectStory(args: StoryArgs = {}, options: LiveSelectStoryOptions) {
   return {
+    components: {
+      VueListBox
+    },
     setup() {
       let selectionMode = computed<SelectionMode>(() => args.selectionMode ?? options.selectionMode ?? 'single');
       let selectedKeys = ref<string[]>(options.defaultSelectedKeys ? [...options.defaultSelectedKeys] : []);
       let isOpen = ref(false);
       let placeholder = options.placeholder ?? 'Select an item';
       let menuStyle = options.menuStyle ?? {};
+      let optionByKey = computed(() => new Map(options.options.map((option) => [option.key, option])));
 
-      let selectedOptions = computed(() => options.options.filter((option) => selectedKeys.value.includes(option.key)));
+      let selectedOptions = computed(() => selectedKeys.value
+        .map((key) => optionByKey.value.get(key))
+        .filter((option): option is SelectOption => option !== undefined));
       let isPlaceholder = computed(() => selectedOptions.value.length === 0);
       let valueText = computed(() => {
         if (options.valueTextBuilder) {
@@ -161,23 +167,27 @@ function createLiveSelectStory(args: StoryArgs = {}, options: LiveSelectStoryOpt
         isOpen.value = !isOpen.value;
       };
 
-      let selectOption = (option: SelectOption) => {
-        if (option.disabled) {
+      let onSelectionChange = (nextValue: string | string[]) => {
+        if (Array.isArray(nextValue)) {
+          selectedKeys.value = [...nextValue];
+        } else if (nextValue) {
+          selectedKeys.value = [nextValue];
+        } else {
+          selectedKeys.value = [];
+        }
+        action('onSelectionChange')([...selectedKeys.value]);
+      };
+
+      let onAction = (key: string) => {
+        let option = optionByKey.value.get(key);
+        if (!option || option.disabled) {
           return;
         }
 
-        action('onAction')(option.key);
-
-        if (selectionMode.value === 'multiple') {
-          selectedKeys.value = selectedKeys.value.includes(option.key)
-            ? selectedKeys.value.filter((key) => key !== option.key)
-            : [...selectedKeys.value, option.key];
-        } else {
-          selectedKeys.value = [option.key];
+        action('onAction')(key);
+        if (selectionMode.value === 'single') {
           isOpen.value = false;
         }
-
-        action('onSelectionChange')(selectedKeys.value);
       };
 
       return {
@@ -187,7 +197,8 @@ function createLiveSelectStory(args: StoryArgs = {}, options: LiveSelectStoryOpt
         label: options.label,
         menuStyle,
         options: options.options,
-        selectOption,
+        onAction,
+        onSelectionChange,
         selectedKeys,
         selectionMode,
         toggleMenu,
@@ -212,25 +223,22 @@ function createLiveSelectStory(args: StoryArgs = {}, options: LiveSelectStoryOpt
           class="react-aria-Popover"
           data-rac=""
           style="background: Canvas; color: CanvasText; border: 1px solid gray; padding: 5px;">
-          <div
+          <VueListBox
+            :model-value="selectionMode === 'multiple' ? selectedKeys : (selectedKeys[0] || '')"
+            :items="options"
             class="menu"
-            role="listbox"
-            :aria-multiselectable="selectionMode === 'multiple' ? 'true' : undefined"
-            :style="menuStyle">
-            <div
-              v-for="option in options"
-              :key="option.key"
-              class="item"
-              role="option"
-              :aria-selected="selectedKeys.includes(option.key) ? 'true' : 'false'"
-              :aria-disabled="option.disabled ? 'true' : undefined"
-              :data-selected="selectedKeys.includes(option.key) ? '' : undefined"
-              :data-disabled="option.disabled ? '' : undefined"
-              @click="selectOption(option)">
-              <a v-if="option.href" :href="option.href" @click.prevent>{{ option.label }}</a>
-              <template v-else>{{ option.label }}</template>
-            </div>
-          </div>
+            aria-label="Suggestions"
+            collection-class="menu"
+            item-base-class="item"
+            :selection-mode="selectionMode"
+            :style="menuStyle"
+            @update:modelValue="onSelectionChange"
+            @select="onAction">
+            <template #default="{item, label}">
+              <a v-if="item.href" :href="item.href" @click.prevent>{{ label }}</a>
+              <template v-else>{{ label }}</template>
+            </template>
+          </VueListBox>
         </div>
       </div>
     `
@@ -460,47 +468,151 @@ export const AsyncVirtualizedCollectionRenderSelect: Story = {
 };
 
 export const SelectSubmitExample: SelectStory = () => ({
+  setup() {
+    let username = ref('');
+    let selectedCompany = ref('');
+    let companies: SelectOption[] = [
+      {key: 'adobe', label: 'Adobe'},
+      {key: 'google', label: 'Google'},
+      {key: 'microsoft', label: 'Microsoft'}
+    ];
+    let isOpen = ref(false);
+    let isInvalid = ref(false);
+
+    let onSubmit = (event: Event) => {
+      event.preventDefault();
+      isInvalid.value = selectedCompany.value === '';
+      action('onSubmit')({username: username.value, company: selectedCompany.value});
+    };
+
+    let onReset = (event: Event) => {
+      event.preventDefault();
+      username.value = '';
+      selectedCompany.value = '';
+      isOpen.value = false;
+      isInvalid.value = false;
+    };
+
+    let onSelectCompany = (company: SelectOption) => {
+      selectedCompany.value = company.key;
+      isOpen.value = false;
+      isInvalid.value = false;
+      action('onSelectionChange')(company.key);
+    };
+
+    let selectedLabel = computed(() => companies.find((company) => company.key === selectedCompany.value)?.label ?? 'Select an item');
+
+    return {
+      companies,
+      isInvalid,
+      isOpen,
+      onReset,
+      onSelectCompany,
+      onSubmit,
+      selectedCompany,
+      selectedLabel,
+      username
+    };
+  },
   template: `
-    <form style="align-items: flex-start; column-gap: 24px; display: flex; flex-direction: column; row-gap: 24px;">
+    <form style="align-items: flex-start; column-gap: 24px; display: flex; flex-direction: column; row-gap: 24px;" @submit="onSubmit" @reset="onReset">
       <div class="v7C2Sq_textfieldExample" data-rac="" data-required="true" style="display: flex; flex-direction: column;">
         <label class="react-aria-Label" style="${selectLabelStyle}">Username</label>
-        <input autocomplete="username" class="react-aria-Input" data-rac="" name="username" required type="text" value="">
+        <input v-model="username" autocomplete="username" class="react-aria-Input" data-rac="" name="username" required type="text">
       </div>
       <template data-react-aria-hidden="true"></template>
-      <div class="react-aria-Select" data-rac="" data-required="true" style="width: 153px;">
+      <div class="react-aria-Select" data-rac="" data-required="true" :data-invalid="isInvalid ? 'true' : undefined" style="width: 153px;">
         <span class="react-aria-Label" style="${selectLabelStyle}">Company</span>
         <button
-          aria-expanded="false"
+          :aria-expanded="isOpen ? 'true' : 'false'"
           aria-haspopup="listbox"
           class="react-aria-Button"
           data-rac=""
-          type="button">
-          <span class="react-aria-SelectValue" data-placeholder="true">Select an item</span>
+          type="button"
+          @click="isOpen = !isOpen">
+          <span class="react-aria-SelectValue" :data-placeholder="selectedCompany ? undefined : 'true'">{{ selectedLabel }}</span>
           <span aria-hidden="true" style="padding-left: 5px;">▼</span>
         </button>
+        <div
+          v-if="isOpen"
+          class="react-aria-Popover"
+          data-rac=""
+          style="background: Canvas; color: CanvasText; border: 1px solid gray; padding: 5px;">
+          <div class="menu" role="listbox">
+            <div
+              v-for="company in companies"
+              :key="company.key"
+              class="item"
+              role="option"
+              :aria-selected="selectedCompany === company.key ? 'true' : 'false'"
+              :data-selected="selectedCompany === company.key ? '' : undefined"
+              @click="onSelectCompany(company)">
+              {{ company.label }}
+            </div>
+          </div>
+        </div>
       </div>
-      <button type="submit">Submit</button>
-      <button type="reset">Reset</button>
+      <button class="react-aria-Button" data-rac="" type="submit">Submit</button>
+      <button class="react-aria-Button" data-rac="" type="reset">Reset</button>
     </form>
   `
 });
 
 export const RequiredSelectWithManyItems = (_props: {selectionMode?: string}) => ({
+  setup() {
+    let isOpen = ref(false);
+    let selectedKey = ref('');
+    let isInvalid = ref(false);
+    let options = usStateOptions.slice(0, 20);
+
+    let onSubmit = (event: Event) => {
+      event.preventDefault();
+      isInvalid.value = selectedKey.value === '';
+    };
+
+    return {
+      isInvalid,
+      isOpen,
+      onSubmit,
+      options,
+      selectedKey
+    };
+  },
   template: `
-    <form>
+    <form @submit="onSubmit">
       <template data-react-aria-hidden="true"></template>
-      <div class="react-aria-Select" data-rac="" data-required="true">
+      <div class="react-aria-Select" data-rac="" data-required="true" :data-invalid="isInvalid ? 'true' : undefined">
         <span class="react-aria-Label" style="${selectLabelStyle}">Required Select with many items</span>
         <button
-          aria-expanded="false"
+          :aria-expanded="isOpen ? 'true' : 'false'"
           aria-haspopup="listbox"
           class="react-aria-Button"
           data-rac=""
-          type="button">
-          <span class="react-aria-SelectValue" data-placeholder="true">Select an item</span>
+          type="button"
+          @click="isOpen = !isOpen">
+          <span class="react-aria-SelectValue" :data-placeholder="selectedKey ? undefined : 'true'">
+            {{ selectedKey || 'Select an item' }}
+          </span>
           <span aria-hidden="true" style="padding-left: 5px;">▼</span>
         </button>
-        <input name="select" required style="display: none;" type="text" value="">
+        <input name="select" required style="display: none;" type="text" :value="selectedKey">
+        <div
+          v-if="isOpen"
+          class="react-aria-Popover"
+          data-rac=""
+          style="background: Canvas; color: CanvasText; border: 1px solid gray; padding: 5px;">
+          <div class="menu" role="listbox" style="max-height: 180px; overflow: auto;">
+            <div
+              v-for="option in options"
+              :key="option.key"
+              class="item"
+              role="option"
+              :aria-selected="selectedKey === option.key ? 'true' : 'false'"
+              @click="selectedKey = option.key; isOpen = false; isInvalid = false">
+              {{ option.label }}
+            </div>
+          </div>
+        </div>
       </div>
       <button class="react-aria-Button" data-rac="" type="submit">Submit</button>
     </form>
@@ -508,6 +620,17 @@ export const RequiredSelectWithManyItems = (_props: {selectionMode?: string}) =>
 });
 
 export const SelectScrollBug = () => ({
+  setup() {
+    let isOpen = ref(false);
+    let selected = ref('');
+    let options = ['Aardvark', 'Kangaroo', 'Snake', 'Koala'];
+
+    return {
+      isOpen,
+      options,
+      selected
+    };
+  },
   template: `
     <div style="display: flex; flex-direction: row; height: 100vh;">
       <div style="flex: 3;">Scrolling here should do nothing.</div>
@@ -552,14 +675,32 @@ export const SelectScrollBug = () => ({
         <div class="react-aria-Select" data-rac="">
           <span class="react-aria-Label" style="${selectLabelStyle}">Favorite Animal</span>
           <button
-            aria-expanded="false"
+            :aria-expanded="isOpen ? 'true' : 'false'"
             aria-haspopup="listbox"
             class="react-aria-Button"
             data-rac=""
-            type="button">
-            <span class="react-aria-SelectValue" data-placeholder="true">Select an item</span>
+            type="button"
+            @click="isOpen = !isOpen">
+            <span class="react-aria-SelectValue" :data-placeholder="selected ? undefined : 'true'">{{ selected || 'Select an item' }}</span>
             <span aria-hidden="true">▼</span>
           </button>
+          <div
+            v-if="isOpen"
+            class="react-aria-Popover"
+            data-rac=""
+            style="background: Canvas; color: CanvasText; border: 1px solid gray; padding: 5px;">
+            <div class="menu" role="listbox">
+              <div
+                v-for="option in options"
+                :key="option"
+                class="item"
+                role="option"
+                :aria-selected="selected === option ? 'true' : 'false'"
+                @click="selected = option; isOpen = false">
+                {{ option }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

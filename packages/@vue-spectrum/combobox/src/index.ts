@@ -24,8 +24,10 @@ type SelectionMode = 'single' | 'multiple';
 type ValidationState = 'invalid' | 'valid';
 type PickerOptionInput = string | {
   actionOnly?: boolean,
+  disabled?: boolean,
   id?: OptionKey,
   inputValueOnSelect?: string,
+  isDisabled?: boolean,
   key?: OptionKey,
   label?: string,
   name?: string,
@@ -34,10 +36,11 @@ type PickerOptionInput = string | {
   value?: OptionKey
 };
 
-type SelectionChangeValue = OptionKey | OptionKey[] | null;
+type SelectionChangeValue = OptionKey | Iterable<OptionKey> | null;
 
 interface NormalizedOption {
   actionOnly: boolean,
+  disabled: boolean,
   id: string,
   inputValueOnSelect?: string,
   onAction?: () => void,
@@ -54,10 +57,47 @@ function toOptionKey(value: OptionKey | null | undefined): string | null {
   return String(value);
 }
 
+function normalizeOptionKeys(value: Iterable<OptionKey> | undefined): OptionKey[] {
+  if (value == null || typeof value === 'string') {
+    return [];
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return [];
+  }
+
+  return Array.from(value as Iterable<unknown>).filter((entry): entry is OptionKey => typeof entry === 'string' || typeof entry === 'number');
+}
+
+function isOptionKeyIterable(value: unknown): value is Iterable<OptionKey> {
+  if (value == null || typeof value === 'string') {
+    return false;
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return false;
+  }
+
+  for (let entry of value as Iterable<unknown>) {
+    if (typeof entry !== 'string' && typeof entry !== 'number') {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function isSelectionChangeValue(value: unknown): value is SelectionChangeValue {
+  return value == null || typeof value === 'string' || typeof value === 'number' || isOptionKeyIterable(value);
+}
+
 function normalizeOption(option: PickerOptionInput, index: number): NormalizedOption {
   if (typeof option === 'string') {
     return {
       actionOnly: false,
+      disabled: false,
       id: option,
       textValue: option
     };
@@ -78,6 +118,7 @@ function normalizeOption(option: PickerOptionInput, index: number): NormalizedOp
 
   return {
     actionOnly: Boolean(option.actionOnly),
+    disabled: Boolean(option.disabled ?? option.isDisabled),
     id: String(keyCandidate),
     inputValueOnSelect: option.inputValueOnSelect,
     onAction: option.onAction,
@@ -108,6 +149,10 @@ export const ComboBox = defineComponent({
     disabled: {
       type: Boolean,
       default: false
+    },
+    disabledKeys: {
+      type: [Array, Set] as PropType<Iterable<OptionKey>>,
+      default: () => []
     },
     estimatedItemHeight: {
       type: Number,
@@ -178,7 +223,7 @@ export const ComboBox = defineComponent({
       default: undefined
     },
     selectedKeys: {
-      type: Array as PropType<OptionKey[] | undefined>,
+      type: [Array, Set] as PropType<Iterable<OptionKey> | undefined>,
       default: undefined
     },
     selectionMode: {
@@ -205,10 +250,10 @@ export const ComboBox = defineComponent({
     focus: (event: FocusEvent) => event instanceof FocusEvent,
     loadMore: () => true,
     open: () => true,
-    selectionChange: (_value: SelectionChangeValue) => true,
+    selectionChange: (value: SelectionChangeValue) => isSelectionChangeValue(value),
     'update:modelValue': (value: string) => typeof value === 'string',
     'update:selectedKey': (value: OptionKey | undefined | null) => value == null || typeof value === 'string' || typeof value === 'number',
-    'update:selectedKeys': (value: OptionKey[]) => Array.isArray(value)
+    'update:selectedKeys': (value: Iterable<OptionKey>) => isOptionKeyIterable(value)
   },
   setup(props, {attrs, emit}) {
     let generatedId = `vs-combobox-${++comboboxId}`;
@@ -239,6 +284,8 @@ export const ComboBox = defineComponent({
     let hasControlledSelection = computed(() => props.selectedKey !== undefined || props.selectedKeys !== undefined);
 
     let normalizedOptions = computed(() => props.options.map((option, index) => normalizeOption(option, index)));
+    let disabledOptionKeys = computed(() => new Set(Array.from(props.disabledKeys).map((key) => String(key))));
+    let isOptionDisabled = (option: NormalizedOption) => option.disabled || disabledOptionKeys.value.has(option.id);
 
     watch(() => [props.selectedKey, props.selectedKeys, props.selectionMode], () => {
       if (!hasControlledSelection.value) {
@@ -246,8 +293,8 @@ export const ComboBox = defineComponent({
       }
 
       if (props.selectionMode === 'multiple') {
-        if (Array.isArray(props.selectedKeys)) {
-          selectedKeysRef.value = new Set(props.selectedKeys.map((key) => String(key)));
+        if (props.selectedKeys !== undefined) {
+          selectedKeysRef.value = new Set(normalizeOptionKeys(props.selectedKeys).map((key) => String(key)));
           return;
         }
 
@@ -256,7 +303,8 @@ export const ComboBox = defineComponent({
         return;
       }
 
-      let selectedKey = toOptionKey(props.selectedKey) ?? (Array.isArray(props.selectedKeys) ? toOptionKey(props.selectedKeys[0]) : null);
+      let selectedKeys = props.selectedKeys === undefined ? [] : normalizeOptionKeys(props.selectedKeys);
+      let selectedKey = toOptionKey(props.selectedKey) ?? toOptionKey(selectedKeys[0]);
       selectedKeysRef.value = selectedKey ? new Set([selectedKey]) : new Set();
     }, {deep: true, immediate: true});
 
@@ -448,8 +496,9 @@ export const ComboBox = defineComponent({
 
       if (props.selectionMode === 'multiple') {
         let nextKeys = Array.from(nextSelection);
-        emit('update:selectedKeys', nextKeys);
-        emit('selectionChange', nextKeys);
+        let nextKeySet = new Set(nextKeys);
+        emit('update:selectedKeys', nextKeySet);
+        emit('selectionChange', nextKeySet);
         return;
       }
 
@@ -459,13 +508,14 @@ export const ComboBox = defineComponent({
     };
 
     let setActiveKey = (focus: 'first' | 'last' | 'manual' = 'first') => {
-      if (filteredOptions.value.length === 0) {
+      let enabledOptions = filteredOptions.value.filter((option) => !isOptionDisabled(option));
+      if (enabledOptions.length === 0) {
         activeOptionKey.value = null;
         return;
       }
 
       if (focus === 'last') {
-        activeOptionKey.value = filteredOptions.value[filteredOptions.value.length - 1].id;
+        activeOptionKey.value = enabledOptions[enabledOptions.length - 1].id;
         return;
       }
 
@@ -473,7 +523,7 @@ export const ComboBox = defineComponent({
         return;
       }
 
-      activeOptionKey.value = filteredOptions.value[0].id;
+      activeOptionKey.value = enabledOptions[0].id;
     };
 
     let openMenu = (focus: 'first' | 'last' | 'manual' = 'first') => {
@@ -508,6 +558,10 @@ export const ComboBox = defineComponent({
     };
 
     let selectOption = (option: NormalizedOption) => {
+      if (isOptionDisabled(option)) {
+        return;
+      }
+
       if (option.onAction) {
         option.onAction();
       }
@@ -548,19 +602,30 @@ export const ComboBox = defineComponent({
     };
 
     let moveActiveOption = (step: -1 | 1) => {
-      if (filteredOptions.value.length === 0) {
+      let enabledOptionIndices = filteredOptions.value
+        .map((option, index) => isOptionDisabled(option) ? null : index)
+        .filter((index): index is number => index != null);
+
+      if (enabledOptionIndices.length === 0) {
         activeOptionKey.value = null;
         return;
       }
 
       let currentIndex = filteredOptions.value.findIndex((option) => option.id === activeOptionKey.value);
-      let nextIndex = currentIndex + step;
+      let currentEnabledIndex = enabledOptionIndices.findIndex((index) => index === currentIndex);
+      let nextIndex = 0;
 
-      if (currentIndex < 0) {
-        nextIndex = step > 0 ? 0 : filteredOptions.value.length - 1;
+      if (currentEnabledIndex < 0) {
+        nextIndex = step > 0
+          ? enabledOptionIndices[0]
+          : enabledOptionIndices[enabledOptionIndices.length - 1];
+      } else {
+        let nextEnabledIndex = Math.max(
+          0,
+          Math.min(enabledOptionIndices.length - 1, currentEnabledIndex + step)
+        );
+        nextIndex = enabledOptionIndices[nextEnabledIndex];
       }
-
-      nextIndex = Math.min(filteredOptions.value.length - 1, Math.max(0, nextIndex));
       activeOptionKey.value = filteredOptions.value[nextIndex].id;
 
       if (virtualizationEnabled.value && listBoxRef.value) {
@@ -629,22 +694,25 @@ export const ComboBox = defineComponent({
 
     let renderOption = (option: NormalizedOption, absoluteIndex: number) => {
       let labelTextId = `${inputId.value}-option-${option.id}-label`;
+      let isDisabledOption = isOptionDisabled(option);
       return h('div', {
         id: `${inputId.value}-option-${option.id}`,
         key: option.id,
         role: 'option',
+        'aria-disabled': isDisabledOption ? 'true' : undefined,
         'aria-labelledby': labelTextId,
         'aria-posinset': String(absoluteIndex + 1),
         'aria-selected': selectedKeysRef.value.has(option.id) ? 'true' : 'false',
         'aria-setsize': String(filteredOptions.value.length),
         'data-key': option.id,
-        'data-react-aria-pressable': 'true',
+        'data-react-aria-pressable': isDisabledOption ? undefined : 'true',
         class: [
           classNames(
             menuStyles,
             'spectrum-Menu-item',
             {
-              'is-focused': activeOptionKey.value === option.id,
+              'is-disabled': isDisabledOption,
+              'is-focused': activeOptionKey.value === option.id && !isDisabledOption,
               'is-selected': selectedKeysRef.value.has(option.id),
               'is-selectable': true
             }
@@ -663,9 +731,18 @@ export const ComboBox = defineComponent({
           }
           : undefined,
         onMouseenter: () => {
+          if (isDisabledOption) {
+            return;
+          }
+
           activeOptionKey.value = option.id;
         },
         onMousedown: (event: MouseEvent) => {
+          if (isDisabledOption) {
+            event.preventDefault();
+            return;
+          }
+
           handleOptionMouseDown(event, option);
         }
       }, [

@@ -41,6 +41,30 @@ const actionItemIcons: Record<string, unknown> = {
   Duplicate
 };
 
+function normalizeActionBarSelection(value: unknown): Set<string> {
+  if (value == null) {
+    return new Set();
+  }
+
+  if (typeof value === 'string') {
+    return value.length > 0 ? new Set([value]) : new Set();
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return new Set();
+  }
+
+  let normalized = new Set<string>();
+  for (let entry of value as Iterable<unknown>) {
+    if (typeof entry === 'string' || typeof entry === 'number') {
+      normalized.add(String(entry));
+    }
+  }
+
+  return normalized;
+}
+
 const ActionBarExample = defineComponent({
   name: 'ActionBarStoryExample',
   components: {
@@ -58,7 +82,7 @@ const ActionBarExample = defineComponent({
       default: 300
     },
     disabledKeys: {
-      type: Array as PropType<string[]>,
+      type: [Array, Set] as PropType<Iterable<string>>,
       default: () => []
     },
     isEmphasized: {
@@ -80,21 +104,24 @@ const ActionBarExample = defineComponent({
   },
   setup(props) {
     let rows = ref<TableRow[]>(defaultRows.slice());
-    let selectedKeys = ref<string[]>([]);
-    let selectedItemCount = computed(() => selectedKeys.value.length);
+    let selectedKeys = ref<Set<string>>(new Set());
+    let selectedItemCount = computed(() => selectedKeys.value.size);
 
     let clearSelection = () => {
-      selectedKeys.value = [];
+      selectedKeys.value = new Set();
     };
 
     let handleAction = (key: string) => {
       if (key === 'delete') {
-        let selected = new Set(selectedKeys.value);
-        rows.value = rows.value.filter((row) => !selected.has(row.id));
-        selectedKeys.value = [];
+        rows.value = rows.value.filter((row) => !selectedKeys.value.has(row.id));
+        selectedKeys.value = new Set();
       }
 
       props.onAction?.(key);
+    };
+
+    let onSelectionChange = (value: unknown) => {
+      selectedKeys.value = normalizeActionBarSelection(value);
     };
 
     return {
@@ -103,6 +130,7 @@ const ActionBarExample = defineComponent({
       clearSelection,
       columns,
       handleAction,
+      onSelectionChange,
       props,
       rows,
       selectedItemCount,
@@ -112,13 +140,14 @@ const ActionBarExample = defineComponent({
   template: `
     <ActionBarContainer :style="{height: \`\${props.containerHeight}px\`}">
       <Table
-        v-model="selectedKeys"
+        :model-value="selectedKeys"
         aria-label="Table"
         :is-quiet="props.isQuiet"
         :columns="columns"
         :rows="rows"
         row-key="id"
         selection-mode="multiple"
+        @update:model-value="onSelectionChange"
         :style="props.tableWidth ? {width: props.tableWidth} : undefined" />
       <ActionBar
         :selected-item-count="selectedItemCount"

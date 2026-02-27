@@ -21,6 +21,62 @@ const menuStyles: {[key: string]: string} = {};
 
 
 type SelectionMode = 'none' | 'single' | 'multiple';
+type ActionGroupItem = string | {
+  children?: string,
+  name: string
+};
+type ActionGroupKey = string | number;
+type ActionGroupSelectionValue = Iterable<ActionGroupKey>;
+
+function getItemKey(item: ActionGroupItem): string {
+  return typeof item === 'string' ? item : String(item.name);
+}
+
+function getItemLabel(item: ActionGroupItem): string {
+  if (typeof item === 'string') {
+    return item;
+  }
+
+  if (typeof item.children === 'string' && item.children.length > 0) {
+    return item.children;
+  }
+
+  return String(item.name);
+}
+
+function normalizeActionGroupSelection(value: ActionGroupSelectionValue | undefined): string[] {
+  if (value == null || typeof value === 'string') {
+    return [];
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return [];
+  }
+
+  return Array.from(value as Iterable<unknown>)
+    .filter((entry): entry is ActionGroupKey => typeof entry === 'number' || typeof entry === 'string')
+    .map((entry) => String(entry));
+}
+
+function isActionGroupSelectionValue(value: unknown): value is ActionGroupSelectionValue {
+  if (value == null) {
+    return false;
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return false;
+  }
+
+  for (let entry of value as Iterable<unknown>) {
+    if (typeof entry !== 'string' && typeof entry !== 'number') {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 interface CollapseCalculation {
   containerSize: number,
@@ -99,7 +155,7 @@ export const ActionGroup = defineComponent({
       default: 'regular'
     },
     disabledKeys: {
-      type: Array as PropType<string[]>,
+      type: [Array, Set] as PropType<Iterable<ActionGroupKey>>,
       default: () => []
     },
     disabled: {
@@ -123,7 +179,7 @@ export const ActionGroup = defineComponent({
       default: undefined
     },
     items: {
-      type: Array as PropType<string[]>,
+      type: Array as PropType<ActionGroupItem[]>,
       default: () => []
     },
     isJustified: {
@@ -131,7 +187,7 @@ export const ActionGroup = defineComponent({
       default: false
     },
     modelValue: {
-      type: Array as PropType<string[]>,
+      type: [Array, Set] as PropType<ActionGroupSelectionValue>,
       default: () => []
     },
     orientation: {
@@ -157,8 +213,8 @@ export const ActionGroup = defineComponent({
   },
   emits: {
     action: (key: string) => typeof key === 'string',
-    change: (value: string[]) => Array.isArray(value),
-    'update:modelValue': (value: string[]) => Array.isArray(value)
+    change: (value: ActionGroupSelectionValue) => isActionGroupSelectionValue(value),
+    'update:modelValue': (value: ActionGroupSelectionValue) => isActionGroupSelectionValue(value)
   },
   setup(props, {emit, attrs, slots}) {
     let wrapperRef = ref<HTMLElement | null>(null);
@@ -176,6 +232,9 @@ export const ActionGroup = defineComponent({
     let isQuiet = computed(() => props.isQuiet ?? props.quiet);
     let isEmphasized = computed(() => props.isEmphasized ?? props.emphasized);
     let isVertical = computed(() => props.orientation === 'vertical');
+    let selectedKeys = computed(() => normalizeActionGroupSelection(props.modelValue));
+    let selectedKeySet = computed(() => new Set(selectedKeys.value));
+    let disabledKeySet = computed(() => new Set(Array.from(props.disabledKeys).map((key) => String(key))));
     let canCollapse = computed(() => {
       if (props.overflowMode !== 'collapse') {
         return false;
@@ -226,31 +285,33 @@ export const ActionGroup = defineComponent({
       }
     ));
 
-    let onAction = (item: string) => {
-      let isItemDisabled = isDisabled.value || props.disabledKeys.includes(item);
+    let onAction = (itemKey: string) => {
+      let isItemDisabled = isDisabled.value || disabledKeySet.value.has(itemKey);
       if (isItemDisabled) {
         return;
       }
 
-      emit('action', item);
+      emit('action', itemKey);
 
       if (props.selectionMode === 'none') {
         return;
       }
 
       if (props.selectionMode === 'single') {
-        let next = [item];
+        let next = new Set([itemKey]);
         emit('update:modelValue', next);
         emit('change', next);
         return;
       }
 
-      let isSelected = props.modelValue.includes(item);
-      let next = isSelected
-        ? props.modelValue.filter((key) => key !== item)
-        : [...props.modelValue, item];
-      emit('update:modelValue', next);
-      emit('change', next);
+      let next = new Set(selectedKeys.value);
+      if (next.has(itemKey)) {
+        next.delete(itemKey);
+      } else {
+        next.add(itemKey);
+      }
+      emit('update:modelValue', new Set(next));
+      emit('change', new Set(next));
     };
 
     let updateOverflow = async () => {
@@ -407,22 +468,24 @@ export const ActionGroup = defineComponent({
         'data-vac': ''
       }, [
       ...visibleActionItems.value.map((item) => {
-        let isSelected = props.modelValue.includes(item);
-        let isItemDisabled = isDisabled.value || props.disabledKeys.includes(item);
+        let itemKey = getItemKey(item);
+        let itemLabel = getItemLabel(item);
+        let isSelected = selectedKeySet.value.has(itemKey);
+        let isItemDisabled = isDisabled.value || disabledKeySet.value.has(itemKey);
         let ariaPressed: 'true' | 'false' | undefined = undefined;
         if (props.selectionMode !== 'none') {
           ariaPressed = isSelected ? 'true' : 'false';
         }
 
         return h('button', {
-          key: item,
+          key: itemKey,
           'data-vs-action-group-item': 'true',
           class: [classNames(
             actionGroupStyles,
             'spectrum-ActionGroup-item',
             {
               'is-selected': isSelected,
-              'is-hovered': hoveredKey.value === item && !isItemDisabled,
+              'is-hovered': hoveredKey.value === itemKey && !isItemDisabled,
               'spectrum-ActionGroup-item--iconOnly': shouldHideButtonText.value,
               'spectrum-ActionGroup-item--isDisabled': isItemDisabled
             },
@@ -441,7 +504,7 @@ export const ActionGroup = defineComponent({
           ), 'vs-action-group__item'],
           type: 'button',
           disabled: isItemDisabled,
-          'aria-label': shouldHideButtonText.value ? item : undefined,
+          'aria-label': shouldHideButtonText.value ? itemLabel : undefined,
           'aria-pressed': ariaPressed,
           'aria-disabled': isItemDisabled ? 'true' : undefined,
           onMouseenter: () => {
@@ -449,14 +512,14 @@ export const ActionGroup = defineComponent({
               return;
             }
 
-            hoveredKey.value = item;
+            hoveredKey.value = itemKey;
           },
           onMouseleave: () => {
             hoveredKey.value = null;
           },
-          onClick: () => onAction(item)
+          onClick: () => onAction(itemKey)
         }, slots.item ? slots.item({item, selected: isSelected, hideButtonText: shouldHideButtonText.value}) : [
-          h('span', {class: classNames(actionGroupStyles, 'spectrum-ActionButton-label')}, item)
+          h('span', {class: classNames(actionGroupStyles, 'spectrum-ActionButton-label')}, itemLabel)
         ]);
       }),
       hasOverflow.value
@@ -477,7 +540,7 @@ export const ActionGroup = defineComponent({
                     'spectrum-ActionButton--staticBlack': props.staticColor === 'black',
                     'spectrum-ActionButton--staticColor': !!props.staticColor,
                     'spectrum-ActionButton--staticWhite': props.staticColor === 'white',
-                    'is-selected': props.selectionMode !== 'none' && props.modelValue.length > 0
+                    'is-selected': props.selectionMode !== 'none' && selectedKeys.value.length > 0
                   }
                 )
               ),
@@ -520,9 +583,11 @@ export const ActionGroup = defineComponent({
                 role: 'menu',
                 'aria-label': 'More actions'
               }, overflowItems.value.map((item) => {
-                let isItemDisabled = isDisabled.value || props.disabledKeys.includes(item);
+                let itemKey = getItemKey(item);
+                let itemLabel = getItemLabel(item);
+                let isItemDisabled = isDisabled.value || disabledKeySet.value.has(itemKey);
                 return h('li', {
-                  key: `${item}-overflow`,
+                  key: `${itemKey}-overflow`,
                   class: 'vs-action-group__overflow-item-wrapper'
                 }, [
                   h('button', {
@@ -532,11 +597,11 @@ export const ActionGroup = defineComponent({
                     type: 'button',
                     disabled: isItemDisabled,
                     role: 'menuitem',
-                    onClick: () => onOverflowItemAction(item)
+                    onClick: () => onOverflowItemAction(itemKey)
                   }, [
                     h('span', {
                       class: classNames(menuStyles, 'spectrum-Menu-itemLabel')
-                    }, item)
+                    }, itemLabel)
                   ])
                 ]);
               }))

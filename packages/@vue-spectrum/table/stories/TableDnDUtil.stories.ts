@@ -67,7 +67,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function renderUtilStory(args: StoryArgs, note: string, options: RenderOptions = {}) {
+function renderUtilStory(args: StoryArgs, options: RenderOptions = {}) {
   let {
     includeDropTarget = false,
     rows = BASE_ROWS,
@@ -80,7 +80,6 @@ function renderUtilStory(args: StoryArgs, note: string, options: RenderOptions =
         args,
         columns: COLUMNS,
         includeDropTarget,
-        note,
         rows,
         secondRows: SECOND_ROWS,
         twoTables
@@ -88,9 +87,13 @@ function renderUtilStory(args: StoryArgs, note: string, options: RenderOptions =
     },
     template: `
       <div style="display: grid; gap: 8px;">
-        <div>{{note}}</div>
-        <div v-if="includeDropTarget" style="border: 1px dashed #9ca3af; border-radius: 6px; padding: 6px 8px; width: 360px;">
-          Droppable placeholder
+        <div
+          v-if="includeDropTarget"
+          role="region"
+          aria-label="Drop target"
+          data-testid="drop-target"
+          style="border: 1px dashed #9ca3af; border-radius: 6px; padding: 6px 8px; width: 360px;">
+          Drop target
         </div>
         <Table v-bind="args" :columns="columns" :rows="rows" />
         <Table
@@ -105,17 +108,17 @@ function renderUtilStory(args: StoryArgs, note: string, options: RenderOptions =
 }
 
 export const DragOutOfTable: Story = {
-  render: (args) => renderUtilStory(args, 'drag out of table', {includeDropTarget: true}),
+  render: (args) => renderUtilStory(args, {includeDropTarget: true}),
   name: 'drag out of table'
 };
 
 export const DragWithinTable: Story = {
-  render: (args) => renderUtilStory(args, 'drag within table (reorder)'),
+  render: (args) => renderUtilStory(args),
   name: 'drag within table (reorder)'
 };
 
 export const DragOntoRow: Story = {
-  render: (args) => renderUtilStory(args, 'drop onto row/folder'),
+  render: (args) => renderUtilStory(args),
   name: 'drop onto row/folder',
   parameters: {
     description: {
@@ -125,7 +128,7 @@ export const DragOntoRow: Story = {
 };
 
 export const DropOntoRoot: Story = {
-  render: (args) => renderUtilStory(args, 'drop onto root', {twoTables: true}),
+  render: (args) => renderUtilStory(args, {twoTables: true}),
   name: 'drop onto root',
   parameters: {
     description: {
@@ -135,7 +138,7 @@ export const DropOntoRoot: Story = {
 };
 
 export const DropBetweenRows: Story = {
-  render: (args) => renderUtilStory(args, 'drop between rows', {twoTables: true}),
+  render: (args) => renderUtilStory(args, {twoTables: true}),
   name: 'drop between rows',
   parameters: {
     description: {
@@ -145,7 +148,7 @@ export const DropBetweenRows: Story = {
 };
 
 export const AllowsDirectoriesAndFilesFromFinder: Story = {
-  render: (args) => renderUtilStory(args, 'allows directories and files from finder', {twoTables: true}),
+  render: (args) => renderUtilStory(args, {twoTables: true}),
   name: 'allows directories and files from finder',
   parameters: {
     description: {
@@ -155,7 +158,7 @@ export const AllowsDirectoriesAndFilesFromFinder: Story = {
 };
 
 export const ComplexDragBetweenTables: Story = {
-  render: (args) => renderUtilStory(args, 'complex drag between tables', {twoTables: true}),
+  render: (args) => renderUtilStory(args, {twoTables: true}),
   name: 'complex drag between tables',
   parameters: {
     description: {
@@ -165,7 +168,7 @@ export const ComplexDragBetweenTables: Story = {
 };
 
 export const UsingGetDropOperations: Story = {
-  render: (args) => renderUtilStory(args, 'using getDropOperations to determine default drop operation', {twoTables: true}),
+  render: (args) => renderUtilStory(args, {twoTables: true}),
   name: 'using getDropOperations to determine default drop operation',
   parameters: {
     description: {
@@ -175,7 +178,7 @@ export const UsingGetDropOperations: Story = {
 };
 
 export const OverrideUtilHandlers: Story = {
-  render: (args) => renderUtilStory(args, 'util handlers overridden by onDrop and getDropOperations', {twoTables: true}),
+  render: (args) => renderUtilStory(args, {twoTables: true}),
   name: 'util handlers overridden by onDrop and getDropOperations',
   parameters: {
     description: {

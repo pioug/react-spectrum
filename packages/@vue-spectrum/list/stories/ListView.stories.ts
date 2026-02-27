@@ -11,6 +11,7 @@ type ListItem = {
 };
 
 type StoryArgs = Record<string, unknown>;
+type StorySelectionValue = Iterable<number | string> | number | string;
 
 const BASE_ITEMS: ListItem[] = [
   {key: 'a', name: 'Adobe Photoshop'},
@@ -76,40 +77,55 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function toSelectionArray(value: unknown): Array<number | string> {
-  if (Array.isArray(value)) {
-    return value.filter((entry): entry is number | string => typeof entry === 'number' || typeof entry === 'string');
-  }
-
+function normalizeStorySelectionValue(value: unknown): Set<number | string> {
   if (typeof value === 'number' || typeof value === 'string') {
-    return [value];
+    return new Set([value]);
   }
 
-  return [];
+  if (value == null) {
+    return new Set();
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return new Set();
+  }
+
+  let normalized = new Set<number | string>();
+  for (let entry of value as Iterable<unknown>) {
+    if (typeof entry === 'number' || typeof entry === 'string') {
+      normalized.add(entry);
+    }
+  }
+
+  return normalized;
 }
 
 function renderList(items: ListItem[], baseArgs: StoryArgs = {}, wrapperStyle = 'max-width: 320px;') {
   return (args: StoryArgs) => ({
     components: {ListView},
     setup() {
-      let selectedKeys = ref<Array<number | string>>([]);
+      let selectedKeys = ref<Set<number | string>>(new Set());
+      let mergedArgs = computed(() => ({
+        ...args,
+        ...baseArgs
+      }));
       return {
-        args,
-        baseArgs,
         items,
+        mergedArgs,
         selectedKeys,
         onAction: action('onAction'),
-        onSelectionChange: (value: unknown) => {
-          selectedKeys.value = toSelectionArray(value);
-          action('onSelectionChange')(value);
+        onSelectionChange: (value: StorySelectionValue) => {
+          let normalized = normalizeStorySelectionValue(value);
+          selectedKeys.value = normalized;
+          action('onSelectionChange')(Array.from(normalized));
         }
       };
     },
     template: `
       <div style="${wrapperStyle}">
         <ListView
-          v-bind="args"
-          v-bind="baseArgs"
+          v-bind="mergedArgs"
           :items="items"
           :model-value="selectedKeys"
           @action="onAction"
@@ -323,10 +339,10 @@ export const WithActionBar: Story = {
     components: {ActionBar, ActionBarContainer, ListView},
     setup() {
       let listItems = ref(BASE_ITEMS.slice(0, 3));
-      let selected = ref<Array<number | string>>(['a']);
-      let selectedCount = computed(() => selected.value.length);
-      let updateSelection = (value: unknown) => {
-        selected.value = toSelectionArray(value);
+      let selected = ref<Set<number | string>>(new Set(['a']));
+      let selectedCount = computed(() => selected.value.size);
+      let updateSelection = (value: StorySelectionValue) => {
+        selected.value = normalizeStorySelectionValue(value);
       };
 
       return {
@@ -336,7 +352,7 @@ export const WithActionBar: Story = {
         selectedCount,
         updateSelection,
         clearSelection: () => {
-          selected.value = [];
+          selected.value = new Set();
         },
         onAction: action('actionbarAction')
       };
@@ -366,10 +382,10 @@ export const WithActionBarEmphasized: Story = {
     components: {ActionBar, ActionBarContainer, ListView},
     setup() {
       let listItems = ref(BASE_ITEMS.slice(0, 3));
-      let selected = ref<Array<number | string>>(['a']);
-      let selectedCount = computed(() => selected.value.length);
-      let updateSelection = (value: unknown) => {
-        selected.value = toSelectionArray(value);
+      let selected = ref<Set<number | string>>(new Set(['a']));
+      let selectedCount = computed(() => selected.value.size);
+      let updateSelection = (value: StorySelectionValue) => {
+        selected.value = normalizeStorySelectionValue(value);
       };
 
       return {
@@ -379,7 +395,7 @@ export const WithActionBarEmphasized: Story = {
         selectedCount,
         updateSelection,
         clearSelection: () => {
-          selected.value = [];
+          selected.value = new Set();
         },
         onAction: action('actionbarAction')
       };

@@ -1,6 +1,8 @@
 import type {Meta, StoryFn} from '@storybook/vue3-vite';
 import {VueSearchField} from 'vue-aria-components';
 import {ref} from 'vue';
+import '../../react-aria-components/example/index.css';
+import '../../react-aria-components/stories/styles.css';
 
 const meta = {
   title: 'React Aria Components/SearchField',
@@ -10,25 +12,21 @@ const meta = {
 export default meta;
 
 export const SearchFieldExample: StoryFn<typeof VueSearchField> = () => ({
+  components: {
+    VueSearchField
+  },
   setup() {
     let query = ref('');
 
     return {
-      clear() {
-        query.value = '';
-      },
       query
     };
   },
   template: `
-    <div
+    <VueSearchField
+      v-model="query"
+      label="Search"
       data-testid="search-field-example"
-      class="v7C2Sq_searchFieldExample"
-      :data-empty="query === '' ? 'true' : undefined"
-      data-rac="">
-      <label class="react-aria-Label">Search</label>
-      <input class="react-aria-Input" type="search" v-model="query">
-      <button aria-label="Clear search" class="react-aria-Button" tabindex="-1" type="button" @click="clear">✕</button>
-    </div>
+      class="searchFieldExample" />
   `
 });

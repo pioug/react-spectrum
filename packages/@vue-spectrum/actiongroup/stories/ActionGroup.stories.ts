@@ -12,6 +12,7 @@ import Move from '@spectrum-icons-vue/workflow/Move';
 import MoveTo from '@spectrum-icons-vue/workflow/MoveTo';
 import Properties from '@spectrum-icons-vue/workflow/Properties';
 import Text from '@spectrum-icons-vue/workflow/Text';
+import {TooltipTrigger} from '@vue-spectrum/tooltip';
 import ViewCard from '@spectrum-icons-vue/workflow/ViewCard';
 import ViewGrid from '@spectrum-icons-vue/workflow/ViewGrid';
 import ViewList from '@spectrum-icons-vue/workflow/ViewList';
@@ -20,6 +21,21 @@ type ActionItem = string | {
   children: string,
   name: string
 };
+
+function normalizeStorySelectionKeys(value: unknown): string[] {
+  if (value == null || typeof value === 'string') {
+    return [];
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return [];
+  }
+
+  return Array.from(value as Iterable<unknown>)
+    .filter((entry): entry is string | number => typeof entry === 'string' || typeof entry === 'number')
+    .map((entry) => String(entry));
+}
 
 const viewItems: ActionItem[] = [
   {children: 'Grid view', name: '1'},
@@ -254,6 +270,58 @@ const OverflowActionGroupExample = defineComponent({
   `
 });
 
+const TooltipActionGroupExample = defineComponent({
+  name: 'TooltipActionGroupExample',
+  components: {
+    ActionGroup,
+    TooltipTrigger
+  },
+  props: {
+    args: {
+      type: Object as PropType<SpectrumActionGroupProps & {
+        onAction?: (key: string) => void,
+        onSelectionChange?: (keys: string[]) => void
+      }>,
+      required: true
+    }
+  },
+  setup(props) {
+    let selected = ref<string[]>([]);
+    let getLabel = (item: ActionItem) => typeof item === 'string' ? item : item.children;
+
+    let forwardSelection = (keys: string[]) => {
+      props.args.onSelectionChange?.(keys);
+    };
+
+    return {
+      getLabel,
+      iconMap,
+      props,
+      selected,
+      viewItems,
+      forwardSelection
+    };
+  },
+  template: `
+    <ActionGroup
+      v-bind="props.args"
+      v-model="selected"
+      :items="viewItems"
+      button-label-behavior="hide"
+      @action="props.args.onAction"
+      @change="forwardSelection">
+      <template #item="{item}">
+        <TooltipTrigger :delay="0" trigger="hover">
+          <component :is="iconMap[getLabel(item)]" />
+          <template #tooltip>
+            {{ getLabel(item) }}
+          </template>
+        </TooltipTrigger>
+      </template>
+    </ActionGroup>
+  `
+});
+
 const FalsyKeysActionGroupExample = defineComponent({
   name: 'FalsyKeysActionGroupExample',
   components: {
@@ -406,7 +474,7 @@ export const StaticColorWhite: ActionGroupStory = {
       return {
         args: {
           ...args,
-          modelValue: Array.isArray(args.defaultSelectedKeys) ? args.defaultSelectedKeys as string[] : []
+          modelValue: normalizeStorySelectionKeys(args.defaultSelectedKeys)
         }
       };
     },
@@ -431,7 +499,7 @@ export const StaticColorBlack: ActionGroupStory = {
       return {
         args: {
           ...args,
-          modelValue: Array.isArray(args.defaultSelectedKeys) ? args.defaultSelectedKeys as string[] : []
+          modelValue: normalizeStorySelectionKeys(args.defaultSelectedKeys)
         }
       };
     },
@@ -447,17 +515,11 @@ export const StaticColorBlack: ActionGroupStory = {
 export const WithTooltips: ActionGroupStory = {
   args: {items: viewItems},
   render: (args) => ({
-    components: {OverflowActionGroupExample},
+    components: {TooltipActionGroupExample},
     setup() {
-      return {
-        args: {
-          ...args,
-          items: viewItems,
-          buttonLabelBehavior: 'hide'
-        }
-      };
+      return {args};
     },
-    template: '<OverflowActionGroupExample :args="args" :items="args.items" />'
+    template: '<TooltipActionGroupExample :args="args" />'
   })
 };
 

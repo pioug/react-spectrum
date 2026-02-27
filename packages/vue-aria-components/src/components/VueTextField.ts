@@ -1,5 +1,4 @@
 import {computed, defineComponent, h} from 'vue';
-import {getSpectrumContext} from '../context';
 
 let textFieldId = 0;
 
@@ -22,11 +21,27 @@ export const VueTextField = defineComponent({
       type: String,
       default: ''
     },
+    name: {
+      type: String,
+      default: ''
+    },
+    type: {
+      type: String,
+      default: 'text'
+    },
     placeholder: {
       type: String,
       default: ''
     },
+    autocomplete: {
+      type: String,
+      default: ''
+    },
     disabled: {
+      type: Boolean,
+      default: false
+    },
+    readOnly: {
       type: Boolean,
       default: false
     },
@@ -41,45 +56,58 @@ export const VueTextField = defineComponent({
   },
   emits: {
     'update:modelValue': (value: string) => typeof value === 'string',
+    change: (value: string) => typeof value === 'string',
     focus: (event: FocusEvent) => event instanceof FocusEvent,
     blur: (event: FocusEvent) => event instanceof FocusEvent
   },
   setup(props, {emit, attrs}) {
-    let context = getSpectrumContext();
     let generatedId = `vs-text-field-${++textFieldId}`;
     let inputId = computed(() => props.id ?? generatedId);
-
-    let classes = computed(() => ([
-      'vs-text-field__input',
-      context.value.scale === 'large' ? 'vs-text-field__input--large' : 'vs-text-field__input--medium',
-      props.invalid ? 'is-invalid' : null
-    ]));
 
     let onInput = (event: Event) => {
       let target = event.currentTarget as HTMLInputElement | null;
       emit('update:modelValue', target?.value ?? '');
     };
 
+    let onChange = (event: Event) => {
+      let target = event.currentTarget as HTMLInputElement | null;
+      emit('change', target?.value ?? '');
+    };
+
     return function render() {
       let descriptionId = props.description ? `${inputId.value}-description` : undefined;
 
-      return h('label', {class: ['vs-text-field', attrs.class], 'data-vac': ''}, [
-        props.label ? h('span', {class: 'vs-text-field__label'}, props.label) : null,
+      return h('div', {
+        ...attrs,
+        class: ['react-aria-TextField', attrs.class],
+        'data-rac': '',
+        'data-disabled': props.disabled ? 'true' : undefined,
+        'data-invalid': props.invalid ? 'true' : undefined,
+        'data-readonly': props.readOnly ? 'true' : undefined,
+        'data-required': props.required ? 'true' : undefined
+      }, [
+        props.label ? h('label', {class: 'react-aria-Label', for: inputId.value}, props.label) : null,
         h('input', {
           id: inputId.value,
-          class: classes.value,
+          class: 'react-aria-Input',
+          'data-rac': '',
+          type: props.type,
+          name: props.name || undefined,
           value: props.modelValue,
-          placeholder: props.placeholder,
+          placeholder: props.placeholder || undefined,
+          autocomplete: props.autocomplete || undefined,
           disabled: props.disabled,
+          readonly: props.readOnly || undefined,
           required: props.required,
           'aria-invalid': props.invalid ? 'true' : undefined,
           'aria-describedby': descriptionId,
           onInput,
+          onChange,
           onFocus: (event: FocusEvent) => emit('focus', event),
           onBlur: (event: FocusEvent) => emit('blur', event)
         }),
         props.description
-          ? h('span', {id: descriptionId, class: 'vs-text-field__description'}, props.description)
+          ? h('span', {id: descriptionId, class: 'react-aria-Text'}, props.description)
           : null
       ]);
     };

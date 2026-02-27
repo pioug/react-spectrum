@@ -1,85 +1,146 @@
 import {action} from '@storybook/addon-actions';
+import {Avatar} from '@vue-spectrum/avatar';
 import {ListBox} from '../src';
 import {computed, defineComponent, ref, watch} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type ListBoxStoryArgs = {
   ariaLabel?: string,
+  disabledKeys?: Iterable<string>,
   isDisabled?: boolean,
-  items?: string[],
+  items?: Array<string | {
+    [key: string]: unknown,
+    ariaLabel?: string,
+    children?: Array<Record<string, unknown>>,
+    href?: string,
+    id?: string | number,
+    items?: Array<Record<string, unknown>>,
+    textValue?: string
+  }>,
   label?: string,
-  modelValue?: string | string[],
+  modelValue?: string | Iterable<string>,
   selectionMode?: 'multiple' | 'none' | 'single'
 };
 
-const defaultItems = ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5'];
+const defaultItems = [
+  'Aardvark',
+  'Kangaroo',
+  'Snake',
+  'Danni',
+  'Devon',
+  'Ross',
+  'Puppy',
+  'Doggo',
+  'Floof'
+];
 const sectionItems = [
-  'Section 1 / Option 1',
-  'Section 1 / Option 2',
-  'Section 2 / Option 1',
-  'Section 2 / Option 2'
-];
-const manySectionItems = [
-  'Section 1 / Option 1',
-  'Section 1 / Option 2',
-  'Section 1 / Option 3',
-  'Section 2 / Option 1',
-  'Section 2 / Option 2',
-  'Section 2 / Option 3',
-  'Section 3 / Option 1',
-  'Section 3 / Option 2',
-  'Section 3 / Option 3'
-];
-
-const ControlledSelectionListBox = defineComponent({
-  name: 'ControlledSelectionListBoxStory',
-  components: {ListBox},
-  props: {
-    multiple: {
-      type: Boolean,
-      default: false
-    }
+  {
+    id: 'animals',
+    title: 'Animals',
+    items: [
+      {id: 'Aardvark', textValue: 'Aardvark'},
+      {id: 'Kangaroo', textValue: 'Kangaroo'},
+      {id: 'Snake', textValue: 'Snake'}
+    ]
   },
-  setup(props) {
-    let selectedValue = ref<string | string[]>(props.multiple ? ['Option 2', 'Option 4'] : 'Option 2');
-
-    let selectFirst = () => {
-      selectedValue.value = props.multiple ? ['Option 1'] : 'Option 1';
-    };
-
-    let clear = () => {
-      selectedValue.value = props.multiple ? [] : '';
-    };
-
-    let handleUpdate = (value: string | string[]) => {
-      selectedValue.value = value;
-      action('update:modelValue')(value);
-    };
-
-    return {
-      selectedValue,
-      selectFirst,
-      clear,
-      handleUpdate,
-      items: [...defaultItems]
-    };
+  {
+    id: 'people',
+    title: 'People',
+    items: [
+      {id: 'Danni', textValue: 'Danni'},
+      {id: 'Devon', textValue: 'Devon'},
+      {id: 'Ross', textValue: 'Ross'}
+    ]
+  }
+];
+const manySectionItems = Array.from({length: 50}, (_section, sectionIndex) => ({
+  id: `section-${sectionIndex}`,
+  title: `Section ${sectionIndex}`,
+  items: Array.from({length: 50}, (_item, itemIndex) => ({
+    id: `section-${sectionIndex}-item-${itemIndex}`,
+    textValue: `Section ${sectionIndex}, Item ${itemIndex}`
+  }))
+}));
+const staticSectionItems = [
+  {
+    id: 'section-1',
+    title: 'Section 1',
+    items: [
+      {id: '1', textValue: 'One'},
+      {id: '2', textValue: 'Two'},
+      {id: '3', textValue: 'Three'}
+    ]
   },
-  template: `
-    <div style="display: grid; gap: 10px; max-width: 320px;">
-      <ListBox
-        aria-label="Controlled listbox"
-        label="Controlled"
-        :items="items"
-        :selection-mode="multiple ? 'multiple' : 'single'"
-        :model-value="selectedValue"
-        @update:model-value="handleUpdate" />
-      <div style="display: flex; gap: 8px;">
-        <button type="button" @click="selectFirst">Select first</button>
-        <button type="button" @click="clear">Clear</button>
-      </div>
-    </div>
-  `
-});
+  {
+    id: 'section-2',
+    title: 'Section 2',
+    items: [
+      {id: '4', textValue: 'Four'},
+      {id: '5', textValue: 'Five'},
+      {id: '6', textValue: 'Six'},
+      {id: '7', textValue: 'Seven'}
+    ]
+  }
+];
+const staticSectionItemsNoTitle = [
+  {
+    id: 'section-1',
+    ariaLabel: 'Section 1',
+    items: [
+      {id: '1', textValue: 'One'},
+      {id: '2', textValue: 'Two'},
+      {id: '3', textValue: 'Three'}
+    ]
+  },
+  {
+    id: 'section-2',
+    ariaLabel: 'Section 2',
+    items: [
+      {id: '4', textValue: 'Four'},
+      {id: '5', textValue: 'Five'},
+      {id: '6', textValue: 'Six'},
+      {id: '7', textValue: 'Seven'}
+    ]
+  }
+];
+const avatarItems = [
+  {id: 'person-1', textValue: 'Person 1', avatarSrc: 'https://i.imgur.com/kJOwAdv.png'},
+  {id: 'person-2', textValue: 'Person 2', avatarSrc: 'https://i.imgur.com/kJOwAdv.png'},
+  {id: 'person-3', textValue: 'Person 3', avatarSrc: 'https://i.imgur.com/kJOwAdv.png'}
+];
+const treeDataItems = [
+  {
+    id: 'people',
+    title: 'People',
+    items: [
+      {id: 'David', textValue: 'David'},
+      {id: 'Sam', textValue: 'Sam'},
+      {id: 'Jane', textValue: 'Jane'}
+    ]
+  },
+  {
+    id: 'animals',
+    title: 'Animals',
+    items: [
+      {id: 'Aardvark', textValue: 'Aardvark'},
+      {id: 'Kangaroo', textValue: 'Kangaroo'},
+      {id: 'Snake', textValue: 'Snake'}
+    ]
+  }
+];
+
+function normalizeSelectionSet(value: string | Iterable<string>): Set<string> {
+  if (typeof value === 'string') {
+    return value.length > 0 ? new Set([value]) : new Set();
+  }
+
+  let normalized = new Set<string>();
+  for (let entry of value) {
+    normalized.add(entry);
+  }
+
+  return normalized;
+}
 
 const AsyncLoadingListBox = defineComponent({
   name: 'AsyncLoadingListBoxStory',
@@ -186,18 +247,18 @@ function renderListBox(baseArgs: Partial<ListBoxStoryArgs> = {}, wrapperStyle?: 
         ...baseArgs,
         ...args
       }));
-      let selectedValue = ref<string | string[]>('');
+      let selectedValue = ref<string | Iterable<string>>('');
 
       watch(mergedArgs, (nextArgs) => {
-        if (Array.isArray(nextArgs.modelValue)) {
-          selectedValue.value = [...nextArgs.modelValue];
+        if (typeof nextArgs.modelValue === 'string' || nextArgs.modelValue == null) {
+          selectedValue.value = nextArgs.modelValue ?? '';
           return;
         }
 
-        selectedValue.value = nextArgs.modelValue ?? '';
+        selectedValue.value = Array.from(nextArgs.modelValue);
       }, {deep: true, immediate: true});
 
-      let handleUpdate = (value: string | string[]) => {
+      let handleUpdate = (value: string | Iterable<string>) => {
         selectedValue.value = value;
         action('update:modelValue')(value);
       };
@@ -213,6 +274,7 @@ function renderListBox(baseArgs: Partial<ListBoxStoryArgs> = {}, wrapperStyle?: 
       <div ${wrapperStyle ? `style="${wrapperStyle}"` : ''}>
         <ListBox
           :aria-label="mergedArgs.ariaLabel"
+          :disabled-keys="mergedArgs.disabledKeys"
           :is-disabled="mergedArgs.isDisabled"
           :items="mergedArgs.items"
           :label="mergedArgs.label"
@@ -228,6 +290,9 @@ function renderListBox(baseArgs: Partial<ListBoxStoryArgs> = {}, wrapperStyle?: 
 export function FocusExample(_args: ListBoxStoryArgs = {}) {
   return {
     components: {RestoreFocusPreview},
+    setup() {
+      return {};
+    },
     template: '<RestoreFocusPreview />'
   };
 }
@@ -243,75 +308,129 @@ export const ListBoxWSections: Story = {
 };
 
 export const ListBoxWManySectionsAndSelection: Story = {
-  render: renderListBox({items: [...manySectionItems], modelValue: 'Section 2 / Option 3'}),
+  render: renderListBox({items: [...manySectionItems], selectionMode: 'multiple'}),
   name: 'ListBox w/ many sections and selection'
 };
 
 export const ListBoxWSectionsAndFalsyIds: Story = {
-  render: renderListBox({items: ['', '0', 'Section / Option 2', 'Section / Option 3']}),
+  render: renderListBox({
+    items: [
+      {
+        id: 0,
+        title: 'key=0',
+        items: [
+          {id: '1', textValue: 'Aardvark'},
+          {id: '2', textValue: 'Kangaroo'},
+          {id: '3', textValue: 'Snake'}
+        ]
+      },
+      {
+        id: '',
+        title: 'key=""',
+        items: [
+          {id: '4', textValue: 'Danni'},
+          {id: '5', textValue: 'Devon'},
+          {id: '6', textValue: 'Ross'}
+        ]
+      }
+    ],
+    selectionMode: 'multiple'
+  }),
   name: 'ListBox w/ sections and falsy ids'
 };
 
 export const ListBoxWSectionsAndNoTitle: Story = {
-  render: renderListBox({items: ['Option 1', 'Option 2', 'Option 3', 'Option 4']}),
+  render: renderListBox({
+    items: [
+      {
+        id: 'animals-no-title',
+        ariaLabel: 'Animals',
+        items: [
+          {id: 'Aardvark', textValue: 'Aardvark'},
+          {id: 'Kangaroo', textValue: 'Kangaroo'},
+          {id: 'Snake', textValue: 'Snake'}
+        ]
+      },
+      {
+        id: 'people-no-title',
+        ariaLabel: 'People',
+        items: [
+          {id: 'Danni', textValue: 'Danni'},
+          {id: 'Devon', textValue: 'Devon'},
+          {id: 'Ross', textValue: 'Ross'}
+        ]
+      }
+    ]
+  }),
   name: 'ListBox w/ sections and no title'
 };
 
 export const Static: Story = {
-  render: renderListBox({label: 'Static listbox', items: [...defaultItems]})
+  render: renderListBox({label: 'Static listbox', items: ['One', 'Two', 'Three']})
 };
 
 export const StaticWithSectionsAndSelection: Story = {
   render: renderListBox({
     label: 'Static with sections',
-    items: [...sectionItems],
-    modelValue: 'Section 2 / Option 2'
+    items: [...staticSectionItems],
+    selectionMode: 'multiple'
   }),
   name: 'Static with sections and selection'
 };
 
 export const StaticWithSectionsAndNoTitle: Story = {
-  render: renderListBox({label: '', items: [...sectionItems]}),
+  render: renderListBox({
+    label: '',
+    items: [...staticSectionItemsNoTitle]
+  }),
   name: 'Static with sections and no title'
 };
 
 export const WithDefaultSelectedOption: Story = {
-  render: renderListBox({modelValue: 'Option 2'}),
+  render: renderListBox({
+    items: [...sectionItems],
+    selectionMode: 'multiple',
+    modelValue: new Set(['Kangaroo'])
+  }),
   name: 'with default selected option'
 };
 
 export const SingleSelectionWithDefaultSelectedOption: Story = {
-  render: renderListBox({selectionMode: 'single', modelValue: 'Option 2'}),
+  render: renderListBox({selectionMode: 'single', modelValue: 'Kangaroo'}),
   name: 'single selection with default selected option'
 };
 
 export const StaticWithDefaultSelectedOptions: Story = {
   render: renderListBox({
     selectionMode: 'multiple',
-    modelValue: ['Option 2', 'Option 4']
+    items: [...staticSectionItems],
+    modelValue: new Set(['2', '3'])
   }),
   name: 'static with default selected options'
 };
 
 export const WithSelectedOptionsControlled: Story = {
-  render: () => ({
-    components: {ControlledSelectionListBox},
-    template: '<ControlledSelectionListBox />'
+  render: renderListBox({
+    items: [...sectionItems],
+    selectionMode: 'multiple',
+    modelValue: new Set(['Kangaroo'])
   }),
   name: 'with selected options (controlled)'
 };
 
 export const StaticWithSelectedOptionsControlled: Story = {
-  render: () => ({
-    components: {ControlledSelectionListBox},
-    template: '<ControlledSelectionListBox :multiple="true" />'
+  render: renderListBox({
+    items: [...staticSectionItems],
+    selectionMode: 'multiple',
+    modelValue: new Set(['2'])
   }),
   name: 'static with selected options (controlled)'
 };
 
 export const WithDisabledOptions: Story = {
   render: renderListBox({
-    items: ['Option 1 (enabled)', 'Option 2 (disabled in React)', 'Option 3 (enabled)']
+    items: [...sectionItems],
+    disabledKeys: ['Kangaroo', 'Ross']
   }),
   name: 'with disabled options'
 };
@@ -319,13 +438,19 @@ export const WithDisabledOptions: Story = {
 export const StaticWithDisabledOptions: Story = {
   render: renderListBox({
     label: 'Static with disabled options',
-    items: ['Option 1 (enabled)', 'Option 2 (disabled in React)', 'Option 3 (enabled)']
+    items: [...staticSectionItems],
+    disabledKeys: ['3', '5']
   }),
   name: 'static with disabled options'
 };
 
 export const MultipleSelection: Story = {
-  render: renderListBox({selectionMode: 'multiple'}),
+  render: renderListBox({
+    selectionMode: 'multiple',
+    modelValue: new Set(['Aardvark', 'Snake']),
+    items: [...sectionItems],
+    disabledKeys: ['Kangaroo', 'Ross']
+  }),
   name: 'Multiple selection'
 };
 
@@ -333,54 +458,65 @@ export const MultipleSelectionStatic: Story = {
   render: renderListBox({
     selectionMode: 'multiple',
     label: 'Multiple selection static',
-    modelValue: ['Option 1', 'Option 3']
+    modelValue: new Set(['2', '5']),
+    items: [...staticSectionItems],
+    disabledKeys: ['1', '3']
   }),
   name: 'Multiple selection, static'
 };
 
 export const NoSelectionAllowed: Story = {
-  render: renderListBox({selectionMode: 'none'}),
+  render: renderListBox({
+    selectionMode: 'none',
+    items: [...sectionItems]
+  }),
   name: 'No selection allowed'
 };
 
 export const NoSelectionAllowedStatic: Story = {
   render: renderListBox({
     selectionMode: 'none',
-    label: 'No selection allowed static'
+    label: 'No selection allowed static',
+    items: [...staticSectionItems]
   }),
   name: 'No selection allowed, static'
 };
 
 export const ListBoxWithAutoFocusTrue: Story = {
   render: renderListBox({
-    items: ['Auto focus 1', 'Auto focus 2', 'Auto focus 3'],
-    modelValue: 'Auto focus 1'
+    items: [...sectionItems]
   }),
   name: 'ListBox with autoFocus=true'
 };
 
 export const ListBoxWithAutoFocusComplex: Story = {
   render: renderListBox({
-    items: ['Complex 1', 'Complex 2', 'Complex 3', 'Complex 4', 'Complex 5'],
-    modelValue: 'Complex 3'
+    items: [...sectionItems],
+    modelValue: 'Snake'
   }),
   name: 'ListBox with autoFocus=true, selectionMode=single, default selected key (uncontrolled)'
 };
 
 export const ListBoxWithAutoFocusFirst: Story = {
-  render: renderListBox({modelValue: 'Option 1'}),
+  render: renderListBox({
+    items: [...sectionItems],
+    selectionMode: 'multiple'
+  }),
   name: 'ListBox with autoFocus="first"'
 };
 
 export const ListBoxWithAutoFocusLast: Story = {
-  render: renderListBox({modelValue: 'Option 5'}),
+  render: renderListBox({
+    items: [...sectionItems],
+    selectionMode: 'multiple'
+  }),
   name: 'ListBox with autoFocus="last"'
 };
 
 export const ListBoxWithKeyboardSelectionWrapping: Story = {
   render: renderListBox({
-    items: ['Wrap 1', 'Wrap 2', 'Wrap 3', 'Wrap 4'],
-    modelValue: 'Wrap 2'
+    items: [...sectionItems],
+    selectionMode: 'multiple'
   }),
   name: 'ListBox with keyboard selection wrapping'
 };
@@ -397,7 +533,7 @@ export const WithSemanticElementsGenerativeMultipleSelection: Story = {
   render: renderListBox({
     items: ['Article', 'Section', 'Heading', 'Paragraph'],
     selectionMode: 'multiple',
-    modelValue: ['Article', 'Paragraph'],
+    modelValue: new Set(['Article', 'Paragraph']),
     label: 'Semantic elements (multiple)'
   }),
   name: 'with semantic elements (generative), multiple selection'
@@ -422,6 +558,9 @@ export const IsLoadingMore: Story = {
 
 export const AsyncLoading: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {AsyncLoadingListBox},
     template: '<AsyncLoadingListBox />'
   }),
@@ -430,6 +569,9 @@ export const AsyncLoading: Story = {
 
 export const AsyncLoadingResizable: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {AsyncLoadingListBox},
     template: '<AsyncLoadingListBox :resizable="true" />'
   }),
@@ -470,7 +612,13 @@ export const WithTranslations: Story = {
 
 export const Links: Story = {
   render: renderListBox({
-    items: ['https://adobe.com', 'https://react-spectrum.adobe.com', 'https://vuejs.org'],
+    items: [
+      {id: 'https://adobe.com/', href: 'https://adobe.com/', textValue: 'Adobe'},
+      {id: 'https://google.com/', href: 'https://google.com/', textValue: 'Google'},
+      {id: 'https://apple.com/', href: 'https://apple.com/', textValue: 'Apple'},
+      {id: 'https://nytimes.com/', href: 'https://nytimes.com/', textValue: 'New York Times'},
+      {id: 'non-link', textValue: 'Non link'}
+    ],
     label: 'Links'
   }),
   args: {
@@ -487,21 +635,53 @@ export const Links: Story = {
 };
 
 export const WithAvatars: Story = {
-  render: renderListBox({
-    items: ['Avery (avatar)', 'Kai (avatar)', 'Lena (avatar)', 'Rina (avatar)'],
-    label: 'With avatars'
+  render: (args) => ({
+    components: {Avatar, ListBox},
+    setup() {
+      return {
+        args,
+        avatarItems
+      };
+    },
+    template: `
+      <ListBox
+        v-bind="args"
+        aria-label="Listbox with avatars"
+        :items="avatarItems"
+        label="With avatars">
+        <template #item="{item}">
+          <span>{{ item.textValue }}</span>
+          <Avatar alt="default Adobe avatar" :src="item.avatarSrc" />
+        </template>
+      </ListBox>
+    `
   })
 };
 
 export const WithTreeData: Story = {
-  render: renderListBox({
-    items: [
-      'Documents / Projects / Proposal.md',
-      'Documents / Projects / Design.sketch',
-      'Documents / Notes / Ideas.txt',
-      'Media / Images / Launch.png',
-      'Media / Videos / Demo.mp4'
-    ],
-    label: 'With tree data'
+  render: () => ({
+    components: {ListBox},
+    setup() {
+      let selectedKeys = ref<Set<string>>(new Set(['Sam', 'Kangaroo']));
+      let handleSelectionChange = (value: string | Iterable<string>) => {
+        selectedKeys.value = normalizeSelectionSet(value);
+        action('onSelectionChange')(Array.from(selectedKeys.value));
+      };
+
+      return {
+        handleSelectionChange,
+        selectedKeys,
+        treeDataItems
+      };
+    },
+    template: `
+      <ListBox
+        aria-label="List organisms"
+        label="With tree data"
+        :items="treeDataItems"
+        selection-mode="multiple"
+        :model-value="selectedKeys"
+        @update:model-value="handleSelectionChange" />
+    `
   })
 };

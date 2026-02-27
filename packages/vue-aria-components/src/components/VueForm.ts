@@ -10,12 +10,9 @@ export const VueForm = defineComponent({
     return function render() {
       return h('form', {
         ...attrs,
-        class: ['vs-form', attrs.class],
-        'data-vac': '',
-        onSubmit: (event: SubmitEvent) => {
-          event.preventDefault();
-          emit('submit', event);
-        },
+        class: ['react-aria-Form', attrs.class],
+        'data-rac': '',
+        onSubmit: (event: SubmitEvent) => emit('submit', event),
         onReset: (event: Event) => emit('reset', event)
       }, slots.default ? slots.default() : []);
     };

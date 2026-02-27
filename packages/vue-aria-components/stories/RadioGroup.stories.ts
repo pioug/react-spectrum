@@ -1,6 +1,9 @@
 import {action} from '@storybook/addon-actions';
 import type {Meta, StoryFn, StoryObj} from '@storybook/vue3-vite';
-import {VueRadioGroup} from 'vue-aria-components';
+import {ref} from 'vue';
+import {VueForm, VueRadio, VueRadioGroup} from 'vue-aria-components';
+import '../../react-aria-components/example/index.css';
+import '../../react-aria-components/stories/styles.css';
 
 const meta = {
   title: 'React Aria Components/RadioGroup',
@@ -12,27 +15,39 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const RadioGroupExample: Story = {
-  render: (_props: {onFocus?: (event: FocusEvent) => void, onBlur?: (event: FocusEvent) => void}) => ({
+  render: (args: {onFocus?: (event: FocusEvent) => void, onBlur?: (event: FocusEvent) => void}) => ({
+    components: {
+      VueRadio,
+      VueRadioGroup
+    },
+    setup() {
+      let selected = ref('');
+
+      return {
+        args,
+        selected,
+        onGroupBlur(event: FocusEvent) {
+          args.onBlur?.(event);
+        },
+        onGroupFocus(event: FocusEvent) {
+          args.onFocus?.(event);
+        },
+        onRadioBlur: action('radio blur'),
+        onRadioFocus: action('radio focus')
+      };
+    },
     template: `
-      <div
+      <VueRadioGroup
+        v-model="selected"
         data-testid="radio-group-example"
-        data-orientation="vertical"
-        role="radiogroup"
-        style="display: flex; flex-direction: column; gap: 8px;">
-        <span class="react-aria-Label" style="display: block; font-size: 14px; font-weight: 400; line-height: 21px;">Favorite pet</span>
-        <label data-testid="radio-dog" style="align-items: center; display: flex; font-size: 18.288px; font-weight: 400; gap: 9.136px; line-height: 27.432px;">
-          <span style="background: Canvas; border: 2px solid gray; border-radius: 20.576px; box-sizing: border-box; display: block; flex-shrink: 0; height: 20.5625px; width: 20.5625px;" />
-          Dog
-        </label>
-        <label style="align-items: center; display: flex; font-size: 18.288px; font-weight: 400; gap: 9.136px; line-height: 27.432px;">
-          <span style="background: Canvas; border: 2px solid gray; border-radius: 20.576px; box-sizing: border-box; display: block; flex-shrink: 0; height: 20.5625px; width: 20.5625px;" />
-          Cat
-        </label>
-        <label style="align-items: center; display: flex; font-size: 18.288px; font-weight: 400; gap: 9.136px; line-height: 27.432px;">
-          <span style="background: Canvas; border: 2px solid gray; border-radius: 20.576px; box-sizing: border-box; display: block; flex-shrink: 0; height: 20.5625px; width: 20.5625px;" />
-          Dragon
-        </label>
-      </div>
+        class="radiogroup"
+        label="Favorite pet"
+        @focus="onGroupFocus"
+        @blur="onGroupBlur">
+        <VueRadio value="dogs" data-testid="radio-dog" class="radio" @focus="onRadioFocus" @blur="onRadioBlur">Dog</VueRadio>
+        <VueRadio value="cats" class="radio" @focus="onRadioFocus" @blur="onRadioBlur">Cat</VueRadio>
+        <VueRadio value="dragon" class="radio" @focus="onRadioFocus" @blur="onRadioBlur">Dragon</VueRadio>
+      </VueRadioGroup>
     `
   }),
   args: {
@@ -42,59 +57,109 @@ export const RadioGroupExample: Story = {
 };
 
 export const RadioGroupControlledExample: StoryFn<typeof VueRadioGroup> = () => ({
+  components: {
+    VueRadio,
+    VueRadioGroup
+  },
+  setup() {
+    let selected = ref('');
+
+    return {
+      selected
+    };
+  },
   template: `
-    <div
+    <VueRadioGroup
+      v-model="selected"
       data-testid="radio-group-example"
-      data-orientation="vertical"
-      role="radiogroup"
-      style="display: flex; flex-direction: column; gap: 8px;">
-      <span class="react-aria-Label" style="display: block; font-size: 14px; font-weight: 400; line-height: 21px;">Favorite pet (controlled)</span>
-      <label data-testid="radio-dog" style="align-items: center; display: flex; font-size: 18.288px; font-weight: 400; gap: 9.136px; line-height: 27.432px;">
-        <span style="background: Canvas; border: 2px solid gray; border-radius: 20.576px; box-sizing: border-box; display: block; flex-shrink: 0; height: 20.5625px; width: 20.5625px;" />
-        Dog
-      </label>
-      <label style="align-items: center; display: flex; font-size: 18.288px; font-weight: 400; gap: 9.136px; line-height: 27.432px;">
-        <span style="background: Canvas; border: 2px solid gray; border-radius: 20.576px; box-sizing: border-box; display: block; flex-shrink: 0; height: 20.5625px; width: 20.5625px;" />
-        Cat
-      </label>
-      <label style="align-items: center; display: flex; font-size: 18.288px; font-weight: 400; gap: 9.136px; line-height: 27.432px;">
-        <span style="background: Canvas; border: 2px solid gray; border-radius: 20.576px; box-sizing: border-box; display: block; flex-shrink: 0; height: 20.5625px; width: 20.5625px;" />
-        Dragon
-      </label>
-    </div>
+      class="radiogroup"
+      label="Favorite pet (controlled)">
+      <VueRadio value="dogs" data-testid="radio-dog" class="radio">Dog</VueRadio>
+      <VueRadio value="cats" class="radio">Cat</VueRadio>
+      <VueRadio value="dragon" class="radio">Dragon</VueRadio>
+    </VueRadioGroup>
   `
 });
 
 export const RadioGroupInDialogExample: StoryFn<typeof VueRadioGroup> = () => ({
+  components: {
+    VueRadio,
+    VueRadioGroup
+  },
+  setup() {
+    let open = ref(false);
+
+    return {
+      open
+    };
+  },
   template: `
-    <button class="react-aria-Button" type="button">Open dialog</button>
+    <button class="react-aria-Button" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" @click="open = true">Open dialog</button>
+    <div v-if="open" style="position: fixed; z-index: 100; inset: 0; background: rgba(0, 0, 0, 0.5);" />
+    <div v-if="open" style="position: fixed; z-index: 101; inset: 0; display: flex; align-items: center; justify-content: center;">
+      <section class="react-aria-Dialog" role="dialog" style="background: Canvas; color: CanvasText; border: 1px solid gray; padding: 30px;">
+        <VueRadioGroup data-testid="radio-group-example" class="radiogroup" label="Favorite pet">
+          <VueRadio value="dogs" data-testid="radio-dog" class="radio">Dog</VueRadio>
+          <VueRadio value="cats" class="radio">Cat</VueRadio>
+          <VueRadio value="dragon" class="radio">Dragon</VueRadio>
+        </VueRadioGroup>
+        <button class="react-aria-Button" data-rac="" type="button" tabindex="0" data-react-aria-pressable="true" style="margin-top: 10px;" @click="open = false">Close</button>
+      </section>
+    </div>
   `
 });
 
 export const RadioGroupSubmitExample: StoryFn<typeof VueRadioGroup> = () => ({
+  components: {
+    VueForm,
+    VueRadio,
+    VueRadioGroup
+  },
+  setup() {
+    let selected = ref('');
+    let isInvalid = ref(false);
+
+    let onSubmit = (event: Event) => {
+      event.preventDefault();
+      isInvalid.value = selected.value === '';
+    };
+
+    let onReset = (event: Event) => {
+      event.preventDefault();
+      selected.value = '';
+      isInvalid.value = false;
+    };
+
+    let onSelectionChange = () => {
+      if (selected.value !== '') {
+        isInvalid.value = false;
+      }
+    };
+
+    return {
+      isInvalid,
+      onReset,
+      onSelectionChange,
+      onSubmit,
+      selected
+    };
+  },
   template: `
-    <form>
-      <div
+    <VueForm @submit="onSubmit" @reset="onReset">
+      <VueRadioGroup
+        v-model="selected"
         data-testid="radio-group-example"
-        data-orientation="vertical"
-        role="radiogroup"
-        style="display: flex; flex-direction: column; gap: 8px;">
-        <span class="react-aria-Label" style="display: block; font-size: 14px; font-weight: 400; line-height: 21px;">Favorite pet</span>
-        <label data-testid="radio-dog" style="align-items: center; display: flex; font-size: 18.288px; font-weight: 400; gap: 9.136px; line-height: 27.432px;">
-          <span style="background: Canvas; border: 2px solid gray; border-radius: 20.576px; box-sizing: border-box; display: block; flex-shrink: 0; height: 20.5625px; width: 20.5625px;" />
-          Dog
-        </label>
-        <label style="align-items: center; display: flex; font-size: 18.288px; font-weight: 400; gap: 9.136px; line-height: 27.432px;">
-          <span style="background: Canvas; border: 2px solid gray; border-radius: 20.576px; box-sizing: border-box; display: block; flex-shrink: 0; height: 20.5625px; width: 20.5625px;" />
-          Cat
-        </label>
-        <label style="align-items: center; display: flex; font-size: 18.288px; font-weight: 400; gap: 9.136px; line-height: 27.432px;">
-          <span style="background: Canvas; border: 2px solid gray; border-radius: 20.576px; box-sizing: border-box; display: block; flex-shrink: 0; height: 20.5625px; width: 20.5625px;" />
-          Dragon
-        </label>
-      </div>
-      <button type="submit">Submit</button>
-      <button type="reset">Reset</button>
-    </form>
+        class="radiogroup"
+        label="Favorite pet"
+        required
+        :invalid="isInvalid"
+        @update:modelValue="onSelectionChange">
+        <VueRadio value="dogs" data-testid="radio-dog" class="radio">Dog</VueRadio>
+        <VueRadio value="cats" class="radio">Cat</VueRadio>
+        <VueRadio value="dragon" class="radio">Dragon</VueRadio>
+      </VueRadioGroup>
+      <button class="react-aria-Button" data-rac="" type="submit" tabindex="0" data-react-aria-pressable="true">Submit</button>
+      <button class="react-aria-Button" data-rac="" type="reset" tabindex="0" data-react-aria-pressable="true">Reset</button>
+    </VueForm>
   `
 });

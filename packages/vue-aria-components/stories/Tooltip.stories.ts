@@ -139,33 +139,69 @@ interface TooltipArrowBoundaryOffsetArgs {
 
 type PlacementCard = {
   key: keyof TooltipArrowBoundaryOffsetArgs,
-  label: string
+  label: string,
+  placement: string,
+  arrowRotation: string
 };
 
 const rows: PlacementCard[][] = [
   [
-    {key: 'topLeft', label: 'Top left'},
-    {key: 'topRight', label: 'Top right'}
+    {key: 'topLeft', label: 'Top left', placement: 'top left', arrowRotation: 'rotate(0deg)'},
+    {key: 'topRight', label: 'Top right', placement: 'top right', arrowRotation: 'rotate(0deg)'}
   ],
   [
-    {key: 'leftTop', label: 'Left top'},
-    {key: 'leftBottom', label: 'Left bottom'}
+    {key: 'leftTop', label: 'Left top', placement: 'left top', arrowRotation: 'rotate(-90deg)'},
+    {key: 'leftBottom', label: 'Left bottom', placement: 'left bottom', arrowRotation: 'rotate(-90deg)'}
   ],
   [
-    {key: 'rightTop', label: 'Right top'},
-    {key: 'rightBottom', label: 'Right bottom'}
+    {key: 'rightTop', label: 'Right top', placement: 'right top', arrowRotation: 'rotate(90deg)'},
+    {key: 'rightBottom', label: 'Right bottom', placement: 'right bottom', arrowRotation: 'rotate(90deg)'}
   ],
   [
-    {key: 'bottomLeft', label: 'Bottom left'},
-    {key: 'bottomRight', label: 'Bottom right'}
+    {key: 'bottomLeft', label: 'Bottom left', placement: 'bottom left', arrowRotation: 'rotate(180deg)'},
+    {key: 'bottomRight', label: 'Bottom right', placement: 'bottom right', arrowRotation: 'rotate(180deg)'}
   ]
 ];
 
 export const TooltipArrowBoundaryOffsetExample: TooltipStoryObj = {
-  render: () => ({
+  render: (args: TooltipArrowBoundaryOffsetArgs) => ({
+    components: {
+      VuePopover
+    },
     setup() {
+      let active = ref<string>('');
+
+      let show = (key: string) => {
+        active.value = key;
+      };
+
+      let hide = (key: string) => {
+        if (active.value === key) {
+          active.value = '';
+        }
+      };
+
+      let arrowOffsetStyle = (card: PlacementCard) => {
+        let offset = Number(args[card.key] ?? 0);
+        if (card.placement.startsWith('left') || card.placement.startsWith('right')) {
+          return {
+            transform: 'translateY(-50%)',
+            marginTop: `${offset}px`
+          };
+        }
+
+        return {
+          transform: 'translateX(-50%)',
+          marginLeft: `${offset}px`
+        };
+      };
+
       return {
-        rows
+        active,
+        arrowOffsetStyle,
+        hide,
+        rows,
+        show
       };
     },
     template: `
@@ -173,73 +209,37 @@ export const TooltipArrowBoundaryOffsetExample: TooltipStoryObj = {
         <div style="display: flex; flex-direction: column;">
           <div v-for="(row, rowIndex) in rows" :key="rowIndex" style="display: flex;">
             <div v-for="card in row" :key="card.key" style="padding: 12px;">
-              <button type="button" style="width: 200px; height: 100px;">{{ card.label }}</button>
+              <button
+                type="button"
+                style="width: 200px; height: 100px;"
+                @mouseenter="show(card.key)"
+                @mouseleave="hide(card.key)"
+                @focus="show(card.key)"
+                @blur="hide(card.key)">
+                {{ card.label }}
+              </button>
+              <VuePopover
+                :open="active === card.key"
+                :placement="card.placement"
+                :dismissable="false"
+                class="react-aria-Tooltip"
+                :style="{
+                  background: 'Canvas',
+                  color: 'CanvasText',
+                  border: '1px solid gray',
+                  padding: '8px',
+                  borderRadius: '9999px',
+                  zIndex: 100000
+                }">
+                <div class="react-aria-OverlayArrow" :data-placement="card.placement" :style="arrowOffsetStyle(card)">
+                  <svg width="8" height="8" :style="{display: 'block', transform: card.arrowRotation}">
+                    <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
+                  </svg>
+                </div>
+                {{ card.label }}
+              </VuePopover>
             </div>
           </div>
-        </div>
-        <div class="react-aria-Tooltip" data-rac="" role="tooltip" data-placement="top" style="position: absolute; z-index: 100000; max-height: 105px; background: Canvas; color: CanvasText; border: 1px solid gray; padding: 8px; border-radius: 9999px; left: 428px; bottom: 603px; font-family: Times; font-size: 16px; line-height: normal;">
-          <div class="react-aria-OverlayArrow" data-rac="" data-placement="top" style="position: absolute; transform: translateX(-50%); top: 100%; left: 39px;">
-            <svg width="8" height="8" style="display: block;">
-              <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
-            </svg>
-          </div>
-          Top left
-        </div>
-        <div class="react-aria-Tooltip" data-rac="" role="tooltip" data-placement="top" style="position: absolute; z-index: 100000; max-height: 105px; background: Canvas; color: CanvasText; border: 1px solid gray; padding: 8px; border-radius: 9999px; left: 775px; bottom: 603px; font-family: Times; font-size: 16px; line-height: normal;">
-          <div class="react-aria-OverlayArrow" data-rac="" data-placement="top" style="position: absolute; transform: translateX(-50%); top: 100%; left: 29px;">
-            <svg width="8" height="8" style="display: block;">
-              <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
-            </svg>
-          </div>
-          Top right
-        </div>
-        <div class="react-aria-Tooltip" data-rac="" role="tooltip" data-placement="left" style="position: absolute; z-index: 100000; max-height: 460px; background: Canvas; color: CanvasText; border: 1px solid gray; padding: 8px; border-radius: 9999px; top: 248px; right: 859px; font-family: Times; font-size: 16px; line-height: normal;">
-          <div class="react-aria-OverlayArrow" data-rac="" data-placement="left" style="position: absolute; transform: translateY(-50%); left: 100%; top: 17px;">
-            <svg width="8" height="8" style="display: block; transform: rotate(-90deg);">
-              <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
-            </svg>
-          </div>
-          Left top
-        </div>
-        <div class="react-aria-Tooltip" data-rac="" role="tooltip" data-placement="left" style="position: absolute; z-index: 100000; max-height: 336px; background: Canvas; color: CanvasText; border: 1px solid gray; padding: 8px; border-radius: 9999px; top: 312px; right: 635px; font-family: Times; font-size: 16px; line-height: normal;">
-          <div class="react-aria-OverlayArrow" data-rac="" data-placement="left" style="position: absolute; transform: translateY(-50%); left: 100%; top: 17px;">
-            <svg width="8" height="8" style="display: block; transform: rotate(-90deg);">
-              <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
-            </svg>
-          </div>
-          Left bottom
-        </div>
-        <div class="react-aria-Tooltip" data-rac="" role="tooltip" data-placement="right" style="position: absolute; z-index: 100000; max-height: 336px; background: Canvas; color: CanvasText; border: 1px solid gray; padding: 8px; border-radius: 9999px; top: 372px; left: 635px; font-family: Times; font-size: 16px; line-height: normal;">
-          <div class="react-aria-OverlayArrow" data-rac="" data-placement="right" style="position: absolute; transform: translateY(-50%); right: 100%; top: 17px;">
-            <svg width="8" height="8" style="display: block; transform: rotate(90deg);">
-              <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
-            </svg>
-          </div>
-          Right top
-        </div>
-        <div class="react-aria-Tooltip" data-rac="" role="tooltip" data-placement="right" style="position: absolute; z-index: 100000; max-height: 460px; background: Canvas; color: CanvasText; border: 1px solid gray; padding: 8px; border-radius: 9999px; top: 436px; left: 859px; font-family: Times; font-size: 16px; line-height: normal;">
-          <div class="react-aria-OverlayArrow" data-rac="" data-placement="right" style="position: absolute; transform: translateY(-50%); right: 100%; top: 17px;">
-            <svg width="8" height="8" style="display: block; transform: rotate(90deg);">
-              <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
-            </svg>
-          </div>
-          Right bottom
-        </div>
-        <div class="react-aria-Tooltip" data-rac="" role="tooltip" data-placement="bottom" style="position: absolute; z-index: 100000; max-height: 105px; background: Canvas; color: CanvasText; border: 1px solid gray; padding: 8px; border-radius: 9999px; top: 603px; left: 428px; font-family: Times; font-size: 16px; line-height: normal;">
-          <div class="react-aria-OverlayArrow" data-rac="" data-placement="bottom" style="position: absolute; transform: translateX(-50%); bottom: 100%; left: 62px;">
-            <svg width="8" height="8" style="display: block; transform: rotate(180deg);">
-              <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
-            </svg>
-          </div>
-          Bottom left
-        </div>
-        <div class="react-aria-Tooltip" data-rac="" role="tooltip" data-placement="bottom" style="position: absolute; z-index: 100000; max-height: 105px; background: Canvas; color: CanvasText; border: 1px solid gray; padding: 8px; border-radius: 9999px; top: 603px; left: 752px; font-family: Times; font-size: 16px; line-height: normal;">
-          <div class="react-aria-OverlayArrow" data-rac="" data-placement="bottom" style="position: absolute; transform: translateX(-50%); bottom: 100%; left: 29px;">
-            <svg width="8" height="8" style="display: block; transform: rotate(180deg);">
-              <path d="M0 0L4 4L8 0" fill="white" stroke-width="1" stroke="gray" />
-            </svg>
-          </div>
-          Bottom right
         </div>
       </div>
     `

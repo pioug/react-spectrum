@@ -1,5 +1,4 @@
-import {computed, defineComponent, h} from 'vue';
-import {getSpectrumContext} from '../context';
+import {computed, defineComponent, h, type PropType} from 'vue';
 
 export const VueMeter = defineComponent({
   name: 'VueMeter',
@@ -11,6 +10,14 @@ export const VueMeter = defineComponent({
     value: {
       type: Number,
       default: 0
+    },
+    minValue: {
+      type: Number as PropType<number | undefined>,
+      default: undefined
+    },
+    maxValue: {
+      type: Number as PropType<number | undefined>,
+      default: undefined
     },
     min: {
       type: Number,
@@ -38,44 +45,45 @@ export const VueMeter = defineComponent({
     }
   },
   setup(props, {attrs}) {
-    let context = getSpectrumContext();
+    let resolvedMin = computed(() => props.minValue ?? props.min);
+    let resolvedMax = computed(() => props.maxValue ?? props.max);
 
-    let clampedValue = computed(() => Math.min(props.max, Math.max(props.min, props.value)));
+    let clampedValue = computed(() => Math.min(resolvedMax.value, Math.max(resolvedMin.value, props.value)));
     let percentage = computed(() => {
-      if (props.max <= props.min) {
+      if (resolvedMax.value <= resolvedMin.value) {
         return 0;
       }
 
-      return ((clampedValue.value - props.min) / (props.max - props.min)) * 100;
+      return ((clampedValue.value - resolvedMin.value) / (resolvedMax.value - resolvedMin.value)) * 100;
     });
-
-    let classes = computed(() => ([
-      'vs-meter',
-      context.value.scale === 'large' ? 'vs-meter--large' : 'vs-meter--medium'
-    ]));
+    let valueText = computed(() => `${Math.round(percentage.value)}%`);
 
     return function render() {
-      return h('div', {class: [classes.value, attrs.class], 'data-vac': ''}, [
+      return h('div', {
+        ...attrs,
+        class: ['react-aria-Meter', attrs.class],
+        role: 'meter progressbar',
+        'data-rac': '',
+        'aria-label': props.label || undefined,
+        'aria-valuemin': resolvedMin.value,
+        'aria-valuemax': resolvedMax.value,
+        'aria-valuenow': clampedValue.value,
+        'aria-valuetext': valueText.value
+      }, [
         props.label || props.showValueLabel
-          ? h('div', {class: 'vs-meter__header'}, [
-            props.label ? h('span', {class: 'vs-meter__label'}, props.label) : null,
-            props.showValueLabel ? h('span', {class: 'vs-meter__value'}, `${Math.round(percentage.value)}%`) : null
+          ? h('div', {class: 'react-aria-LabelRow'}, [
+            props.label ? h('span', {class: 'react-aria-Label'}, props.label) : null,
+            props.showValueLabel ? h('span', {class: 'value'}, valueText.value) : null
           ])
           : null,
         h('div', {
-          class: 'vs-meter__track',
-          role: 'meter',
-          'aria-label': props.label || undefined,
-          'aria-valuemin': props.min,
-          'aria-valuemax': props.max,
-          'aria-valuenow': clampedValue.value,
-          'aria-valuetext': `${Math.round(percentage.value)}%`,
+          class: 'bar',
           'data-low': props.low,
           'data-high': props.high,
           'data-optimum': props.optimum
         }, [
           h('div', {
-            class: 'vs-meter__fill',
+            class: 'fill',
             style: {width: `${percentage.value}%`}
           })
         ])

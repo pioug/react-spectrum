@@ -5,21 +5,6 @@ import {ref} from 'vue';
 import '../../react-aria-components/stories/styles.css';
 
 const basicItems = ['Foo', 'Bar', 'Baz', 'Google'];
-const sectionItems = [
-  'Section 1: Foo',
-  'Section 1: Bar',
-  'Section 1: Baz',
-  'Section 2: Foo',
-  'Section 2: Bar',
-  'Section 2: Baz'
-];
-const albumItems = [
-  'Euphoric Echoes - Luna Solstice',
-  'Neon Dreamscape - Electra Skyline',
-  "Cosmic Serenade - Orion's Symphony",
-  'Melancholy Melodies - Violet Mistral',
-  'Rhythmic Illusions - Mirage Beats'
-];
 const dropOntoRootAlbums = [
   {
     artist: 'Luna Solstice',
@@ -48,29 +33,6 @@ const dropOntoRootAlbums = [
   }
 ];
 const gridItems = ['1,1', '1,2', '1,3', '2,1', '2,2', '2,3', '3,1', '3,2', '3,3'];
-const asyncListBoxItems = [
-  'Luke Skywalker',
-  'C-3PO',
-  'R2-D2',
-  'Darth Vader',
-  'Leia Organa',
-  'Owen Lars',
-  'Beru Whitesun lars',
-  'R5-D4'
-];
-const asyncListBoxVirtualizedVisibleItems = [
-  'Luke Skywalker',
-  'C-3PO',
-  'R2-D2',
-  'Darth Vader',
-  'Leia Organa',
-  'Owen Lars',
-  'Beru Whitesun lars',
-  'R5-D4',
-  'Biggs Darklighter',
-  'Obi-Wan Kenobi',
-  'Anakin Skywalker'
-];
 const listBoxScrollMarginItems = Array.from({length: 100}, (_, id) => ({
   description: `Description ${id}`,
   id,
@@ -231,53 +193,6 @@ export const MyListBoxLoaderIndicator = (props: {isLoading?: boolean, orientatio
   };
 };
 
-interface ListBoxStoryOptions {
-  actionName?: string,
-  containerStyle?: StyleMap,
-  initialValue?: string,
-  items: string[],
-  label: string,
-  listStyle?: StyleMap,
-  showSelection?: boolean
-}
-
-function makeItems(count: number, prefix = 'Item'): string[] {
-  return Array.from({length: count}, (_, index) => `${prefix} ${index + 1}`);
-}
-
-function createListBoxStory(args: ListBoxStoryArgs = {}, options: ListBoxStoryOptions) {
-  return {
-    components: {
-      VueListBox
-    },
-    setup() {
-      let selected = ref(options.initialValue ?? '');
-      return {
-        args,
-        containerStyle: options.containerStyle ?? {},
-        items: options.items,
-        label: options.label,
-        listStyle: options.listStyle ?? {},
-        onSelect: action(options.actionName ?? 'onAction'),
-        selected,
-        showSelection: options.showSelection ?? true
-      };
-    },
-    template: `
-      <div :style="containerStyle">
-        <VueListBox
-          v-bind="args"
-          v-model="selected"
-          :items="items"
-          :label="label"
-          :style="listStyle"
-          @select="onSelect" />
-        <p v-if="showSelection" style="margin-top: 8px;">Selected: {{ selected || 'none' }}</p>
-      </div>
-    `
-  };
-}
-
 interface AsyncListBoxArgs {
   delay?: number,
   orientation?: 'horizontal' | 'vertical'
@@ -346,62 +261,113 @@ function createAsyncListBoxStory(args: AsyncListBoxArgs = {}, opts: {virtualized
   };
 }
 
-function createAlbumCardListBoxStory(label: string) {
+function createAlbumCardListBoxStory(label: string, args: ListBoxStoryArgs = {}, options: {orientation?: 'horizontal' | 'vertical'} = {}) {
   return {
+    components: {
+      VueListBox
+    },
     setup() {
+      let selected = ref<string[]>([]);
       return {
+        args,
+        albumListStyle: {
+          display: 'flex',
+          flexDirection: options.orientation === 'vertical' ? 'column' : 'row',
+          maxWidth: '100%',
+          outline: 'none',
+          overflow: 'auto',
+          padding: '4px',
+          width: 'fit-content'
+        } as StyleMap,
+        albumItemStyle: {
+          borderRadius: '6px',
+          cursor: 'default',
+          display: 'flex',
+          flexDirection: 'column',
+          margin: '0px',
+          outline: 'none',
+          padding: '4px',
+          position: 'relative'
+        } as StyleMap,
+        onSelect: action('onAction'),
+        selected,
         dropOntoRootAlbums
       };
     },
     template: `
-      <div
-        class="react-aria-ListBox"
-        data-rac=""
+      <VueListBox
+        v-bind="args"
+        v-model="selected"
         aria-label="${label}"
-        aria-multiselectable="true"
-        role="listbox"
-        tabindex="0"
-        data-layout="stack"
-        data-orientation="horizontal"
-        style="display: flex; flex-direction: row; width: fit-content; max-width: 100%; padding: 4px; overflow: auto; outline: none;">
-        <div
-          v-for="(album, index) in dropOntoRootAlbums"
-          :key="album.title"
-          class="react-aria-ListBoxItem"
-          data-rac=""
-          role="option"
-          aria-selected="false"
-          tabindex="-1"
-          draggable="true"
-          data-allows-dragging="true"
-          data-selection-mode="multiple"
-          style="position: relative; margin: 0px; padding: 4px; border-radius: 6px; outline: none; cursor: default; display: flex; flex-direction: column;">
-          <img alt="" :src="album.image" style="object-fit: cover; width: 150px; height: 150px; margin-bottom: 4px; border-radius: 4px; transition: box-shadow 200ms;" />
-          <span class="react-aria-Text" :id="'list-box-album-title-' + index" slot="label" style="font-weight: bold;">{{ album.title }}</span>
-          <span class="react-aria-Text" :id="'list-box-album-artist-' + index" slot="description" style="font-size: small;">{{ album.artist }}</span>
-        </div>
-      </div>
+        collection-class="react-aria-ListBox"
+        item-base-class="react-aria-ListBoxItem"
+        item-class="react-aria-ListBoxItem"
+        :items="dropOntoRootAlbums"
+        selection-mode="multiple"
+        data-orientation="${options.orientation ?? 'horizontal'}"
+        :item-style="albumItemStyle"
+        :style="albumListStyle"
+        @select="onSelect">
+        <template #default="{item, value}">
+          <div draggable="true" data-allows-dragging="true">
+            <img alt="" :src="item.image" style="object-fit: cover; width: 150px; height: 150px; margin-bottom: 4px; border-radius: 4px; transition: box-shadow 200ms;" />
+            <span class="react-aria-Text" :id="'list-box-album-title-' + value" slot="label" style="font-weight: bold;">{{ item.title }}</span>
+            <span class="react-aria-Text" :id="'list-box-album-artist-' + value" slot="description" style="font-size: small;">{{ item.artist }}</span>
+          </div>
+        </template>
+      </VueListBox>
     `
   };
 }
 
 export const ListBoxExample: Story = {
-  render: () => ({
+  render: (args) => ({
+    components: {
+      VueListBox
+    },
+    setup() {
+      let selected = ref('');
+      return {
+        args,
+        itemStyle: {
+          color: '#000',
+          cursor: 'default',
+          display: 'grid',
+          overflow: 'hidden',
+          padding: '2px 5px',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          wordBreak: 'break-word'
+        } as StyleMap,
+        listStyle: {
+          background: 'lightgray',
+          border: '1px solid gray',
+          marginTop: '4px',
+          maxWidth: '100%',
+          width: '150px'
+        } as StyleMap,
+        onSelect: action('onAction'),
+        selected,
+        items: basicItems
+      };
+    },
     template: `
-      <div
-        class="v7C2Sq_menu"
-        data-rac=""
+      <VueListBox
+        v-bind="args"
+        v-model="selected"
         aria-label="test listbox"
-        role="listbox"
-        tabindex="0"
-        data-layout="stack"
-        data-orientation="vertical"
-        style="margin-top: 4px; width: 150px; max-width: 100%; border: 1px solid gray; background: lightgray;">
-        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">Foo</div>
-        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">Bar</div>
-        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">Baz</div>
-        <a class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" href="http://google.com" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">Google</a>
-      </div>
+        collection-class="v7C2Sq_menu"
+        item-base-class="v7C2Sq_item"
+        item-class="v7C2Sq_item"
+        :items="items"
+        :item-style="itemStyle"
+        :style="listStyle"
+        @select="onSelect">
+        <template #default="{label}">
+          <a v-if="label === 'Google'" href="http://google.com">{{ label }}</a>
+          <span v-else>{{ label }}</span>
+        </template>
+      </VueListBox>
     `
   })
 };
@@ -430,93 +396,118 @@ ListBoxExample.argTypes = {
 
 ListBoxExample.parameters = {
   description: {
-    data: 'Hover and focus styling parity fixture mirrored from the React story.'
+    data: 'Hover and focus styling behavior mirrored from the React story.'
   }
 };
 
 export const ListBoxSections: Story = {
   render: () => ({
+    components: {
+      VueListBox
+    },
+    setup() {
+      let selected = ref<string[]>([]);
+      return {
+        selected,
+        sections: [
+          {
+            title: 'Section 1',
+            items: ['Foo', 'Bar', 'Baz']
+          },
+          {
+            title: 'Section 2',
+            items: ['Foo', 'Bar', 'Baz']
+          }
+        ],
+        listStyle: {
+          background: 'lightgray',
+          border: '1px solid gray',
+          marginTop: '4px',
+          maxWidth: '100%',
+          width: '150px'
+        } as StyleMap,
+        itemStyle: {
+          color: '#000',
+          display: 'grid',
+          overflow: 'hidden',
+          padding: '2px 5px',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          wordBreak: 'break-word'
+        } as StyleMap
+      };
+    },
     template: `
-      <div
-        class="v7C2Sq_menu"
-        data-rac=""
+      <VueListBox
+        v-model="selected"
         aria-label="test listbox with section"
-        aria-multiselectable="true"
-        role="listbox"
-        tabindex="0"
-        data-layout="stack"
-        data-orientation="vertical"
-        style="margin-top: 4px; width: 150px; max-width: 100%; border: 1px solid gray; background: lightgray;">
-        <section class="v7C2Sq_group" data-rac="" role="group">
-          <header class="react-aria-Header" role="presentation" style="font-size: 1.2em;">Section 1</header>
-          <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" data-selection-mode="multiple" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">Foo</div>
-          <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" data-selection-mode="multiple" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">Bar</div>
-          <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" data-selection-mode="multiple" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">Baz</div>
-        </section>
-        <div role="separator" class="react-aria-Separator" style="border-top: 1px solid gray; margin: 2px 5px;"></div>
-        <section class="v7C2Sq_group" data-rac="" role="group" aria-label="Section 2">
-          <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" data-selection-mode="multiple" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">Foo</div>
-          <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" data-selection-mode="multiple" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">Bar</div>
-          <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" data-selection-mode="multiple" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">Baz</div>
-        </section>
-      </div>
+        collection-class="v7C2Sq_menu"
+        item-base-class="v7C2Sq_item"
+        item-class="v7C2Sq_item"
+        header-class="react-aria-Header"
+        selection-mode="multiple"
+        :sections="sections"
+        :item-style="itemStyle"
+        :style="listStyle" />
     `
   })
 };
 
 export const ListBoxComplex: Story = {
   render: () => ({
+    components: {
+      VueListBox
+    },
+    setup() {
+      let selected = ref<string[]>([]);
+      return {
+        selected,
+        items: [
+          {label: 'Item 1', description: 'Description'},
+          {label: 'Item 2', description: 'Description'},
+          {label: 'Item 3', description: 'Description'}
+        ],
+        listStyle: {
+          background: 'lightgray',
+          border: '1px solid gray',
+          marginTop: '4px',
+          maxWidth: '100%',
+          width: '150px'
+        } as StyleMap,
+        itemStyle: {
+          color: '#000',
+          cursor: 'default',
+          display: 'grid',
+          overflow: 'hidden',
+          padding: '2px 5px',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          wordBreak: 'break-word'
+        } as StyleMap
+      };
+    },
     template: `
-      <div
-        class="v7C2Sq_menu"
-        data-rac=""
+      <VueListBox
+        v-model="selected"
         aria-label="listbox complex"
-        aria-multiselectable="true"
-        role="listbox"
-        tabindex="0"
-        data-layout="stack"
-        data-orientation="vertical"
-        style="margin-top: 4px; width: 150px; max-width: 100%; border: 1px solid gray; background: lightgray;">
-        <div
-          class="v7C2Sq_item"
-          data-rac=""
-          role="option"
-          aria-selected="false"
-          tabindex="-1"
-          data-selection-mode="multiple"
-          style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">
-          <span class="react-aria-Text" slot="label">Item 1</span>
-          <span class="react-aria-Text" slot="description" style="font-size: 13px;">Description</span>
-        </div>
-        <div
-          class="v7C2Sq_item"
-          data-rac=""
-          role="option"
-          aria-selected="false"
-          tabindex="-1"
-          data-selection-mode="multiple"
-          style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">
-          <span class="react-aria-Text" slot="label">Item 2</span>
-          <span class="react-aria-Text" slot="description" style="font-size: 13px;">Description</span>
-        </div>
-        <div
-          class="v7C2Sq_item"
-          data-rac=""
-          role="option"
-          aria-selected="false"
-          tabindex="-1"
-          data-selection-mode="multiple"
-          style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">
-          <span class="react-aria-Text" slot="label">Item 3</span>
-          <span class="react-aria-Text" slot="description" style="font-size: 13px;">Description</span>
-        </div>
-      </div>
+        collection-class="v7C2Sq_menu"
+        item-base-class="v7C2Sq_item"
+        item-class="v7C2Sq_item"
+        selection-mode="multiple"
+        :items="items"
+        :item-style="itemStyle"
+        :style="listStyle">
+        <template #default="{item}">
+          <span class="react-aria-Text" slot="label">{{ item.label }}</span>
+          <span class="react-aria-Text" slot="description" style="font-size: 13px;">{{ item.description }}</span>
+        </template>
+      </VueListBox>
     `
   })
 };
 
 export const ListBoxDnd: Story = {
-  render: () => createAlbumCardListBoxStory('Albums')
+  render: (args) => createAlbumCardListBoxStory('Albums', args as ListBoxStoryArgs)
 };
 
 ListBoxDnd.args = {
@@ -536,7 +527,7 @@ ListBoxDnd.argTypes = {
 };
 
 export const ListBoxPreviewOffset: Story = {
-  render: () => createAlbumCardListBoxStory('Albums with preview offset'),
+  render: (args) => createAlbumCardListBoxStory('Albums with preview offset', args as ListBoxStoryArgs),
   args: {
     layout: 'stack',
     orientation: 'horizontal',
@@ -568,47 +559,97 @@ export const ListBoxPreviewOffset: Story = {
 
 export const ListBoxHover: Story = {
   render: () => ({
+    components: {
+      VueListBox
+    },
+    setup() {
+      let selected = ref('');
+      return {
+        selected,
+        itemStyle: {
+          color: '#000',
+          cursor: 'default',
+          display: 'grid',
+          overflow: 'hidden',
+          padding: '2px 5px',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          wordBreak: 'break-word'
+        } as StyleMap,
+        listStyle: {
+          background: 'lightgray',
+          border: '1px solid gray',
+          marginTop: '4px',
+          maxWidth: '100%',
+          width: '150px'
+        } as StyleMap,
+        onSelect: action('onAction'),
+        items: ['Hover', 'Bar', 'Baz', 'Google']
+      };
+    },
     template: `
-      <div
-        class="v7C2Sq_menu"
-        data-rac=""
+      <VueListBox
+        v-model="selected"
         aria-label="test listbox"
-        role="listbox"
-        tabindex="0"
-        data-layout="stack"
-        data-orientation="vertical"
-        style="margin-top: 4px; width: 150px; max-width: 100%; border: 1px solid gray; background: lightgray;">
-        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">Hover</div>
-        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">Bar</div>
-        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">Baz</div>
-        <a class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" href="http://google.com" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">Google</a>
-      </div>
+        collection-class="v7C2Sq_menu"
+        item-base-class="v7C2Sq_item"
+        item-class="v7C2Sq_item"
+        :items="items"
+        :item-style="itemStyle"
+        :style="listStyle"
+        @select="onSelect">
+        <template #default="{label}">
+          <a v-if="label === 'Google'" href="http://google.com">{{ label }}</a>
+          <span v-else>{{ label }}</span>
+        </template>
+      </VueListBox>
     `
   })
 };
 
 export const ListBoxGrid: Story = {
-  render: () => ({
+  render: (args) => ({
+    components: {
+      VueListBox
+    },
+    setup() {
+      let selected = ref<string[]>([]);
+      return {
+        args,
+        gridItems,
+        selected,
+        itemStyle: {
+          alignItems: 'center',
+          color: '#000',
+          display: 'flex',
+          justifyContent: 'center',
+          padding: '2px 5px',
+          wordBreak: 'break-word'
+        } as StyleMap,
+        listStyle: {
+          background: 'lightgray',
+          border: '1px solid gray',
+          display: 'grid',
+          gridAutoFlow: (args as {orientation?: 'horizontal' | 'vertical'}).orientation === 'horizontal' ? 'column' : 'row',
+          gridTemplate: 'repeat(3, 1fr) / repeat(3, 1fr)',
+          height: '300px',
+          marginTop: '4px',
+          width: '300px'
+        } as StyleMap
+      };
+    },
     template: `
-      <div
-        class="v7C2Sq_menu"
-        data-rac=""
+      <VueListBox
+        v-bind="args"
+        v-model="selected"
         aria-label="test listbox"
-        role="listbox"
-        tabindex="0"
-        data-layout="grid"
-        data-orientation="vertical"
-        style="margin-top: 4px; width: 300px; height: 300px; border: 1px solid gray; background: lightgray; display: grid; grid-template: repeat(3, 1fr) / repeat(3, 1fr); grid-auto-flow: row;">
-        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: flex; align-items: center; justify-content: center; padding: 2px 5px; color: #000;">1,1</div>
-        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: flex; align-items: center; justify-content: center; padding: 2px 5px; color: #000;">1,2</div>
-        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: flex; align-items: center; justify-content: center; padding: 2px 5px; color: #000;">1,3</div>
-        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: flex; align-items: center; justify-content: center; padding: 2px 5px; color: #000;">2,1</div>
-        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: flex; align-items: center; justify-content: center; padding: 2px 5px; color: #000;">2,2</div>
-        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: flex; align-items: center; justify-content: center; padding: 2px 5px; color: #000;">2,3</div>
-        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: flex; align-items: center; justify-content: center; padding: 2px 5px; color: #000;">3,1</div>
-        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: flex; align-items: center; justify-content: center; padding: 2px 5px; color: #000;">3,2</div>
-        <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: flex; align-items: center; justify-content: center; padding: 2px 5px; color: #000;">3,3</div>
-      </div>
+        collection-class="v7C2Sq_menu"
+        item-base-class="v7C2Sq_item"
+        item-class="v7C2Sq_item"
+        layout="grid"
+        :items="gridItems"
+        :item-style="itemStyle"
+        :style="listStyle" />
     `
   })
 };
@@ -630,42 +671,31 @@ ListBoxGrid.argTypes = {
 export const VirtualizedListBox: Story = {
   render: () => ({
     setup() {
+      let selected = ref('');
+      let sections = [
+        {
+          title: 'Section 0',
+          items: virtualizedListBoxVisibleItems
+        }
+      ];
+
       return {
-        virtualizedListBoxVisibleItems
+        sections,
+        selected
       };
     },
     template: `
-      <div
-        class="v7C2Sq_menu"
-        data-rac=""
+      <VueListBox
+        v-model="selected"
         aria-label="virtualized listbox"
-        role="listbox"
-        tabindex="0"
-        data-layout="stack"
-        data-orientation="vertical"
-        style="margin-top: 4px; width: 150px; max-width: 100%; height: 400px; border: 1px solid gray; background: lightgray; overflow: auto;">
-        <div role="presentation" style="width: 150px; height: 25259px; pointer-events: auto; position: relative;">
-          <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 0px; left: 0px; width: 150px; height: 2525px;">
-            <section class="v7C2Sq_group" data-rac="" role="group">
-              <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 0px; left: 0px; width: 150px; height: 25px;">
-                <header class="react-aria-Header" role="presentation" style="font-size: 1.2em;">Section 0</header>
-              </div>
-              <div
-                v-for="(item, index) in virtualizedListBoxVisibleItems"
-                :key="item"
-                role="presentation"
-                :style="{position: 'absolute', overflow: 'visible', opacity: '1', zIndex: '0', contain: 'size layout style', top: (25 + (index * 25)) + 'px', left: '0px', width: '150px', height: '25px'}">
-                <div class="v7C2Sq_item" data-rac="" role="option" tabindex="-1" style="word-break: break-word; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">{{ item }}</div>
-              </div>
-            </section>
-          </div>
-          <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 25259px; left: 0px; width: 150px; height: 0px;">
-            <div inert="" style="position: relative; width: 0px; height: 0px;">
-              <div data-testid="loadMoreSentinel" style="position: absolute; height: 1px; width: 1px;"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+        class="v7C2Sq_menu"
+        collection-class="v7C2Sq_menu"
+        header-class="react-aria-Header"
+        item-base-class="v7C2Sq_item"
+        item-class="v7C2Sq_item"
+        :item-style="{wordBreak: 'break-word', display: 'grid', padding: '2px 5px', overflow: 'hidden', whiteSpace: 'nowrap', color: '#000', textOverflow: 'ellipsis'}"
+        :sections="sections"
+        style="margin-top: 4px; width: 150px; max-width: 100%; height: 400px; border: 1px solid gray; background: lightgray; overflow: auto;" />
     `
   }),
   args: {
@@ -676,18 +706,25 @@ export const VirtualizedListBox: Story = {
 
 export const VirtualizedListBoxEmpty: Story = {
   render: () => ({
+    setup() {
+      let selected = ref('');
+
+      return {
+        selected
+      };
+    },
     template: `
-      <div
-        class="v7C2Sq_menu"
-        data-rac=""
+      <VueListBox
+        v-model="selected"
         aria-label="virtualized listbox"
-        role="listbox"
-        tabindex="0"
-        data-layout="stack"
-        data-orientation="vertical"
+        class="v7C2Sq_menu"
+        collection-class="v7C2Sq_menu"
+        item-base-class="v7C2Sq_item"
+        item-class="v7C2Sq_item"
+        :items="[]"
         style="margin-top: 4px; width: 150px; max-width: 100%; height: 400px; border: 1px solid gray; background: lightgray; overflow: auto;">
-        <div style="padding: 8px 10px;">Empty</div>
-      </div>
+        <template #empty>Empty</template>
+      </VueListBox>
     `
   })
 };
@@ -695,31 +732,29 @@ export const VirtualizedListBoxEmpty: Story = {
 export const VirtualizedListBoxDnd: Story = {
   render: () => ({
     setup() {
+      let selected = ref<string[]>([]);
       return {
+        selected,
         virtualizedListBoxGridVisibleItems
       };
     },
     template: `
-      <div
-        class="v7C2Sq_menu"
-        data-rac=""
+      <VueListBox
+        v-model="selected"
         aria-label="virtualized listbox dnd"
-        aria-multiselectable="true"
-        role="listbox"
-        tabindex="0"
-        data-layout="grid"
-        data-orientation="vertical"
+        class="v7C2Sq_menu"
+        collection-class="v7C2Sq_menu"
+        item-base-class="v7C2Sq_item"
+        item-class="v7C2Sq_item"
+        layout="grid"
+        selection-mode="multiple"
+        :items="virtualizedListBoxGridVisibleItems"
+        :item-style="{wordBreak: 'break-word', border: '1px solid', boxSizing: 'border-box', display: 'grid', padding: '2px 5px', overflow: 'hidden', whiteSpace: 'nowrap', color: '#000', textOverflow: 'ellipsis'}"
         style="margin-top: 4px; width: 400px; max-width: 100%; height: 400px; border: 1px solid gray; background: lightgray; overflow: auto;">
-        <div role="presentation" style="width: 400px; height: 244382px; pointer-events: auto; position: relative;">
-          <div
-            v-for="(item, index) in virtualizedListBoxGridVisibleItems"
-            :key="'virtualized-dnd-' + item"
-            role="presentation"
-            :style="{position: 'absolute', overflow: 'visible', opacity: '1', zIndex: '0', contain: 'size layout style', top: (18 + (Math.floor(index / 4) * 45)) + 'px', left: (15 + ((index % 4) * 96)) + 'px', width: '82px', height: '27px'}">
-            <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" draggable="true" data-allows-dragging="true" data-selection-mode="multiple" style="word-break: break-word; height: 100%; border: 1px solid; box-sizing: border-box; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">{{ item }}</div>
-          </div>
-        </div>
-      </div>
+        <template #default="{label}">
+          <div draggable="true" data-allows-dragging="true">{{ label }}</div>
+        </template>
+      </VueListBox>
     `
   })
 };
@@ -727,31 +762,31 @@ export const VirtualizedListBoxDnd: Story = {
 export const VirtualizedListBoxDndOnAction: Story = {
   render: () => ({
     setup() {
+      let selected = ref<string[]>([]);
+
       return {
+        selected,
         virtualizedListBoxGridVisibleItems
       };
     },
     template: `
-      <div
-        class="v7C2Sq_menu"
-        data-rac=""
+      <VueListBox
+        v-model="selected"
         aria-label="virtualized listbox dnd on action"
-        aria-multiselectable="true"
-        role="listbox"
-        tabindex="0"
-        data-layout="grid"
-        data-orientation="vertical"
-        style="margin-top: 4px; width: 400px; max-width: 100%; height: 400px; border: 1px solid gray; background: lightgray; overflow: auto;">
-        <div role="presentation" style="width: 400px; height: 244382px; pointer-events: auto; position: relative;">
-          <div
-            v-for="(item, index) in virtualizedListBoxGridVisibleItems"
-            :key="'virtualized-dnd-action-' + item"
-            role="presentation"
-            :style="{position: 'absolute', overflow: 'visible', opacity: '1', zIndex: '0', contain: 'size layout style', top: (18 + (Math.floor(index / 4) * 45)) + 'px', left: (15 + ((index % 4) * 96)) + 'px', width: '82px', height: '27px'}">
-            <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" draggable="true" data-allows-dragging="true" data-selection-mode="multiple" style="word-break: break-word; height: 100%; border: 1px solid; box-sizing: border-box; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">{{ item }}</div>
-          </div>
-        </div>
-      </div>
+        class="v7C2Sq_menu"
+        collection-class="v7C2Sq_menu"
+        item-base-class="v7C2Sq_item"
+        item-class="v7C2Sq_item"
+        layout="grid"
+        selection-mode="multiple"
+        :items="virtualizedListBoxGridVisibleItems"
+        :item-style="{wordBreak: 'break-word', border: '1px solid', boxSizing: 'border-box', display: 'grid', padding: '2px 5px', overflow: 'hidden', whiteSpace: 'nowrap', color: '#000', textOverflow: 'ellipsis'}"
+        style="margin-top: 4px; width: 400px; max-width: 100%; height: 400px; border: 1px solid gray; background: lightgray; overflow: auto;"
+        @select="(value) => action('onAction')(value)">
+        <template #default="{label}">
+          <div draggable="true" data-allows-dragging="true">{{ label }}</div>
+        </template>
+      </VueListBox>
     `
   })
 };
@@ -760,32 +795,30 @@ export const VirtualizedListBoxDndOnAction: Story = {
 export const VirtualizedListBoxGrid: Story = {
   render: () => ({
     setup() {
+      let selected = ref<string[]>([]);
       return {
+        selected,
         virtualizedListBoxGridVisibleItems
       };
     },
     template: `
       <div style="height: 400px; width: 400px; resize: both; padding: 40px; overflow: hidden;">
-        <div
-          class="v7C2Sq_menu"
-          data-rac=""
+        <VueListBox
+          v-model="selected"
           aria-label="virtualized listbox"
-          aria-multiselectable="true"
-          role="listbox"
-          tabindex="0"
-          data-layout="grid"
-          data-orientation="vertical"
+          class="v7C2Sq_menu"
+          collection-class="v7C2Sq_menu"
+          item-base-class="v7C2Sq_item"
+          item-class="v7C2Sq_item"
+          layout="grid"
+          selection-mode="multiple"
+          :items="virtualizedListBoxGridVisibleItems"
+          :item-style="{wordBreak: 'break-word', border: '1px solid', boxSizing: 'border-box', display: 'grid', padding: '2px 5px', overflow: 'hidden', whiteSpace: 'nowrap', color: '#000', textOverflow: 'ellipsis'}"
           style="margin-top: 4px; width: 100%; height: 100%; border: 1px solid gray; background: lightgray; overflow: auto;">
-          <div role="presentation" style="width: 400px; height: 244382px; pointer-events: auto; position: relative;">
-            <div
-              v-for="(item, index) in virtualizedListBoxGridVisibleItems"
-              :key="item"
-              role="presentation"
-              :style="{position: 'absolute', overflow: 'visible', opacity: '1', zIndex: '0', contain: 'size layout style', top: (18 + (Math.floor(index / 4) * 45)) + 'px', left: (15 + ((index % 4) * 96)) + 'px', width: '82px', height: '27px'}">
-              <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" draggable="true" data-allows-dragging="true" data-selection-mode="multiple" style="word-break: break-word; height: 100%; border: 1px solid; box-sizing: border-box; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">{{ item }}</div>
-            </div>
-          </div>
-        </div>
+          <template #default="{label}">
+            <div draggable="true" data-allows-dragging="true">{{ label }}</div>
+          </template>
+        </VueListBox>
       </div>
     `
   }),
@@ -799,32 +832,26 @@ export const VirtualizedListBoxGrid: Story = {
 export const VirtualizedListBoxWaterfall: Story = {
   render: () => ({
     setup() {
+      let selected = ref<string[]>([]);
       return {
+        selected,
         virtualizedListBoxWaterfallVisibleItems
       };
     },
     template: `
       <div style="height: 400px; width: 400px; resize: both; padding: 40px; overflow: hidden;">
-        <div
-          class="v7C2Sq_menu"
-          data-rac=""
+        <VueListBox
+          v-model="selected"
           aria-label="virtualized listbox"
-          aria-multiselectable="true"
-          role="listbox"
-          tabindex="0"
-          data-layout="grid"
-          data-orientation="vertical"
-          style="margin-top: 4px; width: 100%; height: 100%; border: 1px solid gray; background: lightgray; overflow: auto;">
-          <div role="presentation" style="width: 400px; height: 5662px; pointer-events: auto; position: relative;">
-            <div
-              v-for="(item, index) in virtualizedListBoxWaterfallVisibleItems"
-              :key="'waterfall-' + index"
-              role="presentation"
-              :style="{position: 'absolute', overflow: 'visible', opacity: '1', zIndex: '0', contain: 'size layout style', top: (18 + (Math.floor(index / 10) * 45)) + 'px', left: ((index % 10) * 40) + 'px', width: '40px', height: '27px'}">
-              <div class="v7C2Sq_item" data-rac="" role="option" aria-selected="false" tabindex="-1" data-selection-mode="multiple" style="word-break: break-word; height: 100%; border: 1px solid; box-sizing: border-box; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">{{ item }}</div>
-            </div>
-          </div>
-        </div>
+          class="v7C2Sq_menu"
+          collection-class="v7C2Sq_menu"
+          item-base-class="v7C2Sq_item"
+          item-class="v7C2Sq_item"
+          layout="grid"
+          selection-mode="multiple"
+          :items="virtualizedListBoxWaterfallVisibleItems"
+          :item-style="{wordBreak: 'break-word', border: '1px solid', boxSizing: 'border-box', display: 'grid', padding: '2px 5px', overflow: 'hidden', whiteSpace: 'nowrap', color: '#000', textOverflow: 'ellipsis'}"
+          style="margin-top: 4px; width: 100%; height: 100%; border: 1px solid gray; background: lightgray; overflow: auto;" />
       </div>
     `
   }),
@@ -865,37 +892,7 @@ export const VirtualizedListBoxWaterfall: Story = {
 };
 
 export const AsyncListBox: Story = {
-  render: () => ({
-    setup() {
-      return {
-        asyncListBoxItems
-      };
-    },
-    template: `
-      <div
-        class="react-aria-ListBox"
-        data-rac=""
-        aria-label="async listbox"
-        role="listbox"
-        tabindex="0"
-        data-layout="stack"
-        data-orientation="horizontal"
-        style="height: fit-content; width: 404px; max-width: 100%; overflow: hidden; display: flex; flex-direction: row; padding: 4px 0 4px 4px; outline: none;">
-        <div
-          v-for="item in asyncListBoxItems"
-          :key="item"
-          class="v7C2Sq_item"
-          data-rac=""
-          role="option"
-          tabindex="-1"
-          style="word-break: break-word; min-height: 100px; min-width: 50px; background-color: lightgrey; border: 1px solid black; box-sizing: border-box; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">{{ item }}</div>
-        <div aria-hidden="true" style="min-width: 4px; width: 4px; background: rgb(248, 248, 248);"></div>
-        <div inert="" style="position: relative; width: 0px; height: 0px;">
-          <div data-testid="loadMoreSentinel" style="position: absolute; height: 1px; width: 1px;"></div>
-        </div>
-      </div>
-    `
-  }),
+  render: (args) => createAsyncListBoxStory(args as AsyncListBoxArgs),
   args: {
     orientation: 'horizontal',
     delay: 50
@@ -908,44 +905,7 @@ export const AsyncListBox: Story = {
   }
 };
 
-export const AsyncListBoxVirtualized: ListBoxStory = () => ({
-  setup() {
-    return {
-      asyncListBoxVirtualizedVisibleItems
-    };
-  },
-  template: `
-    <div
-      class="react-aria-ListBox"
-      data-rac=""
-      aria-label="async virtualized listbox"
-      role="listbox"
-      tabindex="0"
-      data-layout="stack"
-      data-orientation="vertical"
-      style="height: 400px; width: 100px; max-width: 100%; border: 1px solid gray; background: lightgray; overflow: auto; padding: unset; display: flex; flex-direction: column;">
-      <div role="presentation" style="width: 100px; height: 1008px; pointer-events: auto; position: relative;">
-        <div
-          v-for="(item, index) in asyncListBoxVirtualizedVisibleItems"
-          :key="item"
-          role="presentation"
-          :style="{position: 'absolute', overflow: 'visible', opacity: '1', zIndex: '0', contain: 'size layout style', top: (4 + (index * 50)) + 'px', left: '4px', width: '92px', height: '50px'}">
-          <div
-            class="v7C2Sq_item"
-            data-rac=""
-            role="option"
-            tabindex="-1"
-            style="word-break: break-word; background-color: lightgrey; border: 1px solid black; box-sizing: border-box; height: 100%; width: 100%; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; cursor: default; text-overflow: ellipsis;">{{ item }}</div>
-        </div>
-        <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 1004px; left: 4px; height: 0px; width: 92px;">
-          <div inert="" style="position: relative; width: 0px; height: 0px;">
-            <div data-testid="loadMoreSentinel" style="position: absolute; height: 1px; width: 1px;"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  `
-});
+export const AsyncListBoxVirtualized: ListBoxStory = (args) => createAsyncListBoxStory(args as AsyncListBoxArgs, {virtualized: true});
 
 AsyncListBoxVirtualized.args = {
   delay: 50
@@ -953,122 +913,182 @@ AsyncListBoxVirtualized.args = {
 
 export const ListBoxScrollMargin: Story = {
   render: () => ({
+    components: {
+      VueListBox
+    },
     setup() {
+      let selected = ref('');
       return {
-        listBoxScrollMarginItems
+        listBoxScrollMarginItems,
+        listStyle: {
+          background: 'lightgray',
+          border: '1px solid gray',
+          height: '200px',
+          marginTop: '4px',
+          maxWidth: '100%',
+          minWidth: '150px',
+          overflow: 'scroll',
+          width: '150px'
+        } as StyleMap,
+        selected,
+        itemStyle: {
+          color: '#000',
+          display: 'flex',
+          justifyContent: 'space-between',
+          overflow: 'hidden',
+          padding: '2px 20px',
+          scrollMargin: '10px',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          width: '150px',
+          wordBreak: 'break-word'
+        } as StyleMap
       };
     },
     template: `
-      <div
-        class="v7C2Sq_menu"
-        data-rac=""
+      <VueListBox
+        v-model="selected"
         aria-label="test listbox"
-        role="listbox"
-        tabindex="0"
-        data-layout="stack"
-        data-orientation="vertical"
-        style="margin-top: 4px; width: 150px; min-width: 150px; max-width: 100%; height: 200px; border: 1px solid gray; background: lightgray; overflow: scroll;">
-        <div
-          v-for="item in listBoxScrollMarginItems"
-          :key="item.id"
-          class="v7C2Sq_item"
-          data-rac=""
-          role="option"
-          tabindex="-1"
-          style="word-break: break-word; scroll-margin: 10px; width: 150px; display: flex; padding: 2px 20px; justify-content: space-between; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">
+        collection-class="v7C2Sq_menu"
+        item-base-class="v7C2Sq_item"
+        item-class="v7C2Sq_item"
+        :items="listBoxScrollMarginItems"
+        :item-style="itemStyle"
+        :style="listStyle">
+        <template #default="{item}">
           <span>{{ item.name }}</span>
           <span>{{ item.description }}</span>
-        </div>
-      </div>
+        </template>
+      </VueListBox>
     `
   })
 };
 
 export const ListBoxSmoothScroll: Story = {
   render: () => ({
+    components: {
+      VueListBox
+    },
     setup() {
+      let selected = ref<string[]>([]);
       return {
-        listBoxSmoothScrollItems
+        listBoxSmoothScrollItems,
+        selected,
+        listStyle: {
+          background: 'lightgray',
+          border: '1px solid gray',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(4, 80px)',
+          height: '200px',
+          marginTop: '4px',
+          maxWidth: '100%',
+          minWidth: '150px',
+          overflow: 'scroll',
+          scrollBehavior: 'smooth',
+          width: '200px'
+        } as StyleMap,
+        itemStyle: {
+          color: '#000',
+          display: 'grid',
+          minHeight: '32px',
+          overflow: 'hidden',
+          padding: '2px 5px',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          wordBreak: 'break-word'
+        } as StyleMap
       };
     },
     template: `
-      <div
-        class="v7C2Sq_menu"
-        data-rac=""
+      <VueListBox
+        v-model="selected"
         aria-label="test listbox"
-        role="listbox"
-        tabindex="0"
-        data-layout="grid"
-        data-orientation="vertical"
-        style="margin-top: 4px; width: 200px; min-width: 150px; max-width: 100%; height: 200px; border: 1px solid gray; background: lightgray; overflow: scroll; display: grid; grid-template-columns: repeat(4, 80px); scroll-behavior: smooth;">
-        <div
-          v-for="item in listBoxSmoothScrollItems"
-          :key="item"
-          class="v7C2Sq_item"
-          data-rac=""
-          role="option"
-          tabindex="-1"
-          style="word-break: break-word; min-height: 32px; display: grid; padding: 2px 5px; overflow: hidden; white-space: nowrap; color: #000; text-overflow: ellipsis;">{{ item }}</div>
-      </div>
+        collection-class="v7C2Sq_menu"
+        item-base-class="v7C2Sq_item"
+        item-class="v7C2Sq_item"
+        layout="grid"
+        :items="listBoxSmoothScrollItems"
+        :item-style="itemStyle"
+        :style="listStyle" />
     `
   })
 };
 
 export const DropOntoRoot: Story = {
   render: () => ({
+    components: {
+      VueListBox
+    },
     setup() {
+      let sourceSelected = ref<string[]>([]);
+      let targetSelected = ref<string[]>([]);
       return {
+        sourceSelected,
+        targetItems: ref<typeof dropOntoRootAlbums>([]),
+        targetSelected,
+        sourceListStyle: {
+          display: 'flex',
+          flexDirection: 'column',
+          maxWidth: '100%',
+          outline: 'none',
+          overflow: 'auto',
+          padding: '4px',
+          width: 'fit-content'
+        } as StyleMap,
+        targetListStyle: {
+          display: 'flex',
+          flexDirection: 'column',
+          maxWidth: '100%',
+          outline: 'none',
+          overflow: 'auto',
+          padding: '4px',
+          width: 'fit-content'
+        } as StyleMap,
+        albumItemStyle: {
+          borderRadius: '6px',
+          cursor: 'default',
+          display: 'flex',
+          flexDirection: 'column',
+          margin: '0px',
+          outline: 'none',
+          padding: '4px',
+          position: 'relative'
+        } as StyleMap,
         dropOntoRootAlbums
       };
     },
     template: `
       <div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; width: 100%;">
-        <div
-          class="react-aria-ListBox"
-          data-rac=""
+        <VueListBox
+          v-model="sourceSelected"
           aria-label="Albums"
-          aria-multiselectable="true"
-          role="listbox"
-          tabindex="0"
-          data-layout="stack"
-          data-orientation="vertical"
-          style="display: flex; flex-direction: column; width: fit-content; max-width: 100%; padding: 4px; overflow: auto; outline: none;">
-          <div
-            v-for="(album, index) in dropOntoRootAlbums"
-            :key="album.title"
-            class="react-aria-ListBoxItem"
-            data-rac=""
-            role="option"
-            aria-selected="false"
-            tabindex="-1"
-            draggable="true"
-            data-allows-dragging="true"
-            data-selection-mode="multiple"
-            style="position: relative; margin: 0px; padding: 4px; border-radius: 6px; outline: none; cursor: default; display: flex; flex-direction: column;">
-            <img alt="" :src="album.image" style="object-fit: cover; width: 150px; height: 150px; margin-bottom: 4px; border-radius: 4px; transition: box-shadow 200ms;" />
-            <span class="react-aria-Text" :id="'drop-onto-root-title-' + index" slot="label" style="font-weight: bold;">{{ album.title }}</span>
-            <span class="react-aria-Text" :id="'drop-onto-root-artist-' + index" slot="description" style="font-size: small;">{{ album.artist }}</span>
-          </div>
-          <div inert="" style="position: relative; width: 0px; height: 0px;">
-            <div data-testid="loadMoreSentinel" style="position: absolute; height: 1px; width: 1px;"></div>
-          </div>
-        </div>
-        <div
-          class="react-aria-ListBox"
-          data-rac=""
+          collection-class="react-aria-ListBox"
+          item-base-class="react-aria-ListBoxItem"
+          item-class="react-aria-ListBoxItem"
+          selection-mode="multiple"
+          :items="dropOntoRootAlbums"
+          :item-style="albumItemStyle"
+          :style="sourceListStyle">
+          <template #default="{item, value}">
+            <div draggable="true" data-allows-dragging="true">
+              <img alt="" :src="item.image" style="object-fit: cover; width: 150px; height: 150px; margin-bottom: 4px; border-radius: 4px; transition: box-shadow 200ms;" />
+              <span class="react-aria-Text" :id="'drop-onto-root-title-' + value" slot="label" style="font-weight: bold;">{{ item.title }}</span>
+              <span class="react-aria-Text" :id="'drop-onto-root-artist-' + value" slot="description" style="font-size: small;">{{ item.artist }}</span>
+            </div>
+          </template>
+        </VueListBox>
+        <VueListBox
+          v-model="targetSelected"
           aria-label="Albums"
-          aria-multiselectable="true"
-          role="listbox"
-          tabindex="0"
-          data-empty="true"
-          data-layout="stack"
-          data-orientation="vertical"
-          style="display: flex; flex-direction: column; width: fit-content; max-width: 100%; padding: 4px; overflow: auto; outline: none;">
-          <div inert="" style="position: relative; width: 0px; height: 0px;">
-            <div data-testid="loadMoreSentinel" style="position: absolute; height: 1px; width: 1px;"></div>
-          </div>
-          <div role="option" style="display: contents;">Drop items here</div>
-        </div>
+          collection-class="react-aria-ListBox"
+          item-base-class="react-aria-ListBoxItem"
+          item-class="react-aria-ListBoxItem"
+          selection-mode="multiple"
+          :items="targetItems"
+          :item-style="albumItemStyle"
+          :style="targetListStyle">
+          <template #empty>Drop items here</template>
+        </VueListBox>
       </div>
     `
   })

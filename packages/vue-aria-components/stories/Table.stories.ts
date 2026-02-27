@@ -205,137 +205,46 @@ function createTableStory(args: StoryArgs = {}, options: TableStoryOptions) {
 }
 
 export const ReorderableTableExample: TableStory = () => ({
+  components: {
+    VueTable
+  },
+  setup() {
+    return {
+      columns: [
+        {key: 'id', label: 'Id'},
+        {key: 'name', label: 'Name'}
+      ],
+      leftRows: [{id: 1, name: 'Bob'}],
+      rightRows: [{id: 2, name: 'Alex'}]
+    };
+  },
   template: `
-    <div style="display: flex;">
+    <div style="display: flex; gap: 12px;">
       <div class="react-aria-ResizableTableContainer" style="width: 300px; overflow: auto;">
-        <table aria-label="Reorderable table" class="react-aria-Table" data-allows-dragging="true" data-rac="" role="grid" style="border-collapse: collapse; table-layout: fixed; width: fit-content;" tabindex="0">
-          <thead class="react-aria-TableHeader" data-rac="" role="rowgroup">
-            <tr role="row">
-              <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" style="width: 150px;" tabindex="-1">
-                <div style="display: flex;">
-                  <button aria-expanded="false" aria-haspopup="true" class="react-aria-Button" data-rac="" data-react-aria-pressable="true" style="flex: 1 1 0%; height: 30px; text-align: left;" type="button">Id</button>
-                  <div class="react-aria-ColumnResizer" data-rac="" data-react-aria-pressable="true" data-resizable-direction="both" role="presentation" style="background-clip: content-box; background-color: rgb(128, 128, 128); border-bottom: 0px solid transparent; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 0px solid transparent; box-sizing: border-box; cursor: ew-resize; flex-shrink: 0; text-align: center; touch-action: none; width: 15px;">↔<input aria-label="Resizer" aria-orientation="horizontal" max="9007199254740991" min="75" style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;" type="range" value="150"></div>
-                </div>
-              </th>
-              <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" style="width: 150px;" tabindex="-1">
-                <div style="display: flex;">
-                  <button aria-expanded="false" aria-haspopup="true" class="react-aria-Button" data-rac="" data-react-aria-pressable="true" style="flex: 1 1 0%; height: 30px; text-align: left;" type="button">Name</button>
-                  <div class="react-aria-ColumnResizer" data-rac="" data-react-aria-pressable="true" data-resizable-direction="both" role="presentation" style="background-clip: content-box; background-color: rgb(128, 128, 128); border-bottom: 0px solid transparent; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 0px solid transparent; box-sizing: border-box; cursor: ew-resize; flex-shrink: 0; text-align: center; touch-action: none; width: 15px;">↔<input aria-label="Resizer" aria-orientation="horizontal" max="9007199254740991" min="75" style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;" type="range" value="150"></div>
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody class="react-aria-TableBody" data-rac="" role="rowgroup">
-            <tr class="react-aria-Row" data-rac="" draggable="true" role="row" tabindex="-1">
-              <td class="react-aria-Cell" data-rac="" role="rowheader">1</td>
-              <td class="react-aria-Cell" data-rac="" role="gridcell">Bob</td>
-            </tr>
-          </tbody>
-        </table>
+        <VueTable :caption="'Reorderable table'" :columns="columns" :rows="leftRows" />
       </div>
       <div class="react-aria-ResizableTableContainer" style="width: 300px; overflow: auto;">
-        <table aria-label="Reorderable table" class="react-aria-Table" data-allows-dragging="true" data-rac="" role="grid" style="border-collapse: collapse; table-layout: fixed; width: fit-content;" tabindex="0">
-          <thead class="react-aria-TableHeader" data-rac="" role="rowgroup">
-            <tr role="row">
-              <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" style="width: 150px;" tabindex="-1">
-                <div style="display: flex;">
-                  <button aria-expanded="false" aria-haspopup="true" class="react-aria-Button" data-rac="" data-react-aria-pressable="true" style="flex: 1 1 0%; height: 30px; text-align: left;" type="button">Id</button>
-                  <div class="react-aria-ColumnResizer" data-rac="" data-react-aria-pressable="true" data-resizable-direction="both" role="presentation" style="background-clip: content-box; background-color: rgb(128, 128, 128); border-bottom: 0px solid transparent; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 0px solid transparent; box-sizing: border-box; cursor: ew-resize; flex-shrink: 0; text-align: center; touch-action: none; width: 15px;">↔<input aria-label="Resizer" aria-orientation="horizontal" max="9007199254740991" min="75" style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;" type="range" value="150"></div>
-                </div>
-              </th>
-              <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" style="width: 150px;" tabindex="-1">
-                <div style="display: flex;">
-                  <button aria-expanded="false" aria-haspopup="true" class="react-aria-Button" data-rac="" data-react-aria-pressable="true" style="flex: 1 1 0%; height: 30px; text-align: left;" type="button">Name</button>
-                  <div class="react-aria-ColumnResizer" data-rac="" data-react-aria-pressable="true" data-resizable-direction="both" role="presentation" style="background-clip: content-box; background-color: rgb(128, 128, 128); border-bottom: 0px solid transparent; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 0px solid transparent; box-sizing: border-box; cursor: ew-resize; flex-shrink: 0; text-align: center; touch-action: none; width: 15px;">↔<input aria-label="Resizer" aria-orientation="horizontal" max="9007199254740991" min="75" style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;" type="range" value="150"></div>
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody class="react-aria-TableBody" data-rac="" role="rowgroup">
-            <tr class="react-aria-Row" data-rac="" draggable="true" role="row" tabindex="-1">
-              <td class="react-aria-Cell" data-rac="" role="rowheader">2</td>
-              <td class="react-aria-Cell" data-rac="" role="gridcell">Alex</td>
-            </tr>
-          </tbody>
-        </table>
+        <VueTable :caption="'Reorderable table'" :columns="columns" :rows="rightRows" />
       </div>
     </div>
   `
 });
 
 export const TableExampleStory: Story = {
-  render: () => ({
-    setup() {
-      return {fileRows};
+  render: (args) => createTableStory(args as StoryArgs, {
+    caption: 'Example table',
+    columns: [
+      {key: 'name', label: 'Name'},
+      {key: 'type', label: 'Type'},
+      {key: 'date', label: 'Date Modified'},
+      {key: 'actions', label: 'Actions'}
+    ],
+    containerStyle: {
+      width: '400px',
+      overflow: 'auto'
     },
-    template: `
-      <div class="react-aria-ResizableTableContainer" style="width: 400px; overflow: auto;">
-        <table aria-label="Example table" class="react-aria-Table" data-rac="" role="grid" style="border-collapse: collapse; table-layout: fixed; width: fit-content;" tabindex="0">
-          <thead class="react-aria-TableHeader" data-rac="" role="rowgroup">
-            <tr role="row">
-              <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" style="width: 30px;" tabindex="-1">
-                <label class="react-aria-Checkbox" data-disabled="true" data-rac="" data-react-aria-pressable="true" slot="selection">
-                  <span style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;">
-                    <input aria-label="Select All" data-react-aria-pressable="true" disabled type="checkbox">
-                  </span>
-                  <div class="checkbox">
-                    <svg aria-hidden="true" viewBox="0 0 18 18">
-                      <polyline points="1 9 7 14 15 4"></polyline>
-                    </svg>
-                  </div>
-                </label>
-              </th>
-              <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" style="width: 120px;" tabindex="-1">
-                <div style="display: flex;">
-                  <button aria-expanded="false" aria-haspopup="true" class="react-aria-Button" data-rac="" data-react-aria-pressable="true" style="flex: 1 1 0%; height: 30px; text-align: left;" type="button">Name</button>
-                  <div class="react-aria-ColumnResizer" data-rac="" data-react-aria-pressable="true" data-resizable-direction="both" role="presentation" style="background-clip: content-box; background-color: rgb(128, 128, 128); border-left: 5px solid transparent; border-right: 5px solid transparent; box-sizing: border-box; cursor: ew-resize; flex-shrink: 0; text-align: center; touch-action: none; width: 15px;">↔<input aria-label="Resizer" aria-orientation="horizontal" max="9007199254740991" min="75" style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;" type="range" value="120"></div>
-                </div>
-              </th>
-              <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" style="width: 83px;" tabindex="-1">
-                <div style="display: flex;">
-                  <button aria-expanded="false" aria-haspopup="true" class="react-aria-Button" data-rac="" data-react-aria-pressable="true" style="flex: 1 1 0%; height: 30px; text-align: left;" type="button">Type</button>
-                  <div class="react-aria-ColumnResizer" data-rac="" data-react-aria-pressable="true" data-resizable-direction="both" role="presentation" style="background-clip: content-box; background-color: rgb(128, 128, 128); border-left: 5px solid transparent; border-right: 5px solid transparent; box-sizing: border-box; cursor: ew-resize; flex-shrink: 0; text-align: center; touch-action: none; width: 15px;">↔<input aria-label="Resizer" aria-orientation="horizontal" max="9007199254740991" min="75" style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;" type="range" value="83"></div>
-                </div>
-              </th>
-              <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" style="width: 84px;" tabindex="-1">
-                <div style="display: flex;">
-                  <button aria-expanded="false" aria-haspopup="true" class="react-aria-Button" data-rac="" data-react-aria-pressable="true" style="flex: 1 1 0%; text-align: left;" type="button">Date Modified</button>
-                  <div class="react-aria-ColumnResizer" data-rac="" data-react-aria-pressable="true" data-resizable-direction="both" role="presentation" style="background-clip: content-box; background-color: rgb(128, 128, 128); border-left: 5px solid transparent; border-right: 5px solid transparent; box-sizing: border-box; cursor: ew-resize; flex-shrink: 0; height: 30px; text-align: center; touch-action: none; width: 15px;">↔<input aria-label="Resizer" aria-orientation="horizontal" max="9007199254740991" min="75" style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;" type="range" value="84"></div>
-                </div>
-              </th>
-              <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" style="width: 83px;" tabindex="-1">
-                <div style="display: flex;">
-                  <button aria-expanded="false" aria-haspopup="true" class="react-aria-Button" data-rac="" data-react-aria-pressable="true" style="flex: 1 1 0%; height: 30px; text-align: left;" type="button">Actions</button>
-                  <div class="react-aria-ColumnResizer" data-rac="" data-react-aria-pressable="true" data-resizable-direction="both" role="presentation" style="background-clip: content-box; background-color: rgb(128, 128, 128); border-left: 5px solid transparent; border-right: 5px solid transparent; box-sizing: border-box; cursor: ew-resize; flex-shrink: 0; text-align: center; touch-action: none; width: 15px;">↔<input aria-label="Resizer" aria-orientation="horizontal" max="9007199254740991" min="75" style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;" type="range" value="83"></div>
-                </div>
-              </th>
-            </tr>
-          </thead>
-          <tbody class="react-aria-TableBody" data-rac="" role="rowgroup">
-            <tr v-for="row in fileRows" :key="row.id" class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-              <td class="react-aria-Cell" data-rac="" role="gridcell">
-                <label class="react-aria-Checkbox" data-disabled="true" data-rac="" data-react-aria-pressable="true" slot="selection">
-                  <span style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;">
-                    <input aria-label="Select" data-react-aria-pressable="true" disabled type="checkbox">
-                  </span>
-                  <div class="checkbox">
-                    <svg aria-hidden="true" viewBox="0 0 18 18">
-                      <polyline points="1 9 7 14 15 4"></polyline>
-                    </svg>
-                  </div>
-                </label>
-              </td>
-              <td class="react-aria-Cell" data-rac="" role="rowheader" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ row.name }}</td>
-              <td class="react-aria-Cell" data-rac="" role="gridcell" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ row.type }}</td>
-              <td class="react-aria-Cell" data-rac="" role="gridcell" style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">{{ row.date }}</td>
-              <td class="react-aria-Cell" data-rac="" role="gridcell">
-                <button aria-expanded="false" class="react-aria-Button" data-rac="" data-react-aria-pressable="true" type="button">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    `
+    rows: fileRows.map((row) => ({...row, actions: 'Delete'})),
+    showSelection: false
   }),
   args: {
     selectionMode: 'none',
@@ -358,95 +267,48 @@ export const TableExampleStory: Story = {
   }
 };
 
-export const TableDynamicExample: TableStory = () => ({
-  template: `
-    <table aria-label="Files" class="react-aria-Table" data-rac="" role="grid" style="border-collapse: collapse;" tabindex="0">
-      <thead class="react-aria-TableHeader" data-rac="" role="rowgroup">
-        <tr role="row">
-          <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Name</th>
-          <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Type</th>
-          <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Date Modified</th>
-        </tr>
-      </thead>
-      <tbody class="react-aria-TableBody" data-rac="" role="rowgroup">
-        <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-          <td class="react-aria-Cell" data-rac="" role="rowheader">Games</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">File folder</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">6/7/2020</td>
-        </tr>
-        <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-          <td class="react-aria-Cell" data-rac="" role="rowheader">Program Files</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">File folder</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">4/7/2021</td>
-        </tr>
-        <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-          <td class="react-aria-Cell" data-rac="" role="rowheader">bootmgr</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">System file</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">11/20/2010</td>
-        </tr>
-        <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-          <td class="react-aria-Cell" data-rac="" role="rowheader">log.txt</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Text Document</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">1/18/20167</td>
-        </tr>
-      </tbody>
-    </table>
-  `
+export const TableDynamicExample: TableStory = () => createTableStory({}, {
+  caption: 'Files',
+  columns: fileColumns,
+  rows: fileRows,
+  showSelection: false
 });
 
 export const TableCellColSpanExample: TableStory = () => ({
+  setup() {
+    let rows = [
+      {time: '08:00 - 09:00', cells: ['Math', 'History', 'Science', 'English', 'Art']},
+      {time: '09:00 - 10:00', cells: ['Break'], colSpan: 5},
+      {time: '10:00 - 11:00', cells: ['Math', 'History', 'Science', 'English', 'Art']},
+      {time: '11:00 - 12:00', cells: ['Math', 'History', 'Science', 'English', 'Art']},
+      {time: '12:00 - 13:00', cells: ['Break'], colSpan: 5},
+      {time: '13:00 - 14:00', cells: ['History', 'Math', 'English', 'Science', 'Art']}
+    ];
+    return {
+      rows
+    };
+  },
   template: `
     <table aria-label="Timetable" class="react-aria-Table" data-rac="" role="grid" style="border-collapse: collapse;" tabindex="0">
       <thead class="react-aria-TableHeader" data-rac="" role="rowgroup">
         <tr role="row">
-          <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Time</th>
-          <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Monday</th>
-          <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Tuesday</th>
-          <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Wednesday</th>
-          <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Thursday</th>
-          <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Friday</th>
+          <th class="react-aria-Column" data-rac="" role="columnheader" tabindex="-1">Time</th>
+          <th class="react-aria-Column" data-rac="" role="columnheader" tabindex="-1">Monday</th>
+          <th class="react-aria-Column" data-rac="" role="columnheader" tabindex="-1">Tuesday</th>
+          <th class="react-aria-Column" data-rac="" role="columnheader" tabindex="-1">Wednesday</th>
+          <th class="react-aria-Column" data-rac="" role="columnheader" tabindex="-1">Thursday</th>
+          <th class="react-aria-Column" data-rac="" role="columnheader" tabindex="-1">Friday</th>
         </tr>
       </thead>
       <tbody class="react-aria-TableBody" data-rac="" role="rowgroup">
-        <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-          <td class="react-aria-Cell" data-rac="" role="rowheader">08:00 - 09:00</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Math</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">History</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Science</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">English</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Art</td>
-        </tr>
-        <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-          <td class="react-aria-Cell" data-rac="" role="rowheader">09:00 - 10:00</td>
-          <td aria-colspan="5" class="react-aria-Cell" colspan="5" data-rac="" role="gridcell">Break</td>
-        </tr>
-        <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-          <td class="react-aria-Cell" data-rac="" role="rowheader">10:00 - 11:00</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Math</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">History</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Science</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">English</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Art</td>
-        </tr>
-        <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-          <td class="react-aria-Cell" data-rac="" role="rowheader">11:00 - 12:00</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Math</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">History</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Science</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">English</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Art</td>
-        </tr>
-        <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-          <td class="react-aria-Cell" data-rac="" role="rowheader">12:00 - 13:00</td>
-          <td aria-colspan="5" class="react-aria-Cell" colspan="5" data-rac="" role="gridcell">Break</td>
-        </tr>
-        <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-          <td class="react-aria-Cell" data-rac="" role="rowheader">13:00 - 14:00</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">History</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Math</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">English</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Science</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Art</td>
+        <tr v-for="row in rows" :key="row.time" class="react-aria-Row" data-rac="" role="row" tabindex="-1">
+          <td class="react-aria-Cell" data-rac="" role="rowheader">{{ row.time }}</td>
+          <template v-if="row.colSpan">
+            <td :colspan="row.colSpan" :aria-colspan="String(row.colSpan)" class="react-aria-Cell" data-rac="" role="gridcell">{{ row.cells[0] }}</td>
+          </template>
+          <template v-else>
+            <td v-for="(cell, cellIndex) in row.cells" :key="row.time + '-' + cellIndex" class="react-aria-Cell" data-rac="" role="gridcell">{{ cell }}</td>
+          </template>
         </tr>
       </tbody>
     </table>
@@ -454,50 +316,42 @@ export const TableCellColSpanExample: TableStory = () => ({
 });
 
 export const TableCellColSpanWithVariousSpansExample: TableStory = () => ({
+  setup() {
+    let rows = [
+      [{value: 'Cell'}, {value: 'Span 2', span: 2}, {value: 'Cell'}],
+      [{value: 'Cell'}, {value: 'Cell'}, {value: 'Cell'}, {value: 'Cell'}],
+      [{value: 'Span 4', span: 4}],
+      [{value: 'Cell'}, {value: 'Cell'}, {value: 'Cell'}, {value: 'Cell'}],
+      [{value: 'Span 3', span: 3}, {value: 'Cell'}],
+      [{value: 'Cell'}, {value: 'Cell'}, {value: 'Cell'}, {value: 'Cell'}],
+      [{value: 'Cell'}, {value: 'Span 3', span: 3}]
+    ];
+    return {
+      rows
+    };
+  },
   template: `
     <table aria-label="Table with various colspans" class="react-aria-Table" data-rac="" role="grid" style="border-collapse: collapse;" tabindex="0">
       <thead class="react-aria-TableHeader" data-rac="" role="rowgroup">
         <tr role="row">
-          <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Col 1</th>
-          <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Col 2</th>
-          <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Col 3</th>
-          <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Col 4</th>
+          <th class="react-aria-Column" data-rac="" role="columnheader" tabindex="-1">Col 1</th>
+          <th class="react-aria-Column" data-rac="" role="columnheader" tabindex="-1">Col 2</th>
+          <th class="react-aria-Column" data-rac="" role="columnheader" tabindex="-1">Col 3</th>
+          <th class="react-aria-Column" data-rac="" role="columnheader" tabindex="-1">Col 4</th>
         </tr>
       </thead>
       <tbody class="react-aria-TableBody" data-rac="" role="rowgroup">
-        <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-          <td class="react-aria-Cell" data-rac="" role="rowheader">Cell</td>
-          <td aria-colspan="2" class="react-aria-Cell" colspan="2" data-rac="" role="gridcell">Span 2</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Cell</td>
-        </tr>
-        <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-          <td class="react-aria-Cell" data-rac="" role="rowheader">Cell</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Cell</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Cell</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Cell</td>
-        </tr>
-        <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-          <td aria-colspan="4" class="react-aria-Cell" colspan="4" data-rac="" role="rowheader">Span 4</td>
-        </tr>
-        <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-          <td class="react-aria-Cell" data-rac="" role="rowheader">Cell</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Cell</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Cell</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Cell</td>
-        </tr>
-        <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-          <td aria-colspan="3" class="react-aria-Cell" colspan="3" data-rac="" role="rowheader">Span 3</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Cell</td>
-        </tr>
-        <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-          <td class="react-aria-Cell" data-rac="" role="rowheader">Cell</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Cell</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Cell</td>
-          <td class="react-aria-Cell" data-rac="" role="gridcell">Cell</td>
-        </tr>
-        <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-          <td class="react-aria-Cell" data-rac="" role="rowheader">Cell</td>
-          <td aria-colspan="3" class="react-aria-Cell" colspan="3" data-rac="" role="gridcell">Span 3</td>
+        <tr v-for="(row, rowIndex) in rows" :key="'row-' + rowIndex" class="react-aria-Row" data-rac="" role="row" tabindex="-1">
+          <td
+            v-for="(cell, cellIndex) in row"
+            :key="'row-' + rowIndex + '-cell-' + cellIndex"
+            :colspan="cell.span || 1"
+            :aria-colspan="cell.span ? String(cell.span) : undefined"
+            class="react-aria-Cell"
+            data-rac=""
+            :role="cellIndex === 0 ? 'rowheader' : 'gridcell'">
+            {{ cell.value }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -697,50 +551,32 @@ export const DndTableWithNoValidDropTargets: Story = {
   name: 'Dnd Table with no valid drop targets',
   parameters: {
     description: {
-      data: 'Keyboard-drag parity fixture where all drop targets are rejected.'
+      data: 'Keyboard-drag example where all drop targets are rejected.'
     }
   }
 };
 
 export const TableLoadingBodyWrapperStory: Story = {
-  render: () => ({
+  render: (args) => ({
+    components: {
+      VueTable
+    },
+    setup() {
+      let rows = ref([...fileRows]);
+      return {
+        args,
+        columns: fileColumns,
+        rows
+      };
+    },
     template: `
-      <table aria-label="Files" class="react-aria-Table" data-rac="" role="grid" style="border-collapse: collapse;" tabindex="0">
-        <thead class="react-aria-TableHeader" data-rac="" role="rowgroup">
-          <tr role="row">
-            <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Name</th>
-            <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Type</th>
-            <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Date Modified</th>
-          </tr>
-        </thead>
-        <tbody class="react-aria-TableBody" data-rac="" role="rowgroup">
-          <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-            <td class="react-aria-Cell" data-rac="" role="rowheader">Games</td>
-            <td class="react-aria-Cell" data-rac="" role="gridcell">File folder</td>
-            <td class="react-aria-Cell" data-rac="" role="gridcell">6/7/2020</td>
-          </tr>
-          <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-            <td class="react-aria-Cell" data-rac="" role="rowheader">Program Files</td>
-            <td class="react-aria-Cell" data-rac="" role="gridcell">File folder</td>
-            <td class="react-aria-Cell" data-rac="" role="gridcell">4/7/2021</td>
-          </tr>
-          <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-            <td class="react-aria-Cell" data-rac="" role="rowheader">bootmgr</td>
-            <td class="react-aria-Cell" data-rac="" role="gridcell">System file</td>
-            <td class="react-aria-Cell" data-rac="" role="gridcell">11/20/2010</td>
-          </tr>
-          <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-            <td class="react-aria-Cell" data-rac="" role="rowheader">log.txt</td>
-            <td class="react-aria-Cell" data-rac="" role="gridcell">Text Document</td>
-            <td class="react-aria-Cell" data-rac="" role="gridcell">1/18/20167</td>
-          </tr>
-          <tr inert="" style="height: 0px;">
-            <td style="border: 0px; padding: 0px;">
-              <div data-testid="loadMoreSentinel" style="height: 1px; position: relative; width: 1px;"></div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div style="width: 400px; overflow: auto;">
+        <VueTable :caption="'Files'" :columns="columns" :rows="rows" />
+        <div v-if="args.isLoadingMore" style="padding: 8px 0;">Loading more...</div>
+        <div v-else inert="" style="height: 0px;">
+          <div data-testid="loadMoreSentinel" style="height: 1px; position: relative; width: 1px;"></div>
+        </div>
+      </div>
     `
   }),
   args: {
@@ -750,39 +586,23 @@ export const TableLoadingBodyWrapperStory: Story = {
 };
 
 export const TableLoadingRowRenderWrapperStory: Story = {
-  render: () => ({
+  render: (args) => ({
+    components: {
+      VueTable
+    },
+    setup() {
+      let rows = ref([...fileRows]);
+      return {
+        args,
+        columns: fileColumns,
+        rows
+      };
+    },
     template: `
-      <table aria-label="Files" class="react-aria-Table" data-rac="" role="grid" style="border-collapse: collapse;" tabindex="0">
-        <thead class="react-aria-TableHeader" data-rac="" role="rowgroup">
-          <tr role="row">
-            <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Name</th>
-            <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Type</th>
-            <th class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" tabindex="-1">Date Modified</th>
-          </tr>
-        </thead>
-        <tbody class="react-aria-TableBody" data-rac="" role="rowgroup">
-          <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-            <td class="react-aria-Cell" data-rac="" role="rowheader">Games</td>
-            <td class="react-aria-Cell" data-rac="" role="gridcell">File folder</td>
-            <td class="react-aria-Cell" data-rac="" role="gridcell">6/7/2020</td>
-          </tr>
-          <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-            <td class="react-aria-Cell" data-rac="" role="rowheader">Program Files</td>
-            <td class="react-aria-Cell" data-rac="" role="gridcell">File folder</td>
-            <td class="react-aria-Cell" data-rac="" role="gridcell">4/7/2021</td>
-          </tr>
-          <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-            <td class="react-aria-Cell" data-rac="" role="rowheader">bootmgr</td>
-            <td class="react-aria-Cell" data-rac="" role="gridcell">System file</td>
-            <td class="react-aria-Cell" data-rac="" role="gridcell">11/20/2010</td>
-          </tr>
-          <tr class="react-aria-Row" data-rac="" role="row" tabindex="-1">
-            <td class="react-aria-Cell" data-rac="" role="rowheader">log.txt</td>
-            <td class="react-aria-Cell" data-rac="" role="gridcell">Text Document</td>
-            <td class="react-aria-Cell" data-rac="" role="gridcell">1/18/20167</td>
-          </tr>
-        </tbody>
-      </table>
+      <div style="width: 400px; overflow: auto;">
+        <VueTable :caption="'Files'" :columns="columns" :rows="rows" />
+        <div v-if="args.isLoadingMore" style="padding: 8px 0;">Loading more...</div>
+      </div>
     `
   }),
   args: {
@@ -792,36 +612,23 @@ export const TableLoadingRowRenderWrapperStory: Story = {
 };
 
 export const RenderEmptyStateStory: Story = {
-  render: () => ({
+  render: (args) => ({
+    components: {
+      VueTable
+    },
+    setup() {
+      let rows = ref<TableRow[]>([]);
+      return {
+        args,
+        columns: fileColumns,
+        rows
+      };
+    },
     template: `
-      <table aria-label="Files" aria-multiselectable="true" class="react-aria-Table" data-rac="" role="grid" style="border-collapse: collapse;" tabindex="0">
-        <thead class="react-aria-TableHeader" data-rac="" role="rowgroup">
-          <tr role="row">
-            <th class="react-aria-Column" data-rac="" role="columnheader" tabindex="-1">
-              <label class="react-aria-Checkbox" data-disabled="true" data-rac="" slot="selection">
-                <span style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;">
-                  <input aria-label="Select All" disabled type="checkbox">
-                </span>
-                <div class="checkbox">
-                  <svg aria-hidden="true" viewBox="0 0 18 18">
-                    <polyline points="1 9 7 14 15 4"></polyline>
-                  </svg>
-                </div>
-              </label>
-            </th>
-            <th class="react-aria-Column" data-rac="" role="columnheader" tabindex="-1">Name</th>
-            <th class="react-aria-Column" data-rac="" role="columnheader" tabindex="-1">Type</th>
-            <th class="react-aria-Column" data-rac="" role="columnheader" tabindex="-1">Date Modified</th>
-          </tr>
-        </thead>
-        <tbody class="react-aria-TableBody" data-empty="true" data-rac="" role="rowgroup">
-          <tr role="row">
-            <td colspan="4" role="rowheader">
-              <div style="height: 30px; left: 0px; position: sticky; top: 0px; width: 400px;">No results found</div>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      <div style="width: 400px;">
+        <VueTable :caption="'Files'" :columns="columns" :rows="rows" />
+        <div style="height: 30px;">{{ args.isLoading ? 'Loading...' : 'No results found' }}</div>
+      </div>
     `
   }),
   args: {
@@ -1155,66 +962,32 @@ export const VirtualizedTableWithResizing: TableStory = () => ({
 });
 
 export const VirtualizedTableWithEmptyStateStory: Story = {
-  render: () => ({
+  render: (args) => ({
+    components: {
+      VueTable
+    },
+    setup() {
+      let columns: TableColumn[] = [
+        {key: 'foo', label: 'Foo'},
+        {key: 'bar', label: 'Bar'},
+        {key: 'baz', label: 'Baz'}
+      ];
+      let rows = ref([...virtualizedTableRows]);
+
+      return {
+        args,
+        columns,
+        rows
+      };
+    },
     template: `
       <div class="react-aria-ResizableTableContainer" style="height: 400px; width: 400px; overflow: auto; scroll-padding-top: 25px;">
-        <div
-          aria-colcount="3"
-          aria-label="virtualized table"
-          aria-rowcount="1"
-          class="react-aria-Table"
-          data-rac=""
-          role="grid"
-          tabindex="-1">
-          <div role="presentation" style="height: 400px; pointer-events: auto; position: relative; width: 400px;">
-            <div role="presentation" style="contain: size layout style; display: inline-block; height: 25px; left: 0px; opacity: 1; overflow: hidden; position: sticky; top: 0px; width: 400px; z-index: 1;">
-              <div class="react-aria-TableHeader" data-rac="" role="rowgroup" style="background: var(--spectrum-gray-100); height: 100%; width: 100%;">
-                <div aria-rowindex="1" role="row">
-                  <div role="presentation" style="contain: size layout style; height: 25px; left: 0px; opacity: 1; overflow: visible; position: absolute; top: 0px; width: 133px; z-index: 4;">
-                    <div aria-colindex="1" class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" style="width: 133px;" tabindex="-1">
-                      <div style="display: flex;">
-                        <button aria-expanded="false" aria-haspopup="true" class="react-aria-Button" data-rac="" data-react-aria-pressable="true" style="flex: 1 1 0%; height: 30px; text-align: left;" tabindex="0" type="button">Foo</button>
-                        <div class="react-aria-ColumnResizer" data-rac="" data-react-aria-pressable="true" data-resizable-direction="both" role="presentation" style="background-clip: content-box; background-color: rgb(128, 128, 128); border-bottom: 0px solid transparent; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 0px solid transparent; box-sizing: border-box; cursor: ew-resize; flex-shrink: 0; text-align: center; touch-action: none; width: 15px;">↔<input aria-label="Resizer" aria-orientation="horizontal" max="9007199254740991" min="75" style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;" type="range" value="133"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div role="presentation" style="contain: size layout style; height: 25px; left: 133px; opacity: 1; overflow: visible; position: absolute; top: 0px; width: 134px; z-index: 3;">
-                    <div aria-colindex="2" class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" style="width: 134px;" tabindex="-1">
-                      <div style="display: flex;">
-                        <button aria-expanded="false" aria-haspopup="true" class="react-aria-Button" data-rac="" data-react-aria-pressable="true" style="flex: 1 1 0%; height: 30px; text-align: left;" tabindex="0" type="button">Bar</button>
-                        <div class="react-aria-ColumnResizer" data-rac="" data-react-aria-pressable="true" data-resizable-direction="both" role="presentation" style="background-clip: content-box; background-color: rgb(128, 128, 128); border-bottom: 0px solid transparent; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 0px solid transparent; box-sizing: border-box; cursor: ew-resize; flex-shrink: 0; text-align: center; touch-action: none; width: 15px;">↔<input aria-label="Resizer" aria-orientation="horizontal" max="9007199254740991" min="75" style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;" type="range" value="134"></div>
-                      </div>
-                    </div>
-                  </div>
-                  <div role="presentation" style="contain: size layout style; height: 25px; left: 267px; opacity: 1; overflow: visible; position: absolute; top: 0px; width: 133px; z-index: 2;">
-                    <div aria-colindex="3" class="react-aria-Column" data-rac="" data-react-aria-pressable="true" role="columnheader" style="width: 133px;" tabindex="-1">
-                      <div style="display: flex;">
-                        <button aria-expanded="false" aria-haspopup="true" class="react-aria-Button" data-rac="" data-react-aria-pressable="true" style="flex: 1 1 0%; height: 30px; text-align: left;" tabindex="0" type="button">Baz</button>
-                        <div class="react-aria-ColumnResizer" data-rac="" data-react-aria-pressable="true" data-resizable-direction="both" role="presentation" style="background-clip: content-box; background-color: rgb(128, 128, 128); border-bottom: 0px solid transparent; border-left: 5px solid transparent; border-right: 5px solid transparent; border-top: 0px solid transparent; box-sizing: border-box; cursor: ew-resize; flex-shrink: 0; text-align: center; touch-action: none; width: 15px;">↔<input aria-label="Resizer" aria-orientation="horizontal" max="9007199254740991" min="75" style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;" type="range" value="133"></div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div role="presentation" style="contain: size layout style; height: 375px; left: 0px; opacity: 1; overflow: hidden; position: absolute; top: 25px; width: 400px; z-index: 0;">
-              <div class="react-aria-TableBody" data-empty="true" data-rac="" role="rowgroup">
-                <div role="presentation" style="contain: size layout style; height: 0px; left: 0px; opacity: 1; overflow: visible; position: absolute; top: 0px; width: 400px; z-index: 0;">
-                  <div inert="" style="height: 0px;">
-                    <div style="border: 0px; padding: 0px;">
-                      <div data-testid="loadMoreSentinel" style="height: 1px; position: relative; width: 1px;"></div>
-                    </div>
-                  </div>
-                </div>
-                <div role="row" style="display: contents;">
-                  <div aria-colspan="3" role="rowheader" style="display: contents;">
-                    <div style="height: 30px; left: 0px; position: sticky; top: 0px; width: 400px;">No results found</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+        <VueTable
+          :caption="'virtualized table'"
+          :columns="columns"
+          :rows="args.showRows ? rows : []" />
+        <div v-if="args.isLoading" style="height: 30px;">Loading...</div>
+        <div v-else-if="!args.showRows" style="height: 30px;">No results found</div>
       </div>
     `
   }),
@@ -1241,7 +1014,7 @@ export const OnLoadMoreTableVirtualizedResizeWrapperStory: Story = {
   },
   parameters: {
     description: {
-      data: 'Parity fixture with a resizable wrapper around the virtualized table.'
+      data: 'Resizable wrapper around the virtualized table during async loading.'
     }
   }
 };
@@ -1305,7 +1078,7 @@ export const TableWithSuspense: Story = {
   },
   parameters: {
     description: {
-      data: 'Expected behavior fixture for loading replacement vs transition-preserved rows.'
+      data: 'Loading replacement behavior versus transition-preserved rows.'
     }
   }
 };

@@ -9,18 +9,25 @@ const stylesOverrides: {[key: string]: string} = {};
 
 type SelectionMode = 'multiple' | 'none' | 'single';
 type SortDirection = 'ascending' | 'descending';
-type SelectionValue = number | string | Array<number | string>;
+type SelectionKey = number | string;
+type SelectionValue = SelectionKey | Iterable<SelectionKey>;
+type TableLoadingState = 'filtering' | 'idle' | 'loading' | 'loadingMore';
 
 type TableColumn = {
   align?: 'center' | 'end' | 'start',
   ariaLabel?: string,
   colspan?: number,
+  hideHeader?: boolean,
   key: string,
   label?: string,
   level?: number,
+  maxWidth?: number | string,
+  minWidth?: number | string,
   posInSet?: number,
   resizable?: boolean,
   setSize?: number,
+  showDivider?: boolean,
+  width?: number | string,
   sortable?: boolean
 };
 
@@ -42,16 +49,71 @@ type SortDescriptor = {
 
 let tableId = 0;
 
-function normalizeSelectedValue(value: SelectionValue | undefined): Array<number | string> {
-  if (Array.isArray(value)) {
-    return value.filter((entry): entry is number | string => typeof entry === 'number' || typeof entry === 'string');
-  }
+function isSelectionKey(value: unknown): value is SelectionKey {
+  return typeof value === 'number' || typeof value === 'string';
+}
 
-  if (typeof value === 'number' || typeof value === 'string') {
+function normalizeSelectionKeys(keys: Iterable<SelectionKey>): SelectionKey[] {
+  return Array.from(keys).filter(isSelectionKey);
+}
+
+function normalizeSelectedValue(value: SelectionValue | undefined): SelectionKey[] {
+  if (isSelectionKey(value)) {
     return [value];
   }
 
-  return [];
+  if (value == null) {
+    return [];
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return [];
+  }
+
+  return Array.from(value as Iterable<unknown>).filter(isSelectionKey);
+}
+
+function isSelectionValue(value: unknown): value is SelectionValue {
+  if (isSelectionKey(value)) {
+    return true;
+  }
+
+  if (value == null) {
+    return false;
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return false;
+  }
+
+  for (let entry of value as Iterable<unknown>) {
+    if (!isSelectionKey(entry)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function isSelectionIterable(value: unknown): value is Iterable<SelectionKey> {
+  if (value == null) {
+    return false;
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return false;
+  }
+
+  for (let entry of value as Iterable<unknown>) {
+    if (!isSelectionKey(entry)) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 function toBooleanString(value: boolean): 'false' | 'true' {
@@ -96,6 +158,22 @@ function alignToSpectrumToken(align: TableColumn['align']): 'Center' | 'End' | '
   return 'Start';
 }
 
+function toCssSize(value: number | string | undefined): string | undefined {
+  if (typeof value === 'number') {
+    return `${value}px`;
+  }
+
+  if (typeof value === 'string' && value.trim() !== '') {
+    return value;
+  }
+
+  return undefined;
+}
+
+function isLikelyUrl(text: string): boolean {
+  return /^https?:\/\//i.test(text);
+}
+
 export const Table = defineComponent({
   name: 'VueTable',
   inheritAttrs: false,
@@ -124,6 +202,10 @@ export const Table = defineComponent({
       type: String as PropType<'compact' | 'regular' | 'spacious'>,
       default: 'regular'
     },
+    disabledKeys: {
+      type: [Array, Set] as PropType<Iterable<SelectionKey>>,
+      default: () => []
+    },
     isDisabled: {
       type: Boolean,
       default: false
@@ -132,12 +214,16 @@ export const Table = defineComponent({
       type: Boolean,
       default: false
     },
+    loadingState: {
+      type: String as PropType<TableLoadingState>,
+      default: 'idle'
+    },
     modelValue: {
-      type: [String, Number, Array] as PropType<SelectionValue | undefined>,
+      type: [String, Number, Array, Set] as PropType<SelectionValue | undefined>,
       default: undefined
     },
     openKeys: {
-      type: Array as PropType<Array<number | string>>,
+      type: [Array, Set] as PropType<Iterable<number | string>>,
       default: () => []
     },
     overflowMode: {
@@ -170,15 +256,11 @@ export const Table = defineComponent({
     }
   },
   emits: {
-    openChange: (keys: Array<number | string>) => Array.isArray(keys),
+    openChange: (keys: Iterable<SelectionKey>) => isSelectionIterable(keys),
     rowAction: (row: TableRow) => typeof row === 'object' && row !== null,
     sortChange: (value: SortDescriptor) => typeof value === 'object' && value !== null,
     'update:modelValue': (value: SelectionValue) => {
-      if (typeof value === 'number' || typeof value === 'string') {
-        return true;
-      }
-
-      return Array.isArray(value);
+      return isSelectionValue(value);
     }
   },
   setup(props, {emit, attrs}) {
@@ -191,15 +273,22 @@ export const Table = defineComponent({
     let focusedResizer = ref<string | null>(null);
 
     let selectedSet = computed(() => new Set(normalizeSelectedValue(props.modelValue)));
+    let disabledKeySet = computed(() => new Set(normalizeSelectionKeys(props.disabledKeys)));
     let openSet = computed(() => new Set(props.openKeys));
     let hasMultipleSelection = computed(() => props.selectionMode === 'multiple');
     let selectionColumnOffset = computed(() => hasMultipleSelection.value ? 1 : 0);
-    let selectableRowIds = computed(() => props.rows.reduce<Array<number | string>>((acc, row, rowIndex) => {
-      if (props.isDisabled || row.disabled) {
+    let isRowDisabledByContract = (row: TableRow, rowId: SelectionKey) => (
+      props.isDisabled ||
+      !!row.disabled ||
+      disabledKeySet.value.has(rowId)
+    );
+    let selectableRowIds = computed(() => props.rows.reduce<SelectionKey[]>((acc, row, rowIndex) => {
+      let rowId = getRowId(row, rowIndex, props.rowKey);
+      if (isRowDisabledByContract(row, rowId)) {
         return acc;
       }
 
-      acc.push(getRowId(row, rowIndex, props.rowKey));
+      acc.push(rowId);
       return acc;
     }, []));
     let allRowsSelected = computed(() => {
@@ -217,8 +306,12 @@ export const Table = defineComponent({
       return selectableRowIds.value.some((rowId) => selectedSet.value.has(rowId));
     });
 
-    let onSelectRow = (row: TableRow, rowId: number | string) => {
-      if (props.isDisabled || row.disabled || props.selectionMode === 'none') {
+    let onSelectRow = (row: TableRow, rowId: SelectionKey) => {
+      if (isRowDisabledByContract(row, rowId)) {
+        return;
+      }
+
+      if (props.selectionMode === 'none') {
         emit('rowAction', row);
         return;
       }
@@ -236,7 +329,7 @@ export const Table = defineComponent({
         next.add(rowId);
       }
 
-      emit('update:modelValue', Array.from(next));
+      emit('update:modelValue', new Set(next));
       emit('rowAction', row);
     };
 
@@ -253,7 +346,7 @@ export const Table = defineComponent({
         next.add(rowId);
       }
 
-      emit('openChange', Array.from(next));
+      emit('openChange', new Set(next));
     };
 
     let onToggleSort = (column: TableColumn) => {
@@ -278,11 +371,11 @@ export const Table = defineComponent({
       }
 
       if (!isChecked) {
-        emit('update:modelValue', []);
+        emit('update:modelValue', new Set<SelectionKey>());
         return;
       }
 
-      emit('update:modelValue', selectableRowIds.value.slice());
+      emit('update:modelValue', new Set(selectableRowIds.value));
     };
 
     return () => {
@@ -291,6 +384,7 @@ export const Table = defineComponent({
         'spectrum-Table',
         `spectrum-Table--${props.density}`,
         {
+          'react-spectrum-Table--loadingMore': props.loadingState === 'loadingMore',
           'spectrum-Table--quiet': props.isQuiet,
           'spectrum-Table--wrap': props.overflowMode === 'wrap',
           'is-disabled': props.isDisabled
@@ -304,6 +398,7 @@ export const Table = defineComponent({
         'aria-label': props.ariaLabel || attrs['aria-label'],
         'aria-labelledby': tableLabelId.value || attrs['aria-labelledby'],
         'data-testid': props.dataTestid || attrs['data-testid'],
+        'data-loading-state': props.loadingState,
         style: [attrs.style, {visibility: props.visibility}],
         'data-vac': ''
       }, [
@@ -358,6 +453,10 @@ export const Table = defineComponent({
               let isSortable = !!column.sortable;
               let isSortedAsc = props.sortDescriptor?.column === column.key && props.sortDescriptor.direction === 'ascending';
               let isSortedDesc = props.sortDescriptor?.column === column.key && props.sortDescriptor.direction === 'descending';
+              let isDividerCell = !!column.showDivider && columnIndex < props.columns.length - 1;
+              let columnWidth = toCssSize(column.width);
+              let columnMinWidth = toCssSize(column.minWidth);
+              let columnMaxWidth = toCssSize(column.maxWidth);
 
               let headerClassName = classNames(
                 styles,
@@ -366,7 +465,9 @@ export const Table = defineComponent({
                   'is-resizable': isResizable,
                   'is-sortable': isSortable,
                   'is-sorted-asc': isSortedAsc,
-                  'is-sorted-desc': isSortedDesc
+                  'is-sorted-desc': isSortedDesc,
+                  'spectrum-Table-cell--divider': isDividerCell,
+                  'spectrum-Table-cell--hideHeader': !!column.hideHeader
                 }
               );
 
@@ -410,7 +511,14 @@ export const Table = defineComponent({
                 'aria-colspan': column.colspan,
                 'aria-level': column.level,
                 'aria-posinset': column.posInSet,
-                'aria-setsize': column.setSize
+                'aria-setsize': column.setSize,
+                hidden: !!column.hideHeader,
+                'aria-hidden': column.hideHeader ? 'true' : undefined,
+                style: {
+                  width: columnWidth,
+                  minWidth: columnMinWidth,
+                  maxWidth: columnMaxWidth
+                }
               }, [
                 headerContent,
                 isResizable
@@ -447,12 +555,13 @@ export const Table = defineComponent({
             ])
           ]),
           h('tbody', {class: [classNames(styles, 'spectrum-Table-body'), 'vs-table__body'], role: 'rowgroup'}, props.rows.length > 0
-            ? props.rows.map((row, rowIndex) => {
+            ? [
+              ...props.rows.map((row, rowIndex) => {
               let rowId = getRowId(row, rowIndex, props.rowKey);
               let rowChildren = row.children;
               let hasChildren = Array.isArray(rowChildren) && rowChildren.length > 0;
 
-              let isRowDisabled = props.isDisabled || !!row.disabled;
+              let isRowDisabled = isRowDisabledByContract(row, rowId);
               let isRowSelected = row.selected ?? selectedSet.value.has(rowId);
               let isRowHovered = hoveredRow.value === rowId && !isRowDisabled;
               let isRowFocused = focusedRow.value === rowId && !isRowDisabled;
@@ -557,17 +666,32 @@ export const Table = defineComponent({
                   ? `react-spectrum-Table-cell--align${column.align[0].toUpperCase()}${column.align.slice(1)}`
                   : 'react-spectrum-Table-cell--alignStart';
                 let isCellHidden = row.visible === false;
+                let isDividerCell = !!column.showDivider && columnIndex < props.columns.length - 1;
+                let cellText = getCellTextValue(row, column.key);
+                let cellWidth = toCssSize(column.width);
+                let cellMinWidth = toCssSize(column.minWidth);
+                let cellMaxWidth = toCssSize(column.maxWidth);
 
                 return h('td', {
                   key: `${String(rowId)}-${column.key}`,
                   role: 'gridcell',
-                  class: [classNames(styles, 'spectrum-Table-cell'), alignClassName, 'vs-table__cell'],
+                  class: [
+                    classNames(styles, 'spectrum-Table-cell', {
+                      'spectrum-Table-cell--divider': isDividerCell,
+                      'spectrum-Table-cell--hideHeader': !!column.hideHeader
+                    }),
+                    alignClassName,
+                    'vs-table__cell'
+                  ],
                   'aria-colindex': columnIndex + 1 + selectionColumnOffset.value,
                   'aria-colspan': column.colspan,
                   hidden: isCellHidden,
                   'aria-hidden': isCellHidden ? 'true' : undefined,
                   style: {
-                    visibility: cellVisibility
+                    visibility: cellVisibility,
+                    width: cellWidth,
+                    minWidth: cellMinWidth,
+                    maxWidth: cellMaxWidth
                   }
                 }, [
                   hasChildren && columnIndex === 0
@@ -581,18 +705,39 @@ export const Table = defineComponent({
                       }
                     }, isRowOpen ? '▾' : '▸')
                     : null,
-                  h('span', {class: 'vs-table__cell-text'}, getCellTextValue(row, column.key))
+                  isLikelyUrl(cellText)
+                    ? h('a', {
+                      class: ['vs-table__cell-text', 'vs-table__cell-link'],
+                      href: cellText,
+                      rel: 'noreferrer',
+                      target: '_blank'
+                    }, cellText)
+                    : h('span', {class: 'vs-table__cell-text'}, cellText)
                 ]);
               })
               ]);
-            })
+            }),
+              ...(props.loadingState === 'loadingMore'
+                ? [h('tr', {
+                  class: ['vs-table__row', 'is-loading-more'],
+                  role: 'row',
+                  key: 'loading-more'
+                }, [
+                  h('td', {
+                    class: ['vs-table__cell', classNames(styles, 'spectrum-Table-cell')],
+                    role: 'gridcell',
+                    'aria-colspan': Math.max(1, props.columns.length + selectionColumnOffset.value)
+                  }, 'Loading more…')
+                ])]
+                : [])
+            ]
             : [
               h('tr', {class: ['vs-table__row', 'is-empty'], role: 'row', key: 'empty'}, [
                 h('td', {
                   class: ['vs-table__cell', classNames(styles, 'spectrum-Table-cell')],
                   role: 'gridcell',
                   'aria-colspan': Math.max(1, props.columns.length + selectionColumnOffset.value)
-                }, 'No rows')
+                }, props.loadingState === 'loading' || props.loadingState === 'filtering' ? 'Loading…' : 'No rows')
               ])
             ]),
           h('tbody', {class: 'vs-table__drop-indicators', role: 'rowgroup'}, [

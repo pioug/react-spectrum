@@ -247,6 +247,9 @@ export const Log: Story = {
 export const _Ball1D: Story = {
   render: () => ({
     components: {Ball1D},
+    setup() {
+      return {};
+    },
     template: `
       <div style="display: flex; flex-direction: column; gap: 40px;">
         <Ball1D />
@@ -260,6 +263,9 @@ export const _Ball1D: Story = {
 export const Ball2D: Story = {
   render: () => ({
     components: {Ball2DStory},
+    setup() {
+      return {};
+    },
     template: '<Ball2DStory />'
   }),
   name: 'Ball 2D'
@@ -268,6 +274,9 @@ export const Ball2D: Story = {
 export const BallNested: Story = {
   render: () => ({
     components: {BallNestedStory},
+    setup() {
+      return {};
+    },
     template: '<BallNestedStory />'
   }),
   name: 'Ball nested'

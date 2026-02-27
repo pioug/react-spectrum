@@ -15,6 +15,9 @@ type Story = StoryObj<typeof meta>;
 
 export const LargeDefault: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {Divider},
     template: `
       <section>
@@ -29,6 +32,9 @@ export const LargeDefault: Story = {
 
 export const Medium: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {Divider},
     template: `
       <section>
@@ -42,6 +48,9 @@ export const Medium: Story = {
 
 export const Small: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {Divider},
     template: `
       <section>

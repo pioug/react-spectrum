@@ -256,6 +256,9 @@ export const LongRadioLabel: Story = {
 
 export const ProviderControlIsDisabled: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {Provider, Radio, RadioGroup},
     template: `
       <Provider :is-disabled="true">
@@ -282,6 +285,9 @@ export const AutoFocusOnOneRadio: Story = {
 
 export const ControlledRovingTab: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {ControlledRovingTabPreview},
     template: '<ControlledRovingTabPreview />'
   })

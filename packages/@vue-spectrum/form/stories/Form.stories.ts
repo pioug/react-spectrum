@@ -142,6 +142,9 @@ export const LabelPositionSideLabelAlignEnd: Story = {
 
 export const FieldsNextToEachOther: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {Form, TextField},
     template: `
       <Form>
@@ -165,6 +168,9 @@ export const FieldsNextToEachOther: Story = {
 
 export const FieldsWithAutoCompleteProperty: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {Form},
     template: `
       <Form>
@@ -329,6 +335,9 @@ export const FormWithNumberfieldAndLocaleArAe: Story = {
 
 export const WithTranslations: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {Form, TextField, NumberField},
     template: `
       <Form>

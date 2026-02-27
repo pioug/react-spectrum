@@ -99,7 +99,7 @@ export const VueStepList = defineComponent({
       default: 'Step list'
     },
     disabledKeys: {
-      type: Array as PropType<SelectionKey[]>,
+      type: [Array, Set] as PropType<Iterable<SelectionKey>>,
       default: () => []
     },
     items: {

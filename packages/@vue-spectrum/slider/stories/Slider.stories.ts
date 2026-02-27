@@ -36,7 +36,7 @@ function render(args: StoryArgs = {}) {
         onChangeEnd: action('changeEnd')
       };
     },
-    template: '<Slider v-bind="args" @change="onChange($event)" @blur="onChangeEnd($event)" />'
+    template: '<Slider v-bind="args" @change="onChange($event)" @change-end="onChangeEnd($event)" />'
   };
 }
 
@@ -81,37 +81,37 @@ export const LabelOverflow: Story = {
   render: (args) => render({
     ...args,
     label: 'This is a rather long label for this narrow slider element.',
-    max: 1000,
+    maxValue: 1000,
     style: 'width: 300px;'
   })
 };
 
 export const ShowValueLabelFalse: Story = {
-  render: (args) => render({...args, showValue: false})
+  render: (args) => render({...args, showValueLabel: false})
 };
 
 export const FormatOptionsPercent: Story = {
   render: (args) => render({
     ...args,
-    min: 0,
-    max: 1,
+    minValue: 0,
+    maxValue: 1,
     step: 0.01,
-    description: 'formatOptions percent'
+    formatOptions: {style: 'percent'}
   })
 };
 
 export const FormatOptionsCentimeter: Story = {
   render: (args) => render({
     ...args,
-    max: 1000,
-    description: 'formatOptions centimeter'
+    maxValue: 1000,
+    formatOptions: {style: 'unit', unit: 'centimeter'}
   })
 };
 
 export const CustomValueLabel: Story = {
   render: (args) => render({
     ...args,
-    description: 'custom valueLabel'
+    getValueLabel: (value: number) => `A ${value} B`
   })
 };
 
@@ -119,53 +119,69 @@ export const CustomValueLabelWithLabelOverflow: Story = {
   render: (args) => render({
     ...args,
     label: 'This is a rather long label for this narrow slider element.',
-    description: 'custom valueLabel with label overflow'
+    getValueLabel: (value: number) => `A ${value} B`
   })
 };
 
 export const MinMax: Story = {
-  render: (args) => render({...args, min: 30, max: 70})
+  render: (args) => render({...args, minValue: 30, maxValue: 70})
 };
 
 export const Step: Story = {
-  render: (args) => render({...args, min: 0, max: 100, step: 5})
+  render: (args) => render({...args, minValue: 0, maxValue: 100, step: 5})
 };
 
 export const IsFilledTrue: Story = {
-  render: (args) => render({...args, description: 'isFilled: true'})
+  render: (args) => render({...args, isFilled: true})
 };
 
 export const FillOffset: Story = {
   render: (args) => render({
     ...args,
     label: 'Exposure',
-    min: -7,
-    max: 5,
-    modelValue: 0,
-    description: 'fillOffset'
+    isFilled: true,
+    fillOffset: 0,
+    minValue: -7,
+    maxValue: 5,
+    modelValue: 0
   })
 };
 
 export const TrackGradient: Story = {
   render: (args) => render({
     ...args,
-    description: 'trackGradient'
+    trackGradient: ['blue', 'red']
   })
 };
 
 export const TrackGradientWithFillOffset: Story = {
   render: (args) => render({
     ...args,
-    min: 0,
-    max: 100,
+    minValue: 0,
+    maxValue: 100,
     modelValue: 50,
-    description: 'trackGradient with fillOffset'
+    trackGradient: ['blue', 'red'],
+    isFilled: true,
+    fillOffset: 50
   })
 };
 
 export const _ContextualHelp: Story = {
-  render: (args) => render({
-    ...args,
-    description: 'Contextual help: Segments identify who your visitors are.'
+  render: (args) => ({
+    components: {Slider},
+    setup() {
+      return {
+        args,
+        onChange: action('change'),
+        onChangeEnd: action('changeEnd')
+      };
+    },
+    template: `
+      <Slider v-bind="args" @change="onChange($event)" @change-end="onChangeEnd($event)">
+        <template #contextual-help>
+          <button type="button" aria-label="Help">?</button>
+        </template>
+      </Slider>
+    `
   })
 };

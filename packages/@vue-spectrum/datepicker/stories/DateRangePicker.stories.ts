@@ -200,7 +200,7 @@ function renderEventExample(args: StoryArgs) {
   };
 }
 
-function renderCalendarPreferencesExample(args: StoryArgs, note = '') {
+function renderCalendarPreferencesExample(args: StoryArgs) {
   return {
     components: {DateRangePicker},
     setup() {
@@ -230,14 +230,19 @@ function renderCalendarPreferencesExample(args: StoryArgs, note = '') {
         }
         calendar.value = pref.ordering.split(' ')[0];
       };
+      let readLocaleValue = (event: Event) => {
+        let target = event.target;
+        return target instanceof HTMLSelectElement ? target.value : LOCALE_PREFERENCES[0].locale;
+      };
 
       return {
         args,
         calendar,
         locale,
-        note,
+        localePreferences: LOCALE_PREFERENCES,
         otherCalendars,
         preferredCalendars,
+        readLocaleValue,
         updateLocale
       };
     },
@@ -246,8 +251,8 @@ function renderCalendarPreferencesExample(args: StoryArgs, note = '') {
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
           <label style="display: grid; gap: 4px;">
             <span>Locale</span>
-            <select :value="locale" @change="updateLocale(($event.target as HTMLSelectElement).value)">
-              <option v-for="item in ${JSON.stringify(LOCALE_PREFERENCES)}" :key="item.locale" :value="item.locale">{{item.label}}</option>
+            <select :value="locale" @change="updateLocale(readLocaleValue($event))">
+              <option v-for="item in localePreferences" :key="item.locale" :value="item.locale">{{item.label}}</option>
             </select>
           </label>
           <label style="display: grid; gap: 4px;">
@@ -262,7 +267,10 @@ function renderCalendarPreferencesExample(args: StoryArgs, note = '') {
             </select>
           </label>
         </div>
-        <DateRangePicker v-bind="args" :description="note || ('Locale: ' + (locale || 'default') + ', calendar: ' + calendar)" />
+        <DateRangePicker
+          v-bind="args"
+          label="Custom 4-5-4 calendar"
+          :description="'Locale: ' + (locale || 'default') + ', calendar: ' + calendar" />
       </div>
     `
   };
@@ -380,5 +388,5 @@ export const AllTheEvents: Story = {
 };
 
 export const CustomCalendar: Story = {
-  render: (args) => renderCalendarPreferencesExample(args, 'Custom 4-5-4 calendar scenario preview'),
+  render: (args) => renderCalendarPreferencesExample(args),
 };

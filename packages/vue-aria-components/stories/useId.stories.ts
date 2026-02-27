@@ -82,7 +82,7 @@ export const GCuseId: Story = {
   }),
   parameters: {
     description: {
-      data: 'This story demonstrates the React useId GC scenario shape (toggle + suspense/async remount path) adapted to Vue useId.'
+      data: 'This story demonstrates useId cleanup behavior with toggle + suspense/async remounts. In Vue, useId is backed by useSSRSafeId, so no ids updater map is exposed for inspection.'
     }
   }
 };

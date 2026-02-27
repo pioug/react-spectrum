@@ -12,7 +12,7 @@ type TagGroupStoryArgs = {
   items?: TagItemData[],
   label?: string,
   maxRows?: number,
-  modelValue?: string[],
+  modelValue?: Iterable<string>,
   onAction?: () => void,
   onRemove?: (keys: string[]) => void,
   renderEmptyState?: () => unknown,

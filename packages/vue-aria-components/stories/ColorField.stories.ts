@@ -1,5 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {VueColorField} from 'vue-aria-components';
+import {ref} from 'vue';
 
 const meta = {
   title: 'React Aria Components/ColorField',
@@ -22,40 +23,22 @@ type Story = StoryObj<typeof meta>;
 
 export const ColorFieldExample: Story = {
   render: (args: {defaultValue?: string, label?: string}) => ({
+    components: {
+      VueColorField
+    },
     setup() {
-      let expandHex = (value: string) => {
-        let match = value.trim().match(/^#([0-9a-fA-F]{3})$/);
-        if (!match) {
-          return value.toUpperCase();
-        }
-
-        let expanded = match[1].split('').map((channel) => `${channel}${channel}`).join('');
-        return `#${expanded.toUpperCase()}`;
-      };
-
-      let displayValue = expandHex(args.defaultValue ?? '#f00');
+      let color = ref(args.defaultValue ?? '#f00');
       return {
         args,
-        displayValue
+        color
       };
     },
     template: `
-      <div class="react-aria-ColorField" data-rac="" data-channel="hex">
-        <label class="react-aria-Label" for="vs-color-field-input">{{ args.label ?? 'Test' }}</label>
-        <input
-          id="vs-color-field-input"
-          autocomplete="off"
-          autocorrect="off"
-          spellcheck="false"
-          tabindex="0"
-          role="textbox"
-          class="react-aria-Input"
-          data-rac=""
-          type="text"
-          :value="displayValue"
-          title=""
-          style="display: block;">
-      </div>
+      <VueColorField
+        v-model="color"
+        class="react-aria-ColorField"
+        data-rac=""
+        :label="args.label ?? 'Test'" />
     `
   }),
   args: {

@@ -49,6 +49,10 @@ export const Picker = defineComponent({
       type: String,
       default: ''
     },
+    disabledKeys: {
+      type: [Array, Set] as PropType<Iterable<string>>,
+      default: () => []
+    },
     disabled: {
       type: Boolean,
       default: false
@@ -102,6 +106,7 @@ export const Picker = defineComponent({
 
     let pickerIdValue = computed(() => props.id ?? generatedId);
     let options = computed(() => props.items.map((item) => normalizeOption(item)));
+    let disabledKeySet = computed(() => new Set(Array.from(props.disabledKeys)));
     let selectedItem = computed(() => options.value.find((option) => option.id === props.modelValue));
     let isPlaceholder = computed(() => !selectedItem.value);
 
@@ -208,7 +213,7 @@ export const Picker = defineComponent({
           ...options.value.map((option) => h('option', {
             key: option.id,
             value: option.id,
-            disabled: Boolean(option.disabled)
+            disabled: Boolean(option.disabled) || disabledKeySet.value.has(option.id)
           }, option.label))
         ]),
         isInvalid.value

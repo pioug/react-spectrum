@@ -37,7 +37,9 @@ type CardOrientation = 'horizontal' | 'vertical';
 type CardViewLayoutInput = CardLayout | ((options?: unknown) => unknown) | Record<string, unknown>;
 type CardViewLoadingState = 'filtering' | 'idle' | 'loading' | 'loadingMore';
 type CardViewSelectionMode = 'multiple' | 'none' | 'single';
-type CardViewSelectionValue = string | string[];
+type CardViewSelectionValue = number | string | Iterable<string | number>;
+type CardViewSelectedKeys = 'all' | CardViewSelectionValue;
+type CardSelectionKey = number | string;
 
 let cardId = 0;
 
@@ -99,17 +101,17 @@ function resolveCardViewLayout(layout: CardViewLayoutInput | undefined): CardLay
   return 'grid';
 }
 
-function getItemKey(item: CardViewItem, index: number): string {
+function getItemSelectionKey(item: CardViewItem, index: number): CardSelectionKey {
   if (item.id != null) {
-    return String(item.id);
+    return item.id;
   }
 
   if (item.key != null) {
-    return String(item.key);
+    return item.key;
   }
 
   if (item.title) {
-    return String(item.title);
+    return item.title;
   }
 
   return `item-${index}`;
@@ -124,6 +126,10 @@ function toStringArray(value: unknown): string[] {
     return [value];
   }
 
+  if (typeof value === 'number') {
+    return [String(value)];
+  }
+
   if (Array.isArray(value)) {
     return value.map((item) => String(item));
   }
@@ -133,6 +139,33 @@ function toStringArray(value: unknown): string[] {
   }
 
   return [];
+}
+
+function isCardViewSelectionValue(value: unknown): value is CardViewSelectionValue {
+  if (typeof value === 'number' || typeof value === 'string') {
+    return true;
+  }
+
+  if (value == null || typeof value === 'string') {
+    return false;
+  }
+
+  let maybeIterable = value as {[Symbol.iterator]?: (() => Iterator<unknown>) | undefined};
+  if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+    return false;
+  }
+
+  for (let entry of value as Iterable<unknown>) {
+    if (typeof entry !== 'number' && typeof entry !== 'string') {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function isCardViewSelectionChangeValue(value: unknown): value is 'all' | CardViewSelectionValue {
+  return value === 'all' || isCardViewSelectionValue(value);
 }
 
 export const Card = defineComponent({
@@ -338,7 +371,7 @@ export const CardView = defineComponent({
       default: false
     },
     disabledKeys: {
-      type: Array as PropType<Array<string | number>>,
+      type: [Array, Set] as PropType<Iterable<string | number>>,
       default: () => []
     },
     isQuiet: {
@@ -362,7 +395,7 @@ export const CardView = defineComponent({
       default: 'idle'
     },
     modelValue: {
-      type: [String, Array] as PropType<CardViewSelectionValue | undefined>,
+      type: [String, Number, Array, Set] as PropType<CardViewSelectionValue | undefined>,
       default: undefined
     },
     renderEmptyState: {
@@ -370,7 +403,7 @@ export const CardView = defineComponent({
       default: undefined
     },
     selectedKeys: {
-      type: [String, Array, Object] as PropType<'all' | Iterable<string | number> | undefined>,
+      type: [String, Number, Array, Set] as PropType<CardViewSelectedKeys | undefined>,
       default: undefined
     },
     selectionMode: {
@@ -380,9 +413,9 @@ export const CardView = defineComponent({
   },
   emits: {
     action: (item: CardViewItem) => typeof item === 'object' && item !== null,
-    change: (value: unknown) => Array.isArray(value) || typeof value === 'string',
-    selectionChange: (value: unknown) => Array.isArray(value) || value === 'all',
-    'update:modelValue': (value: unknown) => Array.isArray(value) || typeof value === 'string'
+    change: (value: unknown) => isCardViewSelectionValue(value),
+    selectionChange: (value: unknown) => isCardViewSelectionChangeValue(value),
+    'update:modelValue': (value: unknown) => isCardViewSelectionValue(value)
   },
   setup(props, {emit, attrs}) {
     let layoutColumnCount = computed(() => {
@@ -398,12 +431,23 @@ export const CardView = defineComponent({
       return undefined;
     });
     let columnCount = computed(() => layoutColumnCount.value ?? Math.max(1, Math.round(props.columns)));
-    let normalizedItems = computed(() => props.items.map((item, index) => ({
-      item,
-      key: getItemKey(item, index)
-    })));
+    let normalizedItems = computed(() => props.items.map((item, index) => {
+      let selectionKey = getItemSelectionKey(item, index);
+      return {
+        item,
+        selectionKey,
+        key: String(selectionKey)
+      };
+    }));
     let itemKeySet = computed(() => new Set(normalizedItems.value.map((entry) => entry.key)));
-    let disabledKeySet = computed(() => new Set(props.disabledKeys.map((key) => String(key))));
+    let itemSelectionKeyByStringKey = computed(() => {
+      let result = new Map<string, CardSelectionKey>();
+      for (let item of normalizedItems.value) {
+        result.set(item.key, item.selectionKey);
+      }
+      return result;
+    });
+    let disabledKeySet = computed(() => new Set(Array.from(props.disabledKeys).map((key) => String(key))));
     let resolvedLayout = computed(() => resolveCardViewLayout(props.layout));
     let selectedKeys = computed(() => {
       if (props.selectedKeys === 'all') {
@@ -417,17 +461,21 @@ export const CardView = defineComponent({
 
     let emitSelection = (nextSelection: Set<string>) => {
       if (props.selectionMode === 'single') {
-        let value = nextSelection.values().next().value ?? '';
+        let selectedKey = nextSelection.values().next().value;
+        let value = selectedKey == null
+          ? ''
+          : (itemSelectionKeyByStringKey.value.get(selectedKey) ?? selectedKey);
         emit('update:modelValue', value);
         emit('change', value);
-        emit('selectionChange', value ? [value] : []);
+        emit('selectionChange', selectedKey == null ? [] : [value]);
         return;
       }
 
-      let value = Array.from(nextSelection);
-      emit('update:modelValue', value);
-      emit('change', value);
-      emit('selectionChange', value);
+      let value = Array.from(nextSelection, (key) => itemSelectionKeyByStringKey.value.get(key) ?? key);
+      let iterableValue = new Set(value);
+      emit('update:modelValue', iterableValue);
+      emit('change', iterableValue);
+      emit('selectionChange', iterableValue);
     };
 
     let onItemPress = (item: CardViewItem, itemKey: string) => {

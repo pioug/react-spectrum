@@ -1,15 +1,29 @@
-import {computed, type ComputedRef, defineComponent, h, inject, type InjectionKey, type PropType, provide} from 'vue';
-import {getSpectrumContext} from '../context';
+import {computed, type ComputedRef, defineComponent, h, inject, type InjectionKey, type PropType, provide, ref} from 'vue';
 
 interface RadioGroupContextValue {
   disabled: ComputedRef<boolean>,
+  invalid: ComputedRef<boolean>,
   modelValue: ComputedRef<string>,
   name: ComputedRef<string>,
+  onBlur: (event: FocusEvent) => void,
+  onFocus: (event: FocusEvent) => void,
   setValue: (value: string) => void
 }
 
 const radioGroupContextKey: InjectionKey<RadioGroupContextValue> = Symbol('vue-spectrum-radio-group-context');
 let radioGroupId = 0;
+const HIDDEN_INPUT_STYLE = {
+  border: '0px',
+  clip: 'rect(0px, 0px, 0px, 0px)',
+  clipPath: 'inset(50%)',
+  height: '1px',
+  margin: '-1px',
+  overflow: 'hidden',
+  padding: '0px',
+  position: 'absolute',
+  whiteSpace: 'nowrap',
+  width: '1px'
+} as const;
 
 export const VueRadioGroup = defineComponent({
   name: 'VueRadioGroup',
@@ -26,6 +40,14 @@ export const VueRadioGroup = defineComponent({
       type: String,
       default: ''
     },
+    required: {
+      type: Boolean,
+      default: false
+    },
+    invalid: {
+      type: Boolean,
+      default: false
+    },
     name: {
       type: String,
       default: undefined
@@ -40,7 +62,9 @@ export const VueRadioGroup = defineComponent({
     }
   },
   emits: {
-    'update:modelValue': (value: string) => typeof value === 'string'
+    'update:modelValue': (value: string) => typeof value === 'string',
+    focus: (event: FocusEvent) => event instanceof FocusEvent,
+    blur: (event: FocusEvent) => event instanceof FocusEvent
   },
   setup(props, {emit, slots, attrs}) {
     let generatedName = `vs-radio-group-${++radioGroupId}`;
@@ -51,6 +75,9 @@ export const VueRadioGroup = defineComponent({
       name: groupName,
       modelValue: computed(() => props.modelValue),
       disabled: computed(() => props.disabled),
+      invalid: computed(() => props.invalid),
+      onFocus: (event: FocusEvent) => emit('focus', event),
+      onBlur: (event: FocusEvent) => emit('blur', event),
       setValue: (value: string) => emit('update:modelValue', value)
     });
 
@@ -58,18 +85,23 @@ export const VueRadioGroup = defineComponent({
       return h('div', {
         ...attrs,
         class: [
-          'vs-radio-group',
-          props.orientation === 'horizontal' ? 'vs-radio-group--horizontal' : 'vs-radio-group--vertical',
+          'react-aria-RadioGroup',
           attrs.class
         ],
-        'data-vac': '',
+        'data-rac': '',
+        'data-disabled': props.disabled ? 'true' : undefined,
+        'data-invalid': props.invalid ? 'true' : undefined,
+        'data-required': props.required ? 'true' : undefined,
         role: 'radiogroup',
+        'aria-orientation': props.orientation,
         'aria-disabled': props.disabled ? 'true' : undefined,
+        'aria-invalid': props.invalid ? 'true' : undefined,
+        'aria-required': props.required ? 'true' : undefined,
         'aria-describedby': props.description ? descriptionId : undefined
       }, [
-        props.label ? h('span', {class: 'vs-radio-group__label'}, props.label) : null,
-        h('div', {class: 'vs-radio-group__options'}, slots.default ? slots.default() : []),
-        props.description ? h('span', {id: descriptionId, class: 'vs-radio-group__description'}, props.description) : null
+        props.label ? h('span', {class: 'react-aria-Label'}, props.label) : null,
+        ...(slots.default ? slots.default() : []),
+        props.description ? h('span', {id: descriptionId, class: 'react-aria-Text'}, props.description) : null
       ]);
     };
   }
@@ -106,21 +138,19 @@ export const VueRadio = defineComponent({
     blur: (event: FocusEvent) => event instanceof FocusEvent
   },
   setup(props, {emit, slots, attrs}) {
-    let context = getSpectrumContext();
     let group = inject(radioGroupContextKey, null);
+    let isFocused = ref(false);
+    let isFocusVisible = ref(false);
+    let isKeyboardModality = ref(false);
+    let isPressed = ref(false);
 
     let isDisabled = computed(() => props.disabled || (group ? group.disabled.value : false));
+    let isInvalid = computed(() => group ? group.invalid.value : false);
     let isChecked = computed(() => {
       let value = group ? group.modelValue.value : props.modelValue;
       return value === props.value;
     });
     let name = computed(() => group ? group.name.value : props.name);
-
-    let classes = computed(() => ([
-      'vs-radio',
-      context.value.scale === 'large' ? 'vs-radio--large' : 'vs-radio--medium',
-      isDisabled.value ? 'is-disabled' : null
-    ]));
 
     let onChange = (event: Event) => {
       let target = event.currentTarget as HTMLInputElement | null;
@@ -138,21 +168,66 @@ export const VueRadio = defineComponent({
     return function render() {
       return h('label', {
         ...attrs,
-        'data-vac': '',
-        class: [classes.value, attrs.class]
+        class: ['react-aria-Radio', attrs.class],
+        'data-rac': '',
+        'data-react-aria-pressable': 'true',
+        'data-selected': isChecked.value ? 'true' : undefined,
+        'data-disabled': isDisabled.value ? 'true' : undefined,
+        'data-invalid': isInvalid.value ? 'true' : undefined,
+        'data-focused': isFocused.value ? 'true' : undefined,
+        'data-focus-visible': isFocusVisible.value ? 'true' : undefined,
+        'data-pressed': isPressed.value ? 'true' : undefined,
+        onMouseleave: () => {
+          isPressed.value = false;
+        }
       }, [
-        h('input', {
-          class: 'vs-radio__input',
-          type: 'radio',
-          name: name.value,
-          value: props.value,
-          checked: isChecked.value,
-          disabled: isDisabled.value,
-          onChange,
-          onFocus: (event: FocusEvent) => emit('focus', event),
-          onBlur: (event: FocusEvent) => emit('blur', event)
-        }),
-        h('span', {class: 'vs-radio__label'}, slots.default ? slots.default() : (props.label || props.value))
+        h('span', {style: HIDDEN_INPUT_STYLE}, [
+          h('input', {
+            type: 'radio',
+            name: name.value,
+            value: props.value,
+            checked: isChecked.value,
+            disabled: isDisabled.value,
+            onChange,
+            onFocus: (event: FocusEvent) => {
+              isFocused.value = true;
+              let target = event.currentTarget as HTMLElement | null;
+              isFocusVisible.value = Boolean(target?.matches(':focus-visible')) || isKeyboardModality.value;
+              emit('focus', event);
+              group?.onFocus(event);
+            },
+            onBlur: (event: FocusEvent) => {
+              isFocused.value = false;
+              isFocusVisible.value = false;
+              isPressed.value = false;
+              emit('blur', event);
+              group?.onBlur(event);
+            },
+            onKeydown: (event: KeyboardEvent) => {
+              isKeyboardModality.value = true;
+              if (event.key === ' ' || event.key === 'Enter') {
+                isPressed.value = true;
+              }
+            },
+            onKeyup: () => {
+              isPressed.value = false;
+            },
+            onPointerdown: () => {
+              if (isDisabled.value) {
+                return;
+              }
+              isKeyboardModality.value = false;
+              isPressed.value = true;
+            },
+            onPointerup: () => {
+              isPressed.value = false;
+            },
+            onPointercancel: () => {
+              isPressed.value = false;
+            }
+          })
+        ]),
+        h('span', {class: 'react-aria-RadioLabel'}, slots.default ? slots.default() : (props.label || props.value))
       ]);
     };
   }

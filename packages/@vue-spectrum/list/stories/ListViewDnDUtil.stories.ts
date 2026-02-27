@@ -73,7 +73,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function renderUtilStory(args: StoryArgs, note: string, options: RenderOptions = {}) {
+function renderUtilStory(args: StoryArgs, options: RenderOptions = {}) {
   let {
     includeDropTarget = false,
     items = BASE_ITEMS,
@@ -86,16 +86,19 @@ function renderUtilStory(args: StoryArgs, note: string, options: RenderOptions =
         args,
         includeDropTarget,
         items,
-        note,
         secondItems: SECOND_ITEMS,
         twoLists
       };
     },
     template: `
       <div style="display: grid; gap: 8px; width: 320px;">
-        <div>{{note}}</div>
-        <div v-if="includeDropTarget" style="border: 1px dashed #9ca3af; border-radius: 6px; padding: 6px 8px;">
-          Droppable placeholder
+        <div
+          v-if="includeDropTarget"
+          role="region"
+          aria-label="Drop target"
+          data-testid="drop-target"
+          style="border: 1px dashed #9ca3af; border-radius: 6px; padding: 6px 8px;">
+          Drop target
         </div>
         <ListView v-bind="args" aria-label="util handlers list" :items="items" />
         <ListView
@@ -109,22 +112,22 @@ function renderUtilStory(args: StoryArgs, note: string, options: RenderOptions =
 }
 
 export const DragOut: Story = {
-  render: (args) => renderUtilStory(args, 'Drag out of list', {includeDropTarget: true}),
+  render: (args) => renderUtilStory(args, {includeDropTarget: true}),
   name: 'Drag out of list'
 };
 
 export const DragWithin: Story = {
-  render: (args) => renderUtilStory(args, 'Drag within list (reorder)'),
+  render: (args) => renderUtilStory(args),
   name: 'Drag within list (Reorder}'
 };
 
 export const DragWithinMany: Story = {
-  render: (args) => renderUtilStory(args, 'Drag within list with many items', {items: MANY_ITEMS}),
+  render: (args) => renderUtilStory(args, {items: MANY_ITEMS}),
   name: 'Drag within list with many items'
 };
 
 export const DropOntoItem: Story = {
-  render: (args) => renderUtilStory(args, 'drop onto item/folder'),
+  render: (args) => renderUtilStory(args),
   name: 'drop onto item/folder',
   parameters: {
     description: {
@@ -134,7 +137,7 @@ export const DropOntoItem: Story = {
 };
 
 export const DropOntoRoot: Story = {
-  render: (args) => renderUtilStory(args, 'drop onto root', {twoLists: true}),
+  render: (args) => renderUtilStory(args, {twoLists: true}),
   name: 'drop onto root',
   parameters: {
     description: {
@@ -144,7 +147,7 @@ export const DropOntoRoot: Story = {
 };
 
 export const DropBetween: Story = {
-  render: (args) => renderUtilStory(args, 'drop between items', {twoLists: true}),
+  render: (args) => renderUtilStory(args, {twoLists: true}),
   name: 'drop between items',
   parameters: {
     description: {
@@ -154,7 +157,7 @@ export const DropBetween: Story = {
 };
 
 export const DirectoryFileDrop: Story = {
-  render: (args) => renderUtilStory(args, 'allows directories and files from finder', {twoLists: true}),
+  render: (args) => renderUtilStory(args, {twoLists: true}),
   name: 'allows directories and files from finder',
   parameters: {
     description: {
@@ -164,7 +167,7 @@ export const DirectoryFileDrop: Story = {
 };
 
 export const Complex: Story = {
-  render: (args) => renderUtilStory(args, 'complex drag between lists', {twoLists: true}),
+  render: (args) => renderUtilStory(args, {twoLists: true}),
   name: 'complex drag between lists',
   parameters: {
     description: {
@@ -174,7 +177,7 @@ export const Complex: Story = {
 };
 
 export const GetDropOperationDefault: Story = {
-  render: (args) => renderUtilStory(args, 'using getDropOperations to determine default drop operation', {twoLists: true}),
+  render: (args) => renderUtilStory(args, {twoLists: true}),
   name: 'using getDropOperations to determine default drop operation',
   parameters: {
     description: {
@@ -184,7 +187,7 @@ export const GetDropOperationDefault: Story = {
 };
 
 export const UtilOverride: Story = {
-  render: (args) => renderUtilStory(args, 'util handlers overridden by onDrop and getDropOperations', {twoLists: true}),
+  render: (args) => renderUtilStory(args, {twoLists: true}),
   name: 'util handlers overridden by onDrop and getDropOperations',
   parameters: {
     description: {

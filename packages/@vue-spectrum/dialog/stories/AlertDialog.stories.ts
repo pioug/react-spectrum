@@ -1,4 +1,7 @@
+import {ActionButton} from '@vue-spectrum/button';
 import {AlertDialog} from '../src';
+import {action} from '@storybook/addon-actions';
+import {ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type StoryArgs = Record<string, unknown>;
@@ -85,16 +88,38 @@ function baseAlertArgs(overrides: StoryArgs = {}): StoryArgs {
   };
 }
 
-function renderAlert(args: StoryArgs, note?: string) {
+function renderAlert(args: StoryArgs) {
   return {
-    components: {AlertDialog},
+    components: {ActionButton, AlertDialog},
     setup() {
-      return {args, note};
+      let isOpen = ref(true);
+      let openDialog = () => {
+        isOpen.value = true;
+      };
+      let closeDialog = () => {
+        isOpen.value = false;
+      };
+
+      return {
+        args,
+        closeDialog,
+        isOpen,
+        onCancel: action('cancel'),
+        onPrimaryAction: action('primary'),
+        onSecondaryAction: action('secondary'),
+        openDialog
+      };
     },
     template: `
-      <div style="display: grid; gap: 8px; width: 420px;">
-        <div v-if="note">{{note}}</div>
-        <AlertDialog v-bind="args">
+      <div style="display: grid; gap: 8px; width: 420px; margin: 100px 0;">
+        <ActionButton @click="openDialog">Trigger</ActionButton>
+        <AlertDialog
+          v-bind="args"
+          :is-open="isOpen"
+          @cancel="onCancel"
+          @close="closeDialog"
+          @primary-action="onPrimaryAction"
+          @secondary-action="onSecondaryAction">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus.
         </AlertDialog>
       </div>

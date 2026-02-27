@@ -51,6 +51,10 @@ export const SearchAutocomplete = defineComponent({
       type: Boolean,
       default: false
     },
+    icon: {
+      type: [Object, String] as PropType<string | null | undefined>,
+      default: undefined
+    },
     label: {
       type: String,
       default: ''
@@ -139,6 +143,27 @@ export const SearchAutocomplete = defineComponent({
       return props.label || undefined;
     });
 
+    let iconText = computed(() => {
+      if (props.icon === null) {
+        return null;
+      }
+
+      if (typeof props.icon === 'string') {
+        let normalized = props.icon.trim().toLowerCase();
+        if (normalized === '' || normalized === 'search') {
+          return '\ud83d\udd0d';
+        }
+
+        if (normalized === 'filter') {
+          return '\ud83d\udd0e';
+        }
+
+        return props.icon;
+      }
+
+      return '\ud83d\udd0d';
+    });
+
     let emitValue = (value: string) => {
       emit('update:modelValue', value);
       emit('change', value);
@@ -166,11 +191,13 @@ export const SearchAutocomplete = defineComponent({
         h('div', {
           class: searchFieldClassName.value
         }, [
-          h('span', {
-            class: classNames(searchStyles, 'spectrum-Icon'),
-            'data-testid': 'searchicon',
-            'aria-hidden': 'true'
-          }, '\ud83d\udd0d'),
+          iconText.value != null
+            ? h('span', {
+              class: classNames(searchStyles, 'spectrum-Icon'),
+              'data-testid': 'searchicon',
+              'aria-hidden': 'true'
+            }, iconText.value)
+            : null,
           h('input', {
             id: inputId.value,
             class: ['vs-combobox__input', inputClassName.value],

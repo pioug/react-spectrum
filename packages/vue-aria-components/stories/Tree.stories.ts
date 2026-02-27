@@ -313,6 +313,9 @@ function createVirtualizedFlatTreeStory(options: TreeStoryOptions) {
                     </div>
                   </div>
                 </template>
+                <div v-else-if="row.kind === 'section'" class="react-aria-TreeHeader" role="row">
+                  <div role="rowheader" style="display: contents;">{{ row.label }}</div>
+                </div>
                 <div v-else-if="row.kind === 'simple'" class="tree-item">{{ row.label }}</div>
                 <div v-else class="tree-item">
                   <div class="content-wrapper" :style="{marginInlineStart: getInlineStart(row) + 'px'}">
@@ -331,75 +334,6 @@ function createVirtualizedFlatTreeStory(options: TreeStoryOptions) {
                 </div>
               </div>
             </template>
-          </div>
-        </div>
-      </div>
-    `
-  };
-}
-
-function createVirtualizedTreeSectionRenderStory() {
-  return {
-    template: `
-      <div class="tree">
-        <div role="presentation" style="width: 300px; height: 210px; pointer-events: auto; position: relative;">
-          <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 0px; left: 0px; width: 300px; height: 90px;">
-            <section class="react-aria-TreeSection" role="rowgroup">
-              <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 0px; left: 0px; width: 300px; height: 30px;">
-                <div class="react-aria-TreeHeader" role="row">
-                  <div role="rowheader" style="display: contents;">Photo Header</div>
-                </div>
-              </div>
-              <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 30px; left: 0px; width: 300px; height: 30px;">
-                <div class="tree-item">
-                  <div class="content-wrapper" style="margin-inline-start: 20px;">
-                    <span>Photos</span>
-                    <button class="button" aria-label="Info" type="button">ⓘ</button>
-                    <button aria-label="Menu" type="button">☰</button>
-                  </div>
-                </div>
-              </div>
-              <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 60px; left: 0px; width: 300px; height: 30px;">
-                <div class="tree-item">
-                  <div class="content-wrapper" style="margin-inline-start: 20px;">
-                    <span>Edited Photos</span>
-                    <button class="button" aria-label="Info" type="button">ⓘ</button>
-                    <button aria-label="Menu" type="button">☰</button>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </div>
-          <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 90px; left: 0px; width: 300px; height: 60px;">
-            <section class="react-aria-TreeSection" role="rowgroup">
-              <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 0px; left: 0px; width: 300px; height: 30px;">
-                <div class="react-aria-TreeHeader" role="row">
-                  <div role="rowheader" style="display: contents;">Project Header</div>
-                </div>
-              </div>
-              <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 30px; left: 0px; width: 300px; height: 30px;">
-                <div class="tree-item">
-                  <div class="content-wrapper" style="margin-inline-start: 0px;">
-                    <button class="react-aria-Button" slot="chevron" type="button">
-                      <div style="transform: rotate(0deg); width: 16px; height: 16px;">
-                        <svg viewBox="0 0 24 24" style="width: 16px; height: 16px;">
-                          <path d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                        </svg>
-                      </div>
-                    </button>
-                    <span>Projects</span>
-                    <button class="button" aria-label="Info" type="button">ⓘ</button>
-                    <button aria-label="Menu" type="button">☰</button>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </div>
-          <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 150px; left: 0px; width: 300px; height: 30px;">
-            <div class="tree-item">Reports</div>
-          </div>
-          <div role="presentation" style="position: absolute; overflow: visible; opacity: 1; z-index: 0; contain: size layout style; top: 180px; left: 0px; width: 300px; height: 30px;">
-            <div class="tree-item"><span class="react-aria-Text">false Tests</span></div>
           </div>
         </div>
       </div>
@@ -566,7 +500,10 @@ export const TreeWithDragAndDropVirtualized: Story = {
 };
 
 export const VirtualizedTreeSectionRender: Story = {
-  render: () => createVirtualizedTreeSectionRenderStory(),
+  render: () => createVirtualizedFlatTreeStory({
+    overlapRows: true,
+    rows: STATIC_SECTION_ROWS
+  }),
   args: {
     ...baseArgs,
     disallowClearAll: false

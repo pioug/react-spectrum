@@ -106,6 +106,9 @@ export const ScaleLarge: Story = {
 
 export const NestedColorSchemes: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {Button, Provider},
     template: `
       <Provider color-scheme="dark" style="padding: 50px; text-align: center; width: 500px;">
@@ -120,6 +123,9 @@ export const NestedColorSchemes: Story = {
 
 export const NestedProps: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {Button, Provider},
     template: `
       <Provider :is-disabled="true">
@@ -162,6 +168,9 @@ export const ExpressTheme: Story = {
 
 export const ResponsiveStyleProps: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {Button, Provider, TextField},
     template: `
       <Provider style="padding: 50px;">
@@ -194,6 +203,9 @@ export const CustomResponsiveStyleProps: Story = {
 
 export const BreakpointOmitted: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {Button, Provider},
     template: `
       <Provider style="padding: 50px;">
@@ -206,6 +218,9 @@ export const BreakpointOmitted: Story = {
 
 export const LocaleZhHant: Story = {
   render: () => ({
+    setup() {
+      return {};
+    },
     components: {Provider},
     template: `
       <div>

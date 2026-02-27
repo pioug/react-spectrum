@@ -75,7 +75,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function renderDnDStory(args: StoryArgs, note: string, options: RenderOptions = {}) {
+function renderDnDStory(args: StoryArgs, options: RenderOptions = {}) {
   let {
     includeDropTarget = false,
     items = BASE_ITEMS,
@@ -90,16 +90,19 @@ function renderDnDStory(args: StoryArgs, note: string, options: RenderOptions = 
         includeDropTarget,
         items,
         manyHeight,
-        note,
         secondItems: SECOND_LIST_ITEMS,
         twoLists
       };
     },
     template: `
       <div style="display: grid; gap: 8px; width: 320px;">
-        <div>{{note}}</div>
-        <div v-if="includeDropTarget" style="border: 1px dashed #9ca3af; border-radius: 6px; padding: 6px 8px;">
-          Droppable placeholder
+        <div
+          v-if="includeDropTarget"
+          role="region"
+          aria-label="Drop target"
+          data-testid="drop-target"
+          style="border: 1px dashed #9ca3af; border-radius: 6px; padding: 6px 8px;">
+          Drop target
         </div>
         <div :style="{maxHeight: manyHeight ? manyHeight + 'px' : undefined, overflowY: manyHeight ? 'auto' : undefined}">
           <ListView v-bind="args" aria-label="drag and drop list" :items="items" />
@@ -115,42 +118,42 @@ function renderDnDStory(args: StoryArgs, note: string, options: RenderOptions = 
 }
 
 export const DragOut: Story = {
-  render: (args) => renderDnDStory(args, 'Drag out of list', {includeDropTarget: true}),
+  render: (args) => renderDnDStory(args, {includeDropTarget: true}),
   name: 'Drag out of list'
 };
 
 export const CustomDragPreview: Story = {
-  render: (args) => renderDnDStory(args, 'Custom drag preview', {includeDropTarget: true}),
+  render: (args) => renderDnDStory(args, {includeDropTarget: true}),
   name: 'Custom drag preview'
 };
 
 export const DragWithin: Story = {
-  render: (args) => renderDnDStory(args, 'Drag within list (reorder)'),
+  render: (args) => renderDnDStory(args),
   name: 'Drag within list (Reorder}'
 };
 
 export const DragWithinScroll: Story = {
-  render: (args) => renderDnDStory(args, 'Drag within list scrolling (reorder)', {manyHeight: 120}),
+  render: (args) => renderDnDStory(args, {manyHeight: 120}),
   name: 'Drag within list scrolling (Reorder)'
 };
 
 export const DragWithinMany: Story = {
-  render: (args) => renderDnDStory(args, 'Drag within list with many items', {items: MANY_ITEMS, manyHeight: 280}),
+  render: (args) => renderDnDStory(args, {items: MANY_ITEMS, manyHeight: 280}),
   name: 'Drag within list with many items'
 };
 
 export const DragIntoFolder: Story = {
-  render: (args) => renderDnDStory(args, 'Drag into folder'),
+  render: (args) => renderDnDStory(args),
   name: 'Drag into folder'
 };
 
 export const DragBetween: Story = {
-  render: (args) => renderDnDStory(args, 'Drag between lists', {twoLists: true}),
+  render: (args) => renderDnDStory(args, {twoLists: true}),
   name: 'Drag between lists'
 };
 
 export const DragBetweenRootOnly: Story = {
-  render: (args) => renderDnDStory(args, 'Drag between lists (root only)', {twoLists: true}),
+  render: (args) => renderDnDStory(args, {twoLists: true}),
   name: 'Drag between lists (Root only)',
   parameters: {
     description: {
@@ -160,7 +163,7 @@ export const DragBetweenRootOnly: Story = {
 };
 
 export const DraggableOnAction: Story = {
-  render: (args) => renderDnDStory(args, 'draggable rows, onAction', {includeDropTarget: true}),
+  render: (args) => renderDnDStory(args, {includeDropTarget: true}),
   name: 'draggable rows, onAction',
   parameters: {
     description: {
@@ -170,7 +173,7 @@ export const DraggableOnAction: Story = {
 };
 
 export const DraggableCopyLink: Story = {
-  render: (args) => renderDnDStory(args, 'draggable rows, allow copy and link', {includeDropTarget: true}),
+  render: (args) => renderDnDStory(args, {includeDropTarget: true}),
   name: 'draggable rows, allow copy and link',
   parameters: {
     description: {
