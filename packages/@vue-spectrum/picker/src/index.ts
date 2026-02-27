@@ -1,5 +1,6 @@
 import '@adobe/spectrum-css-temp/components/dropdown/vars.css';
 import {classNames} from '@vue-spectrum/utils';
+import {Item, Section} from '@vue-stately/collections';
 import {computed, defineComponent, h, type PropType, ref} from 'vue';
 import './styles.css';
 const styles: {[key: string]: string} = {};
@@ -237,8 +238,6 @@ export const Picker = defineComponent({
   }
 });
 
-export const Item = <T extends PickerItem>(item: T): T => item;
-export const Section = <T extends PickerSection>(section: T): T => section;
-
 export const VuePicker = Picker;
+export {Item, Section};
 export type {SpectrumPickerProps} from '@vue-types/select';

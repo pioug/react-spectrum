@@ -60,6 +60,12 @@ import {
   VueListBox
 } from '@vue-spectrum/listbox';
 import {
+  Item as PickerItem,
+  Picker,
+  Section as PickerSection,
+  VuePicker
+} from '@vue-spectrum/picker';
+import {
   Heading,
   Keyboard,
   Text,
@@ -145,6 +151,12 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(ListBoxItem).not.toBe(VueListBox);
     expect(ListBoxSection).not.toBe(VueListBox);
     expect(useListBoxLayout()).toEqual({layout: 'stack'});
+  });
+
+  it('exports picker collection primitives separately from VuePicker', () => {
+    expect(Picker).toBe(VuePicker);
+    expect(PickerItem).not.toBe(VuePicker);
+    expect(PickerSection).not.toBe(VuePicker);
   });
 
   it('exports semantic text primitives on top of VueText', () => {
