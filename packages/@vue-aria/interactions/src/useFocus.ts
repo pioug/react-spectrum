@@ -1,6 +1,6 @@
 import {computed, type ComputedRef, unref} from 'vue';
 import type {FocusableElement, MaybeRef} from './types';
-import {getEventTarget} from './utils';
+import {getActiveElement, getEventTarget} from './utils';
 
 export interface FocusProps<Target extends FocusableElement = FocusableElement> {
   isDisabled?: MaybeRef<boolean>,
@@ -22,9 +22,28 @@ export interface FocusResult<Target extends FocusableElement = FocusableElement>
 
 export function useFocus<Target extends FocusableElement = FocusableElement>(props: FocusProps<Target> = {}): FocusResult<Target> {
   let isDisabled = computed(() => Boolean(unref(props.isDisabled)));
+  let resolveOwnerDocument = (target: EventTarget | null): Document | null => {
+    if (
+      target == null ||
+      typeof target !== 'object' ||
+      !('ownerDocument' in target)
+    ) {
+      return typeof document !== 'undefined' ? document : null;
+    }
+
+    let ownerDocument = (target as Node).ownerDocument;
+    return ownerDocument ?? (typeof document !== 'undefined' ? document : null);
+  };
 
   let onFocus = (event: FocusEvent) => {
-    if (isDisabled.value || getEventTarget(event) !== event.currentTarget) {
+    let eventTarget = getEventTarget(event);
+    if (isDisabled.value || eventTarget !== event.currentTarget) {
+      return;
+    }
+
+    let ownerDocument = resolveOwnerDocument(eventTarget);
+    let activeElement = getActiveElement(ownerDocument);
+    if (activeElement !== eventTarget) {
       return;
     }
 

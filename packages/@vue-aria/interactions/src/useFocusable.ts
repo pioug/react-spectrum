@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, unref} from 'vue';
+import {computed, nextTick, type ComputedRef, unref} from 'vue';
 import {createEventHandler} from './createEventHandler';
 import type {FocusableElement, MaybeRef} from './types';
 import {type FocusProps, useFocus} from './useFocus';
@@ -74,12 +74,15 @@ export function useFocusable<T extends FocusableElement = FocusableElement>(
 ): FocusableAria {
   let {focusProps} = useFocus(props);
   let {keyboardProps} = useKeyboard(props);
+  let shouldAutoFocus = unref(props.autoFocus) === true;
 
-  if (unref(props.autoFocus) === true) {
-    let element = resolveFocusableElement(domRef);
-    if (element) {
-      focusSafely(element);
-    }
+  if (shouldAutoFocus) {
+    nextTick(() => {
+      let element = resolveFocusableElement(domRef);
+      if (element) {
+        focusSafely(element);
+      }
+    });
   }
 
   let tabIndex = computed(() => {

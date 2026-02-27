@@ -133,6 +133,7 @@ import {
   addWindowFocusTracking,
   setInteractionModality,
   useFocus,
+  useFocusable,
   useFocusVisible,
   useFocusWithin,
   useHover,
@@ -4236,7 +4237,7 @@ describe('Vue migration composition components', () => {
       expect(trigger.tooltipProps.value.id).toContain('react-aria-');
 
       setInteractionModality('keyboard');
-      triggerElement.dispatchEvent(new FocusEvent('focus', {bubbles: true}));
+      triggerElement.focus();
       expect(trigger.isOpen.value).toBe(true);
       expect(trigger.triggerProps.value['aria-describedby']).toBe(trigger.tooltipProps.value.id);
 
@@ -4418,6 +4419,7 @@ describe('Vue migration composition components', () => {
     });
 
     let linkElement = document.createElement('a');
+    linkElement.tabIndex = 0;
     let hiddenProps = hiddenLink.visuallyHiddenProps.value;
     if (hiddenProps.onFocusin) {
       linkElement.addEventListener('focusin', hiddenProps.onFocusin as EventListener);
@@ -4426,20 +4428,25 @@ describe('Vue migration composition components', () => {
       linkElement.addEventListener('focusout', hiddenProps.onFocusout as EventListener);
     }
     document.body.append(linkElement);
+    let outside = document.createElement('button');
+    document.body.append(outside);
 
     try {
       expect(hiddenLink.visuallyHiddenProps.value.style?.position).toBe('absolute');
       expect(hiddenLink.visuallyHiddenProps.value.style?.color).toBe('red');
 
+      linkElement.focus();
       linkElement.dispatchEvent(new FocusEvent('focusin', {bubbles: true}));
       expect(hiddenLink.isFocused.value).toBe(true);
       expect(hiddenLink.visuallyHiddenProps.value.style).toEqual({color: 'red'});
 
-      linkElement.dispatchEvent(new FocusEvent('focusout', {bubbles: true}));
+      outside.focus();
+      linkElement.dispatchEvent(new FocusEvent('focusout', {bubbles: true, relatedTarget: outside}));
       expect(hiddenLink.isFocused.value).toBe(false);
       expect(hiddenLink.visuallyHiddenProps.value.style?.position).toBe('absolute');
     } finally {
       document.body.removeChild(linkElement);
+      document.body.removeChild(outside);
     }
 
     let nonFocusableHidden = useAriaVisuallyHidden();
@@ -5104,10 +5111,10 @@ describe('Vue migration composition components', () => {
         button.addEventListener('blur', press.pressProps.value.onBlur as EventListener);
       }
 
-      button.dispatchEvent(new FocusEvent('focus', {bubbles: true}));
+      button.focus();
       button.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'Enter'}));
       button.dispatchEvent(new KeyboardEvent('keyup', {bubbles: true, key: 'Enter'}));
-      button.dispatchEvent(new FocusEvent('blur', {bubbles: true}));
+      button.blur();
 
       expect(focusEvents).toEqual(['focus', 'blur']);
       expect(focusChanges).toEqual([true, false]);
@@ -5115,6 +5122,114 @@ describe('Vue migration composition components', () => {
       expect(pressEvents).toEqual(['start', 'up', 'end', 'press']);
       expect(pressChanges).toEqual([true, false]);
       expect(press.isPressed.value).toBe(false);
+    } finally {
+      document.body.removeChild(button);
+    }
+  });
+
+  it('ignores vue-aria focus callbacks when active element does not match event target', () => {
+    let focusEvents: string[] = [];
+    let focus = useFocus({
+      onFocus: () => {
+        focusEvents.push('focus');
+      },
+      onFocusChange: (isFocused) => {
+        focusEvents.push(`change:${isFocused}`);
+      }
+    });
+    let button = document.createElement('button');
+    let other = document.createElement('button');
+    document.body.append(button, other);
+
+    try {
+      if (focus.focusProps.value.onFocus) {
+        button.addEventListener('focus', focus.focusProps.value.onFocus as EventListener);
+      }
+
+      other.focus();
+      button.dispatchEvent(new FocusEvent('focus', {bubbles: true}));
+      expect(focusEvents).toEqual([]);
+
+      button.focus();
+      focusEvents = [];
+      button.dispatchEvent(new FocusEvent('focus', {bubbles: true}));
+      expect(focusEvents).toEqual(['focus', 'change:true']);
+    } finally {
+      document.body.removeChild(button);
+      document.body.removeChild(other);
+    }
+  });
+
+  it('clears vue-aria focus-within when disabled and when focus moves outside without focusout', async () => {
+    let isDisabled = ref(false);
+    let focusWithinChanges: boolean[] = [];
+    let blurWithinCount = 0;
+    let focusWithin = useFocusWithin({
+      isDisabled,
+      onBlurWithin: () => {
+        blurWithinCount++;
+      },
+      onFocusWithinChange: (isFocused) => {
+        focusWithinChanges.push(isFocused);
+      }
+    });
+    let container = document.createElement('div');
+    let child = document.createElement('button');
+    let outside = document.createElement('input');
+    container.append(child);
+    document.body.append(container, outside);
+
+    try {
+      if (focusWithin.focusWithinProps.value.onFocusin) {
+        container.addEventListener('focusin', focusWithin.focusWithinProps.value.onFocusin as EventListener);
+      }
+      if (focusWithin.focusWithinProps.value.onFocusout) {
+        container.addEventListener('focusout', focusWithin.focusWithinProps.value.onFocusout as EventListener);
+      }
+
+      child.focus();
+      child.dispatchEvent(new FocusEvent('focusin', {bubbles: true, relatedTarget: null}));
+      expect(focusWithin.isFocusWithin.value).toBe(true);
+
+      isDisabled.value = true;
+      await nextTick();
+      expect(focusWithin.isFocusWithin.value).toBe(false);
+
+      isDisabled.value = false;
+      await nextTick();
+
+      child.focus();
+      child.dispatchEvent(new FocusEvent('focusin', {bubbles: true, relatedTarget: null}));
+      expect(focusWithin.isFocusWithin.value).toBe(true);
+
+      container.removeChild(child);
+      outside.focus();
+      outside.dispatchEvent(new FocusEvent('focus', {bubbles: true, relatedTarget: null}));
+
+      expect(focusWithin.isFocusWithin.value).toBe(false);
+      expect(focusWithinChanges).toEqual([true, false, true, false]);
+      expect(blurWithinCount).toBe(2);
+    } finally {
+      if (child.parentElement === container) {
+        container.removeChild(child);
+      }
+      document.body.removeChild(container);
+      document.body.removeChild(outside);
+    }
+  });
+
+  it('auto-focuses vue-aria focusable elements when the ref resolves on next tick', async () => {
+    let elementRef = ref<HTMLElement | null>(null);
+    useFocusable({
+      autoFocus: true
+    }, elementRef);
+    let button = document.createElement('button');
+    document.body.append(button);
+
+    try {
+      elementRef.value = button;
+      await nextTick();
+      expect(document.activeElement).toBe(button);
     } finally {
       document.body.removeChild(button);
     }
@@ -5323,7 +5438,9 @@ describe('Vue migration composition components', () => {
       container.dispatchEvent(createPointerEvent('pointerenter'));
       container.dispatchEvent(createPointerEvent('pointerleave'));
 
+      child.focus();
       child.dispatchEvent(new FocusEvent('focusin', {bubbles: true, relatedTarget: null}));
+      outside.focus();
       child.dispatchEvent(new FocusEvent('focusout', {bubbles: true, relatedTarget: outside}));
 
       setInteractionModality('pointer');
