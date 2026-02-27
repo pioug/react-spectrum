@@ -1794,6 +1794,55 @@ describe('Vue migration primitives', () => {
     noLabelWarn.mockRestore();
   });
 
+  it('maps progress aria-labelledby composition and custom DOM prop passthrough to react parity', () => {
+    let externalLabelId = 'progress-external-label';
+    let withAriaLabelAndLabelledBy = mount(ProgressBar, {
+      props: {
+        label: 'Loading assets',
+        value: 35
+      },
+      attrs: {
+        'aria-label': 'Fallback progress label',
+        'aria-labelledby': externalLabelId,
+        'data-testid': 'progress-bar-test'
+      }
+    });
+    let labelledBy = withAriaLabelAndLabelledBy.attributes('aria-labelledby');
+    let labelledByIds = labelledBy?.split(/\s+/) ?? [];
+    expect(withAriaLabelAndLabelledBy.attributes('data-testid')).toBe('progress-bar-test');
+    expect(withAriaLabelAndLabelledBy.attributes('aria-label')).toBe('Fallback progress label');
+    expect(labelledByIds).toContain(externalLabelId);
+    expect(labelledByIds).toContain(withAriaLabelAndLabelledBy.get('.spectrum-BarLoader-label').attributes('id'));
+    expect(labelledByIds).toContain(withAriaLabelAndLabelledBy.attributes('id'));
+
+    let withExternalLabelledBy = mount(ProgressBar, {
+      props: {
+        label: 'Loading assets',
+        value: 35
+      },
+      attrs: {
+        'aria-labelledby': externalLabelId
+      }
+    });
+    let withExternalLabelledByIds = withExternalLabelledBy.attributes('aria-labelledby')?.split(/\s+/) ?? [];
+    expect(withExternalLabelledByIds).toContain(externalLabelId);
+    expect(withExternalLabelledByIds).toContain(withExternalLabelledBy.get('.spectrum-BarLoader-label').attributes('id'));
+    expect(withExternalLabelledByIds).not.toContain(withExternalLabelledBy.attributes('id'));
+
+    let circle = mount(ProgressCircle, {
+      props: {
+        value: 45
+      },
+      attrs: {
+        'aria-label': 'Upload progress',
+        'aria-describedby': 'progress-help',
+        'data-testid': 'progress-circle-test'
+      }
+    });
+    expect(circle.attributes('data-testid')).toBe('progress-circle-test');
+    expect(circle.attributes('aria-describedby')).toBe('progress-help');
+  });
+
   it('maps progress circle DOM contract, transforms, and warnings to react parity', () => {
     let circle = mount(ProgressCircle, {
       props: {

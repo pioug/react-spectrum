@@ -1,6 +1,7 @@
 import '@adobe/spectrum-css-temp/components/barloader/vars.css';
 import '@adobe/spectrum-css-temp/components/circleloader/vars.css';
 import {useProgressBar} from '@vue-aria/progress';
+import {filterDOMProps} from '@vue-aria/utils';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, type CSSProperties, defineComponent, h, type PropType} from 'vue';
 import type {SpectrumProgressBarProps, SpectrumProgressCircleProps} from '@vue-types/progress';
@@ -106,12 +107,20 @@ export const ProgressBar = defineComponent({
     return () => {
       let progressBarProps = progress.progressBarProps.value;
       let labelProps = progress.labelProps.value;
+      let domProps = filterDOMProps(attrs as Record<string, unknown>, {labelable: true}) as Record<string, unknown>;
+      let {
+        class: domClass,
+        className: domClassName,
+        style: domStyle,
+        ...otherDomProps
+      } = domProps;
 
       if (!props.label && !progressBarProps['aria-label'] && !progressBarProps['aria-labelledby'] && process.env.NODE_ENV !== 'production') {
         console.warn('If you do not provide a visible label via children, you must specify an aria-label or aria-labelledby attribute for accessibility');
       }
 
       return h('div', {
+        ...otherDomProps,
         ...progressBarProps,
         class: [
           classNames(
@@ -127,12 +136,12 @@ export const ProgressBar = defineComponent({
               'spectrum-BarLoader--staticBlack': props.staticColor === 'black'
             }
           ),
-          attrs.className,
-          attrs.class
+          domClassName,
+          domClass
         ],
         style: [
           {minWidth: '-moz-fit-content'},
-          attrs.style,
+          domStyle,
           props.width != null ? ({width: props.width} as CSSProperties) : undefined
         ]
       }, [
@@ -263,12 +272,20 @@ export const ProgressCircle = defineComponent({
 
     return () => {
       let progressBarProps = progress.progressBarProps.value;
+      let domProps = filterDOMProps(attrs as Record<string, unknown>, {labelable: true}) as Record<string, unknown>;
+      let {
+        class: domClass,
+        className: domClassName,
+        style: domStyle,
+        ...otherDomProps
+      } = domProps;
 
       if (!progressBarProps['aria-label'] && !progressBarProps['aria-labelledby'] && process.env.NODE_ENV !== 'production') {
         console.warn('ProgressCircle requires an aria-label or aria-labelledby attribute for accessibility');
       }
 
       return h('div', {
+        ...otherDomProps,
         ...progressBarProps,
         class: [
           classNames(
@@ -283,10 +300,10 @@ export const ProgressCircle = defineComponent({
               'spectrum-CircleLoader--staticBlack': props.staticColor === 'black'
             }
           ),
-          attrs.className,
-          attrs.class
+          domClassName,
+          domClass
         ],
-        style: attrs.style
+        style: domStyle
       }, [
         h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-track')}),
         h('div', {class: classNames(circleStyles, 'spectrum-CircleLoader-fills')}, [

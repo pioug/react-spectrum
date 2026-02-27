@@ -817,13 +817,28 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `ProgressBar`/`ProgressCircle` ARIA + DOM-prop parity (`@vue-spectrum/progress`, `@vue-aria/progress`)
+
+1. Closed shared progress labelling composition drift in `@vue-aria/progress`:
+   - visible progress labels now compose with external `aria-labelledby` instead of replacing it,
+   - when both `aria-label` and composed `aria-labelledby` are present, progressbar id now participates in `aria-labelledby` to match React `useLabels` semantics.
+2. Closed DOM-prop passthrough drift in `@vue-spectrum/progress`:
+   - root progress elements now forward labelable/custom DOM attributes (for example `data-testid`, `aria-describedby`) like React.
+3. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: progress parity assertions for composed `aria-labelledby` ownership and custom DOM prop passthrough on both bar/circle surfaces.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "progress bar DOM contract|progress aria-labelledby composition and custom DOM prop passthrough|progress circle DOM contract"`,
+   - full Vue tests: `yarn test:vue` (527 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 526 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 527 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).
