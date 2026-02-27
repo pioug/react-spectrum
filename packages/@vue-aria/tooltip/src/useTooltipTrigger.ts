@@ -7,10 +7,12 @@ type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
 export type TooltipTriggerMode = 'focus' | 'focus hover';
 
 export interface AriaTooltipTriggerOptions {
+  close?: (immediate?: boolean) => void,
   id?: MaybeRef<string | undefined>,
   isDisabled?: MaybeRef<boolean>,
   isOpen?: Ref<boolean>,
   onOpenChange?: (isOpen: boolean) => void,
+  open?: (isFocused?: boolean) => void,
   shouldCloseOnPress?: MaybeRef<boolean>,
   trigger?: MaybeRef<TooltipTriggerMode | undefined>,
   triggerRef?: Ref<HTMLElement | null>
@@ -55,12 +57,12 @@ export function useTooltipTrigger(options: AriaTooltipTriggerOptions = {}): Tool
   let isHovered = ref(false);
   let isFocused = ref(false);
 
-  let triggerMode = computed(() => unref(options.trigger) ?? 'focus');
+  let triggerMode = computed(() => unref(options.trigger) ?? 'focus hover');
   let shouldCloseOnPress = computed(() => unref(options.shouldCloseOnPress) ?? true);
   let tooltipId = computed(() => resolveOptionalString(options.id) ?? generatedId);
 
   let setOpen = (nextOpen: boolean) => {
-    if (unref(options.isDisabled)) {
+    if (nextOpen && unref(options.isDisabled)) {
       return;
     }
 
@@ -69,12 +71,24 @@ export function useTooltipTrigger(options: AriaTooltipTriggerOptions = {}): Tool
   };
 
   let open = (isFocusedTrigger?: boolean) => {
-    void isFocusedTrigger;
+    if (unref(options.isDisabled)) {
+      return;
+    }
+
+    if (options.open) {
+      options.open(isFocusedTrigger);
+      return;
+    }
+
     setOpen(true);
   };
 
   let close = (immediate?: boolean) => {
-    void immediate;
+    if (options.close) {
+      options.close(immediate);
+      return;
+    }
+
     setOpen(false);
   };
 

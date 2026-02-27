@@ -3,6 +3,7 @@ import {describe, expect, it, vi} from 'vitest';
 import {h, nextTick} from 'vue';
 import {readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
+import {setInteractionModality} from '@vue-aria/interactions';
 import EditWorkflow from '@spectrum-icons-vue/workflow/Edit';
 import CheckmarkCircle from '@spectrum-icons-vue/workflow/CheckmarkCircle';
 import {Avatar} from '@vue-spectrum/avatar';
@@ -2847,6 +2848,73 @@ describe('Vue migration primitives', () => {
     expect(wrapper.find('.vs-tooltip').exists()).toBe(true);
     await wrapper.setProps({isOpen: false});
     await nextTick();
+    expect(wrapper.find('.vs-tooltip').exists()).toBe(false);
+  });
+
+  it('honors tooltip trigger delay and closeDelay timing on hover', async () => {
+    vi.useFakeTimers();
+
+    try {
+      let wrapper = mount(TooltipTrigger, {
+        props: {
+          closeDelay: 80,
+          content: 'Tooltip details',
+          delay: 120
+        },
+        slots: {
+          default: '<button type="button">Trigger</button>'
+        }
+      });
+
+      setInteractionModality('pointer');
+      let trigger = wrapper.get('.vs-tooltip-trigger__target');
+      await trigger.trigger('pointerenter', {pointerType: 'mouse'});
+      await nextTick();
+      expect(wrapper.find('.vs-tooltip').exists()).toBe(false);
+
+      vi.advanceTimersByTime(119);
+      await nextTick();
+      expect(wrapper.find('.vs-tooltip').exists()).toBe(false);
+
+      vi.advanceTimersByTime(1);
+      await nextTick();
+      expect(wrapper.find('.vs-tooltip').exists()).toBe(true);
+
+      await trigger.trigger('pointerleave', {pointerType: 'mouse'});
+      await nextTick();
+      expect(wrapper.find('.vs-tooltip').exists()).toBe(true);
+
+      vi.advanceTimersByTime(79);
+      await nextTick();
+      expect(wrapper.find('.vs-tooltip').exists()).toBe(true);
+
+      vi.advanceTimersByTime(1);
+      await nextTick();
+      expect(wrapper.find('.vs-tooltip').exists()).toBe(false);
+    } finally {
+      setInteractionModality('keyboard');
+      vi.useRealTimers();
+    }
+  });
+
+  it('closes tooltip trigger when disabled after opening', async () => {
+    let wrapper = mount(TooltipTrigger, {
+      props: {
+        content: 'Tooltip details',
+        modelValue: true
+      },
+      slots: {
+        default: '<button type="button">Trigger</button>'
+      }
+    });
+
+    expect(wrapper.find('.vs-tooltip').exists()).toBe(true);
+    await wrapper.setProps({isDisabled: true});
+    await wrapper.get('.vs-tooltip-trigger__target').trigger('keydown', {key: 'Escape'});
+    await nextTick();
+
+    let modelUpdates = wrapper.emitted('update:modelValue') ?? [];
+    expect(modelUpdates[modelUpdates.length - 1]).toEqual([false]);
     expect(wrapper.find('.vs-tooltip').exists()).toBe(false);
   });
 

@@ -4331,6 +4331,34 @@ describe('Vue migration composition components', () => {
     }
   });
 
+  it('defaults vue-aria tooltip trigger to hover behavior when trigger is not specified', () => {
+    let triggerElement = document.createElement('button');
+    triggerElement.textContent = 'Details';
+    document.body.append(triggerElement);
+
+    try {
+      let trigger = useAriaTooltipTrigger({
+        triggerRef: ref<HTMLElement | null>(triggerElement)
+      });
+      let triggerProps = trigger.triggerProps.value;
+      if (triggerProps.onPointerEnter) {
+        triggerElement.addEventListener('pointerenter', triggerProps.onPointerEnter as EventListener);
+      }
+      if (triggerProps.onPointerLeave) {
+        triggerElement.addEventListener('pointerleave', triggerProps.onPointerLeave as EventListener);
+      }
+
+      setInteractionModality('pointer');
+      triggerElement.dispatchEvent(createPointerEvent('pointerenter', {pointerType: 'mouse'}));
+      expect(trigger.isOpen.value).toBe(true);
+
+      triggerElement.dispatchEvent(createPointerEvent('pointerleave', {pointerType: 'mouse'}));
+      expect(trigger.isOpen.value).toBe(false);
+    } finally {
+      document.body.removeChild(triggerElement);
+    }
+  });
+
   it('computes vue-aria treegrid semantics and expandable tree item behavior', () => {
     let selectedKeys = ref(new Set<string>());
     let expandedKeys = ref(new Set<string>());

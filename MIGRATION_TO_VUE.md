@@ -551,13 +551,32 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `TooltipTrigger` delay/default-mode parity remediation (`@vue-aria/tooltip`, `@vue-spectrum/tooltip`)
+
+1. Closed shared trigger-mode and disabled-close drift in `@vue-aria/tooltip`:
+   - `useTooltipTrigger` now defaults to hover+focus behavior (React-like default),
+   - close paths are no longer blocked when `isDisabled` is true (only opening is blocked),
+   - hook now supports delegated `open`/`close` handlers so state timing behavior can be sourced from stately state.
+2. Rewired `@vue-spectrum/tooltip` trigger internals to use `useTooltipTriggerState` timing semantics:
+   - `delay` and `closeDelay` now drive hover warmup/cooldown behavior through shared state,
+   - trigger open/close emits remain aligned through the shared state `onOpenChange` lifecycle.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: default tooltip trigger hover-open behavior when `trigger` is unspecified,
+   - `starters/vue/src/components.spec.ts`: hover delay/closeDelay timing and close-while-disabled behavior for `TooltipTrigger`.
+4. Validation after fix:
+   - targeted tooltip hook assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "defaults vue-aria tooltip trigger to hover behavior|computes vue-aria tooltip trigger and tooltip hover/focus linkage"`,
+   - targeted tooltip component assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "tooltip trigger delay and closeDelay timing|closes tooltip trigger when disabled after opening|supports defaultOpen and isOpen control aliases on tooltip trigger|emits close updates from tooltip trigger keyboard interactions"`,
+   - full Vue tests: `yarn test:vue` (498 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 495 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 498 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

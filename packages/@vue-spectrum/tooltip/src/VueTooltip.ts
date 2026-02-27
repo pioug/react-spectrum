@@ -1,5 +1,6 @@
 import {computed, defineComponent, h, type PropType, ref, watch} from 'vue';
 import {useTooltip as createTooltip, useTooltipTrigger as createTooltipTrigger, type TooltipTriggerAria, type TooltipTriggerMode} from '@vue-aria/tooltip';
+import {useTooltipTriggerState} from '@vue-stately/tooltip';
 
 export type TooltipPlacement = 'bottom' | 'left' | 'right' | 'top';
 export type TooltipVariant = 'info' | 'negative' | 'neutral' | 'positive';
@@ -173,8 +174,9 @@ export const VueTooltipTrigger = defineComponent({
       }
     }, {immediate: true});
 
-    let tooltipTrigger = createTooltipTrigger({
-      isDisabled: computed(() => props.isDisabled),
+    let tooltipState = useTooltipTriggerState({
+      closeDelay: computed(() => props.closeDelay),
+      delay: computed(() => props.delay),
       isOpen,
       onOpenChange: (nextOpen) => {
         props.onOpenChange?.(nextOpen);
@@ -182,7 +184,14 @@ export const VueTooltipTrigger = defineComponent({
         emit('update:modelValue', nextOpen);
         emit('change', nextOpen);
         emit('openChange', nextOpen);
-      },
+      }
+    });
+
+    let tooltipTrigger = createTooltipTrigger({
+      close: tooltipState.close,
+      isDisabled: computed(() => props.isDisabled),
+      isOpen: tooltipState.isOpen,
+      open: tooltipState.open,
       shouldCloseOnPress: computed(() => props.shouldCloseOnPress),
       trigger: computed(() => props.trigger),
       triggerRef
