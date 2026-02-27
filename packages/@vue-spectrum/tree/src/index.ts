@@ -153,8 +153,24 @@ export const Tree = defineComponent({
 });
 
 export const TreeView = Tree;
-export const TreeViewItem = Tree;
-export const TreeViewItemContent = Tree;
+export const TreeViewItem = defineComponent({
+  name: 'VueTreeViewItem',
+  inheritAttrs: false,
+  setup(_, {attrs, slots}) {
+    return () => h(Tree, {
+      ...attrs
+    }, slots);
+  }
+});
+export const TreeViewItemContent = defineComponent({
+  name: 'VueTreeViewItemContent',
+  inheritAttrs: false,
+  setup(_, {attrs, slots}) {
+    return () => h(Tree, {
+      ...attrs
+    }, slots);
+  }
+});
 export {Collection};
 export {Tree as VueTree};
 

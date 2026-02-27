@@ -113,8 +113,8 @@ describe('Vue Spectrum API compatibility aliases', () => {
   it('keeps tree primitives exported and collection as a dedicated primitive', () => {
     expect(Tree).toBe(VueTree);
     expect(TreeView).toBe(VueTree);
-    expect(TreeViewItem).toBe(VueTree);
-    expect(TreeViewItemContent).toBe(VueTree);
+    expect(TreeViewItem).not.toBe(VueTree);
+    expect(TreeViewItemContent).not.toBe(VueTree);
     expect(Collection).not.toBe(VueTree);
   });
 
@@ -133,15 +133,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(ActionMenu).not.toBe(VueMenu);
     expect(MenuTrigger).not.toBeUndefined();
     expect(MenuTrigger).not.toBe(VueMenu);
-    expect(SubmenuTrigger).toBe(MenuTrigger);
-    expect(ContextualHelpTrigger).toBe(MenuTrigger);
+    expect(SubmenuTrigger).not.toBe(MenuTrigger);
+    expect(ContextualHelpTrigger).not.toBe(MenuTrigger);
     expect(MenuItem).not.toBe(VueMenu);
     expect(MenuSection).not.toBe(VueMenu);
   });
 
   it('exports listbox base and collection primitives separately', () => {
     expect(ListBox).toBe(VueListBox);
-    expect(ListBoxBase).toBe(VueListBox);
+    expect(ListBoxBase).not.toBe(VueListBox);
     expect(ListBoxItem).not.toBe(VueListBox);
     expect(ListBoxSection).not.toBe(VueListBox);
     expect(useListBoxLayout()).toEqual({layout: 'stack'});
@@ -161,8 +161,8 @@ describe('Vue Spectrum API compatibility aliases', () => {
 
   it('exports tabs collection item separately from VueTabs', () => {
     expect(Tabs).toBe(VueTabs);
-    expect(TabList).toBe(VueTabs);
-    expect(TabPanels).toBe(VueTabs);
+    expect(TabList).not.toBe(VueTabs);
+    expect(TabPanels).not.toBe(VueTabs);
     expect(TabItem).not.toBe(VueTabs);
   });
 });

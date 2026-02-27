@@ -1397,8 +1397,20 @@ export const ActionMenu = defineComponent({
   }
 });
 
-export const SubmenuTrigger = MenuTrigger;
-export const ContextualHelpTrigger = MenuTrigger;
+function createMenuTriggerProxy(name: string) {
+  return defineComponent({
+    name,
+    inheritAttrs: false,
+    setup(_, {attrs, slots}) {
+      return () => h(MenuTrigger, {
+        ...attrs
+      }, slots);
+    }
+  });
+}
+
+export const SubmenuTrigger = createMenuTriggerProxy('VueSubmenuTrigger');
+export const ContextualHelpTrigger = createMenuTriggerProxy('VueContextualHelpTrigger');
 export {Item, Section};
 
 export type SpectrumMenuProps<T = unknown> = Record<string, unknown> & {

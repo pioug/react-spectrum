@@ -320,7 +320,15 @@ export const ListBox = defineComponent({
 });
 
 export const VueListBox = ListBox;
-export const ListBoxBase = ListBox;
+export const ListBoxBase = defineComponent({
+  name: 'VueListBoxBase',
+  inheritAttrs: false,
+  setup(_, {attrs, slots}) {
+    return () => h(ListBox, {
+      ...attrs
+    }, slots);
+  }
+});
 export {Item, Section};
 
 export type SpectrumListBoxProps<T = unknown> = Record<string, unknown> & {
