@@ -34,19 +34,21 @@ export interface MoveEvents {
 
 export interface MoveDOMProps {
   onKeyDown?: (event: KeyboardEvent) => void,
-  onPointerDown?: (event: PointerEvent) => void
+  onMouseDown?: (event: MouseEvent) => void,
+  onPointerDown?: (event: PointerEvent) => void,
+  onTouchStart?: (event: TouchEvent) => void
 }
 
 export interface MoveResult {
   moveProps: ComputedRef<MoveDOMProps>
 }
 
-function getModifierKeys(event: KeyboardEvent | PointerEvent): ModifierKeys {
+function getModifierKeys(event: KeyboardEvent | PointerEvent | MouseEvent | TouchEvent): ModifierKeys {
   return {
-    altKey: event.altKey,
-    ctrlKey: event.ctrlKey,
-    metaKey: event.metaKey,
-    shiftKey: event.shiftKey
+    altKey: Boolean(event.altKey),
+    ctrlKey: Boolean(event.ctrlKey),
+    metaKey: Boolean(event.metaKey),
+    shiftKey: Boolean(event.shiftKey)
   };
 }
 
@@ -64,6 +66,7 @@ function isElementNode(value: unknown): value is Element {
 
 export function useMove(props: MoveEvents = {}): MoveResult {
   let didMove = false;
+  let activeMode: 'pointer' | 'mouse' | 'touch' | null = null;
   let activePointerId: number | null = null;
   let lastPosition: {x: number, y: number} | null = null;
   let activeTarget: Element | null = null;
@@ -84,13 +87,14 @@ export function useMove(props: MoveEvents = {}): MoveResult {
   let resetMove = () => {
     restoreTextSelection(activeTarget);
     didMove = false;
+    activeMode = null;
     activePointerId = null;
     activeTarget = null;
     lastPosition = null;
     removeGlobalListeners();
   };
 
-  let triggerMoveStart = (event: KeyboardEvent | PointerEvent, pointerType: PointerType) => {
+  let triggerMoveStart = (event: KeyboardEvent | PointerEvent | MouseEvent | TouchEvent, pointerType: PointerType) => {
     if (didMove) {
       return;
     }
@@ -104,7 +108,7 @@ export function useMove(props: MoveEvents = {}): MoveResult {
   };
 
   let triggerMove = (
-    event: KeyboardEvent | PointerEvent,
+    event: KeyboardEvent | PointerEvent | MouseEvent | TouchEvent,
     pointerType: PointerType,
     deltaX: number,
     deltaY: number
@@ -124,7 +128,7 @@ export function useMove(props: MoveEvents = {}): MoveResult {
     });
   };
 
-  let triggerMoveEnd = (event: KeyboardEvent | PointerEvent, pointerType: PointerType) => {
+  let triggerMoveEnd = (event: KeyboardEvent | PointerEvent | MouseEvent | TouchEvent, pointerType: PointerType) => {
     if (didMove) {
       props.onMoveEnd?.({
         pointerType,
@@ -137,7 +141,7 @@ export function useMove(props: MoveEvents = {}): MoveResult {
   };
 
   let onPointerDown = (event: PointerEvent) => {
-    if (event.button !== 0 || activePointerId != null) {
+    if (event.button !== 0 || activeMode != null) {
       return;
     }
 
@@ -151,6 +155,7 @@ export function useMove(props: MoveEvents = {}): MoveResult {
     }
     disableTextSelection(activeTarget);
 
+    activeMode = 'pointer';
     activePointerId = event.pointerId;
     lastPosition = {
       x: event.pageX,
@@ -192,6 +197,124 @@ export function useMove(props: MoveEvents = {}): MoveResult {
     };
   };
 
+  let onMouseDown = (event: MouseEvent) => {
+    if (event.button !== 0 || activeMode != null) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    activeTarget = isElementNode(event.currentTarget) ? event.currentTarget : null;
+    let ownerWindow = getOwnerWindow(activeTarget);
+    if (!ownerWindow) {
+      return;
+    }
+    disableTextSelection(activeTarget);
+
+    activeMode = 'mouse';
+    lastPosition = {
+      x: event.pageX,
+      y: event.pageY
+    };
+
+    let onMouseMove = (moveEvent: MouseEvent) => {
+      if (moveEvent.button !== 0) {
+        return;
+      }
+
+      let deltaX = moveEvent.pageX - (lastPosition?.x ?? moveEvent.pageX);
+      let deltaY = moveEvent.pageY - (lastPosition?.y ?? moveEvent.pageY);
+      lastPosition = {
+        x: moveEvent.pageX,
+        y: moveEvent.pageY
+      };
+
+      triggerMove(moveEvent, 'mouse', deltaX, deltaY);
+    };
+
+    let onMouseUp = (upEvent: MouseEvent) => {
+      if (upEvent.button !== 0) {
+        return;
+      }
+
+      triggerMoveEnd(upEvent, 'mouse');
+    };
+
+    ownerWindow.addEventListener('mousemove', onMouseMove, false);
+    ownerWindow.addEventListener('mouseup', onMouseUp, false);
+
+    removeGlobalListeners = () => {
+      ownerWindow.removeEventListener('mousemove', onMouseMove, false);
+      ownerWindow.removeEventListener('mouseup', onMouseUp, false);
+      removeGlobalListeners = () => {};
+    };
+  };
+
+  let onTouchStart = (event: TouchEvent) => {
+    if (event.changedTouches.length === 0 || activeMode != null) {
+      return;
+    }
+
+    let touch = event.changedTouches[0];
+    if (!touch) {
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    activeTarget = isElementNode(event.currentTarget) ? event.currentTarget : null;
+    let ownerWindow = getOwnerWindow(activeTarget);
+    if (!ownerWindow) {
+      return;
+    }
+    disableTextSelection(activeTarget);
+
+    activeMode = 'touch';
+    activePointerId = touch.identifier;
+    lastPosition = {
+      x: touch.pageX,
+      y: touch.pageY
+    };
+
+    let onTouchMove = (moveEvent: TouchEvent) => {
+      let changedTouch = Array.from(moveEvent.changedTouches).find((entry) => entry.identifier === activePointerId);
+      if (!changedTouch) {
+        return;
+      }
+
+      let deltaX = changedTouch.pageX - (lastPosition?.x ?? changedTouch.pageX);
+      let deltaY = changedTouch.pageY - (lastPosition?.y ?? changedTouch.pageY);
+      lastPosition = {
+        x: changedTouch.pageX,
+        y: changedTouch.pageY
+      };
+
+      triggerMove(moveEvent, 'touch', deltaX, deltaY);
+    };
+
+    let onTouchEndOrCancel = (upEvent: TouchEvent) => {
+      let changedTouch = Array.from(upEvent.changedTouches).find((entry) => entry.identifier === activePointerId);
+      if (!changedTouch) {
+        return;
+      }
+
+      triggerMoveEnd(upEvent, 'touch');
+    };
+
+    ownerWindow.addEventListener('touchmove', onTouchMove, false);
+    ownerWindow.addEventListener('touchend', onTouchEndOrCancel, false);
+    ownerWindow.addEventListener('touchcancel', onTouchEndOrCancel, false);
+
+    removeGlobalListeners = () => {
+      ownerWindow.removeEventListener('touchmove', onTouchMove, false);
+      ownerWindow.removeEventListener('touchend', onTouchEndOrCancel, false);
+      ownerWindow.removeEventListener('touchcancel', onTouchEndOrCancel, false);
+      removeGlobalListeners = () => {};
+    };
+  };
+
   let onKeyDown = (event: KeyboardEvent) => {
     let deltaX = 0;
     let deltaY = 0;
@@ -224,9 +347,19 @@ export function useMove(props: MoveEvents = {}): MoveResult {
   }
 
   return {
-    moveProps: computed<MoveDOMProps>(() => ({
-      onKeyDown,
-      onPointerDown
-    }))
+    moveProps: computed<MoveDOMProps>(() => {
+      if (typeof PointerEvent === 'undefined') {
+        return {
+          onKeyDown,
+          onMouseDown,
+          onTouchStart
+        };
+      }
+
+      return {
+        onKeyDown,
+        onPointerDown
+      };
+    })
   };
 }

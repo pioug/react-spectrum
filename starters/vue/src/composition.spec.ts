@@ -5981,11 +5981,15 @@ describe('Vue migration composition components', () => {
     try {
       if (move.moveProps.value.onPointerDown) {
         container.addEventListener('pointerdown', move.moveProps.value.onPointerDown as EventListener);
+        container.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 7, pageX: 20, pageY: 30}));
+        window.dispatchEvent(createPointerEvent('pointermove', {pointerId: 7, pageX: 26, pageY: 24}));
+        window.dispatchEvent(createPointerEvent('pointerup', {pointerId: 7, pageX: 26, pageY: 24}));
+      } else if (move.moveProps.value.onMouseDown) {
+        container.addEventListener('mousedown', move.moveProps.value.onMouseDown as EventListener);
+        container.dispatchEvent(new MouseEvent('mousedown', {bubbles: true, button: 0, clientX: 20, clientY: 30}));
+        window.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, button: 0, clientX: 26, clientY: 24}));
+        window.dispatchEvent(new MouseEvent('mouseup', {bubbles: true, button: 0, clientX: 26, clientY: 24}));
       }
-
-      container.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 7, pageX: 20, pageY: 30}));
-      window.dispatchEvent(createPointerEvent('pointermove', {pointerId: 7, pageX: 26, pageY: 24}));
-      window.dispatchEvent(createPointerEvent('pointerup', {pointerId: 7, pageX: 26, pageY: 24}));
 
       expect(moveEvents).toEqual([
         {type: 'movestart'},
@@ -5997,7 +6001,109 @@ describe('Vue migration composition components', () => {
     }
   });
 
-  it('binds vue-aria move global pointer listeners to the owner window', () => {
+  it('falls back to vue-aria mouse move handlers when PointerEvent is unavailable', () => {
+    let moveEvents: Array<{type: string, x?: number, y?: number}> = [];
+    let container = document.createElement('div');
+    document.body.append(container);
+    let originalPointerEvent = globalThis.PointerEvent;
+    Object.defineProperty(globalThis, 'PointerEvent', {
+      configurable: true,
+      value: undefined
+    });
+
+    let move = useMove({
+      onMove: (event) => {
+        moveEvents.push({type: event.type, x: event.deltaX, y: event.deltaY});
+      },
+      onMoveEnd: (event) => {
+        moveEvents.push({type: event.type});
+      },
+      onMoveStart: (event) => {
+        moveEvents.push({type: event.type});
+      }
+    });
+
+    try {
+      if (move.moveProps.value.onMouseDown) {
+        container.addEventListener('mousedown', move.moveProps.value.onMouseDown as EventListener);
+      }
+      expect(move.moveProps.value.onPointerDown).toBeUndefined();
+
+      container.dispatchEvent(new MouseEvent('mousedown', {bubbles: true, button: 0, clientX: 5, clientY: 8}));
+      window.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, button: 0, clientX: 11, clientY: 3}));
+      window.dispatchEvent(new MouseEvent('mouseup', {bubbles: true, button: 0, clientX: 11, clientY: 3}));
+
+      expect(moveEvents).toEqual([
+        {type: 'movestart'},
+        {type: 'move', x: 6, y: -5},
+        {type: 'moveend'}
+      ]);
+    } finally {
+      Object.defineProperty(globalThis, 'PointerEvent', {
+        configurable: true,
+        value: originalPointerEvent
+      });
+      document.body.removeChild(container);
+    }
+  });
+
+  it('falls back to vue-aria touch move handlers when PointerEvent is unavailable', () => {
+    let moveEvents: Array<{type: string, x?: number, y?: number}> = [];
+    let container = document.createElement('div');
+    document.body.append(container);
+    let originalPointerEvent = globalThis.PointerEvent;
+    Object.defineProperty(globalThis, 'PointerEvent', {
+      configurable: true,
+      value: undefined
+    });
+
+    let move = useMove({
+      onMove: (event) => {
+        moveEvents.push({type: event.type, x: event.deltaX, y: event.deltaY});
+      },
+      onMoveEnd: (event) => {
+        moveEvents.push({type: event.type});
+      },
+      onMoveStart: (event) => {
+        moveEvents.push({type: event.type});
+      }
+    });
+
+    let createTouchEvent = (type: string, touches: Array<{identifier: number, pageX: number, pageY: number}>) => {
+      let event = new Event(type, {bubbles: true, cancelable: true}) as TouchEvent;
+      Object.defineProperty(event, 'changedTouches', {value: touches});
+      Object.defineProperty(event, 'altKey', {value: false});
+      Object.defineProperty(event, 'ctrlKey', {value: false});
+      Object.defineProperty(event, 'metaKey', {value: false});
+      Object.defineProperty(event, 'shiftKey', {value: false});
+      return event;
+    };
+
+    try {
+      if (move.moveProps.value.onTouchStart) {
+        container.addEventListener('touchstart', move.moveProps.value.onTouchStart as EventListener);
+      }
+      expect(move.moveProps.value.onPointerDown).toBeUndefined();
+
+      container.dispatchEvent(createTouchEvent('touchstart', [{identifier: 1, pageX: 2, pageY: 4}]));
+      window.dispatchEvent(createTouchEvent('touchmove', [{identifier: 1, pageX: 8, pageY: 1}]));
+      window.dispatchEvent(createTouchEvent('touchend', [{identifier: 1, pageX: 8, pageY: 1}]));
+
+      expect(moveEvents).toEqual([
+        {type: 'movestart'},
+        {type: 'move', x: 6, y: -3},
+        {type: 'moveend'}
+      ]);
+    } finally {
+      Object.defineProperty(globalThis, 'PointerEvent', {
+        configurable: true,
+        value: originalPointerEvent
+      });
+      document.body.removeChild(container);
+    }
+  });
+
+  it('binds vue-aria move global listeners to the owner window', () => {
     let iframe = document.createElement('iframe');
     document.body.appendChild(iframe);
     let iframeWindow = iframe.contentWindow;
@@ -6027,26 +6133,44 @@ describe('Vue migration composition components', () => {
     try {
       if (move.moveProps.value.onPointerDown) {
         container.addEventListener('pointerdown', move.moveProps.value.onPointerDown as EventListener);
+        container.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 31, pageX: 10, pageY: 10}));
+        let iframeListenerTypes = addIframeWindowListener.mock.calls.map(([type]) => type as string);
+        let mainWindowListenerTypes = addMainWindowListener.mock.calls.map(([type]) => type as string);
+        expect(iframeListenerTypes).toEqual(expect.arrayContaining(['pointermove', 'pointerup', 'pointercancel']));
+        expect(mainWindowListenerTypes).not.toContain('pointermove');
+        expect(mainWindowListenerTypes).not.toContain('pointerup');
+        expect(mainWindowListenerTypes).not.toContain('pointercancel');
+
+        iframeWindow!.dispatchEvent(createPointerEvent('pointermove', {pointerId: 31, pageX: 15, pageY: 8}));
+        iframeWindow!.dispatchEvent(createPointerEvent('pointerup', {pointerId: 31, pageX: 15, pageY: 8}));
+        expect(moveEvents).toEqual([
+          {type: 'movestart'},
+          {type: 'move', x: 5, y: -2},
+          {type: 'moveend'}
+        ]);
+
+        let removedIframeTypes = removeIframeWindowListener.mock.calls.map(([type]) => type as string);
+        expect(removedIframeTypes).toEqual(expect.arrayContaining(['pointermove', 'pointerup', 'pointercancel']));
+      } else if (move.moveProps.value.onMouseDown) {
+        container.addEventListener('mousedown', move.moveProps.value.onMouseDown as EventListener);
+        container.dispatchEvent(new MouseEvent('mousedown', {bubbles: true, button: 0, clientX: 10, clientY: 10}));
+        let iframeListenerTypes = addIframeWindowListener.mock.calls.map(([type]) => type as string);
+        let mainWindowListenerTypes = addMainWindowListener.mock.calls.map(([type]) => type as string);
+        expect(iframeListenerTypes).toEqual(expect.arrayContaining(['mousemove', 'mouseup']));
+        expect(mainWindowListenerTypes).not.toContain('mousemove');
+        expect(mainWindowListenerTypes).not.toContain('mouseup');
+
+        iframeWindow!.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, button: 0, clientX: 15, clientY: 8}));
+        iframeWindow!.dispatchEvent(new MouseEvent('mouseup', {bubbles: true, button: 0, clientX: 15, clientY: 8}));
+        expect(moveEvents).toEqual([
+          {type: 'movestart'},
+          {type: 'move', x: 5, y: -2},
+          {type: 'moveend'}
+        ]);
+
+        let removedIframeTypes = removeIframeWindowListener.mock.calls.map(([type]) => type as string);
+        expect(removedIframeTypes).toEqual(expect.arrayContaining(['mousemove', 'mouseup']));
       }
-
-      container.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 31, pageX: 10, pageY: 10}));
-      let iframeListenerTypes = addIframeWindowListener.mock.calls.map(([type]) => type as string);
-      let mainWindowListenerTypes = addMainWindowListener.mock.calls.map(([type]) => type as string);
-      expect(iframeListenerTypes).toEqual(expect.arrayContaining(['pointermove', 'pointerup', 'pointercancel']));
-      expect(mainWindowListenerTypes).not.toContain('pointermove');
-      expect(mainWindowListenerTypes).not.toContain('pointerup');
-      expect(mainWindowListenerTypes).not.toContain('pointercancel');
-
-      iframeWindow!.dispatchEvent(createPointerEvent('pointermove', {pointerId: 31, pageX: 15, pageY: 8}));
-      iframeWindow!.dispatchEvent(createPointerEvent('pointerup', {pointerId: 31, pageX: 15, pageY: 8}));
-      expect(moveEvents).toEqual([
-        {type: 'movestart'},
-        {type: 'move', x: 5, y: -2},
-        {type: 'moveend'}
-      ]);
-
-      let removedIframeTypes = removeIframeWindowListener.mock.calls.map(([type]) => type as string);
-      expect(removedIframeTypes).toEqual(expect.arrayContaining(['pointermove', 'pointerup', 'pointercancel']));
     } finally {
       addMainWindowListener.mockRestore();
       addIframeWindowListener.mockRestore();
@@ -6055,24 +6179,38 @@ describe('Vue migration composition components', () => {
     }
   });
 
-  it('cleans up vue-aria move pointer listeners when scope is disposed mid-move', () => {
+  it('cleans up vue-aria move global listeners when scope is disposed mid-move', () => {
     let container = document.createElement('div');
     document.body.appendChild(container);
     let removeWindowListener = vi.spyOn(window, 'removeEventListener');
 
     let scope = effectScope();
+    let hasPointerDown = false;
+    let hasMouseDown = false;
     scope.run(() => {
       let move = useMove();
       if (move.moveProps.value.onPointerDown) {
         container.addEventListener('pointerdown', move.moveProps.value.onPointerDown as EventListener);
+        hasPointerDown = true;
+      } else if (move.moveProps.value.onMouseDown) {
+        container.addEventListener('mousedown', move.moveProps.value.onMouseDown as EventListener);
+        hasMouseDown = true;
       }
     });
 
     try {
-      container.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 42, pageX: 2, pageY: 2}));
+      if (hasPointerDown) {
+        container.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 42, pageX: 2, pageY: 2}));
+      } else if (hasMouseDown) {
+        container.dispatchEvent(new MouseEvent('mousedown', {bubbles: true, button: 0, clientX: 2, clientY: 2}));
+      }
       scope.stop();
       let removedTypes = removeWindowListener.mock.calls.map(([type]) => type as string);
-      expect(removedTypes).toEqual(expect.arrayContaining(['pointermove', 'pointerup', 'pointercancel']));
+      if (hasPointerDown) {
+        expect(removedTypes).toEqual(expect.arrayContaining(['pointermove', 'pointerup', 'pointercancel']));
+      } else if (hasMouseDown) {
+        expect(removedTypes).toEqual(expect.arrayContaining(['mousemove', 'mouseup']));
+      }
     } finally {
       scope.stop();
       removeWindowListener.mockRestore();

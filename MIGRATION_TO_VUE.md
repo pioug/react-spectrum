@@ -476,13 +476,32 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `useMove` fallback parity remediation (`@vue-aria/interactions`)
+
+1. Closed shared pointer-availability parity gap in `useMove`:
+   - added `mousemove`/`mouseup` fallback path when `PointerEvent` is unavailable,
+   - added `touchstart`/`touchmove`/`touchend`/`touchcancel` fallback path with touch-identifier tracking.
+2. Kept owner-window listener behavior consistent across pointer and fallback modes:
+   - global listeners now bind/remove on the pressed element’s owner window for both pointer and mouse fallback flows.
+3. Extended move cleanup parity:
+   - scope disposal now removes whichever global listener set is active (pointer or mouse fallback).
+4. Added regression coverage in `starters/vue/src/composition.spec.ts` for:
+   - explicit mouse and touch fallback move paths with `PointerEvent` unavailable,
+   - owner-window listener binding/removal in both pointer and fallback modes,
+   - disposal cleanup assertions in both pointer and fallback modes.
+5. Validation after fix:
+   - targeted move slice: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "move pointer events|falls back to vue-aria mouse move|falls back to vue-aria touch move|move global listeners|move global pointer listeners"`,
+   - full Vue tests: `yarn test:vue` (487 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 485 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 487 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).
