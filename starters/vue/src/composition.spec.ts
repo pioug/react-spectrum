@@ -301,6 +301,17 @@ function createPointerEvent(
   return event;
 }
 
+function dispatchOutsideInteraction(target: EventTarget): void {
+  if (typeof PointerEvent !== 'undefined') {
+    target.dispatchEvent(createPointerEvent('pointerdown'));
+    target.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    return;
+  }
+
+  target.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+  target.dispatchEvent(new MouseEvent('mouseup', {bubbles: true}));
+}
+
 function createDOMRect(left: number, top: number, width: number, height: number): DOMRect {
   return {
     x: left,
@@ -3322,6 +3333,117 @@ describe('Vue migration composition components', () => {
       addListenerOnIframe.mockRestore();
       addListenerOnDocument.mockRestore();
       iframe.remove();
+    }
+  });
+
+  it('honors overlay dismissability and outside-interaction predicates', () => {
+    let overlayElement = document.createElement('div');
+    let outsideElement = document.createElement('button');
+    document.body.append(overlayElement, outsideElement);
+
+    let runCase = (options: {isDismissable: boolean, shouldCloseOnInteractOutside?: (element: Element) => boolean}) => {
+      let isOpen = ref(true);
+      let closeCount = 0;
+      let overlay = useAriaOverlay({
+        isDismissable: options.isDismissable,
+        isOpen,
+        onClose: () => {
+          closeCount += 1;
+          isOpen.value = false;
+        },
+        overlayRef: ref(overlayElement),
+        shouldCloseOnInteractOutside: options.shouldCloseOnInteractOutside
+      });
+
+      try {
+        dispatchOutsideInteraction(outsideElement);
+        return closeCount;
+      } finally {
+        overlay.dispose();
+      }
+    };
+
+    try {
+      expect(runCase({isDismissable: true})).toBe(1);
+      expect(runCase({
+        isDismissable: true,
+        shouldCloseOnInteractOutside: () => false
+      })).toBe(0);
+      expect(runCase({
+        isDismissable: true,
+        shouldCloseOnInteractOutside: (element) => element === outsideElement
+      })).toBe(1);
+      expect(runCase({isDismissable: false})).toBe(0);
+    } finally {
+      document.body.removeChild(overlayElement);
+      document.body.removeChild(outsideElement);
+    }
+  });
+
+  it('only dismisses the top-most open overlay on outside interaction', () => {
+    let overlayElementOne = document.createElement('div');
+    let overlayElementTwo = document.createElement('div');
+    let outsideElement = document.createElement('button');
+    document.body.append(overlayElementOne, overlayElementTwo, outsideElement);
+
+    let firstOpen = ref(true);
+    let secondOpen = ref(true);
+    let firstCloseCount = 0;
+    let secondCloseCount = 0;
+    let firstOverlay = useAriaOverlay({
+      isDismissable: true,
+      isOpen: firstOpen,
+      onClose: () => {
+        firstCloseCount += 1;
+        firstOpen.value = false;
+      },
+      overlayRef: ref(overlayElementOne)
+    });
+    let secondOverlay = useAriaOverlay({
+      isDismissable: true,
+      isOpen: secondOpen,
+      onClose: () => {
+        secondCloseCount += 1;
+        secondOpen.value = false;
+      },
+      overlayRef: ref(overlayElementTwo)
+    });
+
+    try {
+      dispatchOutsideInteraction(outsideElement);
+      expect(secondCloseCount).toBe(1);
+      expect(firstCloseCount).toBe(0);
+
+      secondOverlay.dispose();
+      dispatchOutsideInteraction(outsideElement);
+      expect(firstCloseCount).toBe(1);
+    } finally {
+      firstOverlay.dispose();
+      secondOverlay.dispose();
+      document.body.removeChild(overlayElementOne);
+      document.body.removeChild(overlayElementTwo);
+      document.body.removeChild(outsideElement);
+    }
+  });
+
+  it('closes overlays from Escape even when isDismissable is false', () => {
+    let isOpen = ref(true);
+    let closeCount = 0;
+    let overlay = useAriaOverlay({
+      isDismissable: false,
+      isOpen,
+      onClose: () => {
+        closeCount += 1;
+        isOpen.value = false;
+      }
+    });
+
+    try {
+      overlay.overlayProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
+      expect(closeCount).toBe(1);
+      expect(isOpen.value).toBe(false);
+    } finally {
+      overlay.dispose();
     }
   });
 

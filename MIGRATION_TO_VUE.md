@@ -296,10 +296,13 @@
 2. Added regression coverage in `starters/vue/src/composition.spec.ts` for:
    - composing Escape non-dismiss behavior,
    - outside dismissal behavior across pointer/non-pointer paths,
-   - owner-document listener attachment for iframe overlays.
+   - owner-document listener attachment for iframe overlays,
+   - `isDismissable` and `shouldCloseOnInteractOutside` predicate behavior,
+   - top-most overlay-only outside dismissal behavior,
+   - Escape dismissal when `isDismissable` is false (React parity).
 3. Validation after fix:
    - targeted overlay slice: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "overlay trigger, popover|composing Escape|owner document|interact-outside"`,
-   - full Vue tests: `yarn test:vue` (461 passed),
+   - full Vue tests: `yarn test:vue` (464 passed),
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
@@ -309,7 +312,7 @@
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 461 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 464 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).
