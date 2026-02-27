@@ -454,13 +454,35 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `focusSafely`/text-selection/scroll-wheel parity remediation (`@vue-aria/interactions`)
+
+1. Aligned shared `focusSafely` behavior with React interaction contract:
+   - focus now always uses prevent-scroll semantics (`focusWithoutScrolling` behavior),
+   - virtual-modality focus now waits for post-transition scheduling before moving focus,
+   - delayed focus now guards disconnected targets (no focus call when element is removed before callback).
+2. Aligned shared text-selection state machine with React move-gesture behavior:
+   - replaced iOS counter logic with explicit `default -> disabled -> restoring` lifecycle to avoid race conditions,
+   - restored iOS delay + post-transition restore timing (`300ms` + transition callback),
+   - retained per-element non-iOS `user-select` save/restore behavior.
+3. Closed shared listener lifecycle drift in `useScrollWheel`:
+   - added scope-dispose cleanup so composables remove wheel listeners on unmount even when caller does not keep the returned stop function.
+4. Added regression coverage in `starters/vue/src/composition.spec.ts` for:
+   - delayed virtual `focusSafely` behavior and disconnected-element guard,
+   - iOS and non-iOS text-selection restore behavior,
+   - `useScrollWheel` listener cleanup on scope disposal.
+5. Validation after fix:
+   - targeted interaction slice: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "focusSafely|text selection|scroll wheel|long press|move"`,
+   - full Vue tests: `yarn test:vue` (485 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 481 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 485 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

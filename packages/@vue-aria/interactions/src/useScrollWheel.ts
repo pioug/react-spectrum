@@ -1,4 +1,4 @@
-import {computed, unref, watch} from 'vue';
+import {computed, getCurrentScope, onScopeDispose, unref, watch} from 'vue';
 import type {MaybeRef} from './types';
 
 export interface ScrollWheelEvent {
@@ -55,8 +55,14 @@ export function useScrollWheel(props: ScrollWheelProps, ref: MaybeRef<HTMLElemen
     {immediate: true}
   );
 
-  return () => {
+  let stop = () => {
     stopWatch();
     removeListener();
   };
+
+  if (getCurrentScope()) {
+    onScopeDispose(stop);
+  }
+
+  return stop;
 }

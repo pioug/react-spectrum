@@ -1,16 +1,18 @@
+type State = 'default' | 'disabled' | 'restoring';
+
+let state: State = 'default';
 let savedUserSelect = '';
-let iOSDisableCount = 0;
-let modifiedElementMap = new WeakMap<HTMLElement | SVGElement, string>();
+let modifiedElementMap = new WeakMap<Element, string>();
 
 function isIOS(): boolean {
   if (typeof navigator === 'undefined') {
     return false;
   }
 
-  return /iPad|iPhone|iPod/.test(navigator.userAgent);
+  return /iPad|iPhone|iPod/.test(navigator.userAgent) || (/Mac/i.test(navigator.platform) && navigator.maxTouchPoints > 1);
 }
 
-function getDocument(target?: Element | null): Document | null {
+function getOwnerDocument(target?: Element | null): Document | null {
   if (target?.ownerDocument) {
     return target.ownerDocument;
   }
@@ -22,19 +24,30 @@ function getDocument(target?: Element | null): Document | null {
   return document;
 }
 
+function runAfterTransition(callback: () => void): void {
+  if (typeof requestAnimationFrame === 'function') {
+    requestAnimationFrame(() => {
+      callback();
+    });
+    return;
+  }
+
+  setTimeout(callback, 0);
+}
+
 export function disableTextSelection(target?: Element | null): void {
   if (isIOS()) {
-    let ownerDocument = getDocument(target);
+    let ownerDocument = getOwnerDocument(target);
     if (!ownerDocument) {
       return;
     }
 
-    if (iOSDisableCount === 0) {
+    if (state === 'default') {
       savedUserSelect = ownerDocument.documentElement.style.webkitUserSelect;
       ownerDocument.documentElement.style.webkitUserSelect = 'none';
     }
 
-    iOSDisableCount += 1;
+    state = 'disabled';
     return;
   }
 
@@ -49,20 +62,27 @@ export function disableTextSelection(target?: Element | null): void {
 
 export function restoreTextSelection(target?: Element | null): void {
   if (isIOS()) {
-    let ownerDocument = getDocument(target);
-    if (!ownerDocument || iOSDisableCount === 0) {
+    if (state !== 'disabled') {
       return;
     }
 
-    iOSDisableCount -= 1;
+    state = 'restoring';
 
-    if (iOSDisableCount === 0) {
-      window.setTimeout(() => {
-        ownerDocument.documentElement.style.webkitUserSelect = savedUserSelect || '';
+    setTimeout(() => {
+      runAfterTransition(() => {
+        if (state !== 'restoring') {
+          return;
+        }
+
+        let ownerDocument = getOwnerDocument(target);
+        if (ownerDocument?.documentElement.style.webkitUserSelect === 'none') {
+          ownerDocument.documentElement.style.webkitUserSelect = savedUserSelect || '';
+        }
+
         savedUserSelect = '';
-      }, 30);
-    }
-
+        state = 'default';
+      });
+    }, 300);
     return;
   }
 

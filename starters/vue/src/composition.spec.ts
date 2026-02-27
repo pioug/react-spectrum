@@ -132,7 +132,10 @@ import {
 import {
   addWindowFocusTracking,
   ClearPressResponder,
+  disableTextSelection,
+  focusSafely,
   PressResponder,
+  restoreTextSelection,
   setInteractionModality,
   useFocus,
   useFocusable,
@@ -144,7 +147,8 @@ import {
   useKeyboard,
   useLongPress,
   useMove,
-  usePress
+  usePress,
+  useScrollWheel
 } from '@vue-aria/interactions';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
 import {ActionBar} from '@vue-spectrum/actionbar';
@@ -6182,6 +6186,106 @@ describe('Vue migration composition components', () => {
     } finally {
       vi.useRealTimers();
       document.body.removeChild(button);
+    }
+  });
+
+  it('delays vue-aria focusSafely virtual focus and skips disconnected targets', () => {
+    vi.useFakeTimers();
+    setInteractionModality('virtual');
+    let connected = document.createElement('button');
+    let detached = document.createElement('button');
+    document.body.append(connected, detached);
+    let connectedFocus = vi.spyOn(connected, 'focus');
+    let detachedFocus = vi.spyOn(detached, 'focus');
+
+    try {
+      requestAnimationFrame(() => {
+        detached.remove();
+      });
+
+      focusSafely(connected);
+      focusSafely(detached);
+      vi.runAllTimers();
+
+      expect(connectedFocus).toHaveBeenCalledWith({preventScroll: true});
+      expect(detachedFocus).toHaveBeenCalledTimes(0);
+    } finally {
+      vi.useRealTimers();
+      connectedFocus.mockRestore();
+      detachedFocus.mockRestore();
+      connected.remove();
+      detached.remove();
+    }
+  });
+
+  it('restores vue-aria iOS text selection after restore delay', () => {
+    vi.useFakeTimers();
+    let userAgentSpy = vi.spyOn(window.navigator, 'userAgent', 'get').mockReturnValue('iPhone');
+    let platformSpy = vi.spyOn(window.navigator, 'platform', 'get').mockReturnValue('iPhone');
+    let previousUserSelect = document.documentElement.style.webkitUserSelect;
+    document.documentElement.style.webkitUserSelect = 'contain';
+
+    try {
+      disableTextSelection();
+      expect(document.documentElement.style.webkitUserSelect).toBe('none');
+
+      restoreTextSelection();
+      expect(document.documentElement.style.webkitUserSelect).toBe('none');
+
+      vi.runAllTimers();
+      expect(document.documentElement.style.webkitUserSelect).toBe('contain');
+    } finally {
+      vi.useRealTimers();
+      userAgentSpy.mockRestore();
+      platformSpy.mockRestore();
+      document.documentElement.style.webkitUserSelect = previousUserSelect;
+    }
+  });
+
+  it('restores vue-aria non-iOS element text selection styles', () => {
+    let userAgentSpy = vi.spyOn(window.navigator, 'userAgent', 'get').mockReturnValue('Android');
+    let platformSpy = vi.spyOn(window.navigator, 'platform', 'get').mockReturnValue('Linux');
+    let target = document.createElement('div');
+    target.style.userSelect = 'contain';
+
+    try {
+      disableTextSelection(target);
+      expect(target.style.userSelect).toBe('none');
+
+      restoreTextSelection(target);
+      expect(target.style.userSelect).toBe('contain');
+    } finally {
+      userAgentSpy.mockRestore();
+      platformSpy.mockRestore();
+    }
+  });
+
+  it('cleans up vue-aria scroll wheel listeners when scope is disposed', () => {
+    let target = document.createElement('div');
+    document.body.appendChild(target);
+    let scrollEvents: number[] = [];
+    let scope = effectScope();
+    scope.run(() => {
+      useScrollWheel(
+        {
+          onScroll: (event) => {
+            scrollEvents.push(event.deltaY);
+          }
+        },
+        ref(target)
+      );
+    });
+
+    try {
+      target.dispatchEvent(new WheelEvent('wheel', {bubbles: true, cancelable: true, deltaY: 3}));
+      expect(scrollEvents).toEqual([3]);
+
+      scope.stop();
+      target.dispatchEvent(new WheelEvent('wheel', {bubbles: true, cancelable: true, deltaY: 6}));
+      expect(scrollEvents).toEqual([3]);
+    } finally {
+      scope.stop();
+      target.remove();
     }
   });
 
