@@ -6068,6 +6068,129 @@ describe('Vue migration composition components', () => {
     }
   });
 
+  it('ignores vue-aria move starts from right click', () => {
+    let moveEvents: string[] = [];
+    let container = document.createElement('div');
+    document.body.append(container);
+    let move = useMove({
+      onMove: () => {
+        moveEvents.push('move');
+      },
+      onMoveEnd: () => {
+        moveEvents.push('moveend');
+      },
+      onMoveStart: () => {
+        moveEvents.push('movestart');
+      }
+    });
+
+    try {
+      if (move.moveProps.value.onPointerDown) {
+        container.addEventListener('pointerdown', move.moveProps.value.onPointerDown as EventListener);
+        container.dispatchEvent(createPointerEvent('pointerdown', {button: 2, pointerId: 70, pageX: 1, pageY: 1}));
+        window.dispatchEvent(createPointerEvent('pointermove', {button: 2, pointerId: 70, pageX: 5, pageY: 4}));
+        window.dispatchEvent(createPointerEvent('pointerup', {button: 2, pointerId: 70, pageX: 5, pageY: 4}));
+      } else if (move.moveProps.value.onMouseDown) {
+        container.addEventListener('mousedown', move.moveProps.value.onMouseDown as EventListener);
+        container.dispatchEvent(new MouseEvent('mousedown', {bubbles: true, button: 2, clientX: 1, clientY: 1}));
+        window.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, button: 2, clientX: 5, clientY: 4}));
+        window.dispatchEvent(new MouseEvent('mouseup', {bubbles: true, button: 2, clientX: 5, clientY: 4}));
+      }
+
+      expect(moveEvents).toEqual([]);
+    } finally {
+      document.body.removeChild(container);
+    }
+  });
+
+  it('does not emit vue-aria move events when pointer only clicks without movement', () => {
+    let moveEvents: string[] = [];
+    let container = document.createElement('div');
+    document.body.append(container);
+    let move = useMove({
+      onMove: () => {
+        moveEvents.push('move');
+      },
+      onMoveEnd: () => {
+        moveEvents.push('moveend');
+      },
+      onMoveStart: () => {
+        moveEvents.push('movestart');
+      }
+    });
+
+    try {
+      if (move.moveProps.value.onPointerDown) {
+        container.addEventListener('pointerdown', move.moveProps.value.onPointerDown as EventListener);
+        container.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 71, pageX: 10, pageY: 10}));
+        window.dispatchEvent(createPointerEvent('pointerup', {pointerId: 71, pageX: 10, pageY: 10}));
+      } else if (move.moveProps.value.onMouseDown) {
+        container.addEventListener('mousedown', move.moveProps.value.onMouseDown as EventListener);
+        container.dispatchEvent(new MouseEvent('mousedown', {bubbles: true, button: 0, clientX: 10, clientY: 10}));
+        window.dispatchEvent(new MouseEvent('mouseup', {bubbles: true, button: 0, clientX: 10, clientY: 10}));
+      }
+
+      expect(moveEvents).toEqual([]);
+    } finally {
+      document.body.removeChild(container);
+    }
+  });
+
+  it('does not bubble vue-aria move starts to parent move handlers', () => {
+    let childEvents: string[] = [];
+    let parentEvents: string[] = [];
+    let container = document.createElement('div');
+    let child = document.createElement('div');
+    container.append(child);
+    document.body.append(container);
+
+    let parentMove = useMove({
+      onMove: () => {
+        parentEvents.push('move');
+      },
+      onMoveEnd: () => {
+        parentEvents.push('moveend');
+      },
+      onMoveStart: () => {
+        parentEvents.push('movestart');
+      }
+    });
+    let childMove = useMove({
+      onMove: () => {
+        childEvents.push('move');
+      },
+      onMoveEnd: () => {
+        childEvents.push('moveend');
+      },
+      onMoveStart: () => {
+        childEvents.push('movestart');
+      }
+    });
+
+    try {
+      if (parentMove.moveProps.value.onPointerDown && childMove.moveProps.value.onPointerDown) {
+        container.addEventListener('pointerdown', parentMove.moveProps.value.onPointerDown as EventListener);
+        child.addEventListener('pointerdown', childMove.moveProps.value.onPointerDown as EventListener);
+
+        child.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 72, pageX: 3, pageY: 3}));
+        window.dispatchEvent(createPointerEvent('pointermove', {pointerId: 72, pageX: 6, pageY: 1}));
+        window.dispatchEvent(createPointerEvent('pointerup', {pointerId: 72, pageX: 6, pageY: 1}));
+      } else if (parentMove.moveProps.value.onMouseDown && childMove.moveProps.value.onMouseDown) {
+        container.addEventListener('mousedown', parentMove.moveProps.value.onMouseDown as EventListener);
+        child.addEventListener('mousedown', childMove.moveProps.value.onMouseDown as EventListener);
+
+        child.dispatchEvent(new MouseEvent('mousedown', {bubbles: true, button: 0, clientX: 3, clientY: 3}));
+        window.dispatchEvent(new MouseEvent('mousemove', {bubbles: true, button: 0, clientX: 6, clientY: 1}));
+        window.dispatchEvent(new MouseEvent('mouseup', {bubbles: true, button: 0, clientX: 6, clientY: 1}));
+      }
+
+      expect(childEvents).toEqual(['movestart', 'move', 'moveend']);
+      expect(parentEvents).toEqual([]);
+    } finally {
+      document.body.removeChild(container);
+    }
+  });
+
   it('falls back to vue-aria mouse move handlers when PointerEvent is unavailable', () => {
     let moveEvents: Array<{type: string, x?: number, y?: number}> = [];
     let container = document.createElement('div');

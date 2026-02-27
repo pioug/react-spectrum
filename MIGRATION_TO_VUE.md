@@ -524,13 +524,25 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `useMove` parity test-surface expansion (`@vue-aria/interactions`)
+
+1. Expanded regression coverage in `starters/vue/src/composition.spec.ts` by porting additional React `useMove` contracts:
+   - right-click starts are ignored,
+   - click-without-move produces no move lifecycle events,
+   - nested parent/child move handlers do not both fire (child interaction does not bubble to parent move start).
+2. Validation after coverage expansion:
+   - targeted move assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "right click|only clicks without movement|bubble vue-aria move starts|falls back to vue-aria mouse move|move pointer events"`,
+   - full Vue tests: `yarn test:vue` (492 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 489 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 492 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).
