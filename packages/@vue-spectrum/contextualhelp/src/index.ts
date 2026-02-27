@@ -1,7 +1,7 @@
 import '@adobe/spectrum-css-temp/components/contextualhelp/vars.css';
 import {ActionButton} from '@vue-spectrum/button';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, type PropType, ref, watch} from 'vue';
+import {computed, defineComponent, h, nextTick, type PropType, ref, watch} from 'vue';
 const helpStyles: {[key: string]: string} = {};
 
 
@@ -65,6 +65,7 @@ export const ContextualHelp = defineComponent({
   },
   setup(props, {attrs, emit, slots}) {
     let internalOpen = ref(props.modelValue);
+    let triggerRef = ref<HTMLElement | {$el?: Element} | null>(null);
 
     watch(() => props.modelValue, (value) => {
       internalOpen.value = value;
@@ -93,12 +94,23 @@ export const ContextualHelp = defineComponent({
         return;
       }
 
+      let wasOpen = internalOpen.value;
       internalOpen.value = nextValue;
       emit('update:modelValue', nextValue);
       if (nextValue) {
         emit('open');
       } else {
         emit('close');
+        if (wasOpen) {
+          void nextTick(() => {
+            let triggerElement = triggerRef.value instanceof HTMLElement
+              ? triggerRef.value
+              : triggerRef.value && '$el' in triggerRef.value && triggerRef.value.$el instanceof HTMLElement
+                ? triggerRef.value.$el
+                : null;
+            triggerElement?.focus();
+          });
+        }
       }
       emit('openChange', nextValue);
     };
@@ -109,6 +121,7 @@ export const ContextualHelp = defineComponent({
       'data-vac': ''
     }, [
       h(ActionButton, {
+        ref: triggerRef,
         class: [
           classNames(helpStyles, 'react-spectrum-ContextualHelp-button'),
           'vs-contextual-help__trigger',
@@ -119,7 +132,13 @@ export const ContextualHelp = defineComponent({
         'aria-label': triggerLabel.value,
         isDisabled: props.disabled,
         isQuiet: true,
-        onClick: () => setOpen(!internalOpen.value)
+        onClick: () => setOpen(!internalOpen.value),
+        onKeydown: (event: KeyboardEvent) => {
+          if (event.key === 'Escape' && internalOpen.value && props.dismissable) {
+            event.preventDefault();
+            setOpen(false);
+          }
+        }
       }, {
         default: () => [
           h('span', {
@@ -146,7 +165,13 @@ export const ContextualHelp = defineComponent({
             ],
             role: 'dialog',
             'aria-modal': 'false',
-            'data-placement': props.placement
+            'data-placement': props.placement,
+            onKeydown: (event: KeyboardEvent) => {
+              if (event.key === 'Escape' && props.dismissable) {
+                event.preventDefault();
+                setOpen(false);
+              }
+            }
           }, [
             h('header', {class: 'vs-contextual-help__header'}, [
               h('h3', {class: 'vs-contextual-help__title'}, dialogTitle.value),

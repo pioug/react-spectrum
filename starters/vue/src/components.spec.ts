@@ -2166,13 +2166,24 @@ describe('Vue migration primitives', () => {
     });
 
     expect(wrapper.find('.vs-contextual-help__dialog').exists()).toBe(false);
-    await wrapper.get('button.vs-contextual-help__trigger').trigger('click');
+    let trigger = wrapper.get('button.vs-contextual-help__trigger');
+    let focusSpy = vi.spyOn(trigger.element as HTMLButtonElement, 'focus');
+
+    await trigger.trigger('click');
     expect(wrapper.emitted('open')).toHaveLength(1);
     expect(wrapper.emitted('openChange')?.[0]).toEqual([true]);
     expect(wrapper.find('.vs-contextual-help__dialog').exists()).toBe(true);
 
-    await wrapper.get('button.vs-contextual-help__backdrop').trigger('click');
+    await wrapper.get('.vs-contextual-help__dialog').trigger('keydown', {key: 'Escape'});
+    await nextTick();
     expect(wrapper.emitted('close')).toHaveLength(1);
+    expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
+    expect(wrapper.find('.vs-contextual-help__dialog').exists()).toBe(false);
+    expect(focusSpy).toHaveBeenCalled();
+
+    await trigger.trigger('click');
+    await wrapper.get('button.vs-contextual-help__backdrop').trigger('click');
+    expect(wrapper.emitted('close')).toHaveLength(2);
     expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
     expect(wrapper.find('.vs-contextual-help__dialog').exists()).toBe(false);
   });
