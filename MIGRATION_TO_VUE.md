@@ -398,13 +398,29 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — Systemic keyboard propagation parity remediation (`@vue-aria/interactions`)
+
+1. Aligned shared event-wrapper semantics in `createEventHandler` with React interaction behavior:
+   - keyboard/focus handler wrappers now stop propagation by default,
+   - handlers can explicitly opt-in to bubbling via `continuePropagation()`,
+   - wrapper lifecycle now cleans temporary compatibility methods after each dispatch.
+2. Closed keyboard bubbling contract drift in `useKeyboard` call paths by relying on the updated event wrapper semantics.
+3. Added regression coverage in `starters/vue/src/composition.spec.ts` for:
+   - default keyboard non-bubbling behavior,
+   - explicit bubbling behavior when `continuePropagation()` is used.
+4. Validation after fix:
+   - targeted keyboard slice: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "keyboard bubbling|handles vue-aria interactions focus, keyboard, and press callbacks"`,
+   - full Vue tests: `yarn test:vue` (476 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 475 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 476 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

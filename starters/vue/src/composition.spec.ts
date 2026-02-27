@@ -5127,6 +5127,61 @@ describe('Vue migration composition components', () => {
     }
   });
 
+  it('stops vue-aria keyboard bubbling by default and allows continuePropagation opt-in', () => {
+    let wrapperEvents: string[] = [];
+    let outer = document.createElement('div');
+    let innerStopped = document.createElement('button');
+    let innerContinued = document.createElement('button');
+    outer.append(innerStopped, innerContinued);
+    document.body.append(outer);
+
+    let keyboardStopped = useKeyboard({
+      onKeyDown: () => {},
+      onKeyUp: () => {}
+    });
+    let keyboardContinued = useKeyboard({
+      onKeyDown: (event) => {
+        (event as KeyboardEvent & {continuePropagation?: () => void}).continuePropagation?.();
+      },
+      onKeyUp: (event) => {
+        (event as KeyboardEvent & {continuePropagation?: () => void}).continuePropagation?.();
+      }
+    });
+
+    try {
+      outer.addEventListener('keydown', () => {
+        wrapperEvents.push('down');
+      });
+      outer.addEventListener('keyup', () => {
+        wrapperEvents.push('up');
+      });
+
+      if (keyboardStopped.keyboardProps.value.onKeyDown) {
+        innerStopped.addEventListener('keydown', keyboardStopped.keyboardProps.value.onKeyDown as EventListener);
+      }
+      if (keyboardStopped.keyboardProps.value.onKeyUp) {
+        innerStopped.addEventListener('keyup', keyboardStopped.keyboardProps.value.onKeyUp as EventListener);
+      }
+
+      innerStopped.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'A'}));
+      innerStopped.dispatchEvent(new KeyboardEvent('keyup', {bubbles: true, key: 'A'}));
+      expect(wrapperEvents).toEqual([]);
+
+      if (keyboardContinued.keyboardProps.value.onKeyDown) {
+        innerContinued.addEventListener('keydown', keyboardContinued.keyboardProps.value.onKeyDown as EventListener);
+      }
+      if (keyboardContinued.keyboardProps.value.onKeyUp) {
+        innerContinued.addEventListener('keyup', keyboardContinued.keyboardProps.value.onKeyUp as EventListener);
+      }
+
+      innerContinued.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'B'}));
+      innerContinued.dispatchEvent(new KeyboardEvent('keyup', {bubbles: true, key: 'B'}));
+      expect(wrapperEvents).toEqual(['down', 'up']);
+    } finally {
+      document.body.removeChild(outer);
+    }
+  });
+
   it('ignores vue-aria focus callbacks when active element does not match event target', () => {
     let focusEvents: string[] = [];
     let focus = useFocus({
