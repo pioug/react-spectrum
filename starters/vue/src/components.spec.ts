@@ -1227,6 +1227,105 @@ describe('Vue migration primitives', () => {
     }
   });
 
+  it('supports overflow menu keyboard navigation and dismiss lifecycle parity', async () => {
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      callback(0);
+      return 1;
+    });
+    vi.stubGlobal('cancelAnimationFrame', () => {});
+
+    let originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
+    let getBoundingClientRectSpy = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function getBoundingClientRect() {
+      if (this.classList.contains('vs-action-group__wrapper')) {
+        return {
+          width: 170,
+          height: 40,
+          top: 0,
+          right: 170,
+          bottom: 40,
+          left: 0,
+          x: 0,
+          y: 0,
+          toJSON: () => ({})
+        } as DOMRect;
+      }
+
+      if (this.classList.contains('vs-action-group__overflow-measure')) {
+        return {
+          width: 48,
+          height: 30,
+          top: 0,
+          right: 48,
+          bottom: 30,
+          left: 0,
+          x: 0,
+          y: 0,
+          toJSON: () => ({})
+        } as DOMRect;
+      }
+
+      if (this.getAttribute('data-vs-action-group-item') === 'true') {
+        return {
+          width: 72,
+          height: 30,
+          top: 0,
+          right: 72,
+          bottom: 30,
+          left: 0,
+          x: 0,
+          y: 0,
+          toJSON: () => ({})
+        } as DOMRect;
+      }
+
+      return originalGetBoundingClientRect.call(this);
+    });
+
+    try {
+      let wrapper = mount(ActionGroup, {
+        attachTo: document.body,
+        props: {
+          items: ['One', 'Two', 'Three'],
+          overflowMode: 'collapse'
+        }
+      });
+
+      await nextTick();
+      await nextTick();
+
+      let overflowButton = wrapper.get('[data-vs-action-group-overflow-trigger="true"]');
+      overflowButton.element.focus();
+      await overflowButton.trigger('keydown', {key: 'ArrowDown'});
+      await nextTick();
+
+      let overflowItems = wrapper.findAll('.vs-action-group__overflow-menu button[role="menuitem"]');
+      expect(overflowItems).toHaveLength(2);
+      expect(document.activeElement).toBe(overflowItems[0].element);
+
+      await overflowItems[0].trigger('keydown', {key: 'ArrowDown'});
+      await nextTick();
+      overflowItems = wrapper.findAll('.vs-action-group__overflow-menu button[role="menuitem"]');
+      expect(document.activeElement).toBe(overflowItems[1].element);
+
+      document.body.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+      await nextTick();
+      expect(wrapper.find('.vs-action-group__overflow-menu').exists()).toBe(false);
+
+      await overflowButton.trigger('keydown', {key: 'ArrowUp'});
+      await nextTick();
+      overflowItems = wrapper.findAll('.vs-action-group__overflow-menu button[role="menuitem"]');
+      expect(document.activeElement).toBe(overflowItems[overflowItems.length - 1].element);
+
+      await overflowItems[overflowItems.length - 1].trigger('keydown', {key: 'Escape'});
+      await nextTick();
+      expect(wrapper.find('.vs-action-group__overflow-menu').exists()).toBe(false);
+      expect(document.activeElement).toBe(overflowButton.element);
+    } finally {
+      getBoundingClientRectSpy.mockRestore();
+      vi.unstubAllGlobals();
+    }
+  });
+
   it('uses icon-only visible actions when collapse overflows and icon slots are provided', async () => {
     vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
       callback(0);

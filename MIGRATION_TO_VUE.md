@@ -214,6 +214,18 @@
    - `starters/vue/src/components.spec.ts` for overlay Escape/outside-dismiss and `DialogTrigger` focus restore,
    - `starters/vue/src/storybook-parity.spec.ts` for dismissable modal `DialogTrigger` Escape/underlay dismissal flows.
 
+### February 27, 2026 — `ActionGroup` overflow keyboard/dismiss parity remediation
+
+1. Closed overflow-menu keyboard parity gaps in `@vue-spectrum/actiongroup`:
+   - trigger `ArrowDown`/`ArrowUp` now opens overflow menu with first/last focus strategy,
+   - overflow menu now supports `ArrowDown`/`ArrowUp`/`Home`/`End` focus movement,
+   - `Escape` closes overflow menu and restores focus to the overflow trigger.
+2. Hardened overflow dismissal lifecycle:
+   - added robust outside pointer dismissal across `mousedown`/`pointerdown`/`touchstart` capture paths,
+   - aligned overflow trigger/menu ARIA linkage (`aria-controls` to menu id) for controller contract parity.
+3. Added overflow menu focused/hovered state wiring to match Spectrum state class lifecycle in keyboard/pointer paths.
+4. Added regression coverage in `starters/vue/src/components.spec.ts` for keyboard open strategy, menu focus navigation, Escape close+focus restore, and outside-click dismissal.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

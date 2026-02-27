@@ -27,6 +27,9 @@ type ActionGroupItem = string | {
 };
 type ActionGroupKey = string | number;
 type ActionGroupSelectionValue = Iterable<ActionGroupKey>;
+type MenuFocusTarget = 'first' | 'last' | 'manual';
+
+let actionGroupOverflowId = 0;
 
 function getItemKey(item: ActionGroupItem): string {
   return typeof item === 'string' ? item : String(item.name);
@@ -218,11 +221,14 @@ export const ActionGroup = defineComponent({
     'update:modelValue': (value: ActionGroupSelectionValue) => isActionGroupSelectionValue(value)
   },
   setup(props, {emit, attrs, slots}) {
+    let groupId = `vs-action-group-overflow-${++actionGroupOverflowId}`;
     let wrapperRef = ref<HTMLElement | null>(null);
     let groupRef = ref<HTMLElement | null>(null);
     let overflowMeasureRef = ref<HTMLElement | null>(null);
     let overflowTriggerRef = ref<HTMLElement | null>(null);
     let overflowMenuRef = ref<HTMLElement | null>(null);
+    let focusedOverflowKey = ref<string | null>(null);
+    let hoveredOverflowKey = ref<string | null>(null);
     let hoveredKey = ref<string | null>(null);
     let visibleItems = ref(props.items.length);
     let isOverflowMenuOpen = ref(false);
@@ -383,16 +389,121 @@ export const ActionGroup = defineComponent({
       });
     };
 
-    let closeOverflowMenu = () => {
+    let getEnabledOverflowMenuItems = () => {
+      if (!overflowMenuRef.value) {
+        return [] as HTMLButtonElement[];
+      }
+
+      return Array.from(overflowMenuRef.value.querySelectorAll<HTMLButtonElement>('button[role="menuitem"]'))
+        .filter((item) => !item.disabled);
+    };
+
+    let focusOverflowMenuItem = (target: Exclude<MenuFocusTarget, 'manual'>) => {
+      let items = getEnabledOverflowMenuItems();
+      if (items.length === 0) {
+        return;
+      }
+
+      let nextItem = target === 'last'
+        ? items[items.length - 1]
+        : items[0];
+
+      nextItem.focus();
+      focusedOverflowKey.value = nextItem.dataset.key ?? null;
+    };
+
+    let moveOverflowMenuFocus = (step: -1 | 1) => {
+      let items = getEnabledOverflowMenuItems();
+      if (items.length === 0) {
+        return;
+      }
+
+      let activeIndex = items.findIndex((item) => item === document.activeElement);
+      if (activeIndex < 0) {
+        let fallback = step > 0 ? items[0] : items[items.length - 1];
+        fallback.focus();
+        focusedOverflowKey.value = fallback.dataset.key ?? null;
+        return;
+      }
+
+      let nextIndex = Math.max(0, Math.min(items.length - 1, activeIndex + step));
+      let nextItem = items[nextIndex];
+      nextItem.focus();
+      focusedOverflowKey.value = nextItem.dataset.key ?? null;
+    };
+
+    let openOverflowMenu = (focusTarget: MenuFocusTarget = 'manual') => {
+      if (!hasOverflow.value) {
+        return;
+      }
+
+      isOverflowMenuOpen.value = true;
+      if (focusTarget === 'manual') {
+        return;
+      }
+
+      void nextTick(() => {
+        focusOverflowMenuItem(focusTarget);
+      });
+    };
+
+    let closeOverflowMenu = (restoreFocus = false) => {
+      if (!isOverflowMenuOpen.value) {
+        return;
+      }
+
       isOverflowMenuOpen.value = false;
+      focusedOverflowKey.value = null;
+      hoveredOverflowKey.value = null;
+      if (restoreFocus) {
+        void nextTick(() => {
+          overflowTriggerRef.value?.focus();
+        });
+      }
     };
 
     let onOverflowItemAction = (item: string) => {
       onAction(item);
-      closeOverflowMenu();
+      closeOverflowMenu(true);
     };
 
-    let onDocumentPointerDown = (event: PointerEvent) => {
+    let onOverflowMenuKeydown = (event: KeyboardEvent) => {
+      if (!isOverflowMenuOpen.value) {
+        return;
+      }
+
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        event.stopPropagation();
+        closeOverflowMenu(true);
+        return;
+      }
+
+      if (event.key === 'ArrowDown') {
+        event.preventDefault();
+        moveOverflowMenuFocus(1);
+        return;
+      }
+
+      if (event.key === 'ArrowUp') {
+        event.preventDefault();
+        moveOverflowMenuFocus(-1);
+        return;
+      }
+
+      if (event.key === 'Home') {
+        event.preventDefault();
+        focusOverflowMenuItem('first');
+        return;
+      }
+
+      if (event.key === 'End') {
+        event.preventDefault();
+        focusOverflowMenuItem('last');
+      }
+    };
+
+    let onDocumentPointerDown = (event: MouseEvent | PointerEvent | TouchEvent) => {
       if (!isOverflowMenuOpen.value) {
         return;
       }
@@ -410,7 +521,9 @@ export const ActionGroup = defineComponent({
     };
 
     onMounted(() => {
+      document.addEventListener('mousedown', onDocumentPointerDown, true);
       document.addEventListener('pointerdown', onDocumentPointerDown, true);
+      document.addEventListener('touchstart', onDocumentPointerDown, true);
 
       if (typeof ResizeObserver !== 'undefined') {
         resizeObserver = new ResizeObserver(() => {
@@ -426,7 +539,9 @@ export const ActionGroup = defineComponent({
     });
 
     onBeforeUnmount(() => {
+      document.removeEventListener('mousedown', onDocumentPointerDown, true);
       document.removeEventListener('pointerdown', onDocumentPointerDown, true);
+      document.removeEventListener('touchstart', onDocumentPointerDown, true);
       if (resizeObserver) {
         resizeObserver.disconnect();
         resizeObserver = null;
@@ -553,16 +668,34 @@ export const ActionGroup = defineComponent({
             type: 'button',
             'aria-haspopup': 'menu',
             'aria-expanded': isOverflowMenuOpen.value ? 'true' : 'false',
+            'aria-controls': isOverflowMenuOpen.value ? groupId : undefined,
             'aria-label': shouldHideGroupAria.value ? attrs['aria-label'] ?? 'More actions' : 'More actions',
             'aria-labelledby': shouldHideGroupAria.value ? attrs['aria-labelledby'] : undefined,
             'data-vs-action-group-overflow-trigger': 'true',
             onClick: () => {
-              isOverflowMenuOpen.value = !isOverflowMenuOpen.value;
+              if (isOverflowMenuOpen.value) {
+                closeOverflowMenu();
+              } else {
+                openOverflowMenu('manual');
+              }
             },
             onKeydown: (event: KeyboardEvent) => {
+              if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                openOverflowMenu('first');
+                return;
+              }
+
+              if (event.key === 'ArrowUp') {
+                event.preventDefault();
+                openOverflowMenu('last');
+                return;
+              }
+
               if (event.key === 'Escape') {
+                event.preventDefault();
                 event.stopPropagation();
-                closeOverflowMenu();
+                closeOverflowMenu(true);
               }
             }
           }, [
@@ -582,9 +715,11 @@ export const ActionGroup = defineComponent({
               role: 'presentation'
             }, [
               h('ul', {
+                id: groupId,
                 class: [classNames(menuStyles, 'spectrum-Menu'), 'vs-action-group__overflow-menu'],
                 role: 'menu',
-                'aria-label': 'More actions'
+                'aria-label': 'More actions',
+                onKeydown: onOverflowMenuKeydown
               }, overflowItems.value.map((item) => {
                 let itemKey = getItemKey(item);
                 let itemLabel = getItemLabel(item);
@@ -595,11 +730,34 @@ export const ActionGroup = defineComponent({
                 }, [
                   h('button', {
                     class: classNames(menuStyles, 'spectrum-Menu-item', {
-                      'is-disabled': isItemDisabled
+                      'is-disabled': isItemDisabled,
+                      'is-focused': focusedOverflowKey.value === itemKey && !isItemDisabled,
+                      'is-hovered': hoveredOverflowKey.value === itemKey && !isItemDisabled
                     }),
                     type: 'button',
                     disabled: isItemDisabled,
                     role: 'menuitem',
+                    'data-key': itemKey,
+                    onBlur: () => {
+                      if (focusedOverflowKey.value === itemKey) {
+                        focusedOverflowKey.value = null;
+                      }
+                    },
+                    onFocus: () => {
+                      focusedOverflowKey.value = itemKey;
+                    },
+                    onMouseenter: () => {
+                      if (isItemDisabled) {
+                        return;
+                      }
+
+                      hoveredOverflowKey.value = itemKey;
+                    },
+                    onMouseleave: () => {
+                      if (hoveredOverflowKey.value === itemKey) {
+                        hoveredOverflowKey.value = null;
+                      }
+                    },
                     onClick: () => onOverflowItemAction(itemKey)
                   }, [
                     h('span', {
