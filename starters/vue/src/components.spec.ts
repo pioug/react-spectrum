@@ -1684,6 +1684,47 @@ describe('Vue migration primitives', () => {
     warn.mockRestore();
   });
 
+  it('maps meter aria composition, percent formatting, and DOM prop passthrough to react parity', () => {
+    let externalLabelId = 'meter-external-label';
+    let wrapper = mount(Meter, {
+      props: {
+        formatOptions: {style: 'percent'},
+        label: 'Meter',
+        value: 25
+      },
+      attrs: {
+        'aria-label': 'Storage meter',
+        'aria-labelledby': externalLabelId,
+        'aria-describedby': 'meter-help',
+        'data-testid': 'meter-test'
+      }
+    });
+
+    let labelledByIds = wrapper.attributes('aria-labelledby')?.split(/\s+/) ?? [];
+    expect(wrapper.attributes('data-testid')).toBe('meter-test');
+    expect(wrapper.attributes('aria-describedby')).toBe('meter-help');
+    expect(wrapper.attributes('aria-label')).toBe('Storage meter');
+    expect(labelledByIds).toContain(externalLabelId);
+    expect(labelledByIds).toContain(wrapper.get('.spectrum-BarLoader-label').attributes('id'));
+    expect(labelledByIds).toContain(wrapper.attributes('id'));
+    expect(wrapper.find('.spectrum-BarLoader-percentage').text()).toContain('25');
+    expect(wrapper.find('.spectrum-BarLoader-percentage').text()).not.toContain('2500');
+
+    let noVisibleLabel = mount(Meter, {
+      props: {
+        label: null,
+        value: 20
+      },
+      attrs: {
+        'aria-label': 'Storage meter',
+        'aria-labelledby': externalLabelId
+      }
+    });
+    let noVisibleLabelledByIds = noVisibleLabel.attributes('aria-labelledby')?.split(/\s+/) ?? [];
+    expect(noVisibleLabelledByIds).toContain(externalLabelId);
+    expect(noVisibleLabelledByIds).toContain(noVisibleLabel.attributes('id'));
+  });
+
   it('maps statuslight variant and disabled classes', () => {
     let wrapper = mount(StatusLight, {
       props: {

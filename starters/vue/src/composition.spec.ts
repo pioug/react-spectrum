@@ -3181,6 +3181,19 @@ describe('Vue migration composition components', () => {
     });
     expect(explicitValueLabelMeter.meterProps.value['aria-label']).toBe('Storage meter');
     expect(explicitValueLabelMeter.meterProps.value['aria-valuetext']).toBe('3 of 10 GB');
+
+    let composedLabelMeter = useAriaMeter({
+      'aria-label': 'Storage meter',
+      'aria-labelledby': 'external-meter-label',
+      label: 'Upload progress',
+      maxValue: 80,
+      minValue: 0,
+      value: 40
+    });
+    let composedLabelledByIds = composedLabelMeter.meterProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(composedLabelledByIds).toContain('external-meter-label');
+    expect(composedLabelledByIds).toContain(composedLabelMeter.labelProps.value.id);
+    expect(composedLabelledByIds).toContain(composedLabelMeter.meterProps.value.id);
   });
 
   it('computes vue-aria number field stepping and clamped input behavior', () => {

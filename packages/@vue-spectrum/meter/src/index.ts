@@ -1,15 +1,12 @@
 import '@adobe/spectrum-css-temp/components/barloader/vars.css';
+import {useMeter} from '@vue-aria/meter';
 import {classNames} from '@vue-spectrum/utils';
-import {filterDOMProps, mergeIds, useId} from '@vue-aria/utils';
+import {filterDOMProps} from '@vue-aria/utils';
 import {computed, type CSSProperties, defineComponent, h, type PropType} from 'vue';
 const styles: {[key: string]: string} = {};
 
 
 type Variant = 'critical' | 'informative' | 'positive' | 'warning';
-
-function clamp(value: number, min: number, max: number): number {
-  return Math.min(max, Math.max(min, value));
-}
 
 export const Meter = defineComponent({
   name: 'VueMeter',
@@ -61,32 +58,32 @@ export const Meter = defineComponent({
     }
   },
   setup(props, {attrs}) {
-    let meterId = useId(typeof attrs.id === 'string' ? attrs.id : undefined);
-    let labelId = useId();
     let showValueLabel = computed(() => props.showValueLabel ?? !!props.label);
-    let clampedValue = computed(() => clamp(props.value, props.minValue, props.maxValue));
-    let percentage = computed(() => {
-      if (props.maxValue <= props.minValue) {
-        return 0;
-      }
-      return ((clampedValue.value - props.minValue) / (props.maxValue - props.minValue)) * 100;
+    let ariaLabel = computed(() => {
+      let value = attrs['aria-label'];
+      return typeof value === 'string' ? value : undefined;
     });
-    let formatter = computed(() => props.formatOptions ? new Intl.NumberFormat(undefined, props.formatOptions) : null);
-    let defaultValueLabel = computed(() => {
-      if (formatter.value) {
-        return formatter.value.format(clampedValue.value);
-      }
-
-      return `${Math.round(percentage.value)}%`;
+    let ariaLabelledBy = computed(() => {
+      let value = attrs['aria-labelledby'];
+      return typeof value === 'string' ? value : undefined;
     });
-    let valueLabel = computed(() => props.valueLabel ?? defaultValueLabel.value);
+    let meter = useMeter({
+      id: computed(() => typeof attrs.id === 'string' ? attrs.id : undefined),
+      label: computed(() => props.label || undefined),
+      value: computed(() => props.value),
+      minValue: computed(() => props.minValue),
+      maxValue: computed(() => props.maxValue),
+      valueLabel: computed(() => props.valueLabel),
+      formatOptions: computed(() => props.formatOptions),
+      'aria-label': ariaLabel,
+      'aria-labelledby': ariaLabelledBy
+    });
 
     return () => {
-      let ariaLabel = attrs['aria-label'];
-      let ariaLabelledby = attrs['aria-labelledby'];
-      let hasLabel = !!props.label;
+      let meterProps = meter.meterProps.value;
+      let labelProps = meter.labelProps.value;
 
-      if (!hasLabel && !ariaLabel && !ariaLabelledby && process.env.NODE_ENV !== 'production') {
+      if (!props.label && !meterProps['aria-label'] && !meterProps['aria-labelledby'] && process.env.NODE_ENV !== 'production') {
         console.warn('If you do not provide a visible label via children, you must specify an aria-label or aria-labelledby attribute for accessibility');
       }
 
@@ -107,21 +104,12 @@ export const Meter = defineComponent({
       delete otherDomProps['aria-valuetext'];
 
       let valueFillStyle: CSSProperties = {
-        width: `${Math.round(percentage.value)}%`
+        width: `${Math.round(meter.percentage.value * 100)}%`
       };
 
       return h('div', {
         ...otherDomProps,
-        id: meterId,
-        role: 'meter progressbar',
-        'aria-label': !hasLabel && typeof ariaLabel === 'string' ? ariaLabel : undefined,
-        'aria-labelledby': hasLabel
-          ? mergeIds(labelId, typeof ariaLabelledby === 'string' ? ariaLabelledby : undefined)
-          : (typeof ariaLabelledby === 'string' ? ariaLabelledby : undefined),
-        'aria-valuemin': props.minValue,
-        'aria-valuemax': props.maxValue,
-        'aria-valuenow': clampedValue.value,
-        'aria-valuetext': valueLabel.value,
+        ...meterProps,
         class: [
           classNames(
             styles,
@@ -146,14 +134,14 @@ export const Meter = defineComponent({
       }, [
         props.label
           ? h('span', {
-            id: labelId,
+            ...labelProps,
             class: classNames(styles, 'spectrum-BarLoader-label')
           }, props.label)
           : null,
         showValueLabel.value
           ? h('div', {
             class: classNames(styles, 'spectrum-BarLoader-percentage')
-          }, valueLabel.value)
+          }, meterProps['aria-valuetext'])
           : null,
         h('div', {
           class: classNames(styles, 'spectrum-BarLoader-track')

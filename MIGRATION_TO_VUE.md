@@ -832,13 +832,32 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `Meter` ARIA + value-format parity (`@vue-spectrum/meter`, `@vue-aria/meter`)
+
+1. Closed shared meter labelling composition drift in `@vue-aria/meter`:
+   - visible meter labels now compose with external `aria-labelledby`,
+   - when both `aria-label` and composed `aria-labelledby` are present, meter id now participates in `aria-labelledby` to match React `useLabels` semantics.
+2. Closed meter value-text parity drift in `@vue-spectrum/meter`:
+   - switched component ownership to shared `useMeter` semantics for `aria-valuetext` formatting and labeling,
+   - fixed percent-format behavior so `formatOptions.style: 'percent'` uses normalized percentage semantics instead of formatting raw absolute values.
+3. Preserved/extended DOM contract parity:
+   - root meter still forwards labelable/custom DOM props (`data-testid`, `aria-describedby`) while keeping meter role/value ownership on the interactive root.
+4. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: meter aria composition + percent-format + DOM-prop passthrough assertions,
+   - `starters/vue/src/composition.spec.ts`: `useMeter` composition assertions for visible label + external `aria-labelledby` + `aria-label`.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "maps meter variant state classes|maps meter aria composition, percent formatting, and DOM prop passthrough"` and `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria meter range, labels, and value text"`,
+   - full Vue tests: `yarn test:vue` (528 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 527 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 528 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).
