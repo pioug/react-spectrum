@@ -339,13 +339,32 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — Systemic long-press interaction parity remediation (`@vue-aria/interactions`)
+
+1. Aligned shared `useLongPress` behavior with React interaction semantics:
+   - moved `continuePropagation()` to run before pointer-type gating (matching React press propagation behavior),
+   - dispatched `pointercancel` at threshold and focused target (if needed) before firing `onLongPress`,
+   - added touch context-menu suppression lifecycle during long-press with post-`pointerup` cleanup timing parity,
+   - added scope-disposal cleanup for pending long-press timers and touch context-menu listeners.
+2. Hardened pointer-cancel handling in `usePress` for synthetic/no-`PointerEvent` fallback parity:
+   - allow cancel handling when fallback `pointercancel` events omit `pointerId`.
+3. Added regression coverage in `starters/vue/src/composition.spec.ts` for:
+   - long-press callback ordering parity (`start` -> `end` -> `press`),
+   - canceling regular `usePress` `onPress` after long-press threshold,
+   - touch context-menu suppression and cleanup timing.
+4. Validation after fix:
+   - targeted long-press slice: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "long press|longpress|context menu"`,
+   - full Vue tests: `yarn test:vue` (470 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 468 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 470 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

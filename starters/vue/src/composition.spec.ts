@@ -5707,7 +5707,81 @@ describe('Vue migration composition components', () => {
       vi.advanceTimersByTime(40);
       window.dispatchEvent(createPointerEvent('pointerup', {pointerId: 7, pointerType: 'touch'}));
 
-      expect(longPressEvents).toEqual(['start', 'press', 'end']);
+      expect(longPressEvents).toEqual(['start', 'end', 'press']);
+    } finally {
+      vi.useRealTimers();
+      document.body.removeChild(button);
+    }
+  });
+
+  it('prevents regular press handlers when vue-aria long press threshold is reached', () => {
+    vi.useFakeTimers();
+    let longPressEvents: string[] = [];
+    let pressEvents: string[] = [];
+    let button = document.createElement('button');
+    document.body.append(button);
+
+    let longPress = useLongPress({
+      onLongPress: () => {
+        longPressEvents.push('press');
+      },
+      onLongPressEnd: () => {
+        longPressEvents.push('end');
+      },
+      onLongPressStart: () => {
+        longPressEvents.push('start');
+      },
+      threshold: 25
+    });
+    let press = usePress({
+      onPress: () => {
+        pressEvents.push('press');
+      }
+    });
+    let mergedProps = ariaMergeProps(longPress.longPressProps.value, press.pressProps.value);
+
+    try {
+      if (mergedProps.onPointerDown) {
+        button.addEventListener('pointerdown', mergedProps.onPointerDown as EventListener);
+      }
+
+      button.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 8, pointerType: 'touch'}));
+      vi.advanceTimersByTime(30);
+      expect(document.activeElement).toBe(button);
+
+      window.dispatchEvent(createPointerEvent('pointerup', {pointerId: 8, pointerType: 'touch'}));
+      expect(longPressEvents).toEqual(['start', 'end', 'press']);
+      expect(pressEvents).toEqual([]);
+    } finally {
+      vi.useRealTimers();
+      document.body.removeChild(button);
+    }
+  });
+
+  it('prevents touch context menu during vue-aria long press', () => {
+    vi.useFakeTimers();
+    let button = document.createElement('button');
+    document.body.append(button);
+
+    let longPress = useLongPress({
+      onLongPress: () => {},
+      threshold: 25
+    });
+
+    try {
+      if (longPress.longPressProps.value.onPointerDown) {
+        button.addEventListener('pointerdown', longPress.longPressProps.value.onPointerDown as EventListener);
+      }
+
+      button.dispatchEvent(createPointerEvent('pointerdown', {pointerId: 9, pointerType: 'touch'}));
+      vi.advanceTimersByTime(30);
+
+      expect(button.dispatchEvent(new MouseEvent('contextmenu', {bubbles: true, cancelable: true}))).toBe(false);
+
+      window.dispatchEvent(createPointerEvent('pointerup', {pointerId: 9, pointerType: 'touch'}));
+      vi.advanceTimersByTime(40);
+
+      expect(button.dispatchEvent(new MouseEvent('contextmenu', {bubbles: true, cancelable: true}))).toBe(true);
     } finally {
       vi.useRealTimers();
       document.body.removeChild(button);

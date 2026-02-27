@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, ref, unref} from 'vue';
+import {computed, getCurrentScope, onScopeDispose, type ComputedRef, ref, unref} from 'vue';
 import type {MaybeRef, PointerType} from './types';
 import {type PressEvent, usePress} from './usePress';
 
@@ -36,40 +36,77 @@ function isLongPressPointerType(pointerType: PointerType): boolean {
 }
 
 export function useLongPress(props: LongPressProps = {}): LongPressResult {
-  let timeoutId = ref<number | null>(null);
-  let didLongPress = ref(false);
+  let timeoutId = ref<ReturnType<typeof setTimeout> | null>(null);
+  let removeTouchContextMenu = ref<(() => void) | null>(null);
+
+  let clearTouchContextMenu = () => {
+    if (!removeTouchContextMenu.value) {
+      return;
+    }
+
+    removeTouchContextMenu.value();
+    removeTouchContextMenu.value = null;
+  };
 
   let clearTimeoutId = () => {
     if (timeoutId.value == null) {
       return;
     }
 
-    window.clearTimeout(timeoutId.value);
+    clearTimeout(timeoutId.value);
     timeoutId.value = null;
   };
 
   let {pressProps} = usePress({
     isDisabled: props.isDisabled,
     onPressStart: (event) => {
-      if (typeof window === 'undefined' || !isLongPressPointerType(event.pointerType)) {
+      event.continuePropagation();
+      if (!isLongPressPointerType(event.pointerType)) {
         return;
       }
-
-      didLongPress.value = false;
 
       props.onLongPressStart?.({
         ...event,
         type: 'longpressstart'
       });
 
-      timeoutId.value = window.setTimeout(() => {
-        didLongPress.value = true;
+      timeoutId.value = setTimeout(() => {
+        let ownerDocument = event.target.ownerDocument;
+        let ownerWindow = ownerDocument?.defaultView;
+        if (ownerWindow && typeof ownerWindow.PointerEvent !== 'undefined') {
+          event.target.dispatchEvent(new ownerWindow.PointerEvent('pointercancel', {bubbles: true}));
+        } else {
+          event.target.dispatchEvent(new Event('pointercancel', {bubbles: true}));
+        }
+
+        if (ownerDocument?.activeElement !== event.target && typeof (event.target as {focus?: unknown}).focus === 'function') {
+          (event.target as HTMLElement).focus({preventScroll: true});
+        }
+
         props.onLongPress?.({
           ...event,
           type: 'longpress'
         });
         timeoutId.value = null;
       }, Math.max(0, unref(props.threshold) ?? DEFAULT_THRESHOLD));
+
+      if (event.pointerType === 'touch') {
+        clearTouchContextMenu();
+        let onContextMenu = (contextMenuEvent: Event) => {
+          contextMenuEvent.preventDefault();
+        };
+        event.target.addEventListener('contextmenu', onContextMenu, {once: true});
+        removeTouchContextMenu.value = () => {
+          event.target.removeEventListener('contextmenu', onContextMenu);
+        };
+
+        let ownerWindow = event.target.ownerDocument?.defaultView;
+        ownerWindow?.addEventListener('pointerup', () => {
+          setTimeout(() => {
+            clearTouchContextMenu();
+          }, 30);
+        }, {once: true});
+      }
     },
     onPressEnd: (event) => {
       if (!isLongPressPointerType(event.pointerType)) {
@@ -85,6 +122,12 @@ export function useLongPress(props: LongPressProps = {}): LongPressResult {
     },
     shouldCancelOnPointerExit: true
   });
+  if (getCurrentScope()) {
+    onScopeDispose(() => {
+      clearTimeoutId();
+      clearTouchContextMenu();
+    });
+  }
 
   return {
     longPressProps: computed<LongPressDOMProps>(() => {

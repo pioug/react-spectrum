@@ -284,7 +284,7 @@ export function usePress(props: PressHookProps = {}): PressResult {
     };
 
     let onPointerCancel = (cancelEvent: PointerEvent) => {
-      if (cancelEvent.pointerId !== activePointerId.value) {
+      if (cancelEvent.pointerId != null && cancelEvent.pointerId !== activePointerId.value) {
         return;
       }
 
