@@ -749,13 +749,31 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `Slider`/`RangeSlider` group-input ARIA ownership parity (`@vue-spectrum/slider`)
+
+1. Closed slider group/input labeling drift against React:
+   - slider and range slider roots now expose explicit `role="group"` ownership with group-level `aria-label`/`aria-labelledby`,
+   - visible slider labels now get deterministic ids and participate in group labeling,
+   - single-slider thumb input now uses `aria-labelledby` ownership (label id when visible, otherwise group id), with no direct `aria-label` fallback from `label`.
+2. Closed range-slider thumb labeling drift:
+   - range thumbs now keep React-like semantic names (`aria-label="Minimum"` / `aria-label="Maximum"`),
+   - each range thumb now composes `aria-labelledby` as `"<thumb-id> <group-or-label-id>"` to align with React thumb naming behavior.
+3. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: direct Slider/RangeSlider aria ownership assertions for visible labels, external `aria-labelledby`, and no-visible-label `aria-label` flows,
+   - `starters/vue/src/storybook-parity.spec.ts`: slider story parity now asserts group/input aria ownership contracts for both single and range stories.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "slider aria label and labelledby ownership|range slider aria label and labelledby ownership"` and `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts -t "slider stories"`,
+   - full Vue tests: `yarn test:vue` (518 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 515 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 518 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

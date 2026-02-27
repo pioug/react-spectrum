@@ -153,6 +153,8 @@ export const Slider = defineComponent({
     let generatedId = `vs-slider-${++sliderId}`;
     let inputId = computed(() => props.id ?? generatedId);
     let descriptionId = computed(() => props.description ? `${inputId.value}-description` : undefined);
+    let rootId = computed(() => `${inputId.value}-group`);
+    let labelId = computed(() => props.label ? `${inputId.value}-label` : undefined);
 
     let rootAttrs = computed(() => {
       let nextAttrs = {...attrs};
@@ -160,6 +162,27 @@ export const Slider = defineComponent({
       delete (nextAttrs as Record<string, unknown>).style;
       return nextAttrs;
     });
+
+    let externalAriaLabel = computed(() => {
+      let value = attrs['aria-label'];
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    });
+
+    let externalAriaLabelledBy = computed(() => {
+      let value = attrs['aria-labelledby'];
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    });
+
+    let groupAriaLabelledBy = computed(() => {
+      if (labelId.value) {
+        return [labelId.value, externalAriaLabelledBy.value].filter((part): part is string => Boolean(part)).join(' ') || undefined;
+      }
+
+      return externalAriaLabelledBy.value;
+    });
+
+    let groupAriaLabel = computed(() => groupAriaLabelledBy.value ? undefined : externalAriaLabel.value);
+    let inputAriaLabelledBy = computed(() => labelId.value ?? rootId.value);
 
     let isDisabled = computed(() => props.isDisabled ?? props.disabled);
     let minValue = computed(() => props.minValue ?? props.min);
@@ -304,14 +327,18 @@ export const Slider = defineComponent({
 
       return h('div', {
         ...rootAttrs.value,
+        id: rootId.value,
+        role: 'group',
         class: [rootClassName.value, 'vs-slider', attrs.class],
         style: [attrs.style as never, gradientStyle.value as never],
+        'aria-label': groupAriaLabel.value,
+        'aria-labelledby': groupAriaLabelledBy.value,
         'data-vac': ''
       }, [
         shouldRenderLabelContainer
           ? h('div', {class: classNames(styles, 'spectrum-Slider-labelContainer'), role: 'presentation'}, [
             props.label
-              ? h('label', {class: [classNames(styles, 'spectrum-Slider-label'), 'vs-slider__label']}, props.label)
+              ? h('label', {id: labelId.value, class: [classNames(styles, 'spectrum-Slider-label'), 'vs-slider__label']}, props.label)
               : null,
             contextualHelp.value
               ? h('div', {class: classNames(styles, 'spectrum-Slider-contextualHelp')}, contextualHelp.value)
@@ -358,7 +385,8 @@ export const Slider = defineComponent({
               disabled: isDisabled.value,
               form: props.form,
               name: props.name,
-              'aria-label': typeof attrs['aria-label'] === 'string' ? attrs['aria-label'] : (props.label || undefined),
+              'aria-label': undefined,
+              'aria-labelledby': inputAriaLabelledBy.value,
               'aria-describedby': descriptionId.value,
               onInput: (event: Event) => {
                 let target = event.currentTarget as HTMLInputElement | null;
@@ -487,12 +515,37 @@ export const RangeSlider = defineComponent({
   },
   setup(props, {emit, attrs, slots}) {
     let generatedId = `vs-range-slider-${++rangeSliderId}`;
+    let rootId = computed(() => `${generatedId}-group`);
+    let labelId = computed(() => props.label ? `${generatedId}-label` : undefined);
+    let startInputId = computed(() => `${generatedId}-start`);
+    let endInputId = computed(() => `${generatedId}-end`);
     let rootAttrs = computed(() => {
       let nextAttrs = {...attrs};
       delete (nextAttrs as Record<string, unknown>).class;
       delete (nextAttrs as Record<string, unknown>).style;
       return nextAttrs;
     });
+
+    let externalAriaLabel = computed(() => {
+      let value = attrs['aria-label'];
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    });
+
+    let externalAriaLabelledBy = computed(() => {
+      let value = attrs['aria-labelledby'];
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    });
+
+    let groupAriaLabelledBy = computed(() => {
+      if (labelId.value) {
+        return [labelId.value, externalAriaLabelledBy.value].filter((part): part is string => Boolean(part)).join(' ') || undefined;
+      }
+
+      return externalAriaLabelledBy.value;
+    });
+
+    let groupAriaLabel = computed(() => groupAriaLabelledBy.value ? undefined : externalAriaLabel.value);
+    let thumbAriaLabelledBy = computed(() => labelId.value ?? rootId.value);
 
     let isDisabled = computed(() => props.isDisabled ?? props.disabled);
     let minValue = computed(() => props.minValue ?? props.min);
@@ -605,14 +658,18 @@ export const RangeSlider = defineComponent({
 
       return h('div', {
         ...rootAttrs.value,
+        id: rootId.value,
+        role: 'group',
         class: [rootClassName.value, 'vs-slider', attrs.class],
         style: [attrs.style as never],
+        'aria-label': groupAriaLabel.value,
+        'aria-labelledby': groupAriaLabelledBy.value,
         'data-vac': ''
       }, [
         shouldRenderLabelContainer
           ? h('div', {class: classNames(styles, 'spectrum-Slider-labelContainer'), role: 'presentation'}, [
             props.label
-              ? h('label', {class: [classNames(styles, 'spectrum-Slider-label'), 'vs-slider__label']}, props.label)
+              ? h('label', {id: labelId.value, class: [classNames(styles, 'spectrum-Slider-label'), 'vs-slider__label']}, props.label)
               : null,
             contextualHelp.value
               ? h('div', {class: classNames(styles, 'spectrum-Slider-contextualHelp')}, contextualHelp.value)
@@ -650,7 +707,7 @@ export const RangeSlider = defineComponent({
             }
           }, [
             h('input', {
-              id: `${generatedId}-start`,
+              id: startInputId.value,
               class: [classNames(styles, 'spectrum-Slider-input'), 'vs-slider__input'],
               type: 'range',
               min: minValue.value,
@@ -660,7 +717,8 @@ export const RangeSlider = defineComponent({
               disabled: isDisabled.value,
               form: props.form,
               name: props.startName,
-              'aria-label': typeof attrs['aria-label'] === 'string' ? attrs['aria-label'] : 'Minimum',
+              'aria-label': 'Minimum',
+              'aria-labelledby': `${startInputId.value} ${thumbAriaLabelledBy.value}`,
               onInput: (event: Event) => handleInput(0, event, false),
               onChange: (event: Event) => handleInput(0, event, true),
               onFocus: (event: FocusEvent) => {
@@ -714,7 +772,7 @@ export const RangeSlider = defineComponent({
             }
           }, [
             h('input', {
-              id: `${generatedId}-end`,
+              id: endInputId.value,
               class: [classNames(styles, 'spectrum-Slider-input'), 'vs-slider__input'],
               type: 'range',
               min: minValue.value,
@@ -724,7 +782,8 @@ export const RangeSlider = defineComponent({
               disabled: isDisabled.value,
               form: props.form,
               name: props.endName,
-              'aria-label': typeof attrs['aria-label'] === 'string' ? attrs['aria-label'] : 'Maximum',
+              'aria-label': 'Maximum',
+              'aria-labelledby': `${endInputId.value} ${thumbAriaLabelledBy.value}`,
               onInput: (event: Event) => handleInput(1, event, false),
               onChange: (event: Event) => handleInput(1, event, true),
               onFocus: (event: FocusEvent) => {

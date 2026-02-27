@@ -3762,6 +3762,91 @@ describe('Vue migration primitives', () => {
     expect(wrapper.find('.spectrum-InputGroup').classes()).not.toContain('spectrum-InputGroup--invalid');
   });
 
+  it('maps slider aria label and labelledby ownership to react parity', () => {
+    let labelledByWrapper = mount(Slider, {
+      attrs: {
+        'aria-labelledby': 'external-slider-label'
+      },
+      props: {
+        label: 'Progress',
+        modelValue: 40
+      }
+    });
+
+    let labelledByInput = labelledByWrapper.get('input.vs-slider__input');
+    let visibleLabel = labelledByWrapper.get('label.vs-slider__label');
+    expect(labelledByWrapper.attributes('role')).toBe('group');
+    expect(labelledByWrapper.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
+    expect(labelledByWrapper.attributes('aria-labelledby')).toContain('external-slider-label');
+    expect(labelledByWrapper.attributes('aria-label')).toBeUndefined();
+    expect(labelledByInput.attributes('aria-labelledby')).toBe(visibleLabel.attributes('id'));
+    expect(labelledByInput.attributes('aria-label')).toBeUndefined();
+
+    let ariaLabelWrapper = mount(Slider, {
+      attrs: {
+        'aria-label': 'Progress'
+      },
+      props: {
+        label: '',
+        modelValue: 40
+      }
+    });
+
+    let ariaLabelInput = ariaLabelWrapper.get('input.vs-slider__input');
+    expect(ariaLabelWrapper.attributes('role')).toBe('group');
+    expect(ariaLabelWrapper.attributes('aria-label')).toBe('Progress');
+    expect(ariaLabelWrapper.attributes('aria-labelledby')).toBeUndefined();
+    expect(ariaLabelInput.attributes('aria-labelledby')).toBe(ariaLabelWrapper.attributes('id'));
+    expect(ariaLabelInput.attributes('aria-label')).toBeUndefined();
+  });
+
+  it('maps range slider aria label and labelledby ownership to react parity', () => {
+    let labelledByWrapper = mount(RangeSlider, {
+      attrs: {
+        'aria-labelledby': 'external-range-slider-label'
+      },
+      props: {
+        label: 'Window',
+        modelValue: {
+          start: 20,
+          end: 80
+        }
+      }
+    });
+
+    let visibleLabel = labelledByWrapper.get('label.vs-slider__label');
+    let labelledByInputs = labelledByWrapper.findAll('input.vs-slider__input');
+    expect(labelledByInputs).toHaveLength(2);
+    expect(labelledByWrapper.attributes('role')).toBe('group');
+    expect(labelledByWrapper.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
+    expect(labelledByWrapper.attributes('aria-labelledby')).toContain('external-range-slider-label');
+    expect(labelledByInputs[0].attributes('aria-label')).toBe('Minimum');
+    expect(labelledByInputs[1].attributes('aria-label')).toBe('Maximum');
+    expect(labelledByInputs[0].attributes('aria-labelledby')).toBe(`${labelledByInputs[0].attributes('id')} ${visibleLabel.attributes('id')}`);
+    expect(labelledByInputs[1].attributes('aria-labelledby')).toBe(`${labelledByInputs[1].attributes('id')} ${visibleLabel.attributes('id')}`);
+
+    let ariaLabelWrapper = mount(RangeSlider, {
+      attrs: {
+        'aria-label': 'Window'
+      },
+      props: {
+        label: undefined,
+        modelValue: {
+          start: 20,
+          end: 80
+        }
+      }
+    });
+
+    let ariaLabelInputs = ariaLabelWrapper.findAll('input.vs-slider__input');
+    expect(ariaLabelInputs).toHaveLength(2);
+    expect(ariaLabelWrapper.attributes('role')).toBe('group');
+    expect(ariaLabelWrapper.attributes('aria-label')).toBe('Window');
+    expect(ariaLabelWrapper.attributes('aria-labelledby')).toBeUndefined();
+    expect(ariaLabelInputs[0].attributes('aria-labelledby')).toBe(`${ariaLabelInputs[0].attributes('id')} ${ariaLabelWrapper.attributes('id')}`);
+    expect(ariaLabelInputs[1].attributes('aria-labelledby')).toBe(`${ariaLabelInputs[1].attributes('id')} ${ariaLabelWrapper.attributes('id')}`);
+  });
+
   it('maps slider thumb interaction states and disabled class', async () => {
     let wrapper = mount(Slider, {
       props: {

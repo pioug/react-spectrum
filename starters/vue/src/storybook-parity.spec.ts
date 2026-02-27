@@ -265,11 +265,13 @@ import {
   UnavailableWithSubmenu as MenuSubmenuUnavailable
 } from '../../../packages/@vue-spectrum/menu/stories/Submenu.stories';
 import {
+  Label as RangeSliderLabel,
   Default as RangeSliderDefault,
   _ContextualHelp as RangeSliderContextualHelp,
   CustomValueLabel as RangeSliderCustomValueLabel
 } from '../../../packages/@vue-spectrum/slider/stories/RangeSlider.stories';
 import {
+  Label as SliderLabel,
   Default as SliderDefault,
   _ContextualHelp as SliderContextualHelp,
   CustomValueLabel as SliderCustomValueLabel,
@@ -1391,6 +1393,61 @@ describe('Vue storybook helper parity', () => {
       let trackGradientWrapper = mount(trackGradientStory);
       wrappers.push(trackGradientWrapper);
       expect(trackGradientWrapper.get('.vs-slider').attributes('style')).toContain('--spectrum-slider-track-gradient');
+    } finally {
+      for (let wrapper of wrappers) {
+        wrapper.unmount();
+      }
+    }
+  });
+
+  it('renders slider stories with group/input aria ownership parity', () => {
+    let wrappers: Array<ReturnType<typeof mount>> = [];
+
+    try {
+      let sliderLabelStory = SliderLabel.render?.({label: 'Label'}) as ReturnType<Exclude<typeof SliderLabel.render, undefined>>;
+      let sliderLabelWrapper = mount(sliderLabelStory);
+      wrappers.push(sliderLabelWrapper);
+      let sliderGroup = sliderLabelWrapper.get('.vs-slider');
+      let sliderVisibleLabel = sliderLabelWrapper.get('label.vs-slider__label');
+      let sliderInput = sliderLabelWrapper.get('input.vs-slider__input');
+      expect(sliderGroup.attributes('role')).toBe('group');
+      expect(sliderGroup.attributes('aria-labelledby')).toBe(sliderVisibleLabel.attributes('id'));
+      expect(sliderInput.attributes('aria-labelledby')).toBe(sliderVisibleLabel.attributes('id'));
+      expect(sliderInput.attributes('aria-label')).toBeUndefined();
+
+      let sliderDefaultStory = SliderDefault.render?.({}) as ReturnType<Exclude<typeof SliderDefault.render, undefined>>;
+      let sliderDefaultWrapper = mount(sliderDefaultStory);
+      wrappers.push(sliderDefaultWrapper);
+      let sliderDefaultGroup = sliderDefaultWrapper.get('.vs-slider');
+      let sliderDefaultInput = sliderDefaultWrapper.get('input.vs-slider__input');
+      expect(sliderDefaultGroup.attributes('aria-label')).toBe('Label');
+      expect(sliderDefaultGroup.attributes('aria-labelledby')).toBeUndefined();
+      expect(sliderDefaultInput.attributes('aria-labelledby')).toBe(sliderDefaultGroup.attributes('id'));
+      expect(sliderDefaultInput.attributes('aria-label')).toBeUndefined();
+
+      let rangeSliderLabelStory = RangeSliderLabel.render?.({label: 'Label'}) as ReturnType<Exclude<typeof RangeSliderLabel.render, undefined>>;
+      let rangeSliderLabelWrapper = mount(rangeSliderLabelStory);
+      wrappers.push(rangeSliderLabelWrapper);
+      let rangeGroup = rangeSliderLabelWrapper.get('.vs-slider');
+      let rangeVisibleLabel = rangeSliderLabelWrapper.get('label.vs-slider__label');
+      let rangeInputs = rangeSliderLabelWrapper.findAll('input.vs-slider__input');
+      expect(rangeGroup.attributes('role')).toBe('group');
+      expect(rangeGroup.attributes('aria-labelledby')).toBe(rangeVisibleLabel.attributes('id'));
+      expect(rangeInputs).toHaveLength(2);
+      expect(rangeInputs[0].attributes('aria-label')).toBe('Minimum');
+      expect(rangeInputs[1].attributes('aria-label')).toBe('Maximum');
+      expect(rangeInputs[0].attributes('aria-labelledby')).toBe(`${rangeInputs[0].attributes('id')} ${rangeVisibleLabel.attributes('id')}`);
+      expect(rangeInputs[1].attributes('aria-labelledby')).toBe(`${rangeInputs[1].attributes('id')} ${rangeVisibleLabel.attributes('id')}`);
+
+      let rangeSliderDefaultStory = RangeSliderDefault.render?.({}) as ReturnType<Exclude<typeof RangeSliderDefault.render, undefined>>;
+      let rangeSliderDefaultWrapper = mount(rangeSliderDefaultStory);
+      wrappers.push(rangeSliderDefaultWrapper);
+      let rangeDefaultGroup = rangeSliderDefaultWrapper.get('.vs-slider');
+      let rangeDefaultInputs = rangeSliderDefaultWrapper.findAll('input.vs-slider__input');
+      expect(rangeDefaultGroup.attributes('aria-label')).toBe('Label');
+      expect(rangeDefaultGroup.attributes('aria-labelledby')).toBeUndefined();
+      expect(rangeDefaultInputs[0].attributes('aria-labelledby')).toBe(`${rangeDefaultInputs[0].attributes('id')} ${rangeDefaultGroup.attributes('id')}`);
+      expect(rangeDefaultInputs[1].attributes('aria-labelledby')).toBe(`${rangeDefaultInputs[1].attributes('id')} ${rangeDefaultGroup.attributes('id')}`);
     } finally {
       for (let wrapper of wrappers) {
         wrapper.unmount();
