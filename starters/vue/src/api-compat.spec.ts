@@ -89,6 +89,7 @@ import {
   VueIllustration,
   VueUIIcon
 } from '@vue-spectrum/icon';
+import {DIRECTORY_DRAG_TYPE, DropZone as SpectrumDropZone, useDragAndDrop as useSpectrumDragAndDrop} from '@vue-spectrum/dnd';
 import {
   Item as TabItem,
   TabList,
@@ -189,6 +190,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(Icon).toBe(VueIcon);
     expect(UIIcon).toBe(VueUIIcon);
     expect(Illustration).toBe(VueIllustration);
+  });
+
+  it('exports dnd drag/drop compatibility primitives', () => {
+    expect(SpectrumDropZone).not.toBeUndefined();
+    expect(DIRECTORY_DRAG_TYPE).toBe('application/x-directory');
+    expect(useSpectrumDragAndDrop()).toEqual({
+      dragHooks: {},
+      dropHooks: {}
+    });
   });
 
   it('exports tabs collection item separately from VueTabs', () => {

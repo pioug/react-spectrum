@@ -105,6 +105,18 @@ import {
   useLabels as useAriaLabels,
   useSlotId as useAriaSlotId
 } from '@vue-aria/utils';
+import {
+  ScrollView as AriaVirtualizerScrollView,
+  Virtualizer as AriaVirtualizer,
+  VirtualizerItem as AriaVirtualizerItem,
+  getRTLOffsetType as getAriaRTLOffsetType,
+  getScrollLeft as getAriaScrollLeft,
+  layoutInfoToStyle as ariaLayoutInfoToStyle,
+  setScrollLeft as setAriaScrollLeft,
+  useScrollView as useAriaScrollView,
+  useVirtualizer as useAriaVirtualizer,
+  useVirtualizerItem as useAriaVirtualizerItem
+} from '@vue-aria/virtualizer';
 import {VISUALLY_HIDDEN_STYLES as ARIA_VISUALLY_HIDDEN_STYLES, useVisuallyHidden as useAriaVisuallyHidden} from '@vue-aria/visually-hidden';
 import {
   useTable as useAriaTable,
@@ -2452,6 +2464,56 @@ describe('Vue migration composition components', () => {
 
     virtualizerState.setVisibleRect(new StatelyVirtualizerRect(0, 60, 100, 20));
     expect(virtualizerState.visibleViews.value.map((view) => view.layoutInfo?.key)).toEqual(['three', 'four']);
+  });
+
+  it('manages vue-aria virtualizer helper and wrapper contracts', () => {
+    let virtualizer = useAriaVirtualizer({
+      itemCount: ref(8),
+      itemHeight: 20,
+      viewportHeight: 60,
+      scrollTop: ref(10),
+      overscan: 1
+    });
+
+    expect(virtualizer.startIndex.value).toBe(0);
+    expect(virtualizer.endIndex.value).toBe(5);
+    expect(virtualizer.visibleIndexes.value).toEqual([0, 1, 2, 3, 4]);
+    expect(virtualizer.totalHeight.value).toBe(160);
+    expect(virtualizer.offsetTop.value).toBe(0);
+
+    let styledLayout = ariaLayoutInfoToStyle({left: 4, top: 8}, 'ltr', null);
+    expect(styledLayout).toMatchObject({left: 4, top: 8});
+    expect(getAriaRTLOffsetType()).toBe('negative');
+
+    let scroller = document.createElement('div');
+    scroller.scrollLeft = -24;
+    expect(getAriaScrollLeft(scroller, 'rtl')).toBe(24);
+    setAriaScrollLeft(scroller, 'rtl', 12);
+    expect(scroller.scrollLeft).toBe(-12);
+    setAriaScrollLeft(scroller, 'ltr', 6);
+    expect(scroller.scrollLeft).toBe(6);
+
+    let scrollView = useAriaScrollView();
+    expect(scrollView.scrollViewProps).toEqual({});
+
+    let virtualizerItem = useAriaVirtualizerItem({});
+    expect(typeof virtualizerItem.updateSize).toBe('function');
+    expect((virtualizerItem as {virtualizerItemProps?: unknown}).virtualizerItemProps).toEqual({});
+
+    let wrapper = mount({
+      components: {AriaVirtualizer, AriaVirtualizerItem, AriaVirtualizerScrollView},
+      template: `
+        <AriaVirtualizer>
+          <AriaVirtualizerScrollView>
+            <AriaVirtualizerItem>
+              <span class="vs-virtualizer-cell">Cell</span>
+            </AriaVirtualizerItem>
+          </AriaVirtualizerScrollView>
+        </AriaVirtualizer>
+      `
+    });
+
+    expect(wrapper.find('.vs-virtualizer-cell').exists()).toBe(true);
   });
 
   it('computes vue-aria grid semantics plus row and cell selection behavior', () => {

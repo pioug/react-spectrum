@@ -247,6 +247,15 @@
    - outside pointer dismissal path,
    - emitted `openChange` contract on both paths.
 
+### February 27, 2026 — Remaining package-surface parity closure (`dnd`, `virtualizer`)
+
+1. Closed previously unreviewed package-surface gaps by adding explicit contract tests for:
+   - `@vue-spectrum/dnd` API compatibility exports (`DropZone`, `DIRECTORY_DRAG_TYPE`, `useDragAndDrop`),
+   - `@vue-aria/virtualizer` helper/component contracts (`useVirtualizer`, `useScrollView`, `useVirtualizerItem`, RTL scroll helpers, wrapper slot passthrough components).
+2. Added coverage in:
+   - `starters/vue/src/api-compat.spec.ts` (`dnd` export contract),
+   - `starters/vue/src/composition.spec.ts` (`virtualizer` helper + wrapper behavior).
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
