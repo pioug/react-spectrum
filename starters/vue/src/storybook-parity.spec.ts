@@ -124,6 +124,10 @@ import {
   iconNull as SearchAutocompleteIconNull,
   noVisibleLabel as SearchAutocompleteNoVisibleLabel
 } from '../../../packages/@vue-spectrum/autocomplete/stories/SearchAutocomplete.stories';
+import {
+  AriaLabelledBy as SpectrumColorFieldAriaLabelledBy,
+  Default as SpectrumColorFieldDefault
+} from '../../../packages/@vue-spectrum/color/stories/ColorField.stories';
 import {WithExpandedKeys as AccordionWithExpandedKeys} from '../../../packages/@vue-spectrum/accordion/stories/Accordion.stories';
 import {Default as ActionBarDefaultStory} from '../../../packages/@vue-spectrum/actionbar/stories/ActionBar.stories';
 import {
@@ -878,6 +882,39 @@ describe('Vue storybook helper parity', () => {
       await hueInput.setValue('240');
       await nextTick();
       expect((pickerSlidersWrapper.findAll('input.vs-color-field__input')[0].element as HTMLInputElement).value).toBe('#0000ff');
+    } finally {
+      for (let wrapper of wrappers) {
+        wrapper.unmount();
+      }
+    }
+  });
+
+  it('renders spectrum color field stories with input-level aria labelling parity', () => {
+    let wrappers: Array<ReturnType<typeof mount>> = [];
+
+    try {
+      let defaultStory = SpectrumColorFieldDefault.render?.({label: 'Primary Color'}) as ReturnType<Exclude<typeof SpectrumColorFieldDefault.render, undefined>>;
+      let defaultWrapper = mount(defaultStory);
+      wrappers.push(defaultWrapper);
+      let defaultInput = defaultWrapper.get('input.vs-color-field__input');
+      expect(defaultInput.attributes('aria-labelledby')).toBeTruthy();
+      expect(defaultInput.attributes('aria-label')).toBeUndefined();
+
+      let labelledByStory = SpectrumColorFieldAriaLabelledBy.render?.({}) as ReturnType<Exclude<typeof SpectrumColorFieldAriaLabelledBy.render, undefined>>;
+      let labelledByWrapper = mount(labelledByStory);
+      wrappers.push(labelledByWrapper);
+      let labelledByInput = labelledByWrapper.get('input.vs-color-field__input');
+      expect(labelledByInput.attributes('aria-labelledby')).toContain('label');
+      expect(labelledByInput.attributes('aria-label')).toBeUndefined();
+      expect(labelledByWrapper.get('label.vs-color-field').attributes('aria-labelledby')).toBeUndefined();
+
+      let ariaLabelStory = SpectrumColorFieldDefault.render?.({label: '', 'aria-label': 'Primary Color'}) as ReturnType<Exclude<typeof SpectrumColorFieldDefault.render, undefined>>;
+      let ariaLabelWrapper = mount(ariaLabelStory);
+      wrappers.push(ariaLabelWrapper);
+      let ariaLabelInput = ariaLabelWrapper.get('input.vs-color-field__input');
+      expect(ariaLabelInput.attributes('aria-label')).toBe('Primary Color');
+      expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
+      expect(ariaLabelWrapper.get('label.vs-color-field').attributes('aria-label')).toBeUndefined();
     } finally {
       for (let wrapper of wrappers) {
         wrapper.unmount();

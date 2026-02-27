@@ -275,6 +275,7 @@ export const ColorField = defineComponent({
 
     let disabled = computed(() => resolveDisabled(props.disabled, props.isDisabled));
     let inputId = computed(() => props.id ?? generatedId);
+    let labelId = computed(() => props.label ? `${inputId.value}-label` : undefined);
 
     let inputClasses = computed(() => ([
       classNames(colorFieldStyles, 'react-spectrum-ColorField-input'),
@@ -283,8 +284,40 @@ export const ColorField = defineComponent({
       disabled.value ? 'is-disabled' : null
     ]));
 
+    let rootAttrs = computed(() => {
+      let next: Record<string, unknown> = {};
+      for (let [key, value] of Object.entries(attrs)) {
+        if (key === 'aria-label' || key === 'aria-labelledby' || key === 'autofocus') {
+          continue;
+        }
+
+        next[key] = value;
+      }
+
+      return next;
+    });
+
+    let externalAriaLabelledBy = computed(() => {
+      let value = attrs['aria-labelledby'];
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    });
+
+    let ariaLabelledBy = computed(() => {
+      let parts = [labelId.value, externalAriaLabelledBy.value].filter((part): part is string => Boolean(part));
+      return parts.length > 0 ? parts.join(' ') : undefined;
+    });
+
+    let ariaLabel = computed(() => {
+      if (ariaLabelledBy.value) {
+        return undefined;
+      }
+
+      let value = attrs['aria-label'];
+      return typeof value === 'string' && value.length > 0 ? value : undefined;
+    });
+
     return () => h('label', {
-      ...attrs,
+      ...rootAttrs.value,
       class: [
         classNames(colorFieldStyles, 'react-spectrum-ColorField', {
           'focus-ring': focused.value,
@@ -295,7 +328,7 @@ export const ColorField = defineComponent({
       ],
       'data-vac': ''
     }, [
-      props.label ? h('span', {class: 'vs-color-field__label'}, props.label) : null,
+      props.label ? h('span', {id: labelId.value, class: 'vs-color-field__label'}, props.label) : null,
       h('span', {class: 'vs-color-field__control'}, [
         h(ColorSwatch, {
           class: ['vs-color-field__swatch', classNames(colorHandleStyles, 'spectrum-ColorHandle-color')],
@@ -311,8 +344,8 @@ export const ColorField = defineComponent({
           placeholder: props.placeholder,
           disabled: disabled.value,
           spellcheck: 'false',
-          'aria-label': attrs['aria-label'],
-          'aria-labelledby': attrs['aria-labelledby'],
+          'aria-label': ariaLabel.value,
+          'aria-labelledby': ariaLabelledBy.value,
           onInput: (event: Event) => {
             emit('update:modelValue', readTextInputValue(event));
           },

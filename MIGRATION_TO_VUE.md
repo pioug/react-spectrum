@@ -684,13 +684,30 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — `ColorField` aria-labelling ownership parity (`@vue-spectrum/color`)
+
+1. Closed `ColorField` accessibility ownership drift:
+   - visible label text now contributes through input-level `aria-labelledby`,
+   - external `aria-labelledby` composes with visible label ids,
+   - explicit `aria-label` only applies when no `aria-labelledby` source exists.
+2. Hardened root attribute passthrough:
+   - filtered `aria-label`, `aria-labelledby`, and `autofocus` from wrapper passthrough to avoid duplicate/non-interactive label ownership.
+3. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: ColorField aria precedence/ownership assertions for external `aria-labelledby`, visible label + external label composition, and `aria-label` fallback,
+   - `starters/vue/src/storybook-parity.spec.ts`: Spectrum `ColorField` stories now assert input-level labelledby/label contracts for default, `AriaLabelledBy`, and no-visible-label cases.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "color field aria label and labelledby precedence"` and `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts -t "spectrum color field stories with input-level aria labelling parity"`,
+   - full Vue tests: `yarn test:vue` (509 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 507 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 509 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

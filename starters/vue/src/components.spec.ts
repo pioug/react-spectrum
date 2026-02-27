@@ -3307,6 +3307,54 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('change')?.[0]).toEqual(['#10b981']);
   });
 
+  it('maps color field aria label and labelledby precedence to react parity', () => {
+    let labelledByWrapper = mount(ColorField, {
+      attrs: {
+        'aria-labelledby': 'external-color-label'
+      },
+      props: {
+        label: '',
+        modelValue: '#3366ff'
+      }
+    });
+
+    let labelledByInput = labelledByWrapper.get('input.vs-color-field__input');
+    expect(labelledByInput.attributes('aria-labelledby')).toBe('external-color-label');
+    expect(labelledByInput.attributes('aria-label')).toBeUndefined();
+    expect(labelledByWrapper.attributes('aria-labelledby')).toBeUndefined();
+
+    let visibleLabelWrapper = mount(ColorField, {
+      attrs: {
+        'aria-labelledby': 'external-color-label'
+      },
+      props: {
+        label: 'Primary Color',
+        modelValue: '#3366ff'
+      }
+    });
+
+    let visibleLabel = visibleLabelWrapper.get('.vs-color-field__label');
+    let visibleLabelInput = visibleLabelWrapper.get('input.vs-color-field__input');
+    expect(visibleLabelInput.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
+    expect(visibleLabelInput.attributes('aria-labelledby')).toContain('external-color-label');
+    expect(visibleLabelInput.attributes('aria-label')).toBeUndefined();
+
+    let ariaLabelWrapper = mount(ColorField, {
+      attrs: {
+        'aria-label': 'Primary Color'
+      },
+      props: {
+        label: '',
+        modelValue: '#3366ff'
+      }
+    });
+
+    let ariaLabelInput = ariaLabelWrapper.get('input.vs-color-field__input');
+    expect(ariaLabelInput.attributes('aria-label')).toBe('Primary Color');
+    expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
+    expect(ariaLabelWrapper.attributes('aria-label')).toBeUndefined();
+  });
+
   it('emits swatch selection changes and returns selected swatch item', async () => {
     let wrapper = mount(ColorSwatchPicker, {
       props: {
