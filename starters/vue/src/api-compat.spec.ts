@@ -101,7 +101,7 @@ describe('Vue Spectrum API compatibility aliases', () => {
 
   it('exports table view as VueTable and collection primitives separately', () => {
     expect(Table).toBe(VueTable);
-    expect(TableView).toBe(VueTable);
+    expect(TableView).not.toBe(VueTable);
     expect(TableHeader).not.toBe(VueTable);
     expect(TableBody).not.toBe(VueTable);
     expect(Column).not.toBe(VueTable);

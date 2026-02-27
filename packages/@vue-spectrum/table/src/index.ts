@@ -780,7 +780,15 @@ export const Table = defineComponent({
 });
 
 export const VueTable = Table;
-export const TableView = Table;
+export const TableView = defineComponent({
+  name: 'VueTableView',
+  inheritAttrs: false,
+  setup(_, {attrs, slots}) {
+    return () => h(Table, {
+      ...attrs
+    }, slots);
+  }
+});
 export const TableHeader = StatelyTableHeader;
 export const TableBody = StatelyTableBody;
 export const Column = StatelyColumn;
