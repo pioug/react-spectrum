@@ -131,6 +131,8 @@ import {
 } from '@vue-aria/table';
 import {
   addWindowFocusTracking,
+  ClearPressResponder,
+  PressResponder,
   setInteractionModality,
   useFocus,
   useFocusable,
@@ -5179,6 +5181,95 @@ describe('Vue migration composition components', () => {
       expect(wrapperEvents).toEqual(['down', 'up']);
     } finally {
       document.body.removeChild(outer);
+    }
+  });
+
+  it('merges vue-aria press responder context handlers with local usePress handlers', () => {
+    let pressEvents: string[] = [];
+    let restorePressResponder = PressResponder({
+      onPress: () => {
+        pressEvents.push('context-press');
+      },
+      onPressStart: () => {
+        pressEvents.push('context-start');
+      }
+    });
+    let press = usePress({
+      onPress: () => {
+        pressEvents.push('local-press');
+      },
+      onPressStart: () => {
+        pressEvents.push('local-start');
+      }
+    });
+    let button = document.createElement('button');
+    document.body.append(button);
+
+    try {
+      if (press.pressProps.value.onKeyDown) {
+        button.addEventListener('keydown', press.pressProps.value.onKeyDown as EventListener);
+      }
+      if (press.pressProps.value.onKeyUp) {
+        button.addEventListener('keyup', press.pressProps.value.onKeyUp as EventListener);
+      }
+      if (press.pressProps.value.onClick) {
+        button.addEventListener('click', press.pressProps.value.onClick as EventListener);
+      }
+      if (press.pressProps.value.onBlur) {
+        button.addEventListener('blur', press.pressProps.value.onBlur as EventListener);
+      }
+
+      button.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'Enter'}));
+      button.dispatchEvent(new KeyboardEvent('keyup', {bubbles: true, key: 'Enter'}));
+
+      expect(pressEvents).toEqual(['context-start', 'local-start', 'context-press', 'local-press']);
+    } finally {
+      restorePressResponder();
+      ClearPressResponder();
+      document.body.removeChild(button);
+    }
+  });
+
+  it('clears vue-aria press responder context handlers', () => {
+    let contextPressEvents: string[] = [];
+    let localPressEvents: string[] = [];
+    let restorePressResponder = PressResponder({
+      onPress: () => {
+        contextPressEvents.push('context');
+      }
+    });
+    ClearPressResponder();
+    let press = usePress({
+      onPress: () => {
+        localPressEvents.push('local');
+      }
+    });
+    let button = document.createElement('button');
+    document.body.append(button);
+
+    try {
+      if (press.pressProps.value.onKeyDown) {
+        button.addEventListener('keydown', press.pressProps.value.onKeyDown as EventListener);
+      }
+      if (press.pressProps.value.onKeyUp) {
+        button.addEventListener('keyup', press.pressProps.value.onKeyUp as EventListener);
+      }
+      if (press.pressProps.value.onClick) {
+        button.addEventListener('click', press.pressProps.value.onClick as EventListener);
+      }
+      if (press.pressProps.value.onBlur) {
+        button.addEventListener('blur', press.pressProps.value.onBlur as EventListener);
+      }
+
+      button.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'Enter'}));
+      button.dispatchEvent(new KeyboardEvent('keyup', {bubbles: true, key: 'Enter'}));
+
+      expect(contextPressEvents).toEqual([]);
+      expect(localPressEvents).toEqual(['local']);
+    } finally {
+      restorePressResponder();
+      ClearPressResponder();
+      document.body.removeChild(button);
     }
   });
 

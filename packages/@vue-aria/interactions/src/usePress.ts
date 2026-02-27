@@ -2,6 +2,7 @@ import {computed, getCurrentScope, onScopeDispose, type ComputedRef, ref, unref}
 import {disableTextSelection, restoreTextSelection} from './textSelection';
 import {getEventTarget, nodeContains} from './utils';
 import type {MaybeRef, PointerType} from './types';
+import {PressResponderContext} from './context';
 
 export type PressEventType = 'press' | 'pressend' | 'pressstart' | 'pressup';
 
@@ -50,6 +51,43 @@ export interface PressDOMProps {
 export interface PressResult {
   isPressed: ComputedRef<boolean>,
   pressProps: ComputedRef<PressDOMProps>
+}
+
+function chainHandlers<T extends (...args: any[]) => void>(first?: T, second?: T): T | undefined {
+  if (!first) {
+    return second;
+  }
+
+  if (!second) {
+    return first;
+  }
+
+  return ((...args: Parameters<T>) => {
+    first(...args);
+    second(...args);
+  }) as T;
+}
+
+function usePressResponderContext(props: PressHookProps): PressHookProps {
+  let context = PressResponderContext.current;
+  if (!context) {
+    return props;
+  }
+
+  let {register, ref: contextRef, ...contextProps} = context;
+  register?.();
+
+  return {
+    ...contextProps,
+    ...props,
+    onClick: chainHandlers(contextProps.onClick, props.onClick),
+    onPress: chainHandlers(contextProps.onPress, props.onPress),
+    onPressChange: chainHandlers(contextProps.onPressChange, props.onPressChange),
+    onPressEnd: chainHandlers(contextProps.onPressEnd, props.onPressEnd),
+    onPressStart: chainHandlers(contextProps.onPressStart, props.onPressStart),
+    onPressUp: chainHandlers(contextProps.onPressUp, props.onPressUp),
+    ref: props.ref ?? contextRef
+  };
 }
 
 class PressEventImpl implements PressEvent {
@@ -138,6 +176,7 @@ function isFocusableElement(value: unknown): value is HTMLElement {
 }
 
 export function usePress(props: PressHookProps = {}): PressResult {
+  props = usePressResponderContext(props);
   let isDisabled = computed(() => Boolean(unref(props.isDisabled)));
   let isPressedInternal = ref(false);
 

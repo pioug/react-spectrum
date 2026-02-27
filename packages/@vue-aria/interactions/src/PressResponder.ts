@@ -5,7 +5,10 @@ export function PressResponder(props: PressHookProps = {}): () => void {
   let previousContext = PressResponderContext.current;
   PressResponderContext.current = {
     ...(previousContext ?? {}),
-    ...props
+    ...props,
+    register: () => {
+      previousContext?.register?.();
+    }
   } as PressResponderContextValue;
 
   return () => {

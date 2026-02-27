@@ -414,13 +414,30 @@
    - typecheck: `yarn typecheck:vue`,
    - Storybook build: `CI=1 yarn build:vue:storybook`.
 
+### February 27, 2026 — Press responder context parity remediation (`@vue-aria/interactions`)
+
+1. Closed responder-context parity gap in shared press internals:
+   - `usePress` now consumes `PressResponder` context and merges responder handlers with local press handlers (React-like chaining order),
+   - responder `ref` fallback is now honored when local `ref` is not provided,
+   - responder `register` callbacks are now invoked when context is consumed.
+2. Updated `PressResponder` context wiring:
+   - responder context now provides a `register` implementation that composes parent responder registration.
+3. Added regression coverage in `starters/vue/src/composition.spec.ts` for:
+   - responder-context + local handler merge behavior,
+   - `ClearPressResponder` behavior that removes responder-context handlers from subsequent `usePress` consumers.
+4. Validation after fix:
+   - targeted responder slice: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "press responder|local usePress handlers|clears vue-aria press responder"`,
+   - full Vue tests: `yarn test:vue` (478 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `CI=1 yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 476 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 478 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).
