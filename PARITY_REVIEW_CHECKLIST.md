@@ -31,9 +31,10 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - Components: Avatar
   - [x] Story: Avatar.stories.ts
   - Evidence: React/Vue story-id parity is zero for `avatar--*` (`react=4`, `vue=4`, diff `0/0` from React `dist/9ba628661b71010349fd434fe6a68bd0d78e2a15/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`); side-by-side Storybook captures for `default`, `isDisabled`, `with alt text`, and `with custom size` show matching rendered output/computed size and disabled state (`.tmp/avatar-parity/`); existing Vue avatar contract tests in `starters/vue/src/components.spec.ts` already cover DOM class/alt/src/size behavior and remain green under the full validation gate (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`), so no source changes were required.
-- [ ] 1.06 `@vue-spectrum/badge`
+- [x] 1.06 `@vue-spectrum/badge`
   - Components: Badge
-  - [ ] Story: Badge.stories.ts
+  - [x] Story: Badge.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `badge--*` (`react=5`, `vue=5`, diff `0/0` from React `dist/9ba628661b71010349fd434fe6a68bd0d78e2a15/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`); side-by-side Storybook capture for `Default`, `With icon`, `With icon, order reversed`, `Icon only`, and `Overflow` shows matching output/class/role contracts (including icon count/order and overflow width) with evidence in `.tmp/badge-parity/`; existing Vue badge contract coverage in `starters/vue/src/components.spec.ts` and `starters/vue/src/storybook-parity.spec.ts` remains green under the full gate (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`), so no source changes were required.
 - [ ] 1.07 `@vue-spectrum/breadcrumbs`
   - Components: Breadcrumbs
   - [ ] Story: Breadcrumbs.stories.ts
