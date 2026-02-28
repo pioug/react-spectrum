@@ -4001,6 +4001,25 @@ describe('Vue migration composition components', () => {
     expect(isVirtualDragging()).toBe(false);
   });
 
+  it('ignores repeated vue-aria startDrag calls while already dragging', () => {
+    let startCalls = 0;
+    let drag = useDrag({
+      dragItems: [{id: 'ticket-reentry', type: 'ticket', value: {id: 11}}],
+      onDragStart: () => {
+        startCalls += 1;
+      }
+    });
+
+    drag.startDrag();
+    drag.startDrag();
+
+    expect(startCalls).toBe(1);
+    expect(isVirtualDragging()).toBe(true);
+
+    drag.endDrag('cancel');
+    expect(isVirtualDragging()).toBe(false);
+  });
+
   it('matches react-aria dnd type guards using drop item kind', () => {
     let textItem = {kind: 'text', text: 'ticket'};
     let fileItem = {kind: 'file', name: 'ticket.txt'};

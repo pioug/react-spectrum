@@ -42,7 +42,7 @@ export function useDrag(options: AriaDragOptions): DragAria {
   });
 
   let startDrag = () => {
-    if (isDisabled.value || dragItems.value.length === 0) {
+    if (isDragging.value || isDisabled.value || dragItems.value.length === 0) {
       return;
     }
 
