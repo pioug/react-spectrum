@@ -4124,7 +4124,7 @@ describe('Vue migration composition components', () => {
 
     stepList.setLastCompletedStep('details');
     expect(lastCompletedStep.value).toBe('setup');
-    expect(completedChanges).toEqual(['details', 'details']);
+    expect(completedChanges).toEqual(['details']);
   });
 
   it('warns when vue-stately slider and steplist switch between controlled and uncontrolled', async () => {

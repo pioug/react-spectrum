@@ -2430,6 +2430,19 @@
    - full Vue tests: `yarn test:vue` (633 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Step-list helper parity remediation (`@vue-stately/steplist`)
+
+1. Closed residual ad hoc controlled ownership drift in `useStepListState`:
+   - `lastCompletedStep` now routes through shared `useControlledState`.
+2. Preserved step-list behavior contracts:
+   - selection gating, completion logic, and fallback-selection behavior remain unchanged.
+3. Updated controlled no-parent-sync assertion:
+   - `starters/vue/src/composition.spec.ts` step-list controlled test now expects one-turn duplicate suppression for repeated identical `setLastCompletedStep` writes.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "step list"` and full `src/composition.spec.ts`,
+   - full Vue tests: `yarn test:vue` (633 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

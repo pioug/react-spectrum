@@ -1,10 +1,11 @@
-import {computed, type ComputedRef, type Ref, ref, unref, watch, watchEffect} from 'vue';
+import {computed, type ComputedRef, type Ref, unref, watchEffect} from 'vue';
 import {
   type Key,
   type SingleSelectListProps,
   type SingleSelectListState,
   useSingleSelectListState
 } from '@vue-stately/list';
+import {useControlledState} from '@vue-stately/utils';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 
@@ -59,36 +60,14 @@ export function useStepListState<T extends object>(props: StepListProps<T>): Ste
       : undefined
   });
 
-  let uncontrolledLastCompletedStep = ref<Key | null>(props.defaultLastCompletedStep ?? null);
-  let isLastCompletedControlled = computed(() => props.lastCompletedStep !== undefined && props.lastCompletedStep.value !== undefined);
-  let wasLastCompletedControlled = ref(isLastCompletedControlled.value);
-
-  watch(isLastCompletedControlled, (nextIsControlled) => {
-    if (wasLastCompletedControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasLastCompletedControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasLastCompletedControlled.value = nextIsControlled;
-  });
-
-  let lastCompletedStep = computed<Key | null>(() => {
-    if (isLastCompletedControlled.value && props.lastCompletedStep) {
-      return props.lastCompletedStep.value ?? null;
-    }
-
-    return uncontrolledLastCompletedStep.value;
-  });
+  let [lastCompletedStep, setLastCompletedStepInternal] = useControlledState(
+    props.lastCompletedStep,
+    props.defaultLastCompletedStep ?? null,
+    props.onLastCompletedStepChange
+  );
 
   let setLastCompletedStep = (key: Key | null): void => {
-    let previous = lastCompletedStep.value;
-    if (previous === key) {
-      return;
-    }
-
-    if (!isLastCompletedControlled.value) {
-      uncontrolledLastCompletedStep.value = key;
-    }
-
-    props.onLastCompletedStepChange?.(key);
+    setLastCompletedStepInternal(key);
   };
 
   let {indexMap, previousKeyMap} = buildKeyMaps(state);
