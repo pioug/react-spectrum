@@ -42,7 +42,11 @@ export interface AutocompleteAria {
     'aria-autocomplete': 'list',
     'aria-controls': string,
     'aria-expanded': boolean,
+    autoComplete: 'off',
+    autoCorrect: 'off',
     disabled: boolean,
+    enterKeyHint: 'go',
+    spellCheck: 'false',
     value: string
   }>
 }
@@ -126,9 +130,13 @@ export function useAutocomplete(options: AriaAutocompleteOptions): AutocompleteA
   let inputProps = computed(() => ({
     value: String(unref(options.inputValue)),
     disabled: disabled.value,
+    enterKeyHint: 'go' as const,
     'aria-autocomplete': 'list' as const,
     'aria-expanded': filteredItems.value.length > 0,
     'aria-controls': collectionId.value,
+    autoCorrect: 'off' as const,
+    spellCheck: 'false' as const,
+    autoComplete: 'off' as const,
     'aria-activedescendant': focusedKey.value == null
       ? undefined
       : `${collectionId.value}-option-${focusedKey.value}`

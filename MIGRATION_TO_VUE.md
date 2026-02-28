@@ -3342,6 +3342,23 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Autocomplete input text-entry prop parity (`@vue-aria/autocomplete`)
+
+1. Closed autocomplete input prop-surface drift:
+   - `useAutocomplete.inputProps` now includes React-aligned text-entry/accessibility defaults:
+     - `enterKeyHint: 'go'`,
+     - `autoCorrect: 'off'`,
+     - `spellCheck: 'false'`,
+     - `autoComplete: 'off'`.
+2. Preserved existing ARIA linkage parity:
+   - the prior `aria-controls`/`aria-activedescendant` contracts remain unchanged.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` autocomplete assertions now verify all four input text-entry props.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "filters autocomplete items and exposes focused key"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

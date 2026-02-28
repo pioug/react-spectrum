@@ -413,6 +413,10 @@ describe('Vue migration composition components', () => {
     expect(autocomplete.collectionProps.value['aria-label']).toBe('Suggestions');
     expect(autocomplete.inputProps.value['aria-controls']).toBe(autocomplete.collectionProps.value.id);
     expect(autocomplete.inputProps.value['aria-activedescendant']).toBe(`${autocomplete.collectionProps.value.id}-option-Vue`);
+    expect(autocomplete.inputProps.value.enterKeyHint).toBe('go');
+    expect(autocomplete.inputProps.value.autoCorrect).toBe('off');
+    expect(autocomplete.inputProps.value.spellCheck).toBe('false');
+    expect(autocomplete.inputProps.value.autoComplete).toBe('off');
     expect(autocomplete.collectionProps.value.id).toMatch(/^vue-autocomplete-\d+-listbox$/);
 
     let composedAutocomplete = useAutocomplete({
