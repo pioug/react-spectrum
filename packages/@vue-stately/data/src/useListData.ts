@@ -357,12 +357,7 @@ export function createListActions<T, C>(
         let keyArray = Array.isArray(keys) ? keys : [...keys];
         let indices = keyArray
           .map((nextKey) => state.items.findIndex((item) => getKey!(item) === nextKey))
-          .filter((index) => index >= 0)
           .sort((a, b) => a - b);
-
-        if (indices.length === 0) {
-          return state;
-        }
 
         return move(state, indices, toIndex);
       });
@@ -377,12 +372,7 @@ export function createListActions<T, C>(
         let keyArray = Array.isArray(keys) ? keys : [...keys];
         let indices = keyArray
           .map((nextKey) => state.items.findIndex((item) => getKey!(item) === nextKey))
-          .filter((index) => index >= 0)
           .sort((a, b) => a - b);
-
-        if (indices.length === 0) {
-          return state;
-        }
 
         return move(state, indices, toIndex + 1);
       });

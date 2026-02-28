@@ -1413,6 +1413,23 @@ describe('Vue migration composition components', () => {
     expect(list.items.value.map((item) => item.id)).toEqual(['gamma']);
   });
 
+  it('matches vue-stately list move ordering semantics when move keys are missing', () => {
+    let list = useStatelyListData({
+      getKey: (item: {id: string}) => item.id,
+      initialItems: [
+        {id: 'one'},
+        {id: 'two'},
+        {id: 'three'}
+      ]
+    });
+
+    list.moveBefore('three', ['missing']);
+    expect(list.items.value.map((item) => item.id)).toEqual(['one', 'three', 'two']);
+
+    list.moveAfter('one', ['still-missing']);
+    expect(list.items.value.map((item) => item.id)).toEqual(['two', 'one', 'three']);
+  });
+
   it('manages vue-stately tree data insertion, movement, selection, and removal', () => {
     type TreeItem = {children?: TreeItem[], id: string, label: string};
     let tree = useStatelyTreeData<TreeItem>({

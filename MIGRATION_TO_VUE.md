@@ -1833,6 +1833,19 @@
    - full Vue tests: `yarn test:vue` (588 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — List move-key edge-case ordering parity (`@vue-stately/data`)
+
+1. Aligned list reordering semantics with React for missing move keys:
+   - `moveBefore` and `moveAfter` now keep React’s index derivation behavior when provided keys are missing from the current list, rather than filtering them out.
+2. Preserved existing list action contracts:
+   - insertion, removal, selection, and filtering behavior remain unchanged outside the missing-key move edge path.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: explicit missing-key `moveBefore`/`moveAfter` assertions for React-matching ordering outcomes.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "list data insertion|move ordering semantics when move keys are missing"`,
+   - full Vue tests: `yarn test:vue` (589 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
