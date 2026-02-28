@@ -23,8 +23,9 @@ export interface TableColumnResizeAria {
   }>,
   isResizing: Ref<boolean>,
   resizerProps: ComputedRef<{
-    onPointerDown: () => void,
-    onPointerUp: () => void,
+    onMouseDown: (event: MouseEvent) => void,
+    onPointerDown: (event: PointerEvent) => void,
+    onPointerUp: (event?: PointerEvent) => void,
     style: {
       touchAction: 'none'
     }
@@ -88,11 +89,20 @@ export function useTableColumnResize(props: AriaTableColumnResizeProps): TableCo
     })),
     isResizing,
     resizerProps: computed(() => ({
-      onPointerDown: () => {
+      onMouseDown: (event: MouseEvent) => {
         if (isDisabled.value) {
           return;
         }
 
+        event.preventDefault();
+        isResizing.value = true;
+      },
+      onPointerDown: (event: PointerEvent) => {
+        if (isDisabled.value) {
+          return;
+        }
+
+        event.preventDefault();
         isResizing.value = true;
       },
       onPointerUp: () => {

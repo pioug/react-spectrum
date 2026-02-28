@@ -9039,7 +9039,11 @@ describe('Vue migration composition components', () => {
       },
       width: columnWidth
     });
-    columnResize.resizerProps.value.onPointerDown();
+    let preventResizerFocus = vi.fn();
+    columnResize.resizerProps.value.onPointerDown({
+      preventDefault: preventResizerFocus
+    } as unknown as PointerEvent);
+    expect(preventResizerFocus).toHaveBeenCalledTimes(1);
     expect(columnResize.isResizing.value).toBe(true);
     columnResize.inputProps.value.onChange('500');
     expect(columnWidth.value).toBe(400);

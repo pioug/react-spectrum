@@ -3194,6 +3194,17 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Table column-resizer press-focus parity (`@vue-aria/table`)
+
+1. Closed column-resizer press-focus drift:
+   - `useTableColumnResize.resizerProps` now prevents default on mouse/pointer press-start and enters resize state, matching React `preventFocusOnPress` semantics for column-resizer interactions.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` table helper assertions now verify `onPointerDown` prevents default before entering resize mode.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria table wrappers and selection helpers"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
