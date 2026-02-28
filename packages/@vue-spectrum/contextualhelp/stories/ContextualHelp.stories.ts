@@ -216,7 +216,12 @@ export const WithButton: Story = {
       </div>
     `
   }),
-  name: 'with button'
+  name: 'with button',
+  parameters: {
+    description: {
+      data: 'Custom classname foo is on the contextual help button.'
+    }
+  }
 };
 
 export const AriaLabelledyBy: Story = {

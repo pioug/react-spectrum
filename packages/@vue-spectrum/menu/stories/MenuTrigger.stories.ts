@@ -655,7 +655,12 @@ export const WithTranslations: Story = {
   render: () => renderMenu({
     label: 'Languages',
     items: TRANSLATED_ITEMS
-  })
+  }),
+  parameters: {
+    description: {
+      data: 'Translations included for: Arabic, English, Hebrew, Japanese, Korean, Simplified Chinese, and Traditional Chinese.'
+    }
+  }
 };
 
 export const MenuItemUnavailable: Story = {

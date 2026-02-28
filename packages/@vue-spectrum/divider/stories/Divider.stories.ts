@@ -6,6 +6,7 @@ import Select from '@spectrum-icons-vue/workflow/Select';
 
 const meta: Meta<typeof Divider> = {
   title: 'Divider',
+  providerSwitcher: {status: 'positive'},
   component: Divider
 };
 

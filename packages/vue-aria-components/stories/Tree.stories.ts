@@ -358,7 +358,12 @@ export function TreeExampleStaticRender() {
 export const TreeExampleStatic: Story = {
   render: () => TreeExampleStaticRender(),
   args: baseArgs,
-  argTypes: baseArgTypes
+  argTypes: baseArgTypes,
+  parameters: {
+    description: {
+      data: 'Note that the last two items are just to test bare minimum TreeItem and thus dont have the checkbox or any of the other contents that the other items have. The last item tests the isFocused renderProp'
+    }
+  }
 };
 
 export const TreeExampleSection: Story = {
@@ -373,7 +378,12 @@ export const TreeExampleSection: Story = {
 export const TreeExampleStaticNoActions: Story = {
   render: () => createTreeStory({rows: STATIC_NO_ACTIONS_ROWS}),
   args: baseArgs,
-  argTypes: baseArgTypes
+  argTypes: baseArgTypes,
+  parameters: {
+    description: {
+      data: 'Note that the last two items are just to test bare minimum TreeItem and thus dont have the checkbox or any of the other contents that the other items have. The last item tests the isFocused renderProp. This story specifically tests tab behaviour when there are no additional actions in the tree.'
+    }
+  }
 };
 
 export const TreeExampleDynamic: Story = {
@@ -397,7 +407,12 @@ export const WithActions: Story = {
 export const WithLinks: Story = {
   render: () => createTreeStory({rows: DYNAMIC_ROWS}),
   args: baseArgs,
-  name: 'Tree with links'
+  name: 'Tree with links',
+  parameters: {
+    description: {
+      data: 'every tree item should link to adobe.com'
+    }
+  }
 };
 
 export const EmptyTreeStaticStory: Story = {
@@ -413,6 +428,11 @@ export const LoadingStoryDepOnCollectionStory: Story = {
   name: 'Loading, static root loader and dynamic rows',
   args: {
     isLoading: false
+  },
+  parameters: {
+    description: {
+      data: 'Test that Level 3 loading spinner and the root level load spinner appear when toggling isLoading in the controls'
+    }
   }
 };
 
@@ -421,6 +441,11 @@ export const LoadingStoryDepOnTopStory: Story = {
   name: 'Loading, dynamic rows, root loader rendered dynamically as well',
   args: {
     isLoading: false
+  },
+  parameters: {
+    description: {
+      data: 'Test that Level 3 loading spinner and the root level load spinner appear when toggling isLoading in the controls'
+    }
   }
 };
 
@@ -429,6 +454,11 @@ export const ButtonLoadingIndicatorStory: Story = {
   name: 'Loading, dynamic rows, spinner renders in button',
   args: {
     isLoading: false
+  },
+  parameters: {
+    description: {
+      data: 'Test that the expand icon for Project 2 and 5 change to spinner icons when isLoading is toggled on via controls'
+    }
   }
 };
 

@@ -27,6 +27,7 @@ const LONG_PARAGRAPHS = [
 
 const meta: Meta<typeof Dialog> = {
   title: 'Dialog',
+  providerSwitcher: {status: 'notice'},
   excludeStories: ['singleParagraph']
 };
 

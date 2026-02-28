@@ -22,6 +22,7 @@ type FormStoryArgs = {
 
 const meta: Meta<typeof Form> = {
   title: 'Form',
+  providerSwitcher: {status: 'positive'},
   component: Form
 };
 
@@ -347,7 +348,12 @@ export const WithTranslations: Story = {
       </Form>
     `
   }),
-  name: 'with translations'
+  name: 'with translations',
+  parameters: {
+    description: {
+      data: 'Translations included for: Arabic, English, Hebrew, Japanese, Korean, Simplified Chinese, and Traditional Chinese.'
+    }
+  }
 };
 
 export const NativeValidation: Story = {
@@ -365,6 +371,11 @@ export const NativeValidation: Story = {
       }
 
       action('onSubmit')(event);
+    }
+  },
+  parameters: {
+    description: {
+      data: 'This story is to test that client validation occurs on form submit and updates when the user commits changes to a field value (e.g. on blur).'
     }
   }
 };
@@ -401,7 +412,12 @@ export const ServerValidation: Story = {
         </div>
       </div>
     `
-  })
+  }),
+  parameters: {
+    description: {
+      data: 'This story is to test that server errors appear after submission, and are cleared when a field is modified.'
+    }
+  }
 };
 
 export const NumberFieldFormSubmit: Story = {
@@ -432,7 +448,12 @@ export const NumberFieldFormSubmit: Story = {
         </div>
       </form>
     `
-  })
+  }),
+  parameters: {
+    description: {
+      data: 'Try using "Enter" to submit the form from the NumberField. It should call an action in the actions panel.'
+    }
+  }
 };
 
 export const FormAction: Story = {

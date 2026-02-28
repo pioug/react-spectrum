@@ -276,7 +276,12 @@ export const MinMaxValue: Story = {
 };
 
 export const IsDateUnavailable: Story = {
-  render: (args) => renderUnavailableDatesExample(args)
+  render: (args) => renderUnavailableDatesExample(args),
+  parameters: {
+    description: {
+      data: 'Any date between 1/1/1980 and 1/8/1980 are unavailable and will display a "Date unavailable" error to the user'
+    }
+  }
 };
 
 export const PlaceholderVal: Story = {

@@ -46,6 +46,7 @@ const zalgoString = 'i̶͖̊́̃̒̄͆̚͝t̶̢̺̻̘̀̀͒͂͐̐̄̇́͒̅̆́�
 
 const meta = {
   title: 'TextArea',
+  providerSwitcher: {status: 'positive'},
   component: TextArea,
   excludeStories: ['renderTextArea', 'renderInFlexLayouts', 'renderValidationExample', 'localeStrings', 'zalgoString'],
   args: {
@@ -189,51 +190,59 @@ export const Default: Story = {
 export const ValueTestControlled: Story = {
   render: renderTextArea({
     value: 'Test'
-  })
+  }),
+  name: 'value: Test (controlled)'
 };
 
 export const DefaultValueTestUncontrolled: Story = {
   render: renderTextArea({
     defaultValue: 'Test'
-  })
+  }),
+  name: 'defaultValue: Test (uncontrolled)'
 };
 
 export const AutoFocusTrue: Story = {
   render: renderTextArea({
     autoFocus: true
-  })
+  }),
+  name: 'autoFocus: true'
 };
 
 export const IconInfo: Story = {
   render: renderTextArea({
     icon: 'i'
-  })
+  }),
+  name: 'icon: Info'
 };
 
 export const NoVisibleLabel: Story = {
   render: renderTextArea({
     label: '',
     ariaLabel: 'Street address'
-  })
+  }),
+  name: 'no visible label'
 };
 
 export const WithDescription: Story = {
   render: renderTextArea({
     description: 'Enter product feedback.'
-  })
+  }),
+  name: 'with description'
 };
 
 export const WithErrorMessage: Story = {
   render: renderTextArea({
     errorMessage: 'Enter at least 250 characters.',
     validationState: 'invalid'
-  })
+  }),
+  name: 'with error message'
 };
 
 export const WithContextualHelp: Story = {
   render: renderTextArea({
     contextualHelp: 'What is a segment? Segments identify visitor traits, devices, and origins.'
-  })
+  }),
+  name: 'with contextual help'
 };
 
 export const CustomWidth: Story = {
@@ -241,7 +250,8 @@ export const CustomWidth: Story = {
     icon: 'i',
     validationState: 'invalid',
     width: '300px'
-  })
+  }),
+  name: 'custom width'
 };
 
 export const CustomWidthSmall: Story = {
@@ -249,7 +259,8 @@ export const CustomWidthSmall: Story = {
     icon: 'i',
     validationState: 'invalid',
     width: '30px'
-  })
+  }),
+  name: 'custom width small'
 };
 
 export const CustomHeightWithLabel: Story = {
@@ -268,15 +279,28 @@ export const CustomHeightWithLabel: Story = {
         </div>
       </Form>
     `
-  })
+  }),
+  name: 'custom height with label'
 };
 
 export const ChangeableHelptext: Story = {
-  render: renderValidationExample()
+  render: renderValidationExample(),
+  name: 'changeable helptext',
+  parameters: {
+    description: {
+      data: 'Verify that the changing size of the error message does not interfere with the height. To test, delete the input, then type the character "a". Height should update to match.'
+    }
+  }
 };
 
 export const ChangeableHelptextCustomHeight: Story = {
-  render: renderValidationExample('height: 175px; min-height: 100px; max-height: 50vh;')
+  render: renderValidationExample('height: 175px; min-height: 100px; max-height: 50vh;'),
+  name: 'changeable helptext custom height',
+  parameters: {
+    description: {
+      data: 'Verify that the changing size of the error message does not interfere with the height. To test, delete the input, then type the character "a". Height should update to match.'
+    }
+  }
 };
 
 export const ControlledInteractive: Story = {
@@ -305,17 +329,20 @@ export const ControlledInteractive: Story = {
         <Button variant="primary" @click="setText">Set Text</Button>
       </div>
     `
-  })
+  }),
+  name: 'controlled interactive'
 };
 
 export const InFlex: Story = {
-  render: renderInFlexLayouts()
+  render: renderInFlexLayouts(),
+  name: 'in flex'
 };
 
 export const InFlexValidationState: Story = {
   render: renderInFlexLayouts({
     validationState: 'invalid'
-  })
+  }),
+  name: 'in flex validation state'
 };
 
 export const WithDifferentLocaleText: Story = {

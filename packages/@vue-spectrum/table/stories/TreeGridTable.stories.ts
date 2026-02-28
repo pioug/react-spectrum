@@ -242,7 +242,12 @@ export const UserSetRowHeader: Story = {
     openKeys: new Set(['row-1']),
     rowKey: 'id'
   },
-  name: 'multiple user set row headers'
+  name: 'multiple user set row headers',
+  parameters: {
+    description: {
+      data: 'Row headers are Bar and Baz column cells, chevron'
+    }
+  }
 };
 
 export const ManyExpandableRowsStory: Story = {

@@ -607,7 +607,12 @@ export const WithTranslations: Story = {
     items: ['English', 'Espanol', 'Deutsch', 'Francais', 'Italiano'],
     label: 'Translations'
   }),
-  name: 'with translations'
+  name: 'with translations',
+  parameters: {
+    description: {
+      data: 'Translations included for: Arabic, English, Hebrew, Japanese, Korean, Simplified Chinese, and Traditional Chinese.'
+    }
+  }
 };
 
 export const Links: Story = {

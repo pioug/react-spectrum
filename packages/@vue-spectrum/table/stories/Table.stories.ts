@@ -348,6 +348,11 @@ export const DynamicSelectedKeys: Story = {
     rows: BASE_ROWS,
     selectionMode: 'multiple',
     modelValue: new Set([1, 3])
+  },
+  parameters: {
+    controls: {
+      exclude: /selectionMode/
+    }
   }
 };
 
@@ -459,6 +464,11 @@ export const CellWithLongContent: Story = {
     columns: BASE_COLUMNS,
     rows: LONG_CONTENT_ROWS,
     overflowMode: 'wrap'
+  },
+  parameters: {
+    description: {
+      data: 'After changing overflowMode, refresh page to see the change.'
+    }
   }
 };
 
@@ -479,6 +489,11 @@ export const CustomRowHeaderLabeling: Story = {
   args: {
     columns: BASE_COLUMNS,
     rows: BASE_ROWS
+  },
+  parameters: {
+    description: {
+      content: 'Changes how the screen reader labels rows.'
+    }
   }
 };
 
@@ -878,6 +893,11 @@ export const ResizingZoom: Story = {
     columns: BASE_COLUMNS,
     rows: BASE_ROWS,
     resizableColumns: RESIZABLE_COLUMNS
+  },
+  parameters: {
+    description: {
+      data: 'Using browser zoom should not trigger an infinite resizing loop. CMD+"+" to zoom in and CMD+"-" to zoom out.'
+    }
   }
 };
 
@@ -888,6 +908,14 @@ export const ResizingControlledNoInitialWidths: Story = {
     columns: BASE_COLUMNS,
     rows: BASE_ROWS,
     resizableColumns: RESIZABLE_COLUMNS
+  },
+  parameters: {
+    description: {
+      data: `
+    You can use the buttons to save and restore the column widths. When restoring,
+    you will notice that the entire table reverts, this is because no columns are controlled.
+  `
+    }
   }
 };
 
@@ -902,6 +930,17 @@ export const ResizingControlledSomeInitialWidths: Story = {
     ],
     rows: BASE_ROWS,
     resizableColumns: RESIZABLE_COLUMNS
+  },
+  parameters: {
+    description: {
+      data: `
+    You can use the buttons to save and restore the column widths. When restoring,
+    you will see a quick flash because the entire table is re-rendered. This
+    mimics what would happen if an app reloaded the whole page and restored a saved
+    column width state. This is a "some widths" controlled story. It cannot restore
+    the widths of the columns that it does not manage. Height and weight are uncontrolled.
+  `
+    }
   }
 };
 
@@ -916,6 +955,16 @@ export const ResizingControlledAllInitialWidths: Story = {
     ],
     rows: BASE_ROWS,
     resizableColumns: RESIZABLE_COLUMNS
+  },
+  parameters: {
+    description: {
+      data: `
+    You can use the buttons to save and restore the column widths. When restoring,
+    you will see a quick flash because the entire table is re-rendered. This
+    mimics what would happen if an app reloaded the whole page and restored a saved
+    column width state.
+  `
+    }
   }
 };
 
@@ -927,6 +976,13 @@ export const ResizingControlledHideHeader: Story = {
     rows: BASE_ROWS,
     resizableColumns: RESIZABLE_COLUMNS,
     visibility: 'hidden'
+  },
+  parameters: {
+    description: {
+      data: `
+    Hide headers columns should not be resizable.
+  `
+    }
   }
 };
 
@@ -983,6 +1039,11 @@ export const ColumnHeaderFocusRingTable: Story = {
   args: {
     columns: BASE_COLUMNS.map((column) => ({...column, sortable: true})),
     rows: BASE_ROWS
+  },
+  parameters: {
+    description: {
+      data: 'Column header should remain focused even if the table collections empties/loading state changes to loading'
+    }
   }
 };
 
@@ -993,6 +1054,13 @@ export const AsyncLoadOverflowWrapReproStory: Story = {
     columns: BASE_COLUMNS,
     rows: [],
     overflowMode: 'wrap'
+  },
+  parameters: {
+    description: {
+      data: `
+    Rapidly scrolling down through this table should not cause the scroll position to jump to the top.
+  `
+    }
   }
 };
 

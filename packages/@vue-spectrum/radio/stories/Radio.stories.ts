@@ -63,6 +63,7 @@ const ControlledRovingTabPreview = defineComponent({
 
 const meta: Meta<typeof RadioGroup> = {
   title: 'RadioGroup',
+  providerSwitcher: {status: 'positive'},
   component: RadioGroup,
   args: {
     label: 'Favorite pet',

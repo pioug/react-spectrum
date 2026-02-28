@@ -12,6 +12,7 @@ const DIALOG_BODY_TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing eli
 const meta: Meta<typeof DialogTrigger> = {
   title: 'DialogTrigger',
   component: DialogTrigger,
+  providerSwitcher: {status: 'notice'},
   argTypes: {
     crossOffset: {
       control: {
@@ -315,7 +316,14 @@ export const PopoverInsideScrollView: Story = {
         </div>
       </div>
     `
-  })
+  }),
+  parameters: {
+    a11y: {
+      config: {
+        rules: [{id: 'scrollable-region-focusable', enabled: false}]
+      }
+    }
+  }
 };
 
 export const ShouldFlipWithWidth: Story = {
@@ -610,7 +618,12 @@ export const WithTranslations: Story = {
         </DialogTrigger>
       </div>
     `
-  })
+  }),
+  parameters: {
+    description: {
+      data: 'Translations included for: Arabic, English, Hebrew, Japanese, Korean, Simplified Chinese, and Traditional Chinese.'
+    }
+  }
 };
 
 export const TriggersOnEdges: Story = {

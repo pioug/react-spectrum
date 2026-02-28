@@ -28,6 +28,7 @@ const info = 'A containing element with role="search" has been added to define a
 
 const meta: Meta<typeof SearchField> = {
   title: 'SearchField',
+  providerSwitcher: {status: 'positive'},
   component: SearchField,
   args: {
     label: 'Search',
@@ -163,44 +164,53 @@ export const Default: Story = {
 
 export const DefaultValueUncontrolled: Story = {
   render: renderSearchField({modelValue: 'React'}, true),
+  name: 'defaultValue (uncontrolled)',
   parameters: {info}
 };
 
 export const ValueControlled: Story = {
   render: renderSearchField({modelValue: 'React'}, true),
+  name: 'value (controlled)',
   parameters: {info}
 };
 
 export const IconRefresh: Story = {
   render: renderSearchField({modelValue: 'React', icon: 'refresh'}, true),
+  name: 'icon: refresh',
   parameters: {info}
 };
 
 export const IconNull: Story = {
   render: renderSearchField({modelValue: 'React', icon: null}, true),
+  name: 'icon: null',
   parameters: {info}
 };
 
 export const OnClear: Story = {
   render: renderSearchField({modelValue: 'React'}, true),
+  name: 'onClear',
   parameters: {info}
 };
 
 export const AutoFocus: Story = {
   render: renderSearchField({autoFocus: true}, true),
+  name: 'autoFocus',
   parameters: {info}
 };
 
 export const NoVisibleLabel: Story = {
-  render: renderSearchField({label: '', ariaLabel: 'Street address'})
+  render: renderSearchField({label: '', ariaLabel: 'Street address'}),
+  name: 'no visible label'
 };
 
 export const WithDescription: Story = {
-  render: renderSearchField({description: 'Enter a search term.'})
+  render: renderSearchField({description: 'Enter a search term.'}),
+  name: 'with description'
 };
 
 export const WithErrorMessage: Story = {
-  render: renderSearchField({errorMessage: 'Remove special characters.', validationState: 'invalid'})
+  render: renderSearchField({errorMessage: 'Remove special characters.', validationState: 'invalid'}),
+  name: 'with error message'
 };
 
 export const _ContextualHelp: Story = {
@@ -233,11 +243,13 @@ export const _ContextualHelp: Story = {
         </ContextualHelp>
       </div>
     `
-  })
+  }),
+  name: 'contextual help'
 };
 
 export const CustomWidth: Story = {
-  render: renderSearchField({}, false, 'width: 300px;')
+  render: renderSearchField({}, false, 'width: 300px;'),
+  name: 'custom width'
 };
 
 export const CustomWidthAndNarrowContainer: Story = {
@@ -281,7 +293,8 @@ export const CustomWidthAndNarrowContainer: Story = {
           @update:model-value="valueC = $event" />
       </div>
     `
-  })
+  }),
+  name: 'custom width and narrow container'
 };
 
 export const WithinAPopover: Story = {
@@ -313,5 +326,6 @@ export const WithinAPopover: Story = {
         </div>
       </div>
     `
-  })
+  }),
+  name: 'within a popover'
 };

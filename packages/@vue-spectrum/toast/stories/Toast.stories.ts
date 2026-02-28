@@ -95,15 +95,50 @@ function renderToastContainer(args: StoryArgs, options: {showAction?: boolean, t
 }
 
 export const Default: Story = {
-  render: (args) => renderToastContainer(args)
+  render: (args) => renderToastContainer(args),
+  parameters: {
+    a11y: {
+      config: {
+        rules: [
+          {id: 'landmark-main-is-top-level', enabled: false},
+          {id: 'landmark-no-duplicate-main', enabled: false},
+          {id: 'landmark-unique', enabled: false}
+        ]
+      }
+    }
+  }
 };
 
 export const WithAction: Story = {
-  render: (args) => renderToastContainer(args, {showAction: true})
+  render: (args) => renderToastContainer(args, {showAction: true}),
+  name: 'With action',
+  parameters: {
+    a11y: {
+      config: {
+        rules: [
+          {id: 'landmark-main-is-top-level', enabled: false},
+          {id: 'landmark-no-duplicate-main', enabled: false},
+          {id: 'landmark-unique', enabled: false}
+        ]
+      }
+    }
+  }
 };
 
 export const WithTestId: Story = {
-  render: (args) => renderToastContainer(args, {showAction: true, testId: 'hello i am a test id'})
+  render: (args) => renderToastContainer(args, {showAction: true, testId: 'hello i am a test id'}),
+  name: 'With test id',
+  parameters: {
+    a11y: {
+      config: {
+        rules: [
+          {id: 'landmark-main-is-top-level', enabled: false},
+          {id: 'landmark-no-duplicate-main', enabled: false},
+          {id: 'landmark-unique', enabled: false}
+        ]
+      }
+    }
+  }
 };
 
 export const WithDialog: Story = {
@@ -144,7 +179,19 @@ export const WithDialog: Story = {
         <ToastContainer :placement="placement" />
       </div>
     `
-  })
+  }),
+  name: 'With dialog',
+  parameters: {
+    a11y: {
+      config: {
+        rules: [
+          {id: 'landmark-main-is-top-level', enabled: false},
+          {id: 'landmark-no-duplicate-main', enabled: false},
+          {id: 'landmark-unique', enabled: false}
+        ]
+      }
+    }
+  }
 };
 
 export const MultipleToastContainers: Story = {
@@ -181,7 +228,20 @@ export const MultipleToastContainers: Story = {
         <ToastContainer v-if="secondMounted" />
       </div>
     `
-  })
+  }),
+  name: 'multiple ToastContainers',
+  parameters: {
+    disableToastContainer: true,
+    a11y: {
+      config: {
+        rules: [
+          {id: 'landmark-main-is-top-level', enabled: false},
+          {id: 'landmark-no-duplicate-main', enabled: false},
+          {id: 'landmark-unique', enabled: false}
+        ]
+      }
+    }
+  }
 };
 
 export const ProgrammaticallyClosing: Story = {
@@ -221,7 +281,19 @@ export const ProgrammaticallyClosing: Story = {
         <ToastContainer :placement="placement" />
       </div>
     `
-  })
+  }),
+  name: 'programmatically closing',
+  parameters: {
+    a11y: {
+      config: {
+        rules: [
+          {id: 'landmark-main-is-top-level', enabled: false},
+          {id: 'landmark-no-duplicate-main', enabled: false},
+          {id: 'landmark-unique', enabled: false}
+        ]
+      }
+    }
+  }
 };
 
 export const WithIframe: Story = {
@@ -232,7 +304,20 @@ export const WithIframe: Story = {
       };
     },
     template: '<iframe title="iframe" width="500" height="500" :src="iframeSrc" tabindex="-1" />'
-  })
+  }),
+  name: 'with iframe',
+  parameters: {
+    a11y: {
+      config: {
+        rules: [
+          {id: 'aria-allowed-role', selector: '*:not(iframe[role="main"])'},
+          {id: 'landmark-main-is-top-level', enabled: false},
+          {id: 'landmark-no-duplicate-main', enabled: false},
+          {id: 'landmark-unique', enabled: false}
+        ]
+      }
+    }
+  }
 };
 
 export const withFullscreen: Story = {

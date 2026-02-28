@@ -17,7 +17,10 @@ import {Provider} from '../src';
 const CUSTOM_THEME = defaultTheme;
 
 const meta: Meta<typeof Provider> = {
-  title: 'Provider'
+  title: 'Provider',
+  parameters: {
+    providerSwitcher: {status: 'positive'}
+  }
 };
 
 export default meta;

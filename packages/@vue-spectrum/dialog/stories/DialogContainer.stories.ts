@@ -7,7 +7,8 @@ import {defineComponent, ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 const meta: Meta<typeof DialogContainer> = {
-  title: 'DialogContainer'
+  title: 'DialogContainer',
+  providerSwitcher: {status: 'notice'}
 };
 
 export default meta;

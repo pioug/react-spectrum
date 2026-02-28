@@ -192,6 +192,7 @@ const NumberFieldControlledStateReset = defineComponent({
 
 const meta: Meta<typeof NumberField> = {
   title: 'NumberField',
+  providerSwitcher: {status: 'notice'},
   component: NumberField
 };
 

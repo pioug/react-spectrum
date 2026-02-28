@@ -184,7 +184,12 @@ export const WithLinks: Story = {
       }))
     }))
   },
-  name: 'With Links'
+  name: 'Tree with links',
+  parameters: {
+    description: {
+      data: 'every tree item should link to adobe.com'
+    }
+  }
 };
 
 export const EmptyTree: Story = {
