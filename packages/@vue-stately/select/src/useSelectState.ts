@@ -119,6 +119,23 @@ export function useSelectState<T extends object, M extends SelectSelectionMode =
   let selectionMode = computed<SelectSelectionMode>(() => unref(options.selectionMode) ?? 'single');
   let triggerState = useOverlayTriggerState(options);
   let focusStrategy = ref<FocusStrategy | null>(null);
+  let isValueControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
+  let isSelectedKeyControlled = computed(() => {
+    if (selectionMode.value !== 'single' || options.value !== undefined) {
+      return false;
+    }
+
+    return options.selectedKey !== undefined && options.selectedKey.value !== undefined;
+  });
+  let isControlled = computed(() => isValueControlled.value || isSelectedKeyControlled.value);
+  let wasControlled = ref(isControlled.value);
+
+  watch(isControlled, (nextIsControlled) => {
+    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasControlled.value = nextIsControlled;
+  });
 
   let derivedDefaultValue = computed<Key | readonly Key[] | null>(() => {
     if (options.defaultValue !== undefined) {
@@ -133,12 +150,12 @@ export function useSelectState<T extends object, M extends SelectSelectionMode =
   });
 
   let controlledValue = computed<Key | readonly Key[] | null | undefined>(() => {
-    if (options.value !== undefined) {
+    if (isValueControlled.value && options.value !== undefined) {
       return options.value.value as Key | readonly Key[] | null | undefined;
     }
 
-    if (selectionMode.value === 'single' && options.selectedKey !== undefined) {
-      return options.selectedKey.value ?? null;
+    if (isSelectedKeyControlled.value && options.selectedKey !== undefined) {
+      return options.selectedKey.value;
     }
 
     return undefined;
@@ -161,9 +178,9 @@ export function useSelectState<T extends object, M extends SelectSelectionMode =
   let commitValue = (nextValue: Key | readonly Key[] | null): void => {
     let normalizedValue = normalizeValueForSelectionMode(nextValue, selectionMode.value);
 
-    if (options.value) {
+    if (isValueControlled.value && options.value) {
       options.value.value = normalizedValue as SelectValue<M>;
-    } else if (selectionMode.value === 'single' && options.selectedKey) {
+    } else if (isSelectedKeyControlled.value && selectionMode.value === 'single' && options.selectedKey) {
       options.selectedKey.value = Array.isArray(normalizedValue) ? normalizedValue[0] ?? null : normalizedValue;
     } else {
       uncontrolledValue.value = normalizedValue;

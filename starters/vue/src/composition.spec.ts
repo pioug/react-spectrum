@@ -2480,7 +2480,7 @@ describe('Vue migration composition components', () => {
     expect(selectionChanges).toEqual(['vue', 'svelte']);
     expect(changedValues).toEqual(['vue', 'svelte']);
 
-    let multiValue = ref<readonly string[] | undefined>(undefined);
+    let multiValue = ref<readonly string[] | undefined>([]);
     let multiState = useStatelySelectState({
       collection: new StatelyListCollection(nodes),
       onChange: (nextValue) => {
@@ -2494,6 +2494,79 @@ describe('Vue migration composition components', () => {
     multiState.setValue(['react', 'svelte']);
     expect(multiState.value.value).toEqual(['react', 'svelte']);
     expect(Array.from(multiState.selectionManager.selectedKeys.value)).toEqual(['react', 'svelte']);
+  });
+
+  it('warns when vue-stately select switches between controlled and uncontrolled', async () => {
+    let nodes: StatelyListNode<{label: string}>[] = [
+      {key: 'vue', textValue: 'Vue', type: 'item', value: {label: 'Vue'}},
+      {key: 'react', textValue: 'React', type: 'item', value: {label: 'React'}},
+      {key: 'svelte', textValue: 'Svelte', type: 'item', value: {label: 'Svelte'}}
+    ];
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    try {
+      let controlledValue = ref<string | null | undefined>('react');
+      useStatelySelectState({
+        collection: new StatelyListCollection(nodes),
+        value: controlledValue
+      });
+
+      controlledValue.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      controlledValue.value = 'vue';
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+
+      let controlledSelectedKey = ref<string | null | undefined>('react');
+      useStatelySelectState({
+        collection: new StatelyListCollection(nodes),
+        selectedKey: controlledSelectedKey
+      });
+
+      controlledSelectedKey.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      controlledSelectedKey.value = 'svelte';
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it('keeps vue-stately select uncontrolled when control refs are undefined', () => {
+    let nodes: StatelyListNode<{label: string}>[] = [
+      {key: 'vue', textValue: 'Vue', type: 'item', value: {label: 'Vue'}},
+      {key: 'react', textValue: 'React', type: 'item', value: {label: 'React'}},
+      {key: 'svelte', textValue: 'Svelte', type: 'item', value: {label: 'Svelte'}}
+    ];
+
+    let valueRef = ref<readonly string[] | undefined>(undefined);
+    let multiState = useStatelySelectState({
+      collection: new StatelyListCollection(nodes),
+      defaultValue: ['react'],
+      selectionMode: 'multiple',
+      value: valueRef
+    });
+
+    multiState.setValue(['react', 'svelte']);
+    expect(valueRef.value).toBeUndefined();
+    expect(multiState.value.value).toEqual(['react', 'svelte']);
+
+    let selectedKeyRef = ref<string | null | undefined>(undefined);
+    let singleState = useStatelySelectState({
+      collection: new StatelyListCollection(nodes),
+      defaultSelectedKey: 'react',
+      selectedKey: selectedKeyRef
+    });
+
+    singleState.setSelectedKey('svelte');
+    expect(selectedKeyRef.value).toBeUndefined();
+    expect(singleState.selectedKey.value).toBe('svelte');
+    expect(singleState.value.value).toBe('svelte');
   });
 
   it('manages vue-stately slider thumb values, constraints, and drag lifecycle', () => {

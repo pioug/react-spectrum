@@ -1533,6 +1533,25 @@
    - full Vue tests: `yarn test:vue` (566 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Select controlled ownership parity (`@vue-stately/select`)
+
+1. Aligned `useSelectState` controlled-state ownership semantics with React `useControlledState` behavior:
+   - controlled mode now activates only when `value` (or single-select `selectedKey`) refs resolve to non-`undefined` values,
+   - ref-backed `undefined` control refs now remain uncontrolled, using internal state updates instead of writing through control refs.
+2. Aligned controlled/uncontrolled transition warning behavior:
+   - `useSelectState` now emits `WARN: A component changed from ...` when select ownership transitions between controlled and uncontrolled in development.
+3. Preserved existing select interaction contracts:
+   - selection-change and trigger-close behavior remain unchanged for single/multiple mode actions.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - warning assertions for both `value`-controlled and `selectedKey`-controlled transition paths,
+     - assertions that ref-backed-`undefined` control refs (`value`, `selectedKey`) remain uncontrolled during updates,
+     - updated baseline select state test to avoid incidental ownership-transition warnings in non-warning scenarios.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately select selection, trigger state, and value normalization|warns when vue-stately select switches between controlled and uncontrolled|keeps vue-stately select uncontrolled when control refs are undefined"`,
+   - full Vue tests: `yarn test:vue` (568 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
