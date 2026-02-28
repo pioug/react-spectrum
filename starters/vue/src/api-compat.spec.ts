@@ -61,6 +61,17 @@ import {
   VueTable
 } from '@vue-spectrum/table';
 import {
+  Cell as RootCell,
+  Column as RootColumn,
+  Row as RootRow,
+  Section as RootSection,
+  Table as RootTable,
+  TableBody as RootTableBody,
+  TableHeader as RootTableHeader,
+  TableView as RootTableView,
+  VueTable as RootVueTable
+} from '../../../packages/@vue-spectrum/table/index';
+import {
   Collection,
   Tree,
   TreeView,
@@ -294,6 +305,18 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(Row).not.toBe(VueTable);
     expect(Cell).not.toBe(VueTable);
     expect(Section).not.toBe(VueTable);
+  });
+
+  it('keeps root table entry exports aligned with source exports', () => {
+    expect(RootTable).toBe(Table);
+    expect(RootVueTable).toBe(VueTable);
+    expect(RootTableView).toBe(TableView);
+    expect(RootTableHeader).toBe(TableHeader);
+    expect(RootTableBody).toBe(TableBody);
+    expect(RootColumn).toBe(Column);
+    expect(RootRow).toBe(Row);
+    expect(RootCell).toBe(Cell);
+    expect(RootSection).toBe(Section);
   });
 
   it('keeps tree primitives exported and collection as a dedicated primitive', () => {

@@ -1,1 +1,1 @@
-export {Table, VueTable} from './src';
+export * from './src';
