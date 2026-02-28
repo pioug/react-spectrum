@@ -55,9 +55,7 @@ export function useCheckboxGroupState(options: CheckboxGroupStateOptions = {}): 
       return internalValue.value;
     },
     set: (nextValue) => {
-      if (isControlled.value && options.value) {
-        options.value.value = nextValue;
-      } else {
+      if (!isControlled.value) {
         internalValue.value = nextValue;
       }
     }

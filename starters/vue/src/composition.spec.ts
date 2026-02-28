@@ -897,6 +897,7 @@ describe('Vue migration composition components', () => {
       isRequired: true,
       onChange: (value) => {
         changes.push([...value]);
+        selectedValues.value = value;
       },
       value: selectedValues
     });
@@ -915,6 +916,23 @@ describe('Vue migration composition components', () => {
     state.setInvalid('Tests', {isInvalid: false});
     expect(state.isInvalid.value).toBe(false);
     expect(changes).toContainEqual(['Docs', 'Tests']);
+  });
+
+  it('keeps vue-stately checkbox-group controlled without mutating control refs', () => {
+    let selectedValues = ref(['Docs']);
+    let changes: string[][] = [];
+    let state = useStatelyCheckboxGroupState({
+      onChange: (value) => {
+        changes.push([...value]);
+      },
+      value: selectedValues
+    });
+
+    state.addValue('Tests');
+
+    expect(selectedValues.value).toEqual(['Docs']);
+    expect(state.value.value).toEqual(['Docs']);
+    expect(changes).toEqual([['Docs', 'Tests']]);
   });
 
   it('matches vue-stately checkbox-group setValue identity semantics', () => {

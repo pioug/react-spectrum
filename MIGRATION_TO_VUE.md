@@ -2037,6 +2037,19 @@
    - full Vue tests: `yarn test:vue` (606 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Checkbox-group controlled ownership parity (`@vue-stately/checkbox`)
+
+1. Closed checkbox-group controlled ownership drift against React:
+   - `useCheckboxGroupState` no longer mutates controlled `value` refs directly from `setValue`/`addValue`/`removeValue`/`toggleValue` flows.
+2. Preserved controlled callback contract:
+   - state updates still emit `onChange` with requested next values; controlled state remains externally owned and only changes when parent updates the control ref.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: assertions that controlled checkbox groups emit `onChange` without mutating control refs when parent does not mirror changes.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "checkbox-group values and invalid flags|checkbox-group controlled without mutating control refs"`,
+   - full Vue tests: `yarn test:vue` (607 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
