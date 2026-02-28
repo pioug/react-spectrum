@@ -9939,6 +9939,58 @@ describe('Vue migration composition components', () => {
     expect(expandedKeys.value.size).toBe(0);
   });
 
+  it('supports react-style tree overload signatures with tree state', () => {
+    let treeState = useStatelyTreeState({
+      collection: [
+        {
+          childNodes: [
+            {key: 'src/main.ts', textValue: 'main.ts', type: 'item'}
+          ],
+          key: 'src',
+          textValue: 'src',
+          type: 'item'
+        },
+        {
+          key: 'README.md',
+          textValue: 'README.md',
+          type: 'item'
+        }
+      ],
+      selectionMode: 'multiple'
+    });
+
+    let reactTree = useAriaTree({
+      'aria-label': 'Project files'
+    } as unknown as Parameters<typeof useAriaTree>[0], treeState as unknown as Parameters<typeof useAriaTree>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaTree>[2]);
+    expect(reactTree.gridProps.value.role).toBe('treegrid');
+
+    let srcNode = treeState.collection.getItem('src');
+    expect(srcNode).not.toBeNull();
+    let srcTreeItem = useAriaTreeItem({
+      node: srcNode
+    } as unknown as Parameters<typeof useAriaTreeItem>[0], treeState as unknown as Parameters<typeof useAriaTreeItem>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaTreeItem>[2]);
+    expect(srcTreeItem.expandButtonProps.value.disabled).toBe(false);
+    srcTreeItem.expandButtonProps.value.onPress();
+    expect(treeState.expandedKeys.has('src')).toBe(true);
+    expect(treeState.selectionManager.focusedKey).toBe('src');
+    expect(treeState.selectionManager.isFocused).toBe(true);
+    srcTreeItem.expandButtonProps.value.onPress();
+    expect(treeState.expandedKeys.has('src')).toBe(false);
+
+    let readmeNode = treeState.collection.getItem('README.md');
+    expect(readmeNode).not.toBeNull();
+    let readmeTreeItem = useAriaTreeItem({
+      node: readmeNode
+    } as unknown as Parameters<typeof useAriaTreeItem>[0], treeState as unknown as Parameters<typeof useAriaTreeItem>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaTreeItem>[2]);
+    expect(readmeTreeItem.expandButtonProps.value.disabled).toBe(true);
+  });
+
   it('applies vue-aria utility helpers for props, ids, labels, and focusable nodes', () => {
     let callbackCalls: string[] = [];
     let chained = ariaChain((value: string) => {
