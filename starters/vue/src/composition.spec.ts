@@ -4978,6 +4978,21 @@ describe('Vue migration composition components', () => {
     expect(dragState.draggedKey.value).toBeNull();
   });
 
+  it('throws when useDroppableItem is used outside a droppable collection', () => {
+    let dropState = useStatelyDroppableCollectionState();
+    let target = {
+      type: 'item' as const,
+      key: 'alpha',
+      dropPosition: 'on' as const
+    };
+
+    expect(() => {
+      useDroppableItem({target}, dropState, {
+        current: document.createElement('button')
+      });
+    }).toThrow('Droppable item outside a droppable collection');
+  });
+
   it('hides drop indicators when no drag session is active and target is not active', () => {
     let dropState = useStatelyDroppableCollectionState();
     let target = {
@@ -4985,10 +5000,12 @@ describe('Vue migration composition components', () => {
       key: 'alpha',
       dropPosition: 'before' as const
     };
+    let collectionRef = {current: document.createElement('div')};
+    useDroppableCollection({
+      acceptedDragTypes: ['item']
+    }, dropState, collectionRef);
 
-    let dropIndicator = useDropIndicator({target}, dropState, {
-      current: document.createElement('div')
-    }) as {
+    let dropIndicator = useDropIndicator({target}, dropState, collectionRef) as {
       dropIndicatorProps: {value: {'aria-hidden': string}},
       isHidden: {value: boolean}
     };
@@ -5002,18 +5019,22 @@ describe('Vue migration composition components', () => {
     let dropState = useStatelyDroppableCollectionState();
     let target = {type: 'root' as const};
     dropState.setTarget(target);
-    let collectionElement = document.createElement('div');
-    collectionElement.id = 'grid-root';
+    let collectionRef = {current: document.createElement('div')};
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item']
+    }, dropState, collectionRef) as {
+      collectionProps: {value: {id: string}}
+    };
 
-    let dropIndicator = useDropIndicator({target}, dropState, {
-      current: collectionElement
-    }) as {
+    let dropIndicator = useDropIndicator({target}, dropState, collectionRef) as {
       dropIndicatorProps: {value: {id: string, 'aria-label': string, 'aria-labelledby'?: string}}
     };
 
     expect(dropIndicator.dropIndicatorProps.value.id).toMatch(/^vue-aria-drop-indicator-/);
     expect(dropIndicator.dropIndicatorProps.value['aria-label']).toBe('Drop on');
-    expect(dropIndicator.dropIndicatorProps.value['aria-labelledby']).toBe(`${dropIndicator.dropIndicatorProps.value.id} grid-root`);
+    expect(dropIndicator.dropIndicatorProps.value['aria-labelledby']).toBe(
+      `${dropIndicator.dropIndicatorProps.value.id} ${droppableCollection.collectionProps.value.id}`
+    );
   });
 
   it('links root useDropIndicator to generated useDroppableCollection ids', () => {
@@ -5058,10 +5079,12 @@ describe('Vue migration composition components', () => {
       key: 'two',
       dropPosition: 'before' as const
     };
+    let collectionRef = {current: document.createElement('div')};
+    useDroppableCollection({
+      acceptedDragTypes: ['item']
+    }, dropState, collectionRef);
 
-    let dropIndicator = useDropIndicator({target}, dropState, {
-      current: document.createElement('div')
-    }) as {
+    let dropIndicator = useDropIndicator({target}, dropState, collectionRef) as {
       dropIndicatorProps: {value: {'aria-label': string}}
     };
 
@@ -5081,6 +5104,10 @@ describe('Vue migration composition components', () => {
       key: 'alpha',
       dropPosition: 'on' as const
     };
+    let collectionRef = {current: document.createElement('div')};
+    useDroppableCollection({
+      acceptedDragTypes: ['item']
+    }, dropState, collectionRef);
     let refElement = document.createElement('button');
     document.body.appendChild(refElement);
 
@@ -5110,6 +5137,10 @@ describe('Vue migration composition components', () => {
       key: 'alpha',
       dropPosition: 'on' as const
     };
+    let collectionRef = {current: document.createElement('div')};
+    useDroppableCollection({
+      acceptedDragTypes: ['item']
+    }, dropState, collectionRef);
     let refElement = document.createElement('button');
     document.body.appendChild(refElement);
 
@@ -5137,6 +5168,10 @@ describe('Vue migration composition components', () => {
       key: 'alpha',
       dropPosition: 'on' as const
     };
+    let collectionRef = {current: document.createElement('div')};
+    useDroppableCollection({
+      acceptedDragTypes: ['item']
+    }, dropState, collectionRef);
     let droppableItem = useDroppableItem({target}, dropState, {
       current: document.createElement('button')
     }) as {
@@ -5178,6 +5213,10 @@ describe('Vue migration composition components', () => {
       key: 'invalid',
       dropPosition: 'on' as const
     };
+    let collectionRef = {current: document.createElement('div')};
+    useDroppableCollection({
+      acceptedDragTypes: ['item']
+    }, dropState, collectionRef);
     let validDroppable = useDroppableItem({target: validTarget}, dropState, {
       current: document.createElement('button')
     }) as {

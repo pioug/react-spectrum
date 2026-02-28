@@ -23,6 +23,24 @@ let droppableCollectionId = 0;
 let droppableCollectionIds = new WeakMap<object, string>();
 let droppableCollectionRefs = new WeakMap<object, RefObject<HTMLElement | null>>();
 
+function getDroppableCollectionId(state: DroppableCollectionState): string {
+  let id = droppableCollectionIds.get(state as unknown as object);
+  if (!id) {
+    throw new Error('Droppable item outside a droppable collection');
+  }
+
+  return id;
+}
+
+function getDroppableCollectionRef(state: DroppableCollectionState): RefObject<HTMLElement | null> {
+  let ref = droppableCollectionRefs.get(state as unknown as object);
+  if (!ref) {
+    throw new Error('Droppable item outside a droppable collection');
+  }
+
+  return ref;
+}
+
 export type ClipboardProps = AnyRecord;
 export type ClipboardResult = {
   clipboardProps: AnyRecord
@@ -707,11 +725,7 @@ export function useDropIndicator(
       return undefined;
     }
 
-    let collectionId = droppableCollectionIds.get(state as unknown as object) ?? ref.current?.id;
-    if (!collectionId) {
-      return undefined;
-    }
-
+    let collectionId = getDroppableCollectionId(state);
     return `${id} ${collectionId}`;
   };
   let dropIndicatorProps = computed(() => {
@@ -995,6 +1009,7 @@ export function useDroppableItem(
 ): DroppableItemResult {
   let propsRecord = props as AnyRecord;
   let stateRecord = state as AnyRecord;
+  let droppableCollectionRef = getDroppableCollectionRef(state);
   let target = computed(() => {
     if (propsRecord.target && typeof propsRecord.target === 'object') {
       return propsRecord.target as DropTarget;
@@ -1023,12 +1038,11 @@ export function useDroppableItem(
       return true;
     }
 
-    let collectionRef = droppableCollectionRefs.get(state as unknown as object) ?? dropCollectionRef;
     let isInternal = Boolean(
       draggingCollectionRef &&
-      collectionRef &&
+      droppableCollectionRef &&
       draggingCollectionRef.current &&
-      draggingCollectionRef.current === collectionRef.current
+      draggingCollectionRef.current === droppableCollectionRef.current
     );
     let operation = normalizeDropOperation(stateRecord.getDropOperation({
       allowedOperations: DEFAULT_ALLOWED_OPERATIONS,
