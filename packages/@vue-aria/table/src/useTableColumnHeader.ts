@@ -17,6 +17,7 @@ export interface TableColumnHeaderAria {
     'aria-colspan'?: number,
     'aria-sort'?: 'ascending' | 'descending' | 'none',
     onClick: () => void,
+    onKeyDown: (event: KeyboardEvent) => void,
     role: 'columnheader',
     tabindex: -1 | 0
   }>,
@@ -57,7 +58,13 @@ export function useTableColumnHeader(props: AriaTableColumnHeaderProps): TableCo
       tabindex: props.table.focusedKey.value === columnKey.value ? 0 : -1,
       'aria-colspan': colSpan.value && colSpan.value > 1 ? colSpan.value : undefined,
       'aria-sort': ariaSort.value,
-      onClick: press
+      onClick: press,
+      onKeyDown: (event: KeyboardEvent) => {
+        if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
+          event.preventDefault();
+          press();
+        }
+      }
     })),
     isPressed,
     press

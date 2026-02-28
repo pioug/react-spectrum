@@ -3387,6 +3387,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Table column-header keyboard-sort parity (`@vue-aria/table`)
+
+1. Closed column-header keyboard activation drift:
+   - `useTableColumnHeader.columnHeaderProps` now includes `onKeyDown` handling for `Enter`/`Space`, matching React press-based keyboard sorting behavior.
+2. Preserved sort guards:
+   - keyboard sorting still routes through `press()`, preserving existing `allowsSorting` checks and focus updates.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` table assertions now verify Enter-key sorting calls `preventDefault` and dispatches sort callbacks.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria table wrappers and selection helpers"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

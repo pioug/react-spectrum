@@ -9093,6 +9093,13 @@ describe('Vue migration composition components', () => {
     expect(sortedColumns).toEqual(['row-1-cell-1']);
     expect(columnHeader.columnHeaderProps.value.role).toBe('columnheader');
     expect(columnHeader.columnHeaderProps.value['aria-sort']).toBe('none');
+    let preventSortKeyDefault = vi.fn();
+    columnHeader.columnHeaderProps.value.onKeyDown({
+      key: 'Enter',
+      preventDefault: preventSortKeyDefault
+    } as unknown as KeyboardEvent);
+    expect(preventSortKeyDefault).toHaveBeenCalledTimes(1);
+    expect(sortedColumns).toEqual(['row-1-cell-1', 'row-1-cell-1']);
 
     let rowSelectionCheckbox = useAriaTableSelectionCheckbox({
       grid: table,
