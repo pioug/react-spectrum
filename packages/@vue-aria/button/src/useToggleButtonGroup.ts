@@ -59,7 +59,7 @@ function setSelectedKeys(
     return;
   }
 
-  selectedKeys.value = Array.from(nextSelection);
+  selectedKeys.value = new Set(nextSelection);
 }
 
 function resolveSelectedKeys(value: Iterable<string> | Ref<Iterable<string>> | undefined): Iterable<string> | undefined {

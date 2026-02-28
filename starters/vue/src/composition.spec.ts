@@ -667,6 +667,7 @@ describe('Vue migration composition components', () => {
     expect(italicItem.buttonProps.value.role).toBe('radio');
     expect(italicItem.buttonProps.value['aria-checked']).toBe(false);
     italicItem.press();
+    expect(selectedKeys.value instanceof Set).toBe(true);
     expect(Array.from(selectedKeys.value)).toEqual(['italic']);
   });
 

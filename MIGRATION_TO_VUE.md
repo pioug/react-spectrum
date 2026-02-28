@@ -2778,6 +2778,17 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Toggle-button-group selectedKeys shape parity remediation (`@vue-aria/button`)
+
+1. Closed controlled selected-key shape drift in `useToggleButtonGroup`:
+   - controlled `selectedKeys` refs are now updated with `Set` values instead of arrays, matching React toggle-group selection shape semantics.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` toggle-button-group assertions now verify controlled `selectedKeys` remains `Set`-typed after item press.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "button selection and group-item radio state"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
