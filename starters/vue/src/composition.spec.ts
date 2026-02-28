@@ -1911,11 +1911,26 @@ describe('Vue migration composition components', () => {
   });
 
   it('supports react-style collections component creator overload signatures', () => {
-    let leafFactory = createLeafComponent('item', (props: {label: string}) => props.label) as (props: {label: string}) => string;
+    let leafNode: unknown;
+    let leafFactory = createLeafComponent('item', (props: {label: string}, _ref, node) => {
+      leafNode = node;
+      return props.label;
+    }) as (props: {label: string}) => string;
     expect(leafFactory({label: 'Alpha'})).toBe('Alpha');
+    expect((leafNode as {props?: {label?: string}}).props?.label).toBe('Alpha');
 
-    let branchFactory = createBranchComponent('section', (props: {label: string}) => props.label, () => null) as (props: {label: string}) => string;
+    let childrenCalls = 0;
+    let branchNode: unknown;
+    let branchFactory = createBranchComponent('section', (props: {label: string}, _ref, node) => {
+      branchNode = node;
+      return props.label;
+    }, () => {
+      childrenCalls += 1;
+      return 'child-content';
+    }) as (props: {label: string}) => string;
     expect(branchFactory({label: 'Section'})).toBe('Section');
+    expect(childrenCalls).toBe(1);
+    expect((branchNode as {children?: string}).children).toBe('child-content');
   });
 
   it('updates vue-aria color slider, channel field, and text field values', () => {

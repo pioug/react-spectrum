@@ -40,6 +40,8 @@ namespace React {
 }
 
 type Node<T> = {
+  children?: unknown,
+  props?: unknown,
   value?: T
 };
 
@@ -72,7 +74,11 @@ export function createLeafComponent(
     return createLeafComponentInternal(collectionNodeClassOrRender as (item: unknown, index: number) => unknown);
   }
 
-  return (props: unknown) => (render as (props: unknown, ref: ForwardedRef<Element>) => unknown)?.(props, {current: null});
+  return (props: unknown) => (render as (props: unknown, ref: ForwardedRef<Element>, node: Node<unknown>) => unknown)?.(
+    props,
+    {current: null},
+    {props}
+  );
 }
 
 export function createBranchComponent<T extends object, P extends {children?: any}, E extends Element>(
@@ -85,12 +91,21 @@ export function createBranchComponent(
   render?: unknown,
   useChildren?: unknown
 ): unknown {
-  void useChildren;
   if (typeof collectionNodeClassOrRender === 'function' && render == null) {
     return createBranchComponentInternal(collectionNodeClassOrRender as (item: unknown, index: number, children: unknown[]) => unknown);
   }
 
-  return (props: unknown) => (render as (props: unknown, ref: ForwardedRef<Element>, node: Node<unknown>) => unknown)?.(props, {current: null}, {});
+  return (props: unknown) => {
+    let children = typeof useChildren === 'function' ? (useChildren as (props: unknown) => unknown)(props) : undefined;
+    return (render as (props: unknown, ref: ForwardedRef<Element>, node: Node<unknown>) => unknown)?.(
+      props,
+      {current: null},
+      {
+        children,
+        props
+      }
+    );
+  };
 }
 
 export function createHideableComponent<T, P = {}>(
