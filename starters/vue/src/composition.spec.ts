@@ -3178,6 +3178,28 @@ describe('Vue migration composition components', () => {
     expect(changedValues).toEqual([6, 4, 10, 0, 10]);
   });
 
+  it('keeps vue-stately number field controlled without mutating control refs', () => {
+    let value = ref<number | undefined>(4);
+    let changedValues: number[] = [];
+    let numberField = useStatelyNumberFieldState({
+      maxValue: 10,
+      minValue: 0,
+      onChange: (nextValue) => {
+        changedValues.push(nextValue);
+      },
+      step: 2,
+      value
+    });
+
+    numberField.increment();
+    expect(value.value).toBe(4);
+    expect(changedValues).toEqual([6]);
+
+    numberField.increment();
+    expect(value.value).toBe(4);
+    expect(changedValues).toEqual([6, 6]);
+  });
+
   it('manages vue-stately overlay trigger open, close, and toggle state', () => {
     let changes: boolean[] = [];
     let isOpen = ref(false);

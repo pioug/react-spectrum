@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
 import {type FormValidationState, useFormValidationState, type ValidationErrors} from '@vue-stately/form';
 import {useNumberField as useAriaNumberField} from '@vue-aria/numberfield';
 
@@ -80,7 +80,7 @@ export interface NumberFieldStateOptions {
   validate?: (value: number) => boolean | null | string | string[] | undefined,
   validationBehavior?: MaybeRef<'aria' | 'native'>,
   validationErrors?: MaybeRef<ValidationErrors>,
-  value?: Ref<number>
+  value?: Ref<number | undefined>
 }
 
 export interface NumberFieldState extends FormValidationState {
@@ -143,7 +143,31 @@ export function useNumberFieldState(options: NumberFieldStateOptions): NumberFie
     step.value
   );
 
-  let value = options.value ?? ref(initialValue);
+  let uncontrolledValue = ref(initialValue);
+  let isControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
+  let wasControlled = ref(isControlled.value);
+
+  watch(isControlled, (nextIsControlled) => {
+    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasControlled.value = nextIsControlled;
+  });
+
+  let value = computed<number>({
+    get: () => {
+      if (isControlled.value && options.value) {
+        return options.value.value as number;
+      }
+
+      return uncontrolledValue.value;
+    },
+    set: (nextValue) => {
+      if (!isControlled.value) {
+        uncontrolledValue.value = nextValue;
+      }
+    }
+  }) as Ref<number>;
   let numberFormatter = computed(() => new Intl.NumberFormat(undefined, unref(options.formatOptions)));
   let inputValue = ref(numberFormatter.value.format(value.value));
 

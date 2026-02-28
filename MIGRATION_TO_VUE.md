@@ -2256,6 +2256,19 @@
    - full Vue tests: `yarn test:vue` (623 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Number-field controlled ownership parity (`@vue-stately/numberfield`)
+
+1. Closed number-field controlled ownership drift:
+   - `useNumberFieldState` no longer mutates controlled `value` refs directly.
+2. Added controlled-mode transition diagnostics:
+   - number-field state now warns on controlled/uncontrolled transitions in development.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: explicit controlled-no-parent-update assertions for number-field increment behavior.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately number field parsing, stepping, and clamped min/max helpers|keeps vue-stately number field controlled without mutating control refs"`,
+   - full Vue tests: `yarn test:vue` (624 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
