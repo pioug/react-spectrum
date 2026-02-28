@@ -1124,6 +1124,57 @@ describe('Vue migration composition components', () => {
     expect(state.isFocused.value).toBe(true);
   });
 
+  it('warns when vue-stately combobox switches between controlled and uncontrolled', async () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let inputValue = ref<string | undefined>('React');
+    let selectedKey = ref<string | null | undefined>('React');
+    useStatelyComboBoxState({
+      inputValue,
+      items: ['React', 'Vue', 'Svelte'],
+      selectedKey
+    });
+
+    try {
+      inputValue.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      inputValue.value = 'Vue';
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+
+      selectedKey.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      selectedKey.value = 'Svelte';
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it('keeps vue-stately combobox uncontrolled when control refs are undefined', () => {
+    let inputValue = ref<string | undefined>(undefined);
+    let selectedKey = ref<string | null | undefined>(undefined);
+    let state = useStatelyComboBoxState({
+      defaultInputValue: 'React',
+      defaultSelectedKey: 'React',
+      inputValue,
+      items: ['React', 'Vue', 'Svelte'],
+      selectedKey
+    });
+
+    state.setInputValue('Vue');
+    state.setSelectedKey('Vue');
+
+    expect(inputValue.value).toBeUndefined();
+    expect(selectedKey.value).toBeUndefined();
+    expect(state.inputValue.value).toBe('Vue');
+    expect(state.selectedKey.value).toBe('Vue');
+  });
+
   it('manages vue-stately list data insertion, selection, filtering, and movement', () => {
     let list = useStatelyListData({
       filter: (item: {id: string, label: string}, filterText: string) => {

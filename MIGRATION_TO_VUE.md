@@ -1552,6 +1552,27 @@
    - full Vue tests: `yarn test:vue` (568 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — ComboBox controlled ownership parity (`@vue-stately/combobox`)
+
+1. Aligned `useComboBoxState` ownership semantics for both controlled refs:
+   - `inputValue` is now treated as controlled only when `inputValue.value !== undefined`,
+   - `selectedKey` is now treated as controlled only when `selectedKey.value !== undefined`,
+   - ref-backed `undefined` control refs now remain uncontrolled with internal fallback state.
+2. Aligned controlled/uncontrolled transition warning behavior:
+   - `useComboBoxState` now emits `WARN: A component changed from ...` on ownership transitions for both input-value and selected-key control channels in development.
+3. Closed no-op input-change drift:
+   - `setInputValue` now no-ops when the next value matches current input value, avoiding duplicate `onInputChange` emissions.
+4. Improved default-snapshot parity:
+   - `defaultInputValue` and `defaultSelectedKey` now fall back to initial effective state when explicit defaults are omitted.
+5. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - warning assertions for controlled/uncontrolled transitions on both `inputValue` and `selectedKey`,
+     - assertions that ref-backed-`undefined` control refs remain uncontrolled while state updates proceed internally.
+6. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately combobox state for filtering, selection, and revert|warns when vue-stately combobox switches between controlled and uncontrolled|keeps vue-stately combobox uncontrolled when control refs are undefined"`,
+   - full Vue tests: `yarn test:vue` (570 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

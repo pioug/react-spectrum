@@ -1,5 +1,5 @@
 import {type AriaComboBoxOptions, type ComboBoxAria, type ComboBoxItem, useComboBox as useAriaComboBox} from '@vue-aria/combobox';
-import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 
@@ -23,19 +23,72 @@ export interface ComboBoxStateOptions {
   allowsCustomValue?: MaybeRef<boolean>,
   defaultInputValue?: string,
   defaultSelectedKey?: string | null,
-  inputValue?: Ref<string>,
+  inputValue?: Ref<string | undefined>,
   items: MaybeRef<Array<string | {id: string, textValue: string}>>,
   onInputChange?: (value: string) => void,
   onOpenChange?: (isOpen: boolean) => void,
   onSelectionChange?: (key: string | null) => void,
-  selectedKey?: Ref<string | null>
+  selectedKey?: Ref<string | null | undefined>
 }
 
 export type StatelyComboBoxState = ComboBoxState & ComboBoxAria;
 
 export function useComboBoxState(options: ComboBoxStateOptions): StatelyComboBoxState {
-  let inputValue = options.inputValue ?? ref(options.defaultInputValue ?? '');
-  let selectedKeyRef = options.selectedKey ?? ref(options.defaultSelectedKey ?? null);
+  let uncontrolledInputValue = ref(options.defaultInputValue ?? '');
+  let uncontrolledSelectedKey = ref<string | null>(options.defaultSelectedKey ?? null);
+  let isInputValueControlled = computed(() => options.inputValue !== undefined && options.inputValue.value !== undefined);
+  let wasInputValueControlled = ref(isInputValueControlled.value);
+  let isSelectedKeyControlled = computed(() => options.selectedKey !== undefined && options.selectedKey.value !== undefined);
+  let wasSelectedKeyControlled = ref(isSelectedKeyControlled.value);
+
+  watch(isInputValueControlled, (nextIsControlled) => {
+    if (wasInputValueControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasInputValueControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasInputValueControlled.value = nextIsControlled;
+  });
+
+  watch(isSelectedKeyControlled, (nextIsControlled) => {
+    if (wasSelectedKeyControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasSelectedKeyControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasSelectedKeyControlled.value = nextIsControlled;
+  });
+
+  let inputValue = computed<string>({
+    get: () => {
+      if (isInputValueControlled.value && options.inputValue) {
+        return options.inputValue.value;
+      }
+
+      return uncontrolledInputValue.value;
+    },
+    set: (nextValue) => {
+      if (isInputValueControlled.value && options.inputValue) {
+        options.inputValue.value = nextValue;
+      } else {
+        uncontrolledInputValue.value = nextValue;
+      }
+    }
+  }) as Ref<string>;
+  let selectedKeyRef = computed<string | null>({
+    get: () => {
+      if (isSelectedKeyControlled.value && options.selectedKey) {
+        return options.selectedKey.value;
+      }
+
+      return uncontrolledSelectedKey.value;
+    },
+    set: (nextSelectedKey) => {
+      if (isSelectedKeyControlled.value && options.selectedKey) {
+        options.selectedKey.value = nextSelectedKey;
+      } else {
+        uncontrolledSelectedKey.value = nextSelectedKey;
+      }
+    }
+  }) as Ref<string | null>;
+  let initialInputValue = inputValue.value;
+  let initialSelectedKey = selectedKeyRef.value;
   let isFocused = ref(false);
 
   let comboBox = useAriaComboBox({
@@ -75,6 +128,10 @@ export function useComboBoxState(options: ComboBoxStateOptions): StatelyComboBox
   let selectedItems = computed(() => (selectedItem.value ? [selectedItem.value] : []));
 
   let setInputValue = (nextValue: string): void => {
+    if (inputValue.value === nextValue) {
+      return;
+    }
+
     inputValue.value = nextValue;
     options.onInputChange?.(nextValue);
   };
@@ -95,9 +152,9 @@ export function useComboBoxState(options: ComboBoxStateOptions): StatelyComboBox
   return {
     ...comboBox,
     inputValue,
-    defaultInputValue: options.defaultInputValue ?? '',
+    defaultInputValue: options.defaultInputValue ?? initialInputValue,
     selectedKey: comboBox.selectedKey,
-    defaultSelectedKey: options.defaultSelectedKey ?? null,
+    defaultSelectedKey: options.defaultSelectedKey ?? initialSelectedKey,
     value: computed(() => comboBox.selectedKey.value),
     setValue,
     selectedItem,
