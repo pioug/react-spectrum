@@ -3329,6 +3329,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — SearchAutocomplete clear-button press-focus parity (`@vue-aria/autocomplete`)
+
+1. Closed clear-button press-focus drift:
+   - `useSearchAutocomplete` now accepts optional `inputRef` and adds clear-button `onMouseDown`/`onPointerDown`/`onTouchStart` handlers that prevent default focus transfer and restore input focus, matching React search-field behavior used by search-autocomplete.
+2. Preserved clear-button contract parity:
+   - existing `onClick` clear behavior and `tabIndex: -1` tab-order parity remain unchanged.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` search-autocomplete assertions now verify clear-button pointer-down `preventDefault` and input-focus preservation.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "submits and clears search autocomplete state"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

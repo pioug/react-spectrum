@@ -432,10 +432,14 @@ describe('Vue migration composition components', () => {
 
   it('submits and clears search autocomplete state', () => {
     let inputValue = ref('rea');
+    let inputElement = document.createElement('input');
+    document.body.append(inputElement);
+    let inputRef = ref<HTMLInputElement | null>(inputElement);
     let submissions: Array<{focusedKey: string | null, value: string}> = [];
     let clearCount = 0;
 
     let autocomplete = useSearchAutocomplete({
+      inputRef,
       inputValue,
       items: ['React', 'Vue'],
       onClear: () => {
@@ -454,6 +458,13 @@ describe('Vue migration composition components', () => {
     expect(clearCount).toBe(1);
     expect(autocomplete.clearButtonProps.value.disabled).toBe(false);
     expect(autocomplete.clearButtonProps.value.tabIndex).toBe(-1);
+
+    let clearPointerDownEvent = {
+      preventDefault: vi.fn()
+    } as unknown as PointerEvent;
+    autocomplete.clearButtonProps.value.onPointerDown(clearPointerDownEvent);
+    expect(clearPointerDownEvent.preventDefault).toHaveBeenCalledTimes(1);
+    expect(document.activeElement).toBe(inputElement);
 
     inputValue.value = 'react';
     autocomplete.clearButtonProps.value.onClick();
@@ -477,6 +488,8 @@ describe('Vue migration composition components', () => {
       items: ['React', 'Vue']
     });
     expect(disabledAutocomplete.clearButtonProps.value.disabled).toBe(true);
+
+    inputElement.remove();
   });
 
   it('manages vue-stately autocomplete input and focused node state', () => {
