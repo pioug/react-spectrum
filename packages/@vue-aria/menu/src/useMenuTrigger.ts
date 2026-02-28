@@ -39,7 +39,7 @@ export function useMenuTrigger(props: AriaMenuTriggerProps = {}): MenuTriggerAri
   let isOpen = props.isOpen ?? internalOpen;
 
   let setOpen = (nextOpen: boolean) => {
-    if (unref(props.isDisabled)) {
+    if (unref(props.isDisabled) && nextOpen) {
       return;
     }
 

@@ -6384,6 +6384,21 @@ describe('Vue migration composition components', () => {
     expect(menuTrigger.isOpen.value).toBe(false);
     expect(openChanges).toEqual([true, false]);
 
+    let disabledOpen = ref(true);
+    let disabledMenuTrigger = useMenuTrigger({
+      isDisabled: true,
+      isOpen: disabledOpen
+    });
+    disabledMenuTrigger.close();
+    expect(disabledOpen.value).toBe(false);
+    disabledMenuTrigger.open();
+    expect(disabledOpen.value).toBe(false);
+    disabledOpen.value = true;
+    disabledMenuTrigger.menuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
+    expect(disabledOpen.value).toBe(false);
+    disabledMenuTrigger.menuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
+    expect(disabledOpen.value).toBe(false);
+
     let actionEvents: string[] = [];
     let selectedKeys = ref(new Set<string>());
     let menu = useAriaMenu({
