@@ -7574,6 +7574,59 @@ describe('Vue migration composition components', () => {
     }
   });
 
+  it('supports react-style menu overload signatures with tree state', () => {
+    let itemActions: string[] = [];
+    let menuActions: string[] = [];
+    let treeState = useStatelyTreeState({
+      collection: [
+        {
+          key: 'copy',
+          props: {
+            onAction: () => {
+              itemActions.push('node');
+            }
+          },
+          textValue: 'Copy',
+          type: 'item'
+        },
+        {
+          key: 'delete',
+          textValue: 'Delete',
+          type: 'item'
+        }
+      ],
+      selectionMode: 'multiple'
+    });
+
+    let reactMenu = useAriaMenu({
+      'aria-label': 'Actions',
+      onAction: (key) => {
+        menuActions.push(String(key));
+      }
+    } as unknown as Parameters<typeof useAriaMenu>[0], treeState as unknown as Parameters<typeof useAriaMenu>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaMenu>[2]);
+    expect(reactMenu.menuProps.value.role).toBe('menu');
+
+    let reactMenuItem = useAriaMenuItem({
+      key: 'copy',
+      onAction: () => {
+        itemActions.push('props');
+      }
+    } as unknown as Parameters<typeof useAriaMenuItem>[0], treeState as unknown as Parameters<typeof useAriaMenuItem>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaMenuItem>[2]);
+    reactMenuItem.menuItemProps.value.onFocus();
+    expect(treeState.selectionManager.focusedKey).toBe('copy');
+    expect(treeState.selectionManager.isFocused).toBe(true);
+    reactMenuItem.menuItemProps.value.onClick();
+    expect(treeState.selectionManager.isSelected('copy')).toBe(true);
+    expect(itemActions).toEqual(['node']);
+    expect(menuActions).toEqual(['copy']);
+    reactMenuItem.menuItemProps.value.onBlur();
+    expect(treeState.selectionManager.focusedKey).toBeNull();
+  });
+
   it('computes vue-aria meter range, labels, and value text', () => {
     let meter = useAriaMeter({
       label: 'Upload progress',
