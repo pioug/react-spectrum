@@ -1,1 +1,1 @@
-export {Slider, VueSlider} from './src';
+export * from './src';

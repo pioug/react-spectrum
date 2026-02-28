@@ -200,6 +200,16 @@ import {
   Underlay as RootUnderlay,
   VuePopover as RootVuePopover
 } from '../../../packages/@vue-spectrum/overlays/index';
+import {
+  RangeSlider,
+  Slider,
+  VueSlider
+} from '@vue-spectrum/slider';
+import {
+  RangeSlider as RootRangeSlider,
+  Slider as RootSlider,
+  VueSlider as RootVueSlider
+} from '../../../packages/@vue-spectrum/slider/index';
 import {DIRECTORY_DRAG_TYPE, DropZone as SpectrumDropZone, useDragAndDrop as useSpectrumDragAndDrop} from '@vue-spectrum/dnd';
 import {
   Item as TabItem,
@@ -423,6 +433,17 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(RootTray).toBe(Tray);
     expect(RootUnderlay).toBe(Underlay);
     expect(RootVuePopover).toBe(VuePopover);
+  });
+
+  it('keeps slider exports aligned with VueSlider base entry and range primitive', () => {
+    expect(Slider).toBe(VueSlider);
+    expect(RangeSlider).not.toBe(VueSlider);
+  });
+
+  it('keeps root slider entry exports aligned with source exports', () => {
+    expect(RootSlider).toBe(Slider);
+    expect(RootVueSlider).toBe(VueSlider);
+    expect(RootRangeSlider).toBe(RangeSlider);
   });
 
   it('exports dnd drag/drop compatibility primitives', () => {
