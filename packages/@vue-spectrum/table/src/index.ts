@@ -60,6 +60,8 @@ type SortDescriptor = {
   direction: SortDirection
 };
 
+const NESTED_RESIZABLE_COLUMN_WARNING = (columnKey: string) => `Column key: ${columnKey}. Columns with child columns don't allow resizing.`;
+
 let tableId = 0;
 
 function isSelectionKey(value: unknown): value is SelectionKey {
@@ -277,6 +279,7 @@ export const Table = defineComponent({
     }
   },
   setup(props, {emit, attrs}) {
+    let warnedNestedResizableColumns = new Set<string>();
     let generatedId = `vs-table-${++tableId}`;
     let tableLabelId = computed(() => props.ariaLabelledby || (props.caption ? `${generatedId}-caption` : undefined));
 
@@ -463,6 +466,17 @@ export const Table = defineComponent({
                 : null,
               ...props.columns.map((column, columnIndex) => {
               let isResizable = column.resizable || props.resizableColumns.includes(column.key);
+              let childColumns = (column as TableColumn & {children?: unknown}).children;
+              if (
+                Array.isArray(childColumns)
+                && childColumns.length > 0
+                && isResizable
+                && !warnedNestedResizableColumns.has(column.key)
+                && process.env.NODE_ENV !== 'production'
+              ) {
+                console.warn(NESTED_RESIZABLE_COLUMN_WARNING(column.key));
+                warnedNestedResizableColumns.add(column.key);
+              }
               let isSortable = !!column.sortable;
               let isSortedAsc = props.sortDescriptor?.column === column.key && props.sortDescriptor.direction === 'ascending';
               let isSortedDesc = props.sortDescriptor?.column === column.key && props.sortDescriptor.direction === 'descending';

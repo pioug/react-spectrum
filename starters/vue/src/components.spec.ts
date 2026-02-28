@@ -5467,6 +5467,29 @@ describe('Vue migration primitives', () => {
     expect(wrapper.find('[hidden][aria-hidden=\"true\"]').exists()).toBe(true);
   });
 
+  it('warns when resizable table columns include child columns', () => {
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    mount(Table, {
+      props: {
+        columns: [
+          {
+            key: 'group',
+            label: 'Group',
+            resizable: true,
+            children: [{key: 'leaf', label: 'Leaf'}]
+          } as unknown as {key: string, label: string}
+        ],
+        rows: [
+          {id: 1, group: 'Value'}
+        ]
+      }
+    });
+
+    expect(warn).toHaveBeenCalledWith('Column key: group. Columns with child columns don\'t allow resizing.');
+    warn.mockRestore();
+  });
+
   it('renders selection checkbox column and select-all behavior in multiple mode', async () => {
     let wrapper = mount(Table, {
       props: {

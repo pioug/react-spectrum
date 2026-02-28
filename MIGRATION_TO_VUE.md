@@ -1206,6 +1206,19 @@
    - full Vue tests: `yarn test:vue` (536 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Table nested-resize warning parity (`@vue-spectrum/table`)
+
+1. Aligned `Table` header guardrails with React:
+   - in development, a warning now emits when a resizable column includes child columns (`Column key: ... Columns with child columns don't allow resizing.`).
+2. Preserved existing table behavior:
+   - no sort/selection/open-state behavior changes; warning is additive and dev-only.
+3. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: warning assertion for a resizable grouped/nested column configuration.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "maps table state classes, aria metadata, and hidden drop indicators|warns when resizable table columns include child columns"`,
+   - full Vue tests: `yarn test:vue` (537 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
