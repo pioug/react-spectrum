@@ -21,6 +21,7 @@ let draggingKeys = new Set<DraggingKey>();
 let dropIndicatorId = 0;
 let droppableCollectionId = 0;
 let droppableCollectionIds = new WeakMap<object, string>();
+let droppableCollectionRefs = new WeakMap<object, RefObject<HTMLElement | null>>();
 
 export type ClipboardProps = AnyRecord;
 export type ClipboardResult = {
@@ -768,6 +769,7 @@ export function useDroppableCollection(
     collectionId = `vue-aria-droppable-collection-${++droppableCollectionId}`;
     droppableCollectionIds.set(stateObject, collectionId);
   }
+  droppableCollectionRefs.set(stateObject, ref);
   let lastDragPoint: {x: number, y: number} | null = null;
   let isDraggingOverCollection = false;
 
@@ -1021,11 +1023,12 @@ export function useDroppableItem(
       return true;
     }
 
+    let collectionRef = droppableCollectionRefs.get(state as unknown as object) ?? dropCollectionRef;
     let isInternal = Boolean(
       draggingCollectionRef &&
-      dropCollectionRef &&
+      collectionRef &&
       draggingCollectionRef.current &&
-      draggingCollectionRef.current === dropCollectionRef.current
+      draggingCollectionRef.current === collectionRef.current
     );
     let operation = normalizeDropOperation(stateRecord.getDropOperation({
       allowedOperations: DEFAULT_ALLOWED_OPERATIONS,

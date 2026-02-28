@@ -5198,6 +5198,47 @@ describe('Vue migration composition components', () => {
     drag.endDrag('cancel');
   });
 
+  it('treats useDroppableItem as internal when collection refs match without active hover', async () => {
+    let selectedKeys = ref(new Set<string>(['alpha']));
+    let dragState = useStatelyDraggableCollectionState({
+      collection: [
+        {key: 'alpha', value: {id: 1, label: 'Alpha'}}
+      ],
+      selectedKeys,
+      getItems: () => [{id: 'alpha', type: 'item', value: {id: 1}}]
+    });
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: ({isInternal}) => isInternal ? 'move' : 'cancel'
+    });
+    let collectionRef = {current: document.createElement('div')};
+    useDroppableCollection({
+      acceptedDragTypes: ['item']
+    }, dropState, collectionRef);
+    useDraggableCollection({}, dragState, collectionRef);
+    let draggableItem = useDraggableItem({key: 'alpha'}, dragState) as {
+      dragButtonProps: {value: {onClick: () => void}}
+    };
+    draggableItem.dragButtonProps.value.onClick();
+    useDraggableCollection({}, dragState, collectionRef);
+
+    let target = {
+      type: 'item' as const,
+      key: 'alpha',
+      dropPosition: 'on' as const
+    };
+    let droppableItem = useDroppableItem({target}, dropState, {
+      current: document.createElement('button')
+    }) as {
+      dropProps: {value: {'aria-hidden'?: string}}
+    };
+
+    await nextTick();
+    expect(droppableItem.dropProps.value['aria-hidden']).toBeUndefined();
+
+    dragState.endDrag('cancel');
+  });
+
   it('emits useDroppableCollection drop callback payload with coordinates and operation', () => {
     let dropPayloads: Array<{dropOperation: string, type: string, x: number, y: number}> = [];
     let dropState = useStatelyDroppableCollectionState({
