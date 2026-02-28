@@ -1506,6 +1506,76 @@ describe('Vue migration composition components', () => {
     expect(tree.items.value.map((item) => item.key)).toEqual(['child-1', 'root-1']);
   });
 
+  it('matches vue-stately tree moveBefore and moveAfter self-target semantics', () => {
+    type TreeItem = {children?: TreeItem[], id: string};
+    let createTree = () => useStatelyTreeData<TreeItem>({
+      getChildren: (item) => item.children ?? [],
+      getKey: (item) => item.id,
+      initialItems: [
+        {
+          id: 'David',
+          children: [
+            {id: 'John', children: [{id: 'Suzie'}]},
+            {id: 'Sam', children: [{id: 'Stacy'}, {id: 'Brad'}]},
+            {id: 'Jane'}
+          ]
+        },
+        {id: 'Emily'},
+        {id: 'Eli'}
+      ]
+    });
+
+    let treeBefore = createTree();
+    treeBefore.moveBefore('David', ['David']);
+    expect(treeBefore.items.value.map((item) => item.key)).toEqual(['David', 'Emily', 'Eli']);
+
+    treeBefore.moveBefore('David', ['David', 'Eli']);
+    expect(treeBefore.items.value.map((item) => item.key)).toEqual(['David', 'Eli', 'Emily']);
+
+    treeBefore.moveBefore('John', ['John']);
+    expect(treeBefore.getItem('David')?.children?.map((item) => item.key)).toEqual(['John', 'Sam', 'Jane']);
+
+    treeBefore.moveBefore('Jane', ['Sam', 'Jane']);
+    expect(treeBefore.getItem('David')?.children?.map((item) => item.key)).toEqual(['John', 'Sam', 'Jane']);
+
+    let treeAfter = createTree();
+    treeAfter.moveAfter('David', ['David']);
+    expect(treeAfter.items.value.map((item) => item.key)).toEqual(['David', 'Emily', 'Eli']);
+
+    treeAfter.moveAfter('David', ['David', 'Eli']);
+    expect(treeAfter.items.value.map((item) => item.key)).toEqual(['David', 'Eli', 'Emily']);
+
+    treeAfter.moveAfter('John', ['John']);
+    expect(treeAfter.getItem('David')?.children?.map((item) => item.key)).toEqual(['John', 'Sam', 'Jane']);
+
+    treeAfter.moveAfter('Jane', ['Sam', 'Jane']);
+    expect(treeAfter.getItem('David')?.children?.map((item) => item.key)).toEqual(['John', 'Sam', 'Jane']);
+  });
+
+  it('throws when vue-stately tree moveBefore attempts to move a parent into its own subtree', () => {
+    type TreeItem = {children?: TreeItem[], id: string};
+    let tree = useStatelyTreeData<TreeItem>({
+      getChildren: (item) => item.children ?? [],
+      getKey: (item) => item.id,
+      initialItems: [
+        {
+          id: 'David',
+          children: [
+            {id: 'John', children: [{id: 'Suzie'}]},
+            {id: 'Sam'},
+            {id: 'Jane'}
+          ]
+        },
+        {id: 'Emily'},
+        {id: 'Eli'}
+      ]
+    });
+
+    expect(() => {
+      tree.moveBefore('Suzie', ['John', 'Sam', 'Eli']);
+    }).toThrow('Cannot move an item to be a child of itself.');
+  });
+
   it('loads, paginates, and filters vue-stately async list data', async () => {
     let allItems = [
       {id: 'alpha', label: 'Alpha'},

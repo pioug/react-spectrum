@@ -1860,6 +1860,18 @@
    - full Vue tests: `yarn test:vue` (591 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Tree move edge-case parity test-surface expansion (`@vue-stately/data`)
+
+1. Expanded React-aligned tree-data regression coverage for move edge paths:
+   - added self-target move invariants for `moveBefore` and `moveAfter` (no-op semantics when target key is included in moved keys),
+   - added descendant-cycle guard assertion for invalid `moveBefore` operations (`Cannot move an item to be a child of itself.`).
+2. Result of parity probe:
+   - current Vue tree-data move implementation already matches these React contracts; no additional implementation patch was required in this batch.
+3. Validation after coverage expansion:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "tree moveBefore and moveAfter self-target semantics|tree moveBefore attempts to move a parent"`,
+   - full Vue tests: `yarn test:vue` (593 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
