@@ -1,9 +1,11 @@
 import '@adobe/spectrum-css-temp/components/accordion/vars.css';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, type ComputedRef, defineComponent, h, inject, type InjectionKey, onMounted, type PropType, provide, ref, watch} from 'vue';
+import {computed, type ComputedRef, defineComponent, h, inject, type InjectionKey, onMounted, onUpdated, type PropType, provide, ref, watch} from 'vue';
 import {getEventTarget} from '@vue-aria/utils';
 const styles: {[key: string]: string} = {};
 
+const CHEVRON_RIGHT_MEDIUM_PATH = 'M5.99 5a.997.997 0 0 0-.293-.707L1.717.303A1 1 0 1 0 .303 1.717L3.586 5 .303 8.283a1 1 0 1 0 1.414 1.414l3.98-3.99A.997.997 0 0 0 5.99 5z';
+const CHEVRON_LEFT_MEDIUM_PATH = 'M5.697 8.283L2.414 5l3.283-3.283A1 1 0 1 0 4.283.303l-3.98 3.99a1 1 0 0 0 0 1.414l3.98 3.99a1 1 0 1 0 1.414-1.414z';
 
 interface AccordionContextValue {
   expandedKeys: ComputedRef<string[]>,
@@ -253,22 +255,50 @@ export const DisclosureTitle = defineComponent({
     let isHovered = ref(false);
     let isPressed = ref(false);
     let isFocusVisible = ref(false);
+    let headingRef = ref<HTMLElement | null>(null);
+    let direction = ref<'ltr' | 'rtl'>('ltr');
 
     let headingTag = computed(() => {
       let safeLevel = Math.min(6, Math.max(1, Math.trunc(props.level)));
       return `h${safeLevel}`;
     });
 
+    let syncDirection = () => {
+      let explicitDir = attrs.dir;
+      if (explicitDir === 'rtl' || explicitDir === 'ltr') {
+        direction.value = explicitDir;
+        return;
+      }
+
+      let closestDir = headingRef.value?.closest('[dir]')?.getAttribute('dir');
+      if (closestDir === 'rtl' || closestDir === 'ltr') {
+        direction.value = closestDir;
+        return;
+      }
+
+      if (typeof document !== 'undefined') {
+        direction.value = document.documentElement.getAttribute('dir') === 'rtl' ? 'rtl' : 'ltr';
+      }
+    };
+
+    onMounted(syncDirection);
+    onUpdated(syncDirection);
+    watch(() => attrs.dir, syncDirection);
+
     return () => {
       if (!disclosure) {
         return h(headingTag.value, {
+          ref: headingRef,
           ...attrs,
           class: [classNames(styles, 'spectrum-Accordion-itemHeading'), attrs.class],
           'data-vac': ''
         }, slots.default ? slots.default() : []);
       }
 
+      let indicatorIsRtl = direction.value === 'rtl';
+
       return h(headingTag.value, {
+        ref: headingRef,
         class: [classNames(styles, 'spectrum-Accordion-itemHeading')]
       }, [
         h('button', {
@@ -322,7 +352,11 @@ export const DisclosureTitle = defineComponent({
           'data-vac': ''
         }, [
           h('svg', {
-            class: [classNames(styles, 'spectrum-Accordion-itemIndicator'), 'spectrum-Icon', 'spectrum-UIIcon-ChevronRightMedium'],
+            class: [
+              classNames(styles, 'spectrum-Accordion-itemIndicator'),
+              'spectrum-Icon',
+              indicatorIsRtl ? 'spectrum-UIIcon-ChevronLeftMedium' : 'spectrum-UIIcon-ChevronRightMedium'
+            ],
             focusable: 'false',
             'aria-hidden': 'true',
             role: 'img',
@@ -331,7 +365,7 @@ export const DisclosureTitle = defineComponent({
             height: '10'
           }, [
             h('path', {
-              d: 'M5.99 5a.997.997 0 0 0-.293-.707L1.717.303A1 1 0 1 0 .303 1.717L3.586 5 .303 8.283a1 1 0 1 0 1.414 1.414l3.98-3.99A.997.997 0 0 0 5.99 5z'
+              d: indicatorIsRtl ? CHEVRON_LEFT_MEDIUM_PATH : CHEVRON_RIGHT_MEDIUM_PATH
             })
           ]),
           ...(slots.default ? slots.default() : ['Section'])

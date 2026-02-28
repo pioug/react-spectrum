@@ -6208,6 +6208,26 @@ describe('Vue migration primitives', () => {
     expect(wrapper.get('#two-panel').attributes('aria-hidden')).toBe('false');
   });
 
+  it('renders disclosure title chevron direction from rtl context to match react parity', async () => {
+    let wrapper = mount({
+      components: {Provider, Disclosure, DisclosurePanel, DisclosureTitle},
+      template: `
+        <Provider dir="rtl">
+          <Disclosure id="files">
+            <DisclosureTitle>Files</DisclosureTitle>
+            <DisclosurePanel>Files content</DisclosurePanel>
+          </Disclosure>
+        </Provider>
+      `
+    });
+
+    await nextTick();
+
+    let indicator = wrapper.get('.spectrum-Accordion-itemIndicator');
+    expect(indicator.classes()).toContain('spectrum-UIIcon-ChevronLeftMedium');
+    expect(indicator.get('path').attributes('d')).toBe('M5.697 8.283L2.414 5l3.283-3.283A1 1 0 1 0 4.283.303l-3.98 3.99a1 1 0 0 0 0 1.414l3.98 3.99a1 1 0 1 0 1.414-1.414z');
+  });
+
   it('supports uncontrolled accordion state via defaultExpandedKeys and accordion-level disabled aliases', async () => {
     let wrapper = mount({
       components: {Accordion, Disclosure, DisclosurePanel, DisclosureTitle},

@@ -5,14 +5,15 @@ Generated: 2026-02-28T19:00:03Z
 Use this as a progression checklist for parity re-review. Mark each line when complete.
 
 ## Phase 0 - Gate
-- [ ] Run baseline gate: `yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`
-- [ ] Confirm story-id parity for the current batch before/after fixes
+- [x] Run baseline gate: `yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`
+- [x] Confirm story-id parity for the current batch before/after fixes
 
 ## Phase 1 - @vue-spectrum Component Families + Stories
-- [ ] 1.01 `@vue-spectrum/accordion`
+- [x] 1.01 `@vue-spectrum/accordion`
   - Components: Accordion, Disclosure, DisclosurePanel, DisclosureTitle
-  - [ ] Story: Accordion.stories.ts
-  - [ ] Story: Disclosure.stories.ts
+  - [x] Story: Accordion.stories.ts
+  - [x] Story: Disclosure.stories.ts
+  - Evidence: React/Vue story exports and metadata align; targeted story-id parity is zero for `accordion--*` and `disclosure--*`; style-source wiring matches React (`@adobe/spectrum-css-temp/components/accordion/vars.css` with Spectrum selector contract only, no helper-class collisions); fixed RTL indicator parity in `DisclosureTitle` (Vue now renders left-chevron glyph in RTL like React) and added regression coverage in `starters/vue/src/components.spec.ts`; validation rerun passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
 - [ ] 1.02 `@vue-spectrum/actionbar`
   - Components: ActionBar, ActionBarContainer
   - [ ] Story: ActionBar.stories.ts
