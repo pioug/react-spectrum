@@ -164,53 +164,53 @@ export const Default: Story = {
 
 export const DefaultValueUncontrolled: Story = {
   render: renderSearchField({modelValue: 'React'}, true),
-  name: 'defaultValue (uncontrolled)',
+  name: 'Default Value Uncontrolled',
   parameters: {info}
 };
 
 export const ValueControlled: Story = {
   render: renderSearchField({modelValue: 'React'}, true),
-  name: 'value (controlled)',
+  name: 'Value Controlled',
   parameters: {info}
 };
 
 export const IconRefresh: Story = {
   render: renderSearchField({modelValue: 'React', icon: 'refresh'}, true),
-  name: 'icon: refresh',
+  name: 'Icon Refresh',
   parameters: {info}
 };
 
 export const IconNull: Story = {
   render: renderSearchField({modelValue: 'React', icon: null}, true),
-  name: 'icon: null',
+  name: 'Icon Null',
   parameters: {info}
 };
 
 export const OnClear: Story = {
   render: renderSearchField({modelValue: 'React'}, true),
-  name: 'onClear',
+  name: 'On Clear',
   parameters: {info}
 };
 
 export const AutoFocus: Story = {
   render: renderSearchField({autoFocus: true}, true),
-  name: 'autoFocus',
+  name: 'Auto Focus',
   parameters: {info}
 };
 
 export const NoVisibleLabel: Story = {
   render: renderSearchField({label: '', ariaLabel: 'Street address'}),
-  name: 'no visible label'
+  name: 'No Visible Label'
 };
 
 export const WithDescription: Story = {
   render: renderSearchField({description: 'Enter a search term.'}),
-  name: 'with description'
+  name: 'With Description'
 };
 
 export const WithErrorMessage: Story = {
   render: renderSearchField({errorMessage: 'Remove special characters.', validationState: 'invalid'}),
-  name: 'with error message'
+  name: 'With Error Message'
 };
 
 export const _ContextualHelp: Story = {
@@ -244,12 +244,12 @@ export const _ContextualHelp: Story = {
       </div>
     `
   }),
-  name: 'contextual help'
+  name: 'Contextual Help'
 };
 
 export const CustomWidth: Story = {
   render: renderSearchField({}, false, 'width: 300px;'),
-  name: 'custom width'
+  name: 'Custom Width'
 };
 
 export const CustomWidthAndNarrowContainer: Story = {
@@ -294,7 +294,7 @@ export const CustomWidthAndNarrowContainer: Story = {
       </div>
     `
   }),
-  name: 'custom width and narrow container'
+  name: 'Custom Width And Narrow Container'
 };
 
 export const WithinAPopover: Story = {
@@ -327,5 +327,5 @@ export const WithinAPopover: Story = {
       </div>
     `
   }),
-  name: 'within a popover'
+  name: 'Within A Popover'
 };

@@ -191,28 +191,28 @@ export const ValueTestControlled: Story = {
   render: renderTextArea({
     value: 'Test'
   }),
-  name: 'value: Test (controlled)'
+  name: 'Value Test Controlled'
 };
 
 export const DefaultValueTestUncontrolled: Story = {
   render: renderTextArea({
     defaultValue: 'Test'
   }),
-  name: 'defaultValue: Test (uncontrolled)'
+  name: 'Default Value Test Uncontrolled'
 };
 
 export const AutoFocusTrue: Story = {
   render: renderTextArea({
     autoFocus: true
   }),
-  name: 'autoFocus: true'
+  name: 'Auto Focus True'
 };
 
 export const IconInfo: Story = {
   render: renderTextArea({
     icon: 'i'
   }),
-  name: 'icon: Info'
+  name: 'Icon Info'
 };
 
 export const NoVisibleLabel: Story = {
@@ -220,14 +220,14 @@ export const NoVisibleLabel: Story = {
     label: '',
     ariaLabel: 'Street address'
   }),
-  name: 'no visible label'
+  name: 'No Visible Label'
 };
 
 export const WithDescription: Story = {
   render: renderTextArea({
     description: 'Enter product feedback.'
   }),
-  name: 'with description'
+  name: 'With Description'
 };
 
 export const WithErrorMessage: Story = {
@@ -235,14 +235,14 @@ export const WithErrorMessage: Story = {
     errorMessage: 'Enter at least 250 characters.',
     validationState: 'invalid'
   }),
-  name: 'with error message'
+  name: 'With Error Message'
 };
 
 export const WithContextualHelp: Story = {
   render: renderTextArea({
     contextualHelp: 'What is a segment? Segments identify visitor traits, devices, and origins.'
   }),
-  name: 'with contextual help'
+  name: 'With Contextual Help'
 };
 
 export const CustomWidth: Story = {
@@ -251,7 +251,7 @@ export const CustomWidth: Story = {
     validationState: 'invalid',
     width: '300px'
   }),
-  name: 'custom width'
+  name: 'Custom Width'
 };
 
 export const CustomWidthSmall: Story = {
@@ -260,7 +260,7 @@ export const CustomWidthSmall: Story = {
     validationState: 'invalid',
     width: '30px'
   }),
-  name: 'custom width small'
+  name: 'Custom Width Small'
 };
 
 export const CustomHeightWithLabel: Story = {
@@ -280,12 +280,12 @@ export const CustomHeightWithLabel: Story = {
       </Form>
     `
   }),
-  name: 'custom height with label'
+  name: 'Custom Height With Label'
 };
 
 export const ChangeableHelptext: Story = {
   render: renderValidationExample(),
-  name: 'changeable helptext',
+  name: 'Changeable Helptext',
   parameters: {
     description: {
       data: 'Verify that the changing size of the error message does not interfere with the height. To test, delete the input, then type the character "a". Height should update to match.'
@@ -295,7 +295,7 @@ export const ChangeableHelptext: Story = {
 
 export const ChangeableHelptextCustomHeight: Story = {
   render: renderValidationExample('height: 175px; min-height: 100px; max-height: 50vh;'),
-  name: 'changeable helptext custom height',
+  name: 'Changeable Helptext Custom Height',
   parameters: {
     description: {
       data: 'Verify that the changing size of the error message does not interfere with the height. To test, delete the input, then type the character "a". Height should update to match.'
@@ -330,19 +330,19 @@ export const ControlledInteractive: Story = {
       </div>
     `
   }),
-  name: 'controlled interactive'
+  name: 'Controlled Interactive'
 };
 
 export const InFlex: Story = {
   render: renderInFlexLayouts(),
-  name: 'in flex'
+  name: 'In Flex'
 };
 
 export const InFlexValidationState: Story = {
   render: renderInFlexLayouts({
     validationState: 'invalid'
   }),
-  name: 'in flex validation state'
+  name: 'In Flex Validation State'
 };
 
 export const WithDifferentLocaleText: Story = {

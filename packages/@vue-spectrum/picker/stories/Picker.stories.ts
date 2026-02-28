@@ -1,6 +1,7 @@
 import {ContextualHelp} from '@vue-spectrum/contextualhelp';
 import {Picker} from '../src';
 import {action} from '@storybook/addon-actions';
+import {userEvent, within} from '@storybook/test';
 import {computed, defineComponent, ref, watch} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
@@ -259,6 +260,14 @@ function renderPicker(baseArgs: Partial<PickerStoryArgs> = {}, wrapperStyle?: st
 
 export const Default: Story = {
   render: renderPicker({items: [...baseItems]})
+};
+
+Default.play = async ({canvasElement}) => {
+  let canvas = within(canvasElement);
+  let button = await canvas.findByRole('button');
+  await userEvent.click(button);
+  let body = canvasElement.ownerDocument.body;
+  await within(body).findByRole('listbox');
 };
 
 export const Disabled: Story = {

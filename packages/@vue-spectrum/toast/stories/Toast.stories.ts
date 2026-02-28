@@ -111,7 +111,7 @@ export const Default: Story = {
 
 export const WithAction: Story = {
   render: (args) => renderToastContainer(args, {showAction: true}),
-  name: 'With action',
+  name: 'With Action',
   parameters: {
     a11y: {
       config: {
@@ -127,7 +127,7 @@ export const WithAction: Story = {
 
 export const WithTestId: Story = {
   render: (args) => renderToastContainer(args, {showAction: true, testId: 'hello i am a test id'}),
-  name: 'With test id',
+  name: 'With Test Id',
   parameters: {
     a11y: {
       config: {
@@ -180,7 +180,7 @@ export const WithDialog: Story = {
       </div>
     `
   }),
-  name: 'With dialog',
+  name: 'With Dialog',
   parameters: {
     a11y: {
       config: {
@@ -229,7 +229,7 @@ export const MultipleToastContainers: Story = {
       </div>
     `
   }),
-  name: 'multiple ToastContainers',
+  name: 'Multiple Toast Containers',
   parameters: {
     disableToastContainer: true,
     a11y: {
@@ -282,7 +282,7 @@ export const ProgrammaticallyClosing: Story = {
       </div>
     `
   }),
-  name: 'programmatically closing',
+  name: 'Programmatically Closing',
   parameters: {
     a11y: {
       config: {
@@ -305,7 +305,7 @@ export const WithIframe: Story = {
     },
     template: '<iframe title="iframe" width="500" height="500" :src="iframeSrc" tabindex="-1" />'
   }),
-  name: 'with iframe',
+  name: 'With Iframe',
   parameters: {
     a11y: {
       config: {
