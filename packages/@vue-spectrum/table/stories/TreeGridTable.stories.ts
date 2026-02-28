@@ -89,6 +89,14 @@ function makeManyRows(count = 5): RowItem[] {
 const meta: Meta<typeof Table> = {
   title: 'TableView/Expandable rows',
   component: Table,
+  excludeStories: [
+    'StaticExpandableRowsRender',
+    'DynamicExpandableRowsStoryRender',
+    'UserSetRowHeaderRender',
+    'ManyExpandableRowsStoryRender',
+    'EmptyTreeGridStoryRender',
+    'LoadingTreeGridStoryRender'
+  ],
   args: {
     ariaLabel: 'TableView with static expandable rows',
     columns: COLUMNS,
@@ -209,8 +217,26 @@ function renderExpandableTable(args: StoryArgs, showButtons = false, startEmpty 
   };
 }
 
+export const StaticExpandableRowsRender = (args: StoryArgs) => renderExpandableTable(args);
+
+export const DynamicExpandableRowsStoryRender = (args: StoryArgs) => renderExpandableTable(args, true);
+
+export const UserSetRowHeaderRender = (args: StoryArgs) => renderExpandableTable(args);
+
+export const ManyExpandableRowsStoryRender = (args: StoryArgs) => {
+  let rows = Array.isArray(args.rows) ? args.rows : makeManyRows(5);
+  return renderExpandableTable({
+    ...args,
+    rows
+  }, true);
+};
+
+export const EmptyTreeGridStoryRender = (args: StoryArgs) => renderExpandableTable(args, false, true);
+
+export const LoadingTreeGridStoryRender = (args: StoryArgs) => renderExpandableTable(args, true, true);
+
 export const StaticExpandableRows: Story = {
-  render: (args) => renderExpandableTable(args),
+  render: (args) => StaticExpandableRowsRender(args),
   args: {
     ariaLabel: 'TableView with static expandable rows',
     columns: COLUMNS,
@@ -222,7 +248,7 @@ export const StaticExpandableRows: Story = {
 };
 
 export const DynamicExpandableRowsStory: Story = {
-  render: (args) => renderExpandableTable(args, true),
+  render: (args) => DynamicExpandableRowsStoryRender(args),
   args: {
     ariaLabel: 'TableView with dynamic expandable rows',
     columns: COLUMNS,
@@ -234,7 +260,7 @@ export const DynamicExpandableRowsStory: Story = {
 };
 
 export const UserSetRowHeader: Story = {
-  render: (args) => renderExpandableTable(args),
+  render: (args) => UserSetRowHeaderRender(args),
   args: {
     ariaLabel: 'TableView with expandable rows and multiple row headers',
     columns: COLUMNS,
@@ -251,11 +277,11 @@ export const UserSetRowHeader: Story = {
 };
 
 export const ManyExpandableRowsStory: Story = {
-  render: (args) => renderExpandableTable(args, true),
+  render: (args) => ManyExpandableRowsStoryRender(args),
   args: {
     ariaLabel: 'TableView with many dynamic expandable rows',
     columns: COLUMNS,
-    rows: makeManyRows(6),
+    rows: makeManyRows(5),
     openKeys: new Set(['many-1', 'many-2', 'many-3']),
     rowKey: 'id'
   },
@@ -263,7 +289,7 @@ export const ManyExpandableRowsStory: Story = {
 };
 
 export const EmptyTreeGridStory: Story = {
-  render: (args) => renderExpandableTable(args, false, true),
+  render: (args) => EmptyTreeGridStoryRender(args),
   args: {
     ariaLabel: 'TableView with empty state',
     columns: COLUMNS,
@@ -275,7 +301,7 @@ export const EmptyTreeGridStory: Story = {
 };
 
 export const LoadingTreeGridStory: Story = {
-  render: (args) => renderExpandableTable(args, true, true),
+  render: (args) => LoadingTreeGridStoryRender(args),
   args: {
     ariaLabel: 'TableView with loading',
     columns: COLUMNS,

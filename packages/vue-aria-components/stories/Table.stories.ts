@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import type {Meta, StoryFn, StoryObj} from '@storybook/vue3-vite';
 import {VueButton, VueTable} from 'vue-aria-components';
 import {ref} from 'vue';

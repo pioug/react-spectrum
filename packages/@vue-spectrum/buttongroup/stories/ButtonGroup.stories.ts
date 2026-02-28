@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import Bell from '@spectrum-icons-vue/workflow/Bell';
 import {Button} from '@vue-spectrum/button';
 import {ButtonGroup} from '../src';

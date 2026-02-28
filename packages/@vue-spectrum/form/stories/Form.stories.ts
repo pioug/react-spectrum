@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {Form} from '../src';
 import {NumberField} from '@vue-spectrum/numberfield';
 import {TextField} from '@vue-spectrum/textfield';

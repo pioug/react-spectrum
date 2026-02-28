@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {ref} from 'vue';
 import {useCheckbox} from '@vue-aria/checkbox';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';

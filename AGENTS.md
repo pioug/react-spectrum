@@ -52,6 +52,9 @@ Use this checklist for every component batch. Do not skip steps even when tests 
    - Compare React vs Vue style imports for the same component (`@adobe/spectrum-css-temp/.../vars.css` and local CSS files).
    - Confirm Vue package dependencies include any CSS package required by those imports.
    - Confirm Vue renders the class/selector contract expected by reused React/Spectrum CSS (e.g. `spectrum-*` / `react-spectrum-*` when applicable).
+   - Run a class-collision audit for Vue helper classes before sign-off:
+     - Search each non-Spectrum helper class with `rg` across the monorepo.
+     - If the selector exists outside the component package (especially in `packages/vue-aria-components` global styles), rename to a component-scoped prefix and re-verify computed styles.
    - Replace placeholder/private Vue selectors when they break React style reuse parity.
    - Verify at least one triggered state in Storybook (not just static DOM) to ensure styles are actually applied.
 

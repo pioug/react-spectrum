@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {Provider} from '@vue-spectrum/provider';
 import {Radio, RadioGroup} from '../src';
 import {computed, defineComponent, ref} from 'vue';

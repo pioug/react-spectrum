@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {Avatar} from '@vue-spectrum/avatar';
 import {ListBox} from '../src';
 import {computed, defineComponent, ref, watch} from 'vue';

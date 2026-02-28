@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import type {Meta, StoryFn} from '@storybook/vue3-vite';
 import {VueDatePicker, VueDateRangePicker} from 'vue-aria-components';
 import {ref} from 'vue';

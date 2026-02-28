@@ -1,7 +1,7 @@
 import {ContextualHelp} from '@vue-spectrum/contextualhelp';
 import {Picker} from '../src';
-import {action} from '@storybook/addon-actions';
-import {userEvent, within} from '@storybook/test';
+import {action} from 'storybook/actions';
+import {userEvent, within} from 'storybook/test';
 import {computed, defineComponent, ref, watch} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 

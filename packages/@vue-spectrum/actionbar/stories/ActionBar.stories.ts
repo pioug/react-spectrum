@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {ActionBar, ActionBarContainer, type SpectrumActionBarProps} from '../src';
 import {computed, defineComponent, type PropType, ref} from 'vue';
 import Copy from '@spectrum-icons-vue/workflow/Copy';

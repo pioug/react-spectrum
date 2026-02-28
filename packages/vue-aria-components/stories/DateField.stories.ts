@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import type {Meta, StoryFn} from '@storybook/vue3-vite';
 import {VueDateField} from 'vue-aria-components';
 import {computed, ref} from 'vue';

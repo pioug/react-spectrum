@@ -1,6 +1,6 @@
 import {ActionButton, ToggleButton} from '@vue-spectrum/button';
 import {MenuTrigger} from '../src';
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 

@@ -1,26 +1,48 @@
 import {ActionBar, ActionBarContainer} from '@vue-spectrum/actionbar';
 import {ListView} from '../src';
-import {action} from '@storybook/addon-actions';
-import {computed, onMounted, ref} from 'vue';
+import {action} from 'storybook/actions';
+import {computed, h, onMounted, ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type ListItem = {
+  children?: Array<{key: number | string, name: string}>,
   description?: string,
   key: number | string,
-  name: string
+  name: string,
+  type?: string
 };
 
 type StoryArgs = Record<string, unknown>;
 type StorySelectionValue = Iterable<number | string> | number | string;
 
-const BASE_ITEMS: ListItem[] = [
-  {key: 'a', name: 'Adobe Photoshop'},
-  {key: 'b', name: 'Adobe XD'},
-  {key: 'c', name: 'Documents'},
-  {key: 'd', name: 'Adobe InDesign'},
-  {key: 'e', name: 'Utilities'},
-  {key: 'f', name: 'Adobe AfterEffects'}
+export const items: ListItem[] = [
+  {key: 'a', name: 'Adobe Photoshop', type: 'file'},
+  {key: 'b', name: 'Adobe XD', type: 'file'},
+  {key: 'c', name: 'Documents', type: 'folder', children: [
+    {key: 1, name: 'Sales Pitch'},
+    {key: 2, name: 'Demo'},
+    {key: 3, name: 'Taxes'}
+  ]},
+  {key: 'd', name: 'Adobe InDesign', type: 'file'},
+  {key: 'e', name: 'Utilities', type: 'folder', children: [
+    {key: 1, name: 'Activity Monitor'}
+  ]},
+  {key: 'f', name: 'Adobe AfterEffects', type: 'file'},
+  {key: 'g', name: 'Adobe Illustrator', type: 'file'},
+  {key: 'h', name: 'Adobe Lightroom', type: 'file'},
+  {key: 'i', name: 'Adobe Premiere Pro', type: 'file'},
+  {key: 'j', name: 'Adobe Fresco', type: 'file'},
+  {key: 'k', name: 'Adobe Dreamweaver', type: 'file'},
+  {key: 'l', name: 'Adobe Connect', type: 'file'},
+  {key: 'm', name: 'Pictures', type: 'folder', children: [
+    {key: 1, name: 'Yosemite'},
+    {key: 2, name: 'Jackson Hole'},
+    {key: 3, name: 'Crater Lake'}
+  ]},
+  {key: 'n', name: 'Adobe Acrobat', type: 'file'}
 ];
+
+const BASE_ITEMS: ListItem[] = items;
 
 const THUMBNAIL_ITEMS: ListItem[] = [
   {key: '1', name: 'folder of good bois'},
@@ -38,6 +60,10 @@ const MANY_ITEMS: ListItem[] = Array.from({length: 40}, (_, index) => ({
 const meta: Meta<typeof ListView> = {
   title: 'ListView',
   component: ListView,
+  excludeStories: [
+    'items',
+    'renderEmptyState'
+  ],
   args: {
     density: 'regular',
     disabledBehavior: 'selection',
@@ -76,6 +102,13 @@ const meta: Meta<typeof ListView> = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+
+export function renderEmptyState() {
+  return h('div', [
+    h('h3', {style: {marginBottom: '8px'}}, 'No results'),
+    h('p', 'No results found, press here for more info.')
+  ]);
+}
 
 function normalizeStorySelectionValue(value: unknown): Set<number | string> {
   if (typeof value === 'number' || typeof value === 'string') {
@@ -173,13 +206,15 @@ export const EmptyList: Story = {
   render: (args) => ({
     components: {ListView},
     setup() {
-      return {args};
+      return {args, renderEmptyState};
     },
     template: `
       <div style="max-width: 300px;">
-        <ListView v-bind="args" aria-label="empty ListView" :items="[]">
-          <div>No results found, press here for more info.</div>
-        </ListView>
+        <ListView
+          v-bind="args"
+          aria-label="empty ListView"
+          :items="[]"
+          :render-empty-state="renderEmptyState" />
       </div>
     `
   }),
@@ -317,6 +352,7 @@ export const EmptyDynamic: Story = {
       return {
         args,
         listItems,
+        renderEmptyState,
         addItems: () => {
           listItems.value = MANY_ITEMS.slice(0, 6);
         }
@@ -325,9 +361,11 @@ export const EmptyDynamic: Story = {
     template: `
       <div style="display: grid; gap: 8px; max-width: 320px;">
         <button type="button" @click="addItems">Load items</button>
-        <ListView v-bind="args" aria-label="empty dynamic listview" :items="listItems">
-          <div>No items</div>
-        </ListView>
+        <ListView
+          v-bind="args"
+          aria-label="empty dynamic listview"
+          :items="listItems"
+          :render-empty-state="renderEmptyState" />
       </div>
     `
   }),

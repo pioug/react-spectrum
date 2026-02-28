@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {ColorWheel} from '../src';
 import {ref, watch} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';

@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {Button} from '@vue-spectrum/button';
 import {ComboBox} from '../src';
 import {computed, onBeforeUnmount, ref, watch} from 'vue';

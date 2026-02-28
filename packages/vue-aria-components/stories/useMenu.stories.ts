@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {computed, ref, type Ref} from 'vue';
 import {useInteractOutside} from '@vue-aria/interactions';
 import {useMenu, useMenuItem, useMenuTrigger} from '@vue-aria/menu';

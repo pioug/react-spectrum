@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {computed, defineComponent, ref} from 'vue';
 import {useMove, type MoveEndEvent, type MoveStartEvent} from '@vue-aria/interactions';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';

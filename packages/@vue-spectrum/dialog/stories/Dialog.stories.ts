@@ -2,7 +2,7 @@ import {Button} from '@vue-spectrum/button';
 import {Checkbox} from '@vue-spectrum/checkbox';
 import {Dialog} from '../src';
 import {TextField} from '@vue-spectrum/textfield';
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 

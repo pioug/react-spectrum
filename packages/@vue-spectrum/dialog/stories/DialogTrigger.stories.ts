@@ -2,7 +2,7 @@ import {ActionButton, Button} from '@vue-spectrum/button';
 import {AlertDialog, DialogTrigger} from '../src';
 import {Menu} from '@vue-spectrum/menu';
 import {TooltipTrigger} from '@vue-spectrum/tooltip';
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 

@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import type {Meta, StoryFn, StoryObj} from '@storybook/vue3-vite';
 import {ref} from 'vue';
 import {VueForm, VueRadio, VueRadioGroup} from 'vue-aria-components';

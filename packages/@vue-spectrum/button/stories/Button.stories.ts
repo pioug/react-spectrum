@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {Button} from '@vue-spectrum/button';
 import {h, ref} from 'vue';
 import {Provider} from '@vue-spectrum/provider';

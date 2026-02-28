@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {ref} from 'vue';
 import {useInteractOutside, usePress} from '@vue-aria/interactions';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';

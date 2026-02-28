@@ -12,9 +12,8 @@ export const VUE_STORYBOOK_STORY_GLOBS = [
 const config: StorybookConfig = {
   stories: VUE_STORYBOOK_STORY_GLOBS,
   addons: [
+    'storybook/actions',
     '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/addon-interactions',
     '@storybook/addon-a11y'
   ],
   framework: {

@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {ActionGroup, type SpectrumActionGroupProps} from '../src';
 import Book from '@spectrum-icons-vue/workflow/Book';
 import Brush from '@spectrum-icons-vue/workflow/Brush';

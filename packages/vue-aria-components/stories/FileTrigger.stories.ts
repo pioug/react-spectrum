@@ -1,6 +1,6 @@
 import type {Meta, StoryFn} from '@storybook/vue3-vite';
 import {VueFileTrigger} from 'vue-aria-components';
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {ref} from 'vue';
 
 const meta = {

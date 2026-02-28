@@ -3,7 +3,7 @@ import {ButtonGroup} from '@vue-spectrum/buttongroup';
 import {Checkbox} from '@vue-spectrum/checkbox';
 import {Dialog} from '@vue-spectrum/dialog';
 import {UNSAFE_PortalProvider} from '@vue-aria/overlays';
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {clearToastQueue, ToastContainer, ToastQueue, type SpectrumToastOptions} from '../src';
 import {onBeforeUnmount, onMounted, ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
@@ -62,7 +62,7 @@ function createToastHandlers(args: StoryArgs, overrides: Partial<SpectrumToastOp
   };
 }
 
-function renderToastContainer(args: StoryArgs, options: {showAction?: boolean, testId?: string} = {}) {
+function renderToastContainer(args: StoryArgs, options: {showAction?: boolean, toastTestId?: string} = {}) {
   return {
     components: {Button, ButtonGroup, ToastContainer},
     setup() {
@@ -70,13 +70,17 @@ function renderToastContainer(args: StoryArgs, options: {showAction?: boolean, t
       onBeforeUnmount(() => {
         clearToastQueue();
       });
-      let handlers = createToastHandlers(
-        args,
-        options.showAction ? {actionLabel: 'Action', onAction: action('onAction') as () => void} : {}
-      );
+      let handlerOverrides: Partial<SpectrumToastOptions> = {};
+      if (options.showAction) {
+        handlerOverrides.actionLabel = 'Action';
+        handlerOverrides.onAction = action('onAction') as () => void;
+      }
+      if (options.toastTestId) {
+        handlerOverrides['data-testid'] = options.toastTestId;
+      }
+      let handlers = createToastHandlers(args, handlerOverrides);
       return {
         placement: args.placement,
-        testId: options.testId,
         ...handlers
       };
     },
@@ -88,7 +92,7 @@ function renderToastContainer(args: StoryArgs, options: {showAction?: boolean, t
           <Button variant="negative" @click="showNegativeToast">Show Negative Toast</Button>
           <Button variant="accent" @click="showInfoToast">Show Info Toast</Button>
         </ButtonGroup>
-        <ToastContainer :placement="placement" :data-testid="testId" />
+        <ToastContainer :placement="placement" />
       </div>
     `
   };
@@ -111,7 +115,7 @@ export const Default: Story = {
 
 export const WithAction: Story = {
   render: (args) => renderToastContainer(args, {showAction: true}),
-  name: 'With Action',
+  name: 'With action',
   parameters: {
     a11y: {
       config: {
@@ -126,8 +130,8 @@ export const WithAction: Story = {
 };
 
 export const WithTestId: Story = {
-  render: (args) => renderToastContainer(args, {showAction: true, testId: 'hello i am a test id'}),
-  name: 'With Test Id',
+  render: (args) => renderToastContainer(args, {showAction: true, toastTestId: 'hello i am a test id'}),
+  name: 'With test id',
   parameters: {
     a11y: {
       config: {
@@ -180,7 +184,7 @@ export const WithDialog: Story = {
       </div>
     `
   }),
-  name: 'With Dialog',
+  name: 'With dialog',
   parameters: {
     a11y: {
       config: {
@@ -229,7 +233,7 @@ export const MultipleToastContainers: Story = {
       </div>
     `
   }),
-  name: 'Multiple Toast Containers',
+  name: 'multiple ToastContainers',
   parameters: {
     disableToastContainer: true,
     a11y: {
@@ -282,7 +286,7 @@ export const ProgrammaticallyClosing: Story = {
       </div>
     `
   }),
-  name: 'Programmatically Closing',
+  name: 'programmatically closing',
   parameters: {
     a11y: {
       config: {
@@ -305,7 +309,7 @@ export const WithIframe: Story = {
     },
     template: '<iframe title="iframe" width="500" height="500" :src="iframeSrc" tabindex="-1" />'
   }),
-  name: 'With Iframe',
+  name: 'with iframe',
   parameters: {
     a11y: {
       config: {
@@ -384,5 +388,8 @@ export const withFullscreen: Story = {
         <ToastContainer v-if="!isFullscreen" key="app" :placement="placement" />
       </div>
     `
-  })
+  }),
+  parameters: {
+    disableToastContainer: true
+  }
 };

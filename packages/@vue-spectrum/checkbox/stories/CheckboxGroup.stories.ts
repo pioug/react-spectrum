@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {Checkbox, CheckboxGroup} from '../src';
 import {ContextualHelp} from '@vue-spectrum/contextualhelp';
 import {computed, h, ref} from 'vue';

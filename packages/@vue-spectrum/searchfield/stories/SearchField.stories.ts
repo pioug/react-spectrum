@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {ContextualHelp} from '@vue-spectrum/contextualhelp';
 import {SearchField} from '../src';
 import {computed, ref, watch} from 'vue';

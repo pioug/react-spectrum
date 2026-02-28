@@ -1,5 +1,5 @@
 import {ToggleButton} from '@vue-spectrum/button';
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {h, ref} from 'vue';
 import {Provider} from '@vue-spectrum/provider';
 import {theme as defaultTheme} from '@vue-spectrum/theme-default';

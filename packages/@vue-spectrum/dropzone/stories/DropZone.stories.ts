@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {DropZone} from '../src';
 import {ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
@@ -70,27 +70,27 @@ function renderDropZone(baseArgs: Record<string, unknown> = {}, includeDraggable
   });
 }
 
-export const WithDraggable: Story = {
+export const withDraggable: Story = {
   render: renderDropZone({}, true)
 };
 
-export const CustomAriaLabel: Story = {
+export const customAriaLabel: Story = {
   render: renderDropZone({'aria-label': 'custom label'}, true)
 };
 
-export const WithButton: Story = {
+export const withButton: Story = {
   render: renderDropZone({}, false, true)
 };
 
-export const CustomBannerMessage: Story = {
+export const customBannerMessage: Story = {
   render: renderDropZone({replaceMessage: 'This is a custom message'})
 };
 
-export const AcceptsMultiple: Story = {
+export const acceptsMultiple: Story = {
   render: renderDropZone({multiple: true})
 };
 
-export const FilledDropzone: Story = {
+export const filledDropzone: Story = {
   render: (args) => ({
     components: {DropZone},
     setup() {

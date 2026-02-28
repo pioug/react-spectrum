@@ -1,5 +1,5 @@
 import {ActionMenu} from '../src';
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {TooltipTrigger} from '@vue-spectrum/tooltip';
 import {ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';

@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {TagGroup} from '@vue-spectrum/tag';
 import {VueListBox, VueSearchField, VueTextField} from 'vue-aria-components';

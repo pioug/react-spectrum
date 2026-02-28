@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {computed, ref} from 'vue';
 import {TooltipTrigger} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';

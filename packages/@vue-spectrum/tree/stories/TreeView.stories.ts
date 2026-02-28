@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {ref} from 'vue';
 import {TreeView} from '../src';
@@ -75,7 +75,8 @@ const meta: Meta<typeof TreeView> = {
   title: 'TreeView',
   component: TreeView,
   excludeStories: [
-    'renderTree'
+    'renderTree',
+    'renderEmptyState'
   ],
   args: {
     items: STATIC_ITEMS
@@ -98,6 +99,11 @@ const meta: Meta<typeof TreeView> = {
         disable: true
       }
     },
+    renderEmptyState: {
+      table: {
+        disable: true
+      }
+    },
     labelKey: {
       control: 'text'
     },
@@ -110,6 +116,10 @@ const meta: Meta<typeof TreeView> = {
 export default meta;
 
 type Story = StoryObj<typeof meta>;
+
+export function renderEmptyState() {
+  return 'No files selected.';
+}
 
 function renderTree(withMenu = false, emptyState = false) {
   return (args: Record<string, unknown>) => ({
@@ -126,6 +136,7 @@ function renderTree(withMenu = false, emptyState = false) {
         emptyState,
         lastAction,
         onItemAction,
+        renderEmptyState,
         withMenu
       };
     },
@@ -135,7 +146,7 @@ function renderTree(withMenu = false, emptyState = false) {
           v-bind="args"
           :items="emptyState ? [] : args.items"
           @item-action="onItemAction" />
-        <div v-if="emptyState">No files selected.</div>
+        <div v-if="emptyState">{{ renderEmptyState() }}</div>
         <div v-if="lastAction">Last action: {{lastAction}}</div>
         <div v-if="withMenu" style="display: flex; gap: 8px;">
           <button type="button">Edit</button>

@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {ListView, type ListItemRecord} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {computed, ref} from 'vue';

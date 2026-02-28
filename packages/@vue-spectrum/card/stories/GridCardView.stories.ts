@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {CardView} from '../src';
 import {h, onMounted, ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
@@ -37,7 +37,7 @@ let items: GridCardItem[] = [
   {width: 1215, height: 121, src: 'https://i.imgur.com/zzwWogn.jpg', title: 'Bob 8', id: 'Bob 8'}
 ];
 
-let falsyItems = [
+export let falsyItems = [
   {id: 0, width: 1001, height: 381, src: 'https://i.imgur.com/Z7AzH2c.jpg', title: 'Bob 1'},
   {id: 1, width: 640, height: 640, src: 'https://i.imgur.com/DhygPot.jpg', title: 'Joe 1 really really really really really really really really really really really really long'},
   {id: 2, width: 182, height: 1009, src: 'https://i.imgur.com/L7RTlvI.png', title: 'Jane 1'}
@@ -105,6 +105,7 @@ function removeNthItem(value: string, sourceItems: GridCardItem[]) {
 const meta = {
   title: 'CardView/Grid layout',
   component: CardView,
+  excludeStories: ['NoCards', 'CustomLayout', 'falsyItems'],
   args: {
     'aria-label': 'Test CardView'
   },
@@ -363,7 +364,7 @@ export const ControlledCards: Story = {
   name: 'selected keys, controlled'
 };
 
-const NoCards: Story = {
+export const NoCards: Story = {
   render: (args) => ({
     setup() {
       let show = ref(false);
@@ -499,8 +500,14 @@ export const AsyncLoading: Story = {
   name: 'Async loading'
 };
 
+export function CustomLayout(props: Record<string, unknown>) {
+  let renderDynamicCards = DynamicCards.render as Exclude<typeof DynamicCards.render, undefined>;
+  return renderDynamicCards(props);
+}
+
 export const CustomLayoutOptions: Story = {
   ...DynamicCards,
+  render: (args) => CustomLayout(args),
   args: {
     ...DynamicCards.args,
     layoutOptions: {maxColumns: 2, margin: 150, minSpace: {height: 10, width: 10}, itemPadding: 400}

@@ -1,5 +1,5 @@
 import {ActionButton, Button} from '@vue-spectrum/button';
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {computed, ref} from 'vue';
 import {Form} from '@vue-spectrum/form';
 import {TextArea} from '@vue-spectrum/textfield';

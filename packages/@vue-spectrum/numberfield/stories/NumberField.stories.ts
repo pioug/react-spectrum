@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {Button} from '@vue-spectrum/button';
 import {ContextualHelp} from '@vue-spectrum/contextualhelp';
 import {Form} from '@vue-spectrum/form';

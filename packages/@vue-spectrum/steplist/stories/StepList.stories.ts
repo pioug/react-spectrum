@@ -1,4 +1,4 @@
-import {action} from '@storybook/addon-actions';
+import {action} from 'storybook/actions';
 import {computed, ref, watch} from 'vue';
 import {Picker} from '@vue-spectrum/picker';
 import {StepList, type StepListItemData, type StepListValue} from '../src';
