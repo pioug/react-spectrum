@@ -18,11 +18,7 @@ export interface AriaDropOptions {
 export interface DropAria {
   canDrop: (items: DragItem[]) => boolean,
   drop: (items: DragItem[], operation?: DropOperation) => DropOperation,
-  dropProps: ComputedRef<{
-    'aria-disabled'?: true,
-    'data-drop-target': boolean,
-    role: 'group'
-  }>,
+  dropProps: ComputedRef<Record<string, never>>,
   enter: (items: DragItem[]) => boolean,
   exit: () => void,
   isDropTarget: Ref<boolean>,
@@ -174,11 +170,7 @@ export function useDrop(options: AriaDropOptions = {}): DropAria {
     return resolvedOperation;
   };
 
-  let dropProps = computed(() => ({
-    role: 'group' as const,
-    'data-drop-target': isDropTarget.value,
-    'aria-disabled': isDisabled.value ? true as const : undefined
-  }));
+  let dropProps = computed<Record<string, never>>(() => ({}));
 
   return {
     canDrop,

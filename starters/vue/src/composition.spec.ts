@@ -4398,6 +4398,28 @@ describe('Vue migration composition components', () => {
     warnSpy.mockRestore();
   });
 
+  it('matches react useDrop dropProps shape without vue-only attributes', () => {
+    let enabledDrop = useDrop();
+    let enabledProps = enabledDrop.dropProps.value as {
+      'aria-disabled'?: true,
+      'data-drop-target'?: boolean,
+      role?: string
+    };
+    expect(enabledProps.role).toBeUndefined();
+    expect(enabledProps['data-drop-target']).toBeUndefined();
+    expect(enabledProps['aria-disabled']).toBeUndefined();
+
+    let disabledDrop = useDrop({isDisabled: true});
+    let disabledProps = disabledDrop.dropProps.value as {
+      'aria-disabled'?: true,
+      'data-drop-target'?: boolean,
+      role?: string
+    };
+    expect(disabledProps.role).toBeUndefined();
+    expect(disabledProps['data-drop-target']).toBeUndefined();
+    expect(disabledProps['aria-disabled']).toBeUndefined();
+  });
+
   it('filters vue-aria dnd drops by accepted drag types', () => {
     let dropEvents: Array<string> = [];
     let drop = useDrop({
