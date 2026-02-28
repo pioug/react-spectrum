@@ -8473,6 +8473,35 @@ describe('Vue migration composition components', () => {
     isDisabled.value = true;
     expect(radioGroup.radioGroupProps.value['aria-disabled']).toBe(true);
 
+    let statelySelectedValue = ref<string | null>('react');
+    let statelyRadioState = useStatelyRadioGroupState({
+      onChange: (value) => {
+        statelySelectedValue.value = value;
+      },
+      value: statelySelectedValue
+    });
+    let statelyRadioGroup = useAriaRadioGroup({
+      'aria-label': 'Stately Framework'
+    } as unknown as Parameters<typeof useAriaRadioGroup>[0], statelyRadioState as unknown as Parameters<typeof useAriaRadioGroup>[1]);
+    let statelyReactRadio = useAriaRadio({
+      children: 'React',
+      value: 'react'
+    } as unknown as Parameters<typeof useAriaRadio>[0], statelyRadioState as unknown as Parameters<typeof useAriaRadio>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaRadio>[2]);
+    let statelyVueRadio = useAriaRadio({
+      children: 'Vue',
+      value: 'vue'
+    } as unknown as Parameters<typeof useAriaRadio>[0], statelyRadioState as unknown as Parameters<typeof useAriaRadio>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaRadio>[2]);
+    expect(statelyRadioGroup.radioGroupProps.value['aria-disabled']).toBeUndefined();
+    expect(statelyReactRadio.inputProps.value.checked).toBe(true);
+    statelyVueRadio.inputProps.value.onChange();
+    expect(statelySelectedValue.value).toBe('vue');
+
+    statelyReactRadio.dispose();
+    statelyVueRadio.dispose();
     reactRadio.dispose();
     vueRadio.dispose();
   });

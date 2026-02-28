@@ -9,6 +9,11 @@ type RefObject<T> = {
 };
 
 type AnyRecord = Record<string, unknown>;
+
+function isRefLike<T>(value: unknown): value is {value: T} {
+  return Boolean(value) && typeof value === 'object' && 'value' in (value as AnyRecord);
+}
+
 let radioGroupsByState = new WeakMap<object, RadioGroupAria>();
 
 function isRadioGroupAria(value: unknown): value is RadioGroupAria {
@@ -25,7 +30,7 @@ function createRadioGroupFromState(
 ): RadioGroupAria {
   let selectedValue = computed<string | null>({
     get: () => {
-      let value = stateRecord.selectedValue;
+      let value = unref(stateRecord.selectedValue as string | null | {value: string | null} | undefined);
       return value == null ? null : String(value);
     },
     set: (value) => {
@@ -35,17 +40,22 @@ function createRadioGroupFromState(
         return;
       }
 
+      if (isRefLike<string | null>(stateRecord.selectedValue)) {
+        stateRecord.selectedValue.value = value;
+        return;
+      }
+
       stateRecord.selectedValue = value;
     }
   });
 
   return useRadioGroupInternal({
     ...options,
-    isDisabled: computed(() => Boolean(unref(options?.isDisabled)) || Boolean(stateRecord.isDisabled)),
-    isInvalid: computed(() => Boolean(unref(options?.isInvalid)) || Boolean(stateRecord.isInvalid)),
-    isReadOnly: computed(() => Boolean(unref(options?.isReadOnly)) || Boolean(stateRecord.isReadOnly)),
-    isRequired: computed(() => Boolean(unref(options?.isRequired)) || Boolean(stateRecord.isRequired)),
-    name: computed(() => (unref(options?.name) as string | undefined) ?? (stateRecord.name as string | undefined)),
+    isDisabled: computed(() => Boolean(unref(options?.isDisabled)) || Boolean(unref(stateRecord.isDisabled as boolean | undefined))),
+    isInvalid: computed(() => Boolean(unref(options?.isInvalid)) || Boolean(unref(stateRecord.isInvalid as boolean | undefined))),
+    isReadOnly: computed(() => Boolean(unref(options?.isReadOnly)) || Boolean(unref(stateRecord.isReadOnly as boolean | undefined))),
+    isRequired: computed(() => Boolean(unref(options?.isRequired)) || Boolean(unref(stateRecord.isRequired as boolean | undefined))),
+    name: computed(() => (unref(options?.name) as string | undefined) ?? (unref(stateRecord.name as string | undefined | {value: string | undefined}) as string | undefined)),
     selectedValue
   });
 }
