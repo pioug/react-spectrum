@@ -4409,6 +4409,25 @@ describe('Vue migration composition components', () => {
     expect(directoryDrop.drop(directoryItems)).toBe('copy');
   });
 
+  it('fires vue-aria useDrop onDropEnter once per active drop target session', () => {
+    let enterEvents: Array<string> = [];
+    let drop = useDrop({
+      acceptedDragTypes: ['ticket'],
+      onDropEnter: (items) => {
+        enterEvents.push(`enter:${items.length}`);
+      }
+    });
+    let ticketItems = [{id: 'ticket-2', type: 'ticket', value: {id: 2}}];
+
+    expect(drop.enter(ticketItems)).toBe(true);
+    expect(drop.enter(ticketItems)).toBe(true);
+    expect(enterEvents).toEqual(['enter:1']);
+
+    drop.exit();
+    expect(drop.enter(ticketItems)).toBe(true);
+    expect(enterEvents).toEqual(['enter:1', 'enter:1']);
+  });
+
   it('preserves directory drag metadata in vue-aria useDrag items', () => {
     let drag = useDrag({
       dragItems: [{

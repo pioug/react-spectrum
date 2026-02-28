@@ -101,6 +101,10 @@ export function useDrop(options: AriaDropOptions = {}): DropAria {
       return false;
     }
 
+    if (isDropTarget.value) {
+      return true;
+    }
+
     isDropTarget.value = true;
     options.onDropEnter?.(items);
     return true;
