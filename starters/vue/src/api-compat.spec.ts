@@ -182,6 +182,24 @@ import {
   VueRadio as RootVueRadio,
   VueRadioGroup as RootVueRadioGroup
 } from '../../../packages/@vue-spectrum/radio/index';
+import {
+  Modal,
+  OpenTransition,
+  Overlay,
+  Popover,
+  Tray,
+  Underlay,
+  VuePopover
+} from '@vue-spectrum/overlays';
+import {
+  Modal as RootModal,
+  OpenTransition as RootOpenTransition,
+  Overlay as RootOverlay,
+  Popover as RootPopover,
+  Tray as RootTray,
+  Underlay as RootUnderlay,
+  VuePopover as RootVuePopover
+} from '../../../packages/@vue-spectrum/overlays/index';
 import {DIRECTORY_DRAG_TYPE, DropZone as SpectrumDropZone, useDragAndDrop as useSpectrumDragAndDrop} from '@vue-spectrum/dnd';
 import {
   Item as TabItem,
@@ -386,6 +404,25 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(RootRadioGroup).toBe(RadioGroup);
     expect(RootVueRadio).toBe(VueRadio);
     expect(RootVueRadioGroup).toBe(VueRadioGroup);
+  });
+
+  it('keeps overlays exports aligned with VuePopover base entry and primitives', () => {
+    expect(Popover).toBe(VuePopover);
+    expect(Modal).not.toBe(Popover);
+    expect(Overlay).not.toBe(Popover);
+    expect(OpenTransition).not.toBe(Popover);
+    expect(Tray).not.toBe(Popover);
+    expect(Underlay).not.toBe(Popover);
+  });
+
+  it('keeps root overlays entry exports aligned with source exports', () => {
+    expect(RootModal).toBe(Modal);
+    expect(RootOpenTransition).toBe(OpenTransition);
+    expect(RootOverlay).toBe(Overlay);
+    expect(RootPopover).toBe(Popover);
+    expect(RootTray).toBe(Tray);
+    expect(RootUnderlay).toBe(Underlay);
+    expect(RootVuePopover).toBe(VuePopover);
   });
 
   it('exports dnd drag/drop compatibility primitives', () => {
