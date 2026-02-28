@@ -156,6 +156,24 @@ import {
   VueForm as RootVueForm
 } from '../../../packages/@vue-spectrum/form/index';
 import {
+  Flex,
+  fitContent,
+  Grid,
+  minmax,
+  repeat,
+  VueFlex,
+  VueGrid
+} from '@vue-spectrum/layout';
+import {
+  Flex as RootFlex,
+  fitContent as RootFitContent,
+  Grid as RootGrid,
+  minmax as RootMinmax,
+  repeat as RootRepeat,
+  VueFlex as RootVueFlex,
+  VueGrid as RootVueGrid
+} from '../../../packages/@vue-spectrum/layout/index';
+import {
   Heading,
   Keyboard,
   Text,
@@ -498,6 +516,24 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(RootForm).toBe(Form);
     expect(RootVueForm).toBe(VueForm);
     expect(RootUseFormProps).toBe(useFormProps);
+  });
+
+  it('keeps layout exports aligned with Vue layout bases and helpers', () => {
+    expect(Flex).toBe(VueFlex);
+    expect(Grid).toBe(VueGrid);
+    expect(repeat(2, '1fr')).toBe('repeat(2, 1fr)');
+    expect(minmax('0', '1fr')).toBe('minmax(0, 1fr)');
+    expect(fitContent('100px')).toBe('fit-content(100px)');
+  });
+
+  it('keeps root layout entry exports aligned with source exports', () => {
+    expect(RootFlex).toBe(Flex);
+    expect(RootVueFlex).toBe(VueFlex);
+    expect(RootGrid).toBe(Grid);
+    expect(RootVueGrid).toBe(VueGrid);
+    expect(RootRepeat).toBe(repeat);
+    expect(RootMinmax).toBe(minmax);
+    expect(RootFitContent).toBe(fitContent);
   });
 
   it('exports semantic text primitives on top of VueText', () => {
