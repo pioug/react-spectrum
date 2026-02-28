@@ -4734,6 +4734,125 @@ describe('Vue migration composition components', () => {
     root.remove();
   });
 
+  it('matches react radio-group skipping contracts in @vue-aria/focus createFocusManager forward navigation', () => {
+    let root = document.createElement('div');
+    let button1 = document.createElement('button');
+    button1.textContent = 'button1';
+    let form = document.createElement('form');
+    let huey = document.createElement('input');
+    huey.type = 'radio';
+    huey.name = 'drone';
+    huey.checked = true;
+    let dewey = document.createElement('input');
+    dewey.type = 'radio';
+    dewey.name = 'drone';
+    let button2 = document.createElement('button');
+    button2.textContent = 'button2';
+    let louie = document.createElement('input');
+    louie.type = 'radio';
+    louie.name = 'drone';
+    let larry = document.createElement('input');
+    larry.type = 'radio';
+    larry.name = 'ship';
+    let moe = document.createElement('input');
+    moe.type = 'radio';
+    moe.name = 'ship';
+    let button3 = document.createElement('button');
+    button3.textContent = 'button3';
+    let curly = document.createElement('input');
+    curly.type = 'radio';
+    curly.name = 'ship';
+    let button4 = document.createElement('button');
+    button4.textContent = 'button4';
+
+    form.append(huey, dewey, button2, louie, larry, moe, button3, curly);
+    root.append(button1, form, button4);
+    document.body.append(root);
+
+    let manager = createFocusManagerFromPackage({current: root});
+    expect(manager.focusNext({tabbable: true})).toBe(button1);
+    expect(manager.focusNext({tabbable: true})).toBe(huey);
+    expect(manager.focusNext({tabbable: true})).toBe(button2);
+    expect(manager.focusNext({tabbable: true})).toBe(larry);
+    expect(manager.focusNext({tabbable: true})).toBe(button3);
+    expect(manager.focusNext({tabbable: true})).toBe(curly);
+    expect(manager.focusNext({tabbable: true})).toBe(button4);
+
+    root.remove();
+  });
+
+  it('matches react radio-group skipping contracts in @vue-aria/focus createFocusManager backward navigation', () => {
+    let root = document.createElement('div');
+    let button1 = document.createElement('button');
+    button1.textContent = 'button1';
+    let form = document.createElement('form');
+    let huey = document.createElement('input');
+    huey.type = 'radio';
+    huey.name = 'drone';
+    huey.checked = true;
+    let dewey = document.createElement('input');
+    dewey.type = 'radio';
+    dewey.name = 'drone';
+    let button2 = document.createElement('button');
+    button2.textContent = 'button2';
+    let louie = document.createElement('input');
+    louie.type = 'radio';
+    louie.name = 'drone';
+    let larry = document.createElement('input');
+    larry.type = 'radio';
+    larry.name = 'ship';
+    let moe = document.createElement('input');
+    moe.type = 'radio';
+    moe.name = 'ship';
+    let button3 = document.createElement('button');
+    button3.textContent = 'button3';
+    let curly = document.createElement('input');
+    curly.type = 'radio';
+    curly.name = 'ship';
+    let button4 = document.createElement('button');
+    button4.textContent = 'button4';
+
+    form.append(huey, dewey, button2, louie, larry, moe, button3, curly);
+    root.append(button1, form, button4);
+    document.body.append(root);
+
+    let manager = createFocusManagerFromPackage({current: root});
+    button4.focus();
+
+    expect(manager.focusPrevious({tabbable: true})).toBe(curly);
+    expect(manager.focusPrevious({tabbable: true})).toBe(button3);
+    expect(manager.focusPrevious({tabbable: true})).toBe(moe);
+    expect(manager.focusPrevious({tabbable: true})).toBe(button2);
+    expect(manager.focusPrevious({tabbable: true})).toBe(huey);
+    expect(manager.focusPrevious({tabbable: true})).toBe(button1);
+
+    root.remove();
+  });
+
+  it('handles single-radio form traversal without crashing in @vue-aria/focus createFocusManager', () => {
+    let root = document.createElement('div');
+    let button1 = document.createElement('button');
+    button1.textContent = 'button1';
+    let form = document.createElement('form');
+    let only = document.createElement('input');
+    only.type = 'radio';
+    only.name = 'option';
+    let button2 = document.createElement('button');
+    button2.textContent = 'button2';
+
+    form.append(only);
+    root.append(button1, form, button2);
+    document.body.append(root);
+
+    let manager = createFocusManagerFromPackage({current: root});
+    expect(manager.focusNext({tabbable: true})).toBe(button1);
+    expect(() => manager.focusNext({tabbable: true})).not.toThrow();
+    expect(document.activeElement).toBe(only);
+    expect(manager.focusNext({tabbable: true})).toBe(button2);
+
+    root.remove();
+  });
+
   it('filters @vue-aria/focus tree walker nodes by scope and accept callback', () => {
     let root = document.createElement('div');
     let outside = document.createElement('button');
