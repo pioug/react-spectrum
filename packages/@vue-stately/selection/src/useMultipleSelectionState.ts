@@ -1,4 +1,4 @@
-import {computed, type Ref, ref} from 'vue';
+import {computed, type Ref, ref, watch, watchEffect} from 'vue';
 import {type Key, Selection as SelectionSet} from './Selection';
 import {
   type MultipleSelectionState,
@@ -99,11 +99,11 @@ function equalSelections(a: SelectionValue, b: SelectionValue): boolean {
  * Manages state for multiple selection and focus in a collection.
  */
 export function useMultipleSelectionState(props: MultipleSelectionStateProps): MultipleSelectionState {
-  let selectionMode = props.selectionMode ?? 'none';
-  let disallowEmptySelection = Boolean(props.disallowEmptySelection);
-  let disabledBehavior = props.disabledBehavior ?? 'all';
-  let disabledKeys = props.disabledKeys ? new Set(props.disabledKeys) : new Set<Key>();
-  let selectionBehavior = ref<SelectionBehavior>(props.selectionBehavior ?? 'toggle');
+  let selectionBehaviorProp = computed<SelectionBehavior>(() => props.selectionBehavior ?? 'toggle');
+  let selectionBehavior = ref<SelectionBehavior>(selectionBehaviorProp.value);
+  let disabledKeysRef = computed(() => {
+    return props.disabledKeys ? new Set(props.disabledKeys) : new Set<Key>();
+  });
   let isFocused = ref(false);
   let focusedKey = ref<Key | null>(null);
   let childFocusStrategy = ref<'first' | 'last' | null>(null);
@@ -124,6 +124,23 @@ export function useMultipleSelectionState(props: MultipleSelectionStateProps): M
     props.onSelectionChange
   );
 
+  watch(selectionBehaviorProp, (nextBehavior, previousBehavior) => {
+    if (nextBehavior !== previousBehavior) {
+      selectionBehavior.value = nextBehavior;
+    }
+  });
+
+  watchEffect(() => {
+    if (
+      selectionBehaviorProp.value === 'replace'
+      && selectionBehavior.value === 'toggle'
+      && selectedKeys.value !== 'all'
+      && selectedKeys.value.size === 0
+    ) {
+      selectionBehavior.value = 'replace';
+    }
+  });
+
   let setSelectionBehavior = (nextBehavior: SelectionBehavior): void => {
     selectionBehavior.value = nextBehavior;
   };
@@ -132,8 +149,8 @@ export function useMultipleSelectionState(props: MultipleSelectionStateProps): M
     let previousSelection = selectedKeys.value;
     let normalizedSelection = normalizeSelection(
       nextSelection,
-      selectionMode,
-      disallowEmptySelection,
+      props.selectionMode ?? 'none',
+      Boolean(props.disallowEmptySelection),
       previousSelection
     );
     let hasChanged = !equalSelections(normalizedSelection, previousSelection);
@@ -153,8 +170,12 @@ export function useMultipleSelectionState(props: MultipleSelectionStateProps): M
   };
 
   return {
-    selectionMode,
-    disallowEmptySelection,
+    get selectionMode() {
+      return props.selectionMode ?? 'none';
+    },
+    get disallowEmptySelection() {
+      return Boolean(props.disallowEmptySelection);
+    },
     selectionBehavior,
     setSelectionBehavior,
     isFocused,
@@ -164,7 +185,11 @@ export function useMultipleSelectionState(props: MultipleSelectionStateProps): M
     setFocusedKey,
     selectedKeys,
     setSelectedKeys,
-    disabledKeys,
-    disabledBehavior
+    get disabledKeys() {
+      return disabledKeysRef.value;
+    },
+    get disabledBehavior() {
+      return props.disabledBehavior ?? 'all';
+    }
   };
 }

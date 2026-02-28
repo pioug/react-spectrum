@@ -1,5 +1,5 @@
 import {mount} from '@vue/test-utils';
-import {computed, defineComponent, effectScope, h, nextTick, ref} from 'vue';
+import {computed, defineComponent, effectScope, h, nextTick, reactive, ref} from 'vue';
 import {describe, expect, it, vi} from 'vitest';
 import {useActionGroup, useActionGroupItem} from '@vue-aria/actiongroup';
 import {useAutocomplete, useSearchAutocomplete} from '@vue-aria/autocomplete';
@@ -3737,6 +3737,35 @@ describe('Vue migration composition components', () => {
     expect(selectionCopy.anchorKey).toBe('item-2');
     expect(selectionCopy.currentKey).toBe('item-2');
     expect(selectionChanges.length).toBeGreaterThan(0);
+  });
+
+  it('syncs vue-stately multiple selection behavior with prop updates', async () => {
+    let props = reactive({
+      selectionBehavior: 'toggle' as const,
+      selectionMode: 'multiple' as const
+    });
+    let state = useStatelyMultipleSelectionState(props);
+
+    expect(state.selectionBehavior.value).toBe('toggle');
+
+    props.selectionBehavior = 'replace';
+    await nextTick();
+    expect(state.selectionBehavior.value).toBe('replace');
+  });
+
+  it('resets vue-stately multiple selection behavior to replace when replace-mode selection empties', async () => {
+    let state = useStatelyMultipleSelectionState({
+      defaultSelectedKeys: ['item-1'],
+      selectionBehavior: 'replace',
+      selectionMode: 'multiple'
+    });
+
+    state.setSelectionBehavior('toggle');
+    expect(state.selectionBehavior.value).toBe('toggle');
+
+    state.setSelectedKeys(new Set());
+    await nextTick();
+    expect(state.selectionBehavior.value).toBe('replace');
   });
 
   it('warns when vue-stately multiple selection switches between controlled and uncontrolled', async () => {

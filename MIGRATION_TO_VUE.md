@@ -2528,13 +2528,29 @@
    - full Vue tests: `yarn test:vue` (634 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Multiple-selection behavior-prop parity remediation (`@vue-stately/selection`)
+
+1. Closed `selectionBehavior` lifecycle drift in `useMultipleSelectionState`:
+   - added prop-sync behavior so runtime `selectionBehavior` prop updates are reflected in state (React parity).
+2. Closed replace-mode reset drift:
+   - when `selectionBehavior` prop is `replace` and state is temporarily toggled to `toggle`, emptying selection now restores `replace` behavior automatically.
+3. Preserved existing controlled selection ownership semantics:
+   - selected-keys ownership remains helper-driven via `useControlledState`,
+   - duplicate-change suppression and allow-duplicate override behavior remain unchanged.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` now includes prop-update and replace-reset assertions for `useMultipleSelectionState`.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "multiple selection"`,
+   - full Vue tests: `yarn test:vue` (636 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 634 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 636 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).
