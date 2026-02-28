@@ -1995,6 +1995,20 @@
    - full Vue tests: `yarn test:vue` (603 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Search-field controlled contract parity (`@vue-stately/searchfield`)
+
+1. Closed search-field controlled-mode drift against React:
+   - `useSearchFieldState.setValue` no longer mutates controlled refs directly,
+   - controlled mode now emits `onChange` while keeping `value` driven solely by external controlled input.
+2. Expanded coercion parity coverage:
+   - added explicit assertions for numeric/array coercion in both controlled and uncontrolled paths (`toString` semantics).
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: controlled-no-parent-update assertion plus string coercion assertions matching React stately test cases.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "search field controlled and uncontrolled value state|search field controlled and coercion semantics with React"`,
+   - full Vue tests: `yarn test:vue` (604 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

@@ -3039,6 +3039,44 @@ describe('Vue migration composition components', () => {
     expect(refBackedUncontrolled.value).toBeUndefined();
   });
 
+  it('matches vue-stately search field controlled and coercion semantics with React', () => {
+    let controlledValue = ref<unknown>('React');
+    let controlledChanges: string[] = [];
+    let controlledState = useStatelySearchFieldState({
+      onChange: (value) => {
+        controlledChanges.push(value);
+      },
+      value: controlledValue
+    });
+
+    controlledState.setValue('Spectrum');
+    expect(controlledState.value.value).toBe('React');
+    expect(controlledValue.value).toBe('React');
+    expect(controlledChanges).toEqual(['Spectrum']);
+
+    let numericDefault = useStatelySearchFieldState({
+      defaultValue: 13
+    });
+    expect(numericDefault.value.value).toBe('13');
+
+    let arrayDefault = useStatelySearchFieldState({
+      defaultValue: ['hi', 'this', 'is', 'me']
+    });
+    expect(arrayDefault.value.value).toBe('hi,this,is,me');
+
+    let numericControlled = ref<unknown>(13);
+    let numericControlledState = useStatelySearchFieldState({
+      value: numericControlled
+    });
+    expect(numericControlledState.value.value).toBe('13');
+
+    let arrayControlled = ref<unknown>(['hi', 'this', 'is', 'me']);
+    let arrayControlledState = useStatelySearchFieldState({
+      value: arrayControlled
+    });
+    expect(arrayControlledState.value.value).toBe('hi,this,is,me');
+  });
+
   it('warns when vue-stately search field switches between controlled and uncontrolled', async () => {
     let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     let controlledValue = ref<string | undefined>('React');

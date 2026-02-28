@@ -47,9 +47,7 @@ export function useSearchFieldState(options: SearchFieldStateOptions = {}): Sear
       return;
     }
 
-    if (isControlled.value && options.value) {
-      options.value.value = nextValue;
-    } else {
+    if (!isControlled.value) {
       uncontrolledValue.value = nextValue;
     }
 
