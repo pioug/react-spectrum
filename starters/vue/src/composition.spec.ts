@@ -4450,6 +4450,30 @@ describe('Vue migration composition components', () => {
     expect(enterEvents).toEqual(['enter:1', 'enter:1']);
   });
 
+  it('exits vue-aria useDrop when move payload no longer matches accepted types', () => {
+    let moveEvents: Array<string> = [];
+    let exitEvents = 0;
+    let drop = useDrop({
+      acceptedDragTypes: ['ticket'],
+      onDropMove: (items) => {
+        moveEvents.push(`move:${items.length}`);
+      },
+      onDropExit: () => {
+        exitEvents += 1;
+      }
+    });
+    let ticketItems = [{id: 'ticket-2', type: 'ticket', value: {id: 2}}];
+    let fileItems = [{id: 'asset-1', type: 'file', value: {name: 'spec.pdf'}}];
+
+    expect(drop.enter(ticketItems)).toBe(true);
+    drop.move(ticketItems);
+    drop.move(fileItems);
+
+    expect(moveEvents).toEqual(['move:1']);
+    expect(exitEvents).toBe(1);
+    expect(drop.isDropTarget.value).toBe(false);
+  });
+
   it('preserves directory drag metadata in vue-aria useDrag items', () => {
     let drag = useDrag({
       dragItems: [{

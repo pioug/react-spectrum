@@ -115,6 +115,11 @@ export function useDrop(options: AriaDropOptions = {}): DropAria {
       return;
     }
 
+    if (!canDrop(items)) {
+      exit();
+      return;
+    }
+
     options.onDropMove?.(items);
   };
 
