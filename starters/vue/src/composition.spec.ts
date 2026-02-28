@@ -6926,6 +6926,92 @@ describe('Vue migration composition components', () => {
     expect(keyboardDelegate.getKeyForSearch('de')).toBe('row-2-cell-1');
   });
 
+  it('supports react-style grid overload signatures with stately grid state', () => {
+    let rowActions: string[] = [];
+    let cellActions: string[] = [];
+    let selectedKeys = ref(new Set<string>(['row-1']));
+    let collection = new StatelyGridCollection({
+      columnCount: 2,
+      items: [
+        {
+          key: 'row-1',
+          textValue: 'Alpha',
+          childNodes: [
+            {key: 'row-1-cell-1', textValue: 'Alpha'},
+            {key: 'row-1-cell-2', textValue: 'Open'}
+          ]
+        },
+        {
+          key: 'row-2',
+          textValue: 'Delta',
+          childNodes: [
+            {key: 'row-2-cell-1', textValue: 'Delta'},
+            {key: 'row-2-cell-2', textValue: 'Closed'}
+          ]
+        }
+      ]
+    });
+    let gridState = useStatelyGridState({
+      collection,
+      focusMode: 'cell',
+      onSelectionChange: (keys) => {
+        selectedKeys.value = new Set(keys as Iterable<string>);
+      },
+      selectedKeys,
+      selectionMode: 'multiple'
+    });
+
+    let reactGrid = useGrid({
+      'aria-label': 'Tickets',
+      isVirtualized: true,
+      onCellAction: (key) => {
+        cellActions.push(String(key));
+      },
+      onRowAction: (key) => {
+        rowActions.push(String(key));
+      }
+    } as unknown as Parameters<typeof useGrid>[0], gridState as unknown as Parameters<typeof useGrid>[1], {
+      current: null
+    } as unknown as Parameters<typeof useGrid>[2]);
+    expect(reactGrid.gridProps.value.role).toBe('grid');
+    expect(reactGrid.gridProps.value['aria-multiselectable']).toBe('true');
+    expect(reactGrid.gridProps.value['aria-rowcount']).toBe(2);
+
+    let rowNode = collection.getItem('row-1');
+    let cellNode = collection.getItem('row-1-cell-2');
+    if (!rowNode || !cellNode) {
+      throw new Error('Expected react-style grid row/cell nodes to exist');
+    }
+
+    let reactRow = useGridRow({
+      node: rowNode
+    } as unknown as Parameters<typeof useGridRow>[0], gridState as unknown as Parameters<typeof useGridRow>[1], {
+      current: null
+    } as unknown as Parameters<typeof useGridRow>[2]);
+    expect(reactRow.rowProps.value.role).toBe('row');
+    expect(reactRow.rowProps.value['aria-selected']).toBe(true);
+    reactRow.press();
+    expect(rowActions).toEqual(['row-1']);
+    expect(Array.from(selectedKeys.value)).toEqual([]);
+
+    let reactCell = useGridCell({
+      node: cellNode
+    } as unknown as Parameters<typeof useGridCell>[0], gridState as unknown as Parameters<typeof useGridCell>[1], {
+      current: null
+    } as unknown as Parameters<typeof useGridCell>[2]);
+    reactCell.press();
+    expect(cellActions).toEqual(['row-1-cell-2']);
+    expect(Array.from(selectedKeys.value)).toEqual(['row-1']);
+    expect(unref(gridState.selectionManager.focusedKey)).toBe('row-1-cell-2');
+
+    let reactSelectionCheckbox = useGridSelectionCheckbox({
+      key: 'row-2'
+    } as unknown as Parameters<typeof useGridSelectionCheckbox>[0], gridState as unknown as Parameters<typeof useGridSelectionCheckbox>[1]);
+    expect(reactSelectionCheckbox.checkboxProps.value.checked).toBe(false);
+    reactSelectionCheckbox.toggleSelection();
+    expect(Array.from(selectedKeys.value).sort()).toEqual(['row-1', 'row-2']);
+  });
+
   it('computes vue-aria gridlist semantics, item state, and section props', () => {
     let actions: string[] = [];
     let selectedKeys = ref(new Set<string>());
