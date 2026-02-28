@@ -22,7 +22,8 @@ export interface OverlayTriggerAria {
     'aria-controls': string | undefined,
     'aria-expanded': boolean,
     'aria-haspopup'?: boolean | 'listbox',
-    onClick: () => void
+    onClick: () => void,
+    onPress: () => void
   }>
 }
 
@@ -80,7 +81,8 @@ export function useOverlayTrigger(options: OverlayTriggerOptions): OverlayTrigge
       'aria-haspopup': resolveAriaHasPopup(options.type),
       'aria-expanded': isOpen.value,
       'aria-controls': isOpen.value ? overlayId : undefined,
-      onClick: toggle
+      onClick: toggle,
+      onPress: toggle
     }))
   };
 }

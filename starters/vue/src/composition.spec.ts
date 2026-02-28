@@ -6977,6 +6977,10 @@ describe('Vue migration composition components', () => {
       targetRef: triggerRef
     });
 
+    expect(typeof overlayTrigger.triggerProps.value.onPress).toBe('function');
+    overlayTrigger.triggerProps.value.onPress();
+    expect(overlayTrigger.isOpen.value).toBe(true);
+    overlayTrigger.close();
     overlayTrigger.triggerProps.value.onClick();
     expect(overlayTrigger.isOpen.value).toBe(true);
     overlayPosition.updatePosition();
@@ -7362,6 +7366,10 @@ describe('Vue migration composition components', () => {
       type: 'menu'
     }, overlayState, triggerRefObject);
     expect(overlayTrigger.triggerProps.value['aria-expanded']).toBe(false);
+    overlayTrigger.triggerProps.value.onPress();
+    expect(isOpen.value).toBe(true);
+    overlayTrigger.triggerProps.value.onPress();
+    expect(isOpen.value).toBe(false);
     overlayTrigger.triggerProps.value.onClick();
     expect(isOpen.value).toBe(true);
     expect(overlayTrigger.triggerProps.value['aria-controls']).toBe(overlayTrigger.overlayProps.value.id);
