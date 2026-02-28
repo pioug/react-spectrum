@@ -1737,6 +1737,19 @@
    - full Vue tests: `yarn test:vue` (584 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Single-select setter no-op parity (`@vue-stately/list`)
+
+1. Closed `useSingleSelectListState` setter semantics drift:
+   - `setSelectedKey` now updates the controlled/uncontrolled selected-key channel directly, matching React’s `useControlledState`-backed API semantics.
+2. Preserved immediate state synchronization:
+   - selected-key to selection-manager synchronization now uses a synchronous watcher flush so `selectionManager` reflects setter updates immediately in the same tick.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: single-select list test now asserts repeated same-key `setSelectedKey` calls do not emit duplicate `onSelectionChange` events while selection-manager state remains in sync.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately single-select list state and selected item lookups|warns when vue-stately single-select list switches between controlled and uncontrolled|keeps vue-stately single-select list uncontrolled when selectedKey ref is undefined"`,
+   - full Vue tests: `yarn test:vue` (584 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

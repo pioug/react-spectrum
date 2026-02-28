@@ -2234,6 +2234,10 @@ describe('Vue migration composition components', () => {
     listState.setSelectedKey('details');
     expect(selectedKey.value).toBe('details');
     expect(listState.selectionManager.firstSelectedKey).toBe('details');
+    expect(selectionChanges).toEqual(['details']);
+
+    listState.setSelectedKey('details');
+    expect(selectionChanges).toEqual(['details']);
 
     listState.selectionManager.toggleSelection('details');
     expect(selectedKey.value).toBe('details');

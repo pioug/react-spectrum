@@ -83,15 +83,10 @@ export function useSingleSelectListState<T extends object>(props: SingleSelectLi
     if (!equalSets(nextKeys, listState.selectionManager.selectedKeys.value)) {
       listState.selectionManager.setSelectedKeys(nextKeys);
     }
-  });
+  }, {flush: 'sync'});
 
   let setSelectedKey = (key: Key | null): void => {
-    if (key == null) {
-      listState.selectionManager.clearSelection();
-      return;
-    }
-
-    listState.selectionManager.replaceSelection(key);
+    selectedKey.value = key;
   };
 
   let selectedItem = computed(() => {
