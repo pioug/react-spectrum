@@ -1,4 +1,5 @@
 import {computed, type ComputedRef, ref, type Ref, unref} from 'vue';
+import {useLocale} from '@vue-aria/i18n';
 import type {MaybeRef} from './types';
 
 export interface AriaSubmenuTriggerProps {
@@ -36,6 +37,7 @@ let submenuTriggerCounter = 0;
 export function useSubmenuTrigger(props: AriaSubmenuTriggerProps = {}): SubmenuTriggerAria {
   submenuTriggerCounter += 1;
 
+  let {direction} = useLocale();
   let triggerId = `vue-submenu-trigger-${submenuTriggerCounter}`;
   let submenuId = `vue-submenu-${submenuTriggerCounter}`;
   let internalOpen = ref(false);
@@ -71,12 +73,15 @@ export function useSubmenuTrigger(props: AriaSubmenuTriggerProps = {}): SubmenuT
       return;
     }
 
-    if (event.key === 'ArrowRight' || event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
+    let openKey = direction === 'rtl' ? 'ArrowLeft' : 'ArrowRight';
+    let closeKey = direction === 'rtl' ? 'ArrowRight' : 'ArrowLeft';
+
+    if (event.key === openKey || event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
       event.preventDefault();
       open();
     }
 
-    if (event.key === 'ArrowLeft' || event.key === 'Escape') {
+    if ((event.key === closeKey && isOpen.value) || event.key === 'Escape') {
       event.preventDefault();
       close();
     }

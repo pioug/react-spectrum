@@ -6661,6 +6661,12 @@ describe('Vue migration composition components', () => {
     submenuTrigger.submenuTriggerProps.value.onMouseEnter();
     expect(submenuTrigger.isOpen.value).toBe(true);
     expect(submenuTrigger.submenuTriggerProps.value['aria-controls']).toBe(submenuTrigger.submenuProps.value.id);
+    submenuTrigger.submenuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowRight'}));
+    expect(submenuTrigger.isOpen.value).toBe(true);
+    submenuTrigger.submenuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowLeft'}));
+    expect(submenuTrigger.isOpen.value).toBe(false);
+    submenuTrigger.submenuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowLeft'}));
+    expect(submenuTrigger.isOpen.value).toBe(false);
     submenuTrigger.submenuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
     expect(submenuTrigger.isOpen.value).toBe(false);
     expect(submenuTrigger.submenuTriggerProps.value['aria-controls']).toBeUndefined();
@@ -6702,6 +6708,21 @@ describe('Vue migration composition components', () => {
     expect(disabledSubmenuOpen.value).toBe(true);
     disabledSubmenuTrigger.submenuTriggerProps.value.onClick();
     expect(disabledSubmenuOpen.value).toBe(true);
+
+    let rtlProvider = I18nProvider({
+      locale: 'ar-EG'
+    });
+    try {
+      let rtlSubmenuTrigger = useSubmenuTrigger();
+      rtlSubmenuTrigger.submenuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowRight'}));
+      expect(rtlSubmenuTrigger.isOpen.value).toBe(false);
+      rtlSubmenuTrigger.submenuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowLeft'}));
+      expect(rtlSubmenuTrigger.isOpen.value).toBe(true);
+      rtlSubmenuTrigger.submenuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowRight'}));
+      expect(rtlSubmenuTrigger.isOpen.value).toBe(false);
+    } finally {
+      rtlProvider.clear();
+    }
   });
 
   it('computes vue-aria meter range, labels, and value text', () => {
