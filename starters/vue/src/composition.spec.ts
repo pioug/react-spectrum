@@ -4409,6 +4409,26 @@ describe('Vue migration composition components', () => {
     expect(directoryDrop.drop(directoryItems)).toBe('copy');
   });
 
+  it('preserves directory drag metadata in vue-aria useDrag items', () => {
+    let drag = useDrag({
+      dragItems: [{
+        id: 'dir-1',
+        kind: 'directory',
+        type: 'file',
+        types: new Set([DIRECTORY_DRAG_TYPE]),
+        value: {name: 'specs'}
+      } as any]
+    });
+    let directoryDrop = useDrop({
+      acceptedDragTypes: [DIRECTORY_DRAG_TYPE]
+    });
+
+    expect((drag.dragItems.value[0] as unknown as {kind?: string}).kind).toBe('directory');
+    expect((drag.dragItems.value[0] as unknown as {types?: Set<string>}).types).toEqual(new Set([DIRECTORY_DRAG_TYPE]));
+    expect(directoryDrop.enter(drag.dragItems.value)).toBe(true);
+    expect(directoryDrop.drop(drag.dragItems.value)).toBe('copy');
+  });
+
   it('accepts directory kind payloads in useDroppableCollection when configured with DIRECTORY_DRAG_TYPE', () => {
     let dropState = useStatelyDroppableCollectionState({
       acceptedDragTypes: [DIRECTORY_DRAG_TYPE],

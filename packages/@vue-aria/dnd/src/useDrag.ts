@@ -3,6 +3,7 @@ import {beginDragSession, endDragSession, isDragSessionHandled} from './dragSess
 import {type DragItem, type DropOperation} from './types';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
+type AnyRecord = Record<string, unknown>;
 const DRAG_TARGET_WARNING = 'Drags initiated from the React Aria useDrag hook may only be dropped on a target created with useDrop. This ensures that a keyboard and screen reader accessible alternative is available.';
 
 export interface AriaDragOptions {
@@ -34,11 +35,23 @@ export function useDrag(options: AriaDragOptions): DragAria {
 
   let dragItems = computed(() => {
     let items = unref(options.dragItems);
-    return items.map((item) => ({
-      id: String(item.id),
-      type: String(item.type),
-      value: item.value
-    }));
+    return items.map((item) => {
+      let dragItem: DragItem & AnyRecord = {
+        id: String(item.id),
+        type: String(item.type),
+        value: item.value
+      };
+      let itemRecord = item as unknown as AnyRecord;
+      if (typeof itemRecord.kind === 'string') {
+        dragItem.kind = itemRecord.kind;
+      }
+
+      if (itemRecord.types instanceof Set || Array.isArray(itemRecord.types)) {
+        dragItem.types = itemRecord.types;
+      }
+
+      return dragItem;
+    });
   });
 
   let startDrag = () => {
