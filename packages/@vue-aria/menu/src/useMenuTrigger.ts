@@ -4,7 +4,8 @@ import type {MaybeRef} from './types';
 export interface AriaMenuTriggerProps {
   isDisabled?: MaybeRef<boolean>,
   isOpen?: Ref<boolean>,
-  onOpenChange?: (isOpen: boolean) => void
+  onOpenChange?: (isOpen: boolean) => void,
+  type?: MaybeRef<'listbox' | 'menu'>
 }
 
 export interface MenuTriggerAria {
@@ -20,7 +21,7 @@ export interface MenuTriggerAria {
   menuTriggerProps: ComputedRef<{
     'aria-controls': string | undefined,
     'aria-expanded': boolean,
-    'aria-haspopup': 'menu',
+    'aria-haspopup': 'listbox' | 'menu',
     disabled?: true,
     id: string,
     onClick: (event?: MouseEvent) => void,
@@ -41,6 +42,7 @@ export function useMenuTrigger(props: AriaMenuTriggerProps = {}): MenuTriggerAri
   let menuId = `vue-menu-${menuTriggerCounter}`;
   let internalOpen = ref(false);
   let isOpen = props.isOpen ?? internalOpen;
+  let triggerType = computed(() => unref(props.type) ?? 'menu');
   let focusStrategy = ref<'first' | 'last' | null>(null);
 
   let setOpen = (nextOpen: boolean, nextFocusStrategy: 'first' | 'last' | null = null) => {
@@ -104,7 +106,7 @@ export function useMenuTrigger(props: AriaMenuTriggerProps = {}): MenuTriggerAri
     menuTriggerProps: computed(() => ({
       id: triggerId,
       'aria-controls': isOpen.value ? menuId : undefined,
-      'aria-haspopup': 'menu' as const,
+      'aria-haspopup': triggerType.value,
       'aria-expanded': isOpen.value,
       disabled: unref(props.isDisabled) ? true : undefined,
       onClick: (event?: MouseEvent) => {

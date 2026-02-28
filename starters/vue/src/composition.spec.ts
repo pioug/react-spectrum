@@ -6542,6 +6542,12 @@ describe('Vue migration composition components', () => {
     });
     expect(menuTrigger.isOpen.value).toBe(false);
     expect(menuTrigger.menuTriggerProps.value['aria-controls']).toBeUndefined();
+    expect(menuTrigger.menuTriggerProps.value['aria-haspopup']).toBe('menu');
+
+    let listboxTrigger = useMenuTrigger({
+      type: 'listbox'
+    });
+    expect(listboxTrigger.menuTriggerProps.value['aria-haspopup']).toBe('listbox');
 
     let menuMouseDownEvent = {
       preventDefault: vi.fn()
