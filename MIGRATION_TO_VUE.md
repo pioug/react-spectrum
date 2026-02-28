@@ -1789,6 +1789,17 @@
    - full Vue tests: `yarn test:vue` (584 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Checkbox-group setter identity parity (`@vue-stately/checkbox`)
+
+1. Closed checkbox-group setter no-op drift:
+   - `useCheckboxGroupState.setValue` now no-ops when called with the exact same value array reference, matching React `useControlledState` identity semantics.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: checkbox-group test now asserts same-reference `setValue` is a no-op while a new array instance with identical values still emits change.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately checkbox-group values and invalid flags|matches vue-stately checkbox-group setValue identity semantics|warns when vue-stately checkbox group switches between controlled and uncontrolled|keeps vue-stately checkbox group uncontrolled when value ref is undefined"`,
+   - full Vue tests: `yarn test:vue` (584 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

@@ -91,6 +91,10 @@ export function useCheckboxGroupState(options: CheckboxGroupStateOptions = {}): 
       return;
     }
 
+    if (Object.is(nextValue, value.value)) {
+      return;
+    }
+
     let normalizedValue = normalizeValues(nextValue);
     value.value = normalizedValue;
     options.onChange?.(normalizedValue);

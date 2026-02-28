@@ -917,6 +917,25 @@ describe('Vue migration composition components', () => {
     expect(changes).toContainEqual(['Docs', 'Tests']);
   });
 
+  it('matches vue-stately checkbox-group setValue identity semantics', () => {
+    let selectedValues = ref(['Docs']);
+    let changes: string[][] = [];
+    let state = useStatelyCheckboxGroupState({
+      onChange: (value) => {
+        changes.push([...value]);
+        selectedValues.value = value;
+      },
+      value: selectedValues
+    });
+
+    let sameValueRef = selectedValues.value;
+    state.setValue(sameValueRef);
+    expect(changes).toEqual([]);
+
+    state.setValue([...sameValueRef]);
+    expect(changes).toEqual([['Docs']]);
+  });
+
   it('warns when vue-stately checkbox group switches between controlled and uncontrolled', async () => {
     let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     let selectedValues = ref<string[] | undefined>(['Docs']);
