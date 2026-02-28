@@ -1,5 +1,6 @@
 import {addMonths, cloneDate, formatMonthLabel, isAfterDay, isBeforeDay, isSameMonth, startOfMonth} from './utils';
 import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
+import {useLabels} from '@vue-aria/utils';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
 
@@ -10,6 +11,11 @@ export interface CalendarVisibleDuration {
 }
 
 export interface AriaCalendarOptions {
+  'aria-label'?: MaybeRef<string | undefined>,
+  'aria-labelledby'?: MaybeRef<string | undefined>,
+  ariaLabel?: MaybeRef<string | undefined>,
+  ariaLabelledby?: MaybeRef<string | undefined>,
+  id?: MaybeRef<string | undefined>,
   isDisabled?: MaybeRef<boolean>,
   locale?: MaybeRef<string>,
   maxValue?: MaybeRef<Date | null | undefined>,
@@ -23,8 +29,10 @@ export interface AriaCalendarOptions {
 export interface CalendarAria {
   calendarProps: ComputedRef<{
     'aria-disabled'?: boolean,
-    'aria-label': string,
-    role: 'group'
+    'aria-label'?: string,
+    'aria-labelledby'?: string,
+    id?: string,
+    role: 'application'
   }>,
   isDateDisabled: (date: Date) => boolean,
   nextPage: () => void,
@@ -33,6 +41,14 @@ export interface CalendarAria {
   selectedDate: ComputedRef<Date | null>,
   visibleDate: Ref<Date>,
   visibleRangeLabel: ComputedRef<string>
+}
+
+function resolveOptionalString(value: MaybeRef<string | undefined> | undefined): string | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+
+  return unref(value);
 }
 
 export function useCalendar(options: AriaCalendarOptions = {}): CalendarAria {
@@ -108,9 +124,21 @@ export function useCalendar(options: AriaCalendarOptions = {}): CalendarAria {
   };
 
   let visibleRangeLabel = computed(() => formatMonthLabel(visibleDate.value, locale.value));
+  let ariaLabel = computed(() => resolveOptionalString(options.ariaLabel) ?? resolveOptionalString(options['aria-label']));
+  let ariaLabelledby = computed(() => resolveOptionalString(options.ariaLabelledby) ?? resolveOptionalString(options['aria-labelledby']));
+  let combinedAriaLabel = computed(() => [ariaLabel.value, visibleRangeLabel.value].filter(Boolean).join(', ') || undefined);
+  let labelProps = computed(() => {
+    return useLabels({
+      id: resolveOptionalString(options.id),
+      'aria-label': combinedAriaLabel.value,
+      'aria-labelledby': ariaLabelledby.value
+    });
+  });
   let calendarProps = computed(() => ({
-    role: 'group' as const,
-    'aria-label': 'Calendar',
+    role: 'application' as const,
+    id: labelProps.value.id as string | undefined,
+    'aria-label': labelProps.value['aria-label'],
+    'aria-labelledby': labelProps.value['aria-labelledby'],
     'aria-disabled': isDisabled.value || undefined
   }));
 

@@ -1,16 +1,25 @@
-import {addDays, cloneDate, startOfMonth, startOfWeek} from './utils';
+import {addDays, cloneDate, formatMonthLabel, startOfMonth, startOfWeek} from './utils';
 import {computed, type ComputedRef, type Ref, unref} from 'vue';
+import {useLabels} from '@vue-aria/utils';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
 
 export interface AriaCalendarGridOptions {
+  'aria-label'?: MaybeRef<string | undefined>,
+  'aria-labelledby'?: MaybeRef<string | undefined>,
+  ariaLabel?: MaybeRef<string | undefined>,
+  ariaLabelledby?: MaybeRef<string | undefined>,
   firstDayOfWeek?: MaybeRef<number | undefined>,
+  id?: MaybeRef<string | undefined>,
   locale?: MaybeRef<string>,
   visibleDate: MaybeRef<Date>
 }
 
 export interface CalendarGridAria {
   gridProps: ComputedRef<{
+    'aria-label'?: string,
+    'aria-labelledby'?: string,
+    id?: string,
     role: 'grid'
   }>,
   headerProps: ComputedRef<{
@@ -18,6 +27,14 @@ export interface CalendarGridAria {
   }>,
   weekDays: ComputedRef<string[]>,
   weeks: ComputedRef<Date[][]>
+}
+
+function resolveOptionalString(value: MaybeRef<string | undefined> | undefined): string | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+
+  return unref(value);
 }
 
 export function useCalendarGrid(options: AriaCalendarGridOptions): CalendarGridAria {
@@ -50,7 +67,15 @@ export function useCalendarGrid(options: AriaCalendarGridOptions): CalendarGridA
   });
 
   let gridProps = computed(() => ({
-    role: 'grid' as const
+    role: 'grid' as const,
+    ...useLabels({
+      id: resolveOptionalString(options.id),
+      'aria-label': [
+        resolveOptionalString(options.ariaLabel) ?? resolveOptionalString(options['aria-label']),
+        formatMonthLabel(cloneDate(unref(options.visibleDate)), locale.value)
+      ].filter(Boolean).join(', ') || undefined,
+      'aria-labelledby': resolveOptionalString(options.ariaLabelledby) ?? resolveOptionalString(options['aria-labelledby'])
+    })
   }));
 
   let headerProps = computed(() => ({

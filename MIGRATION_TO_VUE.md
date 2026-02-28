@@ -1076,6 +1076,23 @@
    - full Vue tests: `yarn test:vue` (531 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 27, 2026 — Shared calendar label-ownership parity (`@vue-aria/calendar`)
+
+1. Aligned `useCalendar` and `useRangeCalendar` accessibility ownership with React calendar-base semantics:
+   - calendar roots now expose labelable props (`id`, `aria-label`, `aria-labelledby`) via shared `useLabels`,
+   - visible-range text now contributes to computed `aria-label`,
+   - dual-label flows now compose calendar id into `aria-labelledby`.
+2. Aligned `useCalendarGrid` accessibility ownership with React calendar-grid semantics:
+   - grid now exposes labelable props (`id`, `aria-label`, `aria-labelledby`) via shared `useLabels`,
+   - visible-range text now contributes to the grid label,
+   - dual-label flows now compose grid id into `aria-labelledby`.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: explicit calendar/range/grid assertions for role + composed label ownership (`aria-label` + `aria-labelledby` + self-id composition).
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "calendar navigation and date selection|builds calendar grid and cell selection for date and range flows"`,
+   - full Vue tests: `yarn test:vue` (531 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

@@ -579,6 +579,8 @@ describe('Vue migration composition components', () => {
       visibleDate
     });
 
+    expect(calendar.calendarProps.value.role).toBe('application');
+    expect(calendar.calendarProps.value['aria-label']).toContain(calendar.visibleRangeLabel.value);
     expect(calendar.visibleRangeLabel.value).toContain('2025');
     calendar.nextPage();
     expect(calendar.visibleDate.value.getMonth()).toBe(1);
@@ -586,6 +588,17 @@ describe('Vue migration composition components', () => {
     calendar.selectDate(new Date(2025, 1, 10));
     expect(selectedDate.value?.getMonth()).toBe(1);
     expect(selectedDate.value?.getDate()).toBe(10);
+
+    let composedCalendar = useCalendar({
+      'aria-label': 'Project schedule',
+      'aria-labelledby': 'external-calendar-label',
+      id: 'project-calendar',
+      visibleDate: ref(new Date(2025, 0, 1))
+    });
+    let composedCalendarLabelledByIds = composedCalendar.calendarProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(composedCalendarLabelledByIds).toContain('external-calendar-label');
+    expect(composedCalendarLabelledByIds).toContain('project-calendar');
+    expect(composedCalendar.calendarProps.value['aria-label']).toContain('Project schedule');
   });
 
   it('pages vue-aria calendar by visible duration unless pageBehavior is single', () => {
@@ -623,10 +636,23 @@ describe('Vue migration composition components', () => {
       locale: 'en-US'
     });
 
+    expect(grid.gridProps.value.role).toBe('grid');
+    expect(grid.gridProps.value['aria-label']).toContain('2025');
     expect(grid.weekDays.value).toHaveLength(7);
     expect(grid.weeks.value).toHaveLength(6);
     expect(tuesdayFirstGrid.weekDays.value[0]).toMatch(/^Tue/i);
     expect(tuesdayFirstGrid.weeks.value[0][0].getDay()).toBe(2);
+
+    let composedGrid = useCalendarGrid({
+      'aria-label': 'Project schedule grid',
+      'aria-labelledby': 'external-calendar-grid-label',
+      id: 'project-calendar-grid',
+      visibleDate
+    });
+    let composedGridLabelledByIds = composedGrid.gridProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(composedGridLabelledByIds).toContain('external-calendar-grid-label');
+    expect(composedGridLabelledByIds).toContain('project-calendar-grid');
+    expect(composedGrid.gridProps.value['aria-label']).toContain('Project schedule grid');
 
     let cellDate = grid.weeks.value[2][3];
     let cell = useCalendarCell({
@@ -644,6 +670,8 @@ describe('Vue migration composition components', () => {
       visibleDate: ref(new Date(2025, 0, 1)),
       value: rangeValue
     });
+    expect(rangeCalendar.calendarProps.value.role).toBe('application');
+    expect(rangeCalendar.calendarProps.value['aria-label']).toContain(rangeCalendar.visibleRangeLabel.value);
     rangeCalendar.selectDate(new Date(2025, 0, 5));
     rangeCalendar.selectDate(new Date(2025, 0, 8));
 
