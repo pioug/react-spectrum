@@ -196,9 +196,22 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(SpectrumDropZone).not.toBeUndefined();
     expect(DIRECTORY_DRAG_TYPE).toBe('application/x-directory');
     expect(useSpectrumDragAndDrop()).toEqual({
-      dragHooks: {},
-      dropHooks: {}
+      dragAndDropHooks: {}
     });
+
+    let hooks = useSpectrumDragAndDrop({
+      getItems: () => [{id: 'one', type: 'item', value: {id: 1}}],
+      onDrop: () => {}
+    });
+    expect(hooks.dragAndDropHooks.useDraggableCollectionState).toBeTypeOf('function');
+    expect(hooks.dragAndDropHooks.useDraggableCollection).toBeTypeOf('function');
+    expect(hooks.dragAndDropHooks.useDraggableItem).toBeTypeOf('function');
+    expect(hooks.dragAndDropHooks.DragPreview).not.toBeUndefined();
+    expect(hooks.dragAndDropHooks.useDroppableCollectionState).toBeTypeOf('function');
+    expect(hooks.dragAndDropHooks.useDroppableCollection).toBeTypeOf('function');
+    expect(hooks.dragAndDropHooks.useDroppableItem).toBeTypeOf('function');
+    expect(hooks.dragAndDropHooks.useDropIndicator).toBeTypeOf('function');
+    expect(hooks.dragAndDropHooks.isVirtualDragging).toBeTypeOf('function');
   });
 
   it('exports tabs collection item separately from VueTabs', () => {
