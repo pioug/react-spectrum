@@ -1607,9 +1607,13 @@ describe('Vue migration composition components', () => {
   it('filters and selects options with vue-aria combobox composable state', () => {
     let inputValue = ref('');
     let selectedKey = ref<string | null>(null);
+    let selectionChanges: Array<string | null> = [];
     let comboBox = useComboBox({
       inputValue,
       items: ['React', 'Vue', 'Svelte'],
+      onSelectionChange: (key) => {
+        selectionChanges.push(key);
+      },
       selectedKey
     });
 
@@ -1624,6 +1628,10 @@ describe('Vue migration composition components', () => {
     expect(selectedKey.value).toBe('Vue');
     expect(inputValue.value).toBe('Vue');
     expect(comboBox.isOpen.value).toBe(false);
+    expect(selectionChanges).toEqual(['Vue']);
+
+    comboBox.selectKey('Vue');
+    expect(selectionChanges).toEqual(['Vue']);
   });
 
   it('reports vue-aria combobox open trigger reasons for open and toggle', () => {
@@ -1638,6 +1646,7 @@ describe('Vue migration composition components', () => {
     });
 
     comboBox.open('first', 'focus');
+    comboBox.open('last', 'input');
     comboBox.close();
     comboBox.toggle('first', 'manual');
     comboBox.toggle();

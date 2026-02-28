@@ -3022,6 +3022,21 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — ComboBox duplicate-callback parity (`@vue-aria/combobox`)
+
+1. Closed duplicate selection-change emission drift:
+   - `useComboBox` now suppresses `onSelectionChange` when `setSelectedKey` receives the existing key.
+2. Closed duplicate open-change emission drift:
+   - `useComboBox.open()` now emits `onOpenChange(true, trigger)` only on actual closed->open transitions (while still applying focus strategy updates).
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` combobox assertions now verify:
+     - repeated same-key `selectKey` calls do not emit duplicate `onSelectionChange`,
+     - repeated `open()` calls while already open do not emit duplicate open-change events.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "filters and selects options with vue-aria combobox composable state|reports vue-aria combobox open trigger reasons for open and toggle"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

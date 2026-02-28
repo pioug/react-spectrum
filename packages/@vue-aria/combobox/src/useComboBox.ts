@@ -101,6 +101,10 @@ export function useComboBox(options: AriaComboBoxOptions): ComboBoxAria {
   let internalSelectedKey = ref<string | null>(options.selectedKey?.value ?? null);
   let selectedKey = computed(() => options.selectedKey?.value ?? internalSelectedKey.value);
   let setSelectedKey = (key: string | null) => {
+    if (selectedKey.value === key) {
+      return;
+    }
+
     if (options.selectedKey) {
       options.selectedKey.value = key;
     } else {
@@ -133,7 +137,11 @@ export function useComboBox(options: AriaComboBoxOptions): ComboBoxAria {
       return;
     }
 
-    isOpen.value = true;
+    let wasOpen = isOpen.value;
+    if (!wasOpen) {
+      isOpen.value = true;
+    }
+
     if (focus === 'first') {
       focusedKey.value = filteredItems.value[0]?.id ?? null;
     } else if (focus === 'last') {
@@ -142,7 +150,9 @@ export function useComboBox(options: AriaComboBoxOptions): ComboBoxAria {
         : null;
     }
 
-    options.onOpenChange?.(true, trigger);
+    if (!wasOpen) {
+      options.onOpenChange?.(true, trigger);
+    }
   };
 
   let close = () => {
