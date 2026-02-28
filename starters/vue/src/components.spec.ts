@@ -25,6 +25,7 @@ import {DatePicker, DateRangePicker, TimeField} from '@vue-spectrum/datepicker';
 import {Dialog, DialogTrigger} from '@vue-spectrum/dialog';
 import {Divider} from '@vue-spectrum/divider';
 import {DropZone} from '@vue-spectrum/dropzone';
+import {useDragAndDrop as useSpectrumDragAndDrop} from '@vue-spectrum/dnd';
 import {FileTrigger} from '@vue-spectrum/filetrigger';
 import {Form} from '@vue-spectrum/form';
 import {Image} from '@vue-spectrum/image';
@@ -5004,20 +5005,22 @@ describe('Vue migration primitives', () => {
 
   it('warns when list view drag/drop hooks toggle across renders', async () => {
     let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let dragAndDrop = useSpectrumDragAndDrop({
+      getItems: (keys) => Array.from(keys, (key) => ({id: String(key), type: 'item', value: {key}})),
+      onDrop: () => {}
+    });
+    let dragOnly = useSpectrumDragAndDrop({
+      getItems: (keys) => Array.from(keys, (key) => ({id: String(key), type: 'item', value: {key}}))
+    });
     let wrapper = mount(ListView, {
       props: {
         items: ['React'],
-        dragAndDropHooks: {
-          useDraggableCollectionState: () => {},
-          useDroppableCollectionState: () => {}
-        }
+        dragAndDropHooks: dragAndDrop.dragAndDropHooks
       }
     });
 
     await wrapper.setProps({
-      dragAndDropHooks: {
-        useDraggableCollectionState: () => {}
-      }
+      dragAndDropHooks: dragOnly.dragAndDropHooks
     });
     expect(warn).toHaveBeenCalledWith('Drop hooks were provided during one render, but not another. This should be avoided as it may produce unexpected behavior.');
 
@@ -5526,12 +5529,16 @@ describe('Vue migration primitives', () => {
 
   it('warns when table drag/drop hooks toggle and with expandable rows', async () => {
     let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let dragAndDrop = useSpectrumDragAndDrop({
+      getItems: (keys) => Array.from(keys, (key) => ({id: String(key), type: 'item', value: {key}})),
+      onDrop: () => {}
+    });
+    let dragOnly = useSpectrumDragAndDrop({
+      getItems: (keys) => Array.from(keys, (key) => ({id: String(key), type: 'item', value: {key}}))
+    });
     let wrapper = mount(Table, {
       props: {
-        dragAndDropHooks: {
-          useDraggableCollectionState: () => {},
-          useDroppableCollectionState: () => {}
-        },
+        dragAndDropHooks: dragAndDrop.dragAndDropHooks,
         columns: [
           {key: 'name', label: 'Name'}
         ],
@@ -5550,9 +5557,7 @@ describe('Vue migration primitives', () => {
     warn.mockClear();
 
     await wrapper.setProps({
-      dragAndDropHooks: {
-        useDraggableCollectionState: () => {}
-      }
+      dragAndDropHooks: dragOnly.dragAndDropHooks
     });
     expect(warn).toHaveBeenCalledWith('Drop hooks were provided during one render, but not another. This should be avoided as it may produce unexpected behavior.');
     expect(warn).toHaveBeenCalledWith('Drag and drop is not yet fully supported with expandable rows and may produce unexpected results.');
