@@ -130,6 +130,14 @@ import {
   VueIllustration,
   VueUIIcon
 } from '@vue-spectrum/icon';
+import {
+  Link,
+  VueLink
+} from '@vue-spectrum/link';
+import {
+  Link as RootLink,
+  VueLink as RootVueLink
+} from '../../../packages/@vue-spectrum/link/index';
 import {DIRECTORY_DRAG_TYPE, DropZone as SpectrumDropZone, useDragAndDrop as useSpectrumDragAndDrop} from '@vue-spectrum/dnd';
 import {
   Item as TabItem,
@@ -277,6 +285,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(Icon).toBe(VueIcon);
     expect(UIIcon).toBe(VueUIIcon);
     expect(Illustration).toBe(VueIllustration);
+  });
+
+  it('keeps link exports aligned with VueLink base entry', () => {
+    expect(Link).toBe(VueLink);
+  });
+
+  it('keeps root link entry exports aligned with source exports', () => {
+    expect(RootLink).toBe(Link);
+    expect(RootVueLink).toBe(VueLink);
   });
 
   it('exports dnd drag/drop compatibility primitives', () => {

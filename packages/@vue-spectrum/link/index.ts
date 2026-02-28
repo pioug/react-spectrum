@@ -1,1 +1,1 @@
-export {Link, VueLink} from './src';
+export * from './src';
