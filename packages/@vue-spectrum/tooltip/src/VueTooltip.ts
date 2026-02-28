@@ -1,4 +1,4 @@
-import {computed, defineComponent, h, type PropType, ref, watch} from 'vue';
+import {computed, defineComponent, h, type PropType, ref} from 'vue';
 import {useTooltip as createTooltip, useTooltipTrigger as createTooltipTrigger, type TooltipTriggerAria, type TooltipTriggerMode} from '@vue-aria/tooltip';
 import {useTooltipTriggerState} from '@vue-stately/tooltip';
 
@@ -165,19 +165,23 @@ export const VueTooltipTrigger = defineComponent({
   },
   setup(props, {attrs, emit, slots}) {
     let triggerRef = ref<HTMLElement | null>(null);
-    let isOpen = ref(props.defaultOpen);
-
-    watch(() => [props.modelValue, props.isOpen], ([modelValue, controlledOpen]) => {
-      let nextValue = typeof controlledOpen === 'boolean' ? controlledOpen : modelValue;
-      if (typeof nextValue === 'boolean') {
-        isOpen.value = nextValue;
+    let controlledOpen = computed<boolean | undefined>(() => {
+      if (typeof props.isOpen === 'boolean') {
+        return props.isOpen;
       }
-    }, {immediate: true});
+
+      if (typeof props.modelValue === 'boolean') {
+        return props.modelValue;
+      }
+
+      return undefined;
+    });
 
     let tooltipState = useTooltipTriggerState({
       closeDelay: computed(() => props.closeDelay),
+      defaultOpen: computed(() => props.defaultOpen),
       delay: computed(() => props.delay),
-      isOpen,
+      isOpen: controlledOpen,
       onOpenChange: (nextOpen) => {
         props.onOpenChange?.(nextOpen);
         emit('update:isOpen', nextOpen);

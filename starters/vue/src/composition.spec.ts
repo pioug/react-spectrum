@@ -3128,6 +3128,7 @@ describe('Vue migration composition components', () => {
       isOpen,
       onOpenChange: (nextOpen) => {
         changes.push(nextOpen);
+        isOpen.value = nextOpen;
       }
     });
 
@@ -3146,6 +3147,26 @@ describe('Vue migration composition components', () => {
     expect(uncontrolledOverlayState.isOpen.value).toBe(true);
     uncontrolledOverlayState.close();
     expect(uncontrolledOverlayState.isOpen.value).toBe(false);
+  });
+
+  it('keeps vue-stately overlay trigger controlled without mutating control refs', () => {
+    let changes: boolean[] = [];
+    let isOpen = ref(false);
+    let overlayState = useStatelyOverlayTriggerState({
+      isOpen,
+      onOpenChange: (nextOpen) => {
+        changes.push(nextOpen);
+      }
+    });
+
+    overlayState.open();
+    expect(isOpen.value).toBe(false);
+    expect(overlayState.isOpen.value).toBe(false);
+    expect(changes).toEqual([true]);
+
+    overlayState.open();
+    expect(isOpen.value).toBe(false);
+    expect(changes).toEqual([true, true]);
   });
 
   it('manages vue-stately radio group selection, focus tracking, and required validation', () => {

@@ -2226,6 +2226,22 @@
    - full Vue tests: `yarn test:vue` (621 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Overlay trigger controlled ownership parity (`@vue-stately/overlays`, tooltip integration)
+
+1. Closed overlay-trigger controlled ownership drift:
+   - `useOverlayTriggerState` no longer mutates controlled `isOpen` refs directly from `open`/`close`/`toggle`/`setOpen`,
+   - overlay trigger `isOpen` input now accepts computed refs (`MaybeRef<boolean | undefined>`) for controlled/uncontrolled bridging without writable ref assumptions.
+2. Aligned tooltip integration with controlled ownership:
+   - `VueTooltipTrigger` now passes controlled open state only when `isOpen`/`modelValue` are explicitly provided; otherwise it relies on overlay uncontrolled state,
+   - restored uncontrolled `defaultOpen` behavior by wiring `defaultOpen` through tooltip trigger state options.
+3. Expanded regression coverage:
+   - `starters/vue/src/composition.spec.ts`: explicit controlled-no-parent-update assertion for `useOverlayTriggerState`,
+   - `starters/vue/src/components.spec.ts`: tooltip controlled tests now mirror parent updates where required and avoid uncontrolled-to-controlled warning transitions in alias coverage.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts` and `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately overlay trigger open, close, and toggle state|keeps vue-stately overlay trigger controlled without mutating control refs"`,
+   - full Vue tests: `yarn test:vue` (622 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

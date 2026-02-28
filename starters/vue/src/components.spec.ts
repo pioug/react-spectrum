@@ -3325,13 +3325,17 @@ describe('Vue migration primitives', () => {
     expect(openUpdates[openUpdates.length - 1]).toEqual([false]);
     expect(changeEvents[changeEvents.length - 1]).toEqual([false]);
     expect(openChangeEvents[openChangeEvents.length - 1]).toEqual([false]);
+    await wrapper.setProps({modelValue: false});
+    await nextTick();
+    expect(wrapper.find('.vs-tooltip').exists()).toBe(false);
   });
 
   it('supports defaultOpen and isOpen control aliases on tooltip trigger', async () => {
     let wrapper = mount(TooltipTrigger, {
       props: {
         content: 'Tooltip details',
-        defaultOpen: true
+        defaultOpen: true,
+        isOpen: true
       },
       slots: {
         default: '<button type=\"button\">Trigger</button>'
@@ -3408,6 +3412,8 @@ describe('Vue migration primitives', () => {
 
     let modelUpdates = wrapper.emitted('update:modelValue') ?? [];
     expect(modelUpdates[modelUpdates.length - 1]).toEqual([false]);
+    await wrapper.setProps({modelValue: false});
+    await nextTick();
     expect(wrapper.find('.vs-tooltip').exists()).toBe(false);
   });
 

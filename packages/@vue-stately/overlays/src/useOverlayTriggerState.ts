@@ -4,7 +4,7 @@ type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 
 export interface OverlayTriggerProps {
   defaultOpen?: MaybeRef<boolean>,
-  isOpen?: Ref<boolean | undefined>,
+  isOpen?: MaybeRef<boolean | undefined>,
   onOpenChange?: (isOpen: boolean) => void
 }
 
@@ -21,7 +21,7 @@ export interface OverlayTriggerState {
  */
 export function useOverlayTriggerState(props: OverlayTriggerProps = {}): OverlayTriggerState {
   let uncontrolledOpen = ref(Boolean(unref(props.defaultOpen)));
-  let isControlled = computed(() => props.isOpen !== undefined && props.isOpen.value !== undefined);
+  let isControlled = computed(() => props.isOpen !== undefined && unref(props.isOpen) !== undefined);
   let wasControlled = ref(isControlled.value);
 
   watch(isControlled, (nextIsControlled) => {
@@ -32,8 +32,8 @@ export function useOverlayTriggerState(props: OverlayTriggerProps = {}): Overlay
   });
 
   let isOpen = computed(() => {
-    if (isControlled.value && props.isOpen) {
-      return props.isOpen.value;
+    if (isControlled.value) {
+      return Boolean(unref(props.isOpen));
     }
 
     return uncontrolledOpen.value;
@@ -44,9 +44,7 @@ export function useOverlayTriggerState(props: OverlayTriggerProps = {}): Overlay
       return;
     }
 
-    if (isControlled.value && props.isOpen) {
-      props.isOpen.value = nextOpen;
-    } else {
+    if (!isControlled.value) {
       uncontrolledOpen.value = nextOpen;
     }
 

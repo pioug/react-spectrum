@@ -34,7 +34,7 @@ export interface TooltipTriggerProps {
   closeDelay?: MaybeRef<number>,
   defaultOpen?: MaybeRef<boolean>,
   delay?: MaybeRef<number>,
-  isOpen?: Ref<boolean>,
+  isOpen?: MaybeRef<boolean | undefined>,
   onOpenChange?: (isOpen: boolean) => void
 }
 
