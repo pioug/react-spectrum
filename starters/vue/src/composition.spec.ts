@@ -1091,19 +1091,35 @@ describe('Vue migration composition components', () => {
 
   it('manages vue-stately color area/slider/field/channel/picker state baselines', () => {
     let areaValue = ref('#000000');
+    let areaChanges: string[] = [];
     let area = useStatelyColorAreaState({
+      onChange: (nextValue) => {
+        areaChanges.push(nextValue);
+        areaValue.value = nextValue;
+      },
       value: areaValue
     });
     area.setColorFromPoint(1, 0);
     expect(areaValue.value).toBe('#ffff00');
+    expect(areaChanges).toEqual(['#ffff00']);
+    area.setColorFromPoint(1, 0);
+    expect(areaChanges).toEqual(['#ffff00']);
 
     let sliderValue = ref('#000000');
+    let sliderChanges: string[] = [];
     let slider = useStatelyColorSliderState({
       channel: 'red',
+      onChange: (nextValue) => {
+        sliderChanges.push(nextValue);
+        sliderValue.value = nextValue;
+      },
       value: sliderValue
     });
     slider.increment(32);
     expect(sliderValue.value).toBe('#200000');
+    expect(sliderChanges).toEqual(['#200000']);
+    slider.setValue('#200000');
+    expect(sliderChanges).toEqual(['#200000']);
 
     let field = useStatelyColorFieldState({
       defaultValue: '#112233'

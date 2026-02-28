@@ -1750,6 +1750,20 @@
    - full Vue tests: `yarn test:vue` (584 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Color area/slider no-op and coalesced change parity (`@vue-stately/color`)
+
+1. Closed `useColorAreaState` duplicate-change drift:
+   - `setValue`, `setXValue`, and `setYValue` now no-op for unchanged values.
+   - `setColorFromPoint` now coalesces x/y channel updates into a single state commit and single `onChange` emission when both channels change.
+2. Closed `useColorSliderState` same-value emission drift:
+   - `setValue` now no-ops for same parsed color values instead of emitting duplicate `onChange`.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: color state baseline test now asserts single-emission behavior for area point updates and no duplicate emission for same-value slider sets.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately color area/slider/field/channel/picker state baselines|warns when vue-stately color picker and channel-field switch between controlled and uncontrolled|keeps vue-stately color picker and channel-field uncontrolled when value refs are undefined"`,
+   - full Vue tests: `yarn test:vue` (584 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

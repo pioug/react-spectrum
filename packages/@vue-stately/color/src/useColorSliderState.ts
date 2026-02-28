@@ -38,7 +38,12 @@ export function useColorSliderState(props: ColorSliderStateOptions): ColorSlider
   let channelValue = computed(() => getColorChannelValue(value.value, props.channel));
 
   let setValue = (nextValue: Color): void => {
-    value.value = parseColor(nextValue);
+    let parsedValue = parseColor(nextValue);
+    if (parsedValue === value.value) {
+      return;
+    }
+
+    value.value = parsedValue;
     props.onChange?.(value.value);
   };
 

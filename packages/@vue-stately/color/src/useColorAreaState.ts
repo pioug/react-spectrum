@@ -56,16 +56,31 @@ export function useColorAreaState(props: ColorAreaProps): ColorAreaState {
   let isDragging = ref(false);
 
   let setValue = (nextValue: Color): void => {
-    value.value = parseColor(nextValue);
+    let parsedValue = parseColor(nextValue);
+    if (parsedValue === value.value) {
+      return;
+    }
+
+    value.value = parsedValue;
     props.onChange?.(value.value);
   };
 
   let setXValue = (nextValue: number): void => {
-    setValue(setColorChannelValue(value.value, xChannel, clamp(nextValue, xRange.minValue, xRange.maxValue)));
+    let clampedValue = clamp(nextValue, xRange.minValue, xRange.maxValue);
+    if (clampedValue === xValue.value) {
+      return;
+    }
+
+    setValue(setColorChannelValue(value.value, xChannel, clampedValue));
   };
 
   let setYValue = (nextValue: number): void => {
-    setValue(setColorChannelValue(value.value, yChannel, clamp(nextValue, yRange.minValue, yRange.maxValue)));
+    let clampedValue = clamp(nextValue, yRange.minValue, yRange.maxValue);
+    if (clampedValue === yValue.value) {
+      return;
+    }
+
+    setValue(setColorChannelValue(value.value, yChannel, clampedValue));
   };
 
   return {
@@ -84,8 +99,21 @@ export function useColorAreaState(props: ColorAreaProps): ColorAreaState {
     setColorFromPoint: (x: number, y: number) => {
       let nextX = xRange.minValue + clamp(x, 0, 1) * (xRange.maxValue - xRange.minValue);
       let nextY = yRange.minValue + (1 - clamp(y, 0, 1)) * (yRange.maxValue - yRange.minValue);
-      setXValue(nextX);
-      setYValue(nextY);
+      let nextColor: Color | null = null;
+      let clampedX = clamp(nextX, xRange.minValue, xRange.maxValue);
+      let clampedY = clamp(nextY, yRange.minValue, yRange.maxValue);
+
+      if (clampedX !== xValue.value) {
+        nextColor = setColorChannelValue(value.value, xChannel, clampedX);
+      }
+
+      if (clampedY !== yValue.value) {
+        nextColor = setColorChannelValue(nextColor ?? value.value, yChannel, clampedY);
+      }
+
+      if (nextColor != null) {
+        setValue(nextColor);
+      }
     },
     getThumbPosition: () => ({
       x: (xValue.value - xRange.minValue) / (xRange.maxValue - xRange.minValue),
