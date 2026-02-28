@@ -81,12 +81,14 @@ export const DragPreview = defineComponent({
 export class ListDropTargetDelegate {
   private collection: Iterable<AnyRecord>;
   private ref: RefObject<HTMLElement | null>;
+  private layout: 'grid' | 'stack';
   private orientation: 'horizontal' | 'vertical';
   private direction: 'ltr' | 'rtl';
 
   constructor(collection: Iterable<AnyRecord>, ref: RefObject<HTMLElement | null>, options: AnyRecord = {}) {
     this.collection = collection;
     this.ref = ref;
+    this.layout = options.layout === 'grid' ? 'grid' : 'stack';
     this.orientation = options.orientation === 'horizontal' ? 'horizontal' : 'vertical';
     this.direction = options.direction === 'rtl' ? 'rtl' : 'ltr';
   }
@@ -99,12 +101,24 @@ export class ListDropTargetDelegate {
     return this.orientation === 'horizontal' ? rect.right : rect.bottom;
   }
 
-  private getBeforePosition(): 'before' | 'after' {
-    return this.orientation === 'horizontal' && this.direction === 'rtl' ? 'after' : 'before';
+  private getSecondaryStart(rect: DOMRect): number {
+    return this.orientation === 'horizontal' ? rect.top : rect.left;
   }
 
-  private getAfterPosition(): 'before' | 'after' {
-    return this.orientation === 'horizontal' && this.direction === 'rtl' ? 'before' : 'after';
+  private getSecondaryEnd(rect: DOMRect): number {
+    return this.orientation === 'horizontal' ? rect.bottom : rect.right;
+  }
+
+  private getFlowStart(rect: DOMRect): number {
+    return this.layout === 'stack' ? this.getPrimaryStart(rect) : this.getSecondaryStart(rect);
+  }
+
+  private getFlowEnd(rect: DOMRect): number {
+    return this.layout === 'stack' ? this.getPrimaryEnd(rect) : this.getSecondaryEnd(rect);
+  }
+
+  private getFlowSize(rect: DOMRect): number {
+    return this.getFlowEnd(rect) - this.getFlowStart(rect);
   }
 
   getDropTargetFromPoint(
@@ -132,90 +146,108 @@ export class ListDropTargetDelegate {
       }
     }
 
+    let containerRect = container.getBoundingClientRect();
     let primary = this.orientation === 'horizontal' ? x : y;
-    let firstItem: AnyRecord | null = null;
-    let firstStart = 0;
-    let lastItem: AnyRecord | null = null;
-    let lastEnd = 0;
+    let secondary = this.orientation === 'horizontal' ? y : x;
+    primary += this.getPrimaryStart(containerRect);
+    secondary += this.getSecondaryStart(containerRect);
 
-    for (let item of items) {
-      let key = String(item.key);
-      let element = elements.get(key);
+    let flow = this.layout === 'stack' ? primary : secondary;
+    let isPrimaryRTL = this.orientation === 'horizontal' && this.direction === 'rtl';
+    let isSecondaryRTL = this.layout === 'grid' && this.orientation === 'vertical' && this.direction === 'rtl';
+    let isFlowRTL = this.layout === 'stack' ? isPrimaryRTL : isSecondaryRTL;
+    let beforePosition = isFlowRTL ? 'after' : 'before';
+    let afterPosition = isFlowRTL ? 'before' : 'after';
+
+    let low = 0;
+    let high = items.length;
+    while (low < high) {
+      let mid = Math.floor((low + high) / 2);
+      let item = items[mid];
+      let element = elements.get(String(item.key));
       if (!element) {
-        continue;
+        break;
       }
 
       let rect = element.getBoundingClientRect();
-      let start = this.getPrimaryStart(rect);
-      let end = this.getPrimaryEnd(rect);
-      if (firstItem == null) {
-        firstItem = item;
-        firstStart = start;
-      }
-      lastItem = item;
-      lastEnd = end;
-
-      if (primary < start || primary > end) {
-        continue;
-      }
-
-      let onTarget = {
-        type: 'item' as const,
-        key: item.key,
-        dropPosition: 'on' as const
+      let update = (isGreater: boolean) => {
+        if (isGreater) {
+          low = mid + 1;
+        } else {
+          high = mid;
+        }
       };
-      if (isValidDropTarget(onTarget)) {
-        return onTarget;
-      }
 
-      let mid = start + (end - start) / 2;
-      let beforeTarget = {
-        type: 'item' as const,
-        key: item.key,
-        dropPosition: this.getBeforePosition()
-      };
-      let afterTarget = {
-        type: 'item' as const,
-        key: item.key,
-        dropPosition: this.getAfterPosition()
-      };
-      let preferredTarget = primary <= mid ? beforeTarget : afterTarget;
-      if (isValidDropTarget(preferredTarget)) {
-        return preferredTarget;
-      }
+      if (primary < this.getPrimaryStart(rect)) {
+        update(isPrimaryRTL);
+      } else if (primary > this.getPrimaryEnd(rect)) {
+        update(!isPrimaryRTL);
+      } else if (secondary < this.getSecondaryStart(rect)) {
+        update(isSecondaryRTL);
+      } else if (secondary > this.getSecondaryEnd(rect)) {
+        update(!isSecondaryRTL);
+      } else {
+        let target = {
+          type: 'item' as const,
+          key: item.key,
+          dropPosition: 'on' as const
+        };
 
-      let alternateTarget = primary <= mid ? afterTarget : beforeTarget;
-      if (isValidDropTarget(alternateTarget)) {
-        return alternateTarget;
-      }
+        if (isValidDropTarget(target)) {
+          if (flow <= this.getFlowStart(rect) + 5 && isValidDropTarget({...target, dropPosition: 'before'})) {
+            return {
+              ...target,
+              dropPosition: beforePosition
+            };
+          }
 
-      return onTarget;
+          if (flow >= this.getFlowEnd(rect) - 5 && isValidDropTarget({...target, dropPosition: 'after'})) {
+            return {
+              ...target,
+              dropPosition: afterPosition
+            };
+          }
+
+          return target;
+        }
+
+        let flowMid = this.getFlowStart(rect) + this.getFlowSize(rect) / 2;
+        if (flow <= flowMid && isValidDropTarget({...target, dropPosition: 'before'})) {
+          return {
+            ...target,
+            dropPosition: beforePosition
+          };
+        }
+
+        if (flow >= flowMid && isValidDropTarget({...target, dropPosition: 'after'})) {
+          return {
+            ...target,
+            dropPosition: afterPosition
+          };
+        }
+
+        return target;
+      }
     }
 
-    if (!firstItem || !lastItem) {
-      return {type: 'root'};
-    }
-
-    if (primary <= firstStart) {
+    let item = items[Math.min(low, items.length - 1)];
+    let element = elements.get(String(item.key));
+    let rect = element?.getBoundingClientRect();
+    if (rect && (
+      primary < this.getPrimaryStart(rect) ||
+      Math.abs(flow - this.getFlowStart(rect)) < Math.abs(flow - this.getFlowEnd(rect))
+    )) {
       return {
         type: 'item',
-        key: firstItem.key,
-        dropPosition: this.getBeforePosition()
-      };
-    }
-
-    if (primary >= lastEnd) {
-      return {
-        type: 'item',
-        key: lastItem.key,
-        dropPosition: this.getAfterPosition()
+        key: item.key,
+        dropPosition: beforePosition
       };
     }
 
     return {
       type: 'item',
-      key: lastItem.key,
-      dropPosition: this.getAfterPosition()
+      key: item.key,
+      dropPosition: afterPosition
     };
   }
 }

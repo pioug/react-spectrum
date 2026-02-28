@@ -4128,6 +4128,86 @@ describe('Vue migration composition components', () => {
     });
 
     container.remove();
+
+    let horizontalContainer = document.createElement('div');
+    let horizontalFirst = document.createElement('div');
+    horizontalFirst.dataset.key = 'left';
+    let horizontalSecond = document.createElement('div');
+    horizontalSecond.dataset.key = 'right';
+    horizontalContainer.append(horizontalFirst, horizontalSecond);
+    document.body.append(horizontalContainer);
+
+    horizontalContainer.getBoundingClientRect = () => {
+      return {
+        bottom: 40,
+        height: 40,
+        left: 100,
+        right: 180,
+        top: 0,
+        width: 80,
+        x: 100,
+        y: 0,
+        toJSON: () => ({})
+      } as DOMRect;
+    };
+    horizontalFirst.getBoundingClientRect = () => {
+      return {
+        bottom: 40,
+        height: 40,
+        left: 140,
+        right: 180,
+        top: 0,
+        width: 40,
+        x: 140,
+        y: 0,
+        toJSON: () => ({})
+      } as DOMRect;
+    };
+    horizontalSecond.getBoundingClientRect = () => {
+      return {
+        bottom: 40,
+        height: 40,
+        left: 100,
+        right: 140,
+        top: 0,
+        width: 40,
+        x: 100,
+        y: 0,
+        toJSON: () => ({})
+      } as DOMRect;
+    };
+
+    let horizontalRtlDelegate = new ListDropTargetDelegate([
+      {key: 'left', type: 'item'},
+      {key: 'right', type: 'item'}
+    ], {current: horizontalContainer}, {
+      direction: 'rtl',
+      orientation: 'horizontal'
+    });
+    expect(horizontalRtlDelegate.getDropTargetFromPoint(70, 10, () => true)).toEqual({
+      type: 'item',
+      key: 'left',
+      dropPosition: 'on'
+    });
+    expect(horizontalRtlDelegate.getDropTargetFromPoint(-10, 10, () => true)).toEqual({
+      type: 'item',
+      key: 'right',
+      dropPosition: 'after'
+    });
+    expect(horizontalRtlDelegate.getDropTargetFromPoint(95, 10, () => true)).toEqual({
+      type: 'item',
+      key: 'left',
+      dropPosition: 'before'
+    });
+    expect(horizontalRtlDelegate.getDropTargetFromPoint(10, 10, (target) => {
+      return target && typeof target === 'object' && (target as {dropPosition?: string}).dropPosition !== 'on';
+    })).toEqual({
+      type: 'item',
+      key: 'right',
+      dropPosition: 'after'
+    });
+
+    horizontalContainer.remove();
   });
 
   it('does not warn when vue-aria drags end via a useDrop target', () => {
