@@ -49,7 +49,8 @@ export interface TableStateProps<T> {
  */
 export function useTableState<T>(props: TableStateProps<T>): TableState<T> {
   let selectionMode = props.selectionMode ?? 'none';
-  let sortDescriptor = props.sortDescriptor ?? ref<SortDescriptor | null>(null);
+  let sortDescriptor = computed(() => props.sortDescriptor?.value ?? null) as Ref<SortDescriptor | null>;
+  let isKeyboardNavigationDisabled = ref(false);
 
   let gridState = useGridState<T, FilterableCollection<T>>({
     allowDuplicateSelectionEvents: props.allowDuplicateSelectionEvents,
@@ -63,8 +64,6 @@ export function useTableState<T>(props: TableStateProps<T>): TableState<T> {
     selectionBehavior: props.selectionBehavior,
     selectionMode
   });
-  gridState.isKeyboardNavigationDisabled.value = props.collection.size === 0;
-
   let sort = (columnKey: Key, direction?: SortDirection): void => {
     let currentSort = sortDescriptor.value;
     let nextDirection = direction
@@ -76,7 +75,6 @@ export function useTableState<T>(props: TableStateProps<T>): TableState<T> {
       direction: nextDirection
     };
 
-    sortDescriptor.value = nextSortDescriptor;
     props.onSortChange?.(nextSortDescriptor);
   };
 
@@ -84,10 +82,13 @@ export function useTableState<T>(props: TableStateProps<T>): TableState<T> {
     ...gridState,
     collection: props.collection,
     selectionMode,
-    showSelectionCheckboxes: Boolean(props.showSelectionCheckboxes) && selectionMode !== 'none',
+    showSelectionCheckboxes: Boolean(props.showSelectionCheckboxes),
     sortDescriptor,
+    isKeyboardNavigationDisabled: computed(() => {
+      return props.collection.size === 0 || isKeyboardNavigationDisabled.value;
+    }) as Ref<boolean>,
     setKeyboardNavigationDisabled: (value) => {
-      gridState.isKeyboardNavigationDisabled.value = value;
+      isKeyboardNavigationDisabled.value = value;
     },
     sort
   };

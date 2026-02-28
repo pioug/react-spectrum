@@ -2605,13 +2605,28 @@
    - full Vue tests: `yarn test:vue` (640 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Table sort/show-checkbox controlled parity remediation (`@vue-stately/table`)
+
+1. Closed controlled sort-descriptor ownership drift in `useTableState`:
+   - sorting now emits through `onSortChange` without mutating controlled `sortDescriptor` refs (React parity).
+2. Closed checkbox-visibility drift:
+   - `showSelectionCheckboxes` now reflects the explicit prop value without Vue-only `selectionMode !== 'none'` gating.
+3. Preserved keyboard-navigation gating semantics:
+   - table keyboard-navigation disabled state still includes empty-collection gating plus explicit local disable toggles.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` now includes controlled no-parent-sync sort assertions and `showSelectionCheckboxes` parity when `selectionMode` is `none`.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "vue-stately table"`,
+   - full Vue tests: `yarn test:vue` (642 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 640 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 642 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

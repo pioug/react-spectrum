@@ -4353,7 +4353,8 @@ describe('Vue migration composition components', () => {
     }
   });
 
-  it('manages vue-stately table collection filtering, row selection, and sort descriptor state', () => {
+  it('manages vue-stately table collection filtering, row selection, and controlled sort descriptor state', () => {
+    let sortDescriptor = ref<{column: string | number, direction: 'ascending' | 'descending'} | null>(null);
     let tableState = useStatelyTableState({
       collection: new StatelyTableCollection({
         columns: [
@@ -4379,7 +4380,11 @@ describe('Vue migration composition components', () => {
           }
         ]
       }),
+      onSortChange: (nextSortDescriptor) => {
+        sortDescriptor.value = nextSortDescriptor;
+      },
       selectionMode: 'multiple',
+      sortDescriptor: sortDescriptor as Ref<{column: string | number, direction: 'ascending' | 'descending'} | null>,
       showSelectionCheckboxes: true
     });
 
@@ -4399,6 +4404,64 @@ describe('Vue migration composition components', () => {
     });
     expect(filteredState.collection.size).toBe(1);
     expect(filteredState.collection.getFirstKey()).toBe('row-2');
+  });
+
+  it('keeps vue-stately table sort descriptor controlled without mutating control refs', () => {
+    let sortDescriptor = ref<{column: string | number, direction: 'ascending' | 'descending'} | null>({
+      column: 'status',
+      direction: 'ascending'
+    });
+    let sortChanges: Array<{column: string | number, direction: 'ascending' | 'descending'}> = [];
+    let tableState = useStatelyTableState({
+      collection: new StatelyTableCollection({
+        columns: [
+          {key: 'title', title: 'Title'},
+          {key: 'status', title: 'Status'}
+        ],
+        rows: [
+          {
+            key: 'row-1',
+            textValue: 'Backlog item',
+            cells: [
+              {textValue: 'Backlog item', value: 'Backlog item'},
+              {textValue: 'Open', value: 'Open'}
+            ]
+          }
+        ]
+      }),
+      onSortChange: (nextSortDescriptor) => {
+        sortChanges.push(nextSortDescriptor);
+      },
+      sortDescriptor: sortDescriptor as Ref<{column: string | number, direction: 'ascending' | 'descending'} | null>
+    });
+
+    tableState.sort('status');
+
+    expect(sortDescriptor.value).toEqual({column: 'status', direction: 'ascending'});
+    expect(sortChanges).toEqual([{column: 'status', direction: 'descending'}]);
+  });
+
+  it('keeps vue-stately table showSelectionCheckboxes aligned with props when selectionMode is none', () => {
+    let tableState = useStatelyTableState({
+      collection: new StatelyTableCollection({
+        columns: [
+          {key: 'title', title: 'Title'}
+        ],
+        rows: [
+          {
+            key: 'row-1',
+            textValue: 'Backlog item',
+            cells: [
+              {textValue: 'Backlog item', value: 'Backlog item'}
+            ]
+          }
+        ]
+      }),
+      selectionMode: 'none',
+      showSelectionCheckboxes: true
+    });
+
+    expect(tableState.showSelectionCheckboxes).toBe(true);
   });
 
   it('manages vue-stately tree grid expanded key state', () => {
