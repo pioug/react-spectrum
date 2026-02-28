@@ -695,6 +695,23 @@ describe('Vue migration composition components', () => {
     italicItem.press();
     expect(selectedKeys.value instanceof Set).toBe(true);
     expect(Array.from(selectedKeys.value)).toEqual(['italic']);
+
+    let groupItemClickCount = 0;
+    let groupItemPressUpCount = 0;
+    let boldItem = useToggleButtonGroupItem({
+      group,
+      id: 'bold',
+      onClick: () => {
+        groupItemClickCount += 1;
+      },
+      onPressUp: () => {
+        groupItemPressUpCount += 1;
+      }
+    });
+    boldItem.press();
+    expect(groupItemClickCount).toBe(1);
+    expect(groupItemPressUpCount).toBe(1);
+    expect(Array.from(selectedKeys.value)).toEqual(['bold']);
   });
 
   it('manages vue-aria calendar navigation and date selection', () => {

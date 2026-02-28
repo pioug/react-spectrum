@@ -186,13 +186,22 @@ export function useToggleButtonGroupItem(options: AriaToggleButtonGroupItemOptio
     ariaHasPopup: options.ariaHasPopup,
     ariaPressed: options.ariaPressed,
     elementType: options.elementType,
+    form: options.form,
+    formAction: options.formAction,
+    formEncType: options.formEncType,
+    formMethod: options.formMethod,
+    formNoValidate: options.formNoValidate,
+    formTarget: options.formTarget,
     href: options.href,
     isDisabled: computed(() => Boolean(unref(options.isDisabled)) || options.group.isDisabled.value),
     isSelected,
+    name: options.name,
+    onClick: options.onClick,
     onPress: options.onPress,
     onPressChange: options.onPressChange,
     onPressEnd: options.onPressEnd,
     onPressStart: options.onPressStart,
+    onPressUp: options.onPressUp,
     onToggle: options.onToggle,
     rel: options.rel,
     setSelected: (nextSelected) => {
@@ -200,7 +209,8 @@ export function useToggleButtonGroupItem(options: AriaToggleButtonGroupItemOptio
       options.onSelectionChange?.(id.value, nextSelected, nextSelection);
     },
     target: options.target,
-    type: options.type
+    type: options.type,
+    value: options.value
   });
 
   let buttonProps = computed(() => {

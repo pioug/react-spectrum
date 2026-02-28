@@ -2840,6 +2840,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Toggle-button-group item prop-forwarding parity remediation (`@vue-aria/button`)
+
+1. Closed toggle-group item prop-forwarding drift:
+   - `useToggleButtonGroupItem` now forwards the full shared button prop surface into `useToggleButton`, including:
+     - native form props (`form*`, `name`, `value`),
+     - event callbacks (`onClick`, `onPressUp`) in addition to existing press/toggle callbacks.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` toggle-button-group item assertions now verify forwarded `onClick` and `onPressUp` callbacks fire during item press.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "button selection and group-item radio state"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
