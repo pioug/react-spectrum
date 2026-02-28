@@ -1,5 +1,6 @@
 import {type AriaToggleButtonOptions, type ToggleButtonAria, useToggleButton} from './useToggleButton';
 import {computed, type ComputedRef, isRef, type Ref, unref} from 'vue';
+import {useToolbar} from '@vue-aria/toolbar';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
 
@@ -7,6 +8,10 @@ export type ToggleButtonGroupSelectionMode = 'multiple' | 'single';
 export type ToggleButtonGroupOrientation = 'horizontal' | 'vertical';
 
 export interface AriaToggleButtonGroupOptions {
+  'aria-label'?: MaybeRef<string | undefined>,
+  'aria-labelledby'?: MaybeRef<string | undefined>,
+  ariaLabel?: MaybeRef<string | undefined>,
+  ariaLabelledby?: MaybeRef<string | undefined>,
   isDisabled?: MaybeRef<boolean>,
   orientation?: MaybeRef<ToggleButtonGroupOrientation>,
   selectedKeys?: Iterable<string> | Ref<Iterable<string>>,
@@ -16,8 +21,13 @@ export interface AriaToggleButtonGroupOptions {
 export interface ToggleButtonGroupAria {
   groupProps: ComputedRef<{
     'aria-disabled'?: boolean,
+    'aria-label'?: string,
+    'aria-labelledby'?: string,
     'aria-orientation': ToggleButtonGroupOrientation,
-    role: 'radiogroup' | 'toolbar'
+    onBlurCapture?: (event: FocusEvent) => void,
+    onFocusCapture?: (event: FocusEvent) => void,
+    onKeyDownCapture?: (event: KeyboardEvent) => void,
+    role: 'group' | 'radiogroup' | 'toolbar'
   }>,
   isDisabled: ComputedRef<boolean>,
   isSelected: (key: string) => boolean,
@@ -79,6 +89,13 @@ export function useToggleButtonGroup(options: AriaToggleButtonGroupOptions = {})
   let selectionMode = computed(() => normalizeSelectionMode(unref(options.selectionMode)));
   let orientation = computed(() => normalizeOrientation(unref(options.orientation)));
   let selectedKeys = computed(() => toKeySet(resolveSelectedKeys(options.selectedKeys)));
+  let toolbar = useToolbar({
+    'aria-label': options['aria-label'],
+    'aria-labelledby': options['aria-labelledby'],
+    ariaLabel: options.ariaLabel,
+    ariaLabelledby: options.ariaLabelledby,
+    orientation
+  });
 
   let setSelected = (key: string, isSelectedKey: boolean): Set<string> => {
     let nextSelection = new Set(selectedKeys.value);
@@ -110,11 +127,14 @@ export function useToggleButtonGroup(options: AriaToggleButtonGroupOptions = {})
 
   let isSelected = (key: string) => selectedKeys.value.has(key);
 
-  let groupProps = computed(() => ({
-    role: selectionMode.value === 'single' ? 'radiogroup' as const : 'toolbar' as const,
-    'aria-orientation': orientation.value,
-    'aria-disabled': isDisabled.value || undefined
-  }));
+  let groupProps = computed(() => {
+    let toolbarProps = toolbar.toolbarProps.value;
+    return {
+      ...toolbarProps,
+      role: selectionMode.value === 'single' ? 'radiogroup' as const : toolbarProps.role,
+      'aria-disabled': isDisabled.value || undefined
+    };
+  });
 
   return {
     groupProps,

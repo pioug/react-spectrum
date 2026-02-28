@@ -682,6 +682,8 @@ describe('Vue migration composition components', () => {
       selectedKeys,
       selectionMode: 'single'
     });
+    expect(group.groupProps.value.role).toBe('radiogroup');
+    expect(typeof group.groupProps.value.onKeyDownCapture).toBe('function');
 
     let italicItem = useToggleButtonGroupItem({
       group,

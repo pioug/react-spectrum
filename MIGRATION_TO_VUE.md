@@ -2827,6 +2827,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Toggle-button-group toolbar semantics parity remediation (`@vue-aria/button`)
+
+1. Closed toolbar interaction-prop drift in `useToggleButtonGroup`:
+   - toggle-button-group now composes `useToolbar` props (arrow-key/focus management capture handlers and labeling surface) rather than exposing only static role/orientation attributes.
+2. Preserved single-selection role override:
+   - role remains `radiogroup` for single selection mode while inheriting toolbar group semantics (`toolbar`/`group`) for non-single modes, matching React composition behavior.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` toggle-button-group assertions now verify `groupProps.role` and presence of keyboard-capture handlers in composed group props.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "button selection and group-item radio state"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
