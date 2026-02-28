@@ -68,6 +68,26 @@ import {
   VueColorWheel as RootVueColorWheel
 } from '../../../packages/@vue-spectrum/color/index';
 import {
+  DateField,
+  DatePicker,
+  DateRangePicker,
+  TimeField,
+  VueDateField,
+  VueDatePicker,
+  VueDateRangePicker,
+  VueTimeField
+} from '@vue-spectrum/datepicker';
+import {
+  DateField as RootDateField,
+  DatePicker as RootDatePicker,
+  DateRangePicker as RootDateRangePicker,
+  TimeField as RootTimeField,
+  VueDateField as RootVueDateField,
+  VueDatePicker as RootVueDatePicker,
+  VueDateRangePicker as RootVueDateRangePicker,
+  VueTimeField as RootVueTimeField
+} from '../../../packages/@vue-spectrum/datepicker/index';
+import {
   ButtonGroup,
   VueButtonGroup
 } from '@vue-spectrum/buttongroup';
@@ -522,6 +542,24 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(RootVueColorWheel).toBe(VueColorWheel);
     expect(RootParseColor).toBe(parseColor);
     expect(RootGetColorChannels).toBe(getColorChannels);
+  });
+
+  it('keeps datepicker exports aligned with Vue date/time aliases', () => {
+    expect(DateField).toBe(VueDateField);
+    expect(DatePicker).toBe(VueDatePicker);
+    expect(DateRangePicker).toBe(VueDateRangePicker);
+    expect(TimeField).toBe(VueTimeField);
+  });
+
+  it('keeps root datepicker entry exports aligned with source exports', () => {
+    expect(RootDateField).toBe(DateField);
+    expect(RootVueDateField).toBe(VueDateField);
+    expect(RootDatePicker).toBe(DatePicker);
+    expect(RootVueDatePicker).toBe(VueDatePicker);
+    expect(RootDateRangePicker).toBe(DateRangePicker);
+    expect(RootVueDateRangePicker).toBe(VueDateRangePicker);
+    expect(RootTimeField).toBe(TimeField);
+    expect(RootVueTimeField).toBe(VueTimeField);
   });
 
   it('keeps buttongroup exports aligned with VueButtonGroup base entry', () => {
