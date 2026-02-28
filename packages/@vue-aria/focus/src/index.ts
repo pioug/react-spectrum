@@ -240,12 +240,16 @@ export function getFocusableTreeWalker(
 }
 
 export function isElementInChildOfActiveScope(element: Element): boolean {
+  if (element.closest('[data-react-aria-top-layer]')) {
+    return true;
+  }
+
   if (typeof document === 'undefined') {
     return false;
   }
 
   let activeElement = document.activeElement;
-  return Boolean(activeElement && element.contains(activeElement));
+  return Boolean(activeElement && (element.contains(activeElement) || activeElement.contains(element)));
 }
 
 export function dispatchVirtualBlur(fromElement: Element, toElement: Element | null): void {

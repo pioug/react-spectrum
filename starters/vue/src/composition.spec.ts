@@ -48,6 +48,7 @@ import {
   focusSafely as focusPackageFocusSafely,
   getVirtuallyFocusedElement as getVirtuallyFocusedElementFromPackage,
   getFocusableTreeWalker as getFocusableTreeWalkerFromPackage,
+  isElementInChildOfActiveScope as isElementInChildOfActiveScopeFromPackage,
   isFocusable as focusIsFocusable,
   moveVirtualFocus as moveVirtualFocusFromPackage,
   useFocusManager as useFocusManagerFromPackage,
@@ -4458,6 +4459,27 @@ describe('Vue migration composition components', () => {
 
   it('returns undefined from @vue-aria/focus useFocusManager outside scope context', () => {
     expect(useFocusManagerFromPackage()).toBeUndefined();
+  });
+
+  it('handles top-layer and active-element containment in isElementInChildOfActiveScope', () => {
+    let topLayer = document.createElement('div');
+    topLayer.setAttribute('data-react-aria-top-layer', '');
+    let topLayerChild = document.createElement('button');
+    topLayer.append(topLayerChild);
+    document.body.append(topLayer);
+
+    let scope = document.createElement('div');
+    let activeButton = document.createElement('button');
+    scope.append(activeButton);
+    document.body.append(scope);
+    activeButton.focus();
+
+    expect(isElementInChildOfActiveScopeFromPackage(topLayerChild)).toBe(true);
+    expect(isElementInChildOfActiveScopeFromPackage(scope)).toBe(true);
+    expect(isElementInChildOfActiveScopeFromPackage(activeButton)).toBe(true);
+
+    topLayer.remove();
+    scope.remove();
   });
 
   it('resolves aria-activedescendant through @vue-aria/focus getVirtuallyFocusedElement', () => {
