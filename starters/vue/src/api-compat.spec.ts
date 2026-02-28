@@ -142,6 +142,14 @@ import {
   VueTooltipTrigger as RootVueTooltipTrigger
 } from '../../../packages/@vue-spectrum/tooltip/index';
 import {
+  InlineAlert,
+  VueInlineAlert
+} from '@vue-spectrum/inlinealert';
+import {
+  InlineAlert as RootInlineAlert,
+  VueInlineAlert as RootVueInlineAlert
+} from '../../../packages/@vue-spectrum/inlinealert/index';
+import {
   ButtonGroup,
   VueButtonGroup
 } from '@vue-spectrum/buttongroup';
@@ -673,6 +681,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(RootVueTooltip).toBe(VueTooltip);
     expect(RootTooltipTrigger).toBe(TooltipTrigger);
     expect(RootVueTooltipTrigger).toBe(VueTooltipTrigger);
+  });
+
+  it('keeps inlinealert exports aligned with VueInlineAlert base entry', () => {
+    expect(InlineAlert).toBe(VueInlineAlert);
+  });
+
+  it('keeps root inlinealert entry exports aligned with source exports', () => {
+    expect(RootInlineAlert).toBe(InlineAlert);
+    expect(RootVueInlineAlert).toBe(VueInlineAlert);
   });
 
   it('keeps buttongroup exports aligned with VueButtonGroup base entry', () => {
