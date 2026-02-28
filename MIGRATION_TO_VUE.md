@@ -2723,6 +2723,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — I18n filter default-sensitivity parity remediation (`@vue-aria/i18n`)
+
+1. Closed `useFilter` default-collator drift:
+   - removed Vue-only default `sensitivity: 'base'` override so default `useFilter()` collation now matches React (`usage: 'search'` with platform/default collator sensitivity).
+2. Added/updated regression coverage:
+   - `starters/vue/src/composition.spec.ts` i18n helper assertions now verify:
+     - default filter behavior is case-sensitive by default (React parity),
+     - explicitly passing `{sensitivity: 'base'}` restores case-insensitive matching.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "locale-sensitive values with vue-aria i18n helpers"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

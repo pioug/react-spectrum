@@ -5986,8 +5986,14 @@ describe('Vue migration composition components', () => {
     expect(collator.compare('é', 'e')).toBe(0);
 
     let filter = useFilter();
-    expect(filter.contains('Vue Spectrum', 'spectrum')).toBe(true);
-    expect(filter.startsWith('Migration', 'mig')).toBe(true);
+    expect(filter.contains('Vue Spectrum', 'spectrum')).toBe(false);
+    expect(filter.startsWith('Migration', 'mig')).toBe(false);
+
+    let caseInsensitiveFilter = useFilter({
+      sensitivity: 'base'
+    });
+    expect(caseInsensitiveFilter.contains('Vue Spectrum', 'spectrum')).toBe(true);
+    expect(caseInsensitiveFilter.startsWith('Migration', 'mig')).toBe(true);
 
     let listFormatter = useListFormatter({
       style: 'long',

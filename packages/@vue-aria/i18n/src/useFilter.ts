@@ -8,7 +8,6 @@ export interface Filter {
 
 export function useFilter(options: Intl.CollatorOptions = {}): Filter {
   let collator = useCollator({
-    sensitivity: 'base',
     usage: 'search',
     ...options
   });
