@@ -9110,6 +9110,53 @@ describe('Vue migration composition components', () => {
     }
   });
 
+  it('supports react-style tooltip trigger overload with external state', () => {
+    let isOpen = ref(false);
+    let openCalls: Array<boolean | undefined> = [];
+    let closeCalls: Array<boolean | undefined> = [];
+    let setOpenCalls: boolean[] = [];
+    let reactTooltipState = {
+      get isOpen() {
+        return isOpen.value;
+      },
+      close: (immediate?: boolean) => {
+        closeCalls.push(immediate);
+        isOpen.value = false;
+      },
+      open: (isFocused?: boolean) => {
+        openCalls.push(isFocused);
+        isOpen.value = true;
+      },
+      setOpen: (nextOpen: boolean) => {
+        setOpenCalls.push(nextOpen);
+        isOpen.value = nextOpen;
+      }
+    };
+
+    let trigger = useAriaTooltipTrigger({
+      trigger: 'focus hover'
+    } as unknown as Parameters<typeof useAriaTooltipTrigger>[0], reactTooltipState as unknown as Parameters<typeof useAriaTooltipTrigger>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaTooltipTrigger>[2]);
+
+    expect(trigger.isOpen.value).toBe(false);
+    trigger.open(true);
+    expect(trigger.isOpen.value).toBe(true);
+    expect(openCalls).toEqual([true]);
+    expect(trigger.triggerProps.value['aria-describedby']).toBe(trigger.tooltipProps.value.id);
+
+    trigger.close(true);
+    expect(trigger.isOpen.value).toBe(false);
+    expect(closeCalls).toEqual([true]);
+    expect(trigger.triggerProps.value['aria-describedby']).toBeUndefined();
+
+    trigger.open();
+    trigger.close();
+    expect(openCalls).toEqual([true, undefined]);
+    expect(closeCalls).toEqual([true, undefined]);
+    expect(setOpenCalls).toEqual([]);
+  });
+
   it('computes vue-aria treegrid semantics and expandable tree item behavior', () => {
     let selectedKeys = ref(new Set<string>());
     let expandedKeys = ref(new Set<string>());
