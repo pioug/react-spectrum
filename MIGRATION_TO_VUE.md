@@ -2800,6 +2800,17 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Button `onPressUp` lifecycle parity remediation (`@vue-aria/button`)
+
+1. Closed button press-lifecycle drift in `useButton`:
+   - `press()` now emits `onPressUp` in addition to existing `onPress`/`onClick`/`onPressStart`/`onPressEnd` callbacks, matching React press callback surface expectations.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` button composable assertions now verify `onPressUp` firing on enabled press and non-firing when disabled.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "button props and press interactions"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
