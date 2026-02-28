@@ -32,6 +32,7 @@ export function useDrag(options: AriaDragOptions): DragAria {
   let isDragging = ref(false);
   let lastDropOperation = ref<DropOperation | null>(null);
   let activeSessionId = ref<number | null>(null);
+  let lastDragPoint = ref<{x: number, y: number} | null>(null);
 
   let dragItems = computed(() => {
     let items = unref(options.dragItems);
@@ -60,6 +61,7 @@ export function useDrag(options: AriaDragOptions): DragAria {
     }
 
     isDragging.value = true;
+    lastDragPoint.value = null;
     activeSessionId.value = beginDragSession();
     options.onDragStart?.(dragItems.value);
   };
@@ -69,6 +71,11 @@ export function useDrag(options: AriaDragOptions): DragAria {
       return;
     }
 
+    if (lastDragPoint.value && lastDragPoint.value.x === point.x && lastDragPoint.value.y === point.y) {
+      return;
+    }
+
+    lastDragPoint.value = point;
     options.onDragMove?.(point, dragItems.value);
   };
 
@@ -87,6 +94,7 @@ export function useDrag(options: AriaDragOptions): DragAria {
     }
 
     isDragging.value = false;
+    lastDragPoint.value = null;
     lastDropOperation.value = operation;
     activeSessionId.value = null;
     options.onDragEnd?.(operation, dragItems.value);

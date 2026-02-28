@@ -4008,6 +4008,25 @@ describe('Vue migration composition components', () => {
     warnSpy.mockRestore();
   });
 
+  it('fires vue-aria useDrag onDragMove only when coordinates change', () => {
+    let dragMoves: Array<string> = [];
+    let drag = useDrag({
+      dragItems: [{id: 'ticket-motion', type: 'ticket', value: {id: 12}}],
+      onDragMove: (point) => {
+        dragMoves.push(`move:${point.x},${point.y}`);
+      }
+    });
+
+    drag.startDrag();
+    drag.moveDrag({x: 10, y: 12});
+    drag.moveDrag({x: 10, y: 12});
+    drag.moveDrag({x: 14, y: 16});
+    drag.moveDrag({x: 14, y: 16});
+    drag.endDrag('cancel');
+
+    expect(dragMoves).toEqual(['move:10,12', 'move:14,16']);
+  });
+
   it('tracks vue-aria virtual dragging session state while drag is active', () => {
     let drag = useDrag({
       dragItems: [{id: 'ticket-virtual', type: 'ticket', value: {id: 7}}]
