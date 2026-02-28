@@ -32,7 +32,12 @@ import {
   isTextDropItem,
   isVirtualDragging,
   useDrag,
-  useDrop
+  useDraggableCollection,
+  useDraggableItem,
+  useDrop,
+  useDropIndicator,
+  useDroppableCollection,
+  useDroppableItem
 } from '@vue-aria/dnd';
 import {EXAMPLE_THEME_CLASS, useExampleTheme} from '@vue-aria/example-theme';
 import {useFocusRing, useHasTabbableChild} from '@vue-aria/focus';
@@ -4139,6 +4144,76 @@ describe('Vue migration composition components', () => {
     expect(droppable.enter(items)).toBe(true);
     expect(droppable.drop(items)).toBe('move');
     expect(dropEvents).toEqual(['drop:move']);
+  });
+
+  it('wires vue-aria dnd collection/item hooks to vue-stately drag and drop state', () => {
+    let dragState = useStatelyDraggableCollectionState({
+      collection: [
+        {key: 'alpha', value: {id: 1, label: 'Alpha'}}
+      ],
+      selectedKeys: ref(new Set(['alpha']))
+    });
+    let dropEvents: Array<string> = [];
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: ({target}) => target?.type === 'item' ? 'move' : 'copy',
+      onDrop: (event) => {
+        dropEvents.push(`drop:${event.operation}`);
+      }
+    });
+
+    let collectionRef = {current: document.createElement('div')};
+    useDraggableCollection({}, dragState, collectionRef);
+
+    let draggableItem = useDraggableItem({key: 'alpha'}, dragState) as {
+      dragButtonProps: {value: {onClick: () => void}},
+      dragProps: {value: {draggable: boolean}}
+    };
+    expect(draggableItem.dragProps.value.draggable).toBe(true);
+    draggableItem.dragButtonProps.value.onClick();
+    expect(dragState.draggedKey.value).toBe('alpha');
+
+    let target = {
+      type: 'item' as const,
+      key: 'alpha',
+      dropPosition: 'on' as const
+    };
+    dropState.setTarget(target);
+
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item']
+    }, dropState, collectionRef) as {
+      collectionProps: {value: {
+        role: 'group',
+        'data-drop-target': boolean,
+        onDragEnter: (items: unknown) => boolean,
+        onDrop: (items: unknown, operation?: 'cancel' | 'copy' | 'link' | 'move') => 'cancel' | 'copy' | 'link' | 'move'
+      }}
+    };
+    expect(droppableCollection.collectionProps.value.role).toBe('group');
+    expect(droppableCollection.collectionProps.value['data-drop-target']).toBe(true);
+    expect(droppableCollection.collectionProps.value.onDragEnter([{id: 'item-1', type: 'item', value: {id: 1}}])).toBe(true);
+    expect(droppableCollection.collectionProps.value.onDragEnter([{id: 'asset-1', type: 'file', value: {id: 2}}])).toBe(false);
+
+    let droppableItem = useDroppableItem({target}, dropState, collectionRef) as {
+      isDropTarget: {value: boolean}
+    };
+    expect(droppableItem.isDropTarget.value).toBe(true);
+
+    let dropIndicator = useDropIndicator({target}, dropState, collectionRef) as {
+      dropIndicatorProps: {value: {'aria-roledescription': string}},
+      isDropTarget: {value: boolean},
+      isHidden: {value: boolean}
+    };
+    expect(dropIndicator.dropIndicatorProps.value['aria-roledescription']).toBe('drop indicator');
+    expect(dropIndicator.isDropTarget.value).toBe(true);
+    expect(dropIndicator.isHidden.value).toBe(false);
+
+    expect(droppableCollection.collectionProps.value.onDrop([{id: 'item-1', type: 'item', value: {id: 1}}], 'move')).toBe('move');
+    expect(dropEvents).toEqual(['drop:move']);
+
+    dragState.endDrag('cancel');
+    expect(dragState.draggedKey.value).toBeNull();
   });
 
   it('toggles vue-stately global feature flags', () => {

@@ -1,6 +1,6 @@
 import {type AriaDragOptions, type DragAria, useDrag as useAriaDrag} from './useDrag';
 import {type AriaDropOptions, type DropAria, useDrop as useAriaDrop} from './useDrop';
-import {defineComponent} from 'vue';
+import {computed, defineComponent, unref} from 'vue';
 import {type DragItem, type DropOperation} from './types';
 import {isVirtualDraggingSessionActive} from './dragSession';
 
@@ -9,6 +9,15 @@ export type {DragItem, DropOperation} from './types';
 
 type AnyRecord = Record<string, unknown>;
 type RefObject<T> = {current: T};
+type DraggingKey = number | string;
+
+const DROP_OPERATIONS = new Set<DropOperation>(['cancel', 'copy', 'link', 'move']);
+const DEFAULT_DROP_OPERATION: DropOperation = 'copy';
+const DEFAULT_ALLOWED_OPERATIONS: DropOperation[] = ['copy', 'move', 'link'];
+
+let draggingCollectionRef: RefObject<HTMLElement | null> | null = null;
+let dropCollectionRef: RefObject<HTMLElement | null> | null = null;
+let draggingKeys = new Set<DraggingKey>();
 
 export type ClipboardProps = AnyRecord;
 export type ClipboardResult = {
@@ -75,6 +84,125 @@ export class ListDropTargetDelegate {
   }
 }
 
+function readMaybeRef<T>(value: unknown): T {
+  return unref(value as T);
+}
+
+function toDragItems(items: unknown): DragItem[] {
+  if (!Array.isArray(items)) {
+    return [];
+  }
+
+  return items
+    .map((item, index) => {
+      if (!item || typeof item !== 'object') {
+        return null;
+      }
+
+      let record = item as AnyRecord;
+      return {
+        id: String(record.id ?? record.key ?? index),
+        type: String(record.type ?? 'item'),
+        value: 'value' in record ? record.value : record
+      } satisfies DragItem;
+    })
+    .filter((item): item is DragItem => item != null);
+}
+
+function normalizeDropItems(input: unknown): DragItem[] {
+  if (Array.isArray(input)) {
+    return toDragItems(input);
+  }
+
+  if (!input || typeof input !== 'object') {
+    return [];
+  }
+
+  let record = input as AnyRecord;
+  if (Array.isArray(record.items)) {
+    return toDragItems(record.items);
+  }
+
+  let detail = record.detail as AnyRecord | undefined;
+  if (detail && Array.isArray(detail.items)) {
+    return toDragItems(detail.items);
+  }
+
+  return [];
+}
+
+function normalizeDropOperation(input: unknown): DropOperation {
+  if (typeof input === 'string' && DROP_OPERATIONS.has(input as DropOperation)) {
+    return input as DropOperation;
+  }
+
+  return DEFAULT_DROP_OPERATION;
+}
+
+function resolveDropOperation(input: unknown, fallback?: DropOperation): DropOperation {
+  if (input && typeof input === 'object') {
+    let record = input as AnyRecord;
+    if (typeof record.dropOperation === 'string') {
+      return normalizeDropOperation(record.dropOperation);
+    }
+
+    if (typeof record.operation === 'string') {
+      return normalizeDropOperation(record.operation);
+    }
+  }
+
+  if (fallback) {
+    return normalizeDropOperation(fallback);
+  }
+
+  return DEFAULT_DROP_OPERATION;
+}
+
+function readDraggingKeys(stateRecord: AnyRecord): Set<DraggingKey> {
+  let nextKeys = readMaybeRef<unknown>(stateRecord.draggingKeys);
+  if (!(nextKeys instanceof Set)) {
+    return new Set();
+  }
+
+  let normalized = new Set<DraggingKey>();
+  for (let key of nextKeys) {
+    if (typeof key === 'number' || typeof key === 'string') {
+      normalized.add(key);
+    }
+  }
+
+  return normalized;
+}
+
+function readDropTarget(stateRecord: AnyRecord): DropTarget | null {
+  let target = readMaybeRef<unknown>(stateRecord.target);
+  if (!target || typeof target !== 'object') {
+    return null;
+  }
+
+  return target as DropTarget;
+}
+
+function isInternalDrop(ref: RefObject<HTMLElement | null>): boolean {
+  return Boolean(
+    draggingCollectionRef &&
+    draggingCollectionRef.current &&
+    draggingCollectionRef.current === ref.current
+  );
+}
+
+function includesAcceptedType(acceptedTypes: Set<string> | null, items: DragItem[]): boolean {
+  if (items.length === 0) {
+    return false;
+  }
+
+  if (acceptedTypes == null) {
+    return true;
+  }
+
+  return items.every((item) => acceptedTypes.has(item.type));
+}
+
 export function useDrag(options: DragOptions): DragResult;
 export function useDrag(options: AriaDragOptions): DragAria;
 export function useDrag(options: AriaDragOptions): DragAria {
@@ -111,47 +239,292 @@ export function useClipboard(_props: ClipboardProps): ClipboardResult {
 
 export function useDraggableCollection(
   _props: DraggableCollectionOptions,
-  _state: DraggableCollectionState,
-  _ref: RefObject<HTMLElement | null>
+  state: DraggableCollectionState,
+  ref: RefObject<HTMLElement | null>
 ): void {
-  // Compatibility no-op.
+  let stateRecord = state as AnyRecord;
+  let keys = readDraggingKeys(stateRecord);
+  if (keys.size > 0) {
+    draggingCollectionRef = ref;
+    draggingKeys = keys;
+  } else if (draggingCollectionRef?.current === ref.current) {
+    draggingCollectionRef = null;
+    draggingKeys = new Set();
+  }
 }
 
 export function useDraggableItem(
-  _props: DraggableItemProps,
-  _state: DraggableCollectionState
+  props: DraggableItemProps,
+  state: DraggableCollectionState
 ): DraggableItemResult {
+  let propsRecord = props as AnyRecord;
+  let stateRecord = state as AnyRecord;
+  let key = propsRecord.key as DraggingKey | undefined;
+  let selectionManager = (stateRecord.selectionManager ?? {}) as AnyRecord;
+
+  let isDisabled = computed(() => {
+    if (Boolean(readMaybeRef<boolean>(stateRecord.isDisabled))) {
+      return true;
+    }
+
+    if (key == null) {
+      return true;
+    }
+
+    if (typeof selectionManager.isDisabled === 'function') {
+      return Boolean(selectionManager.isDisabled(key));
+    }
+
+    return false;
+  });
+
+  let dragItems = computed(() => {
+    if (key == null || typeof stateRecord.getItems !== 'function') {
+      return [];
+    }
+
+    return toDragItems(stateRecord.getItems(key));
+  });
+
+  let drag = useAriaDrag({
+    dragItems,
+    isDisabled,
+    onDragStart: () => {
+      if (key == null || typeof stateRecord.startDrag !== 'function') {
+        return;
+      }
+
+      stateRecord.startDrag(key);
+      draggingKeys = readDraggingKeys(stateRecord);
+    },
+    onDragMove: (point) => {
+      if (typeof stateRecord.moveDrag === 'function') {
+        stateRecord.moveDrag(point);
+      }
+    },
+    onDragEnd: (operation) => {
+      if (typeof stateRecord.endDrag === 'function') {
+        stateRecord.endDrag(operation);
+      }
+
+      draggingCollectionRef = null;
+      dropCollectionRef = null;
+      draggingKeys = new Set();
+    }
+  });
+
+  let dragButtonProps = computed(() => ({
+    'aria-grabbed': drag.isDragging.value,
+    isDisabled: isDisabled.value,
+    onClick: () => {
+      if (isDisabled.value) {
+        return;
+      }
+
+      drag.startDrag();
+    }
+  }));
+
   return {
-    draggableItemProps: {}
+    dragProps: drag.dragProps,
+    dragButtonProps,
+    draggableItemProps: drag.dragProps
   };
 }
 
 export function useDropIndicator(
-  _props: DropIndicatorProps,
-  _state: DroppableCollectionState,
-  _ref: RefObject<HTMLElement | null>
+  props: DropIndicatorProps,
+  state: DroppableCollectionState,
+  ref: RefObject<HTMLElement | null>
 ): DropIndicatorAria {
+  let droppableItem = useDroppableItem(props, state, ref) as {
+    dropProps: {value: AnyRecord},
+    isDropTarget: {value: boolean}
+  };
+  let dropIndicatorProps = computed(() => ({
+    ...droppableItem.dropProps.value,
+    'aria-roledescription': 'drop indicator',
+    tabIndex: -1
+  }));
+  let isHidden = computed(() => {
+    return !droppableItem.isDropTarget.value && Boolean(dropIndicatorProps.value['aria-hidden']);
+  });
+
   return {
-    dropIndicatorProps: {}
+    dropIndicatorProps,
+    isDropTarget: droppableItem.isDropTarget,
+    isHidden
   };
 }
 
 export function useDroppableCollection(
-  _props: DroppableCollectionOptions,
-  _state: DroppableCollectionState,
-  _ref: RefObject<HTMLElement | null>
+  props: DroppableCollectionOptions,
+  state: DroppableCollectionState,
+  ref: RefObject<HTMLElement | null>
 ): DroppableCollectionResult {
+  let propsRecord = props as AnyRecord;
+  let stateRecord = state as AnyRecord;
+  let acceptedTypes = computed(() => {
+    let accepted = readMaybeRef<unknown>(propsRecord.acceptedDragTypes);
+    if (accepted == null || accepted === 'all') {
+      return null;
+    }
+
+    let maybeIterable = accepted as { [Symbol.iterator]?: () => Iterator<unknown> };
+    if (typeof maybeIterable[Symbol.iterator] !== 'function') {
+      return null;
+    }
+
+    return new Set(Array.from(accepted as Iterable<unknown>, (type) => String(type)));
+  });
+  let isDisabled = computed(() => {
+    return Boolean(readMaybeRef<boolean>(stateRecord.isDisabled)) || Boolean(readMaybeRef<boolean>(propsRecord.isDisabled));
+  });
+  let isDropTarget = computed(() => readDropTarget(stateRecord) != null);
+
+  let onDragEnter = (input?: unknown): boolean => {
+    let items = normalizeDropItems(input);
+    if (isDisabled.value || !includesAcceptedType(acceptedTypes.value, items)) {
+      return false;
+    }
+
+    dropCollectionRef = ref;
+    if (typeof stateRecord.enter === 'function') {
+      stateRecord.enter(items);
+    }
+
+    if (typeof propsRecord.onDropEnter === 'function') {
+      propsRecord.onDropEnter({
+        items,
+        target: readDropTarget(stateRecord),
+        type: 'dropenter'
+      });
+    }
+
+    return true;
+  };
+
+  let onDragOver = (input?: unknown): void => {
+    let items = normalizeDropItems(input);
+    if (items.length === 0) {
+      return;
+    }
+
+    dropCollectionRef = ref;
+    if (typeof stateRecord.move === 'function') {
+      stateRecord.move(items);
+    }
+
+    if (typeof propsRecord.onDropMove === 'function') {
+      propsRecord.onDropMove({
+        items,
+        target: readDropTarget(stateRecord),
+        type: 'dropmove'
+      });
+    }
+  };
+
+  let onDragLeave = (): void => {
+    if (typeof stateRecord.exit === 'function') {
+      stateRecord.exit();
+    }
+
+    if (typeof propsRecord.onDropExit === 'function') {
+      propsRecord.onDropExit({
+        target: readDropTarget(stateRecord),
+        type: 'dropexit'
+      });
+    }
+
+    dropCollectionRef = null;
+  };
+
+  let onDrop = (input?: unknown, fallbackOperation?: DropOperation): DropOperation => {
+    let items = normalizeDropItems(input);
+    if (isDisabled.value || !includesAcceptedType(acceptedTypes.value, items)) {
+      onDragLeave();
+      return 'cancel';
+    }
+
+    let requestedOperation = resolveDropOperation(input, fallbackOperation);
+    let operation = requestedOperation;
+    if (typeof stateRecord.getDropOperation === 'function') {
+      operation = normalizeDropOperation(stateRecord.getDropOperation({
+        allowedOperations: DEFAULT_ALLOWED_OPERATIONS,
+        draggingKeys: new Set(draggingKeys),
+        isInternal: isInternalDrop(ref),
+        items,
+        target: readDropTarget(stateRecord)
+      }));
+    }
+
+    let resolvedOperation = operation;
+    if (typeof stateRecord.drop === 'function') {
+      resolvedOperation = normalizeDropOperation(stateRecord.drop(items, operation));
+    }
+
+    if (typeof propsRecord.onDrop === 'function') {
+      propsRecord.onDrop({
+        items,
+        target: readDropTarget(stateRecord),
+        dropOperation: resolvedOperation,
+        operation: resolvedOperation,
+        type: 'drop'
+      });
+    }
+
+    if (!isInternalDrop(ref)) {
+      draggingCollectionRef = null;
+      draggingKeys = new Set();
+    }
+    dropCollectionRef = null;
+
+    return resolvedOperation;
+  };
+
+  let collectionProps = computed(() => ({
+    role: 'group',
+    'data-drop-target': isDropTarget.value,
+    'aria-disabled': isDisabled.value ? true as const : undefined,
+    onDragEnter,
+    onDragLeave,
+    onDragOver,
+    onDrop
+  }));
+
   return {
-    collectionProps: {}
+    collectionProps
   };
 }
 
 export function useDroppableItem(
-  _props: DroppableItemOptions,
-  _state: DroppableCollectionState,
+  props: DroppableItemOptions,
+  state: DroppableCollectionState,
   _ref: RefObject<HTMLElement | null>
 ): DroppableItemResult {
+  let propsRecord = props as AnyRecord;
+  let stateRecord = state as AnyRecord;
+  let target = computed(() => {
+    if (propsRecord.target && typeof propsRecord.target === 'object') {
+      return propsRecord.target as DropTarget;
+    }
+
+    return readDropTarget(stateRecord);
+  });
+  let isDropTarget = computed(() => {
+    if (!target.value || typeof stateRecord.isDropTarget !== 'function') {
+      return false;
+    }
+
+    return Boolean(stateRecord.isDropTarget(target.value));
+  });
+  let dropProps = computed(() => ({
+    'aria-hidden': isVirtualDragging() && !isDropTarget.value ? 'true' : undefined
+  }));
+
   return {
-    droppableItemProps: {}
+    dropProps,
+    isDropTarget,
+    droppableItemProps: dropProps
   };
 }
