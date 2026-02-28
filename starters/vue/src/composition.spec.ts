@@ -16968,12 +16968,12 @@ describe('Vue migration composition components', () => {
       }
     });
 
-    await wrapper.get('button.vs-contextual-help__trigger').trigger('click');
+    await wrapper.get('button.react-spectrum-ContextualHelp-button').trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([true]);
     expect(wrapper.emitted('open')).toHaveLength(1);
-    expect(wrapper.find('section.vs-contextual-help__dialog').exists()).toBe(true);
+    expect(wrapper.find('section.react-spectrum-ContextualHelp-dialog').exists()).toBe(true);
 
-    await wrapper.get('button.vs-contextual-help__close').trigger('click');
+    await wrapper.get('section.react-spectrum-ContextualHelp-dialog').trigger('keydown', {key: 'Escape'});
     expect(wrapper.emitted('update:modelValue')?.[1]).toEqual([false]);
     expect(wrapper.emitted('close')).toHaveLength(1);
   });

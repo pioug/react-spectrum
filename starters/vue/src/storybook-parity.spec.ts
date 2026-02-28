@@ -2421,14 +2421,14 @@ describe('Vue storybook helper parity', () => {
     let explicitAndLabelledByWrapper = mount(explicitAndLabelledByStory);
 
     try {
-      expect(infoWrapper.get('button.vs-contextual-help__trigger').attributes('aria-label')).toBe('Information');
-      expect(withButtonWrapper.get('button.vs-contextual-help__trigger').classes()).toContain('foo');
+      expect(infoWrapper.get('button.react-spectrum-ContextualHelp-button').attributes('aria-label')).toBe('Information');
+      expect(withButtonWrapper.get('button.react-spectrum-ContextualHelp-button').classes()).toContain('foo');
 
-      let labelledByTrigger = labelledByWrapper.get('button.vs-contextual-help__trigger');
+      let labelledByTrigger = labelledByWrapper.get('button.react-spectrum-ContextualHelp-button');
       expect(labelledByTrigger.attributes('aria-labelledby')).toBe('foo');
       expect(labelledByTrigger.attributes('aria-label')).toBeUndefined();
 
-      let explicitAndLabelledByTrigger = explicitAndLabelledByWrapper.get('button.vs-contextual-help__trigger');
+      let explicitAndLabelledByTrigger = explicitAndLabelledByWrapper.get('button.react-spectrum-ContextualHelp-button');
       let explicitAndLabelledByIds = explicitAndLabelledByTrigger.attributes('aria-labelledby')?.split(/\s+/) ?? [];
       expect(explicitAndLabelledByTrigger.attributes('aria-label')).toBe('Read more details');
       expect(explicitAndLabelledByIds).toContain('contextual-help-label');

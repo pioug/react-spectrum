@@ -2645,8 +2645,8 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    expect(wrapper.find('.vs-contextual-help__dialog').exists()).toBe(false);
-    let trigger = wrapper.get('button.vs-contextual-help__trigger');
+    expect(wrapper.find('section[role="dialog"]').exists()).toBe(false);
+    let trigger = wrapper.get('button.react-spectrum-ContextualHelp-button');
     expect(trigger.find('svg').exists()).toBe(true);
     expect(trigger.text()).not.toContain('?');
     let focusSpy = vi.spyOn(trigger.element as HTMLButtonElement, 'focus');
@@ -2654,20 +2654,21 @@ describe('Vue migration primitives', () => {
     await trigger.trigger('click');
     expect(wrapper.emitted('open')).toHaveLength(1);
     expect(wrapper.emitted('openChange')?.[0]).toEqual([true]);
-    expect(wrapper.find('.vs-contextual-help__dialog').exists()).toBe(true);
+    expect(wrapper.find('section.react-spectrum-ContextualHelp-dialog[role="dialog"]').exists()).toBe(true);
 
-    await wrapper.get('.vs-contextual-help__dialog').trigger('keydown', {key: 'Escape'});
+    await wrapper.get('section.react-spectrum-ContextualHelp-dialog[role="dialog"]').trigger('keydown', {key: 'Escape'});
     await nextTick();
     expect(wrapper.emitted('close')).toHaveLength(1);
     expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
-    expect(wrapper.find('.vs-contextual-help__dialog').exists()).toBe(false);
+    expect(wrapper.find('section[role="dialog"]').exists()).toBe(false);
     expect(focusSpy).toHaveBeenCalled();
 
     await trigger.trigger('click');
-    await wrapper.get('button.vs-contextual-help__backdrop').trigger('click');
+    document.body.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+    await nextTick();
     expect(wrapper.emitted('close')).toHaveLength(2);
     expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
-    expect(wrapper.find('.vs-contextual-help__dialog').exists()).toBe(false);
+    expect(wrapper.find('section[role="dialog"]').exists()).toBe(false);
   });
 
   it('maps contextual help trigger aria labeling and class forwarding to react parity', () => {
@@ -2676,7 +2677,7 @@ describe('Vue migration primitives', () => {
         default: () => 'Details'
       }
     });
-    expect(defaultWrapper.get('button.vs-contextual-help__trigger').attributes('aria-label')).toBe('Help');
+    expect(defaultWrapper.get('button.react-spectrum-ContextualHelp-button').attributes('aria-label')).toBe('Help');
 
     let infoWrapper = mount(ContextualHelp, {
       props: {
@@ -2686,7 +2687,7 @@ describe('Vue migration primitives', () => {
         default: () => 'Details'
       }
     });
-    expect(infoWrapper.get('button.vs-contextual-help__trigger').attributes('aria-label')).toBe('Information');
+    expect(infoWrapper.get('button.react-spectrum-ContextualHelp-button').attributes('aria-label')).toBe('Information');
 
     let customLabelWrapper = mount(ContextualHelp, {
       attrs: {
@@ -2696,7 +2697,7 @@ describe('Vue migration primitives', () => {
         default: () => 'Details'
       }
     });
-    expect(customLabelWrapper.get('button.vs-contextual-help__trigger').attributes('aria-label')).toBe('Read more details');
+    expect(customLabelWrapper.get('button.react-spectrum-ContextualHelp-button').attributes('aria-label')).toBe('Read more details');
 
     let labelledByWrapper = mount(ContextualHelp, {
       attrs: {
@@ -2707,7 +2708,7 @@ describe('Vue migration primitives', () => {
         default: () => 'Details'
       }
     });
-    let trigger = labelledByWrapper.get('button.vs-contextual-help__trigger');
+    let trigger = labelledByWrapper.get('button.react-spectrum-ContextualHelp-button');
     expect(trigger.attributes('aria-labelledby')).toBe('contextual-help-label');
     expect(trigger.attributes('aria-label')).toBeUndefined();
     expect(trigger.classes()).toContain('foo');
@@ -2723,7 +2724,7 @@ describe('Vue migration primitives', () => {
         default: () => 'Details'
       }
     });
-    let explicitAndLabelledByTrigger = explicitAndLabelledByWrapper.get('button.vs-contextual-help__trigger');
+    let explicitAndLabelledByTrigger = explicitAndLabelledByWrapper.get('button.react-spectrum-ContextualHelp-button');
     let explicitAndLabelledByIds = explicitAndLabelledByTrigger.attributes('aria-labelledby')?.split(/\s+/) ?? [];
     expect(explicitAndLabelledByTrigger.attributes('aria-label')).toBe('Read more details');
     expect(explicitAndLabelledByIds).toContain('contextual-help-label');

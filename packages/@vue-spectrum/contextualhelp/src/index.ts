@@ -1,9 +1,12 @@
 import '@adobe/spectrum-css-temp/components/contextualhelp/vars.css';
+import '@adobe/spectrum-css-temp/components/dialog/vars.css';
+import '@adobe/spectrum-css-temp/components/popover/vars.css';
 import {ActionButton} from '@vue-spectrum/button';
 import HelpOutline from '@spectrum-icons-vue/workflow/HelpOutline';
 import InfoOutline from '@spectrum-icons-vue/workflow/InfoOutline';
+import {getEventTarget} from '@vue-aria/utils';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, nextTick, type PropType, ref, watch} from 'vue';
+import {computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, type PropType, ref, watch} from 'vue';
 const helpStyles: {[key: string]: string} = {};
 let contextualHelpId = 0;
 
@@ -12,19 +15,75 @@ type ContextualHelpVariant = 'help' | 'info';
 type ContextualHelpPlacement =
   | 'bottom'
   | 'bottom end'
+  | 'bottom left'
+  | 'bottom right'
   | 'bottom start'
+  | 'end'
+  | 'end bottom'
+  | 'end top'
   | 'left'
   | 'left bottom'
   | 'left top'
   | 'right'
   | 'right bottom'
   | 'right top'
+  | 'start'
+  | 'start bottom'
+  | 'start top'
   | 'top'
   | 'top end'
+  | 'top left'
+  | 'top right'
   | 'top start';
 
-function normalizePlacement(placement: ContextualHelpPlacement): 'bottom' | 'left' | 'right' | 'top' {
-  return (placement.split(' ')[0] as 'bottom' | 'left' | 'right' | 'top') || 'bottom';
+type PhysicalPlacementSide = 'bottom' | 'left' | 'right' | 'top';
+type PhysicalPlacementAlign = 'bottom' | 'end' | 'left' | 'right' | 'start' | 'top';
+
+function normalizeSide(rawSide: string | undefined, isRTL: boolean): PhysicalPlacementSide {
+  if (rawSide === 'top' || rawSide === 'left' || rawSide === 'right') {
+    return rawSide;
+  }
+
+  if (rawSide === 'start') {
+    return isRTL ? 'right' : 'left';
+  }
+
+  if (rawSide === 'end') {
+    return isRTL ? 'left' : 'right';
+  }
+
+  return 'bottom';
+}
+
+function normalizeAlign(side: PhysicalPlacementSide, rawAlign: string | undefined): PhysicalPlacementAlign {
+  if (side === 'top' || side === 'bottom') {
+    if (rawAlign === 'end' || rawAlign === 'right' || rawAlign === 'left') {
+      return rawAlign;
+    }
+
+    return 'start';
+  }
+
+  if (rawAlign === 'bottom') {
+    return 'bottom';
+  }
+
+  if (rawAlign === 'end') {
+    return 'bottom';
+  }
+
+  if (rawAlign === 'top') {
+    return 'top';
+  }
+
+  return 'top';
+}
+
+function resolvePlacement(placement: string, isRTL: boolean): {align: PhysicalPlacementAlign, side: PhysicalPlacementSide} {
+  let [rawSide, rawAlign] = placement.trim().split(/\s+/);
+  let side = normalizeSide(rawSide, isRTL);
+  let align = normalizeAlign(side, rawAlign);
+  return {align, side};
 }
 
 export const ContextualHelp = defineComponent({
@@ -51,6 +110,14 @@ export const ContextualHelp = defineComponent({
       type: String as PropType<ContextualHelpPlacement>,
       default: 'bottom start'
     },
+    offset: {
+      type: Number,
+      default: 8
+    },
+    crossOffset: {
+      type: Number,
+      default: 0
+    },
     title: {
       type: String,
       default: ''
@@ -69,8 +136,25 @@ export const ContextualHelp = defineComponent({
   setup(props, {attrs, emit, slots}) {
     let generatedId = `vs-contextual-help-${++contextualHelpId}`;
     let internalOpen = ref(props.modelValue);
+    let rootRef = ref<HTMLElement | null>(null);
     let triggerRef = ref<HTMLElement | {$el?: Element} | null>(null);
     let triggerId = computed(() => typeof attrs.id === 'string' && attrs.id.length > 0 ? attrs.id : generatedId);
+    let dialogId = computed(() => `${triggerId.value}-dialog`);
+    let isRTL = computed(() => {
+      if (attrs.dir === 'rtl') {
+        return true;
+      }
+
+      if (attrs.dir === 'ltr') {
+        return false;
+      }
+
+      if (typeof document !== 'undefined') {
+        return document.documentElement.dir === 'rtl';
+      }
+
+      return false;
+    });
 
     watch(() => props.modelValue, (value) => {
       internalOpen.value = value;
@@ -114,16 +198,57 @@ export const ContextualHelp = defineComponent({
       return ids.size > 0 ? Array.from(ids).join(' ') : undefined;
     });
 
-    let dialogTitle = computed(() => {
-      if (props.title) {
-        return props.title;
+    let triggerIcon = computed(() => props.variant === 'info' ? InfoOutline : HelpOutline);
+    let resolvedPlacement = computed(() => resolvePlacement(props.placement, isRTL.value));
+    let popoverClassName = computed(() => classNames(
+      {},
+      'spectrum-Popover',
+      `spectrum-Popover--${resolvedPlacement.value.side}`,
+      'react-spectrum-Popover',
+      {
+        'is-open': internalOpen.value,
+        [`is-open--${resolvedPlacement.value.side}`]: internalOpen.value
+      }
+    ));
+    let popoverStyle = computed<Record<string, string>>(() => {
+      let {align, side} = resolvedPlacement.value;
+      let offset = `${props.offset}px`;
+      let crossOffset = `${props.crossOffset}px`;
+      let style: Record<string, string> = {
+        position: 'absolute',
+        zIndex: '1'
+      };
+
+      switch (side) {
+        case 'top':
+          style.bottom = `calc(100% + ${offset})`;
+          break;
+        case 'left':
+          style.right = `calc(100% + ${offset})`;
+          break;
+        case 'right':
+          style.left = `calc(100% + ${offset})`;
+          break;
+        default:
+          style.top = `calc(100% + ${offset})`;
       }
 
-      return props.variant === 'info' ? 'Information' : 'Help';
-    });
+      if (side === 'top' || side === 'bottom') {
+        if (align === 'end' || align === 'right') {
+          style.right = props.crossOffset === 0 ? '0' : `calc(0px - ${crossOffset})`;
+        } else {
+          style.left = crossOffset;
+        }
+      } else if (side === 'left' || side === 'right') {
+        if (align === 'bottom') {
+          style.bottom = props.crossOffset === 0 ? '0' : `calc(0px - ${crossOffset})`;
+        } else {
+          style.top = crossOffset;
+        }
+      }
 
-    let triggerIcon = computed(() => props.variant === 'info' ? InfoOutline : HelpOutline);
-    let placementSide = computed(() => normalizePlacement(props.placement));
+      return style;
+    });
 
     let setOpen = (nextValue: boolean) => {
       if (internalOpen.value === nextValue) {
@@ -151,6 +276,31 @@ export const ContextualHelp = defineComponent({
       emit('openChange', nextValue);
     };
 
+    let onDocumentPointerDown = (event: MouseEvent | PointerEvent | TouchEvent) => {
+      if (!internalOpen.value || !props.dismissable) {
+        return;
+      }
+
+      let target = getEventTarget(event);
+      if (target instanceof Node && rootRef.value?.contains(target)) {
+        return;
+      }
+
+      setOpen(false);
+    };
+
+    onMounted(() => {
+      document.addEventListener('mousedown', onDocumentPointerDown, true);
+      document.addEventListener('pointerdown', onDocumentPointerDown, true);
+      document.addEventListener('touchstart', onDocumentPointerDown, true);
+    });
+
+    onBeforeUnmount(() => {
+      document.removeEventListener('mousedown', onDocumentPointerDown, true);
+      document.removeEventListener('pointerdown', onDocumentPointerDown, true);
+      document.removeEventListener('touchstart', onDocumentPointerDown, true);
+    });
+
     let triggerAttrs = computed(() => {
       let filteredAttrs: Record<string, unknown> = {};
       for (let [key, value] of Object.entries(attrs)) {
@@ -165,23 +315,24 @@ export const ContextualHelp = defineComponent({
     });
 
     return () => h('div', {
+      ref: rootRef,
       class: 'vs-contextual-help',
+      style: {
+        display: 'inline-flex',
+        position: 'relative'
+      },
       'data-vac': ''
     }, [
       h(ActionButton, {
         ...triggerAttrs.value,
         ref: triggerRef,
         id: triggerId.value,
-        class: [
-          classNames(helpStyles, 'react-spectrum-ContextualHelp-button'),
-          'vs-contextual-help__trigger',
-          props.variant === 'info' ? 'vs-contextual-help__trigger--info' : 'vs-contextual-help__trigger--help',
-          attrs.class
-        ],
-        'aria-haspopup': 'dialog',
+        class: [classNames(helpStyles, 'react-spectrum-ContextualHelp-button'), attrs.class],
         'aria-expanded': internalOpen.value ? 'true' : 'false',
         'aria-label': triggerLabel.value,
         'aria-labelledby': labelledBy.value,
+        'aria-controls': internalOpen.value ? dialogId.value : undefined,
+        isActive: internalOpen.value,
         isDisabled: props.disabled,
         isQuiet: true,
         onClick: () => setOpen(!internalOpen.value),
@@ -191,33 +342,29 @@ export const ContextualHelp = defineComponent({
             setOpen(false);
           }
         }
-        }, {
-          default: () => [
-            h(triggerIcon.value, {
-              class: 'vs-contextual-help__trigger-icon',
-              'aria-hidden': 'true'
-            })
-          ]
-        }),
+      }, {
+        default: () => [
+          h(triggerIcon.value, {
+            size: 'S',
+            'aria-hidden': 'true'
+          })
+        ]
+      }),
       internalOpen.value
-        ? h('div', {class: 'vs-contextual-help__layer'}, [
-          props.dismissable
-            ? h('button', {
-              class: 'vs-contextual-help__backdrop',
-              type: 'button',
-              'aria-label': 'Dismiss contextual help',
-              onClick: () => setOpen(false)
-            })
-            : null,
+        ? h('div', {
+          class: [popoverClassName.value, 'vs-contextual-help__popover'],
+          'data-testid': 'popover',
+          role: 'presentation',
+          style: popoverStyle.value
+        }, [
           h('section', {
+            id: dialogId.value,
             class: [
-              classNames(helpStyles, 'react-spectrum-ContextualHelp-dialog'),
-              'vs-contextual-help__dialog',
-              `vs-contextual-help__dialog--${placementSide.value}`
+              classNames({}, 'spectrum-Dialog', 'spectrum-Dialog--small', 'react-spectrum-Dialog'),
+              classNames(helpStyles, 'react-spectrum-ContextualHelp-dialog')
             ],
             role: 'dialog',
-            'aria-modal': 'false',
-            'data-placement': props.placement,
+            tabindex: -1,
             onKeydown: (event: KeyboardEvent) => {
               if (event.key === 'Escape' && props.dismissable) {
                 event.preventDefault();
@@ -225,23 +372,12 @@ export const ContextualHelp = defineComponent({
               }
             }
           }, [
-            h('header', {class: 'vs-contextual-help__header'}, [
-              h('h3', {class: 'vs-contextual-help__title'}, dialogTitle.value),
-              props.dismissable
-                ? h('button', {
-                  class: 'vs-contextual-help__close',
-                  type: 'button',
-                  'aria-label': 'Close contextual help',
-                  onClick: () => setOpen(false)
-                }, 'x')
-                : null
-            ]),
             h('div', {
-              class: [classNames(helpStyles, 'react-spectrum-ContextualHelp-content'), 'vs-contextual-help__content']
+              class: classNames(helpStyles, 'react-spectrum-ContextualHelp-content')
             }, slots.default ? slots.default() : []),
             slots.footer
               ? h('footer', {
-                class: [classNames(helpStyles, 'react-spectrum-ContextualHelp-footer'), 'vs-contextual-help__footer']
+                class: classNames(helpStyles, 'react-spectrum-ContextualHelp-footer')
               }, slots.footer())
               : null
           ])
