@@ -1,4 +1,4 @@
-import {computed, type Ref, ref} from 'vue';
+import {computed, type Ref, ref, watch} from 'vue';
 import {type Key, Selection as SelectionSet} from './Selection';
 import {
   type MultipleSelectionState,
@@ -110,12 +110,26 @@ export function useMultipleSelectionState(props: MultipleSelectionStateProps): M
   let uncontrolledSelectedKeys = ref<SelectionValue>(
     normalizeIncomingSelection(props.defaultSelectedKeys)
   );
+  let isControlled = computed(() => props.selectedKeys !== undefined && props.selectedKeys.value !== undefined);
+  let wasControlled = ref(isControlled.value);
+
+  watch(isControlled, (nextIsControlled) => {
+    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasControlled.value = nextIsControlled;
+  });
+
   let selectedKeys = computed<SelectionValue>({
     get: () => {
-      return props.selectedKeys?.value ?? uncontrolledSelectedKeys.value;
+      if (isControlled.value && props.selectedKeys) {
+        return props.selectedKeys.value;
+      }
+
+      return uncontrolledSelectedKeys.value;
     },
     set: (nextSelection) => {
-      if (props.selectedKeys) {
+      if (isControlled.value && props.selectedKeys) {
         props.selectedKeys.value = nextSelection;
       } else {
         uncontrolledSelectedKeys.value = nextSelection;

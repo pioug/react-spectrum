@@ -2164,6 +2164,45 @@ describe('Vue migration composition components', () => {
     expect(selectionChanges.length).toBeGreaterThan(0);
   });
 
+  it('warns when vue-stately multiple selection switches between controlled and uncontrolled', async () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let selectedKeys = ref<Set<string> | 'all' | undefined>(new Set(['item-1']));
+    useStatelyMultipleSelectionState({
+      selectedKeys,
+      selectionMode: 'multiple'
+    });
+
+    try {
+      selectedKeys.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      selectedKeys.value = new Set(['item-2']);
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it('keeps vue-stately multiple selection uncontrolled when selectedKeys ref is undefined', () => {
+    let selectedKeysRef = ref<Set<string> | 'all' | undefined>(undefined);
+    let state = useStatelyMultipleSelectionState({
+      defaultSelectedKeys: ['item-1'],
+      selectedKeys: selectedKeysRef,
+      selectionMode: 'multiple'
+    });
+
+    state.setSelectedKeys(new Set(['item-2']));
+
+    expect(selectedKeysRef.value).toBeUndefined();
+    expect(state.selectedKeys.value).not.toBe('all');
+    if (state.selectedKeys.value === 'all') {
+      throw new Error('Expected key set selection state');
+    }
+    expect(Array.from(state.selectedKeys.value)).toEqual(['item-2']);
+  });
+
   it('manages vue-stately select selection, trigger state, and value normalization', () => {
     let nodes: StatelyListNode<{label: string}>[] = [
       {key: 'vue', textValue: 'Vue', type: 'item', value: {label: 'Vue'}},

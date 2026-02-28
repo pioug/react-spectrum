@@ -1405,6 +1405,22 @@
    - full Vue tests: `yarn test:vue` (552 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Multiple-selection controlled ownership parity (`@vue-stately/selection`)
+
+1. Aligned `useMultipleSelectionState` controlled-state semantics with React `useControlledState` behavior:
+   - `selectedKeys` is now treated as controlled only when the prop ref exists and `selectedKeys.value !== undefined`,
+   - ref-backed-`undefined` values now stay uncontrolled (internal state updates) instead of forcing controlled writes.
+2. Aligned controlled/uncontrolled transition warning behavior:
+   - `useMultipleSelectionState` now emits `WARN: A component changed from ...` on ownership transitions in development.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - warning assertions for controlled->uncontrolled and uncontrolled->controlled transitions,
+     - assertion that a ref-backed-`undefined` `selectedKeys` prop remains uncontrolled during `setSelectedKeys` updates.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately multiple selection state and selection-manager helpers|warns when vue-stately multiple selection switches between controlled and uncontrolled|keeps vue-stately multiple selection uncontrolled when selectedKeys ref is undefined"`,
+   - full Vue tests: `yarn test:vue` (554 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
