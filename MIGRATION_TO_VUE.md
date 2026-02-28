@@ -1912,6 +1912,20 @@
    - full Vue tests: `yarn test:vue` (597 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Toggle-group setter/disabled parity (`@vue-stately/toggle`)
+
+1. Closed toggle-group state-layer behavior drift against React:
+   - removed Vue-only `isDisabled` early return in `toggleKey` so state helpers remain callable regardless of disabled presentation state,
+   - removed Vue-only normalization/guarding in `setSelectedKeys` so direct setter writes are not altered by `selectionMode` or `disallowEmptySelection`.
+2. Preserved interaction-level invariants from React:
+   - `toggleKey` still enforces `disallowEmptySelection` for user-style toggle interactions in both selection modes.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: assertions that disabled groups still update through direct state calls, direct `setSelectedKeys` writes preserve caller-provided sets in single mode, and empty sets are allowed via setter even when `disallowEmptySelection` is true.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "toggle-group setter and disabled semantics|toggle and toggle-group selection behavior"`,
+   - full Vue tests: `yarn test:vue` (598 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

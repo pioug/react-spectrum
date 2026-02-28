@@ -57,29 +57,15 @@ export function useToggleGroupState(props: ToggleGroupProps): ToggleGroupState {
   });
 
   let commitSelectedKeys = (keys: Set<Key>): void => {
-    let nextKeys = keys;
-    if (selectionMode.value === 'single' && nextKeys.size > 1) {
-      let firstKey = nextKeys.values().next().value;
-      nextKeys = firstKey == null ? new Set() : new Set([firstKey]);
-    }
-
-    if (disallowEmptySelection.value && nextKeys.size === 0 && selectedKeys.value.size > 0) {
+    if (Object.is(keys, selectedKeys.value)) {
       return;
     }
 
-    if (Object.is(nextKeys, selectedKeys.value)) {
-      return;
-    }
-
-    selectedKeys.value = nextKeys;
-    props.onSelectionChange?.(nextKeys);
+    selectedKeys.value = keys;
+    props.onSelectionChange?.(keys);
   };
 
   let toggleKey = (key: Key): void => {
-    if (isDisabled.value) {
-      return;
-    }
-
     let keys: Set<Key>;
     if (selectionMode.value === 'multiple') {
       keys = new Set(selectedKeys.value);

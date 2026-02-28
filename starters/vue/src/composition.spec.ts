@@ -3617,6 +3617,36 @@ describe('Vue migration composition components', () => {
     expect(groupSelectionChanges).toEqual([['bold', 'italic'], ['italic'], ['italic']]);
   });
 
+  it('matches vue-stately toggle-group setter and disabled semantics with React', () => {
+    let disabledGroupState = useStatelyToggleGroupState({
+      defaultSelectedKeys: ['bold'],
+      isDisabled: true,
+      selectionMode: 'multiple'
+    });
+
+    disabledGroupState.toggleKey('italic');
+    expect(Array.from(disabledGroupState.selectedKeys.value)).toEqual(['bold', 'italic']);
+
+    let singleGroupState = useStatelyToggleGroupState({
+      defaultSelectedKeys: ['left'],
+      disallowEmptySelection: true,
+      selectionMode: 'single'
+    });
+
+    singleGroupState.setSelectedKeys(new Set(['left', 'right']));
+    expect(Array.from(singleGroupState.selectedKeys.value)).toEqual(['left', 'right']);
+
+    singleGroupState.setSelectedKeys(new Set());
+    expect(Array.from(singleGroupState.selectedKeys.value)).toEqual([]);
+
+    singleGroupState.toggleKey('left');
+    expect(Array.from(singleGroupState.selectedKeys.value)).toEqual(['left']);
+
+    // disallowEmptySelection is enforced by toggle interactions, not direct setSelectedKeys writes.
+    singleGroupState.toggleKey('left');
+    expect(Array.from(singleGroupState.selectedKeys.value)).toEqual(['left']);
+  });
+
   it('warns when vue-stately toggle hooks switch between controlled and uncontrolled', async () => {
     let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
