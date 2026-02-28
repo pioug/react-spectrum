@@ -1719,6 +1719,39 @@ describe('Vue migration composition components', () => {
     ]);
   });
 
+  it('opens and toggles vue-aria combobox from trigger press handlers', () => {
+    let inputValue = ref('');
+    let openChanges: Array<[boolean, string | undefined]> = [];
+    let comboBox = useComboBox({
+      inputValue,
+      items: ['React', 'Vue'],
+      onOpenChange: (isOpen, trigger) => {
+        openChanges.push([isOpen, trigger]);
+      }
+    });
+
+    comboBox.buttonProps.value.onPressStart({pointerType: 'mouse'});
+    expect(comboBox.isOpen.value).toBe(true);
+    expect(comboBox.focusedKey.value).toBeNull();
+
+    comboBox.buttonProps.value.onPressStart({pointerType: 'mouse'});
+    expect(comboBox.isOpen.value).toBe(false);
+
+    comboBox.buttonProps.value.onPressStart({pointerType: 'keyboard'});
+    expect(comboBox.isOpen.value).toBe(true);
+    expect(comboBox.focusedKey.value).toBe('React');
+
+    comboBox.buttonProps.value.onPress({pointerType: 'touch'});
+    expect(comboBox.isOpen.value).toBe(false);
+
+    expect(openChanges).toEqual([
+      [true, 'manual'],
+      [false, undefined],
+      [true, 'manual'],
+      [false, undefined]
+    ]);
+  });
+
   it('reverts non-custom combobox input to last committed value', () => {
     let inputValue = ref('');
     let comboBox = useComboBox({

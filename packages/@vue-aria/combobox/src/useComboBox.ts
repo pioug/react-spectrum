@@ -35,6 +35,8 @@ export interface ComboBoxAria {
     'aria-label': string,
     disabled: boolean,
     onMouseDown: (event: MouseEvent) => void,
+    onPress: (event: {pointerType: string}) => void,
+    onPressStart: (event: {pointerType: string}) => void,
     onPointerDown: (event: PointerEvent) => void,
     tabIndex: -1
   }>,
@@ -238,6 +240,20 @@ export function useComboBox(options: AriaComboBoxOptions): ComboBoxAria {
     'aria-controls': isOpen.value ? listBoxId : undefined,
     'aria-expanded': isOpen.value,
     'aria-label': 'Toggle suggestions',
+    onPressStart: (event: {pointerType: string}) => {
+      if (isDisabled.value || isReadOnly.value || event.pointerType === 'touch') {
+        return;
+      }
+
+      toggle(event.pointerType === 'keyboard' || event.pointerType === 'virtual' ? 'first' : 'manual', 'manual');
+    },
+    onPress: (event: {pointerType: string}) => {
+      if (isDisabled.value || isReadOnly.value || event.pointerType !== 'touch') {
+        return;
+      }
+
+      toggle('manual', 'manual');
+    },
     onMouseDown: (event: MouseEvent) => {
       event.preventDefault();
     },
