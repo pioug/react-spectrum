@@ -59,13 +59,19 @@ export function UNSTABLE_useFilteredTableState<T>(
 }
 
 export type TableColumnResizeStateProps<T = unknown> = Record<string, unknown> & {
+  tableWidth?: number,
   _tableType?: T
 };
 export interface TableColumnResizeState<T = unknown> {
   columnWidths: Map<string | number, number>,
-  startResize: (columnKey: string | number, width: number) => void,
-  updateResize: (columnKey: string | number, width: number) => void,
-  endResize: (columnKey: string | number) => void,
+  getColumnMaxWidth: (columnKey: string | number) => number,
+  getColumnMinWidth: (columnKey: string | number) => number,
+  getColumnWidth: (columnKey: string | number) => number,
+  resizingColumn: string | number | null,
+  tableState: TableState<T>,
+  updateResizedColumns: (columnKey: string | number, width: number) => Map<string | number, number>,
+  startResize: (columnKey: string | number) => void,
+  endResize: () => void,
   _tableType?: T
 }
 
@@ -92,21 +98,49 @@ export const Row = {name: 'VueStatelyTableRow'};
 export const Cell = {name: 'VueStatelyTableCell'};
 
 export function useTableColumnResizeState<T>(
-  _props?: TableColumnResizeStateProps<T>,
-  _state?: TableState<T>
+  props: TableColumnResizeStateProps<T> = {},
+  state?: TableState<T>
 ): TableColumnResizeState<T> {
-  void _props;
-  void _state;
+  let maxTableWidth = Number.isFinite(Number(props.tableWidth))
+    ? Math.max(0, Number(props.tableWidth))
+    : Number.MAX_SAFE_INTEGER;
   let columnWidths = new Map<string | number, number>();
+  let resizingColumn: string | number | null = null;
+
+  let getColumnWidth = (columnKey: string | number): number => {
+    return columnWidths.get(columnKey) ?? 0;
+  };
+
+  let getColumnMinWidth = (_columnKey: string | number): number => {
+    return 0;
+  };
+
+  let getColumnMaxWidth = (_columnKey: string | number): number => {
+    return maxTableWidth;
+  };
+
+  let updateResizedColumns = (columnKey: string | number, width: number): Map<string | number, number> => {
+    let boundedWidth = Math.max(getColumnMinWidth(columnKey), Math.min(getColumnMaxWidth(columnKey), width));
+    columnWidths.set(columnKey, boundedWidth);
+    return new Map(columnWidths);
+  };
+
   return {
     columnWidths,
-    startResize: (columnKey, width) => {
-      columnWidths.set(columnKey, width);
+    getColumnWidth,
+    getColumnMinWidth,
+    getColumnMaxWidth,
+    get resizingColumn() {
+      return resizingColumn;
     },
-    updateResize: (columnKey, width) => {
-      columnWidths.set(columnKey, width);
+    tableState: state ?? ({} as TableState<T>),
+    updateResizedColumns,
+    startResize: (columnKey) => {
+      resizingColumn = columnKey;
     },
-    endResize: () => {}
+    endResize: () => {
+      resizingColumn = null;
+    }
   };
 }
 

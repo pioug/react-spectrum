@@ -299,6 +299,7 @@ import {useStepListState as useStatelyStepListState} from '@vue-stately/steplist
 import {
   buildHeaderRows as buildStatelyTableHeaderRows,
   TableCollection as StatelyTableCollection,
+  useTableColumnResizeState as useStatelyTableColumnResizeState,
   UNSTABLE_useFilteredTableState as useStatelyFilteredTableState,
   UNSTABLE_useTreeGridState as useStatelyTreeGridState,
   useTableState as useStatelyTableState
@@ -6331,6 +6332,45 @@ describe('Vue migration composition components', () => {
     await nextTick();
 
     expect(tableState.selectionMode).toBe('multiple');
+  });
+
+  it('exposes react-style vue-stately table column resize state contract', () => {
+    let tableState = useStatelyTableState({
+      collection: new StatelyTableCollection({
+        columns: [
+          {key: 'title', title: 'Title'},
+          {key: 'status', title: 'Status'}
+        ],
+        rows: [
+          {
+            key: 'row-1',
+            textValue: 'Backlog item',
+            cells: [
+              {textValue: 'Backlog item', value: 'Backlog item'},
+              {textValue: 'Open', value: 'Open'}
+            ]
+          }
+        ]
+      }),
+      selectionMode: 'none'
+    });
+
+    let resizeState = useStatelyTableColumnResizeState({
+      tableWidth: 240
+    }, tableState);
+
+    expect(resizeState.resizingColumn).toBeNull();
+    resizeState.startResize('status');
+    expect(resizeState.resizingColumn).toBe('status');
+    let resized = resizeState.updateResizedColumns('status', 999);
+    expect(resized.get('status')).toBe(240);
+    expect(resizeState.getColumnWidth('status')).toBe(240);
+    expect(resizeState.columnWidths.get('status')).toBe(240);
+    expect(resizeState.getColumnMinWidth('status')).toBe(0);
+    expect(resizeState.getColumnMaxWidth('status')).toBe(240);
+    resizeState.endResize();
+    expect(resizeState.resizingColumn).toBeNull();
+    expect(resizeState.tableState).toBe(tableState);
   });
 
   it('manages vue-stately tree grid expanded key state', () => {
