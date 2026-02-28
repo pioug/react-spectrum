@@ -358,14 +358,6 @@ export function useDraggableItem(
     return false;
   });
 
-  let dragItems = computed(() => {
-    if (key == null || typeof stateRecord.getItems !== 'function') {
-      return [];
-    }
-
-    return toDragItems(stateRecord.getItems(key));
-  });
-
   let isDragging = computed(() => {
     if (key == null || typeof stateRecord.isDragging !== 'function') {
       return false;
