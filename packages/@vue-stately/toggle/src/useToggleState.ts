@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 
@@ -23,6 +23,15 @@ export function useToggleState(options: ToggleStateOptions = {}): ToggleState {
   let uncontrolledSelected = ref(options.defaultSelected ?? false);
   let isReadOnly = computed(() => Boolean(unref(options.isReadOnly)));
   let isControlled = computed(() => options.isSelected !== undefined && options.isSelected.value !== undefined);
+  let wasControlled = ref(isControlled.value);
+
+  watch(isControlled, (nextIsControlled) => {
+    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasControlled.value = nextIsControlled;
+  });
+
   let isSelected = computed(() => {
     if (isControlled.value && options.isSelected) {
       return Boolean(options.isSelected.value);

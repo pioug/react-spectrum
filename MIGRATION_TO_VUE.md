@@ -1340,6 +1340,20 @@
    - full Vue tests: `yarn test:vue` (546 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Toggle-store controlled-state warning parity (`@vue-stately/toggle`)
+
+1. Aligned toggle-store controlled/uncontrolled transition warnings with React stately behavior:
+   - `useToggleState` now emits `WARN: A component changed from ...` when `isSelected` ownership switches between controlled and uncontrolled.
+   - `useToggleGroupState` now emits the same warning when `selectedKeys` ownership switches between controlled and uncontrolled.
+2. Preserved existing toggle selection behavior:
+   - no selection semantics changes were introduced; this patch adds dev-only warning parity for ownership transitions.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: new assertions for both single-toggle and toggle-group controlled/uncontrolled transitions.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately toggle and toggle-group selection behavior|warns when vue-stately toggle hooks switch between controlled and uncontrolled"`,
+   - full Vue tests: `yarn test:vue` (547 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

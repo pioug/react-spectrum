@@ -2457,6 +2457,40 @@ describe('Vue migration composition components', () => {
     expect(groupSelectionChanges).toEqual([['bold', 'italic'], ['italic']]);
   });
 
+  it('warns when vue-stately toggle hooks switch between controlled and uncontrolled', async () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    try {
+      let controlledSelected = ref<boolean | undefined>(true);
+      useStatelyToggleState({
+        isSelected: controlledSelected
+      });
+
+      controlledSelected.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      controlledSelected.value = false;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+
+      let controlledSelectedKeys = ref<Set<string | number> | undefined>(new Set(['bold']));
+      useStatelyToggleGroupState({
+        selectedKeys: controlledSelectedKeys
+      });
+
+      controlledSelectedKeys.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      controlledSelectedKeys.value = new Set(['italic']);
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
   it('manages vue-stately tooltip trigger warmup and close delay behavior', () => {
     vi.useFakeTimers();
 

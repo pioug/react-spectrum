@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 export type Key = string | number;
@@ -42,6 +42,16 @@ export function useToggleGroupState(props: ToggleGroupProps): ToggleGroupState {
   let selectionMode = computed(() => unref(props.selectionMode) ?? 'single');
   let disallowEmptySelection = computed(() => Boolean(unref(props.disallowEmptySelection)));
   let isDisabled = computed(() => Boolean(unref(props.isDisabled)));
+  let isControlled = computed(() => props.selectedKeys !== undefined && props.selectedKeys.value !== undefined);
+  let wasControlled = ref(isControlled.value);
+
+  watch(isControlled, (nextIsControlled) => {
+    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasControlled.value = nextIsControlled;
+  });
+
   let uncontrolledSelectedKeys = ref(new Set<Key>(props.defaultSelectedKeys ?? []));
   let selectedKeys = computed<Set<Key>>({
     get: () => {
