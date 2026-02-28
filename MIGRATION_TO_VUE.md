@@ -2076,6 +2076,20 @@
    - full Vue tests: `yarn test:vue` (609 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Toggle controlled ownership parity (`@vue-stately/toggle`)
+
+1. Closed controlled ownership drift in toggle hooks:
+   - `useToggleState` no longer mutates controlled `isSelected` refs directly,
+   - `useToggleGroupState` no longer mutates controlled `selectedKeys` refs directly.
+2. Preserved emitted change contract:
+   - controlled toggles still emit `onChange`/`onSelectionChange` payloads for requested transitions; state remains externally owned when controlled.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: assertions that controlled single toggle and toggle-group refs remain unchanged when parent does not mirror callbacks, while callbacks still emit requested values.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "toggle and toggle-group selection behavior|toggle hooks controlled without mutating control refs"`,
+   - full Vue tests: `yarn test:vue` (610 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

@@ -46,9 +46,7 @@ export function useToggleState(options: ToggleStateOptions = {}): ToggleState {
       return;
     }
 
-    if (isControlled.value && options.isSelected) {
-      options.isSelected.value = nextSelected;
-    } else {
+    if (!isControlled.value) {
       uncontrolledSelected.value = nextSelected;
     }
 

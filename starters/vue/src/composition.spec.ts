@@ -3929,6 +3929,37 @@ describe('Vue migration composition components', () => {
     expect(Array.from(singleGroupState.selectedKeys.value)).toEqual(['left']);
   });
 
+  it('keeps vue-stately toggle hooks controlled without mutating control refs', () => {
+    let controlledSelected = ref<boolean | undefined>(true);
+    let toggleChanges: boolean[] = [];
+    let toggleState = useStatelyToggleState({
+      isSelected: controlledSelected,
+      onChange: (isSelected) => {
+        toggleChanges.push(isSelected);
+      }
+    });
+
+    toggleState.toggle();
+    expect(controlledSelected.value).toBe(true);
+    expect(toggleState.isSelected.value).toBe(true);
+    expect(toggleChanges).toEqual([false]);
+
+    let controlledSelectedKeys = ref<Set<string | number> | undefined>(new Set(['bold']));
+    let groupChanges: string[][] = [];
+    let groupState = useStatelyToggleGroupState({
+      onSelectionChange: (keys) => {
+        groupChanges.push(Array.from(keys).map((key) => String(key)));
+      },
+      selectedKeys: controlledSelectedKeys,
+      selectionMode: 'multiple'
+    });
+
+    groupState.toggleKey('italic');
+    expect(Array.from(controlledSelectedKeys.value ?? [])).toEqual(['bold']);
+    expect(Array.from(groupState.selectedKeys.value)).toEqual(['bold']);
+    expect(groupChanges).toEqual([['bold', 'italic']]);
+  });
+
   it('warns when vue-stately toggle hooks switch between controlled and uncontrolled', async () => {
     let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 

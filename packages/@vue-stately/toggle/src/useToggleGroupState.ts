@@ -48,9 +48,7 @@ export function useToggleGroupState(props: ToggleGroupProps): ToggleGroupState {
       return uncontrolledSelectedKeys.value;
     },
     set: (nextKeys) => {
-      if (isControlled.value && props.selectedKeys) {
-        props.selectedKeys.value = nextKeys;
-      } else {
+      if (!isControlled.value) {
         uncontrolledSelectedKeys.value = nextKeys;
       }
     }
