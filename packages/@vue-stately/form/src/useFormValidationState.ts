@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, ref, type Ref, unref} from 'vue';
+import {computed, type ComputedRef, ref, type Ref, unref, watch} from 'vue';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 
@@ -120,6 +120,8 @@ export function useFormValidationState<T>(props: FormValidationProps<T>): FormVa
 
   let currentValidity = ref<ValidationResult>(DEFAULT_VALIDATION_RESULT);
   let nextValidation = ref<ValidationResult>(DEFAULT_VALIDATION_RESULT);
+  let lastServerErrors = ref<ValidationErrors | undefined>(undefined);
+  let isServerErrorCleared = ref(false);
 
   let controlledError = computed<ValidationResult | null>(() => {
     let isInvalid = props.isInvalid == null ? undefined : Boolean(unref(props.isInvalid));
@@ -159,7 +161,9 @@ export function useFormValidationState<T>(props: FormValidationProps<T>): FormVa
     }
 
     let names = Array.isArray(props.name) ? props.name : [props.name];
-    let messages = names.flatMap((name) => asArray(errors[name]));
+    let messages = isServerErrorCleared.value
+      ? []
+      : names.flatMap((name) => asArray(errors[name]));
     return getValidationResult(messages.map((message) => String(message)));
   });
 
@@ -205,14 +209,14 @@ export function useFormValidationState<T>(props: FormValidationProps<T>): FormVa
   };
 
   let commitValidation = (): void => {
-    if (behavior.value !== 'native') {
-      return;
+    if (behavior.value === 'native') {
+      let next = clientError.value ?? builtinValidation.value ?? nextValidation.value;
+      if (next && !isEqualValidation(currentValidity.value, next)) {
+        currentValidity.value = next;
+      }
     }
 
-    let next = clientError.value ?? builtinValidation.value ?? nextValidation.value;
-    if (next && !isEqualValidation(currentValidity.value, next)) {
-      currentValidity.value = next;
-    }
+    isServerErrorCleared.value = true;
   };
 
   let resetValidation = (): void => {
@@ -220,7 +224,20 @@ export function useFormValidationState<T>(props: FormValidationProps<T>): FormVa
     if (behavior.value === 'native') {
       nextValidation.value = DEFAULT_VALIDATION_RESULT;
     }
+
+    isServerErrorCleared.value = true;
   };
+
+  watch(
+    () => unref(props.validationErrors),
+    (nextServerErrors) => {
+      if (nextServerErrors !== lastServerErrors.value) {
+        lastServerErrors.value = nextServerErrors ?? undefined;
+        isServerErrorCleared.value = false;
+      }
+    },
+    {immediate: true}
+  );
 
   return {
     realtimeValidation,

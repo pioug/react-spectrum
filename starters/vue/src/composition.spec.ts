@@ -2969,6 +2969,30 @@ describe('Vue migration composition components', () => {
     expect(mergedValidation.validationErrors).toEqual(['Server error']);
   });
 
+  it('clears and re-shows vue-stately form server validation errors on commit/reset', async () => {
+    let validationErrors = ref<Record<string, string[]>>({
+      field: ['Server error']
+    });
+    let state = useStatelyFormValidationState({
+      name: 'field',
+      validationBehavior: ref<'aria' | 'native'>('aria'),
+      validationErrors,
+      value: ref('hello')
+    });
+
+    expect(state.displayValidation.value.validationErrors).toEqual(['Server error']);
+
+    state.commitValidation();
+    expect(state.displayValidation.value.validationErrors).toEqual([]);
+
+    validationErrors.value = {field: ['Next server error']};
+    await nextTick();
+    expect(state.displayValidation.value.validationErrors).toEqual(['Next server error']);
+
+    state.resetValidation();
+    expect(state.displayValidation.value.validationErrors).toEqual([]);
+  });
+
   it('manages vue-stately grid collection and row/cell focus-selection state', () => {
     let collection = new StatelyGridCollection({
       columnCount: 2,
