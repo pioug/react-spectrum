@@ -12,6 +12,20 @@ type RefObject<T> = {
 
 type AnyRecord = Record<string, unknown>;
 
+function isRefLike<T>(value: unknown): value is {value: T} {
+  return Boolean(value) && typeof value === 'object' && 'value' in (value as AnyRecord);
+}
+
+function setRecordValue(record: AnyRecord, key: string, value: unknown): void {
+  let currentValue = record[key];
+  if (isRefLike<unknown>(currentValue)) {
+    currentValue.value = value;
+    return;
+  }
+
+  record[key] = value;
+}
+
 function toValueSet(values: unknown): Set<string> {
   let resolvedValues = unref(values as unknown);
   values = resolvedValues;
@@ -68,7 +82,7 @@ function applyGroupSelection(stateRecord: AnyRecord, nextValues: Set<string>): v
     return;
   }
 
-  stateRecord.selectedValues = new Set(nextValues);
+  setRecordValue(stateRecord, 'selectedValues', new Set(nextValues));
 }
 
 export type {AriaCheckboxGroupItemProps, AriaCheckboxGroupProps, AriaCheckboxProps} from '@vue-types/checkbox';
@@ -108,7 +122,7 @@ export function useCheckbox(
           return;
         }
 
-        stateRecord.isSelected = isSelected;
+        setRecordValue(stateRecord, 'isSelected', isSelected);
       }
     });
   }

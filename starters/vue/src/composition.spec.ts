@@ -792,6 +792,17 @@ describe('Vue migration composition components', () => {
     expect(isSelected.value).toBe(true);
     expect(toggleButton.buttonProps.value['aria-pressed']).toBe(true);
 
+    let fallbackToggleSelected = ref(false);
+    let fallbackToggleButton = useToggleButton({
+      'aria-label': 'Fallback toggle'
+    } as unknown as Parameters<typeof useToggleButton>[0], {
+      isSelected: fallbackToggleSelected
+    } as unknown as Parameters<typeof useToggleButton>[1], {
+      current: null
+    } as unknown as Parameters<typeof useToggleButton>[2]);
+    fallbackToggleButton.press();
+    expect(fallbackToggleSelected.value).toBe(true);
+
     let selectedKeys = ref(new Set<string>(['bold']));
     let selectionMode = ref<'multiple' | 'single'>('single');
     let isGroupDisabled = ref(false);
@@ -865,6 +876,19 @@ describe('Vue migration composition components', () => {
     } as unknown as Parameters<typeof useToggleButtonGroupItem>[2]);
     disabledItem.press();
     expect(Array.from(selectedKeys.value)).toEqual(['italic']);
+
+    let fallbackGroupSelectedKeys = ref(new Set<string>(['bold']));
+    let fallbackGroupSelectionMode = ref<'multiple' | 'single'>('single');
+    let fallbackGroupItem = useToggleButtonGroupItem({
+      id: 'italic'
+    } as unknown as Parameters<typeof useToggleButtonGroupItem>[0], {
+      selectedKeys: fallbackGroupSelectedKeys,
+      selectionMode: fallbackGroupSelectionMode
+    } as unknown as Parameters<typeof useToggleButtonGroupItem>[1], {
+      current: null
+    } as unknown as Parameters<typeof useToggleButtonGroupItem>[2]);
+    fallbackGroupItem.press();
+    expect(Array.from(fallbackGroupSelectedKeys.value)).toEqual(['italic']);
 
     let statelyToggleSelected = ref(false);
     let statelyToggleState = useStatelyToggleState({
@@ -1472,6 +1496,15 @@ describe('Vue migration composition components', () => {
     expect(checkboxToggleCalls).toBe(1);
     expect(checkboxSelected.value).toBe(true);
 
+    let fallbackCheckboxSelected = ref(false);
+    let fallbackCheckbox = useCheckbox({} as unknown as Parameters<typeof useCheckbox>[0], {
+      isSelected: fallbackCheckboxSelected
+    } as unknown as Parameters<typeof useCheckbox>[1], {
+      current: null
+    } as unknown as Parameters<typeof useCheckbox>[2]);
+    fallbackCheckbox.press();
+    expect(fallbackCheckboxSelected.value).toBe(true);
+
     let selectedValues = ref(new Set<string>(['Docs']));
     let addCalls: string[] = [];
     let removeCalls: string[] = [];
@@ -1523,6 +1556,19 @@ describe('Vue migration composition components', () => {
     reactCheckboxGroupItem.press();
     expect(removeCalls).toEqual(['Tests']);
     expect(Array.from(selectedValues.value)).toEqual(['Docs']);
+
+    let fallbackGroupValues = ref(new Set<string>(['Docs']));
+    let fallbackGroupItem = useCheckboxGroupItem({
+      value: 'Tests'
+    } as unknown as Parameters<typeof useCheckboxGroupItem>[0], {
+      selectedValues: fallbackGroupValues
+    } as unknown as Parameters<typeof useCheckboxGroupItem>[1], {
+      current: null
+    } as unknown as Parameters<typeof useCheckboxGroupItem>[2]);
+    fallbackGroupItem.press();
+    expect(Array.from(fallbackGroupValues.value).sort()).toEqual(['Docs', 'Tests']);
+    fallbackGroupItem.press();
+    expect(Array.from(fallbackGroupValues.value)).toEqual(['Docs']);
 
     let statelyToggleSelected = ref(false);
     let statelyToggleState = useStatelyToggleState({

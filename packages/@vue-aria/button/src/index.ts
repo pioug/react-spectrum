@@ -15,6 +15,7 @@ import {computed, unref} from 'vue';
 type RefObject<T> = {
   current: T
 };
+type AnyRecord = Record<string, unknown>;
 
 type ElementType = 'a' | 'button' | 'div' | 'input' | 'span' | (string & {});
 type DOMAttributes = Record<string, unknown>;
@@ -68,6 +69,20 @@ export function useButton(options: AriaButtonOptions): ButtonAria {
 
 type ToggleState = Record<string, unknown>;
 type ToggleGroupState = Record<string, unknown>;
+
+function isRefLike<T>(value: unknown): value is {value: T} {
+  return Boolean(value) && typeof value === 'object' && 'value' in (value as AnyRecord);
+}
+
+function setRecordValue(record: ToggleState | ToggleGroupState, key: string, value: unknown): void {
+  let currentValue = record[key];
+  if (isRefLike<unknown>(currentValue)) {
+    currentValue.value = value;
+    return;
+  }
+
+  record[key] = value;
+}
 
 function toKeySet(values: unknown): Set<string> {
   let resolvedValues = unref(values as unknown);
@@ -130,7 +145,7 @@ function applySelectedKeysToState(stateRecord: ToggleGroupState, nextSelection: 
     return;
   }
 
-  stateRecord.selectedKeys = new Set(nextSelection);
+  setRecordValue(stateRecord, 'selectedKeys', new Set(nextSelection));
 }
 
 export function useToggleButton<T extends ElementType>(
@@ -173,7 +188,7 @@ export function useToggleButton(
           return;
         }
 
-        stateRecord.isSelected = isSelected;
+        setRecordValue(stateRecord, 'isSelected', isSelected);
       }
     });
   }
