@@ -708,6 +708,9 @@ export function useDroppableCollection(
   let onDragOver = (input?: unknown): void => {
     let items = normalizeDropItems(input);
     if (items.length === 0 || isDisabled.value || !includesAcceptedType(acceptedTypes.value, items)) {
+      if (isDraggingOverCollection) {
+        onDragLeave(input);
+      }
       return;
     }
 

@@ -4690,11 +4690,6 @@ describe('Vue migration composition components', () => {
       clientX: 21,
       clientY: 34
     });
-    droppableCollection.collectionProps.value.onDragOver({
-      items: [{id: 'asset-1', type: 'file', value: {id: 2}}],
-      clientX: 44,
-      clientY: 55
-    });
     expect(moveEvents).toEqual(['move:21,34']);
 
     let droppableItem = useDroppableItem({target}, dropState, collectionRef) as {
@@ -4868,6 +4863,40 @@ describe('Vue migration composition components', () => {
     });
 
     expect(moveEvents).toEqual(['move:12,13']);
+  });
+
+  it('exits useDroppableCollection when dragover payload becomes invalid', () => {
+    let exitEvents: Array<string> = [];
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item']
+    });
+    dropState.setTarget({type: 'root'});
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      onDropExit: (event) => {
+        exitEvents.push(`exit:${event.x},${event.y}`);
+      }
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDragEnter: (items?: unknown) => boolean,
+        onDragOver: (items?: unknown) => void
+      }}
+    };
+
+    expect(droppableCollection.collectionProps.value.onDragEnter({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 4,
+      clientY: 6
+    })).toBe(true);
+
+    droppableCollection.collectionProps.value.onDragOver({
+      items: [{id: 'asset-1', type: 'file', value: {id: 2}}],
+      clientX: 12,
+      clientY: 16
+    });
+
+    expect(exitEvents).toEqual(['exit:12,16']);
+    expect(dropState.target.value).toBeNull();
   });
 
   it('fires useDroppableCollection onDropEnter once per active hover session', () => {
