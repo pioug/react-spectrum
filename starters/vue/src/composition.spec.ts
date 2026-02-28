@@ -8102,6 +8102,29 @@ describe('Vue migration composition components', () => {
     expect(isOpen.value).toBe(true);
     expect(overlayTrigger.triggerProps.value['aria-controls']).toBe(overlayTrigger.overlayProps.value.id);
 
+    let statelyTriggerState = useStatelyOverlayTriggerState({
+      defaultOpen: false
+    });
+    let statelyOverlayTrigger = useAriaOverlayTrigger({
+      type: 'menu'
+    } as unknown as Parameters<typeof useAriaOverlayTrigger>[0], statelyTriggerState as unknown as Parameters<typeof useAriaOverlayTrigger>[1], triggerRefObject);
+    expect(statelyOverlayTrigger.triggerProps.value['aria-expanded']).toBe(false);
+    statelyOverlayTrigger.triggerProps.value.onPress();
+    expect(statelyTriggerState.isOpen.value).toBe(true);
+    statelyOverlayTrigger.triggerProps.value.onPress();
+    expect(statelyTriggerState.isOpen.value).toBe(false);
+
+    let statelyPopoverState = useStatelyOverlayTriggerState({
+      defaultOpen: true
+    });
+    let statelyPopover = useAriaPopover({
+      placement: 'bottom',
+      popoverRef: ref(popoverElement),
+      triggerRef: ref(triggerElement)
+    }, statelyPopoverState as unknown as Parameters<typeof useAriaPopover>[1]);
+    statelyPopover.popoverProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
+    expect(statelyPopoverState.isOpen.value).toBe(false);
+
     let overlayIsOpen = ref(true);
     let overlay = useAriaOverlay({
       isDismissable: true,
@@ -8148,6 +8171,17 @@ describe('Vue migration composition components', () => {
     modalOverlay.modalProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
     expect(modalIsOpen.value).toBe(false);
 
+    let statelyModalState = useStatelyOverlayTriggerState({
+      defaultOpen: true
+    });
+    let statelyModalOverlay = useAriaModalOverlay({
+      isDismissable: true
+    } as unknown as Parameters<typeof useAriaModalOverlay>[0], statelyModalState as unknown as Parameters<typeof useAriaModalOverlay>[1], modalRefObject as unknown as Parameters<typeof useAriaModalOverlay>[2]);
+    statelyModalOverlay.modalProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
+    expect(statelyModalState.isOpen.value).toBe(false);
+
+    statelyModalOverlay.dispose();
+    statelyPopover.dispose();
     modalOverlay.dispose();
     popover.dispose();
     overlay.dispose();

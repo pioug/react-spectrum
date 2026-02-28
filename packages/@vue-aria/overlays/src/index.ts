@@ -5,7 +5,7 @@ import {type AriaModalOverlayOptions, type ModalOverlayAria, useModalOverlay as 
 import {type AriaOverlayOptions, type OverlayAria, useOverlay as useOverlayInternal} from './useOverlay';
 import {type AriaOverlayPositionOptions, type OverlayPlacement, type PositionAria, useOverlayPosition as useOverlayPositionInternal} from './useOverlayPosition';
 import {type AriaPopoverOptions, type PopoverAria, usePopover as usePopoverInternal} from './usePopover';
-import {computed, defineComponent, h, inject, provide, ref, Teleport, type ComputedRef, type PropType, type Ref} from 'vue';
+import {computed, defineComponent, h, inject, provide, ref, Teleport, type ComputedRef, type PropType, type Ref, unref} from 'vue';
 import type {MaybeRef} from './types';
 import {type OverlayTriggerAria, type OverlayTriggerOptions, type OverlayTriggerType, useOverlayTrigger as useOverlayTriggerInternal} from './useOverlayTrigger';
 import {type PreventScrollAria, type PreventScrollOptions, usePreventScroll as usePreventScrollInternal} from './usePreventScroll';
@@ -18,7 +18,7 @@ type RefObject<T> = {current: T};
 type OverlayPortalContainer = Element | string | null | undefined;
 export type OverlayTriggerState = {
   close: () => void,
-  isOpen: boolean,
+  isOpen: boolean | ComputedRef<boolean> | Ref<boolean>,
   open?: () => void,
   toggle: () => void
 };
@@ -81,6 +81,10 @@ function toElementRef(refObject: RefObject<Element | null>): Ref<HTMLElement | n
   return ref((refObject.current as HTMLElement | null) ?? null);
 }
 
+function readIsOpenState(state: OverlayTriggerState): boolean {
+  return Boolean(unref((state as AnyRecord).isOpen as boolean | undefined));
+}
+
 export function ariaHideOutside(targets: Element[], options?: AriaHideOutsideOptions | Element): () => void;
 export function ariaHideOutside(targets: Array<Element | null | undefined>): () => void;
 export function ariaHideOutside(
@@ -125,9 +129,9 @@ export function useOverlayTrigger(
 ): OverlayTriggerAria {
   if (state) {
     let isOpen = computed({
-      get: () => state.isOpen,
+      get: () => readIsOpenState(state),
       set: (nextOpen: boolean) => {
-        if (nextOpen === state.isOpen) {
+        if (nextOpen === readIsOpenState(state)) {
           return;
         }
 
@@ -163,7 +167,7 @@ export function usePopover(
   if (state) {
     return usePopoverInternal({
       ...options,
-      isOpen: computed(() => state.isOpen),
+      isOpen: computed(() => readIsOpenState(state)),
       onClose: state.close
     });
   }
@@ -185,7 +189,7 @@ export function useModalOverlay(
   if (state && refObject) {
     return useModalOverlayInternal({
       ...options,
-      isOpen: computed(() => state.isOpen),
+      isOpen: computed(() => readIsOpenState(state)),
       modalRef: ref((refObject.current as HTMLElement | null) ?? null),
       onClose: state.close
     });
