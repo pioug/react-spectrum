@@ -184,6 +184,14 @@ import {
   VueUIIcon
 } from '@vue-spectrum/icon';
 import {
+  Icon as RootIcon,
+  Illustration as RootIllustration,
+  UIIcon as RootUIIcon,
+  VueIcon as RootVueIcon,
+  VueIllustration as RootVueIllustration,
+  VueUIIcon as RootVueUIIcon
+} from '../../../packages/@vue-spectrum/icon/index';
+import {
   Link,
   VueLink
 } from '@vue-spectrum/link';
@@ -469,6 +477,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(Icon).toBe(VueIcon);
     expect(UIIcon).toBe(VueUIIcon);
     expect(Illustration).toBe(VueIllustration);
+  });
+
+  it('keeps root icon entry exports aligned with source exports', () => {
+    expect(RootIcon).toBe(Icon);
+    expect(RootVueIcon).toBe(VueIcon);
+    expect(RootUIIcon).toBe(UIIcon);
+    expect(RootVueUIIcon).toBe(VueUIIcon);
+    expect(RootIllustration).toBe(Illustration);
+    expect(RootVueIllustration).toBe(VueIllustration);
   });
 
   it('keeps link exports aligned with VueLink base entry', () => {
