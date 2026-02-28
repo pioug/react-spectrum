@@ -714,7 +714,6 @@ export function useDraggableItem(
 
     return {
       draggable: true,
-      'aria-grabbed': isDragging.value,
       onDragStart: () => {
         startDrag();
       },
@@ -743,7 +742,6 @@ export function useDraggableItem(
   });
 
   let dragButtonProps = computed(() => ({
-    'aria-grabbed': isDragging.value,
     isDisabled: isDisabled.value,
     onClick: () => {
       startDrag();
