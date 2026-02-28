@@ -1059,6 +1059,23 @@
    - full Vue tests: `yarn test:vue` (531 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 27, 2026 — Shared color area/wheel label-ownership parity (`@vue-aria/color`)
+
+1. Aligned `useColorArea` labelling ownership with shared `useLabels` semantics:
+   - area now supports `id`, `aria-label`, and `aria-labelledby` inputs,
+   - default area label now matches React intent (`"Color picker"`),
+   - when `aria-label` and `aria-labelledby` coexist, area id now participates in `aria-labelledby`.
+2. Aligned `useColorWheel` labelling ownership with shared `useLabels` semantics:
+   - wheel now supports `id`, `aria-label`, and `aria-labelledby` inputs,
+   - default wheel label now resolves to `"Hue"` when no explicit label is provided,
+   - dual-label flows now compose wheel id into `aria-labelledby`.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: assertions for default labels and dual-label ownership on both color area and color wheel hooks.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "updates vue-aria color area, wheel, and swatch props"`,
+   - full Vue tests: `yarn test:vue` (531 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

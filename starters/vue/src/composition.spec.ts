@@ -864,6 +864,19 @@ describe('Vue migration composition components', () => {
     area.setValue(0.25, 0.75);
     expect(x.value).toBeCloseTo(0.25);
     expect(y.value).toBeCloseTo(0.75);
+    expect(area.areaProps.value['aria-label']).toBe('Color picker');
+
+    let composedArea = useColorArea({
+      'aria-label': 'Saturation area',
+      'aria-labelledby': 'external-color-area-label',
+      id: 'color-area',
+      x,
+      y
+    });
+    let areaLabelledByIds = composedArea.areaProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(areaLabelledByIds).toContain('external-color-area-label');
+    expect(areaLabelledByIds).toContain('color-area');
+    expect(composedArea.areaProps.value['aria-label']).toBe('Saturation area');
 
     let angle = ref(0);
     let radius = ref(0);
@@ -874,6 +887,19 @@ describe('Vue migration composition components', () => {
     wheel.setValue(420, 0.5);
     expect(angle.value).toBe(60);
     expect(radius.value).toBe(0.5);
+    expect(wheel.wheelProps.value['aria-label']).toBe('Hue');
+
+    let composedWheel = useColorWheel({
+      'aria-label': 'Hue wheel',
+      'aria-labelledby': 'external-color-wheel-label',
+      id: 'color-wheel',
+      angle,
+      radius
+    });
+    let wheelLabelledByIds = composedWheel.wheelProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(wheelLabelledByIds).toContain('external-color-wheel-label');
+    expect(wheelLabelledByIds).toContain('color-wheel');
+    expect(composedWheel.wheelProps.value['aria-label']).toBe('Hue wheel');
 
     let swatch = useColorSwatch({
       color: ref('ff00ff')
