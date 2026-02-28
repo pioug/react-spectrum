@@ -5887,6 +5887,95 @@ describe('Vue migration composition components', () => {
     expect(moveEvents).toEqual(['move:12,13']);
   });
 
+  it('fires useDroppableCollection onDropActivate after sustained dragover on item targets', () => {
+    vi.useFakeTimers();
+    try {
+      let activateEvents: Array<string> = [];
+      let dropState = useStatelyDroppableCollectionState({
+        acceptedDragTypes: ['item'],
+        getDropOperation: () => 'move'
+      });
+      dropState.setTarget({type: 'item', key: 'alpha', dropPosition: 'on'});
+      let droppableCollection = useDroppableCollection({
+        acceptedDragTypes: ['item'],
+        onDropActivate: (event) => {
+          activateEvents.push(`activate:${event.target.type}:${event.target.key}:${event.target.dropPosition}:${event.x},${event.y}`);
+        }
+      }, dropState, {current: document.createElement('div')}) as {
+        collectionProps: {value: {
+          onDragEnter: (items?: unknown) => boolean,
+          onDragOver: (items?: unknown) => void
+        }}
+      };
+
+      expect(droppableCollection.collectionProps.value.onDragEnter({
+        items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+        clientX: 3,
+        clientY: 4
+      })).toBe(true);
+
+      droppableCollection.collectionProps.value.onDragOver({
+        items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+        clientX: 9,
+        clientY: 11
+      });
+
+      vi.advanceTimersByTime(799);
+      expect(activateEvents).toEqual([]);
+
+      vi.advanceTimersByTime(1);
+      expect(activateEvents).toEqual(['activate:item:alpha:on:9,11']);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('does not fire useDroppableCollection onDropActivate when drag leaves first', () => {
+    vi.useFakeTimers();
+    try {
+      let activateEvents: Array<string> = [];
+      let dropState = useStatelyDroppableCollectionState({
+        acceptedDragTypes: ['item'],
+        getDropOperation: () => 'move'
+      });
+      dropState.setTarget({type: 'item', key: 'alpha', dropPosition: 'on'});
+      let droppableCollection = useDroppableCollection({
+        acceptedDragTypes: ['item'],
+        onDropActivate: (event) => {
+          activateEvents.push(`activate:${event.target.key}:${event.x},${event.y}`);
+        }
+      }, dropState, {current: document.createElement('div')}) as {
+        collectionProps: {value: {
+          onDragEnter: (items?: unknown) => boolean,
+          onDragOver: (items?: unknown) => void,
+          onDragLeave: (items?: unknown) => void
+        }}
+      };
+
+      expect(droppableCollection.collectionProps.value.onDragEnter({
+        items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+        clientX: 2,
+        clientY: 3
+      })).toBe(true);
+
+      droppableCollection.collectionProps.value.onDragOver({
+        items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+        clientX: 7,
+        clientY: 10
+      });
+
+      droppableCollection.collectionProps.value.onDragLeave({
+        clientX: 12,
+        clientY: 14
+      });
+
+      vi.advanceTimersByTime(800);
+      expect(activateEvents).toEqual([]);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it('exits useDroppableCollection when dragover payload becomes invalid', () => {
     let exitEvents: Array<string> = [];
     let dropState = useStatelyDroppableCollectionState({

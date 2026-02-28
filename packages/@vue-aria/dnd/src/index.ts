@@ -16,6 +16,7 @@ type DraggingKey = number | string;
 const DROP_OPERATIONS = new Set<DropOperation>(['cancel', 'copy', 'link', 'move']);
 const DEFAULT_DROP_OPERATION: DropOperation = 'copy';
 const DEFAULT_ALLOWED_OPERATIONS: DropOperation[] = ['copy', 'move', 'link'];
+const DROP_ACTIVATE_TIMEOUT = 800;
 const noop = () => {};
 
 let draggingCollectionRef: RefObject<HTMLElement | null> | null = null;
@@ -815,6 +816,33 @@ export function useDroppableCollection(
   droppableCollectionRefs.set(stateObject, ref);
   let lastDragPoint: {x: number, y: number} | null = null;
   let isDraggingOverCollection = false;
+  let dropActivateTimeout: ReturnType<typeof setTimeout> | undefined;
+
+  let clearDropActivateTimeout = () => {
+    if (dropActivateTimeout) {
+      clearTimeout(dropActivateTimeout);
+      dropActivateTimeout = undefined;
+    }
+  };
+
+  let scheduleDropActivate = (target: DropTarget | null, point: {x: number, y: number}) => {
+    clearDropActivateTimeout();
+    if (!target || target.type !== 'item' || typeof propsRecord.onDropActivate !== 'function') {
+      return;
+    }
+
+    let targetSnapshot = target;
+    let x = point.x;
+    let y = point.y;
+    dropActivateTimeout = setTimeout(() => {
+      propsRecord.onDropActivate({
+        type: 'dropactivate',
+        target: targetSnapshot,
+        x,
+        y
+      });
+    }, DROP_ACTIVATE_TIMEOUT);
+  };
 
   let getDropOperation = (items: DragItem[], target: DropTarget | null, fallback: DropOperation): DropOperation => {
     if (typeof stateRecord.getDropOperation !== 'function') {
@@ -1064,9 +1092,12 @@ export function useDroppableCollection(
         y: point.y
       });
     }
+
+    scheduleDropActivate(target, point);
   };
 
   let onDragLeave = (input?: unknown): void => {
+    clearDropActivateTimeout();
     isDraggingOverCollection = false;
     let target = readDropTarget(stateRecord);
     if (!target) {
@@ -1098,6 +1129,7 @@ export function useDroppableCollection(
   };
 
   let onDrop = (input?: unknown, fallbackOperation?: DropOperation): DropOperation => {
+    clearDropActivateTimeout();
     let items = normalizeDropItems(input);
     if (isDisabled.value || !includesAcceptedType(acceptedTypes.value, items)) {
       onDragLeave(input);
