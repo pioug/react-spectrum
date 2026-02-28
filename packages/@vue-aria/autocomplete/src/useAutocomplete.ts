@@ -38,7 +38,9 @@ export interface AutocompleteAria {
   filteredItems: ComputedRef<AutocompleteItem[]>,
   focusedKey: ComputedRef<string | null>,
   inputProps: ComputedRef<{
+    'aria-activedescendant'?: string,
     'aria-autocomplete': 'list',
+    'aria-controls': string,
     'aria-expanded': boolean,
     disabled: boolean,
     value: string
@@ -71,7 +73,12 @@ function resolveOptionalString(value: MaybeRef<string | undefined> | undefined):
   return unref(value);
 }
 
+let autocompleteCounter = 0;
+
 export function useAutocomplete(options: AriaAutocompleteOptions): AutocompleteAria {
+  autocompleteCounter += 1;
+
+  let generatedCollectionId = `vue-autocomplete-${autocompleteCounter}-listbox`;
   let query = computed(() => normalizeQuery(String(unref(options.inputValue))));
   let disabled = computed(() => Boolean(unref(options.disabled)));
   let shouldAutoFocusFirst = computed(() => Boolean(unref(options.shouldAutoFocusFirst ?? true)));
@@ -101,9 +108,10 @@ export function useAutocomplete(options: AriaAutocompleteOptions): AutocompleteA
 
   let ariaLabel = computed(() => resolveOptionalString(options.ariaLabel) ?? resolveOptionalString(options['aria-label']) ?? 'Suggestions');
   let ariaLabelledby = computed(() => resolveOptionalString(options.ariaLabelledby) ?? resolveOptionalString(options['aria-labelledby']));
+  let collectionId = computed(() => resolveOptionalString(options.id) ?? generatedCollectionId);
   let collectionLabelProps = computed(() => {
     return useLabels({
-      id: resolveOptionalString(options.id),
+      id: collectionId.value,
       'aria-label': ariaLabel.value,
       'aria-labelledby': ariaLabelledby.value
     });
@@ -119,7 +127,11 @@ export function useAutocomplete(options: AriaAutocompleteOptions): AutocompleteA
     value: String(unref(options.inputValue)),
     disabled: disabled.value,
     'aria-autocomplete': 'list' as const,
-    'aria-expanded': filteredItems.value.length > 0
+    'aria-expanded': filteredItems.value.length > 0,
+    'aria-controls': collectionId.value,
+    'aria-activedescendant': focusedKey.value == null
+      ? undefined
+      : `${collectionId.value}-option-${focusedKey.value}`
   }));
 
   return {

@@ -3279,6 +3279,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Autocomplete input ARIA linkage parity (`@vue-aria/autocomplete`)
+
+1. Closed autocomplete trigger/listbox linkage drift:
+   - `useAutocomplete.inputProps` now exposes `aria-controls` bound to the resolved listbox id, matching React input-to-collection linkage behavior.
+2. Closed active-descendant drift for focused option exposure:
+   - `useAutocomplete.inputProps` now emits `aria-activedescendant` for the focused option id contract, and falls back to a generated stable listbox id when no explicit id is provided.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` autocomplete assertions now verify generated/default listbox ids and `inputProps` `aria-controls` + `aria-activedescendant` contracts.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "filters autocomplete items and exposes focused key"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

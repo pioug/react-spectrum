@@ -411,6 +411,9 @@ describe('Vue migration composition components', () => {
     expect(autocomplete.filteredItems.value.map((item) => item.textValue)).toEqual(['Vue', 'React', 'Svelte']);
     expect(autocomplete.collectionProps.value.role).toBe('listbox');
     expect(autocomplete.collectionProps.value['aria-label']).toBe('Suggestions');
+    expect(autocomplete.inputProps.value['aria-controls']).toBe(autocomplete.collectionProps.value.id);
+    expect(autocomplete.inputProps.value['aria-activedescendant']).toBe(`${autocomplete.collectionProps.value.id}-option-Vue`);
+    expect(autocomplete.collectionProps.value.id).toMatch(/^vue-autocomplete-\d+-listbox$/);
 
     let composedAutocomplete = useAutocomplete({
       'aria-label': 'Search suggestions',
@@ -423,6 +426,8 @@ describe('Vue migration composition components', () => {
     expect(composedIds).toContain('external-suggestions-label');
     expect(composedIds).toContain('suggestions-listbox');
     expect(composedAutocomplete.collectionProps.value['aria-label']).toBe('Search suggestions');
+    expect(composedAutocomplete.inputProps.value['aria-controls']).toBe('suggestions-listbox');
+    expect(composedAutocomplete.inputProps.value['aria-activedescendant']).toBe('suggestions-listbox-option-Vue');
   });
 
   it('submits and clears search autocomplete state', () => {
