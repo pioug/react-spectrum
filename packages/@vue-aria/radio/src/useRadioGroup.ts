@@ -1,5 +1,6 @@
 import {computed, type ComputedRef, ref, type Ref, unref} from 'vue';
 import type {MaybeRef} from './types';
+import {useLocale} from '@vue-aria/i18n';
 
 type Orientation = 'horizontal' | 'vertical';
 
@@ -85,6 +86,7 @@ function resolveOptionalString(value: MaybeRef<string | undefined> | undefined):
 
 export function useRadioGroup(options: AriaRadioGroupOptions = {}): RadioGroupAria {
   radioGroupCounter += 1;
+  let {direction: localeDirection} = useLocale();
 
   let groupId = computed(() => resolveOptionalString(options.id) ?? `vue-radio-group-${radioGroupCounter}`);
   let groupName = computed(() => unref(options.name) ?? `${groupId.value}-name`);
@@ -199,19 +201,31 @@ export function useRadioGroup(options: AriaRadioGroupOptions = {}): RadioGroupAr
       return;
     }
 
-    let direction: 'next' | 'prev' | null = null;
-    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
-      direction = 'next';
-    } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
-      direction = 'prev';
+    let keyDirection: 'next' | 'prev' | null = null;
+    if (event.key === 'ArrowRight') {
+      if (orientation.value !== 'vertical' && localeDirection === 'rtl') {
+        keyDirection = 'prev';
+      } else {
+        keyDirection = 'next';
+      }
+    } else if (event.key === 'ArrowLeft') {
+      if (orientation.value !== 'vertical' && localeDirection === 'rtl') {
+        keyDirection = 'next';
+      } else {
+        keyDirection = 'prev';
+      }
+    } else if (event.key === 'ArrowDown') {
+      keyDirection = 'next';
+    } else if (event.key === 'ArrowUp') {
+      keyDirection = 'prev';
     }
 
-    if (direction == null) {
+    if (keyDirection == null) {
       return;
     }
 
     event.preventDefault();
-    let nextValue = getNextValue(currentTarget.value, direction);
+    let nextValue = getNextValue(currentTarget.value, keyDirection);
     if (nextValue != null) {
       setSelectedValue(nextValue);
     }

@@ -3048,6 +3048,17 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Radio-group RTL arrow-key parity (`@vue-aria/radio`)
+
+1. Closed locale-direction keyboard navigation drift:
+   - `useRadioGroup` now mirrors React arrow-key direction semantics for horizontal RTL groups (`ArrowRight` moves to previous, `ArrowLeft` moves to next).
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` radio-group assertions now verify RTL horizontal `ArrowRight` navigation selects the previous option.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria radio group selection and keyboard movement"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

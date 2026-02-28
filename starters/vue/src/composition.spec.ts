@@ -7053,6 +7053,46 @@ describe('Vue migration composition components', () => {
     radioGroup.radioGroupProps.value.onKeyDown(rightArrow);
     expect(selectedValue.value).toBe('vue');
 
+    let rtlProvider = I18nProvider({
+      locale: 'ar-EG'
+    });
+    try {
+      let rtlSelectedValue = ref<string | null>('b');
+      let rtlRadioGroup = useAriaRadioGroup({
+        orientation: 'horizontal',
+        selectedValue: rtlSelectedValue
+      });
+      let rtlRadioA = useAriaRadio({
+        children: 'A',
+        value: 'a'
+      }, rtlRadioGroup);
+      let rtlRadioB = useAriaRadio({
+        children: 'B',
+        value: 'b'
+      }, rtlRadioGroup);
+      let rtlRadioC = useAriaRadio({
+        children: 'C',
+        value: 'c'
+      }, rtlRadioGroup);
+
+      let rtlTargetInput = document.createElement('input');
+      rtlTargetInput.type = 'radio';
+      rtlTargetInput.value = 'b';
+      let rtlRightArrow = {
+        key: 'ArrowRight',
+        preventDefault: () => {},
+        composedPath: () => [rtlTargetInput]
+      } as unknown as KeyboardEvent;
+      rtlRadioGroup.radioGroupProps.value.onKeyDown(rtlRightArrow);
+      expect(rtlSelectedValue.value).toBe('a');
+
+      rtlRadioA.dispose();
+      rtlRadioB.dispose();
+      rtlRadioC.dispose();
+    } finally {
+      rtlProvider.clear();
+    }
+
     vueRadio.inputProps.value.onMouseDown();
     expect(vueRadio.isPressed.value).toBe(true);
     vueRadio.inputProps.value.onMouseUp();
