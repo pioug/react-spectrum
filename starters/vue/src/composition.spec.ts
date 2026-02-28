@@ -6472,6 +6472,16 @@ describe('Vue migration composition components', () => {
     menuTrigger.close();
     expect(openChanges).toEqual([true, false, true, false]);
 
+    let triggerButton = document.createElement('button');
+    document.body.append(triggerButton);
+    menuTrigger.menuTriggerProps.value.onClick({
+      currentTarget: triggerButton
+    } as unknown as MouseEvent);
+    expect(document.activeElement).toBe(triggerButton);
+    expect(menuTrigger.isOpen.value).toBe(true);
+    menuTrigger.close();
+    triggerButton.remove();
+
     let disabledOpen = ref(true);
     let disabledMenuTrigger = useMenuTrigger({
       isDisabled: true,

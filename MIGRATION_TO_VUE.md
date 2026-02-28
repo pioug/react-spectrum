@@ -3205,6 +3205,17 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Menu trigger click-focus parity (`@vue-aria/menu`)
+
+1. Closed trigger click-focus drift:
+   - `useMenuTrigger.menuTriggerProps.onClick` now focuses the trigger element before toggling open state, matching React menu-trigger focus behavior used for stable focus restoration on close.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` menu-trigger assertions now verify click-triggered open paths focus the trigger button element.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria menu trigger and item selection semantics"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

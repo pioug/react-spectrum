@@ -22,7 +22,7 @@ export interface MenuTriggerAria {
     'aria-haspopup': 'menu',
     disabled?: true,
     id: string,
-    onClick: () => void,
+    onClick: (event?: MouseEvent) => void,
     onKeyDown: (event: KeyboardEvent) => void
   }>,
   open: () => void,
@@ -95,7 +95,12 @@ export function useMenuTrigger(props: AriaMenuTriggerProps = {}): MenuTriggerAri
       'aria-haspopup': 'menu' as const,
       'aria-expanded': isOpen.value,
       disabled: unref(props.isDisabled) ? true : undefined,
-      onClick: toggle,
+      onClick: (event?: MouseEvent) => {
+        if (event?.currentTarget instanceof HTMLElement) {
+          event.currentTarget.focus();
+        }
+        toggle();
+      },
       onKeyDown
     })),
     open,
