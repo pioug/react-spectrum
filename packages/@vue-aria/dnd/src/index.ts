@@ -672,6 +672,7 @@ export function useDroppableCollection(
   });
   let isDropTarget = computed(() => readDropTarget(stateRecord) != null);
   let lastDragPoint: {x: number, y: number} | null = null;
+  let isDraggingOverCollection = false;
 
   let onDragEnter = (input?: unknown): boolean => {
     let items = normalizeDropItems(input);
@@ -679,6 +680,11 @@ export function useDroppableCollection(
       return false;
     }
 
+    if (isDraggingOverCollection) {
+      return true;
+    }
+
+    isDraggingOverCollection = true;
     let point = readPoint(input, ref);
     lastDragPoint = point;
     dropCollectionRef = ref;
@@ -728,6 +734,7 @@ export function useDroppableCollection(
   };
 
   let onDragLeave = (input?: unknown): void => {
+    isDraggingOverCollection = false;
     let target = readDropTarget(stateRecord);
     if (!target) {
       dropCollectionRef = null;
