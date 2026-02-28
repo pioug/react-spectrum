@@ -2268,13 +2268,23 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    expect(wrapper.get('[data-testid="searchicon"]').text()).toBe('🔎');
-    expect(wrapper.get('input[type="search"]').attributes('list')).toContain('-list');
-    await wrapper.get('input[type="search"]').trigger('focus');
+    let icon = wrapper.get('[data-testid="searchicon"]');
+    expect(icon.element.tagName).toBe('svg');
+    expect(icon.classes()).toContain('spectrum-Textfield-icon');
+    expect(icon.classes()).toContain('spectrum-Icon--sizeS');
+    let input = wrapper.get('input[type="text"]');
+    expect(input.attributes('list')).toBeUndefined();
+    expect(input.attributes('role')).toBe('combobox');
+    expect(input.attributes('aria-autocomplete')).toBe('list');
+    expect(input.attributes('autocomplete')).toBe('off');
+    expect(input.attributes('autocorrect')).toBe('off');
+    expect(input.attributes('spellcheck')).toBe('false');
+
+    await input.trigger('focus');
     expect(wrapper.find('.spectrum-InputGroup').classes()).not.toContain('focus-ring');
     expect(wrapper.emitted('openChange')?.[0]).toEqual([true]);
 
-    let autocompleteInput = wrapper.get('input[type="search"]').element as HTMLInputElement;
+    let autocompleteInput = input.element as HTMLInputElement;
     let originalMatches = autocompleteInput.matches.bind(autocompleteInput);
     let matchesSpy = vi.spyOn(autocompleteInput, 'matches').mockImplementation((selector: string) => {
       if (selector === ':focus-visible') {
@@ -2283,21 +2293,21 @@ describe('Vue migration primitives', () => {
       return originalMatches(selector);
     });
 
-    await wrapper.get('input[type="search"]').trigger('focus');
+    await input.trigger('focus');
     expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('focus-ring');
     matchesSpy.mockRestore();
-    await wrapper.get('input[type="search"]').trigger('blur');
+    await input.trigger('blur');
     expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
 
-    await wrapper.get('input[type="search"]').setValue('Mechanical');
+    await input.setValue('Mechanical');
     expect(wrapper.emitted('inputChange')?.some((call) => call[0] === 'Mechanical')).toBe(true);
     expect(wrapper.emitted('selectionChange')?.at(-1)).toEqual(['Mechanical']);
 
     await wrapper.setProps({modelValue: 'Mechanical'});
-    await wrapper.get('input[type="search"]').trigger('keydown', {key: 'Enter'});
+    await input.trigger('keydown', {key: 'Enter'});
     expect(wrapper.emitted('submit')?.at(-1)).toEqual(['Mechanical', 'Mechanical']);
 
-    await wrapper.get('button.vs-combobox__clear').trigger('click');
+    await wrapper.get('div.spectrum-ClearButton[role="button"]').trigger('click');
     expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual(['']);
     expect(wrapper.emitted('inputChange')?.at(-1)).toEqual(['']);
     expect(wrapper.emitted('selectionChange')?.at(-1)).toEqual([null]);
@@ -2313,6 +2323,7 @@ describe('Vue migration primitives', () => {
     });
 
     expect(noIcon.find('[data-testid="searchicon"]').exists()).toBe(false);
+    expect(noIcon.get('input[type="text"]').classes()).not.toContain('spectrum-Textfield-inputIcon');
   });
 
   it('maps search autocomplete aria label and labelledby precedence to react parity', () => {
@@ -2327,7 +2338,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let labelledByInput = labelledByWrapper.get('input[type="search"]');
+    let labelledByInput = labelledByWrapper.get('input[type="text"]');
     expect(labelledByInput.attributes('aria-labelledby')).toBe('external-search-autocomplete-label');
     expect(labelledByInput.attributes('aria-label')).toBeUndefined();
     expect(labelledByWrapper.attributes('aria-labelledby')).toBeUndefined();
@@ -2343,8 +2354,8 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let visibleLabel = visibleLabelWrapper.get('.vs-combobox__label');
-    let visibleLabelInput = visibleLabelWrapper.get('input[type="search"]');
+    let visibleLabel = visibleLabelWrapper.get('label.spectrum-FieldLabel');
+    let visibleLabelInput = visibleLabelWrapper.get('input[type="text"]');
     expect(visibleLabelInput.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
     expect(visibleLabelInput.attributes('aria-labelledby')).toContain('external-search-autocomplete-label');
     expect(visibleLabelInput.attributes('aria-label')).toBeUndefined();
@@ -2360,7 +2371,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let ariaLabelInput = ariaLabelWrapper.get('input[type="search"]');
+    let ariaLabelInput = ariaLabelWrapper.get('input[type="text"]');
     expect(ariaLabelInput.attributes('aria-label')).toBe('Search Autocomplete');
     expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
     expect(ariaLabelWrapper.attributes('aria-label')).toBeUndefined();

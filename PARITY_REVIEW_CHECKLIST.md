@@ -23,9 +23,10 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - [x] Story: ActionGroup.stories.ts
   - [x] Story: Toolbar.stories.ts
   - Evidence: React/Vue story-id parity is zero for `actiongroup--*` and `toolbar--*` (React index `dist/9ba628661b71010349fd434fe6a68bd0d78e2a15/storybook/index.json` vs Vue index `starters/vue/dist/storybook/index.json`); overflow story behavior now matches React by removing Vue-only collapse overrides in `ActionGroup.stories.ts`; overflow measurement DOM/style parity is aligned by rendering a hidden presentation `div` and enforcing absolute positioning via `.spectrum-ActionButton.vs-spectrum-action-group__overflow-measure`; targeted ActionGroup/Toolbar parity tests pass and full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
-- [ ] 1.04 `@vue-spectrum/autocomplete`
+- [x] 1.04 `@vue-spectrum/autocomplete`
   - Components: SearchAutocomplete
-  - [ ] Story: SearchAutocomplete.stories.ts
+  - [x] Story: SearchAutocomplete.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `searchautocomplete--*` (`react=10`, `vue=10`, diff `0/0` from React `dist/9ba628661b71010349fd434fe6a68bd0d78e2a15/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`); Vue SearchAutocomplete internals were aligned to React structure/contracts by replacing emoji placeholder icons with Spectrum SVG icon paths/classes (`Magnifier`, `Filter`, clear/alert icons), switching to React-style text combobox ARIA/input attributes (`type="text"`, `role="combobox"`, `aria-autocomplete="list"`, `autocomplete/autocorrect/spellcheck` wiring), removing datalist-only wiring, and matching wrapper class hierarchy (`spectrum-InputGroup` + `spectrum-Field-field`, nested `spectrum-Textfield-wrapper` + `spectrum-Textfield`); story parity was tightened by removing Vue-only fixed-width wrappers and by matching React custom submit/async-label behavior in `SearchAutocomplete.stories.ts`; regression expectations were updated in `starters/vue/src/components.spec.ts`, `starters/vue/src/storybook-parity.spec.ts`, and `starters/vue/src/composition.spec.ts`; validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`) with manual React/Vue side-by-side screenshot evidence captured under `.tmp/autocomplete-parity/`.
 - [ ] 1.05 `@vue-spectrum/avatar`
   - Components: Avatar
   - [ ] Story: Avatar.stories.ts

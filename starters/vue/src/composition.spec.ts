@@ -17038,7 +17038,9 @@ describe('Vue migration composition components', () => {
     await wrapper.get('input').setValue('Rust');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Rust']);
     expect(wrapper.emitted('change')?.[0]).toEqual(['Rust']);
-    expect(wrapper.findAll('datalist option')).toHaveLength(3);
+    expect(wrapper.get('input').attributes('role')).toBe('combobox');
+    expect(wrapper.get('input').attributes('aria-autocomplete')).toBe('list');
+    expect(wrapper.find('datalist').exists()).toBe(false);
   });
 
   it('emits action and clear selection events from action bar controls', async () => {

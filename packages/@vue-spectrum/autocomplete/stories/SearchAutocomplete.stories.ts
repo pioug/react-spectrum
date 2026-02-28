@@ -9,8 +9,7 @@ type SearchItem = {
   name: string
 };
 type RenderOptions = {
-  options?: string[],
-  showResult?: boolean
+  options?: string[]
 };
 
 let items: SearchItem[] = [
@@ -181,33 +180,21 @@ type Story = StoryObj<typeof meta>;
 
 function renderStory(args: StoryArgs, renderOptions: RenderOptions = {}) {
   let {
-    options = BASE_OPTIONS,
-    showResult = false
+    options = BASE_OPTIONS
   } = renderOptions;
   return {
     components: {SearchAutocomplete},
     setup() {
       let modelValue = ref('');
-      let submittedValue = ref('');
-      let submit = () => {
-        submittedValue.value = modelValue.value;
-      };
 
       return {
         args,
         modelValue,
-        options,
-        showResult,
-        submit,
-        submittedValue
+        options
       };
     },
     template: `
-      <div style="display: grid; gap: 8px; width: 320px;">
-        <SearchAutocomplete v-bind="args" v-model="modelValue" :options="options" />
-        <button v-if="showResult" type="button" @click="submit">Submit search</button>
-        <div v-if="showResult">Search results for: {{submittedValue}}</div>
-      </div>
+      <SearchAutocomplete v-bind="args" v-model="modelValue" :options="options" />
     `
   };
 }
@@ -257,7 +244,42 @@ export const noVisibleLabel: Story = {
 };
 
 export const customOnSubmit: Story = {
-  render: (args) => renderStory(args, {showResult: true}),
+  render: (args) => ({
+    components: {SearchAutocomplete},
+    setup() {
+      let modelValue = ref('');
+      let options = [...BASE_OPTIONS];
+      let searchTerm = ref('');
+      let onSubmit = (value: string, key: string | null) => {
+        if (value) {
+          searchTerm.value = value;
+        } else if (key) {
+          searchTerm.value = key;
+        } else {
+          searchTerm.value = '';
+        }
+
+        let onSubmitArg = args.onSubmit;
+        if (typeof onSubmitArg === 'function') {
+          onSubmitArg(value, key);
+        }
+      };
+
+      return {
+        args,
+        modelValue,
+        onSubmit,
+        options,
+        searchTerm
+      };
+    },
+    template: `
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <SearchAutocomplete v-bind="args" v-model="modelValue" :options="options" @submit="onSubmit" />
+        <div>Search results for: {{searchTerm}}</div>
+      </div>
+    `
+  }),
   name: 'custom onSubmit'
 };
 
@@ -273,7 +295,7 @@ export const iconNull: Story = {
 
 export const WithAvatars: Story = {
   render: (args) => renderStory(args, {
-    options: ['👤 User 1', '👤 User 2', '👤 User 3', '👤 User 4']
+    options: ['User 1', 'User 2', 'User 3', 'User 4']
   }),
   args: {
     label: 'Search users'
@@ -303,14 +325,12 @@ export const AsyncList: Story = {
       };
     },
     template: `
-      <div style="display: grid; gap: 8px; width: 320px;">
-        <div v-if="loading">Loading options...</div>
-        <SearchAutocomplete
-          v-bind="args"
-          v-model="modelValue"
-          :options="options"
-          :placeholder="loading ? 'Loading...' : args.placeholder" />
-      </div>
+      <SearchAutocomplete
+        v-bind="args"
+        v-model="modelValue"
+        label="Star Wars Character Lookup"
+        :options="options"
+        :placeholder="loading ? 'Loading...' : args.placeholder" />
     `
   })
 };

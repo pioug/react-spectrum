@@ -1509,14 +1509,18 @@ describe('Vue storybook helper parity', () => {
       let defaultStory = SearchAutocompleteDefault.render?.({label: 'Search with Autocomplete'}) as ReturnType<Exclude<typeof SearchAutocompleteDefault.render, undefined>>;
       let defaultWrapper = mount(defaultStory);
       wrappers.push(defaultWrapper);
-      let defaultInput = defaultWrapper.get('input[type="search"]');
+      let defaultInput = defaultWrapper.get('input[type="text"]');
       expect(defaultInput.attributes('aria-labelledby')).toBeTruthy();
       expect(defaultInput.attributes('aria-label')).toBeUndefined();
+      expect(defaultInput.attributes('role')).toBe('combobox');
+      expect(defaultInput.attributes('aria-autocomplete')).toBe('list');
 
       let iconFilterStory = SearchAutocompleteIconFilter.render?.({}) as ReturnType<Exclude<typeof SearchAutocompleteIconFilter.render, undefined>>;
       let iconFilterWrapper = mount(iconFilterStory);
       wrappers.push(iconFilterWrapper);
-      expect(iconFilterWrapper.get('[data-testid="searchicon"]').text()).toBe('🔎');
+      let filterIcon = iconFilterWrapper.get('[data-testid="searchicon"]');
+      expect(filterIcon.element.tagName).toBe('svg');
+      expect(filterIcon.classes()).toContain('spectrum-Icon--sizeS');
 
       let iconNullStory = SearchAutocompleteIconNull.render?.({}) as ReturnType<Exclude<typeof SearchAutocompleteIconNull.render, undefined>>;
       let iconNullWrapper = mount(iconNullStory);
@@ -1527,12 +1531,13 @@ describe('Vue storybook helper parity', () => {
       let withAvatarsWrapper = mount(withAvatarsStory);
       wrappers.push(withAvatarsWrapper);
       expect(withAvatarsWrapper.text()).not.toContain('With avatars');
-      expect(withAvatarsWrapper.findAll('datalist option').map((option) => option.attributes('value'))).toContain('👤 User 1');
+      expect(withAvatarsWrapper.find('input[type="text"]').exists()).toBe(true);
+      expect(withAvatarsWrapper.find('datalist').exists()).toBe(false);
 
       let noVisibleLabelStory = SearchAutocompleteNoVisibleLabel.render?.({}) as ReturnType<Exclude<typeof SearchAutocompleteNoVisibleLabel.render, undefined>>;
       let noVisibleLabelWrapper = mount(noVisibleLabelStory);
       wrappers.push(noVisibleLabelWrapper);
-      let noVisibleLabelInput = noVisibleLabelWrapper.get('input[type="search"]');
+      let noVisibleLabelInput = noVisibleLabelWrapper.get('input[type="text"]');
       expect(noVisibleLabelInput.attributes('aria-label')).toBe('Search Autocomplete');
       expect(noVisibleLabelInput.attributes('aria-labelledby')).toBeUndefined();
     } finally {

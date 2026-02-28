@@ -1,3 +1,5 @@
+import '@adobe/spectrum-css-temp/components/button/vars.css';
+import '@adobe/spectrum-css-temp/components/fieldlabel/vars.css';
 import '@adobe/spectrum-css-temp/components/inputgroup/vars.css';
 import '@adobe/spectrum-css-temp/components/search/vars.css';
 import '@adobe/spectrum-css-temp/components/textfield/vars.css';
@@ -5,6 +7,8 @@ import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, type PropType, ref, watch} from 'vue';
 import './searchautocomplete.css';
 import {getEventTarget} from '@vue-aria/utils';
+const buttonStyles: {[key: string]: string} = {};
+const fieldStyles: {[key: string]: string} = {};
 const inputGroupStyles: {[key: string]: string} = {};
 const searchStyles: {[key: string]: string} = {};
 const textfieldStyles: {[key: string]: string} = {};
@@ -13,6 +17,28 @@ const textfieldStyles: {[key: string]: string} = {};
 type ValidationState = 'invalid' | 'valid';
 type PickerOptionInput = string;
 const SEARCH_AUTOCOMPLETE_PLACEHOLDER_WARNING = 'Placeholders are deprecated due to accessibility issues. Please use help text instead.';
+const MAGNIFIER_PATH = 'M15.77 14.71l-4.534-4.535a6.014 6.014 0 1 0-1.06 1.06l4.533 4.535a.75.75 0 1 0 1.061-1.06zM6.5 11A4.5 4.5 0 1 1 11 6.5 4.505 4.505 0 0 1 6.5 11z';
+const FILTER_PATH = 'M30.946,2H3.054a1,1,0,0,0-.787,1.617L14,18.589V33.9a.992.992,0,0,0,1.68.824l3.981-4.153A1.219,1.219,0,0,0,20,29.728V18.589L31.733,3.617A1,1,0,0,0,30.946,2Z';
+const CLEAR_PATH = 'M7.317 6.433L4.884 4l2.433-2.433a.625.625 0 1 0-.884-.884L4 3.116 1.567.683a.625.625 0 1 0-.884.884L3.116 4 .683 6.433a.625.625 0 1 0 .884.884L4 4.884l2.433 2.433a.625.625 0 0 0 .884-.884z';
+const ALERT_PATH = 'M8.564 1.289L.2 16.256A.5.5 0 0 0 .636 17h16.728a.5.5 0 0 0 .436-.744L9.436 1.289a.5.5 0 0 0-.872 0zM10 14.75a.25.25 0 0 1-.25.25h-1.5a.25.25 0 0 1-.25-.25v-1.5a.25.25 0 0 1 .25-.25h1.5a.25.25 0 0 1 .25.25zm0-3a.25.25 0 0 1-.25.25h-1.5a.25.25 0 0 1-.25-.25v-6a.25.25 0 0 1 .25-.25h1.5a.25.25 0 0 1 .25.25z';
+
+function renderIconPath(
+  className: string,
+  path: string,
+  attrs: Record<string, unknown> = {},
+  viewBox?: string
+) {
+  return h('svg', {
+    class: className,
+    focusable: 'false',
+    'aria-hidden': 'true',
+    role: 'img',
+    viewBox,
+    ...attrs
+  }, [
+    h('path', {d: path})
+  ]);
+}
 
 let autocompleteId = 0;
 
@@ -53,7 +79,7 @@ export const SearchAutocomplete = defineComponent({
       default: false
     },
     icon: {
-      type: [Object, String] as PropType<string | null | undefined>,
+      type: null as unknown as PropType<unknown>,
       default: undefined
     },
     label: {
@@ -90,6 +116,7 @@ export const SearchAutocomplete = defineComponent({
   },
   setup(props, {attrs, emit}) {
     let generatedId = `vs-search-autocomplete-${++autocompleteId}`;
+    let inputRef = ref<HTMLInputElement | null>(null);
     let isHovered = ref(false);
     let isFocused = ref(false);
     let isFocusVisible = ref(false);
@@ -102,7 +129,16 @@ export const SearchAutocomplete = defineComponent({
     let isDisabled = computed(() => props.isDisabled ?? props.disabled);
     let isInvalid = computed(() => (props.isInvalid || props.invalid || props.validationState === 'invalid') && !isDisabled.value);
     let isValid = computed(() => props.validationState === 'valid' && !isDisabled.value);
-    let isPlaceholder = computed(() => props.modelValue === '');
+    let hasInputIcon = computed(() => props.icon !== null);
+    let filteredOptions = computed(() => {
+      let query = props.modelValue.trim().toLocaleLowerCase();
+      if (!query) {
+        return props.options;
+      }
+
+      return props.options.filter((option) => option.toLocaleLowerCase().includes(query));
+    });
+    let isOpen = computed(() => isFocused.value && filteredOptions.value.length > 0 && !isDisabled.value);
 
     watch(() => props.placeholder, (placeholder) => {
       if (placeholder && !hasWarnedDeprecatedPlaceholder.value && process.env.NODE_ENV !== 'production') {
@@ -114,11 +150,15 @@ export const SearchAutocomplete = defineComponent({
     let controlClassName = computed(() => classNames(
       inputGroupStyles,
       'spectrum-InputGroup',
+      'spectrum-FocusRing',
+      'spectrum-FocusRing-ring',
+      fieldStyles,
+      'spectrum-Field-field',
       {
         'spectrum-InputGroup--quiet': props.isQuiet,
         'is-disabled': isDisabled.value,
         'spectrum-InputGroup--invalid': isInvalid.value,
-        'is-hovered': isHovered.value,
+        'is-hovered': isHovered.value && !isDisabled.value,
         'is-focused': isFocused.value,
         'focus-ring': isFocusVisible.value
       },
@@ -126,6 +166,9 @@ export const SearchAutocomplete = defineComponent({
     ));
 
     let searchFieldClassName = computed(() => classNames(
+      fieldStyles,
+      'spectrum-Field',
+      'spectrum-Field--positionTop',
       searchStyles,
       'spectrum-Search',
       'spectrum-Search--loadable',
@@ -136,22 +179,72 @@ export const SearchAutocomplete = defineComponent({
         'spectrum-Search--invalid': isInvalid.value,
         'spectrum-Search--valid': isValid.value
       },
+      textfieldStyles,
+      'spectrum-Textfield-wrapper',
+      {
+        'spectrum-Textfield-wrapper--quiet': props.isQuiet
+      },
       classNames(inputGroupStyles, 'spectrum-InputGroup-field')
+    ));
+
+    let textfieldClassName = computed(() => classNames(
+      textfieldStyles,
+      'spectrum-Textfield',
+      'spectrum-FocusRing',
+      'spectrum-FocusRing-ring',
+      fieldStyles,
+      'spectrum-Field-field'
     ));
 
     let inputClassName = computed(() => classNames(
       searchStyles,
       'spectrum-Search-input',
+      textfieldStyles,
+      'spectrum-Textfield-input',
+      'i18nFontFamily',
       {
-        'is-placeholder': isPlaceholder.value,
-        'is-hovered': isHovered.value
+        'spectrum-Textfield-inputIcon': hasInputIcon.value,
+        'is-hovered': isHovered.value && !isDisabled.value
       }
+    ));
+
+    let rootClassName = computed(() => classNames(
+      fieldStyles,
+      'spectrum-Field',
+      'spectrum-Field--positionTop'
+    ));
+
+    let labelClassName = computed(() => classNames(
+      fieldStyles,
+      'spectrum-FieldLabel'
+    ));
+
+    let iconClassName = computed(() => classNames(
+      textfieldStyles,
+      'spectrum-Icon',
+      'spectrum-Textfield-icon'
+    ));
+
+    let clearButtonClassName = computed(() => classNames(
+      buttonStyles,
+      searchStyles,
+      'spectrum-ClearButton',
+      'spectrum-BaseButton',
+      'i18nFontFamily',
+      'spectrum-FocusRing',
+      'spectrum-FocusRing-ring'
     ));
 
     let rootAttrs = computed(() => {
       let next: Record<string, unknown> = {};
       for (let [key, value] of Object.entries(attrs)) {
-        if (key === 'aria-label' || key === 'aria-labelledby' || key === 'autofocus') {
+        if (
+          key === 'aria-label'
+          || key === 'aria-labelledby'
+          || key === 'autofocus'
+          || key === 'class'
+          || key === 'style'
+        ) {
           continue;
         }
 
@@ -184,7 +277,7 @@ export const SearchAutocomplete = defineComponent({
       return undefined;
     });
 
-    let iconText = computed(() => {
+    let iconNode = computed(() => {
       if (props.icon === null) {
         return null;
       }
@@ -192,17 +285,42 @@ export const SearchAutocomplete = defineComponent({
       if (typeof props.icon === 'string') {
         let normalized = props.icon.trim().toLowerCase();
         if (normalized === '' || normalized === 'search') {
-          return '\ud83d\udd0d';
+          return renderIconPath(
+            `${iconClassName.value} spectrum-UIIcon-Magnifier`,
+            MAGNIFIER_PATH,
+            {'data-testid': 'searchicon'}
+          );
         }
 
         if (normalized === 'filter') {
-          return '\ud83d\udd0e';
+          return renderIconPath(
+            `${iconClassName.value} spectrum-Icon--sizeS`,
+            FILTER_PATH,
+            {'data-testid': 'searchicon', 'fill-rule': 'evenodd'},
+            '0 0 36 36'
+          );
         }
 
-        return props.icon;
+        return h('span', {
+          class: iconClassName.value,
+          'data-testid': 'searchicon',
+          'aria-hidden': 'true'
+        }, props.icon);
       }
 
-      return '\ud83d\udd0d';
+      if (props.icon !== undefined) {
+        return h('span', {
+          class: iconClassName.value,
+          'data-testid': 'searchicon',
+          'aria-hidden': 'true'
+        }, [props.icon as never]);
+      }
+
+      return renderIconPath(
+        `${iconClassName.value} spectrum-UIIcon-Magnifier`,
+        MAGNIFIER_PATH,
+        {'data-testid': 'searchicon'}
+      );
     });
 
     let emitValue = (value: string) => {
@@ -215,12 +333,12 @@ export const SearchAutocomplete = defineComponent({
       return props.options.includes(value) ? value : null;
     };
 
-    return () => h('label', {
+    return () => h('div', {
       ...rootAttrs.value,
-      class: ['vs-combobox', attrs.class],
-      'data-vac': ''
+      class: [rootClassName.value, attrs.class],
+      style: attrs.style
     }, [
-      props.label ? h('span', {id: labelId.value, class: 'vs-combobox__label'}, props.label) : null,
+      props.label ? h('label', {id: labelId.value, class: labelClassName.value, for: inputId.value}, props.label) : null,
       h('div', {
         class: controlClassName.value,
         onMouseenter: () => {
@@ -237,76 +355,91 @@ export const SearchAutocomplete = defineComponent({
         h('div', {
           class: searchFieldClassName.value
         }, [
-          iconText.value != null
-            ? h('span', {
-              class: classNames(searchStyles, 'spectrum-Icon'),
-              'data-testid': 'searchicon',
-              'aria-hidden': 'true'
-            }, iconText.value)
-            : null,
-          h('input', {
-            id: inputId.value,
-            class: ['vs-combobox__input', inputClassName.value],
-            type: 'search',
-            list: listId.value,
-            value: props.modelValue,
-            placeholder: props.placeholder || undefined,
-            disabled: isDisabled.value,
-            readonly: props.isReadOnly || undefined,
-            'aria-invalid': isInvalid.value ? 'true' : undefined,
-            'aria-label': ariaLabel.value,
-            'aria-labelledby': ariaLabelledBy.value,
-            'aria-haspopup': 'listbox',
-            autofocus: props.autoFocus || attrs.autofocus || undefined,
-            onInput: (event: Event) => {
-              let target = event.currentTarget as HTMLInputElement | null;
-              emitValue(target?.value ?? '');
-            },
-            onChange: (event: Event) => {
-              let target = event.currentTarget as HTMLInputElement | null;
-              emit('selectionChange', resolveSelectionKey(target?.value ?? ''));
-            },
-            onFocus: (event: FocusEvent) => {
-              isFocused.value = true;
-              let target = getEventTarget(event);
-              isFocusVisible.value = target instanceof HTMLElement ? target.matches(':focus-visible') : false;
-              emit('openChange', true);
-              emit('focus', event);
-            },
-            onBlur: (event: FocusEvent) => {
-              isFocused.value = false;
-              isFocusVisible.value = false;
-              emit('openChange', false);
-              emit('blur', event);
-            },
-            onKeydown: (event: KeyboardEvent) => {
-              if (event.key === 'Enter') {
-                emit('submit', props.modelValue, resolveSelectionKey(props.modelValue));
+          h('div', {class: textfieldClassName.value}, [
+            iconNode.value,
+            h('input', {
+              ref: inputRef,
+              id: inputId.value,
+              class: inputClassName.value,
+              type: 'text',
+              value: props.modelValue,
+              placeholder: props.placeholder || undefined,
+              disabled: isDisabled.value,
+              readonly: props.isReadOnly || undefined,
+              autocomplete: 'off',
+              autocorrect: 'off',
+              spellcheck: 'false',
+              role: 'combobox',
+              'aria-autocomplete': 'list',
+              'aria-expanded': isOpen.value ? 'true' : 'false',
+              'aria-controls': isOpen.value ? listId.value : undefined,
+              'aria-invalid': isInvalid.value ? 'true' : undefined,
+              'aria-label': ariaLabel.value,
+              'aria-labelledby': ariaLabelledBy.value,
+              autofocus: props.autoFocus || attrs.autofocus || undefined,
+              onInput: (event: Event) => {
+                let target = event.currentTarget as HTMLInputElement | null;
+                emitValue(target?.value ?? '');
+              },
+              onChange: (event: Event) => {
+                let target = event.currentTarget as HTMLInputElement | null;
+                emit('selectionChange', resolveSelectionKey(target?.value ?? ''));
+              },
+              onFocus: (event: FocusEvent) => {
+                isFocused.value = true;
+                let target = getEventTarget(event);
+                isFocusVisible.value = target instanceof HTMLElement ? target.matches(':focus-visible') : false;
+                emit('openChange', filteredOptions.value.length > 0);
+                emit('focus', event);
+              },
+              onBlur: (event: FocusEvent) => {
+                isFocused.value = false;
+                isFocusVisible.value = false;
+                emit('openChange', false);
+                emit('blur', event);
+              },
+              onKeydown: (event: KeyboardEvent) => {
+                if (event.key === 'Enter') {
+                  let target = event.currentTarget as HTMLInputElement | null;
+                  let currentValue = target?.value ?? props.modelValue;
+                  emit('submit', currentValue, resolveSelectionKey(currentValue));
+                }
               }
-            }
-          }),
-          props.modelValue !== '' && !isDisabled.value && !props.isReadOnly
-            ? h('button', {
-              class: [classNames(searchStyles, 'spectrum-ClearButton'), 'vs-combobox__clear'],
-              type: 'button',
-              'aria-label': 'Clear search',
-              onClick: () => {
-                emit('update:modelValue', '');
-                emit('change', '');
-                emit('inputChange', '');
-                emit('selectionChange', null);
-                emit('clear');
-              }
-            }, '\u00d7')
-            : null,
-          isInvalid.value
-            ? h('span', {
-              class: classNames(textfieldStyles, 'spectrum-Textfield-validationIcon'),
-              'aria-hidden': 'true'
-            }, '!')
-            : null
-        ]),
-        h('datalist', {id: listId.value}, props.options.map((option) => h('option', {value: option}, option)))
+            }),
+            props.modelValue !== '' && !isDisabled.value && !props.isReadOnly
+              ? h('div', {
+                class: clearButtonClassName.value,
+                role: 'button',
+                'data-react-aria-pressable': 'true',
+                'aria-label': 'Clear search',
+                'aria-hidden': 'true',
+                onMousedown: (event: MouseEvent) => {
+                  event.preventDefault();
+                  inputRef.value?.focus();
+                },
+                onClick: () => {
+                  emit('update:modelValue', '');
+                  emit('change', '');
+                  emit('inputChange', '');
+                  emit('selectionChange', null);
+                  emit('clear');
+                  inputRef.value?.focus();
+                }
+              }, [
+                renderIconPath(
+                  classNames(buttonStyles, 'spectrum-Icon', 'spectrum-UIIcon-CrossSmall', 'spectrum-Icon'),
+                  CLEAR_PATH
+                )
+              ])
+              : null,
+            isInvalid.value
+              ? renderIconPath(
+                classNames(textfieldStyles, 'spectrum-Icon', 'spectrum-UIIcon-AlertMedium', 'spectrum-Textfield-validationIcon'),
+                ALERT_PATH
+              )
+              : null
+          ])
+        ])
       ])
     ]);
   }
