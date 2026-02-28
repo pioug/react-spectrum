@@ -26,7 +26,7 @@ import {
 } from '@vue-aria/datepicker';
 import {useDialog as useAriaDialog} from '@vue-aria/dialog';
 import {useDisclosure as useAriaDisclosure} from '@vue-aria/disclosure';
-import {useDrag, useDrop} from '@vue-aria/dnd';
+import {isVirtualDragging, useDrag, useDrop} from '@vue-aria/dnd';
 import {EXAMPLE_THEME_CLASS, useExampleTheme} from '@vue-aria/example-theme';
 import {useFocusRing, useHasTabbableChild} from '@vue-aria/focus';
 import {useFormValidation} from '@vue-aria/form';
@@ -3978,6 +3978,20 @@ describe('Vue migration composition components', () => {
     expect(dragEvents).toEqual(['start', 'move:40,88', 'end:move']);
     expect(warnSpy).toHaveBeenCalledWith('Drags initiated from the React Aria useDrag hook may only be dropped on a target created with useDrop. This ensures that a keyboard and screen reader accessible alternative is available.');
     warnSpy.mockRestore();
+  });
+
+  it('tracks vue-aria virtual dragging session state while drag is active', () => {
+    let drag = useDrag({
+      dragItems: [{id: 'ticket-virtual', type: 'ticket', value: {id: 7}}]
+    });
+
+    expect(isVirtualDragging()).toBe(false);
+
+    drag.startDrag();
+    expect(isVirtualDragging()).toBe(true);
+
+    drag.endDrag('cancel');
+    expect(isVirtualDragging()).toBe(false);
   });
 
   it('does not warn when vue-aria drags end via a useDrop target', () => {

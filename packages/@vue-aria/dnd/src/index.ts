@@ -2,6 +2,7 @@ import {type AriaDragOptions, type DragAria, useDrag as useAriaDrag} from './use
 import {type AriaDropOptions, type DropAria, useDrop as useAriaDrop} from './useDrop';
 import {defineComponent} from 'vue';
 import {type DragItem, type DropOperation} from './types';
+import {isVirtualDraggingSessionActive} from './dragSession';
 
 export type {AriaDragOptions, DragAria, AriaDropOptions, DropAria};
 export type {DragItem, DropOperation} from './types';
@@ -99,7 +100,7 @@ export function isTextDropItem(dropItem: DropItem): dropItem is TextDropItem {
 }
 
 export function isVirtualDragging(): boolean {
-  return false;
+  return isVirtualDraggingSessionActive();
 }
 
 export function useClipboard(_props: ClipboardProps): ClipboardResult {

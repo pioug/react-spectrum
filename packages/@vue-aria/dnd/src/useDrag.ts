@@ -1,5 +1,5 @@
 import {computed, type ComputedRef, ref, type Ref, unref} from 'vue';
-import {beginDragSession, isDragSessionHandled} from './dragSession';
+import {beginDragSession, endDragSession, isDragSessionHandled} from './dragSession';
 import {type DragItem, type DropOperation} from './types';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
@@ -67,6 +67,10 @@ export function useDrag(options: AriaDragOptions): DragAria {
     let isDropHandledByUseDrop = activeSessionId.value != null && isDragSessionHandled(activeSessionId.value);
     if (operation !== 'cancel' && !isDropHandledByUseDrop && process.env.NODE_ENV !== 'production') {
       console.warn(DRAG_TARGET_WARNING);
+    }
+
+    if (activeSessionId.value != null) {
+      endDragSession(activeSessionId.value);
     }
 
     isDragging.value = false;
