@@ -1,6 +1,6 @@
 import '@adobe/spectrum-css-temp/components/card/vars.css';
 import {classNames} from '@vue-spectrum/utils';
-import {Comment, computed, defineComponent, h, isVNode, Text, type PropType, ref} from 'vue';
+import {Comment, computed, defineComponent, h, isVNode, nextTick, onMounted, onUpdated, Text, type PropType, ref} from 'vue';
 import {getEventTarget} from '@vue-aria/utils';
 const styles: {[key: string]: string} = {};
 
@@ -40,6 +40,7 @@ type CardViewSelectionMode = 'multiple' | 'none' | 'single';
 type CardViewSelectionValue = number | string | Iterable<string | number>;
 type CardViewSelectedKeys = 'all' | CardViewSelectionValue;
 type CardSelectionKey = number | string;
+const CARD_FOCUSABLE_WARNING = 'Card does not support focusable elements, please contact the team regarding your use case.';
 
 let cardId = 0;
 
@@ -232,6 +233,8 @@ export const Card = defineComponent({
     let isQuiet = computed(() => props.isQuiet ?? props.quiet);
     let isDisabled = computed(() => props.isDisabled ?? props.disabled);
     let isSelected = computed(() => props.isSelected ?? props.selected);
+    let cardRef = ref<HTMLElement | null>(null);
+    let hasWarnedFocusableChildren = ref(false);
 
     let isHovered = ref(false);
     let isFocused = ref(false);
@@ -284,6 +287,28 @@ export const Card = defineComponent({
     let titleId = computed(() => hasTitle.value ? `${cardBaseId.value}-title` : undefined);
     let descriptionId = computed(() => hasContent.value ? `${cardBaseId.value}-description` : undefined);
 
+    let warnOnFocusableChildren = () => {
+      if (hasWarnedFocusableChildren.value || process.env.NODE_ENV === 'production') {
+        return;
+      }
+
+      let focusableNode = cardRef.value?.querySelector<HTMLElement>('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])');
+      if (!focusableNode) {
+        return;
+      }
+
+      console.warn(CARD_FOCUSABLE_WARNING);
+      hasWarnedFocusableChildren.value = true;
+    };
+
+    onMounted(() => {
+      nextTick().then(warnOnFocusableChildren);
+    });
+
+    onUpdated(() => {
+      nextTick().then(warnOnFocusableChildren);
+    });
+
     let className = computed(() => classNames(
       styles,
       'spectrum-Card',
@@ -305,6 +330,7 @@ export const Card = defineComponent({
 
     return () => h('div', {
       ...attrs,
+      ref: cardRef,
       class: [className.value, attrs.class],
       role: typeof attrs.role === 'string' ? attrs.role : 'article',
       tabindex: isDisabled.value ? -1 : 0,

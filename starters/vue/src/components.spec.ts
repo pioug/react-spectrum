@@ -3403,6 +3403,22 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('press')).toHaveLength(1);
   });
 
+  it('warns when card content contains focusable elements', async () => {
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    mount(Card, {
+      props: {
+        title: 'Snapshot'
+      },
+      slots: {
+        default: () => h('button', {type: 'button'}, 'Focusable action')
+      }
+    });
+
+    await nextTick();
+    expect(warn).toHaveBeenCalledWith('Card does not support focusable elements, please contact the team regarding your use case.');
+    warn.mockRestore();
+  });
+
   it('maps card hovered/focused/selected classes and aria labels', async () => {
     let wrapper = mount(Card, {
       props: {

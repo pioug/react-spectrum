@@ -1168,6 +1168,20 @@
    - full Vue tests: `yarn test:vue` (534 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — `Card` focusable-content warning parity (`@vue-spectrum/card`)
+
+1. Aligned `Card` dev warning behavior with React:
+   - `Card` now warns when focusable descendants are rendered inside card content (`Card does not support focusable elements...`), matching React guardrails.
+2. Implemented warning checks with lifecycle-safe DOM probing:
+   - warning evaluation now runs on mount/update against rendered card DOM without triggering slot-evaluation warnings.
+3. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: warning assertion for focusable card content.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "emits press events from standalone cards|warns when card content contains focusable elements|maps card hovered/focused/selected classes and aria labels"`,
+   - targeted parity assertions: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts -t "renders card view disabled keys story with disabled-card contracts"`,
+   - full Vue tests: `yarn test:vue` (535 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
