@@ -1217,6 +1217,7 @@ export function useDroppableCollection(
     role: 'group',
     'data-drop-target': isDropTarget.value,
     'aria-disabled': isDisabled.value ? true as const : undefined,
+    onKeyDown: propsRecord.onKeyDown,
     onDragEnter,
     onDragLeave,
     onDragOver,

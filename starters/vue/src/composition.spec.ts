@@ -6169,6 +6169,28 @@ describe('Vue migration composition components', () => {
     expect(enterEvents).toEqual(['enter:6,8', 'enter:20,22']);
   });
 
+  it('forwards useDroppableCollection onKeyDown handlers', () => {
+    let keyEvents: Array<string> = [];
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item']
+    });
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      onKeyDown: (event: KeyboardEvent) => {
+        keyEvents.push(event.key);
+      }
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onKeyDown?: (event: KeyboardEvent) => void
+      }}
+    };
+
+    droppableCollection.collectionProps.value.onKeyDown?.({key: 'ArrowDown'} as KeyboardEvent);
+    droppableCollection.collectionProps.value.onKeyDown?.({key: 'Home'} as KeyboardEvent);
+
+    expect(keyEvents).toEqual(['ArrowDown', 'Home']);
+  });
+
   it('matches react focusable element detection contracts via @vue-aria/focus', () => {
     let anchor = document.createElement('a');
     expect(focusIsFocusable(anchor)).toBe(false);
