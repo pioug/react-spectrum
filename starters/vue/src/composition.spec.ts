@@ -4998,6 +4998,55 @@ describe('Vue migration composition components', () => {
     expect(dropIndicator.isHidden.value).toBe(true);
   });
 
+  it('adds root useDropIndicator accessibility labels', () => {
+    let dropState = useStatelyDroppableCollectionState();
+    let target = {type: 'root' as const};
+    dropState.setTarget(target);
+    let collectionElement = document.createElement('div');
+    collectionElement.id = 'grid-root';
+
+    let dropIndicator = useDropIndicator({target}, dropState, {
+      current: collectionElement
+    }) as {
+      dropIndicatorProps: {value: {id: string, 'aria-label': string, 'aria-labelledby'?: string}}
+    };
+
+    expect(dropIndicator.dropIndicatorProps.value.id).toMatch(/^vue-aria-drop-indicator-/);
+    expect(dropIndicator.dropIndicatorProps.value['aria-label']).toBe('Drop on');
+    expect(dropIndicator.dropIndicatorProps.value['aria-labelledby']).toBe(`${dropIndicator.dropIndicatorProps.value.id} grid-root`);
+  });
+
+  it('adds item insertion labels to useDropIndicator', () => {
+    let dropState = useStatelyDroppableCollectionState();
+    (dropState as unknown as {collection: unknown}).collection = {
+      getItem: (key: string) => {
+        if (key === 'one') {
+          return {key: 'one', prevKey: null, nextKey: 'two', textValue: 'One', type: 'item'};
+        }
+
+        if (key === 'two') {
+          return {key: 'two', prevKey: 'one', nextKey: 'three', textValue: 'Two', type: 'item'};
+        }
+
+        return {key: 'three', prevKey: 'two', nextKey: null, textValue: 'Three', type: 'item'};
+      },
+      getTextValue: (key: string) => key === 'one' ? 'One' : key === 'two' ? 'Two' : 'Three'
+    };
+    let target = {
+      type: 'item' as const,
+      key: 'two',
+      dropPosition: 'before' as const
+    };
+
+    let dropIndicator = useDropIndicator({target}, dropState, {
+      current: document.createElement('div')
+    }) as {
+      dropIndicatorProps: {value: {'aria-label': string}}
+    };
+
+    expect(dropIndicator.dropIndicatorProps.value['aria-label']).toBe('Insert between One and Two');
+  });
+
   it('focuses useDroppableItem target when virtual drag activates the drop target', async () => {
     let drag = useDrag({
       dragItems: [{id: 'item-1', type: 'item', value: {id: 1}}]

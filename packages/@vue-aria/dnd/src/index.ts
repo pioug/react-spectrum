@@ -18,6 +18,7 @@ const DEFAULT_ALLOWED_OPERATIONS: DropOperation[] = ['copy', 'move', 'link'];
 let draggingCollectionRef: RefObject<HTMLElement | null> | null = null;
 let dropCollectionRef: RefObject<HTMLElement | null> | null = null;
 let draggingKeys = new Set<DraggingKey>();
+let dropIndicatorId = 0;
 
 export type ClipboardProps = AnyRecord;
 export type ClipboardResult = {
@@ -621,9 +622,94 @@ export function useDropIndicator(
   state: DroppableCollectionState,
   ref: RefObject<HTMLElement | null>
 ): DropIndicatorAria {
+  let propsRecord = props as AnyRecord;
+  let stateRecord = state as AnyRecord;
   let droppableItem = useDroppableItem(props, state, ref) as {
     dropProps: {value: AnyRecord},
     isDropTarget: {value: boolean}
+  };
+  let id = `vue-aria-drop-indicator-${++dropIndicatorId}`;
+  let getText = (key: DraggingKey | null): string => {
+    if (key == null) {
+      return '';
+    }
+
+    let collection = stateRecord.collection as AnyRecord | undefined;
+    if (collection && typeof collection.getTextValue === 'function') {
+      let textValue = collection.getTextValue(key);
+      if (typeof textValue === 'string' && textValue.length > 0) {
+        return textValue;
+      }
+    }
+
+    if (collection && typeof collection.getItem === 'function') {
+      let item = collection.getItem(key) as AnyRecord | undefined;
+      if (item && typeof item.textValue === 'string' && item.textValue.length > 0) {
+        return item.textValue;
+      }
+    }
+
+    return String(key);
+  };
+  let labelForTarget = () => {
+    let target = propsRecord.target as AnyRecord | undefined;
+    if (!target || typeof target !== 'object') {
+      return 'Drop on';
+    }
+
+    if (target.type === 'root') {
+      return 'Drop on';
+    }
+
+    let key = target.key as DraggingKey | null;
+    if (target.dropPosition === 'on') {
+      let itemText = getText(key);
+      return itemText ? `Drop on ${itemText}` : 'Drop on';
+    }
+
+    let collection = stateRecord.collection as AnyRecord | undefined;
+    let beforeKey: DraggingKey | null = null;
+    let afterKey: DraggingKey | null = null;
+    if (target.dropPosition === 'before') {
+      let prevKey = collection && typeof collection.getItem === 'function'
+        ? (collection.getItem(key) as AnyRecord | undefined)?.prevKey as DraggingKey | null | undefined
+        : null;
+      beforeKey = prevKey ?? null;
+      afterKey = key;
+    } else {
+      beforeKey = key;
+      let nextKey = collection && typeof collection.getItem === 'function'
+        ? (collection.getItem(key) as AnyRecord | undefined)?.nextKey as DraggingKey | null | undefined
+        : null;
+      afterKey = nextKey ?? null;
+    }
+
+    if (beforeKey != null && afterKey != null) {
+      return `Insert between ${getText(beforeKey)} and ${getText(afterKey)}`;
+    }
+
+    if (beforeKey != null) {
+      return `Insert after ${getText(beforeKey)}`;
+    }
+
+    if (afterKey != null) {
+      return `Insert before ${getText(afterKey)}`;
+    }
+
+    return 'Drop on';
+  };
+  let labelledBy = () => {
+    let target = propsRecord.target as AnyRecord | undefined;
+    if (!target || target.type !== 'root') {
+      return undefined;
+    }
+
+    let collectionId = ref.current?.id;
+    if (!collectionId) {
+      return undefined;
+    }
+
+    return `${id} ${collectionId}`;
   };
   let dropIndicatorProps = computed(() => {
     let ariaHidden = !isVirtualDragging()
@@ -631,7 +717,10 @@ export function useDropIndicator(
       : droppableItem.dropProps.value['aria-hidden'];
     return {
       ...droppableItem.dropProps.value,
+      id,
       'aria-roledescription': 'drop indicator',
+      'aria-label': labelForTarget(),
+      'aria-labelledby': labelledBy(),
       'aria-hidden': ariaHidden,
       tabIndex: -1
     };
