@@ -3400,6 +3400,23 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — ListBox option label-ownership parity (`@vue-aria/listbox`)
+
+1. Closed option accessible-name ownership drift:
+   - `useOption.optionProps` now follows React ownership semantics by wiring `aria-labelledby` to `labelProps.id` and only forwarding `aria-label` when explicitly provided.
+2. Preserved description linkage parity:
+   - option `aria-describedby` remains mapped when item description content exists.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` listbox option assertions now verify:
+     - default `aria-labelledby` ownership,
+     - no implicit `aria-label` text mirroring,
+     - description id wiring,
+     - explicit `aria-label` passthrough with preserved `aria-labelledby`.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria listbox options, sections, and list data ids"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

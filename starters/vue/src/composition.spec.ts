@@ -6467,6 +6467,16 @@ describe('Vue migration composition components', () => {
     expect(option.optionProps.value.id).toBe(getItemId(listBox as unknown as object, 'vue'));
     expect(option.optionProps.value['aria-posinset']).toBe(2);
     expect(option.optionProps.value['aria-setsize']).toBe(2);
+    expect(option.optionProps.value['aria-labelledby']).toBe(option.labelProps.value.id);
+    expect(option.optionProps.value['aria-label']).toBeUndefined();
+    expect(option.optionProps.value['aria-describedby']).toBe(option.descriptionProps.value.id);
+
+    let labelledOption = useAriaOption({
+      'aria-label': 'Vue framework option',
+      key: 'vue'
+    }, listBox);
+    expect(labelledOption.optionProps.value['aria-label']).toBe('Vue framework option');
+    expect(labelledOption.optionProps.value['aria-labelledby']).toBe(labelledOption.labelProps.value.id);
 
     let section = useAriaListBoxSection({
       'aria-label': 'Primary options',
