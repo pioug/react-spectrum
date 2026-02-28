@@ -6380,6 +6380,7 @@ describe('Vue migration composition components', () => {
     expect(menuTrigger.isOpen.value).toBe(false);
     menuTrigger.menuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
     expect(menuTrigger.isOpen.value).toBe(true);
+    expect(menuTrigger.menuProps.value['aria-labelledby']).toBe(menuTrigger.menuTriggerProps.value.id);
     menuTrigger.close();
     expect(menuTrigger.isOpen.value).toBe(false);
     expect(openChanges).toEqual([true, false]);

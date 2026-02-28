@@ -2919,6 +2919,17 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Menu-trigger `aria-labelledby` ownership parity (`@vue-aria/menu`)
+
+1. Closed menu trigger/menu relationship drift:
+   - `useMenuTrigger` now sets `menuProps['aria-labelledby']` to the trigger id, matching React trigger-owned menu labelling.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` menu-trigger assertions now verify menu `aria-labelledby` equals trigger `id`.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria menu trigger and item selection semantics"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

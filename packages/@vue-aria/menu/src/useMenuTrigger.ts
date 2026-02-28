@@ -11,6 +11,7 @@ export interface MenuTriggerAria {
   close: () => void,
   isOpen: Ref<boolean>,
   menuProps: ComputedRef<{
+    'aria-labelledby': string,
     hidden: boolean,
     id: string,
     role: 'menu'
@@ -75,6 +76,7 @@ export function useMenuTrigger(props: AriaMenuTriggerProps = {}): MenuTriggerAri
     menuProps: computed(() => ({
       id: menuId,
       role: 'menu' as const,
+      'aria-labelledby': triggerId,
       hidden: !isOpen.value
     })),
     menuTriggerProps: computed(() => ({
