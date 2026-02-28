@@ -16,8 +16,10 @@ export interface ColorPickerState {
   toggle: () => void
 }
 
+const DEFAULT_COLOR = '#000000';
+
 export function useColorPickerState(props: ColorPickerProps = {}): ColorPickerState {
-  let internalValue = ref(parseColor(props.defaultValue ?? '#ffffff'));
+  let internalValue = ref(parseColor(props.defaultValue ?? DEFAULT_COLOR));
   let isControlled = computed(() => props.value !== undefined && props.value.value !== undefined);
   let wasControlled = ref(isControlled.value);
 
@@ -37,9 +39,7 @@ export function useColorPickerState(props: ColorPickerProps = {}): ColorPickerSt
       return internalValue.value;
     },
     set: (nextValue) => {
-      if (isControlled.value && props.value) {
-        props.value.value = nextValue;
-      } else {
+      if (!isControlled.value) {
         internalValue.value = nextValue;
       }
     }
@@ -52,8 +52,11 @@ export function useColorPickerState(props: ColorPickerProps = {}): ColorPickerSt
       return;
     }
 
-    colorValue.value = nextColor;
-    props.onChange?.(colorValue.value);
+    if (!isControlled.value) {
+      colorValue.value = nextColor;
+    }
+
+    props.onChange?.(nextColor);
   };
 
   return {

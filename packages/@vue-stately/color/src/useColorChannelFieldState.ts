@@ -23,7 +23,7 @@ function clamp(value: number, min: number, max: number): number {
 }
 
 export function useColorChannelFieldState(options: ColorChannelFieldStateOptions): ColorChannelFieldState {
-  let internalValue = ref(parseColor(options.defaultValue ?? '#ffffff'));
+  let internalValue = ref(parseColor(options.defaultValue ?? '#000000'));
   let isControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
   let wasControlled = ref(isControlled.value);
 
@@ -43,9 +43,7 @@ export function useColorChannelFieldState(options: ColorChannelFieldStateOptions
       return internalValue.value;
     },
     set: (nextValue) => {
-      if (isControlled.value && options.value) {
-        options.value.value = nextValue;
-      } else {
+      if (!isControlled.value) {
         internalValue.value = nextValue;
       }
     }
@@ -62,7 +60,10 @@ export function useColorChannelFieldState(options: ColorChannelFieldStateOptions
       return;
     }
 
-    colorValue.value = nextColor;
+    if (!isControlled.value) {
+      colorValue.value = nextColor;
+    }
+
     inputValue.value = String(getColorChannelValue(nextColor, options.channel));
     options.onChange?.(nextColor);
   };

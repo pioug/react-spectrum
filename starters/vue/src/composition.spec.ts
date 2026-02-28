@@ -1288,6 +1288,9 @@ describe('Vue migration composition components', () => {
 
     let channelState = useStatelyColorChannelFieldState({
       channel: 'green',
+      onChange: (nextValue) => {
+        sliderValue.value = nextValue;
+      },
       value: sliderValue
     });
     channelState.setInputValue('64');
@@ -1295,6 +1298,9 @@ describe('Vue migration composition components', () => {
 
     let pickerValue = ref('#abcdef');
     let picker = useStatelyColorPickerState({
+      onChange: (nextValue) => {
+        pickerValue.value = nextValue;
+      },
       value: pickerValue
     });
     picker.open();
@@ -1303,6 +1309,40 @@ describe('Vue migration composition components', () => {
     expect(picker.isOpen.value).toBe(false);
     expect(pickerValue.value).toBe('#123456');
     expect(parseStatelyColor('#abc')).toBe('#aabbcc');
+  });
+
+  it('keeps vue-stately color picker and channel-field controlled without mutating control refs', () => {
+    let pickerValue = ref('#abcdef');
+    let pickerChanges: string[] = [];
+    let picker = useStatelyColorPickerState({
+      onChange: (nextValue) => {
+        pickerChanges.push(nextValue);
+      },
+      value: pickerValue
+    });
+
+    picker.setColorValue('#123456');
+    expect(pickerValue.value).toBe('#abcdef');
+    expect(pickerChanges).toEqual(['#123456']);
+
+    let channelValue = ref('#112233');
+    let channelChanges: string[] = [];
+    let channelState = useStatelyColorChannelFieldState({
+      channel: 'red',
+      onChange: (nextValue) => {
+        channelChanges.push(nextValue);
+      },
+      value: channelValue
+    });
+
+    channelState.setInputValue('64');
+    expect(channelValue.value).toBe('#112233');
+    expect(channelChanges).toEqual(['#402233']);
+  });
+
+  it('uses vue-stately color picker default black value when no value is provided', () => {
+    let picker = useStatelyColorPickerState();
+    expect(picker.colorValue.value).toBe('#000000');
   });
 
   it('keeps vue-stately color field empty when initialized with an invalid default value', () => {
