@@ -13,6 +13,9 @@ export interface MenuSectionAria {
     'aria-labelledby'?: string,
     role: 'group'
   }>,
+  itemProps: ComputedRef<{
+    role: 'presentation'
+  }>,
   headingProps: ComputedRef<{
     id?: string,
     role?: 'presentation'
@@ -29,6 +32,9 @@ export function useMenuSection(props: AriaMenuSectionProps = {}): MenuSectionAri
   let ariaLabel = computed(() => unref(props.ariaLabel) ?? unref(props['aria-label']));
 
   return {
+    itemProps: computed(() => ({
+      role: 'presentation' as const
+    })),
     groupProps: computed(() => ({
       role: 'group' as const,
       'aria-label': ariaLabel.value,

@@ -2908,6 +2908,17 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Menu-section `itemProps` API parity (`@vue-aria/menu`)
+
+1. Closed menu-section API surface drift:
+   - `useMenuSection` now returns `itemProps` with `role: 'presentation'`, matching React hook output.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` menu-hook assertions now verify `section.itemProps.role === 'presentation'`.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria menu trigger and item selection semantics"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

@@ -6458,6 +6458,7 @@ describe('Vue migration composition components', () => {
     let section = useMenuSection({
       heading: 'Edit options'
     });
+    expect(section.itemProps.value.role).toBe('presentation');
     expect(section.groupProps.value.role).toBe('group');
     expect(section.groupProps.value['aria-labelledby']).toBe(section.headingProps.value.id);
 
