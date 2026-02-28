@@ -4163,6 +4163,56 @@ describe('Vue migration composition components', () => {
     expect(toStatelyFixedNumber(Math.PI, 2)).toBe(3.14);
   });
 
+  it('matches vue-stately controlled-state callback semantics for controlled props', async () => {
+    let controlledValue = ref<string | undefined>('controlledValue');
+    let changeEvents: string[] = [];
+    let [state, setState] = useStatelyControlledState(
+      controlledValue,
+      'defaultValue',
+      (nextValue) => {
+        changeEvents.push(nextValue);
+      }
+    );
+
+    expect(state.value).toBe('controlledValue');
+
+    controlledValue.value = 'updated';
+    await nextTick();
+    expect(state.value).toBe('updated');
+
+    setState((prevValue) => {
+      expect(prevValue).toBe('updated');
+      return `${prevValue}-newValue`;
+    });
+    setState((prevValue) => {
+      expect(prevValue).toBe('updated-newValue');
+      return `${prevValue}-wombat`;
+    });
+
+    expect(changeEvents).toEqual(['updated-newValue', 'updated-newValue-wombat']);
+    expect(state.value).toBe('updated');
+
+    await nextTick();
+
+    setState((prevValue) => {
+      expect(prevValue).toBe('updated');
+      return 'newValue';
+    });
+    await nextTick();
+    setState((prevValue) => {
+      expect(prevValue).toBe('updated');
+      return 'newValue';
+    });
+    await nextTick();
+    setState((prevValue) => {
+      expect(prevValue).toBe('updated');
+      return 'updated';
+    });
+
+    expect(changeEvents).toEqual(['updated-newValue', 'updated-newValue-wombat', 'newValue', 'newValue']);
+    expect(state.value).toBe('updated');
+  });
+
   it('warns when vue-stately controlled state toggles between controlled and uncontrolled', async () => {
     let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     let controlledValue = ref<string | undefined>('controlled');

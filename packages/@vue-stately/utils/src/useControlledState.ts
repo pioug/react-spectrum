@@ -12,7 +12,8 @@ export function useControlledState<T, C = T>(
   defaultValue: T,
   onChange?: (nextValue: C, ...args: unknown[]) => void
 ): [WritableComputedRef<T>, (nextValue: SetValueAction<T>, ...args: unknown[]) => void] {
-  let uncontrolledValue = ref(defaultValue);
+  let stateValue = ref((value?.value !== undefined ? value.value : defaultValue) as T);
+  let valueRef = ref<T>(stateValue.value);
   let isControlledRef = ref(value?.value !== undefined);
   let isControlled = computed(() => value?.value !== undefined);
 
@@ -28,30 +29,34 @@ export function useControlledState<T, C = T>(
   let currentValue = computed<T>({
     get: () => {
       if (isControlled.value && value) {
-        return value.value;
+        return value.value as T;
       }
 
-      return uncontrolledValue.value;
-    },
-    set: (nextValue) => {
-      if (isControlled.value && value) {
-        value.value = nextValue;
-      } else {
-        uncontrolledValue.value = nextValue;
-      }
+      return stateValue.value;
     }
   }) as WritableComputedRef<T>;
 
+  watch(currentValue, (nextValue) => {
+    valueRef.value = nextValue;
+  }, {flush: 'sync'});
+
   let setValue = (nextValue: SetValueAction<T>, ...args: unknown[]): void => {
     let resolvedNextValue = typeof nextValue === 'function'
-      ? (nextValue as (currentValue: T) => T)(currentValue.value)
+      ? (nextValue as (currentValue: T) => T)(valueRef.value)
       : nextValue;
 
-    if (Object.is(currentValue.value, resolvedNextValue)) {
+    if (Object.is(valueRef.value, resolvedNextValue)) {
       return;
     }
 
-    currentValue.value = resolvedNextValue;
+    valueRef.value = resolvedNextValue;
+    stateValue.value = resolvedNextValue;
+    if (isControlled.value) {
+      queueMicrotask(() => {
+        valueRef.value = currentValue.value;
+      });
+    }
+
     onChange?.(resolvedNextValue as unknown as C, ...args);
   };
 

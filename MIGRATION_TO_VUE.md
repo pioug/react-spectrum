@@ -1980,6 +1980,21 @@
    - full Vue tests: `yarn test:vue` (602 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Controlled-state callback parity (`@vue-stately/utils`)
+
+1. Closed core controlled-state contract drift against React:
+   - `useControlledState` no longer writes directly to controlled refs when `setValue` is called,
+   - controlled writes now follow React semantics: emit `onChange` with the candidate value while leaving the externally controlled value source authoritative.
+2. Aligned callback sequencing behavior:
+   - function-form `setValue` now uses a tracked internal value ref so back-to-back callback writes in one tick compose correctly,
+   - the tracked value ref resets to the externally controlled value on the next microtask, matching React’s render-cycle reset behavior.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: controlled `useControlledState` test for callback composition in one tick and repeated callback updates across subsequent ticks after controlled prop changes.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "utility state and numeric helper behavior|controlled-state callback semantics for controlled props"`,
+   - full Vue tests: `yarn test:vue` (603 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
