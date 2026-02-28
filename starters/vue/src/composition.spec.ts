@@ -2585,6 +2585,7 @@ describe('Vue migration composition components', () => {
     expect(dialog.dialogProps.value.role).toBe('dialog');
     expect(dialog.dialogProps.value.hidden).toBe(true);
     expect(dialog.dialogProps.value['aria-labelledby']).toBe(dialog.titleProps.value.id);
+    expect(dialog.dialogProps.value['aria-modal']).toBeUndefined();
     expect(dialog.triggerProps.value['aria-controls']).toBeUndefined();
 
     dialog.triggerProps.value.onClick();

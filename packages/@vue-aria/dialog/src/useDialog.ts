@@ -22,7 +22,6 @@ export interface DialogAria {
     'aria-describedby'?: string,
     'aria-label'?: string,
     'aria-labelledby'?: string,
-    'aria-modal': true,
     hidden: boolean,
     id: string,
     role: 'alertdialog' | 'dialog',
@@ -103,7 +102,6 @@ export function useDialog(options: AriaDialogOptions = {}): DialogAria {
     role: role.value,
     tabindex: -1,
     hidden: !isOpen.value,
-    'aria-modal': true as const,
     'aria-label': unref(options.ariaLabel),
     'aria-labelledby': labelledBy.value,
     'aria-describedby': unref(options.ariaDescribedby)
