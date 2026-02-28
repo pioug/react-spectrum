@@ -1,3 +1,5 @@
+const STOP_PROPAGATION_WARNING = 'stopPropagation is now the default behavior for events in React Spectrum. You can use continuePropagation() to revert this behavior.';
+
 export function createEventHandler<EventType extends Event>(
   first?: ((event: EventType) => void) | null,
   second?: ((event: EventType) => void) | null
@@ -11,13 +13,21 @@ export function createEventHandler<EventType extends Event>(
       let shouldStopPropagation = true;
       let wrappedEvent = event as EventType & {
         continuePropagation?: () => void,
+        isDefaultPrevented?: () => boolean,
         isPropagationStopped?: () => boolean,
-        isDefaultPrevented?: () => boolean
+        stopPropagation?: () => void
       };
       let stopPropagation = event.stopPropagation.bind(event);
 
       wrappedEvent.continuePropagation = () => {
         shouldStopPropagation = false;
+      };
+      wrappedEvent.stopPropagation = () => {
+        if (shouldStopPropagation && process.env.NODE_ENV !== 'production') {
+          console.error(STOP_PROPAGATION_WARNING);
+        } else {
+          shouldStopPropagation = true;
+        }
       };
       wrappedEvent.isPropagationStopped = () => {
         return shouldStopPropagation;
@@ -33,8 +43,9 @@ export function createEventHandler<EventType extends Event>(
       }
 
       delete wrappedEvent.continuePropagation;
-      delete wrappedEvent.isPropagationStopped;
       delete wrappedEvent.isDefaultPrevented;
+      delete wrappedEvent.isPropagationStopped;
+      delete wrappedEvent.stopPropagation;
     };
   };
 

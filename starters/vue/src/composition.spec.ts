@@ -101,6 +101,7 @@ import {
   mergeIds as ariaMergeIds,
   mergeProps as ariaMergeProps,
   nodeContains as ariaNodeContains,
+  useDrag1D as useAriaDrag1D,
   useId as useAriaId,
   useLabels as useAriaLabels,
   useSlotId as useAriaSlotId
@@ -2558,10 +2559,50 @@ describe('Vue migration composition components', () => {
     setUncontrolledState((currentValue) => currentValue + 3);
     expect(uncontrolledState.value).toBe(5);
 
+    let uncontrolledRefValue = ref<string | undefined>(undefined);
+    let [uncontrolledRefState, setUncontrolledRefState] = useStatelyControlledState(uncontrolledRefValue, 'fallback');
+    setUncontrolledRefState('updated');
+    expect(uncontrolledRefState.value).toBe('updated');
+    expect(uncontrolledRefValue.value).toBeUndefined();
+
     expect(clampStatelyNumber(8, 0, 5)).toBe(5);
     expect(roundStatelyStepPrecision(0.123456789, 1e-7)).toBe(0.12345679);
     expect(snapStatelyValueToStep(2, -0.5, 100, 3)).toBe(2.5);
     expect(toStatelyFixedNumber(Math.PI, 2)).toBe(3.14);
+  });
+
+  it('warns when vue-stately controlled state toggles between controlled and uncontrolled', async () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let controlledValue = ref<string | undefined>('controlled');
+    let [controlledState] = useStatelyControlledState(controlledValue, 'default');
+
+    try {
+      expect(controlledState.value).toBe('controlled');
+
+      controlledValue.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      controlledValue.value = 'next';
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it('warns that vue-aria useDrag1D is deprecated', () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    try {
+      useAriaDrag1D({
+        containerRef: {current: document.createElement('div')},
+        onPositionChange: () => {}
+      });
+
+      expect(warnSpy).toHaveBeenCalledWith('useDrag1D is deprecated, please use `useMove` instead https://react-spectrum.adobe.com/react-aria/useMove.html');
+    } finally {
+      warnSpy.mockRestore();
+    }
   });
 
   it('manages vue-stately virtualizer layout geometry and visible view state', () => {
@@ -5757,6 +5798,29 @@ describe('Vue migration composition components', () => {
       expect(wrapperEvents).toEqual(['down', 'up']);
     } finally {
       document.body.removeChild(outer);
+    }
+  });
+
+  it('warns when wrapped vue-aria keyboard handlers call stopPropagation directly', () => {
+    let errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    let keyboard = useKeyboard({
+      onKeyDown: (event) => {
+        event.stopPropagation();
+      }
+    });
+    let button = document.createElement('button');
+    document.body.append(button);
+
+    try {
+      if (keyboard.keyboardProps.value.onKeyDown) {
+        button.addEventListener('keydown', keyboard.keyboardProps.value.onKeyDown as EventListener);
+      }
+
+      button.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'A'}));
+      expect(errorSpy).toHaveBeenCalledWith('stopPropagation is now the default behavior for events in React Spectrum. You can use continuePropagation() to revert this behavior.');
+    } finally {
+      errorSpy.mockRestore();
+      document.body.removeChild(button);
     }
   });
 

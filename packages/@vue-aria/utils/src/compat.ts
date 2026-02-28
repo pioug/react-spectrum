@@ -325,7 +325,13 @@ export function runAfterTransition(callback: () => void): void {
   requestAnimationFrame(() => callback());
 }
 
+const USE_DRAG_1D_DEPRECATION_WARNING = 'useDrag1D is deprecated, please use `useMove` instead https://react-spectrum.adobe.com/react-aria/useMove.html';
+
 export function useDrag1D(props: UseDrag1DProps): HTMLAttributes<HTMLElement> {
+  if (process.env.NODE_ENV !== 'production') {
+    console.warn(USE_DRAG_1D_DEPRECATION_WARNING);
+  }
+
   let {containerRef, reverse, orientation = 'horizontal', onDrag, onHover, onPositionChange} = props;
   let dragging = ref(false);
 

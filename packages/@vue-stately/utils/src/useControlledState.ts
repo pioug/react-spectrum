@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, type Ref, ref} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, watch} from 'vue';
 
 export type SetValueAction<T> = T | ((currentValue: T) => T);
 
@@ -13,16 +13,28 @@ export function useControlledState<T, C = T>(
   onChange?: (nextValue: C, ...args: unknown[]) => void
 ): [WritableComputedRef<T>, (nextValue: SetValueAction<T>, ...args: unknown[]) => void] {
   let uncontrolledValue = ref(defaultValue);
+  let isControlledRef = ref(value?.value !== undefined);
+  let isControlled = computed(() => value?.value !== undefined);
+
+  watch(isControlled, (nextIsControlled) => {
+    let wasControlled = isControlledRef.value;
+    if (wasControlled !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasControlled ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+
+    isControlledRef.value = nextIsControlled;
+  });
+
   let currentValue = computed<T>({
     get: () => {
-      if (value && value.value !== undefined) {
+      if (isControlled.value && value) {
         return value.value;
       }
 
       return uncontrolledValue.value;
     },
     set: (nextValue) => {
-      if (value) {
+      if (isControlled.value && value) {
         value.value = nextValue;
       } else {
         uncontrolledValue.value = nextValue;

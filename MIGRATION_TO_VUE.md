@@ -1264,6 +1264,27 @@
    - full Vue tests: `yarn test:vue` (538 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Shared utility warning parity (`@vue-stately/utils`, `@vue-aria/interactions`, `@vue-aria/utils`)
+
+1. Aligned shared controlled/uncontrolled warning behavior with React stately utils:
+   - `useControlledState` now emits React-matching warnings when state ownership toggles (`controlled -> uncontrolled` or `uncontrolled -> controlled`) in development.
+   - controlled-state writes now follow React semantics when a ref-backed value exists but is currently `undefined` (updates stay internal until the value becomes controlled).
+2. Aligned shared event-wrapper warning behavior with React interactions:
+   - `createEventHandler` now emits the React warning when wrapped handlers call `stopPropagation()` directly, while preserving `continuePropagation()` opt-in flow.
+3. Aligned deprecated utility warning behavior with React aria utils:
+   - `useDrag1D` now emits the React deprecation warning in development (`useDrag1D is deprecated, please use useMove instead...`).
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - controlled/uncontrolled transition warnings for `useControlledState`,
+     - uncontrolled-ref write semantics,
+     - `useDrag1D` deprecation warning text,
+     - `createEventHandler` stopPropagation warning text.
+   - `packages/@vue-stately/utils/README.md`: removed stale limitation note claiming `useControlledState` lacks transition warnings.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately utility state and numeric helper behavior|warns when vue-stately controlled state toggles between controlled and uncontrolled|warns that vue-aria useDrag1D is deprecated|stops vue-aria keyboard bubbling by default and allows continuePropagation opt-in|warns when wrapped vue-aria keyboard handlers call stopPropagation directly"`,
+   - full Vue tests: `yarn test:vue` (541 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

@@ -26,4 +26,3 @@ let snapped = snapValueToStep(7.2, 0, 10, 0.5);
 ## Known limitations
 
 * API parity with `@react-stately/utils` is not complete yet.
-* `useControlledState` does not emit controlled/uncontrolled transition warnings in this baseline.
