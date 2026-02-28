@@ -248,16 +248,41 @@ export function isElementInChildOfActiveScope(element: Element): boolean {
   return Boolean(activeElement && element.contains(activeElement));
 }
 
-export function dispatchVirtualFocus(_toElement: Element, _fromElement: Element | null): void {}
-export function dispatchVirtualBlur(_toElement: Element, _fromElement: Element | null): void {}
+export function dispatchVirtualBlur(fromElement: Element, toElement: Element | null): void {
+  fromElement.dispatchEvent(new FocusEvent('blur', {relatedTarget: toElement}));
+  fromElement.dispatchEvent(new FocusEvent('focusout', {bubbles: true, relatedTarget: toElement}));
+}
+
+export function dispatchVirtualFocus(toElement: Element, fromElement: Element | null): void {
+  toElement.dispatchEvent(new FocusEvent('focus', {relatedTarget: fromElement}));
+  toElement.dispatchEvent(new FocusEvent('focusin', {bubbles: true, relatedTarget: fromElement}));
+}
 
 export function getVirtuallyFocusedElement(documentRef: Document): Element | null {
-  return documentRef.activeElement;
+  let activeElement = documentRef.activeElement;
+  let activeDescendant = activeElement?.getAttribute('aria-activedescendant');
+  if (activeDescendant) {
+    return documentRef.getElementById(activeDescendant) ?? activeElement;
+  }
+
+  return activeElement;
 }
 
 export function moveVirtualFocus(element: Element | null): void {
-  if (element && typeof (element as FocusableElement).focus === 'function') {
-    (element as FocusableElement).focus?.();
+  let ownerDocument = element?.ownerDocument ?? (typeof document !== 'undefined' ? document : null);
+  if (!ownerDocument) {
+    return;
+  }
+
+  let previousFocus = getVirtuallyFocusedElement(ownerDocument);
+  if (previousFocus !== element) {
+    if (previousFocus) {
+      dispatchVirtualBlur(previousFocus, element);
+    }
+
+    if (element) {
+      dispatchVirtualFocus(element, previousFocus);
+    }
   }
 }
 

@@ -43,9 +43,13 @@ import {
 import {EXAMPLE_THEME_CLASS, useExampleTheme} from '@vue-aria/example-theme';
 import {
   createFocusManager as createFocusManagerFromPackage,
+  dispatchVirtualBlur as dispatchVirtualBlurFromPackage,
+  dispatchVirtualFocus as dispatchVirtualFocusFromPackage,
   focusSafely as focusPackageFocusSafely,
+  getVirtuallyFocusedElement as getVirtuallyFocusedElementFromPackage,
   getFocusableTreeWalker as getFocusableTreeWalkerFromPackage,
   isFocusable as focusIsFocusable,
+  moveVirtualFocus as moveVirtualFocusFromPackage,
   useFocusManager as useFocusManagerFromPackage,
   useFocusRing,
   useHasTabbableChild
@@ -4453,6 +4457,48 @@ describe('Vue migration composition components', () => {
 
   it('returns undefined from @vue-aria/focus useFocusManager outside scope context', () => {
     expect(useFocusManagerFromPackage()).toBeUndefined();
+  });
+
+  it('resolves aria-activedescendant through @vue-aria/focus getVirtuallyFocusedElement', () => {
+    let host = document.createElement('div');
+    let input = document.createElement('input');
+    input.id = 'focus-host';
+    let activeDescendant = document.createElement('div');
+    activeDescendant.id = 'focus-option-2';
+    input.setAttribute('aria-activedescendant', activeDescendant.id);
+    host.append(input, activeDescendant);
+    document.body.append(host);
+
+    input.focus();
+    expect(getVirtuallyFocusedElementFromPackage(document)).toBe(activeDescendant);
+    host.remove();
+  });
+
+  it('dispatches virtual focus/blur events and moveVirtualFocus event ordering', () => {
+    let from = document.createElement('button');
+    let to = document.createElement('button');
+    document.body.append(from, to);
+    let events: string[] = [];
+    from.addEventListener('blur', () => events.push('from:blur'));
+    from.addEventListener('focusout', () => events.push('from:focusout'));
+    to.addEventListener('focus', () => events.push('to:focus'));
+    to.addEventListener('focusin', () => events.push('to:focusin'));
+
+    dispatchVirtualFocusFromPackage(from, null);
+    dispatchVirtualBlurFromPackage(from, to);
+    events = [];
+    from.focus();
+    moveVirtualFocusFromPackage(to);
+
+    expect(events).toEqual([
+      'from:blur',
+      'from:focusout',
+      'to:focus',
+      'to:focusin'
+    ]);
+
+    from.remove();
+    to.remove();
   });
 
   it('toggles vue-stately global feature flags', () => {
