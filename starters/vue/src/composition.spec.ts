@@ -4712,6 +4712,48 @@ describe('Vue migration composition components', () => {
     }]);
   });
 
+  it('fires useDroppableCollection onDropMove only when drag position changes', () => {
+    let moveEvents: Array<string> = [];
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item']
+    });
+    dropState.setTarget({type: 'root'});
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      onDropMove: (event) => {
+        moveEvents.push(`move:${event.x},${event.y}`);
+      }
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDragEnter: (items?: unknown) => boolean,
+        onDragOver: (items?: unknown) => void
+      }}
+    };
+
+    expect(droppableCollection.collectionProps.value.onDragEnter({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 10,
+      clientY: 10
+    })).toBe(true);
+    droppableCollection.collectionProps.value.onDragOver({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 10,
+      clientY: 10
+    });
+    droppableCollection.collectionProps.value.onDragOver({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 12,
+      clientY: 13
+    });
+    droppableCollection.collectionProps.value.onDragOver({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 12,
+      clientY: 13
+    });
+
+    expect(moveEvents).toEqual(['move:12,13']);
+  });
+
   it('matches react focusable element detection contracts via @vue-aria/focus', () => {
     let anchor = document.createElement('a');
     expect(focusIsFocusable(anchor)).toBe(false);

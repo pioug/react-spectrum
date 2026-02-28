@@ -671,6 +671,7 @@ export function useDroppableCollection(
     return Boolean(readMaybeRef<boolean>(stateRecord.isDisabled)) || Boolean(readMaybeRef<boolean>(propsRecord.isDisabled));
   });
   let isDropTarget = computed(() => readDropTarget(stateRecord) != null);
+  let lastDragPoint: {x: number, y: number} | null = null;
 
   let onDragEnter = (input?: unknown): boolean => {
     let items = normalizeDropItems(input);
@@ -679,6 +680,7 @@ export function useDroppableCollection(
     }
 
     let point = readPoint(input, ref);
+    lastDragPoint = point;
     dropCollectionRef = ref;
     if (typeof stateRecord.enter === 'function') {
       stateRecord.enter(items);
@@ -704,6 +706,11 @@ export function useDroppableCollection(
     }
 
     let point = readPoint(input, ref);
+    if (lastDragPoint && lastDragPoint.x === point.x && lastDragPoint.y === point.y) {
+      return;
+    }
+
+    lastDragPoint = point;
     dropCollectionRef = ref;
     if (typeof stateRecord.move === 'function') {
       stateRecord.move(items);
@@ -745,6 +752,7 @@ export function useDroppableCollection(
       });
     }
 
+    lastDragPoint = null;
     dropCollectionRef = null;
   };
 
