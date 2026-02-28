@@ -2213,6 +2213,19 @@
    - full Vue tests: `yarn test:vue` (620 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Tree-grid expanded-keys controlled ownership parity (`@vue-stately/table`)
+
+1. Closed tree-grid controlled ownership drift:
+   - `UNSTABLE_useTreeGridState` no longer mutates controlled `UNSTABLE_expandedKeys` refs directly.
+2. Aligned tree-grid expanded key reads:
+   - returned `expandedKeys` now reads from the current computed source, keeping controlled reads in sync with externally owned refs.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: updated baseline controlled tree-grid test to mirror parent updates and added explicit controlled-no-parent-update assertions.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately tree grid expanded key state|keeps vue-stately tree grid controlled without mutating control refs|warns when vue-stately tree grid expanded keys switch between controlled and uncontrolled|keeps vue-stately tree grid expansion uncontrolled when expanded key ref is undefined"`,
+   - full Vue tests: `yarn test:vue` (621 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

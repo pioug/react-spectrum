@@ -3929,6 +3929,7 @@ describe('Vue migration composition components', () => {
       UNSTABLE_expandedKeys: expandedKeys,
       UNSTABLE_onExpandedChange: (keys) => {
         expandedChanges.push(Array.from(keys) as string[]);
+        expandedKeys.value = new Set(keys as Set<string>);
       }
     });
 
@@ -3941,6 +3942,37 @@ describe('Vue migration composition components', () => {
     treeGridState.setExpandedKeys(sameExpandedSetRef ?? new Set());
     treeGridState.setExpandedKeys(new Set(['row-2']));
     expect(expandedChanges).toEqual([['row-1', 'row-2'], ['row-2'], ['row-2']]);
+  });
+
+  it('keeps vue-stately tree grid controlled without mutating control refs', () => {
+    let expandedKeys = ref<Set<string> | undefined>(new Set(['row-1']));
+    let expandedChanges: string[][] = [];
+    let treeGridState = useStatelyTreeGridState({
+      collection: new StatelyTableCollection({
+        columns: [
+          {key: 'title', title: 'Title'}
+        ],
+        rows: [
+          {key: 'row-1', textValue: 'Row 1', cells: [{textValue: 'Row 1', value: 'Row 1'}]},
+          {key: 'row-2', textValue: 'Row 2', cells: [{textValue: 'Row 2', value: 'Row 2'}]}
+        ]
+      }),
+      selectionMode: 'none',
+      UNSTABLE_expandedKeys: expandedKeys,
+      UNSTABLE_onExpandedChange: (keys) => {
+        expandedChanges.push(Array.from(keys) as string[]);
+      }
+    });
+
+    treeGridState.toggleKey('row-2');
+    expect(Array.from(expandedKeys.value ?? [])).toEqual(['row-1']);
+    expect(Array.from(treeGridState.expandedKeys as Set<string>)).toEqual(['row-1']);
+    expect(expandedChanges).toEqual([['row-1', 'row-2']]);
+
+    treeGridState.toggleKey('row-2');
+    expect(Array.from(expandedKeys.value ?? [])).toEqual(['row-1']);
+    expect(Array.from(treeGridState.expandedKeys as Set<string>)).toEqual(['row-1']);
+    expect(expandedChanges).toEqual([['row-1', 'row-2'], ['row-1', 'row-2']]);
   });
 
   it('warns when vue-stately tree grid expanded keys switch between controlled and uncontrolled', async () => {

@@ -188,15 +188,12 @@ export function UNSTABLE_useTreeGridState<T>(props: TreeGridStateProps<T>): Tree
     },
     set: (nextExpandedKeys) => {
       let normalizedExpandedKeys = normalizeExpandedKeys(nextExpandedKeys);
-      if (isControlled.value && props.UNSTABLE_expandedKeys) {
-        props.UNSTABLE_expandedKeys.value = normalizedExpandedKeys;
-      } else {
+      if (!isControlled.value) {
         uncontrolledExpandedKeys.value = normalizedExpandedKeys;
       }
     }
   });
 
-  let treeGridState: TreeGridState<T>;
   let setExpandedKeys = (nextExpandedKeys: ExpandedKeysInput | ExpandedKeys): void => {
     let normalizedExpandedKeys = normalizeExpandedKeys(nextExpandedKeys);
     if (Object.is(normalizedExpandedKeys, expandedKeys.value)) {
@@ -204,10 +201,6 @@ export function UNSTABLE_useTreeGridState<T>(props: TreeGridStateProps<T>): Tree
     }
 
     expandedKeys.value = normalizedExpandedKeys;
-    if (treeGridState) {
-      treeGridState.expandedKeys = normalizedExpandedKeys;
-    }
-
     if (normalizedExpandedKeys !== 'all') {
       props.UNSTABLE_onExpandedChange?.(normalizedExpandedKeys);
     }
@@ -229,12 +222,12 @@ export function UNSTABLE_useTreeGridState<T>(props: TreeGridStateProps<T>): Tree
     setExpandedKeys(nextExpandedKeys);
   };
 
-  treeGridState = {
+  return {
     ...state,
-    expandedKeys: expandedKeys.value,
+    get expandedKeys() {
+      return expandedKeys.value;
+    },
     setExpandedKeys,
     toggleKey
   };
-
-  return treeGridState;
 }
