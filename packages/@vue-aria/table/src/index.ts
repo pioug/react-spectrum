@@ -147,7 +147,49 @@ export function useTableColumnHeader<T>(
   ref: RefObject<FocusableElement | null>
 ): TableColumnHeaderAria;
 export function useTableColumnHeader(options: AriaTableColumnHeaderProps): TableColumnHeaderAria;
-export function useTableColumnHeader(options: AriaTableColumnHeaderProps): TableColumnHeaderAria {
+export function useTableColumnHeader(
+  options: AriaTableColumnHeaderProps,
+  state?: TableState<unknown>,
+  refObject?: RefObject<FocusableElement | null>
+): TableColumnHeaderAria {
+  if (state) {
+    let stateRecord = state as AnyRecord;
+    let optionsRecord = options as AnyRecord;
+    let node = (optionsRecord.node ?? {}) as AnyRecord;
+    let nodeProps = (node.props ?? {}) as AnyRecord;
+
+    let table = useTable({
+      ariaLabel: (optionsRecord['aria-label'] as string | undefined) ?? (optionsRecord.ariaLabel as string | undefined) ?? 'table',
+      collection: stateRecord.collection,
+      disabledKeys: stateRecord.disabledKeys,
+      onRowAction: optionsRecord.onAction as ((key: string | number) => void) | undefined
+    }, stateRecord, refObject as RefObject<HTMLElement | null> | undefined);
+
+    let sortDescriptor = computed(() => {
+      let descriptor = stateRecord.sortDescriptor as AnyRecord | undefined;
+      if (!descriptor || descriptor.column !== node.key) {
+        return undefined;
+      }
+
+      let direction = descriptor.direction;
+      return direction === 'ascending' || direction === 'descending' ? direction : undefined;
+    });
+
+    return useTableColumnHeaderInternal({
+      allowsSorting: Boolean(nodeProps.allowsSorting),
+      colSpan: typeof node.colSpan === 'number' ? node.colSpan : undefined,
+      columnKey: node.key as string | number,
+      onSort: (columnKey) => {
+        let sort = stateRecord.sort;
+        if (typeof sort === 'function') {
+          sort(columnKey);
+        }
+      },
+      sortDirection: sortDescriptor,
+      table
+    });
+  }
+
   return useTableColumnHeaderInternal(options);
 }
 

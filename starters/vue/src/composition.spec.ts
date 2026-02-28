@@ -9776,6 +9776,85 @@ describe('Vue migration composition components', () => {
     expect(disabledRow.isDisabled.value).toBe(true);
   });
 
+  it('supports react-style useTableColumnHeader overload with node/state sorting', () => {
+    let collection = {
+      columnCount: 2,
+      rows: [
+        {
+          key: 'row-1',
+          index: 0,
+          textValue: 'Backlog',
+          cells: [
+            {key: 'row-1-cell-1', colIndex: 0, textValue: 'Backlog'},
+            {key: 'status', colIndex: 1, textValue: 'Open'}
+          ]
+        }
+      ]
+    };
+    let selectedKeys = new Set<string | number>();
+    let focusedKey: string | number | null = null;
+    let sortCalls: Array<string | number> = [];
+
+    let state = reactive({
+      collection,
+      disabledKeys: new Set<string | number>(),
+      selectionManager: {
+        get focusedKey() {
+          return focusedKey;
+        },
+        selectionMode: 'multiple' as const,
+        get selectedKeys() {
+          return selectedKeys;
+        },
+        setFocusedKey: (key: string | number | null) => {
+          focusedKey = key;
+        },
+        setSelectedKeys: (keys: Set<string | number>) => {
+          selectedKeys = new Set(keys);
+        }
+      },
+      sort: (key: string | number) => {
+        sortCalls.push(key);
+        state.sortDescriptor = {
+          column: key,
+          direction: 'ascending' as const
+        };
+      },
+      sortDescriptor: null as {column: string | number, direction: 'ascending' | 'descending'} | null
+    });
+
+    let columnHeader = useAriaTableColumnHeader({
+      node: {
+        colSpan: 1,
+        key: 'status',
+        props: {
+          allowsSorting: true
+        }
+      }
+    } as unknown as Parameters<typeof useAriaTableColumnHeader>[0], state as unknown as Parameters<typeof useAriaTableColumnHeader>[1], {
+      current: null
+    });
+
+    expect(columnHeader.columnHeaderProps.value['aria-sort']).toBe('none');
+    columnHeader.columnHeaderProps.value.onClick();
+    expect(sortCalls).toEqual(['status']);
+    expect(columnHeader.columnHeaderProps.value['aria-sort']).toBe('ascending');
+
+    state.sortDescriptor = {
+      column: 'status',
+      direction: 'descending'
+    };
+    expect(columnHeader.columnHeaderProps.value['aria-sort']).toBe('descending');
+
+    let preventSortKeyDefault = vi.fn();
+    columnHeader.columnHeaderProps.value.onKeyDown({
+      key: 'Enter',
+      preventDefault: preventSortKeyDefault
+    } as unknown as KeyboardEvent);
+    expect(preventSortKeyDefault).toHaveBeenCalledTimes(1);
+    expect(sortCalls).toEqual(['status', 'status']);
+  });
+
   it('announces and clears live region messages with vue-aria live announcer', () => {
     destroyAnnouncer();
 
