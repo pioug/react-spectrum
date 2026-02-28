@@ -1209,6 +1209,86 @@ describe('Vue migration composition components', () => {
     expect(changes).toEqual([['Docs', 'Tests'], ['Docs']]);
   });
 
+  it('supports react-style checkbox overload signatures with state', () => {
+    let checkboxSelected = ref(false);
+    let checkboxToggleCalls = 0;
+    let checkboxState = {
+      get isSelected() {
+        return checkboxSelected.value;
+      },
+      setSelected: (nextSelected: boolean) => {
+        checkboxSelected.value = nextSelected;
+      },
+      toggle: () => {
+        checkboxToggleCalls += 1;
+        checkboxSelected.value = !checkboxSelected.value;
+      }
+    };
+
+    let reactCheckbox = useCheckbox({
+      isIndeterminate: true
+    } as unknown as Parameters<typeof useCheckbox>[0], checkboxState as unknown as Parameters<typeof useCheckbox>[1], {
+      current: null
+    } as unknown as Parameters<typeof useCheckbox>[2]);
+
+    expect(reactCheckbox.inputProps.value['aria-checked']).toBe('mixed');
+    reactCheckbox.press();
+    expect(checkboxToggleCalls).toBe(1);
+    expect(checkboxSelected.value).toBe(true);
+
+    let selectedValues = ref(new Set<string>(['Docs']));
+    let addCalls: string[] = [];
+    let removeCalls: string[] = [];
+    let checkboxGroupState = {
+      get isDisabled() {
+        return false;
+      },
+      get isReadOnly() {
+        return false;
+      },
+      get isRequired() {
+        return true;
+      },
+      name: 'react-features',
+      get selectedValues() {
+        return selectedValues.value;
+      },
+      addValue: (value: string) => {
+        addCalls.push(value);
+        let nextValues = new Set(selectedValues.value);
+        nextValues.add(value);
+        selectedValues.value = nextValues;
+      },
+      removeValue: (value: string) => {
+        removeCalls.push(value);
+        let nextValues = new Set(selectedValues.value);
+        nextValues.delete(value);
+        selectedValues.value = nextValues;
+      }
+    };
+
+    let reactCheckboxGroup = useCheckboxGroup({
+      'aria-label': 'React checkbox group'
+    } as unknown as Parameters<typeof useCheckboxGroup>[0], checkboxGroupState as unknown as Parameters<typeof useCheckboxGroup>[1]);
+    expect(reactCheckboxGroup.groupProps.value.role).toBe('group');
+    expect(reactCheckboxGroup.groupProps.value['aria-required']).toBe(true);
+    expect(reactCheckboxGroup.name.value).toBe('react-features');
+
+    let reactCheckboxGroupItem = useCheckboxGroupItem({
+      value: 'Tests'
+    } as unknown as Parameters<typeof useCheckboxGroupItem>[0], checkboxGroupState as unknown as Parameters<typeof useCheckboxGroupItem>[1], {
+      current: null
+    } as unknown as Parameters<typeof useCheckboxGroupItem>[2]);
+
+    reactCheckboxGroupItem.press();
+    expect(addCalls).toEqual(['Tests']);
+    expect(Array.from(selectedValues.value).sort()).toEqual(['Docs', 'Tests']);
+
+    reactCheckboxGroupItem.press();
+    expect(removeCalls).toEqual(['Tests']);
+    expect(Array.from(selectedValues.value)).toEqual(['Docs']);
+  });
+
   it('manages vue-stately checkbox-group values and invalid flags', () => {
     let selectedValues = ref(['Docs']);
     let changes: string[][] = [];
