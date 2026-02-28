@@ -721,14 +721,24 @@ export function useDroppableCollection(
   };
 
   let onDragLeave = (input?: unknown): void => {
+    let target = readDropTarget(stateRecord);
+    if (!target) {
+      dropCollectionRef = null;
+      return;
+    }
+
     let point = readPoint(input, ref);
     if (typeof stateRecord.exit === 'function') {
       stateRecord.exit();
     }
 
+    if (typeof stateRecord.setTarget === 'function') {
+      stateRecord.setTarget(null);
+    }
+
     if (typeof propsRecord.onDropExit === 'function') {
       propsRecord.onDropExit({
-        target: readDropTarget(stateRecord),
+        target,
         type: 'dropexit',
         x: point.x,
         y: point.y
@@ -745,6 +755,7 @@ export function useDroppableCollection(
       return 'cancel';
     }
 
+    let target = readDropTarget(stateRecord);
     let point = readPoint(input, ref);
     let requestedOperation = resolveDropOperation(input, fallbackOperation);
     let operation = requestedOperation;
@@ -754,7 +765,7 @@ export function useDroppableCollection(
         draggingKeys: new Set(draggingKeys),
         isInternal: isInternalDrop(ref),
         items,
-        target: readDropTarget(stateRecord)
+        target
       }));
     }
 
@@ -766,7 +777,7 @@ export function useDroppableCollection(
     if (typeof propsRecord.onDrop === 'function') {
       propsRecord.onDrop({
         items,
-        target: readDropTarget(stateRecord),
+        target,
         dropOperation: resolvedOperation,
         operation: resolvedOperation,
         type: 'drop',
@@ -774,6 +785,8 @@ export function useDroppableCollection(
         y: point.y
       });
     }
+
+    onDragLeave(input);
 
     if (!isInternalDrop(ref)) {
       draggingCollectionRef = null;

@@ -4597,15 +4597,43 @@ describe('Vue migration composition components', () => {
 
     expect(droppableCollection.collectionProps.value.onDrop([{id: 'item-1', type: 'item', value: {id: 1}}], 'move')).toBe('move');
     expect(dropEvents).toEqual(['drop:move']);
+    expect(exitEvents).toEqual(['exit:0,0']);
+    expect(dropState.target.value).toBeNull();
+    expect(droppableCollection.collectionProps.value['data-drop-target']).toBe(false);
     droppableCollection.collectionProps.value.onDragLeave({
       clientX: 5,
       clientY: 6
     });
-    expect(exitEvents).toEqual(['exit:5,6']);
+    expect(exitEvents).toEqual(['exit:0,0']);
 
     dragState.endDrag('cancel');
     expect(dragState.draggedKey.value).toBeNull();
     expect(draggableItem.dragProps.value['aria-grabbed']).toBe(false);
+  });
+
+  it('does not emit useDroppableCollection onDropExit without an active target', () => {
+    let exitEvents: Array<string> = [];
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item']
+    });
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      onDropExit: (event) => {
+        exitEvents.push(`exit:${event.x},${event.y}`);
+      }
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDragLeave: (items?: unknown) => void
+      }}
+    };
+
+    droppableCollection.collectionProps.value.onDragLeave({
+      clientX: 8,
+      clientY: 13
+    });
+
+    expect(exitEvents).toEqual([]);
+    expect(dropState.target.value).toBeNull();
   });
 
   it('matches react-aria disabled draggable item contract by omitting drag props', () => {
