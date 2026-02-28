@@ -1,4 +1,5 @@
 import {defineComponent} from 'vue';
+import {focusSafely as focusSafelyInteractions} from '@vue-aria/interactions';
 import {isFocusable as isFocusableUtils} from '@vue-aria/utils';
 
 export type {AriaFocusRingProps, FocusRingAria, FocusRingProps} from './useFocusRing';
@@ -127,9 +128,7 @@ export function moveVirtualFocus(element: Element | null): void {
 }
 
 export function focusSafely(element: FocusableElement): void {
-  if (typeof element.focus === 'function') {
-    element.focus();
-  }
+  focusSafelyInteractions(element as unknown as HTMLElement | SVGElement);
 }
 
 export function isFocusable(element: Element): boolean {

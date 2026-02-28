@@ -41,7 +41,7 @@ import {
   useDroppableItem
 } from '@vue-aria/dnd';
 import {EXAMPLE_THEME_CLASS, useExampleTheme} from '@vue-aria/example-theme';
-import {isFocusable as focusIsFocusable, useFocusRing, useHasTabbableChild} from '@vue-aria/focus';
+import {focusSafely as focusPackageFocusSafely, isFocusable as focusIsFocusable, useFocusRing, useHasTabbableChild} from '@vue-aria/focus';
 import {useFormValidation} from '@vue-aria/form';
 import {
   GridKeyboardDelegate,
@@ -4384,6 +4384,18 @@ describe('Vue migration composition components', () => {
     let disabledInput = document.createElement('input');
     disabledInput.disabled = true;
     expect(focusIsFocusable(disabledInput)).toBe(false);
+  });
+
+  it('uses @vue-aria/interactions focusSafely behavior via @vue-aria/focus export', () => {
+    let element = document.createElement('input');
+    document.body.appendChild(element);
+    let focusSpy = vi.spyOn(element, 'focus');
+
+    focusPackageFocusSafely(element as unknown as Element & {focus?: () => void});
+
+    expect(focusSpy).toHaveBeenCalled();
+    focusSpy.mockRestore();
+    element.remove();
   });
 
   it('toggles vue-stately global feature flags', () => {
