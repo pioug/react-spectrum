@@ -7996,6 +7996,89 @@ describe('Vue migration composition components', () => {
     warnSpy.mockRestore();
   });
 
+  it('supports react-style radio and radio-group overload signatures', () => {
+    let selectedValue = ref<string | null>('react');
+    let isDisabled = ref(false);
+    let selectionCalls: string[] = [];
+    let reactRadioState = {
+      get isDisabled() {
+        return isDisabled.value;
+      },
+      get isInvalid() {
+        return false;
+      },
+      get isReadOnly() {
+        return false;
+      },
+      get isRequired() {
+        return true;
+      },
+      name: 'react-radio-group',
+      get selectedValue() {
+        return selectedValue.value;
+      },
+      setSelectedValue: (value: string | null) => {
+        let nextValue = value == null ? null : String(value);
+        if (nextValue === selectedValue.value) {
+          return;
+        }
+
+        selectedValue.value = nextValue;
+        if (nextValue != null) {
+          selectionCalls.push(nextValue);
+        }
+      }
+    };
+
+    let radioGroup = useAriaRadioGroup({
+      'aria-label': 'Framework'
+    } as unknown as Parameters<typeof useAriaRadioGroup>[0], reactRadioState as unknown as Parameters<typeof useAriaRadioGroup>[1]);
+    expect(radioGroup.radioGroupProps.value.role).toBe('radiogroup');
+    expect(radioGroup.radioGroupProps.value.name).toBe('react-radio-group');
+    expect(radioGroup.radioGroupProps.value['aria-required']).toBe(true);
+
+    let reactRadio = useAriaRadio({
+      children: 'React',
+      value: 'react'
+    } as unknown as Parameters<typeof useAriaRadio>[0], reactRadioState as unknown as Parameters<typeof useAriaRadio>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaRadio>[2]);
+    let vueRadio = useAriaRadio({
+      children: 'Vue',
+      value: 'vue'
+    } as unknown as Parameters<typeof useAriaRadio>[0], reactRadioState as unknown as Parameters<typeof useAriaRadio>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaRadio>[2]);
+
+    expect(reactRadio.inputProps.value.checked).toBe(true);
+    expect(vueRadio.inputProps.value.checked).toBe(false);
+
+    vueRadio.inputProps.value.onChange();
+    expect(selectedValue.value).toBe('vue');
+    expect(selectionCalls).toEqual(['vue']);
+    expect(vueRadio.inputProps.value.checked).toBe(true);
+    expect(reactRadio.inputProps.value.checked).toBe(false);
+
+    let targetInput = document.createElement('input');
+    targetInput.type = 'radio';
+    targetInput.value = 'vue';
+    let preventArrowDefault = vi.fn();
+    radioGroup.radioGroupProps.value.onKeyDown({
+      key: 'ArrowRight',
+      preventDefault: preventArrowDefault,
+      composedPath: () => [targetInput]
+    } as unknown as KeyboardEvent);
+    expect(preventArrowDefault).toHaveBeenCalledTimes(1);
+    expect(selectedValue.value).toBe('react');
+    expect(selectionCalls).toEqual(['vue', 'react']);
+
+    isDisabled.value = true;
+    expect(radioGroup.radioGroupProps.value['aria-disabled']).toBe(true);
+
+    reactRadio.dispose();
+    vueRadio.dispose();
+  });
+
   it('computes vue-aria search field submit and clear behavior', () => {
     let inputValue = ref('vue');
     let submitValues: string[] = [];
