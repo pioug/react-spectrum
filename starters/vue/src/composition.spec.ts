@@ -5076,6 +5076,33 @@ describe('Vue migration composition components', () => {
     refElement.remove();
   });
 
+  it('focuses useDroppableItem target when mounted after target is already active', async () => {
+    let drag = useDrag({
+      dragItems: [{id: 'item-1', type: 'item', value: {id: 1}}]
+    });
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: () => 'move'
+    });
+    let target = {
+      type: 'item' as const,
+      key: 'alpha',
+      dropPosition: 'on' as const
+    };
+    let refElement = document.createElement('button');
+    document.body.appendChild(refElement);
+
+    drag.startDrag();
+    dropState.setTarget(target);
+    useDroppableItem({target}, dropState, {current: refElement});
+    await nextTick();
+
+    expect(document.activeElement).toBe(refElement);
+
+    drag.endDrag('cancel');
+    refElement.remove();
+  });
+
   it('updates useDroppableItem visibility when virtual drag session changes', async () => {
     let drag = useDrag({
       dragItems: [{id: 'item-1', type: 'item', value: {id: 1}}]

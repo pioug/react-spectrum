@@ -1038,7 +1038,7 @@ export function useDroppableItem(
     if (ref.current && typeof ref.current.focus === 'function') {
       ref.current.focus();
     }
-  });
+  }, {immediate: true});
 
   return {
     dropProps,
