@@ -1002,6 +1002,20 @@
    - full Vue tests: `yarn test:vue` (531 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 27, 2026 — Shared `useGridListSection` label-composition parity (`@vue-aria/gridlist`)
+
+1. Aligned gridlist section rowgroup labeling with React `useLabels` behavior:
+   - rowgroup now composes section heading ownership through shared label semantics,
+   - rowgroup id now participates in `aria-labelledby` when `aria-label` coexists with heading `aria-labelledby`.
+2. Preserved section structure semantics:
+   - section row/rowheader/rowgroup roles and item behavior remain unchanged.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: section rowgroup assertions for composed `aria-labelledby` ownership (`rowheader-id` + rowgroup id).
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "gridlist semantics, item state, and section props"`,
+   - full Vue tests: `yarn test:vue` (531 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

@@ -2850,6 +2850,9 @@ describe('Vue migration composition components', () => {
     expect(section.rowHeaderProps.value.role).toBe('rowheader');
     expect(section.rowGroupProps.value.role).toBe('rowgroup');
     expect(section.rowGroupProps.value['aria-label']).toBe('Open stories');
+    let sectionLabelledByIds = section.rowGroupProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(sectionLabelledByIds).toContain(section.rowHeaderProps.value.id);
+    expect(sectionLabelledByIds).toContain(section.rowGroupProps.value.id as string);
   });
 
   it('formats locale-sensitive values with vue-aria i18n helpers', () => {
