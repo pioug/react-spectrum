@@ -5598,6 +5598,111 @@ describe('Vue migration composition components', () => {
     expect(itemDropCalls).toBe(0);
   });
 
+  it('dispatches useDroppableCollection onItemDrop with external drop metadata', () => {
+    let itemDropPayload: null | {
+      isInternal: boolean,
+      dropOperation: string,
+      target: {type: string, key: string, dropPosition: string},
+      itemCount: number
+    } = null;
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: () => 'move'
+    });
+    dropState.setTarget({
+      type: 'item',
+      key: 'alpha',
+      dropPosition: 'on'
+    });
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      onItemDrop: (event) => {
+        itemDropPayload = {
+          isInternal: Boolean(event.isInternal),
+          dropOperation: String(event.dropOperation),
+          target: {
+            type: String(event.target.type),
+            key: String(event.target.key),
+            dropPosition: String(event.target.dropPosition)
+          },
+          itemCount: event.items.length
+        };
+      }
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDrop: (input: unknown, operation?: 'cancel' | 'copy' | 'link' | 'move') => 'cancel' | 'copy' | 'link' | 'move'
+      }}
+    };
+
+    expect(droppableCollection.collectionProps.value.onDrop({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 10,
+      clientY: 12
+    }, 'move')).toBe('move');
+    expect(itemDropPayload).toEqual({
+      isInternal: false,
+      dropOperation: 'move',
+      target: {type: 'item', key: 'alpha', dropPosition: 'on'},
+      itemCount: 1
+    });
+  });
+
+  it('dispatches useDroppableCollection onItemDrop with internal drop metadata', () => {
+    let itemDropPayload: null | {
+      isInternal: boolean,
+      dropOperation: string
+    } = null;
+    let selectedKeys = ref(new Set<string>(['alpha']));
+    let dragState = useStatelyDraggableCollectionState({
+      collection: [
+        {key: 'alpha', value: {id: 1, label: 'Alpha'}}
+      ],
+      selectedKeys,
+      getItems: () => [{id: 'alpha', type: 'item', value: {id: 1}}]
+    });
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: () => 'move'
+    });
+    dropState.setTarget({
+      type: 'item',
+      key: 'alpha',
+      dropPosition: 'on'
+    });
+    let collectionRef = {current: document.createElement('div')};
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      onItemDrop: (event) => {
+        itemDropPayload = {
+          isInternal: Boolean(event.isInternal),
+          dropOperation: String(event.dropOperation)
+        };
+      }
+    }, dropState, collectionRef) as {
+      collectionProps: {value: {
+        onDrop: (input: unknown, operation?: 'cancel' | 'copy' | 'link' | 'move') => 'cancel' | 'copy' | 'link' | 'move'
+      }}
+    };
+    useDraggableCollection({}, dragState, collectionRef);
+    let draggableItem = useDraggableItem({key: 'alpha'}, dragState) as {
+      dragButtonProps: {value: {onClick: () => void}}
+    };
+    draggableItem.dragButtonProps.value.onClick();
+    useDraggableCollection({}, dragState, collectionRef);
+
+    expect(droppableCollection.collectionProps.value.onDrop({
+      items: [{id: 'alpha', type: 'item', value: {id: 1}}],
+      clientX: 14,
+      clientY: 16
+    }, 'move')).toBe('move');
+    expect(itemDropPayload).toEqual({
+      isInternal: true,
+      dropOperation: 'move'
+    });
+
+    dragState.endDrag('cancel');
+  });
+
   it('fires useDroppableCollection onDropMove only when drag position changes', () => {
     let moveEvents: Array<string> = [];
     let dropState = useStatelyDroppableCollectionState({
