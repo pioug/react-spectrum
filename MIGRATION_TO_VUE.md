@@ -2865,6 +2865,20 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Menu-item ARIA state parity remediation (`@vue-aria/menu`)
+
+1. Closed menu-item ARIA state drift against React for selectable menu roles:
+   - removed Vue-only `aria-selected` emission from `useMenuItem`,
+   - kept `aria-checked` as the sole selection-state attribute for `menuitemradio`/`menuitemcheckbox`, matching React semantics.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` menu hook assertions now verify:
+     - selectable items do not emit `aria-selected`,
+     - non-selectable `menuitem` entries emit neither `aria-checked` nor `aria-selected`.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria menu trigger and item selection semantics"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

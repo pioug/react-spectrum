@@ -18,7 +18,6 @@ export interface MenuItemAria {
     'aria-checked'?: boolean,
     'aria-disabled'?: true,
     'aria-haspopup'?: 'menu',
-    'aria-selected'?: boolean,
     id: string,
     onBlur: () => void,
     onClick: () => void,
@@ -83,7 +82,6 @@ export function useMenuItem(props: AriaMenuItemProps, menu: MenuAria): MenuItemA
       id: itemId,
       role: role.value,
       'aria-disabled': isDisabled.value || undefined,
-      'aria-selected': menu.selectionMode.value === 'none' ? undefined : isSelected.value,
       'aria-checked': menu.selectionMode.value === 'none' ? undefined : isSelected.value,
       onBlur: () => {
         menu.focusKey(null);

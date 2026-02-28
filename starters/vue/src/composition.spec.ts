@@ -6419,6 +6419,7 @@ describe('Vue migration composition components', () => {
     warn.mockRestore();
 
     expect(item.menuItemProps.value.role).toBe('menuitemcheckbox');
+    expect(item.menuItemProps.value['aria-selected']).toBeUndefined();
 
     item.menuItemProps.value.onFocus();
     expect(item.isFocused.value).toBe(true);
@@ -6429,6 +6430,15 @@ describe('Vue migration composition components', () => {
     item.menuItemProps.value.onClick();
     expect(selectedKeys.value.has('duplicate')).toBe(true);
     expect(actionEvents).toEqual(['item:duplicate', 'duplicate']);
+    expect(item.menuItemProps.value['aria-checked']).toBe(true);
+    expect(item.menuItemProps.value['aria-selected']).toBeUndefined();
+
+    let plainItem = useAriaMenuItem({
+      key: 'plain-item'
+    }, dashedMenu);
+    expect(plainItem.menuItemProps.value.role).toBe('menuitem');
+    expect(plainItem.menuItemProps.value['aria-checked']).toBeUndefined();
+    expect(plainItem.menuItemProps.value['aria-selected']).toBeUndefined();
 
     let section = useMenuSection({
       heading: 'Edit options'
