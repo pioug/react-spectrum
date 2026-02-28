@@ -4647,6 +4647,28 @@ describe('Vue migration composition components', () => {
     expect(fallbackTabListState.selectedKey.value).toBe('svelte');
   });
 
+  it('repositions vue-stately tab selection when the selected tab is removed from collection', async () => {
+    let options = reactive({
+      collection: new StatelyListCollection([
+        {key: 'vue', textValue: 'Vue', type: 'item', value: {label: 'Vue'}},
+        {key: 'react', textValue: 'React', type: 'item', value: {label: 'React'}},
+        {key: 'svelte', textValue: 'Svelte', type: 'item', value: {label: 'Svelte'}}
+      ] as StatelyListNode<{label: string}>[]),
+      defaultSelectedKey: 'react'
+    });
+    let tabListState = useStatelyTabListState(options);
+    expect(tabListState.selectedKey.value).toBe('react');
+
+    options.collection = new StatelyListCollection([
+      {key: 'vue', textValue: 'Vue', type: 'item', value: {label: 'Vue'}},
+      {key: 'svelte', textValue: 'Svelte', type: 'item', value: {label: 'Svelte'}}
+    ] as StatelyListNode<{label: string}>[]);
+    await nextTick();
+
+    expect(tabListState.selectedKey.value).toBe('vue');
+    expect(tabListState.selectionManager.focusedKey.value).toBe('vue');
+  });
+
   it('manages vue-stately toast queue visibility, close lifecycle, and queue subscriptions', () => {
     let closedToasts: string[] = [];
     let toastState = useStatelyToastState<string>({

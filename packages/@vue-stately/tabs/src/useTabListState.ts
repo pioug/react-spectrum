@@ -47,7 +47,24 @@ export interface TabListState<T> extends SingleSelectListState<T> {
  */
 export function useTabListState<T extends object>(props: TabListStateOptions<T>): TabListState<T> {
   let state = useSingleSelectListState<T>({
-    ...props,
+    get collection() {
+      return props.collection;
+    },
+    get disabledKeys() {
+      return props.disabledKeys;
+    },
+    get filter() {
+      return props.filter;
+    },
+    get items() {
+      return props.items;
+    },
+    get layoutDelegate() {
+      return props.layoutDelegate;
+    },
+    get selectedKey() {
+      return props.selectedKey;
+    },
     onSelectionChange: props.onSelectionChange
       ? (key) => {
         if (key != null) {
@@ -87,7 +104,18 @@ export function useTabListState<T extends object>(props: TabListStateOptions<T>)
   });
 
   return {
-    ...state,
+    get collection() {
+      return state.collection;
+    },
+    get disabledKeys() {
+      return state.disabledKeys;
+    },
+    get selectionManager() {
+      return state.selectionManager;
+    },
+    selectedItem: state.selectedItem,
+    selectedKey: state.selectedKey,
+    setSelectedKey: state.setSelectedKey,
     isDisabled: Boolean(props.isDisabled)
   };
 }

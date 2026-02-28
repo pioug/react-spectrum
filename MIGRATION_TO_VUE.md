@@ -2635,13 +2635,26 @@
    - full Vue tests: `yarn test:vue` (643 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Tab-list collection-reactivity forwarding parity remediation (`@vue-stately/tabs`)
+
+1. Closed reactive prop-forwarding drift in `useTabListState`:
+   - tab-list now forwards list-state inputs via live getters instead of setup-time spread snapshots.
+2. Closed stale-state projection drift on returned tab state:
+   - returned tab state now exposes base list state through live getters to keep collection/selection-manager reads synchronized.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` now includes selected-tab removal behavior for reactive collection updates.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "tab list"`,
+   - full Vue tests: `yarn test:vue` (644 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 643 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 644 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).
