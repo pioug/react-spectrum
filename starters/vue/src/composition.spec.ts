@@ -2725,6 +2725,21 @@ describe('Vue migration composition components', () => {
     expect(grid.gridProps.value['aria-rowcount']).toBe(2);
     expect(grid.keyboardDelegate.value.getKeyBelow('row-1')).toBe('row-2');
 
+    let dashedAriaGrid = useGrid({
+      'aria-label': 'Dashed tickets',
+      collection,
+      selectionMode: 'none'
+    });
+    expect(dashedAriaGrid.gridProps.value['aria-label']).toBe('Dashed tickets');
+
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    useGrid({
+      collection,
+      selectionMode: 'none'
+    });
+    expect(warn).toHaveBeenCalledWith('An aria-label or aria-labelledby prop is required for accessibility.');
+    warn.mockRestore();
+
     let row = useGridRow({
       grid,
       isVirtualized: true,

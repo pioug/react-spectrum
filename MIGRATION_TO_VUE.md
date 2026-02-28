@@ -1093,6 +1093,20 @@
    - full Vue tests: `yarn test:vue` (531 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 27, 2026 — Shared `useGrid` aria prop-surface parity (`@vue-aria/grid`)
+
+1. Aligned grid labelable prop surface with React:
+   - `useGrid` now accepts both dashed and camel ARIA naming (`aria-label`/`aria-labelledby` and aliases),
+   - emitted grid props now resolve labels from either path.
+2. Added missing accessibility warning parity:
+   - in development, `useGrid` now warns when neither `aria-label` nor `aria-labelledby` is provided.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: assertions for dashed `aria-label` passthrough and missing-label warning behavior.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "grid semantics plus row and cell selection behavior"`,
+   - full Vue tests: `yarn test:vue` (531 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

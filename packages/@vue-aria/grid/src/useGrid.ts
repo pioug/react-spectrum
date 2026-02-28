@@ -3,6 +3,8 @@ import {type GridCollection, type GridKey, type GridSelectionMode, type MaybeRef
 import {GridKeyboardDelegate} from './GridKeyboardDelegate';
 
 export interface GridProps {
+  'aria-label'?: MaybeRef<string | undefined>,
+  'aria-labelledby'?: MaybeRef<string | undefined>,
   ariaLabel?: MaybeRef<string | undefined>,
   ariaLabelledby?: MaybeRef<string | undefined>,
   focusMode?: MaybeRef<'cell' | 'row'>,
@@ -63,6 +65,14 @@ function toKeySet(keys: MaybeRef<Iterable<GridKey>> | undefined): Set<GridKey> {
   return new Set(Array.from(resolved, (key) => String(key)));
 }
 
+function resolveOptionalString(value: MaybeRef<string | undefined> | undefined): string | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+
+  return unref(value);
+}
+
 export function useGrid(options: AriaGridOptions): GridAria {
   gridId += 1;
 
@@ -76,6 +86,12 @@ export function useGrid(options: AriaGridOptions): GridAria {
   let selectedKeys = options.selectedKeys ?? ref(new Set<GridKey>());
   let focusedKey = options.focusedKey ?? ref<GridKey | null>(null);
   let isFocused = ref(false);
+  let ariaLabel = computed(() => resolveOptionalString(options.ariaLabel) ?? resolveOptionalString(options['aria-label']));
+  let ariaLabelledby = computed(() => resolveOptionalString(options.ariaLabelledby) ?? resolveOptionalString(options['aria-labelledby']));
+
+  if (!ariaLabel.value && !ariaLabelledby.value && process.env.NODE_ENV !== 'production') {
+    console.warn('An aria-label or aria-labelledby prop is required for accessibility.');
+  }
 
   let keyboardDelegate = computed(() => {
     return new GridKeyboardDelegate({
@@ -227,8 +243,8 @@ export function useGrid(options: AriaGridOptions): GridAria {
     return {
       role: 'grid' as const,
       id,
-      'aria-label': unref(options.ariaLabel),
-      'aria-labelledby': unref(options.ariaLabelledby),
+      'aria-label': ariaLabel.value,
+      'aria-labelledby': ariaLabelledby.value,
       'aria-multiselectable': selectionMode.value === 'multiple' ? 'true' : undefined,
       'aria-rowcount': isVirtualized.value ? rows.length : undefined,
       'aria-colcount': isVirtualized.value ? resolvedColumnCount : undefined,
