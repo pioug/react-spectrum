@@ -4600,6 +4600,7 @@ describe('Vue migration composition components', () => {
       acceptedDragTypes: ['item'],
       getDropOperation: () => 'cancel'
     });
+    dropState.setTarget({type: 'root'});
     let droppableCollection = useDroppableCollection({
       acceptedDragTypes: ['item'],
       onDropEnter,
@@ -4620,6 +4621,7 @@ describe('Vue migration composition components', () => {
     };
 
     expect(droppableCollection.collectionProps.value.onDragEnter(payload)).toBe(false);
+    expect(dropState.target.value).toBeNull();
     droppableCollection.collectionProps.value.onDragOver({
       ...payload,
       clientX: 15,

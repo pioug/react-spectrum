@@ -711,6 +711,10 @@ export function useDroppableCollection(
       didEnter = stateRecord.enter(items) !== false;
     }
     if (!didEnter) {
+      if (typeof stateRecord.setTarget === 'function') {
+        stateRecord.setTarget(null);
+      }
+
       return false;
     }
 
