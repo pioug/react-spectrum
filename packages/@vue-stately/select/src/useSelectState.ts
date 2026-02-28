@@ -13,6 +13,7 @@ import {
   useListState
 } from '@vue-stately/list';
 import {type OverlayTriggerProps, type OverlayTriggerState, useOverlayTriggerState} from '@vue-stately/overlays';
+import {useControlledState} from '@vue-stately/utils';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 export type SelectSelectionMode = Extract<ListSelectionMode, 'multiple' | 'single'>;
@@ -119,23 +120,6 @@ export function useSelectState<T extends object, M extends SelectSelectionMode =
   let selectionMode = computed<SelectSelectionMode>(() => unref(options.selectionMode) ?? 'single');
   let triggerState = useOverlayTriggerState(options);
   let focusStrategy = ref<FocusStrategy | null>(null);
-  let isValueControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
-  let isSelectedKeyControlled = computed(() => {
-    if (selectionMode.value !== 'single' || options.value !== undefined) {
-      return false;
-    }
-
-    return options.selectedKey !== undefined && options.selectedKey.value !== undefined;
-  });
-  let isControlled = computed(() => isValueControlled.value || isSelectedKeyControlled.value);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasControlled.value = nextIsControlled;
-  });
 
   let derivedDefaultValue = computed<Key | readonly Key[] | null>(() => {
     if (options.defaultValue !== undefined) {
@@ -150,49 +134,32 @@ export function useSelectState<T extends object, M extends SelectSelectionMode =
   });
 
   let controlledValue = computed<Key | readonly Key[] | null | undefined>(() => {
-    if (isValueControlled.value && options.value !== undefined) {
+    if (options.value !== undefined) {
       return options.value.value as Key | readonly Key[] | null | undefined;
     }
 
-    if (isSelectedKeyControlled.value && options.selectedKey !== undefined) {
+    if (selectionMode.value === 'single' && options.selectedKey !== undefined) {
       return options.selectedKey.value;
     }
 
     return undefined;
   });
-
-  let uncontrolledValue = ref<Key | readonly Key[] | null>(derivedDefaultValue.value);
-  let rawValue = computed<Key | readonly Key[] | null>(() => {
-    if (controlledValue.value !== undefined) {
-      return controlledValue.value;
-    }
-
-    return uncontrolledValue.value;
-  });
+  let [rawValue, setRawValue] = useControlledState<Key | readonly Key[] | null, SelectValue<M>>(
+    controlledValue as Ref<Key | readonly Key[] | null | undefined>,
+    derivedDefaultValue.value,
+    options.onChange
+  );
 
   let value = computed<SelectValue<M>>(() => {
     let normalizedValue = normalizeValueForSelectionMode(rawValue.value, selectionMode.value);
     return normalizedValue as SelectValue<M>;
   });
 
-  let commitValue = (nextValue: Key | readonly Key[] | null): void => {
-    let normalizedValue = normalizeValueForSelectionMode(nextValue, selectionMode.value);
-    if (Object.is(rawValue.value, normalizedValue)) {
-      return;
-    }
-
-    if (!isValueControlled.value && !isSelectedKeyControlled.value) {
-      uncontrolledValue.value = normalizedValue;
-    }
-
-    options.onChange?.(normalizedValue as SelectValue<M>);
-  };
-
   let setValue = (nextValue: Key | readonly Key[] | null): void => {
     if (selectionMode.value === 'single') {
       let normalizedKey = Array.isArray(nextValue) ? nextValue[0] ?? null : nextValue;
       let previousKey = value.value as Key | null;
-      commitValue(normalizedKey);
+      setRawValue(normalizedKey);
 
       if (normalizedKey !== previousKey) {
         options.onSelectionChange?.(normalizedKey);
@@ -201,7 +168,7 @@ export function useSelectState<T extends object, M extends SelectSelectionMode =
       return;
     }
 
-    commitValue(normalizeValueForSelectionMode(nextValue, 'multiple'));
+    setRawValue(normalizeValueForSelectionMode(nextValue, 'multiple'));
   };
 
   let selectedKeys = ref(normalizeSet(value.value as Key | readonly Key[] | null));

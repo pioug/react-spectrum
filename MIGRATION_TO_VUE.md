@@ -2300,6 +2300,21 @@
    - full Vue tests: `yarn test:vue` (630 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Select controlled ownership parity remediation (`@vue-stately/select`)
+
+1. Closed remaining controlled ownership drift in `useSelectState`:
+   - replaced ad hoc controlled/uncontrolled value management with shared `useControlledState`,
+   - removed direct controlled write-through branches while preserving `value`/`selectedKey` compatibility behavior for single and multiple selection modes.
+2. Preserved React-style event behavior:
+   - `onChange` now follows helper equality semantics for repeated same-value writes in controlled no-parent-sync scenarios,
+   - `onSelectionChange` intent semantics for repeated controller calls remain intact.
+3. Updated regression expectation to match React helper behavior:
+   - `starters/vue/src/composition.spec.ts` controlled select test now expects `onChange` duplicate suppression for repeated same-key writes in one turn.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "vue-stately select"` and full `src/composition.spec.ts`,
+   - full Vue tests: `yarn test:vue` (630 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### February 28, 2026 — Shared controlled helper identity parity remediation (`@vue-stately/utils`)
 
 1. Closed a cross-hook identity mismatch in `useControlledState` affecting object values (`Array`, `Set`, object payloads):

@@ -3751,7 +3751,7 @@ describe('Vue migration composition components', () => {
     expect(selectionChanges).toEqual(['svelte']);
 
     singleState.setSelectedKey('svelte');
-    expect(changedValues).toEqual(['svelte', 'svelte']);
+    expect(changedValues).toEqual(['svelte']);
     expect(selectionChanges).toEqual(['svelte', 'svelte']);
 
     let multiValue = ref<readonly string[] | undefined>(['react']);
