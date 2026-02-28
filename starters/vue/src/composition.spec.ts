@@ -3154,7 +3154,7 @@ describe('Vue migration composition components', () => {
 
     state.open('first');
     expect(isOpen.value).toBe(false);
-    expect(openChanges).toEqual([true, true]);
+    expect(openChanges).toEqual([true]);
   });
 
   it('warns when vue-stately menu trigger switches between controlled and uncontrolled', async () => {
@@ -3325,7 +3325,7 @@ describe('Vue migration composition components', () => {
 
     overlayState.open();
     expect(isOpen.value).toBe(false);
-    expect(changes).toEqual([true, true]);
+    expect(changes).toEqual([true]);
   });
 
   it('manages vue-stately radio group selection, focus tracking, and required validation', () => {

@@ -1,4 +1,5 @@
-import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
+import {useControlledState} from '@vue-stately/utils';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 
@@ -37,24 +38,11 @@ export interface RootMenuTriggerState extends MenuTriggerState {
  * Manages root menu trigger open state and nested submenu key stacks.
  */
 export function useMenuTriggerState(props: MenuTriggerProps = {}): RootMenuTriggerState {
-  let internalOpen = ref(Boolean(unref(props.defaultOpen)));
-  let isControlled = computed(() => props.isOpen !== undefined && props.isOpen.value !== undefined);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasControlled.value = nextIsControlled;
-  });
-
-  let isOpen = computed(() => {
-    if (isControlled.value && props.isOpen) {
-      return props.isOpen.value;
-    }
-
-    return internalOpen.value;
-  });
+  let [isOpen, setOpenInternal] = useControlledState(
+    props.isOpen,
+    Boolean(unref(props.defaultOpen)),
+    props.onOpenChange
+  );
   let focusStrategy = ref<FocusStrategy | null>(null);
   let expandedKeysStack = ref<Key[]>([]);
 
@@ -63,19 +51,11 @@ export function useMenuTriggerState(props: MenuTriggerProps = {}): RootMenuTrigg
       return;
     }
 
-    if (isOpen.value === nextOpen) {
-      return;
-    }
-
-    if (!isControlled.value) {
-      internalOpen.value = nextOpen;
-    }
-
-    if (!nextOpen) {
+    if (!nextOpen && isOpen.value) {
       expandedKeysStack.value = [];
     }
 
-    props.onOpenChange?.(nextOpen);
+    setOpenInternal(nextOpen);
   };
 
   let open = (nextFocusStrategy: FocusStrategy | null = null): void => {

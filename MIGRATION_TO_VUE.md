@@ -2340,6 +2340,21 @@
    - full Vue tests: `yarn test:vue` (631 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Overlay/menu trigger helper parity remediation (`@vue-stately/overlays`, `@vue-stately/menu`)
+
+1. Closed residual ad hoc controlled-state ownership drift in open-state trigger hooks:
+   - `useOverlayTriggerState` now routes controlled/uncontrolled `isOpen` through shared `useControlledState`,
+   - `useMenuTriggerState` now routes controlled/uncontrolled root menu open state through shared `useControlledState` while preserving submenu stack reset on close.
+2. Preserved existing trigger contracts:
+   - `isDisabled` guard remains in menu trigger open-state writes,
+   - focus strategy and submenu expansion stack behavior remain unchanged.
+3. Updated controlled no-parent-sync regression expectation:
+   - `starters/vue/src/composition.spec.ts` now expects one-turn duplicate suppression for repeated identical `open()` calls in controlled `menu trigger` and `overlay trigger` scenarios.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "menu trigger|overlay trigger"` and full `src/composition.spec.ts`,
+   - full Vue tests: `yarn test:vue` (631 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

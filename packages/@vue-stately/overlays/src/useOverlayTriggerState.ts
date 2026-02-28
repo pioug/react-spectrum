@@ -1,4 +1,5 @@
-import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
+import {computed, type ComputedRef, type Ref, unref} from 'vue';
+import {useControlledState} from '@vue-stately/utils';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 
@@ -20,35 +21,20 @@ export interface OverlayTriggerState {
  * Manages state for an overlay trigger.
  */
 export function useOverlayTriggerState(props: OverlayTriggerProps = {}): OverlayTriggerState {
-  let uncontrolledOpen = ref(Boolean(unref(props.defaultOpen)));
-  let isControlled = computed(() => props.isOpen !== undefined && unref(props.isOpen) !== undefined);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasControlled.value = nextIsControlled;
-  });
-
-  let isOpen = computed(() => {
-    if (isControlled.value) {
-      return Boolean(unref(props.isOpen));
-    }
-
-    return uncontrolledOpen.value;
-  });
+  let controlledOpen = props.isOpen === undefined
+    ? undefined
+    : computed<boolean | undefined>(() => {
+      let nextOpen = unref(props.isOpen);
+      return nextOpen === undefined ? undefined : Boolean(nextOpen);
+    });
+  let [isOpen, setOpenInternal] = useControlledState(
+    controlledOpen,
+    Boolean(unref(props.defaultOpen)),
+    props.onOpenChange
+  );
 
   let setOpen = (nextOpen: boolean): void => {
-    if (isOpen.value === nextOpen) {
-      return;
-    }
-
-    if (!isControlled.value) {
-      uncontrolledOpen.value = nextOpen;
-    }
-
-    props.onOpenChange?.(nextOpen);
+    setOpenInternal(nextOpen);
   };
 
   let open = (): void => {
