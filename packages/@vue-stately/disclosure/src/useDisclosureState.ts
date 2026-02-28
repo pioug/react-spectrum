@@ -1,10 +1,10 @@
-import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 
 export interface DisclosureProps {
   /** Whether the disclosure is expanded (controlled). */
-  isExpanded?: Ref<boolean>,
+  isExpanded?: Ref<boolean | undefined>,
   /** Whether the disclosure is expanded by default (uncontrolled). */
   defaultExpanded?: MaybeRef<boolean>,
   /** Handler that is called when the disclosure expanded state changes. */
@@ -30,9 +30,18 @@ export interface DisclosureState {
  */
 export function useDisclosureState(props: DisclosureProps = {}): DisclosureState {
   let uncontrolledExpanded = ref(Boolean(unref(props.defaultExpanded)));
+  let isControlled = computed(() => props.isExpanded !== undefined && props.isExpanded.value !== undefined);
+  let wasControlled = ref(isControlled.value);
+
+  watch(isControlled, (nextIsControlled) => {
+    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasControlled.value = nextIsControlled;
+  });
 
   let isExpanded = computed(() => {
-    if (props.isExpanded) {
+    if (isControlled.value && props.isExpanded) {
       return props.isExpanded.value;
     }
 
@@ -40,7 +49,11 @@ export function useDisclosureState(props: DisclosureProps = {}): DisclosureState
   });
 
   let setExpanded = (nextExpanded: boolean): void => {
-    if (props.isExpanded) {
+    if (isExpanded.value === nextExpanded) {
+      return;
+    }
+
+    if (isControlled.value && props.isExpanded) {
       props.isExpanded.value = nextExpanded;
     } else {
       uncontrolledExpanded.value = nextExpanded;

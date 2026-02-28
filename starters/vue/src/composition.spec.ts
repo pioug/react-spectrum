@@ -1384,7 +1384,7 @@ describe('Vue migration composition components', () => {
     expect(expanded.value).toBe(false);
     disclosure.collapse();
     expect(expanded.value).toBe(false);
-    expect(changes).toEqual([true, false, false]);
+    expect(changes).toEqual([true, false]);
   });
 
   it('manages vue-stately disclosure group expanded keys for single and multiple modes', () => {
@@ -1404,6 +1404,86 @@ describe('Vue migration composition components', () => {
     expect(Array.from(multipleGroup.expandedKeys.value)).toEqual(['one', 'two']);
     multipleGroup.toggleKey('one');
     expect(Array.from(multipleGroup.expandedKeys.value)).toEqual(['two']);
+  });
+
+  it('warns when vue-stately disclosure hooks switch between controlled and uncontrolled', async () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    try {
+      let overlayOpen = ref<boolean | undefined>(true);
+      useStatelyOverlayTriggerState({
+        isOpen: overlayOpen
+      });
+
+      overlayOpen.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      overlayOpen.value = false;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+
+      let disclosureExpanded = ref<boolean | undefined>(true);
+      useStatelyDisclosureState({
+        isExpanded: disclosureExpanded
+      });
+
+      disclosureExpanded.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      disclosureExpanded.value = false;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+
+      let disclosureExpandedKeys = ref<Set<string> | undefined>(new Set(['alpha']));
+      useStatelyDisclosureGroupState({
+        expandedKeys: disclosureExpandedKeys
+      });
+
+      disclosureExpandedKeys.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      disclosureExpandedKeys.value = new Set(['beta']);
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it('keeps vue-stately overlay and disclosure hooks uncontrolled when control refs are undefined', () => {
+    let overlayOpen = ref<boolean | undefined>(undefined);
+    let overlayState = useStatelyOverlayTriggerState({
+      defaultOpen: false,
+      isOpen: overlayOpen
+    });
+
+    overlayState.open();
+    expect(overlayOpen.value).toBeUndefined();
+    expect(overlayState.isOpen.value).toBe(true);
+
+    let disclosureExpanded = ref<boolean | undefined>(undefined);
+    let disclosureState = useStatelyDisclosureState({
+      defaultExpanded: false,
+      isExpanded: disclosureExpanded
+    });
+
+    disclosureState.expand();
+    expect(disclosureExpanded.value).toBeUndefined();
+    expect(disclosureState.isExpanded.value).toBe(true);
+
+    let disclosureExpandedKeys = ref<Set<string> | undefined>(undefined);
+    let disclosureGroupState = useStatelyDisclosureGroupState({
+      allowsMultipleExpanded: true,
+      defaultExpandedKeys: ['alpha'],
+      expandedKeys: disclosureExpandedKeys
+    });
+
+    disclosureGroupState.toggleKey('beta');
+    expect(disclosureExpandedKeys.value).toBeUndefined();
+    expect(Array.from(disclosureGroupState.expandedKeys.value).sort()).toEqual(['alpha', 'beta']);
   });
 
   it('tracks vue-aria dnd drag lifecycle callbacks and operation state', () => {

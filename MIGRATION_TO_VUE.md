@@ -1421,6 +1421,25 @@
    - full Vue tests: `yarn test:vue` (554 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Overlay/Disclosure controlled ownership parity (`@vue-stately/overlays`, `@vue-stately/disclosure`)
+
+1. Aligned controlled-state semantics for overlay/disclosure stores with React `useControlledState` behavior:
+   - `useOverlayTriggerState`, `useDisclosureState`, and `useDisclosureGroupState` now treat ref-backed props as controlled only when the ref value is not `undefined`,
+   - ref-backed `undefined` control refs now remain uncontrolled (internal state updates) instead of forcing prop writes.
+2. Aligned controlled/uncontrolled transition warning behavior:
+   - all three hooks now emit `WARN: A component changed from ...` when ownership transitions between controlled and uncontrolled in development.
+3. Closed disclosure no-op emission drift:
+   - `useDisclosureState.setExpanded` now no-ops when the next value matches current state, matching React controlled-state behavior and avoiding duplicate `onExpandedChange` emissions.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - warning assertions for controlled/uncontrolled transitions in overlay, disclosure, and disclosure-group hooks,
+     - assertions that ref-backed `undefined` control refs remain uncontrolled for all three hooks,
+     - updated disclosure transition test to assert React-like no-op emission behavior.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately disclosure expansion state transitions|manages vue-stately disclosure group expanded keys for single and multiple modes|warns when vue-stately disclosure hooks switch between controlled and uncontrolled|keeps vue-stately overlay and disclosure hooks uncontrolled when control refs are undefined|manages vue-stately overlay trigger open, close, and toggle state"`,
+   - full Vue tests: `yarn test:vue` (556 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

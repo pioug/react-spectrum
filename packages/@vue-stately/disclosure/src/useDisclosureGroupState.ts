@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, type Ref, ref, unref, watchEffect} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref, watch, watchEffect} from 'vue';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 
@@ -10,7 +10,7 @@ export interface DisclosureGroupProps {
   /** Whether all items are disabled. */
   isDisabled?: MaybeRef<boolean>,
   /** The currently expanded keys in the group (controlled). */
-  expandedKeys?: Ref<Set<Key>>,
+  expandedKeys?: Ref<Set<Key> | undefined>,
   /** The initial expanded keys in the group (uncontrolled). */
   defaultExpandedKeys?: Iterable<Key>,
   /** Handler that is called when items are expanded or collapsed. */
@@ -25,7 +25,7 @@ export interface DisclosureGroupState {
   isDisabled: ComputedRef<boolean>,
 
   /** A set of keys for items that are expanded. */
-  expandedKeys: Ref<Set<Key>>,
+  expandedKeys: ComputedRef<Set<Key>>,
 
   /** Toggles the expanded state for an item by its key. */
   toggleKey: (key: Key) => void,
@@ -42,7 +42,23 @@ export function useDisclosureGroupState(props: DisclosureGroupProps = {}): Discl
   let allowsMultipleExpanded = computed(() => Boolean(unref(props.allowsMultipleExpanded)));
   let isDisabled = computed(() => Boolean(unref(props.isDisabled)));
   let uncontrolledExpandedKeys = ref(new Set(props.defaultExpandedKeys ?? []));
-  let expandedKeys = props.expandedKeys ?? uncontrolledExpandedKeys;
+  let isControlled = computed(() => props.expandedKeys !== undefined && props.expandedKeys.value !== undefined);
+  let wasControlled = ref(isControlled.value);
+
+  watch(isControlled, (nextIsControlled) => {
+    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasControlled.value = nextIsControlled;
+  });
+
+  let expandedKeys = computed(() => {
+    if (isControlled.value && props.expandedKeys) {
+      return props.expandedKeys.value;
+    }
+
+    return uncontrolledExpandedKeys.value;
+  });
 
   let setExpandedKeys = (nextKeys: Set<Key>): void => {
     let normalizedKeys = new Set(nextKeys);
@@ -52,7 +68,12 @@ export function useDisclosureGroupState(props: DisclosureGroupProps = {}): Discl
       normalizedKeys = firstKey == null ? new Set() : new Set([firstKey]);
     }
 
-    expandedKeys.value = normalizedKeys;
+    if (isControlled.value && props.expandedKeys) {
+      props.expandedKeys.value = normalizedKeys;
+    } else {
+      uncontrolledExpandedKeys.value = normalizedKeys;
+    }
+
     props.onExpandedChange?.(new Set(normalizedKeys));
   };
 
