@@ -21,6 +21,7 @@ import {
   useDatePicker,
   useDateRangePicker,
   useDateSegment,
+  useDisplayNames,
   useTimeField
 } from '@vue-aria/datepicker';
 import {useDialog as useAriaDialog} from '@vue-aria/dialog';
@@ -3356,7 +3357,110 @@ describe('Vue migration composition components', () => {
     } as unknown as Parameters<typeof useDateSegment>[0], dateFieldState as unknown as Parameters<typeof useDateSegment>[1], {
       current: null
     } as unknown as Parameters<typeof useDateSegment>[2]);
-    expect(dateSegment.segmentProps).toEqual({});
+    expect(dateSegment.segmentProps.value.role).toBe('spinbutton');
+    expect(dateSegment.segmentProps.value.contentEditable).toBe(true);
+  });
+
+  it('maps date segment interactions to spinbutton and state callbacks', () => {
+    let incrementCalls: string[] = [];
+    let clearCalls: string[] = [];
+    let setSegmentCalls: Array<[string, number]> = [];
+    let focusNextCalls = 0;
+    let focusPreviousCalls = 0;
+    let segmentRef = document.createElement('div');
+
+    let segmentState = {
+      ariaLabel: 'Start date',
+      clearSegment: (segmentType: string) => {
+        clearCalls.push(segmentType);
+      },
+      decrement: () => {},
+      focusNext: () => {
+        focusNextCalls += 1;
+      },
+      focusPrevious: () => {
+        focusPreviousCalls += 1;
+      },
+      increment: (segmentType: string) => {
+        incrementCalls.push(segmentType);
+      },
+      isDisabled: ref(false),
+      isInvalid: ref(true),
+      isReadOnly: ref(false),
+      isRequired: ref(true),
+      setSegment: (segmentType: string, value: number) => {
+        setSegmentCalls.push([segmentType, value]);
+      }
+    };
+
+    let dateSegment = useDateSegment({
+      isEditable: true,
+      isPlaceholder: false,
+      maxValue: 31,
+      minValue: 1,
+      placeholder: 'dd',
+      text: '12',
+      type: 'day',
+      value: 12
+    } as unknown as Parameters<typeof useDateSegment>[0], segmentState as unknown as Parameters<typeof useDateSegment>[1], {
+      current: segmentRef
+    } as unknown as Parameters<typeof useDateSegment>[2]);
+
+    expect(dateSegment.segmentProps.value.role).toBe('spinbutton');
+    expect(dateSegment.segmentProps.value['aria-invalid']).toBe('true');
+    expect(dateSegment.segmentProps.value['aria-readonly']).toBeUndefined();
+    expect(dateSegment.segmentProps.value.inputMode).toBe('numeric');
+    expect(dateSegment.segmentProps.value.tabIndex).toBe(0);
+
+    dateSegment.segmentProps.value.onKeyDown({
+      altKey: false,
+      ctrlKey: false,
+      isComposing: false,
+      key: 'ArrowUp',
+      metaKey: false,
+      preventDefault: () => {},
+      shiftKey: false,
+      stopPropagation: () => {}
+    } as unknown as KeyboardEvent);
+    expect(incrementCalls).toEqual(['day']);
+
+    let preventDefault = vi.fn();
+    let stopPropagation = vi.fn();
+    dateSegment.segmentProps.value.onKeyDown({
+      altKey: false,
+      ctrlKey: false,
+      isComposing: false,
+      key: 'Backspace',
+      metaKey: false,
+      preventDefault,
+      shiftKey: false,
+      stopPropagation
+    } as unknown as KeyboardEvent);
+    expect(preventDefault).toHaveBeenCalledTimes(1);
+    expect(stopPropagation).toHaveBeenCalledTimes(1);
+    expect(clearCalls).toEqual(['day']);
+
+    let preventBeforeInput = vi.fn();
+    dateSegment.segmentProps.value.onBeforeInput?.({
+      data: '3',
+      inputType: 'insertText',
+      preventDefault: preventBeforeInput
+    } as unknown as InputEvent);
+    expect(preventBeforeInput).toHaveBeenCalledTimes(1);
+    expect(setSegmentCalls).toEqual([['day', 3]]);
+
+    let literalSegment = useDateSegment({
+      text: '/',
+      type: 'literal'
+    } as unknown as Parameters<typeof useDateSegment>[0], segmentState as unknown as Parameters<typeof useDateSegment>[1], {
+      current: segmentRef
+    } as unknown as Parameters<typeof useDateSegment>[2]);
+    expect(literalSegment.segmentProps.value['aria-hidden']).toBe(true);
+
+    let displayNames = useDisplayNames();
+    expect(displayNames.of('day')).toBeTruthy();
+    expect(focusNextCalls).toBe(0);
+    expect(focusPreviousCalls).toBe(0);
   });
 
   it('manages vue-stately date and time field state', () => {
