@@ -1,4 +1,4 @@
-import {defineComponent, onMounted, onUnmounted, ref, watch} from 'vue';
+import {defineComponent, getCurrentScope, onMounted, onScopeDispose, onUnmounted, ref, watch} from 'vue';
 
 type GenericFunction = (...args: unknown[]) => unknown;
 type Orientation = 'horizontal' | 'vertical';
@@ -104,6 +104,9 @@ type KeyEvent = {
   ctrlKey: boolean,
   metaKey: boolean
 };
+
+let descriptionId = 0;
+const descriptionNodes = new Map<string, {refCount: number, element: HTMLDivElement}>();
 
 function canUseDOM(): boolean {
   return typeof window !== 'undefined' && typeof document !== 'undefined';
@@ -568,9 +571,45 @@ export function useViewportSize(): ViewportSize {
 }
 
 export function useDescription(description: string = ''): AriaLabelingProps {
-  let id = `vs-description-${Math.random().toString(36).slice(2)}`;
+  if (!description || !canUseDOM()) {
+    return {
+      'aria-describedby': undefined
+    };
+  }
+
+  let node = descriptionNodes.get(description);
+  if (!node) {
+    let id = `vs-description-${descriptionId++}`;
+    let element = document.createElement('div');
+    element.id = id;
+    element.style.display = 'none';
+    element.textContent = description;
+    document.body.appendChild(element);
+    node = {
+      refCount: 0,
+      element
+    };
+    descriptionNodes.set(description, node);
+  }
+
+  node.refCount++;
+  if (getCurrentScope()) {
+    onScopeDispose(() => {
+      let existing = descriptionNodes.get(description);
+      if (!existing) {
+        return;
+      }
+
+      existing.refCount--;
+      if (existing.refCount <= 0) {
+        existing.element.remove();
+        descriptionNodes.delete(description);
+      }
+    });
+  }
+
   return {
-    'aria-describedby': description ? id : undefined
+    'aria-describedby': node.element.id
   };
 }
 

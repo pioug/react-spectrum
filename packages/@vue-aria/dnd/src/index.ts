@@ -824,6 +824,26 @@ export function useDroppableCollection(
     }));
   };
 
+  let getDropOperationWithRootFallback = (items: DragItem[], fallback: DropOperation): DropOperation => {
+    let target = readDropTarget(stateRecord);
+    let operation = getDropOperation(items, target, fallback);
+    if (operation !== 'cancel' || target == null || target.type === 'root') {
+      return operation;
+    }
+
+    let rootTarget: DropTarget = {type: 'root'};
+    let rootOperation = getDropOperation(items, rootTarget, fallback);
+    if (rootOperation === 'cancel') {
+      return 'cancel';
+    }
+
+    if (typeof stateRecord.setTarget === 'function') {
+      stateRecord.setTarget(rootTarget);
+    }
+
+    return rootOperation;
+  };
+
   let getItemTypes = (item: DragItem): Set<string> => {
     let itemRecord = item as AnyRecord;
     if (itemRecord.kind === 'directory') {
@@ -946,7 +966,7 @@ export function useDroppableCollection(
     }
 
     if (isDraggingOverCollection) {
-      if (getDropOperation(items, readDropTarget(stateRecord), DEFAULT_DROP_OPERATION) === 'cancel') {
+      if (getDropOperationWithRootFallback(items, DEFAULT_DROP_OPERATION) === 'cancel') {
         onDragLeave(input);
         return false;
       }
@@ -958,11 +978,7 @@ export function useDroppableCollection(
       stateRecord.setTarget({type: 'root'});
     }
 
-    let didEnter = true;
-    if (typeof stateRecord.enter === 'function') {
-      didEnter = stateRecord.enter(items) !== false;
-    }
-    if (!didEnter) {
+    if (getDropOperationWithRootFallback(items, DEFAULT_DROP_OPERATION) === 'cancel') {
       if (typeof stateRecord.setTarget === 'function') {
         stateRecord.setTarget(null);
       }
@@ -970,11 +986,11 @@ export function useDroppableCollection(
       return false;
     }
 
-    if (getDropOperation(items, readDropTarget(stateRecord), DEFAULT_DROP_OPERATION) === 'cancel') {
-      if (typeof stateRecord.exit === 'function') {
-        stateRecord.exit();
-      }
-
+    let didEnter = true;
+    if (typeof stateRecord.enter === 'function') {
+      didEnter = stateRecord.enter(items) !== false;
+    }
+    if (!didEnter) {
       if (typeof stateRecord.setTarget === 'function') {
         stateRecord.setTarget(null);
       }
@@ -1026,10 +1042,12 @@ export function useDroppableCollection(
     }
 
     let target = readDropTarget(stateRecord);
-    if (getDropOperation(items, target, DEFAULT_DROP_OPERATION) === 'cancel') {
+    if (getDropOperationWithRootFallback(items, DEFAULT_DROP_OPERATION) === 'cancel') {
       onDragLeave(input);
       return;
     }
+
+    target = readDropTarget(stateRecord);
 
     if (typeof propsRecord.onDropMove === 'function') {
       propsRecord.onDropMove({
@@ -1080,11 +1098,11 @@ export function useDroppableCollection(
       return 'cancel';
     }
 
-    let target = readDropTarget(stateRecord);
     let point = readPoint(input, ref);
     let requestedOperation = resolveDropOperation(input, fallbackOperation);
-    let operation = getDropOperation(items, target, requestedOperation);
-    if (operation === 'cancel') {
+    let operation = getDropOperationWithRootFallback(items, requestedOperation);
+    let target = readDropTarget(stateRecord);
+    if (operation === 'cancel' || !target) {
       onDragLeave(input);
       return 'cancel';
     }

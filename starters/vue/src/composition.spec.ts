@@ -4720,6 +4720,92 @@ describe('Vue migration composition components', () => {
     expect(onDrop).not.toHaveBeenCalled();
   });
 
+  it('falls back useDroppableCollection target to root when item targets are rejected on drag enter', () => {
+    let onDropEnter = vi.fn();
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: ({target}) => target?.type === 'root' ? 'copy' : 'cancel'
+    });
+    dropState.setTarget({type: 'item', key: 'alpha', dropPosition: 'before'});
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      onDropEnter
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDragEnter: (input: unknown) => boolean
+      }}
+    };
+
+    let payload = {
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 10,
+      clientY: 16
+    };
+
+    expect(droppableCollection.collectionProps.value.onDragEnter(payload)).toBe(true);
+    expect(dropState.target.value).toEqual({type: 'root'});
+    expect(onDropEnter).toHaveBeenCalledWith({
+      items: payload.items,
+      target: {type: 'root'},
+      type: 'dropenter',
+      x: 10,
+      y: 16
+    });
+  });
+
+  it('falls back useDroppableCollection target to root when dragover item target becomes invalid', () => {
+    let allowItemTarget = ref(true);
+    let onDropMove = vi.fn();
+    let onDropExit = vi.fn();
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: ({target}) => {
+        if (target?.type === 'root') {
+          return 'copy';
+        }
+
+        return allowItemTarget.value ? 'move' : 'cancel';
+      }
+    });
+    dropState.setTarget({type: 'item', key: 'alpha', dropPosition: 'before'});
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      onDropMove,
+      onDropExit
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDragEnter: (input: unknown) => boolean,
+        onDragOver: (input?: unknown) => void
+      }}
+    };
+
+    let payload = {
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 7,
+      clientY: 11
+    };
+
+    expect(droppableCollection.collectionProps.value.onDragEnter(payload)).toBe(true);
+    expect(dropState.target.value).toEqual({type: 'item', key: 'alpha', dropPosition: 'before'});
+
+    allowItemTarget.value = false;
+    droppableCollection.collectionProps.value.onDragOver({
+      ...payload,
+      clientX: 18,
+      clientY: 24
+    });
+
+    expect(dropState.target.value).toEqual({type: 'root'});
+    expect(onDropMove).toHaveBeenCalledWith({
+      items: payload.items,
+      target: {type: 'root'},
+      type: 'dropmove',
+      x: 18,
+      y: 24
+    });
+    expect(onDropExit).not.toHaveBeenCalled();
+  });
+
   it('exits useDroppableCollection when dragover operation becomes cancel', () => {
     let dropOperation = ref<'move' | 'cancel'>('move');
     let moveEvents: Array<string> = [];
@@ -5135,13 +5221,17 @@ describe('Vue migration composition components', () => {
 
     expect(dropIndicator.dropIndicatorProps.value['aria-describedby']).toBeUndefined();
 
+    setInteractionModality('keyboard');
     drag.startDrag();
     await nextTick();
-    expect(dropIndicator.dropIndicatorProps.value['aria-describedby']).toMatch(/^vs-description-/);
+    let describedBy = dropIndicator.dropIndicatorProps.value['aria-describedby'];
+    expect(describedBy).toMatch(/^vs-description-/);
+    expect(document.getElementById(String(describedBy))?.textContent).toBe('Press Enter to drop. Press Escape to cancel drag.');
 
     drag.endDrag('cancel');
     await nextTick();
     expect(dropIndicator.dropIndicatorProps.value['aria-describedby']).toBeUndefined();
+    setInteractionModality('keyboard');
   });
 
   it('focuses useDroppableItem target when virtual drag activates the drop target', async () => {
@@ -5272,13 +5362,17 @@ describe('Vue migration composition components', () => {
     expect(typeof droppableItem.dropProps.value.onClick).toBe('function');
     expect(droppableItem.dropProps.value['aria-describedby']).toBeUndefined();
 
+    setInteractionModality('keyboard');
     drag.startDrag();
     await nextTick();
-    expect(droppableItem.dropProps.value['aria-describedby']).toMatch(/^vs-description-/);
+    let describedBy = droppableItem.dropProps.value['aria-describedby'];
+    expect(describedBy).toMatch(/^vs-description-/);
+    expect(document.getElementById(String(describedBy))?.textContent).toBe('Press Enter to drop. Press Escape to cancel drag.');
 
     drag.endDrag('cancel');
     await nextTick();
     expect(droppableItem.dropProps.value['aria-describedby']).toBeUndefined();
+    setInteractionModality('keyboard');
   });
 
   it('keeps valid useDroppableItem targets visible during virtual drag', async () => {
