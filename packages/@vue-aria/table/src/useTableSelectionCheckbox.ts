@@ -17,7 +17,9 @@ export interface TableSelectionCheckboxAria {
     'aria-label': string,
     'aria-labelledby'?: string,
     checked: boolean,
-    disabled: boolean
+    disabled: boolean,
+    id: string,
+    onChange: () => void
   }>,
   toggleSelection: () => void
 }
@@ -56,7 +58,7 @@ export function useTableSelectionCheckbox(options: AriaTableSelectionCheckboxOpt
     checkboxProps: computed(() => ({
       ...checkbox.checkboxProps.value,
       'aria-labelledby': rowLabelledBy.value
-        ? `${rowLabelledBy.value}`
+        ? `${checkbox.checkboxProps.value.id} ${rowLabelledBy.value}`.trim()
         : undefined
     })),
     toggleSelection: checkbox.toggleSelection

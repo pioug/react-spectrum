@@ -5375,6 +5375,16 @@ describe('Vue migration composition components', () => {
     });
     rowSelectionCheckbox.toggleSelection();
     expect(table.isSelected('row-1')).toBe(false);
+    expect(rowSelectionCheckbox.checkboxProps.value.id).toContain('vue-grid-selection-checkbox-');
+
+    let rowLabelledSelectionCheckbox = useAriaTableSelectionCheckbox({
+      grid: table,
+      key: 'row-1',
+      rowLabelledBy: 'row-1-label'
+    });
+    let rowSelectionLabelledBy = rowLabelledSelectionCheckbox.checkboxProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(rowSelectionLabelledBy).toContain(rowLabelledSelectionCheckbox.checkboxProps.value.id);
+    expect(rowSelectionLabelledBy).toContain('row-1-label');
 
     let selectAllCheckbox = useAriaTableSelectAllCheckbox({
       keys: collection.rows.map((rowItem) => rowItem.key),

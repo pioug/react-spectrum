@@ -1045,6 +1045,20 @@
    - full Vue tests: `yarn test:vue` (531 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 27, 2026 — Shared grid/table selection-checkbox id/label parity (`@vue-aria/grid`, `@vue-aria/table`)
+
+1. Aligned row-selection checkbox contract with React:
+   - `useGridSelectionCheckbox` now emits stable checkbox ids and `onChange` handlers on checkbox props,
+   - `useTableSelectionCheckbox` now composes `aria-labelledby` as `"<checkbox-id> <row-labelledby>"` when row labelling is provided.
+2. Preserved selection behavior:
+   - toggle selection semantics remain unchanged for row and table selection flows.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: table-wrapper assertions for checkbox id presence and composed row-labelledby ownership.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "grid semantics plus row and cell selection behavior|table wrappers and selection helpers"`,
+   - full Vue tests: `yarn test:vue` (531 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

@@ -12,20 +12,29 @@ export interface GridSelectionCheckboxAria {
   checkboxProps: ComputedRef<{
     'aria-label': string,
     checked: boolean,
-    disabled: boolean
+    disabled: boolean,
+    id: string,
+    onChange: () => void
   }>,
   toggleSelection: () => void
 }
 
+let gridSelectionCheckboxCounter = 0;
+
 export function useGridSelectionCheckbox(props: AriaGridSelectionCheckboxProps): GridSelectionCheckboxAria {
+  gridSelectionCheckboxCounter += 1;
+  let checkboxId = `vue-grid-selection-checkbox-${gridSelectionCheckboxCounter}`;
+
   let toggleSelection = () => {
     props.grid.toggleSelection(props.key);
   };
 
   let checkboxProps = computed(() => ({
+    id: checkboxId,
     'aria-label': unref(props.ariaLabel) ?? 'Select row',
     checked: props.grid.isSelected(props.key),
-    disabled: !props.grid.canSelectItem(props.key)
+    disabled: !props.grid.canSelectItem(props.key),
+    onChange: toggleSelection
   }));
 
   return {
