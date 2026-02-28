@@ -5091,6 +5091,38 @@ describe('Vue migration composition components', () => {
     expect(dropIndicator.dropIndicatorProps.value['aria-label']).toBe('Insert between One and Two');
   });
 
+  it('adds virtual drop descriptions to useDropIndicator during active drag sessions', async () => {
+    let drag = useDrag({
+      dragItems: [{id: 'item-1', type: 'item', value: {id: 1}}]
+    });
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: () => 'move'
+    });
+    let target = {
+      type: 'item' as const,
+      key: 'alpha',
+      dropPosition: 'before' as const
+    };
+    let collectionRef = {current: document.createElement('div')};
+    useDroppableCollection({
+      acceptedDragTypes: ['item']
+    }, dropState, collectionRef);
+    let dropIndicator = useDropIndicator({target}, dropState, collectionRef) as {
+      dropIndicatorProps: {value: {'aria-describedby'?: string}}
+    };
+
+    expect(dropIndicator.dropIndicatorProps.value['aria-describedby']).toBeUndefined();
+
+    drag.startDrag();
+    await nextTick();
+    expect(dropIndicator.dropIndicatorProps.value['aria-describedby']).toMatch(/^vs-description-/);
+
+    drag.endDrag('cancel');
+    await nextTick();
+    expect(dropIndicator.dropIndicatorProps.value['aria-describedby']).toBeUndefined();
+  });
+
   it('focuses useDroppableItem target when virtual drag activates the drop target', async () => {
     let drag = useDrag({
       dragItems: [{id: 'item-1', type: 'item', value: {id: 1}}]
@@ -5191,6 +5223,41 @@ describe('Vue migration composition components', () => {
     drag.endDrag('cancel');
     await nextTick();
     expect(droppableItem.dropProps.value['aria-hidden']).toBeUndefined();
+  });
+
+  it('adds virtual drop descriptions to useDroppableItem only during active drag sessions', async () => {
+    let drag = useDrag({
+      dragItems: [{id: 'item-1', type: 'item', value: {id: 1}}]
+    });
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: () => 'move'
+    });
+    let target = {
+      type: 'item' as const,
+      key: 'alpha',
+      dropPosition: 'on' as const
+    };
+    let collectionRef = {current: document.createElement('div')};
+    useDroppableCollection({
+      acceptedDragTypes: ['item']
+    }, dropState, collectionRef);
+    let droppableItem = useDroppableItem({target}, dropState, {
+      current: document.createElement('button')
+    }) as {
+      dropProps: {value: {'aria-describedby'?: string, onClick: () => void}}
+    };
+
+    expect(typeof droppableItem.dropProps.value.onClick).toBe('function');
+    expect(droppableItem.dropProps.value['aria-describedby']).toBeUndefined();
+
+    drag.startDrag();
+    await nextTick();
+    expect(droppableItem.dropProps.value['aria-describedby']).toMatch(/^vs-description-/);
+
+    drag.endDrag('cancel');
+    await nextTick();
+    expect(droppableItem.dropProps.value['aria-describedby']).toBeUndefined();
   });
 
   it('keeps valid useDroppableItem targets visible during virtual drag', async () => {

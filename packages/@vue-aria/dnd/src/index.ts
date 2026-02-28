@@ -1,5 +1,7 @@
 import {type AriaDragOptions, type DragAria, useDrag as useAriaDrag} from './useDrag';
 import {type AriaDropOptions, type DropAria, useDrop as useAriaDrop} from './useDrop';
+import {getInteractionModality} from '@vue-aria/interactions';
+import {useDescription} from '@vue-aria/utils';
 import {computed, defineComponent, unref, watch} from 'vue';
 import {DIRECTORY_DRAG_TYPE as INTERNAL_DIRECTORY_DRAG_TYPE, type DragItem, type DropOperation} from './types';
 import {getActiveDragItems, isVirtualDraggingSessionActive} from './dragSession';
@@ -14,6 +16,7 @@ type DraggingKey = number | string;
 const DROP_OPERATIONS = new Set<DropOperation>(['cancel', 'copy', 'link', 'move']);
 const DEFAULT_DROP_OPERATION: DropOperation = 'copy';
 const DEFAULT_ALLOWED_OPERATIONS: DropOperation[] = ['copy', 'move', 'link'];
+const noop = () => {};
 
 let draggingCollectionRef: RefObject<HTMLElement | null> | null = null;
 let dropCollectionRef: RefObject<HTMLElement | null> | null = null;
@@ -39,6 +42,26 @@ function getDroppableCollectionRef(state: DroppableCollectionState): RefObject<H
   }
 
   return ref;
+}
+
+function mapDragModality(modality: string | null): 'keyboard' | 'touch' | 'virtual' {
+  if (!modality) {
+    modality = 'virtual';
+  }
+
+  if (modality === 'pointer') {
+    modality = 'virtual';
+  }
+
+  if (modality === 'virtual' && typeof window !== 'undefined' && 'ontouchstart' in window) {
+    return 'touch';
+  }
+
+  if (modality === 'keyboard' || modality === 'touch') {
+    return modality;
+  }
+
+  return 'virtual';
 }
 
 export type ClipboardProps = AnyRecord;
@@ -1010,6 +1033,9 @@ export function useDroppableItem(
   let propsRecord = props as AnyRecord;
   let stateRecord = state as AnyRecord;
   let droppableCollectionRef = getDroppableCollectionRef(state);
+  let keyboardDropDescription = useDescription('Press Enter to drop. Press Escape to cancel drag.');
+  let touchDropDescription = useDescription('Double tap to drop.');
+  let virtualDropDescription = useDescription('Click to drop.');
   let target = computed(() => {
     if (propsRecord.target && typeof propsRecord.target === 'object') {
       return propsRecord.target as DropTarget;
@@ -1053,8 +1079,24 @@ export function useDroppableItem(
     }));
     return operation !== 'cancel';
   });
+  let describedBy = computed(() => {
+    if (!isVirtualDragging()) {
+      return undefined;
+    }
+
+    switch (mapDragModality(getInteractionModality())) {
+      case 'keyboard':
+        return keyboardDropDescription['aria-describedby'];
+      case 'touch':
+        return touchDropDescription['aria-describedby'];
+      default:
+        return virtualDropDescription['aria-describedby'];
+    }
+  });
   let dropProps = computed(() => ({
-    'aria-hidden': isVirtualDragging() && !isValidDropTarget.value ? 'true' : undefined
+    'aria-describedby': describedBy.value,
+    'aria-hidden': isVirtualDragging() && !isValidDropTarget.value ? 'true' : undefined,
+    onClick: noop
   }));
   watch(isDropTarget, (next, previous) => {
     if (!next || previous || !isVirtualDragging()) {
