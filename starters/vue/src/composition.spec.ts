@@ -90,6 +90,7 @@ import {useToggle as useAriaToggle} from '@vue-aria/toggle';
 import {useToolbar as useAriaToolbar} from '@vue-aria/toolbar';
 import {useTooltip as useAriaTooltip, useTooltipTrigger as useAriaTooltipTrigger} from '@vue-aria/tooltip';
 import {useTree as useAriaTree, useTreeItem as useAriaTreeItem} from '@vue-aria/tree';
+import * as ariaUtils from '@vue-aria/utils';
 import {
   chain as ariaChain,
   filterDOMProps as ariaFilterDOMProps,
@@ -6487,6 +6488,21 @@ describe('Vue migration composition components', () => {
     }, listBox);
     expect(labelledOption.optionProps.value['aria-label']).toBe('Vue framework option');
     expect(labelledOption.optionProps.value['aria-labelledby']).toBe(labelledOption.labelProps.value.id);
+
+    let isMacSpy = vi.spyOn(ariaUtils, 'isMac').mockReturnValue(true);
+    let isWebKitSpy = vi.spyOn(ariaUtils, 'isWebKit').mockReturnValue(true);
+    try {
+      let macVoiceOverOption = useAriaOption({
+        'aria-label': 'Mac VoiceOver option',
+        key: 'react'
+      }, listBox);
+      expect(macVoiceOverOption.optionProps.value['aria-label']).toBeUndefined();
+      expect(macVoiceOverOption.optionProps.value['aria-labelledby']).toBeUndefined();
+      expect(macVoiceOverOption.optionProps.value['aria-describedby']).toBeUndefined();
+    } finally {
+      isMacSpy.mockRestore();
+      isWebKitSpy.mockRestore();
+    }
 
     let section = useAriaListBoxSection({
       'aria-label': 'Primary options',

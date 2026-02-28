@@ -2,6 +2,7 @@ import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
 import {getItemId, type ListKey} from './utils';
 import {type ListBoxAria, type ListBoxItemNode} from './useListBox';
 import type {ListState} from '@vue-stately/list';
+import {isMac, isWebKit} from '@vue-aria/utils';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
 
@@ -23,7 +24,7 @@ export interface OptionAria {
     'aria-disabled'?: true,
     'aria-describedby'?: string,
     'aria-label'?: string,
-    'aria-labelledby': string,
+    'aria-labelledby'?: string,
     'aria-posinset'?: number,
     'aria-selected'?: boolean,
     'aria-setsize'?: number,
@@ -129,13 +130,19 @@ export function useOption(props: AriaOptionProps, listBox: ListBoxAria): OptionA
       id: labelId.value
     })),
     optionProps: computed(() => ({
+      // Safari with VoiceOver on macOS may misread slot label/description wiring for options.
+      // Match React and rely on option text content in this browser/AT path.
+      ...(isMac() && isWebKit()
+        ? {}
+        : {
+            'aria-label': unref(props['aria-label']),
+            'aria-labelledby': labelId.value,
+            'aria-describedby': item.value?.description ? descriptionId.value : undefined
+          }),
       id: getItemId(listBox as unknown as ListState<unknown>, key.value),
       role: 'option' as const,
       'aria-disabled': isDisabled.value || undefined,
       'aria-selected': listBox.selectionMode.value !== 'none' ? isSelected.value : undefined,
-      'aria-label': unref(props['aria-label']),
-      'aria-labelledby': labelId.value,
-      'aria-describedby': item.value?.description ? descriptionId.value : undefined,
       'aria-posinset': listBox.isVirtualized.value ? (item.value?.index ?? 0) + 1 : undefined,
       'aria-setsize': listBox.isVirtualized.value ? listBox.collection.value.items.length : undefined,
       onClick,
