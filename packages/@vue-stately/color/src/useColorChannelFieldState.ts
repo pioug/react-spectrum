@@ -1,11 +1,11 @@
 import {type Color, type ColorChannel, getChannelRange, getColorChannelValue, parseColor, setColorChannelValue} from './Color';
-import {computed, type ComputedRef, ref, type Ref} from 'vue';
+import {computed, type ComputedRef, ref, type Ref, watch} from 'vue';
 
 export interface ColorChannelFieldStateOptions {
   channel: ColorChannel,
   defaultValue?: Color,
   onChange?: (value: Color) => void,
-  value?: Ref<Color>
+  value?: Ref<Color | undefined>
 }
 
 export interface ColorChannelFieldState {
@@ -23,9 +23,33 @@ function clamp(value: number, min: number, max: number): number {
 }
 
 export function useColorChannelFieldState(options: ColorChannelFieldStateOptions): ColorChannelFieldState {
-  let controlledValue = options.value;
   let internalValue = ref(parseColor(options.defaultValue ?? '#ffffff'));
-  let colorValue = controlledValue ?? internalValue;
+  let isControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
+  let wasControlled = ref(isControlled.value);
+
+  watch(isControlled, (nextIsControlled) => {
+    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasControlled.value = nextIsControlled;
+  });
+
+  let colorValue = computed<Color>({
+    get: () => {
+      if (isControlled.value && options.value) {
+        return options.value.value;
+      }
+
+      return internalValue.value;
+    },
+    set: (nextValue) => {
+      if (isControlled.value && options.value) {
+        options.value.value = nextValue;
+      } else {
+        internalValue.value = nextValue;
+      }
+    }
+  }) as Ref<Color>;
   let range = getChannelRange(options.channel);
 
   let numberValue = computed(() => getColorChannelValue(colorValue.value, options.channel));
@@ -33,6 +57,11 @@ export function useColorChannelFieldState(options: ColorChannelFieldStateOptions
 
   let setChannelValue = (nextValue: number): void => {
     let nextColor = setColorChannelValue(colorValue.value, options.channel, clamp(nextValue, range.minValue, range.maxValue));
+    if (nextColor === colorValue.value) {
+      inputValue.value = String(getColorChannelValue(nextColor, options.channel));
+      return;
+    }
+
     colorValue.value = nextColor;
     inputValue.value = String(getColorChannelValue(nextColor, options.channel));
     options.onChange?.(nextColor);

@@ -1061,6 +1061,64 @@ describe('Vue migration composition components', () => {
     expect(parseStatelyColor('#abc')).toBe('#aabbcc');
   });
 
+  it('warns when vue-stately color picker and channel-field switch between controlled and uncontrolled', async () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    try {
+      let pickerValue = ref<string | undefined>('#abcdef');
+      useStatelyColorPickerState({
+        value: pickerValue
+      });
+
+      pickerValue.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      pickerValue.value = '#123456';
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+
+      let channelValue = ref<string | undefined>('#112233');
+      useStatelyColorChannelFieldState({
+        channel: 'red',
+        value: channelValue
+      });
+
+      channelValue.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      channelValue.value = '#445566';
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it('keeps vue-stately color picker and channel-field uncontrolled when value refs are undefined', () => {
+    let pickerValue = ref<string | undefined>(undefined);
+    let picker = useStatelyColorPickerState({
+      defaultValue: '#abcdef',
+      value: pickerValue
+    });
+
+    picker.setColorValue('#123456');
+    expect(pickerValue.value).toBeUndefined();
+    expect(picker.colorValue.value).toBe('#123456');
+
+    let channelValue = ref<string | undefined>(undefined);
+    let channelState = useStatelyColorChannelFieldState({
+      channel: 'red',
+      defaultValue: '#112233',
+      value: channelValue
+    });
+
+    channelState.setInputValue('64');
+    expect(channelValue.value).toBeUndefined();
+    expect(channelState.colorValue.value).toBe('#402233');
+  });
+
   it('filters and selects options with vue-aria combobox composable state', () => {
     let inputValue = ref('');
     let selectedKey = ref<string | null>(null);

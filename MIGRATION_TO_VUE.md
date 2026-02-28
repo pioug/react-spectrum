@@ -1573,6 +1573,25 @@
    - full Vue tests: `yarn test:vue` (570 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Color controlled ownership parity (`@vue-stately/color`)
+
+1. Aligned controlled-state semantics for React-parity color hooks that map to `useControlledState`:
+   - `useColorPickerState` and `useColorChannelFieldState` now treat value refs as controlled only when `value.value !== undefined`,
+   - ref-backed `undefined` values now remain uncontrolled with internal fallback state.
+2. Aligned controlled/uncontrolled transition warning behavior:
+   - both hooks now emit `WARN: A component changed from ...` on ownership transitions in development.
+3. Closed no-op emission drift:
+   - `useColorPickerState.setColorValue` now no-ops when the parsed next color equals current color,
+   - `useColorChannelFieldState` now avoids duplicate change emissions when channel updates resolve to the same color value.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - warning assertions for controlled->uncontrolled and uncontrolled->controlled transitions in picker/channel hooks,
+     - assertions that ref-backed-`undefined` value refs remain uncontrolled while color updates proceed internally.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately color area/slider/field/channel/picker state baselines|warns when vue-stately color picker and channel-field switch between controlled and uncontrolled|keeps vue-stately color picker and channel-field uncontrolled when value refs are undefined"`,
+   - full Vue tests: `yarn test:vue` (572 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
