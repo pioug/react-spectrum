@@ -28,6 +28,46 @@ import {
   VueCheckbox as RootVueCheckbox
 } from '../../../packages/@vue-spectrum/checkbox/index';
 import {
+  ColorArea,
+  ColorEditor,
+  ColorField,
+  ColorPicker,
+  ColorSlider,
+  ColorSwatch,
+  ColorSwatchPicker,
+  ColorWheel,
+  getColorChannels,
+  parseColor,
+  VueColorArea,
+  VueColorEditor,
+  VueColorField,
+  VueColorPicker,
+  VueColorSlider,
+  VueColorSwatch,
+  VueColorSwatchPicker,
+  VueColorWheel
+} from '@vue-spectrum/color';
+import {
+  ColorArea as RootColorArea,
+  ColorEditor as RootColorEditor,
+  ColorField as RootColorField,
+  ColorPicker as RootColorPicker,
+  ColorSlider as RootColorSlider,
+  ColorSwatch as RootColorSwatch,
+  ColorSwatchPicker as RootColorSwatchPicker,
+  ColorWheel as RootColorWheel,
+  getColorChannels as RootGetColorChannels,
+  parseColor as RootParseColor,
+  VueColorArea as RootVueColorArea,
+  VueColorEditor as RootVueColorEditor,
+  VueColorField as RootVueColorField,
+  VueColorPicker as RootVueColorPicker,
+  VueColorSlider as RootVueColorSlider,
+  VueColorSwatch as RootVueColorSwatch,
+  VueColorSwatchPicker as RootVueColorSwatchPicker,
+  VueColorWheel as RootVueColorWheel
+} from '../../../packages/@vue-spectrum/color/index';
+import {
   ButtonGroup,
   VueButtonGroup
 } from '@vue-spectrum/buttongroup';
@@ -448,6 +488,40 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(RootCheckbox).toBe(Checkbox);
     expect(RootVueCheckbox).toBe(VueCheckbox);
     expect(RootCheckboxGroup).toBe(CheckboxGroup);
+  });
+
+  it('keeps color exports aligned with Vue color aliases and helpers', () => {
+    expect(ColorArea).toBe(VueColorArea);
+    expect(ColorEditor).toBe(VueColorEditor);
+    expect(ColorField).toBe(VueColorField);
+    expect(ColorPicker).toBe(VueColorPicker);
+    expect(ColorSlider).toBe(VueColorSlider);
+    expect(ColorSwatch).toBe(VueColorSwatch);
+    expect(ColorSwatchPicker).toBe(VueColorSwatchPicker);
+    expect(ColorWheel).toBe(VueColorWheel);
+    expect(parseColor('#abc')).toBe('#aabbcc');
+    expect(getColorChannels('rgb')).toEqual(['red', 'green', 'blue']);
+  });
+
+  it('keeps root color entry exports aligned with source exports', () => {
+    expect(RootColorArea).toBe(ColorArea);
+    expect(RootVueColorArea).toBe(VueColorArea);
+    expect(RootColorEditor).toBe(ColorEditor);
+    expect(RootVueColorEditor).toBe(VueColorEditor);
+    expect(RootColorField).toBe(ColorField);
+    expect(RootVueColorField).toBe(VueColorField);
+    expect(RootColorPicker).toBe(ColorPicker);
+    expect(RootVueColorPicker).toBe(VueColorPicker);
+    expect(RootColorSlider).toBe(ColorSlider);
+    expect(RootVueColorSlider).toBe(VueColorSlider);
+    expect(RootColorSwatch).toBe(ColorSwatch);
+    expect(RootVueColorSwatch).toBe(VueColorSwatch);
+    expect(RootColorSwatchPicker).toBe(ColorSwatchPicker);
+    expect(RootVueColorSwatchPicker).toBe(VueColorSwatchPicker);
+    expect(RootColorWheel).toBe(ColorWheel);
+    expect(RootVueColorWheel).toBe(VueColorWheel);
+    expect(RootParseColor).toBe(parseColor);
+    expect(RootGetColorChannels).toBe(getColorChannels);
   });
 
   it('keeps buttongroup exports aligned with VueButtonGroup base entry', () => {
