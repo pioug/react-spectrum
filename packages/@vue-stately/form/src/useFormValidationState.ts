@@ -57,7 +57,7 @@ export const privateValidationStateProp: string = '__formValidationState' + Date
 export interface FormValidationProps<T> {
   builtinValidation?: ValidationResult,
   isInvalid?: MaybeRef<boolean>,
-  name?: string | string[],
+  name?: MaybeRef<string | string[] | undefined>,
   validate?: (value: T) => boolean | null | string | string[] | undefined,
   validationBehavior?: MaybeRef<'aria' | 'native'>,
   validationErrors?: MaybeRef<ValidationErrors>,
@@ -156,11 +156,12 @@ export function useFormValidationState<T>(props: FormValidationProps<T>): FormVa
 
   let serverError = computed<ValidationResult | null>(() => {
     let errors = unref(props.validationErrors);
-    if (!errors || !props.name) {
+    let name = unref(props.name);
+    if (!errors || !name) {
       return null;
     }
 
-    let names = Array.isArray(props.name) ? props.name : [props.name];
+    let names = Array.isArray(name) ? name : [name];
     let messages = isServerErrorCleared.value
       ? []
       : names.flatMap((name) => asArray(errors[name]));

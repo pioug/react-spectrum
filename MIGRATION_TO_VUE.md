@@ -2674,13 +2674,25 @@
    - full Vue tests: `yarn test:vue` (646 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Radio-group validation-name reactive parity remediation (`@vue-stately/radio`, `@vue-stately/form`)
+
+1. Closed reactive validation-name drift for radio-group form state:
+   - `useFormValidationState` now accepts reactive `name` inputs and resolves server-error scopes from live name refs.
+   - `useRadioGroupState` now forwards validation `name` as a computed source rather than an eagerly unwrapped value.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` now includes a radio-group server-validation test asserting error-scope updates when `name` changes.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "radio group"`,
+   - full Vue tests: `yarn test:vue` (647 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 646 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 647 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

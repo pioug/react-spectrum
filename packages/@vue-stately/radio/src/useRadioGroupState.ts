@@ -57,10 +57,10 @@ export function useRadioGroupState(options: RadioGroupStateOptions = {}): RadioG
 
   let validation = useFormValidationState<string | null>({
     isInvalid: options.isInvalid,
-    name: (() => {
+    name: computed(() => {
       let nextName = unref(options.name);
       return nextName == null ? undefined : nextName;
-    })(),
+    }),
     validate: (value) => {
       let validationResult = options.validate?.(value);
       if (validationResult !== undefined) {

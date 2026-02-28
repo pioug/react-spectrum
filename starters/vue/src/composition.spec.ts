@@ -3624,6 +3624,27 @@ describe('Vue migration composition components', () => {
     expect(requiredGroup.validationState.value).toBe('invalid');
   });
 
+  it('updates vue-stately radio-group server validation scope when name changes', async () => {
+    let groupName = ref('primary');
+    let validationErrors = ref<Record<string, string[]>>({
+      primary: ['Primary error'],
+      secondary: ['Secondary error']
+    });
+    let radioGroup = useStatelyRadioGroupState({
+      name: groupName,
+      validationBehavior: ref<'aria' | 'native'>('aria'),
+      validationErrors,
+      value: ref('react')
+    });
+
+    expect(radioGroup.displayValidation.value.validationErrors).toEqual(['Primary error']);
+
+    groupName.value = 'secondary';
+    await nextTick();
+
+    expect(radioGroup.displayValidation.value.validationErrors).toEqual(['Secondary error']);
+  });
+
   it('keeps vue-stately radio group controlled without mutating control refs', () => {
     let selectedValue = ref<string | null>('react');
     let changedValues: Array<string | null> = [];
