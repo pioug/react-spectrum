@@ -358,34 +358,40 @@ export function useDraggableItem(
     draggingKeys = new Set();
   };
 
-  let dragProps = computed(() => ({
-    draggable: !isDisabled.value,
-    'aria-grabbed': isDragging.value,
-    onDragStart: () => {
-      startDrag();
-    },
-    onDrag: (event?: unknown) => {
-      if (!isDragging.value || typeof stateRecord.moveDrag !== 'function') {
-        return;
-      }
-
-      let eventRecord = (event ?? {}) as AnyRecord;
-      let x = typeof eventRecord.clientX === 'number'
-        ? eventRecord.clientX
-        : typeof eventRecord.x === 'number'
-          ? eventRecord.x
-          : 0;
-      let y = typeof eventRecord.clientY === 'number'
-        ? eventRecord.clientY
-        : typeof eventRecord.y === 'number'
-          ? eventRecord.y
-          : 0;
-      stateRecord.moveDrag({x, y});
-    },
-    onDragEnd: (event?: unknown) => {
-      endDrag(event);
+  let dragProps = computed(() => {
+    if (isDisabled.value) {
+      return {};
     }
-  }));
+
+    return {
+      draggable: true,
+      'aria-grabbed': isDragging.value,
+      onDragStart: () => {
+        startDrag();
+      },
+      onDrag: (event?: unknown) => {
+        if (!isDragging.value || typeof stateRecord.moveDrag !== 'function') {
+          return;
+        }
+
+        let eventRecord = (event ?? {}) as AnyRecord;
+        let x = typeof eventRecord.clientX === 'number'
+          ? eventRecord.clientX
+          : typeof eventRecord.x === 'number'
+            ? eventRecord.x
+            : 0;
+        let y = typeof eventRecord.clientY === 'number'
+          ? eventRecord.clientY
+          : typeof eventRecord.y === 'number'
+            ? eventRecord.y
+            : 0;
+        stateRecord.moveDrag({x, y});
+      },
+      onDragEnd: (event?: unknown) => {
+        endDrag(event);
+      }
+    };
+  });
 
   let dragButtonProps = computed(() => ({
     'aria-grabbed': isDragging.value,

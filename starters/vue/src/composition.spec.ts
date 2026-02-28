@@ -4259,6 +4259,26 @@ describe('Vue migration composition components', () => {
     expect(draggableItem.dragProps.value['aria-grabbed']).toBe(false);
   });
 
+  it('matches react-aria disabled draggable item contract by omitting drag props', () => {
+    let dragState = useStatelyDraggableCollectionState({
+      collection: [
+        {key: 'alpha', value: {id: 1, label: 'Alpha'}}
+      ],
+      isDisabled: true,
+      selectedKeys: ref(new Set(['alpha']))
+    });
+
+    let draggableItem = useDraggableItem({key: 'alpha'}, dragState) as {
+      dragButtonProps: {value: {isDisabled: boolean, onClick: () => void}},
+      dragProps: {value: Record<string, unknown>}
+    };
+
+    expect(draggableItem.dragProps.value).toEqual({});
+    expect(draggableItem.dragButtonProps.value.isDisabled).toBe(true);
+    draggableItem.dragButtonProps.value.onClick();
+    expect(dragState.draggedKey.value).toBeNull();
+  });
+
   it('toggles vue-stately global feature flags', () => {
     expect(statelyTableNestedRows()).toBe(false);
     expect(statelyShadowDOM()).toBe(false);
