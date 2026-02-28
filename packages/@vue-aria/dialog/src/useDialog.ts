@@ -69,6 +69,10 @@ export function useDialog(options: AriaDialogOptions = {}): DialogAria {
   });
 
   let setOpen = (nextOpen: boolean) => {
+    if (isOpen.value === nextOpen) {
+      return;
+    }
+
     isOpen.value = nextOpen;
     options.onOpenChange?.(nextOpen);
   };

@@ -2983,6 +2983,17 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Dialog open-change no-op parity (`@vue-aria/dialog`)
+
+1. Closed dialog open-state no-op emission drift:
+   - `useDialog` now suppresses duplicate writes/callbacks when `setOpen` receives the current open state.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` dialog hook assertions now verify repeated `open()` calls do not emit duplicate `onOpenChange` events.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-aria dialog labeling and open state"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

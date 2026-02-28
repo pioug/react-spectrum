@@ -2515,6 +2515,8 @@ describe('Vue migration composition components', () => {
     dialog.open();
     expect(dialog.isOpen.value).toBe(true);
     expect(dialog.dialogProps.value.hidden).toBe(false);
+    dialog.open();
+    expect(openChanges).toEqual([true]);
     dialog.toggle();
     expect(dialog.isOpen.value).toBe(false);
     expect(openChanges).toEqual([true, false]);
