@@ -477,7 +477,47 @@ describe('Vue migration composition components', () => {
     expect(controlledState.inputValue.value).toBe('React');
     controlledState.setInputValue('Vue');
     expect(controlledChanges).toEqual(['Vue']);
+    controlledState.setInputValue('Vue');
+    expect(controlledChanges).toEqual(['Vue']);
     expect(controlledState.inputValue.value).toBe('Vue');
+  });
+
+  it('warns when vue-stately autocomplete switches between controlled and uncontrolled', async () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let controlledInput = ref<string | undefined>('React');
+    useStatelyAutocompleteState({
+      inputValue: controlledInput
+    });
+
+    try {
+      controlledInput.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      controlledInput.value = 'Vue';
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it('keeps vue-stately autocomplete uncontrolled when input ref is undefined', () => {
+    let inputValue = ref<string | undefined>(undefined);
+    let changes: string[] = [];
+    let state = useStatelyAutocompleteState({
+      defaultInputValue: 'Vue',
+      inputValue,
+      onInputChange: (value) => {
+        changes.push(value);
+      }
+    });
+
+    state.setInputValue('React');
+
+    expect(inputValue.value).toBeUndefined();
+    expect(state.inputValue.value).toBe('React');
+    expect(changes).toEqual(['React']);
   });
 
   it('provides breadcrumb nav props with default and custom labels', () => {

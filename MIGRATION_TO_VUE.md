@@ -1459,6 +1459,25 @@
    - full Vue tests: `yarn test:vue` (558 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Autocomplete controlled ownership parity (`@vue-stately/autocomplete`)
+
+1. Aligned `useAutocompleteState` controlled-state semantics with React `useControlledState` behavior:
+   - controlled mode is now only active when `inputValue` exists and resolves to a non-`undefined` value,
+   - ref-backed `undefined` values now remain uncontrolled (internal updates) rather than behaving as controlled.
+2. Aligned controlled/uncontrolled transition warning behavior:
+   - `useAutocompleteState` now emits `WARN: A component changed from ...` on ownership transitions in development.
+3. Closed no-op emission drift:
+   - `setInputValue` now no-ops when the new value equals current input value, matching React controlled-state behavior and avoiding duplicate `onInputChange` emissions.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - warning assertions for controlled->uncontrolled and uncontrolled->controlled transitions,
+     - assertion that ref-backed-`undefined` `inputValue` stays uncontrolled during updates,
+     - updated base autocomplete state test to assert no duplicate `onInputChange` on no-op value sets.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately autocomplete input and focused node state|warns when vue-stately autocomplete switches between controlled and uncontrolled|keeps vue-stately autocomplete uncontrolled when input ref is undefined"`,
+   - full Vue tests: `yarn test:vue` (560 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

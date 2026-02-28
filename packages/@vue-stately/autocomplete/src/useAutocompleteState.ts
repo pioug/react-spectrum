@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 
@@ -21,7 +21,16 @@ export interface AutocompleteStateOptions {
 export function useAutocompleteState(options: AutocompleteStateOptions = {}): AutocompleteState {
   let uncontrolledInputValue = ref(unref(options.defaultInputValue) ?? '');
   let focusedNodeId = ref<string | null>(null);
-  let isControlled = computed(() => unref(options.inputValue) !== undefined);
+  let isControlled = computed(() => options.inputValue !== undefined && unref(options.inputValue) !== undefined);
+  let wasControlled = ref(isControlled.value);
+
+  watch(isControlled, (nextIsControlled) => {
+    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasControlled.value = nextIsControlled;
+  });
+
   let inputValue = computed(() => {
     if (isControlled.value) {
       return unref(options.inputValue) ?? '';
@@ -31,6 +40,10 @@ export function useAutocompleteState(options: AutocompleteStateOptions = {}): Au
   });
 
   let setInputValue = (value: string): void => {
+    if (inputValue.value === value) {
+      return;
+    }
+
     if (!isControlled.value) {
       uncontrolledInputValue.value = value;
     }
