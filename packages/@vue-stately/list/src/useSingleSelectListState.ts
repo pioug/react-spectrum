@@ -1,6 +1,7 @@
 import {computed, type ComputedRef, type Ref, ref, watch} from 'vue';
 import {type Key, type ListNode} from './ListCollection';
 import {type ListProps, type ListState, useListState} from './useListState';
+import {useControlledState} from '@vue-stately/utils';
 
 function equalSets(a: Set<Key>, b: Set<Key>): boolean {
   if (a.size !== b.size) {
@@ -32,31 +33,11 @@ export interface SingleSelectListState<T> extends ListState<T> {
  * Provides state management for list-like components with single selection.
  */
 export function useSingleSelectListState<T extends object>(props: SingleSelectListProps<T>): SingleSelectListState<T> {
-  let uncontrolledSelectedKey = ref<Key | null>(props.defaultSelectedKey ?? null);
-  let isControlled = computed(() => props.selectedKey !== undefined && props.selectedKey.value !== undefined);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasControlled.value = nextIsControlled;
-  });
-
-  let selectedKey = computed<Key | null>({
-    get: () => {
-      if (isControlled.value && props.selectedKey) {
-        return props.selectedKey.value;
-      }
-
-      return uncontrolledSelectedKey.value;
-    },
-    set: (nextSelectedKey) => {
-      if (!isControlled.value) {
-        uncontrolledSelectedKey.value = nextSelectedKey;
-      }
-    }
-  }) as Ref<Key | null>;
+  let [selectedKey, setSelectedKeyInternal] = useControlledState<Key | null>(
+    props.selectedKey,
+    props.defaultSelectedKey ?? null,
+    props.onSelectionChange
+  );
 
   let selectedKeys = ref(selectedKey.value == null ? new Set<Key>() : new Set<Key>([selectedKey.value]));
   let isSyncingSelection = false;
@@ -77,7 +58,7 @@ export function useSingleSelectListState<T extends object>(props: SingleSelectLi
         props.onSelectionChange(key);
       }
 
-      setSelectedKey(key);
+      setSelectedKeyInternal(key);
     }
   });
 
@@ -94,12 +75,7 @@ export function useSingleSelectListState<T extends object>(props: SingleSelectLi
   }, {flush: 'sync'});
 
   let setSelectedKey = (key: Key | null): void => {
-    if (selectedKey.value === key) {
-      return;
-    }
-
-    selectedKey.value = key;
-    props.onSelectionChange?.(key);
+    setSelectedKeyInternal(key);
   };
 
   let selectedItem = computed(() => {

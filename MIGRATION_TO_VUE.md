@@ -2284,6 +2284,32 @@
    - full Vue tests: `yarn test:vue` (625 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Set/collection controlled ownership parity sweep (`@vue-stately/checkbox`, `disclosure`, `toggle`, `list`, `tree`)
+
+1. Closed remaining ad hoc controlled-state ownership drift in set/collection hooks:
+   - `useCheckboxGroupState`, `useDisclosureGroupState`, `useToggleGroupState`, `useSingleSelectListState`, and `useTreeState` now route controlled/uncontrolled behavior through `@vue-stately/utils/useControlledState`.
+2. Preserved React-style callback contracts while keeping Vue-specific guards:
+   - retained duplicate selection event behavior in single-select list (`onSelectionChange` still fires when list selection reselects current key),
+   - retained existing disabled/read-only gating for checkbox/radio/toggle families,
+   - retained tree/list collection synchronization behavior while removing direct controlled ref mutation branches.
+3. Expanded regressions for controlled no-parent-sync edge cases:
+   - `starters/vue/src/composition.spec.ts` now covers same-turn duplicate suppression for identical controlled update payload references across checkbox group, disclosure group, toggle group, single-select list, and tree expansion state.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "checkbox-group|disclosure group|toggle-group|single-select list|tree collection"` and `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "checkbox-group controlled callbacks|disclosure-group controlled callbacks|single-select controlled callbacks|toggle-group controlled callbacks|tree controlled callbacks"`,
+   - full composition suite: `yarn workspace vue-spectrum-starter test src/composition.spec.ts` (278 passed),
+   - full Vue tests: `yarn test:vue` (630 passed),
+   - typecheck: `yarn typecheck:vue`.
+
+### February 28, 2026 — Shared controlled helper identity parity remediation (`@vue-stately/utils`)
+
+1. Closed a cross-hook identity mismatch in `useControlledState` affecting object values (`Array`, `Set`, object payloads):
+   - switched internal `stateValue` and `valueRef` storage from `ref` to `shallowRef` so `Object.is` equality checks use caller-provided references instead of deep-reactive proxy wrappers.
+2. Impact:
+   - controlled no-parent-sync duplicate callback suppression now matches React helper semantics for object payloads,
+   - fixes applied centrally for all hooks using `useControlledState`, not only the hooks touched in this batch.
+3. Validation:
+   - covered by the new controlled callback regressions listed above and full Vue gate (`yarn test:vue`, `yarn typecheck:vue`).
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

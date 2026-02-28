@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, type Ref, ref, watch} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, shallowRef, watch} from 'vue';
 
 export type SetValueAction<T> = T | ((currentValue: T) => T);
 
@@ -12,8 +12,8 @@ export function useControlledState<T, C = T>(
   defaultValue: T,
   onChange?: (nextValue: C, ...args: unknown[]) => void
 ): [WritableComputedRef<T>, (nextValue: SetValueAction<T>, ...args: unknown[]) => void] {
-  let stateValue = ref((value?.value !== undefined ? value.value : defaultValue) as T);
-  let valueRef = ref<T>(stateValue.value);
+  let stateValue = shallowRef((value?.value !== undefined ? value.value : defaultValue) as T);
+  let valueRef = shallowRef<T>(stateValue.value);
   let isControlledRef = ref(value?.value !== undefined);
   let isControlled = computed(() => value?.value !== undefined);
 

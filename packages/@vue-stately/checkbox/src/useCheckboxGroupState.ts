@@ -1,4 +1,5 @@
-import {computed, type ComputedRef, ref, type Ref, unref, watch} from 'vue';
+import {computed, type ComputedRef, ref, type Ref, unref} from 'vue';
+import {useControlledState} from '@vue-stately/utils';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 
@@ -35,31 +36,11 @@ export interface CheckboxGroupStateOptions {
 
 export function useCheckboxGroupState(options: CheckboxGroupStateOptions = {}): CheckboxGroupState {
   let initialDefaultValue = [...(unref(options.defaultValue) ?? [])];
-  let internalValue = ref(initialDefaultValue);
-  let isControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasControlled.value = nextIsControlled;
-  });
-
-  let value = computed<string[]>({
-    get: () => {
-      if (isControlled.value && options.value) {
-        return options.value.value;
-      }
-
-      return internalValue.value;
-    },
-    set: (nextValue) => {
-      if (!isControlled.value) {
-        internalValue.value = nextValue;
-      }
-    }
-  }) as Ref<string[]>;
+  let [value, setValueInternal] = useControlledState<string[]>(
+    options.value,
+    initialDefaultValue,
+    options.onChange
+  );
 
   let initialValue = [...value.value];
   let invalidValues = ref(new Map<string, ValidationResult>());
@@ -85,12 +66,7 @@ export function useCheckboxGroupState(options: CheckboxGroupStateOptions = {}): 
       return;
     }
 
-    if (Object.is(nextValue, value.value)) {
-      return;
-    }
-
-    value.value = nextValue;
-    options.onChange?.(nextValue);
+    setValueInternal(nextValue);
   };
 
   let isSelected = (nextValue: string): boolean => {

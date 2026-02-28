@@ -1014,6 +1014,25 @@ describe('Vue migration composition components', () => {
     expect(changes).toEqual([['Docs', 'Tests']]);
   });
 
+  it('suppresses duplicate vue-stately checkbox-group controlled callbacks for the same update in one turn', () => {
+    let selectedValues = ref(['Docs']);
+    let changes: string[][] = [];
+    let state = useStatelyCheckboxGroupState({
+      onChange: (value) => {
+        changes.push([...value]);
+      },
+      value: selectedValues
+    });
+
+    let requestedValues = ['Docs', 'Tests'];
+    state.setValue(requestedValues);
+    state.setValue(requestedValues);
+
+    expect(selectedValues.value).toEqual(['Docs']);
+    expect(state.value.value).toEqual(['Docs']);
+    expect(changes).toEqual([['Docs', 'Tests']]);
+  });
+
   it('matches vue-stately checkbox-group setValue identity semantics', () => {
     let selectedValues = ref(['Docs']);
     let changes: string[][] = [];
@@ -2353,6 +2372,25 @@ describe('Vue migration composition components', () => {
     expect(groupChanges).toEqual([['beta']]);
   });
 
+  it('suppresses duplicate vue-stately disclosure-group controlled callbacks for the same update in one turn', () => {
+    let expandedKeys = ref<Set<string | number> | undefined>(new Set(['alpha']));
+    let groupChanges: string[][] = [];
+    let disclosureGroup = useStatelyDisclosureGroupState({
+      expandedKeys,
+      onExpandedChange: (keys) => {
+        groupChanges.push(Array.from(keys).map((key) => String(key)));
+      }
+    });
+
+    let requestedKeys = new Set<string | number>(['beta']);
+    disclosureGroup.setExpandedKeys(requestedKeys);
+    disclosureGroup.setExpandedKeys(requestedKeys);
+
+    expect(Array.from(expandedKeys.value ?? [])).toEqual(['alpha']);
+    expect(Array.from(disclosureGroup.expandedKeys.value)).toEqual(['alpha']);
+    expect(groupChanges).toEqual([['beta']]);
+  });
+
   it('manages vue-stately disclosure group expanded keys for single and multiple modes', () => {
     let singleGroup = useStatelyDisclosureGroupState();
     singleGroup.toggleKey('alpha');
@@ -2996,6 +3034,29 @@ describe('Vue migration composition components', () => {
       }
     });
 
+    listState.setSelectedKey('details');
+
+    expect(selectedKey.value).toBe('overview');
+    expect(listState.selectedKey.value).toBe('overview');
+    expect(selectionChanges).toEqual(['details']);
+  });
+
+  it('suppresses duplicate vue-stately single-select controlled callbacks without parent sync in one turn', () => {
+    let nodes: StatelyListNode<{label: string}>[] = [
+      {key: 'overview', textValue: 'Overview', type: 'item', value: {label: 'Overview'}},
+      {key: 'details', textValue: 'Details', type: 'item', value: {label: 'Details'}}
+    ];
+    let selectedKey = ref<string | null>('overview');
+    let selectionChanges: Array<string | null> = [];
+    let listState = useStatelySingleSelectListState({
+      collection: new StatelyListCollection(nodes),
+      selectedKey,
+      onSelectionChange: (key) => {
+        selectionChanges.push(key as string | null);
+      }
+    });
+
+    listState.setSelectedKey('details');
     listState.setSelectedKey('details');
 
     expect(selectedKey.value).toBe('overview');
@@ -4378,6 +4439,26 @@ describe('Vue migration composition components', () => {
     expect(groupChanges).toEqual([['bold', 'italic']]);
   });
 
+  it('suppresses duplicate vue-stately toggle-group controlled callbacks for the same update in one turn', () => {
+    let controlledSelectedKeys = ref<Set<string | number> | undefined>(new Set(['bold']));
+    let groupChanges: string[][] = [];
+    let groupState = useStatelyToggleGroupState({
+      onSelectionChange: (keys) => {
+        groupChanges.push(Array.from(keys).map((key) => String(key)));
+      },
+      selectedKeys: controlledSelectedKeys,
+      selectionMode: 'multiple'
+    });
+
+    let requestedKeys = new Set<string | number>(['bold', 'italic']);
+    groupState.setSelectedKeys(requestedKeys);
+    groupState.setSelectedKeys(requestedKeys);
+
+    expect(Array.from(controlledSelectedKeys.value ?? [])).toEqual(['bold']);
+    expect(Array.from(groupState.selectedKeys.value)).toEqual(['bold']);
+    expect(groupChanges).toEqual([['bold', 'italic']]);
+  });
+
   it('warns when vue-stately toggle hooks switch between controlled and uncontrolled', async () => {
     let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
@@ -4711,6 +4792,46 @@ describe('Vue migration composition components', () => {
     });
 
     treeState.toggleKey('mammals');
+
+    expect(Array.from(expandedKeys.value ?? [])).toEqual(['animals']);
+    expect(Array.from(treeState.collection.getKeys())).toEqual([
+      'animals',
+      'mammals',
+      'birds',
+      'plants'
+    ]);
+    expect(expandedChanges).toEqual([['animals', 'mammals']]);
+  });
+
+  it('suppresses duplicate vue-stately tree controlled callbacks for the same update in one turn', () => {
+    let expandedKeys = ref<Set<string | number> | undefined>(new Set(['animals']));
+    let expandedChanges: string[][] = [];
+    let treeState = useStatelyTreeState({
+      expandedKeys,
+      items: [
+        {
+          key: 'animals',
+          childNodes: [
+            {
+              key: 'mammals',
+              childNodes: [
+                {key: 'bear'}
+              ]
+            },
+            {key: 'birds'}
+          ]
+        },
+        {key: 'plants'}
+      ],
+      onExpandedChange: (nextKeys) => {
+        expandedChanges.push(Array.from(nextKeys).map((key) => String(key)));
+      },
+      selectionMode: 'none'
+    });
+
+    let requestedKeys = new Set<string | number>(['animals', 'mammals']);
+    treeState.setExpandedKeys(requestedKeys);
+    treeState.setExpandedKeys(requestedKeys);
 
     expect(Array.from(expandedKeys.value ?? [])).toEqual(['animals']);
     expect(Array.from(treeState.collection.getKeys())).toEqual([

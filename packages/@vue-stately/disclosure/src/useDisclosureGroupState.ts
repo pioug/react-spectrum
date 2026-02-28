@@ -1,4 +1,5 @@
-import {computed, type ComputedRef, type Ref, ref, unref, watch, watchEffect} from 'vue';
+import {computed, type ComputedRef, type Ref, unref, watchEffect} from 'vue';
+import {useControlledState} from '@vue-stately/utils';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 
@@ -41,35 +42,14 @@ export interface DisclosureGroupState {
 export function useDisclosureGroupState(props: DisclosureGroupProps = {}): DisclosureGroupState {
   let allowsMultipleExpanded = computed(() => Boolean(unref(props.allowsMultipleExpanded)));
   let isDisabled = computed(() => Boolean(unref(props.isDisabled)));
-  let uncontrolledExpandedKeys = ref(new Set(props.defaultExpandedKeys ?? []));
-  let isControlled = computed(() => props.expandedKeys !== undefined && props.expandedKeys.value !== undefined);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasControlled.value = nextIsControlled;
-  });
-
-  let expandedKeys = computed(() => {
-    if (isControlled.value && props.expandedKeys) {
-      return props.expandedKeys.value;
-    }
-
-    return uncontrolledExpandedKeys.value;
-  });
+  let [expandedKeys, setExpandedKeysInternal] = useControlledState<Set<Key>>(
+    props.expandedKeys,
+    new Set(props.defaultExpandedKeys ?? []),
+    props.onExpandedChange
+  );
 
   let setExpandedKeys = (nextKeys: Set<Key>): void => {
-    if (Object.is(nextKeys, expandedKeys.value)) {
-      return;
-    }
-
-    if (!isControlled.value) {
-      uncontrolledExpandedKeys.value = nextKeys;
-    }
-
-    props.onExpandedChange?.(nextKeys);
+    setExpandedKeysInternal(nextKeys);
   };
 
   watchEffect(() => {

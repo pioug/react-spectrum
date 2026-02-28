@@ -1,4 +1,5 @@
-import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
+import {computed, type ComputedRef, type Ref, unref} from 'vue';
+import {useControlledState} from '@vue-stately/utils';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 export type Key = string | number;
@@ -28,39 +29,14 @@ export function useToggleGroupState(props: ToggleGroupProps): ToggleGroupState {
   let selectionMode = computed(() => unref(props.selectionMode) ?? 'single');
   let disallowEmptySelection = computed(() => Boolean(unref(props.disallowEmptySelection)));
   let isDisabled = computed(() => Boolean(unref(props.isDisabled)));
-  let isControlled = computed(() => props.selectedKeys !== undefined && props.selectedKeys.value !== undefined);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasControlled.value = nextIsControlled;
-  });
-
-  let uncontrolledSelectedKeys = ref(new Set<Key>(props.defaultSelectedKeys ?? []));
-  let selectedKeys = computed<Set<Key>>({
-    get: () => {
-      if (isControlled.value && props.selectedKeys) {
-        return props.selectedKeys.value;
-      }
-
-      return uncontrolledSelectedKeys.value;
-    },
-    set: (nextKeys) => {
-      if (!isControlled.value) {
-        uncontrolledSelectedKeys.value = nextKeys;
-      }
-    }
-  });
+  let [selectedKeys, setSelectedKeysInternal] = useControlledState<Set<Key>>(
+    props.selectedKeys,
+    new Set<Key>(props.defaultSelectedKeys ?? []),
+    props.onSelectionChange
+  );
 
   let commitSelectedKeys = (keys: Set<Key>): void => {
-    if (Object.is(keys, selectedKeys.value)) {
-      return;
-    }
-
-    selectedKeys.value = keys;
-    props.onSelectionChange?.(keys);
+    setSelectedKeysInternal(keys);
   };
 
   let toggleKey = (key: Key): void => {
