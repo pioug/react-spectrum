@@ -1,1 +1,1 @@
-export {Menu, VueMenu} from './src';
+export * from './src';

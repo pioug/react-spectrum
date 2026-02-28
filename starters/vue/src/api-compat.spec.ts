@@ -85,6 +85,16 @@ import {
   VueMenu
 } from '@vue-spectrum/menu';
 import {
+  ActionMenu as RootActionMenu,
+  ContextualHelpTrigger as RootContextualHelpTrigger,
+  Item as RootMenuItem,
+  Menu as RootMenu,
+  MenuTrigger as RootMenuTrigger,
+  Section as RootMenuSection,
+  SubmenuTrigger as RootSubmenuTrigger,
+  VueMenu as RootVueMenu
+} from '../../../packages/@vue-spectrum/menu/index';
+import {
   Item as ListBoxItem,
   ListBox,
   ListBoxBase,
@@ -322,6 +332,17 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(ContextualHelpTrigger).not.toBe(MenuTrigger);
     expect(MenuItem).not.toBe(VueMenu);
     expect(MenuSection).not.toBe(VueMenu);
+  });
+
+  it('keeps root menu entry exports aligned with source exports', () => {
+    expect(RootMenu).toBe(Menu);
+    expect(RootVueMenu).toBe(VueMenu);
+    expect(RootActionMenu).toBe(ActionMenu);
+    expect(RootMenuTrigger).toBe(MenuTrigger);
+    expect(RootSubmenuTrigger).toBe(SubmenuTrigger);
+    expect(RootContextualHelpTrigger).toBe(ContextualHelpTrigger);
+    expect(RootMenuItem).toBe(MenuItem);
+    expect(RootMenuSection).toBe(MenuSection);
   });
 
   it('exports listbox base and collection primitives separately', () => {
