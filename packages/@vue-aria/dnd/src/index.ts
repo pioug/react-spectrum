@@ -1,10 +1,12 @@
 import {type AriaDragOptions, type DragAria, useDrag as useAriaDrag} from './useDrag';
 import {type AriaDropOptions, type DropAria, useDrop as useAriaDrop} from './useDrop';
 import {getInteractionModality} from '@vue-aria/interactions';
+import {useLocalizedStringFormatter} from '@vue-aria/i18n';
 import {getScrollParent, isIOS, isScrollable, isWebKit, useDescription} from '@vue-aria/utils';
 import {computed, defineComponent, unref, watch} from 'vue';
 import {DIRECTORY_DRAG_TYPE as INTERNAL_DIRECTORY_DRAG_TYPE, type DragItem, type DropOperation} from './types';
 import {getActiveDragItems, isVirtualDraggingSessionActive} from './dragSession';
+import intlMessages from './intlMessages';
 
 export type {AriaDragOptions, DragAria, AriaDropOptions, DropAria};
 export type {DragItem, DropOperation} from './types';
@@ -765,6 +767,7 @@ export function useDropIndicator(
     dropProps: {value: AnyRecord},
     isDropTarget: {value: boolean}
   };
+  let stringFormatter = useLocalizedStringFormatter(intlMessages, '@vue-aria/dnd');
   let id = `vue-aria-drop-indicator-${++dropIndicatorId}`;
   let getText = (key: DraggingKey | null): string => {
     if (key == null) {
@@ -791,17 +794,19 @@ export function useDropIndicator(
   let labelForTarget = () => {
     let target = propsRecord.target as AnyRecord | undefined;
     if (!target || typeof target !== 'object') {
-      return 'Drop on';
+      return stringFormatter.format('dropOnRoot');
     }
 
     if (target.type === 'root') {
-      return 'Drop on';
+      return stringFormatter.format('dropOnRoot');
     }
 
     let key = target.key as DraggingKey | null;
     if (target.dropPosition === 'on') {
       let itemText = getText(key);
-      return itemText ? `Drop on ${itemText}` : 'Drop on';
+      return itemText
+        ? stringFormatter.format('dropOnItem', {itemText})
+        : stringFormatter.format('dropOnRoot');
     }
 
     let collection = stateRecord.collection as AnyRecord | undefined;
@@ -828,18 +833,25 @@ export function useDropIndicator(
     }
 
     if (beforeKey != null && afterKey != null) {
-      return `Insert between ${getText(beforeKey)} and ${getText(afterKey)}`;
+      return stringFormatter.format('insertBetween', {
+        beforeItemText: getText(beforeKey),
+        afterItemText: getText(afterKey)
+      });
     }
 
     if (beforeKey != null) {
-      return `Insert after ${getText(beforeKey)}`;
+      return stringFormatter.format('insertAfter', {
+        itemText: getText(beforeKey)
+      });
     }
 
     if (afterKey != null) {
-      return `Insert before ${getText(afterKey)}`;
+      return stringFormatter.format('insertBefore', {
+        itemText: getText(afterKey)
+      });
     }
 
-    return 'Drop on';
+    return stringFormatter.format('dropOnRoot');
   };
   let labelledBy = () => {
     let target = propsRecord.target as AnyRecord | undefined;
@@ -857,7 +869,7 @@ export function useDropIndicator(
     return {
       ...droppableItem.dropProps.value,
       id,
-      'aria-roledescription': 'drop indicator',
+      'aria-roledescription': stringFormatter.format('dropIndicator'),
       'aria-label': labelForTarget(),
       'aria-labelledby': labelledBy(),
       'aria-hidden': ariaHidden,
@@ -1361,10 +1373,11 @@ export function useDroppableItem(
 ): DroppableItemResult {
   let propsRecord = props as AnyRecord;
   let stateRecord = state as AnyRecord;
+  let stringFormatter = useLocalizedStringFormatter(intlMessages, '@vue-aria/dnd');
   let droppableCollectionRef = getDroppableCollectionRef(state);
-  let keyboardDropDescription = useDescription('Press Enter to drop. Press Escape to cancel drag.');
-  let touchDropDescription = useDescription('Double tap to drop.');
-  let virtualDropDescription = useDescription('Click to drop.');
+  let keyboardDropDescription = useDescription(stringFormatter.format('dropDescriptionKeyboard'));
+  let touchDropDescription = useDescription(stringFormatter.format('dropDescriptionTouch'));
+  let virtualDropDescription = useDescription(stringFormatter.format('dropDescriptionVirtual'));
   let target = computed(() => {
     if (propsRecord.target && typeof propsRecord.target === 'object') {
       return propsRecord.target as DropTarget;

@@ -5296,6 +5296,34 @@ describe('Vue migration composition components', () => {
     );
   });
 
+  it('localizes useDropIndicator labels from vue-aria i18n locale context', () => {
+    let provider = I18nProvider({
+      locale: 'de-DE'
+    });
+
+    try {
+      let dropState = useStatelyDroppableCollectionState();
+      let target = {type: 'root' as const};
+      dropState.setTarget(target);
+      let collectionRef = {current: document.createElement('div')};
+      useDroppableCollection({
+        acceptedDragTypes: ['item']
+      }, dropState, collectionRef);
+
+      let dropIndicator = useDropIndicator({target}, dropState, collectionRef) as {
+        dropIndicatorProps: {value: {
+          'aria-label': string,
+          'aria-roledescription': string
+        }}
+      };
+
+      expect(dropIndicator.dropIndicatorProps.value['aria-label']).toBe('Ablegen auf');
+      expect(dropIndicator.dropIndicatorProps.value['aria-roledescription']).toBe('Ablegeanzeiger');
+    } finally {
+      provider.clear();
+    }
+  });
+
   it('links root useDropIndicator to generated useDroppableCollection ids', () => {
     let dropState = useStatelyDroppableCollectionState();
     let target = {type: 'root' as const};
