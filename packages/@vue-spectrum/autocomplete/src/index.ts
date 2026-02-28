@@ -2,7 +2,7 @@ import '@adobe/spectrum-css-temp/components/inputgroup/vars.css';
 import '@adobe/spectrum-css-temp/components/search/vars.css';
 import '@adobe/spectrum-css-temp/components/textfield/vars.css';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, type PropType, ref} from 'vue';
+import {computed, defineComponent, h, type PropType, ref, watch} from 'vue';
 import './searchautocomplete.css';
 import {getEventTarget} from '@vue-aria/utils';
 const inputGroupStyles: {[key: string]: string} = {};
@@ -12,6 +12,7 @@ const textfieldStyles: {[key: string]: string} = {};
 
 type ValidationState = 'invalid' | 'valid';
 type PickerOptionInput = string;
+const SEARCH_AUTOCOMPLETE_PLACEHOLDER_WARNING = 'Placeholders are deprecated due to accessibility issues. Please use help text instead.';
 
 let autocompleteId = 0;
 
@@ -92,6 +93,7 @@ export const SearchAutocomplete = defineComponent({
     let isHovered = ref(false);
     let isFocused = ref(false);
     let isFocusVisible = ref(false);
+    let hasWarnedDeprecatedPlaceholder = ref(false);
 
     let inputId = computed(() => props.id ?? generatedId);
     let labelId = computed(() => props.label ? `${inputId.value}-label` : undefined);
@@ -101,6 +103,13 @@ export const SearchAutocomplete = defineComponent({
     let isInvalid = computed(() => (props.isInvalid || props.invalid || props.validationState === 'invalid') && !isDisabled.value);
     let isValid = computed(() => props.validationState === 'valid' && !isDisabled.value);
     let isPlaceholder = computed(() => props.modelValue === '');
+
+    watch(() => props.placeholder, (placeholder) => {
+      if (placeholder && !hasWarnedDeprecatedPlaceholder.value && process.env.NODE_ENV !== 'production') {
+        console.warn(SEARCH_AUTOCOMPLETE_PLACEHOLDER_WARNING);
+        hasWarnedDeprecatedPlaceholder.value = true;
+      }
+    }, {immediate: true});
 
     let controlClassName = computed(() => classNames(
       inputGroupStyles,

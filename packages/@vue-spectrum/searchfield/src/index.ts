@@ -19,6 +19,7 @@ type LabelAlign = 'end' | 'start';
 type LabelPosition = 'side' | 'top';
 type NecessityIndicator = 'icon' | 'label';
 type ValidationState = 'invalid' | 'valid';
+const SEARCHFIELD_PLACEHOLDER_WARNING = 'Placeholders are deprecated due to accessibility issues. Please use help text instead. See the docs for details: https://react-spectrum.adobe.com/react-spectrum/SearchField.html#help-text';
 
 let searchFieldId = 0;
 
@@ -165,6 +166,7 @@ export const SearchField = defineComponent({
   setup(props, {attrs, emit}) {
     let generatedId = `vs-search-field-${++searchFieldId}`;
     let inputRef = ref<HTMLInputElement | null>(null);
+    let hasWarnedDeprecatedPlaceholder = ref(false);
 
     let isHovered = ref(false);
     let isFocusVisible = ref(false);
@@ -182,6 +184,13 @@ export const SearchField = defineComponent({
 
       if (typeof modelValue === 'string') {
         uncontrolledValue.value = modelValue;
+      }
+    }, {immediate: true});
+
+    watch(() => props.placeholder, (placeholder) => {
+      if (placeholder && !hasWarnedDeprecatedPlaceholder.value && process.env.NODE_ENV !== 'production') {
+        console.warn(SEARCHFIELD_PLACEHOLDER_WARNING);
+        hasWarnedDeprecatedPlaceholder.value = true;
       }
     }, {immediate: true});
 

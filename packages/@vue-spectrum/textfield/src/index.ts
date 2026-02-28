@@ -18,6 +18,8 @@ type ValidationState = 'invalid' | 'valid';
 
 const ALERT_PATH = 'M8.564 1.289L.2 16.256A.5.5 0 0 0 .636 17h16.728a.5.5 0 0 0 .436-.744L9.436 1.289a.5.5 0 0 0-.872 0zM10 14.75a.25.25 0 0 1-.25.25h-1.5a.25.25 0 0 1-.25-.25v-1.5a.25.25 0 0 1 .25-.25h1.5a.25.25 0 0 1 .25.25zm0-3a.25.25 0 0 1-.25.25h-1.5a.25.25 0 0 1-.25-.25v-6a.25.25 0 0 1 .25-.25h1.5a.25.25 0 0 1 .25.25z';
 const CHECKMARK_PATH = 'M4.5 10a1.022 1.022 0 0 1-.799-.384l-2.488-3a1 1 0 0 1 1.576-1.233L4.5 7.376l4.712-5.991a1 1 0 1 1 1.576 1.23l-5.51 7A.978.978 0 0 1 4.5 10z';
+const TEXTFIELD_PLACEHOLDER_WARNING = 'Placeholders are deprecated due to accessibility issues. Please use help text instead. See the docs for details: https://react-spectrum.adobe.com/react-spectrum/TextField.html#help-text';
+const TEXTAREA_PLACEHOLDER_WARNING = 'Placeholders are deprecated due to accessibility issues. Please use help text instead. See the docs for details: https://react-spectrum.adobe.com/react-spectrum/TextArea.html#help-text';
 
 let inputIdCounter = 0;
 let textAreaIdCounter = 0;
@@ -173,6 +175,7 @@ function buildField(
       let generatedId = idFactory();
       let inputId = computed(() => props.id ?? generatedId);
       let inputRef = ref<HTMLInputElement | HTMLTextAreaElement | null>(null);
+      let hasWarnedDeprecatedPlaceholder = ref(false);
 
       let isHovered = ref(false);
       let isFocusVisible = ref(false);
@@ -186,6 +189,13 @@ function buildField(
 
         if (typeof modelValue === 'string') {
           uncontrolledValue.value = modelValue;
+        }
+      }, {immediate: true});
+
+      watch(() => props.placeholder, (placeholder) => {
+        if (placeholder && !hasWarnedDeprecatedPlaceholder.value && process.env.NODE_ENV !== 'production') {
+          console.warn(kind === 'input' ? TEXTFIELD_PLACEHOLDER_WARNING : TEXTAREA_PLACEHOLDER_WARNING);
+          hasWarnedDeprecatedPlaceholder.value = true;
         }
       }, {immediate: true});
 

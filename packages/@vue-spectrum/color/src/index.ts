@@ -5,7 +5,7 @@ import '@adobe/spectrum-css-temp/components/colorslider/vars.css';
 import '@adobe/spectrum-css-temp/components/colorwheel/vars.css';
 import './colorfield.css';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, type PropType, ref} from 'vue';
+import {computed, defineComponent, getCurrentInstance, h, type PropType, ref, watch} from 'vue';
 const colorAreaStyles: {[key: string]: string} = {};
 const colorHandleStyles: {[key: string]: string} = {};
 const colorLoupeStyles: {[key: string]: string} = {};
@@ -39,6 +39,7 @@ type RgbColor = {
 };
 
 const DEFAULT_HEX_COLOR = '#3366ff';
+const COLORFIELD_PLACEHOLDER_WARNING = 'Placeholders are deprecated due to accessibility issues. Please use help text instead. See the docs for details: https://react-spectrum.adobe.com/react-spectrum/ColorField.html#help-text';
 const DEFAULT_COLOR_SWATCHES: ColorSwatchItem[] = [
   {id: 'azure', color: '#0ea5e9', label: 'Azure'},
   {id: 'violet', color: '#8b5cf6', label: 'Violet'},
@@ -270,8 +271,11 @@ export const ColorField = defineComponent({
     'update:modelValue': (value: string) => typeof value === 'string'
   },
   setup(props, {emit, attrs}) {
+    let instance = getCurrentInstance();
+    let didProvidePlaceholderProp = Boolean(instance?.vnode.props && Object.prototype.hasOwnProperty.call(instance.vnode.props, 'placeholder'));
     let generatedId = `vs-color-field-${++colorFieldId}`;
     let focused = ref(false);
+    let hasWarnedDeprecatedPlaceholder = ref(false);
 
     let disabled = computed(() => resolveDisabled(props.disabled, props.isDisabled));
     let inputId = computed(() => props.id ?? generatedId);
@@ -315,6 +319,13 @@ export const ColorField = defineComponent({
       let value = attrs['aria-label'];
       return typeof value === 'string' && value.length > 0 ? value : undefined;
     });
+
+    watch(() => props.placeholder, (placeholder) => {
+      if (didProvidePlaceholderProp && placeholder && !hasWarnedDeprecatedPlaceholder.value && process.env.NODE_ENV !== 'production') {
+        console.warn(COLORFIELD_PLACEHOLDER_WARNING);
+        hasWarnedDeprecatedPlaceholder.value = true;
+      }
+    }, {immediate: true});
 
     return () => h('label', {
       ...rootAttrs.value,

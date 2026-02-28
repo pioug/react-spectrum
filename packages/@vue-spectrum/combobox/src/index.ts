@@ -48,6 +48,7 @@ interface NormalizedOption {
 }
 
 let comboboxId = 0;
+const COMBOBOX_PLACEHOLDER_WARNING = 'Placeholders are deprecated due to accessibility issues. Please use help text instead. See the docs for details: https://react-spectrum.adobe.com/react-spectrum/ComboBox.html#help-text';
 
 function toOptionKey(value: OptionKey | null | undefined): string | null {
   if (value == null) {
@@ -260,6 +261,7 @@ export const ComboBox = defineComponent({
   setup(props, {attrs, emit}) {
     let generatedId = `vs-combobox-${++comboboxId}`;
     let activeOptionKey = ref<string | null>(null);
+    let hasWarnedDeprecatedPlaceholder = ref(false);
     let hasEmittedLoadMore = ref(false);
     let isExpanded = ref(false);
     let isFocused = ref(false);
@@ -312,6 +314,13 @@ export const ComboBox = defineComponent({
     }, {deep: true, immediate: true});
 
     let selectedItems = computed(() => normalizedOptions.value.filter((option) => selectedKeysRef.value.has(option.id)));
+
+    watch(() => props.placeholder, (placeholder) => {
+      if (placeholder && !hasWarnedDeprecatedPlaceholder.value && process.env.NODE_ENV !== 'production') {
+        console.warn(COMBOBOX_PLACEHOLDER_WARNING);
+        hasWarnedDeprecatedPlaceholder.value = true;
+      }
+    }, {immediate: true});
 
     let externalAriaLabelledBy = computed(() => {
       let value = attrs['aria-labelledby'];

@@ -2472,6 +2472,60 @@ describe('Vue migration primitives', () => {
     expect(ariaLabelWrapper.attributes('aria-label')).toBeUndefined();
   });
 
+  it('warns on deprecated placeholder usage for text entry components', () => {
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    mount(TextField, {
+      props: {
+        label: 'Name',
+        placeholder: 'Type your name'
+      }
+    });
+    mount(TextArea, {
+      props: {
+        label: 'Summary',
+        placeholder: 'Type a summary'
+      }
+    });
+    mount(SearchField, {
+      props: {
+        label: 'Search',
+        placeholder: 'Search projects'
+      }
+    });
+    mount(ComboBox, {
+      props: {
+        label: 'Framework',
+        modelValue: '',
+        options: ['Vue', 'React'],
+        placeholder: 'Choose framework'
+      }
+    });
+    mount(SearchAutocomplete, {
+      props: {
+        label: 'Search with Autocomplete',
+        modelValue: '',
+        options: ['Aerospace'],
+        placeholder: 'Search options'
+      }
+    });
+    mount(ColorField, {
+      props: {
+        label: 'Color',
+        modelValue: '#3366ff',
+        placeholder: '#ffffff'
+      }
+    });
+
+    expect(warn).toHaveBeenCalledWith('Placeholders are deprecated due to accessibility issues. Please use help text instead. See the docs for details: https://react-spectrum.adobe.com/react-spectrum/TextField.html#help-text');
+    expect(warn).toHaveBeenCalledWith('Placeholders are deprecated due to accessibility issues. Please use help text instead. See the docs for details: https://react-spectrum.adobe.com/react-spectrum/TextArea.html#help-text');
+    expect(warn).toHaveBeenCalledWith('Placeholders are deprecated due to accessibility issues. Please use help text instead. See the docs for details: https://react-spectrum.adobe.com/react-spectrum/SearchField.html#help-text');
+    expect(warn).toHaveBeenCalledWith('Placeholders are deprecated due to accessibility issues. Please use help text instead. See the docs for details: https://react-spectrum.adobe.com/react-spectrum/ComboBox.html#help-text');
+    expect(warn).toHaveBeenCalledWith('Placeholders are deprecated due to accessibility issues. Please use help text instead.');
+    expect(warn).toHaveBeenCalledWith('Placeholders are deprecated due to accessibility issues. Please use help text instead. See the docs for details: https://react-spectrum.adobe.com/react-spectrum/ColorField.html#help-text');
+    warn.mockRestore();
+  });
+
   it('maps combobox disabledKeys to disabled option state and blocked selection', async () => {
     let wrapper = mount(ComboBox, {
       props: {

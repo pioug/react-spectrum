@@ -1140,6 +1140,21 @@
    - full Vue tests: `yarn test:vue` (532 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Placeholder deprecation warning parity (`@vue-spectrum/*` text-entry components)
+
+1. Aligned placeholder deprecation warnings with React for Spectrum text-entry components:
+   - `@vue-spectrum/textfield` now warns for `TextField` and `TextArea` placeholder usage with React-matching messages/docs links,
+   - `@vue-spectrum/searchfield`, `@vue-spectrum/combobox`, and `@vue-spectrum/autocomplete` now emit matching placeholder deprecation warnings,
+   - `@vue-spectrum/color` `ColorField` now emits the matching placeholder warning when placeholder is explicitly provided.
+2. Preserved component behavior contracts:
+   - no input/event/state ownership changes; this patch only closes missing dev-warning parity.
+3. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: explicit warning assertions across TextField/TextArea/SearchField/ComboBox/SearchAutocomplete/ColorField placeholder scenarios.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "warns on deprecated placeholder usage for text entry components|maps searchfield field contract, aria wiring, icon variants, and clear behavior|maps search autocomplete icon variants and clear behavior|maps combobox interaction states, aria wiring, and hidden key input|maps color field aria label and labelledby precedence to react parity"`,
+   - full Vue tests: `yarn test:vue` (533 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
