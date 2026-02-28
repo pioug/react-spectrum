@@ -52,15 +52,14 @@ export function useSingleSelectListState<T extends object>(props: SingleSelectLi
       return uncontrolledSelectedKey.value;
     },
     set: (nextSelectedKey) => {
-      if (isControlled.value && props.selectedKey) {
-        props.selectedKey.value = nextSelectedKey;
-      } else {
+      if (!isControlled.value) {
         uncontrolledSelectedKey.value = nextSelectedKey;
       }
     }
   }) as Ref<Key | null>;
 
   let selectedKeys = ref(selectedKey.value == null ? new Set<Key>() : new Set<Key>([selectedKey.value]));
+  let isSyncingSelection = false;
 
   let listState = useListState({
     ...props,
@@ -69,24 +68,38 @@ export function useSingleSelectListState<T extends object>(props: SingleSelectLi
     selectedKeys,
     selectionMode: 'single',
     onSelectionChange: (keys) => {
-      let key = keys.values().next().value ?? null;
-      if (selectedKey.value !== key) {
-        selectedKey.value = key;
+      if (isSyncingSelection) {
+        return;
       }
 
-      props.onSelectionChange?.(key);
+      let key = keys.values().next().value ?? null;
+      if (key === selectedKey.value && props.onSelectionChange) {
+        props.onSelectionChange(key);
+      }
+
+      setSelectedKey(key);
     }
   });
 
   watch(selectedKey, (nextKey) => {
     let nextKeys = nextKey == null ? new Set<Key>() : new Set<Key>([nextKey]);
     if (!equalSets(nextKeys, listState.selectionManager.selectedKeys.value)) {
-      listState.selectionManager.setSelectedKeys(nextKeys);
+      isSyncingSelection = true;
+      try {
+        listState.selectionManager.setSelectedKeys(nextKeys);
+      } finally {
+        isSyncingSelection = false;
+      }
     }
   }, {flush: 'sync'});
 
   let setSelectedKey = (key: Key | null): void => {
+    if (selectedKey.value === key) {
+      return;
+    }
+
     selectedKey.value = key;
+    props.onSelectionChange?.(key);
   };
 
   let selectedItem = computed(() => {

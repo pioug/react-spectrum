@@ -2103,6 +2103,22 @@
    - full Vue tests: `yarn test:vue` (611 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Single-select list controlled ownership parity (`@vue-stately/list`)
+
+1. Closed single-select list controlled ownership drift:
+   - `useSingleSelectListState` no longer mutates controlled `selectedKey` refs directly from `setSelectedKey` or selection-manager events.
+2. Aligned callback semantics with React behavior:
+   - `onSelectionChange` still fires for same-key selection manager updates,
+   - direct `setSelectedKey` same-value writes remain no-ops.
+3. Removed duplicate callback emission feedback:
+   - added internal sync guard so selected-key-to-selection-manager synchronization does not recursively re-emit selection changes.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: explicit controlled-no-parent-update assertion for single-select list state.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "single-select list state and selected item lookups|single-select list controlled without mutating control refs|tab list selection and focused-tab synchronization"`,
+   - full Vue tests: `yarn test:vue` (612 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

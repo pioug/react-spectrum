@@ -2744,6 +2744,7 @@ describe('Vue migration composition components', () => {
       selectedKey,
       onSelectionChange: (key) => {
         selectionChanges.push(key as string | null);
+        selectedKey.value = key as string | null;
       }
     });
 
@@ -2762,6 +2763,28 @@ describe('Vue migration composition components', () => {
     expect(selectedKey.value).toBe('details');
     expect(listState.selectedItem.value?.key).toBe('details');
     expect(selectionChanges[selectionChanges.length - 1]).toBe('details');
+  });
+
+  it('keeps vue-stately single-select list controlled without mutating control refs', () => {
+    let nodes: StatelyListNode<{label: string}>[] = [
+      {key: 'overview', textValue: 'Overview', type: 'item', value: {label: 'Overview'}},
+      {key: 'details', textValue: 'Details', type: 'item', value: {label: 'Details'}}
+    ];
+    let selectedKey = ref<string | null>('overview');
+    let selectionChanges: Array<string | null> = [];
+    let listState = useStatelySingleSelectListState({
+      collection: new StatelyListCollection(nodes),
+      selectedKey,
+      onSelectionChange: (key) => {
+        selectionChanges.push(key as string | null);
+      }
+    });
+
+    listState.setSelectedKey('details');
+
+    expect(selectedKey.value).toBe('overview');
+    expect(listState.selectedKey.value).toBe('overview');
+    expect(selectionChanges).toEqual(['details']);
   });
 
   it('warns when vue-stately single-select list switches between controlled and uncontrolled', async () => {
