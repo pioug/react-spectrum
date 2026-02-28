@@ -83,6 +83,29 @@ export function useListBox(options: AriaListBoxOptions, collection: MaybeRef<Lis
   let id = computed(() => resolveOptionalValue(options.id) ?? `vue-listbox-${listBoxCounter}`);
   let label = computed(() => resolveOptionalValue(options.label));
   let labelId = computed(() => (label.value ? `${id.value}-label` : undefined));
+  let ariaLabel = computed(() => resolveOptionalValue(options.ariaLabel) ?? resolveOptionalValue(options['aria-label']));
+  let ariaLabelledby = computed(() => resolveOptionalValue(options.ariaLabelledby) ?? resolveOptionalValue(options['aria-labelledby']));
+  let combinedAriaLabelledBy = computed(() => {
+    let ids = new Set<string>();
+    if (labelId.value) {
+      ids.add(labelId.value);
+    }
+
+    let labelledBy = ariaLabelledby.value;
+    if (labelledBy) {
+      for (let nextId of labelledBy.trim().split(/\s+/)) {
+        if (nextId) {
+          ids.add(nextId);
+        }
+      }
+    }
+
+    if (ariaLabel.value && ids.size > 0) {
+      ids.add(id.value);
+    }
+
+    return ids.size > 0 ? Array.from(ids).join(' ') : undefined;
+  });
 
   let listBox = {
     collection: resolvedCollection,
@@ -95,10 +118,8 @@ export function useListBox(options: AriaListBoxOptions, collection: MaybeRef<Lis
     listBoxProps: computed(() => ({
       id: id.value,
       role: 'listbox' as const,
-      'aria-label': resolveOptionalValue(options.ariaLabel) ?? resolveOptionalValue(options['aria-label']),
-      'aria-labelledby': labelId.value
-        ? [labelId.value, resolveOptionalValue(options.ariaLabelledby) ?? resolveOptionalValue(options['aria-labelledby'])].filter(Boolean).join(' ')
-        : resolveOptionalValue(options.ariaLabelledby) ?? resolveOptionalValue(options['aria-labelledby']),
+      'aria-label': ariaLabel.value,
+      'aria-labelledby': combinedAriaLabelledBy.value,
       'aria-multiselectable': selectionMode.value === 'multiple' ? ('true' as const) : undefined
     })),
     onAction: options.onAction,

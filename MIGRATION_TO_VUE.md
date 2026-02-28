@@ -959,6 +959,20 @@
    - full Vue tests: `yarn test:vue` (531 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 27, 2026 — Shared `useListBox` ARIA composition parity (`@vue-aria/listbox`)
+
+1. Aligned listbox labeling semantics with React dual-label behavior:
+   - visible listbox label id now composes with external `aria-labelledby`,
+   - listbox id now participates in `aria-labelledby` when `aria-label` coexists with labelledby sources.
+2. Preserved list contract behavior:
+   - listbox role/selection semantics and list-data wiring remain unchanged while labeling ownership is corrected.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: explicit listbox assertions for combined visible-label + external `aria-labelledby` + `aria-label` ownership.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "listbox options, sections, and list data ids"`,
+   - full Vue tests: `yarn test:vue` (531 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

@@ -3097,6 +3097,24 @@ describe('Vue migration composition components', () => {
     expect(section.headingProps.value.role).toBe('presentation');
     expect(section.groupProps.value.role).toBe('group');
     expect(section.groupProps.value['aria-labelledby']).toBe(section.headingProps.value.id);
+
+    let composedLabelListBox = useAriaListBox({
+      'aria-label': 'Framework picker',
+      'aria-labelledby': 'external-framework-listbox-label',
+      id: 'framework-listbox',
+      label: 'Frameworks',
+      selectionMode: 'single'
+    }, {
+      items: [
+        {key: 'react', index: 0, textValue: 'React'}
+      ]
+    });
+
+    let listBoxLabelledByIds = composedLabelListBox.listBoxProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(listBoxLabelledByIds).toContain('framework-listbox-label');
+    expect(listBoxLabelledByIds).toContain('external-framework-listbox-label');
+    expect(listBoxLabelledByIds).toContain('framework-listbox');
+    expect(composedLabelListBox.listBoxProps.value['aria-label']).toBe('Framework picker');
   });
 
   it('computes vue-aria menu trigger and item selection semantics', () => {
