@@ -1,1 +1,1 @@
-export {StatusLight, VueStatusLight} from './src';
+export * from './src';
