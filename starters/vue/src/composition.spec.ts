@@ -4243,6 +4243,100 @@ describe('Vue migration composition components', () => {
     wrapper.unmount();
   });
 
+  it('supports react-style custom clipboard data maps', async () => {
+    let onPaste = vi.fn();
+    let wrapper = mount(defineComponent({
+      setup() {
+        let {clipboardProps} = useClipboard({
+          getItems: () => [{test: 'test data'}],
+          onPaste
+        });
+        return () => h('div', {
+          tabIndex: 0,
+          ...clipboardProps
+        });
+      }
+    }));
+
+    await wrapper.get('div').trigger('focus');
+    let clipboardData = createClipboardData();
+    dispatchClipboardEvent('copy', clipboardData);
+
+    expect(clipboardData.getData('test')).toBe('test data');
+    dispatchClipboardEvent('paste', clipboardData);
+    expect(onPaste).toHaveBeenCalledTimes(1);
+
+    let pastedItems = onPaste.mock.calls[0][0] as Array<{kind: string, getText: (type: string) => Promise<string>, types: Set<string>}>;
+    expect(pastedItems).toHaveLength(1);
+    expect(Array.from(pastedItems[0].types)).toEqual(['test']);
+    expect(await pastedItems[0].getText('test')).toBe('test data');
+    wrapper.unmount();
+  });
+
+  it('supports multiple custom clipboard items via react custom payload type', async () => {
+    let onPaste = vi.fn();
+    let wrapper = mount(defineComponent({
+      setup() {
+        let {clipboardProps} = useClipboard({
+          getItems: () => [{test: 'item 1'}, {test: 'item 2'}],
+          onPaste
+        });
+        return () => h('div', {
+          tabIndex: 0,
+          ...clipboardProps
+        });
+      }
+    }));
+
+    await wrapper.get('div').trigger('focus');
+    let clipboardData = createClipboardData();
+    dispatchClipboardEvent('copy', clipboardData);
+
+    expect(clipboardData.getData('test')).toBe('item 1');
+    expect(JSON.parse(clipboardData.getData('application/vnd.react-aria.items+json'))).toEqual([
+      {test: 'item 1'},
+      {test: 'item 2'}
+    ]);
+
+    dispatchClipboardEvent('paste', clipboardData);
+    expect(onPaste).toHaveBeenCalledTimes(1);
+    let pastedItems = onPaste.mock.calls[0][0] as Array<{getText: (type: string) => Promise<string>}>;
+    expect(pastedItems).toHaveLength(2);
+    expect(await pastedItems[0].getText('test')).toBe('item 1');
+    expect(await pastedItems[1].getText('test')).toBe('item 2');
+    wrapper.unmount();
+  });
+
+  it('passes clipboard action details to getItems for copy and cut', async () => {
+    let onCopy = vi.fn();
+    let onCut = vi.fn();
+    let wrapper = mount(defineComponent({
+      setup() {
+        let {clipboardProps} = useClipboard({
+          getItems: (details) => [{[details.action]: 'test data'}],
+          onCopy,
+          onCut
+        });
+        return () => h('div', {
+          tabIndex: 0,
+          ...clipboardProps
+        });
+      }
+    }));
+
+    await wrapper.get('div').trigger('focus');
+    let copyClipboardData = createClipboardData();
+    dispatchClipboardEvent('copy', copyClipboardData);
+    expect(copyClipboardData.getData('copy')).toBe('test data');
+    expect(onCopy).toHaveBeenCalledTimes(1);
+
+    let cutClipboardData = createClipboardData();
+    dispatchClipboardEvent('cut', cutClipboardData);
+    expect(cutClipboardData.getData('cut')).toBe('test data');
+    expect(onCut).toHaveBeenCalledTimes(1);
+    wrapper.unmount();
+  });
+
   it('resolves list drop targets from pointer coordinates via ListDropTargetDelegate', () => {
     let container = document.createElement('div');
     let first = document.createElement('div');

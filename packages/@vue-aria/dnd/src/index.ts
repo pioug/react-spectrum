@@ -112,7 +112,7 @@ function mapDragModality(modality: string | null): 'keyboard' | 'touch' | 'virtu
 }
 
 export interface ClipboardProps {
-  getItems?: (details: {action: 'copy' | 'cut'}) => DragItem[],
+  getItems?: (details: {action: 'copy' | 'cut'}) => Array<DragItem | Record<string, unknown>>,
   isDisabled?: boolean,
   onCopy?: () => void,
   onCut?: () => void,
@@ -584,29 +584,38 @@ function writeDataTransferValue(dataTransfer: DataTransfer, type: string, value:
   dataTransfer.setData(type, value);
 }
 
-function toClipboardPayload(items: DragItem[]): Array<Record<string, string>> {
+function toClipboardPayload(items: Array<DragItem | Record<string, unknown>>): Array<Record<string, string>> {
   return items.map((item) => {
-    let record = item as unknown as AnyRecord;
-    let type = typeof item.type === 'string' && item.type.length > 0
-      ? item.type
-      : 'text/plain';
-    let value = serializeClipboardValue(item.value);
-    let dataByType: Record<string, string> = {[type]: value};
-    let extraTypes = record.types;
-    if (extraTypes instanceof Set) {
-      for (let extraType of extraTypes) {
-        let key = String(extraType);
-        if (!(key in dataByType)) {
-          dataByType[key] = value;
+    let record = item as AnyRecord;
+    if ('value' in record) {
+      let type = typeof record.type === 'string' && record.type.length > 0
+        ? record.type
+        : 'text/plain';
+      let value = serializeClipboardValue(record.value);
+      let dataByType: Record<string, string> = {[type]: value};
+      let extraTypes = record.types;
+      if (extraTypes instanceof Set) {
+        for (let extraType of extraTypes) {
+          let key = String(extraType);
+          if (!(key in dataByType)) {
+            dataByType[key] = value;
+          }
         }
       }
+
+      return dataByType;
+    }
+
+    let dataByType: Record<string, string> = {};
+    for (let [type, value] of Object.entries(record)) {
+      dataByType[type] = serializeClipboardValue(value);
     }
 
     return dataByType;
   });
 }
 
-function writeToDataTransfer(dataTransfer: DataTransfer, items: DragItem[]): void {
+function writeToDataTransfer(dataTransfer: DataTransfer, items: Array<DragItem | Record<string, unknown>>): void {
   let groupedByType = new Map<string, string[]>();
   let needsCustomData = false;
   let customData = toClipboardPayload(items);
@@ -1003,7 +1012,10 @@ export function useClipboard(props: ClipboardProps): ClipboardResult {
     }
 
     event.preventDefault();
-    writeToDataTransfer(clipboardEvent.clipboardData, props.getItems({action: 'copy'}));
+    let items = props.getItems({action: 'copy'});
+    if (Array.isArray(items)) {
+      writeToDataTransfer(clipboardEvent.clipboardData, items);
+    }
     props.onCopy?.();
   };
   let onBeforeCut = (event: Event) => {
@@ -1024,7 +1036,10 @@ export function useClipboard(props: ClipboardProps): ClipboardResult {
     }
 
     event.preventDefault();
-    writeToDataTransfer(clipboardEvent.clipboardData, props.getItems({action: 'cut'}));
+    let items = props.getItems({action: 'cut'});
+    if (Array.isArray(items)) {
+      writeToDataTransfer(clipboardEvent.clipboardData, items);
+    }
     props.onCut();
   };
   let onBeforePaste = (event: Event) => {
