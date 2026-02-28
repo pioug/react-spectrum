@@ -131,25 +131,11 @@ function normalizeExpandedKeys(expandedKeys: ExpandedKeysInput | ExpandedKeys | 
     return 'all';
   }
 
+  if (expandedKeys instanceof Set) {
+    return expandedKeys;
+  }
+
   return new Set(expandedKeys ?? []);
-}
-
-function expandedKeysEqual(a: ExpandedKeys, b: ExpandedKeys): boolean {
-  if (a === 'all' || b === 'all') {
-    return a === b;
-  }
-
-  if (a.size !== b.size) {
-    return false;
-  }
-
-  for (let key of a) {
-    if (!b.has(key)) {
-      return false;
-    }
-  }
-
-  return true;
 }
 
 export class TableColumnLayout {
@@ -203,9 +189,7 @@ export function UNSTABLE_useTreeGridState<T>(props: TreeGridStateProps<T>): Tree
     set: (nextExpandedKeys) => {
       let normalizedExpandedKeys = normalizeExpandedKeys(nextExpandedKeys);
       if (isControlled.value && props.UNSTABLE_expandedKeys) {
-        props.UNSTABLE_expandedKeys.value = normalizedExpandedKeys === 'all'
-          ? 'all'
-          : new Set(normalizedExpandedKeys);
+        props.UNSTABLE_expandedKeys.value = normalizedExpandedKeys;
       } else {
         uncontrolledExpandedKeys.value = normalizedExpandedKeys;
       }
@@ -215,7 +199,7 @@ export function UNSTABLE_useTreeGridState<T>(props: TreeGridStateProps<T>): Tree
   let treeGridState: TreeGridState<T>;
   let setExpandedKeys = (nextExpandedKeys: ExpandedKeysInput | ExpandedKeys): void => {
     let normalizedExpandedKeys = normalizeExpandedKeys(nextExpandedKeys);
-    if (expandedKeysEqual(normalizedExpandedKeys, expandedKeys.value)) {
+    if (Object.is(normalizedExpandedKeys, expandedKeys.value)) {
       return;
     }
 
@@ -225,7 +209,7 @@ export function UNSTABLE_useTreeGridState<T>(props: TreeGridStateProps<T>): Tree
     }
 
     if (normalizedExpandedKeys !== 'all') {
-      props.UNSTABLE_onExpandedChange?.(new Set(normalizedExpandedKeys));
+      props.UNSTABLE_onExpandedChange?.(normalizedExpandedKeys);
     }
   };
 

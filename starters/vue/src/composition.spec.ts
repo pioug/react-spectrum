@@ -3003,7 +3003,10 @@ describe('Vue migration composition components', () => {
     expect(Array.from(expandedKeys.value ?? [])).toEqual(['row-1', 'row-2']);
     treeGridState.toggleKey('row-1');
     expect(Array.from(expandedKeys.value ?? [])).toEqual(['row-2']);
-    expect(expandedChanges).toEqual([['row-1', 'row-2'], ['row-2']]);
+    let sameExpandedSetRef = expandedKeys.value;
+    treeGridState.setExpandedKeys(sameExpandedSetRef ?? new Set());
+    treeGridState.setExpandedKeys(new Set(['row-2']));
+    expect(expandedChanges).toEqual([['row-1', 'row-2'], ['row-2'], ['row-2']]);
   });
 
   it('warns when vue-stately tree grid expanded keys switch between controlled and uncontrolled', async () => {

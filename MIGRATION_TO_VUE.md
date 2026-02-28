@@ -1722,6 +1722,21 @@
    - full Vue tests: `yarn test:vue` (584 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Tree-grid expanded-set identity parity (`@vue-stately/table`)
+
+1. Closed `UNSTABLE_useTreeGridState` expanded-set normalization drift:
+   - set normalization now preserves existing `Set` references instead of always cloning.
+2. Aligned expanded update semantics with React `useControlledState` behavior:
+   - expanded no-op checks now use identity semantics (`Object.is`) rather than deep set-equality.
+3. Aligned expanded-change callback payload behavior:
+   - `UNSTABLE_onExpandedChange` now receives the normalized expanded set directly (no forced clone).
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: tree-grid state test now asserts same-reference `setExpandedKeys` is a no-op while a new `Set` with identical keys still emits expanded-change parity.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately tree grid expanded key state|warns when vue-stately tree grid expanded keys switch between controlled and uncontrolled|keeps vue-stately tree grid expansion uncontrolled when expanded key ref is undefined"`,
+   - full Vue tests: `yarn test:vue` (584 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
