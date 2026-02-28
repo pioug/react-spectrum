@@ -6964,6 +6964,50 @@ describe('Vue migration composition components', () => {
     expect(dashedAriaSection.rowGroupProps.value['aria-label']).toBe('Queued stories');
   });
 
+  it('supports react-style gridlist overload signatures with list state', () => {
+    let nodes: StatelyListNode<{label: string}>[] = [
+      {key: 'story-1', index: 0, textValue: 'Story 1', type: 'item', value: {label: 'Story 1'}},
+      {key: 'story-2', index: 1, textValue: 'Story 2', type: 'item', value: {label: 'Story 2'}}
+    ];
+    let selectedKeys = ref(new Set<string>(['story-1']));
+    let listState = useStatelyListState({
+      collection: new StatelyListCollection(nodes),
+      selectedKeys,
+      selectionMode: 'multiple'
+    });
+
+    let reactGridList = useGridList({
+      'aria-label': 'React-style gridlist'
+    } as unknown as Parameters<typeof useGridList>[0], listState as unknown as Parameters<typeof useGridList>[1], {
+      current: null
+    } as unknown as Parameters<typeof useGridList>[2]);
+    expect(reactGridList.gridProps.value.role).toBe('grid');
+    expect(reactGridList.gridProps.value['aria-multiselectable']).toBe('true');
+
+    let reactGridListItem = useGridListItem({
+      node: nodes[1]
+    } as unknown as Parameters<typeof useGridListItem>[0], listState as unknown as Parameters<typeof useGridListItem>[1], {
+      current: null
+    } as unknown as Parameters<typeof useGridListItem>[2]);
+    reactGridListItem.press();
+    expect(Array.from(selectedKeys.value).sort()).toEqual(['story-1', 'story-2']);
+    expect(reactGridListItem.rowProps.value.id).toContain('story-2');
+
+    let reactSelectionCheckbox = useGridListSelectionCheckbox({
+      key: 'story-2'
+    } as unknown as Parameters<typeof useGridListSelectionCheckbox>[0], listState as unknown as Parameters<typeof useGridListSelectionCheckbox>[1]);
+    expect(reactSelectionCheckbox.checkboxProps.value.checked).toBe(true);
+    reactSelectionCheckbox.toggleSelection();
+    expect(Array.from(selectedKeys.value)).toEqual(['story-1']);
+
+    let reactSection = useGridListSection({
+      'aria-label': 'React section'
+    } as unknown as Parameters<typeof useGridListSection>[0], listState as unknown as Parameters<typeof useGridListSection>[1], {
+      current: null
+    } as unknown as Parameters<typeof useGridListSection>[2]);
+    expect(reactSection.rowGroupProps.value['aria-label']).toBe('React section');
+  });
+
   it('formats locale-sensitive values with vue-aria i18n helpers', () => {
     let provider = I18nProvider({
       locale: 'fr-FR'
