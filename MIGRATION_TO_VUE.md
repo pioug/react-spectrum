@@ -1354,6 +1354,24 @@
    - full Vue tests: `yarn test:vue` (547 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — SearchField store controlled-state parity (`@vue-stately/searchfield`)
+
+1. Aligned controlled/uncontrolled ownership semantics with React `useSearchFieldState`:
+   - ref-backed values are now treated as controlled only when `value.value !== undefined` (matching React `useControlledState` behavior),
+   - ref-backed undefined values now use uncontrolled fallback state instead of being treated as controlled.
+2. Aligned controlled/uncontrolled transition warnings:
+   - `useSearchFieldState` now emits `WARN: A component changed from ...` when ownership switches between controlled and uncontrolled.
+3. Aligned change emission guardrails:
+   - `setValue` now skips updates/callbacks when the new value is unchanged, matching shared controlled-state semantics.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - ref-backed undefined searchfield state remains uncontrolled and keeps fallback value semantics,
+     - controlled/uncontrolled transition warning assertions for searchfield state.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately search field controlled and uncontrolled value state|warns when vue-stately search field switches between controlled and uncontrolled"`,
+   - full Vue tests: `yarn test:vue` (548 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

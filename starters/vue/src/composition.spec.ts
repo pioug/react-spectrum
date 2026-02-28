@@ -2080,6 +2080,35 @@ describe('Vue migration composition components', () => {
     controlledState.setValue('Spectrum');
     expect(controlledState.value.value).toBe('Spectrum');
     expect(controlledChanges).toEqual(['Spectrum']);
+
+    let refBackedUncontrolled = ref<string | undefined>(undefined);
+    let refBackedState = useStatelySearchFieldState({
+      defaultValue: 'Fallback',
+      value: refBackedUncontrolled
+    });
+    refBackedState.setValue('Draft');
+    expect(refBackedState.value.value).toBe('Draft');
+    expect(refBackedUncontrolled.value).toBeUndefined();
+  });
+
+  it('warns when vue-stately search field switches between controlled and uncontrolled', async () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let controlledValue = ref<string | undefined>('React');
+    useStatelySearchFieldState({
+      value: controlledValue
+    });
+
+    try {
+      controlledValue.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      controlledValue.value = 'Vue';
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+    } finally {
+      warnSpy.mockRestore();
+    }
   });
 
   it('manages vue-stately multiple selection state and selection-manager helpers', () => {
