@@ -5027,6 +5027,40 @@ describe('Vue migration composition components', () => {
     refElement.remove();
   });
 
+  it('updates useDroppableItem visibility when virtual drag session changes', async () => {
+    let drag = useDrag({
+      dragItems: [{id: 'item-1', type: 'item', value: {id: 1}}]
+    });
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: () => 'move'
+    });
+    let target = {
+      type: 'item' as const,
+      key: 'alpha',
+      dropPosition: 'on' as const
+    };
+    let droppableItem = useDroppableItem({target}, dropState, {
+      current: document.createElement('button')
+    }) as {
+      dropProps: {value: {'aria-hidden'?: string}}
+    };
+
+    expect(droppableItem.dropProps.value['aria-hidden']).toBeUndefined();
+
+    drag.startDrag();
+    await nextTick();
+    expect(droppableItem.dropProps.value['aria-hidden']).toBe('true');
+
+    dropState.setTarget(target);
+    await nextTick();
+    expect(droppableItem.dropProps.value['aria-hidden']).toBeUndefined();
+
+    drag.endDrag('cancel');
+    await nextTick();
+    expect(droppableItem.dropProps.value['aria-hidden']).toBeUndefined();
+  });
+
   it('emits useDroppableCollection drop callback payload with coordinates and operation', () => {
     let dropPayloads: Array<{dropOperation: string, type: string, x: number, y: number}> = [];
     let dropState = useStatelyDroppableCollectionState({
