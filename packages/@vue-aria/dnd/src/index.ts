@@ -100,11 +100,21 @@ function toDragItems(items: unknown): DragItem[] {
       }
 
       let record = item as AnyRecord;
-      return {
+      let dragItem: DragItem & AnyRecord = {
         id: String(record.id ?? record.key ?? index),
         type: String(record.type ?? 'item'),
         value: 'value' in record ? record.value : record
-      } satisfies DragItem;
+      };
+
+      if (typeof record.kind === 'string') {
+        dragItem.kind = record.kind;
+      }
+
+      if (record.types instanceof Set || Array.isArray(record.types)) {
+        dragItem.types = record.types;
+      }
+
+      return dragItem;
     })
     .filter((item): item is DragItem => item != null);
 }
@@ -243,7 +253,34 @@ function includesAcceptedType(acceptedTypes: Set<string> | null, items: DragItem
     return true;
   }
 
-  return items.every((item) => acceptedTypes.has(item.type));
+  return items.every((item) => {
+    let itemRecord = item as unknown as AnyRecord;
+    let itemTypes = new Set<string>();
+    itemTypes.add(item.type);
+
+    if (itemRecord.kind === 'directory') {
+      itemTypes.add(DIRECTORY_DRAG_TYPE);
+    }
+
+    let types = itemRecord.types;
+    if (types instanceof Set) {
+      for (let type of types) {
+        itemTypes.add(String(type));
+      }
+    } else if (Array.isArray(types)) {
+      for (let type of types) {
+        itemTypes.add(String(type));
+      }
+    }
+
+    for (let type of itemTypes) {
+      if (acceptedTypes.has(type)) {
+        return true;
+      }
+    }
+
+    return false;
+  });
 }
 
 export function useDrag(options: DragOptions): DragResult;

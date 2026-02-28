@@ -4096,6 +4096,34 @@ describe('Vue migration composition components', () => {
     expect(directoryDrop.drop(directoryItems)).toBe('copy');
   });
 
+  it('accepts directory kind payloads in useDroppableCollection when configured with DIRECTORY_DRAG_TYPE', () => {
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: [DIRECTORY_DRAG_TYPE],
+      getDropOperation: () => 'copy'
+    });
+    dropState.setTarget({type: 'root'});
+    let dropEvents: Array<string> = [];
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: [DIRECTORY_DRAG_TYPE],
+      onDrop: (event) => {
+        let firstItem = event.items[0] as {type?: string} | undefined;
+        dropEvents.push(`${event.dropOperation}:${String(firstItem?.type)}`);
+      }
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDragEnter: (input: unknown) => boolean,
+        onDrop: (input: unknown, operation?: 'cancel' | 'copy' | 'link' | 'move') => 'cancel' | 'copy' | 'link' | 'move'
+      }}
+    };
+
+    let directoryInput = {
+      items: [{id: 'dir-1', kind: 'directory', type: 'file', value: {name: 'specs'}}]
+    };
+    expect(droppableCollection.collectionProps.value.onDragEnter(directoryInput)).toBe(true);
+    expect(droppableCollection.collectionProps.value.onDrop(directoryInput)).toBe('copy');
+    expect(dropEvents).toEqual(['copy:file']);
+  });
+
   it('manages vue-stately draggable collection keys and drag lifecycle', () => {
     let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     let dragEvents: Array<string> = [];
