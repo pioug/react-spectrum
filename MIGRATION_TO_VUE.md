@@ -3081,6 +3081,17 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Toggle duplicate-change suppression parity (`@vue-aria/toggle`)
+
+1. Closed toggle duplicate emission drift:
+   - `useToggle.setSelected` now suppresses writes/callbacks when the next selected value matches current state.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` toggle assertions now verify repeated same-state `onChange` calls do not emit duplicate `onChange` callbacks.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria toggle press behavior and accessibility props"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

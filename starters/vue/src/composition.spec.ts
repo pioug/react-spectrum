@@ -7915,6 +7915,10 @@ describe('Vue migration composition components', () => {
     expect(pressChanges).toEqual([true, false]);
     expect(pressCount).toBe(1);
 
+    toggle.inputProps.value.onChange(true);
+    expect(selected.value).toBe(true);
+    expect(changeEvents).toEqual([true]);
+
     toggle.inputProps.value.onChange(false);
     expect(selected.value).toBe(false);
     expect(changeEvents).toEqual([true, false]);

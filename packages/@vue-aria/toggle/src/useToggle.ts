@@ -92,6 +92,10 @@ export function useToggle(options: AriaToggleOptions = {}): ToggleAria {
       return;
     }
 
+    if (isSelected.value === nextSelected) {
+      return;
+    }
+
     if (options.setSelected) {
       options.setSelected(nextSelected);
     } else {
