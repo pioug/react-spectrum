@@ -1440,6 +1440,25 @@
    - full Vue tests: `yarn test:vue` (556 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Radio-group controlled ownership parity (`@vue-stately/radio`)
+
+1. Aligned `useRadioGroupState` controlled-state semantics with React `useControlledState` behavior:
+   - `value` is now treated as controlled only when the ref exists and `value.value !== undefined`,
+   - ref-backed `undefined` values now stay uncontrolled (internal updates) rather than forcing prop writes.
+2. Aligned controlled/uncontrolled transition warning behavior:
+   - `useRadioGroupState` now emits `WARN: A component changed from ...` on ownership transitions in development.
+3. Closed no-op emission drift:
+   - `setSelectedValue` now no-ops when the requested value matches current state, preventing duplicate `onChange` emissions.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - warning assertions for controlled->uncontrolled and uncontrolled->controlled transitions,
+     - assertion that ref-backed-`undefined` `value` stays uncontrolled during selection updates,
+     - updated base radio-group state test to assert no duplicate `onChange` on no-op selection.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately radio group selection, focus tracking, and required validation|warns when vue-stately radio group switches between controlled and uncontrolled|keeps vue-stately radio group uncontrolled when value ref is undefined"`,
+   - full Vue tests: `yarn test:vue` (558 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

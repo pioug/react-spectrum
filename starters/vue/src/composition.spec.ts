@@ -2114,6 +2114,8 @@ describe('Vue migration composition components', () => {
     radioGroup.setSelectedValue('vue');
     expect(selectedValue.value).toBe('vue');
     expect(changedValues).toEqual(['vue']);
+    radioGroup.setSelectedValue('vue');
+    expect(changedValues).toEqual(['vue']);
     expect(radioGroup.validationState.value).toBeNull();
 
     let disabledGroup = useStatelyRadioGroupState({
@@ -2130,6 +2132,44 @@ describe('Vue migration composition components', () => {
     requiredGroup.commitValidation();
     expect(requiredGroup.isInvalid.value).toBe(true);
     expect(requiredGroup.validationState.value).toBe('invalid');
+  });
+
+  it('warns when vue-stately radio group switches between controlled and uncontrolled', async () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let selectedValue = ref<string | null | undefined>('react');
+    useStatelyRadioGroupState({
+      value: selectedValue
+    });
+
+    try {
+      selectedValue.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      selectedValue.value = 'vue';
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it('keeps vue-stately radio group uncontrolled when value ref is undefined', () => {
+    let selectedValue = ref<string | null | undefined>(undefined);
+    let changedValues: string[] = [];
+    let radioGroup = useStatelyRadioGroupState({
+      defaultValue: 'react',
+      onChange: (value) => {
+        changedValues.push(value);
+      },
+      value: selectedValue
+    });
+
+    radioGroup.setSelectedValue('vue');
+
+    expect(selectedValue.value).toBeUndefined();
+    expect(radioGroup.selectedValue.value).toBe('vue');
+    expect(changedValues).toEqual(['vue']);
   });
 
   it('manages vue-stately search field controlled and uncontrolled value state', () => {
