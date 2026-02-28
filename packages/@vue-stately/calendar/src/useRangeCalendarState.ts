@@ -1,7 +1,8 @@
 import {cloneDate, endOfMonth, normalizeDateRange, startOfMonth} from './utils';
-import {computed, type ComputedRef, type Ref, ref, watch} from 'vue';
+import {computed, type ComputedRef, type Ref, ref} from 'vue';
 import type {DateRange, RangeCalendarState} from './types';
 import {useRangeCalendar} from '@vue-aria/calendar';
+import {useControlledState} from '@vue-stately/utils';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 export type DateValue = string | number | Date;
@@ -57,33 +58,29 @@ export function useRangeCalendarState<T extends DateValue = DateValue>(
   props: RangeCalendarStateOptions<T>
 ): RangeCalendarState<T> {
   let options = props ?? ({} as RangeCalendarStateOptions<T>);
-  let internalValue = ref<DateRange>(normalizeDateRange(options.defaultValue as unknown as DateRange ?? {
+  let defaultValue = normalizeDateRange(options.defaultValue as unknown as DateRange ?? {
     start: null,
     end: null
-  }));
-  let isControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasControlled.value = nextIsControlled;
   });
+  let controlledValue = computed<DateRange | undefined>(() => {
+    if (options.value?.value === undefined) {
+      return undefined;
+    }
 
+    return normalizeDateRange(options.value.value as unknown as DateRange);
+  });
+  let [controlledRangeValue, setControlledRangeValue] = useControlledState<DateRange, RangeValue<T>>(
+    controlledValue,
+    defaultValue,
+    (nextValue) => {
+      options.onChange?.(normalizeDateRange(nextValue) as unknown as RangeValue<T>);
+    }
+  );
+  let isControlled = computed(() => controlledValue.value !== undefined);
   let valueRef = computed<DateRange>({
-    get: () => {
-      if (isControlled.value && options.value) {
-        return normalizeDateRange(options.value.value as unknown as DateRange);
-      }
-
-      return normalizeDateRange(internalValue.value);
-    },
+    get: () => normalizeDateRange(controlledRangeValue.value),
     set: (nextValue) => {
-      let normalized = normalizeDateRange(nextValue);
-      if (!isControlled.value) {
-        internalValue.value = normalized;
-      }
+      setControlledRangeValue(normalizeDateRange(nextValue));
     }
   }) as Ref<DateRange>;
 
@@ -119,7 +116,6 @@ export function useRangeCalendarState<T extends DateValue = DateValue>(
     }
 
     valueRef.value = normalizedNextValue;
-    options.onChange?.(normalizeDateRange(normalizedNextValue) as unknown as RangeValue<T>);
   };
 
   let setFocusedDate = (date: Date): void => {
@@ -164,15 +160,15 @@ export function useRangeCalendarState<T extends DateValue = DateValue>(
 
     anchorDate.value = nextAnchorDate ? cloneDate(nextAnchorDate) : null;
     setFocusedDate(nextDate);
-    if (isControlled.value) {
-      calendar.selectDate(nextDate);
+    if (isControlled.value && !areDateRangesEqual(previousValue, nextValue)) {
+      setControlledRangeValue(normalizeDateRange(nextValue));
+      if (
+        nextDate.getFullYear() !== visibleDate.value.getFullYear()
+        || nextDate.getMonth() !== visibleDate.value.getMonth()
+      ) {
+        visibleDate.value = startOfMonth(nextDate);
+      }
     }
-
-    if (areDateRangesEqual(previousValue, nextValue)) {
-      return;
-    }
-
-    options.onChange?.(normalizeDateRange(nextValue) as unknown as RangeValue<T>);
   };
 
   return {

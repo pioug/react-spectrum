@@ -2483,6 +2483,21 @@
    - full Vue tests: `yarn test:vue` (633 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Calendar helper ownership parity remediation (`@vue-stately/calendar`)
+
+1. Closed remaining ad hoc controlled ownership paths in calendar hooks:
+   - `useCalendarState` now routes selected date ownership through shared `useControlledState`,
+   - `useRangeCalendarState` now routes selected range ownership through shared `useControlledState`.
+2. Preserved calendar/range behavior contracts:
+   - controlled range anchor semantics (first click start, second click close range) remain intact even when parent does not sync immediately,
+   - visible month synchronization on controlled range selection remains preserved.
+3. Removed direct manual warning ownership:
+   - controlled/uncontrolled transition warnings now come from the shared helper rather than per-hook watchers.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "calendar and range-calendar"`,
+   - full Vue tests: `yarn test:vue` (633 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

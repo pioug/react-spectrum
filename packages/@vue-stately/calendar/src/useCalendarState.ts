@@ -1,7 +1,8 @@
 import {addDays, addMonths, cloneDate, endOfMonth, sameDay, startOfMonth} from './utils';
 import type {CalendarState} from './types';
-import {computed, type ComputedRef, type Ref, ref, watch} from 'vue';
+import {computed, type ComputedRef, type Ref, ref} from 'vue';
 import {useCalendar} from '@vue-aria/calendar';
+import {useControlledState} from '@vue-stately/utils';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 export type DateValue = string | number | Date;
@@ -28,29 +29,25 @@ function areDatesEqual(left: Date | null, right: Date | null): boolean {
 
 export function useCalendarState<T extends DateValue = DateValue>(props: CalendarStateOptions<T>): CalendarState {
   let options = props ?? ({} as CalendarStateOptions<T>);
-  let internalValue = ref<Date | null>(options.defaultValue ? cloneDate(options.defaultValue as unknown as Date) : null);
-  let isControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+  let defaultValue = options.defaultValue ? cloneDate(options.defaultValue as unknown as Date) : null;
+  let controlledValue = computed<Date | null | undefined>(() => {
+    if (options.value?.value === undefined) {
+      return undefined;
     }
-    wasControlled.value = nextIsControlled;
+
+    return options.value.value ? cloneDate(options.value.value as unknown as Date) : null;
   });
-
+  let [controlledDateValue, setControlledDateValue] = useControlledState<Date | null, T | null>(
+    controlledValue,
+    defaultValue,
+    (nextValue) => {
+      options.onChange?.(nextValue ? cloneDate(nextValue) as unknown as T : null);
+    }
+  );
   let valueRef = computed<Date | null>({
-    get: () => {
-      if (isControlled.value && options.value) {
-        return options.value.value ? cloneDate(options.value.value as unknown as Date) : null;
-      }
-
-      return internalValue.value ? cloneDate(internalValue.value) : null;
-    },
+    get: () => controlledDateValue.value ? cloneDate(controlledDateValue.value) : null,
     set: (nextValue) => {
-      if (!isControlled.value) {
-        internalValue.value = nextValue ? cloneDate(nextValue) : null;
-      }
+      setControlledDateValue(nextValue ? cloneDate(nextValue) : null);
     }
   }) as Ref<Date | null>;
 
@@ -84,7 +81,6 @@ export function useCalendarState<T extends DateValue = DateValue>(props: Calenda
     }
 
     valueRef.value = normalizedNextValue ? cloneDate(normalizedNextValue) : null;
-    options.onChange?.(normalizedNextValue ? cloneDate(normalizedNextValue) as unknown as T : null);
   };
 
   let setFocusedDate = (date: Date): void => {
@@ -99,13 +95,12 @@ export function useCalendarState<T extends DateValue = DateValue>(props: Calenda
 
     let previousValue = valueRef.value ? cloneDate(valueRef.value) : null;
     let nextValue = cloneDate(date);
-    calendar.selectDate(date);
     setFocusedDate(nextValue);
     if (areDatesEqual(previousValue, nextValue)) {
       return;
     }
 
-    options.onChange?.(cloneDate(nextValue) as unknown as T);
+    calendar.selectDate(nextValue);
   };
 
   return {
