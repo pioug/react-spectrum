@@ -1709,6 +1709,19 @@
    - full Vue tests: `yarn test:vue` (583 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Select value no-op emission parity (`@vue-stately/select`)
+
+1. Closed select controlled-state no-op drift:
+   - `useSelectState` now applies identity no-op semantics (`Object.is`) before committing value updates, matching React `useControlledState`.
+2. Aligned change-emission behavior:
+   - `onChange` is no longer emitted for same-value writes (including repeated same-key single selection and same-reference multiple-value writes).
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: select state test now asserts repeated same-key `setSelectedKey` and same-reference multiple `setValue` calls do not emit duplicate changes.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately select selection, trigger state, and value normalization|warns when vue-stately select switches between controlled and uncontrolled|keeps vue-stately select uncontrolled when control refs are undefined"`,
+   - full Vue tests: `yarn test:vue` (584 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

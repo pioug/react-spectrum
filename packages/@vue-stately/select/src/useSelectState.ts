@@ -177,6 +177,9 @@ export function useSelectState<T extends object, M extends SelectSelectionMode =
 
   let commitValue = (nextValue: Key | readonly Key[] | null): void => {
     let normalizedValue = normalizeValueForSelectionMode(nextValue, selectionMode.value);
+    if (Object.is(rawValue.value, normalizedValue)) {
+      return;
+    }
 
     if (isValueControlled.value && options.value) {
       options.value.value = normalizedValue as SelectValue<M>;

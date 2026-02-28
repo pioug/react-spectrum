@@ -2709,12 +2709,18 @@ describe('Vue migration composition components', () => {
     expect(selectedValue.value).toBe('svelte');
     expect(selectionChanges).toEqual(['vue', 'svelte']);
     expect(changedValues).toEqual(['vue', 'svelte']);
+    singleState.setSelectedKey('svelte');
+    expect(selectionChanges).toEqual(['vue', 'svelte']);
+    expect(changedValues).toEqual(['vue', 'svelte']);
 
     let multiValue = ref<readonly string[] | undefined>([]);
+    let multiChangeValues: string[][] = [];
     let multiState = useStatelySelectState({
       collection: new StatelyListCollection(nodes),
       onChange: (nextValue) => {
-        multiValue.value = nextValue as readonly string[];
+        let resolved = [...(nextValue as readonly string[])];
+        multiValue.value = resolved;
+        multiChangeValues.push(resolved);
       },
       selectionMode: 'multiple',
       value: multiValue
@@ -2724,6 +2730,9 @@ describe('Vue migration composition components', () => {
     multiState.setValue(['react', 'svelte']);
     expect(multiState.value.value).toEqual(['react', 'svelte']);
     expect(Array.from(multiState.selectionManager.selectedKeys.value)).toEqual(['react', 'svelte']);
+    let sameValueRef = multiState.value.value;
+    multiState.setValue(sameValueRef);
+    expect(multiChangeValues).toEqual([['react', 'svelte']]);
   });
 
   it('warns when vue-stately select switches between controlled and uncontrolled', async () => {
