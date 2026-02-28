@@ -3645,6 +3645,30 @@ describe('Vue migration composition components', () => {
     expect(onChangeEndValues).toEqual([[40]]);
   });
 
+  it('keeps vue-stately slider controlled without mutating control refs', () => {
+    let controlledValue = ref<number[] | undefined>([20, 60]);
+    let onChangeValues: number[][] = [];
+    let slider = useStatelySliderState({
+      maxValue: 100,
+      minValue: 0,
+      onChange: (nextValue) => {
+        onChangeValues.push(Array.isArray(nextValue) ? [...nextValue] : [nextValue]);
+      },
+      step: 5,
+      value: controlledValue
+    });
+
+    slider.setThumbValue(0, 80);
+    expect(controlledValue.value).toEqual([20, 60]);
+    expect(slider.values.value).toEqual([20, 60]);
+    expect(onChangeValues).toEqual([[60, 60]]);
+
+    slider.setThumbValue(0, 80);
+    expect(controlledValue.value).toEqual([20, 60]);
+    expect(slider.values.value).toEqual([20, 60]);
+    expect(onChangeValues).toEqual([[60, 60], [60, 60]]);
+  });
+
   it('manages vue-stately step list completion and selection eligibility', () => {
     let nodes: StatelyListNode<{label: string}>[] = [
       {key: 'setup', textValue: 'Setup', type: 'item', value: {label: 'Setup'}},

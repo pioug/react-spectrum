@@ -2147,6 +2147,20 @@
    - full Vue tests: `yarn test:vue` (615 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Slider controlled ownership parity (`@vue-stately/slider`)
+
+1. Closed slider controlled ownership drift:
+   - `useSliderState` no longer mutates controlled `value` refs directly from thumb updates.
+2. Aligned controlled callback equality semantics with React:
+   - change suppression now compares against rendered `values` (controlled source) rather than internal drag-tracking refs,
+   - repeated same target writes still emit in controlled-no-parent-update mode, matching React controlled behavior.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: explicit controlled-no-parent-update assertion for slider thumb updates and repeated same-value callback emissions.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately slider thumb values, constraints, and drag lifecycle|keeps vue-stately slider drag callbacks aligned in controlled mode without parent sync|keeps vue-stately slider controlled without mutating control refs|warns when vue-stately slider and steplist switch between controlled and uncontrolled"`,
+   - full Vue tests: `yarn test:vue` (616 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

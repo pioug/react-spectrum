@@ -161,14 +161,12 @@ export function useSliderState<T extends number | number[]>(options: SliderState
   };
 
   let setValues = (nextValues: number[]): void => {
-    if (equalArrays(nextValues, valuesRef.value)) {
+    if (equalArrays(nextValues, values.value)) {
       return;
     }
 
     valuesRef.value = nextValues;
-    if (isControlled.value && options.value) {
-      options.value.value = toOutputValue(nextValues);
-    } else {
+    if (!isControlled.value) {
       uncontrolledValues.value = nextValues;
     }
 
