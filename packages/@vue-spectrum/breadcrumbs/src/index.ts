@@ -1,7 +1,18 @@
 import '@adobe/spectrum-css-temp/components/breadcrumb/vars.css';
-import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, nextTick, onMounted, type PropType, ref} from 'vue';
+import '@adobe/spectrum-css-temp/components/button/vars.css';
+import '@adobe/spectrum-css-temp/components/menu/vars.css';
+import {classNames, filterDOMProps} from '@vue-spectrum/utils';
+import {computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, type PropType, ref, watch} from 'vue';
+
 const styles: {[key: string]: string} = {};
+const buttonStyles: {[key: string]: string} = {};
+const menuStyles: {[key: string]: string} = {};
+
+const MIN_VISIBLE_ITEMS = 1;
+const MAX_VISIBLE_ITEMS = 4;
+
+const FOLDER_BREADCRUMB_PATH = 'M16.5 4l-7.166.004-1.652-1.7A1 1 0 0 0 6.965 2H2a1 1 0 0 0-1 1v11.5a.5.5 0 0 0 .5.5h15a.5.5 0 0 0 .5-.5v-10a.5.5 0 0 0-.5-.5zM2 3h4.965l1.943 2H2zm10.354 5.854l-3 3a.5.5 0 0 1-.707 0l-3-3a.5.5 0 0 1 .707-.707L9 10.793l2.646-2.646a.5.5 0 0 1 .707.707z';
+const CHEVRON_RIGHT_SMALL_PATH = 'M5.5 4a.747.747 0 0 0-.22-.53C4.703 2.862 3.242 1.5 2.04.23A.75.75 0 1 0 .98 1.29L3.69 4 .98 6.71a.75.75 0 1 0 1.06 1.06l3.24-3.24A.747.747 0 0 0 5.5 4z';
 
 type BreadcrumbItemInput = string | {
   children?: string,
@@ -22,6 +33,15 @@ type NormalizedBreadcrumbItem = {
   target?: string
 };
 
+type OverflowMenuItem = {
+  items: NormalizedBreadcrumbItem[],
+  key: 'menu',
+  selectedKey: string,
+  type: 'menu'
+};
+
+type RenderedBreadcrumbItem = NormalizedBreadcrumbItem | OverflowMenuItem;
+
 function normalizeBreadcrumbItem(item: BreadcrumbItemInput, index: number): NormalizedBreadcrumbItem {
   if (typeof item === 'string') {
     return {
@@ -30,7 +50,8 @@ function normalizeBreadcrumbItem(item: BreadcrumbItemInput, index: number): Norm
     };
   }
 
-  let label = item.label ?? item.children ?? (item.id != null ? String(item.id) : '') ?? `Item ${index + 1}`;
+  let fallbackLabel = item.id != null ? String(item.id) : `Item ${index + 1}`;
+  let label = item.label ?? item.children ?? fallbackLabel;
   let key = item.key ?? item.id ?? label ?? index;
 
   return {
@@ -40,6 +61,21 @@ function normalizeBreadcrumbItem(item: BreadcrumbItemInput, index: number): Norm
     rel: item.rel,
     target: item.target
   };
+}
+
+function isOverflowMenuItem(item: RenderedBreadcrumbItem): item is OverflowMenuItem {
+  return (item as OverflowMenuItem).type === 'menu';
+}
+
+function renderIconPath(className: string, path: string) {
+  return h('svg', {
+    class: className,
+    focusable: 'false',
+    'aria-hidden': 'true',
+    role: 'img'
+  }, [
+    h('path', {d: path})
+  ]);
 }
 
 export const Breadcrumbs = defineComponent({
@@ -82,8 +118,16 @@ export const Breadcrumbs = defineComponent({
   emits: {
     action: (key: string) => typeof key === 'string'
   },
-  setup(props, {emit, attrs}) {
+  setup(props, {attrs, emit}) {
     let currentItemRef = ref<HTMLElement | null>(null);
+    let hoveredKey = ref<string | null>(null);
+    let focusedKey = ref<string | null>(null);
+    let isMenuOpen = ref(false);
+    let listRef = ref<HTMLUListElement | null>(null);
+    let navRef = ref<HTMLElement | null>(null);
+    let visibleItems = ref(0);
+    let resizeObserver: ResizeObserver | null = null;
+
     let isDisabled = computed(() => props.isDisabled ?? props.disabled);
     let normalizedItems = computed(() => props.items.map((item, index) => normalizeBreadcrumbItem(item, index)));
     let currentKey = computed(() => {
@@ -97,132 +141,352 @@ export const Breadcrumbs = defineComponent({
       let last = normalizedItems.value.at(-1);
       return last?.key ?? '';
     });
-    let hoveredItem = ref<string | null>(null);
-    let focusedItem = ref<string | null>(null);
 
-    onMounted(() => {
+    let computeVisibleItems = (visibleCount: number) => {
+      let currentList = listRef.value;
+      if (!currentList) {
+        return visibleCount;
+      }
+
+      let listItems = Array.from(currentList.children) as HTMLLIElement[];
+      if (listItems.length === 0) {
+        return visibleCount;
+      }
+
+      let containerWidth = currentList.offsetWidth;
+      let isShowingMenu = normalizedItems.value.length > visibleCount;
+      let calculatedWidth = 0;
+      let nextVisibleItems = 0;
+      let maxVisibleItems = MAX_VISIBLE_ITEMS;
+
+      if (props.showRoot) {
+        let rootItem = listItems.shift();
+        if (rootItem) {
+          calculatedWidth += rootItem.offsetWidth;
+          nextVisibleItems++;
+        }
+      }
+
+      if (isShowingMenu) {
+        let menuItem = listItems.shift();
+        if (menuItem) {
+          calculatedWidth += menuItem.offsetWidth;
+          maxVisibleItems--;
+        }
+      }
+
+      if (props.showRoot && calculatedWidth >= containerWidth) {
+        nextVisibleItems--;
+      }
+
+      if (props.isMultiline) {
+        if (listItems.length > 0) {
+          listItems.pop();
+          nextVisibleItems++;
+        }
+      } else if (listItems.length > 0) {
+        let lastItem = listItems.pop() as HTMLLIElement;
+        let previousOverflow = lastItem.style.overflow;
+        lastItem.style.overflow = 'visible';
+
+        calculatedWidth += lastItem.offsetWidth;
+        if (calculatedWidth < containerWidth) {
+          nextVisibleItems++;
+        }
+
+        lastItem.style.overflow = previousOverflow;
+      }
+
+      for (let item of listItems.reverse()) {
+        calculatedWidth += item.offsetWidth;
+        if (calculatedWidth < containerWidth) {
+          nextVisibleItems++;
+        }
+      }
+
+      return Math.max(MIN_VISIBLE_ITEMS, Math.min(maxVisibleItems, nextVisibleItems));
+    };
+
+    let updateOverflow = async () => {
+      visibleItems.value = normalizedItems.value.length;
+      await nextTick();
+
+      let nextVisibleItems = computeVisibleItems(normalizedItems.value.length);
+      visibleItems.value = nextVisibleItems;
+      await nextTick();
+
+      if (nextVisibleItems < normalizedItems.value.length && nextVisibleItems > 1) {
+        visibleItems.value = computeVisibleItems(nextVisibleItems);
+      }
+    };
+
+    let renderedItems = computed<RenderedBreadcrumbItem[]>(() => {
+      let items = normalizedItems.value;
+      let clampedVisibleItems = Math.max(0, Math.min(items.length, visibleItems.value || items.length));
+
+      if (items.length <= clampedVisibleItems) {
+        return items;
+      }
+
+      let selectedKey = items.at(-1)?.key ?? '';
+      let availableItems = [...items];
+      let contents: RenderedBreadcrumbItem[] = [];
+      let endItems = clampedVisibleItems;
+
+      if (props.showRoot && clampedVisibleItems > 1) {
+        let rootItem = availableItems.shift();
+        if (rootItem) {
+          contents.push(rootItem);
+          endItems--;
+        }
+      }
+
+      let safeEndItems = Math.max(1, endItems);
+      let hiddenItems = availableItems.slice(0, Math.max(0, availableItems.length - safeEndItems));
+      let tailItems = availableItems.slice(-safeEndItems);
+
+      if (hiddenItems.length > 0) {
+        contents.push({
+          type: 'menu',
+          key: 'menu',
+          items: hiddenItems,
+          selectedKey
+        });
+      }
+
+      contents.push(...tailItems);
+      return contents;
+    });
+
+    let focusCurrentItem = () => {
       if (props.autoFocusCurrent) {
         void nextTick(() => {
           currentItemRef.value?.focus();
         });
       }
+    };
+
+    let onDocumentMouseDown = (event: MouseEvent) => {
+      let target = event.target as Node | null;
+      if (!target || !navRef.value?.contains(target)) {
+        isMenuOpen.value = false;
+      }
+    };
+
+    onMounted(() => {
+      visibleItems.value = normalizedItems.value.length;
+      void updateOverflow();
+      focusCurrentItem();
+
+      if (typeof ResizeObserver !== 'undefined') {
+        resizeObserver = new ResizeObserver(() => {
+          void updateOverflow();
+        });
+        if (navRef.value) {
+          resizeObserver.observe(navRef.value);
+        }
+      }
+
+      document.addEventListener('mousedown', onDocumentMouseDown);
     });
 
-    return () => h('nav', {
-      ...attrs,
-      class: ['vs-breadcrumbs', attrs.class],
-      'aria-label': (typeof attrs['aria-label'] === 'string' ? attrs['aria-label'] : undefined) || 'Breadcrumbs',
-      'data-vac': ''
-    }, [
-      h('ol', {
-        class: [classNames(
-          styles,
-          'spectrum-Breadcrumbs',
-          {
-            'is-disabled': isDisabled.value,
-            'spectrum-Breadcrumbs--multiline': props.isMultiline,
-            'spectrum-Breadcrumbs--showRoot': props.showRoot,
-            'spectrum-Breadcrumbs--small': props.size === 'S',
-            'spectrum-Breadcrumbs--medium': props.size === 'M'
-          }
-        ), 'vs-breadcrumbs__list']
-      }, normalizedItems.value.map((item, index) => {
-        let isCurrent = item.key === currentKey.value;
-        let isHovered = hoveredItem.value === item.key && !isDisabled.value && !isCurrent;
-        let isFocused = focusedItem.value === item.key && !isCurrent;
+    onBeforeUnmount(() => {
+      resizeObserver?.disconnect();
+      document.removeEventListener('mousedown', onDocumentMouseDown);
+    });
 
-        return h('li', {
-          key: item.key,
-          class: [classNames(styles, 'spectrum-Breadcrumbs-item'), 'vs-breadcrumbs__item']
-        }, [
-          isCurrent
-            ? h('span', {
-              ref: props.autoFocusCurrent ? currentItemRef : undefined,
-              tabindex: props.autoFocusCurrent ? -1 : undefined,
-              class: 'vs-breadcrumbs__current',
-              'aria-current': 'page'
+    watch(
+      () => [
+        normalizedItems.value.map((item) => item.key).join('|'),
+        props.showRoot,
+        props.isMultiline,
+        props.size
+      ],
+      () => {
+        isMenuOpen.value = false;
+        void updateOverflow();
+      }
+    );
+
+    watch(
+      () => [currentKey.value, props.autoFocusCurrent],
+      () => {
+        focusCurrentItem();
+      }
+    );
+
+    let emitAction = (key: string) => {
+      if (!isDisabled.value) {
+        emit('action', key);
+      }
+    };
+
+    return () => {
+      let domProps = filterDOMProps(attrs as Record<string, unknown>, {labelable: true}) as Record<string, unknown>;
+      let {
+        class: domClass,
+        className: domClassName,
+        style: domStyle,
+        ...restDomProps
+      } = domProps;
+
+      let ariaLabel = (typeof attrs['aria-label'] === 'string' && attrs['aria-label']) || 'Breadcrumbs';
+      let breadcrumbItems = renderedItems.value;
+
+      return h('nav', {
+        ...restDomProps,
+        ref: navRef,
+        class: [domClassName, domClass],
+        style: domStyle,
+        'aria-label': ariaLabel
+      }, [
+        h('ul', {
+          ref: listRef,
+          class: classNames(
+            styles,
+            'spectrum-Breadcrumbs',
+            {
+              'spectrum-Breadcrumbs--small': props.size === 'S',
+              'spectrum-Breadcrumbs--medium': props.size === 'M',
+              'spectrum-Breadcrumbs--multiline': props.isMultiline,
+              'spectrum-Breadcrumbs--showRoot': props.showRoot,
+              'is-disabled': isDisabled.value
+            }
+          )
+        }, breadcrumbItems.map((item, index) => {
+          if (isOverflowMenuItem(item)) {
+            return h('li', {
+              key: item.key,
+              class: classNames(styles, 'spectrum-Breadcrumbs-item')
+            }, [
+              h('span', null, [
+                h('button', {
+                  class: classNames(
+                    buttonStyles,
+                    'spectrum-ActionButton',
+                    'spectrum-BaseButton',
+                    'i18nFontFamily',
+                    'spectrum-FocusRing',
+                    'spectrum-FocusRing-ring',
+                    'spectrum-ActionButton--quiet',
+                    classNames(styles, 'spectrum-Breadcrumbs-actionButton')
+                  ),
+                  type: 'button',
+                  tabIndex: 0,
+                  disabled: isDisabled.value,
+                  'aria-haspopup': 'true',
+                  'aria-expanded': isMenuOpen.value ? 'true' : 'false',
+                  'data-react-aria-pressable': 'true',
+                  'aria-label': '…',
+                  onClick: (event: MouseEvent) => {
+                    event.preventDefault();
+                    if (isDisabled.value) {
+                      return;
+                    }
+                    isMenuOpen.value = !isMenuOpen.value;
+                  }
+                }, [
+                  renderIconPath(
+                    classNames(buttonStyles, 'spectrum-Icon', 'spectrum-UIIcon-FolderBreadcrumb', 'spectrum-Icon'),
+                    FOLDER_BREADCRUMB_PATH
+                  )
+                ]),
+                isMenuOpen.value
+                  ? h('ul', {
+                    class: classNames(menuStyles, 'spectrum-Menu'),
+                    role: 'menu'
+                  }, item.items.map((menuItem) => h('li', {
+                    key: menuItem.key,
+                    class: classNames(menuStyles, 'spectrum-Menu-item'),
+                    role: 'menuitemradio',
+                    'aria-checked': menuItem.key === item.selectedKey ? 'true' : 'false',
+                    onClick: (event: MouseEvent) => {
+                      event.preventDefault();
+                      emitAction(menuItem.key);
+                      isMenuOpen.value = false;
+                    }
+                  }, menuItem.label)))
+                  : null
+              ]),
+              renderIconPath(
+                classNames(styles, 'spectrum-Breadcrumbs-itemSeparator', 'spectrum-Icon', 'spectrum-UIIcon-ChevronRightSmall'),
+                CHEVRON_RIGHT_SMALL_PATH
+              )
+            ]);
+          }
+
+          let isCurrent = item.key === currentKey.value;
+          let isHovered = hoveredKey.value === item.key && !isDisabled.value && !isCurrent;
+          let isFocused = focusedKey.value === item.key && !isCurrent;
+          let commonProps = {
+            class: classNames(
+              styles,
+              'spectrum-Breadcrumbs-itemLink',
+              {
+                'is-hovered': isHovered,
+                'focus-ring': isFocused
+              }
+            ),
+            'data-react-aria-pressable': 'true',
+            'aria-disabled': isCurrent || isDisabled.value ? 'true' : undefined,
+            'aria-current': isCurrent ? 'page' : undefined,
+            tabindex: !isCurrent && !isDisabled.value ? 0 : undefined,
+            onMouseenter: () => {
+              hoveredKey.value = item.key;
+            },
+            onMouseleave: () => {
+              if (hoveredKey.value === item.key) {
+                hoveredKey.value = null;
+              }
+            },
+            onFocus: () => {
+              focusedKey.value = item.key;
+            },
+            onBlur: () => {
+              if (focusedKey.value === item.key) {
+                focusedKey.value = null;
+              }
+            }
+          };
+
+          let linkNode = item.href
+            ? h('a', {
+              ...commonProps,
+              ref: props.autoFocusCurrent && isCurrent ? currentItemRef : undefined,
+              href: item.href,
+              rel: item.rel,
+              target: item.target,
+              onClick: (event: MouseEvent) => {
+                event.preventDefault();
+                if (!isCurrent) {
+                  emitAction(item.key);
+                }
+              }
             }, item.label)
-            : item.href
-              ? h('a', {
-                class: [classNames(
-                  styles,
-                  'spectrum-Breadcrumbs-itemLink',
-                  {
-                    'is-hovered': isHovered,
-                    'focus-ring': isFocused,
-                    'is-reversed': false
-                  }
-                ), 'vs-breadcrumbs__link'],
-                href: item.href,
-                rel: item.rel,
-                target: item.target,
-                'aria-disabled': isDisabled.value ? 'true' : undefined,
-                onMouseenter: () => {
-                  hoveredItem.value = item.key;
-                },
-                onMouseleave: () => {
-                  if (hoveredItem.value === item.key) {
-                    hoveredItem.value = null;
-                  }
-                },
-                onFocus: () => {
-                  focusedItem.value = item.key;
-                },
-                onBlur: () => {
-                  if (focusedItem.value === item.key) {
-                    focusedItem.value = null;
-                  }
-                },
-                onClick: (event: MouseEvent) => {
-                  event.preventDefault();
-                  if (!isDisabled.value) {
-                    emit('action', item.key);
-                  }
+            : h('span', {
+              ...commonProps,
+              ref: props.autoFocusCurrent && isCurrent ? currentItemRef : undefined,
+              role: 'link',
+              onClick: () => {
+                if (!isCurrent) {
+                  emitAction(item.key);
                 }
-              }, item.label)
-              : h('button', {
-                class: [classNames(
-                  styles,
-                  'spectrum-Breadcrumbs-itemLink',
-                  {
-                    'is-hovered': isHovered,
-                    'focus-ring': isFocused,
-                    'is-reversed': false
-                  }
-                ), 'vs-breadcrumbs__link'],
-                type: 'button',
-                disabled: isDisabled.value,
-                onMouseenter: () => {
-                  hoveredItem.value = item.key;
-                },
-                onMouseleave: () => {
-                  if (hoveredItem.value === item.key) {
-                    hoveredItem.value = null;
-                  }
-                },
-                onFocus: () => {
-                  focusedItem.value = item.key;
-                },
-                onBlur: () => {
-                  if (focusedItem.value === item.key) {
-                    focusedItem.value = null;
-                  }
-                },
-                onClick: () => {
-                  if (!isDisabled.value) {
-                    emit('action', item.key);
-                  }
-                }
-              }, item.label),
-          index < normalizedItems.value.length - 1
-            ? h('span', {
-              class: [classNames(styles, 'spectrum-Breadcrumbs-itemSeparator'), 'vs-breadcrumbs__separator'],
-              'aria-hidden': 'true'
-            }, '›')
-            : null
-        ]);
-      }))
-    ]);
+              }
+            }, item.label);
+
+          return h('li', {
+            key: `${item.key}-${index}`,
+            class: classNames(styles, 'spectrum-Breadcrumbs-item')
+          }, [
+            linkNode,
+            renderIconPath(
+              classNames(styles, 'spectrum-Breadcrumbs-itemSeparator', 'spectrum-Icon', 'spectrum-UIIcon-ChevronRightSmall'),
+              CHEVRON_RIGHT_SMALL_PATH
+            )
+          ]);
+        }))
+      ]);
+    };
   }
 });
 

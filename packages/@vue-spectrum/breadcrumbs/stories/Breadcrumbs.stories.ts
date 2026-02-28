@@ -60,7 +60,7 @@ export const Default: Story = {
     setup() {
       return {args, items: defaultItems};
     },
-    template: '<Breadcrumbs v-bind="args" :items="items" />'
+    template: '<div style="width: 100vw;"><Breadcrumbs v-bind="args" :items="items" /></div>'
   }),
   name: '3 items'
 };
@@ -71,7 +71,7 @@ export const DefaultTruncated: Story = {
     setup() {
       return {args, items: defaultItems};
     },
-    template: '<div style="width: 120px;"><Breadcrumbs v-bind="args" :items="items" /></div>'
+    template: '<div style="width: 100vw;"><div style="width: 120px;"><Breadcrumbs v-bind="args" :items="items" /></div></div>'
   }),
   name: 'truncated'
 };
@@ -82,7 +82,7 @@ export const RenderMany: Story = {
     setup() {
       return {args, items: manyItems};
     },
-    template: '<div style="min-width: 100px; width: 300px; padding: 10px; resize: horizontal; overflow: auto; background-color: var(--spectrum-global-color-gray-50);"><Breadcrumbs v-bind="args" :items="items" /></div>'
+    template: '<div style="width: 100vw;"><div style="min-width: 100px; width: 300px; padding: 10px; resize: horizontal; overflow: auto; background-color: var(--spectrum-global-color-gray-50);"><Breadcrumbs v-bind="args" :items="items" /></div></div>'
   }),
   name: '7 items, resizable container'
 };
@@ -93,7 +93,7 @@ export const OneItem: Story = {
     setup() {
       return {args, items: ['Root']};
     },
-    template: '<Breadcrumbs v-bind="args" :items="items" />'
+    template: '<div style="width: 100vw;"><Breadcrumbs v-bind="args" :items="items" /></div>'
   }),
   name: '1 item'
 };
@@ -104,6 +104,6 @@ export const Links: Story = {
     setup() {
       return {args, items: linkItems};
     },
-    template: '<Breadcrumbs v-bind="args" :items="items" />'
+    template: '<div style="width: 100vw;"><Breadcrumbs v-bind="args" :items="items" /></div>'
   })
 };

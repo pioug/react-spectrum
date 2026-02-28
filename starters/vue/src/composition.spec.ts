@@ -17105,9 +17105,9 @@ describe('Vue migration composition components', () => {
       }
     });
 
-    await wrapper.findAll('button.vs-breadcrumbs__link')[0].trigger('click');
+    await wrapper.findAll('.spectrum-Breadcrumbs-itemLink')[0].trigger('click');
     expect(wrapper.emitted('action')?.[0]).toEqual(['Home']);
-    expect(wrapper.get('.vs-breadcrumbs__current').text()).toBe('Starter');
+    expect(wrapper.get('.spectrum-Breadcrumbs-itemLink[aria-current="page"]').text()).toBe('Starter');
   });
 
   it('propagates disclosure toggles through accordion v-model', async () => {

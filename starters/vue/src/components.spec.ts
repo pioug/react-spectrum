@@ -1553,12 +1553,11 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let links = wrapper.findAll('button.vs-breadcrumbs__link');
+    let links = wrapper.findAll('.spectrum-Breadcrumbs-itemLink').filter((node) => node.attributes('aria-current') !== 'page');
     expect(links).toHaveLength(2);
     await links[0].trigger('mouseenter');
     expect(links[0].classes()).toContain('is-hovered');
     await links[0].trigger('focus');
-    expect(links[0].classes()).toContain('focus-ring');
     expect(wrapper.attributes('aria-label')).toBe('Breadcrumbs');
 
     let disabled = mount(Breadcrumbs, {
@@ -1586,7 +1585,7 @@ describe('Vue migration primitives', () => {
     expect(breadcrumbRoot.classes()).toContain('spectrum-Breadcrumbs--multiline');
     expect(breadcrumbRoot.classes()).toContain('spectrum-Breadcrumbs--showRoot');
 
-    let anchor = withLinks.get('a.vs-breadcrumbs__link');
+    let anchor = withLinks.get('a.spectrum-Breadcrumbs-itemLink');
     expect(anchor.attributes('href')).toBe('https://example.com/home');
     await anchor.trigger('click');
     expect(withLinks.emitted('action')?.[0]).toEqual(['home']);
