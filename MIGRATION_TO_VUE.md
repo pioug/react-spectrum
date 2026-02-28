@@ -1648,6 +1648,23 @@
    - full Vue tests: `yarn test:vue` (579 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Toggle-group controlled ownership + same-selection emission parity (`@vue-stately/toggle`)
+
+1. Closed `useToggleGroupState` uncontrolled-write drift:
+   - ref-backed `selectedKeys` now behaves as controlled only when `selectedKeys.value !== undefined`,
+   - ref-backed `undefined` control refs now remain uncontrolled (internal state updates), matching React `useControlledState` ownership semantics.
+2. Closed same-selection emission drift:
+   - removed deep set-equality suppression that prevented selection-change emissions for new `Set` instances with unchanged members,
+   - update no-op checks now use identity semantics (`Object.is`) to match React controlled-state behavior.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - toggle-group disallow-empty path now asserts repeated selected-key interaction still emits selection-change parity,
+     - new assertion that ref-backed-`undefined` `selectedKeys` remains uncontrolled during updates.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately toggle and toggle-group selection behavior|warns when vue-stately toggle hooks switch between controlled and uncontrolled|keeps vue-stately toggle group uncontrolled when selectedKeys ref is undefined"`,
+   - full Vue tests: `yarn test:vue` (580 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

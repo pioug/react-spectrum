@@ -3,20 +3,6 @@ import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 export type Key = string | number;
 
-function equalSets(a: Set<Key>, b: Set<Key>): boolean {
-  if (a.size !== b.size) {
-    return false;
-  }
-
-  for (let key of a) {
-    if (!b.has(key)) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
 export interface ToggleGroupProps {
   defaultSelectedKeys?: Iterable<Key>,
   disallowEmptySelection?: MaybeRef<boolean>,
@@ -55,14 +41,14 @@ export function useToggleGroupState(props: ToggleGroupProps): ToggleGroupState {
   let uncontrolledSelectedKeys = ref(new Set<Key>(props.defaultSelectedKeys ?? []));
   let selectedKeys = computed<Set<Key>>({
     get: () => {
-      if (props.selectedKeys && props.selectedKeys.value !== undefined) {
+      if (isControlled.value && props.selectedKeys) {
         return props.selectedKeys.value;
       }
 
       return uncontrolledSelectedKeys.value;
     },
     set: (nextKeys) => {
-      if (props.selectedKeys) {
+      if (isControlled.value && props.selectedKeys) {
         props.selectedKeys.value = nextKeys;
       } else {
         uncontrolledSelectedKeys.value = nextKeys;
@@ -71,7 +57,7 @@ export function useToggleGroupState(props: ToggleGroupProps): ToggleGroupState {
   });
 
   let commitSelectedKeys = (keys: Set<Key>): void => {
-    let nextKeys = new Set(keys);
+    let nextKeys = keys;
     if (selectionMode.value === 'single' && nextKeys.size > 1) {
       let firstKey = nextKeys.values().next().value;
       nextKeys = firstKey == null ? new Set() : new Set([firstKey]);
@@ -81,12 +67,12 @@ export function useToggleGroupState(props: ToggleGroupProps): ToggleGroupState {
       return;
     }
 
-    if (equalSets(nextKeys, selectedKeys.value)) {
+    if (Object.is(nextKeys, selectedKeys.value)) {
       return;
     }
 
     selectedKeys.value = nextKeys;
-    props.onSelectionChange?.(new Set(nextKeys));
+    props.onSelectionChange?.(nextKeys);
   };
 
   let toggleKey = (key: Key): void => {

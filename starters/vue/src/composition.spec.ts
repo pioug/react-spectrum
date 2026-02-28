@@ -3160,7 +3160,7 @@ describe('Vue migration composition components', () => {
     });
     singleGroupState.toggleKey('right');
     expect(Array.from(singleGroupState.selectedKeys.value)).toEqual(['right']);
-    expect(groupSelectionChanges).toEqual([['bold', 'italic'], ['italic']]);
+    expect(groupSelectionChanges).toEqual([['bold', 'italic'], ['italic'], ['italic']]);
   });
 
   it('warns when vue-stately toggle hooks switch between controlled and uncontrolled', async () => {
@@ -3195,6 +3195,25 @@ describe('Vue migration composition components', () => {
     } finally {
       warnSpy.mockRestore();
     }
+  });
+
+  it('keeps vue-stately toggle group uncontrolled when selectedKeys ref is undefined', () => {
+    let selectedKeysRef = ref<Set<string | number> | undefined>(undefined);
+    let groupChanges: string[][] = [];
+    let groupState = useStatelyToggleGroupState({
+      defaultSelectedKeys: ['bold'],
+      onSelectionChange: (keys) => {
+        groupChanges.push(Array.from(keys).map((key) => String(key)));
+      },
+      selectedKeys: selectedKeysRef,
+      selectionMode: 'multiple'
+    });
+
+    groupState.toggleKey('italic');
+
+    expect(selectedKeysRef.value).toBeUndefined();
+    expect(Array.from(groupState.selectedKeys.value)).toEqual(['bold', 'italic']);
+    expect(groupChanges).toEqual([['bold', 'italic']]);
   });
 
   it('manages vue-stately tooltip trigger warmup and close delay behavior', () => {
