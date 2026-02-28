@@ -61,6 +61,20 @@ function toKeySet(value: Iterable<string> | undefined): Set<string> {
   return new Set(Array.from(value, (key) => String(key)));
 }
 
+function equalKeySets(a: Set<string>, b: Set<string>): boolean {
+  if (a.size !== b.size) {
+    return false;
+  }
+
+  for (let key of a) {
+    if (!b.has(key)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 function setSelectedKeys(
   selectedKeys: Iterable<string> | Ref<Iterable<string>> | undefined,
   nextSelection: Set<string>
@@ -114,6 +128,10 @@ export function useToggleButtonGroup(options: AriaToggleButtonGroupOptions = {})
       nextSelection.add(key);
     } else {
       nextSelection.delete(key);
+    }
+
+    if (equalKeySets(nextSelection, selectedKeys.value)) {
+      return nextSelection;
     }
 
     setSelectedKeys(options.selectedKeys, nextSelection);
@@ -205,8 +223,11 @@ export function useToggleButtonGroupItem(options: AriaToggleButtonGroupItemOptio
     onToggle: options.onToggle,
     rel: options.rel,
     setSelected: (nextSelected) => {
+      let previousSelection = new Set(options.group.selectedKeys.value);
       let nextSelection = options.group.setSelected(id.value, nextSelected);
-      options.onSelectionChange?.(id.value, nextSelected, nextSelection);
+      if (!equalKeySets(previousSelection, nextSelection)) {
+        options.onSelectionChange?.(id.value, nextSelected, nextSelection);
+      }
     },
     target: options.target,
     type: options.type,

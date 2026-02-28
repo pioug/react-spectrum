@@ -712,6 +712,24 @@ describe('Vue migration composition components', () => {
     expect(groupItemClickCount).toBe(1);
     expect(groupItemPressUpCount).toBe(1);
     expect(Array.from(selectedKeys.value)).toEqual(['bold']);
+
+    let disabledSelectionChanges = 0;
+    let disabledKeys = ref<Iterable<string>>(new Set(['bold']));
+    let disabledGroup = useToggleButtonGroup({
+      isDisabled: true,
+      selectedKeys: disabledKeys,
+      selectionMode: 'multiple'
+    });
+    let disabledItem = useToggleButtonGroupItem({
+      group: disabledGroup,
+      id: 'italic',
+      onSelectionChange: () => {
+        disabledSelectionChanges += 1;
+      }
+    });
+    disabledItem.press();
+    expect(disabledSelectionChanges).toBe(0);
+    expect(Array.from(disabledKeys.value)).toEqual(['bold']);
   });
 
   it('manages vue-aria calendar navigation and date selection', () => {

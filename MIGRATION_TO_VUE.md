@@ -2853,6 +2853,18 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Toggle-button-group no-op change suppression parity remediation (`@vue-aria/button`)
+
+1. Closed no-op change lifecycle drift in toggle-group internals:
+   - `useToggleButtonGroup.setSelected` now suppresses controlled-ref writes when selection content is unchanged.
+   - `useToggleButtonGroupItem` now suppresses item-level `onSelectionChange` callbacks when the selection set does not actually change.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` toggle-group assertions now verify disabled-group item presses do not emit item-level selection-change callbacks or mutate controlled selected keys.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "button selection and group-item radio state"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
