@@ -2294,6 +2294,39 @@ describe('Vue migration composition components', () => {
     expect(openChanges).toEqual([true, false]);
   });
 
+  it('warns when vue-stately menu trigger switches between controlled and uncontrolled', async () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let isOpen = ref<boolean | undefined>(true);
+    useStatelyMenuTriggerState({
+      isOpen
+    });
+
+    try {
+      isOpen.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      isOpen.value = true;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it('keeps vue-stately menu trigger uncontrolled when isOpen ref is undefined', () => {
+    let isOpen = ref<boolean | undefined>(undefined);
+    let state = useStatelyMenuTriggerState({
+      defaultOpen: false,
+      isOpen
+    });
+
+    state.open('first');
+    expect(isOpen.value).toBeUndefined();
+    expect(state.isOpen.value).toBe(true);
+    expect(state.focusStrategy.value).toBe('first');
+  });
+
   it('manages vue-stately submenu trigger level, focus strategy, and close-all behavior', () => {
     let root = useStatelyMenuTriggerState();
     let submenu = useStatelySubmenuTriggerState({

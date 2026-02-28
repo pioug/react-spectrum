@@ -1610,6 +1610,24 @@
    - full Vue tests: `yarn test:vue` (574 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Menu-trigger controlled ownership parity (`@vue-stately/menu`)
+
+1. Aligned `useMenuTriggerState` controlled-state semantics with shared overlay contracts:
+   - `isOpen` is now treated as controlled only when the control ref exists and `isOpen.value !== undefined`,
+   - ref-backed `undefined` `isOpen` refs now remain uncontrolled, using internal open state.
+2. Aligned controlled/uncontrolled transition warning behavior:
+   - `useMenuTriggerState` now emits `WARN: A component changed from ...` on ownership transitions in development.
+3. Preserved menu trigger behavior contracts:
+   - focus-strategy updates, submenu stack management, and root-close behavior remain unchanged.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - warning assertions for controlled->uncontrolled and uncontrolled->controlled `isOpen` transitions,
+     - assertion that ref-backed-`undefined` `isOpen` stays uncontrolled while open/focus behavior updates internal state.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately menu trigger open state and submenu stack|warns when vue-stately menu trigger switches between controlled and uncontrolled|keeps vue-stately menu trigger uncontrolled when isOpen ref is undefined|manages vue-stately submenu trigger level, focus strategy, and close-all behavior"`,
+   - full Vue tests: `yarn test:vue` (576 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

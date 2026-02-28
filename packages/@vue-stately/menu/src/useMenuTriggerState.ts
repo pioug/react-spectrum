@@ -1,4 +1,4 @@
-import {type ComputedRef, type Ref, ref, unref} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 
@@ -8,13 +8,13 @@ export type FocusStrategy = 'first' | 'last';
 export interface MenuTriggerProps {
   defaultOpen?: MaybeRef<boolean>,
   isDisabled?: MaybeRef<boolean>,
-  isOpen?: Ref<boolean>,
+  isOpen?: Ref<boolean | undefined>,
   onOpenChange?: (isOpen: boolean) => void
 }
 
 export interface OverlayTriggerState {
   close: () => void,
-  isOpen: Ref<boolean>,
+  isOpen: ComputedRef<boolean>,
   open: () => void,
   setOpen: (isOpen: boolean) => void,
   toggle: () => void
@@ -38,7 +38,23 @@ export interface RootMenuTriggerState extends MenuTriggerState {
  */
 export function useMenuTriggerState(props: MenuTriggerProps = {}): RootMenuTriggerState {
   let internalOpen = ref(Boolean(unref(props.defaultOpen)));
-  let isOpen = props.isOpen ?? internalOpen;
+  let isControlled = computed(() => props.isOpen !== undefined && props.isOpen.value !== undefined);
+  let wasControlled = ref(isControlled.value);
+
+  watch(isControlled, (nextIsControlled) => {
+    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasControlled.value = nextIsControlled;
+  });
+
+  let isOpen = computed(() => {
+    if (isControlled.value && props.isOpen) {
+      return props.isOpen.value;
+    }
+
+    return internalOpen.value;
+  });
   let focusStrategy = ref<FocusStrategy | null>(null);
   let expandedKeysStack = ref<Key[]>([]);
 
@@ -51,7 +67,12 @@ export function useMenuTriggerState(props: MenuTriggerProps = {}): RootMenuTrigg
       return;
     }
 
-    isOpen.value = nextOpen;
+    if (isControlled.value && props.isOpen) {
+      props.isOpen.value = nextOpen;
+    } else {
+      internalOpen.value = nextOpen;
+    }
+
     if (!nextOpen) {
       expandedKeysStack.value = [];
     }
