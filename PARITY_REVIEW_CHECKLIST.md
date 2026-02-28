@@ -18,10 +18,11 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - Components: ActionBar, ActionBarContainer
   - [x] Story: ActionBar.stories.ts
   - Evidence: React/Vue story-id parity is zero for `actionbar--*`; Vue ActionBar internals were aligned to React contracts by removing Vue-only aliases/attrs (`clearLabel`, `emphasized`, `data-vs-action-bar*` hooks), keeping canonical class/ARIA structure (`react-spectrum-ActionBar*`, `aria-label="Actions"`, `Clear selection`), passing `disabledKeys` directly by key, and emitting keyed actions via React-style keyed story items (`edit/copy/delete/move/duplicate`); regression selectors/assertions were updated in `starters/vue/src/components.spec.ts`, `starters/vue/src/composition.spec.ts`, and `starters/vue/src/storybook-parity.spec.ts`; validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
-- [ ] 1.03 `@vue-spectrum/actiongroup`
+- [x] 1.03 `@vue-spectrum/actiongroup`
   - Components: ActionGroup
-  - [ ] Story: ActionGroup.stories.ts
-  - [ ] Story: Toolbar.stories.ts
+  - [x] Story: ActionGroup.stories.ts
+  - [x] Story: Toolbar.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `actiongroup--*` and `toolbar--*` (React index `dist/9ba628661b71010349fd434fe6a68bd0d78e2a15/storybook/index.json` vs Vue index `starters/vue/dist/storybook/index.json`); overflow story behavior now matches React by removing Vue-only collapse overrides in `ActionGroup.stories.ts`; overflow measurement DOM/style parity is aligned by rendering a hidden presentation `div` and enforcing absolute positioning via `.spectrum-ActionButton.vs-spectrum-action-group__overflow-measure`; targeted ActionGroup/Toolbar parity tests pass and full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
 - [ ] 1.04 `@vue-spectrum/autocomplete`
   - Components: SearchAutocomplete
   - [ ] Story: SearchAutocomplete.stories.ts

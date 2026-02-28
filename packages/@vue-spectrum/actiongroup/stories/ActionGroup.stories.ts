@@ -562,11 +562,7 @@ export const Overflow: ActionGroupStory = {
     components: {OverflowActionGroupExample},
     setup() {
       return {
-        args: {
-          ...args,
-          buttonLabelBehavior: 'collapse',
-          overflowMode: 'collapse'
-        },
+        args,
         overflowItems
       };
     },
@@ -584,11 +580,7 @@ export const SummaryIcon: ActionGroupStory = {
     components: {OverflowActionGroupExample},
     setup() {
       return {
-        args: {
-          ...args,
-          buttonLabelBehavior: 'collapse',
-          overflowMode: 'collapse'
-        },
+        args,
         overflowItems
       };
     },

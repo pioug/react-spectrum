@@ -42,7 +42,8 @@
   width: 100%;
 }
 
-.vs-spectrum-action-group__overflow-measure {
+.vs-spectrum-action-group__overflow-measure,
+.spectrum-ActionButton.vs-spectrum-action-group__overflow-measure {
   left: -10000px;
   pointer-events: none;
   position: absolute;

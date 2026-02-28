@@ -785,10 +785,9 @@ export const ActionGroup = defineComponent({
         class: 'vs-spectrum-action-group__hidden-marker'
       })
     ]),
-      h('button', {
+      h('div', {
         ref: overflowMeasureRef,
-        type: 'button',
-        tabIndex: -1,
+        role: 'presentation',
         'aria-hidden': 'true',
         class: [
           classNames(
