@@ -50,11 +50,12 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - Components: VueButtonGroup
   - [x] Story: ButtonGroup.stories.ts
   - Evidence: React/Vue story-id parity is zero for `buttongroup--*` (`react=2`, `vue=2`, diff `0/0` from React `dist/9ba628661b71010349fd434fe6a68bd0d78e2a15/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`); Vue ButtonGroup story output was aligned to React in `packages/@vue-spectrum/buttongroup/stories/ButtonGroup.stories.ts` by using React-equivalent button label class wrappers for the expanding button content so the clicked overflow/line-wrap behavior matches the React story contract; full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`) with side-by-side screenshot evidence under `.tmp/buttongroup-parity/`.
-- [ ] 1.10 `@vue-spectrum/calendar`
+- [x] 1.10 `@vue-spectrum/calendar`
   - Components: VueCalendar, VueRangeCalendar
-  - [ ] Story: Calendar.stories.ts
-  - [ ] Story: RangeCalendar.stories.ts
-  - [ ] Story: RangeCalendarCell.stories.ts
+  - [x] Story: Calendar.stories.ts
+  - [x] Story: RangeCalendar.stories.ts
+  - [x] Story: RangeCalendarCell.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `date-and-time-calendar--*` (`react=13`, `vue=13`), `date-and-time-rangecalendar--*` (`react=12`, `vue=12`), and `date-and-time-rangecalendar-cell--*` (`react=1`, `vue=1`) from React `dist/9ba628661b71010349fd434fe6a68bd0d78e2a15/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue Calendar/RangeCalendar internals were aligned in `packages/@vue-spectrum/calendar/src/index.ts` by adding React-equivalent header navigation controls (`ActionButton` + workflow chevrons with RTL swap), applying `role="application"` at calendar roots, switching weekday headers to narrow labels, honoring controlled `focusedValue` for initial visible month, and splitting focus-visible styling from focus-roving state so default/controlled stories no longer show persistent non-React focus rings; story parity was tightened in `packages/@vue-spectrum/calendar/stories/Calendar.stories.ts` and `packages/@vue-spectrum/calendar/stories/RangeCalendar.stories.ts` by mirroring React locale/calendar pickers, provider locale wiring, `max-width: 100vw` wrappers, controlled-focus reset flow, date bounds/unavailable interval logic, and AM/PM time-field display values; `packages/@vue-spectrum/calendar/stories/RangeCalendarCell.stories.ts` replaced the placeholder render with the React-equivalent powerset CSS state matrix; full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`) with refreshed side-by-side screenshot evidence under `.tmp/calendar-parity/`.
 - [ ] 1.11 `@vue-spectrum/card`
   - Components: Card, CardView
   - [ ] Story: Card.stories.ts

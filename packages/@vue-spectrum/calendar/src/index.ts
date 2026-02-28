@@ -1,6 +1,10 @@
 import '@adobe/spectrum-css-temp/components/calendar/vars.css';
+import {ActionButton} from '@vue-spectrum/button';
+import ChevronLeft from '@spectrum-icons-vue/workflow/ChevronLeft';
+import ChevronRight from '@spectrum-icons-vue/workflow/ChevronRight';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, type PropType, ref, watch} from 'vue';
+import {useProvider} from '@vue-spectrum/provider';
 const styles: {[key: string]: string} = {};
 
 
@@ -26,6 +30,7 @@ type RangeInputValue = {
 type MonthRenderOptions = {
   disabled: boolean,
   firstDayIndex: number,
+  focusVisibleKey: string | null,
   focusedKey: string | null,
   hoveredKey: string | null,
   isDateUnavailable: (date: Date) => boolean,
@@ -39,6 +44,7 @@ type MonthRenderOptions = {
   minDate: Date | null,
   monthStart: Date,
   onFocus: (key: string | null) => void,
+  onFocusVisible: (key: string | null) => void,
   onHover: (key: string | null) => void,
   onPress: (key: string | null) => void,
   onSelectDate: (date: Date) => void,
@@ -189,7 +195,7 @@ function buildMonthMatrix(monthStart: Date, firstDayIndex: number): Date[][] {
 }
 
 function getWeekdayLabels(firstDayIndex: number): string[] {
-  let formatter = new Intl.DateTimeFormat(undefined, {weekday: 'short'});
+  let formatter = new Intl.DateTimeFormat(undefined, {weekday: 'narrow'});
   let base = new Date(2024, 0, 7);
 
   return [...new Array(7).keys()].map((offset) => {
@@ -252,7 +258,7 @@ function renderCalendarMonth(options: MonthRenderOptions) {
       let isSelected = options.isDateSelected(day);
       let isToday = isSameDay(day, new Date());
 
-      let isFocused = options.focusedKey === dayKey;
+      let isFocused = options.focusVisibleKey === dayKey;
       let isHovered = options.hoveredKey === dayKey && !isDisabled;
       let isPressed = options.pressedKey === dayKey && !isDisabled;
       let isSelectionStart = options.isSelectionStart(day);
@@ -260,7 +266,11 @@ function renderCalendarMonth(options: MonthRenderOptions) {
       let isRangeStart = options.isRangeStart(day);
       let isRangeEnd = options.isRangeEnd(day);
       let isInvalid = isSelected && !isWithinBounds;
-      let tabIndex = isSelected && !isDisabled ? 0 : -1;
+      let tabIndex = isDisabled
+        ? -1
+        : options.focusedKey
+          ? (options.focusedKey === dayKey ? 0 : -1)
+          : (isSelected ? 0 : -1);
 
       return h('td', {
         class: classNames(styles, 'spectrum-Calendar-tableCell'),
@@ -290,6 +300,7 @@ function renderCalendarMonth(options: MonthRenderOptions) {
           tabindex: tabIndex,
           onBlur: () => {
             options.onFocus(null);
+            options.onFocusVisible(null);
             options.onPress(null);
           },
           onClick: () => {
@@ -299,12 +310,14 @@ function renderCalendarMonth(options: MonthRenderOptions) {
 
             options.onSelectDate(day);
           },
-          onFocus: () => {
+          onFocus: (event: FocusEvent) => {
             if (isDisabled) {
               return;
             }
 
             options.onFocus(dayKey);
+            let target = event.currentTarget as HTMLElement | null;
+            options.onFocusVisible(target?.matches(':focus-visible') ? dayKey : null);
           },
           onKeydown: (event: KeyboardEvent) => {
             if (isDisabled) {
@@ -332,6 +345,7 @@ function renderCalendarMonth(options: MonthRenderOptions) {
               return;
             }
 
+            options.onFocusVisible(null);
             options.onPress(dayKey);
           },
           onMouseenter: () => {
@@ -466,7 +480,12 @@ export const VueCalendar = defineComponent({
 
     let firstDayIndex = computed(() => firstDayIndexByCode[props.firstDayOfWeek] ?? firstDayIndexByCode.sun);
     let visibleMonths = computed(() => Math.max(1, props.visibleMonths));
-    let initialVisibleDate = parseDateValue(toDateString(props.defaultFocusedValue)) ?? selectedDate.value ?? new Date();
+    let initialVisibleDate = (
+      parseDateValue(toDateString(props.focusedValue))
+      ?? parseDateValue(toDateString(props.defaultFocusedValue))
+      ?? selectedDate.value
+      ?? new Date()
+    );
     let visibleMonthStart = ref(startOfMonth(initialVisibleDate));
     let monthStarts = computed(() => [...new Array(visibleMonths.value).keys()].map((offset) => addMonths(visibleMonthStart.value, offset)));
     let weekDayLabels = computed(() => getWeekdayLabels(firstDayIndex.value));
@@ -474,6 +493,7 @@ export const VueCalendar = defineComponent({
     let hoveredKey = ref<string | null>(null);
     let pressedKey = ref<string | null>(null);
     let focusedKey = ref<string | null>(toDateString(props.focusedValue) || toDateString(props.defaultFocusedValue) || null);
+    let focusVisibleKey = ref<string | null>(null);
 
     let controlledFocusedValue = computed(() => toDateString(props.focusedValue));
     watch(controlledFocusedValue, (nextValue) => {
@@ -555,12 +575,15 @@ export const VueCalendar = defineComponent({
       emitValue(target?.value ?? '');
     };
 
+    let provider = useProvider();
+    let isRtl = computed(() => provider.dir === 'rtl');
+
     return () => h('div', {
       ...attrs,
       'aria-label': ariaLabel.value,
+      role: 'application',
       class: [
         classNames(styles, 'spectrum-Calendar'),
-        'vs-calendar',
         attrs.class
       ],
       'data-vac': ''
@@ -574,35 +597,44 @@ export const VueCalendar = defineComponent({
         key: formatDateValue(monthDate)
       }, [
         index === 0
-          ? h('button', {
+          ? h(ActionButton, {
             'aria-label': 'Previous month',
-            class: [classNames(styles, 'spectrum-Calendar-prevMonth'), 'vs-calendar__prev-month'],
-            disabled: isDisabled.value,
+            class: classNames(styles, 'spectrum-Calendar-prevMonth'),
+            isDisabled: isDisabled.value,
+            isQuiet: true,
             onClick: () => {
               visibleMonthStart.value = addMonths(visibleMonthStart.value, -1);
-            },
-            type: 'button'
-          }, '\u2039')
+            }
+          }, {
+            default: () => isRtl.value
+              ? h(ChevronRight, {'aria-hidden': 'true'})
+              : h(ChevronLeft, {'aria-hidden': 'true'})
+          })
           : null,
         h('h2', {
           'aria-hidden': 'true',
           class: classNames(styles, 'spectrum-Calendar-title')
         }, getMonthTitle(monthDate)),
         index === monthStarts.value.length - 1
-          ? h('button', {
+          ? h(ActionButton, {
             'aria-label': 'Next month',
-            class: [classNames(styles, 'spectrum-Calendar-nextMonth'), 'vs-calendar__next-month'],
-            disabled: isDisabled.value,
+            class: classNames(styles, 'spectrum-Calendar-nextMonth'),
+            isDisabled: isDisabled.value,
+            isQuiet: true,
             onClick: () => {
               visibleMonthStart.value = addMonths(visibleMonthStart.value, 1);
-            },
-            type: 'button'
-          }, '\u203a')
+            }
+          }, {
+            default: () => isRtl.value
+              ? h(ChevronLeft, {'aria-hidden': 'true'})
+              : h(ChevronRight, {'aria-hidden': 'true'})
+          })
           : null
       ]))),
       h('div', {class: classNames(styles, 'spectrum-Calendar-months')}, monthStarts.value.map((monthStartDate) => renderCalendarMonth({
         disabled: isDisabled.value,
         firstDayIndex: firstDayIndex.value,
+        focusVisibleKey: focusVisibleKey.value,
         focusedKey: focusedKey.value,
         hoveredKey: hoveredKey.value,
         isDateUnavailable: (date) => props.isDateUnavailable?.(date) ?? false,
@@ -617,6 +649,9 @@ export const VueCalendar = defineComponent({
         monthStart: monthStartDate,
         onFocus: (key) => {
           setFocusedKey(key);
+        },
+        onFocusVisible: (key) => {
+          focusVisibleKey.value = key;
         },
         onHover: (key) => {
           hoveredKey.value = key;
@@ -761,6 +796,7 @@ export const VueRangeCalendar = defineComponent({
     let hoveredKey = ref<string | null>(null);
     let pressedKey = ref<string | null>(null);
     let focusedKey = ref<string | null>(selectedRange.value.start || null);
+    let focusVisibleKey = ref<string | null>(null);
     let isDisabled = computed(() => props.isDisabled ?? props.disabled);
 
     let ariaLabel = computed(() => {
@@ -847,13 +883,15 @@ export const VueRangeCalendar = defineComponent({
     };
 
     let dayIndexFromFirstDay = (date: Date) => (date.getDay() - firstDayIndex.value + 7) % 7;
+    let provider = useProvider();
+    let isRtl = computed(() => provider.dir === 'rtl');
 
     return () => h('div', {
       ...attrs,
       'aria-label': ariaLabel.value,
+      role: 'application',
       class: [
         classNames(styles, 'spectrum-Calendar'),
-        'vs-range-calendar',
         attrs.class
       ],
       'data-vac': ''
@@ -867,35 +905,44 @@ export const VueRangeCalendar = defineComponent({
         key: formatDateValue(monthDate)
       }, [
         index === 0
-          ? h('button', {
+          ? h(ActionButton, {
             'aria-label': 'Previous month',
-            class: [classNames(styles, 'spectrum-Calendar-prevMonth'), 'vs-range-calendar__prev-month'],
-            disabled: isDisabled.value,
+            class: classNames(styles, 'spectrum-Calendar-prevMonth'),
+            isDisabled: isDisabled.value,
+            isQuiet: true,
             onClick: () => {
               visibleMonthStart.value = addMonths(visibleMonthStart.value, -1);
-            },
-            type: 'button'
-          }, '\u2039')
+            }
+          }, {
+            default: () => isRtl.value
+              ? h(ChevronRight, {'aria-hidden': 'true'})
+              : h(ChevronLeft, {'aria-hidden': 'true'})
+          })
           : null,
         h('h2', {
           'aria-hidden': 'true',
           class: classNames(styles, 'spectrum-Calendar-title')
         }, getMonthTitle(monthDate)),
         index === monthStarts.value.length - 1
-          ? h('button', {
+          ? h(ActionButton, {
             'aria-label': 'Next month',
-            class: [classNames(styles, 'spectrum-Calendar-nextMonth'), 'vs-range-calendar__next-month'],
-            disabled: isDisabled.value,
+            class: classNames(styles, 'spectrum-Calendar-nextMonth'),
+            isDisabled: isDisabled.value,
+            isQuiet: true,
             onClick: () => {
               visibleMonthStart.value = addMonths(visibleMonthStart.value, 1);
-            },
-            type: 'button'
-          }, '\u203a')
+            }
+          }, {
+            default: () => isRtl.value
+              ? h(ChevronLeft, {'aria-hidden': 'true'})
+              : h(ChevronRight, {'aria-hidden': 'true'})
+          })
           : null
       ]))),
       h('div', {class: classNames(styles, 'spectrum-Calendar-months')}, monthStarts.value.map((monthStartDate) => renderCalendarMonth({
         disabled: isDisabled.value,
         firstDayIndex: firstDayIndex.value,
+        focusVisibleKey: focusVisibleKey.value,
         focusedKey: focusedKey.value,
         hoveredKey: hoveredKey.value,
         isDateUnavailable: (date) => props.isDateUnavailable?.(date) ?? false,
@@ -950,6 +997,9 @@ export const VueRangeCalendar = defineComponent({
         monthStart: monthStartDate,
         onFocus: (key) => {
           focusedKey.value = key;
+        },
+        onFocusVisible: (key) => {
+          focusVisibleKey.value = key;
         },
         onHover: (key) => {
           hoveredKey.value = key;

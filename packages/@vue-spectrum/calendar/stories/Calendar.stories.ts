@@ -1,7 +1,13 @@
 import {action} from 'storybook/actions';
-import type {Meta, StoryObj} from '@storybook/vue3-vite';
-import {computed, ref} from 'vue';
+import {ActionButton} from '@vue-spectrum/button';
 import {Calendar} from '../src';
+import {CalendarDate, getLocalTimeZone, today} from '@internationalized/date';
+import {computed, ref} from 'vue';
+import {Flex} from '@vue-spectrum/layout';
+import {Meta, StoryObj} from '@storybook/vue3-vite';
+import {Picker} from '@vue-spectrum/picker';
+import {Provider} from '@vue-spectrum/provider';
+import {TimeField} from '@vue-spectrum/datepicker';
 
 type CalendarStoryArgs = {
   'aria-label'?: string,
@@ -16,9 +22,53 @@ type CalendarStoryArgs = {
   maxValue?: unknown,
   minValue?: unknown,
   onChange?: (value: string) => void,
+  onFocusChange?: (value: string | null) => void,
   value?: unknown,
   visibleMonths?: number
 };
+
+type LocalePreference = {
+  id: string,
+  label: string,
+  locale: string,
+  ordering: string
+};
+
+type CalendarOption = {
+  id: string,
+  label: string
+};
+
+const preferences: LocalePreference[] = [
+  {id: 'default', label: 'Default', locale: '', ordering: 'gregory'},
+  {id: 'ar-DZ', label: 'Arabic (Algeria)', locale: 'ar-DZ', ordering: 'gregory islamic islamic-civil islamic-tbla'},
+  {id: 'ar-AE', label: 'Arabic (United Arab Emirates)', locale: 'ar-AE', ordering: 'gregory islamic-umalqura islamic islamic-civil islamic-tbla'},
+  {id: 'ar-EG', label: 'Arabic (Egypt)', locale: 'AR-EG', ordering: 'gregory coptic islamic islamic-civil islamic-tbla'},
+  {id: 'ar-SA', label: 'Arabic (Saudi Arabia)', locale: 'ar-SA', ordering: 'islamic-umalqura gregory islamic islamic-rgsa'},
+  {id: 'fa-AF', label: 'Farsi (Afghanistan)', locale: 'fa-AF', ordering: 'persian gregory islamic islamic-civil islamic-tbla'},
+  {id: 'am-ET', label: 'Amharic (Ethiopia)', locale: 'am-ET', ordering: 'gregory ethiopic ethioaa'},
+  {id: 'he-IL', label: 'Hebrew (Israel)', locale: 'he-IL', ordering: 'gregory hebrew islamic islamic-civil islamic-tbla'},
+  {id: 'hi-IN', label: 'Hindi (India)', locale: 'hi-IN', ordering: 'gregory indian'},
+  {id: 'ja-JP', label: 'Japanese (Japan)', locale: 'ja-JP', ordering: 'gregory japanese'},
+  {id: 'th-TH', label: 'Thai (Thailand)', locale: 'th-TH', ordering: 'buddhist gregory'},
+  {id: 'zh-TW', label: 'Chinese (Taiwan)', locale: 'zh-TW', ordering: 'gregory roc chinese'}
+];
+
+const calendars: CalendarOption[] = [
+  {id: 'gregory', label: 'Gregorian'},
+  {id: 'japanese', label: 'Japanese'},
+  {id: 'buddhist', label: 'Buddhist'},
+  {id: 'roc', label: 'Taiwan'},
+  {id: 'persian', label: 'Persian'},
+  {id: 'indian', label: 'Indian'},
+  {id: 'islamic-umalqura', label: 'Islamic (Umm al-Qura)'},
+  {id: 'islamic-civil', label: 'Islamic Civil'},
+  {id: 'islamic-tbla', label: 'Islamic Tabular'},
+  {id: 'hebrew', label: 'Hebrew'},
+  {id: 'coptic', label: 'Coptic'},
+  {id: 'ethiopic', label: 'Ethiopic'},
+  {id: 'ethioaa', label: 'Ethiopic (Amete Alem)'}
+];
 
 function toDateString(value: unknown): string {
   if (value == null) {
@@ -60,10 +110,8 @@ function dateParts(year: number, month: number, day: number): {day: number, mont
   return {year, month, day};
 }
 
-function dateStringWithOffset(days = 0): string {
-  let value = new Date();
-  value.setDate(value.getDate() + days);
-  return value.toISOString().slice(0, 10);
+function dateValueWithOffset(days = 0): CalendarDate {
+  return today(getLocalTimeZone()).add({days});
 }
 
 const meta: Meta<typeof Calendar> = {
@@ -144,12 +192,128 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function render(args: CalendarStoryArgs) {
+function renderCalendarExample(args: CalendarStoryArgs) {
   return {
-    components: {Calendar},
+    components: {Calendar, Flex, Picker, Provider},
     setup() {
       let selected = ref(toDateString(args.value ?? args.defaultValue));
-      let focused = ref(toDateString(args.focusedValue ?? args.defaultFocusedValue) || null);
+      let focused = ref<string | null>(toDateString(args.focusedValue ?? args.defaultFocusedValue) || null);
+      let minValue = computed(() => toDateString(args.minValue));
+      let maxValue = computed(() => toDateString(args.maxValue));
+      let locale = ref(preferences[0].id);
+      let calendar = ref(calendars[0].id);
+      let defaultLocale = ref(Intl.DateTimeFormat().resolvedOptions().locale || 'en-US');
+
+      let localeItems = computed(() => preferences.map((item) => ({
+        id: item.id,
+        label: item.label
+      })));
+
+      let preferredCalendars = computed(() => {
+        let preference = preferences.find((item) => item.id === locale.value) ?? preferences[0];
+        let preferredIds = preference.ordering.split(' ');
+        return preferredIds
+          .map((id) => calendars.find((calendarOption) => calendarOption.id === id))
+          .filter((calendarOption): calendarOption is CalendarOption => Boolean(calendarOption));
+      });
+
+      let calendarItems = computed(() => {
+        let preferredIds = new Set(preferredCalendars.value.map((item) => item.id));
+        let preferred = preferredCalendars.value.map((item) => ({id: item.id, label: item.label}));
+        let others = calendars
+          .filter((item) => !preferredIds.has(item.id))
+          .map((item) => ({id: item.id, label: item.label}));
+        return [...preferred, ...others];
+      });
+
+      let providerLocale = computed(() => {
+        let preference = preferences.find((item) => item.id === locale.value) ?? preferences[0];
+        let baseLocale = preference.locale || defaultLocale.value;
+        let preferredDefault = preferredCalendars.value[0]?.id;
+        if (calendar.value && preferredDefault && calendar.value !== preferredDefault) {
+          return `${baseLocale}-u-ca-${calendar.value}`;
+        }
+
+        return baseLocale;
+      });
+
+      let updateLocale = (nextLocale: string) => {
+        locale.value = nextLocale;
+        let preference = preferences.find((item) => item.id === nextLocale) ?? preferences[0];
+        calendar.value = preference.ordering.split(' ')[0];
+      };
+
+      let handleChange = (value: string) => {
+        selected.value = value;
+        args.onChange?.(value);
+      };
+
+      let handleFocusChange = (value: string | null) => {
+        focused.value = value;
+        args.onFocusChange?.(value);
+      };
+
+      return {
+        args,
+        calendar,
+        calendarItems,
+        focused,
+        handleChange,
+        handleFocusChange,
+        locale,
+        localeItems,
+        maxValue,
+        minValue,
+        providerLocale,
+        selected,
+        updateLocale
+      };
+    },
+    template: `
+      <Flex direction="column" gap="size-600" align-items="center">
+        <Flex direction="column" gap="size-150" style="width: 156px;">
+          <Picker
+            label="Locale"
+            :items="localeItems"
+            :model-value="locale"
+            @update:model-value="updateLocale" />
+          <Picker
+            label="Calendar"
+            :items="calendarItems"
+            :model-value="calendar"
+            @update:model-value="calendar = $event" />
+        </Flex>
+        <Provider :locale="providerLocale">
+          <div style="max-width: 100vw; overflow: auto; padding: 10px;">
+            <Calendar
+              :aria-label="args['aria-label']"
+              :default-focused-value="args.defaultFocusedValue"
+              :default-value="args.defaultValue"
+              :error-message="args.errorMessage"
+              :first-day-of-week="args.firstDayOfWeek"
+              :focused-value="args.focusedValue || focused"
+              :is-date-unavailable="args.isDateUnavailable"
+              :is-disabled="args.isDisabled"
+              :label="args.label"
+              :max-value="maxValue"
+              :min-value="minValue"
+              :value="args.value || selected"
+              :visible-months="args.visibleMonths"
+              @change="handleChange"
+              @focus-change="handleFocusChange" />
+          </div>
+        </Provider>
+      </Flex>
+    `
+  };
+}
+
+function renderCalendarWithTime(args: CalendarStoryArgs, initialDate: string, initialTime: string) {
+  return {
+    components: {Calendar, Flex, TimeField},
+    setup() {
+      let selected = ref(toDateString(args.value) || initialDate);
+      let timeValue = ref(initialTime);
       let minValue = computed(() => toDateString(args.minValue));
       let maxValue = computed(() => toDateString(args.maxValue));
 
@@ -160,72 +324,105 @@ function render(args: CalendarStoryArgs) {
 
       return {
         args,
-        focused,
         handleChange,
         maxValue,
         minValue,
-        selected
+        selected,
+        timeValue
       };
     },
     template: `
-      <Calendar
-        :aria-label="args['aria-label']"
-        :default-focused-value="args.defaultFocusedValue"
-        :default-value="args.defaultValue"
-        :error-message="args.errorMessage"
-        :first-day-of-week="args.firstDayOfWeek"
-        :focused-value="args.focusedValue || focused"
-        :is-date-unavailable="args.isDateUnavailable"
-        :is-disabled="args.isDisabled"
-        :label="args.label"
-        :max-value="maxValue"
-        :min-value="minValue"
-        :value="args.value || selected"
-        :visible-months="args.visibleMonths"
-        @change="handleChange"
-        @focus-change="focused = $event" />
+      <Flex direction="column">
+        <Calendar
+          :aria-label="args['aria-label']"
+          :default-focused-value="args.defaultFocusedValue"
+          :default-value="args.defaultValue"
+          :error-message="args.errorMessage"
+          :first-day-of-week="args.firstDayOfWeek"
+          :is-date-unavailable="args.isDateUnavailable"
+          :is-disabled="args.isDisabled"
+          :label="args.label"
+          :max-value="maxValue"
+          :min-value="minValue"
+          :value="selected"
+          :visible-months="args.visibleMonths"
+          @change="handleChange" />
+        <TimeField
+          label="Time"
+          :model-value="timeValue"
+          @update:model-value="timeValue = $event" />
+      </Flex>
+    `
+  };
+}
+
+function renderControlledFocus(args: CalendarStoryArgs, initialFocusedDate: {day: number, month: number, year: number}) {
+  return {
+    components: {ActionButton, Calendar, Flex},
+    setup() {
+      let initial = {...initialFocusedDate};
+      let focused = ref<{day: number, month: number, year: number} | string | null>(initial);
+
+      let resetFocusedDate = () => {
+        focused.value = {...initial};
+      };
+
+      return {
+        args,
+        focused,
+        resetFocusedDate
+      };
+    },
+    template: `
+      <Flex direction="column" align-items="start" gap="size-200">
+        <ActionButton @click="resetFocusedDate">Reset focused date</ActionButton>
+        <Calendar
+          :aria-label="args['aria-label']"
+          :error-message="args.errorMessage"
+          :first-day-of-week="args.firstDayOfWeek"
+          :focused-value="focused"
+          :is-date-unavailable="args.isDateUnavailable"
+          :is-disabled="args.isDisabled"
+          :label="args.label"
+          :visible-months="args.visibleMonths"
+          @focus-change="focused = $event" />
+      </Flex>
     `
   };
 }
 
 export const Default: Story = {
-  render
+  render: renderCalendarExample
 };
 
 export const DefaultValue: Story = {
   ...Default,
   args: {
-    defaultValue: dateParts(2019, 6, 5)
+    defaultValue: new CalendarDate(2019, 6, 5)
   }
 };
 
 export const ControlledValue: Story = {
   ...Default,
   args: {
-    value: dateParts(2019, 5, 5)
+    value: new CalendarDate(2019, 5, 5)
   }
 };
 
 export const WithTime: Story = {
-  ...Default,
-  args: {
-    value: '2019-06-05T08:00:00'
-  }
+  render: (args) => renderCalendarWithTime(args, '2019-06-05', '8:00 AM')
 };
 
 export const ZonedTime: Story = {
-  ...Default,
-  args: {
-    value: '2021-03-14T00:45-08:00[America/Los_Angeles]'
-  },
+  render: (args) => renderCalendarWithTime(args, '2021-03-14', '12:45 AM'),
   name: 'with zoned time'
 };
 
 export const OneWeek: Story = {
   ...Default,
   args: {
-    minValue: dateStringWithOffset(0),
-    maxValue: dateStringWithOffset(7)
+    minValue: dateValueWithOffset(0),
+    maxValue: today(getLocalTimeZone()).add({weeks: 1})
   },
   name: 'minValue: today, maxValue: 1 week from now'
 };
@@ -233,9 +430,9 @@ export const OneWeek: Story = {
 export const DefaultMinMax: Story = {
   ...Default,
   args: {
-    defaultValue: dateParts(2019, 6, 10),
-    minValue: dateParts(2019, 6, 5),
-    maxValue: dateParts(2019, 6, 20)
+    defaultValue: new CalendarDate(2019, 6, 10),
+    minValue: new CalendarDate(2019, 6, 5),
+    maxValue: new CalendarDate(2019, 6, 20)
   },
   name: 'defaultValue + minValue + maxValue'
 };
@@ -243,12 +440,14 @@ export const DefaultMinMax: Story = {
 export const DateUnavailable: Story = {
   ...Default,
   args: {
-    defaultValue: dateStringWithOffset(1),
+    defaultValue: dateValueWithOffset(1),
     isDateUnavailable: (date: Date) => {
-      let start = dateStringWithOffset(2);
-      let end = dateStringWithOffset(6);
       let value = date.toISOString().slice(0, 10);
-      return value > start && value < end;
+      let disabledIntervals = [
+        [dateValueWithOffset(0).toString(), dateValueWithOffset(7).toString()],
+        [dateValueWithOffset(14).toString(), dateValueWithOffset(21).toString()]
+      ];
+      return disabledIntervals.some(([start, end]) => value > start && value < end);
     }
   },
   name: 'isDateUnavailable'
@@ -257,7 +456,7 @@ export const DateUnavailable: Story = {
 export const MinValue: Story = {
   ...Default,
   args: {
-    minValue: dateStringWithOffset(0)
+    minValue: dateValueWithOffset(0)
   },
   name: 'minValue: today'
 };
@@ -265,8 +464,8 @@ export const MinValue: Story = {
 export const MinValueDefaultVal: Story = {
   ...Default,
   args: {
-    minValue: dateStringWithOffset(0),
-    defaultValue: dateParts(2019, 6, 5)
+    minValue: dateValueWithOffset(0),
+    defaultValue: new CalendarDate(2019, 6, 5)
   },
   name: 'minValue: today, defaultValue'
 };
@@ -274,36 +473,17 @@ export const MinValueDefaultVal: Story = {
 export const DefaultFocusedValue: Story = {
   ...Default,
   args: {
-    defaultFocusedValue: dateParts(2019, 6, 5)
+    defaultFocusedValue: new CalendarDate(2019, 6, 5)
   },
   name: 'defaultFocusedValue'
 };
 
 export const FocusedValue: Story = {
-  render: (args: CalendarStoryArgs) => ({
-    components: {Calendar},
-    setup() {
-      let focused = ref<unknown>(dateParts(2019, 6, 5));
-      return {args, focused};
-    },
-    template: `
-      <div style="display: grid; gap: 12px;">
-        <button type="button" @click="focused = new Date(2019, 5, 5)">Reset focused date</button>
-        <Calendar
-          :aria-label="args['aria-label']"
-          :focused-value="focused"
-          @focus-change="focused = $event" />
-      </div>
-    `
-  }),
+  render: (args) => renderControlledFocus(args, dateParts(2019, 6, 5)),
   name: 'focusedValue'
 };
 
 export const Custom454Example: Story = {
-  ...Default,
-  args: {
-    defaultValue: dateParts(2023, 2, 5),
-    firstDayOfWeek: 'mon'
-  },
+  render: (args) => renderControlledFocus(args, dateParts(2023, 2, 5)),
   name: 'Custom calendar'
 };
