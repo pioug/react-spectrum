@@ -2954,6 +2954,18 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Menu trigger/submenu no-op open-change parity (`@vue-aria/menu`)
+
+1. Closed no-op emission drift in menu trigger hooks:
+   - `useMenuTrigger` now suppresses writes/callbacks when `nextOpen` equals current state,
+   - `useSubmenuTrigger` now suppresses writes/callbacks when `nextOpen` equals current state.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` menu-hook assertions now verify repeated identical open/close calls emit `onOpenChange` only on actual state transitions.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria menu trigger and item selection semantics"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

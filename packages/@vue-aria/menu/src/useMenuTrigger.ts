@@ -44,6 +44,10 @@ export function useMenuTrigger(props: AriaMenuTriggerProps = {}): MenuTriggerAri
       return;
     }
 
+    if (isOpen.value === nextOpen) {
+      return;
+    }
+
     isOpen.value = nextOpen;
     props.onOpenChange?.(nextOpen);
   };

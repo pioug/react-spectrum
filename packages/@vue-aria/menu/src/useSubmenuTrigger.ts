@@ -35,6 +35,10 @@ export function useSubmenuTrigger(props: AriaSubmenuTriggerProps = {}): SubmenuT
       return;
     }
 
+    if (isOpen.value === nextOpen) {
+      return;
+    }
+
     isOpen.value = nextOpen;
     props.onOpenChange?.(nextOpen);
   };

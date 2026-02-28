@@ -6391,6 +6391,8 @@ describe('Vue migration composition components', () => {
     menuTrigger.menuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
     expect(menuTrigger.isOpen.value).toBe(true);
     expect(menuTrigger.menuProps.value['aria-labelledby']).toBe(menuTrigger.menuTriggerProps.value.id);
+    menuTrigger.open();
+    expect(openChanges).toEqual([true]);
     menuTrigger.close();
     expect(menuTrigger.isOpen.value).toBe(false);
     menuTrigger.menuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowUp'}));
@@ -6482,6 +6484,18 @@ describe('Vue migration composition components', () => {
     expect(submenuTrigger.isOpen.value).toBe(true);
     submenuTrigger.submenuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
     expect(submenuTrigger.isOpen.value).toBe(false);
+
+    let submenuOpenChanges: boolean[] = [];
+    let trackedSubmenuTrigger = useSubmenuTrigger({
+      onOpenChange: (nextOpen) => {
+        submenuOpenChanges.push(nextOpen);
+      }
+    });
+    trackedSubmenuTrigger.open();
+    trackedSubmenuTrigger.open();
+    trackedSubmenuTrigger.close();
+    trackedSubmenuTrigger.close();
+    expect(submenuOpenChanges).toEqual([true, false]);
 
     let disabledSubmenuOpen = ref(true);
     let disabledSubmenuTrigger = useSubmenuTrigger({
