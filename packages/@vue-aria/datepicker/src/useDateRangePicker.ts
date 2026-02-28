@@ -117,6 +117,10 @@ export function useDateRangePicker(options: AriaDateRangePickerOptions): DateRan
   let value = computed(() => options.value.value);
 
   let setOpen = (nextOpen: boolean) => {
+    if (isOpen.value === nextOpen) {
+      return;
+    }
+
     isOpen.value = nextOpen;
     options.onOpenChange?.(nextOpen);
   };
@@ -143,6 +147,13 @@ export function useDateRangePicker(options: AriaDateRangePickerOptions): DateRan
 
   let setRange = (nextRange: DateRangeValue) => {
     let normalizedRange = normalizeRangeValue(nextRange, minValue.value, maxValue.value);
+    if (
+      options.value.value.start === normalizedRange.start
+      && options.value.value.end === normalizedRange.end
+    ) {
+      return;
+    }
+
     options.value.value = normalizedRange;
     options.onChange?.(normalizedRange);
   };

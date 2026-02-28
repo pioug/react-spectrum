@@ -2966,6 +2966,23 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Date picker/range-picker no-op callback parity (`@vue-aria/datepicker`)
+
+1. Closed no-op lifecycle drift in `useDatePicker`:
+   - `setOpen` now suppresses duplicate writes/callbacks when the open state is unchanged,
+   - `setValue` now suppresses duplicate writes/callbacks when normalized value is unchanged (including repeated null clears).
+2. Closed no-op lifecycle drift in `useDateRangePicker`:
+   - `setOpen` now suppresses duplicate writes/callbacks when the open state is unchanged,
+   - `setRange` now suppresses duplicate writes/callbacks when normalized start/end values are unchanged.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` datepicker assertions now verify:
+     - open/close callbacks emit only on transitions for both single and range pickers,
+     - repeated normalized-equivalent value/range writes do not emit duplicate change callbacks.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "updates vue-aria date picker and date range picker selection state"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

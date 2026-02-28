@@ -80,6 +80,10 @@ export function useDatePicker(options: AriaDatePickerOptions): DatePickerAria {
   let value = computed(() => options.value.value);
 
   let setOpen = (nextOpen: boolean) => {
+    if (isOpen.value === nextOpen) {
+      return;
+    }
+
     isOpen.value = nextOpen;
     options.onOpenChange?.(nextOpen);
   };
@@ -106,12 +110,20 @@ export function useDatePicker(options: AriaDatePickerOptions): DatePickerAria {
 
   let setValue = (nextValue: string | null) => {
     if (nextValue == null || nextValue.length === 0) {
+      if (options.value.value == null) {
+        return;
+      }
+
       options.value.value = null;
       options.onChange?.(null);
       return;
     }
 
     let clampedValue = clampComparableValue(nextValue, minValue.value, maxValue.value);
+    if (options.value.value === clampedValue) {
+      return;
+    }
+
     options.value.value = clampedValue;
     options.onChange?.(clampedValue);
   };

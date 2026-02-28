@@ -2239,20 +2239,39 @@ describe('Vue migration composition components', () => {
   });
 
   it('updates vue-aria date picker and date range picker selection state', () => {
+    let pickerOpenChanges: boolean[] = [];
+    let pickerChanges: Array<string | null> = [];
     let pickerValue = ref<string | null>(null);
     let picker = useDatePicker({
       maxValue: '2026-02-28',
       minValue: '2026-02-01',
+      onChange: (nextValue) => {
+        pickerChanges.push(nextValue);
+      },
+      onOpenChange: (nextOpen) => {
+        pickerOpenChanges.push(nextOpen);
+      },
       value: pickerValue
     });
 
     picker.open();
     expect(picker.isOpen.value).toBe(true);
+    picker.open();
+    expect(pickerOpenChanges).toEqual([true]);
     picker.setValue('2026-03-10');
     expect(pickerValue.value).toBe('2026-02-28');
+    picker.setValue('2026-03-10');
+    expect(pickerChanges).toEqual(['2026-02-28']);
     picker.close();
     expect(picker.isOpen.value).toBe(false);
+    picker.close();
+    expect(pickerOpenChanges).toEqual([true, false]);
+    picker.setValue(null);
+    picker.setValue(null);
+    expect(pickerChanges).toEqual(['2026-02-28', null]);
 
+    let rangeOpenChanges: boolean[] = [];
+    let rangeChanges: Array<{end: string | null, start: string | null}> = [];
     let rangeValue = ref({
       start: null as string | null,
       end: null as string | null
@@ -2260,8 +2279,21 @@ describe('Vue migration composition components', () => {
     let rangePicker = useDateRangePicker({
       maxValue: '2026-02-28',
       minValue: '2026-02-01',
+      onChange: (nextValue) => {
+        rangeChanges.push({...nextValue});
+      },
+      onOpenChange: (nextOpen) => {
+        rangeOpenChanges.push(nextOpen);
+      },
       value: rangeValue
     });
+
+    rangePicker.open();
+    rangePicker.open();
+    expect(rangeOpenChanges).toEqual([true]);
+    rangePicker.close();
+    rangePicker.close();
+    expect(rangeOpenChanges).toEqual([true, false]);
 
     rangePicker.setStart('2026-02-20');
     rangePicker.setEnd('2026-03-10');
@@ -2278,6 +2310,12 @@ describe('Vue migration composition components', () => {
       start: '2026-02-25',
       end: '2026-02-25'
     });
+    let rangeChangeCount = rangeChanges.length;
+    rangePicker.setRange({
+      start: '2026-02-25',
+      end: '2026-02-25'
+    });
+    expect(rangeChanges.length).toBe(rangeChangeCount);
     expect(rangePicker.isInvalid.value).toBe(false);
   });
 
