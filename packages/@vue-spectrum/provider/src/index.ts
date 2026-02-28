@@ -6,7 +6,7 @@ import type {
   ProviderContext as ReactProviderContext,
   ProviderProps as ReactProviderProps
 } from '@vue-types/provider';
-import {computed, type ComputedRef, defineComponent, h, inject, type InjectionKey, type PropType, provide} from 'vue';
+import {computed, type ComputedRef, defineComponent, getCurrentInstance, h, inject, type InjectionKey, nextTick, onMounted, type PropType, provide, ref, watch} from 'vue';
 import {type SpectrumContextValue, VueSpectrumProvider} from 'vue-aria-components';
 
 type ThemeSectionLike = {
@@ -70,6 +70,8 @@ export const Provider = defineComponent({
     }
   },
   setup(props, {slots, attrs}) {
+    let instance = getCurrentInstance();
+    let hasWarnedNestedDirection = ref(false);
     let parentContext = inject(
       providerContextKey,
       computed(() => defaultProviderContext)
@@ -89,6 +91,31 @@ export const Provider = defineComponent({
     });
 
     provide(providerContextKey, context);
+
+    let warnOnNestedDirection = () => {
+      if (hasWarnedNestedDirection.value || process.env.NODE_ENV === 'production') {
+        return;
+      }
+
+      let root = instance?.proxy?.$el;
+      if (!(root instanceof HTMLElement) || !context.value.dir) {
+        return;
+      }
+
+      let closestDirection = root.parentElement?.closest('[dir]')?.getAttribute('dir');
+      if (closestDirection && closestDirection !== context.value.dir) {
+        console.warn(`Language directions cannot be nested. ${context.value.dir} inside ${closestDirection}.`);
+        hasWarnedNestedDirection.value = true;
+      }
+    };
+
+    onMounted(() => {
+      nextTick().then(warnOnNestedDirection);
+    });
+
+    watch(() => context.value.dir, () => {
+      nextTick().then(warnOnNestedDirection);
+    });
 
     return () => h(VueSpectrumProvider, {
       ...attrs,

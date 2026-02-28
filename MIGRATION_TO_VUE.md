@@ -1182,6 +1182,18 @@
    - full Vue tests: `yarn test:vue` (535 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Provider nested-direction warning parity (`@vue-spectrum/provider`)
+
+1. Aligned `Provider` nested-direction guardrail with React:
+   - in development, nested providers now warn when `dir` conflicts with an ancestor direction (`Language directions cannot be nested...`).
+2. Implemented warning in provider internals using mounted/update checks against resolved provider DOM direction context.
+3. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: nested `Provider dir="ltr"` + child `Provider dir="rtl"` now asserts React warning text.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "applies provider theme classes and metadata for token variants|warns when provider direction is nested with an opposite parent direction"`,
+   - full Vue tests: `yarn test:vue` (536 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

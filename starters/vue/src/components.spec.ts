@@ -180,6 +180,25 @@ describe('Vue migration primitives', () => {
     expect(darkRoot.attributes('data-color-scheme')).toBe('dark');
   });
 
+  it('warns when provider direction is nested with an opposite parent direction', async () => {
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    mount({
+      components: {Provider},
+      template: `
+        <Provider dir="ltr">
+          <Provider dir="rtl">
+            <div>Nested direction shell</div>
+          </Provider>
+        </Provider>
+      `
+    });
+
+    await nextTick();
+    expect(warn).toHaveBeenCalledWith('Language directions cannot be nested. rtl inside ltr.');
+    warn.mockRestore();
+  });
+
   it('renders well content and role-based aria labelling', () => {
     let wrapper = mount(Well, {
       props: {
