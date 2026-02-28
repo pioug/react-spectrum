@@ -4393,6 +4393,7 @@ describe('Vue migration composition components', () => {
 
     let ticketItems = [{id: 'ticket-2', type: 'ticket', value: {id: 2}}];
     let fileItems = [{id: 'asset-1', type: 'file', value: {name: 'spec.pdf'}}];
+    let mixedItems = [ticketItems[0], fileItems[0]];
     let directoryItems = [{id: 'dir-1', kind: 'directory', type: 'file', value: {name: 'specs'}}];
 
     expect(drop.enter(ticketItems)).toBe(true);
@@ -4400,7 +4401,9 @@ describe('Vue migration composition components', () => {
     expect(drop.lastDropOperation.value).toBe('copy');
     expect(drop.enter(fileItems)).toBe(false);
     expect(drop.drop(fileItems)).toBe('cancel');
-    expect(dropEvents).toEqual(['enter', 'drop:copy']);
+    expect(drop.enter(mixedItems)).toBe(true);
+    expect(drop.drop(mixedItems, 'move')).toBe('move');
+    expect(dropEvents).toEqual(['enter', 'drop:copy', 'enter', 'drop:move']);
 
     let directoryDrop = useDrop({
       acceptedDragTypes: [DIRECTORY_DRAG_TYPE]
@@ -4474,6 +4477,37 @@ describe('Vue migration composition components', () => {
     expect(droppableCollection.collectionProps.value.onDragEnter(directoryInput)).toBe(true);
     expect(droppableCollection.collectionProps.value.onDrop(directoryInput)).toBe('copy');
     expect(dropEvents).toEqual(['copy:file']);
+  });
+
+  it('accepts mixed payloads in useDroppableCollection when any item type matches', () => {
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['ticket'],
+      getDropOperation: () => 'copy'
+    });
+    dropState.setTarget({type: 'root'});
+    let dropEvents: Array<string> = [];
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['ticket'],
+      onDrop: (event) => {
+        dropEvents.push(`drop:${event.dropOperation}:${event.items.length}`);
+      }
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDragEnter: (input: unknown) => boolean,
+        onDrop: (input: unknown, operation?: 'cancel' | 'copy' | 'link' | 'move') => 'cancel' | 'copy' | 'link' | 'move'
+      }}
+    };
+
+    let mixedInput = {
+      items: [
+        {id: 'ticket-2', type: 'ticket', value: {id: 2}},
+        {id: 'asset-1', type: 'file', value: {name: 'spec.pdf'}}
+      ]
+    };
+
+    expect(droppableCollection.collectionProps.value.onDragEnter(mixedInput)).toBe(true);
+    expect(droppableCollection.collectionProps.value.onDrop(mixedInput)).toBe('copy');
+    expect(dropEvents).toEqual(['drop:copy:2']);
   });
 
   it('manages vue-stately draggable collection keys and drag lifecycle', () => {

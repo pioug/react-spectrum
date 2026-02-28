@@ -83,7 +83,7 @@ export function useDrop(options: AriaDropOptions = {}): DropAria {
       return true;
     }
 
-    return items.every((item) => {
+    return items.some((item) => {
       let itemTypes = getAcceptedItemTypes(item);
       for (let type of itemTypes) {
         if (acceptedDragTypes.value.has(type)) {

@@ -433,7 +433,7 @@ function includesAcceptedType(acceptedTypes: Set<string> | null, items: DragItem
     return true;
   }
 
-  return items.every((item) => {
+  return items.some((item) => {
     let itemRecord = item as unknown as AnyRecord;
     let itemTypes = new Set<string>();
     itemTypes.add(item.type);
