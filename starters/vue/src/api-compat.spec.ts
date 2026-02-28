@@ -156,6 +156,18 @@ import {
   VueForm as RootVueForm
 } from '../../../packages/@vue-spectrum/form/index';
 import {
+  Provider as SpectrumProvider,
+  useProvider as useSpectrumProvider,
+  useProviderProps as useSpectrumProviderProps,
+  VueProvider as SpectrumVueProvider
+} from '@vue-spectrum/provider';
+import {
+  Provider as RootSpectrumProvider,
+  useProvider as RootUseSpectrumProvider,
+  useProviderProps as RootUseSpectrumProviderProps,
+  VueProvider as RootSpectrumVueProvider
+} from '../../../packages/@vue-spectrum/provider/index';
+import {
   Flex,
   fitContent,
   Grid,
@@ -516,6 +528,19 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(RootForm).toBe(Form);
     expect(RootVueForm).toBe(VueForm);
     expect(RootUseFormProps).toBe(useFormProps);
+  });
+
+  it('keeps provider exports aligned with VueProvider base entry and helpers', () => {
+    expect(SpectrumProvider).toBe(SpectrumVueProvider);
+    expect(useSpectrumProvider).toBeTypeOf('function');
+    expect(useSpectrumProviderProps).toBeTypeOf('function');
+  });
+
+  it('keeps root provider entry exports aligned with source exports', () => {
+    expect(RootSpectrumProvider).toBe(SpectrumProvider);
+    expect(RootSpectrumVueProvider).toBe(SpectrumVueProvider);
+    expect(RootUseSpectrumProvider).toBe(useSpectrumProvider);
+    expect(RootUseSpectrumProviderProps).toBe(useSpectrumProviderProps);
   });
 
   it('keeps layout exports aligned with Vue layout bases and helpers', () => {
