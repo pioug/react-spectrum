@@ -1926,6 +1926,21 @@
    - full Vue tests: `yarn test:vue` (598 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Controlled tree expansion sync parity (`@vue-stately/tree`)
+
+1. Closed controlled tree expansion sync drift against React:
+   - `useTreeState` now watches controlled `expandedKeys` changes and rebuilds `collection`/`SelectionManager.collection` immediately, matching React re-render behavior when controlled props change externally.
+2. Closed data-source sync drift:
+   - `useTreeState` now watches `collection`/`items` reactive inputs and rebuilds the internal `TreeCollection` with current expansion state when those sources change.
+3. Preserved expansion contract:
+   - `setExpandedKeys` still emits `onExpandedChange` on non-identical set writes and keeps Object.is no-op behavior.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: controlled tree test asserting that external `expandedKeys` updates reveal newly expanded descendants in `collection.getKeys()`.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "tree collection expansion and selection behavior|controlled expandedKeys change externally"`,
+   - full Vue tests: `yarn test:vue` (599 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

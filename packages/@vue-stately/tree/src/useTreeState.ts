@@ -120,17 +120,12 @@ export function useTreeState<T>(props: TreeProps<T>): TreeState<T> {
   };
 
   let setExpandedKeys = (keys: Set<Key>): void => {
-    let nextKeys = keys;
-    if (Object.is(nextKeys, expandedKeys.value)) {
+    if (Object.is(keys, expandedKeys.value)) {
       return;
     }
 
-    expandedKeys.value = nextKeys;
-    if (state) {
-      state.expandedKeys = nextKeys;
-    }
-    props.onExpandedChange?.(nextKeys);
-    syncCollection(resolveCollection(props, nextKeys));
+    expandedKeys.value = keys;
+    props.onExpandedChange?.(keys);
   };
 
   let toggleKey = (key: Key): void => {
@@ -145,6 +140,24 @@ export function useTreeState<T>(props: TreeProps<T>): TreeState<T> {
     setExpandedKeys,
     toggleKey
   };
+
+  watch(expandedKeys, (nextExpandedKeys) => {
+    if (state) {
+      state.expandedKeys = nextExpandedKeys;
+    }
+    syncCollection(resolveCollection(props, nextExpandedKeys));
+  }, {flush: 'sync'});
+
+  watch(
+    [
+      () => props.collection ? unref(props.collection) : undefined,
+      () => props.items ? unref(props.items) : undefined
+    ],
+    () => {
+      syncCollection(resolveCollection(props, expandedKeys.value));
+    },
+    {flush: 'sync'}
+  );
 
   return state;
 }
