@@ -4279,6 +4279,26 @@ describe('Vue migration composition components', () => {
     expect(dragState.draggedKey.value).toBeNull();
   });
 
+  it('hides drop indicators when no drag session is active and target is not active', () => {
+    let dropState = useStatelyDroppableCollectionState();
+    let target = {
+      type: 'item' as const,
+      key: 'alpha',
+      dropPosition: 'before' as const
+    };
+
+    let dropIndicator = useDropIndicator({target}, dropState, {
+      current: document.createElement('div')
+    }) as {
+      dropIndicatorProps: {value: {'aria-hidden': string}},
+      isHidden: {value: boolean}
+    };
+
+    expect(isVirtualDragging()).toBe(false);
+    expect(dropIndicator.dropIndicatorProps.value['aria-hidden']).toBe('true');
+    expect(dropIndicator.isHidden.value).toBe(true);
+  });
+
   it('toggles vue-stately global feature flags', () => {
     expect(statelyTableNestedRows()).toBe(false);
     expect(statelyShadowDOM()).toBe(false);

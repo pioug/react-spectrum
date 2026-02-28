@@ -418,11 +418,17 @@ export function useDropIndicator(
     dropProps: {value: AnyRecord},
     isDropTarget: {value: boolean}
   };
-  let dropIndicatorProps = computed(() => ({
-    ...droppableItem.dropProps.value,
-    'aria-roledescription': 'drop indicator',
-    tabIndex: -1
-  }));
+  let dropIndicatorProps = computed(() => {
+    let ariaHidden = !isVirtualDragging()
+      ? 'true'
+      : droppableItem.dropProps.value['aria-hidden'];
+    return {
+      ...droppableItem.dropProps.value,
+      'aria-roledescription': 'drop indicator',
+      'aria-hidden': ariaHidden,
+      tabIndex: -1
+    };
+  });
   let isHidden = computed(() => {
     return !droppableItem.isDropTarget.value && Boolean(dropIndicatorProps.value['aria-hidden']);
   });
