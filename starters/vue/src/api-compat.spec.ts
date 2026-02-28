@@ -154,8 +154,15 @@ import {
 import {
   ProgressBar,
   ProgressBarBase,
+  ProgressCircle,
   VueProgressBar
 } from '@vue-spectrum/progress';
+import {
+  ProgressBar as RootProgressBar,
+  ProgressBarBase as RootProgressBarBase,
+  ProgressCircle as RootProgressCircle,
+  VueProgressBar as RootVueProgressBar
+} from '../../../packages/@vue-spectrum/progress/index';
 import {
   TextField,
   TextFieldBase,
@@ -425,9 +432,17 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(Keyboard).not.toBe(VueText);
   });
 
-  it('exports a dedicated ProgressBarBase wrapper', () => {
+  it('exports dedicated progress wrappers around VueProgressBar', () => {
     expect(ProgressBar).toBe(VueProgressBar);
     expect(ProgressBarBase).not.toBe(VueProgressBar);
+    expect(ProgressCircle).not.toBe(VueProgressBar);
+  });
+
+  it('keeps root progress entry exports aligned with source exports', () => {
+    expect(RootProgressBar).toBe(ProgressBar);
+    expect(RootVueProgressBar).toBe(VueProgressBar);
+    expect(RootProgressBarBase).toBe(ProgressBarBase);
+    expect(RootProgressCircle).toBe(ProgressCircle);
   });
 
   it('exports a dedicated TextFieldBase wrapper', () => {
