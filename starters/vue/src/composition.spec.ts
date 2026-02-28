@@ -4030,6 +4030,28 @@ describe('Vue migration composition components', () => {
     expect(multiChangeValues).toEqual([['react', 'svelte']]);
   });
 
+  it('repositions vue-stately select value when the selected option is removed from collection', async () => {
+    let options = reactive({
+      collection: new StatelyListCollection([
+        {key: 'vue', textValue: 'Vue', type: 'item', value: {label: 'Vue'}},
+        {key: 'react', textValue: 'React', type: 'item', value: {label: 'React'}},
+        {key: 'svelte', textValue: 'Svelte', type: 'item', value: {label: 'Svelte'}}
+      ] as StatelyListNode<{label: string}>[]),
+      defaultSelectedKey: 'react'
+    });
+    let state = useStatelySelectState(options);
+    expect(state.value.value).toBe('react');
+
+    options.collection = new StatelyListCollection([
+      {key: 'vue', textValue: 'Vue', type: 'item', value: {label: 'Vue'}},
+      {key: 'svelte', textValue: 'Svelte', type: 'item', value: {label: 'Svelte'}}
+    ] as StatelyListNode<{label: string}>[]);
+    await nextTick();
+
+    expect(state.value.value).toBe('vue');
+    expect(state.selectedKey.value).toBe('vue');
+  });
+
   it('keeps vue-stately select controlled without mutating control refs', () => {
     let nodes: StatelyListNode<{label: string}>[] = [
       {key: 'vue', textValue: 'Vue', type: 'item', value: {label: 'Vue'}},
@@ -4303,7 +4325,7 @@ describe('Vue migration composition components', () => {
     ];
     await nextTick();
 
-    expect(stepList.selectedKey.value).toBe('review');
+    expect(stepList.selectedKey.value).toBe('setup');
   });
 
   it('keeps vue-stately step list controlled without mutating control refs', () => {

@@ -384,7 +384,7 @@ export function useListState<T extends object>(props: ListProps<T>): ListState<T
   watch(disabledKeys, (nextDisabledKeys) => {
     context.disabledKeys = nextDisabledKeys;
     selectionManager.disabledKeys = nextDisabledKeys;
-    selectedKeys.value = normalizeSelection(selectedKeys.value, context);
+    selectionManager.setSelectedKeys(new Set(selectedKeys.value));
   }, {flush: 'sync'});
 
   watch(
@@ -399,7 +399,7 @@ export function useListState<T extends object>(props: ListProps<T>): ListState<T
       context.collection = nextCollection;
       collection.value = nextCollection;
       selectionManager.collection = nextCollection;
-      selectedKeys.value = normalizeSelection(selectedKeys.value, context);
+      selectionManager.setSelectedKeys(new Set(selectedKeys.value));
       resetFocusedKeyIfMissing(nextCollection, selectionManager, previousCollection);
     },
     {flush: 'sync'}
@@ -408,12 +408,12 @@ export function useListState<T extends object>(props: ListProps<T>): ListState<T
   watch(selectionMode, (nextSelectionMode) => {
     context.selectionMode = nextSelectionMode;
     selectionManager.selectionMode = nextSelectionMode;
-    selectedKeys.value = normalizeSelection(selectedKeys.value, context);
+    selectionManager.setSelectedKeys(new Set(selectedKeys.value));
   }, {flush: 'sync'});
 
   watch(() => props.disallowEmptySelection, (nextDisallowEmptySelection) => {
     context.disallowEmptySelection = Boolean(nextDisallowEmptySelection);
-    selectedKeys.value = normalizeSelection(selectedKeys.value, context);
+    selectionManager.setSelectedKeys(new Set(selectedKeys.value));
   }, {flush: 'sync'});
 
   watch(() => props.allowDuplicateSelectionEvents, (nextAllowDuplicateSelectionEvents) => {

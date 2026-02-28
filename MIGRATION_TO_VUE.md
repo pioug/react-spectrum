@@ -2648,13 +2648,26 @@
    - full Vue tests: `yarn test:vue` (644 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Select/list live-forwarding + collection-normalization parity remediation (`@vue-stately/select`, `@vue-stately/list`)
+
+1. Closed reactive forwarding drift in `useSelectState`:
+   - select now forwards list-state inputs via live getters rather than setup-time option snapshots.
+2. Closed collection-normalization callback drift in `useListState`:
+   - collection/disabled/selection-mode normalization now routes through selection-manager setters, preserving selection-change callback semantics expected by higher-level state hooks.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` now includes a reactive select collection-update test asserting selected value/key fallback when the selected option is removed.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "vue-stately select"`,
+   - full Vue tests: `yarn test:vue` (645 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 644 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 645 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

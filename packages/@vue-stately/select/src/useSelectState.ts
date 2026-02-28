@@ -197,11 +197,32 @@ export function useSelectState<T extends object, M extends SelectSelectionMode =
   });
 
   let listState = useListState({
-    ...options,
+    get collection() {
+      return options.collection;
+    },
+    get disabledKeys() {
+      return options.disabledKeys;
+    },
+    get filter() {
+      return options.filter;
+    },
+    get items() {
+      return options.items;
+    },
+    get layoutDelegate() {
+      return options.layoutDelegate;
+    },
+    get suppressTextValueWarning() {
+      return options.suppressTextValueWarning;
+    },
     allowDuplicateSelectionEvents: true,
-    disallowEmptySelection: selectionMode.value === 'single',
+    get disallowEmptySelection() {
+      return selectionMode.value === 'single';
+    },
     selectedKeys,
-    selectionMode: selectionMode.value,
+    get selectionMode() {
+      return selectionMode.value;
+    },
     onSelectionChange: (keys) => {
       if (selectionMode.value === 'single') {
         let key = keys.values().next().value ?? null;
@@ -255,6 +276,15 @@ export function useSelectState<T extends object, M extends SelectSelectionMode =
     ...validationState,
     ...listState,
     ...triggerState,
+    get collection() {
+      return listState.collection;
+    },
+    get disabledKeys() {
+      return listState.disabledKeys;
+    },
+    get selectionManager() {
+      return listState.selectionManager;
+    },
     value,
     defaultValue,
     setValue,
