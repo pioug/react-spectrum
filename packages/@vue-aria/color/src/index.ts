@@ -169,9 +169,29 @@ function createSliderValueRef(stateRecord: AnyRecord): Ref<number> {
         return;
       }
 
-      let setValue = stateRecord.setValue;
-      if (typeof setValue === 'function') {
-        setValue(nextValue);
+      let currentValue = readNumber(stateRecord.channelValue) ?? readNumber(stateRecord.value);
+      if (currentValue != null) {
+        let delta = nextValue - currentValue;
+        if (delta > 0) {
+          let increment = stateRecord.increment;
+          if (typeof increment === 'function') {
+            increment(delta);
+            return;
+          }
+        } else if (delta < 0) {
+          let decrement = stateRecord.decrement;
+          if (typeof decrement === 'function') {
+            decrement(-delta);
+            return;
+          }
+        } else {
+          return;
+        }
+      }
+
+      let stateValue = stateRecord.value;
+      if (typeof stateRecord.setValue === 'function' && (typeof stateValue === 'number' || (isRefLike<unknown>(stateValue) && typeof stateValue.value === 'number'))) {
+        stateRecord.setValue(nextValue);
         return;
       }
 

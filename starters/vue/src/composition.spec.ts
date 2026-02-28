@@ -1807,6 +1807,21 @@ describe('Vue migration composition components', () => {
     slider.decrement();
     expect(sliderValue.value).toBe(35);
 
+    let statelySliderValue = ref('#000000');
+    let statelySliderState = useStatelyColorSliderState({
+      channel: 'hue',
+      onChange: (nextValue) => {
+        statelySliderValue.value = nextValue;
+      },
+      value: statelySliderValue
+    });
+    let sliderFromStatelyState = useColorSlider({
+      channel: 'hue'
+    } as unknown as Parameters<typeof useColorSlider>[0], statelySliderState as unknown as Parameters<typeof useColorSlider>[1]);
+    sliderFromStatelyState.setValue(180);
+    expect(statelySliderState.channelValue.value).toBeGreaterThan(179);
+    expect(statelySliderState.channelValue.value).toBeLessThan(182);
+
     let hue = ref(0);
     let saturation = ref(20);
     let wheelState = {
