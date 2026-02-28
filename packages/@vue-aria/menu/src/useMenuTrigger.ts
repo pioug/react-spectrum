@@ -17,13 +17,15 @@ export interface MenuTriggerAria {
     role: 'menu'
   }>,
   menuTriggerProps: ComputedRef<{
-    'aria-controls': string,
+    'aria-controls': string | undefined,
     'aria-expanded': boolean,
     'aria-haspopup': 'menu',
     disabled?: true,
     id: string,
     onClick: (event?: MouseEvent) => void,
-    onKeyDown: (event: KeyboardEvent) => void
+    onKeyDown: (event: KeyboardEvent) => void,
+    onMouseDown: (event: MouseEvent) => void,
+    onPointerDown: (event: PointerEvent) => void
   }>,
   open: () => void,
   toggle: () => void
@@ -65,6 +67,10 @@ export function useMenuTrigger(props: AriaMenuTriggerProps = {}): MenuTriggerAri
   };
 
   let onKeyDown = (event: KeyboardEvent) => {
+    if (unref(props.isDisabled)) {
+      return;
+    }
+
     if (
       event.key === 'ArrowDown'
       || event.key === 'ArrowUp'
@@ -91,15 +97,25 @@ export function useMenuTrigger(props: AriaMenuTriggerProps = {}): MenuTriggerAri
     })),
     menuTriggerProps: computed(() => ({
       id: triggerId,
-      'aria-controls': menuId,
+      'aria-controls': isOpen.value ? menuId : undefined,
       'aria-haspopup': 'menu' as const,
       'aria-expanded': isOpen.value,
       disabled: unref(props.isDisabled) ? true : undefined,
       onClick: (event?: MouseEvent) => {
+        if (unref(props.isDisabled)) {
+          return;
+        }
+
         if (event?.currentTarget instanceof HTMLElement) {
           event.currentTarget.focus();
         }
         toggle();
+      },
+      onMouseDown: (event: MouseEvent) => {
+        event.preventDefault();
+      },
+      onPointerDown: (event: PointerEvent) => {
+        event.preventDefault();
       },
       onKeyDown
     })),

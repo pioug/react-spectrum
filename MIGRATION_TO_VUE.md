@@ -3292,6 +3292,24 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Menu trigger press-focus + ARIA linkage parity (`@vue-aria/menu`)
+
+1. Closed trigger/listbox ARIA linkage drift:
+   - `useMenuTrigger.menuTriggerProps['aria-controls']` now mirrors React overlay-trigger behavior by only exposing the menu id while open.
+2. Closed trigger press-focus drift:
+   - `useMenuTrigger.menuTriggerProps` now exposes `onMouseDown` and `onPointerDown` handlers that prevent default focus transfer, aligning with React `preventFocusOnPress` semantics.
+3. Closed disabled trigger input-path drift:
+   - disabled trigger `onClick` and `onKeyDown` paths are now no-ops, matching React disabled-trigger behavior.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` menu-trigger assertions now verify:
+     - pointer/mouse press-start `preventDefault` parity,
+     - closed/open `aria-controls` ownership contract parity,
+     - disabled click/keyboard no-op behavior.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria menu trigger and item selection semantics"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

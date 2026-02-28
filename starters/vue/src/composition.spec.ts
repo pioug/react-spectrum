@@ -6481,13 +6481,29 @@ describe('Vue migration composition components', () => {
       }
     });
     expect(menuTrigger.isOpen.value).toBe(false);
+    expect(menuTrigger.menuTriggerProps.value['aria-controls']).toBeUndefined();
+
+    let menuMouseDownEvent = {
+      preventDefault: vi.fn()
+    } as unknown as MouseEvent;
+    menuTrigger.menuTriggerProps.value.onMouseDown(menuMouseDownEvent);
+    expect(menuMouseDownEvent.preventDefault).toHaveBeenCalledTimes(1);
+
+    let menuPointerDownEvent = {
+      preventDefault: vi.fn()
+    } as unknown as PointerEvent;
+    menuTrigger.menuTriggerProps.value.onPointerDown(menuPointerDownEvent);
+    expect(menuPointerDownEvent.preventDefault).toHaveBeenCalledTimes(1);
+
     menuTrigger.menuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
     expect(menuTrigger.isOpen.value).toBe(true);
+    expect(menuTrigger.menuTriggerProps.value['aria-controls']).toBe(menuTrigger.menuProps.value.id);
     expect(menuTrigger.menuProps.value['aria-labelledby']).toBe(menuTrigger.menuTriggerProps.value.id);
     menuTrigger.open();
     expect(openChanges).toEqual([true]);
     menuTrigger.close();
     expect(menuTrigger.isOpen.value).toBe(false);
+    expect(menuTrigger.menuTriggerProps.value['aria-controls']).toBeUndefined();
     menuTrigger.menuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowUp'}));
     expect(menuTrigger.isOpen.value).toBe(true);
     menuTrigger.close();
@@ -6514,9 +6530,12 @@ describe('Vue migration composition components', () => {
     expect(disabledOpen.value).toBe(false);
     disabledOpen.value = true;
     disabledMenuTrigger.menuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
-    expect(disabledOpen.value).toBe(false);
+    expect(disabledOpen.value).toBe(true);
+    disabledOpen.value = true;
+    disabledMenuTrigger.menuTriggerProps.value.onClick();
+    expect(disabledOpen.value).toBe(true);
     disabledMenuTrigger.menuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
-    expect(disabledOpen.value).toBe(false);
+    expect(disabledOpen.value).toBe(true);
 
     let actionEvents: string[] = [];
     let selectedKeys = ref(new Set<string>());
