@@ -164,10 +164,17 @@ import {
   VueProgressBar as RootVueProgressBar
 } from '../../../packages/@vue-spectrum/progress/index';
 import {
+  TextArea,
   TextField,
   TextFieldBase,
   VueTextField
 } from '@vue-spectrum/textfield';
+import {
+  TextArea as RootTextArea,
+  TextField as RootTextField,
+  TextFieldBase as RootTextFieldBase,
+  VueTextField as RootVueTextField
+} from '../../../packages/@vue-spectrum/textfield/index';
 import {
   Icon,
   Illustration,
@@ -445,9 +452,17 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(RootProgressCircle).toBe(ProgressCircle);
   });
 
-  it('exports a dedicated TextFieldBase wrapper', () => {
+  it('exports dedicated textfield wrappers around VueTextField', () => {
     expect(TextField).toBe(VueTextField);
     expect(TextFieldBase).not.toBe(VueTextField);
+    expect(TextArea).not.toBe(VueTextField);
+  });
+
+  it('keeps root textfield entry exports aligned with source exports', () => {
+    expect(RootTextField).toBe(TextField);
+    expect(RootVueTextField).toBe(VueTextField);
+    expect(RootTextFieldBase).toBe(TextFieldBase);
+    expect(RootTextArea).toBe(TextArea);
   });
 
   it('keeps icon exports wired to Vue icon primitives', () => {
