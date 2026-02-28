@@ -1,4 +1,5 @@
 import {defineComponent} from 'vue';
+import {isFocusable as isFocusableUtils} from '@vue-aria/utils';
 
 export type {AriaFocusRingProps, FocusRingAria, FocusRingProps} from './useFocusRing';
 export {useFocusRing} from './useFocusRing';
@@ -132,7 +133,7 @@ export function focusSafely(element: FocusableElement): void {
 }
 
 export function isFocusable(element: Element): boolean {
-  return typeof element.matches === 'function' && !element.hasAttribute('disabled');
+  return isFocusableUtils(element);
 }
 
 export function useFocusable<T extends FocusableElement = FocusableElement>(

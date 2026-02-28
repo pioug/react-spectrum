@@ -41,7 +41,7 @@ import {
   useDroppableItem
 } from '@vue-aria/dnd';
 import {EXAMPLE_THEME_CLASS, useExampleTheme} from '@vue-aria/example-theme';
-import {useFocusRing, useHasTabbableChild} from '@vue-aria/focus';
+import {isFocusable as focusIsFocusable, useFocusRing, useHasTabbableChild} from '@vue-aria/focus';
 import {useFormValidation} from '@vue-aria/form';
 import {
   GridKeyboardDelegate,
@@ -4369,6 +4369,21 @@ describe('Vue migration composition components', () => {
       x: 33,
       y: 44
     }]);
+  });
+
+  it('matches react focusable element detection contracts via @vue-aria/focus', () => {
+    let anchor = document.createElement('a');
+    expect(focusIsFocusable(anchor)).toBe(false);
+    anchor.href = '#ticket';
+    expect(focusIsFocusable(anchor)).toBe(true);
+
+    let hiddenButton = document.createElement('button');
+    hiddenButton.setAttribute('hidden', '');
+    expect(focusIsFocusable(hiddenButton)).toBe(false);
+
+    let disabledInput = document.createElement('input');
+    disabledInput.disabled = true;
+    expect(focusIsFocusable(disabledInput)).toBe(false);
   });
 
   it('toggles vue-stately global feature flags', () => {
