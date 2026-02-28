@@ -320,6 +320,12 @@ function createColorChannelFieldValueRef(stateRecord: AnyRecord): Ref<number> {
         return;
       }
 
+      let setNumberValue = stateRecord.setNumberValue;
+      if (typeof setNumberValue === 'function') {
+        setNumberValue(nextValue);
+        return;
+      }
+
       let setInputValue = stateRecord.setInputValue;
       if (typeof setInputValue === 'function') {
         setInputValue(String(nextValue));

@@ -1933,6 +1933,36 @@ describe('Vue migration composition components', () => {
     channelField.decrement();
     expect(channelDecrementCalls).toBe(1);
     expect(channelNumber.value).toBe(41);
+
+    let reactStyleChannelInput = ref('10');
+    let reactStyleChannelNumber = ref(10);
+    let reactStyleChannelState = {
+      numberValue: computed(() => reactStyleChannelNumber.value),
+      inputValue: reactStyleChannelInput,
+      setInputValue: (value: string) => {
+        reactStyleChannelInput.value = value;
+      },
+      setNumberValue: (value: number) => {
+        reactStyleChannelNumber.value = value;
+        reactStyleChannelInput.value = String(value);
+      },
+      increment: () => {
+        reactStyleChannelNumber.value += 1;
+        reactStyleChannelInput.value = String(reactStyleChannelNumber.value);
+      },
+      decrement: () => {
+        reactStyleChannelNumber.value -= 1;
+        reactStyleChannelInput.value = String(reactStyleChannelNumber.value);
+      }
+    };
+    let channelFieldFromReactStyleState = useColorChannelField({
+      channel: 'hue'
+    } as unknown as Parameters<typeof useColorChannelField>[0], reactStyleChannelState as unknown as Parameters<typeof useColorChannelField>[1], {
+      current: null
+    } as unknown as Parameters<typeof useColorChannelField>[2]);
+    channelFieldFromReactStyleState.setValue(88);
+    expect(reactStyleChannelNumber.value).toBe(88);
+    expect(reactStyleChannelInput.value).toBe('88');
   });
 
   it('manages vue-stately color area/slider/field/channel/picker state baselines', () => {
