@@ -47,6 +47,20 @@ function resolveValues(values: Iterable<string> | Ref<Iterable<string>> | undefi
   return values;
 }
 
+function equalValueSets(a: Set<string>, b: Set<string>): boolean {
+  if (a.size !== b.size) {
+    return false;
+  }
+
+  for (let value of a) {
+    if (!b.has(value)) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 function setValues(target: Iterable<string> | Ref<Iterable<string>> | undefined, values: Set<string>): void {
   if (!target || !isRef(target)) {
     return;
@@ -72,6 +86,10 @@ export function useCheckboxGroup(options: AriaCheckboxGroupOptions = {}): Checkb
       nextValues.add(value);
     } else {
       nextValues.delete(value);
+    }
+
+    if (equalValueSets(nextValues, selectedValues.value)) {
+      return nextValues;
     }
 
     setValues(options.selectedValues, nextValues);

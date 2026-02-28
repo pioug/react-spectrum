@@ -1041,9 +1041,13 @@ describe('Vue migration composition components', () => {
   });
 
   it('updates checkbox group selections through group item composables', () => {
+    let changes: string[][] = [];
     let selectedValues = ref<Iterable<string>>(['Docs']);
     let group = useCheckboxGroup({
       name: 'features',
+      onChange: (nextValues) => {
+        changes.push(Array.from(nextValues));
+      },
       selectedValues
     });
 
@@ -1055,9 +1059,14 @@ describe('Vue migration composition components', () => {
     expect(testsItem.inputProps.value.name).toBe('features');
     testsItem.press();
     expect(Array.from(selectedValues.value)).toEqual(['Docs', 'Tests']);
+    expect(changes).toEqual([['Docs', 'Tests']]);
 
     testsItem.press();
     expect(Array.from(selectedValues.value)).toEqual(['Docs']);
+    expect(changes).toEqual([['Docs', 'Tests'], ['Docs']]);
+
+    group.setSelected('Docs', true);
+    expect(changes).toEqual([['Docs', 'Tests'], ['Docs']]);
   });
 
   it('manages vue-stately checkbox-group values and invalid flags', () => {
