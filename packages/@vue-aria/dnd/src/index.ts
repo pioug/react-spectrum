@@ -825,11 +825,22 @@ export function useDroppableCollection(
     }
   };
 
-  let updateTargetFromPoint = (items: DragItem[], input?: unknown): {x: number, y: number} => {
+  let updateTargetFromPoint = (
+    items: DragItem[],
+    input?: unknown
+  ): {
+    point: {x: number, y: number},
+    didResolveTarget: boolean,
+    resolvedTarget: DropTarget | null
+  } => {
     let point = readPoint(input, ref);
     let dropTargetDelegate = propsRecord.dropTargetDelegate as AnyRecord | undefined;
     if (!dropTargetDelegate || typeof dropTargetDelegate.getDropTargetFromPoint !== 'function') {
-      return point;
+      return {
+        point,
+        didResolveTarget: false,
+        resolvedTarget: null
+      };
     }
 
     let getDropOperationForTarget = (target: DropTarget | null): DropOperation => {
@@ -840,14 +851,18 @@ export function useDroppableCollection(
       point.y,
       (target: DropTarget) => getDropOperationForTarget(target) !== 'cancel'
     );
-    let normalizedTarget: DropTarget = nextTarget && typeof nextTarget === 'object'
+    let resolvedTarget = nextTarget && typeof nextTarget === 'object'
       ? nextTarget as DropTarget
-      : {type: 'root'};
-    if (typeof stateRecord.setTarget === 'function') {
-      stateRecord.setTarget(normalizedTarget);
+      : null;
+    if (resolvedTarget && typeof stateRecord.setTarget === 'function') {
+      stateRecord.setTarget(resolvedTarget);
     }
 
-    return point;
+    return {
+      point,
+      didResolveTarget: true,
+      resolvedTarget
+    };
   };
 
   let scheduleDropActivate = (target: DropTarget | null, point: {x: number, y: number}) => {
@@ -1025,7 +1040,12 @@ export function useDroppableCollection(
     }
 
     if (isDraggingOverCollection) {
-      updateTargetFromPoint(items, input);
+      let {didResolveTarget, resolvedTarget} = updateTargetFromPoint(items, input);
+      if (didResolveTarget && !resolvedTarget) {
+        onDragLeave(input);
+        return false;
+      }
+
       if (getDropOperationWithRootFallback(items, DEFAULT_DROP_OPERATION) === 'cancel') {
         onDragLeave(input);
         return false;
@@ -1034,8 +1054,13 @@ export function useDroppableCollection(
       return true;
     }
 
-    let point = updateTargetFromPoint(items, input);
-    if (readDropTarget(stateRecord) == null && typeof stateRecord.setTarget === 'function') {
+    let {point, didResolveTarget, resolvedTarget} = updateTargetFromPoint(items, input);
+    if (didResolveTarget && !resolvedTarget && typeof stateRecord.setTarget === 'function') {
+      stateRecord.setTarget(null);
+      return false;
+    }
+
+    if (!didResolveTarget && readDropTarget(stateRecord) == null && typeof stateRecord.setTarget === 'function') {
       stateRecord.setTarget({type: 'root'});
     }
 
@@ -1095,7 +1120,13 @@ export function useDroppableCollection(
       return;
     }
 
-    point = updateTargetFromPoint(items, input);
+    let targetFromPoint = updateTargetFromPoint(items, input);
+    if (targetFromPoint.didResolveTarget && !targetFromPoint.resolvedTarget) {
+      onDragLeave(input);
+      return;
+    }
+
+    point = targetFromPoint.point;
 
     lastDragPoint = point;
     dropCollectionRef = ref;

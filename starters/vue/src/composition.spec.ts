@@ -4762,6 +4762,78 @@ describe('Vue migration composition components', () => {
     expect(dropState.target.value).toEqual({type: 'item', key: 'valid', dropPosition: 'on'});
   });
 
+  it('cancels useDroppableCollection enter when dropTargetDelegate does not resolve a target', () => {
+    let onDropEnter = vi.fn();
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: ({target}) => target?.type === 'item' ? 'move' : 'copy'
+    });
+    let dropTargetDelegate = {
+      getDropTargetFromPoint: vi.fn(() => null)
+    };
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      dropTargetDelegate,
+      onDropEnter
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDragEnter: (input: unknown) => boolean
+      }}
+    };
+
+    expect(droppableCollection.collectionProps.value.onDragEnter({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 12,
+      clientY: 6
+    })).toBe(false);
+    expect(dropState.target.value).toBeNull();
+    expect(onDropEnter).not.toHaveBeenCalled();
+  });
+
+  it('exits useDroppableCollection when dropTargetDelegate loses its target during dragover', () => {
+    let onDropExit = vi.fn();
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: ({target}) => target?.type === 'item' ? 'move' : 'copy'
+    });
+    let dropTargetDelegate = {
+      getDropTargetFromPoint: vi.fn((x: number) => {
+        return x < 20 ? {type: 'item', key: 'alpha', dropPosition: 'before'} : null;
+      })
+    };
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      dropTargetDelegate,
+      onDropExit
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDragEnter: (input: unknown) => boolean,
+        onDragOver: (input?: unknown) => void
+      }}
+    };
+
+    expect(droppableCollection.collectionProps.value.onDragEnter({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 10,
+      clientY: 4
+    })).toBe(true);
+    expect(dropState.target.value).toEqual({type: 'item', key: 'alpha', dropPosition: 'before'});
+
+    droppableCollection.collectionProps.value.onDragOver({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 25,
+      clientY: 9
+    });
+
+    expect(onDropExit).toHaveBeenCalledWith({
+      target: {type: 'item', key: 'alpha', dropPosition: 'before'},
+      type: 'dropexit',
+      x: 25,
+      y: 9
+    });
+    expect(dropState.target.value).toBeNull();
+  });
+
   it('rejects useDroppableCollection targets when getDropOperation resolves to cancel', () => {
     let onDropEnter = vi.fn();
     let onDropMove = vi.fn();
