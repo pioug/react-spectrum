@@ -2325,6 +2325,21 @@
 3. Validation:
    - covered by the new controlled callback regressions listed above and full Vue gate (`yarn test:vue`, `yarn typecheck:vue`).
 
+### February 28, 2026 — Multiple-selection helper parity remediation (`@vue-stately/selection`)
+
+1. Closed residual controlled-callback drift in base multiple-selection state:
+   - `useMultipleSelectionState` now routes controlled selection ownership through shared `useControlledState`,
+   - normalized selection logic preserves passed set references when possible, matching React helper equality behavior in controlled no-parent-sync paths.
+2. Preserved existing multiple-selection behavior contracts:
+   - disallow-empty and single-mode normalization logic remains intact,
+   - duplicate-selection-event behavior still works for distinct set writes (`allowDuplicateSelectionEvents`).
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` now asserts one-turn duplicate suppression when the same controlled selection object is written repeatedly.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "multiple selection"` and full `src/composition.spec.ts`,
+   - full Vue tests: `yarn test:vue` (631 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

@@ -3659,6 +3659,29 @@ describe('Vue migration composition components', () => {
     expect(selectionChanges).toEqual([['item-2'], ['item-2']]);
   });
 
+  it('suppresses duplicate vue-stately multiple selection controlled callbacks for the same update in one turn', () => {
+    let selectedKeysRef = ref<Set<string> | 'all' | undefined>(new Set(['item-1']));
+    let selectionChanges: Array<string[] | 'all'> = [];
+    let state = useStatelyMultipleSelectionState({
+      onSelectionChange: (keys) => {
+        selectionChanges.push(keys === 'all' ? 'all' : Array.from(keys) as string[]);
+      },
+      selectedKeys: selectedKeysRef,
+      selectionMode: 'multiple'
+    });
+
+    let requestedSelection = new Set(['item-2']);
+    state.setSelectedKeys(requestedSelection);
+    state.setSelectedKeys(requestedSelection);
+
+    expect(selectedKeysRef.value).not.toBe('all');
+    if (selectedKeysRef.value === 'all' || selectedKeysRef.value == null) {
+      throw new Error('Expected key set selection state');
+    }
+    expect(Array.from(selectedKeysRef.value)).toEqual(['item-1']);
+    expect(selectionChanges).toEqual([['item-2']]);
+  });
+
   it('manages vue-stately select selection, trigger state, and value normalization', () => {
     let nodes: StatelyListNode<{label: string}>[] = [
       {key: 'vue', textValue: 'Vue', type: 'item', value: {label: 'Vue'}},

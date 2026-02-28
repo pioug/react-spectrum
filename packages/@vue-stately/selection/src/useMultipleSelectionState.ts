@@ -1,4 +1,4 @@
-import {computed, type Ref, ref, watch} from 'vue';
+import {computed, type Ref, ref} from 'vue';
 import {type Key, Selection as SelectionSet} from './Selection';
 import {
   type MultipleSelectionState,
@@ -7,6 +7,7 @@ import {
   type SelectionMode,
   type SelectionValue
 } from './types';
+import {useControlledState} from '@vue-stately/utils';
 
 function selectionAsSet(selection: SelectionValue): Set<Key> {
   if (selection === 'all') {
@@ -54,7 +55,7 @@ function normalizeSelection(
     return new SelectionSet([firstKey], firstKey, firstKey);
   }
 
-  let nextSelection = new SelectionSet(selection);
+  let nextSelection = selection;
   if (selectionMode === 'single' && nextSelection.size > 1) {
     let firstKey = nextSelection.values().next().value;
     nextSelection = firstKey == null
@@ -107,33 +108,21 @@ export function useMultipleSelectionState(props: MultipleSelectionStateProps): M
   let focusedKey = ref<Key | null>(null);
   let childFocusStrategy = ref<'first' | 'last' | null>(null);
 
-  let uncontrolledSelectedKeys = ref<SelectionValue>(
-    normalizeIncomingSelection(props.defaultSelectedKeys)
+  let controlledSelectedKeys = props.selectedKeys === undefined
+    ? undefined
+    : computed<SelectionValue | undefined>(() => {
+      let nextSelection = props.selectedKeys?.value;
+      if (nextSelection === undefined) {
+        return undefined;
+      }
+
+      return normalizeIncomingSelection(nextSelection);
+    });
+  let [selectedKeys, setSelectedKeysInternal] = useControlledState<SelectionValue>(
+    controlledSelectedKeys,
+    normalizeIncomingSelection(props.defaultSelectedKeys),
+    props.onSelectionChange
   );
-  let isControlled = computed(() => props.selectedKeys !== undefined && props.selectedKeys.value !== undefined);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasControlled.value = nextIsControlled;
-  });
-
-  let selectedKeys = computed<SelectionValue>({
-    get: () => {
-      if (isControlled.value && props.selectedKeys) {
-        return props.selectedKeys.value;
-      }
-
-      return uncontrolledSelectedKeys.value;
-    },
-    set: (nextSelection) => {
-      if (!isControlled.value) {
-        uncontrolledSelectedKeys.value = nextSelection;
-      }
-    }
-  }) as Ref<SelectionValue>;
 
   let setSelectionBehavior = (nextBehavior: SelectionBehavior): void => {
     selectionBehavior.value = nextBehavior;
@@ -149,12 +138,8 @@ export function useMultipleSelectionState(props: MultipleSelectionStateProps): M
     );
     let hasChanged = !equalSelections(normalizedSelection, previousSelection);
 
-    if (hasChanged) {
-      selectedKeys.value = normalizedSelection;
-    }
-
     if (hasChanged || props.allowDuplicateSelectionEvents) {
-      props.onSelectionChange?.(normalizedSelection);
+      setSelectedKeysInternal(normalizedSelection);
     }
   };
 
