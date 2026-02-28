@@ -1476,6 +1476,41 @@ describe('Vue migration composition components', () => {
     reactCheckboxGroupItem.press();
     expect(removeCalls).toEqual(['Tests']);
     expect(Array.from(selectedValues.value)).toEqual(['Docs']);
+
+    let statelyToggleSelected = ref(false);
+    let statelyToggleState = useStatelyToggleState({
+      isSelected: statelyToggleSelected,
+      onChange: (nextSelected) => {
+        statelyToggleSelected.value = nextSelected;
+      }
+    });
+    let checkboxFromStatelyToggle = useCheckbox({
+      'aria-label': 'Stately toggle checkbox'
+    } as unknown as Parameters<typeof useCheckbox>[0], statelyToggleState as unknown as Parameters<typeof useCheckbox>[1], {
+      current: null
+    } as unknown as Parameters<typeof useCheckbox>[2]);
+    expect(checkboxFromStatelyToggle.inputProps.value.checked).toBe(false);
+    checkboxFromStatelyToggle.press();
+    expect(statelyToggleSelected.value).toBe(true);
+
+    let statelyGroupValues = ref<string[] | undefined>(['Docs']);
+    let statelyCheckboxGroupState = useStatelyCheckboxGroupState({
+      onChange: (nextValues) => {
+        statelyGroupValues.value = nextValues;
+      },
+      value: statelyGroupValues
+    });
+    let checkboxGroupFromStatelyState = useCheckboxGroup({
+      'aria-label': 'Stately checkbox group'
+    } as unknown as Parameters<typeof useCheckboxGroup>[0], statelyCheckboxGroupState as unknown as Parameters<typeof useCheckboxGroup>[1]);
+    let checkboxGroupItemFromStatelyState = useCheckboxGroupItem({
+      value: 'Tests'
+    } as unknown as Parameters<typeof useCheckboxGroupItem>[0], statelyCheckboxGroupState as unknown as Parameters<typeof useCheckboxGroupItem>[1], {
+      current: null
+    } as unknown as Parameters<typeof useCheckboxGroupItem>[2]);
+    expect(checkboxGroupFromStatelyState.groupProps.value['aria-disabled']).toBeUndefined();
+    checkboxGroupItemFromStatelyState.press();
+    expect(statelyGroupValues.value).toEqual(['Docs', 'Tests']);
   });
 
   it('manages vue-stately checkbox-group values and invalid flags', () => {

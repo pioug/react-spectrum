@@ -13,6 +13,9 @@ type RefObject<T> = {
 type AnyRecord = Record<string, unknown>;
 
 function toValueSet(values: unknown): Set<string> {
+  let resolvedValues = unref(values as unknown);
+  values = resolvedValues;
+
   if (!values || typeof values !== 'object') {
     return new Set();
   }
@@ -87,9 +90,9 @@ export function useCheckbox(
     let stateRecord = state as AnyRecord;
     return useCheckboxInternal({
       ...options,
-      isSelected: computed(() => Boolean(stateRecord.isSelected)),
+      isSelected: computed(() => Boolean(unref(stateRecord.isSelected as boolean | undefined))),
       setSelected: (isSelected) => {
-        if (Boolean(stateRecord.isSelected) === isSelected) {
+        if (Boolean(unref(stateRecord.isSelected as boolean | undefined)) === isSelected) {
           return;
         }
 
@@ -130,10 +133,10 @@ export function useCheckboxGroup(
 
     return useCheckboxGroupInternal({
       ...options,
-      isDisabled: computed(() => Boolean(unref(options?.isDisabled)) || Boolean(stateRecord.isDisabled)),
-      isReadOnly: computed(() => Boolean(unref(options?.isReadOnly)) || Boolean(stateRecord.isReadOnly)),
-      isRequired: computed(() => Boolean(unref(options?.isRequired)) || Boolean(stateRecord.isRequired)),
-      name: computed(() => (unref(options?.name) as string | undefined) ?? (stateRecord.name as string | undefined)),
+      isDisabled: computed(() => Boolean(unref(options?.isDisabled)) || Boolean(unref(stateRecord.isDisabled as boolean | undefined))),
+      isReadOnly: computed(() => Boolean(unref(options?.isReadOnly)) || Boolean(unref(stateRecord.isReadOnly as boolean | undefined))),
+      isRequired: computed(() => Boolean(unref(options?.isRequired)) || Boolean(unref(stateRecord.isRequired as boolean | undefined))),
+      name: computed(() => (unref(options?.name) as string | undefined) ?? (unref(stateRecord.name as string | undefined | {value: string | undefined}) as string | undefined)),
       selectedValues
     });
   }
