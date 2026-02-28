@@ -3129,6 +3129,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — SpinButton touch-cancel repeat parity (`@vue-aria/spinbutton`)
+
+1. Closed touch pointer-cancel lifecycle drift:
+   - `useSpinButton` now registers touch press `pointercancel` listeners during active touch-press repetition and clears repeat state when cancellation occurs, matching React cancellation behavior during interrupted touch gestures.
+2. Closed listener lifecycle drift:
+   - added disposer tracking so pointer-cancel listeners are removed on press completion and composable teardown.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` spinbutton assertions now verify touch press repetition is cancelled by `window` `pointercancel` without mutating value.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria spinbutton keyboard and press interactions"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

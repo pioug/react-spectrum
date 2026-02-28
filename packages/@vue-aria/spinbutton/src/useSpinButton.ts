@@ -106,6 +106,7 @@ export function useSpinButton(options: SpinButtonOptions = {}): SpinButtonAria {
   let isFocused = ref(false);
   let isRepeating = ref(false);
   let repeatTimer: ReturnType<typeof setTimeout> | null = null;
+  let pointerCancelRemovers = new Set<() => void>();
 
   let clearRepeat = () => {
     if (repeatTimer != null) {
@@ -115,8 +116,37 @@ export function useSpinButton(options: SpinButtonOptions = {}): SpinButtonAria {
     isRepeating.value = false;
   };
 
+  let registerPointerCancel = (onCancel: () => void): (() => void) => {
+    if (typeof window === 'undefined') {
+      return () => {};
+    }
+
+    let listener = () => {
+      onCancel();
+    };
+    window.addEventListener('pointercancel', listener, true);
+
+    let isRemoved = false;
+    let remove = () => {
+      if (isRemoved || typeof window === 'undefined') {
+        return;
+      }
+
+      window.removeEventListener('pointercancel', listener, true);
+      isRemoved = true;
+      pointerCancelRemovers.delete(remove);
+    };
+
+    pointerCancelRemovers.add(remove);
+    return remove;
+  };
+
   if (getCurrentInstance()) {
     onBeforeUnmount(() => {
+      for (let removePointerCancel of pointerCancelRemovers) {
+        removePointerCancel();
+      }
+      pointerCancelRemovers.clear();
       clearRepeat();
     });
   }
@@ -255,6 +285,7 @@ export function useSpinButton(options: SpinButtonOptions = {}): SpinButtonAria {
   ): StepButtonHandlers => {
     let touchPressReleased = false;
     let repeatedWhilePressed = false;
+    let removePointerCancelListener: (() => void) | null = null;
 
     return {
       onPressStart: (event) => {
@@ -268,6 +299,13 @@ export function useSpinButton(options: SpinButtonOptions = {}): SpinButtonAria {
 
         let pointerType = resolvePointerType(event);
         if (pointerType === 'touch') {
+          removePointerCancelListener?.();
+          removePointerCancelListener = registerPointerCancel(() => {
+            touchPressReleased = false;
+            repeatedWhilePressed = false;
+            clearRepeat();
+          });
+
           startRepeating(action, () => canRun.value, 600, () => {
             repeatedWhilePressed = true;
           });
@@ -287,6 +325,8 @@ export function useSpinButton(options: SpinButtonOptions = {}): SpinButtonAria {
           touchPressReleased = true;
         }
 
+        removePointerCancelListener?.();
+        removePointerCancelListener = null;
         clearRepeat();
       },
       onPressEnd: (event) => {
@@ -294,6 +334,8 @@ export function useSpinButton(options: SpinButtonOptions = {}): SpinButtonAria {
           action();
         }
 
+        removePointerCancelListener?.();
+        removePointerCancelListener = null;
         touchPressReleased = false;
         repeatedWhilePressed = false;
         clearRepeat();

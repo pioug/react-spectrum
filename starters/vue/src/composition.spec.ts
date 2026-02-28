@@ -7766,6 +7766,13 @@ describe('Vue migration composition components', () => {
       spinButton.incrementButtonProps.value.onPressEnd({pointerType: 'touch'});
       expect(value.value).toBe(4);
 
+      value.value = 4;
+      spinButton.incrementButtonProps.value.onPressStart({pointerType: 'touch'});
+      window.dispatchEvent(new Event('pointercancel'));
+      vi.advanceTimersByTime(620);
+      spinButton.incrementButtonProps.value.onPressEnd({pointerType: 'touch'});
+      expect(value.value).toBe(4);
+
       expect(incrementCount).toBeGreaterThan(0);
       expect(decrementCount).toBeGreaterThan(0);
 
