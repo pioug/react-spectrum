@@ -1,6 +1,6 @@
 # Vue Migration Parity Review Checklist
 
-Generated: 2026-02-28T18:03:20.194Z
+Generated: 2026-02-28T19:00:03Z
 
 Use this as a progression checklist for parity re-review. Mark each line when complete.
 
