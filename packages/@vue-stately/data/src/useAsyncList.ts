@@ -304,6 +304,14 @@ export function useAsyncList<T, C = string>(options: AsyncListOptions<T, C>): As
     data.value = reducer(data.value, action);
   };
 
+  let listActionOptions = {
+    ...options,
+    getKey,
+    get cursor(): C | undefined {
+      return data.value.cursor;
+    }
+  };
+
   let dispatchFetch = async (action: Action<T, C>, fn: AsyncListLoadFunction<T, C>): Promise<void> => {
     let abortController = new AbortController();
     let previousData = data.value;
@@ -364,7 +372,7 @@ export function useAsyncList<T, C = string>(options: AsyncListOptions<T, C>): As
     sort(sortDescriptor: SortDescriptor) {
       void dispatchFetch({type: 'sorting', sortDescriptor}, (sort || load) as AsyncListLoadFunction<T, C>);
     },
-    ...createListActions({...options, getKey, cursor: data.value.cursor}, (updater) => {
+    ...createListActions(listActionOptions, (updater) => {
       dispatch({type: 'update', updater});
     }),
     setFilterText(filterText: string) {

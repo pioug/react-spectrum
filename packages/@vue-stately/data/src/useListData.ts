@@ -190,7 +190,7 @@ export function createListActions<T, C>(
   opts: CreateListOptions<T, C>,
   dispatch: Dispatch<ListState<T>>
 ): Omit<ListData<T>, 'filterText' | 'getItem' | 'items' | 'selectedKeys'> {
-  let {cursor, getKey} = opts;
+  let {getKey} = opts;
 
   return {
     setSelectedKeys(selectedKeys: SelectionInput) {
@@ -299,7 +299,7 @@ export function createListActions<T, C>(
           }
         }
 
-        if (cursor == null && items.length === 0) {
+        if (opts.cursor == null && items.length === 0) {
           selection = new Set();
         }
 

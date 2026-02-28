@@ -1817,6 +1817,22 @@
    - full Vue tests: `yarn test:vue` (587 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Async-list cursor-aware action parity (`@vue-stately/data`)
+
+1. Closed stale-cursor behavior drift in async list actions:
+   - list actions created by `useAsyncList` now read the current pagination cursor dynamically instead of capturing the initial cursor snapshot.
+2. Aligned selection-clearing semantics with React list actions:
+   - `remove()` now preserves `'all'` selection when the loaded page is emptied but a next-page cursor still exists.
+3. Implementation alignment details:
+   - `createListActions` now references `opts.cursor` at action time,
+   - `useAsyncList` now provides a live cursor getter in action options.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: async-list test that removes the last loaded item while cursor remains and asserts `'all'` selection is preserved.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "async list data|all-selection when removing last loaded item"`,
+   - full Vue tests: `yarn test:vue` (588 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

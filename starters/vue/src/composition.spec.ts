@@ -1486,6 +1486,34 @@ describe('Vue migration composition components', () => {
     expect(asyncList.items.value.map((item) => item.id)).toEqual(['gamma']);
   });
 
+  it('keeps vue-stately async list all-selection when removing last loaded item while cursor remains', async () => {
+    let asyncList = useStatelyAsyncList<{id: string}, string>({
+      getKey: (item) => item.id,
+      load: async ({cursor}) => {
+        if (cursor === 'page-2') {
+          return {
+            items: [{id: 'second'}],
+            cursor: undefined
+          };
+        }
+
+        return {
+          items: [{id: 'first'}],
+          cursor: 'page-2'
+        };
+      }
+    });
+
+    await nextTick();
+    await Promise.resolve();
+
+    asyncList.setSelectedKeys('all');
+    asyncList.remove('first');
+
+    expect(asyncList.items.value).toEqual([]);
+    expect(asyncList.selectedKeys.value).toBe('all');
+  });
+
   it('clamps vue-aria date field and time field values within min/max bounds', () => {
     let dateValue = ref('2026-02-05');
     let dateField = useDateField({
