@@ -6647,6 +6647,18 @@ describe('Vue migration composition components', () => {
     expect(plainItem.menuItemProps.value['aria-checked']).toBeUndefined();
     expect(plainItem.menuItemProps.value['aria-selected']).toBeUndefined();
 
+    let triggerItem = useAriaMenuItem({
+      'aria-controls': 'submenu-actions',
+      'aria-expanded': true,
+      'aria-haspopup': 'menu',
+      key: 'trigger-item'
+    }, menu);
+    expect(triggerItem.menuItemProps.value.role).toBe('menuitem');
+    expect(triggerItem.menuItemProps.value['aria-haspopup']).toBe('menu');
+    expect(triggerItem.menuItemProps.value['aria-expanded']).toBe(true);
+    expect(triggerItem.menuItemProps.value['aria-controls']).toBe('submenu-actions');
+    expect(triggerItem.menuItemProps.value['aria-checked']).toBeUndefined();
+
     let section = useMenuSection({
       heading: 'Edit options'
     });

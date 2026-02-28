@@ -3,6 +3,10 @@ import type {MaybeRef, MenuKey} from './types';
 import {type MenuAria} from './useMenu';
 
 export interface AriaMenuItemProps {
+  'aria-controls'?: MaybeRef<string | undefined>,
+  'aria-expanded'?: MaybeRef<boolean | 'true' | 'false' | undefined>,
+  'aria-haspopup'?: MaybeRef<'dialog' | 'menu' | undefined>,
+  'aria-label'?: MaybeRef<string | undefined>,
   closeOnSelect?: MaybeRef<boolean>,
   isDisabled?: MaybeRef<boolean>,
   key: MaybeRef<MenuKey>,
@@ -16,8 +20,11 @@ export interface MenuItemAria {
   isSelected: ComputedRef<boolean>,
   menuItemProps: ComputedRef<{
     'aria-checked'?: boolean,
+    'aria-controls'?: string,
     'aria-disabled'?: true,
-    'aria-haspopup'?: 'menu',
+    'aria-expanded'?: boolean | 'true' | 'false',
+    'aria-haspopup'?: 'dialog' | 'menu',
+    'aria-label'?: string,
     id: string,
     onBlur: () => void,
     onClick: () => void,
@@ -41,8 +48,13 @@ export function useMenuItem(props: AriaMenuItemProps, menu: MenuAria): MenuItemA
   let isDisabled = computed(() => Boolean(unref(props.isDisabled)));
   let isSelected = computed(() => menu.selectedKeys.value.has(key.value));
   let isFocused = computed(() => menu.focusedKey.value === key.value);
+  let hasPopup = computed(() => unref(props['aria-haspopup']));
 
   let role = computed(() => {
+    if (hasPopup.value) {
+      return 'menuitem' as const;
+    }
+
     if (menu.selectionMode.value === 'single') {
       return 'menuitemradio' as const;
     }
@@ -82,7 +94,11 @@ export function useMenuItem(props: AriaMenuItemProps, menu: MenuAria): MenuItemA
       id: itemId,
       role: role.value,
       'aria-disabled': isDisabled.value || undefined,
-      'aria-checked': menu.selectionMode.value === 'none' ? undefined : isSelected.value,
+      'aria-checked': menu.selectionMode.value === 'none' || hasPopup.value ? undefined : isSelected.value,
+      'aria-label': unref(props['aria-label']),
+      'aria-controls': unref(props['aria-controls']),
+      'aria-haspopup': hasPopup.value,
+      'aria-expanded': unref(props['aria-expanded']),
       onBlur: () => {
         menu.focusKey(null);
       },
