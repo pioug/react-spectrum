@@ -5016,6 +5016,27 @@ describe('Vue migration composition components', () => {
     expect(dropIndicator.dropIndicatorProps.value['aria-labelledby']).toBe(`${dropIndicator.dropIndicatorProps.value.id} grid-root`);
   });
 
+  it('links root useDropIndicator to generated useDroppableCollection ids', () => {
+    let dropState = useStatelyDroppableCollectionState();
+    let target = {type: 'root' as const};
+    dropState.setTarget(target);
+    let collectionRef = {current: document.createElement('div')};
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item']
+    }, dropState, collectionRef) as {
+      collectionProps: {value: {id: string}}
+    };
+
+    let dropIndicator = useDropIndicator({target}, dropState, collectionRef) as {
+      dropIndicatorProps: {value: {id: string, 'aria-labelledby'?: string}}
+    };
+
+    expect(droppableCollection.collectionProps.value.id).toMatch(/^vue-aria-droppable-collection-/);
+    expect(dropIndicator.dropIndicatorProps.value['aria-labelledby']).toBe(
+      `${dropIndicator.dropIndicatorProps.value.id} ${droppableCollection.collectionProps.value.id}`
+    );
+  });
+
   it('adds item insertion labels to useDropIndicator', () => {
     let dropState = useStatelyDroppableCollectionState();
     (dropState as unknown as {collection: unknown}).collection = {

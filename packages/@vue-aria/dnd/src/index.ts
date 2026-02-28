@@ -19,6 +19,8 @@ let draggingCollectionRef: RefObject<HTMLElement | null> | null = null;
 let dropCollectionRef: RefObject<HTMLElement | null> | null = null;
 let draggingKeys = new Set<DraggingKey>();
 let dropIndicatorId = 0;
+let droppableCollectionId = 0;
+let droppableCollectionIds = new WeakMap<object, string>();
 
 export type ClipboardProps = AnyRecord;
 export type ClipboardResult = {
@@ -704,7 +706,7 @@ export function useDropIndicator(
       return undefined;
     }
 
-    let collectionId = ref.current?.id;
+    let collectionId = droppableCollectionIds.get(state as unknown as object) ?? ref.current?.id;
     if (!collectionId) {
       return undefined;
     }
@@ -760,6 +762,12 @@ export function useDroppableCollection(
     return Boolean(readMaybeRef<boolean>(stateRecord.isDisabled)) || Boolean(readMaybeRef<boolean>(propsRecord.isDisabled));
   });
   let isDropTarget = computed(() => readDropTarget(stateRecord) != null);
+  let stateObject = state as unknown as object;
+  let collectionId = droppableCollectionIds.get(stateObject);
+  if (!collectionId) {
+    collectionId = `vue-aria-droppable-collection-${++droppableCollectionId}`;
+    droppableCollectionIds.set(stateObject, collectionId);
+  }
   let lastDragPoint: {x: number, y: number} | null = null;
   let isDraggingOverCollection = false;
 
@@ -963,6 +971,7 @@ export function useDroppableCollection(
   };
 
   let collectionProps = computed(() => ({
+    id: collectionId,
     role: 'group',
     'data-drop-target': isDropTarget.value,
     'aria-disabled': isDisabled.value ? true as const : undefined,
