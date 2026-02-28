@@ -693,7 +693,7 @@ export function useDropIndicator(
       }
     }
 
-    return String(key);
+    return '';
   };
   let labelForTarget = () => {
     let target = propsRecord.target as AnyRecord | undefined;

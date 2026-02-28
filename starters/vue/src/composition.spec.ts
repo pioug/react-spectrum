@@ -5091,6 +5091,27 @@ describe('Vue migration composition components', () => {
     expect(dropIndicator.dropIndicatorProps.value['aria-label']).toBe('Insert between One and Two');
   });
 
+  it('does not fall back to item keys for useDropIndicator item labels', () => {
+    let dropState = useStatelyDroppableCollectionState();
+    (dropState as unknown as {collection: unknown}).collection = {
+      getItem: () => null
+    };
+    let target = {
+      type: 'item' as const,
+      key: 'missing',
+      dropPosition: 'on' as const
+    };
+    let collectionRef = {current: document.createElement('div')};
+    useDroppableCollection({
+      acceptedDragTypes: ['item']
+    }, dropState, collectionRef);
+    let dropIndicator = useDropIndicator({target}, dropState, collectionRef) as {
+      dropIndicatorProps: {value: {'aria-label': string}}
+    };
+
+    expect(dropIndicator.dropIndicatorProps.value['aria-label']).toBe('Drop on');
+  });
+
   it('adds virtual drop descriptions to useDropIndicator during active drag sessions', async () => {
     let drag = useDrag({
       dragItems: [{id: 'item-1', type: 'item', value: {id: 1}}]
