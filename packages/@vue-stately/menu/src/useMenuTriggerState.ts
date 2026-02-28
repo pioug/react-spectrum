@@ -67,9 +67,7 @@ export function useMenuTriggerState(props: MenuTriggerProps = {}): RootMenuTrigg
       return;
     }
 
-    if (isControlled.value && props.isOpen) {
-      props.isOpen.value = nextOpen;
-    } else {
+    if (!isControlled.value) {
       internalOpen.value = nextOpen;
     }
 

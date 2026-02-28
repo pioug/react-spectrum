@@ -2200,6 +2200,19 @@
    - full Vue tests: `yarn test:vue` (619 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Menu-trigger controlled ownership parity (`@vue-stately/menu`)
+
+1. Closed menu-trigger controlled ownership drift:
+   - `useMenuTriggerState` no longer mutates controlled `isOpen` refs directly from `open`/`close`/`toggle`/`setOpen`.
+2. Preserved callback semantics:
+   - `onOpenChange` continues to emit requested open/close transitions while controlled state remains externally owned.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: updated baseline controlled menu-trigger test to mirror parent updates and added explicit controlled-no-parent-update assertions.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately menu trigger open state and submenu stack|keeps vue-stately menu trigger controlled without mutating control refs|warns when vue-stately menu trigger switches between controlled and uncontrolled|keeps vue-stately menu trigger uncontrolled when isOpen ref is undefined|manages vue-stately submenu trigger level, focus strategy, and close-all behavior"`,
+   - full Vue tests: `yarn test:vue` (620 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

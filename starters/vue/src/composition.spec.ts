@@ -2978,6 +2978,7 @@ describe('Vue migration composition components', () => {
       isOpen,
       onOpenChange: (nextOpen) => {
         openChanges.push(nextOpen);
+        isOpen.value = nextOpen;
       }
     });
 
@@ -2997,6 +2998,26 @@ describe('Vue migration composition components', () => {
     expect(state.isOpen.value).toBe(false);
     expect(state.expandedKeysStack.value).toEqual([]);
     expect(openChanges).toEqual([true, false]);
+  });
+
+  it('keeps vue-stately menu trigger controlled without mutating control refs', () => {
+    let openChanges: boolean[] = [];
+    let isOpen = ref(false);
+    let state = useStatelyMenuTriggerState({
+      isOpen,
+      onOpenChange: (nextOpen) => {
+        openChanges.push(nextOpen);
+      }
+    });
+
+    state.open('first');
+    expect(isOpen.value).toBe(false);
+    expect(state.isOpen.value).toBe(false);
+    expect(openChanges).toEqual([true]);
+
+    state.open('first');
+    expect(isOpen.value).toBe(false);
+    expect(openChanges).toEqual([true, true]);
   });
 
   it('warns when vue-stately menu trigger switches between controlled and uncontrolled', async () => {
