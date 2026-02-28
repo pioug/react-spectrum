@@ -2,7 +2,7 @@ import {type AriaDragOptions, type DragAria, useDrag as useAriaDrag} from './use
 import {type AriaDropOptions, type DropAria, useDrop as useAriaDrop} from './useDrop';
 import {computed, defineComponent, unref, watch} from 'vue';
 import {DIRECTORY_DRAG_TYPE as INTERNAL_DIRECTORY_DRAG_TYPE, type DragItem, type DropOperation} from './types';
-import {isVirtualDraggingSessionActive} from './dragSession';
+import {getActiveDragItems, isVirtualDraggingSessionActive} from './dragSession';
 
 export type {AriaDragOptions, DragAria, AriaDropOptions, DropAria};
 export type {DragItem, DropOperation} from './types';
@@ -909,8 +909,37 @@ export function useDroppableItem(
 
     return Boolean(stateRecord.isDropTarget(target.value));
   });
+  let isValidDropTarget = computed(() => {
+    if (!isVirtualDragging()) {
+      return true;
+    }
+
+    if (!target.value || typeof stateRecord.getDropOperation !== 'function') {
+      return true;
+    }
+
+    let items = getActiveDragItems();
+    if (items.length === 0) {
+      return true;
+    }
+
+    let isInternal = Boolean(
+      draggingCollectionRef &&
+      dropCollectionRef &&
+      draggingCollectionRef.current &&
+      draggingCollectionRef.current === dropCollectionRef.current
+    );
+    let operation = normalizeDropOperation(stateRecord.getDropOperation({
+      allowedOperations: DEFAULT_ALLOWED_OPERATIONS,
+      draggingKeys: new Set(draggingKeys),
+      isInternal,
+      items,
+      target: target.value
+    }));
+    return operation !== 'cancel';
+  });
   let dropProps = computed(() => ({
-    'aria-hidden': isVirtualDragging() && !isDropTarget.value ? 'true' : undefined
+    'aria-hidden': isVirtualDragging() && !isValidDropTarget.value ? 'true' : undefined
   }));
   watch(isDropTarget, (next, previous) => {
     if (!next || previous || !isVirtualDragging()) {

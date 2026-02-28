@@ -5033,7 +5033,7 @@ describe('Vue migration composition components', () => {
     });
     let dropState = useStatelyDroppableCollectionState({
       acceptedDragTypes: ['item'],
-      getDropOperation: () => 'move'
+      getDropOperation: () => 'cancel'
     });
     let target = {
       type: 'item' as const,
@@ -5054,11 +5054,51 @@ describe('Vue migration composition components', () => {
 
     dropState.setTarget(target);
     await nextTick();
-    expect(droppableItem.dropProps.value['aria-hidden']).toBeUndefined();
+    expect(droppableItem.dropProps.value['aria-hidden']).toBe('true');
 
     drag.endDrag('cancel');
     await nextTick();
     expect(droppableItem.dropProps.value['aria-hidden']).toBeUndefined();
+  });
+
+  it('keeps valid useDroppableItem targets visible during virtual drag', async () => {
+    let drag = useDrag({
+      dragItems: [{id: 'item-1', type: 'item', value: {id: 1}}]
+    });
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: ({target}) => {
+        return target?.type === 'item' && target.key === 'valid' ? 'move' : 'cancel';
+      }
+    });
+    let validTarget = {
+      type: 'item' as const,
+      key: 'valid',
+      dropPosition: 'on' as const
+    };
+    let invalidTarget = {
+      type: 'item' as const,
+      key: 'invalid',
+      dropPosition: 'on' as const
+    };
+    let validDroppable = useDroppableItem({target: validTarget}, dropState, {
+      current: document.createElement('button')
+    }) as {
+      dropProps: {value: {'aria-hidden'?: string}}
+    };
+    let invalidDroppable = useDroppableItem({target: invalidTarget}, dropState, {
+      current: document.createElement('button')
+    }) as {
+      dropProps: {value: {'aria-hidden'?: string}}
+    };
+
+    drag.startDrag();
+    await nextTick();
+
+    expect(validDroppable.dropProps.value['aria-hidden']).toBeUndefined();
+    expect(invalidDroppable.dropProps.value['aria-hidden']).toBe('true');
+
+    drag.endDrag('cancel');
   });
 
   it('emits useDroppableCollection drop callback payload with coordinates and operation', () => {

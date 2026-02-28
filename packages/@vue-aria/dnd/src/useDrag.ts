@@ -62,7 +62,7 @@ export function useDrag(options: AriaDragOptions): DragAria {
 
     isDragging.value = true;
     lastDragPoint.value = null;
-    activeSessionId.value = beginDragSession();
+    activeSessionId.value = beginDragSession(dragItems.value);
     options.onDragStart?.(dragItems.value);
   };
 
