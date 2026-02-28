@@ -18,6 +18,16 @@ import {
   VueButton as RootVueButton
 } from '../../../packages/@vue-spectrum/button/index';
 import {
+  Checkbox,
+  CheckboxGroup,
+  VueCheckbox
+} from '@vue-spectrum/checkbox';
+import {
+  Checkbox as RootCheckbox,
+  CheckboxGroup as RootCheckboxGroup,
+  VueCheckbox as RootVueCheckbox
+} from '../../../packages/@vue-spectrum/checkbox/index';
+import {
   ButtonGroup,
   VueButtonGroup
 } from '@vue-spectrum/buttongroup';
@@ -402,6 +412,17 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(RootLogicButton).toBe(LogicButton);
     expect(RootClearButton).toBe(ClearButton);
     expect(RootToggleButton).toBe(ToggleButton);
+  });
+
+  it('keeps checkbox exports aligned with VueCheckbox base entry and group primitive', () => {
+    expect(Checkbox).toBe(VueCheckbox);
+    expect(CheckboxGroup).not.toBe(VueCheckbox);
+  });
+
+  it('keeps root checkbox entry exports aligned with source exports', () => {
+    expect(RootCheckbox).toBe(Checkbox);
+    expect(RootVueCheckbox).toBe(VueCheckbox);
+    expect(RootCheckboxGroup).toBe(CheckboxGroup);
   });
 
   it('keeps buttongroup exports aligned with VueButtonGroup base entry', () => {
