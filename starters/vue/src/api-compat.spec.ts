@@ -146,6 +146,14 @@ import {
   Meter as RootMeter,
   VueMeter as RootVueMeter
 } from '../../../packages/@vue-spectrum/meter/index';
+import {
+  NumberField,
+  VueNumberField
+} from '@vue-spectrum/numberfield';
+import {
+  NumberField as RootNumberField,
+  VueNumberField as RootVueNumberField
+} from '../../../packages/@vue-spectrum/numberfield/index';
 import {DIRECTORY_DRAG_TYPE, DropZone as SpectrumDropZone, useDragAndDrop as useSpectrumDragAndDrop} from '@vue-spectrum/dnd';
 import {
   Item as TabItem,
@@ -311,6 +319,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
   it('keeps root meter entry exports aligned with source exports', () => {
     expect(RootMeter).toBe(Meter);
     expect(RootVueMeter).toBe(VueMeter);
+  });
+
+  it('keeps numberfield exports aligned with VueNumberField base entry', () => {
+    expect(NumberField).toBe(VueNumberField);
+  });
+
+  it('keeps root numberfield entry exports aligned with source exports', () => {
+    expect(RootNumberField).toBe(NumberField);
+    expect(RootVueNumberField).toBe(VueNumberField);
   });
 
   it('exports dnd drag/drop compatibility primitives', () => {

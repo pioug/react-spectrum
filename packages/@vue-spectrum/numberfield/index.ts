@@ -1,1 +1,1 @@
-export {NumberField, VueNumberField} from './src';
+export * from './src';
