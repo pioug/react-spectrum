@@ -1659,10 +1659,18 @@ describe('Vue migration composition components', () => {
       selectedKey
     });
 
+    expect(comboBox.buttonProps.value['aria-controls']).toBeUndefined();
+    expect(comboBox.inputProps.value['aria-controls']).toBeUndefined();
+    expect(comboBox.inputProps.value.autoComplete).toBe('off');
+    expect(comboBox.inputProps.value.autoCorrect).toBe('off');
+    expect(comboBox.inputProps.value.spellCheck).toBe('false');
+
     comboBox.open('first');
     expect(comboBox.isOpen.value).toBe(true);
     expect(comboBox.focusedKey.value).toBe('React');
     expect(comboBox.buttonProps.value.tabIndex).toBe(-1);
+    expect(comboBox.buttonProps.value['aria-controls']).toBe(comboBox.listBoxProps.value.id);
+    expect(comboBox.inputProps.value['aria-controls']).toBe(comboBox.listBoxProps.value.id);
 
     let preventComboButtonFocus = vi.fn();
     comboBox.buttonProps.value.onPointerDown({
@@ -1677,6 +1685,8 @@ describe('Vue migration composition components', () => {
     expect(selectedKey.value).toBe('Vue');
     expect(inputValue.value).toBe('Vue');
     expect(comboBox.isOpen.value).toBe(false);
+    expect(comboBox.buttonProps.value['aria-controls']).toBeUndefined();
+    expect(comboBox.inputProps.value['aria-controls']).toBeUndefined();
     expect(selectionChanges).toEqual(['Vue']);
 
     comboBox.selectKey('Vue');

@@ -29,7 +29,7 @@ export interface AriaComboBoxOptions {
 
 export interface ComboBoxAria {
   buttonProps: ComputedRef<{
-    'aria-controls': string,
+    'aria-controls': string | undefined,
     'aria-expanded': boolean,
     'aria-haspopup': 'listbox',
     'aria-label': string,
@@ -51,11 +51,14 @@ export interface ComboBoxAria {
   inputProps: ComputedRef<{
     'aria-activedescendant'?: string,
     'aria-autocomplete': 'list',
-    'aria-controls': string,
+    'aria-controls': string | undefined,
     'aria-expanded': boolean,
+    autoComplete: 'off',
+    autoCorrect: 'off',
     disabled: boolean,
     readonly: boolean,
     role: 'combobox',
+    spellCheck: 'false',
     value: string
   }>,
   isOpen: Ref<boolean>,
@@ -232,7 +235,7 @@ export function useComboBox(options: AriaComboBoxOptions): ComboBoxAria {
     disabled: isDisabled.value || isReadOnly.value,
     tabIndex: -1 as const,
     'aria-haspopup': 'listbox' as const,
-    'aria-controls': listBoxId,
+    'aria-controls': isOpen.value ? listBoxId : undefined,
     'aria-expanded': isOpen.value,
     'aria-label': 'Toggle suggestions',
     onMouseDown: (event: MouseEvent) => {
@@ -249,8 +252,11 @@ export function useComboBox(options: AriaComboBoxOptions): ComboBoxAria {
     disabled: isDisabled.value,
     readonly: isReadOnly.value,
     'aria-autocomplete': 'list' as const,
-    'aria-controls': listBoxId,
+    'aria-controls': isOpen.value ? listBoxId : undefined,
     'aria-expanded': isOpen.value,
+    autoComplete: 'off' as const,
+    autoCorrect: 'off' as const,
+    spellCheck: 'false' as const,
     'aria-activedescendant': focusedKey.value == null ? undefined : `${idBase}-option-${focusedKey.value}`
   }));
 

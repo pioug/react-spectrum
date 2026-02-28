@@ -3417,6 +3417,25 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — ComboBox ARIA-controls ownership + text-entry prop parity (`@vue-aria/combobox`)
+
+1. Closed combobox trigger/input `aria-controls` ownership drift:
+   - `useComboBox.buttonProps['aria-controls']` and `useComboBox.inputProps['aria-controls']` now mirror React ownership semantics by exposing the listbox id only while open.
+2. Closed combobox input text-entry prop-surface drift:
+   - `useComboBox.inputProps` now includes React-aligned text-entry defaults:
+     - `autoComplete: 'off'`,
+     - `autoCorrect: 'off'`,
+     - `spellCheck: 'false'`.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` combobox assertions now verify:
+     - closed/open `aria-controls` ownership for trigger and input props,
+     - combobox input text-entry defaults (`autoComplete`, `autoCorrect`, `spellCheck`).
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "filters and selects options with vue-aria combobox composable state|reports vue-aria combobox open trigger reasons for open and toggle"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`,
+   - Storybook build: `yarn build:vue:storybook`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
