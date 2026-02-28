@@ -42,6 +42,14 @@ import {
   VueDialog as RootVueDialog
 } from '../../../packages/@vue-spectrum/dialog/index';
 import {
+  Divider,
+  VueDivider
+} from '@vue-spectrum/divider';
+import {
+  Divider as RootDivider,
+  VueDivider as RootVueDivider
+} from '../../../packages/@vue-spectrum/divider/index';
+import {
   Cell,
   Column,
   Row,
@@ -204,6 +212,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(Header).not.toBe(View);
     expect(Content).not.toBe(View);
     expect(Footer).not.toBe(View);
+  });
+
+  it('keeps divider exports aligned with VueDivider base entry', () => {
+    expect(Divider).toBe(VueDivider);
+  });
+
+  it('keeps root divider entry exports aligned with source exports', () => {
+    expect(RootDivider).toBe(Divider);
+    expect(RootVueDivider).toBe(VueDivider);
   });
 
   it('exports menu controllers/collection primitives separately from VueMenu', () => {

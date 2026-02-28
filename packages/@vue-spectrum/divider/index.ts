@@ -1,1 +1,1 @@
-export {Divider, VueDivider} from './src';
+export * from './src';
