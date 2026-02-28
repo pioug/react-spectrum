@@ -2044,6 +2044,50 @@ describe('Vue migration composition components', () => {
     expect(selectionChanges[selectionChanges.length - 1]).toBe('details');
   });
 
+  it('warns when vue-stately single-select list switches between controlled and uncontrolled', async () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let nodes: StatelyListNode<{label: string}>[] = [
+      {key: 'overview', textValue: 'Overview', type: 'item', value: {label: 'Overview'}},
+      {key: 'details', textValue: 'Details', type: 'item', value: {label: 'Details'}}
+    ];
+    let selectedKey = ref<string | null | undefined>('overview');
+    useStatelySingleSelectListState({
+      collection: new StatelyListCollection(nodes),
+      selectedKey
+    });
+
+    try {
+      selectedKey.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      selectedKey.value = 'details';
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it('keeps vue-stately single-select list uncontrolled when selectedKey ref is undefined', () => {
+    let nodes: StatelyListNode<{label: string}>[] = [
+      {key: 'overview', textValue: 'Overview', type: 'item', value: {label: 'Overview'}},
+      {key: 'details', textValue: 'Details', type: 'item', value: {label: 'Details'}}
+    ];
+    let selectedKey = ref<string | null | undefined>(undefined);
+    let listState = useStatelySingleSelectListState({
+      collection: new StatelyListCollection(nodes),
+      defaultSelectedKey: 'overview',
+      selectedKey
+    });
+
+    listState.setSelectedKey('details');
+
+    expect(selectedKey.value).toBeUndefined();
+    expect(listState.selectedKey.value).toBe('details');
+    expect(listState.selectedItem.value?.textValue).toBe('Details');
+  });
+
   it('manages vue-stately menu trigger open state and submenu stack', () => {
     let openChanges: boolean[] = [];
     let isOpen = ref(false);

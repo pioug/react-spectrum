@@ -19,7 +19,7 @@ function equalSets(a: Set<Key>, b: Set<Key>): boolean {
 export interface SingleSelectListProps<T> extends Omit<ListProps<T>, 'defaultSelectedKeys' | 'disallowEmptySelection' | 'onSelectionChange' | 'selectedKeys' | 'selectionMode'> {
   defaultSelectedKey?: Key | null,
   onSelectionChange?: (key: Key | null) => void,
-  selectedKey?: Ref<Key | null>
+  selectedKey?: Ref<Key | null | undefined>
 }
 
 export interface SingleSelectListState<T> extends ListState<T> {
@@ -33,7 +33,33 @@ export interface SingleSelectListState<T> extends ListState<T> {
  */
 export function useSingleSelectListState<T extends object>(props: SingleSelectListProps<T>): SingleSelectListState<T> {
   let uncontrolledSelectedKey = ref<Key | null>(props.defaultSelectedKey ?? null);
-  let selectedKey = props.selectedKey ?? uncontrolledSelectedKey;
+  let isControlled = computed(() => props.selectedKey !== undefined && props.selectedKey.value !== undefined);
+  let wasControlled = ref(isControlled.value);
+
+  watch(isControlled, (nextIsControlled) => {
+    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasControlled.value = nextIsControlled;
+  });
+
+  let selectedKey = computed<Key | null>({
+    get: () => {
+      if (isControlled.value && props.selectedKey) {
+        return props.selectedKey.value;
+      }
+
+      return uncontrolledSelectedKey.value;
+    },
+    set: (nextSelectedKey) => {
+      if (isControlled.value && props.selectedKey) {
+        props.selectedKey.value = nextSelectedKey;
+      } else {
+        uncontrolledSelectedKey.value = nextSelectedKey;
+      }
+    }
+  }) as Ref<Key | null>;
+
   let selectedKeys = ref(selectedKey.value == null ? new Set<Key>() : new Set<Key>([selectedKey.value]));
 
   let listState = useListState({

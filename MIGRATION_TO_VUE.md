@@ -1497,6 +1497,24 @@
    - full Vue tests: `yarn test:vue` (562 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Single-select list controlled ownership parity (`@vue-stately/list`)
+
+1. Aligned `useSingleSelectListState` controlled-state semantics with React `useControlledState` behavior:
+   - `selectedKey` is now treated as controlled only when the ref exists and `selectedKey.value !== undefined`,
+   - ref-backed `undefined` `selectedKey` values now remain uncontrolled (internal state updates) rather than forcing prop writes.
+2. Aligned controlled/uncontrolled transition warning behavior:
+   - `useSingleSelectListState` now emits `WARN: A component changed from ...` when ownership transitions in development.
+3. Preserved selection-change emission contract:
+   - existing behavior that always calls `onSelectionChange` for same-key selection interactions remains intact.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - warning assertions for controlled->uncontrolled and uncontrolled->controlled transitions,
+     - assertion that ref-backed-`undefined` `selectedKey` stays uncontrolled during selection updates.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately single-select list state and selected item lookups|warns when vue-stately single-select list switches between controlled and uncontrolled|keeps vue-stately single-select list uncontrolled when selectedKey ref is undefined"`,
+   - full Vue tests: `yarn test:vue` (564 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
