@@ -1665,6 +1665,19 @@
    - full Vue tests: `yarn test:vue` (580 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Tooltip-store parity test-surface expansion (`@vue-stately/tooltip`)
+
+1. Expanded React-aligned regression coverage in `starters/vue/src/composition.spec.ts` for tooltip trigger state:
+   - repeated `open(false)` warmup calls reset the pending warmup timer instead of opening early,
+   - `closeDelay` immediate-close behavior is asserted for both `0` and negative values,
+   - opening a second controlled tooltip closes the previously open controlled tooltip.
+2. Hardened test cleanup for tooltip global warmup/cooldown shared state:
+   - tooltip-state tests now drain timers in cleanup to avoid cross-test global warmup leakage.
+3. Validation after coverage expansion:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately tooltip trigger warmup and close delay behavior|resets vue-stately tooltip warmup when open is called repeatedly|closes vue-stately tooltip immediately when closeDelay is zero or negative|closes previously opened vue-stately controlled tooltip when another opens"`,
+   - full Vue tests: `yarn test:vue` (580 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

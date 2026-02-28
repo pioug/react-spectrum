@@ -3257,6 +3257,111 @@ describe('Vue migration composition components', () => {
 
       expect(openChanges).toEqual([true, false]);
     } finally {
+      vi.runAllTimers();
+      vi.useRealTimers();
+    }
+  });
+
+  it('resets vue-stately tooltip warmup when open is called repeatedly', () => {
+    vi.useFakeTimers();
+
+    try {
+      vi.runAllTimers();
+
+      let isOpen = ref(false);
+      let openChanges: boolean[] = [];
+      let tooltipState = useStatelyTooltipTriggerState({
+        delay: 1000,
+        isOpen,
+        onOpenChange: (nextOpen) => {
+          openChanges.push(nextOpen);
+          isOpen.value = nextOpen;
+        }
+      });
+
+      tooltipState.open(false);
+      vi.advanceTimersByTime(600);
+      expect(tooltipState.isOpen.value).toBe(false);
+
+      tooltipState.open(false);
+      vi.advanceTimersByTime(400);
+      expect(tooltipState.isOpen.value).toBe(false);
+      expect(openChanges).toEqual([]);
+
+      vi.advanceTimersByTime(600);
+      expect(tooltipState.isOpen.value).toBe(true);
+      expect(openChanges).toEqual([true]);
+    } finally {
+      vi.runAllTimers();
+      vi.useRealTimers();
+    }
+  });
+
+  it('closes vue-stately tooltip immediately when closeDelay is zero or negative', () => {
+    vi.useFakeTimers();
+
+    try {
+      let zeroDelayTooltipState = useStatelyTooltipTriggerState({
+        closeDelay: 0,
+        delay: 0
+      });
+      zeroDelayTooltipState.open(true);
+      expect(zeroDelayTooltipState.isOpen.value).toBe(true);
+      zeroDelayTooltipState.close();
+      expect(zeroDelayTooltipState.isOpen.value).toBe(false);
+
+      let negativeDelayTooltipState = useStatelyTooltipTriggerState({
+        closeDelay: -50,
+        delay: 0
+      });
+      negativeDelayTooltipState.open(true);
+      expect(negativeDelayTooltipState.isOpen.value).toBe(true);
+      negativeDelayTooltipState.close();
+      expect(negativeDelayTooltipState.isOpen.value).toBe(false);
+    } finally {
+      vi.runAllTimers();
+      vi.useRealTimers();
+    }
+  });
+
+  it('closes previously opened vue-stately controlled tooltip when another opens', () => {
+    vi.useFakeTimers();
+
+    try {
+      let firstIsOpen = ref(false);
+      let secondIsOpen = ref(false);
+      let firstChanges: boolean[] = [];
+      let secondChanges: boolean[] = [];
+
+      let firstTooltip = useStatelyTooltipTriggerState({
+        delay: 1000,
+        isOpen: firstIsOpen,
+        onOpenChange: (nextOpen) => {
+          firstChanges.push(nextOpen);
+          firstIsOpen.value = nextOpen;
+        }
+      });
+      let secondTooltip = useStatelyTooltipTriggerState({
+        delay: 1000,
+        isOpen: secondIsOpen,
+        onOpenChange: (nextOpen) => {
+          secondChanges.push(nextOpen);
+          secondIsOpen.value = nextOpen;
+        }
+      });
+
+      firstTooltip.open(false);
+      vi.advanceTimersByTime(1000);
+      expect(firstTooltip.isOpen.value).toBe(true);
+      expect(firstChanges).toEqual([true]);
+
+      secondTooltip.open(false);
+      expect(firstTooltip.isOpen.value).toBe(false);
+      expect(secondTooltip.isOpen.value).toBe(true);
+      expect(firstChanges).toEqual([true, false]);
+      expect(secondChanges).toEqual([true]);
+    } finally {
+      vi.runAllTimers();
       vi.useRealTimers();
     }
   });
