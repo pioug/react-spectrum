@@ -146,6 +146,20 @@ import {
   VuePicker
 } from '@vue-spectrum/picker';
 import {
+  Autocomplete,
+  Item as AutocompleteItem,
+  SearchAutocomplete,
+  Section as AutocompleteSection,
+  VueSearchAutocomplete
+} from '@vue-spectrum/autocomplete';
+import {
+  Autocomplete as RootAutocomplete,
+  Item as RootAutocompleteItem,
+  SearchAutocomplete as RootSearchAutocomplete,
+  Section as RootAutocompleteSection,
+  VueSearchAutocomplete as RootVueSearchAutocomplete
+} from '../../../packages/@vue-spectrum/autocomplete/index';
+import {
   ComboBox,
   Item as ComboBoxItem,
   Section as ComboBoxSection,
@@ -529,6 +543,21 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(Picker).toBe(VuePicker);
     expect(PickerItem).not.toBe(VuePicker);
     expect(PickerSection).not.toBe(VuePicker);
+  });
+
+  it('exports autocomplete collection primitives separately from VueSearchAutocomplete', () => {
+    expect(Autocomplete).toBe(VueSearchAutocomplete);
+    expect(SearchAutocomplete).toBe(VueSearchAutocomplete);
+    expect(AutocompleteItem).not.toBe(VueSearchAutocomplete);
+    expect(AutocompleteSection).not.toBe(VueSearchAutocomplete);
+  });
+
+  it('keeps root autocomplete entry exports aligned with source exports', () => {
+    expect(RootAutocomplete).toBe(Autocomplete);
+    expect(RootSearchAutocomplete).toBe(SearchAutocomplete);
+    expect(RootVueSearchAutocomplete).toBe(VueSearchAutocomplete);
+    expect(RootAutocompleteItem).toBe(AutocompleteItem);
+    expect(RootAutocompleteSection).toBe(AutocompleteSection);
   });
 
   it('exports combobox collection primitives separately from VueComboBox', () => {
