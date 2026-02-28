@@ -3,7 +3,7 @@ import {type AriaDropOptions, type DropAria, useDrop as useAriaDrop} from './use
 import {getInteractionModality} from '@vue-aria/interactions';
 import {useLocalizedStringFormatter} from '@vue-aria/i18n';
 import {getScrollParent, isIOS, isScrollable, isWebKit, useDescription} from '@vue-aria/utils';
-import {computed, defineComponent, unref, watch} from 'vue';
+import {computed, defineComponent, getCurrentScope, onScopeDispose, unref, watch} from 'vue';
 import type {AriaButtonProps} from '@vue-types/button';
 import type {
   Direction,
@@ -57,6 +57,8 @@ const DEFAULT_DROP_OPERATION: DropOperation = 'copy';
 const DEFAULT_ALLOWED_OPERATIONS: DropOperation[] = ['copy', 'move', 'link'];
 const DROP_ACTIVATE_TIMEOUT = 800;
 const AUTOSCROLL_AREA_SIZE = 20;
+const CUSTOM_DRAG_TYPE = 'application/vnd.react-aria.items+json';
+const NATIVE_DRAG_TYPES = new Set(['text/html', 'text/plain', 'text/uri-list']);
 const noop = () => {};
 
 let draggingCollectionRef: RefObject<HTMLElement | null> | null = null;
@@ -66,6 +68,10 @@ let dropIndicatorId = 0;
 let droppableCollectionId = 0;
 let droppableCollectionIds = new WeakMap<object, string>();
 let droppableCollectionRefs = new WeakMap<object, RefObject<HTMLElement | null>>();
+let globalClipboardEvents = new Map<string, {
+  handlers: Set<(event: Event) => void>,
+  listener: (event: Event) => void
+}>();
 
 function getDroppableCollectionId(state: DroppableCollectionState): string {
   let id = droppableCollectionIds.get(state as unknown as object);
@@ -525,6 +531,154 @@ function normalizeDropItems(input: unknown): DragItem[] {
   return [];
 }
 
+function serializeClipboardValue(value: unknown): string {
+  if (typeof value === 'string') {
+    return value;
+  }
+
+  if (value == null) {
+    return '';
+  }
+
+  if (typeof value === 'number' || typeof value === 'boolean' || typeof value === 'bigint') {
+    return String(value);
+  }
+
+  try {
+    return JSON.stringify(value);
+  } catch {
+    return String(value);
+  }
+}
+
+function getDataTransferTypes(dataTransfer: DataTransfer): string[] {
+  let types = (dataTransfer as AnyRecord).types;
+  if (!types) {
+    return [];
+  }
+
+  if (Array.isArray(types)) {
+    return types.map((type) => String(type));
+  }
+
+  if (typeof (types as { [Symbol.iterator]?: unknown })[Symbol.iterator] === 'function') {
+    return Array.from(types as Iterable<unknown>, (type) => String(type));
+  }
+
+  return [];
+}
+
+function readDataTransferValue(dataTransfer: DataTransfer, type: string): string {
+  if (typeof dataTransfer.getData === 'function') {
+    return dataTransfer.getData(type);
+  }
+
+  return '';
+}
+
+function writeDataTransferValue(dataTransfer: DataTransfer, type: string, value: string): void {
+  if (typeof dataTransfer.setData !== 'function') {
+    return;
+  }
+
+  dataTransfer.setData(type, value);
+}
+
+function toClipboardPayload(items: DragItem[]): Array<Record<string, string>> {
+  return items.map((item) => {
+    let record = item as unknown as AnyRecord;
+    let type = typeof item.type === 'string' && item.type.length > 0
+      ? item.type
+      : 'text/plain';
+    let value = serializeClipboardValue(item.value);
+    let dataByType: Record<string, string> = {[type]: value};
+    let extraTypes = record.types;
+    if (extraTypes instanceof Set) {
+      for (let extraType of extraTypes) {
+        let key = String(extraType);
+        if (!(key in dataByType)) {
+          dataByType[key] = value;
+        }
+      }
+    }
+
+    return dataByType;
+  });
+}
+
+function writeToDataTransfer(dataTransfer: DataTransfer, items: DragItem[]): void {
+  let groupedByType = new Map<string, string[]>();
+  let needsCustomData = false;
+  let customData = toClipboardPayload(items);
+
+  for (let item of customData) {
+    let types = Object.keys(item);
+    if (types.length > 1) {
+      needsCustomData = true;
+    }
+
+    for (let type of types) {
+      let values = groupedByType.get(type);
+      if (!values) {
+        values = [];
+        groupedByType.set(type, values);
+      } else {
+        needsCustomData = true;
+      }
+
+      values.push(item[type]);
+    }
+  }
+
+  for (let [type, values] of groupedByType) {
+    if (NATIVE_DRAG_TYPES.has(type)) {
+      writeDataTransferValue(dataTransfer, type, values.join('\n'));
+    } else {
+      writeDataTransferValue(dataTransfer, type, values[0]);
+    }
+  }
+
+  if (needsCustomData) {
+    writeDataTransferValue(dataTransfer, CUSTOM_DRAG_TYPE, JSON.stringify(customData));
+  }
+}
+
+function readFromDataTransfer(dataTransfer: DataTransfer): DropItem[] {
+  let types = getDataTransferTypes(dataTransfer);
+  if (types.includes(CUSTOM_DRAG_TYPE)) {
+    try {
+      let data = readDataTransferValue(dataTransfer, CUSTOM_DRAG_TYPE);
+      let parsed = JSON.parse(data) as Array<Record<string, string>>;
+      return parsed.map((item) => {
+        let itemTypes = Object.keys(item);
+        return {
+          kind: 'text',
+          types: new Set(itemTypes),
+          getText: (type: string) => Promise.resolve(item[type] ?? '')
+        } as TextDropItem;
+      });
+    } catch {
+      // Ignore malformed custom clipboard payloads and fall back to native types.
+    }
+  }
+
+  let nativeTypes = types.filter((type) => Boolean(type) && type !== CUSTOM_DRAG_TYPE);
+  if (nativeTypes.length === 0) {
+    return [];
+  }
+
+  let dataByType = new Map<string, string>();
+  for (let type of nativeTypes) {
+    dataByType.set(type, readDataTransferValue(dataTransfer, type));
+  }
+
+  return [{
+    kind: 'text',
+    types: new Set(nativeTypes),
+    getText: (type: string) => Promise.resolve(dataByType.get(type) ?? '')
+  } satisfies TextDropItem];
+}
+
 function normalizeDropOperation(input: unknown): DropOperation {
   if (typeof input === 'string' && DROP_OPERATIONS.has(input as DropOperation)) {
     return input as DropOperation;
@@ -758,6 +912,43 @@ function includesAcceptedType(acceptedTypes: Set<string> | null, items: DragItem
   });
 }
 
+function addGlobalEventListener(eventName: string, handler: (event: Event) => void): () => void {
+  if (typeof document === 'undefined') {
+    return noop;
+  }
+
+  let eventData = globalClipboardEvents.get(eventName);
+  if (!eventData) {
+    let handlers = new Set<(event: Event) => void>();
+    let listener = (event: Event) => {
+      for (let callback of handlers) {
+        callback(event);
+      }
+    };
+
+    eventData = {
+      handlers,
+      listener
+    };
+    globalClipboardEvents.set(eventName, eventData);
+    document.addEventListener(eventName, listener);
+  }
+
+  eventData.handlers.add(handler);
+  return () => {
+    let current = globalClipboardEvents.get(eventName);
+    if (!current) {
+      return;
+    }
+
+    current.handlers.delete(handler);
+    if (current.handlers.size === 0) {
+      document.removeEventListener(eventName, current.listener);
+      globalClipboardEvents.delete(eventName);
+    }
+  };
+}
+
 export function useDrag(options: DragOptions): DragResult;
 export function useDrag(options: AriaDragOptions): DragAria;
 export function useDrag(options: AriaDragOptions): DragAria {
@@ -786,9 +977,100 @@ export function isVirtualDragging(): boolean {
   return isVirtualDraggingSessionActive();
 }
 
-export function useClipboard(_props: ClipboardProps): ClipboardResult {
+export function useClipboard(props: ClipboardProps): ClipboardResult {
+  let isFocused = false;
+  let onFocus = () => {
+    isFocused = true;
+  };
+  let onBlur = () => {
+    isFocused = false;
+  };
+  let onBeforeCopy = (event: Event) => {
+    if (!isFocused || !props.getItems) {
+      return;
+    }
+
+    event.preventDefault();
+  };
+  let onCopy = (event: Event) => {
+    if (!isFocused || !props.getItems) {
+      return;
+    }
+
+    let clipboardEvent = event as ClipboardEvent;
+    if (!clipboardEvent.clipboardData) {
+      return;
+    }
+
+    event.preventDefault();
+    writeToDataTransfer(clipboardEvent.clipboardData, props.getItems({action: 'copy'}));
+    props.onCopy?.();
+  };
+  let onBeforeCut = (event: Event) => {
+    if (!isFocused || !props.getItems || !props.onCut) {
+      return;
+    }
+
+    event.preventDefault();
+  };
+  let onCut = (event: Event) => {
+    if (!isFocused || !props.getItems || !props.onCut) {
+      return;
+    }
+
+    let clipboardEvent = event as ClipboardEvent;
+    if (!clipboardEvent.clipboardData) {
+      return;
+    }
+
+    event.preventDefault();
+    writeToDataTransfer(clipboardEvent.clipboardData, props.getItems({action: 'cut'}));
+    props.onCut();
+  };
+  let onBeforePaste = (event: Event) => {
+    if (!isFocused || !props.onPaste) {
+      return;
+    }
+
+    event.preventDefault();
+  };
+  let onPaste = (event: Event) => {
+    if (!isFocused || !props.onPaste) {
+      return;
+    }
+
+    let clipboardEvent = event as ClipboardEvent;
+    if (!clipboardEvent.clipboardData) {
+      return;
+    }
+
+    event.preventDefault();
+    props.onPaste(readFromDataTransfer(clipboardEvent.clipboardData));
+  };
+
+  if (!props.isDisabled) {
+    let cleanupFns = [
+      addGlobalEventListener('beforecopy', onBeforeCopy),
+      addGlobalEventListener('copy', onCopy),
+      addGlobalEventListener('beforecut', onBeforeCut),
+      addGlobalEventListener('cut', onCut),
+      addGlobalEventListener('beforepaste', onBeforePaste),
+      addGlobalEventListener('paste', onPaste)
+    ];
+    if (getCurrentScope()) {
+      onScopeDispose(() => {
+        for (let cleanup of cleanupFns) {
+          cleanup();
+        }
+      });
+    }
+  }
+
   return {
-    clipboardProps: {}
+    clipboardProps: {
+      onBlur,
+      onFocus
+    }
   };
 }
 

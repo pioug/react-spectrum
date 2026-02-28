@@ -34,6 +34,7 @@ import {
   isTextDropItem,
   isVirtualDragging,
   useDrag,
+  useClipboard,
   useDraggableCollection,
   useDraggableItem,
   useDrop,
@@ -4097,6 +4098,149 @@ describe('Vue migration composition components', () => {
 
     expect(isTextDropItem(mismatchedShape)).toBe(true);
     expect(isFileDropItem(mismatchedShape)).toBe(false);
+  });
+
+  let createClipboardData = (): DataTransfer => {
+    let values = new Map<string, string>();
+    return {
+      getData(type: string) {
+        return values.get(type) ?? '';
+      },
+      setData(type: string, value: string) {
+        values.set(type, value);
+      },
+      get types() {
+        return Array.from(values.keys());
+      }
+    } as unknown as DataTransfer;
+  };
+
+  let dispatchClipboardEvent = (type: string, clipboardData: DataTransfer): boolean => {
+    let event = new Event(type, {bubbles: true, cancelable: true}) as Event & {clipboardData: DataTransfer};
+    Object.defineProperty(event, 'clipboardData', {value: clipboardData});
+    return document.dispatchEvent(event);
+  };
+
+  it('copies useClipboard items when focused', async () => {
+    let onCopy = vi.fn();
+    let wrapper = mount(defineComponent({
+      setup() {
+        let {clipboardProps} = useClipboard({
+          getItems: () => [{id: 'clipboard-copy', type: 'text/plain', value: 'hello world'}],
+          onCopy
+        });
+        return () => h('div', {
+          tabIndex: 0,
+          ...clipboardProps
+        });
+      }
+    }));
+
+    await wrapper.get('div').trigger('focus');
+
+    let clipboardData = createClipboardData();
+    dispatchClipboardEvent('beforecopy', clipboardData);
+    dispatchClipboardEvent('copy', clipboardData);
+
+    expect(clipboardData.getData('text/plain')).toBe('hello world');
+    expect(onCopy).toHaveBeenCalledTimes(1);
+    wrapper.unmount();
+  });
+
+  it('does not copy useClipboard items when not focused', () => {
+    let onCopy = vi.fn();
+    let wrapper = mount(defineComponent({
+      setup() {
+        let {clipboardProps} = useClipboard({
+          getItems: () => [{id: 'clipboard-no-focus', type: 'text/plain', value: 'hello world'}],
+          onCopy
+        });
+        return () => h('div', {
+          tabIndex: 0,
+          ...clipboardProps
+        });
+      }
+    }));
+
+    let clipboardData = createClipboardData();
+    dispatchClipboardEvent('beforecopy', clipboardData);
+    dispatchClipboardEvent('copy', clipboardData);
+
+    expect(clipboardData.getData('text/plain')).toBe('');
+    expect(onCopy).not.toHaveBeenCalled();
+    wrapper.unmount();
+  });
+
+  it('cuts useClipboard items only when onCut is provided', async () => {
+    let onCut = vi.fn();
+    let wrapper = mount(defineComponent({
+      setup() {
+        let {clipboardProps} = useClipboard({
+          getItems: () => [{id: 'clipboard-cut', type: 'text/plain', value: 'cut value'}],
+          onCut
+        });
+        return () => h('div', {
+          tabIndex: 0,
+          ...clipboardProps
+        });
+      }
+    }));
+
+    await wrapper.get('div').trigger('focus');
+
+    let clipboardData = createClipboardData();
+    dispatchClipboardEvent('beforecut', clipboardData);
+    dispatchClipboardEvent('cut', clipboardData);
+
+    expect(clipboardData.getData('text/plain')).toBe('cut value');
+    expect(onCut).toHaveBeenCalledTimes(1);
+    wrapper.unmount();
+
+    let noCutWrapper = mount(defineComponent({
+      setup() {
+        let {clipboardProps} = useClipboard({
+          getItems: () => [{id: 'clipboard-cut-disabled', type: 'text/plain', value: 'cut value'}]
+        });
+        return () => h('div', {
+          tabIndex: 0,
+          ...clipboardProps
+        });
+      }
+    }));
+
+    await noCutWrapper.get('div').trigger('focus');
+    let noCutClipboardData = createClipboardData();
+    dispatchClipboardEvent('beforecut', noCutClipboardData);
+    dispatchClipboardEvent('cut', noCutClipboardData);
+    expect(noCutClipboardData.getData('text/plain')).toBe('');
+    noCutWrapper.unmount();
+  });
+
+  it('pastes useClipboard text drop items from clipboard data', async () => {
+    let onPaste = vi.fn();
+    let wrapper = mount(defineComponent({
+      setup() {
+        let {clipboardProps} = useClipboard({onPaste});
+        return () => h('div', {
+          tabIndex: 0,
+          ...clipboardProps
+        });
+      }
+    }));
+
+    await wrapper.get('div').trigger('focus');
+
+    let clipboardData = createClipboardData();
+    clipboardData.setData('text/plain', 'hello world');
+    dispatchClipboardEvent('beforepaste', clipboardData);
+    dispatchClipboardEvent('paste', clipboardData);
+
+    expect(onPaste).toHaveBeenCalledTimes(1);
+    let pastedItems = onPaste.mock.calls[0][0] as Array<{kind: string, getText: (type: string) => Promise<string>}>;
+    expect(pastedItems).toHaveLength(1);
+    expect(pastedItems[0].kind).toBe('text');
+    expect(await pastedItems[0].getText('text/plain')).toBe('hello world');
+    wrapper.unmount();
   });
 
   it('resolves list drop targets from pointer coordinates via ListDropTargetDelegate', () => {
