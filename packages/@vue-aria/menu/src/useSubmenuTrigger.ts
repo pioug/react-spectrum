@@ -17,7 +17,7 @@ export interface SubmenuTriggerAria {
   }>,
   submenuTriggerProps: ComputedRef<{
     'aria-expanded': boolean,
-    'aria-haspopup': 'menu',
+    'aria-haspopup'?: 'menu',
     'aria-label': string,
     onKeyDown: (event: KeyboardEvent) => void,
     onMouseEnter: () => void,
@@ -31,7 +31,7 @@ export function useSubmenuTrigger(props: AriaSubmenuTriggerProps = {}): SubmenuT
   let isOpen = props.isOpen ?? internalOpen;
 
   let setOpen = (nextOpen: boolean) => {
-    if (unref(props.isDisabled)) {
+    if (unref(props.isDisabled) && nextOpen) {
       return;
     }
 
@@ -73,7 +73,7 @@ export function useSubmenuTrigger(props: AriaSubmenuTriggerProps = {}): SubmenuT
     })),
     submenuTriggerProps: computed(() => ({
       role: 'menuitem' as const,
-      'aria-haspopup': 'menu' as const,
+      'aria-haspopup': unref(props.isDisabled) ? undefined : 'menu' as const,
       'aria-expanded': isOpen.value,
       'aria-label': 'Open submenu',
       onMouseEnter: () => {

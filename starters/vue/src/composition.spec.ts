@@ -6467,6 +6467,17 @@ describe('Vue migration composition components', () => {
     expect(submenuTrigger.isOpen.value).toBe(true);
     submenuTrigger.submenuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
     expect(submenuTrigger.isOpen.value).toBe(false);
+
+    let disabledSubmenuOpen = ref(true);
+    let disabledSubmenuTrigger = useSubmenuTrigger({
+      isDisabled: true,
+      isOpen: disabledSubmenuOpen
+    });
+    expect(disabledSubmenuTrigger.submenuTriggerProps.value['aria-haspopup']).toBeUndefined();
+    disabledSubmenuTrigger.close();
+    expect(disabledSubmenuOpen.value).toBe(false);
+    disabledSubmenuTrigger.open();
+    expect(disabledSubmenuOpen.value).toBe(false);
   });
 
   it('computes vue-aria meter range, labels, and value text', () => {

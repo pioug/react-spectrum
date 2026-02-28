@@ -2892,6 +2892,22 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Submenu-trigger disabled lifecycle + `aria-haspopup` parity (`@vue-aria/menu`)
+
+1. Closed disabled lifecycle drift in `useSubmenuTrigger`:
+   - disabled state now blocks only open transitions and still allows close/dismiss transitions.
+2. Closed ARIA prop-surface drift:
+   - submenu trigger now omits `aria-haspopup` when disabled, matching React behavior.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` menu-hook assertions now verify disabled submenu triggers:
+     - do not expose `aria-haspopup`,
+     - can close when already open,
+     - cannot reopen while disabled.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria menu trigger and item selection semantics"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
