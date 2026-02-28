@@ -36,9 +36,10 @@ export interface DialogAria {
   }>,
   toggle: () => void,
   triggerProps: ComputedRef<{
-    'aria-controls': string,
+    'aria-controls': string | undefined,
     'aria-expanded': boolean,
     'aria-haspopup': 'dialog'
+    onClick: () => void
   }>
 }
 
@@ -115,7 +116,8 @@ export function useDialog(options: AriaDialogOptions = {}): DialogAria {
   let triggerProps = computed(() => ({
     'aria-haspopup': 'dialog' as const,
     'aria-expanded': isOpen.value,
-    'aria-controls': dialogId
+    'aria-controls': isOpen.value ? dialogId : undefined,
+    onClick: toggle
   }));
 
   let backdropProps = computed(() => ({

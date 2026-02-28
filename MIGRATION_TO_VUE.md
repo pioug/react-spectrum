@@ -3359,6 +3359,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Dialog trigger click + ARIA-controls parity (`@vue-aria/dialog`)
+
+1. Closed dialog trigger activation drift:
+   - `useDialog.triggerProps` now exposes `onClick` wired to `toggle`, so trigger-prop interaction opens and closes dialog state directly.
+2. Closed dialog trigger ARIA-controls ownership drift:
+   - `useDialog.triggerProps['aria-controls']` now mirrors open-state ownership (present while open, omitted while closed).
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` dialog assertions now verify trigger click toggles open state and open-state `aria-controls` ownership.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-aria dialog labeling and open state"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

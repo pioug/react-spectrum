@@ -2574,15 +2574,20 @@ describe('Vue migration composition components', () => {
     expect(dialog.dialogProps.value.role).toBe('dialog');
     expect(dialog.dialogProps.value.hidden).toBe(true);
     expect(dialog.dialogProps.value['aria-labelledby']).toBe(dialog.titleProps.value.id);
+    expect(dialog.triggerProps.value['aria-controls']).toBeUndefined();
+
+    dialog.triggerProps.value.onClick();
+    expect(dialog.isOpen.value).toBe(true);
+    expect(dialog.dialogProps.value.hidden).toBe(false);
+    expect(dialog.triggerProps.value['aria-controls']).toBe(dialog.dialogProps.value.id);
+    dialog.triggerProps.value.onClick();
+    expect(dialog.isOpen.value).toBe(false);
+    expect(openChanges).toEqual([true, false]);
+    expect(dialog.triggerProps.value['aria-controls']).toBeUndefined();
 
     dialog.open();
     expect(dialog.isOpen.value).toBe(true);
-    expect(dialog.dialogProps.value.hidden).toBe(false);
-    dialog.open();
-    expect(openChanges).toEqual([true]);
-    dialog.toggle();
-    expect(dialog.isOpen.value).toBe(false);
-    expect(openChanges).toEqual([true, false]);
+    expect(openChanges).toEqual([true, false, true]);
   });
 
   it('keeps non-dismissable vue-aria dialog open when close is requested', () => {
