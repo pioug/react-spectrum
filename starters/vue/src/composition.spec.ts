@@ -5532,6 +5532,72 @@ describe('Vue migration composition components', () => {
     dragState.endDrag('cancel');
   });
 
+  it('dispatches useDroppableCollection onRootDrop by default when target is root', () => {
+    let rootPayload: null | {
+      dropOperation: string,
+      itemCount: number
+    } = null;
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: () => 'move'
+    });
+    dropState.setTarget({type: 'root'});
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      onRootDrop: (event) => {
+        rootPayload = {
+          dropOperation: String(event.dropOperation),
+          itemCount: event.items.length
+        };
+      }
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDrop: (input: unknown, operation?: 'cancel' | 'copy' | 'link' | 'move') => 'cancel' | 'copy' | 'link' | 'move'
+      }}
+    };
+
+    expect(droppableCollection.collectionProps.value.onDrop({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 2,
+      clientY: 4
+    }, 'move')).toBe('move');
+    expect(rootPayload).toEqual({
+      dropOperation: 'move',
+      itemCount: 1
+    });
+  });
+
+  it('respects useDroppableCollection shouldAcceptItemDrop in default onItemDrop dispatch', () => {
+    let itemDropCalls = 0;
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: () => 'move'
+    });
+    dropState.setTarget({
+      type: 'item',
+      key: 'alpha',
+      dropPosition: 'on'
+    });
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      shouldAcceptItemDrop: () => false,
+      onItemDrop: () => {
+        itemDropCalls++;
+      }
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDrop: (input: unknown, operation?: 'cancel' | 'copy' | 'link' | 'move') => 'cancel' | 'copy' | 'link' | 'move'
+      }}
+    };
+
+    expect(droppableCollection.collectionProps.value.onDrop({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 6,
+      clientY: 8
+    }, 'move')).toBe('move');
+    expect(itemDropCalls).toBe(0);
+  });
+
   it('fires useDroppableCollection onDropMove only when drag position changes', () => {
     let moveEvents: Array<string> = [];
     let dropState = useStatelyDroppableCollectionState({
