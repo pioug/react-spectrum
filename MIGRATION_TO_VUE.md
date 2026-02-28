@@ -2090,6 +2090,19 @@
    - full Vue tests: `yarn test:vue` (610 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Tree controlled ownership parity (`@vue-stately/tree`)
+
+1. Closed tree expansion controlled ownership drift:
+   - `useTreeState` no longer mutates controlled `expandedKeys` refs from `setExpandedKeys`/`toggleKey`.
+2. Preserved controlled callback behavior:
+   - controlled tree expansion requests still emit `onExpandedChange` with requested key sets; collection expansion only updates when parent mirrors controlled ref changes.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: assertion that controlled tree expansion refs remain unchanged without parent updates while `onExpandedChange` still emits requested expanded keys.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "tree collection when controlled expandedKeys change externally|tree controlled without mutating expanded key refs"`,
+   - full Vue tests: `yarn test:vue` (611 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

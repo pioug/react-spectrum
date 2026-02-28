@@ -82,9 +82,7 @@ export function useTreeState<T>(props: TreeProps<T>): TreeState<T> {
       return uncontrolledExpandedKeys.value;
     },
     set: (nextKeys) => {
-      if (isExpandedKeysControlled.value && props.expandedKeys) {
-        props.expandedKeys.value = nextKeys;
-      } else {
+      if (!isExpandedKeysControlled.value) {
         uncontrolledExpandedKeys.value = nextKeys;
       }
     }

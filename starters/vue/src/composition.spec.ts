@@ -4266,6 +4266,44 @@ describe('Vue migration composition components', () => {
     ]);
   });
 
+  it('keeps vue-stately tree controlled without mutating expanded key refs', () => {
+    let expandedKeys = ref<Set<string | number> | undefined>(new Set(['animals']));
+    let expandedChanges: string[][] = [];
+    let treeState = useStatelyTreeState({
+      expandedKeys,
+      items: [
+        {
+          key: 'animals',
+          childNodes: [
+            {
+              key: 'mammals',
+              childNodes: [
+                {key: 'bear'}
+              ]
+            },
+            {key: 'birds'}
+          ]
+        },
+        {key: 'plants'}
+      ],
+      onExpandedChange: (nextKeys) => {
+        expandedChanges.push(Array.from(nextKeys).map((key) => String(key)));
+      },
+      selectionMode: 'none'
+    });
+
+    treeState.toggleKey('mammals');
+
+    expect(Array.from(expandedKeys.value ?? [])).toEqual(['animals']);
+    expect(Array.from(treeState.collection.getKeys())).toEqual([
+      'animals',
+      'mammals',
+      'birds',
+      'plants'
+    ]);
+    expect(expandedChanges).toEqual([['animals', 'mammals']]);
+  });
+
   it('warns when vue-stately tree expandedKeys switches between controlled and uncontrolled', async () => {
     let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     let expandedKeys = ref<Set<string> | undefined>(new Set(['animals']));
