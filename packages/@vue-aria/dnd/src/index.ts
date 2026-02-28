@@ -825,6 +825,31 @@ export function useDroppableCollection(
     }
   };
 
+  let updateTargetFromPoint = (items: DragItem[], input?: unknown): {x: number, y: number} => {
+    let point = readPoint(input, ref);
+    let dropTargetDelegate = propsRecord.dropTargetDelegate as AnyRecord | undefined;
+    if (!dropTargetDelegate || typeof dropTargetDelegate.getDropTargetFromPoint !== 'function') {
+      return point;
+    }
+
+    let getDropOperationForTarget = (target: DropTarget | null): DropOperation => {
+      return getDropOperation(items, target, DEFAULT_DROP_OPERATION);
+    };
+    let nextTarget = dropTargetDelegate.getDropTargetFromPoint(
+      point.x,
+      point.y,
+      (target: DropTarget) => getDropOperationForTarget(target) !== 'cancel'
+    );
+    let normalizedTarget: DropTarget = nextTarget && typeof nextTarget === 'object'
+      ? nextTarget as DropTarget
+      : {type: 'root'};
+    if (typeof stateRecord.setTarget === 'function') {
+      stateRecord.setTarget(normalizedTarget);
+    }
+
+    return point;
+  };
+
   let scheduleDropActivate = (target: DropTarget | null, point: {x: number, y: number}) => {
     clearDropActivateTimeout();
     if (!target || target.type !== 'item' || typeof propsRecord.onDropActivate !== 'function') {
@@ -1000,6 +1025,7 @@ export function useDroppableCollection(
     }
 
     if (isDraggingOverCollection) {
+      updateTargetFromPoint(items, input);
       if (getDropOperationWithRootFallback(items, DEFAULT_DROP_OPERATION) === 'cancel') {
         onDragLeave(input);
         return false;
@@ -1008,6 +1034,7 @@ export function useDroppableCollection(
       return true;
     }
 
+    let point = updateTargetFromPoint(items, input);
     if (readDropTarget(stateRecord) == null && typeof stateRecord.setTarget === 'function') {
       stateRecord.setTarget({type: 'root'});
     }
@@ -1033,7 +1060,6 @@ export function useDroppableCollection(
     }
 
     isDraggingOverCollection = true;
-    let point = readPoint(input, ref);
     lastDragPoint = point;
     dropCollectionRef = ref;
     if (typeof propsRecord.onDropEnter === 'function') {
@@ -1068,6 +1094,8 @@ export function useDroppableCollection(
     if (lastDragPoint && lastDragPoint.x === point.x && lastDragPoint.y === point.y) {
       return;
     }
+
+    point = updateTargetFromPoint(items, input);
 
     lastDragPoint = point;
     dropCollectionRef = ref;

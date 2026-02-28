@@ -4679,6 +4679,89 @@ describe('Vue migration composition components', () => {
     expect(dropEvents).toEqual(['drop:copy:root']);
   });
 
+  it('resolves useDroppableCollection targets from dropTargetDelegate coordinates', () => {
+    let moveTargets: Array<string> = [];
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: () => 'move'
+    });
+    let dropTargetDelegate = {
+      getDropTargetFromPoint: vi.fn((x: number) => {
+        return x < 20
+          ? {type: 'item', key: 'alpha', dropPosition: 'before'}
+          : {type: 'item', key: 'beta', dropPosition: 'after'};
+      })
+    };
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      dropTargetDelegate,
+      onDropMove: (event) => {
+        moveTargets.push(`${String(event.target?.type)}:${String((event.target as {key?: string} | null)?.key ?? '')}:${event.x},${event.y}`);
+      }
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDragEnter: (input: unknown) => boolean,
+        onDragOver: (input?: unknown) => void
+      }}
+    };
+
+    expect(droppableCollection.collectionProps.value.onDragEnter({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 10,
+      clientY: 5
+    })).toBe(true);
+    expect(dropState.target.value).toEqual({type: 'item', key: 'alpha', dropPosition: 'before'});
+
+    droppableCollection.collectionProps.value.onDragOver({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 40,
+      clientY: 8
+    });
+
+    expect(dropState.target.value).toEqual({type: 'item', key: 'beta', dropPosition: 'after'});
+    expect(moveTargets).toEqual(['item:beta:40,8']);
+    expect(dropTargetDelegate.getDropTargetFromPoint).toHaveBeenCalledTimes(2);
+  });
+
+  it('passes target validity checks to useDroppableCollection dropTargetDelegate resolution', () => {
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: ({target}) => {
+        if (target?.type === 'root') {
+          return 'copy';
+        }
+
+        return target?.type === 'item' && target.key === 'valid' ? 'move' : 'cancel';
+      }
+    });
+    let dropTargetDelegate = {
+      getDropTargetFromPoint: vi.fn((_x: number, _y: number, isValidDropTarget: (target: unknown) => boolean) => {
+        let invalidTarget = {type: 'item', key: 'invalid', dropPosition: 'on'};
+        if (isValidDropTarget(invalidTarget)) {
+          return invalidTarget;
+        }
+
+        let validTarget = {type: 'item', key: 'valid', dropPosition: 'on'};
+        return isValidDropTarget(validTarget) ? validTarget : {type: 'root'};
+      })
+    };
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      dropTargetDelegate
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDragEnter: (input: unknown) => boolean
+      }}
+    };
+
+    expect(droppableCollection.collectionProps.value.onDragEnter({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 12,
+      clientY: 6
+    })).toBe(true);
+    expect(dropState.target.value).toEqual({type: 'item', key: 'valid', dropPosition: 'on'});
+  });
+
   it('rejects useDroppableCollection targets when getDropOperation resolves to cancel', () => {
     let onDropEnter = vi.fn();
     let onDropMove = vi.fn();
