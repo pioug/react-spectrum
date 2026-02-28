@@ -1282,9 +1282,13 @@ describe('Vue migration composition components', () => {
   it('manages vue-stately combobox state for filtering, selection, and revert', () => {
     let inputValue = ref('');
     let selectedKey = ref<string | null>(null);
+    let selectionChanges: Array<string | null> = [];
     let state = useStatelyComboBoxState({
       inputValue,
       items: ['React', 'Vue', 'Svelte'],
+      onSelectionChange: (key) => {
+        selectionChanges.push(key);
+      },
       selectedKey
     });
 
@@ -1299,6 +1303,10 @@ describe('Vue migration composition components', () => {
     state.setValue('Vue');
     expect(selectedKey.value).toBe('Vue');
     expect(state.selectedItem.value?.textValue).toBe('Vue');
+    expect(selectionChanges).toEqual(['Vue']);
+
+    state.setValue('Vue');
+    expect(selectionChanges).toEqual(['Vue']);
 
     state.setInputValue('temporary');
     state.revert();

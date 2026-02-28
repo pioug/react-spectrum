@@ -137,6 +137,10 @@ export function useComboBoxState(options: ComboBoxStateOptions): StatelyComboBox
   };
 
   let setSelectedKey = (nextKey: string | null): void => {
+    if (comboBox.selectedKey.value === nextKey) {
+      return;
+    }
+
     comboBox.selectKey(nextKey);
   };
 

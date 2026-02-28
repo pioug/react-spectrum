@@ -1778,6 +1778,17 @@
    - full Vue tests: `yarn test:vue` (584 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — ComboBox direct setter no-op parity (`@vue-stately/combobox`)
+
+1. Closed direct setter emission drift:
+   - `useComboBoxState.setSelectedKey` now no-ops when the requested key is already selected, matching React `setValue`/`useControlledState` no-op semantics for same-key writes.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: combobox state test now asserts repeated same-value `setValue` calls do not emit duplicate selection-change events.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately combobox state for filtering, selection, and revert|warns when vue-stately combobox switches between controlled and uncontrolled|keeps vue-stately combobox uncontrolled when control refs are undefined"`,
+   - full Vue tests: `yarn test:vue` (584 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
