@@ -486,6 +486,13 @@ describe('Vue migration composition components', () => {
       ariaLabel: ref('Project trail')
     });
     expect(customBreadcrumbs.navProps.value['aria-label']).toBe('Project trail');
+
+    let dashedBreadcrumbs = useBreadcrumbs({
+      'aria-label': 'Release path',
+      id: 'release-breadcrumbs'
+    });
+    expect(dashedBreadcrumbs.navProps.value['aria-label']).toBe('Release path');
+    expect(dashedBreadcrumbs.navProps.value.id).toBe('release-breadcrumbs');
   });
 
   it('computes breadcrumb item props and press behavior', () => {

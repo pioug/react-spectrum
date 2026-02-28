@@ -1219,6 +1219,18 @@
    - full Vue tests: `yarn test:vue` (537 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — `useBreadcrumbs` prop-surface parity (`@vue-aria/breadcrumbs`)
+
+1. Aligned breadcrumb hook label/id prop surface with React DOM-prop behavior:
+   - `useBreadcrumbs` now accepts dashed `aria-label` in addition to camel alias,
+   - breadcrumb nav props now support explicit `id` passthrough while preserving default label fallback (`"Breadcrumbs"`).
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: default, camel, and dashed-label + id assertions for breadcrumb nav props.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "provides breadcrumb nav props with default and custom labels"`,
+   - full Vue tests: `yarn test:vue` (537 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
