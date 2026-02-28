@@ -1406,6 +1406,7 @@ describe('Vue migration composition components', () => {
   });
 
   it('tracks vue-aria dnd drag lifecycle callbacks and operation state', () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     let dragEvents: Array<string> = [];
     let drag = useDrag({
       dragItems: [{id: 'ticket-1', type: 'ticket', value: {id: 1}}],
@@ -1427,6 +1428,26 @@ describe('Vue migration composition components', () => {
     expect(drag.isDragging.value).toBe(false);
     expect(drag.lastDropOperation.value).toBe('move');
     expect(dragEvents).toEqual(['start', 'move:40,88', 'end:move']);
+    expect(warnSpy).toHaveBeenCalledWith('Drags initiated from the React Aria useDrag hook may only be dropped on a target created with useDrop. This ensures that a keyboard and screen reader accessible alternative is available.');
+    warnSpy.mockRestore();
+  });
+
+  it('does not warn when vue-aria drags end via a useDrop target', () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let drag = useDrag({
+      dragItems: [{id: 'ticket-3', type: 'ticket', value: {id: 3}}]
+    });
+    let drop = useDrop({
+      acceptedDragTypes: ['ticket']
+    });
+
+    drag.startDrag();
+    expect(drop.enter(drag.dragItems.value)).toBe(true);
+    let operation = drop.drop(drag.dragItems.value, 'copy');
+    drag.endDrag(operation);
+
+    expect(warnSpy).not.toHaveBeenCalledWith('Drags initiated from the React Aria useDrag hook may only be dropped on a target created with useDrop. This ensures that a keyboard and screen reader accessible alternative is available.');
+    warnSpy.mockRestore();
   });
 
   it('filters vue-aria dnd drops by accepted drag types', () => {
@@ -1453,6 +1474,7 @@ describe('Vue migration composition components', () => {
   });
 
   it('manages vue-stately draggable collection keys and drag lifecycle', () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     let dragEvents: Array<string> = [];
     let selectedKeys = ref(new Set<string>(['alpha', 'beta']));
     let draggable = useStatelyDraggableCollectionState({
@@ -1479,6 +1501,8 @@ describe('Vue migration composition components', () => {
     expect(draggable.draggingKeys.value.size).toBe(0);
     expect(draggable.draggedKey.value).toBeNull();
     expect(dragEvents).toEqual(['start:alpha,beta', 'end:move:alpha,beta']);
+    expect(warnSpy).toHaveBeenCalledWith('Drags initiated from the React Aria useDrag hook may only be dropped on a target created with useDrop. This ensures that a keyboard and screen reader accessible alternative is available.');
+    warnSpy.mockRestore();
   });
 
   it('manages vue-stately droppable collection target and operation resolution', () => {

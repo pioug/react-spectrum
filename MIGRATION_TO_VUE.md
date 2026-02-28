@@ -1303,6 +1303,23 @@
    - full Vue tests: `yarn test:vue` (543 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — `useDrag` drop-target warning parity (`@vue-aria/dnd`)
+
+1. Aligned `useDrag` warning behavior with React:
+   - drags that end with non-cancel operations now warn when no `useDrop` target handled the drop (`Drags initiated from the React Aria useDrag hook may only be dropped on a target created with useDrop...`).
+2. Added shared drag-session tracking between `useDrag` and `useDrop`:
+   - introduced lightweight internal session state to mark active drags and whether a `useDrop` target consumed the drop.
+   - `useDrop.drop()` now marks the active drag session as handled before resolving the drop operation.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - direct `useDrag` warning assertion for non-`useDrop` completion,
+     - no-warning assertion when drop flows through `useDrop`,
+     - updated stately draggable-collection test to assert warning parity and suppress console noise in the suite.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "tracks vue-aria dnd drag lifecycle callbacks and operation state|does not warn when vue-aria drags end via a useDrop target|manages vue-stately draggable collection keys and drag lifecycle|filters vue-aria dnd drops by accepted drag types"`,
+   - full Vue tests: `yarn test:vue` (544 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

@@ -1,7 +1,9 @@
 import {computed, type ComputedRef, ref, type Ref, unref} from 'vue';
+import {beginDragSession, isDragSessionHandled} from './dragSession';
 import {type DragItem, type DropOperation} from './types';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
+const DRAG_TARGET_WARNING = 'Drags initiated from the React Aria useDrag hook may only be dropped on a target created with useDrop. This ensures that a keyboard and screen reader accessible alternative is available.';
 
 export interface AriaDragOptions {
   dragItems: MaybeRef<DragItem[]>,
@@ -28,6 +30,7 @@ export function useDrag(options: AriaDragOptions): DragAria {
   let isDisabled = computed(() => Boolean(unref(options.isDisabled)));
   let isDragging = ref(false);
   let lastDropOperation = ref<DropOperation | null>(null);
+  let activeSessionId = ref<number | null>(null);
 
   let dragItems = computed(() => {
     let items = unref(options.dragItems);
@@ -44,6 +47,7 @@ export function useDrag(options: AriaDragOptions): DragAria {
     }
 
     isDragging.value = true;
+    activeSessionId.value = beginDragSession();
     options.onDragStart?.(dragItems.value);
   };
 
@@ -60,8 +64,14 @@ export function useDrag(options: AriaDragOptions): DragAria {
       return;
     }
 
+    let isDropHandledByUseDrop = activeSessionId.value != null && isDragSessionHandled(activeSessionId.value);
+    if (operation !== 'cancel' && !isDropHandledByUseDrop && process.env.NODE_ENV !== 'production') {
+      console.warn(DRAG_TARGET_WARNING);
+    }
+
     isDragging.value = false;
     lastDropOperation.value = operation;
+    activeSessionId.value = null;
     options.onDragEnd?.(operation, dragItems.value);
   };
 

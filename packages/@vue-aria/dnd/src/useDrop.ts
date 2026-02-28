@@ -1,4 +1,5 @@
 import {computed, type ComputedRef, ref, type Ref, unref} from 'vue';
+import {markActiveDragSessionHandled} from './dragSession';
 import {type DragItem, type DropOperation} from './types';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
@@ -93,6 +94,7 @@ export function useDrop(options: AriaDropOptions = {}): DropAria {
       return 'cancel';
     }
 
+    markActiveDragSessionHandled();
     let resolvedOperation = operation ?? options.getDropOperation?.(items) ?? 'copy';
     lastDropItems.value = items;
     lastDropOperation.value = resolvedOperation;
