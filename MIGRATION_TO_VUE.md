@@ -1030,6 +1030,21 @@
    - full Vue tests: `yarn test:vue` (531 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 27, 2026 — Shared `useAutocomplete` collection-labelling parity (`@vue-aria/autocomplete`)
+
+1. Aligned autocomplete collection labelling with React `useLabels` behavior:
+   - listbox collection now exposes stable labelable props (`id`, `aria-label`, `aria-labelledby`) instead of role-only output,
+   - default collection label now matches React intent (`"Suggestions"`),
+   - when `aria-label` and `aria-labelledby` coexist, collection id now participates in `aria-labelledby`.
+2. Preserved autocomplete filtering behavior:
+   - item filtering and focused-key behavior remain unchanged.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: assertions for default collection label and composed `aria-label` + `aria-labelledby` ownership.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "filters autocomplete items and exposes focused key"`,
+   - full Vue tests: `yarn test:vue` (531 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

@@ -1,4 +1,5 @@
 import {computed, type ComputedRef, type Ref, unref} from 'vue';
+import {useLabels} from '@vue-aria/utils';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
 
@@ -15,7 +16,12 @@ export type AutocompleteItemInput =
     };
 
 export interface AriaAutocompleteOptions {
+  'aria-label'?: MaybeRef<string | undefined>,
+  'aria-labelledby'?: MaybeRef<string | undefined>,
+  ariaLabel?: MaybeRef<string | undefined>,
+  ariaLabelledby?: MaybeRef<string | undefined>,
   disabled?: MaybeRef<boolean>,
+  id?: MaybeRef<string | undefined>,
   inputValue: MaybeRef<string>,
   items: MaybeRef<AutocompleteItemInput[]>,
   shouldAutoFocusFirst?: MaybeRef<boolean>
@@ -23,6 +29,9 @@ export interface AriaAutocompleteOptions {
 
 export interface AutocompleteAria {
   collectionProps: ComputedRef<{
+    'aria-label'?: string,
+    'aria-labelledby'?: string,
+    id?: string,
     role: 'listbox'
   }>,
   filter: (item: AutocompleteItem) => boolean,
@@ -54,6 +63,14 @@ function normalizeQuery(value: string): string {
   return value.trim().toLocaleLowerCase();
 }
 
+function resolveOptionalString(value: MaybeRef<string | undefined> | undefined): string | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+
+  return unref(value);
+}
+
 export function useAutocomplete(options: AriaAutocompleteOptions): AutocompleteAria {
   let query = computed(() => normalizeQuery(String(unref(options.inputValue))));
   let disabled = computed(() => Boolean(unref(options.disabled)));
@@ -82,8 +99,20 @@ export function useAutocomplete(options: AriaAutocompleteOptions): AutocompleteA
     return filteredItems.value[0].id;
   });
 
+  let ariaLabel = computed(() => resolveOptionalString(options.ariaLabel) ?? resolveOptionalString(options['aria-label']) ?? 'Suggestions');
+  let ariaLabelledby = computed(() => resolveOptionalString(options.ariaLabelledby) ?? resolveOptionalString(options['aria-labelledby']));
+  let collectionLabelProps = computed(() => {
+    return useLabels({
+      id: resolveOptionalString(options.id),
+      'aria-label': ariaLabel.value,
+      'aria-labelledby': ariaLabelledby.value
+    });
+  });
   let collectionProps = computed(() => ({
-    role: 'listbox' as const
+    role: 'listbox' as const,
+    id: collectionLabelProps.value.id as string | undefined,
+    'aria-label': collectionLabelProps.value['aria-label'],
+    'aria-labelledby': collectionLabelProps.value['aria-labelledby']
   }));
 
   let inputProps = computed(() => ({

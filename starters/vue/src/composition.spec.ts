@@ -404,6 +404,20 @@ describe('Vue migration composition components', () => {
 
     inputValue.value = '';
     expect(autocomplete.filteredItems.value.map((item) => item.textValue)).toEqual(['Vue', 'React', 'Svelte']);
+    expect(autocomplete.collectionProps.value.role).toBe('listbox');
+    expect(autocomplete.collectionProps.value['aria-label']).toBe('Suggestions');
+
+    let composedAutocomplete = useAutocomplete({
+      'aria-label': 'Search suggestions',
+      'aria-labelledby': 'external-suggestions-label',
+      id: 'suggestions-listbox',
+      inputValue,
+      items: ['Vue']
+    });
+    let composedIds = composedAutocomplete.collectionProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(composedIds).toContain('external-suggestions-label');
+    expect(composedIds).toContain('suggestions-listbox');
+    expect(composedAutocomplete.collectionProps.value['aria-label']).toBe('Search suggestions');
   });
 
   it('submits and clears search autocomplete state', () => {
