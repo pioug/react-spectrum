@@ -6777,6 +6777,11 @@ describe('Vue migration composition components', () => {
     disabledSubmenuTrigger.submenuTriggerProps.value.onClick();
     expect(disabledSubmenuOpen.value).toBe(true);
 
+    let dialogSubmenuTrigger = useSubmenuTrigger({
+      type: 'dialog'
+    });
+    expect(dialogSubmenuTrigger.submenuTriggerProps.value['aria-haspopup']).toBe('dialog');
+
     let rtlProvider = I18nProvider({
       locale: 'ar-EG'
     });

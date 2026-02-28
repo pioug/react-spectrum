@@ -5,7 +5,8 @@ import type {MaybeRef} from './types';
 export interface AriaSubmenuTriggerProps {
   isDisabled?: MaybeRef<boolean>,
   isOpen?: Ref<boolean>,
-  onOpenChange?: (isOpen: boolean) => void
+  onOpenChange?: (isOpen: boolean) => void,
+  type?: MaybeRef<'dialog' | 'menu'>
 }
 
 export interface SubmenuTriggerAria {
@@ -21,7 +22,7 @@ export interface SubmenuTriggerAria {
   submenuTriggerProps: ComputedRef<{
     'aria-controls': string | undefined,
     'aria-expanded': boolean,
-    'aria-haspopup'?: 'menu',
+    'aria-haspopup'?: 'dialog' | 'menu',
     'aria-label': string,
     id: string,
     onClick: (event?: MouseEvent) => void,
@@ -42,6 +43,7 @@ export function useSubmenuTrigger(props: AriaSubmenuTriggerProps = {}): SubmenuT
   let submenuId = `vue-submenu-${submenuTriggerCounter}`;
   let internalOpen = ref(false);
   let isOpen = props.isOpen ?? internalOpen;
+  let popupType = computed(() => unref(props.type) ?? 'menu');
 
   let setOpen = (nextOpen: boolean) => {
     if (unref(props.isDisabled) && nextOpen) {
@@ -101,7 +103,7 @@ export function useSubmenuTrigger(props: AriaSubmenuTriggerProps = {}): SubmenuT
       id: triggerId,
       role: 'menuitem' as const,
       'aria-controls': isOpen.value ? submenuId : undefined,
-      'aria-haspopup': unref(props.isDisabled) ? undefined : 'menu' as const,
+      'aria-haspopup': unref(props.isDisabled) ? undefined : popupType.value,
       'aria-expanded': isOpen.value,
       'aria-label': 'Open submenu',
       onClick: (event?: MouseEvent) => {
