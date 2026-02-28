@@ -1,8 +1,9 @@
 import {computed, type ComputedRef, ref, type Ref, unref} from 'vue';
 import {markActiveDragSessionHandled} from './dragSession';
-import {type DragItem, type DropOperation} from './types';
+import {DIRECTORY_DRAG_TYPE, type DragItem, type DropOperation} from './types';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
+type AnyRecord = Record<string, unknown>;
 
 export interface AriaDropOptions {
   acceptedDragTypes?: MaybeRef<Iterable<string>>,
@@ -39,6 +40,32 @@ function toTypeSet(value: MaybeRef<Iterable<string>> | undefined): Set<string> {
   return new Set(Array.from(resolved, (type) => String(type)));
 }
 
+function getAcceptedItemTypes(item: DragItem): Set<string> {
+  let itemRecord = item as unknown as AnyRecord;
+  let acceptedTypes = new Set<string>();
+
+  if (typeof item.type === 'string') {
+    acceptedTypes.add(item.type);
+  }
+
+  if (itemRecord.kind === 'directory') {
+    acceptedTypes.add(DIRECTORY_DRAG_TYPE);
+  }
+
+  let types = itemRecord.types;
+  if (types instanceof Set) {
+    for (let type of types) {
+      acceptedTypes.add(String(type));
+    }
+  } else if (Array.isArray(types)) {
+    for (let type of types) {
+      acceptedTypes.add(String(type));
+    }
+  }
+
+  return acceptedTypes;
+}
+
 export function useDrop(options: AriaDropOptions = {}): DropAria {
   let isDisabled = computed(() => Boolean(unref(options.isDisabled)));
   let acceptedDragTypes = computed(() => toTypeSet(options.acceptedDragTypes));
@@ -56,7 +83,16 @@ export function useDrop(options: AriaDropOptions = {}): DropAria {
       return true;
     }
 
-    return items.every((item) => acceptedDragTypes.value.has(item.type));
+    return items.every((item) => {
+      let itemTypes = getAcceptedItemTypes(item);
+      for (let type of itemTypes) {
+        if (acceptedDragTypes.value.has(type)) {
+          return true;
+        }
+      }
+
+      return false;
+    });
   };
 
   let enter = (items: DragItem[]) => {

@@ -27,6 +27,7 @@ import {
 import {useDialog as useAriaDialog} from '@vue-aria/dialog';
 import {useDisclosure as useAriaDisclosure} from '@vue-aria/disclosure';
 import {
+  DIRECTORY_DRAG_TYPE,
   isDirectoryDropItem,
   isFileDropItem,
   isTextDropItem,
@@ -4079,6 +4080,7 @@ describe('Vue migration composition components', () => {
 
     let ticketItems = [{id: 'ticket-2', type: 'ticket', value: {id: 2}}];
     let fileItems = [{id: 'asset-1', type: 'file', value: {name: 'spec.pdf'}}];
+    let directoryItems = [{id: 'dir-1', kind: 'directory', type: 'file', value: {name: 'specs'}}];
 
     expect(drop.enter(ticketItems)).toBe(true);
     expect(drop.drop(ticketItems, 'copy')).toBe('copy');
@@ -4086,6 +4088,12 @@ describe('Vue migration composition components', () => {
     expect(drop.enter(fileItems)).toBe(false);
     expect(drop.drop(fileItems)).toBe('cancel');
     expect(dropEvents).toEqual(['enter', 'drop:copy']);
+
+    let directoryDrop = useDrop({
+      acceptedDragTypes: [DIRECTORY_DRAG_TYPE]
+    });
+    expect(directoryDrop.enter(directoryItems)).toBe(true);
+    expect(directoryDrop.drop(directoryItems)).toBe('copy');
   });
 
   it('manages vue-stately draggable collection keys and drag lifecycle', () => {

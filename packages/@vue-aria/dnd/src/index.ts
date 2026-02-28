@@ -1,7 +1,7 @@
 import {type AriaDragOptions, type DragAria, useDrag as useAriaDrag} from './useDrag';
 import {type AriaDropOptions, type DropAria, useDrop as useAriaDrop} from './useDrop';
 import {computed, defineComponent, unref} from 'vue';
-import {type DragItem, type DropOperation} from './types';
+import {DIRECTORY_DRAG_TYPE as INTERNAL_DIRECTORY_DRAG_TYPE, type DragItem, type DropOperation} from './types';
 import {isVirtualDraggingSessionActive} from './dragSession';
 
 export type {AriaDragOptions, DragAria, AriaDropOptions, DropAria};
@@ -69,7 +69,7 @@ export type ItemDropTarget = AnyRecord;
 export type RootDropTarget = AnyRecord;
 export type TextDropItem = DropItem;
 
-export const DIRECTORY_DRAG_TYPE = 'application/x-directory';
+export const DIRECTORY_DRAG_TYPE = INTERNAL_DIRECTORY_DRAG_TYPE;
 
 export const DragPreview = defineComponent({
   name: 'VueAriaDragPreview',
