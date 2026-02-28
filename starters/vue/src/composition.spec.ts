@@ -2075,6 +2075,7 @@ describe('Vue migration composition components', () => {
       isExpanded: expanded,
       onExpandedChange: (isExpanded) => {
         changes.push(isExpanded);
+        expanded.value = isExpanded;
       }
     });
 
@@ -2086,6 +2087,36 @@ describe('Vue migration composition components', () => {
     disclosure.collapse();
     expect(expanded.value).toBe(false);
     expect(changes).toEqual([true, false]);
+  });
+
+  it('keeps vue-stately disclosure hooks controlled without mutating control refs', () => {
+    let expanded = ref(false);
+    let expansionChanges: boolean[] = [];
+    let disclosure = useStatelyDisclosureState({
+      isExpanded: expanded,
+      onExpandedChange: (isExpanded) => {
+        expansionChanges.push(isExpanded);
+      }
+    });
+
+    disclosure.expand();
+    expect(expanded.value).toBe(false);
+    expect(disclosure.isExpanded.value).toBe(false);
+    expect(expansionChanges).toEqual([true]);
+
+    let expandedKeys = ref<Set<string | number> | undefined>(new Set(['alpha']));
+    let groupChanges: string[][] = [];
+    let disclosureGroup = useStatelyDisclosureGroupState({
+      expandedKeys,
+      onExpandedChange: (keys) => {
+        groupChanges.push(Array.from(keys).map((key) => String(key)));
+      }
+    });
+
+    disclosureGroup.toggleKey('beta');
+    expect(Array.from(expandedKeys.value ?? [])).toEqual(['alpha']);
+    expect(Array.from(disclosureGroup.expandedKeys.value)).toEqual(['alpha']);
+    expect(groupChanges).toEqual([['beta']]);
   });
 
   it('manages vue-stately disclosure group expanded keys for single and multiple modes', () => {

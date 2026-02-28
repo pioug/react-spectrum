@@ -65,9 +65,7 @@ export function useDisclosureGroupState(props: DisclosureGroupProps = {}): Discl
       return;
     }
 
-    if (isControlled.value && props.expandedKeys) {
-      props.expandedKeys.value = nextKeys;
-    } else {
+    if (!isControlled.value) {
       uncontrolledExpandedKeys.value = nextKeys;
     }
 

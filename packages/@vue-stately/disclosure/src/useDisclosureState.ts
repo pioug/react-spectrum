@@ -53,9 +53,7 @@ export function useDisclosureState(props: DisclosureProps = {}): DisclosureState
       return;
     }
 
-    if (isControlled.value && props.isExpanded) {
-      props.isExpanded.value = nextExpanded;
-    } else {
+    if (!isControlled.value) {
       uncontrolledExpanded.value = nextExpanded;
     }
 

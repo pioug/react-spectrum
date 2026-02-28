@@ -2022,6 +2022,21 @@
    - full Vue tests: `yarn test:vue` (605 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Disclosure controlled contract parity (`@vue-stately/disclosure`)
+
+1. Closed controlled disclosure-state drift against React:
+   - `useDisclosureState` no longer mutates controlled `isExpanded` refs during `expand`/`collapse`/`toggle`,
+   - controlled updates now flow through `onExpandedChange` only.
+2. Closed controlled disclosure-group drift:
+   - `useDisclosureGroupState.setExpandedKeys` no longer mutates controlled `expandedKeys` refs directly,
+   - group callbacks now emit requested next keys while controlled state remains externally owned.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: explicit assertions that controlled disclosure and disclosure-group refs remain unchanged unless parent updates control refs, while callbacks still emit the requested transitions.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "disclosure expansion state transitions|disclosure hooks controlled without mutating control refs"`,
+   - full Vue tests: `yarn test:vue` (606 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
