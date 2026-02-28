@@ -4283,6 +4283,29 @@ describe('Vue migration composition components', () => {
     expect(completedChanges).toContain('details');
   });
 
+  it('repositions vue-stately step list selection when the selected step is removed from collection', async () => {
+    let options = reactive({
+      items: [
+        {key: 'setup', textValue: 'Setup', type: 'item', value: {label: 'Setup'}},
+        {key: 'details', textValue: 'Details', type: 'item', value: {label: 'Details'}},
+        {key: 'review', textValue: 'Review', type: 'item', value: {label: 'Review'}}
+      ] as StatelyListNode<{label: string}>[],
+      selectionMode: 'single' as const
+    });
+    let stepList = useStatelyStepListState(options);
+
+    stepList.setSelectedKey('details');
+    expect(stepList.selectedKey.value).toBe('details');
+
+    options.items = [
+      {key: 'setup', textValue: 'Setup', type: 'item', value: {label: 'Setup'}},
+      {key: 'review', textValue: 'Review', type: 'item', value: {label: 'Review'}}
+    ];
+    await nextTick();
+
+    expect(stepList.selectedKey.value).toBe('review');
+  });
+
   it('keeps vue-stately step list controlled without mutating control refs', () => {
     let nodes: StatelyListNode<{label: string}>[] = [
       {key: 'setup', textValue: 'Setup', type: 'item', value: {label: 'Setup'}},

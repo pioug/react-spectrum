@@ -2620,13 +2620,28 @@
    - full Vue tests: `yarn test:vue` (642 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Single-select + step-list collection-reactivity parity remediation (`@vue-stately/list`, `@vue-stately/steplist`)
+
+1. Closed reactive prop-forwarding drift in single-select/list wrappers:
+   - `useSingleSelectListState` now forwards upstream list props via live getters instead of setup-time spread snapshots.
+2. Closed step-list reactive collection drift:
+   - `useStepListState` now forwards list props via live getters and resynchronizes completion/selection state on collection updates.
+3. Preserved step-list completion semantics while restoring collection-update behavior:
+   - when a selected step is removed from the collection, fallback selection now resolves against the updated step order and completion map.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` now includes a reactive collection update test for step-list selected-step removal.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "step list"` and `-t "single-select list"`,
+   - full Vue tests: `yarn test:vue` (643 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 642 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 643 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

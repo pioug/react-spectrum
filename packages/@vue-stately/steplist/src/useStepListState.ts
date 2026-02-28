@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, type Ref, unref, watchEffect} from 'vue';
+import {computed, type ComputedRef, type Ref, unref, watch, watchEffect} from 'vue';
 import {
   type Key,
   type SingleSelectListProps,
@@ -50,7 +50,30 @@ export interface StepListState<T> extends SingleSelectListState<T> {
  */
 export function useStepListState<T extends object>(props: StepListProps<T>): StepListState<T> {
   let state = useSingleSelectListState<T>({
-    ...props,
+    get collection() {
+      return props.collection;
+    },
+    get defaultSelectedKey() {
+      return props.defaultSelectedKey;
+    },
+    get disabledKeys() {
+      return props.disabledKeys;
+    },
+    get filter() {
+      return props.filter;
+    },
+    get items() {
+      return props.items;
+    },
+    get layoutDelegate() {
+      return props.layoutDelegate;
+    },
+    get selectedKey() {
+      return props.selectedKey;
+    },
+    get suppressTextValueWarning() {
+      return props.suppressTextValueWarning;
+    },
     onSelectionChange: props.onSelectionChange
       ? (key) => {
         if (key != null) {
@@ -70,13 +93,14 @@ export function useStepListState<T extends object>(props: StepListProps<T>): Ste
     setLastCompletedStepInternal(key);
   };
 
-  let {indexMap, previousKeyMap} = buildKeyMaps(state);
+  let getKeyMaps = () => buildKeyMaps(state);
 
   let isCompleted = (step: Key | null | undefined): boolean => {
     if (step == null || lastCompletedStep.value == null) {
       return false;
     }
 
+    let {indexMap} = getKeyMaps();
     let stepIndex = indexMap.get(step);
     let completedIndex = indexMap.get(lastCompletedStep.value);
     if (stepIndex == null || completedIndex == null) {
@@ -106,9 +130,10 @@ export function useStepListState<T extends object>(props: StepListProps<T>): Ste
     return key;
   };
 
-  watchEffect(() => {
+  let syncStepSelectionState = (): void => {
+    let {indexMap, previousKeyMap} = getKeyMaps();
     let selectedKey = state.selectedKey.value;
-    if (selectedKey == null || !state.collection.getItem(selectedKey)) {
+    if (state.selectionManager.isEmpty || selectedKey == null || !state.collection.getItem(selectedKey)) {
       let fallbackKey = findDefaultSelectedKey();
       if (fallbackKey != null) {
         state.selectionManager.replaceSelection(fallbackKey);
@@ -126,7 +151,22 @@ export function useStepListState<T extends object>(props: StepListProps<T>): Ste
       let previousKey = previousKeyMap.get(selectedKey!) ?? null;
       setLastCompletedStep(previousKey);
     }
+  };
+
+  watchEffect(() => {
+    syncStepSelectionState();
   });
+
+  watch(
+    [
+      () => props.collection ? unref(props.collection) : undefined,
+      () => props.items ? unref(props.items) : undefined
+    ],
+    () => {
+      syncStepSelectionState();
+    },
+    {flush: 'sync'}
+  );
 
   let isSelectable = (step: Key): boolean => {
     if (Boolean(unref(props.isDisabled)) || Boolean(unref(props.isReadOnly)) || state.disabledKeys.has(step)) {
@@ -137,6 +177,7 @@ export function useStepListState<T extends object>(props: StepListProps<T>): Ste
       return true;
     }
 
+    let {previousKeyMap} = getKeyMaps();
     let previousStep = previousKeyMap.get(step) ?? null;
     return step === state.collection.getFirstKey() || isCompleted(previousStep);
   };
@@ -148,6 +189,7 @@ export function useStepListState<T extends object>(props: StepListProps<T>): Ste
       return;
     }
 
+    let {previousKeyMap} = getKeyMaps();
     let previousStep = previousKeyMap.get(key) ?? null;
     if (previousStep != null && !isCompleted(previousStep)) {
       setLastCompletedStep(previousStep);
@@ -157,11 +199,21 @@ export function useStepListState<T extends object>(props: StepListProps<T>): Ste
   };
 
   return {
-    ...state,
+    get collection() {
+      return state.collection;
+    },
+    get disabledKeys() {
+      return state.disabledKeys;
+    },
+    get selectionManager() {
+      return state.selectionManager;
+    },
+    selectedItem: state.selectedItem,
+    selectedKey: state.selectedKey,
+    setSelectedKey,
     lastCompletedStep,
     setLastCompletedStep,
     isCompleted,
-    isSelectable,
-    setSelectedKey
+    isSelectable
   };
 }

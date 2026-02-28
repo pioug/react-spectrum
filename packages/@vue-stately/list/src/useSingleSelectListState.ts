@@ -43,7 +43,24 @@ export function useSingleSelectListState<T extends object>(props: SingleSelectLi
   let isSyncingSelection = false;
 
   let listState = useListState({
-    ...props,
+    get collection() {
+      return props.collection;
+    },
+    get disabledKeys() {
+      return props.disabledKeys;
+    },
+    get filter() {
+      return props.filter;
+    },
+    get items() {
+      return props.items;
+    },
+    get layoutDelegate() {
+      return props.layoutDelegate;
+    },
+    get suppressTextValueWarning() {
+      return props.suppressTextValueWarning;
+    },
     allowDuplicateSelectionEvents: true,
     disallowEmptySelection: true,
     selectedKeys,
@@ -85,7 +102,15 @@ export function useSingleSelectListState<T extends object>(props: SingleSelectLi
   });
 
   return {
-    ...listState,
+    get collection() {
+      return listState.collection;
+    },
+    get disabledKeys() {
+      return listState.disabledKeys;
+    },
+    get selectionManager() {
+      return listState.selectionManager;
+    },
     selectedKey,
     setSelectedKey,
     selectedItem

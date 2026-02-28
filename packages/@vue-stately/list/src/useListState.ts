@@ -372,15 +372,18 @@ export function useListState<T extends object>(props: ListProps<T>): ListState<T
   resetFocusedKeyIfMissing(collection.value, selectionManager, null);
 
   let state: ListState<T> = {
-    collection: collection.value,
-    disabledKeys: disabledKeys.value,
+    get collection() {
+      return collection.value;
+    },
+    get disabledKeys() {
+      return context.disabledKeys;
+    },
     selectionManager
   };
 
   watch(disabledKeys, (nextDisabledKeys) => {
     context.disabledKeys = nextDisabledKeys;
     selectionManager.disabledKeys = nextDisabledKeys;
-    state.disabledKeys = nextDisabledKeys;
     selectedKeys.value = normalizeSelection(selectedKeys.value, context);
   }, {flush: 'sync'});
 
@@ -396,7 +399,6 @@ export function useListState<T extends object>(props: ListProps<T>): ListState<T
       context.collection = nextCollection;
       collection.value = nextCollection;
       selectionManager.collection = nextCollection;
-      state.collection = nextCollection;
       selectedKeys.value = normalizeSelection(selectedKeys.value, context);
       resetFocusedKeyIfMissing(nextCollection, selectionManager, previousCollection);
     },
