@@ -7171,6 +7171,7 @@ describe('Vue migration composition components', () => {
   });
 
   it('computes vue-aria select trigger, menu selection, and hidden select wiring', () => {
+    let selectionChanges: Array<string | number | null> = [];
     let selectedKey = ref<string | null>(null);
     let options = [
       {key: 'react', textValue: 'React'},
@@ -7178,6 +7179,9 @@ describe('Vue migration composition components', () => {
     ];
     let select = useAriaSelect({
       label: 'Framework',
+      onSelectionChange: (key) => {
+        selectionChanges.push(key);
+      },
       options,
       selectedKey
     });
@@ -7190,9 +7194,22 @@ describe('Vue migration composition components', () => {
     expect(selectedKey.value).toBe('vue');
     expect(select.isOpen.value).toBe(false);
     expect(select.selectedItem.value?.textValue).toBe('Vue');
+    expect(selectionChanges).toEqual(['vue']);
 
     select.triggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowUp'}));
+    expect(select.isOpen.value).toBe(true);
+    expect(selectedKey.value).toBe('vue');
+    select.close();
+
+    select.triggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowLeft'}));
     expect(selectedKey.value).toBe('react');
+    select.triggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowRight'}));
+    expect(selectedKey.value).toBe('vue');
+    expect(selectionChanges).toEqual(['vue', 'react', 'vue']);
+
+    select.open();
+    select.menuProps.value.onSelect('vue');
+    expect(selectionChanges).toEqual(['vue', 'react', 'vue']);
 
     let hiddenSelect = useAriaHiddenSelect({
       name: 'framework',
@@ -7200,9 +7217,9 @@ describe('Vue migration composition components', () => {
       selectedKey
     });
     expect(hiddenSelect.selectProps.value.name).toBe('framework');
-    expect(hiddenSelect.selectProps.value.value).toBe('react');
-    hiddenSelect.selectProps.value.onChange('vue');
-    expect(selectedKey.value).toBe('vue');
+    expect(hiddenSelect.selectProps.value.value).toBe('vue');
+    hiddenSelect.selectProps.value.onChange('react');
+    expect(selectedKey.value).toBe('react');
 
     let composedLabelSelect = useAriaSelect({
       'aria-label': 'Framework picker',

@@ -99,6 +99,16 @@ function isOptionDisabled(option: SelectOption | undefined): boolean {
   return Boolean(option.disabled);
 }
 
+function findFirstEnabledKey(options: SelectOption[]): SelectKey | null {
+  for (let option of options) {
+    if (!isOptionDisabled(option)) {
+      return option.key;
+    }
+  }
+
+  return null;
+}
+
 export function useSelect(options: AriaSelectOptions = {}): SelectAria {
   selectCounter += 1;
 
@@ -153,8 +163,11 @@ export function useSelect(options: AriaSelectOptions = {}): SelectAria {
       return;
     }
 
-    selectedKey.value = key;
-    options.onSelectionChange?.(key);
+    if (selectedKey.value !== key) {
+      selectedKey.value = key;
+      options.onSelectionChange?.(key);
+    }
+
     close();
   };
 
@@ -184,25 +197,37 @@ export function useSelect(options: AriaSelectOptions = {}): SelectAria {
   };
 
   let onKeyDown = (event: KeyboardEvent) => {
+    if (isDisabled.value) {
+      return;
+    }
+
     if (event.key === 'ArrowDown') {
       event.preventDefault();
       open();
-      let nextKey = getNextEnabledKey('next');
-      if (nextKey != null) {
-        selectedKey.value = nextKey;
-        options.onSelectionChange?.(nextKey);
-      }
       return;
     }
 
     if (event.key === 'ArrowUp') {
       event.preventDefault();
       open();
-      let previousKey = getNextEnabledKey('previous');
-      if (previousKey != null) {
-        selectedKey.value = previousKey;
-        options.onSelectionChange?.(previousKey);
+      return;
+    }
+
+    if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+      event.preventDefault();
+
+      let nextKey: SelectKey | null;
+      if (selectedKey.value == null) {
+        nextKey = findFirstEnabledKey(normalizedOptions.value);
+      } else {
+        nextKey = getNextEnabledKey(event.key === 'ArrowLeft' ? 'previous' : 'next');
       }
+
+      if (nextKey != null && nextKey !== selectedKey.value) {
+        selectedKey.value = nextKey;
+        options.onSelectionChange?.(nextKey);
+      }
+
       return;
     }
 

@@ -2994,6 +2994,23 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Select trigger keyboard parity (`@vue-aria/select`)
+
+1. Closed trigger-keyboard behavior drift against React `useSelect` + `useMenuTrigger` composition:
+   - `ArrowUp`/`ArrowDown` on the closed trigger now open the listbox without mutating selected value.
+   - `ArrowLeft`/`ArrowRight` now perform closed-trigger single-step selection movement across enabled options.
+2. Closed duplicate selection emission drift:
+   - `selectKey` now suppresses duplicate `onSelectionChange` when selecting the already-selected key.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` select assertions now verify:
+     - open-only behavior for `ArrowUp`,
+     - left/right selection stepping behavior,
+     - no duplicate selection-change emission on same-key menu selection.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria select trigger, menu selection, and hidden select wiring"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
