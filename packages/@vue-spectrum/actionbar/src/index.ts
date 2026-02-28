@@ -3,8 +3,24 @@ import {ActionButton} from '@vue-spectrum/button';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
 import {computed, defineComponent, h, type PropType} from 'vue';
 
+const ACTION_BAR_CLEAR_ICON_PATH = 'M11.697 10.283L7.414 6l4.283-4.283A1 1 0 1 0 10.283.303L6 4.586 1.717.303A1 1 0 1 0 .303 1.717L4.586 6 .303 10.283a1 1 0 1 0 1.414 1.414L6 7.414l4.283 4.283a1 1 0 1 0 1.414-1.414z';
+
 function normalizeActionKeyForComparison(value: string): string {
   return value.trim().toLowerCase().replace(/\s+/g, '');
+}
+
+function renderActionBarClearIcon() {
+  return h('svg', {
+    class: ['spectrum-Icon', 'spectrum-UIIcon-CrossLarge'],
+    focusable: 'false',
+    'aria-hidden': 'true',
+    role: 'img',
+    viewBox: '0 0 12 12'
+  }, [
+    h('path', {
+      d: ACTION_BAR_CLEAR_ICON_PATH
+    })
+  ]);
 }
 
 export const ActionBar = defineComponent({
@@ -95,7 +111,8 @@ export const ActionBar = defineComponent({
       let actions = slots.default
         ? slots.default()
         : h(ActionGroup, {
-          class: ['react-spectrum-ActionBar-actionGroup', 'vs-action-bar__actions'],
+          class: ['react-spectrum-ActionBar-actionGroup', 'vs-spectrum-action-bar__actions'],
+          'data-vs-action-bar-actions': 'true',
           'aria-label': 'Actions',
           items: props.items,
           selectionMode: 'none',
@@ -114,11 +131,12 @@ export const ActionBar = defineComponent({
         ...attrs,
         class: [
           actionBarClassName.value,
-          'vs-action-bar',
+          'vs-spectrum-action-bar',
           isEmphasized.value ? 'is-emphasized' : null,
           isOpen.value ? 'is-open' : null,
           attrs.class
         ],
+        'data-vs-action-bar': 'true',
         tabindex: 0,
         'data-vac': '',
         onKeydown: (event: KeyboardEvent) => {
@@ -128,20 +146,22 @@ export const ActionBar = defineComponent({
           }
         }
       }, [
-        h('div', {class: ['react-spectrum-ActionBar-bar', 'vs-action-bar__bar']}, [
+        h('div', {class: ['react-spectrum-ActionBar-bar', 'vs-spectrum-action-bar__bar']}, [
           actions,
           h(ActionButton, {
-            class: 'vs-action-bar__clear',
+            class: 'vs-spectrum-action-bar__clear',
             isQuiet: true,
             staticColor: isEmphasized.value ? 'white' : undefined,
             'aria-label': props.clearLabel,
+            'data-vs-action-bar-clear': 'true',
             style: {
               gridArea: 'clear'
             },
             onClick: () => emit('clearSelection')
-          }, () => '\u00d7'),
+          }, () => renderActionBarClearIcon()),
           h('p', {
-            class: ['react-spectrum-ActionBar-selectedCount', 'vs-action-bar__count']
+            class: ['react-spectrum-ActionBar-selectedCount', 'vs-spectrum-action-bar__count'],
+            'data-vs-action-bar-count': 'true'
           }, selectedLabel.value)
         ])
       ]);
@@ -155,7 +175,8 @@ export const ActionBarContainer = defineComponent({
   setup(_props, {attrs, slots}) {
     return () => h('div', {
       ...attrs,
-      class: ['ActionBarContainer', 'vs-action-bar-container', attrs.class],
+      class: ['ActionBarContainer', 'vs-spectrum-action-bar-container', attrs.class],
+      'data-vs-action-bar-container': 'true',
       'data-vac': ''
     }, slots.default ? slots.default() : []);
   }

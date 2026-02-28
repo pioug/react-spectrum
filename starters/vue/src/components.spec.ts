@@ -1513,7 +1513,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    expect(wrapper.find('button.vs-action-bar__clear svg path').exists()).toBe(true);
+    expect(wrapper.find('button[data-vs-action-bar-clear="true"] svg path').exists()).toBe(true);
 
     let actionButtons = wrapper.findAll('button[data-vs-action-group-item="true"]');
     expect(actionButtons).toHaveLength(2);
