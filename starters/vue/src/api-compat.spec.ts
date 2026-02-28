@@ -138,6 +138,14 @@ import {
   Link as RootLink,
   VueLink as RootVueLink
 } from '../../../packages/@vue-spectrum/link/index';
+import {
+  Meter,
+  VueMeter
+} from '@vue-spectrum/meter';
+import {
+  Meter as RootMeter,
+  VueMeter as RootVueMeter
+} from '../../../packages/@vue-spectrum/meter/index';
 import {DIRECTORY_DRAG_TYPE, DropZone as SpectrumDropZone, useDragAndDrop as useSpectrumDragAndDrop} from '@vue-spectrum/dnd';
 import {
   Item as TabItem,
@@ -294,6 +302,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
   it('keeps root link entry exports aligned with source exports', () => {
     expect(RootLink).toBe(Link);
     expect(RootVueLink).toBe(VueLink);
+  });
+
+  it('keeps meter exports aligned with VueMeter base entry', () => {
+    expect(Meter).toBe(VueMeter);
+  });
+
+  it('keeps root meter entry exports aligned with source exports', () => {
+    expect(RootMeter).toBe(Meter);
+    expect(RootVueMeter).toBe(VueMeter);
   });
 
   it('exports dnd drag/drop compatibility primitives', () => {

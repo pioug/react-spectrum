@@ -1,1 +1,1 @@
-export {Meter, VueMeter} from './src';
+export * from './src';
