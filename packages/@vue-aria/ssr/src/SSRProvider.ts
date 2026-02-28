@@ -120,8 +120,7 @@ export function useSSRSafeId(defaultId?: string): string {
   let context = getCurrentContext();
 
   if (context === defaultContext && !canUseDOM() && process.env.NODE_ENV !== 'production') {
-    // Match the React warning behavior at a high level when no provider wraps SSR execution.
-    console.warn('When server rendering, wrap your app in SSRProvider for consistent id generation.');
+    console.warn('When server rendering, you must wrap your application in an <SSRProvider> to ensure consistent ids are generated between the client and server.');
   }
 
   context.current += 1;

@@ -4445,6 +4445,17 @@ describe('Vue migration composition components', () => {
     expect(useAriaIsSSR()).toBe(false);
 
     rootProvider.dispose();
+
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let originalCreateElement = window.document.createElement;
+    try {
+      (window.document as Document & {createElement?: Document['createElement']}).createElement = undefined as unknown as Document['createElement'];
+      useAriaSSRSafeId();
+      expect(warn).toHaveBeenCalledWith('When server rendering, you must wrap your application in an <SSRProvider> to ensure consistent ids are generated between the client and server.');
+    } finally {
+      (window.document as Document & {createElement?: Document['createElement']}).createElement = originalCreateElement;
+      warn.mockRestore();
+    }
   });
 
   it('computes vue-aria steplist list and step item semantics', () => {

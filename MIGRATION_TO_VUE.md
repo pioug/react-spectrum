@@ -1253,6 +1253,17 @@
    - full Vue tests: `yarn test:vue` (538 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — SSR warning-message parity (`@vue-aria/ssr`)
+
+1. Aligned `useSSRSafeId` no-provider warning text with React:
+   - when SSR id generation runs without an active provider in non-production, warning text now matches React verbatim.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: simulates non-DOM capability and asserts the exact SSRProvider warning message.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria ssr provider scopes and safe ids"`,
+   - full Vue tests: `yarn test:vue` (538 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
