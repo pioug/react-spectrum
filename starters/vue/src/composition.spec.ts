@@ -4634,6 +4634,9 @@ describe('Vue migration composition components', () => {
       expandedKeys
     });
     expect(srcTreeItem.expandButtonProps.value['aria-label']).toBe('Expand');
+    let expandLabelledByIds = srcTreeItem.expandButtonProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(expandLabelledByIds).toContain(srcTreeItem.rowProps.value.id);
+    expect(expandLabelledByIds).toContain(srcTreeItem.expandButtonProps.value.id as string);
     expect(srcTreeItem.expandButtonProps.value.disabled).toBe(false);
 
     srcTreeItem.expandButtonProps.value.onPress();

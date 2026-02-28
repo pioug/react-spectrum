@@ -988,6 +988,20 @@
    - full Vue tests: `yarn test:vue` (531 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 27, 2026 — Shared `useTreeItem` expander-label parity (`@vue-aria/tree`)
+
+1. Aligned tree-item expander labeling with React `useLabels` behavior:
+   - expander button now composes `aria-label` + row `aria-labelledby` through shared label semantics,
+   - expander id now participates in `aria-labelledby` when label + labelledby coexist.
+2. Preserved tree interaction behavior:
+   - expand/collapse action, disabled gating, and row/grid semantics remain unchanged.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: tree-item assertions for expander `aria-labelledby` composition (`row-id` + expander id).
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "treegrid semantics and expandable tree item behavior"`,
+   - full Vue tests: `yarn test:vue` (531 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
