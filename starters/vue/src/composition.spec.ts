@@ -4509,6 +4509,33 @@ describe('Vue migration composition components', () => {
     expect(tableState.showSelectionCheckboxes).toBe(true);
   });
 
+  it('syncs vue-stately table selectionMode when props change', async () => {
+    let options = reactive({
+      collection: new StatelyTableCollection({
+        columns: [
+          {key: 'title', title: 'Title'}
+        ],
+        rows: [
+          {
+            key: 'row-1',
+            textValue: 'Backlog item',
+            cells: [
+              {textValue: 'Backlog item', value: 'Backlog item'}
+            ]
+          }
+        ]
+      }),
+      selectionMode: 'none' as 'none' | 'single' | 'multiple'
+    });
+    let tableState = useStatelyTableState(options);
+    expect(tableState.selectionMode).toBe('none');
+
+    options.selectionMode = 'multiple';
+    await nextTick();
+
+    expect(tableState.selectionMode).toBe('multiple');
+  });
+
   it('manages vue-stately tree grid expanded key state', () => {
     let expandedKeys = ref<Set<string> | undefined>(new Set(['row-1']));
     let expandedChanges: string[][] = [];

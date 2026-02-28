@@ -2661,13 +2661,26 @@
    - full Vue tests: `yarn test:vue` (645 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Table selection-mode reactive parity follow-up (`@vue-stately/table`)
+
+1. Closed selection-mode snapshot drift in `useTableState`:
+   - table `selectionMode` now resolves from live props instead of setup-time snapshots.
+2. Preserved table collection/show-checkbox reactive reads:
+   - table collection and `showSelectionCheckboxes` reads now flow through live getters for prop updates.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` now includes a table `selectionMode` prop-change synchronization assertion.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "vue-stately table"`,
+   - full Vue tests: `yarn test:vue` (646 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 645 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 646 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

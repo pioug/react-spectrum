@@ -48,7 +48,7 @@ export interface TableStateProps<T> {
  * Provides table state for row selection, sorting, and keyboard-navigation gating.
  */
 export function useTableState<T>(props: TableStateProps<T>): TableState<T> {
-  let selectionMode = props.selectionMode ?? 'none';
+  let selectionMode = computed(() => props.selectionMode ?? 'none');
   let sortDescriptor = computed(() => props.sortDescriptor?.value ?? null) as Ref<SortDescriptor | null>;
   let isKeyboardNavigationDisabled = ref(false);
 
@@ -62,7 +62,9 @@ export function useTableState<T>(props: TableStateProps<T>): TableState<T> {
     onSelectionChange: props.onSelectionChange,
     selectedKeys: props.selectedKeys,
     selectionBehavior: props.selectionBehavior,
-    selectionMode
+    get selectionMode() {
+      return selectionMode.value;
+    }
   });
   let sort = (columnKey: Key, direction?: SortDirection): void => {
     let currentSort = sortDescriptor.value;
@@ -80,9 +82,15 @@ export function useTableState<T>(props: TableStateProps<T>): TableState<T> {
 
   return {
     ...gridState,
-    collection: props.collection,
-    selectionMode,
-    showSelectionCheckboxes: Boolean(props.showSelectionCheckboxes),
+    get collection() {
+      return props.collection;
+    },
+    get selectionMode() {
+      return selectionMode.value;
+    },
+    get showSelectionCheckboxes() {
+      return Boolean(props.showSelectionCheckboxes);
+    },
     sortDescriptor,
     isKeyboardNavigationDisabled: computed(() => {
       return props.collection.size === 0 || isKeyboardNavigationDisabled.value;
