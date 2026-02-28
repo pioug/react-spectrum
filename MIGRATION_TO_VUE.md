@@ -1372,6 +1372,20 @@
    - full Vue tests: `yarn test:vue` (548 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Slider/StepList controlled-state warning parity (`@vue-stately/slider`, `@vue-stately/steplist`)
+
+1. Aligned controlled/uncontrolled transition warnings with React stately behavior:
+   - `useSliderState` now emits `WARN: A component changed from ...` when `value` ownership transitions between controlled and uncontrolled.
+   - `useStepListState` now emits the same warning when `lastCompletedStep` ownership transitions between controlled and uncontrolled.
+2. Preserved selection/value behavior:
+   - no slider thumb math or steplist completion logic changes were introduced; patch is warning-only parity for ownership transitions.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: controlled/uncontrolled transition warning assertions for both slider and steplist state hooks.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately slider thumb values, constraints, and drag lifecycle|manages vue-stately step list completion and selection eligibility|warns when vue-stately slider and steplist switch between controlled and uncontrolled"`,
+   - full Vue tests: `yarn test:vue` (549 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

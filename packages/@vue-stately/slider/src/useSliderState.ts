@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 type Orientation = 'horizontal' | 'vertical';
@@ -134,6 +134,14 @@ export function useSliderState<T extends number | number[]>(options: SliderState
     return typeof controlledValue === 'number' || typeof options.defaultValue === 'number';
   });
   let isControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
+  let wasControlled = ref(isControlled.value);
+
+  watch(isControlled, (nextIsControlled) => {
+    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasControlled.value = nextIsControlled;
+  });
 
   let values = computed<number[]>(() => {
     if (isControlled.value && options.value) {

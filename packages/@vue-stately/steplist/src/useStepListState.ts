@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, type Ref, ref, unref, watchEffect} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref, watch, watchEffect} from 'vue';
 import {
   type Key,
   type SingleSelectListProps,
@@ -61,6 +61,15 @@ export function useStepListState<T extends object>(props: StepListProps<T>): Ste
 
   let uncontrolledLastCompletedStep = ref<Key | null>(props.defaultLastCompletedStep ?? null);
   let isLastCompletedControlled = computed(() => props.lastCompletedStep !== undefined && props.lastCompletedStep.value !== undefined);
+  let wasLastCompletedControlled = ref(isLastCompletedControlled.value);
+
+  watch(isLastCompletedControlled, (nextIsControlled) => {
+    if (wasLastCompletedControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasLastCompletedControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasLastCompletedControlled.value = nextIsControlled;
+  });
+
   let lastCompletedStep = computed<Key | null>(() => {
     if (isLastCompletedControlled.value && props.lastCompletedStep) {
       return props.lastCompletedStep.value ?? null;

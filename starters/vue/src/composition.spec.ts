@@ -2299,6 +2299,48 @@ describe('Vue migration composition components', () => {
     expect(completedChanges).toContain('details');
   });
 
+  it('warns when vue-stately slider and steplist switch between controlled and uncontrolled', async () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    try {
+      let sliderValue = ref<number[] | undefined>([20, 60]);
+      useStatelySliderState({
+        value: sliderValue
+      });
+
+      sliderValue.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      sliderValue.value = [30, 70];
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+
+      let nodes: StatelyListNode<{label: string}>[] = [
+        {key: 'setup', textValue: 'Setup', type: 'item', value: {label: 'Setup'}},
+        {key: 'details', textValue: 'Details', type: 'item', value: {label: 'Details'}},
+        {key: 'review', textValue: 'Review', type: 'item', value: {label: 'Review'}}
+      ];
+
+      let lastCompletedStep = ref<string | null | undefined>('setup');
+      useStatelyStepListState({
+        collection: new StatelyListCollection(nodes),
+        defaultSelectedKey: 'details',
+        lastCompletedStep
+      });
+
+      lastCompletedStep.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      lastCompletedStep.value = 'details';
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
   it('manages vue-stately table collection filtering, row selection, and sort descriptor state', () => {
     let tableState = useStatelyTableState({
       collection: new StatelyTableCollection({
