@@ -26,7 +26,8 @@ export interface DateRangePickerAria {
     'aria-expanded': boolean,
     'aria-haspopup': 'dialog',
     'aria-label': string,
-    disabled: boolean
+    disabled: boolean,
+    onClick: () => void
   }>,
   calendarProps: ComputedRef<{
     end: string | null,
@@ -222,7 +223,8 @@ export function useDateRangePicker(options: AriaDateRangePickerOptions): DateRan
     'aria-haspopup': 'dialog' as const,
     'aria-controls': calendarId,
     'aria-expanded': isOpen.value,
-    'aria-label': 'Toggle range calendar'
+    'aria-label': 'Toggle range calendar',
+    onClick: open
   }));
 
   let calendarProps = computed(() => ({

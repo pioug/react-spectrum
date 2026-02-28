@@ -2286,8 +2286,11 @@ describe('Vue migration composition components', () => {
 
     picker.open();
     expect(picker.isOpen.value).toBe(true);
+    picker.close();
+    picker.buttonProps.value.onClick();
+    expect(picker.isOpen.value).toBe(true);
     picker.open();
-    expect(pickerOpenChanges).toEqual([true]);
+    expect(pickerOpenChanges).toEqual([true, false, true]);
     picker.setValue('2026-03-10');
     expect(pickerValue.value).toBe('2026-02-28');
     picker.setValue('2026-03-10');
@@ -2295,7 +2298,7 @@ describe('Vue migration composition components', () => {
     picker.close();
     expect(picker.isOpen.value).toBe(false);
     picker.close();
-    expect(pickerOpenChanges).toEqual([true, false]);
+    expect(pickerOpenChanges).toEqual([true, false, true, false]);
     picker.setValue(null);
     picker.setValue(null);
     expect(pickerChanges).toEqual(['2026-02-28', null]);
@@ -2319,11 +2322,13 @@ describe('Vue migration composition components', () => {
     });
 
     rangePicker.open();
+    rangePicker.close();
+    rangePicker.buttonProps.value.onClick();
     rangePicker.open();
-    expect(rangeOpenChanges).toEqual([true]);
+    expect(rangeOpenChanges).toEqual([true, false, true]);
     rangePicker.close();
     rangePicker.close();
-    expect(rangeOpenChanges).toEqual([true, false]);
+    expect(rangeOpenChanges).toEqual([true, false, true, false]);
 
     rangePicker.setStart('2026-02-20');
     rangePicker.setEnd('2026-03-10');

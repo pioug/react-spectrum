@@ -21,7 +21,8 @@ export interface DatePickerAria {
     'aria-expanded': boolean,
     'aria-haspopup': 'dialog',
     'aria-label': string,
-    disabled: boolean
+    disabled: boolean,
+    onClick: () => void
   }>,
   calendarProps: ComputedRef<{
     id: string,
@@ -162,7 +163,8 @@ export function useDatePicker(options: AriaDatePickerOptions): DatePickerAria {
     'aria-haspopup': 'dialog' as const,
     'aria-controls': calendarId,
     'aria-expanded': isOpen.value,
-    'aria-label': 'Toggle calendar'
+    'aria-label': 'Toggle calendar',
+    onClick: open
   }));
 
   let calendarProps = computed(() => ({

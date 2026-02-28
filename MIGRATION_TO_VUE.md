@@ -3240,6 +3240,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — DatePicker trigger-button click-open parity (`@vue-aria/datepicker`)
+
+1. Closed datepicker trigger button contract drift:
+   - `useDatePicker.buttonProps` now includes `onClick` wired to `open()`, matching React trigger-button open behavior.
+2. Closed date-range picker trigger button contract drift:
+   - `useDateRangePicker.buttonProps` now includes `onClick` wired to `open()`, matching React range trigger-button open behavior.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` datepicker assertions now verify button-prop click paths open single and range pickers with no duplicate open-change emissions.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "updates vue-aria date picker and date range picker selection state"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
