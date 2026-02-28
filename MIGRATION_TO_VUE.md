@@ -2063,6 +2063,19 @@
    - full Vue tests: `yarn test:vue` (608 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Select controlled ownership parity (`@vue-stately/select`)
+
+1. Closed select controlled ownership drift:
+   - `useSelectState` no longer mutates controlled `value` or `selectedKey` refs directly during `setValue`/`setSelectedKey` flows.
+2. Preserved emitted selection contract:
+   - `onChange` and single-select `onSelectionChange` still emit requested next selection payloads; controlled state remains externally owned.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: assertions that controlled single- and multi-select refs remain unchanged when parent does not mirror callbacks, while callback payloads continue to emit.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "select selection, trigger state, and value normalization|select controlled without mutating control refs"`,
+   - full Vue tests: `yarn test:vue` (609 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

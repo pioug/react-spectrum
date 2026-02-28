@@ -181,11 +181,7 @@ export function useSelectState<T extends object, M extends SelectSelectionMode =
       return;
     }
 
-    if (isValueControlled.value && options.value) {
-      options.value.value = normalizedValue as SelectValue<M>;
-    } else if (isSelectedKeyControlled.value && selectionMode.value === 'single' && options.selectedKey) {
-      options.selectedKey.value = Array.isArray(normalizedValue) ? normalizedValue[0] ?? null : normalizedValue;
-    } else {
+    if (!isValueControlled.value && !isSelectedKeyControlled.value) {
       uncontrolledValue.value = normalizedValue;
     }
 

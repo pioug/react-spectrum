@@ -3329,6 +3329,54 @@ describe('Vue migration composition components', () => {
     expect(multiChangeValues).toEqual([['react', 'svelte']]);
   });
 
+  it('keeps vue-stately select controlled without mutating control refs', () => {
+    let nodes: StatelyListNode<{label: string}>[] = [
+      {key: 'vue', textValue: 'Vue', type: 'item', value: {label: 'Vue'}},
+      {key: 'react', textValue: 'React', type: 'item', value: {label: 'React'}},
+      {key: 'svelte', textValue: 'Svelte', type: 'item', value: {label: 'Svelte'}}
+    ];
+
+    let selectedValue = ref<string | null | undefined>('react');
+    let changedValues: Array<string | null> = [];
+    let selectionChanges: Array<string | null> = [];
+    let singleState = useStatelySelectState({
+      collection: new StatelyListCollection(nodes),
+      onChange: (nextValue) => {
+        changedValues.push(nextValue as string | null);
+      },
+      onSelectionChange: (key) => {
+        selectionChanges.push(key as string | null);
+      },
+      value: selectedValue
+    });
+
+    singleState.setSelectedKey('svelte');
+    expect(selectedValue.value).toBe('react');
+    expect(singleState.value.value).toBe('react');
+    expect(changedValues).toEqual(['svelte']);
+    expect(selectionChanges).toEqual(['svelte']);
+
+    singleState.setSelectedKey('svelte');
+    expect(changedValues).toEqual(['svelte', 'svelte']);
+    expect(selectionChanges).toEqual(['svelte', 'svelte']);
+
+    let multiValue = ref<readonly string[] | undefined>(['react']);
+    let multiChangeValues: string[][] = [];
+    let multiState = useStatelySelectState({
+      collection: new StatelyListCollection(nodes),
+      onChange: (nextValue) => {
+        multiChangeValues.push([...(nextValue as readonly string[])]);
+      },
+      selectionMode: 'multiple',
+      value: multiValue
+    });
+
+    multiState.setValue(['react', 'svelte']);
+    expect(multiValue.value).toEqual(['react']);
+    expect(multiState.value.value).toEqual(['react']);
+    expect(multiChangeValues).toEqual([['react', 'svelte']]);
+  });
+
   it('warns when vue-stately select switches between controlled and uncontrolled', async () => {
     let nodes: StatelyListNode<{label: string}>[] = [
       {key: 'vue', textValue: 'Vue', type: 'item', value: {label: 'Vue'}},
