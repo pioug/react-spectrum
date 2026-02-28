@@ -81,6 +81,10 @@ export function useRadio(options: AriaRadioOptions, group: RadioGroupAria): Radi
       return;
     }
 
+    if (isSelected.value) {
+      return;
+    }
+
     group.setSelectedValue(value.value);
     options.onChange?.(value.value);
   };

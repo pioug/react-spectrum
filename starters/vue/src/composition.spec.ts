@@ -7033,6 +7033,9 @@ describe('Vue migration composition components', () => {
     });
     let reactRadio = useAriaRadio({
       children: 'React',
+      onChange: () => {
+        selectionChanges.push('item:react');
+      },
       value: 'react'
     }, radioGroup);
     let vueRadio = useAriaRadio({
@@ -7054,10 +7057,10 @@ describe('Vue migration composition components', () => {
     reactRadio.inputProps.value.onChange();
     expect(selectedValue.value).toBe('react');
     expect(reactRadio.isSelected.value).toBe(true);
-    expect(selectionChanges).toEqual(['react']);
+    expect(selectionChanges).toEqual(['react', 'item:react']);
 
     reactRadio.inputProps.value.onChange();
-    expect(selectionChanges).toEqual(['react']);
+    expect(selectionChanges).toEqual(['react', 'item:react']);
 
     let targetInput = document.createElement('input');
     targetInput.type = 'radio';
@@ -7069,7 +7072,7 @@ describe('Vue migration composition components', () => {
     } as unknown as KeyboardEvent;
     radioGroup.radioGroupProps.value.onKeyDown(rightArrow);
     expect(selectedValue.value).toBe('vue');
-    expect(selectionChanges).toEqual(['react', 'vue']);
+    expect(selectionChanges).toEqual(['react', 'item:react', 'vue']);
 
     let rtlProvider = I18nProvider({
       locale: 'ar-EG'
