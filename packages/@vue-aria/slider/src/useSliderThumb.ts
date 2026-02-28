@@ -11,7 +11,7 @@ import {
   sliderData,
   type SliderTrackRef
 } from './utils';
-import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
+import {computed, type ComputedRef, getCurrentScope, onScopeDispose, type Ref, ref, unref, watch} from 'vue';
 import type {MaybeRef, SliderDirection, SliderOrientation, SliderState} from './types';
 
 export interface AriaSliderThumbOptions {
@@ -166,6 +166,7 @@ export function useSliderThumb(opts: AriaSliderThumbOptions, state: SliderState)
   }, {flush: 'sync'});
 
   let activePointerId = ref<number | null>(null);
+  let hasGlobalListeners = false;
 
   let updateThumbPosition = (clientX: number, clientY: number): void => {
     let track = resolveTrackElement(opts.trackRef);
@@ -208,6 +209,7 @@ export function useSliderThumb(opts: AriaSliderThumbOptions, state: SliderState)
     state.setFocusedThumb(index);
     state.setThumbDragging(index, true);
     updateThumbPosition(point.clientX, point.clientY);
+    addGlobalListeners();
   };
 
   let handleMove = (event: MouseEvent | PointerEvent | TouchEvent): void => {
@@ -239,6 +241,43 @@ export function useSliderThumb(opts: AriaSliderThumbOptions, state: SliderState)
 
     activePointerId.value = null;
     state.setThumbDragging(index, false);
+    removeGlobalListeners();
+  };
+
+  let globalMoveListener = (event: Event): void => {
+    handleMove(event as MouseEvent | PointerEvent | TouchEvent);
+  };
+
+  let globalEndListener = (event: Event): void => {
+    handleEnd(event as MouseEvent | PointerEvent | TouchEvent);
+  };
+
+  let addGlobalListeners = (): void => {
+    if (hasGlobalListeners || typeof window === 'undefined') {
+      return;
+    }
+
+    window.addEventListener('mousemove', globalMoveListener);
+    window.addEventListener('pointermove', globalMoveListener);
+    window.addEventListener('touchmove', globalMoveListener);
+    window.addEventListener('mouseup', globalEndListener);
+    window.addEventListener('pointerup', globalEndListener);
+    window.addEventListener('touchend', globalEndListener);
+    hasGlobalListeners = true;
+  };
+
+  let removeGlobalListeners = (): void => {
+    if (!hasGlobalListeners || typeof window === 'undefined') {
+      return;
+    }
+
+    window.removeEventListener('mousemove', globalMoveListener);
+    window.removeEventListener('pointermove', globalMoveListener);
+    window.removeEventListener('touchmove', globalMoveListener);
+    window.removeEventListener('mouseup', globalEndListener);
+    window.removeEventListener('pointerup', globalEndListener);
+    window.removeEventListener('touchend', globalEndListener);
+    hasGlobalListeners = false;
   };
 
   let onKeyDown = (event: KeyboardEvent): void => {
@@ -323,6 +362,12 @@ export function useSliderThumb(opts: AriaSliderThumbOptions, state: SliderState)
 
     return percent;
   });
+
+  if (getCurrentScope()) {
+    onScopeDispose(() => {
+      removeGlobalListeners();
+    });
+  }
 
   return {
     inputProps: computed(() => ({

@@ -7570,15 +7570,13 @@ describe('Vue migration composition components', () => {
     expect(document.activeElement).toBe(secondInput);
     expect(values.value[1]).toBe(80);
 
-    slider.trackProps.value.onMouseMove(new MouseEvent('mousemove', {
-      bubbles: true,
+    window.dispatchEvent(new MouseEvent('mousemove', {
       clientX: 120,
       clientY: 12
     }));
     expect(values.value[1]).toBe(60);
 
-    slider.trackProps.value.onMouseUp(new MouseEvent('mouseup', {
-      bubbles: true,
+    window.dispatchEvent(new MouseEvent('mouseup', {
       clientX: 120,
       clientY: 12
     }));
@@ -7599,13 +7597,11 @@ describe('Vue migration composition components', () => {
       clientX: 40,
       clientY: 12
     }));
-    thumb.thumbProps.value.onMouseMove(new MouseEvent('mousemove', {
-      bubbles: true,
+    window.dispatchEvent(new MouseEvent('mousemove', {
       clientX: 10,
       clientY: 12
     }));
-    thumb.thumbProps.value.onMouseUp(new MouseEvent('mouseup', {
-      bubbles: true,
+    window.dispatchEvent(new MouseEvent('mouseup', {
       clientX: 10,
       clientY: 12
     }));

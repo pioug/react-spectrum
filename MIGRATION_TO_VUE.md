@@ -3116,6 +3116,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Slider outside-drag lifecycle parity (`@vue-aria/slider`)
+
+1. Closed outside-drag lifecycle drift for track dragging:
+   - `useSlider` now installs window-level move/end listeners during active drag and tears them down on drag end, matching React outside-track drag behavior.
+2. Closed outside-drag lifecycle drift for thumb dragging:
+   - `useSliderThumb` now installs window-level move/end listeners during active thumb drag and tears them down on drag end, matching React outside-thumb drag behavior.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` slider assertions now verify both track and thumb drags continue and terminate correctly through `window` move/up events.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "slider"` and `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria slider track and thumb interactions"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

@@ -10,7 +10,7 @@ import {
   type SliderPoint,
   type SliderTrackRef
 } from './utils';
-import {computed, type ComputedRef, ref, unref, watchEffect} from 'vue';
+import {computed, type ComputedRef, getCurrentScope, onScopeDispose, ref, unref, watchEffect} from 'vue';
 import type {MaybeRef, SliderDirection, SliderOrientation, SliderState} from './types';
 
 export interface AriaSliderOptions {
@@ -145,6 +145,7 @@ export function useSlider(
 
   let activeThumbIndex = ref<number | null>(null);
   let activePointerId = ref<number | null>(null);
+  let hasGlobalListeners = false;
 
   let resolveTrackMetrics = (): TrackMetrics | null => {
     let track = resolveTrackElement(trackRef);
@@ -228,6 +229,43 @@ export function useSlider(
     state.setThumbDragging(activeThumbIndex.value, false);
     activeThumbIndex.value = null;
     activePointerId.value = null;
+    removeGlobalListeners();
+  };
+
+  let globalMoveListener = (event: Event): void => {
+    handleMove(event as MouseEvent | PointerEvent | TouchEvent);
+  };
+
+  let globalEndListener = (event: Event): void => {
+    handleEnd(event as MouseEvent | PointerEvent | TouchEvent);
+  };
+
+  let addGlobalListeners = (): void => {
+    if (hasGlobalListeners || typeof window === 'undefined') {
+      return;
+    }
+
+    window.addEventListener('mousemove', globalMoveListener);
+    window.addEventListener('pointermove', globalMoveListener);
+    window.addEventListener('touchmove', globalMoveListener);
+    window.addEventListener('mouseup', globalEndListener);
+    window.addEventListener('pointerup', globalEndListener);
+    window.addEventListener('touchend', globalEndListener);
+    hasGlobalListeners = true;
+  };
+
+  let removeGlobalListeners = (): void => {
+    if (!hasGlobalListeners || typeof window === 'undefined') {
+      return;
+    }
+
+    window.removeEventListener('mousemove', globalMoveListener);
+    window.removeEventListener('pointermove', globalMoveListener);
+    window.removeEventListener('touchmove', globalMoveListener);
+    window.removeEventListener('mouseup', globalEndListener);
+    window.removeEventListener('pointerup', globalEndListener);
+    window.removeEventListener('touchend', globalEndListener);
+    hasGlobalListeners = false;
   };
 
   let handleStart = (event: MouseEvent | PointerEvent | TouchEvent): void => {
@@ -245,7 +283,11 @@ export function useSlider(
     }
 
     event.preventDefault();
+    let previousActiveThumbIndex = activeThumbIndex.value;
     startDraggingFromPoint(point);
+    if (previousActiveThumbIndex == null && activeThumbIndex.value != null) {
+      addGlobalListeners();
+    }
   };
 
   let handleMove = (event: MouseEvent | PointerEvent | TouchEvent): void => {
@@ -269,6 +311,12 @@ export function useSlider(
 
     document.getElementById(getSliderThumbId(state, 0))?.focus();
   };
+
+  if (getCurrentScope()) {
+    onScopeDispose(() => {
+      removeGlobalListeners();
+    });
+  }
 
   return {
     groupProps: computed(() => ({
