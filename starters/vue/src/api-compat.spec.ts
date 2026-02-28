@@ -88,6 +88,14 @@ import {
   VueTimeField as RootVueTimeField
 } from '../../../packages/@vue-spectrum/datepicker/index';
 import {
+  Badge,
+  VueBadge
+} from '@vue-spectrum/badge';
+import {
+  Badge as RootBadge,
+  VueBadge as RootVueBadge
+} from '../../../packages/@vue-spectrum/badge/index';
+import {
   ButtonGroup,
   VueButtonGroup
 } from '@vue-spectrum/buttongroup';
@@ -560,6 +568,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(RootVueDateRangePicker).toBe(VueDateRangePicker);
     expect(RootTimeField).toBe(TimeField);
     expect(RootVueTimeField).toBe(VueTimeField);
+  });
+
+  it('keeps badge exports aligned with VueBadge base entry', () => {
+    expect(Badge).toBe(VueBadge);
+  });
+
+  it('keeps root badge entry exports aligned with source exports', () => {
+    expect(RootBadge).toBe(Badge);
+    expect(RootVueBadge).toBe(VueBadge);
   });
 
   it('keeps buttongroup exports aligned with VueButtonGroup base entry', () => {
