@@ -7627,6 +7627,35 @@ describe('Vue migration composition components', () => {
     expect(treeState.selectionManager.focusedKey).toBeNull();
   });
 
+  it('supports react-style menu trigger overload signatures with stately trigger state', () => {
+    let menuTriggerState = useStatelyMenuTriggerState({
+      defaultOpen: false
+    });
+    let reactMenuTrigger = useMenuTrigger({
+      type: 'menu'
+    } as unknown as Parameters<typeof useMenuTrigger>[0], menuTriggerState as unknown as Parameters<typeof useMenuTrigger>[1], {
+      current: null
+    } as unknown as Parameters<typeof useMenuTrigger>[2]);
+    expect(reactMenuTrigger.isOpen.value).toBe(false);
+    reactMenuTrigger.menuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
+    expect(menuTriggerState.isOpen.value).toBe(true);
+    reactMenuTrigger.close();
+    expect(menuTriggerState.isOpen.value).toBe(false);
+
+    let submenuState = useStatelySubmenuTriggerState({
+      triggerKey: 'copy'
+    }, menuTriggerState);
+    let reactSubmenuTrigger = useSubmenuTrigger({
+      type: 'menu'
+    } as unknown as Parameters<typeof useSubmenuTrigger>[0], submenuState as unknown as Parameters<typeof useSubmenuTrigger>[1], {
+      current: null
+    } as unknown as Parameters<typeof useSubmenuTrigger>[2]);
+    reactSubmenuTrigger.submenuTriggerProps.value.onMouseEnter();
+    expect(submenuState.isOpen.value).toBe(true);
+    reactSubmenuTrigger.close();
+    expect(submenuState.isOpen.value).toBe(false);
+  });
+
   it('computes vue-aria meter range, labels, and value text', () => {
     let meter = useAriaMeter({
       label: 'Upload progress',

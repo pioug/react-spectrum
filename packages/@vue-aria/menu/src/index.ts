@@ -160,6 +160,30 @@ function resolveCollectionItemAction(
   return typeof nodeAction === 'function' ? nodeAction as () => void : undefined;
 }
 
+function createStateOpenRef(stateRecord: AnyRecord): Ref<boolean> {
+  return computed<boolean>({
+    get: () => Boolean(readMaybeRef<unknown>(stateRecord.isOpen)),
+    set: (nextOpen) => {
+      if (typeof stateRecord.setOpen === 'function') {
+        stateRecord.setOpen(nextOpen);
+        return;
+      }
+
+      if (nextOpen && typeof stateRecord.open === 'function') {
+        stateRecord.open();
+        return;
+      }
+
+      if (!nextOpen && typeof stateRecord.close === 'function') {
+        stateRecord.close();
+        return;
+      }
+
+      writeMaybeRef(stateRecord, 'isOpen', nextOpen);
+    }
+  }) as Ref<boolean>;
+}
+
 export type MenuTriggerAria<T = unknown> = VueMenuTriggerAria;
 export type AriaMenuOptions<T = unknown> = VueAriaMenuOptions;
 export type SubmenuTriggerAria<T = unknown> = VueSubmenuTriggerAria;
@@ -171,7 +195,21 @@ export function useMenuTrigger<T>(
   ref: RefObject<Element | null>
 ): MenuTriggerAria<T>;
 export function useMenuTrigger(props?: AriaMenuTriggerProps): VueMenuTriggerAria;
-export function useMenuTrigger(props?: AriaMenuTriggerProps): VueMenuTriggerAria {
+export function useMenuTrigger(
+  props?: AriaMenuTriggerProps,
+  state?: MenuTriggerState,
+  refObject?: RefObject<Element | null>
+): VueMenuTriggerAria {
+  if (state) {
+    void refObject;
+    let stateRecord = state as unknown as AnyRecord;
+    let propsRecord = (props ?? {}) as AnyRecord;
+    return useMenuTriggerInternal({
+      ...(propsRecord as AriaMenuTriggerProps),
+      isOpen: propsRecord.isOpen ?? createStateOpenRef(stateRecord)
+    });
+  }
+
   return useMenuTriggerInternal(props);
 }
 
@@ -253,6 +291,20 @@ export function useSubmenuTrigger<T>(
   ref: RefObject<FocusableElement | null>
 ): SubmenuTriggerAria<T>;
 export function useSubmenuTrigger(props?: AriaSubmenuTriggerProps): VueSubmenuTriggerAria;
-export function useSubmenuTrigger(props?: AriaSubmenuTriggerProps): VueSubmenuTriggerAria {
+export function useSubmenuTrigger(
+  props?: AriaSubmenuTriggerProps,
+  state?: SubmenuTriggerState,
+  refObject?: RefObject<FocusableElement | null>
+): VueSubmenuTriggerAria {
+  if (state) {
+    void refObject;
+    let stateRecord = state as unknown as AnyRecord;
+    let propsRecord = (props ?? {}) as AnyRecord;
+    return useSubmenuTriggerInternal({
+      ...(propsRecord as AriaSubmenuTriggerProps),
+      isOpen: propsRecord.isOpen ?? createStateOpenRef(stateRecord)
+    });
+  }
+
   return useSubmenuTriggerInternal(props);
 }
