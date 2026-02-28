@@ -1,5 +1,6 @@
 import {type AriaComboBoxOptions, type ComboBoxAria, type ComboBoxItem, useComboBox as useAriaComboBox} from '@vue-aria/combobox';
-import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
+import {useControlledState} from '@vue-stately/utils';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 type ComboBoxMenuTriggerAction = 'focus' | 'input' | 'manual';
@@ -35,59 +36,26 @@ export interface ComboBoxStateOptions {
 export type StatelyComboBoxState = ComboBoxState & ComboBoxAria;
 
 export function useComboBoxState(options: ComboBoxStateOptions): StatelyComboBoxState {
-  let uncontrolledInputValue = ref(options.defaultInputValue ?? '');
-  let uncontrolledSelectedKey = ref<string | null>(options.defaultSelectedKey ?? null);
-  let isInputValueControlled = computed(() => options.inputValue !== undefined && options.inputValue.value !== undefined);
-  let wasInputValueControlled = ref(isInputValueControlled.value);
-  let isSelectedKeyControlled = computed(() => options.selectedKey !== undefined && options.selectedKey.value !== undefined);
-  let wasSelectedKeyControlled = ref(isSelectedKeyControlled.value);
-
-  watch(isInputValueControlled, (nextIsControlled) => {
-    if (wasInputValueControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasInputValueControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasInputValueControlled.value = nextIsControlled;
-  });
-
-  watch(isSelectedKeyControlled, (nextIsControlled) => {
-    if (wasSelectedKeyControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasSelectedKeyControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasSelectedKeyControlled.value = nextIsControlled;
-  });
-
+  let [inputValueState, setInputValueInternal] = useControlledState(
+    options.inputValue,
+    options.defaultInputValue ?? '',
+    options.onInputChange
+  );
+  let [selectedKeyState, setSelectedKeyInternal] = useControlledState(
+    options.selectedKey,
+    options.defaultSelectedKey ?? null,
+    options.onSelectionChange
+  );
   let inputValue = computed<string>({
-    get: () => {
-      if (isInputValueControlled.value && options.inputValue) {
-        return options.inputValue.value;
-      }
-
-      return uncontrolledInputValue.value;
-    },
+    get: () => inputValueState.value,
     set: (nextValue) => {
-      if (inputValue.value === nextValue) {
-        return;
-      }
-
-      if (!isInputValueControlled.value) {
-        uncontrolledInputValue.value = nextValue;
-      }
-
-      options.onInputChange?.(nextValue);
+      setInputValueInternal(nextValue);
     }
   }) as Ref<string>;
   let selectedKeyRef = computed<string | null>({
-    get: () => {
-      if (isSelectedKeyControlled.value && options.selectedKey) {
-        return options.selectedKey.value;
-      }
-
-      return uncontrolledSelectedKey.value;
-    },
-    set: (nextSelectedKey) => {
-      if (!isSelectedKeyControlled.value) {
-        uncontrolledSelectedKey.value = nextSelectedKey;
-      }
+    get: () => selectedKeyState.value,
+    set: (nextKey) => {
+      setSelectedKeyInternal(nextKey);
     }
   }) as Ref<string | null>;
   let initialInputValue = inputValue.value;
@@ -100,8 +68,7 @@ export function useComboBoxState(options: ComboBoxStateOptions): StatelyComboBox
     items: options.items,
     onOpenChange: options.onOpenChange,
     onSelectionChange: (key) => {
-      selectedKeyRef.value = key;
-      options.onSelectionChange?.(key);
+      setSelectedKeyInternal(key);
     },
     selectedKey: selectedKeyRef
   } satisfies AriaComboBoxOptions);
@@ -131,11 +98,7 @@ export function useComboBoxState(options: ComboBoxStateOptions): StatelyComboBox
   let selectedItems = computed(() => (selectedItem.value ? [selectedItem.value] : []));
 
   let setInputValue = (nextValue: string): void => {
-    if (inputValue.value === nextValue) {
-      return;
-    }
-
-    inputValue.value = nextValue;
+    setInputValueInternal(nextValue);
   };
 
   let setSelectedKey = (nextKey: string | null): void => {

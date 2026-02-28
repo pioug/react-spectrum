@@ -1585,7 +1585,7 @@ describe('Vue migration composition components', () => {
     expect(selectionChanges).toEqual(['Vue']);
 
     state.setValue('Vue');
-    expect(selectionChanges).toEqual(['Vue', 'Vue']);
+    expect(selectionChanges).toEqual(['Vue']);
   });
 
   it('reports vue-stately combobox open trigger reasons for open and toggle', () => {
