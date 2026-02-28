@@ -820,6 +820,11 @@ describe('Vue migration composition components', () => {
       calendar,
       date: cellDate
     });
+    let preventCalendarCellFocus = vi.fn();
+    cell.buttonProps.value.onPointerDown({
+      preventDefault: preventCalendarCellFocus
+    } as unknown as PointerEvent);
+    expect(preventCalendarCellFocus).toHaveBeenCalledTimes(1);
     cell.press();
     expect(calendar.selectedDate.value?.getDate()).toBe(cellDate.getDate());
 

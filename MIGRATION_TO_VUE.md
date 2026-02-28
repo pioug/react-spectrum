@@ -3229,6 +3229,17 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Calendar cell press-focus parity (`@vue-aria/calendar`)
+
+1. Closed calendar-cell press-focus drift:
+   - `useCalendarCell.buttonProps` now prevents default on mouse/pointer press-start, aligning with React calendar cell `preventFocusOnPress` behavior.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` calendar assertions now verify calendar cell pointer-down handlers prevent default.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "builds calendar grid and cell selection for date and range flows"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

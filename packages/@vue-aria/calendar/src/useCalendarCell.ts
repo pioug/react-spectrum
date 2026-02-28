@@ -14,6 +14,8 @@ export interface AriaCalendarCellOptions {
 export interface CalendarCellAria {
   buttonProps: ComputedRef<{
     disabled: boolean,
+    onMouseDown: (event: MouseEvent) => void,
+    onPointerDown: (event: PointerEvent) => void,
     tabindex: number
   }>,
   cellProps: ComputedRef<{
@@ -68,6 +70,12 @@ export function useCalendarCell(options: AriaCalendarCellOptions): CalendarCellA
 
   let buttonProps = computed(() => ({
     disabled: isDisabled.value,
+    onMouseDown: (event: MouseEvent) => {
+      event.preventDefault();
+    },
+    onPointerDown: (event: PointerEvent) => {
+      event.preventDefault();
+    },
     tabindex: isSelected.value ? 0 : -1
   }));
 
