@@ -5,11 +5,12 @@ import '@adobe/spectrum-css-temp/components/menu/vars.css';
 import '@adobe/spectrum-css-temp/components/popover/vars.css';
 import '@adobe/spectrum-css-temp/components/search/vars.css';
 import '@adobe/spectrum-css-temp/components/textfield/vars.css';
-import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, type PropType, ref, watch} from 'vue';
+import {classNames, dimensionValue} from '@vue-spectrum/utils';
+import {computed, defineComponent, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, type PropType, ref, watch} from 'vue';
 import './combobox.css';
 import './stateClassOverrides.css';
 import {getEventTarget} from '@vue-aria/utils';
+import {ProgressCircle} from '@vue-spectrum/progress';
 
 const buttonStyles: {[key: string]: string} = {};
 const fieldStyles: {[key: string]: string} = {};
@@ -19,7 +20,10 @@ const popoverStyles: {[key: string]: string} = {};
 const textfieldStyles: {[key: string]: string} = {};
 
 type OptionKey = string | number;
+type DimensionValue = string | number;
 type FormValue = 'text' | 'key';
+type LoadingState = 'filtering' | 'loading' | 'loadingMore';
+type MenuTrigger = 'focus' | 'input' | 'manual';
 type SelectionMode = 'single' | 'multiple';
 type ValidationState = 'invalid' | 'valid';
 type PickerOptionInput = string | {
@@ -49,6 +53,19 @@ interface NormalizedOption {
 
 let comboboxId = 0;
 const COMBOBOX_PLACEHOLDER_WARNING = 'Placeholders are deprecated due to accessibility issues. Please use help text instead. See the docs for details: https://react-spectrum.adobe.com/react-spectrum/ComboBox.html#help-text';
+const ALERT_PATH = 'M8.564 1.289L.2 16.256A.5.5 0 0 0 .636 17h16.728a.5.5 0 0 0 .436-.744L9.436 1.289a.5.5 0 0 0-.872 0zM10 14.75a.25.25 0 0 1-.25.25h-1.5a.25.25 0 0 1-.25-.25v-1.5a.25.25 0 0 1 .25-.25h1.5a.25.25 0 0 1 .25.25zm0-3a.25.25 0 0 1-.25.25h-1.5a.25.25 0 0 1-.25-.25v-6a.25.25 0 0 1 .25-.25h1.5a.25.25 0 0 1 .25.25z';
+const CHECKMARK_PATH = 'M4.5 10a1.022 1.022 0 0 1-.799-.384l-2.488-3a1 1 0 0 1 1.576-1.233L4.5 7.376l4.712-5.991a1 1 0 1 1 1.576 1.23l-5.51 7A.978.978 0 0 1 4.5 10z';
+
+function renderIcon(className: string, path: string) {
+  return h('svg', {
+    class: className,
+    focusable: 'false',
+    'aria-hidden': 'true',
+    role: 'img'
+  }, [
+    h('path', {d: path})
+  ]);
+}
 
 function toOptionKey(value: OptionKey | null | undefined): string | null {
   if (value == null) {
@@ -143,6 +160,10 @@ export const ComboBox = defineComponent({
       type: Boolean,
       default: false
     },
+    contextualHelp: {
+      type: null as unknown as PropType<unknown>,
+      default: undefined
+    },
     disableLocalFilter: {
       type: Boolean,
       default: false
@@ -203,6 +224,18 @@ export const ComboBox = defineComponent({
       type: String,
       default: ''
     },
+    loadingState: {
+      type: String as PropType<LoadingState | undefined>,
+      default: undefined
+    },
+    menuTrigger: {
+      type: String as PropType<MenuTrigger>,
+      default: 'input'
+    },
+    menuWidth: {
+      type: [Number, String] as PropType<DimensionValue | undefined>,
+      default: undefined
+    },
     modelValue: {
       type: String,
       default: ''
@@ -242,6 +275,10 @@ export const ComboBox = defineComponent({
     visibleItemCount: {
       type: Number,
       default: 20
+    },
+    width: {
+      type: [Number, String] as PropType<DimensionValue | undefined>,
+      default: undefined
     }
   },
   emits: {
@@ -275,6 +312,19 @@ export const ComboBox = defineComponent({
     let rootRef = ref<HTMLElement | null>(null);
     let triggerRef = ref<HTMLButtonElement | null>(null);
     let selectedKeysRef = ref<Set<string>>(new Set());
+    let showLoading = ref(false);
+    let loadingTimer: ReturnType<typeof setTimeout> | null = null;
+    let uncontrolledInputValue = ref(props.modelValue);
+    let componentInstance = getCurrentInstance();
+
+    let hasProp = (propName: string) => {
+      let vnodeProps = componentInstance?.vnode.props;
+      if (!vnodeProps) {
+        return false;
+      }
+
+      return Object.prototype.hasOwnProperty.call(vnodeProps, propName);
+    };
 
     let inputId = computed(() => props.id ?? generatedId);
     let buttonId = computed(() => `${inputId.value}-button`);
@@ -284,9 +334,12 @@ export const ComboBox = defineComponent({
     let isInvalid = computed(() => (props.isInvalid || props.invalid || props.validationState === 'invalid') && !isDisabled.value);
     let isValid = computed(() => props.validationState === 'valid' && !isDisabled.value);
     let resolvedFormValue = computed<FormValue>(() => props.allowsCustomValue ? 'text' : props.formValue);
+    let allowsEmptyCollection = computed(() => props.allowsEmptyCollection || props.loadingState != null);
     let itemHeight = computed(() => Math.max(1, props.estimatedItemHeight));
     let maximumVisibleItems = computed(() => Math.max(1, props.visibleItemCount));
     let hasControlledSelection = computed(() => props.selectedKey !== undefined || props.selectedKeys !== undefined);
+    let isModelValueControlled = computed(() => hasProp('modelValue') || hasProp('model-value'));
+    let resolvedInputValue = computed(() => isModelValueControlled.value ? props.modelValue : uncontrolledInputValue.value);
 
     let normalizedOptions = computed(() => props.options.map((option, index) => normalizeOption(option, index)));
     let disabledOptionKeys = computed(() => new Set(Array.from(props.disabledKeys).map((key) => String(key))));
@@ -315,11 +368,55 @@ export const ComboBox = defineComponent({
 
     let selectedItems = computed(() => normalizedOptions.value.filter((option) => selectedKeysRef.value.has(option.id)));
 
+    watch([selectedItems, isModelValueControlled, () => props.selectionMode, () => props.selectedKey, () => props.selectedKeys], ([items, modelValueControlled, selectionMode]) => {
+      if (modelValueControlled || selectionMode !== 'single') {
+        return;
+      }
+
+      let selectedItem = items[0];
+      if (selectedItem) {
+        uncontrolledInputValue.value = selectedItem.inputValueOnSelect ?? selectedItem.textValue;
+        return;
+      }
+
+      if (props.selectedKey !== undefined || props.selectedKeys !== undefined) {
+        uncontrolledInputValue.value = '';
+      }
+    }, {immediate: true});
+
     watch(() => props.placeholder, (placeholder) => {
       if (placeholder && !hasWarnedDeprecatedPlaceholder.value && process.env.NODE_ENV !== 'production') {
         console.warn(COMBOBOX_PLACEHOLDER_WARNING);
         hasWarnedDeprecatedPlaceholder.value = true;
       }
+    }, {immediate: true});
+
+    let clearLoadingTimer = () => {
+      if (loadingTimer != null) {
+        clearTimeout(loadingTimer);
+        loadingTimer = null;
+      }
+    };
+
+    watch(() => [props.loadingState, resolvedInputValue.value], ([loadingState, inputValue], previous) => {
+      let prevLoadingState = previous?.[0];
+      let prevInputValue = previous?.[1];
+      let isLoading = loadingState === 'loading' || loadingState === 'filtering';
+      if (!isLoading) {
+        clearLoadingTimer();
+        showLoading.value = false;
+        return;
+      }
+
+      if (showLoading.value && loadingState === prevLoadingState && inputValue === prevInputValue) {
+        return;
+      }
+
+      showLoading.value = false;
+      clearLoadingTimer();
+      loadingTimer = setTimeout(() => {
+        showLoading.value = true;
+      }, 500);
     }, {immediate: true});
 
     let externalAriaLabelledBy = computed(() => {
@@ -350,6 +447,17 @@ export const ComboBox = defineComponent({
       'spectrum-Field',
       'spectrum-Field--positionTop'
     ));
+
+    let rootStyle = computed(() => {
+      let width = dimensionValue(props.width);
+      let attrStyle = attrs.style as Record<string, unknown> | string | undefined;
+
+      if (!width) {
+        return attrStyle;
+      }
+
+      return [{width}, attrStyle];
+    });
 
     let controlClassName = computed(() => classNames(
       inputGroupStyles,
@@ -423,12 +531,18 @@ export const ComboBox = defineComponent({
       classNames(inputGroupStyles, 'spectrum-FieldButton')
     ));
 
+    let loadingIndicatorClassName = computed(() => classNames(
+      textfieldStyles,
+      'spectrum-Textfield-circleLoader',
+      classNames(inputGroupStyles, 'spectrum-InputGroup-input-circleLoader')
+    ));
+
     let filteredOptions = computed(() => {
       if (props.disableLocalFilter) {
         return normalizedOptions.value;
       }
 
-      let query = props.modelValue.trim().toLocaleLowerCase();
+      let query = resolvedInputValue.value.trim().toLocaleLowerCase();
       if (!query) {
         return normalizedOptions.value;
       }
@@ -464,6 +578,19 @@ export const ComboBox = defineComponent({
     let maxListHeight = computed(() => `${itemHeight.value * maximumVisibleItems.value}px`);
     let totalListHeight = computed(() => `${filteredOptions.value.length * itemHeight.value}px`);
     let activeDescendant = computed(() => activeOptionKey.value ? `${inputId.value}-option-${activeOptionKey.value}` : undefined);
+    let resolvedMenuWidth = computed(() => dimensionValue(props.menuWidth) ?? listBoxWidth.value ?? undefined);
+    let shouldShowLoadingIndicator = computed(() => {
+      if (!showLoading.value) {
+        return false;
+      }
+
+      if (props.loadingState === 'loading') {
+        return true;
+      }
+
+      return props.loadingState === 'filtering' && (isExpanded.value || props.menuTrigger === 'manual');
+    });
+    let shouldShowLoadingMoreIndicator = computed(() => props.loadingState === 'loadingMore');
     let hiddenFormValues = computed(() => {
       if (!props.name || resolvedFormValue.value !== 'key') {
         return [];
@@ -478,6 +605,9 @@ export const ComboBox = defineComponent({
     });
 
     let emitValue = (value: string) => {
+      if (!isModelValueControlled.value) {
+        uncontrolledInputValue.value = value;
+      }
       emit('update:modelValue', value);
       emit('change', value);
       emit('inputChange', value);
@@ -504,6 +634,7 @@ export const ComboBox = defineComponent({
     });
 
     onBeforeUnmount(() => {
+      clearLoadingTimer();
       window.removeEventListener('resize', updateListBoxWidth);
       document.removeEventListener('mousedown', onDocumentPointerDown, true);
       document.removeEventListener('pointerdown', onDocumentPointerDown, true);
@@ -550,7 +681,7 @@ export const ComboBox = defineComponent({
         return;
       }
 
-      if (!props.allowsEmptyCollection && filteredOptions.value.length === 0) {
+      if (!allowsEmptyCollection.value && filteredOptions.value.length === 0) {
         return;
       }
 
@@ -792,10 +923,49 @@ export const ComboBox = defineComponent({
       ]);
     };
 
+    let renderListBoxContents = () => {
+      let children: unknown[] = [];
+
+      if (virtualizationEnabled.value) {
+        children.push(h('div', {
+          style: {
+            height: totalListHeight.value,
+            position: 'relative'
+          }
+        }, visibleOptions.value.map((option, index) => renderOption(option, startIndex.value + index))));
+      } else {
+        children.push(...visibleOptions.value.map((option, index) => renderOption(option, index)));
+      }
+
+      if (visibleOptions.value.length === 0 && props.loadingState != null) {
+        children.push(h('span', {
+          class: 'no-results'
+        }, props.loadingState === 'loading' ? 'Loading...' : 'No results'));
+      }
+
+      if (shouldShowLoadingMoreIndicator.value) {
+        children.push(h('div', {
+          class: classNames(menuStyles, 'spectrum-Menu-item'),
+          role: 'presentation',
+          'aria-hidden': 'true'
+        }, [
+          h(ProgressCircle, {
+            class: 'vs-combobox__listbox-loading',
+            'aria-label': 'Loading more',
+            isIndeterminate: true,
+            size: 'S'
+          })
+        ]));
+      }
+
+      return children;
+    };
+
     return () => h('div', {
       ...rootAttrs.value,
       ref: rootRef,
-      class: [rootClassName.value, attrs.class]
+      class: [rootClassName.value, attrs.class],
+      style: rootStyle.value
     }, [
       props.label
         ? h('label', {
@@ -803,6 +973,11 @@ export const ComboBox = defineComponent({
           for: inputId.value,
           class: classNames(fieldStyles, 'spectrum-FieldLabel')
         }, props.label)
+        : null,
+      props.label && props.contextualHelp
+        ? h('span', {
+          class: classNames(fieldStyles, 'spectrum-Field-contextualHelp')
+        }, typeof props.contextualHelp === 'string' ? props.contextualHelp : [props.contextualHelp as never])
         : null,
       h('div', {
         class: controlClassName.value,
@@ -833,7 +1008,7 @@ export const ComboBox = defineComponent({
               id: inputId.value,
               class: inputClassName.value,
               type: 'text',
-              value: props.modelValue,
+              value: resolvedInputValue.value,
               placeholder: props.placeholder || undefined,
               disabled: isDisabled.value,
               readonly: props.isReadOnly || undefined,
@@ -855,13 +1030,18 @@ export const ComboBox = defineComponent({
               onInput: (event: Event) => {
                 let target = event.currentTarget as HTMLInputElement | null;
                 emitValue(target?.value ?? '');
-                openMenu('first');
-                setActiveKey('first');
+                if (props.menuTrigger !== 'manual') {
+                  openMenu('first');
+                  setActiveKey('first');
+                }
               },
               onFocus: (event: FocusEvent) => {
                 isFocused.value = true;
                 let target = getEventTarget(event);
                 isFocusVisible.value = target instanceof HTMLElement ? target.matches(':focus-visible') : false;
+                if (props.menuTrigger === 'focus') {
+                  openMenu('first');
+                }
                 emit('focus', event);
               },
               onBlur: (event: FocusEvent) => {
@@ -906,13 +1086,38 @@ export const ComboBox = defineComponent({
               }
             }),
             isInvalid.value
-              ? h('span', {
-                class: classNames(textfieldStyles, 'spectrum-Textfield-validationIcon'),
-                'aria-hidden': 'true'
-              }, '!')
+              ? renderIcon(
+                classNames(
+                  textfieldStyles,
+                  'spectrum-Icon',
+                  'spectrum-UIIcon-AlertMedium',
+                  'spectrum-Textfield-validationIcon',
+                  classNames(inputGroupStyles, 'spectrum-InputGroup-input-validationIcon')
+                ),
+                ALERT_PATH
+              )
+              : isValid.value
+                ? renderIcon(
+                  classNames(
+                    textfieldStyles,
+                    'spectrum-Icon',
+                    'spectrum-UIIcon-CheckmarkMedium',
+                    'spectrum-Textfield-validationIcon',
+                    classNames(inputGroupStyles, 'spectrum-InputGroup-input-validationIcon')
+                  ),
+                  CHECKMARK_PATH
+                )
               : null
           ])
         ]),
+        shouldShowLoadingIndicator.value
+          ? h(ProgressCircle, {
+            class: loadingIndicatorClassName.value,
+            'aria-label': 'Loading',
+            isIndeterminate: true,
+            size: 'S'
+          })
+          : null,
         h('button', {
           ref: triggerRef,
           id: buttonId.value,
@@ -961,6 +1166,8 @@ export const ComboBox = defineComponent({
               'spectrum-UIIcon-ChevronDownMedium'
             ],
             viewBox: '0 0 10 6',
+            width: '10',
+            height: '6',
             focusable: 'false',
             'aria-hidden': 'true',
             role: 'img'
@@ -986,8 +1193,8 @@ export const ComboBox = defineComponent({
           role: 'presentation',
           style: {
             maxHeight: '410px',
-            minWidth: listBoxWidth.value ?? undefined,
-            width: listBoxWidth.value ?? undefined
+            minWidth: resolvedMenuWidth.value,
+            width: resolvedMenuWidth.value
           }
         }, [
           h('div', {
@@ -1003,19 +1210,10 @@ export const ComboBox = defineComponent({
               overflow: 'hidden auto',
               padding: '0px',
               position: 'relative',
-              width: listBoxWidth.value ?? undefined
+              width: resolvedMenuWidth.value
             },
             onScroll: onListScroll
-          }, virtualizationEnabled.value
-            ? [
-              h('div', {
-                style: {
-                  height: totalListHeight.value,
-                  position: 'relative'
-                }
-              }, visibleOptions.value.map((option, index) => renderOption(option, startIndex.value + index)))
-            ]
-            : visibleOptions.value.map((option, index) => renderOption(option, index)))
+          }, renderListBoxContents())
         ])
         : null,
       hiddenFormValues.value.map((value, index) => h('input', {

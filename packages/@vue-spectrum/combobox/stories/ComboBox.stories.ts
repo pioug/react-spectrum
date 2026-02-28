@@ -1,7 +1,10 @@
 import {action} from 'storybook/actions';
-import {Button} from '@vue-spectrum/button';
+import {ActionButton, Button} from '@vue-spectrum/button';
 import {ComboBox} from '../src';
-import {computed, onBeforeUnmount, ref, watch} from 'vue';
+import {ContextualHelp} from '@vue-spectrum/contextualhelp';
+import {Content} from '@vue-spectrum/view';
+import {Heading} from '@vue-spectrum/text';
+import {computed, h, onBeforeUnmount, ref, watch} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type StoryArgs = Record<string, unknown>;
@@ -23,12 +26,12 @@ const BASIC_ANIMALS: ComboOption[] = [
 ];
 
 const WITH_SECTION_OPTIONS: ComboOption[] = [
-  {id: '1', textValue: 'Animals: Aardvark'},
-  {id: '2', textValue: 'Animals: Kangaroo'},
-  {id: '3', textValue: 'Animals: Snake'},
-  {id: '4', textValue: 'People: Danni'},
-  {id: '5', textValue: 'People: Devon'},
-  {id: '6', textValue: 'People: Ross'}
+  {id: '1', textValue: 'Aardvark'},
+  {id: '2', textValue: 'Kangaroo'},
+  {id: '3', textValue: 'Snake'},
+  {id: '4', textValue: 'Danni'},
+  {id: '5', textValue: 'Devon'},
+  {id: '6', textValue: 'Ross'}
 ];
 
 const MANY_SECTION_OPTIONS: ComboOption[] = Array.from({length: 50}, (_section, sectionIndex) => (
@@ -279,7 +282,7 @@ export const NoItems: Story = {
 
 export const MappedItems: Story = {
   render: (args) => ({
-    components: {Button, ComboBox},
+    components: {ComboBox},
     setup() {
       let options = ref<ComboOption[]>([
         {id: 'one', textValue: 'The first item'},
@@ -302,8 +305,8 @@ export const MappedItems: Story = {
       };
     },
     template: `
-      <div style="display: grid; gap: 12px;">
-        <Button variant="secondary" @click="updateItems">Press to change items</Button>
+      <div style="display: grid;">
+        <button @click="updateItems">Press to change items</button>
         <ComboBox v-bind="args" :options="options" />
       </div>
     `
@@ -366,21 +369,21 @@ export const DisabledKeys: Story = {
 
 export const ContextualHelpStory: Story = {
   render: (args) => ({
-    components: {ComboBox},
+    components: {ComboBox, Content, ContextualHelp, Heading},
     setup() {
       return {
         args,
+        contextualHelp: h(ContextualHelp, null, {
+          default: () => [
+            h(Heading, {'element-type': 'h3'}, () => 'What is a segment?'),
+            h(Content, null, () => 'Segments identify who your visitors are, what devices and services they use, where they navigated from, and much more.')
+          ]
+        }),
         options: STATIC_OPTIONS
       };
     },
     template: `
-      <div style="display: grid; gap: 8px;">
-        <p style="margin: 0; max-width: 520px;">
-          What is a segment? Segments identify who your visitors are, what devices and services they use,
-          where they navigated from, and much more.
-        </p>
-        <ComboBox v-bind="args" :options="options" />
-      </div>
+      <ComboBox v-bind="args" :contextual-help="contextualHelp" :options="options" />
     `
   }),
   name: 'contextual help'
@@ -388,7 +391,7 @@ export const ContextualHelpStory: Story = {
 
 export const Resize: Story = {
   render: (args) => ({
-    components: {Button, ComboBox},
+    components: {ActionButton, ComboBox},
     setup() {
       let isCompact = ref(true);
       let toggleSize = () => {
@@ -405,9 +408,9 @@ export const Resize: Story = {
     template: `
       <div style="display: grid; gap: 12px; justify-items: start;">
         <div :style="{width: isCompact ? '200px' : '300px'}">
-          <ComboBox v-bind="args" :options="options" style="width: 100%;" />
+          <ComboBox v-bind="args" :options="options" width="100%" />
         </div>
-        <Button variant="secondary" @click="toggleSize">Toggle size</Button>
+        <ActionButton @click="toggleSize">Toggle size</ActionButton>
       </div>
     `
   })
@@ -616,7 +619,7 @@ export const ControlledInputDefaultKey: Story = {
     disabledKeys: ['2', '6']
   },
   render: (args) => ({
-    components: {ComboBox},
+    components: {Button, ComboBox},
     setup() {
       let inputValue = ref(typeof args.modelValue === 'string' ? args.modelValue : 'K');
       let onInputChange = (value: string) => {
@@ -627,16 +630,24 @@ export const ControlledInputDefaultKey: Story = {
         args,
         inputValue,
         onInputChange,
-        options: STATIC_OPTIONS
+        options: WITH_SECTION_OPTIONS
       };
     },
     template: `
-      <ComboBox
-        v-bind="args"
-        :options="options"
-        :model-value="inputValue"
-        @update:model-value="onInputChange"
-      />
+      <div style="display: grid; gap: 12px;">
+        <div>Current input value: {{inputValue}}</div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <Button variant="secondary" @click="onInputChange('Blah')">Blah</Button>
+          <Button variant="secondary" @click="onInputChange('Kangaroo')">Kangaroo</Button>
+          <Button variant="secondary" @click="onInputChange('')">Clear field</Button>
+        </div>
+        <ComboBox
+          v-bind="args"
+          :options="options"
+          :model-value="inputValue"
+          @update:model-value="onInputChange"
+        />
+      </div>
     `
   }),
   name: 'inputValue and defaultSelectedKey (controlled by inputvalue)'
@@ -649,7 +660,7 @@ export const ControlledInputValue: Story = {
     disabledKeys: ['2', '6']
   },
   render: (args) => ({
-    components: {ComboBox},
+    components: {Button, ComboBox},
     setup() {
       let selectedKey = ref(typeof args.selectedKey === 'string' ? args.selectedKey : '2');
       let setSelectedKey = (value: string | number | undefined | null) => {
@@ -664,12 +675,20 @@ export const ControlledInputValue: Story = {
       };
     },
     template: `
-      <ComboBox
-        v-bind="args"
-        :options="options"
-        :selected-key="selectedKey || undefined"
-        @update:selected-key="setSelectedKey"
-      />
+      <div style="display: grid; gap: 12px;">
+        <div>Current selectedKey: {{selectedKey || 'none'}}</div>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <Button variant="secondary" @click="setSelectedKey('3')">Snake</Button>
+          <Button variant="secondary" @click="setSelectedKey('6')">Ross</Button>
+          <Button variant="secondary" @click="setSelectedKey('')">Clear key</Button>
+        </div>
+        <ComboBox
+          v-bind="args"
+          :options="options"
+          :selected-key="selectedKey || undefined"
+          @update:selected-key="setSelectedKey"
+        />
+      </div>
     `
   }),
   name: 'defaultInputValue and selectedKey (controlled by selectedKey)'
@@ -718,10 +737,16 @@ export const LoadingState: Story = {
     },
     template: `
       <div style="display: grid; gap: 16px;">
-        <ComboBox v-bind="args" label="Combobox (loading)" :options="options" placeholder="Loading..." />
-        <ComboBox v-bind="args" label="Combobox (filtering)" :options="options" placeholder="Filtering..." />
-        <ComboBox v-bind="args" label="Combobox (loading + manual open)" :options="options" placeholder="Loading..." />
-        <ComboBox v-bind="args" label="Combobox (loading more)" :options="options" placeholder="Loading more..." />
+        <ComboBox v-bind="args" label="Combobox (loading)" :options="options" loading-state="loading" />
+        <ComboBox v-bind="args" label="Combobox (filtering)" :options="options" loading-state="filtering" />
+        <ComboBox
+          v-bind="args"
+          label="Combobox (loading + menuTrigger manual)"
+          :options="options"
+          loading-state="loading"
+          menu-trigger="manual"
+        />
+        <ComboBox v-bind="args" label="Combobox (loading more)" :options="options" loading-state="loadingMore" />
       </div>
     `
   })
@@ -787,7 +812,7 @@ function renderServerSideFiltering(args: StoryArgs, controlledKey: boolean, rese
   return {
     components: {ComboBox},
     setup() {
-      let inputValue = ref(controlledKey ? 'Luke Skywalker' : '');
+      let inputValue = ref('');
       let selectedKey = ref<string | undefined>(controlledKey ? 'Luke Skywalker' : undefined);
       let options = ref<ComboOption[]>([]);
       let loading = ref(false);
@@ -808,7 +833,7 @@ function renderServerSideFiltering(args: StoryArgs, controlledKey: boolean, rese
           if (controlledKey && selectedKey.value && !matches.includes(selectedKey.value)) {
             selectedKey.value = undefined;
           }
-        }, 400);
+        }, 1500);
       };
 
       watch(inputValue, value => {
@@ -856,6 +881,7 @@ function renderServerSideFiltering(args: StoryArgs, controlledKey: boolean, rese
         args,
         inputValue,
         loading,
+        loadingState: computed(() => loading.value ? 'loading' : undefined),
         onBlur,
         onInputChange,
         onSelectionChange,
@@ -864,11 +890,11 @@ function renderServerSideFiltering(args: StoryArgs, controlledKey: boolean, rese
       };
     },
     template: `
-      <div style="display: grid; gap: 8px;">
-        <div v-if="loading">Loading…</div>
+      <div>
         <ComboBox
-          v-bind="args"
           label="Star Wars Character Lookup"
+          v-bind="args"
+          :loading-state="loadingState"
           :options="options"
           :model-value="inputValue"
           :selected-key="selectedKey"
@@ -898,7 +924,7 @@ export const SeverSideFilteringControlledReset: Story = {
 
 export const InDialog: Story = {
   render: (args) => ({
-    components: {Button, ComboBox},
+    components: {ActionButton, Button, ComboBox},
     setup() {
       let isOpen = ref(false);
       let selectedKey = ref<string | undefined>(undefined);
@@ -912,7 +938,7 @@ export const InDialog: Story = {
     },
     template: `
       <div style="display: grid; gap: 12px; justify-items: start;">
-        <Button variant="secondary" @click="isOpen = true">Show ComboBox</Button>
+        <ActionButton @click="isOpen = true">Show ComboBox</ActionButton>
         <div
           v-if="isOpen"
           style="display: grid; gap: 12px; width: min(100%, 440px); padding: 16px; border: 1px solid #d4d4d8; border-radius: 8px;">
@@ -936,9 +962,31 @@ export const WHCM: Story = {
   render: (args) => ({
     components: {ComboBox},
     setup() {
+      let rows: Record<string, unknown>[] = [
+        {placeholder: 'Type here...'},
+        {},
+        {labelPosition: 'side'},
+        {isQuiet: true, placeholder: 'Type here...'},
+        {isQuiet: true},
+        {isRequired: true},
+        {isRequired: true, isQuiet: true},
+        {validationState: 'invalid'},
+        {validationState: 'invalid', isQuiet: true}
+      ];
+
+      let mergeArgs = (row: Record<string, unknown>, isDisabled = false) => {
+        return {
+          ...args,
+          ...row,
+          isDisabled
+        };
+      };
+
       return {
         args,
-        options: STATIC_OPTIONS
+        mergeArgs,
+        options: STATIC_OPTIONS,
+        rows
       };
     },
     template: `
@@ -947,11 +995,10 @@ export const WHCM: Story = {
           Shows the different states from
           <a href="https://spectrum.adobe.com/static/Windows-High-Contrast-Kits/Combobox-WindowsHighContrast.xd" target="_blank" rel="noreferrer">spectrum</a>.
         </div>
-        <ComboBox v-bind="args" label="Label" placeholder="Type here..." :options="options" />
-        <ComboBox v-bind="args" label="Label" :options="options" />
-        <ComboBox v-bind="args" label="Label" is-quiet :options="options" />
-        <ComboBox v-bind="args" label="Label" is-invalid :options="options" />
-        <ComboBox v-bind="args" label="Label" is-invalid is-quiet :options="options" />
+        <div v-for="(row, index) in rows" :key="index" style="display: flex; gap: 16px; align-items: start;">
+          <ComboBox v-bind="mergeArgs(row)" label="Label" :options="options" />
+          <ComboBox v-bind="mergeArgs(row, true)" label="Label" :options="options" />
+        </div>
       </div>
     `
   })

@@ -1,3 +1,12 @@
 .spectrum-InputGroup .spectrum-Textfield-input:focus-visible:not(:active) {
   box-shadow: none;
 }
+
+.spectrum-InputGroup .spectrum-CircleLoader.spectrum-Textfield-circleLoader.spectrum-InputGroup-input-circleLoader {
+  margin-inline-end: var(--spectrum-global-dimension-size-100);
+}
+
+.vs-combobox__listbox-loading {
+  display: block;
+  margin: var(--spectrum-global-dimension-size-100) auto;
+}

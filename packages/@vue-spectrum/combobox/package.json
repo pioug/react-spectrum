@@ -25,6 +25,7 @@
   "dependencies": {
     "@adobe/spectrum-css-temp": "3.0.0-alpha.1",
     "@vue-aria/utils": "workspace:*",
+    "@vue-spectrum/progress": "workspace:*",
     "@vue-spectrum/utils": "workspace:*",
     "@vue-stately/collections": "workspace:*",
     "@vue-types/combobox": "^3.13.11"
