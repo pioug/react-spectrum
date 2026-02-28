@@ -61,11 +61,15 @@ export function useDisclosureGroupState(props: DisclosureGroupProps = {}): Discl
   });
 
   let setExpandedKeys = (nextKeys: Set<Key>): void => {
-    let normalizedKeys = new Set(nextKeys);
+    let normalizedKeys = nextKeys;
 
     if (!allowsMultipleExpanded.value && normalizedKeys.size > 1) {
       let firstKey = normalizedKeys.values().next().value;
       normalizedKeys = firstKey == null ? new Set() : new Set([firstKey]);
+    }
+
+    if (Object.is(normalizedKeys, expandedKeys.value)) {
+      return;
     }
 
     if (isControlled.value && props.expandedKeys) {
@@ -74,7 +78,7 @@ export function useDisclosureGroupState(props: DisclosureGroupProps = {}): Discl
       uncontrolledExpandedKeys.value = normalizedKeys;
     }
 
-    props.onExpandedChange?.(new Set(normalizedKeys));
+    props.onExpandedChange?.(normalizedKeys);
   };
 
   watchEffect(() => {

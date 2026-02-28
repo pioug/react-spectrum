@@ -1659,6 +1659,24 @@ describe('Vue migration composition components', () => {
     expect(Array.from(multipleGroup.expandedKeys.value)).toEqual(['two']);
   });
 
+  it('matches vue-stately disclosure group expanded-set identity semantics', () => {
+    let expandedChanges: string[][] = [];
+    let group = useStatelyDisclosureGroupState({
+      allowsMultipleExpanded: true,
+      defaultExpandedKeys: ['alpha'],
+      onExpandedChange: (keys) => {
+        expandedChanges.push(Array.from(keys).map((key) => String(key)));
+      }
+    });
+
+    let sameSetRef = group.expandedKeys.value;
+    group.setExpandedKeys(sameSetRef);
+    expect(expandedChanges).toEqual([]);
+
+    group.setExpandedKeys(new Set(['alpha']));
+    expect(expandedChanges).toEqual([['alpha']]);
+  });
+
   it('warns when vue-stately disclosure hooks switch between controlled and uncontrolled', async () => {
     let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 

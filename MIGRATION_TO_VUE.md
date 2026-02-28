@@ -1694,6 +1694,21 @@
    - full Vue tests: `yarn test:vue` (583 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Disclosure-group expanded-set identity parity (`@vue-stately/disclosure`)
+
+1. Closed `useDisclosureGroupState` set-expanded no-op/emission drift:
+   - `setExpandedKeys` now uses identity no-op checks (`Object.is`) instead of always cloning and emitting.
+2. Aligned callback payload parity with React:
+   - `onExpandedChange` now receives the normalized next set directly instead of an always-cloned payload.
+3. Preserved disclosure-group ownership behavior:
+   - controlled/uncontrolled transition warnings and ref-backed-`undefined` uncontrolled behavior remain unchanged.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: new disclosure-group test asserts same-reference `setExpandedKeys` is a no-op while a new `Set` with same keys still emits (React parity).
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately disclosure group expanded keys for single and multiple modes|matches vue-stately disclosure group expanded-set identity semantics|warns when vue-stately disclosure hooks switch between controlled and uncontrolled|keeps vue-stately overlay and disclosure hooks uncontrolled when control refs are undefined"`,
+   - full Vue tests: `yarn test:vue` (583 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
