@@ -9696,6 +9696,86 @@ describe('Vue migration composition components', () => {
     expect(columnResize.isResizing.value).toBe(false);
   });
 
+  it('supports react-style useTable overload with state/ref and onAction fallback', () => {
+    let collection = {
+      columnCount: 2,
+      rows: [
+        {
+          key: 'row-1',
+          index: 0,
+          textValue: 'Backlog',
+          cells: [
+            {key: 'row-1-cell-1', colIndex: 0, textValue: 'Backlog'},
+            {key: 'row-1-cell-2', colIndex: 1, textValue: 'Open'}
+          ]
+        },
+        {
+          key: 'row-2',
+          index: 1,
+          textValue: 'Done',
+          cells: [
+            {key: 'row-2-cell-1', colIndex: 0, textValue: 'Done'},
+            {key: 'row-2-cell-2', colIndex: 1, textValue: 'Closed'}
+          ]
+        }
+      ]
+    };
+    let actions: Array<string | number> = [];
+    let focusedKey: string | number | null = null;
+    let selectedKeys = new Set<string | number>();
+    let state = {
+      collection,
+      disabledKeys: new Set<string | number>(['row-2']),
+      selectionManager: {
+        get focusedKey() {
+          return focusedKey;
+        },
+        selectionMode: 'multiple' as const,
+        get selectedKeys() {
+          return selectedKeys;
+        },
+        setFocusedKey: (key: string | number | null) => {
+          focusedKey = key;
+        },
+        setSelectedKeys: (keys: Set<string | number>) => {
+          selectedKeys = new Set(keys);
+        }
+      }
+    };
+
+    let table = useAriaTable({
+      'aria-label': 'React-style table',
+      id: 'react-table-id',
+      onAction: (key: string | number) => {
+        actions.push(key);
+      }
+    } as unknown as Parameters<typeof useAriaTable>[0], state as unknown as Parameters<typeof useAriaTable>[1], {
+      current: null
+    });
+
+    expect(table.gridProps.value.id).toBe('react-table-id');
+    expect(table.gridProps.value['aria-label']).toBe('React-style table');
+
+    table.toggleSelection('row-1');
+    expect(Array.from(selectedKeys)).toEqual(['row-1']);
+    table.setFocusedKey('row-1-cell-1');
+    expect(focusedKey).toBe('row-1-cell-1');
+
+    table.triggerRowAction('row-1');
+    expect(actions).toEqual(['row-1']);
+
+    let enabledRow = useAriaTableRow({
+      grid: table,
+      row: collection.rows[0]
+    });
+    let disabledRow = useAriaTableRow({
+      grid: table,
+      row: collection.rows[1]
+    });
+    expect(enabledRow.isDisabled.value).toBe(false);
+    expect(disabledRow.isDisabled.value).toBe(true);
+  });
+
   it('announces and clears live region messages with vue-aria live announcer', () => {
     destroyAnnouncer();
 

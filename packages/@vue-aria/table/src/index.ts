@@ -37,6 +37,7 @@ import {
   useTableSelectionCheckbox as useTableSelectionCheckboxInternal
 } from './useTableSelectionCheckbox';
 import type {GridAria, GridRowAria, GridRowGroupAria, GridRowProps} from '@vue-aria/grid';
+import {computed} from 'vue';
 import {useTableRowGroup as useTableRowGroupInternal} from './useTableRowGroup';
 
 type AnyRecord = Record<string, unknown>;
@@ -45,6 +46,22 @@ type FocusableElement = Element;
 type TableState<T> = AnyRecord;
 type TreeGridState<T> = AnyRecord;
 type TableColumnResizeState<T> = AnyRecord;
+
+function toSet(values: unknown): Set<string | number> {
+  if (!values || typeof values !== 'object') {
+    return new Set();
+  }
+
+  if (values instanceof Set) {
+    return new Set(values);
+  }
+
+  if (Symbol.iterator in values) {
+    return new Set(Array.from(values as Iterable<string | number>));
+  }
+
+  return new Set();
+}
 
 export type {AriaTableOptions};
 export type AriaTableProps = AriaTableOptions;
@@ -68,7 +85,59 @@ export function useTable<T>(
   ref: RefObject<HTMLElement | null>
 ): GridAria;
 export function useTable(options: AriaTableOptions): GridAria;
-export function useTable(options: AriaTableOptions): GridAria {
+export function useTable(
+  options: AriaTableOptions,
+  state?: TableState<unknown> | TreeGridState<unknown>,
+  refObject?: RefObject<HTMLElement | null>
+): GridAria {
+  if (state) {
+    void refObject;
+    let stateRecord = state as AnyRecord;
+    let optionsRecord = options as AnyRecord;
+    let selectionManager = (stateRecord.selectionManager ?? {}) as AnyRecord;
+
+    let focusedKey = computed<string | number | null>({
+      get: () => {
+        let key = selectionManager.focusedKey;
+        return key == null ? null : (key as string | number);
+      },
+      set: (key) => {
+        let setFocusedKey = selectionManager.setFocusedKey;
+        if (typeof setFocusedKey === 'function') {
+          setFocusedKey(key);
+          return;
+        }
+
+        selectionManager.focusedKey = key;
+      }
+    });
+
+    let selectedKeys = computed<Set<string | number>>({
+      get: () => toSet(selectionManager.selectedKeys),
+      set: (keys) => {
+        let nextKeys = new Set(keys);
+        let setSelectedKeys = selectionManager.setSelectedKeys;
+        if (typeof setSelectedKeys === 'function') {
+          setSelectedKeys(nextKeys);
+          return;
+        }
+
+        selectionManager.selectedKeys = nextKeys;
+      }
+    });
+
+    return useTableInternal({
+      ...options,
+      collection: stateRecord.collection,
+      disabledKeys: stateRecord.disabledKeys,
+      focusedKey,
+      selectedKeys,
+      selectionMode: selectionManager.selectionMode ?? optionsRecord.selectionMode,
+      onRowAction: (optionsRecord.onRowAction as ((key: string | number) => void) | undefined)
+        ?? (optionsRecord.onAction as ((key: string | number) => void) | undefined)
+    });
+  }
+
   return useTableInternal(options);
 }
 
