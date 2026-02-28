@@ -3011,6 +3011,17 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Tooltip trigger no-op open-change parity (`@vue-aria/tooltip`)
+
+1. Closed tooltip trigger no-op emission drift:
+   - `useTooltipTrigger` now suppresses duplicate writes/callbacks when `setOpen` receives the current state.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` tooltip-trigger assertions now verify repeated identical open/close calls emit `onOpenChange` only on state transitions.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria tooltip trigger and tooltip hover/focus linkage"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

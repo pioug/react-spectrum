@@ -66,6 +66,10 @@ export function useTooltipTrigger(options: AriaTooltipTriggerOptions = {}): Tool
       return;
     }
 
+    if (isOpen.value === nextOpen) {
+      return;
+    }
+
     isOpen.value = nextOpen;
     options.onOpenChange?.(nextOpen);
   };

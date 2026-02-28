@@ -8033,6 +8033,19 @@ describe('Vue migration composition components', () => {
       expect(trigger.isOpen.value).toBe(true);
       tooltipElement.dispatchEvent(createPointerEvent('pointerleave', {pointerType: 'mouse'}));
       expect(trigger.isOpen.value).toBe(false);
+
+      let openChanges: boolean[] = [];
+      let trackedTrigger = useAriaTooltipTrigger({
+        onOpenChange: (nextOpen) => {
+          openChanges.push(nextOpen);
+        },
+        triggerRef: ref<HTMLElement | null>(triggerElement)
+      });
+      trackedTrigger.open();
+      trackedTrigger.open();
+      trackedTrigger.close();
+      trackedTrigger.close();
+      expect(openChanges).toEqual([true, false]);
     } finally {
       document.body.removeChild(triggerElement);
       document.body.removeChild(tooltipElement);
