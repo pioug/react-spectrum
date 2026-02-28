@@ -308,6 +308,7 @@ import {
   ProgrammaticallyClosing as ToastProgrammaticallyClosing,
   WithAction as ToastWithAction,
   WithDialog as ToastWithDialog,
+  WithTestId as ToastWithTestId,
   WithIframe as ToastWithIframe,
   withFullscreen as ToastWithFullscreen
 } from '../../../packages/@vue-spectrum/toast/stories/Toast.stories';
@@ -2411,6 +2412,7 @@ describe('Vue storybook helper parity', () => {
     clearToastQueue();
     let defaultWrapper: ReturnType<typeof mount> | null = null;
     let actionWrapper: ReturnType<typeof mount> | null = null;
+    let testIdWrapper: ReturnType<typeof mount> | null = null;
     let withDialogWrapper: ReturnType<typeof mount> | null = null;
     let multipleWrapper: ReturnType<typeof mount> | null = null;
     let closingWrapper: ReturnType<typeof mount> | null = null;
@@ -2426,12 +2428,12 @@ describe('Vue storybook helper parity', () => {
 
       await neutralButton.trigger('click');
       await nextTick();
-      expect(defaultWrapper.get('section.vs-toast-region').attributes('aria-label')).toBe('Notifications');
-      expect(defaultWrapper.find('.vs-toast').exists()).toBe(true);
+      expect(defaultWrapper.get('section.react-spectrum-ToastContainer').attributes('aria-label')).toBe('Notifications');
+      expect(defaultWrapper.find('.spectrum-Toast').exists()).toBe(true);
 
       clearToastQueue();
       await nextTick();
-      expect(defaultWrapper.find('.vs-toast').exists()).toBe(false);
+      expect(defaultWrapper.find('.spectrum-Toast').exists()).toBe(false);
       defaultWrapper.unmount();
       defaultWrapper = null;
 
@@ -2439,12 +2441,23 @@ describe('Vue storybook helper parity', () => {
       actionWrapper = mount(actionStory);
       await actionWrapper.get('button').trigger('click');
       await nextTick();
-      expect(actionWrapper.find('.vs-toast__action').text()).toBe('Action');
+      expect(actionWrapper.find('button[data-testid="rsp-Toast-secondaryButton"]').text()).toBe('Action');
 
       clearToastQueue();
       await nextTick();
       actionWrapper.unmount();
       actionWrapper = null;
+
+      let testIdStory = ToastWithTestId.render?.({placement: undefined, shouldCloseOnAction: true, timeout: undefined}) as ReturnType<Exclude<typeof ToastWithTestId.render, undefined>>;
+      testIdWrapper = mount(testIdStory);
+      await testIdWrapper.get('button').trigger('click');
+      await nextTick();
+      expect(testIdWrapper.find('.spectrum-Toast[data-testid="hello i am a test id"]').exists() || document.querySelector('.spectrum-Toast[data-testid="hello i am a test id"]') !== null).toBe(true);
+
+      clearToastQueue();
+      await nextTick();
+      testIdWrapper.unmount();
+      testIdWrapper = null;
 
       let withDialogStory = ToastWithDialog.render?.({placement: undefined, shouldCloseOnAction: false, timeout: undefined}) as ReturnType<Exclude<typeof ToastWithDialog.render, undefined>>;
       withDialogWrapper = mount(withDialogStory);
@@ -2461,7 +2474,7 @@ describe('Vue storybook helper parity', () => {
         neutralToastButton?.click();
       }
       await nextTick();
-      expect(withDialogWrapper.find('.vs-toast').exists() || document.body.querySelector('.vs-toast') !== null).toBe(true);
+      expect(withDialogWrapper.find('.spectrum-Toast').exists() || document.body.querySelector('.spectrum-Toast') !== null).toBe(true);
 
       clearToastQueue();
       await nextTick();
@@ -2473,11 +2486,11 @@ describe('Vue storybook helper parity', () => {
       expect(multipleWrapper.findAll('input[type="checkbox"]')).toHaveLength(2);
       await multipleWrapper.findAll('button').find((button) => button.text() === 'Show Positive Toast')?.trigger('click');
       await nextTick();
-      expect(multipleWrapper.findAll('section.vs-toast-region').length + document.querySelectorAll('section.vs-toast-region').length).toBeGreaterThan(0);
+      expect(multipleWrapper.findAll('section.react-spectrum-ToastContainer').length + document.querySelectorAll('section.react-spectrum-ToastContainer').length).toBeGreaterThan(0);
       let firstCheckbox = multipleWrapper.findAll('input[type="checkbox"]')[0];
       await firstCheckbox.setValue(false);
       await nextTick();
-      expect(multipleWrapper.findAll('section.vs-toast-region').length + document.querySelectorAll('section.vs-toast-region').length).toBeGreaterThan(0);
+      expect(multipleWrapper.findAll('section.react-spectrum-ToastContainer').length + document.querySelectorAll('section.react-spectrum-ToastContainer').length).toBeGreaterThan(0);
 
       clearToastQueue();
       await nextTick();
@@ -2491,7 +2504,7 @@ describe('Vue storybook helper parity', () => {
       await toggleButton.trigger('click');
       await nextTick();
       expect(closingWrapper.get('button').text()).toContain('Hide');
-      expect(closingWrapper.find('.vs-toast').exists()).toBe(true);
+      expect(closingWrapper.find('.spectrum-Toast').exists()).toBe(true);
       await closingWrapper.get('button').trigger('click');
       await nextTick();
       expect(closingWrapper.get('button').text()).toContain('Show');
@@ -2517,6 +2530,7 @@ describe('Vue storybook helper parity', () => {
       clearToastQueue();
       defaultWrapper?.unmount();
       actionWrapper?.unmount();
+      testIdWrapper?.unmount();
       withDialogWrapper?.unmount();
       multipleWrapper?.unmount();
       closingWrapper?.unmount();

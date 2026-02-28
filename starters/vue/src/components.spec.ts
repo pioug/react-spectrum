@@ -3269,18 +3269,20 @@ describe('Vue migration primitives', () => {
     });
 
     expect(wrapper.attributes('aria-label')).toBe('Notifications');
-    expect(wrapper.classes()).toContain('vs-toast-region--top-end');
-    expect(wrapper.findAll('.vs-toast')).toHaveLength(2);
+    expect(wrapper.classes()).toContain('react-spectrum-ToastContainer');
+    expect(wrapper.attributes('data-position')).toBe('top');
+    expect(wrapper.attributes('data-placement')).toBe('end');
+    expect(wrapper.findAll('.spectrum-Toast')).toHaveLength(2);
 
-    await wrapper.get('.vs-toast__action').trigger('click');
+    await wrapper.get('button[data-testid="rsp-Toast-secondaryButton"]').trigger('click');
     await nextTick();
     expect(actions).toEqual(['undo']);
     expect(queue.visibleToasts.value).toHaveLength(1);
 
-    await wrapper.get('.vs-toast__close').trigger('click');
+    await wrapper.get('button[data-testid="rsp-Toast-closeButton"]').trigger('click');
     await nextTick();
     expect(queue.visibleToasts.value).toHaveLength(0);
-    expect(wrapper.find('.vs-toast-region').exists()).toBe(false);
+    expect(wrapper.find('.react-spectrum-ToastContainer').exists()).toBe(false);
   });
 
   it('renders tooltip content with variant, placement, and icon styling', () => {

@@ -4,19 +4,43 @@ import {computed, defineComponent, h, onBeforeUnmount, onMounted, type PropType,
 export type ToastPlacement = 'top' | 'top end' | 'bottom' | 'bottom end';
 export type ToastVariant = 'info' | 'negative' | 'neutral' | 'positive';
 
+interface ToastDOMProps {
+  'aria-describedby'?: string,
+  'aria-label'?: string,
+  'aria-labelledby'?: string,
+  'data-testid'?: string,
+  id?: string,
+  role?: string,
+  tabIndex?: number
+}
+
 export interface SpectrumToastValue {
   actionLabel?: string,
+  'aria-describedby'?: string,
+  'aria-label'?: string,
+  'aria-labelledby'?: string,
   children: string,
+  'data-testid'?: string,
+  id?: string,
   onAction?: () => void,
+  role?: string,
   shouldCloseOnAction?: boolean,
+  tabIndex?: number,
   variant: ToastVariant
 }
 
 export interface SpectrumToastOptions {
   actionLabel?: string,
+  'aria-describedby'?: string,
+  'aria-label'?: string,
+  'aria-labelledby'?: string,
+  'data-testid'?: string,
+  id?: string,
   onAction?: () => void,
   onClose?: () => void,
+  role?: string,
   shouldCloseOnAction?: boolean,
+  tabIndex?: number,
   timeout?: number
 }
 
@@ -51,10 +75,41 @@ interface TimerState {
 }
 
 let toastIdCounter = 0;
+const TOAST_DOM_PROP_KEYS: Array<keyof ToastDOMProps> = [
+  'id',
+  'role',
+  'tabIndex',
+  'data-testid',
+  'aria-label',
+  'aria-labelledby',
+  'aria-describedby'
+];
+const TOAST_ICON_CLASS_BY_VARIANT: Partial<Record<ToastVariant, string>> = {
+  info: 'spectrum-UIIcon-InfoMedium',
+  negative: 'spectrum-UIIcon-AlertMedium',
+  positive: 'spectrum-UIIcon-SuccessMedium'
+};
+const TOAST_ICON_LABEL_BY_VARIANT: Partial<Record<ToastVariant, string>> = {
+  info: 'Info',
+  negative: 'Negative',
+  positive: 'Positive'
+};
 
 function createToastKey(): string {
   toastIdCounter += 1;
   return `vue-toast-${toastIdCounter}`;
+}
+
+function getToastDOMProps(value: ToastDOMProps): ToastDOMProps {
+  let domProps: ToastDOMProps = {};
+  for (let key of TOAST_DOM_PROP_KEYS) {
+    let propValue = value[key];
+    if (propValue != null) {
+      domProps[key] = propValue;
+    }
+  }
+
+  return domProps;
 }
 
 function getTimeoutValue(options: SpectrumToastOptions): number | undefined {
@@ -157,7 +212,8 @@ export function createToastQueue(options: CreateToastQueueOptions = {}): Spectru
         variant,
         actionLabel: toastOptions.actionLabel,
         onAction: toastOptions.onAction,
-        shouldCloseOnAction: toastOptions.shouldCloseOnAction
+        shouldCloseOnAction: toastOptions.shouldCloseOnAction,
+        ...getToastDOMProps(toastOptions)
       },
       onClose: toastOptions.onClose
     };
@@ -269,38 +325,71 @@ const VueToastItem = defineComponent({
       }
     };
 
-    return () => h('article', {
-      ...toast.toastProps.value,
-      class: [
-        'vs-toast',
-        `vs-toast--${props.toast.content?.variant ?? 'neutral'}`
-      ]
-    }, [
-      h('div', {
-        ...toast.contentProps.value,
-        class: 'vs-toast__content'
+    return () => {
+      let variant = props.toast.content?.variant ?? 'neutral';
+      let iconClassName = TOAST_ICON_CLASS_BY_VARIANT[variant];
+      let iconLabel = TOAST_ICON_LABEL_BY_VARIANT[variant];
+
+      return h('article', {
+        ...toast.toastProps.value,
+        ...getToastDOMProps(props.toast.content),
+        class: [
+          'spectrum-Toast',
+          `spectrum-Toast--${variant}`
+        ]
       }, [
-        h('p', {
-          ...toast.titleProps.value,
-          class: 'vs-toast__title'
-        }, props.toast.content?.children ?? ''),
-        props.toast.content?.actionLabel
-          ? h('button', {
+        h('div', {
+          ...toast.contentProps.value,
+          class: 'spectrum-Toast-contentWrapper'
+        }, [
+          iconClassName
+            ? h('span', {
+              role: 'img',
+              'aria-label': iconLabel,
+              class: ['spectrum-Icon', iconClassName, 'spectrum-Toast-typeIcon']
+            })
+            : null,
+          h('div', {
+            class: 'spectrum-Toast-body',
+            role: 'presentation'
+          }, [
+            h('div', {
+              ...toast.titleProps.value,
+              class: 'spectrum-Toast-content',
+              role: 'presentation'
+            }, props.toast.content?.children ?? ''),
+            props.toast.content?.actionLabel
+              ? h('button', {
+                type: 'button',
+                class: ['spectrum-BaseButton', 'spectrum-Button'],
+                'data-style': 'fill',
+                'data-variant': 'secondary',
+                'data-static-color': 'white',
+                'data-testid': 'rsp-Toast-secondaryButton',
+                onClick: handleAction
+              }, props.toast.content.actionLabel)
+              : null
+          ])
+        ]),
+        h('div', {
+          class: 'spectrum-Toast-buttons'
+        }, [
+          h('button', {
             type: 'button',
-            class: 'vs-toast__action',
-            onClick: handleAction
-          }, props.toast.content.actionLabel)
-          : null
-      ]),
-      h('button', {
-        type: 'button',
-        class: 'vs-toast__close',
-        'aria-label': toast.closeButtonProps.value['aria-label'],
-        onClick: () => {
-          toast.closeButtonProps.value.onPress();
-        }
-      }, '×')
-    ]);
+            class: ['spectrum-BaseButton', 'spectrum-ClearButton', 'spectrum-ClearButton--overBackground'],
+            'aria-label': toast.closeButtonProps.value['aria-label'],
+            'data-testid': 'rsp-Toast-closeButton',
+            onClick: () => {
+              toast.closeButtonProps.value.onPress();
+            }
+          }, [
+            h('span', {
+              class: ['spectrum-Icon', 'spectrum-UIIcon-CrossMedium']
+            })
+          ])
+        ])
+      ]);
+    };
   }
 });
 
@@ -324,6 +413,13 @@ export const VueToastContainer = defineComponent({
     let containerToken = Symbol('vue-toast-container');
     let activeQueue = computed(() => props.queue ?? getGlobalToastQueue());
     let isActiveContainer = computed(() => props.queue != null || activeToastContainerToken.value === containerToken);
+    let containerPlacement = computed(() => {
+      let [position = 'bottom', placement = 'center'] = props.placement.split(' ');
+      return {
+        position,
+        placement
+      };
+    });
     let toastRegion = createToastRegion({
       ariaLabel: props.ariaLabel
     }, {
@@ -356,17 +452,18 @@ export const VueToastContainer = defineComponent({
         ...attrs,
         ...toastRegion.regionProps.value,
         class: [
-          'vs-toast-region',
-          `vs-toast-region--${props.placement.replace(' ', '-')}`,
+          'react-spectrum-ToastContainer',
           attrs.class
         ],
+        'data-position': containerPlacement.value.position,
+        'data-placement': containerPlacement.value.placement,
         'data-vac': ''
       }, [
         h('ol', {
-          class: 'vs-toast-region__list'
+          class: 'spectrum-ToastContainer-list'
         }, toasts.map((toast) => h('li', {
           key: String(toast.key),
-          class: 'vs-toast-region__item'
+          class: 'spectrum-ToastContainer-listitem'
         }, [
           h(VueToastItem, {
             toast,
