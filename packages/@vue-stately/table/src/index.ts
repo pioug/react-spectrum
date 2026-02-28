@@ -14,6 +14,7 @@ import {
   UNSTABLE_useFilteredTableState as unstableUseFilteredTableStateInternal,
   useTableState as useTableStateInternal
 } from './useTableState';
+import {computed, type Ref, ref, watch} from 'vue';
 export {Section} from '@vue-stately/collections';
 
 export {TableCollection};
@@ -109,12 +110,47 @@ export function useTableColumnResizeState<T>(
 }
 
 export type CollectionBuilderContext = Record<string, unknown>;
+
+type ExpandedKeys = 'all' | Set<string | number>;
+type ExpandedKeysInput = 'all' | Iterable<string | number>;
+
 export interface TreeGridState<T = unknown> extends TableState<T> {
-  expandedKeys: Set<string | number>
+  expandedKeys: ExpandedKeys,
+  setExpandedKeys: (keys: ExpandedKeysInput | ExpandedKeys) => void,
+  toggleKey: (key: string | number) => void
 }
 export type TreeGridStateProps<T = unknown> = TableStateProps<T> & {
-  defaultExpandedKeys?: Iterable<string | number>
+  defaultExpandedKeys?: ExpandedKeysInput,
+  UNSTABLE_defaultExpandedKeys?: ExpandedKeysInput,
+  UNSTABLE_expandedKeys?: Ref<ExpandedKeysInput | undefined>,
+  UNSTABLE_onExpandedChange?: (keys: Set<string | number>) => void
 };
+
+function normalizeExpandedKeys(expandedKeys: ExpandedKeysInput | ExpandedKeys | undefined): ExpandedKeys {
+  if (expandedKeys === 'all') {
+    return 'all';
+  }
+
+  return new Set(expandedKeys ?? []);
+}
+
+function expandedKeysEqual(a: ExpandedKeys, b: ExpandedKeys): boolean {
+  if (a === 'all' || b === 'all') {
+    return a === b;
+  }
+
+  if (a.size !== b.size) {
+    return false;
+  }
+
+  for (let key of a) {
+    if (!b.has(key)) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 export class TableColumnLayout {
   private widths = new Map<string | number, number>();
@@ -143,8 +179,78 @@ export function buildHeaderRows<T>(
 
 export function UNSTABLE_useTreeGridState<T>(props: TreeGridStateProps<T>): TreeGridState<T> {
   let state = useTableState(props);
-  return {
-    ...state,
-    expandedKeys: new Set()
+  let uncontrolledExpandedKeys = ref<ExpandedKeys>(normalizeExpandedKeys(
+    props.UNSTABLE_defaultExpandedKeys ?? props.defaultExpandedKeys
+  ));
+  let isControlled = computed(() => props.UNSTABLE_expandedKeys !== undefined && props.UNSTABLE_expandedKeys.value !== undefined);
+  let wasControlled = ref(isControlled.value);
+
+  watch(isControlled, (nextIsControlled) => {
+    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasControlled.value = nextIsControlled;
+  });
+
+  let expandedKeys = computed<ExpandedKeys>({
+    get: () => {
+      if (isControlled.value && props.UNSTABLE_expandedKeys) {
+        return normalizeExpandedKeys(props.UNSTABLE_expandedKeys.value);
+      }
+
+      return uncontrolledExpandedKeys.value;
+    },
+    set: (nextExpandedKeys) => {
+      let normalizedExpandedKeys = normalizeExpandedKeys(nextExpandedKeys);
+      if (isControlled.value && props.UNSTABLE_expandedKeys) {
+        props.UNSTABLE_expandedKeys.value = normalizedExpandedKeys === 'all'
+          ? 'all'
+          : new Set(normalizedExpandedKeys);
+      } else {
+        uncontrolledExpandedKeys.value = normalizedExpandedKeys;
+      }
+    }
+  });
+
+  let treeGridState: TreeGridState<T>;
+  let setExpandedKeys = (nextExpandedKeys: ExpandedKeysInput | ExpandedKeys): void => {
+    let normalizedExpandedKeys = normalizeExpandedKeys(nextExpandedKeys);
+    if (expandedKeysEqual(normalizedExpandedKeys, expandedKeys.value)) {
+      return;
+    }
+
+    expandedKeys.value = normalizedExpandedKeys;
+    if (treeGridState) {
+      treeGridState.expandedKeys = normalizedExpandedKeys;
+    }
+
+    if (normalizedExpandedKeys !== 'all') {
+      props.UNSTABLE_onExpandedChange?.(new Set(normalizedExpandedKeys));
+    }
   };
+
+  let toggleKey = (key: string | number): void => {
+    if (expandedKeys.value === 'all') {
+      setExpandedKeys(new Set());
+      return;
+    }
+
+    let nextExpandedKeys = new Set(expandedKeys.value);
+    if (nextExpandedKeys.has(key)) {
+      nextExpandedKeys.delete(key);
+    } else {
+      nextExpandedKeys.add(key);
+    }
+
+    setExpandedKeys(nextExpandedKeys);
+  };
+
+  treeGridState = {
+    ...state,
+    expandedKeys: expandedKeys.value,
+    setExpandedKeys,
+    toggleKey
+  };
+
+  return treeGridState;
 }

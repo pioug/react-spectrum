@@ -256,6 +256,7 @@ import {
   buildHeaderRows as buildStatelyTableHeaderRows,
   TableCollection as StatelyTableCollection,
   UNSTABLE_useFilteredTableState as useStatelyFilteredTableState,
+  UNSTABLE_useTreeGridState as useStatelyTreeGridState,
   useTableState as useStatelyTableState
 } from '@vue-stately/table';
 import {useTabListState as useStatelyTabListState} from '@vue-stately/tabs';
@@ -2948,6 +2949,79 @@ describe('Vue migration composition components', () => {
     });
     expect(filteredState.collection.size).toBe(1);
     expect(filteredState.collection.getFirstKey()).toBe('row-2');
+  });
+
+  it('manages vue-stately tree grid expanded key state', () => {
+    let expandedKeys = ref<Set<string> | undefined>(new Set(['row-1']));
+    let expandedChanges: string[][] = [];
+    let treeGridState = useStatelyTreeGridState({
+      collection: new StatelyTableCollection({
+        columns: [
+          {key: 'title', title: 'Title'}
+        ],
+        rows: [
+          {key: 'row-1', textValue: 'Row 1', cells: [{textValue: 'Row 1', value: 'Row 1'}]},
+          {key: 'row-2', textValue: 'Row 2', cells: [{textValue: 'Row 2', value: 'Row 2'}]}
+        ]
+      }),
+      selectionMode: 'none',
+      UNSTABLE_expandedKeys: expandedKeys,
+      UNSTABLE_onExpandedChange: (keys) => {
+        expandedChanges.push(Array.from(keys) as string[]);
+      }
+    });
+
+    expect(Array.from(treeGridState.expandedKeys as Set<string>)).toEqual(['row-1']);
+    treeGridState.toggleKey('row-2');
+    expect(Array.from(expandedKeys.value ?? [])).toEqual(['row-1', 'row-2']);
+    treeGridState.toggleKey('row-1');
+    expect(Array.from(expandedKeys.value ?? [])).toEqual(['row-2']);
+    expect(expandedChanges).toEqual([['row-1', 'row-2'], ['row-2']]);
+  });
+
+  it('warns when vue-stately tree grid expanded keys switch between controlled and uncontrolled', async () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let expandedKeys = ref<Set<string> | undefined>(new Set(['row-1']));
+    useStatelyTreeGridState({
+      collection: new StatelyTableCollection({
+        columns: [{key: 'title', title: 'Title'}],
+        rows: [{key: 'row-1', textValue: 'Row 1', cells: [{textValue: 'Row 1', value: 'Row 1'}]}]
+      }),
+      selectionMode: 'none',
+      UNSTABLE_expandedKeys: expandedKeys
+    });
+
+    try {
+      expandedKeys.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      expandedKeys.value = new Set(['row-1']);
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it('keeps vue-stately tree grid expansion uncontrolled when expanded key ref is undefined', () => {
+    let expandedKeys = ref<Set<string> | undefined>(undefined);
+    let treeGridState = useStatelyTreeGridState({
+      collection: new StatelyTableCollection({
+        columns: [{key: 'title', title: 'Title'}],
+        rows: [
+          {key: 'row-1', textValue: 'Row 1', cells: [{textValue: 'Row 1', value: 'Row 1'}]},
+          {key: 'row-2', textValue: 'Row 2', cells: [{textValue: 'Row 2', value: 'Row 2'}]}
+        ]
+      }),
+      selectionMode: 'none',
+      defaultExpandedKeys: ['row-1'],
+      UNSTABLE_expandedKeys: expandedKeys
+    });
+
+    treeGridState.toggleKey('row-2');
+    expect(expandedKeys.value).toBeUndefined();
+    expect(Array.from(treeGridState.expandedKeys as Set<string>)).toEqual(['row-1', 'row-2']);
   });
 
   it('builds vue-stately table header rows from column definitions', () => {

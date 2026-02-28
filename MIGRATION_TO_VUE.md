@@ -1628,6 +1628,26 @@
    - full Vue tests: `yarn test:vue` (576 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Tree-grid expanded ownership parity (`@vue-stately/table`)
+
+1. Closed `UNSTABLE_useTreeGridState` ownership gap in Vue table stately surface:
+   - added explicit expanded-key state ownership (`UNSTABLE_expandedKeys` / `UNSTABLE_defaultExpandedKeys` / `UNSTABLE_onExpandedChange`) to replace the previous placeholder-only behavior.
+2. Aligned controlled-state semantics and warnings:
+   - expanded keys are now treated as controlled only when `UNSTABLE_expandedKeys.value !== undefined`,
+   - ref-backed `undefined` expanded-key refs now stay uncontrolled,
+   - ownership transitions now emit `WARN: A component changed from ...` in development.
+3. Added basic tree-grid expansion state mutators:
+   - implemented `setExpandedKeys` and `toggleKey` with set-based state transitions and callback emission parity for non-`all` updates.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - expanded-key toggle/update assertions,
+     - warning assertions for controlled->uncontrolled and uncontrolled->controlled transitions,
+     - assertion that ref-backed-`undefined` expanded-key refs remain uncontrolled.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately table collection filtering, row selection, and sort descriptor state|manages vue-stately tree grid expanded key state|warns when vue-stately tree grid expanded keys switch between controlled and uncontrolled|keeps vue-stately tree grid expansion uncontrolled when expanded key ref is undefined|builds vue-stately table header rows from column definitions"`,
+   - full Vue tests: `yarn test:vue` (579 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
