@@ -1955,6 +1955,17 @@
    - full Vue tests: `yarn test:vue` (600 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Async-list filter-text refetch parity coverage (`@vue-stately/data`)
+
+1. Expanded async-list filtering regression coverage from React parity tests:
+   - added a case where a filtering load returns a different `filterText`, which must trigger a second filtering fetch using the updated text.
+2. Parity probe outcome:
+   - current Vue async-list implementation already matches this React contract (`filterText` update + follow-up fetch + final idle state with latest items); no implementation patch was required.
+3. Validation after coverage expansion:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "loads, paginates, and filters vue-stately async list data|filter text when load returns a new filter and refetches"`,
+   - full Vue tests: `yarn test:vue` (601 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

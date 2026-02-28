@@ -1773,6 +1773,76 @@ describe('Vue migration composition components', () => {
     expect(asyncList.selectedKeys.value).toBe('all');
   });
 
+  it('updates vue-stately async list filter text when load returns a new filter and refetches', async () => {
+    vi.useFakeTimers();
+
+    try {
+      let filterItems = [{id: 10}, {id: 11}];
+      let firstFilteredItems = [{id: 20}, {id: 21}];
+      let secondFilteredItems = [{id: 30}, {id: 31}];
+      let load = vi.fn()
+        .mockImplementationOnce(() => new Promise((resolve) => {
+          setTimeout(() => {
+            resolve({items: filterItems});
+          }, 100);
+        }))
+        .mockImplementationOnce(() => new Promise((resolve) => {
+          setTimeout(() => {
+            resolve({
+              items: firstFilteredItems,
+              filterText: 'new text'
+            });
+          }, 100);
+        }))
+        .mockImplementationOnce(() => new Promise((resolve) => {
+          setTimeout(() => {
+            resolve({items: secondFilteredItems});
+          }, 100);
+        }));
+      let asyncList = useStatelyAsyncList<{id: number}, string>({
+        initialFilterText: 'Bo',
+        load
+      });
+
+      expect(asyncList.loadingState.value).toBe('loading');
+      expect(load).toHaveBeenCalledTimes(1);
+      expect(asyncList.filterText.value).toBe('Bo');
+
+      vi.advanceTimersByTime(100);
+      await Promise.resolve();
+      await Promise.resolve();
+      expect(asyncList.loadingState.value).toBe('idle');
+      expect(asyncList.items.value).toEqual(filterItems);
+      expect(asyncList.filterText.value).toBe('Bo');
+
+      asyncList.setFilterText('Jo');
+      expect(asyncList.loadingState.value).toBe('filtering');
+      expect(load).toHaveBeenCalledTimes(2);
+      expect(asyncList.filterText.value).toBe('Jo');
+
+      vi.advanceTimersByTime(100);
+      await Promise.resolve();
+      await Promise.resolve();
+
+      expect(asyncList.loadingState.value).toBe('filtering');
+      expect(load).toHaveBeenCalledTimes(3);
+      expect(asyncList.items.value).toEqual(firstFilteredItems);
+      expect(asyncList.filterText.value).toBe('new text');
+
+      vi.advanceTimersByTime(100);
+      await Promise.resolve();
+      await Promise.resolve();
+
+      expect(asyncList.loadingState.value).toBe('idle');
+      expect(load).toHaveBeenCalledTimes(3);
+      expect(asyncList.items.value).toEqual(secondFilteredItems);
+      expect(asyncList.filterText.value).toBe('new text');
+    } finally {
+      vi.runAllTimers();
+      vi.useRealTimers();
+    }
+  });
+
   it('clamps vue-aria date field and time field values within min/max bounds', () => {
     let dateValue = ref('2026-02-05');
     let dateField = useDateField({
