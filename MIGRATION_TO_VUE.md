@@ -2560,13 +2560,27 @@
    - full Vue tests: `yarn test:vue` (637 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Tree disabled-keys reactive parity remediation (`@vue-stately/tree`)
+
+1. Closed reactive disabled-keys drift in `useTreeState`:
+   - tree selection state now reads `disabledKeys` from the live tree props source instead of a setup-time snapshot.
+2. Preserved tree ownership and expansion contracts:
+   - controlled/uncontrolled expanded key behavior remains unchanged,
+   - selection manager collection sync and focused-key reset behavior remain intact.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` now includes a tree disabled-keys update test that changes `disabledKeys` after state creation and asserts `selectionManager.isDisabled` + `state.disabledKeys` parity.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "vue-stately tree"`,
+   - full Vue tests: `yarn test:vue` (638 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 637 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 638 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

@@ -5028,6 +5028,32 @@ describe('Vue migration composition components', () => {
     ]);
   });
 
+  it('syncs vue-stately tree disabled keys when disabledKeys prop changes', async () => {
+    let options = reactive({
+      disabledKeys: [] as string[],
+      items: [
+        {
+          key: 'animals',
+          childNodes: [
+            {key: 'birds'}
+          ]
+        },
+        {key: 'plants'}
+      ],
+      selectionMode: 'multiple' as const
+    });
+
+    let treeState = useStatelyTreeState(options);
+    expect(treeState.selectionManager.isDisabled('birds')).toBe(false);
+    expect(treeState.disabledKeys.has('birds')).toBe(false);
+
+    options.disabledKeys = ['birds'];
+    await nextTick();
+
+    expect(treeState.selectionManager.isDisabled('birds')).toBe(true);
+    expect(treeState.disabledKeys.has('birds')).toBe(true);
+  });
+
   it('keeps vue-stately tree controlled without mutating expanded key refs', () => {
     let expandedKeys = ref<Set<string | number> | undefined>(new Set(['animals']));
     let expandedChanges: string[][] = [];

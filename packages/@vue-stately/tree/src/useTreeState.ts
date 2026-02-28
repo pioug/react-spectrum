@@ -69,19 +69,21 @@ export function useTreeState<T>(props: TreeProps<T>): TreeState<T> {
     props.onExpandedChange
   );
 
-  let disabledKeys = props.disabledKeys ? new Set(props.disabledKeys) : new Set<Key>();
   let collection = shallowRef<TreeCollection<T>>(resolveCollection(props, expandedKeys.value));
-  let selectionState = useMultipleSelectionState({
+  let selectionStateProps = {
     allowDuplicateSelectionEvents: props.allowDuplicateSelectionEvents,
     defaultSelectedKeys: props.defaultSelectedKeys,
     disabledBehavior: props.disabledBehavior,
-    disabledKeys,
+    get disabledKeys() {
+      return props.disabledKeys;
+    },
     disallowEmptySelection: props.disallowEmptySelection,
     onSelectionChange: props.onSelectionChange,
     selectedKeys: props.selectedKeys,
     selectionBehavior: props.selectionBehavior,
     selectionMode: props.selectionMode ?? 'none'
-  });
+  };
+  let selectionState = useMultipleSelectionState(selectionStateProps);
   let selectionManager = new SelectionManager(collection.value, selectionState);
   let state: TreeState<T>;
 
@@ -108,7 +110,7 @@ export function useTreeState<T>(props: TreeProps<T>): TreeState<T> {
 
   state = {
     collection: collection.value,
-    disabledKeys,
+    disabledKeys: selectionState.disabledKeys,
     expandedKeys: expandedKeys.value,
     selectionManager,
     setExpandedKeys,
@@ -125,10 +127,14 @@ export function useTreeState<T>(props: TreeProps<T>): TreeState<T> {
   watch(
     [
       () => props.collection ? unref(props.collection) : undefined,
-      () => props.items ? unref(props.items) : undefined
+      () => props.items ? unref(props.items) : undefined,
+      () => props.disabledKeys
     ],
     () => {
       syncCollection(resolveCollection(props, expandedKeys.value));
+      if (state) {
+        state.disabledKeys = selectionState.disabledKeys;
+      }
     },
     {flush: 'sync'}
   );
