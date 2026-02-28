@@ -4431,6 +4431,28 @@ describe('Vue migration composition components', () => {
     expect(directoryDrop.drop(directoryItems)).toBe('copy');
   });
 
+  it('rejects vue-aria useDrop targets when getDropOperation resolves to cancel', () => {
+    let onDropEnter = vi.fn();
+    let onDrop = vi.fn();
+    let drop = useDrop({
+      acceptedDragTypes: ['ticket'],
+      getDropOperation: () => 'cancel',
+      onDropEnter,
+      onDrop
+    });
+    let ticketItems = [{id: 'ticket-2', type: 'ticket', value: {id: 2}}];
+
+    expect(drop.canDrop(ticketItems)).toBe(false);
+    expect(drop.enter(ticketItems)).toBe(false);
+    expect(drop.isDropTarget.value).toBe(false);
+    expect(onDropEnter).not.toHaveBeenCalled();
+
+    expect(drop.drop(ticketItems)).toBe('cancel');
+    expect(drop.drop(ticketItems, 'copy')).toBe('cancel');
+    expect(drop.lastDropOperation.value).toBe('cancel');
+    expect(onDrop).not.toHaveBeenCalled();
+  });
+
   it('fires vue-aria useDrop onDropEnter once per active drop target session', () => {
     let enterEvents: Array<string> = [];
     let drop = useDrop({

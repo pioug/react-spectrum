@@ -31,6 +31,14 @@ export interface DropAria {
   move: (items: DragItem[]) => void
 }
 
+function resolveOperation(
+  options: AriaDropOptions,
+  items: DragItem[],
+  operation?: DropOperation
+): DropOperation {
+  return operation ?? options.getDropOperation?.(items) ?? 'copy';
+}
+
 function toTypeSet(value: MaybeRef<Iterable<string>> | undefined): Set<string> {
   let resolved = value === undefined ? undefined : unref(value);
   if (!resolved) {
@@ -83,7 +91,7 @@ export function useDrop(options: AriaDropOptions = {}): DropAria {
       return true;
     }
 
-    return items.some((item) => {
+    let hasAcceptedType = items.some((item) => {
       let itemTypes = getAcceptedItemTypes(item);
       for (let type of itemTypes) {
         if (acceptedDragTypes.value.has(type)) {
@@ -93,6 +101,11 @@ export function useDrop(options: AriaDropOptions = {}): DropAria {
 
       return false;
     });
+    if (!hasAcceptedType) {
+      return false;
+    }
+
+    return resolveOperation(options, items) !== 'cancel';
   };
 
   let enter = (items: DragItem[]) => {
@@ -133,14 +146,14 @@ export function useDrop(options: AriaDropOptions = {}): DropAria {
   };
 
   let drop = (items: DragItem[], operation?: DropOperation) => {
-    if (!canDrop(items)) {
+    let resolvedOperation = resolveOperation(options, items, operation);
+    if (!canDrop(items) || resolvedOperation === 'cancel') {
       isDropTarget.value = false;
       lastDropOperation.value = 'cancel';
       return 'cancel';
     }
 
     markActiveDragSessionHandled();
-    let resolvedOperation = operation ?? options.getDropOperation?.(items) ?? 'copy';
     lastDropItems.value = items;
     lastDropOperation.value = resolvedOperation;
     isDropTarget.value = false;
