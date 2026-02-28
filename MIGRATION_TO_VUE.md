@@ -2471,6 +2471,18 @@
    - full Vue tests: `yarn test:vue` (633 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Tree-grid expanded-keys helper parity remediation (`@vue-stately/table`)
+
+1. Closed residual ad hoc expanded-keys ownership drift in `UNSTABLE_useTreeGridState`:
+   - replaced manual controlled/uncontrolled tracking with shared `useControlledState` for `expandedKeys`.
+2. Preserved tree-grid expanded change contracts:
+   - `UNSTABLE_onExpandedChange` still fires only for concrete set payloads (never for `'all'`),
+   - uncontrolled/controlled expanded key reads continue to normalize to `'all' | Set<Key>`.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "tree grid"`,
+   - full Vue tests: `yarn test:vue` (633 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

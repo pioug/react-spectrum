@@ -14,7 +14,8 @@ import {
   UNSTABLE_useFilteredTableState as unstableUseFilteredTableStateInternal,
   useTableState as useTableStateInternal
 } from './useTableState';
-import {computed, type Ref, ref, watch} from 'vue';
+import {computed, type Ref} from 'vue';
+import {useControlledState} from '@vue-stately/utils';
 export {Section} from '@vue-stately/collections';
 
 export {TableCollection};
@@ -165,45 +166,30 @@ export function buildHeaderRows<T>(
 
 export function UNSTABLE_useTreeGridState<T>(props: TreeGridStateProps<T>): TreeGridState<T> {
   let state = useTableState(props);
-  let uncontrolledExpandedKeys = ref<ExpandedKeys>(normalizeExpandedKeys(
+  let defaultExpandedKeys = normalizeExpandedKeys(
     props.UNSTABLE_defaultExpandedKeys ?? props.defaultExpandedKeys
-  ));
-  let isControlled = computed(() => props.UNSTABLE_expandedKeys !== undefined && props.UNSTABLE_expandedKeys.value !== undefined);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+  );
+  let controlledExpandedKeys = computed<ExpandedKeys | undefined>(() => {
+    let expandedKeys = props.UNSTABLE_expandedKeys?.value;
+    if (expandedKeys === undefined) {
+      return undefined;
     }
-    wasControlled.value = nextIsControlled;
+
+    return normalizeExpandedKeys(expandedKeys);
   });
-
-  let expandedKeys = computed<ExpandedKeys>({
-    get: () => {
-      if (isControlled.value && props.UNSTABLE_expandedKeys) {
-        return normalizeExpandedKeys(props.UNSTABLE_expandedKeys.value);
-      }
-
-      return uncontrolledExpandedKeys.value;
-    },
-    set: (nextExpandedKeys) => {
-      let normalizedExpandedKeys = normalizeExpandedKeys(nextExpandedKeys);
-      if (!isControlled.value) {
-        uncontrolledExpandedKeys.value = normalizedExpandedKeys;
+  let [expandedKeys, setExpandedKeysState] = useControlledState<ExpandedKeys, Set<string | number>>(
+    controlledExpandedKeys,
+    defaultExpandedKeys,
+    (nextExpandedKeys) => {
+      if (nextExpandedKeys !== 'all') {
+        props.UNSTABLE_onExpandedChange?.(nextExpandedKeys);
       }
     }
-  });
+  );
 
   let setExpandedKeys = (nextExpandedKeys: ExpandedKeysInput | ExpandedKeys): void => {
     let normalizedExpandedKeys = normalizeExpandedKeys(nextExpandedKeys);
-    if (Object.is(normalizedExpandedKeys, expandedKeys.value)) {
-      return;
-    }
-
-    expandedKeys.value = normalizedExpandedKeys;
-    if (normalizedExpandedKeys !== 'all') {
-      props.UNSTABLE_onExpandedChange?.(normalizedExpandedKeys);
-    }
+    setExpandedKeysState(normalizedExpandedKeys);
   };
 
   let toggleKey = (key: string | number): void => {
