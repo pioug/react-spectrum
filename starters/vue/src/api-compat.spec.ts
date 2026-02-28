@@ -80,6 +80,14 @@ import {
   VueTree
 } from '@vue-spectrum/tree';
 import {
+  Collection as RootTreeCollection,
+  Tree as RootTree,
+  TreeView as RootTreeView,
+  TreeViewItem as RootTreeViewItem,
+  TreeViewItemContent as RootTreeViewItemContent,
+  VueTree as RootVueTree
+} from '../../../packages/@vue-spectrum/tree/index';
+import {
   Content,
   Footer,
   Header,
@@ -325,6 +333,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(TreeViewItem).not.toBe(VueTree);
     expect(TreeViewItemContent).not.toBe(VueTree);
     expect(Collection).not.toBe(VueTree);
+  });
+
+  it('keeps root tree entry exports aligned with source exports', () => {
+    expect(RootTree).toBe(Tree);
+    expect(RootVueTree).toBe(VueTree);
+    expect(RootTreeView).toBe(TreeView);
+    expect(RootTreeViewItem).toBe(TreeViewItem);
+    expect(RootTreeViewItemContent).toBe(TreeViewItemContent);
+    expect(RootTreeCollection).toBe(Collection);
   });
 
   it('exports view primitives with semantic wrappers', () => {

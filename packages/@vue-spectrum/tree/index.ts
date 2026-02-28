@@ -1,1 +1,1 @@
-export {Tree, VueTree} from './src';
+export * from './src';
