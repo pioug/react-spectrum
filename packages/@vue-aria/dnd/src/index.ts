@@ -4,6 +4,44 @@ import {getInteractionModality} from '@vue-aria/interactions';
 import {useLocalizedStringFormatter} from '@vue-aria/i18n';
 import {getScrollParent, isIOS, isScrollable, isWebKit, useDescription} from '@vue-aria/utils';
 import {computed, defineComponent, unref, watch} from 'vue';
+import type {AriaButtonProps} from '@vue-types/button';
+import type {
+  Direction,
+  DOMAttributes,
+  DragEndEvent as SharedDragEndEvent,
+  DragMoveEvent as SharedDragMoveEvent,
+  DragStartEvent as SharedDragStartEvent,
+  DragTypes as SharedDragTypes,
+  DraggableCollectionEndEvent as SharedDraggableCollectionEndEvent,
+  DraggableCollectionMoveEvent as SharedDraggableCollectionMoveEvent,
+  DraggableCollectionStartEvent as SharedDraggableCollectionStartEvent,
+  DirectoryDropItem as SharedDirectoryDropItem,
+  DropEnterEvent as SharedDropEnterEvent,
+  DropEvent as SharedDropEvent,
+  DropExitEvent as SharedDropExitEvent,
+  DropItem as SharedDropItem,
+  DropMoveEvent as SharedDropMoveEvent,
+  DropPosition as SharedDropPosition,
+  DropTarget as SharedDropTarget,
+  DropTargetDelegate as SharedDropTargetDelegate,
+  DroppableCollectionDropEvent as SharedDroppableCollectionDropEvent,
+  DroppableCollectionEnterEvent as SharedDroppableCollectionEnterEvent,
+  DroppableCollectionExitEvent as SharedDroppableCollectionExitEvent,
+  DroppableCollectionInsertDropEvent as SharedDroppableCollectionInsertDropEvent,
+  DroppableCollectionMoveEvent as SharedDroppableCollectionMoveEvent,
+  DroppableCollectionOnItemDropEvent as SharedDroppableCollectionOnItemDropEvent,
+  DroppableCollectionReorderEvent as SharedDroppableCollectionReorderEvent,
+  DroppableCollectionRootDropEvent as SharedDroppableCollectionRootDropEvent,
+  FileDropItem as SharedFileDropItem,
+  FocusableElement,
+  ItemDropTarget as SharedItemDropTarget,
+  Key,
+  Node,
+  Orientation,
+  RefObject,
+  RootDropTarget as SharedRootDropTarget,
+  TextDropItem as SharedTextDropItem
+} from '@vue-types/shared';
 import {DIRECTORY_DRAG_TYPE as INTERNAL_DIRECTORY_DRAG_TYPE, type DragItem, type DropOperation} from './types';
 import {getActiveDragItems, isVirtualDraggingSessionActive} from './dragSession';
 import intlMessages from './intlMessages';
@@ -12,8 +50,7 @@ export type {AriaDragOptions, DragAria, AriaDropOptions, DropAria};
 export type {DragItem, DropOperation} from './types';
 
 type AnyRecord = Record<string, unknown>;
-type RefObject<T> = {current: T};
-type DraggingKey = number | string;
+type DraggingKey = Key;
 
 const DROP_OPERATIONS = new Set<DropOperation>(['cancel', 'copy', 'link', 'move']);
 const DEFAULT_DROP_OPERATION: DropOperation = 'copy';
@@ -68,55 +105,165 @@ function mapDragModality(modality: string | null): 'keyboard' | 'touch' | 'virtu
   return 'virtual';
 }
 
-export type ClipboardProps = AnyRecord;
-export type ClipboardResult = {
-  clipboardProps: AnyRecord
-};
-export type DirectoryDropItem = DropItem;
-export type DragEndEvent = AnyRecord;
-export type DragMoveEvent = AnyRecord;
+export interface ClipboardProps {
+  getItems?: (details: {action: 'copy' | 'cut'}) => DragItem[],
+  isDisabled?: boolean,
+  onCopy?: () => void,
+  onCut?: () => void,
+  onPaste?: (items: DropItem[]) => void
+}
+
+export interface ClipboardResult {
+  clipboardProps: DOMAttributes
+}
+
+export type DirectoryDropItem = SharedDirectoryDropItem;
+export type DragEndEvent = SharedDragEndEvent;
+export type DragMoveEvent = SharedDragMoveEvent;
 export type DragOptions = AriaDragOptions;
-export type DragPreviewProps = AnyRecord;
-export type DragPreviewRenderer = AnyRecord;
+export interface DragPreviewProps {
+  children?: (items: DragItem[]) => unknown
+}
+
+export type DragPreviewRenderer = (
+  items: DragItem[],
+  callback: (node: HTMLElement | null, x?: number, y?: number) => void
+) => void;
+
 export type DragResult = DragAria;
-export type DragStartEvent = AnyRecord;
-export type DragTypes = AnyRecord;
-export type DraggableCollectionEndEvent = AnyRecord;
-export type DraggableCollectionMoveEvent = AnyRecord;
-export type DraggableCollectionOptions = AnyRecord;
-export type DraggableCollectionState = AnyRecord;
-export type DraggableCollectionStartEvent = AnyRecord;
-export type DraggableItemProps = AnyRecord;
-export type DraggableItemResult = AnyRecord;
-export type DropEnterEvent = AnyRecord;
-export type DropEvent = AnyRecord;
-export type DropExitEvent = AnyRecord;
-export type DropIndicatorAria = AnyRecord;
-export type DropIndicatorProps = AnyRecord;
-export type DropItem = DragItem | AnyRecord;
-export type DropMoveEvent = AnyRecord;
+export type DragStartEvent = SharedDragStartEvent;
+export type DragTypes = SharedDragTypes;
+export type DraggableCollectionEndEvent = SharedDraggableCollectionEndEvent;
+export type DraggableCollectionMoveEvent = SharedDraggableCollectionMoveEvent;
+export interface DraggableCollectionOptions {}
+type MaybeRefValue<T> = T | {value: T};
+
+export interface DraggableCollectionState {
+  draggingKeys: MaybeRefValue<Set<Key>>,
+  endDrag?: (operation: DropOperation) => void,
+  isDisabled?: MaybeRefValue<boolean>,
+  isDragging?: (key: Key) => boolean,
+  moveDrag?: (event: {x: number, y: number}) => void,
+  selectionManager?: {
+    isDisabled?: (key: Key) => boolean
+  },
+  startDrag?: (key: Key) => void
+}
+
+export type DraggableCollectionStartEvent = SharedDraggableCollectionStartEvent;
+
+export interface DraggableItemProps {
+  hasAction?: boolean,
+  hasDragButton?: boolean,
+  key: Key
+}
+
+export interface DraggableItemResult {
+  dragButtonProps: {value: AriaButtonProps},
+  dragProps: {value: AnyRecord}
+}
+
+export type DropEnterEvent = SharedDropEnterEvent;
+export type DropEvent = SharedDropEvent;
+export type DropExitEvent = SharedDropExitEvent;
+export interface DropIndicatorAria {
+  dropIndicatorProps: {value: AnyRecord},
+  isDropTarget: {value: boolean},
+  isHidden: {value: boolean}
+}
+
+export interface DropIndicatorProps {
+  activateButtonRef?: RefObject<FocusableElement | null>,
+  target: DropTarget
+}
+
+export type DropItem = SharedDropItem;
+export type DropMoveEvent = SharedDropMoveEvent;
 export type DropOptions = AriaDropOptions;
-export type DropPosition = AnyRecord;
+export type DropPosition = SharedDropPosition;
 export type DropResult = DropAria;
-export type DropTarget = AnyRecord;
-export type DropTargetDelegate = AnyRecord;
-export type DroppableCollectionDropEvent = AnyRecord;
-export type DroppableCollectionEnterEvent = AnyRecord;
-export type DroppableCollectionExitEvent = AnyRecord;
-export type DroppableCollectionInsertDropEvent = AnyRecord;
-export type DroppableCollectionMoveEvent = AnyRecord;
-export type DroppableCollectionOnItemDropEvent = AnyRecord;
-export type DroppableCollectionOptions = AnyRecord;
-export type DroppableCollectionState = AnyRecord;
-export type DroppableCollectionReorderEvent = AnyRecord;
-export type DroppableCollectionResult = AnyRecord;
-export type DroppableCollectionRootDropEvent = AnyRecord;
-export type DroppableItemOptions = AnyRecord;
-export type DroppableItemResult = AnyRecord;
-export type FileDropItem = DropItem;
-export type ItemDropTarget = AnyRecord;
-export type RootDropTarget = AnyRecord;
-export type TextDropItem = DropItem;
+export type DropTarget = SharedDropTarget;
+export type DropTargetDelegate = SharedDropTargetDelegate;
+export type DroppableCollectionDropEvent = SharedDroppableCollectionDropEvent;
+export type DroppableCollectionEnterEvent = SharedDroppableCollectionEnterEvent;
+export type DroppableCollectionExitEvent = SharedDroppableCollectionExitEvent;
+export type DroppableCollectionInsertDropEvent = SharedDroppableCollectionInsertDropEvent;
+export type DroppableCollectionMoveEvent = SharedDroppableCollectionMoveEvent;
+export type DroppableCollectionOnItemDropEvent = SharedDroppableCollectionOnItemDropEvent;
+
+export interface DroppableCollectionOptions {
+  acceptedDragTypes?: 'all' | Array<string | symbol>,
+  dropTargetDelegate?: DropTargetDelegate,
+  getDropOperation?: (target: DropTarget, types: DragTypes, allowedOperations: DropOperation[]) => DropOperation,
+  isDisabled?: boolean,
+  onDrop?: (e: DroppableCollectionDropEvent) => void,
+  onDropActivate?: (e: {target: DropTarget, type: 'dropactivate', x: number, y: number}) => void,
+  onDropEnter?: (e: DroppableCollectionEnterEvent) => void,
+  onDropExit?: (e: DroppableCollectionExitEvent) => void,
+  onDropMove?: (e: DroppableCollectionMoveEvent) => void,
+  onInsert?: (e: DroppableCollectionInsertDropEvent) => void,
+  onItemDrop?: (e: DroppableCollectionOnItemDropEvent) => void,
+  onKeyDown?: (event: KeyboardEvent) => void,
+  onMove?: (e: DroppableCollectionReorderEvent) => void,
+  onReorder?: (e: DroppableCollectionReorderEvent) => void,
+  onRootDrop?: (e: DroppableCollectionRootDropEvent) => void,
+  shouldAcceptItemDrop?: (target: ItemDropTarget, types: Set<string>) => boolean
+}
+
+interface DroppableCollectionNode {
+  key: Key,
+  nextKey?: Key | null,
+  prevKey?: Key | null,
+  textValue?: string,
+  type: string
+}
+
+interface DroppableCollectionData {
+  getItem?: (key: Key) => DroppableCollectionNode | null | undefined,
+  getTextValue?: (key: Key) => string | undefined
+}
+
+interface DroppableCollectionOperationEvent {
+  allowedOperations: DropOperation[],
+  draggingKeys: Set<Key>,
+  isInternal: boolean,
+  items: DragItem[],
+  target: DropTarget | null
+}
+
+export interface DroppableCollectionState {
+  collection?: DroppableCollectionData,
+  drop?: (items: DragItem[], operation: DropOperation) => DropOperation,
+  enter?: (items: DragItem[]) => boolean,
+  exit?: () => void,
+  getDropOperation?: (event: DroppableCollectionOperationEvent) => DropOperation,
+  isDisabled?: MaybeRefValue<boolean>,
+  isDropTarget?: (target: DropTarget | null) => boolean,
+  move?: (items: DragItem[]) => void,
+  setTarget?: (target: DropTarget | null) => void,
+  target?: MaybeRefValue<DropTarget | null>
+}
+
+export type DroppableCollectionReorderEvent = SharedDroppableCollectionReorderEvent;
+export interface DroppableCollectionResult {
+  collectionProps: {value: AnyRecord}
+}
+
+export type DroppableCollectionRootDropEvent = SharedDroppableCollectionRootDropEvent;
+export interface DroppableItemOptions {
+  activateButtonRef?: RefObject<FocusableElement | null>,
+  target: DropTarget
+}
+
+export interface DroppableItemResult {
+  dropProps: {value: AnyRecord},
+  isDropTarget: {value: boolean}
+}
+
+export type FileDropItem = SharedFileDropItem;
+export type ItemDropTarget = SharedItemDropTarget;
+export type RootDropTarget = SharedRootDropTarget;
+export type TextDropItem = SharedTextDropItem;
 
 export const DIRECTORY_DRAG_TYPE = INTERNAL_DIRECTORY_DRAG_TYPE;
 
@@ -135,14 +282,22 @@ function escapeCssSelectorValue(value: string): string {
   return value.replace(/["\\]/g, '\\$&');
 }
 
-export class ListDropTargetDelegate {
-  private collection: Iterable<AnyRecord>;
+export class ListDropTargetDelegate implements DropTargetDelegate {
+  private collection: Iterable<Node<unknown>>;
   private ref: RefObject<HTMLElement | null>;
   private layout: 'grid' | 'stack';
-  private orientation: 'horizontal' | 'vertical';
-  private direction: 'ltr' | 'rtl';
+  private orientation: Orientation;
+  private direction: Direction;
 
-  constructor(collection: Iterable<AnyRecord>, ref: RefObject<HTMLElement | null>, options: AnyRecord = {}) {
+  constructor(
+    collection: Iterable<Node<unknown>>,
+    ref: RefObject<HTMLElement | null>,
+    options: {
+      direction?: Direction,
+      layout?: 'stack' | 'grid',
+      orientation?: Orientation
+    } = {}
+  ) {
     this.collection = collection;
     this.ref = ref;
     this.layout = options.layout === 'grid' ? 'grid' : 'stack';

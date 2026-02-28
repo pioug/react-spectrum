@@ -1,6 +1,16 @@
 import {
   DIRECTORY_DRAG_TYPE as ARIA_DIRECTORY_DRAG_TYPE,
   DragPreview as AriaDragPreview,
+  type DragItem,
+  type DraggableCollectionOptions,
+  type DraggableItemProps,
+  type DraggableItemResult,
+  type DropIndicatorAria,
+  type DropIndicatorProps,
+  type DroppableCollectionOptions,
+  type DroppableCollectionResult,
+  type DroppableItemOptions,
+  type DroppableItemResult,
   isVirtualDragging,
   useDraggableCollection as useAriaDraggableCollection,
   useDraggableItem as useAriaDraggableItem,
@@ -9,70 +19,80 @@ import {
   useDroppableItem as useAriaDroppableItem
 } from '@vue-aria/dnd';
 import {
+  type DraggableCollectionState,
+  type DraggableCollectionStateOptions,
+  type DroppableCollectionState,
+  type DroppableCollectionStateOptions,
   useDraggableCollectionState as useStatelyDraggableCollectionState,
   useDroppableCollectionState as useStatelyDroppableCollectionState
 } from '@vue-stately/dnd';
+import type {DraggableCollectionProps, DroppableCollectionProps, Key, RefObject} from '@vue-types/shared';
 import {VueDropZone} from 'vue-aria-components';
 
 export const DropZone = VueDropZone;
 export {VueDropZone};
 
-type AnyRecord = Record<string, unknown>;
-type Key = number | string;
+interface DraggableCollectionStateOpts<T> extends Omit<DraggableCollectionStateOptions<T>, 'getItems'> {}
 
-export type DragAndDropOptions<T = object> = AnyRecord & {
-  getItems?: (keys: Set<Key>, items: T[]) => unknown,
-  onDrop?: unknown,
-  onInsert?: unknown,
-  onItemDrop?: unknown,
-  onReorder?: unknown,
-  onRootDrop?: unknown,
-  renderPreview?: (keys: Set<Key>, draggedKey: Key) => unknown,
-  _itemType?: T
-};
-type DragAndDropHookMap = {
+interface DragHooks<T = object> {
   DragPreview?: typeof AriaDragPreview,
-  isVirtualDragging?: () => boolean,
-  renderPreview?: (keys: Set<Key>, draggedKey: Key) => unknown,
-  useDraggableCollection?: typeof useAriaDraggableCollection,
-  useDraggableCollectionState?: (props: AnyRecord) => AnyRecord,
-  useDraggableItem?: typeof useAriaDraggableItem,
-  useDropIndicator?: typeof useAriaDropIndicator,
-  useDroppableCollection?: typeof useAriaDroppableCollection,
-  useDroppableCollectionState?: (props: AnyRecord) => AnyRecord,
-  useDroppableItem?: typeof useAriaDroppableItem
-};
-export type DragAndDropHooks = {
-  dragAndDropHooks: DragAndDropHookMap
-};
-export type DirectoryDropItem = AnyRecord;
-export type DraggableCollectionEndEvent = AnyRecord;
-export type DraggableCollectionMoveEvent = AnyRecord;
-export type DraggableCollectionStartEvent = AnyRecord;
-export type DragPreviewRenderer = AnyRecord;
-export type DragTypes = AnyRecord;
-export type DropItem = AnyRecord;
-export type DropOperation = AnyRecord;
-export type DroppableCollectionDropEvent = AnyRecord;
-export type DroppableCollectionEnterEvent = AnyRecord;
-export type DroppableCollectionExitEvent = AnyRecord;
-export type DroppableCollectionInsertDropEvent = AnyRecord;
-export type DroppableCollectionMoveEvent = AnyRecord;
-export type DroppableCollectionOnItemDropEvent = AnyRecord;
-export type DroppableCollectionReorderEvent = AnyRecord;
-export type DroppableCollectionRootDropEvent = AnyRecord;
-export type DropPosition = AnyRecord;
-export type DropTarget = AnyRecord;
-export type FileDropItem = AnyRecord;
-export type ItemDropTarget = AnyRecord;
-export type RootDropTarget = AnyRecord;
-export type TextDropItem = AnyRecord;
+  useDraggableCollection?: (props: DraggableCollectionOptions, state: DraggableCollectionState, ref: RefObject<HTMLElement | null>) => void,
+  useDraggableCollectionState?: (props: DraggableCollectionStateOpts<T>) => DraggableCollectionState,
+  useDraggableItem?: (props: DraggableItemProps, state: DraggableCollectionState) => DraggableItemResult
+}
+
+interface DropHooks {
+  useDropIndicator?: (props: DropIndicatorProps, state: DroppableCollectionState, ref: RefObject<HTMLElement | null>) => DropIndicatorAria,
+  useDroppableCollection?: (props: DroppableCollectionOptions, state: DroppableCollectionState, ref: RefObject<HTMLElement | null>) => DroppableCollectionResult,
+  useDroppableCollectionState?: (props: DroppableCollectionStateOptions) => DroppableCollectionState,
+  useDroppableItem?: (options: DroppableItemOptions, state: DroppableCollectionState, ref: RefObject<HTMLElement | null>) => DroppableItemResult
+}
+
+export interface DragAndDropHooks<T = object> {
+  dragAndDropHooks: DragHooks<T> & DropHooks & {
+    isVirtualDragging?: () => boolean,
+    renderPreview?: (keys: Set<Key>, draggedKey: Key) => unknown
+  }
+}
+
+export interface DragAndDropOptions<T = object> extends Omit<DraggableCollectionProps<T>, 'preview' | 'getItems'>, Omit<DroppableCollectionProps, 'onMove'> {
+  getItems?: (keys: Set<Key>, items: T[]) => DragItem[],
+  renderPreview?: (keys: Set<Key>, draggedKey: Key) => unknown
+}
+
+export type {
+  DirectoryDropItem,
+  DraggableCollectionEndEvent,
+  DraggableCollectionMoveEvent,
+  DraggableCollectionStartEvent,
+  DragPreviewRenderer,
+  DragTypes,
+  DropItem,
+  DropOperation,
+  DroppableCollectionDropEvent,
+  DroppableCollectionEnterEvent,
+  DroppableCollectionExitEvent,
+  DroppableCollectionInsertDropEvent,
+  DroppableCollectionMoveEvent,
+  DroppableCollectionOnItemDropEvent,
+  DroppableCollectionReorderEvent,
+  DroppableCollectionRootDropEvent,
+  DropPosition,
+  DropTarget,
+  FileDropItem,
+  ItemDropTarget,
+  RootDropTarget,
+  TextDropItem
+} from '@vue-types/shared';
 
 export const DIRECTORY_DRAG_TYPE = ARIA_DIRECTORY_DRAG_TYPE;
 
 export function useDragAndDrop<T = object>(options?: DragAndDropOptions<T>): DragAndDropHooks {
   let resolvedOptions = options ?? {};
-  let hooks: DragAndDropHookMap = {};
+  let hooks: DragHooks<T> & DropHooks & {
+    isVirtualDragging?: () => boolean,
+    renderPreview?: (keys: Set<Key>, draggedKey: Key) => unknown
+  } = {};
   let isDraggable = typeof resolvedOptions.getItems === 'function';
   let isDroppable = Boolean(
     resolvedOptions.onDrop ||
@@ -88,7 +108,7 @@ export function useDragAndDrop<T = object>(options?: DragAndDropOptions<T>): Dra
         ...props,
         ...resolvedOptions,
         getItems: resolvedOptions.getItems
-      } as never) as AnyRecord;
+      } as unknown as DraggableCollectionStateOptions<T>);
     };
     hooks.useDraggableCollection = useAriaDraggableCollection;
     hooks.useDraggableItem = useAriaDraggableItem;
@@ -101,14 +121,14 @@ export function useDragAndDrop<T = object>(options?: DragAndDropOptions<T>): Dra
       return useStatelyDroppableCollectionState({
         ...props,
         ...resolvedOptions
-      } as never) as AnyRecord;
+      } as unknown as DroppableCollectionStateOptions);
     };
     hooks.useDroppableItem = useAriaDroppableItem;
     hooks.useDroppableCollection = ((props, state, ref) => {
       return useAriaDroppableCollection({
         ...props,
         ...resolvedOptions
-      }, state, ref);
+      } as DroppableCollectionOptions, state, ref);
     }) as typeof useAriaDroppableCollection;
     hooks.useDropIndicator = useAriaDropIndicator;
   }
