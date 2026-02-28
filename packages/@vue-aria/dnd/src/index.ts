@@ -898,7 +898,6 @@ export function useDroppableCollection(
   let isDisabled = computed(() => {
     return Boolean(readMaybeRef<boolean>(stateRecord.isDisabled)) || Boolean(readMaybeRef<boolean>(propsRecord.isDisabled));
   });
-  let isDropTarget = computed(() => readDropTarget(stateRecord) != null);
   let stateObject = state as unknown as object;
   let collectionId = droppableCollectionIds.get(stateObject);
   if (!collectionId) {
@@ -1343,9 +1342,6 @@ export function useDroppableCollection(
     id: collectionId,
     // Keep collection announcements owned by drop indicators, matching React behavior.
     'aria-describedby': null,
-    role: 'group',
-    'data-drop-target': isDropTarget.value,
-    'aria-disabled': isDisabled.value ? true as const : undefined,
     onKeyDown: propsRecord.onKeyDown,
     onDragEnter,
     onDragLeave,

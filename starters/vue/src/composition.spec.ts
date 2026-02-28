@@ -5120,16 +5120,22 @@ describe('Vue migration composition components', () => {
       }
     }, dropState, collectionRef) as {
       collectionProps: {value: {
-        role: 'group',
-        'data-drop-target': boolean,
+        id: string,
+        'aria-describedby': null,
+        role?: string,
+        'data-drop-target'?: boolean,
+        'aria-disabled'?: true,
         onDragEnter: (items: unknown) => boolean,
         onDragLeave: (items?: unknown) => void,
         onDragOver: (items?: unknown) => void,
         onDrop: (items: unknown, operation?: 'cancel' | 'copy' | 'link' | 'move') => 'cancel' | 'copy' | 'link' | 'move'
       }}
     };
-    expect(droppableCollection.collectionProps.value.role).toBe('group');
-    expect(droppableCollection.collectionProps.value['data-drop-target']).toBe(true);
+    expect(droppableCollection.collectionProps.value.id).toMatch(/^vue-aria-droppable-collection-/);
+    expect(droppableCollection.collectionProps.value['aria-describedby']).toBeNull();
+    expect(droppableCollection.collectionProps.value.role).toBeUndefined();
+    expect(droppableCollection.collectionProps.value['data-drop-target']).toBeUndefined();
+    expect(droppableCollection.collectionProps.value['aria-disabled']).toBeUndefined();
     expect(droppableCollection.collectionProps.value.onDragEnter({
       items: [{id: 'item-1', type: 'item', value: {id: 1}}],
       clientX: 12,
@@ -5162,7 +5168,7 @@ describe('Vue migration composition components', () => {
     expect(dropEvents).toEqual(['drop:move']);
     expect(exitEvents).toEqual(['exit:0,0']);
     expect(dropState.target.value).toBeNull();
-    expect(droppableCollection.collectionProps.value['data-drop-target']).toBe(false);
+    expect(droppableCollection.collectionProps.value['data-drop-target']).toBeUndefined();
     droppableCollection.collectionProps.value.onDragLeave({
       clientX: 5,
       clientY: 6
