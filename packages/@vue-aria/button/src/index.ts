@@ -70,6 +70,9 @@ type ToggleState = Record<string, unknown>;
 type ToggleGroupState = Record<string, unknown>;
 
 function toKeySet(values: unknown): Set<string> {
+  let resolvedValues = unref(values as unknown);
+  values = resolvedValues;
+
   if (!values || typeof values !== 'object') {
     return new Set();
   }
@@ -152,9 +155,9 @@ export function useToggleButton(
     let stateRecord = state as ToggleState;
     return useToggleButtonInternal({
       ...options,
-      isSelected: computed(() => Boolean(stateRecord.isSelected)),
+      isSelected: computed(() => Boolean(unref(stateRecord.isSelected as boolean | undefined))),
       setSelected: (isSelected) => {
-        if (Boolean(stateRecord.isSelected) === isSelected) {
+        if (Boolean(unref(stateRecord.isSelected as boolean | undefined)) === isSelected) {
           return;
         }
 
@@ -199,7 +202,7 @@ export function useToggleButtonGroup(
       }
     });
     let selectionMode = computed(() => {
-      let mode = stateRecord.selectionMode;
+      let mode = unref(stateRecord.selectionMode as 'single' | 'multiple' | undefined);
       if (mode === 'single' || mode === 'multiple') {
         return mode;
       }
@@ -210,7 +213,7 @@ export function useToggleButtonGroup(
 
     return useToggleButtonGroupInternal({
       ...options,
-      isDisabled: computed(() => Boolean(unref(options.isDisabled)) || Boolean(stateRecord.isDisabled)),
+      isDisabled: computed(() => Boolean(unref(options.isDisabled)) || Boolean(unref(stateRecord.isDisabled as boolean | undefined))),
       selectedKeys,
       selectionMode
     });
@@ -240,7 +243,7 @@ export function useToggleButtonGroupItem(
     let stateRecord = state as ToggleGroupState;
     let optionsRecord = options as Record<string, unknown>;
     let group = useToggleButtonGroup({
-      isDisabled: computed(() => Boolean(stateRecord.isDisabled)),
+      isDisabled: computed(() => Boolean(unref(stateRecord.isDisabled as boolean | undefined))),
       selectedKeys: computed<Set<string>>({
         get: () => toKeySet(stateRecord.selectedKeys),
         set: (nextSelection) => {
@@ -248,7 +251,7 @@ export function useToggleButtonGroupItem(
         }
       }),
       selectionMode: computed(() => {
-        let mode = stateRecord.selectionMode;
+        let mode = unref(stateRecord.selectionMode as 'single' | 'multiple' | undefined);
         return mode === 'single' ? 'single' : 'multiple';
       })
     }, stateRecord, refObject as RefObject<HTMLElement | null> | undefined);

@@ -865,6 +865,43 @@ describe('Vue migration composition components', () => {
     } as unknown as Parameters<typeof useToggleButtonGroupItem>[2]);
     disabledItem.press();
     expect(Array.from(selectedKeys.value)).toEqual(['italic']);
+
+    let statelyToggleSelected = ref(false);
+    let statelyToggleState = useStatelyToggleState({
+      isSelected: statelyToggleSelected,
+      onChange: (nextSelected) => {
+        statelyToggleSelected.value = nextSelected;
+      }
+    });
+    let statelyToggleButton = useToggleButton({
+      'aria-label': 'Stately toggle'
+    } as unknown as Parameters<typeof useToggleButton>[0], statelyToggleState as unknown as Parameters<typeof useToggleButton>[1], {
+      current: null
+    } as unknown as Parameters<typeof useToggleButton>[2]);
+    expect(statelyToggleButton.isSelected.value).toBe(false);
+    statelyToggleButton.press();
+    expect(statelyToggleSelected.value).toBe(true);
+
+    let statelySelectedKeys = ref<Set<string> | undefined>(new Set(['bold']));
+    let statelyGroupState = useStatelyToggleGroupState({
+      onSelectionChange: (keys) => {
+        statelySelectedKeys.value = new Set(Array.from(keys, (key) => String(key)));
+      },
+      selectedKeys: statelySelectedKeys
+    });
+    let groupFromStatelyState = useToggleButtonGroup({
+      'aria-label': 'Stately formatting'
+    } as unknown as Parameters<typeof useToggleButtonGroup>[0], statelyGroupState as unknown as Parameters<typeof useToggleButtonGroup>[1], {
+      current: null
+    } as unknown as Parameters<typeof useToggleButtonGroup>[2]);
+    let italicFromStatelyState = useToggleButtonGroupItem({
+      id: 'italic'
+    } as unknown as Parameters<typeof useToggleButtonGroupItem>[0], statelyGroupState as unknown as Parameters<typeof useToggleButtonGroupItem>[1], {
+      current: null
+    } as unknown as Parameters<typeof useToggleButtonGroupItem>[2]);
+    expect(groupFromStatelyState.groupProps.value.role).toBe('radiogroup');
+    italicFromStatelyState.press();
+    expect(Array.from(statelySelectedKeys.value ?? [])).toEqual(['italic']);
   });
 
   it('manages vue-aria calendar navigation and date selection', () => {
