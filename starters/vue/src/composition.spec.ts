@@ -996,6 +996,195 @@ describe('Vue migration composition components', () => {
     expect(offsetMonthCell.isOutsideVisibleRange.value).toBe(false);
   });
 
+  it('supports react-style calendar overload signatures with external state', () => {
+    let selectedDate = ref<Date | null>(new Date(2025, 0, 15));
+    let focusedDate = ref(new Date(2025, 0, 15));
+    let isFocused = ref(false);
+    let selectCalls: Date[] = [];
+    let nextPageCalls = 0;
+    let previousPageCalls = 0;
+
+    let calendarState = {
+      value: selectedDate,
+      focusedDate,
+      visibleRange: computed(() => ({
+        start: new Date(focusedDate.value.getFullYear(), focusedDate.value.getMonth(), 1),
+        end: new Date(focusedDate.value.getFullYear(), focusedDate.value.getMonth() + 1, 0)
+      })),
+      isCellDisabled: (date: Date) => {
+        return date.getDay() === 0;
+      },
+      selectDate: (date: Date) => {
+        let normalizedDate = new Date(date);
+        selectCalls.push(normalizedDate);
+        selectedDate.value = normalizedDate;
+        focusedDate.value = normalizedDate;
+      },
+      setValue: (value: Date | null) => {
+        selectedDate.value = value ? new Date(value) : null;
+      },
+      setFocusedDate: (date: Date) => {
+        focusedDate.value = new Date(date);
+      },
+      setFocused: (nextFocused: boolean) => {
+        isFocused.value = nextFocused;
+      },
+      selectFocusedDate: () => {
+        selectedDate.value = new Date(focusedDate.value);
+      },
+      focusNextDay: () => {
+        focusedDate.value = new Date(2025, 0, 16);
+      },
+      focusPreviousDay: () => {
+        focusedDate.value = new Date(2025, 0, 14);
+      },
+      focusNextPage: () => {
+        nextPageCalls += 1;
+        focusedDate.value = new Date(2025, 1, 15);
+      },
+      focusPreviousPage: () => {
+        previousPageCalls += 1;
+        focusedDate.value = new Date(2025, 0, 15);
+      }
+    };
+
+    let calendar = useCalendar({
+      'aria-label': 'React-style calendar'
+    } as unknown as Parameters<typeof useCalendar>[0], calendarState as unknown as Parameters<typeof useCalendar>[1]);
+
+    expect(calendar.selectedDate.value?.getDate()).toBe(15);
+    expect(calendar.isDateDisabled(new Date(2025, 0, 19))).toBe(true);
+    calendar.selectDate(new Date(2025, 0, 20));
+    expect(selectCalls).toHaveLength(1);
+    expect(selectedDate.value?.getDate()).toBe(20);
+    calendar.nextPage();
+    calendar.prevPage();
+    expect(nextPageCalls).toBe(1);
+    expect(previousPageCalls).toBe(1);
+
+    let grid = useCalendarGrid({
+      firstDayOfWeek: 'mon'
+    } as unknown as Parameters<typeof useCalendarGrid>[0], calendarState as unknown as Parameters<typeof useCalendarGrid>[1]);
+    expect(grid.headerProps.value['aria-hidden']).toBe(true);
+    expect(grid.gridProps.value['aria-multiselectable']).toBeUndefined();
+    expect(grid.weekDays.value[0]).toMatch(/^Mon/i);
+
+    let preventDefault = vi.fn();
+    let stopPropagation = vi.fn();
+    (grid.gridProps.value.onKeyDown as (event: KeyboardEvent) => void)({
+      key: 'PageDown',
+      shiftKey: true,
+      preventDefault,
+      stopPropagation
+    } as unknown as KeyboardEvent);
+    expect(preventDefault).toHaveBeenCalledTimes(1);
+    expect(stopPropagation).toHaveBeenCalledTimes(1);
+    expect(nextPageCalls).toBe(2);
+
+    (grid.gridProps.value.onFocus as (() => void))?.();
+    expect(isFocused.value).toBe(true);
+    (grid.gridProps.value.onBlur as (() => void))?.();
+    expect(isFocused.value).toBe(false);
+
+    let calendarCell = useCalendarCell({
+      date: new Date(2025, 0, 20),
+      isOutsideMonth: true
+    } as unknown as Parameters<typeof useCalendarCell>[0], calendarState as unknown as Parameters<typeof useCalendarCell>[1], {
+      current: null
+    } as unknown as Parameters<typeof useCalendarCell>[2]);
+    expect(calendarCell.isSelected.value).toBe(true);
+    expect(calendarCell.isOutsideVisibleRange.value).toBe(true);
+    calendarCell.press();
+    expect(selectCalls).toHaveLength(2);
+
+    let rangeValue = ref({
+      start: new Date(2025, 0, 5),
+      end: new Date(2025, 0, 8)
+    });
+    let rangeFocusedDate = ref(new Date(2025, 0, 5));
+    let rangeAnchorDate = ref<Date | null>(null);
+    let rangeSelectCalls = 0;
+    let rangeNextPageCalls = 0;
+    let rangeState = {
+      value: rangeValue,
+      highlightedRange: computed(() => ({
+        start: rangeValue.value.start ? new Date(rangeValue.value.start) : null,
+        end: rangeValue.value.end ? new Date(rangeValue.value.end) : null
+      })),
+      anchorDate: rangeAnchorDate,
+      focusedDate: rangeFocusedDate,
+      visibleRange: computed(() => ({
+        start: new Date(rangeFocusedDate.value.getFullYear(), rangeFocusedDate.value.getMonth(), 1),
+        end: new Date(rangeFocusedDate.value.getFullYear(), rangeFocusedDate.value.getMonth() + 1, 0)
+      })),
+      isCellDisabled: () => false,
+      selectDate: (date: Date) => {
+        rangeSelectCalls += 1;
+        let normalizedDate = new Date(date);
+        if (!rangeValue.value.start || rangeValue.value.end) {
+          rangeValue.value = {
+            start: normalizedDate,
+            end: null
+          };
+          rangeAnchorDate.value = normalizedDate;
+          return;
+        }
+
+        rangeValue.value = {
+          start: new Date(rangeValue.value.start),
+          end: normalizedDate
+        };
+        rangeAnchorDate.value = null;
+      },
+      setValue: (value: {end: Date | null, start: Date | null}) => {
+        rangeValue.value = {
+          start: value.start ? new Date(value.start) : null,
+          end: value.end ? new Date(value.end) : null
+        };
+      },
+      setFocusedDate: (date: Date) => {
+        rangeFocusedDate.value = new Date(date);
+      },
+      setFocused: () => {},
+      focusNextPage: () => {
+        rangeNextPageCalls += 1;
+        rangeFocusedDate.value = new Date(2025, 1, 5);
+      },
+      focusPreviousPage: () => {
+        rangeFocusedDate.value = new Date(2025, 0, 5);
+      }
+    };
+
+    let rangeCalendar = useRangeCalendar({
+      'aria-label': 'React-style range calendar'
+    } as unknown as Parameters<typeof useRangeCalendar>[0], rangeState as unknown as Parameters<typeof useRangeCalendar>[1], {
+      current: null
+    } as unknown as Parameters<typeof useRangeCalendar>[2]);
+    expect(rangeCalendar.highlightedRange.value.start?.getDate()).toBe(5);
+    expect(rangeCalendar.highlightedRange.value.end?.getDate()).toBe(8);
+    rangeCalendar.selectDate(new Date(2025, 0, 10));
+    expect(rangeSelectCalls).toBe(1);
+    expect(rangeValue.value.start?.getDate()).toBe(10);
+    rangeCalendar.selectDate(new Date(2025, 0, 12));
+    expect(rangeSelectCalls).toBe(2);
+    expect(rangeValue.value.end?.getDate()).toBe(12);
+    rangeCalendar.nextPage();
+    expect(rangeNextPageCalls).toBe(1);
+
+    let rangeGrid = useCalendarGrid({} as unknown as Parameters<typeof useCalendarGrid>[0], rangeState as unknown as Parameters<typeof useCalendarGrid>[1]);
+    expect(rangeGrid.gridProps.value['aria-multiselectable']).toBe(true);
+
+    let disabledRangeCell = useCalendarCell({
+      date: new Date(2025, 0, 11),
+      isDisabled: true
+    } as unknown as Parameters<typeof useCalendarCell>[0], rangeState as unknown as Parameters<typeof useCalendarCell>[1], {
+      current: null
+    } as unknown as Parameters<typeof useCalendarCell>[2]);
+    expect(disabledRangeCell.isSelected.value).toBe(true);
+    disabledRangeCell.press();
+    expect(rangeSelectCalls).toBe(2);
+  });
+
   it('manages vue-stately calendar and range-calendar state transitions', () => {
     let selectedDate = ref<Date | null>(new Date(2025, 0, 15));
     let dateChanges: Array<Date | null> = [];
