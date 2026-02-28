@@ -8899,6 +8899,41 @@ describe('Vue migration composition components', () => {
     expect(ariaLabelOnlySelect.menuProps.value['aria-labelledby']).toBe('framework-trigger-no-label');
   });
 
+  it('supports react-style select overload signatures with stately select state', () => {
+    let nodes: StatelyListNode<{label: string}>[] = [
+      {key: 'react', textValue: 'React', type: 'item', value: {label: 'React'}},
+      {key: 'vue', textValue: 'Vue', type: 'item', value: {label: 'Vue'}}
+    ];
+    let state = useStatelySelectState({
+      collection: new StatelyListCollection(nodes),
+      defaultSelectedKey: 'react'
+    });
+
+    let reactSelect = useAriaSelect({
+      'aria-label': 'Framework',
+      label: 'Framework'
+    } as unknown as Parameters<typeof useAriaSelect>[0], state as unknown as Parameters<typeof useAriaSelect>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaSelect>[2]);
+    expect(reactSelect.selectedKey.value).toBe('react');
+    reactSelect.open();
+    expect(state.isOpen.value).toBe(true);
+    reactSelect.menuProps.value.onSelect('vue');
+    expect(state.selectedKey.value).toBe('vue');
+    expect(state.isOpen.value).toBe(false);
+    expect(reactSelect.selectedItem.value?.textValue).toBe('Vue');
+
+    let reactHiddenSelect = useAriaHiddenSelect({
+      name: 'framework'
+    } as unknown as Parameters<typeof useAriaHiddenSelect>[0], state as unknown as Parameters<typeof useAriaHiddenSelect>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaHiddenSelect>[2]);
+    expect(reactHiddenSelect.selectProps.value.options.map((option) => option.key)).toEqual(['react', 'vue']);
+    expect(reactHiddenSelect.selectProps.value.value).toBe('vue');
+    reactHiddenSelect.selectProps.value.onChange('react');
+    expect(state.selectedKey.value).toBe('react');
+  });
+
   it('computes vue-aria selection delegate, list, and typeahead behavior', () => {
     let items = [
       {key: 'react', textValue: 'React'},
