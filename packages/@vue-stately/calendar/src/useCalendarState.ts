@@ -18,6 +18,14 @@ export interface CalendarStateOptions<T extends DateValue = DateValue> {
   value?: Ref<T | null | undefined>
 }
 
+function areDatesEqual(left: Date | null, right: Date | null): boolean {
+  if (left == null || right == null) {
+    return left === right;
+  }
+
+  return sameDay(left, right);
+}
+
 export function useCalendarState<T extends DateValue = DateValue>(props: CalendarStateOptions<T>): CalendarState {
   let options = props ?? ({} as CalendarStateOptions<T>);
   let internalValue = ref<Date | null>(options.defaultValue ? cloneDate(options.defaultValue as unknown as Date) : null);
@@ -40,9 +48,7 @@ export function useCalendarState<T extends DateValue = DateValue>(props: Calenda
       return internalValue.value ? cloneDate(internalValue.value) : null;
     },
     set: (nextValue) => {
-      if (isControlled.value && options.value) {
-        options.value.value = nextValue ? cloneDate(nextValue) as unknown as T : null;
-      } else {
+      if (!isControlled.value) {
         internalValue.value = nextValue ? cloneDate(nextValue) : null;
       }
     }
@@ -71,8 +77,14 @@ export function useCalendarState<T extends DateValue = DateValue>(props: Calenda
   }));
 
   let setValue = (nextValue: Date | null): void => {
-    valueRef.value = nextValue ? cloneDate(nextValue) : null;
-    options.onChange?.(valueRef.value ? cloneDate(valueRef.value) as unknown as T : null);
+    let normalizedNextValue = nextValue ? cloneDate(nextValue) : null;
+    let previousValue = valueRef.value ? cloneDate(valueRef.value) : null;
+    if (areDatesEqual(previousValue, normalizedNextValue)) {
+      return;
+    }
+
+    valueRef.value = normalizedNextValue ? cloneDate(normalizedNextValue) : null;
+    options.onChange?.(normalizedNextValue ? cloneDate(normalizedNextValue) as unknown as T : null);
   };
 
   let setFocusedDate = (date: Date): void => {
@@ -81,9 +93,19 @@ export function useCalendarState<T extends DateValue = DateValue>(props: Calenda
   };
 
   let selectDate = (date: Date): void => {
+    if (calendar.isDateDisabled(date)) {
+      return;
+    }
+
+    let previousValue = valueRef.value ? cloneDate(valueRef.value) : null;
+    let nextValue = cloneDate(date);
     calendar.selectDate(date);
-    setFocusedDate(date);
-    options.onChange?.(valueRef.value ? cloneDate(valueRef.value) as unknown as T : null);
+    setFocusedDate(nextValue);
+    if (areDatesEqual(previousValue, nextValue)) {
+      return;
+    }
+
+    options.onChange?.(cloneDate(nextValue) as unknown as T);
   };
 
   return {

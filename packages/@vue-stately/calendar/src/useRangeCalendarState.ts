@@ -23,6 +23,36 @@ export interface RangeCalendarStateOptions<T extends DateValue = DateValue> {
   value?: Ref<RangeValue<T> | undefined>
 }
 
+function areDatesEqual(left: Date | null, right: Date | null): boolean {
+  if (left == null || right == null) {
+    return left === right;
+  }
+
+  return left.getFullYear() === right.getFullYear()
+    && left.getMonth() === right.getMonth()
+    && left.getDate() === right.getDate();
+}
+
+function areDateRangesEqual(left: DateRange, right: DateRange): boolean {
+  return areDatesEqual(left.start, right.start) && areDatesEqual(left.end, right.end);
+}
+
+function buildRangeFromAnchor(anchor: Date, date: Date): DateRange {
+  let anchorDate = cloneDate(anchor);
+  let nextDate = cloneDate(date);
+  if (nextDate < anchorDate) {
+    return {
+      start: nextDate,
+      end: anchorDate
+    };
+  }
+
+  return {
+    start: anchorDate,
+    end: nextDate
+  };
+}
+
 export function useRangeCalendarState<T extends DateValue = DateValue>(
   props: RangeCalendarStateOptions<T>
 ): RangeCalendarState<T> {
@@ -51,9 +81,7 @@ export function useRangeCalendarState<T extends DateValue = DateValue>(
     },
     set: (nextValue) => {
       let normalized = normalizeDateRange(nextValue);
-      if (isControlled.value && options.value) {
-        options.value.value = normalized as unknown as RangeValue<T>;
-      } else {
+      if (!isControlled.value) {
         internalValue.value = normalized;
       }
     }
@@ -84,8 +112,14 @@ export function useRangeCalendarState<T extends DateValue = DateValue>(
   }));
 
   let setValue = (nextValue: DateRange): void => {
-    valueRef.value = normalizeDateRange(nextValue);
-    options.onChange?.(normalizeDateRange(valueRef.value) as unknown as RangeValue<T>);
+    let normalizedNextValue = normalizeDateRange(nextValue);
+    let previousValue = normalizeDateRange(valueRef.value);
+    if (areDateRangesEqual(previousValue, normalizedNextValue)) {
+      return;
+    }
+
+    valueRef.value = normalizedNextValue;
+    options.onChange?.(normalizeDateRange(normalizedNextValue) as unknown as RangeValue<T>);
   };
 
   let setFocusedDate = (date: Date): void => {
@@ -94,17 +128,51 @@ export function useRangeCalendarState<T extends DateValue = DateValue>(
   };
 
   let selectDate = (date: Date): void => {
-    if (!valueRef.value.start || valueRef.value.end) {
-      anchorDate.value = cloneDate(date);
+    if (calendar.isDateDisabled(date)) {
+      return;
     }
 
-    calendar.selectDate(date);
-    setFocusedDate(date);
-    options.onChange?.(normalizeDateRange(valueRef.value) as unknown as RangeValue<T>);
+    let nextDate = cloneDate(date);
+    let previousValue = normalizeDateRange(valueRef.value);
+    let nextValue: DateRange;
+    let nextAnchorDate: Date | null;
 
-    if (valueRef.value.start && valueRef.value.end) {
-      anchorDate.value = null;
+    if (isControlled.value) {
+      if (!anchorDate.value) {
+        nextValue = {
+          start: nextDate,
+          end: null
+        };
+        nextAnchorDate = nextDate;
+      } else {
+        nextValue = buildRangeFromAnchor(anchorDate.value, nextDate);
+        nextAnchorDate = null;
+      }
+    } else {
+      if (!previousValue.start || previousValue.end) {
+        nextAnchorDate = nextDate;
+      } else {
+        nextAnchorDate = anchorDate.value;
+      }
+
+      calendar.selectDate(nextDate);
+      nextValue = normalizeDateRange(valueRef.value);
+      if (nextValue.start && nextValue.end) {
+        nextAnchorDate = null;
+      }
     }
+
+    anchorDate.value = nextAnchorDate ? cloneDate(nextAnchorDate) : null;
+    setFocusedDate(nextDate);
+    if (isControlled.value) {
+      calendar.selectDate(nextDate);
+    }
+
+    if (areDateRangesEqual(previousValue, nextValue)) {
+      return;
+    }
+
+    options.onChange?.(normalizeDateRange(nextValue) as unknown as RangeValue<T>);
   };
 
   return {

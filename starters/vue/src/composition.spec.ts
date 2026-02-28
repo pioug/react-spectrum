@@ -754,6 +754,7 @@ describe('Vue migration composition components', () => {
       value: selectedDate,
       onChange: (value) => {
         dateChanges.push(value ? new Date(value) : null);
+        selectedDate.value = value ? new Date(value) : null;
       }
     });
 
@@ -777,6 +778,10 @@ describe('Vue migration composition components', () => {
           start: value.start ? new Date(value.start) : null,
           end: value.end ? new Date(value.end) : null
         });
+        selectedRange.value = {
+          start: value.start ? new Date(value.start) : null,
+          end: value.end ? new Date(value.end) : null
+        };
       }
     });
 
@@ -786,6 +791,62 @@ describe('Vue migration composition components', () => {
     expect(selectedRange.value.end?.getDate()).toBe(8);
     expect(rangeState.isSelected(new Date(2025, 0, 6))).toBe(true);
     expect(rangeChanges.length).toBeGreaterThan(0);
+  });
+
+  it('keeps vue-stately calendar and range-calendar controlled without mutating control refs', () => {
+    let selectedDate = ref<Date | null>(new Date(2025, 0, 15));
+    let dateChanges: Array<Date | null> = [];
+    let calendarState = useStatelyCalendarState({
+      onChange: (value) => {
+        dateChanges.push(value ? new Date(value) : null);
+      },
+      value: selectedDate
+    });
+
+    calendarState.selectDate(new Date(2025, 0, 16));
+    expect(selectedDate.value?.getDate()).toBe(15);
+    expect(dateChanges).toHaveLength(1);
+    expect(dateChanges[0]?.getDate()).toBe(16);
+
+    calendarState.setValue(new Date(2025, 0, 20));
+    expect(selectedDate.value?.getDate()).toBe(15);
+    expect(dateChanges).toHaveLength(2);
+    expect(dateChanges[1]?.getDate()).toBe(20);
+
+    let selectedRange = ref({
+      start: null as Date | null,
+      end: null as Date | null
+    });
+    let rangeChanges: Array<{end: Date | null, start: Date | null}> = [];
+    let rangeState = useStatelyRangeCalendarState({
+      onChange: (value) => {
+        rangeChanges.push({
+          start: value.start ? new Date(value.start) : null,
+          end: value.end ? new Date(value.end) : null
+        });
+      },
+      value: selectedRange
+    });
+
+    rangeState.selectDate(new Date(2025, 0, 5));
+    rangeState.selectDate(new Date(2025, 0, 8));
+    expect(selectedRange.value.start).toBeNull();
+    expect(selectedRange.value.end).toBeNull();
+    expect(rangeChanges).toHaveLength(2);
+    expect(rangeChanges[0].start?.getDate()).toBe(5);
+    expect(rangeChanges[0].end).toBeNull();
+    expect(rangeChanges[1].start?.getDate()).toBe(5);
+    expect(rangeChanges[1].end?.getDate()).toBe(8);
+
+    rangeState.setValue({
+      start: new Date(2025, 0, 10),
+      end: new Date(2025, 0, 12)
+    });
+    expect(selectedRange.value.start).toBeNull();
+    expect(selectedRange.value.end).toBeNull();
+    expect(rangeChanges).toHaveLength(3);
+    expect(rangeChanges[2].start?.getDate()).toBe(10);
+    expect(rangeChanges[2].end?.getDate()).toBe(12);
   });
 
   it('warns when vue-stately calendar and range-calendar switch between controlled and uncontrolled', async () => {

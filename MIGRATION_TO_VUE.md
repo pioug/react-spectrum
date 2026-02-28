@@ -2119,6 +2119,20 @@
    - full Vue tests: `yarn test:vue` (612 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Calendar controlled ownership parity (`@vue-stately/calendar`)
+
+1. Closed calendar controlled ownership drift:
+   - `useCalendarState` no longer mutates controlled `value` refs directly from `setValue`/`selectDate`.
+2. Closed range-calendar controlled ownership drift:
+   - `useRangeCalendarState` no longer mutates controlled `value` refs directly from `setValue`/`selectDate`,
+   - controlled range selection now preserves anchor-based two-click range completion and emits callback payloads without parent write-through.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: updated baseline controlled tests to mirror parent updates and added explicit controlled-no-parent-update assertions for both calendar and range-calendar.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately calendar and range-calendar state transitions|keeps vue-stately calendar and range-calendar controlled without mutating control refs|warns when vue-stately calendar and range-calendar switch between controlled and uncontrolled|keeps vue-stately calendar and range-calendar uncontrolled when value refs are undefined"`,
+   - full Vue tests: `yarn test:vue` (613 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
