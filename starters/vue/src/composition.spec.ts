@@ -4592,6 +4592,94 @@ describe('Vue migration composition components', () => {
     expect(dropEvents).toEqual(['drop:copy:2']);
   });
 
+  it('rejects useDroppableCollection targets when getDropOperation resolves to cancel', () => {
+    let onDropEnter = vi.fn();
+    let onDropMove = vi.fn();
+    let onDrop = vi.fn();
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: () => 'cancel'
+    });
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      onDropEnter,
+      onDropMove,
+      onDrop
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDragEnter: (input: unknown) => boolean,
+        onDragOver: (input?: unknown) => void,
+        onDrop: (input: unknown, operation?: 'cancel' | 'copy' | 'link' | 'move') => 'cancel' | 'copy' | 'link' | 'move'
+      }}
+    };
+
+    let payload = {
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 11,
+      clientY: 17
+    };
+
+    expect(droppableCollection.collectionProps.value.onDragEnter(payload)).toBe(false);
+    droppableCollection.collectionProps.value.onDragOver({
+      ...payload,
+      clientX: 15,
+      clientY: 22
+    });
+    expect(droppableCollection.collectionProps.value.onDrop(payload)).toBe('cancel');
+    expect(onDropEnter).not.toHaveBeenCalled();
+    expect(onDropMove).not.toHaveBeenCalled();
+    expect(onDrop).not.toHaveBeenCalled();
+  });
+
+  it('exits useDroppableCollection when dragover operation becomes cancel', () => {
+    let dropOperation = ref<'move' | 'cancel'>('move');
+    let moveEvents: Array<string> = [];
+    let exitEvents: Array<string> = [];
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: () => dropOperation.value
+    });
+    dropState.setTarget({type: 'root'});
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      onDropMove: (event) => {
+        moveEvents.push(`move:${event.x},${event.y}`);
+      },
+      onDropExit: (event) => {
+        exitEvents.push(`exit:${event.x},${event.y}`);
+      }
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDragEnter: (input: unknown) => boolean,
+        onDragOver: (input?: unknown) => void
+      }}
+    };
+
+    let payload = {
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 9,
+      clientY: 12
+    };
+
+    expect(droppableCollection.collectionProps.value.onDragEnter(payload)).toBe(true);
+    droppableCollection.collectionProps.value.onDragOver({
+      ...payload,
+      clientX: 14,
+      clientY: 19
+    });
+
+    dropOperation.value = 'cancel';
+    droppableCollection.collectionProps.value.onDragOver({
+      ...payload,
+      clientX: 28,
+      clientY: 33
+    });
+
+    expect(moveEvents).toEqual(['move:14,19']);
+    expect(exitEvents).toEqual(['exit:28,33']);
+    expect(dropState.target.value).toBeNull();
+  });
+
   it('manages vue-stately draggable collection keys and drag lifecycle', () => {
     let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     let dragEvents: Array<string> = [];

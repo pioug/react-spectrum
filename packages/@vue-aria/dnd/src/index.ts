@@ -674,6 +674,20 @@ export function useDroppableCollection(
   let lastDragPoint: {x: number, y: number} | null = null;
   let isDraggingOverCollection = false;
 
+  let getDropOperation = (items: DragItem[], target: DropTarget | null, fallback: DropOperation): DropOperation => {
+    if (typeof stateRecord.getDropOperation !== 'function') {
+      return fallback;
+    }
+
+    return normalizeDropOperation(stateRecord.getDropOperation({
+      allowedOperations: DEFAULT_ALLOWED_OPERATIONS,
+      draggingKeys: new Set(draggingKeys),
+      isInternal: isInternalDrop(ref),
+      items,
+      target
+    }));
+  };
+
   let onDragEnter = (input?: unknown): boolean => {
     let items = normalizeDropItems(input);
     if (isDisabled.value || !includesAcceptedType(acceptedTypes.value, items)) {
@@ -684,17 +698,38 @@ export function useDroppableCollection(
     }
 
     if (isDraggingOverCollection) {
+      if (getDropOperation(items, readDropTarget(stateRecord), DEFAULT_DROP_OPERATION) === 'cancel') {
+        onDragLeave(input);
+        return false;
+      }
+
       return true;
+    }
+
+    let didEnter = true;
+    if (typeof stateRecord.enter === 'function') {
+      didEnter = stateRecord.enter(items) !== false;
+    }
+    if (!didEnter) {
+      return false;
+    }
+
+    if (getDropOperation(items, readDropTarget(stateRecord), DEFAULT_DROP_OPERATION) === 'cancel') {
+      if (typeof stateRecord.exit === 'function') {
+        stateRecord.exit();
+      }
+
+      if (typeof stateRecord.setTarget === 'function') {
+        stateRecord.setTarget(null);
+      }
+
+      return false;
     }
 
     isDraggingOverCollection = true;
     let point = readPoint(input, ref);
     lastDragPoint = point;
     dropCollectionRef = ref;
-    if (typeof stateRecord.enter === 'function') {
-      stateRecord.enter(items);
-    }
-
     if (typeof propsRecord.onDropEnter === 'function') {
       propsRecord.onDropEnter({
         items,
@@ -717,6 +752,12 @@ export function useDroppableCollection(
       return;
     }
 
+    if (!isDraggingOverCollection) {
+      if (!onDragEnter(input)) {
+        return;
+      }
+    }
+
     let point = readPoint(input, ref);
     if (lastDragPoint && lastDragPoint.x === point.x && lastDragPoint.y === point.y) {
       return;
@@ -728,10 +769,16 @@ export function useDroppableCollection(
       stateRecord.move(items);
     }
 
+    let target = readDropTarget(stateRecord);
+    if (getDropOperation(items, target, DEFAULT_DROP_OPERATION) === 'cancel') {
+      onDragLeave(input);
+      return;
+    }
+
     if (typeof propsRecord.onDropMove === 'function') {
       propsRecord.onDropMove({
         items,
-        target: readDropTarget(stateRecord),
+        target,
         type: 'dropmove',
         x: point.x,
         y: point.y
@@ -744,6 +791,7 @@ export function useDroppableCollection(
     let target = readDropTarget(stateRecord);
     if (!target) {
       dropCollectionRef = null;
+      lastDragPoint = null;
       return;
     }
 
@@ -779,20 +827,19 @@ export function useDroppableCollection(
     let target = readDropTarget(stateRecord);
     let point = readPoint(input, ref);
     let requestedOperation = resolveDropOperation(input, fallbackOperation);
-    let operation = requestedOperation;
-    if (typeof stateRecord.getDropOperation === 'function') {
-      operation = normalizeDropOperation(stateRecord.getDropOperation({
-        allowedOperations: DEFAULT_ALLOWED_OPERATIONS,
-        draggingKeys: new Set(draggingKeys),
-        isInternal: isInternalDrop(ref),
-        items,
-        target
-      }));
+    let operation = getDropOperation(items, target, requestedOperation);
+    if (operation === 'cancel') {
+      onDragLeave(input);
+      return 'cancel';
     }
 
     let resolvedOperation = operation;
     if (typeof stateRecord.drop === 'function') {
       resolvedOperation = normalizeDropOperation(stateRecord.drop(items, operation));
+    }
+    if (resolvedOperation === 'cancel') {
+      onDragLeave(input);
+      return 'cancel';
     }
 
     if (typeof propsRecord.onDrop === 'function') {
