@@ -1,15 +1,18 @@
 import {defineComponent} from 'vue';
 import {focusSafely as focusSafelyInteractions} from '@vue-aria/interactions';
-import {isFocusable as isFocusableUtils} from '@vue-aria/utils';
+import {isFocusable as isFocusableUtils, isTabbable as isTabbableUtils, nodeContains as nodeContainsUtils} from '@vue-aria/utils';
 
 export type {AriaFocusRingProps, FocusRingAria, FocusRingProps} from './useFocusRing';
 export {useFocusRing} from './useFocusRing';
 export type {AriaHasTabbableChildOptions, MaybeElementRef} from './useHasTabbableChild';
 export {useHasTabbableChild} from './useHasTabbableChild';
 
-type AnyRecord = Record<string, unknown>;
-
-export type FocusManagerOptions = AnyRecord;
+export type FocusManagerOptions = {
+  accept?: (node: Element) => boolean,
+  from?: Element,
+  tabbable?: boolean,
+  wrap?: boolean
+};
 export type FocusScopeProps = {
   autoFocus?: boolean,
   contain?: boolean,
@@ -17,17 +20,17 @@ export type FocusScopeProps = {
 };
 export type FocusableElement = Element & {focus?: () => void};
 export type RefObject<T> = {current: T};
-export type FocusableOptions<T extends FocusableElement = FocusableElement> = AnyRecord;
+export type FocusableOptions<T extends FocusableElement = FocusableElement> = Record<string, unknown>;
 export type FocusableAria = {
   focusableProps: FocusableOptions
 };
-export type FocusableProviderProps = AnyRecord;
+export type FocusableProviderProps = Record<string, unknown>;
 
 export interface FocusManager {
-  focusNext: () => void,
-  focusPrevious: () => void,
-  focusFirst: () => void,
-  focusLast: () => void
+  focusNext: (opts?: FocusManagerOptions) => FocusableElement | null,
+  focusPrevious: (opts?: FocusManagerOptions) => FocusableElement | null,
+  focusFirst: (opts?: FocusManagerOptions) => FocusableElement | null,
+  focusLast: (opts?: FocusManagerOptions) => FocusableElement | null
 }
 
 export const FocusScope = defineComponent({
@@ -72,37 +75,168 @@ export const Focusable = defineComponent({
   }
 });
 
-function createNoopFocusManager(): FocusManager {
+function focusElement(element: Element | null): FocusableElement | null {
+  if (!element) {
+    return null;
+  }
+
+  focusSafelyInteractions(element as unknown as HTMLElement | SVGElement);
+  return element as FocusableElement;
+}
+
+function getLastFocusableElement(root: Element, opts: FocusManagerOptions): FocusableElement | null {
+  let walker = getFocusableTreeWalker(root, opts);
+  let lastFocusableElement: FocusableElement | null = null;
+  let nextNode = walker.nextNode() as Element | null;
+  while (nextNode) {
+    lastFocusableElement = nextNode as FocusableElement;
+    nextNode = walker.nextNode() as Element | null;
+  }
+
+  return lastFocusableElement;
+}
+
+export function createFocusManager(ref: RefObject<Element | null>, defaultOptions: FocusManagerOptions = {}): FocusManager {
   return {
-    focusNext: () => {},
-    focusPrevious: () => {},
-    focusFirst: () => {},
-    focusLast: () => {}
+    focusNext(opts: FocusManagerOptions = {}) {
+      let root = ref.current;
+      if (!root) {
+        return null;
+      }
+
+      let mergedOptions = {
+        ...defaultOptions,
+        ...opts
+      };
+      let node = mergedOptions.from ?? root.ownerDocument?.activeElement ?? null;
+      let walker = getFocusableTreeWalker(root, {
+        accept: mergedOptions.accept,
+        tabbable: mergedOptions.tabbable
+      });
+      if (node && nodeContainsUtils(root, node)) {
+        walker.currentNode = node;
+      }
+
+      let nextNode = walker.nextNode() as Element | null;
+      if (!nextNode && mergedOptions.wrap) {
+        walker.currentNode = root;
+        nextNode = walker.nextNode() as Element | null;
+      }
+
+      return focusElement(nextNode);
+    },
+    focusPrevious(opts: FocusManagerOptions = {}) {
+      let root = ref.current;
+      if (!root) {
+        return null;
+      }
+
+      let mergedOptions = {
+        ...defaultOptions,
+        ...opts
+      };
+      let node = mergedOptions.from ?? root.ownerDocument?.activeElement ?? null;
+      let walker = getFocusableTreeWalker(root, {
+        accept: mergedOptions.accept,
+        tabbable: mergedOptions.tabbable
+      });
+
+      if (node && nodeContainsUtils(root, node)) {
+        walker.currentNode = node;
+        let previousNode = walker.previousNode() as Element | null;
+        if (!previousNode && mergedOptions.wrap) {
+          return focusElement(getLastFocusableElement(root, mergedOptions));
+        }
+
+        return focusElement(previousNode);
+      }
+
+      return focusElement(getLastFocusableElement(root, mergedOptions));
+    },
+    focusFirst(opts: FocusManagerOptions = {}) {
+      let root = ref.current;
+      if (!root) {
+        return null;
+      }
+
+      let mergedOptions = {
+        ...defaultOptions,
+        ...opts
+      };
+      let walker = getFocusableTreeWalker(root, {
+        accept: mergedOptions.accept,
+        tabbable: mergedOptions.tabbable
+      });
+      return focusElement(walker.nextNode() as Element | null);
+    },
+    focusLast(opts: FocusManagerOptions = {}) {
+      let root = ref.current;
+      if (!root) {
+        return null;
+      }
+
+      let mergedOptions = {
+        ...defaultOptions,
+        ...opts
+      };
+      return focusElement(getLastFocusableElement(root, mergedOptions));
+    }
   };
 }
 
-export function createFocusManager(_ref: RefObject<Element | null>, _opts: FocusManagerOptions = {}): FocusManager {
-  return createNoopFocusManager();
-}
-
 export function useFocusManager(): FocusManager | undefined {
-  return createNoopFocusManager();
+  return undefined;
 }
 
 export interface ShadowTreeWalker extends TreeWalker {}
 
 export function getFocusableTreeWalker(
   root: Element,
-  _opts: FocusManagerOptions = {},
-  _scope: Element[] = []
+  opts: FocusManagerOptions = {},
+  scope: Element[] = []
 ): ShadowTreeWalker | TreeWalker {
   let ownerDocument = root.ownerDocument;
-  if (ownerDocument && typeof ownerDocument.createTreeWalker === 'function') {
-    let showElement = typeof NodeFilter === 'undefined' ? 1 : NodeFilter.SHOW_ELEMENT;
-    return ownerDocument.createTreeWalker(root, showElement);
+  if (!ownerDocument || typeof ownerDocument.createTreeWalker !== 'function') {
+    return null as unknown as TreeWalker;
   }
 
-  return null as unknown as TreeWalker;
+  let showElement = typeof NodeFilter === 'undefined' ? 1 : NodeFilter.SHOW_ELEMENT;
+  let filterAccept = typeof NodeFilter === 'undefined' ? 1 : NodeFilter.FILTER_ACCEPT;
+  let filterReject = typeof NodeFilter === 'undefined' ? 2 : NodeFilter.FILTER_REJECT;
+  let filterSkip = typeof NodeFilter === 'undefined' ? 3 : NodeFilter.FILTER_SKIP;
+  let hasScope = scope.length > 0;
+  let isValidNode = opts.tabbable ? isTabbableUtils : isFocusableUtils;
+
+  let walker = ownerDocument.createTreeWalker(root, showElement, {
+    acceptNode(node) {
+      if (!(node instanceof Element)) {
+        return filterSkip;
+      }
+
+      if (opts.from && nodeContainsUtils(opts.from, node)) {
+        return filterReject;
+      }
+
+      if (hasScope && !scope.some((scopeElement) => nodeContainsUtils(scopeElement, node))) {
+        return filterSkip;
+      }
+
+      if (!isValidNode(node)) {
+        return filterSkip;
+      }
+
+      if (opts.accept && !opts.accept(node)) {
+        return filterSkip;
+      }
+
+      return filterAccept;
+    }
+  });
+  if (opts.from) {
+    walker.currentNode = opts.from;
+  }
+
+  return walker;
 }
 
 export function isElementInChildOfActiveScope(element: Element): boolean {

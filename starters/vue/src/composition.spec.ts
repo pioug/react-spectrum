@@ -41,7 +41,15 @@ import {
   useDroppableItem
 } from '@vue-aria/dnd';
 import {EXAMPLE_THEME_CLASS, useExampleTheme} from '@vue-aria/example-theme';
-import {focusSafely as focusPackageFocusSafely, isFocusable as focusIsFocusable, useFocusRing, useHasTabbableChild} from '@vue-aria/focus';
+import {
+  createFocusManager as createFocusManagerFromPackage,
+  focusSafely as focusPackageFocusSafely,
+  getFocusableTreeWalker as getFocusableTreeWalkerFromPackage,
+  isFocusable as focusIsFocusable,
+  useFocusManager as useFocusManagerFromPackage,
+  useFocusRing,
+  useHasTabbableChild
+} from '@vue-aria/focus';
 import {useFormValidation} from '@vue-aria/form';
 import {
   GridKeyboardDelegate,
@@ -4396,6 +4404,55 @@ describe('Vue migration composition components', () => {
     expect(focusSpy).toHaveBeenCalled();
     focusSpy.mockRestore();
     element.remove();
+  });
+
+  it('navigates focusable elements with @vue-aria/focus createFocusManager contract', () => {
+    let root = document.createElement('div');
+    let first = document.createElement('button');
+    first.textContent = 'First';
+    let hidden = document.createElement('button');
+    hidden.textContent = 'Hidden';
+    hidden.setAttribute('hidden', '');
+    let second = document.createElement('button');
+    second.textContent = 'Second';
+    root.append(first, hidden, second);
+    document.body.append(root);
+
+    let manager = createFocusManagerFromPackage({current: root});
+    expect(manager.focusFirst()).toBe(first);
+    expect(document.activeElement).toBe(first);
+    expect(manager.focusNext()).toBe(second);
+    expect(document.activeElement).toBe(second);
+    expect(manager.focusNext({wrap: true})).toBe(first);
+    expect(manager.focusPrevious({wrap: true})).toBe(second);
+
+    root.remove();
+  });
+
+  it('filters @vue-aria/focus tree walker nodes by scope and accept callback', () => {
+    let root = document.createElement('div');
+    let outside = document.createElement('button');
+    outside.id = 'outside';
+    let scopedContainer = document.createElement('div');
+    let denied = document.createElement('button');
+    denied.id = 'denied';
+    let allowed = document.createElement('button');
+    allowed.id = 'allowed';
+    scopedContainer.append(denied, allowed);
+    root.append(outside, scopedContainer);
+    document.body.append(root);
+
+    let walker = getFocusableTreeWalkerFromPackage(root, {
+      accept: (node) => node.id === 'allowed'
+    }, [scopedContainer]);
+
+    expect(walker.nextNode()).toBe(allowed);
+    expect(walker.nextNode()).toBeNull();
+    root.remove();
+  });
+
+  it('returns undefined from @vue-aria/focus useFocusManager outside scope context', () => {
+    expect(useFocusManagerFromPackage()).toBeUndefined();
   });
 
   it('toggles vue-stately global feature flags', () => {
