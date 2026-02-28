@@ -74,7 +74,7 @@ export interface NumberFieldStateOptions {
   isReadOnly?: MaybeRef<boolean>,
   maxValue?: MaybeRef<number | undefined>,
   minValue?: MaybeRef<number | undefined>,
-  name?: string | string[],
+  name?: MaybeRef<string | string[] | undefined>,
   onChange?: (value: number) => void,
   onInputChange?: (value: string) => void,
   step?: MaybeRef<number | undefined>,

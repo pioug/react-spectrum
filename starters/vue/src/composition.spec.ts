@@ -3535,6 +3535,27 @@ describe('Vue migration composition components', () => {
     expect(changedValues).toEqual([6]);
   });
 
+  it('updates vue-stately number-field server validation scope when name changes', async () => {
+    let fieldName = ref('primary');
+    let validationErrors = ref<Record<string, string[]>>({
+      primary: ['Primary error'],
+      secondary: ['Secondary error']
+    });
+    let numberField = useStatelyNumberFieldState({
+      name: fieldName,
+      validationBehavior: ref<'aria' | 'native'>('aria'),
+      validationErrors,
+      value: ref(10)
+    });
+
+    expect(numberField.displayValidation.value.validationErrors).toEqual(['Primary error']);
+
+    fieldName.value = 'secondary';
+    await nextTick();
+
+    expect(numberField.displayValidation.value.validationErrors).toEqual(['Secondary error']);
+  });
+
   it('manages vue-stately overlay trigger open, close, and toggle state', () => {
     let changes: boolean[] = [];
     let isOpen = ref(false);

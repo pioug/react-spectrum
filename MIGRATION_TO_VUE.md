@@ -2686,13 +2686,24 @@
    - full Vue tests: `yarn test:vue` (647 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Number-field validation-name reactive parity remediation (`@vue-stately/numberfield`, `@vue-stately/form`)
+
+1. Closed reactive validation-name drift for number-field form state:
+   - `useNumberFieldState` now accepts reactive `name` inputs (`MaybeRef`) when forwarding to `useFormValidationState`.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` now includes a number-field server-validation test asserting error-scope updates when `name` changes.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "number field|number-field server validation scope"`,
+   - full Vue tests: `yarn test:vue` (648 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 647 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 648 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).
