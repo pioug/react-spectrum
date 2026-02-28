@@ -1,5 +1,5 @@
 import {mount} from '@vue/test-utils';
-import {computed, defineComponent, effectScope, h, nextTick, reactive, ref} from 'vue';
+import {computed, defineComponent, effectScope, h, nextTick, reactive, ref, unref} from 'vue';
 import {describe, expect, it, vi} from 'vitest';
 import {useActionGroup, useActionGroupItem} from '@vue-aria/actiongroup';
 import {useAutocomplete, useSearchAutocomplete} from '@vue-aria/autocomplete';
@@ -369,6 +369,43 @@ describe('Vue migration composition components', () => {
     expect(item.itemProps.value.role).toBe('menuitemcheckbox');
     item.press();
     expect(presses).toEqual([{key: 'Delete', selectedKeys: ['Edit', 'Delete']}]);
+  });
+
+  it('supports react-style actiongroup overload signatures with list state', () => {
+    let selectedKeys = ref(new Set<string>(['edit']));
+    let state = useStatelyListState({
+      collection: new StatelyListCollection([
+        {key: 'edit', textValue: 'Edit', type: 'item'},
+        {key: 'share', textValue: 'Share', type: 'item'},
+        {key: 'delete', textValue: 'Delete', type: 'item'}
+      ]),
+      disabledKeys: new Set(['delete']),
+      selectedKeys,
+      selectionMode: 'multiple'
+    });
+
+    let reactActionGroup = useActionGroup({} as unknown as Parameters<typeof useActionGroup>[0], state as unknown as Parameters<typeof useActionGroup>[1], {
+      current: null
+    } as unknown as Parameters<typeof useActionGroup>[2]);
+    expect(reactActionGroup.selectionMode.value).toBe('multiple');
+    expect(Array.from(reactActionGroup.selectedKeys.value)).toEqual(['edit']);
+
+    let shareItem = useActionGroupItem({
+      key: 'share'
+    } as unknown as Parameters<typeof useActionGroupItem>[0], state as unknown as Parameters<typeof useActionGroupItem>[1], {
+      current: null
+    } as unknown as Parameters<typeof useActionGroupItem>[2]);
+    shareItem.press();
+    expect(Array.from(selectedKeys.value).sort()).toEqual(['edit', 'share']);
+
+    let deleteItem = useActionGroupItem({
+      key: 'delete'
+    } as unknown as Parameters<typeof useActionGroupItem>[0], state as unknown as Parameters<typeof useActionGroupItem>[1], {
+      current: null
+    } as unknown as Parameters<typeof useActionGroupItem>[2]);
+    expect(deleteItem.isDisabled.value).toBe(true);
+    deleteItem.press();
+    expect(Array.from(selectedKeys.value).sort()).toEqual(['edit', 'share']);
   });
 
   it('toggles aria-hidden when watched modal containers are added and removed', async () => {
@@ -7340,6 +7377,59 @@ describe('Vue migration composition components', () => {
     expect(listBoxLabelledByIds).toContain('external-framework-listbox-label');
     expect(listBoxLabelledByIds).toContain('framework-listbox');
     expect(composedLabelListBox.listBoxProps.value['aria-label']).toBe('Framework picker');
+  });
+
+  it('supports react-style listbox overload signatures with list state', () => {
+    let actionEvents: string[] = [];
+    let nodes: StatelyListNode<{label: string}>[] = [
+      {key: 'react', index: 0, textValue: 'React', type: 'item', value: {label: 'React'}},
+      {key: 'vue', index: 1, textValue: 'Vue', type: 'item', value: {label: 'Vue'}},
+      {key: 'svelte', index: 2, textValue: 'Svelte', type: 'item', value: {label: 'Svelte'}, isDisabled: true}
+    ];
+    let selectedKeys = ref(new Set<string>(['react']));
+    let listState = useStatelyListState({
+      collection: new StatelyListCollection(nodes),
+      disabledKeys: new Set(['svelte']),
+      selectedKeys,
+      selectionMode: 'multiple'
+    });
+
+    let reactListBox = useAriaListBox({
+      'aria-label': 'Framework list',
+      isVirtualized: true,
+      onAction: (key) => {
+        actionEvents.push(String(key));
+      },
+      shouldFocusOnHover: true,
+      shouldSelectOnPressUp: true
+    } as unknown as Parameters<typeof useAriaListBox>[0], listState as unknown as Parameters<typeof useAriaListBox>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaListBox>[2]);
+    expect(reactListBox.listBoxProps.value.role).toBe('listbox');
+    expect(reactListBox.listBoxProps.value['aria-multiselectable']).toBe('true');
+
+    let reactOption = useAriaOption({
+      key: 'vue'
+    } as unknown as Parameters<typeof useAriaOption>[0], listState as unknown as Parameters<typeof useAriaOption>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaOption>[2]);
+    reactOption.optionProps.value.onMouseEnter();
+    expect(unref((listState.selectionManager as {focusedKey: unknown}).focusedKey)).toBe('vue');
+
+    reactOption.optionProps.value.onMouseDown();
+    reactOption.optionProps.value.onMouseUp();
+    expect(Array.from(selectedKeys.value).sort()).toEqual(['react', 'vue']);
+    expect(actionEvents).toEqual(['vue']);
+    expect(reactOption.optionProps.value.id).toBe(getItemId(listState as unknown as object, 'vue'));
+    expect(reactOption.optionProps.value['aria-setsize']).toBe(3);
+
+    let disabledOption = useAriaOption({
+      key: 'svelte'
+    } as unknown as Parameters<typeof useAriaOption>[0], listState as unknown as Parameters<typeof useAriaOption>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaOption>[2]);
+    disabledOption.press();
+    expect(Array.from(selectedKeys.value).sort()).toEqual(['react', 'vue']);
   });
 
   it('computes vue-aria menu trigger and item selection semantics', () => {
