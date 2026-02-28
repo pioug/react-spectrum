@@ -1240,6 +1240,19 @@
    - full Vue tests: `yarn test:vue` (537 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Landmark role/label warning parity (`@vue-aria/landmark`)
+
+1. Aligned landmark-manager guardrails with React:
+   - emits error when more than one `main` landmark is registered,
+   - emits warning when duplicate-role landmarks are missing labels,
+   - emits warning when duplicate-role landmarks reuse the same label.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: asserts duplicate-`main` error and duplicate-`navigation` unlabeled warning behavior.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "navigates vue-aria landmarks with the landmark controller|warns on landmark role conflicts and duplicate unlabeled roles"`,
+   - full Vue tests: `yarn test:vue` (538 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

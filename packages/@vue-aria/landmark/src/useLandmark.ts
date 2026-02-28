@@ -72,6 +72,35 @@ function nodeContains(target: EventTarget | null, node: EventTarget | null): boo
 class LandmarkManager {
   landmarks: Landmark[] = [];
 
+  private getLandmarksByRole(role: AriaLandmarkRole): Landmark[] {
+    return this.landmarks.filter((landmark) => landmark.role === role);
+  }
+
+  private checkLandmarkLabels(role: AriaLandmarkRole) {
+    let landmarksWithRole = this.getLandmarksByRole(role);
+    if (landmarksWithRole.length <= 1 || process.env.NODE_ENV === 'production') {
+      return;
+    }
+
+    let duplicatesWithoutLabel = landmarksWithRole.filter((landmark) => !landmark.label);
+    if (duplicatesWithoutLabel.length > 0) {
+      console.warn(
+        `Page contains more than one landmark with the '${role}' role. If two or more landmarks on a page share the same role, all must be labeled with an aria-label or aria-labelledby attribute: `,
+        duplicatesWithoutLabel.map((landmark) => unref(landmark.ref))
+      );
+      return;
+    }
+
+    let labels = landmarksWithRole.map((landmark) => landmark.label);
+    let duplicateLabels = labels.filter((label, index) => labels.indexOf(label) !== index);
+    for (let duplicateLabel of new Set(duplicateLabels)) {
+      console.warn(
+        `Page contains more than one landmark with the '${role}' role and '${duplicateLabel}' label. If two or more landmarks on a page share the same role, they must have unique labels: `,
+        landmarksWithRole.filter((landmark) => landmark.label === duplicateLabel).map((landmark) => unref(landmark.ref))
+      );
+    }
+  }
+
   addLandmark(landmark: Landmark): () => void {
     let existingIndex = this.landmarks.findIndex((candidate) => candidate.ref === landmark.ref);
     if (existingIndex >= 0) {
@@ -79,6 +108,12 @@ class LandmarkManager {
     } else {
       this.landmarks.push(landmark);
     }
+
+    if (landmark.role === 'main' && this.getLandmarksByRole('main').length > 1 && process.env.NODE_ENV !== 'production') {
+      console.error('Page can contain no more than one landmark with the role "main".');
+    }
+
+    this.checkLandmarkLabels(landmark.role);
 
     return () => {
       this.landmarks = this.landmarks.filter((candidate) => candidate.ref !== landmark.ref);

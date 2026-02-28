@@ -3113,6 +3113,44 @@ describe('Vue migration composition components', () => {
     }
   });
 
+  it('warns on landmark role conflicts and duplicate unlabeled roles', () => {
+    let mainA = document.createElement('main');
+    let mainB = document.createElement('main');
+    let navA = document.createElement('nav');
+    let navB = document.createElement('nav');
+    document.body.append(mainA, mainB, navA, navB);
+
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let error = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    try {
+      useLandmark({
+        'aria-label': 'Main A',
+        role: 'main'
+      }, ref(mainA));
+      useLandmark({
+        'aria-label': 'Main B',
+        role: 'main'
+      }, ref(mainB));
+      useLandmark({
+        role: 'navigation'
+      }, ref(navA));
+      useLandmark({
+        role: 'navigation'
+      }, ref(navB));
+
+      expect(error).toHaveBeenCalledWith('Page can contain no more than one landmark with the role "main".');
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining("Page contains more than one landmark with the 'navigation' role."), expect.any(Array));
+    } finally {
+      error.mockRestore();
+      warn.mockRestore();
+      document.body.removeChild(mainA);
+      document.body.removeChild(mainB);
+      document.body.removeChild(navA);
+      document.body.removeChild(navB);
+    }
+  });
+
   it('applies vue-aria link semantics and press interactions', () => {
     let pressCount = 0;
     let customLink = useAriaLink({
