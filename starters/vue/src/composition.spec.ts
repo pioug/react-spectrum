@@ -7539,10 +7539,25 @@ describe('Vue migration composition components', () => {
     let slider = useAriaSlider({
       label: 'Volume'
     }, state, trackRef);
+    let firstInput = document.createElement('input');
+    let secondInput = document.createElement('input');
+    document.body.append(firstInput, secondInput);
+
+    let thumb = useAriaSliderThumb({
+      index: 0,
+      inputRef: ref<HTMLInputElement | null>(firstInput),
+      trackRef
+    }, state);
+    let secondThumb = useAriaSliderThumb({
+      index: 1,
+      inputRef: ref<HTMLInputElement | null>(secondInput),
+      trackRef
+    }, state);
 
     expect(slider.groupProps.value.role).toBe('group');
     expect(slider.groupProps.value['aria-labelledby']).toContain('label');
     expect(slider.outputProps.value.htmlFor.split(' ')).toHaveLength(2);
+    expect(document.activeElement).not.toBe(secondInput);
 
     slider.trackProps.value.onMouseDown(new MouseEvent('mousedown', {
       bubbles: true,
@@ -7551,6 +7566,8 @@ describe('Vue migration composition components', () => {
       clientY: 12
     }));
     expect(focusedThumb.value).toBe(1);
+    expect(secondThumb.isFocused.value).toBe(true);
+    expect(document.activeElement).toBe(secondInput);
     expect(values.value[1]).toBe(80);
 
     slider.trackProps.value.onMouseMove(new MouseEvent('mousemove', {
@@ -7566,13 +7583,6 @@ describe('Vue migration composition components', () => {
       clientY: 12
     }));
     expect(draggingThumbs.value.has(1)).toBe(false);
-
-    let inputRef = ref<HTMLInputElement | null>(document.createElement('input'));
-    let thumb = useAriaSliderThumb({
-      index: 0,
-      inputRef,
-      trackRef
-    }, state);
 
     expect(thumb.inputProps.value.type).toBe('range');
     expect(thumb.thumbProps.value.style.left).toBe('20%');
@@ -7600,6 +7610,9 @@ describe('Vue migration composition components', () => {
       clientY: 12
     }));
     expect(values.value[0]).toBe(5);
+
+    firstInput.remove();
+    secondInput.remove();
   });
 
   it('composes vue-aria slider and thumb labelledby ownership parity', () => {

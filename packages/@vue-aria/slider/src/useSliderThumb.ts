@@ -11,7 +11,7 @@ import {
   sliderData,
   type SliderTrackRef
 } from './utils';
-import {computed, type ComputedRef, type Ref, ref, unref, watchEffect} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
 import type {MaybeRef, SliderDirection, SliderOrientation, SliderState} from './types';
 
 export interface AriaSliderThumbOptions {
@@ -147,9 +147,9 @@ export function useSliderThumb(opts: AriaSliderThumbOptions, state: SliderState)
     return ids.size > 0 ? Array.from(ids).join(' ') : undefined;
   });
 
-  watchEffect(() => {
-    state.setThumbEditable(index, !isDisabled.value);
-  });
+  watch(isDisabled, (nextIsDisabled) => {
+    state.setThumbEditable(index, !nextIsDisabled);
+  }, {flush: 'sync', immediate: true});
 
   let focusInput = (): void => {
     inputRef.value?.focus();
@@ -158,6 +158,12 @@ export function useSliderThumb(opts: AriaSliderThumbOptions, state: SliderState)
   let focusedThumb = computed(() => resolveMaybeRef(state.focusedThumb, undefined));
   let isFocused = computed(() => focusedThumb.value === index);
   let isDragging = computed(() => state.isThumbDragging(index));
+
+  watch(isFocused, (nextIsFocused) => {
+    if (nextIsFocused) {
+      focusInput();
+    }
+  }, {flush: 'sync'});
 
   let activePointerId = ref<number | null>(null);
 

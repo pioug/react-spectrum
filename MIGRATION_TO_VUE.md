@@ -3103,6 +3103,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Slider focused-thumb DOM focus parity (`@vue-aria/slider`)
+
+1. Closed focused-thumb DOM focus drift:
+   - `useSliderThumb` now mirrors React behavior by focusing the thumb input whenever the thumb becomes focused through shared slider state updates (including track-click selection paths).
+2. Closed reactive lifecycle drift:
+   - replaced `setThumbEditable` sync with source-scoped `watch(isDisabled)` to avoid recursive reactive update loops when external state setters read reactive refs.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` slider assertions now verify track click focuses the selected thumb input element.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria slider track and thumb interactions"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
