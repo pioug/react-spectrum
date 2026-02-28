@@ -146,6 +146,18 @@ import {
   VuePicker
 } from '@vue-spectrum/picker';
 import {
+  ComboBox,
+  Item as ComboBoxItem,
+  Section as ComboBoxSection,
+  VueComboBox
+} from '@vue-spectrum/combobox';
+import {
+  ComboBox as RootComboBox,
+  Item as RootComboBoxItem,
+  Section as RootComboBoxSection,
+  VueComboBox as RootVueComboBox
+} from '../../../packages/@vue-spectrum/combobox/index';
+import {
   Form,
   useFormProps,
   VueForm
@@ -517,6 +529,19 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(Picker).toBe(VuePicker);
     expect(PickerItem).not.toBe(VuePicker);
     expect(PickerSection).not.toBe(VuePicker);
+  });
+
+  it('exports combobox collection primitives separately from VueComboBox', () => {
+    expect(ComboBox).toBe(VueComboBox);
+    expect(ComboBoxItem).not.toBe(VueComboBox);
+    expect(ComboBoxSection).not.toBe(VueComboBox);
+  });
+
+  it('keeps root combobox entry exports aligned with source exports', () => {
+    expect(RootComboBox).toBe(ComboBox);
+    expect(RootVueComboBox).toBe(VueComboBox);
+    expect(RootComboBoxItem).toBe(ComboBoxItem);
+    expect(RootComboBoxSection).toBe(ComboBoxSection);
   });
 
   it('keeps form exports aligned with VueForm base entry and helper', () => {
