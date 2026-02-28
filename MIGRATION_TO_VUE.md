@@ -2415,6 +2415,21 @@
    - full Vue tests: `yarn test:vue` (633 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Date picker helper parity remediation (`@vue-stately/datepicker`)
+
+1. Closed direct controlled-ref mutation paths in picker state hooks:
+   - `useDatePickerState` now routes value ownership through shared `useControlledState`,
+   - `useDateRangePickerState` now routes range value ownership through shared `useControlledState`.
+2. Preserved picker behavior contracts:
+   - open/close/toggle behavior and `shouldCloseOnSelect` handling remain unchanged,
+   - date/time sub-state behavior (`dateValue`, `timeValue`, `timeRange`) remains unchanged.
+3. Expanded controlled no-parent-sync regression assertions:
+   - `starters/vue/src/composition.spec.ts` controlled date picker test now asserts one-turn duplicate suppression for repeated identical `setDateValue` writes.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "date picker and date range picker|date picker open and selection|date range picker date and time range|keeps vue-stately date picker and date range picker controlled without mutating control refs"` and full `src/composition.spec.ts`,
+   - full Vue tests: `yarn test:vue` (633 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

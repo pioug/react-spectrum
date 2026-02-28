@@ -1,5 +1,6 @@
-import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
 import {useDatePicker} from '@vue-aria/datepicker';
+import {useControlledState} from '@vue-stately/utils';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 export type DateValue = string | number | Date;
@@ -44,29 +45,15 @@ export interface DatePickerState {
 
 export function useDatePickerState<T extends DateValue = DateValue>(props: DatePickerStateOptions<T>): DatePickerState {
   let options = props ?? ({} as DatePickerStateOptions<T>);
-  let internalValue = ref<string | null>(options.defaultValue ?? null);
-  let isControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasControlled.value = nextIsControlled;
-  });
-
+  let [valueState, setValueInternal] = useControlledState(
+    options.value as Ref<string | null | undefined> | undefined,
+    options.defaultValue ?? null,
+    options.onChange
+  );
   let value = computed<string | null>({
-    get: () => {
-      if (isControlled.value && options.value) {
-        return options.value.value ?? null;
-      }
-
-      return internalValue.value;
-    },
+    get: () => valueState.value,
     set: (nextValue) => {
-      if (!isControlled.value) {
-        internalValue.value = nextValue;
-      }
+      setValueInternal(nextValue);
     }
   }) as Ref<string | null>;
   let timeValue = ref<string | null>(null);
@@ -78,7 +65,6 @@ export function useDatePickerState<T extends DateValue = DateValue>(props: DateP
     isRequired: options.isRequired,
     maxValue: options.maxValue,
     minValue: options.minValue,
-    onChange: options.onChange,
     onOpenChange: options.onOpenChange,
     value
   });

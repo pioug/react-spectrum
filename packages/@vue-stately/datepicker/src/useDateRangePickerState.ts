@@ -1,5 +1,6 @@
-import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
 import {type DateRangeValue, useDateRangePicker} from '@vue-aria/datepicker';
+import {useControlledState} from '@vue-stately/utils';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 export type DateValue = string | number | Date;
@@ -66,29 +67,15 @@ export interface DateRangePickerStateOptions<T extends DateValue = DateValue> {
 
 export function useDateRangePickerState<T extends DateValue = DateValue>(props: DateRangePickerStateOptions<T>): DateRangePickerState {
   let options = props ?? ({} as DateRangePickerStateOptions<T>);
-  let internalValue = ref(cloneRange(options.defaultValue));
-  let isControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasControlled.value = nextIsControlled;
-  });
-
+  let [valueState, setValueInternal] = useControlledState(
+    options.value as Ref<DateRangeValue | undefined> | undefined,
+    cloneRange(options.defaultValue),
+    options.onChange
+  );
   let value = computed<DateRangeValue>({
-    get: () => {
-      if (isControlled.value && options.value) {
-        return cloneRange(options.value.value);
-      }
-
-      return cloneRange(internalValue.value);
-    },
+    get: () => cloneRange(valueState.value),
     set: (nextValue) => {
-      if (!isControlled.value) {
-        internalValue.value = cloneRange(nextValue);
-      }
+      setValueInternal(nextValue);
     }
   }) as Ref<DateRangeValue>;
   let timeRange = ref<TimeRangeValue>({
@@ -103,7 +90,6 @@ export function useDateRangePickerState<T extends DateValue = DateValue>(props: 
     isRequired: options.isRequired,
     maxValue: options.maxValue,
     minValue: options.minValue,
-    onChange: options.onChange,
     onOpenChange: options.onOpenChange,
     value
   });

@@ -2316,6 +2316,7 @@ describe('Vue migration composition components', () => {
     });
 
     picker.setDateValue('2026-02-22');
+    picker.setDateValue('2026-02-22');
     expect(pickerValue.value).toBeNull();
     expect(picker.dateValue.value).toBeNull();
     expect(pickerChanges).toEqual(['2026-02-22']);
