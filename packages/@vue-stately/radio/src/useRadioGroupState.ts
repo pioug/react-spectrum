@@ -1,5 +1,6 @@
-import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
 import {type FormValidationState, useFormValidationState, type ValidationErrors} from '@vue-stately/form';
+import {useControlledState} from '@vue-stately/utils';
 import {useId} from '@vue-aria/utils';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
@@ -41,31 +42,11 @@ export interface RadioGroupState extends FormValidationState {
 export function useRadioGroupState(options: RadioGroupStateOptions = {}): RadioGroupState {
   let generatedName = useId();
   let name = computed(() => unref(options.name) ?? generatedName);
-  let uncontrolledSelectedValue = ref(options.defaultValue ?? null);
-  let isControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasControlled.value = nextIsControlled;
-  });
-
-  let selectedValue = computed<string | null>({
-    get: () => {
-      if (isControlled.value && options.value) {
-        return options.value.value;
-      }
-
-      return uncontrolledSelectedValue.value;
-    },
-    set: (nextValue) => {
-      if (!isControlled.value) {
-        uncontrolledSelectedValue.value = nextValue;
-      }
-    }
-  }) as Ref<string | null>;
+  let [selectedValue, setSelected] = useControlledState<string | null>(
+    options.value,
+    options.defaultValue ?? null,
+    options.onChange
+  );
 
   let initialSelectedValue = selectedValue.value;
   let lastFocusedValue = ref<string | null>(null);
@@ -116,13 +97,7 @@ export function useRadioGroupState(options: RadioGroupStateOptions = {}): RadioG
       return;
     }
 
-    if (selectedValue.value === value) {
-      return;
-    }
-
-    selectedValue.value = value;
-    options.onChange?.(value);
-
+    setSelected(value);
     validation.commitValidation();
   };
 
@@ -134,7 +109,7 @@ export function useRadioGroupState(options: RadioGroupStateOptions = {}): RadioG
     ...validation,
     name,
     selectedValue,
-    defaultSelectedValue: isControlled.value ? initialSelectedValue : options.defaultValue ?? null,
+    defaultSelectedValue: options.value?.value !== undefined ? initialSelectedValue : options.defaultValue ?? null,
     setSelectedValue,
     lastFocusedValue,
     setLastFocusedValue,

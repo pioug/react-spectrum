@@ -1,4 +1,5 @@
-import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
+import {computed, type ComputedRef, type Ref, unref} from 'vue';
+import {useControlledState} from '@vue-stately/utils';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 
@@ -29,47 +30,26 @@ export interface DisclosureState {
  * methods to toggle this state.
  */
 export function useDisclosureState(props: DisclosureProps = {}): DisclosureState {
-  let uncontrolledExpanded = ref(Boolean(unref(props.defaultExpanded)));
-  let isControlled = computed(() => props.isExpanded !== undefined && props.isExpanded.value !== undefined);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasControlled.value = nextIsControlled;
-  });
-
-  let isExpanded = computed(() => {
-    if (isControlled.value && props.isExpanded) {
-      return props.isExpanded.value;
-    }
-
-    return uncontrolledExpanded.value;
-  });
+  let [isExpanded, setExpandedInternal] = useControlledState(
+    props.isExpanded,
+    Boolean(unref(props.defaultExpanded)),
+    props.onExpandedChange
+  );
 
   let setExpanded = (nextExpanded: boolean): void => {
-    if (isExpanded.value === nextExpanded) {
-      return;
-    }
-
-    if (!isControlled.value) {
-      uncontrolledExpanded.value = nextExpanded;
-    }
-
-    props.onExpandedChange?.(nextExpanded);
+    setExpandedInternal(nextExpanded);
   };
 
   let expand = (): void => {
-    setExpanded(true);
+    setExpandedInternal(true);
   };
 
   let collapse = (): void => {
-    setExpanded(false);
+    setExpandedInternal(false);
   };
 
   let toggle = (): void => {
-    setExpanded(!isExpanded.value);
+    setExpandedInternal(!isExpanded.value);
   };
 
   return {

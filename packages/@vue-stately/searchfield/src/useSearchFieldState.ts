@@ -1,4 +1,5 @@
-import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
+import {computed, type ComputedRef, type Ref, unref} from 'vue';
+import {useControlledState} from '@vue-stately/utils';
 
 function toString(value: unknown): string | undefined {
   if (value == null) {
@@ -23,35 +24,17 @@ export interface SearchFieldState {
  * Provides state management for search fields.
  */
 export function useSearchFieldState(options: SearchFieldStateOptions = {}): SearchFieldState {
-  let uncontrolledValue = ref(toString(unref(options.defaultValue)) ?? '');
-  let isControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasControlled.value = nextIsControlled;
-  });
-
-  let value = computed(() => {
-    if (isControlled.value) {
-      return toString(unref(options.value)) ?? '';
-    }
-
-    return uncontrolledValue.value;
-  });
+  let controlledValue = options.value === undefined
+    ? undefined
+    : computed<string | undefined>(() => toString(unref(options.value)));
+  let [value, setValueInternal] = useControlledState(
+    controlledValue,
+    toString(unref(options.defaultValue)) || '',
+    options.onChange
+  );
 
   let setValue = (nextValue: string): void => {
-    if (nextValue === value.value) {
-      return;
-    }
-
-    if (!isControlled.value) {
-      uncontrolledValue.value = nextValue;
-    }
-
-    options.onChange?.(nextValue);
+    setValueInternal(nextValue);
   };
 
   return {

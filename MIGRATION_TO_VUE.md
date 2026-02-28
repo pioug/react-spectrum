@@ -2269,6 +2269,21 @@
    - full Vue tests: `yarn test:vue` (624 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Controlled state helper parity sweep (`@vue-stately/autocomplete`, `searchfield`, `toggle`, `disclosure`, `radio`)
+
+1. Closed remaining ad hoc controlled-state ownership drift in single-value hooks by aligning with shared helper semantics:
+   - `useAutocompleteState`, `useSearchFieldState`, `useToggleState`, `useDisclosureState`, and `useRadioGroupState` now route controlled/uncontrolled behavior through `@vue-stately/utils/useControlledState`.
+2. Preserved existing public contracts while matching React callback/equality behavior:
+   - removed direct per-hook controlled write-through branches,
+   - retained read-only/disabled guards where applicable (`toggle`, `radio`),
+   - retained existing validation commit behavior in `radio`.
+3. Expanded regression coverage for duplicate controlled callbacks without parent sync:
+   - `starters/vue/src/composition.spec.ts` now asserts one-turn duplicate suppression for controlled `autocomplete`, `searchfield`, `toggle`, `disclosure`, and `radio` updates.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "autocomplete|search field|toggle hooks controlled|disclosure hooks controlled|radio group controlled"`,
+   - full Vue tests: `yarn test:vue` (625 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

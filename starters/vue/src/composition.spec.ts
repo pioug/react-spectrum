@@ -484,6 +484,24 @@ describe('Vue migration composition components', () => {
     expect(controlledState.inputValue.value).toBe('Vue');
   });
 
+  it('suppresses duplicate vue-stately autocomplete controlled callbacks without parent sync in one turn', () => {
+    let controlledInput = ref<string | undefined>('React');
+    let controlledChanges: string[] = [];
+    let controlledState = useStatelyAutocompleteState({
+      inputValue: controlledInput,
+      onInputChange: (value) => {
+        controlledChanges.push(value);
+      }
+    });
+
+    controlledState.setInputValue('Vue');
+    controlledState.setInputValue('Vue');
+
+    expect(controlledInput.value).toBe('React');
+    expect(controlledState.inputValue.value).toBe('React');
+    expect(controlledChanges).toEqual(['Vue']);
+  });
+
   it('warns when vue-stately autocomplete switches between controlled and uncontrolled', async () => {
     let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     let controlledInput = ref<string | undefined>('React');
@@ -2315,6 +2333,7 @@ describe('Vue migration composition components', () => {
     });
 
     disclosure.expand();
+    disclosure.expand();
     expect(expanded.value).toBe(false);
     expect(disclosure.isExpanded.value).toBe(false);
     expect(expansionChanges).toEqual([true]);
@@ -3300,6 +3319,7 @@ describe('Vue migration composition components', () => {
     });
 
     radioGroup.setSelectedValue('vue');
+    radioGroup.setSelectedValue('vue');
 
     expect(selectedValue.value).toBe('react');
     expect(radioGroup.selectedValue.value).toBe('react');
@@ -3409,6 +3429,7 @@ describe('Vue migration composition components', () => {
       value: controlledValue
     });
 
+    controlledState.setValue('Spectrum');
     controlledState.setValue('Spectrum');
     expect(controlledState.value.value).toBe('React');
     expect(controlledValue.value).toBe('React');
@@ -4335,6 +4356,7 @@ describe('Vue migration composition components', () => {
       }
     });
 
+    toggleState.toggle();
     toggleState.toggle();
     expect(controlledSelected.value).toBe(true);
     expect(toggleState.isSelected.value).toBe(true);
