@@ -2752,6 +2752,22 @@ describe('Vue migration composition components', () => {
     expect(requiredGroup.validationState.value).toBe('invalid');
   });
 
+  it('emits vue-stately radio-group onChange for null selection parity', () => {
+    let changes: Array<string | null> = [];
+    let radioGroup = useStatelyRadioGroupState({
+      defaultValue: 'vue',
+      onChange: (value) => {
+        changes.push(value);
+      }
+    });
+
+    radioGroup.setSelectedValue('react');
+    radioGroup.setSelectedValue(null);
+
+    expect(radioGroup.selectedValue.value).toBeNull();
+    expect(changes).toEqual(['react', null]);
+  });
+
   it('warns when vue-stately radio group switches between controlled and uncontrolled', async () => {
     let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     let selectedValue = ref<string | null | undefined>('react');

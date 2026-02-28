@@ -1886,6 +1886,19 @@
    - full Vue tests: `yarn test:vue` (594 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Radio-group null-change emission parity (`@vue-stately/radio`)
+
+1. Closed radio-group change-emission drift against React:
+   - `setSelectedValue(null)` now emits `onChange(null)` instead of suppressing callback dispatch for null selections.
+2. Updated radio-group option typing for parity:
+   - `onChange` now accepts `string | null` to reflect actual state transitions (`selected` and `cleared`) in the state API.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: explicit assertion that radio-group emits `onChange` for both non-null and null selection transitions.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "radio group selection, focus tracking, and required validation|null selection parity"`,
+   - full Vue tests: `yarn test:vue` (595 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

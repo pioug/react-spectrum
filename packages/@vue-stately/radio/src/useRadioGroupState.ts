@@ -13,7 +13,7 @@ export interface RadioGroupStateOptions {
   isReadOnly?: MaybeRef<boolean>,
   isRequired?: MaybeRef<boolean>,
   name?: MaybeRef<string | undefined>,
-  onChange?: (value: string) => void,
+  onChange?: (value: string | null) => void,
   validate?: (value: string | null) => boolean | null | string | string[] | undefined,
   validationBehavior?: MaybeRef<'aria' | 'native'>,
   validationErrors?: MaybeRef<ValidationErrors>,
@@ -123,9 +123,7 @@ export function useRadioGroupState(options: RadioGroupStateOptions = {}): RadioG
     }
 
     selectedValue.value = value;
-    if (value != null) {
-      options.onChange?.(value);
-    }
+    options.onChange?.(value);
 
     validation.commitValidation();
   };
