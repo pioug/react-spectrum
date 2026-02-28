@@ -1155,6 +1155,19 @@
    - full Vue tests: `yarn test:vue` (533 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — `DialogTrigger` unmount-warning parity (`@vue-spectrum/dialog`)
+
+1. Aligned `DialogTrigger` lifecycle guardrails with React:
+   - in development, `DialogTrigger` now warns when unmounted while still open for modal-like dialog types (non-`popover`/`tray`), matching React guidance to prefer `DialogContainer` in conditional/unmounting flows.
+2. Preserved dialog behavior:
+   - no open/close/focus-dismiss contract changes; this patch only adds missing warning parity.
+3. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: assertion that unmounting an open modal `DialogTrigger` emits the React warning text.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "restores trigger focus when dialog trigger closes from Escape|warns when dialog trigger unmounts while open for modal-like types"`,
+   - full Vue tests: `yarn test:vue` (534 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

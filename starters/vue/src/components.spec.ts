@@ -4528,6 +4528,24 @@ describe('Vue migration primitives', () => {
     wrapper.unmount();
   });
 
+  it('warns when dialog trigger unmounts while open for modal-like types', () => {
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let wrapper = mount(DialogTrigger, {
+      props: {
+        defaultOpen: true,
+        type: 'modal'
+      },
+      slots: {
+        trigger: ({open}: {open: () => void}) => h('button', {onClick: open, type: 'button'}, 'Open dialog'),
+        default: () => h('div', 'Dialog body')
+      }
+    });
+
+    wrapper.unmount();
+    expect(warn).toHaveBeenCalledWith('A DialogTrigger unmounted while open. This is likely due to being placed within a trigger that unmounts or inside a conditional. Consider using a DialogContainer instead.');
+    warn.mockRestore();
+  });
+
   it('emits model updates and change events from picker selections', async () => {
     let wrapper = mount(Picker, {
       props: {

@@ -2,7 +2,7 @@ import '@adobe/spectrum-css-temp/components/dialog/vars.css';
 import {Button} from '@vue-spectrum/button';
 import {Modal, Popover, Tray} from '@vue-spectrum/overlays';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, type ComputedRef, defineComponent, getCurrentInstance, h, inject, nextTick, provide, ref, type InjectionKey, type PropType, type VNode, watch} from 'vue';
+import {computed, type ComputedRef, defineComponent, getCurrentInstance, h, inject, nextTick, onBeforeUnmount, provide, ref, type InjectionKey, type PropType, type VNode, watch} from 'vue';
 const styles: {[key: string]: string} = {};
 
 
@@ -550,6 +550,7 @@ export const DialogTrigger = defineComponent({
     });
     let isDismissable = useResolvedDismissableState(computed(() => props.isDismissable), computed(() => props.dismissable));
     let resolvedType = computed(() => props.mobileType ?? props.type);
+    let hasUnmountedWarning = ref(false);
 
     let setOpen = (nextValue: boolean) => {
       if (isOpen.value === nextValue) {
@@ -626,6 +627,17 @@ export const DialogTrigger = defineComponent({
         nextTick(() => {
           restoreFocusToTrigger();
         });
+      }
+    });
+
+    onBeforeUnmount(() => {
+      if (hasUnmountedWarning.value) {
+        return;
+      }
+
+      if (isOpen.value && resolvedType.value !== 'popover' && resolvedType.value !== 'tray' && process.env.NODE_ENV !== 'production') {
+        console.warn('A DialogTrigger unmounted while open. This is likely due to being placed within a trigger that unmounts or inside a conditional. Consider using a DialogContainer instead.');
+        hasUnmountedWarning.value = true;
       }
     });
 
