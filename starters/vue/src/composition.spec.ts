@@ -3215,6 +3215,86 @@ describe('Vue migration composition components', () => {
     expect(rangePicker.isInvalid.value).toBe(false);
   });
 
+  it('supports react-style datepicker overload signatures with stately state', () => {
+    let dateValue = ref('2026-02-10');
+    let dateFieldState = useStatelyDateFieldState({
+      onChange: (value) => {
+        dateValue.value = value;
+      },
+      value: dateValue
+    });
+    let reactDateField = useDateField({
+      maxValue: '2026-02-20'
+    } as unknown as Parameters<typeof useDateField>[0], dateFieldState as unknown as Parameters<typeof useDateField>[1], {
+      current: null
+    } as unknown as Parameters<typeof useDateField>[2]);
+    reactDateField.setValue('2026-03-01');
+    expect(dateValue.value).toBe('2026-02-20');
+
+    let timeValue = ref('09:30');
+    let timeFieldState = useStatelyTimeFieldState({
+      onChange: (value) => {
+        timeValue.value = value;
+      },
+      value: timeValue
+    });
+    let reactTimeField = useTimeField({
+      maxValue: '10:00'
+    } as unknown as Parameters<typeof useTimeField>[0], timeFieldState as unknown as Parameters<typeof useTimeField>[1], {
+      current: null
+    } as unknown as Parameters<typeof useTimeField>[2]);
+    reactTimeField.setValue('11:45');
+    expect(timeValue.value).toBe('10:00');
+
+    let pickerValue = ref<string | null>(null);
+    let datePickerState = useStatelyDatePickerState({
+      onChange: (value) => {
+        pickerValue.value = value;
+      },
+      value: pickerValue
+    });
+    let reactDatePicker = useDatePicker({
+      minValue: '2026-02-01'
+    } as unknown as Parameters<typeof useDatePicker>[0], datePickerState as unknown as Parameters<typeof useDatePicker>[1], {
+      current: null
+    } as unknown as Parameters<typeof useDatePicker>[2]);
+    reactDatePicker.open();
+    expect(datePickerState.isOpen.value).toBe(true);
+    reactDatePicker.setValue('2026-02-22');
+    expect(pickerValue.value).toBe('2026-02-22');
+    reactDatePicker.close();
+    expect(datePickerState.isOpen.value).toBe(false);
+
+    let rangeValue = ref({
+      start: null as string | null,
+      end: null as string | null
+    });
+    let rangePickerState = useStatelyDateRangePickerState({
+      onChange: (value) => {
+        rangeValue.value = {
+          start: value.start,
+          end: value.end
+        };
+      },
+      value: rangeValue
+    });
+    let reactRangePicker = useDateRangePicker({
+      minValue: '2026-02-01'
+    } as unknown as Parameters<typeof useDateRangePicker>[0], rangePickerState as unknown as Parameters<typeof useDateRangePicker>[1], {
+      current: null
+    } as unknown as Parameters<typeof useDateRangePicker>[2]);
+    reactRangePicker.open();
+    expect(rangePickerState.isOpen.value).toBe(true);
+    reactRangePicker.setStart('2026-02-20');
+    reactRangePicker.setEnd('2026-02-24');
+    expect(rangeValue.value).toEqual({
+      start: '2026-02-20',
+      end: '2026-02-24'
+    });
+    reactRangePicker.close();
+    expect(rangePickerState.isOpen.value).toBe(false);
+  });
+
   it('manages vue-stately date and time field state', () => {
     let dateValue = ref('2026-02-10');
     let dateField = useStatelyDateFieldState({
