@@ -61,9 +61,7 @@ export function useRadioGroupState(options: RadioGroupStateOptions = {}): RadioG
       return uncontrolledSelectedValue.value;
     },
     set: (nextValue) => {
-      if (isControlled.value && options.value) {
-        options.value.value = nextValue;
-      } else {
+      if (!isControlled.value) {
         uncontrolledSelectedValue.value = nextValue;
       }
     }

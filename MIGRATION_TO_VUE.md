@@ -2050,6 +2050,19 @@
    - full Vue tests: `yarn test:vue` (607 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Radio-group controlled ownership parity (`@vue-stately/radio`)
+
+1. Closed radio-group controlled ownership drift:
+   - `useRadioGroupState` no longer mutates controlled `value` refs directly from `setSelectedValue`.
+2. Preserved callback/validation behavior:
+   - `onChange` and validation commit semantics remain unchanged; controlled updates are now callback-driven and externally owned.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: assertion that controlled radio-group refs remain unchanged when parent does not mirror `onChange`, while callbacks still emit the requested selection.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "radio group selection, focus tracking, and required validation|radio group controlled without mutating control refs"`,
+   - full Vue tests: `yarn test:vue` (608 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
