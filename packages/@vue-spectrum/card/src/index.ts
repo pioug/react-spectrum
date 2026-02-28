@@ -1,4 +1,6 @@
 import '@adobe/spectrum-css-temp/components/card/vars.css';
+import '@adobe/spectrum-css-temp/components/checkbox/vars.css';
+import {ProgressCircle} from '@vue-spectrum/progress';
 import {classNames} from '@vue-spectrum/utils';
 import {Comment, computed, defineComponent, h, isVNode, nextTick, onMounted, onUpdated, Text, type PropType, ref} from 'vue';
 import {getEventTarget} from '@vue-aria/utils';
@@ -41,6 +43,7 @@ type CardViewSelectionValue = number | string | Iterable<string | number>;
 type CardViewSelectedKeys = 'all' | CardViewSelectionValue;
 type CardSelectionKey = number | string;
 const CARD_FOCUSABLE_WARNING = 'Card does not support focusable elements, please contact the team regarding your use case.';
+const CARD_DEFAULT_DESCRIPTION = 'Very very very very very very very very very very very very very long description';
 
 let cardId = 0;
 
@@ -79,6 +82,18 @@ function hasRenderableContent(value: unknown): boolean {
 function resolveCardViewLayout(layout: CardViewLayoutInput | undefined): CardLayout {
   if (layout === 'gallery' || layout === 'waterfall' || layout === 'grid') {
     return layout;
+  }
+
+  if (layout === GalleryLayout) {
+    return 'gallery';
+  }
+
+  if (layout === WaterfallLayout) {
+    return 'waterfall';
+  }
+
+  if (layout === GridLayout) {
+    return 'grid';
   }
 
   if (layout && typeof layout === 'object' && 'layoutType' in layout) {
@@ -217,6 +232,10 @@ export const Card = defineComponent({
       type: Boolean,
       default: false
     },
+    showSelectionCheckbox: {
+      type: Boolean,
+      default: false
+    },
     title: {
       type: String,
       default: ''
@@ -277,12 +296,32 @@ export const Card = defineComponent({
 
       return [];
     });
-    let previewNodes = computed(() => slots.preview ? slots.preview() : []);
+    let imageNodes = computed(() => slots.preview ? slots.preview() : []);
+    let illustrationNodes = computed(() => slots.illustration ? slots.illustration() : []);
+    let avatarNodes = computed(() => slots.avatar ? slots.avatar() : []);
 
     let hasTitle = computed(() => hasRenderableContent(titleNodes.value));
     let hasDetail = computed(() => hasRenderableContent(detailNodes.value));
     let hasContent = computed(() => hasRenderableContent(contentNodes.value));
-    let hasPreview = computed(() => hasRenderableContent(previewNodes.value));
+    let hasImage = computed(() => hasRenderableContent(imageNodes.value));
+    let hasIllustration = computed(() => hasRenderableContent(illustrationNodes.value));
+    let hasAvatar = computed(() => hasRenderableContent(avatarNodes.value));
+    let hasPreview = computed(() => hasImage.value || hasIllustration.value);
+    let resolvedTabIndex = computed(() => {
+      let tabIndex = attrs.tabindex;
+      if (typeof tabIndex === 'number' && Number.isFinite(tabIndex)) {
+        return Math.trunc(tabIndex);
+      }
+
+      if (typeof tabIndex === 'string' && tabIndex.trim().length > 0) {
+        let parsed = Number.parseInt(tabIndex, 10);
+        if (!Number.isNaN(parsed)) {
+          return parsed;
+        }
+      }
+
+      return 0;
+    });
 
     let titleId = computed(() => hasTitle.value ? `${cardBaseId.value}-title` : undefined);
     let descriptionId = computed(() => hasContent.value ? `${cardBaseId.value}-description` : undefined);
@@ -333,7 +372,7 @@ export const Card = defineComponent({
       ref: cardRef,
       class: [className.value, attrs.class],
       role: typeof attrs.role === 'string' ? attrs.role : 'article',
-      tabindex: isDisabled.value ? -1 : 0,
+      tabindex: isDisabled.value ? -1 : resolvedTabIndex.value,
       'aria-disabled': isDisabled.value ? 'true' : undefined,
       'aria-label': typeof attrs['aria-label'] === 'string' ? attrs['aria-label'] : (hasTitle.value ? undefined : props.title || undefined),
       'aria-labelledby': titleId.value,
@@ -364,12 +403,51 @@ export const Card = defineComponent({
       }
     }, [
       h('div', {class: classNames(styles, 'spectrum-Card-grid')}, [
-        hasPreview.value
-          ? h('div', {class: classNames(styles, 'spectrum-Card-image')}, previewNodes.value)
+        props.showSelectionCheckbox
+          ? h('div', {
+            class: classNames(styles, 'spectrum-Card-checkboxWrapper')
+          }, [
+            h('label', {
+              class: classNames(styles, 'spectrum-Checkbox', {'is-checked': isSelected.value}, 'spectrum-Card-checkbox')
+            }, [
+              h('input', {
+                'aria-label': 'select',
+                checked: isSelected.value,
+                class: classNames(styles, 'spectrum-Checkbox-input'),
+                'data-react-aria-pressable': 'true',
+                disabled: isDisabled.value,
+                tabindex: -1,
+                type: 'checkbox'
+              }),
+              h('span', {class: classNames(styles, 'spectrum-Checkbox-box')}, [
+                h('svg', {
+                  class: classNames(styles, 'spectrum-Icon', 'spectrum-UIIcon-CheckmarkSmall', 'spectrum-Checkbox-checkmark'),
+                  focusable: 'false',
+                  'aria-hidden': 'true',
+                  role: 'img'
+                }, [
+                  h('path', {d: 'M3.788 9A.999.999 0 0 1 3 8.615l-2.288-3a1 1 0 1 1 1.576-1.23l1.5 1.991 3.924-4.991a1 1 0 1 1 1.576 1.23l-4.712 6A.999.999 0 0 1 3.788 9z'})
+                ])
+              ])
+            ])
+          ])
           : null,
-        hasTitle.value ? h('span', {id: titleId.value, class: classNames(styles, 'spectrum-Card-heading')}, titleNodes.value) : null,
-        hasDetail.value ? h('span', {class: classNames(styles, 'spectrum-Card-detail')}, detailNodes.value) : null,
-        hasContent.value ? h('span', {id: descriptionId.value, class: classNames(styles, 'spectrum-Card-content')}, contentNodes.value) : null,
+        hasImage.value
+          ? h('div', {
+            class: classNames(styles, 'spectrum-Card-image'),
+            style: {overflow: 'hidden'}
+          }, imageNodes.value)
+          : null,
+        hasIllustration.value
+          ? h('div', {
+            class: classNames(styles, 'spectrum-Card-illustration'),
+            style: {overflow: 'hidden'}
+          }, illustrationNodes.value)
+          : null,
+        hasAvatar.value ? h('div', {class: classNames(styles, 'spectrum-Card-avatar')}, avatarNodes.value) : null,
+        hasTitle.value ? h('h3', {id: titleId.value, class: classNames(styles, 'spectrum-Card-heading')}, titleNodes.value) : null,
+        hasDetail.value ? h('span', {class: classNames(styles, 'spectrum-Card-detail'), role: 'none'}, detailNodes.value) : null,
+        hasContent.value ? h('section', {id: descriptionId.value, class: classNames(styles, 'spectrum-Card-content')}, contentNodes.value) : null,
         h('div', {class: classNames(styles, 'spectrum-Card-decoration'), 'aria-hidden': 'true'})
       ])
     ]);
@@ -430,7 +508,7 @@ export const CardView = defineComponent({
     },
     selectionMode: {
       type: String as PropType<CardViewSelectionMode>,
-      default: 'single'
+      default: 'none'
     }
   },
   emits: {
@@ -452,7 +530,15 @@ export const CardView = defineComponent({
 
       return undefined;
     });
-    let columnCount = computed(() => layoutColumnCount.value ?? Math.max(1, Math.round(props.columns)));
+    let resolvedLayout = computed(() => resolveCardViewLayout(props.layout));
+    let fallbackColumnCount = computed(() => {
+      if (resolvedLayout.value === 'waterfall') {
+        return 2;
+      }
+
+      return Math.max(1, Math.round(props.columns));
+    });
+    let columnCount = computed(() => layoutColumnCount.value ?? fallbackColumnCount.value);
     let normalizedItems = computed(() => props.items.map((item, index) => {
       let selectionKey = getItemSelectionKey(item, index);
       return {
@@ -470,7 +556,6 @@ export const CardView = defineComponent({
       return result;
     });
     let disabledKeySet = computed(() => new Set(Array.from(props.disabledKeys).map((key) => String(key))));
-    let resolvedLayout = computed(() => resolveCardViewLayout(props.layout));
     let selectedKeys = computed(() => {
       if (props.selectedKeys === 'all') {
         return new Set(itemKeySet.value);
@@ -529,7 +614,14 @@ export const CardView = defineComponent({
     let renderCenteredRow = (content: unknown) => h('div', {
       role: 'row',
       'aria-rowindex': normalizedItems.value.length + 1,
-      class: classNames(styles, 'spectrum-CardView-centeredWrapper')
+      class: classNames(styles, 'spectrum-CardView-centeredWrapper'),
+      style: {
+        alignItems: 'center',
+        display: 'flex',
+        gridColumn: '1 / -1',
+        height: '100%',
+        justifyContent: 'center'
+      }
     }, [
       h('div', {role: 'gridcell'}, [content])
     ]);
@@ -538,7 +630,7 @@ export const CardView = defineComponent({
       let gridRows = normalizedItems.value.map(({item, key}, index) => {
         let itemTitle = item.title ? String(item.title) : `Item ${index + 1}`;
         let itemDetail = item.detail ? String(item.detail) : 'PNG';
-        let itemDescription = item.description ? String(item.description) : undefined;
+        let itemDescription = item.description ? String(item.description) : CARD_DEFAULT_DESCRIPTION;
         let itemSrc = item.src ? String(item.src) : undefined;
         let isItemDisabled = props.disabled || disabledKeySet.value.has(key);
         let isItemSelected = selectedKeys.value.has(key);
@@ -563,11 +655,12 @@ export const CardView = defineComponent({
         return h('div', {
           key,
           role: 'row',
+          tabindex: -1,
           'aria-rowindex': index + 1,
-          class: classNames(styles, 'spectrum-CardView-row')
+          class: classNames(styles, 'spectrum-CardView-row'),
+          style: resolvedLayout.value === 'gallery' ? {height: '280px'} : undefined
         }, [
           h(Card, {
-            class: 'vs-card-view__item',
             description: itemDescription,
             detail: itemDetail,
             id: item.id == null ? undefined : String(item.id),
@@ -577,6 +670,8 @@ export const CardView = defineComponent({
             layout: resolvedLayout.value,
             orientation: props.cardOrientation,
             role: 'gridcell',
+            showSelectionCheckbox: props.selectionMode !== 'none',
+            tabindex: -1,
             title: itemTitle,
             'aria-label': itemTitle,
             'aria-selected': props.selectionMode === 'none' ? undefined : (isItemSelected ? 'true' : 'false'),
@@ -587,35 +682,51 @@ export const CardView = defineComponent({
 
       if (normalizedItems.value.length === 0) {
         if (isLoading.value) {
-          gridRows.push(renderCenteredRow('Loading...'));
+          gridRows.push(renderCenteredRow(h(ProgressCircle, {
+            'aria-label': props.loadingState === 'loadingMore' ? 'Loading more' : 'Loading',
+            isIndeterminate: true
+          })));
         } else if (props.renderEmptyState) {
           gridRows.push(renderCenteredRow(props.renderEmptyState()));
         }
       } else if (props.loadingState === 'loadingMore') {
-        gridRows.push(renderCenteredRow('Loading more...'));
+        gridRows.push(renderCenteredRow(h(ProgressCircle, {
+          'aria-label': 'Loading more',
+          isIndeterminate: true
+        })));
       }
 
       return h('div', {
         ...attrs,
-        class: [classNames(styles, 'spectrum-CardView'), 'vs-card-view', attrs.class],
+        class: [classNames(styles, 'spectrum-CardView'), attrs.class],
         role: 'grid',
         'aria-label': attrs['aria-label'],
         'aria-rowcount': normalizedItems.value.length,
         'aria-multiselectable': props.selectionMode === 'multiple' ? 'true' : undefined,
+        tabindex: normalizedItems.value.length === 0 && !isLoading.value && props.renderEmptyState ? -1 : 0,
         style: [
           {
+            display: 'grid',
+            gap: '20px',
             gridTemplateColumns: `repeat(${columnCount.value}, minmax(0, 1fr))`
           },
           attrs.style
-        ],
-        'data-vac': ''
+        ]
       }, gridRows);
     };
   }
 });
-export const GalleryLayout = (options: GalleryLayoutOptions = {}) => options;
-export const GridLayout = (options: GridLayoutOptions = {}) => options;
-export const WaterfallLayout = (options: WaterfallLayoutOptions = {}) => options;
+export function GalleryLayout(options: GalleryLayoutOptions = {}) {
+  return options;
+}
+
+export function GridLayout(options: GridLayoutOptions = {}) {
+  return options;
+}
+
+export function WaterfallLayout(options: WaterfallLayoutOptions = {}) {
+  return options;
+}
 export const VueCard = Card;
 export const VueCardView = CardView;
 export type {SpectrumCardViewProps} from '@vue-types/card';

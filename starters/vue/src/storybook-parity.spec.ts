@@ -3115,7 +3115,7 @@ describe('Vue storybook helper parity', () => {
       let cardStory = GridCardViewDisabledKeys.render?.({...cardArgs}) as ReturnType<Exclude<typeof GridCardViewDisabledKeys.render, undefined>>;
       let cardWrapper = mount(cardStory);
       wrappers.push(cardWrapper);
-      let disabledCards = cardWrapper.findAll('.vs-card-view__item[aria-disabled="true"]').map((card) => card.attributes('aria-label'));
+      let disabledCards = cardWrapper.findAll('[role="gridcell"][aria-disabled="true"]').map((card) => card.attributes('aria-label'));
       expect(disabledCards).toEqual(expect.arrayContaining(['Joe 2', 'Bob 4']));
       expect(cardWrapper.text()).not.toContain('disabled in React');
 
@@ -3127,13 +3127,13 @@ describe('Vue storybook helper parity', () => {
       }) as ReturnType<Exclude<typeof GridCardViewDisabledKeys.render, undefined>>;
       let selectedSetWrapper = mount(selectedSetStory);
       wrappers.push(selectedSetWrapper);
-      let selectedCards = selectedSetWrapper.findAll('.vs-card-view__item.is-selected').map((card) => card.attributes('aria-label'));
+      let selectedCards = selectedSetWrapper.findAll('[role="gridcell"].is-selected').map((card) => card.attributes('aria-label'));
       expect(selectedCards).toEqual(['Bob 1']);
 
-      let numericSelectedStory = GridCardViewFalsyIds.render?.({modelValue: 0}) as ReturnType<Exclude<typeof GridCardViewFalsyIds.render, undefined>>;
+      let numericSelectedStory = GridCardViewFalsyIds.render?.({modelValue: 0, selectionMode: 'single'}) as ReturnType<Exclude<typeof GridCardViewFalsyIds.render, undefined>>;
       let numericSelectedWrapper = mount(numericSelectedStory);
       wrappers.push(numericSelectedWrapper);
-      let numericSelectedCards = numericSelectedWrapper.findAll('.vs-card-view__item.is-selected').map((card) => card.attributes('aria-label'));
+      let numericSelectedCards = numericSelectedWrapper.findAll('[role="gridcell"].is-selected').map((card) => card.attributes('aria-label'));
       expect(numericSelectedCards).toEqual(['Bob 1']);
 
       let controlledArgs = (GridCardViewControlledCards as {args?: Record<string, unknown>}).args ?? {};
@@ -3151,7 +3151,7 @@ describe('Vue storybook helper parity', () => {
       let controlledSelectedKeys = controlledWrapper.getComponent({name: 'VueCardView'}).props('selectedKeys') as unknown;
       expect(controlledSelectedKeys).toBeInstanceOf(Set);
       expect(Array.from(controlledSelectedKeys as Set<string>)).toEqual(['Bob 1']);
-      let controlledSelectedCards = controlledWrapper.findAll('.vs-card-view__item.is-selected').map((card) => card.attributes('aria-label'));
+      let controlledSelectedCards = controlledWrapper.findAll('[role="gridcell"].is-selected').map((card) => card.attributes('aria-label'));
       expect(controlledSelectedCards).toEqual(['Bob 1']);
     } finally {
       for (let wrapper of wrappers) {

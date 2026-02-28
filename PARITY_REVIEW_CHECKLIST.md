@@ -56,14 +56,15 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - [x] Story: RangeCalendar.stories.ts
   - [x] Story: RangeCalendarCell.stories.ts
   - Evidence: React/Vue story-id parity is zero for `date-and-time-calendar--*` (`react=13`, `vue=13`), `date-and-time-rangecalendar--*` (`react=12`, `vue=12`), and `date-and-time-rangecalendar-cell--*` (`react=1`, `vue=1`) from React `dist/9ba628661b71010349fd434fe6a68bd0d78e2a15/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue Calendar/RangeCalendar internals were aligned in `packages/@vue-spectrum/calendar/src/index.ts` by adding React-equivalent header navigation controls (`ActionButton` + workflow chevrons with RTL swap), applying `role="application"` at calendar roots, switching weekday headers to narrow labels, honoring controlled `focusedValue` for initial visible month, and splitting focus-visible styling from focus-roving state so default/controlled stories no longer show persistent non-React focus rings; story parity was tightened in `packages/@vue-spectrum/calendar/stories/Calendar.stories.ts` and `packages/@vue-spectrum/calendar/stories/RangeCalendar.stories.ts` by mirroring React locale/calendar pickers, provider locale wiring, `max-width: 100vw` wrappers, controlled-focus reset flow, date bounds/unavailable interval logic, and AM/PM time-field display values; `packages/@vue-spectrum/calendar/stories/RangeCalendarCell.stories.ts` replaced the placeholder render with the React-equivalent powerset CSS state matrix; full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`) with refreshed side-by-side screenshot evidence under `.tmp/calendar-parity/`.
-- [ ] 1.11 `@vue-spectrum/card`
+- [x] 1.11 `@vue-spectrum/card`
   - Components: Card, CardView
-  - [ ] Story: Card.stories.ts
-  - [ ] Story: GalleryCardView.stories.ts
-  - [ ] Story: GridCardView.stories.ts
-  - [ ] Story: HorizontalCard.stories.ts
-  - [ ] Story: QuietCard.stories.ts
-  - [ ] Story: WaterfallCardView.stories.ts
+  - [x] Story: Card.stories.ts
+  - [x] Story: GalleryCardView.stories.ts
+  - [x] Story: GridCardView.stories.ts
+  - [x] Story: HorizontalCard.stories.ts
+  - [x] Story: QuietCard.stories.ts
+  - [x] Story: WaterfallCardView.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `card-default--*` (`react=9`, `vue=9`), `card-horizontal--*` (`react=3`, `vue=3`), `card-quiet--*` (`react=11`, `vue=11`), `cardview-grid-layout--*` (`react=15`, `vue=15`), `cardview-gallery-layout--*` (`react=13`, `vue=13`), and `cardview-waterfall-layout--*` (`react=14`, `vue=14`) from React `dist/9ba628661b71010349fd434fe6a68bd0d78e2a15/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue card internals were aligned in `packages/@vue-spectrum/card/src/index.ts` by restoring React-equivalent selection checkbox DOM/classes, adding `preview`/`illustration`/`avatar` slot support, correcting heading/detail/content semantics (`h3`, `role="none"`, `section`), matching card/cardview tabindex and selection-mode defaults (`selectionMode='none'`), adding loading-state `ProgressCircle` rendering, and matching grid root layout/empty-state focus behavior; card stories were aligned in `packages/@vue-spectrum/card/stories/Card.stories.ts`, `GridCardView.stories.ts`, and `QuietCard.stories.ts` by restoring React-equivalent avatar/preview composition, empty-state illustration/link content, async loading flow, and asset illustration markup/classes; regression coverage was updated in `starters/vue/src/components.spec.ts` and `starters/vue/src/storybook-parity.spec.ts`; full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
 - [ ] 1.12 `@vue-spectrum/checkbox`
   - Components: Checkbox, CheckboxGroup
   - [ ] Story: Checkbox.stories.ts

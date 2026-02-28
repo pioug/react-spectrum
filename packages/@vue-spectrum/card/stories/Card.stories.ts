@@ -39,7 +39,11 @@ function getDescription(index: number): string {
   return descriptions[index % descriptions.length];
 }
 
-function renderPreview(index: number) {
+function previewObjectFit(orientation?: 'horizontal' | 'vertical'): 'contain' | 'cover' {
+  return orientation === 'horizontal' ? 'cover' : 'contain';
+}
+
+function renderPreview(index: number, orientation?: 'horizontal' | 'vertical') {
   return () => [
     h('img', {
       alt: '',
@@ -47,8 +51,21 @@ function renderPreview(index: number) {
       style: {
         display: 'block',
         height: '100%',
-        objectFit: 'cover',
+        objectFit: previewObjectFit(orientation),
         width: '100%'
+      }
+    })
+  ];
+}
+
+function renderAvatar() {
+  return () => [
+    h('img', {
+      alt: '',
+      src: 'https://mir-s3-cdn-cf.behance.net/project_modules/disp/690bc6105945313.5f84bfc9de488.png',
+      style: {
+        height: 'var(--spectrum-global-dimension-avatar-size-400, var(--spectrum-alias-avatar-size-400))',
+        width: 'var(--spectrum-global-dimension-avatar-size-400, var(--spectrum-alias-avatar-size-400))'
       }
     })
   ];
@@ -61,21 +78,31 @@ function renderCard(
     description?: string,
     detail?: string,
     title?: string,
+    withAvatar?: boolean,
     withPreview?: boolean
   } = {}
 ) {
   let title = options.title ?? `Title ${index}`;
   let detail = options.detail ?? 'PNG';
   let description = options.description ?? 'Description';
+  let withAvatar = options.withAvatar ?? false;
   let withPreview = options.withPreview ?? true;
   let cardProps = pickCardProps(args);
+  let slots: Record<string, (() => unknown[])> = {};
+  if (withPreview) {
+    slots.preview = renderPreview(index, cardProps.orientation);
+  }
+
+  if (withAvatar) {
+    slots.avatar = renderAvatar();
+  }
 
   return h(Card, {
     ...cardProps,
     description,
     detail,
     title
-  }, withPreview ? {preview: renderPreview(index)} : undefined);
+  }, Object.keys(slots).length > 0 ? slots : undefined);
 }
 
 const DEFAULT_CHILDREN = {
@@ -158,7 +185,8 @@ export const Default: Story = {
         renderCard(args, 0, {
           description: 'Description',
           detail: 'PNG',
-          title: 'Title'
+          title: 'Title',
+          withAvatar: true
         })
       ]);
     }
@@ -407,9 +435,11 @@ export const Selected: Story = {
           detail: 'PNG',
           isSelected: this.selected,
           onPress: this.toggleSelected,
+          showSelectionCheckbox: true,
           title: 'Title'
         }, {
-          preview: renderPreview(0)
+          avatar: renderAvatar(),
+          preview: renderPreview(0, this.args.orientation)
         })
       ]);
     }

@@ -3573,11 +3573,12 @@ describe('Vue migration primitives', () => {
         items: [
           {id: 'overview', title: 'Overview'},
           {id: 'quality', title: 'Quality'}
-        ]
+        ],
+        selectionMode: 'single'
       }
     });
 
-    await wrapper.findAll('.vs-card-view__item')[1].trigger('click');
+    await wrapper.findAll('[role="gridcell"]')[1].trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['quality']);
     expect(wrapper.emitted('action')?.[0]).toEqual([{id: 'quality', title: 'Quality'}]);
     expect(wrapper.findAll('[role=\"row\"]')[1].attributes('aria-rowindex')).toBe('2');
@@ -3595,7 +3596,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let cards = wrapper.findAll('.vs-card-view__item');
+    let cards = wrapper.findAll('[role="gridcell"]');
     expect(cards).toHaveLength(2);
     expect(cards[1].attributes('aria-disabled')).toBe('true');
 
@@ -3625,7 +3626,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let cards = wrapper.findAll('.vs-card-view__item');
+    let cards = wrapper.findAll('[role="gridcell"]');
     expect(cards).toHaveLength(2);
     expect(cards[0].classes()).toContain('is-selected');
     expect(cards[1].classes()).not.toContain('is-selected');
@@ -3654,7 +3655,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let cards = wrapper.findAll('.vs-card-view__item');
+    let cards = wrapper.findAll('[role="gridcell"]');
     expect(cards).toHaveLength(2);
     expect(cards[0].classes()).toContain('is-selected');
     expect(cards[1].classes()).not.toContain('is-selected');
@@ -3677,7 +3678,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let cards = wrapper.findAll('.vs-card-view__item');
+    let cards = wrapper.findAll('[role="gridcell"]');
     expect(cards).toHaveLength(2);
     expect(cards[0].classes()).toContain('is-selected');
     expect(cards[1].classes()).not.toContain('is-selected');
@@ -3702,7 +3703,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    expect(gallery.get('.vs-card-view__item').classes()).toContain('spectrum-Card--gallery');
+    expect(gallery.get('[role="gridcell"]').classes()).toContain('spectrum-Card--gallery');
 
     let waterfall = mount(CardView, {
       props: {
@@ -3711,7 +3712,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    expect(waterfall.get('.vs-card-view__item').classes()).toContain('spectrum-Card--waterfall');
+    expect(waterfall.get('[role="gridcell"]').classes()).toContain('spectrum-Card--waterfall');
   });
 
   it('renders loading and empty rows for card view states', () => {
@@ -3721,7 +3722,7 @@ describe('Vue migration primitives', () => {
         loadingState: 'loading'
       }
     });
-    expect(loading.text()).toContain('Loading...');
+    expect(loading.find('.spectrum-CircleLoader').exists()).toBe(true);
 
     let empty = mount(CardView, {
       props: {
