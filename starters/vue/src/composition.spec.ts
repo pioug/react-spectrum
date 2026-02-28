@@ -1476,12 +1476,19 @@ describe('Vue migration composition components', () => {
   it('manages vue-stately combobox state for filtering, selection, and revert', () => {
     let inputValue = ref('');
     let selectedKey = ref<string | null>(null);
+    let inputChanges: string[] = [];
     let selectionChanges: Array<string | null> = [];
     let state = useStatelyComboBoxState({
       inputValue,
       items: ['React', 'Vue', 'Svelte'],
+      onInputChange: (value) => {
+        inputChanges.push(value);
+        inputValue.value = value;
+      },
       onSelectionChange: (key) => {
         selectionChanges.push(key);
+        selectedKey.value = key;
+        inputValue.value = key ?? '';
       },
       selectedKey
     });
@@ -1493,6 +1500,7 @@ describe('Vue migration composition components', () => {
 
     state.setInputValue('vu');
     expect(state.filteredCollection.value.map((item) => item.textValue)).toEqual(['Vue']);
+    expect(inputChanges).toEqual(['vu']);
 
     state.setValue('Vue');
     expect(selectedKey.value).toBe('Vue');
@@ -1506,6 +1514,37 @@ describe('Vue migration composition components', () => {
     state.revert();
     expect(inputValue.value).toBe('Vue');
     expect(state.isFocused.value).toBe(true);
+  });
+
+  it('keeps vue-stately combobox controlled without mutating control refs', () => {
+    let inputValue = ref('React');
+    let selectedKey = ref<string | null>('React');
+    let inputChanges: string[] = [];
+    let selectionChanges: Array<string | null> = [];
+    let state = useStatelyComboBoxState({
+      inputValue,
+      items: ['React', 'Vue', 'Svelte'],
+      onInputChange: (value) => {
+        inputChanges.push(value);
+      },
+      onSelectionChange: (key) => {
+        selectionChanges.push(key);
+      },
+      selectedKey
+    });
+
+    state.setInputValue('Vu');
+    expect(inputValue.value).toBe('React');
+    expect(state.inputValue.value).toBe('React');
+    expect(inputChanges).toEqual(['Vu']);
+
+    state.setValue('Vue');
+    expect(selectedKey.value).toBe('React');
+    expect(state.selectedKey.value).toBe('React');
+    expect(selectionChanges).toEqual(['Vue']);
+
+    state.setValue('Vue');
+    expect(selectionChanges).toEqual(['Vue', 'Vue']);
   });
 
   it('reports vue-stately combobox open trigger reasons for open and toggle', () => {

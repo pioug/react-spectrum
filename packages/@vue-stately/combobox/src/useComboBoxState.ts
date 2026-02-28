@@ -65,11 +65,15 @@ export function useComboBoxState(options: ComboBoxStateOptions): StatelyComboBox
       return uncontrolledInputValue.value;
     },
     set: (nextValue) => {
-      if (isInputValueControlled.value && options.inputValue) {
-        options.inputValue.value = nextValue;
-      } else {
+      if (inputValue.value === nextValue) {
+        return;
+      }
+
+      if (!isInputValueControlled.value) {
         uncontrolledInputValue.value = nextValue;
       }
+
+      options.onInputChange?.(nextValue);
     }
   }) as Ref<string>;
   let selectedKeyRef = computed<string | null>({
@@ -81,9 +85,7 @@ export function useComboBoxState(options: ComboBoxStateOptions): StatelyComboBox
       return uncontrolledSelectedKey.value;
     },
     set: (nextSelectedKey) => {
-      if (isSelectedKeyControlled.value && options.selectedKey) {
-        options.selectedKey.value = nextSelectedKey;
-      } else {
+      if (!isSelectedKeyControlled.value) {
         uncontrolledSelectedKey.value = nextSelectedKey;
       }
     }
@@ -134,7 +136,6 @@ export function useComboBoxState(options: ComboBoxStateOptions): StatelyComboBox
     }
 
     inputValue.value = nextValue;
-    options.onInputChange?.(nextValue);
   };
 
   let setSelectedKey = (nextKey: string | null): void => {

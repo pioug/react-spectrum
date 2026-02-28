@@ -2174,6 +2174,19 @@
    - full Vue tests: `yarn test:vue` (617 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — ComboBox controlled ownership parity (`@vue-stately/combobox`)
+
+1. Closed combobox controlled ownership drift:
+   - `useComboBoxState` no longer mutates controlled `inputValue` or `selectedKey` refs directly.
+2. Aligned input callback flow with React-like controlled ownership:
+   - `inputValue` writes now emit `onInputChange` from the computed setter path, so internal combobox operations (`selectKey`, `commit`, `revert`) emit controlled input updates without direct ref write-through.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: updated baseline controlled combobox test to mirror parent callbacks and added explicit controlled-no-parent-update assertions.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately combobox state for filtering, selection, and revert|keeps vue-stately combobox controlled without mutating control refs|warns when vue-stately combobox switches between controlled and uncontrolled|keeps vue-stately combobox uncontrolled when control refs are undefined"`,
+   - full Vue tests: `yarn test:vue` (618 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
