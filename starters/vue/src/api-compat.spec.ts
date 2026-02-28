@@ -146,6 +146,16 @@ import {
   VuePicker
 } from '@vue-spectrum/picker';
 import {
+  Form,
+  useFormProps,
+  VueForm
+} from '@vue-spectrum/form';
+import {
+  Form as RootForm,
+  useFormProps as RootUseFormProps,
+  VueForm as RootVueForm
+} from '../../../packages/@vue-spectrum/form/index';
+import {
   Heading,
   Keyboard,
   Text,
@@ -453,6 +463,17 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(Picker).toBe(VuePicker);
     expect(PickerItem).not.toBe(VuePicker);
     expect(PickerSection).not.toBe(VuePicker);
+  });
+
+  it('keeps form exports aligned with VueForm base entry and helper', () => {
+    expect(Form).toBe(VueForm);
+    expect(useFormProps).toBeTypeOf('function');
+  });
+
+  it('keeps root form entry exports aligned with source exports', () => {
+    expect(RootForm).toBe(Form);
+    expect(RootVueForm).toBe(VueForm);
+    expect(RootUseFormProps).toBe(useFormProps);
   });
 
   it('exports semantic text primitives on top of VueText', () => {
