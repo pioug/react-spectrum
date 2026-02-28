@@ -448,6 +448,12 @@ describe('Vue migration composition components', () => {
     expect(inputValue.value).toBe('');
     expect(clearCount).toBe(1);
     expect(autocomplete.clearButtonProps.value.disabled).toBe(false);
+    expect(autocomplete.clearButtonProps.value.tabIndex).toBe(-1);
+
+    inputValue.value = 'react';
+    autocomplete.clearButtonProps.value.onClick();
+    expect(inputValue.value).toBe('');
+    expect(clearCount).toBe(2);
 
     let manualAutocomplete = useSearchAutocomplete({
       inputValue: ref('rea'),

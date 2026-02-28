@@ -3266,6 +3266,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — SearchAutocomplete clear-button contract parity (`@vue-aria/autocomplete`)
+
+1. Closed clear-button contract drift:
+   - `useSearchAutocomplete.clearButtonProps` now includes `onClick` wired to clear behavior.
+2. Closed clear-button tab-order drift:
+   - clear button now exposes `tabIndex: -1`, aligning with React clear-button exclusion from tab order.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` search-autocomplete assertions now verify clear-button click wiring and tab-order parity.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "submits and clears search autocomplete state"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

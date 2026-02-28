@@ -11,7 +11,9 @@ export interface SearchAutocompleteAria extends AutocompleteAria {
   clear: () => void,
   clearButtonProps: ComputedRef<{
     'aria-label': string,
-    disabled: boolean
+    disabled: boolean,
+    onClick: () => void,
+    tabIndex: -1
   }>,
   submit: () => void
 }
@@ -35,7 +37,9 @@ export function useSearchAutocomplete(options: AriaSearchAutocompleteOptions): S
 
   let clearButtonProps = computed(() => ({
     disabled: Boolean(unref(options.disabled)),
-    'aria-label': 'Clear search'
+    'aria-label': 'Clear search',
+    tabIndex: -1 as const,
+    onClick: clear
   }));
 
   return {
