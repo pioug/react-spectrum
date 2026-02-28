@@ -78,6 +78,14 @@ export const DragPreview = defineComponent({
   }
 });
 
+function escapeCssSelectorValue(value: string): string {
+  if (typeof CSS !== 'undefined' && typeof CSS.escape === 'function') {
+    return CSS.escape(value);
+  }
+
+  return value.replace(/["\\]/g, '\\$&');
+}
+
 export class ListDropTargetDelegate {
   private collection: Iterable<AnyRecord>;
   private ref: RefObject<HTMLElement | null>;
@@ -138,8 +146,12 @@ export class ListDropTargetDelegate {
       return {type: 'root'};
     }
 
+    let collection = container.dataset.collection;
+    let selector = collection
+      ? `[data-collection="${escapeCssSelectorValue(collection)}"]`
+      : '[data-key]';
     let elements = new Map<string, HTMLElement>();
-    for (let element of container.querySelectorAll<HTMLElement>('[data-key]')) {
+    for (let element of container.querySelectorAll<HTMLElement>(selector)) {
       let key = element.dataset.key;
       if (key != null) {
         elements.set(key, element);

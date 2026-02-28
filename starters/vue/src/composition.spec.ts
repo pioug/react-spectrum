@@ -4210,6 +4210,157 @@ describe('Vue migration composition components', () => {
     horizontalContainer.remove();
   });
 
+  it('scopes ListDropTargetDelegate lookups to matching data-collection nodes', () => {
+    let container = document.createElement('div');
+    container.dataset.collection = 'vue-list-main';
+
+    let alpha = document.createElement('div');
+    alpha.dataset.collection = 'vue-list-main';
+    alpha.dataset.key = 'alpha';
+    let beta = document.createElement('div');
+    beta.dataset.collection = 'vue-list-main';
+    beta.dataset.key = 'beta';
+    let foreignAlpha = document.createElement('div');
+    foreignAlpha.dataset.key = 'alpha';
+
+    container.append(alpha, beta, foreignAlpha);
+    document.body.append(container);
+
+    container.getBoundingClientRect = () => {
+      return {
+        bottom: 80,
+        height: 80,
+        left: 0,
+        right: 100,
+        top: 0,
+        width: 100,
+        x: 0,
+        y: 0,
+        toJSON: () => ({})
+      } as DOMRect;
+    };
+    alpha.getBoundingClientRect = () => {
+      return {
+        bottom: 40,
+        height: 40,
+        left: 0,
+        right: 100,
+        top: 0,
+        width: 100,
+        x: 0,
+        y: 0,
+        toJSON: () => ({})
+      } as DOMRect;
+    };
+    beta.getBoundingClientRect = () => {
+      return {
+        bottom: 80,
+        height: 40,
+        left: 0,
+        right: 100,
+        top: 40,
+        width: 100,
+        x: 0,
+        y: 40,
+        toJSON: () => ({})
+      } as DOMRect;
+    };
+    foreignAlpha.getBoundingClientRect = () => {
+      return {
+        bottom: 440,
+        height: 40,
+        left: 0,
+        right: 100,
+        top: 400,
+        width: 100,
+        x: 0,
+        y: 400,
+        toJSON: () => ({})
+      } as DOMRect;
+    };
+
+    let delegate = new ListDropTargetDelegate([
+      {key: 'alpha', type: 'item'},
+      {key: 'beta', type: 'item'}
+    ], {current: container});
+
+    expect(delegate.getDropTargetFromPoint(10, 10, () => true)).toEqual({
+      type: 'item',
+      key: 'alpha',
+      dropPosition: 'on'
+    });
+
+    container.remove();
+  });
+
+  it('escapes collection selectors in ListDropTargetDelegate lookups', () => {
+    let container = document.createElement('div');
+    container.dataset.collection = 'vue-list-"quoted"';
+
+    let first = document.createElement('div');
+    first.dataset.collection = 'vue-list-"quoted"';
+    first.dataset.key = 'first';
+    let second = document.createElement('div');
+    second.dataset.collection = 'vue-list-"quoted"';
+    second.dataset.key = 'second';
+
+    container.append(first, second);
+    document.body.append(container);
+
+    container.getBoundingClientRect = () => {
+      return {
+        bottom: 80,
+        height: 80,
+        left: 0,
+        right: 100,
+        top: 0,
+        width: 100,
+        x: 0,
+        y: 0,
+        toJSON: () => ({})
+      } as DOMRect;
+    };
+    first.getBoundingClientRect = () => {
+      return {
+        bottom: 40,
+        height: 40,
+        left: 0,
+        right: 100,
+        top: 0,
+        width: 100,
+        x: 0,
+        y: 0,
+        toJSON: () => ({})
+      } as DOMRect;
+    };
+    second.getBoundingClientRect = () => {
+      return {
+        bottom: 80,
+        height: 40,
+        left: 0,
+        right: 100,
+        top: 40,
+        width: 100,
+        x: 0,
+        y: 40,
+        toJSON: () => ({})
+      } as DOMRect;
+    };
+
+    let delegate = new ListDropTargetDelegate([
+      {key: 'first', type: 'item'},
+      {key: 'second', type: 'item'}
+    ], {current: container});
+
+    expect(delegate.getDropTargetFromPoint(10, 10, () => true)).toEqual({
+      type: 'item',
+      key: 'first',
+      dropPosition: 'on'
+    });
+
+    container.remove();
+  });
+
   it('does not warn when vue-aria drags end via a useDrop target', () => {
     let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     let drag = useDrag({
