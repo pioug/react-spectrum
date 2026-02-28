@@ -2187,6 +2187,19 @@
    - full Vue tests: `yarn test:vue` (618 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Step-list controlled ownership parity (`@vue-stately/steplist`)
+
+1. Closed step-list controlled ownership drift:
+   - `useStepListState` no longer mutates controlled `lastCompletedStep` refs directly from `setLastCompletedStep`.
+2. Preserved callback semantics:
+   - `onLastCompletedStepChange` continues to emit requested transitions while controlled state remains externally owned.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: explicit controlled-no-parent-update assertions for `lastCompletedStep` writes.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately step list completion and selection eligibility|keeps vue-stately step list controlled without mutating control refs|warns when vue-stately slider and steplist switch between controlled and uncontrolled"`,
+   - full Vue tests: `yarn test:vue` (619 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

@@ -84,9 +84,7 @@ export function useStepListState<T extends object>(props: StepListProps<T>): Ste
       return;
     }
 
-    if (isLastCompletedControlled.value && props.lastCompletedStep) {
-      props.lastCompletedStep.value = key;
-    } else {
+    if (!isLastCompletedControlled.value) {
       uncontrolledLastCompletedStep.value = key;
     }
 

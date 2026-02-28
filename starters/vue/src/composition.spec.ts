@@ -3773,6 +3773,34 @@ describe('Vue migration composition components', () => {
     expect(completedChanges).toContain('details');
   });
 
+  it('keeps vue-stately step list controlled without mutating control refs', () => {
+    let nodes: StatelyListNode<{label: string}>[] = [
+      {key: 'setup', textValue: 'Setup', type: 'item', value: {label: 'Setup'}},
+      {key: 'details', textValue: 'Details', type: 'item', value: {label: 'Details'}},
+      {key: 'review', textValue: 'Review', type: 'item', value: {label: 'Review'}}
+    ];
+
+    let lastCompletedStep = ref<string | null | undefined>('setup');
+    let completedChanges: Array<string | null> = [];
+    let stepList = useStatelyStepListState({
+      collection: new StatelyListCollection(nodes),
+      defaultSelectedKey: 'details',
+      lastCompletedStep,
+      onLastCompletedStepChange: (key) => {
+        completedChanges.push(key as string | null);
+      }
+    });
+
+    stepList.setLastCompletedStep('details');
+    expect(lastCompletedStep.value).toBe('setup');
+    expect(stepList.lastCompletedStep.value).toBe('setup');
+    expect(completedChanges).toEqual(['details']);
+
+    stepList.setLastCompletedStep('details');
+    expect(lastCompletedStep.value).toBe('setup');
+    expect(completedChanges).toEqual(['details', 'details']);
+  });
+
   it('warns when vue-stately slider and steplist switch between controlled and uncontrolled', async () => {
     let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
