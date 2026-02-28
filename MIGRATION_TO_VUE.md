@@ -2930,6 +2930,17 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Menu-trigger `ArrowUp` open-key parity (`@vue-aria/menu`)
+
+1. Closed keyboard-open drift in `useMenuTrigger`:
+   - trigger keyboard handling now opens on `ArrowUp` in addition to existing open keys, matching React trigger open-key support.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` menu-trigger assertions now verify `ArrowUp` opens the menu and emits the expected open-change sequence.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria menu trigger and item selection semantics"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

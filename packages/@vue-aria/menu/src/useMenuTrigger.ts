@@ -61,7 +61,13 @@ export function useMenuTrigger(props: AriaMenuTriggerProps = {}): MenuTriggerAri
   };
 
   let onKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'ArrowDown' || event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
+    if (
+      event.key === 'ArrowDown'
+      || event.key === 'ArrowUp'
+      || event.key === 'Enter'
+      || event.key === ' '
+      || event.key === 'Spacebar'
+    ) {
       event.preventDefault();
       open();
     } else if (event.key === 'Escape') {

@@ -6383,7 +6383,10 @@ describe('Vue migration composition components', () => {
     expect(menuTrigger.menuProps.value['aria-labelledby']).toBe(menuTrigger.menuTriggerProps.value.id);
     menuTrigger.close();
     expect(menuTrigger.isOpen.value).toBe(false);
-    expect(openChanges).toEqual([true, false]);
+    menuTrigger.menuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowUp'}));
+    expect(menuTrigger.isOpen.value).toBe(true);
+    menuTrigger.close();
+    expect(openChanges).toEqual([true, false, true, false]);
 
     let disabledOpen = ref(true);
     let disabledMenuTrigger = useMenuTrigger({
