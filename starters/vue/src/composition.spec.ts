@@ -2115,6 +2115,28 @@ describe('Vue migration composition components', () => {
     expect(expandedChanges).toEqual([['alpha']]);
   });
 
+  it('matches vue-stately disclosure group disabled and single-mode setter semantics with React', async () => {
+    let disabledGroup = useStatelyDisclosureGroupState({
+      isDisabled: true
+    });
+
+    disabledGroup.toggleKey('alpha');
+    expect(Array.from(disabledGroup.expandedKeys.value)).toEqual(['alpha']);
+
+    let expandedChanges: string[][] = [];
+    let singleGroup = useStatelyDisclosureGroupState({
+      onExpandedChange: (keys) => {
+        expandedChanges.push(Array.from(keys).map((key) => String(key)));
+      }
+    });
+
+    singleGroup.setExpandedKeys(new Set(['alpha', 'beta']));
+    await nextTick();
+
+    expect(expandedChanges).toEqual([['alpha', 'beta'], ['alpha']]);
+    expect(Array.from(singleGroup.expandedKeys.value)).toEqual(['alpha']);
+  });
+
   it('warns when vue-stately disclosure hooks switch between controlled and uncontrolled', async () => {
     let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 

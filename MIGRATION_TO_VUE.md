@@ -1966,6 +1966,20 @@
    - full Vue tests: `yarn test:vue` (601 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Disclosure-group setter/disabled parity (`@vue-stately/disclosure`)
+
+1. Closed disclosure-group state-layer drift against React:
+   - removed Vue-only `isDisabled` early return in `toggleKey` so programmatic state calls behave like React state helpers,
+   - removed Vue-only single-mode key normalization inside `setExpandedKeys`.
+2. Preserved single-expand invariant behavior:
+   - the existing single-mode normalization effect remains in place, so multi-key writes in single mode are normalized after the initial state write, matching React’s effect-driven behavior.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: assertions that disabled groups still respond to direct toggle calls and that single-mode direct multi-key writes emit the initial write followed by normalization.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "disclosure group expanded keys for single and multiple modes|disclosure group disabled and single-mode setter semantics with React"`,
+   - full Vue tests: `yarn test:vue` (602 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
