@@ -6042,6 +6042,73 @@ describe('Vue migration composition components', () => {
     expect(moveEvents).toEqual(['move:12,13']);
   });
 
+  it('auto-scrolls useDroppableCollection near scroll edges when supported', () => {
+    let autoScrollSupported = ariaUtils.isWebKit() && !ariaUtils.isIOS();
+    let frameCallback: FrameRequestCallback | null = null;
+    let requestAnimationFrameSpy = vi.spyOn(globalThis, 'requestAnimationFrame').mockImplementation((callback: FrameRequestCallback) => {
+      frameCallback = callback;
+      return 1;
+    });
+    let cancelAnimationFrameSpy = vi.spyOn(globalThis, 'cancelAnimationFrame').mockImplementation(() => undefined);
+    let container: HTMLDivElement | null = null;
+
+    try {
+      let dropState = useStatelyDroppableCollectionState({
+        acceptedDragTypes: ['item']
+      });
+      container = document.createElement('div');
+      container.style.overflowY = 'scroll';
+      document.body.append(container);
+      container.getBoundingClientRect = () => ({
+        left: 0,
+        right: 100,
+        top: 0,
+        bottom: 100,
+        x: 0,
+        y: 0,
+        width: 100,
+        height: 100,
+        toJSON: () => ({})
+      }) as DOMRect;
+      let droppableCollection = useDroppableCollection({
+        acceptedDragTypes: ['item']
+      }, dropState, {current: container}) as {
+        collectionProps: {value: {
+          onDragEnter: (items?: unknown) => boolean,
+          onDragOver: (items?: unknown) => void,
+          onDragLeave: (items?: unknown) => void
+        }}
+      };
+
+      expect(droppableCollection.collectionProps.value.onDragEnter({
+        items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+        clientX: 10,
+        clientY: 10
+      })).toBe(true);
+      droppableCollection.collectionProps.value.onDragOver({
+        items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+        clientX: 50,
+        clientY: 95
+      });
+
+      if (autoScrollSupported) {
+        expect(requestAnimationFrameSpy).toHaveBeenCalledTimes(1);
+        expect(frameCallback).not.toBeNull();
+        frameCallback?.(0);
+        expect(container.scrollTop).toBeGreaterThan(0);
+        droppableCollection.collectionProps.value.onDragLeave({clientX: 50, clientY: 95});
+        expect(cancelAnimationFrameSpy).toHaveBeenCalled();
+      } else {
+        expect(requestAnimationFrameSpy).not.toHaveBeenCalled();
+        expect(container.scrollTop).toBe(0);
+      }
+    } finally {
+      requestAnimationFrameSpy.mockRestore();
+      cancelAnimationFrameSpy.mockRestore();
+      container?.remove();
+    }
+  });
+
   it('fires useDroppableCollection onDropActivate after sustained dragover on item targets', () => {
     vi.useFakeTimers();
     try {

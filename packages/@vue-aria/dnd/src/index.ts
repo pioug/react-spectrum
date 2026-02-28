@@ -1,7 +1,7 @@
 import {type AriaDragOptions, type DragAria, useDrag as useAriaDrag} from './useDrag';
 import {type AriaDropOptions, type DropAria, useDrop as useAriaDrop} from './useDrop';
 import {getInteractionModality} from '@vue-aria/interactions';
-import {useDescription} from '@vue-aria/utils';
+import {getScrollParent, isIOS, isScrollable, isWebKit, useDescription} from '@vue-aria/utils';
 import {computed, defineComponent, unref, watch} from 'vue';
 import {DIRECTORY_DRAG_TYPE as INTERNAL_DIRECTORY_DRAG_TYPE, type DragItem, type DropOperation} from './types';
 import {getActiveDragItems, isVirtualDraggingSessionActive} from './dragSession';
@@ -17,6 +17,7 @@ const DROP_OPERATIONS = new Set<DropOperation>(['cancel', 'copy', 'link', 'move'
 const DEFAULT_DROP_OPERATION: DropOperation = 'copy';
 const DEFAULT_ALLOWED_OPERATIONS: DropOperation[] = ['copy', 'move', 'link'];
 const DROP_ACTIVATE_TIMEOUT = 800;
+const AUTOSCROLL_AREA_SIZE = 20;
 const noop = () => {};
 
 let draggingCollectionRef: RefObject<HTMLElement | null> | null = null;
@@ -437,6 +438,97 @@ function readPoint(input: unknown, ref: RefObject<HTMLElement | null>): {x: numb
   };
 }
 
+function createAutoScroll(ref: RefObject<HTMLElement | null>): {move: (x: number, y: number) => void, stop: () => void} {
+  let scrollableElement: Element | null = null;
+  let scrollableX = true;
+  let scrollableY = true;
+  let timer: ReturnType<typeof requestAnimationFrame> | undefined;
+  let dx = 0;
+  let dy = 0;
+
+  let stop = () => {
+    if (timer) {
+      cancelAnimationFrame(timer);
+      timer = undefined;
+    }
+  };
+
+  let scroll = () => {
+    if (scrollableX && scrollableElement) {
+      scrollableElement.scrollLeft += dx;
+    }
+    if (scrollableY && scrollableElement) {
+      scrollableElement.scrollTop += dy;
+    }
+
+    if (timer) {
+      timer = requestAnimationFrame(scroll);
+    }
+  };
+
+  let ensureScrollableElement = () => {
+    if (!ref.current) {
+      scrollableElement = null;
+      return;
+    }
+
+    scrollableElement = isScrollable(ref.current)
+      ? ref.current
+      : getScrollParent(ref.current);
+    let style = window.getComputedStyle(scrollableElement);
+    scrollableX = /(auto|scroll)/.test(style.overflowX);
+    scrollableY = /(auto|scroll)/.test(style.overflowY);
+  };
+
+  return {
+    move(x: number, y: number) {
+      // Native auto-scroll behavior is missing in macOS WebKit.
+      if (!isWebKit() || isIOS()) {
+        return;
+      }
+
+      ensureScrollableElement();
+      if (!scrollableElement) {
+        return;
+      }
+
+      if (!scrollableElement.isConnected) {
+        stop();
+        return;
+      }
+
+      let box = scrollableElement.getBoundingClientRect();
+      if (box.width <= AUTOSCROLL_AREA_SIZE * 2 && box.height <= AUTOSCROLL_AREA_SIZE * 2) {
+        stop();
+        return;
+      }
+      let left = AUTOSCROLL_AREA_SIZE;
+      let top = AUTOSCROLL_AREA_SIZE;
+      let bottom = box.height - AUTOSCROLL_AREA_SIZE;
+      let right = box.width - AUTOSCROLL_AREA_SIZE;
+      if (x < left || x > right || y < top || y > bottom) {
+        if (x < left) {
+          dx = x - left;
+        } else if (x > right) {
+          dx = x - right;
+        }
+        if (y < top) {
+          dy = y - top;
+        } else if (y > bottom) {
+          dy = y - bottom;
+        }
+
+        if (!timer) {
+          timer = requestAnimationFrame(scroll);
+        }
+      } else {
+        stop();
+      }
+    },
+    stop
+  };
+}
+
 function readDraggingKeys(stateRecord: AnyRecord): Set<DraggingKey> {
   let nextKeys = readMaybeRef<unknown>(stateRecord.draggingKeys);
   if (!(nextKeys instanceof Set)) {
@@ -817,6 +909,7 @@ export function useDroppableCollection(
   let lastDragPoint: {x: number, y: number} | null = null;
   let isDraggingOverCollection = false;
   let dropActivateTimeout: ReturnType<typeof setTimeout> | undefined;
+  let autoScroll = createAutoScroll(ref);
 
   let clearDropActivateTimeout = () => {
     if (dropActivateTimeout) {
@@ -1142,6 +1235,8 @@ export function useDroppableCollection(
 
     target = readDropTarget(stateRecord);
 
+    autoScroll.move(point.x, point.y);
+
     if (typeof propsRecord.onDropMove === 'function') {
       propsRecord.onDropMove({
         items,
@@ -1157,6 +1252,7 @@ export function useDroppableCollection(
 
   let onDragLeave = (input?: unknown): void => {
     clearDropActivateTimeout();
+    autoScroll.stop();
     isDraggingOverCollection = false;
     let target = readDropTarget(stateRecord);
     if (!target) {
