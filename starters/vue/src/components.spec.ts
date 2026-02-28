@@ -2829,8 +2829,8 @@ describe('Vue migration primitives', () => {
 
     let labelledByInput = labelledByWrapper.get('input.spectrum-Checkbox-input');
     let visibleLabel = labelledByWrapper.get('.spectrum-Checkbox-label');
-    expect(labelledByInput.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
-    expect(labelledByInput.attributes('aria-labelledby')).toContain('external-checkbox-label');
+    expect(visibleLabel.attributes('id')).toBeUndefined();
+    expect(labelledByInput.attributes('aria-labelledby')).toBe('external-checkbox-label');
     expect(labelledByInput.attributes('aria-label')).toBeUndefined();
     expect(labelledByWrapper.attributes('aria-labelledby')).toBeUndefined();
 
