@@ -108,6 +108,14 @@ import {
   VueLabel as RootVueLabel
 } from '../../../packages/@vue-spectrum/label/index';
 import {
+  Well,
+  VueWell
+} from '@vue-spectrum/well';
+import {
+  Well as RootWell,
+  VueWell as RootVueWell
+} from '../../../packages/@vue-spectrum/well/index';
+import {
   ButtonGroup,
   VueButtonGroup
 } from '@vue-spectrum/buttongroup';
@@ -602,6 +610,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(RootVueLabel).toBe(VueLabel);
     expect(RootHelpText).toBe(HelpText);
     expect(RootField).toBe(Field);
+  });
+
+  it('keeps well exports aligned with VueWell base entry', () => {
+    expect(Well).toBe(VueWell);
+  });
+
+  it('keeps root well entry exports aligned with source exports', () => {
+    expect(RootWell).toBe(Well);
+    expect(RootVueWell).toBe(VueWell);
   });
 
   it('keeps buttongroup exports aligned with VueButtonGroup base entry', () => {
