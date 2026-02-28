@@ -4171,6 +4171,27 @@ describe('Vue migration composition components', () => {
     wrapper.unmount();
   });
 
+  it('does not copy useClipboard items when getItems is missing', async () => {
+    let onCopy = vi.fn();
+    let wrapper = mount(defineComponent({
+      setup() {
+        let {clipboardProps} = useClipboard({onCopy});
+        return () => h('div', {
+          tabIndex: 0,
+          ...clipboardProps
+        });
+      }
+    }));
+
+    await wrapper.get('div').trigger('focus');
+    let clipboardData = createClipboardData();
+    dispatchClipboardEvent('beforecopy', clipboardData);
+    dispatchClipboardEvent('copy', clipboardData);
+    expect(clipboardData.getData('text/plain')).toBe('');
+    expect(onCopy).not.toHaveBeenCalled();
+    wrapper.unmount();
+  });
+
   it('cuts useClipboard items only when onCut is provided', async () => {
     let onCut = vi.fn();
     let wrapper = mount(defineComponent({
@@ -4216,6 +4237,27 @@ describe('Vue migration composition components', () => {
     noCutWrapper.unmount();
   });
 
+  it('does not cut useClipboard items when getItems is missing', async () => {
+    let onCut = vi.fn();
+    let wrapper = mount(defineComponent({
+      setup() {
+        let {clipboardProps} = useClipboard({onCut});
+        return () => h('div', {
+          tabIndex: 0,
+          ...clipboardProps
+        });
+      }
+    }));
+
+    await wrapper.get('div').trigger('focus');
+    let clipboardData = createClipboardData();
+    dispatchClipboardEvent('beforecut', clipboardData);
+    dispatchClipboardEvent('cut', clipboardData);
+    expect(clipboardData.getData('text/plain')).toBe('');
+    expect(onCut).not.toHaveBeenCalled();
+    wrapper.unmount();
+  });
+
   it('pastes useClipboard text drop items from clipboard data', async () => {
     let onPaste = vi.fn();
     let wrapper = mount(defineComponent({
@@ -4240,6 +4282,59 @@ describe('Vue migration composition components', () => {
     expect(pastedItems).toHaveLength(1);
     expect(pastedItems[0].kind).toBe('text');
     expect(await pastedItems[0].getText('text/plain')).toBe('hello world');
+    wrapper.unmount();
+  });
+
+  it('does not paste when useClipboard onPaste is missing', async () => {
+    let wrapper = mount(defineComponent({
+      setup() {
+        let {clipboardProps} = useClipboard();
+        return () => h('div', {
+          tabIndex: 0,
+          ...clipboardProps
+        });
+      }
+    }));
+
+    await wrapper.get('div').trigger('focus');
+    let clipboardData = createClipboardData();
+    clipboardData.setData('text/plain', 'hello world');
+    dispatchClipboardEvent('beforepaste', clipboardData);
+    dispatchClipboardEvent('paste', clipboardData);
+    wrapper.unmount();
+  });
+
+  it('disables clipboard interactions when useClipboard isDisabled is true', async () => {
+    let onCopy = vi.fn();
+    let onCut = vi.fn();
+    let onPaste = vi.fn();
+    let wrapper = mount(defineComponent({
+      setup() {
+        let {clipboardProps} = useClipboard({
+          getItems: () => [{id: 'disabled', type: 'text/plain', value: 'disabled payload'}],
+          isDisabled: true,
+          onCopy,
+          onCut,
+          onPaste
+        });
+        return () => h('div', {
+          tabIndex: 0,
+          ...clipboardProps
+        });
+      }
+    }));
+
+    await wrapper.get('div').trigger('focus');
+    let clipboardData = createClipboardData();
+    dispatchClipboardEvent('copy', clipboardData);
+    dispatchClipboardEvent('cut', clipboardData);
+    clipboardData.setData('text/plain', 'incoming payload');
+    dispatchClipboardEvent('paste', clipboardData);
+
+    expect(clipboardData.getData('text/plain')).toBe('incoming payload');
+    expect(onCopy).not.toHaveBeenCalled();
+    expect(onCut).not.toHaveBeenCalled();
+    expect(onPaste).not.toHaveBeenCalled();
     wrapper.unmount();
   });
 

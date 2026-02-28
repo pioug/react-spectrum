@@ -986,7 +986,7 @@ export function isVirtualDragging(): boolean {
   return isVirtualDraggingSessionActive();
 }
 
-export function useClipboard(props: ClipboardProps): ClipboardResult {
+export function useClipboard(props: ClipboardProps = {}): ClipboardResult {
   let isFocused = false;
   let onFocus = () => {
     isFocused = true;
