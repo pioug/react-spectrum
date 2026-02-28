@@ -194,6 +194,14 @@ import {
   VueSearchField as RootVueSearchField
 } from '../../../packages/@vue-spectrum/searchfield/index';
 import {
+  IllustratedMessage,
+  VueIllustratedMessage
+} from '@vue-spectrum/illustratedmessage';
+import {
+  IllustratedMessage as RootIllustratedMessage,
+  VueIllustratedMessage as RootVueIllustratedMessage
+} from '../../../packages/@vue-spectrum/illustratedmessage/index';
+import {
   Icon,
   Illustration,
   UIIcon,
@@ -523,6 +531,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
   it('keeps root searchfield entry exports aligned with source exports', () => {
     expect(RootSearchField).toBe(SearchField);
     expect(RootVueSearchField).toBe(VueSearchField);
+  });
+
+  it('keeps illustratedmessage exports aligned with VueIllustratedMessage base entry', () => {
+    expect(IllustratedMessage).toBe(VueIllustratedMessage);
+  });
+
+  it('keeps root illustratedmessage entry exports aligned with source exports', () => {
+    expect(RootIllustratedMessage).toBe(IllustratedMessage);
+    expect(RootVueIllustratedMessage).toBe(VueIllustratedMessage);
   });
 
   it('keeps icon exports wired to Vue icon primitives', () => {

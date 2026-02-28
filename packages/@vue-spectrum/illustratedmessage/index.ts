@@ -1,1 +1,1 @@
-export {IllustratedMessage, VueIllustratedMessage} from './src';
+export * from './src';
