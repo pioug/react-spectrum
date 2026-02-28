@@ -61,11 +61,12 @@ function toKeySet(value: unknown): Set<Key> {
 }
 
 function getCollectionKeys(collection: unknown): Key[] {
-  if (!collection || typeof collection !== 'object') {
+  let resolvedCollection = isRefLike<unknown>(collection) ? collection.value : collection;
+  if (!resolvedCollection || typeof resolvedCollection !== 'object') {
     return [];
   }
 
-  let collectionRecord = collection as AnyRecord;
+  let collectionRecord = resolvedCollection as AnyRecord;
   let getKeys = collectionRecord.getKeys;
   if (typeof getKeys === 'function') {
     return Array.from(getKeys() as Iterable<unknown>, (key) => String(key));
@@ -122,7 +123,7 @@ function createFocusedKeyRef(stateRecord: TabListStateRecord): Ref<Key | null> {
         return toKey(focusedKey.value);
       }
 
-      return toKey(stateRecord.focusedKey);
+      return toKey(unref(stateRecord.focusedKey as Key | null | undefined));
     },
     set: (nextKey) => {
       let normalizedKey = toKey(nextKey);
@@ -171,7 +172,7 @@ function createStateTabList(
     ...options,
     disabledKeys: mergedDisabledKeys,
     focusedKey,
-    isDisabled: computed(() => Boolean(unref(options?.isDisabled)) || Boolean(stateRecord.isDisabled)),
+    isDisabled: computed(() => Boolean(unref(options?.isDisabled)) || Boolean(unref(stateRecord.isDisabled as boolean | undefined))),
     selectedKey,
     tabs: computed(() => getCollectionKeys(stateRecord.collection))
   });

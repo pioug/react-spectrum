@@ -9685,6 +9685,20 @@ describe('Vue migration composition components', () => {
     expect(openCalls).toEqual([true, undefined]);
     expect(closeCalls).toEqual([true, undefined]);
     expect(setOpenCalls).toEqual([]);
+
+    let statelyTrigger = useAriaTooltipTrigger({
+      trigger: 'focus hover'
+    } as unknown as Parameters<typeof useAriaTooltipTrigger>[0], useStatelyTooltipTriggerState({
+      closeDelay: 0,
+      delay: 0
+    }) as unknown as Parameters<typeof useAriaTooltipTrigger>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaTooltipTrigger>[2]);
+    expect(statelyTrigger.isOpen.value).toBe(false);
+    statelyTrigger.open(true);
+    expect(statelyTrigger.isOpen.value).toBe(true);
+    statelyTrigger.close(true);
+    expect(statelyTrigger.isOpen.value).toBe(false);
   });
 
   it('computes vue-aria treegrid semantics and expandable tree item behavior', () => {
@@ -10178,10 +10192,11 @@ describe('Vue migration composition components', () => {
         setSelectedKeysCalls.push(Array.from(selectedKeys.value));
       }
     };
+    let isTabsDisabled = ref(false);
     let reactStyleState = {
       collection,
       disabledKeys: new Set<string>(['history']),
-      isDisabled: false,
+      isDisabled: isTabsDisabled,
       selectionManager,
       selectedKey: computed(() => Array.from(selectedKeys.value)[0] ?? null),
       setSelectedKey: (key: string | null) => {
@@ -10199,6 +10214,7 @@ describe('Vue migration composition components', () => {
       current: null
     } as unknown as Parameters<typeof useAriaTabList>[2]);
     expect(tabList.tabListProps.value.role).toBe('tablist');
+    expect(tabList.state.isDisabled.value).toBe(false);
     expect(tabList.state.isSelected('overview')).toBe(true);
     expect(tabList.state.isDisabledKey('history')).toBe(true);
 
@@ -10239,6 +10255,8 @@ describe('Vue migration composition components', () => {
     } as unknown as Parameters<typeof useAriaTabPanel>[2]);
     expect(tabPanel.tabPanelProps.value.id).toBe(tabList.state.getTabPanelId('details'));
     expect(tabPanel.tabPanelProps.value['aria-labelledby']).toBe(tabList.state.getTabId('details'));
+    isTabsDisabled.value = true;
+    expect(tabList.state.isDisabled.value).toBe(true);
     expect(setSelectedKeysCalls).toEqual([]);
   });
 

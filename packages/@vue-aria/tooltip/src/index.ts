@@ -2,13 +2,17 @@ import {type AriaTooltipOptions, type TooltipAria, type TooltipTriggerStateLike,
 import type {AriaTooltipProps, TooltipTriggerProps} from '@vue-types/tooltip';
 import {type AriaTooltipTriggerOptions, type TooltipTriggerAria, type TooltipTriggerMode, useTooltipTrigger as useTooltipTriggerInternal} from './useTooltipTrigger';
 import type {TooltipTriggerState} from '@vue-stately/tooltip';
-import {computed} from 'vue';
+import {computed, unref} from 'vue';
 
 type FocusableElement = Element;
 type RefObject<T> = {
   current: T
 };
 type AnyRecord = Record<string, unknown>;
+
+function isRefLike<T>(value: unknown): value is {value: T} {
+  return Boolean(value) && typeof value === 'object' && 'value' in (value as AnyRecord);
+}
 
 export type {AriaTooltipOptions, TooltipAria, TooltipTriggerStateLike, AriaTooltipTriggerOptions, TooltipTriggerAria, TooltipTriggerMode, AriaTooltipProps, TooltipTriggerProps};
 
@@ -41,11 +45,21 @@ export function useTooltipTrigger(
           return;
         }
 
+        if (isRefLike<boolean>(stateRecord.isOpen)) {
+          stateRecord.isOpen.value = false;
+          return;
+        }
+
         stateRecord.isOpen = false;
       },
       isOpen: computed<boolean>({
-        get: () => Boolean(stateRecord.isOpen),
+        get: () => Boolean(unref(stateRecord.isOpen as boolean | undefined)),
         set: (isOpen) => {
+          if (isRefLike<boolean>(stateRecord.isOpen)) {
+            stateRecord.isOpen.value = isOpen;
+            return;
+          }
+
           stateRecord.isOpen = isOpen;
         }
       }),
@@ -61,6 +75,11 @@ export function useTooltipTrigger(
         let open = stateRecord.open;
         if (typeof open === 'function') {
           open(isFocused);
+          return;
+        }
+
+        if (isRefLike<boolean>(stateRecord.isOpen)) {
+          stateRecord.isOpen.value = true;
           return;
         }
 
