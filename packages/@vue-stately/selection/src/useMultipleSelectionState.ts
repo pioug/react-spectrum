@@ -129,9 +129,7 @@ export function useMultipleSelectionState(props: MultipleSelectionStateProps): M
       return uncontrolledSelectedKeys.value;
     },
     set: (nextSelection) => {
-      if (isControlled.value && props.selectedKeys) {
-        props.selectedKeys.value = nextSelection;
-      } else {
+      if (!isControlled.value) {
         uncontrolledSelectedKeys.value = nextSelection;
       }
     }

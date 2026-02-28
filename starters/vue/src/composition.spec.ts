@@ -3389,6 +3389,34 @@ describe('Vue migration composition components', () => {
     expect(Array.from(state.selectedKeys.value)).toEqual(['item-2']);
   });
 
+  it('keeps vue-stately multiple selection controlled without mutating control refs', () => {
+    let selectedKeysRef = ref<Set<string> | 'all' | undefined>(new Set(['item-1']));
+    let selectionChanges: Array<string[] | 'all'> = [];
+    let state = useStatelyMultipleSelectionState({
+      onSelectionChange: (keys) => {
+        selectionChanges.push(keys === 'all' ? 'all' : Array.from(keys) as string[]);
+      },
+      selectedKeys: selectedKeysRef,
+      selectionMode: 'multiple'
+    });
+
+    state.setSelectedKeys(new Set(['item-2']));
+    expect(selectedKeysRef.value).not.toBe('all');
+    if (selectedKeysRef.value === 'all' || selectedKeysRef.value == null) {
+      throw new Error('Expected key set selection state');
+    }
+    expect(Array.from(selectedKeysRef.value)).toEqual(['item-1']);
+    expect(state.selectedKeys.value).not.toBe('all');
+    if (state.selectedKeys.value === 'all') {
+      throw new Error('Expected key set selection state');
+    }
+    expect(Array.from(state.selectedKeys.value)).toEqual(['item-1']);
+    expect(selectionChanges).toEqual([['item-2']]);
+
+    state.setSelectedKeys(new Set(['item-2']));
+    expect(selectionChanges).toEqual([['item-2'], ['item-2']]);
+  });
+
   it('manages vue-stately select selection, trigger state, and value normalization', () => {
     let nodes: StatelyListNode<{label: string}>[] = [
       {key: 'vue', textValue: 'Vue', type: 'item', value: {label: 'Vue'}},

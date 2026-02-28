@@ -2161,6 +2161,19 @@
    - full Vue tests: `yarn test:vue` (616 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Multiple-selection controlled ownership parity (`@vue-stately/selection`)
+
+1. Closed controlled ownership drift in base selection state:
+   - `useMultipleSelectionState` no longer mutates controlled `selectedKeys` refs directly.
+2. Preserved controlled callback behavior:
+   - `onSelectionChange` continues to emit requested selections, including repeated same requested sets when parent does not mirror controlled updates.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: explicit controlled-no-parent-update assertion for multiple-selection state.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts`,
+   - full Vue tests: `yarn test:vue` (617 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
