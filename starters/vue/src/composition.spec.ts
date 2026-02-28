@@ -4416,7 +4416,10 @@ describe('Vue migration composition components', () => {
 
     let fallbackTabListState = useStatelyTabListState({
       collection: new StatelyListCollection(nodes),
-      disabledKeys: ['vue', 'react']
+      disabledKeys: ['vue', 'react'],
+      onSelectionChange: () => {
+        throw new Error('fallback tab initialization should not emit onSelectionChange');
+      }
     });
     expect(fallbackTabListState.selectedKey.value).toBe('svelte');
   });

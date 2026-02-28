@@ -1,22 +1,33 @@
 import {type Key, type SingleSelectListProps, type SingleSelectListState, useSingleSelectListState} from '@vue-stately/list';
 import {ref, watchEffect} from 'vue';
 
-function findDefaultSelectedKey<T>(state: SingleSelectListState<T>): Key | null {
-  let selectedKey = state.collection.getFirstKey();
+type TabCollection = {
+  getFirstKey: () => Key | null,
+  getLastKey: () => Key | null,
+  getKeyAfter: (key: Key) => Key | null,
+  getItem: (key: Key) => {props?: {isDisabled?: boolean}} | null | undefined
+};
+
+function findDefaultSelectedKey(collection: TabCollection | undefined, disabledKeys: Set<Key>): Key | null {
+  if (collection == null) {
+    return null;
+  }
+
+  let selectedKey = collection.getFirstKey();
   while (
     selectedKey != null &&
-    (state.disabledKeys.has(selectedKey) || Boolean(state.collection.getItem(selectedKey)?.props?.isDisabled)) &&
-    selectedKey !== state.collection.getLastKey()
+    (disabledKeys.has(selectedKey) || Boolean(collection.getItem(selectedKey)?.props?.isDisabled)) &&
+    selectedKey !== collection.getLastKey()
   ) {
-    selectedKey = state.collection.getKeyAfter(selectedKey);
+    selectedKey = collection.getKeyAfter(selectedKey);
   }
 
   if (
     selectedKey != null &&
-    (state.disabledKeys.has(selectedKey) || Boolean(state.collection.getItem(selectedKey)?.props?.isDisabled)) &&
-    selectedKey === state.collection.getLastKey()
+    (disabledKeys.has(selectedKey) || Boolean(collection.getItem(selectedKey)?.props?.isDisabled)) &&
+    selectedKey === collection.getLastKey()
   ) {
-    selectedKey = state.collection.getFirstKey();
+    selectedKey = collection.getFirstKey();
   }
 
   return selectedKey;
@@ -44,7 +55,11 @@ export function useTabListState<T extends object>(props: TabListStateOptions<T>)
         }
       }
       : undefined,
-    suppressTextValueWarning: true
+    suppressTextValueWarning: true,
+    defaultSelectedKey:
+      props.defaultSelectedKey
+      ?? findDefaultSelectedKey(props.collection, props.disabledKeys ? new Set(props.disabledKeys) : new Set())
+      ?? undefined
   });
 
   let lastSelectedKey = ref<Key | null>(state.selectedKey.value);
@@ -54,7 +69,7 @@ export function useTabListState<T extends object>(props: TabListStateOptions<T>)
       props.selectedKey == null &&
       (state.selectionManager.isEmpty || selectedKey == null || !state.collection.getItem(selectedKey))
     ) {
-      let fallbackKey = findDefaultSelectedKey(state);
+      let fallbackKey = findDefaultSelectedKey(state.collection, state.disabledKeys);
       if (fallbackKey != null) {
         state.selectionManager.setSelectedKeys(new Set([fallbackKey]));
         selectedKey = fallbackKey;

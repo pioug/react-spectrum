@@ -2514,6 +2514,20 @@
    - full Vue tests: `yarn test:vue` (634 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Tab-list fallback initialization parity remediation (`@vue-stately/tabs`)
+
+1. Closed fallback-selection initialization drift in `useTabListState`:
+   - aligned with React by computing fallback `defaultSelectedKey` during state creation rather than selecting via post-init mutation.
+2. Preserved tab-list fallback behavior while preventing mount-time callback noise:
+   - uncontrolled tab lists with no explicit default still select the first enabled tab,
+   - fallback initialization no longer emits `onSelectionChange` during mount.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` tab-list state test now asserts fallback initialization does not emit `onSelectionChange`.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately tab list selection and focused-tab synchronization"`,
+   - full Vue tests: `yarn test:vue` (634 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
