@@ -104,6 +104,12 @@ import {
   View
 } from '@vue-spectrum/view';
 import {
+  Content as RootContent,
+  Footer as RootFooter,
+  Header as RootHeader,
+  View as RootView
+} from '../../../packages/@vue-spectrum/view/index';
+import {
   ActionMenu,
   ContextualHelpTrigger,
   Item as MenuItem,
@@ -155,6 +161,12 @@ import {
   Section as PickerSection,
   VuePicker
 } from '@vue-spectrum/picker';
+import {
+  Item as RootPickerItem,
+  Picker as RootPicker,
+  Section as RootPickerSection,
+  VuePicker as RootVuePicker
+} from '../../../packages/@vue-spectrum/picker/index';
 import {
   Autocomplete,
   Item as AutocompleteItem,
@@ -227,6 +239,12 @@ import {
   Text,
   VueText
 } from '@vue-spectrum/text';
+import {
+  Heading as RootHeading,
+  Keyboard as RootKeyboard,
+  Text as RootText,
+  VueText as RootVueText
+} from '../../../packages/@vue-spectrum/text/index';
 import {
   ProgressBar,
   ProgressBarBase,
@@ -393,6 +411,13 @@ import {
   Tabs,
   VueTabs
 } from '@vue-spectrum/tabs';
+import {
+  Item as RootTabItem,
+  TabList as RootTabList,
+  TabPanels as RootTabPanels,
+  Tabs as RootTabs,
+  VueTabs as RootVueTabs
+} from '../../../packages/@vue-spectrum/tabs/index';
 
 describe('Vue Spectrum API compatibility aliases', () => {
   it('exports button primitives with VueButton as the base Button export', () => {
@@ -501,6 +526,13 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(Footer).not.toBe(View);
   });
 
+  it('keeps root view entry exports aligned with source exports', () => {
+    expect(RootView).toBe(View);
+    expect(RootHeader).toBe(Header);
+    expect(RootContent).toBe(Content);
+    expect(RootFooter).toBe(Footer);
+  });
+
   it('keeps divider exports aligned with VueDivider base entry', () => {
     expect(Divider).toBe(VueDivider);
   });
@@ -564,6 +596,13 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(Picker).toBe(VuePicker);
     expect(PickerItem).not.toBe(VuePicker);
     expect(PickerSection).not.toBe(VuePicker);
+  });
+
+  it('keeps root picker entry exports aligned with source exports', () => {
+    expect(RootPicker).toBe(Picker);
+    expect(RootVuePicker).toBe(VuePicker);
+    expect(RootPickerItem).toBe(PickerItem);
+    expect(RootPickerSection).toBe(PickerSection);
   });
 
   it('exports autocomplete collection primitives separately from VueSearchAutocomplete', () => {
@@ -640,6 +679,13 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(Text).not.toBe(VueText);
     expect(Heading).not.toBe(VueText);
     expect(Keyboard).not.toBe(VueText);
+  });
+
+  it('keeps root text entry exports aligned with source exports', () => {
+    expect(RootText).toBe(Text);
+    expect(RootVueText).toBe(VueText);
+    expect(RootHeading).toBe(Heading);
+    expect(RootKeyboard).toBe(Keyboard);
   });
 
   it('exports dedicated progress wrappers around VueProgressBar', () => {
@@ -840,5 +886,13 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(TabList).not.toBe(VueTabs);
     expect(TabPanels).not.toBe(VueTabs);
     expect(TabItem).not.toBe(VueTabs);
+  });
+
+  it('keeps root tabs entry exports aligned with source exports', () => {
+    expect(RootTabs).toBe(Tabs);
+    expect(RootVueTabs).toBe(VueTabs);
+    expect(RootTabList).toBe(TabList);
+    expect(RootTabPanels).toBe(TabPanels);
+    expect(RootTabItem).toBe(TabItem);
   });
 });
