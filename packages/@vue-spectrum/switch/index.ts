@@ -1,1 +1,1 @@
-export {Switch, VueSwitch} from './src';
+export * from './src';

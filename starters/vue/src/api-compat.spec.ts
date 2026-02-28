@@ -162,6 +162,14 @@ import {
   StatusLight as RootStatusLight,
   VueStatusLight as RootVueStatusLight
 } from '../../../packages/@vue-spectrum/statuslight/index';
+import {
+  Switch,
+  VueSwitch
+} from '@vue-spectrum/switch';
+import {
+  Switch as RootSwitch,
+  VueSwitch as RootVueSwitch
+} from '../../../packages/@vue-spectrum/switch/index';
 import {DIRECTORY_DRAG_TYPE, DropZone as SpectrumDropZone, useDragAndDrop as useSpectrumDragAndDrop} from '@vue-spectrum/dnd';
 import {
   Item as TabItem,
@@ -345,6 +353,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
   it('keeps root statuslight entry exports aligned with source exports', () => {
     expect(RootStatusLight).toBe(StatusLight);
     expect(RootVueStatusLight).toBe(VueStatusLight);
+  });
+
+  it('keeps switch exports aligned with VueSwitch base entry', () => {
+    expect(Switch).toBe(VueSwitch);
+  });
+
+  it('keeps root switch entry exports aligned with source exports', () => {
+    expect(RootSwitch).toBe(Switch);
+    expect(RootVueSwitch).toBe(VueSwitch);
   });
 
   it('exports dnd drag/drop compatibility primitives', () => {
