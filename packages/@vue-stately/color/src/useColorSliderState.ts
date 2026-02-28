@@ -1,5 +1,6 @@
 import {type Color, type ColorChannel, getChannelRange, getColorChannelValue, parseColor, setColorChannelValue} from './Color';
 import {computed, type ComputedRef, type Ref, ref} from 'vue';
+import {useControlledState} from '@vue-stately/utils';
 
 export interface ColorSliderStateOptions {
   channel: ColorChannel,
@@ -30,21 +31,18 @@ function clamp(value: number, min: number, max: number): number {
 }
 
 export function useColorSliderState(props: ColorSliderStateOptions): ColorSliderState {
-  let controlledValue = props.value;
-  let internalValue = ref(parseColor(props.defaultValue ?? '#ffffff'));
-  let value = controlledValue ?? internalValue;
+  let [value, setValueInternal] = useControlledState(
+    props.value,
+    parseColor(props.defaultValue ?? '#ffffff'),
+    props.onChange
+  );
   let range = getChannelRange(props.channel);
   let isDragging = ref(false);
   let channelValue = computed(() => getColorChannelValue(value.value, props.channel));
 
   let setValue = (nextValue: Color): void => {
     let parsedValue = parseColor(nextValue);
-    if (parsedValue === value.value) {
-      return;
-    }
-
-    value.value = parsedValue;
-    props.onChange?.(value.value);
+    setValueInternal(parsedValue);
   };
 
   let setChannelValue = (nextValue: number): void => {

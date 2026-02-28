@@ -2385,6 +2385,21 @@
    - full Vue tests: `yarn test:vue` (631 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Expanded color helper parity remediation (`@vue-stately/color`)
+
+1. Extended helper-based controlled ownership alignment across the remaining color state hooks:
+   - `useColorAreaState`,
+   - `useColorFieldState`,
+   - `useColorSliderState`,
+   - `useColorWheelState`.
+2. Closed direct controlled-ref mutation paths in these hooks by routing value updates through shared `useControlledState`.
+3. Added regression coverage for controlled no-parent-sync behavior:
+   - `starters/vue/src/composition.spec.ts` now asserts one-turn duplicate suppression and no controlled-ref mutation across color area/field/slider/wheel.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "color area|color field|color slider|color wheel|color picker and channel-field"` and full `src/composition.spec.ts`,
+   - full Vue tests: `yarn test:vue` (632 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

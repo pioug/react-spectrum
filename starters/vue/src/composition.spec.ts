@@ -1381,6 +1381,65 @@ describe('Vue migration composition components', () => {
     expect(channelChanges).toEqual(['#402233']);
   });
 
+  it('keeps vue-stately color area, field, slider, and wheel controlled without mutating control refs', () => {
+    let areaValue = ref('#000000');
+    let areaChanges: string[] = [];
+    let area = useStatelyColorAreaState({
+      onChange: (nextValue) => {
+        areaChanges.push(nextValue);
+      },
+      value: areaValue
+    });
+
+    area.setColorFromPoint(1, 0);
+    area.setColorFromPoint(1, 0);
+    expect(areaValue.value).toBe('#000000');
+    expect(areaChanges).toEqual(['#ffff00']);
+
+    let fieldValue = ref<string | null>('#445566');
+    let fieldChanges: Array<string | null> = [];
+    let field = useStatelyColorFieldState({
+      onChange: (nextValue) => {
+        fieldChanges.push(nextValue);
+      },
+      value: fieldValue
+    });
+
+    field.setColorValue('#556677');
+    field.setColorValue('#556677');
+    expect(fieldValue.value).toBe('#445566');
+    expect(fieldChanges).toEqual(['#556677']);
+
+    let sliderValue = ref('#000000');
+    let sliderChanges: string[] = [];
+    let slider = useStatelyColorSliderState({
+      channel: 'red',
+      onChange: (nextValue) => {
+        sliderChanges.push(nextValue);
+      },
+      value: sliderValue
+    });
+
+    slider.increment(32);
+    slider.increment(32);
+    expect(sliderValue.value).toBe('#000000');
+    expect(sliderChanges).toEqual(['#200000']);
+
+    let wheelValue = ref('#000000');
+    let wheelChanges: string[] = [];
+    let wheel = useStatelyColorWheelState({
+      onChange: (nextValue) => {
+        wheelChanges.push(nextValue);
+      },
+      value: wheelValue
+    });
+
+    wheel.setHue(120);
+    wheel.setHue(120);
+    expect(wheelValue.value).toBe('#000000');
+    expect(wheelChanges).toHaveLength(1);
+  });
+
   it('uses vue-stately color picker default black value when no value is provided', () => {
     let picker = useStatelyColorPickerState();
     expect(picker.colorValue.value).toBe('#000000');

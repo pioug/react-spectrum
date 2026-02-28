@@ -1,6 +1,7 @@
 import {type Color, parseColor} from './Color';
 import {computed, type ComputedRef, type Ref, ref} from 'vue';
 import {useColor} from './useColor';
+import {useControlledState} from '@vue-stately/utils';
 
 export interface ColorFieldStateOptions {
   defaultValue?: Color,
@@ -34,19 +35,16 @@ function addColorValue(color: Color | null, amount: number): Color {
 }
 
 export function useColorFieldState(props: ColorFieldStateOptions = {}): ColorFieldState {
-  let controlledColor = props.value;
-  let internalColorValue = ref<Color | null>(useColor(props.defaultValue) ?? null);
-  let colorValue = controlledColor ?? internalColorValue;
+  let [colorValue, setColorValueInternal] = useControlledState<Color | null>(
+    props.value,
+    useColor(props.defaultValue) ?? null,
+    props.onChange
+  );
   let inputValue = ref(colorValue.value ?? '');
 
   let setColorValue = (nextColor: Color | null): void => {
     let parsedColor = nextColor ? parseColor(nextColor) : null;
-    if (parsedColor === colorValue.value) {
-      return;
-    }
-
-    colorValue.value = parsedColor;
-    props.onChange?.(colorValue.value);
+    setColorValueInternal(parsedColor);
   };
 
   let validate = (nextValue: string): boolean => {
