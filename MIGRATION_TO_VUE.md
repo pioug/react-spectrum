@@ -1941,6 +1941,20 @@
    - full Vue tests: `yarn test:vue` (599 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Slider controlled drag callback parity (`@vue-stately/slider`)
+
+1. Closed controlled-slider drag callback drift against React:
+   - `useSliderState` now tracks in-flight drag values in an internal value ref, and uses that source when computing drag-end payloads.
+2. Aligned drag lifecycle behavior:
+   - starting a drag now snapshots the current rendered values into the internal drag value ref,
+   - drag-end `onChangeEnd` now emits the latest drag value even if the controlled parent writes stale values during intermediate `onChange` callbacks.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: controlled slider test where `onChange` intentionally rewrites the controlled value to stale data during drag, asserting `onChangeEnd` still reports the latest dragged value.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "slider thumb values, constraints, and drag lifecycle|slider drag callbacks aligned in controlled mode without parent sync"`,
+   - full Vue tests: `yarn test:vue` (600 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

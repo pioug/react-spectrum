@@ -150,6 +150,7 @@ export function useSliderState<T extends number | number[]>(options: SliderState
 
     return uncontrolledValues.value;
   });
+  let valuesRef = ref<number[]>(values.value);
 
   let toOutputValue = (nextValues: number[]): T => {
     if (isSingleValue.value) {
@@ -160,10 +161,11 @@ export function useSliderState<T extends number | number[]>(options: SliderState
   };
 
   let setValues = (nextValues: number[]): void => {
-    if (equalArrays(nextValues, values.value)) {
+    if (equalArrays(nextValues, valuesRef.value)) {
       return;
     }
 
+    valuesRef.value = nextValues;
     if (isControlled.value && options.value) {
       options.value.value = toOutputValue(nextValues);
     } else {
@@ -244,7 +246,7 @@ export function useSliderState<T extends number | number[]>(options: SliderState
     let min = getThumbMinValue(index);
     let max = getThumbMaxValue(index);
     let snappedValue = snapValueToStep(value, min, max, step);
-    let nextValues = replaceIndex(values.value, index, snappedValue);
+    let nextValues = replaceIndex(valuesRef.value, index, snappedValue);
     setValues(nextValues);
   };
 
@@ -258,11 +260,15 @@ export function useSliderState<T extends number | number[]>(options: SliderState
       return;
     }
 
+    if (dragging) {
+      valuesRef.value = values.value;
+    }
+
     let wasDragging = isDraggings.value[index] ?? false;
     isDraggings.value = replaceIndex(isDraggings.value, index, dragging);
 
     if (options.onChangeEnd && wasDragging && !isDraggings.value.some(Boolean)) {
-      options.onChangeEnd(toOutputValue(values.value));
+      options.onChangeEnd(toOutputValue(valuesRef.value));
     }
   };
 
