@@ -202,6 +202,14 @@ import {
   VueIllustratedMessage as RootVueIllustratedMessage
 } from '../../../packages/@vue-spectrum/illustratedmessage/index';
 import {
+  LabeledValue,
+  VueLabeledValue
+} from '@vue-spectrum/labeledvalue';
+import {
+  LabeledValue as RootLabeledValue,
+  VueLabeledValue as RootVueLabeledValue
+} from '../../../packages/@vue-spectrum/labeledvalue/index';
+import {
   Icon,
   Illustration,
   UIIcon,
@@ -540,6 +548,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
   it('keeps root illustratedmessage entry exports aligned with source exports', () => {
     expect(RootIllustratedMessage).toBe(IllustratedMessage);
     expect(RootVueIllustratedMessage).toBe(VueIllustratedMessage);
+  });
+
+  it('keeps labeledvalue exports aligned with VueLabeledValue base entry', () => {
+    expect(LabeledValue).toBe(VueLabeledValue);
+  });
+
+  it('keeps root labeledvalue entry exports aligned with source exports', () => {
+    expect(RootLabeledValue).toBe(LabeledValue);
+    expect(RootVueLabeledValue).toBe(VueLabeledValue);
   });
 
   it('keeps icon exports wired to Vue icon primitives', () => {

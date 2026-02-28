@@ -1,1 +1,1 @@
-export {LabeledValue, VueLabeledValue} from './src';
+export * from './src';
