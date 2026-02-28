@@ -537,6 +537,42 @@ describe('Vue migration composition components', () => {
     inputElement.remove();
   });
 
+  it('supports react-style autocomplete overload signatures with stately state', () => {
+    let autocompleteState = useStatelyAutocompleteState({
+      defaultInputValue: 'vu'
+    });
+    let reactAutocomplete = useAutocomplete({
+      items: ['Vue', 'React', 'Svelte']
+    } as unknown as Parameters<typeof useAutocomplete>[0], autocompleteState as unknown as Parameters<typeof useAutocomplete>[1]);
+    expect(reactAutocomplete.filteredItems.value.map((item) => item.textValue)).toEqual(['Vue']);
+    expect(autocompleteState.focusedNodeId.value).toBe(`${reactAutocomplete.collectionProps.value.id}-option-Vue`);
+
+    autocompleteState.setInputValue('rea');
+    expect(reactAutocomplete.filteredItems.value.map((item) => item.textValue)).toEqual(['React']);
+
+    let submitCalls: Array<{focusedKey: string | null, value: string}> = [];
+    let clearCount = 0;
+    let searchState = useStatelyComboBoxState({
+      defaultInputValue: 'rea',
+      items: ['React', 'Vue']
+    });
+    let reactSearchAutocomplete = useSearchAutocomplete({
+      onClear: () => {
+        clearCount += 1;
+      },
+      onSubmit: (value, focusedKey) => {
+        submitCalls.push({value, focusedKey});
+      },
+      shouldAutoFocusFirst: false
+    } as unknown as Parameters<typeof useSearchAutocomplete>[0], searchState as unknown as Parameters<typeof useSearchAutocomplete>[1]);
+    reactSearchAutocomplete.submit();
+    expect(submitCalls).toEqual([{value: 'rea', focusedKey: null}]);
+
+    reactSearchAutocomplete.clear();
+    expect(searchState.inputValue.value).toBe('');
+    expect(clearCount).toBe(1);
+  });
+
   it('manages vue-stately autocomplete input and focused node state', () => {
     let uncontrolledChanges: string[] = [];
     let uncontrolledState = useStatelyAutocompleteState({
