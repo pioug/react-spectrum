@@ -68,11 +68,13 @@ import {useMenu as useAriaMenu, useMenuItem as useAriaMenuItem, useMenuSection, 
 import {useMeter as useAriaMeter} from '@vue-aria/meter';
 import {useNumberField as useAriaNumberField} from '@vue-aria/numberfield';
 import {
+  Overlay as AriaOverlay,
   OverlayContainer as AriaOverlayContainer,
   OverlayProvider as AriaOverlayProvider,
   ariaHideOutside as ariaHideOutsideOverlays,
   useModal as useAriaModal,
   useModalOverlay as useAriaModalOverlay,
+  useOverlayFocusContain as useAriaOverlayFocusContain,
   useOverlay as useAriaOverlay,
   useOverlayPosition as useAriaOverlayPosition,
   useOverlayTrigger as useAriaOverlayTrigger,
@@ -8380,6 +8382,43 @@ describe('Vue migration composition components', () => {
     document.documentElement.style.overflow = previousOverflow;
     document.documentElement.style.paddingRight = previousPaddingRight;
     document.body.innerHTML = previousMarkup;
+  });
+
+  it('wires overlay focus contain hook into overlay focus scope containment', async () => {
+    let portalContainer = document.createElement('div');
+    document.body.appendChild(portalContainer);
+
+    let FocusContainConsumer = defineComponent({
+      name: 'FocusContainConsumer',
+      setup() {
+        useAriaOverlayFocusContain();
+        return () => h('span', {class: 'focus-contain-consumer'}, 'Overlay body');
+      }
+    });
+
+    let Harness = defineComponent({
+      name: 'OverlayFocusContainHarness',
+      setup() {
+        return () => h(AriaOverlay, {
+          portalContainer
+        }, {
+          default: () => h(FocusContainConsumer)
+        });
+      }
+    });
+
+    let wrapper = mount(Harness);
+
+    try {
+      await nextTick();
+      let focusScope = wrapper.findComponent({name: 'VueAriaFocusScope'});
+      expect(focusScope.exists()).toBe(true);
+      expect(focusScope.props('contain')).toBe(true);
+      expect(portalContainer.textContent).toContain('Overlay body');
+    } finally {
+      wrapper.unmount();
+      portalContainer.remove();
+    }
   });
 
   it('matches react useModal provider/container aria-hidden nesting contracts', async () => {

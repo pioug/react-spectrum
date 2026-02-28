@@ -1,4 +1,5 @@
 import {ariaHideOutside as ariaHideOutsideInternal} from './ariaHideOutside';
+import {FocusScope} from '@vue-aria/focus';
 import {useCreateModalProvider} from './modalContext';
 import {type AriaModalOptions, type ModalAria, useModal} from './useModal';
 import {type AriaModalOverlayOptions, type ModalOverlayAria, useModalOverlay as useModalOverlayInternal} from './useModalOverlay';
@@ -39,7 +40,12 @@ export type ModalProviderProps = AnyRecord;
 export type OverlayContainerProps = {
   portalContainer?: OverlayPortalContainer
 };
-export type OverlayProps = AnyRecord;
+export type OverlayProps = {
+  disableFocusManagement?: boolean,
+  isExiting?: boolean,
+  portalContainer?: OverlayPortalContainer,
+  shouldContainFocus?: boolean
+};
 export type OverlayTriggerProps = Pick<OverlayTriggerOptions, 'type'>;
 export type PositionProps = AriaOverlayPositionOptions;
 export type PortalProviderProps = {
@@ -52,6 +58,12 @@ export type Placement = string;
 export type PlacementAxis = 'main' | 'cross';
 
 const portalContextSymbol = Symbol('VueAriaPortalContext');
+const overlayContainContextSymbol = Symbol('VueAriaOverlayContainContext');
+
+type OverlayContainContextValue = {
+  contain: Ref<boolean>,
+  setContain: (contain: boolean) => void
+};
 
 function getClosestOverlayContainer(container: Element): Element | null {
   return container.closest('[data-overlay-container]');
@@ -274,8 +286,62 @@ export const OverlayContainer = defineComponent({
 
 export const Overlay = defineComponent({
   name: 'VueAriaOverlay',
-  setup(_, {slots}) {
-    return () => slots.default ? slots.default() : null;
+  props: {
+    portalContainer: {
+      type: [String, Object] as PropType<OverlayPortalContainer>,
+      default: undefined
+    },
+    disableFocusManagement: {
+      type: Boolean,
+      default: false
+    },
+    shouldContainFocus: {
+      type: Boolean,
+      default: false
+    },
+    isExiting: {
+      type: Boolean,
+      default: false
+    }
+  },
+  setup(props, {slots}) {
+    let contain = ref(false);
+    provide<OverlayContainContextValue>(overlayContainContextSymbol, {
+      contain,
+      setContain: (nextContain: boolean) => {
+        contain.value = nextContain;
+      }
+    });
+    let {getContainer} = useUNSAFE_PortalContext();
+
+    return () => {
+      let portalContainer: Element | null;
+      if (props.portalContainer !== undefined) {
+        portalContainer = resolvePortalContainer(props.portalContainer);
+      } else if (getContainer) {
+        portalContainer = getContainer();
+      } else {
+        portalContainer = resolvePortalContainer(undefined);
+      }
+
+      if (!portalContainer) {
+        return null;
+      }
+
+      let renderContents = () => slots.default ? slots.default() : null;
+      let overlayContents = props.disableFocusManagement
+        ? renderContents()
+        : h(FocusScope, {
+          contain: (props.shouldContainFocus || contain.value) && !props.isExiting,
+          restoreFocus: true
+        }, {
+          default: renderContents
+        });
+
+      return h(Teleport, {
+        to: portalContainer
+      }, [overlayContents]);
+    };
   }
 });
 
@@ -314,7 +380,8 @@ export function useModalProvider(): ModalProviderAria {
 }
 
 export function useOverlayFocusContain(): void {
-  // Compatibility no-op.
+  let context = inject<OverlayContainContextValue | null>(overlayContainContextSymbol, null);
+  context?.setContain(true);
 }
 
 export function useUNSAFE_PortalContext(): PortalProviderContextValue {

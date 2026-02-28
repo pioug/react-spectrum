@@ -8,7 +8,11 @@ export {useHasTabbableChild} from './useHasTabbableChild';
 type AnyRecord = Record<string, unknown>;
 
 export type FocusManagerOptions = AnyRecord;
-export type FocusScopeProps = AnyRecord;
+export type FocusScopeProps = {
+  autoFocus?: boolean,
+  contain?: boolean,
+  restoreFocus?: boolean
+};
 export type FocusableElement = Element & {focus?: () => void};
 export type RefObject<T> = {current: T};
 export type FocusableOptions<T extends FocusableElement = FocusableElement> = AnyRecord;
@@ -26,7 +30,21 @@ export interface FocusManager {
 
 export const FocusScope = defineComponent({
   name: 'VueAriaFocusScope',
-  setup(_, {slots}) {
+  props: {
+    autoFocus: {
+      type: Boolean,
+      default: false
+    },
+    contain: {
+      type: Boolean,
+      default: false
+    },
+    restoreFocus: {
+      type: Boolean,
+      default: false
+    }
+  },
+  setup(_props, {slots}) {
     return () => slots.default ? slots.default() : null;
   }
 });
