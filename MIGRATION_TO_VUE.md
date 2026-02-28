@@ -2736,6 +2736,22 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Search-field keyboard/clear lifecycle parity remediation (`@vue-aria/searchfield`)
+
+1. Closed keyboard semantics drift in `useSearchField`:
+   - Enter now prevents default only when `onSubmit` is provided (and always when disabled/read-only), matching React behavior.
+   - Escape now calls `continuePropagation()` when value is already empty (input state and DOM value), matching React semantics.
+   - disabled/read-only now short-circuit Escape handling (no forced prevent-default side effects).
+2. Closed clear-button lifecycle drift:
+   - clear button `disabled` now reflects only disabled/read-only state (not current input length),
+   - clear action no longer no-ops for empty values, so `onClear` behavior is aligned when clear is explicitly invoked.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` search-field assertions now cover Enter prevent-default behavior, Escape propagation behavior when empty, and clear-button disabled/click lifecycle parity.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "search field submit and clear behavior"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

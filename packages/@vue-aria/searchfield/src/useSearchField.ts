@@ -91,10 +91,6 @@ export function useSearchField(options: AriaSearchFieldOptions = {}): SearchFiel
       return;
     }
 
-    if (inputValue.value.length === 0) {
-      return;
-    }
-
     inputValue.value = '';
     options.onInputChange?.('');
     options.onClear?.();
@@ -172,12 +168,23 @@ export function useSearchField(options: AriaSearchFieldOptions = {}): SearchFiel
         return;
       }
 
-      submit();
+      if (options.onSubmit) {
+        event.preventDefault();
+        submit();
+      }
+
+      return;
+    }
+
+    if (isDisabled.value || isReadOnly.value) {
       return;
     }
 
     if (event.key === 'Escape') {
-      if (inputValue.value.length === 0) {
+      let nativeValue = inputRef.value?.value ?? '';
+      if (inputValue.value.length === 0 && nativeValue.length === 0) {
+        let continuePropagation = (event as KeyboardEvent & {continuePropagation?: () => void}).continuePropagation;
+        continuePropagation?.();
         return;
       }
 
@@ -191,7 +198,7 @@ export function useSearchField(options: AriaSearchFieldOptions = {}): SearchFiel
     clearButtonProps: computed(() => ({
       type: 'button' as const,
       'aria-label': 'Clear search',
-      disabled: isDisabled.value || isReadOnly.value || inputValue.value.length === 0,
+      disabled: isDisabled.value || isReadOnly.value,
       onClick: clear,
       onMouseDown: (event: MouseEvent) => {
         event.preventDefault();

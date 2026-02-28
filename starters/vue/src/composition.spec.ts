@@ -6908,18 +6908,41 @@ describe('Vue migration composition components', () => {
     });
 
     expect(searchField.inputProps.value.type).toBe('search');
-    searchField.inputProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Enter'}));
+    let preventEnterDefault = vi.fn();
+    searchField.inputProps.value.onKeyDown({
+      key: 'Enter',
+      preventDefault: preventEnterDefault
+    } as unknown as KeyboardEvent);
     expect(submitValues).toEqual(['vue']);
+    expect(preventEnterDefault).toHaveBeenCalledTimes(1);
 
-    searchField.inputProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
+    let preventEscapeDefault = vi.fn();
+    searchField.inputProps.value.onKeyDown({
+      key: 'Escape',
+      preventDefault: preventEscapeDefault
+    } as unknown as KeyboardEvent);
     expect(inputValue.value).toBe('');
     expect(clearCount).toBe(1);
-    expect(searchField.clearButtonProps.value.disabled).toBe(true);
+    expect(preventEscapeDefault).toHaveBeenCalledTimes(1);
+    expect(searchField.clearButtonProps.value.disabled).toBe(false);
+
+    let continueEscapePropagation = vi.fn();
+    let preventEscapeWhenEmpty = vi.fn();
+    searchField.inputProps.value.onKeyDown({
+      key: 'Escape',
+      continuePropagation: continueEscapePropagation,
+      preventDefault: preventEscapeWhenEmpty
+    } as unknown as KeyboardEvent);
+    expect(continueEscapePropagation).toHaveBeenCalledTimes(1);
+    expect(preventEscapeWhenEmpty).not.toHaveBeenCalled();
 
     searchField.inputProps.value.onInput('react');
     expect(inputValue.value).toBe('react');
     searchField.clearButtonProps.value.onClick();
     expect(inputValue.value).toBe('');
+    expect(clearCount).toBe(2);
+    searchField.clearButtonProps.value.onClick();
+    expect(clearCount).toBe(3);
 
     let composedLabelSearchField = useAriaSearchField({
       'aria-label': 'Search query',
