@@ -130,6 +130,18 @@ import {
   VueToastContainer as RootVueToastContainer
 } from '../../../packages/@vue-spectrum/toast/index';
 import {
+  Tooltip,
+  TooltipTrigger,
+  VueTooltip,
+  VueTooltipTrigger
+} from '@vue-spectrum/tooltip';
+import {
+  Tooltip as RootTooltip,
+  TooltipTrigger as RootTooltipTrigger,
+  VueTooltip as RootVueTooltip,
+  VueTooltipTrigger as RootVueTooltipTrigger
+} from '../../../packages/@vue-spectrum/tooltip/index';
+import {
   ButtonGroup,
   VueButtonGroup
 } from '@vue-spectrum/buttongroup';
@@ -648,6 +660,19 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(RootToastQueue).toBe(ToastQueue);
     expect(RootCreateToastQueue).toBe(createToastQueue);
     expect(RootClearToastQueue).toBe(clearToastQueue);
+  });
+
+  it('keeps tooltip exports aligned with Vue tooltip aliases', () => {
+    expect(Tooltip).toBe(VueTooltip);
+    expect(TooltipTrigger).toBe(VueTooltipTrigger);
+    expect(TooltipTrigger).not.toBe(Tooltip);
+  });
+
+  it('keeps root tooltip entry exports aligned with source exports', () => {
+    expect(RootTooltip).toBe(Tooltip);
+    expect(RootVueTooltip).toBe(VueTooltip);
+    expect(RootTooltipTrigger).toBe(TooltipTrigger);
+    expect(RootVueTooltipTrigger).toBe(VueTooltipTrigger);
   });
 
   it('keeps buttongroup exports aligned with VueButtonGroup base entry', () => {
