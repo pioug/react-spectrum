@@ -116,6 +116,20 @@ import {
   VueWell as RootVueWell
 } from '../../../packages/@vue-spectrum/well/index';
 import {
+  clearToastQueue,
+  createToastQueue,
+  ToastContainer,
+  ToastQueue,
+  VueToastContainer
+} from '@vue-spectrum/toast';
+import {
+  clearToastQueue as RootClearToastQueue,
+  createToastQueue as RootCreateToastQueue,
+  ToastContainer as RootToastContainer,
+  ToastQueue as RootToastQueue,
+  VueToastContainer as RootVueToastContainer
+} from '../../../packages/@vue-spectrum/toast/index';
+import {
   ButtonGroup,
   VueButtonGroup
 } from '@vue-spectrum/buttongroup';
@@ -619,6 +633,21 @@ describe('Vue Spectrum API compatibility aliases', () => {
   it('keeps root well entry exports aligned with source exports', () => {
     expect(RootWell).toBe(Well);
     expect(RootVueWell).toBe(VueWell);
+  });
+
+  it('keeps toast exports aligned with VueToastContainer and queue helpers', () => {
+    expect(ToastContainer).toBe(VueToastContainer);
+    expect(ToastQueue).toBeTypeOf('object');
+    expect(createToastQueue).toBeTypeOf('function');
+    expect(clearToastQueue).toBeTypeOf('function');
+  });
+
+  it('keeps root toast entry exports aligned with source exports', () => {
+    expect(RootToastContainer).toBe(ToastContainer);
+    expect(RootVueToastContainer).toBe(VueToastContainer);
+    expect(RootToastQueue).toBe(ToastQueue);
+    expect(RootCreateToastQueue).toBe(createToastQueue);
+    expect(RootClearToastQueue).toBe(clearToastQueue);
   });
 
   it('keeps buttongroup exports aligned with VueButtonGroup base entry', () => {
