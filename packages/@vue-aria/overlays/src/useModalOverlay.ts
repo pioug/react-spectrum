@@ -1,7 +1,6 @@
 import {ariaHideOutside} from './ariaHideOutside';
 import {computed, type ComputedRef, type Ref, unref, watch} from 'vue';
 import type {MaybeRef} from './types';
-import {useModal} from './useModal';
 import {useOverlay} from './useOverlay';
 import {usePreventScroll} from './usePreventScroll';
 
@@ -36,9 +35,6 @@ export function useModalOverlay(options: AriaModalOverlayOptions): ModalOverlayA
     overlayRef: options.modalRef,
     shouldCloseOnInteractOutside: options.shouldCloseOnInteractOutside
   });
-  let modal = useModal({
-    isDisabled: computed(() => !isOpen.value)
-  });
   let preventScroll = usePreventScroll({
     isDisabled: computed(() => !isOpen.value)
   });
@@ -65,7 +61,7 @@ export function useModalOverlay(options: AriaModalOverlayOptions): ModalOverlayA
       overlay.dispose();
     },
     modalProps: computed(() => ({
-      ...modal.modalProps.value,
+      'data-ismodal': isOpen.value,
       role: 'dialog' as const,
       onKeyDown: overlay.overlayProps.value.onKeyDown
     })),

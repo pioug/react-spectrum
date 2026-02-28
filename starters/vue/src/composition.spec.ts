@@ -56,7 +56,10 @@ import {useMenu as useAriaMenu, useMenuItem as useAriaMenuItem, useMenuSection, 
 import {useMeter as useAriaMeter} from '@vue-aria/meter';
 import {useNumberField as useAriaNumberField} from '@vue-aria/numberfield';
 import {
+  OverlayContainer as AriaOverlayContainer,
+  OverlayProvider as AriaOverlayProvider,
   ariaHideOutside as ariaHideOutsideOverlays,
+  useModal as useAriaModal,
   useModalOverlay as useAriaModalOverlay,
   useOverlay as useAriaOverlay,
   useOverlayPosition as useAriaOverlayPosition,
@@ -7025,6 +7028,293 @@ describe('Vue migration composition components', () => {
     document.documentElement.style.overflow = previousOverflow;
     document.documentElement.style.paddingRight = previousPaddingRight;
     document.body.innerHTML = previousMarkup;
+  });
+
+  it('matches react useModal provider/container aria-hidden nesting contracts', async () => {
+    let mountRoot = document.createElement('div');
+    document.body.appendChild(mountRoot);
+
+    let showModal = ref(false);
+    let showInner = ref(false);
+    let portalContainer = ref<Element | null | undefined>(undefined);
+    let innerPortalContainer = ref<Element | null | undefined>(undefined);
+
+    let ModalDOM = defineComponent({
+      name: 'TestUseModalDom',
+      setup() {
+        let {modalProps} = useAriaModal();
+        return () => h('div', {
+          'data-testid': 'modal',
+          ...modalProps.value
+        }, 'Modal');
+      }
+    });
+
+    let InnerModalDOM = defineComponent({
+      name: 'TestUseInnerModalDom',
+      setup() {
+        let {modalProps} = useAriaModal();
+        return () => h('div', {
+          'data-testid': 'inner-modal',
+          ...modalProps.value
+        }, 'Inner');
+      }
+    });
+
+    let Harness = defineComponent({
+      name: 'TestUseModalHarness',
+      setup() {
+        return () => h(AriaOverlayProvider, {
+          'data-testid': 'root-provider'
+        }, {
+          default: () => [
+            'This is the root provider.',
+            showModal.value
+              ? h(AriaOverlayContainer, {
+                portalContainer: portalContainer.value,
+                'data-testid': 'modal-provider'
+              }, {
+                default: () => [
+                  h(ModalDOM),
+                  showInner.value
+                    ? h(AriaOverlayContainer, {
+                      portalContainer: innerPortalContainer.value,
+                      'data-testid': 'inner-modal-provider'
+                    }, {
+                      default: () => h(InnerModalDOM)
+                    })
+                    : null
+                ]
+              })
+              : null
+          ]
+        });
+      }
+    });
+
+    let wrapper = mount(Harness, {
+      attachTo: mountRoot
+    });
+
+    let getByTestId = (id: string): HTMLElement => {
+      let element = document.querySelector(`[data-testid="${id}"]`);
+      if (!(element instanceof HTMLElement)) {
+        throw new Error(`Expected element with data-testid="${id}" to exist`);
+      }
+      return element;
+    };
+
+    try {
+      let rootProvider = getByTestId('root-provider');
+      expect(rootProvider.getAttribute('aria-hidden')).toBeNull();
+
+      showModal.value = true;
+      await nextTick();
+      let modalProvider = getByTestId('modal-provider');
+
+      expect(rootProvider.getAttribute('aria-hidden')).toBe('true');
+      expect(modalProvider.getAttribute('aria-hidden')).toBeNull();
+      expect(getByTestId('modal').getAttribute('data-ismodal')).toBe('true');
+
+      showInner.value = true;
+      await nextTick();
+      let innerModalProvider = getByTestId('inner-modal-provider');
+
+      expect(rootProvider.getAttribute('aria-hidden')).toBe('true');
+      expect(modalProvider.getAttribute('aria-hidden')).toBe('true');
+      expect(innerModalProvider.getAttribute('aria-hidden')).toBeNull();
+      expect(getByTestId('inner-modal').getAttribute('data-ismodal')).toBe('true');
+
+      showInner.value = false;
+      await nextTick();
+      expect(rootProvider.getAttribute('aria-hidden')).toBe('true');
+      expect(getByTestId('modal-provider').getAttribute('aria-hidden')).toBeNull();
+
+      showModal.value = false;
+      await nextTick();
+      expect(rootProvider.getAttribute('aria-hidden')).toBeNull();
+    } finally {
+      wrapper.unmount();
+      mountRoot.remove();
+    }
+  });
+
+  it('supports useModal overlay containers in an explicit portal container', async () => {
+    let mountRoot = document.createElement('div');
+    let alternateContainer = document.createElement('div');
+    alternateContainer.setAttribute('id', 'alternateContainer');
+    document.body.append(mountRoot, alternateContainer);
+
+    let showModal = ref(false);
+    let showInner = ref(false);
+
+    let ModalDOM = defineComponent({
+      name: 'TestUseModalAlternateDom',
+      setup() {
+        let {modalProps} = useAriaModal();
+        return () => h('div', {
+          'data-testid': 'modal',
+          ...modalProps.value
+        }, 'Modal');
+      }
+    });
+
+    let InnerModalDOM = defineComponent({
+      name: 'TestUseInnerModalAlternateDom',
+      setup() {
+        let {modalProps} = useAriaModal();
+        return () => h('div', {
+          'data-testid': 'inner-modal',
+          ...modalProps.value
+        }, 'Inner');
+      }
+    });
+
+    let Harness = defineComponent({
+      name: 'TestUseModalAlternateHarness',
+      setup() {
+        return () => h(AriaOverlayProvider, {
+          'data-testid': 'root-provider'
+        }, {
+          default: () => [
+            showModal.value
+              ? h(AriaOverlayContainer, {
+                portalContainer: alternateContainer,
+                'data-testid': 'modal-provider'
+              }, {
+                default: () => [
+                  h(ModalDOM),
+                  showInner.value
+                    ? h(AriaOverlayContainer, {
+                      portalContainer: alternateContainer,
+                      'data-testid': 'inner-modal-provider'
+                    }, {
+                      default: () => h(InnerModalDOM)
+                    })
+                    : null
+                ]
+              })
+              : null
+          ]
+        });
+      }
+    });
+
+    let wrapper = mount(Harness, {
+      attachTo: mountRoot
+    });
+
+    let getByTestId = (id: string): HTMLElement => {
+      let element = document.querySelector(`[data-testid="${id}"]`);
+      if (!(element instanceof HTMLElement)) {
+        throw new Error(`Expected element with data-testid="${id}" to exist`);
+      }
+      return element;
+    };
+
+    try {
+      let rootProvider = getByTestId('root-provider');
+      expect(rootProvider.getAttribute('aria-hidden')).toBeNull();
+
+      showModal.value = true;
+      await nextTick();
+      let modalProvider = getByTestId('modal-provider');
+      expect(alternateContainer.contains(modalProvider)).toBe(true);
+      expect(rootProvider.getAttribute('aria-hidden')).toBe('true');
+      expect(modalProvider.getAttribute('aria-hidden')).toBeNull();
+
+      showInner.value = true;
+      await nextTick();
+      let innerModalProvider = getByTestId('inner-modal-provider');
+      expect(alternateContainer.contains(innerModalProvider)).toBe(true);
+      expect(rootProvider.getAttribute('aria-hidden')).toBe('true');
+      expect(modalProvider.getAttribute('aria-hidden')).toBe('true');
+      expect(innerModalProvider.getAttribute('aria-hidden')).toBeNull();
+
+      showInner.value = false;
+      await nextTick();
+      expect(rootProvider.getAttribute('aria-hidden')).toBe('true');
+      expect(getByTestId('modal-provider').getAttribute('aria-hidden')).toBeNull();
+
+      showModal.value = false;
+      await nextTick();
+      expect(rootProvider.getAttribute('aria-hidden')).toBeNull();
+    } finally {
+      wrapper.unmount();
+      mountRoot.remove();
+      alternateContainer.remove();
+    }
+  });
+
+  it('throws when useModal overlay container portals into another overlay container', () => {
+    let mountRoot = document.createElement('div');
+    document.body.appendChild(mountRoot);
+
+    let modalRoot = document.createElement('div');
+    modalRoot.setAttribute('data-overlay-container', '');
+    let nestedContainer = document.createElement('div');
+    modalRoot.appendChild(nestedContainer);
+    document.body.appendChild(modalRoot);
+
+    let ModalDOM = defineComponent({
+      name: 'TestUseModalErrorDom',
+      setup() {
+        let {modalProps} = useAriaModal();
+        return () => h('div', {
+          'data-testid': 'modal',
+          ...modalProps.value
+        }, 'Modal');
+      }
+    });
+
+    let InnerModalDOM = defineComponent({
+      name: 'TestUseInnerModalErrorDom',
+      setup() {
+        let {modalProps} = useAriaModal();
+        return () => h('div', {
+          'data-testid': 'inner-modal',
+          ...modalProps.value
+        }, 'Inner');
+      }
+    });
+
+    let Harness = defineComponent({
+      name: 'TestUseModalErrorHarness',
+      setup() {
+        return () => h(AriaOverlayProvider, {
+          'data-testid': 'root-provider'
+        }, {
+          default: () => [
+            h(AriaOverlayContainer, {
+              'data-testid': 'modal-provider'
+            }, {
+              default: () => [
+                h(ModalDOM),
+                h(AriaOverlayContainer, {
+                  portalContainer: nestedContainer,
+                  'data-testid': 'inner-modal-provider'
+                }, {
+                  default: () => h(InnerModalDOM)
+                })
+              ]
+            })
+          ]
+        });
+      }
+    });
+
+    let wrapper: ReturnType<typeof mount> | null = null;
+    try {
+      expect(() => {
+        wrapper = mount(Harness, {
+          attachTo: mountRoot
+        });
+      }).toThrow('An OverlayContainer must not be inside another container. Please change the portalContainer prop.');
+    } finally {
+      wrapper?.unmount();
+      mountRoot.remove();
+      modalRoot.remove();
+    }
   });
 
   it('keeps composing Escape open and dismisses overlays via outside interactions', () => {
