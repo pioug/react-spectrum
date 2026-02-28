@@ -1678,6 +1678,22 @@
    - full Vue tests: `yarn test:vue` (580 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Tree expanded-set identity parity (`@vue-stately/tree`)
+
+1. Closed `useTreeState` expanded-set update semantics drift:
+   - `setExpandedKeys` no-op checks now use identity semantics (`Object.is`) instead of deep set-equality comparisons.
+2. Aligned callback payload parity with React:
+   - `onExpandedChange` now receives the actual next expanded-keys set instead of an always-cloned set payload.
+3. Preserved controlled/uncontrolled ownership behavior:
+   - ref-backed `undefined` `expandedKeys` refs remain uncontrolled,
+   - ownership-transition warnings remain unchanged.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: tree state test now asserts repeated `setExpandedKeys(new Set([...sameKeys]))` still emits `onExpandedChange` (React parity).
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately tree collection expansion and selection behavior|warns when vue-stately tree expandedKeys switches between controlled and uncontrolled|keeps vue-stately tree expansion uncontrolled when expandedKeys ref is undefined"`,
+   - full Vue tests: `yarn test:vue` (583 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

@@ -3417,6 +3417,7 @@ describe('Vue migration composition components', () => {
 
     treeState.selectionManager.setFocusedKey('bear');
     treeState.setExpandedKeys(new Set(['animals']));
+    treeState.setExpandedKeys(new Set(['animals']));
     expect(treeState.selectionManager.focusedKey).toBeNull();
     expect(Array.from(treeState.collection.getKeys())).toEqual([
       'animals',
@@ -3424,6 +3425,7 @@ describe('Vue migration composition components', () => {
       'birds',
       'plants'
     ]);
+    expect(expandedChanges).toEqual([['animals', 'mammals'], ['animals'], ['animals']]);
   });
 
   it('warns when vue-stately tree expandedKeys switches between controlled and uncontrolled', async () => {

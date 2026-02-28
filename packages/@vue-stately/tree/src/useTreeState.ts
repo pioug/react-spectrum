@@ -37,20 +37,6 @@ export interface TreeState<T> {
   toggleKey: (key: Key) => void
 }
 
-function equalSets(a: Set<Key>, b: Set<Key>): boolean {
-  if (a.size !== b.size) {
-    return false;
-  }
-
-  for (let key of a) {
-    if (!b.has(key)) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
 function toggleExpandedKey(keys: Set<Key>, key: Key): Set<Key> {
   let nextKeys = new Set(keys);
   if (nextKeys.has(key)) {
@@ -134,8 +120,8 @@ export function useTreeState<T>(props: TreeProps<T>): TreeState<T> {
   };
 
   let setExpandedKeys = (keys: Set<Key>): void => {
-    let nextKeys = new Set(keys);
-    if (equalSets(nextKeys, expandedKeys.value)) {
+    let nextKeys = keys;
+    if (Object.is(nextKeys, expandedKeys.value)) {
       return;
     }
 
@@ -143,7 +129,7 @@ export function useTreeState<T>(props: TreeProps<T>): TreeState<T> {
     if (state) {
       state.expandedKeys = nextKeys;
     }
-    props.onExpandedChange?.(new Set(nextKeys));
+    props.onExpandedChange?.(nextKeys);
     syncCollection(resolveCollection(props, nextKeys));
   };
 
