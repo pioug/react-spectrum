@@ -7317,6 +7317,107 @@ describe('Vue migration composition components', () => {
     }
   });
 
+  it('supports react-style overload signatures for overlay composables', async () => {
+    let previousMarkup = document.body.innerHTML;
+    document.body.innerHTML = '<button data-testid="trigger"></button><div data-testid="popover"></div><div data-testid="modal"></div>';
+
+    let triggerElement = document.querySelector('[data-testid="trigger"]');
+    let popoverElement = document.querySelector('[data-testid="popover"]');
+    let modalElement = document.querySelector('[data-testid="modal"]');
+
+    if (
+      !(triggerElement instanceof HTMLElement) ||
+      !(popoverElement instanceof HTMLElement) ||
+      !(modalElement instanceof HTMLElement)
+    ) {
+      throw new Error('Expected overlay overload nodes to exist');
+    }
+
+    triggerElement.getBoundingClientRect = () => createDOMRect(120, 180, 48, 20);
+    popoverElement.getBoundingClientRect = () => createDOMRect(0, 0, 200, 140);
+    modalElement.getBoundingClientRect = () => createDOMRect(16, 16, 320, 220);
+
+    let triggerRefObject = {current: triggerElement as Element | null};
+    let popoverRefObject = {current: popoverElement as Element | null};
+    let modalRefObject = {current: modalElement as HTMLElement | null};
+
+    let isOpen = ref(false);
+    let closeCount = 0;
+    let overlayState = {
+      close: () => {
+        isOpen.value = false;
+      },
+      get isOpen() {
+        return isOpen.value;
+      },
+      open: () => {
+        isOpen.value = true;
+      },
+      toggle: () => {
+        isOpen.value = !isOpen.value;
+      }
+    };
+
+    let overlayTrigger = useAriaOverlayTrigger({
+      type: 'menu'
+    }, overlayState, triggerRefObject);
+    expect(overlayTrigger.triggerProps.value['aria-expanded']).toBe(false);
+    overlayTrigger.triggerProps.value.onClick();
+    expect(isOpen.value).toBe(true);
+    expect(overlayTrigger.triggerProps.value['aria-controls']).toBe(overlayTrigger.overlayProps.value.id);
+
+    let overlayIsOpen = ref(true);
+    let overlay = useAriaOverlay({
+      isDismissable: true,
+      isOpen: overlayIsOpen,
+      onClose: () => {
+        closeCount += 1;
+        overlayIsOpen.value = false;
+      }
+    }, popoverRefObject);
+    expect(overlay.overlayRef.value).toBe(popoverElement);
+
+    let popover = useAriaPopover({
+      placement: 'bottom',
+      popoverRef: ref(popoverElement),
+      triggerRef: ref(triggerElement)
+    }, overlayState);
+    expect(popover.popoverProps.value.role).toBe('dialog');
+    popover.popoverProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
+    expect(isOpen.value).toBe(false);
+
+    overlay.overlayProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
+    expect(closeCount).toBe(1);
+    expect(overlayIsOpen.value).toBe(false);
+
+    let modalIsOpen = ref(true);
+    let modalState = {
+      close: () => {
+        modalIsOpen.value = false;
+      },
+      get isOpen() {
+        return modalIsOpen.value;
+      },
+      open: () => {
+        modalIsOpen.value = true;
+      },
+      toggle: () => {
+        modalIsOpen.value = !modalIsOpen.value;
+      }
+    };
+    let modalOverlay = useAriaModalOverlay({
+      isDismissable: true
+    }, modalState, modalRefObject);
+    expect(modalOverlay.modalProps.value['data-ismodal']).toBe(true);
+    modalOverlay.modalProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
+    expect(modalIsOpen.value).toBe(false);
+
+    modalOverlay.dispose();
+    popover.dispose();
+    overlay.dispose();
+    document.body.innerHTML = previousMarkup;
+  });
+
   it('keeps composing Escape open and dismisses overlays via outside interactions', () => {
     let overlayElement = document.createElement('div');
     let outsideElement = document.createElement('button');

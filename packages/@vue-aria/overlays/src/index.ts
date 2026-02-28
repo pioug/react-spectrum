@@ -5,7 +5,7 @@ import {type AriaModalOverlayOptions, type ModalOverlayAria, useModalOverlay as 
 import {type AriaOverlayOptions, type OverlayAria, useOverlay as useOverlayInternal} from './useOverlay';
 import {type AriaOverlayPositionOptions, type OverlayPlacement, type PositionAria, useOverlayPosition as useOverlayPositionInternal} from './useOverlayPosition';
 import {type AriaPopoverOptions, type PopoverAria, usePopover as usePopoverInternal} from './usePopover';
-import {defineComponent, h, inject, provide, ref, Teleport, type ComputedRef, type PropType, type Ref} from 'vue';
+import {computed, defineComponent, h, inject, provide, ref, Teleport, type ComputedRef, type PropType, type Ref} from 'vue';
 import type {MaybeRef} from './types';
 import {type OverlayTriggerAria, type OverlayTriggerOptions, type OverlayTriggerType, useOverlayTrigger as useOverlayTriggerInternal} from './useOverlayTrigger';
 import {type PreventScrollAria, type PreventScrollOptions, usePreventScroll as usePreventScrollInternal} from './usePreventScroll';
@@ -16,12 +16,17 @@ export type {AriaModalOptions, ModalAria, AriaModalOverlayOptions, ModalOverlayA
 type AnyRecord = Record<string, unknown>;
 type RefObject<T> = {current: T};
 type OverlayPortalContainer = Element | string | null | undefined;
-export type OverlayTriggerState = AnyRecord;
+export type OverlayTriggerState = {
+  close: () => void,
+  isOpen: boolean,
+  open?: () => void,
+  toggle: () => void
+};
 export type AriaHideOutsideOptions = AnyRecord;
 
-export type AriaModalOverlayProps = AriaModalOverlayOptions;
-export type AriaOverlayProps = AriaOverlayOptions;
-export type AriaPopoverProps = AriaPopoverOptions;
+export type AriaModalOverlayProps = Omit<AriaModalOverlayOptions, 'isOpen' | 'modalRef' | 'onClose'>;
+export type AriaOverlayProps = Omit<AriaOverlayOptions, 'overlayRef'>;
+export type AriaPopoverProps = Omit<AriaPopoverOptions, 'isOpen' | 'onClose'>;
 export type AriaPositionProps = AriaOverlayPositionOptions;
 export type DismissButtonProps = AnyRecord;
 export type ModalProviderAria = {
@@ -35,7 +40,7 @@ export type OverlayContainerProps = {
   portalContainer?: OverlayPortalContainer
 };
 export type OverlayProps = AnyRecord;
-export type OverlayTriggerProps = OverlayTriggerOptions;
+export type OverlayTriggerProps = Pick<OverlayTriggerOptions, 'type'>;
 export type PositionProps = AriaOverlayPositionOptions;
 export type PortalProviderProps = {
   getContainer?: (() => Element | null) | null
@@ -72,6 +77,10 @@ function resolvePortalContainer(container: OverlayPortalContainer): Element | nu
   return document.body;
 }
 
+function toElementRef(refObject: RefObject<Element | null>): Ref<HTMLElement | null> {
+  return ref((refObject.current as HTMLElement | null) ?? null);
+}
+
 export function ariaHideOutside(targets: Element[], options?: AriaHideOutsideOptions | Element): () => void;
 export function ariaHideOutside(targets: Array<Element | null | undefined>): () => void;
 export function ariaHideOutside(
@@ -89,23 +98,76 @@ export function useOverlayPosition(options: AriaOverlayPositionOptions): Positio
 
 export function useOverlay(props: AriaOverlayProps, ref: RefObject<Element | null>): OverlayAria;
 export function useOverlay(options: AriaOverlayOptions): OverlayAria;
-export function useOverlay(options: AriaOverlayOptions): OverlayAria {
+export function useOverlay(
+  options: AriaOverlayOptions,
+  refObject?: RefObject<Element | null>
+): OverlayAria {
+  if (refObject) {
+    return useOverlayInternal({
+      ...options,
+      overlayRef: toElementRef(refObject)
+    });
+  }
+
   return useOverlayInternal(options);
 }
 
 export function useOverlayTrigger(
   props: OverlayTriggerProps,
   state: OverlayTriggerState,
-  ref: RefObject<Element | null>
+  ref?: RefObject<Element | null>
 ): OverlayTriggerAria;
 export function useOverlayTrigger(options: OverlayTriggerOptions): OverlayTriggerAria;
-export function useOverlayTrigger(options: OverlayTriggerOptions): OverlayTriggerAria {
+export function useOverlayTrigger(
+  options: OverlayTriggerOptions,
+  state?: OverlayTriggerState,
+  refObject?: RefObject<Element | null>
+): OverlayTriggerAria {
+  if (state) {
+    let isOpen = computed({
+      get: () => state.isOpen,
+      set: (nextOpen: boolean) => {
+        if (nextOpen === state.isOpen) {
+          return;
+        }
+
+        if (nextOpen) {
+          if (state.open) {
+            state.open();
+          } else {
+            state.toggle();
+          }
+          return;
+        }
+
+        state.close();
+      }
+    });
+
+    void refObject;
+    return useOverlayTriggerInternal({
+      ...options,
+      isOpen
+    });
+  }
+
   return useOverlayTriggerInternal(options);
 }
 
 export function usePopover(props: AriaPopoverProps, state: OverlayTriggerState): PopoverAria;
 export function usePopover(options: AriaPopoverOptions): PopoverAria;
-export function usePopover(options: AriaPopoverOptions): PopoverAria {
+export function usePopover(
+  options: AriaPopoverOptions,
+  state?: OverlayTriggerState
+): PopoverAria {
+  if (state) {
+    return usePopoverInternal({
+      ...options,
+      isOpen: computed(() => state.isOpen),
+      onClose: state.close
+    });
+  }
+
   return usePopoverInternal(options);
 }
 
@@ -115,7 +177,20 @@ export function useModalOverlay(
   ref: RefObject<HTMLElement | null>
 ): ModalOverlayAria;
 export function useModalOverlay(options: AriaModalOverlayOptions): ModalOverlayAria;
-export function useModalOverlay(options: AriaModalOverlayOptions): ModalOverlayAria {
+export function useModalOverlay(
+  options: AriaModalOverlayOptions,
+  state?: OverlayTriggerState,
+  refObject?: RefObject<HTMLElement | null>
+): ModalOverlayAria {
+  if (state && refObject) {
+    return useModalOverlayInternal({
+      ...options,
+      isOpen: computed(() => state.isOpen),
+      modalRef: ref((refObject.current as HTMLElement | null) ?? null),
+      onClose: state.close
+    });
+  }
+
   return useModalOverlayInternal(options);
 }
 
