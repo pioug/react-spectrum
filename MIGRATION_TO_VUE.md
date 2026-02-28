@@ -3155,6 +3155,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — NumberField stepper focus/tab-order parity (`@vue-aria/numberfield`)
+
+1. Closed stepper tab-order drift:
+   - increment/decrement button props now expose `tabIndex: -1`, matching React stepper exclusion from keyboard tab order.
+2. Closed stepper press-focus drift:
+   - stepper button press-start handlers now prevent focus transfer (`onMouseDown`/`onPointerDown`), matching React prevent-focus-on-press behavior.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` numberfield assertions now verify stepper `tabIndex` parity and pointer-down focus prevention.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria number field stepping and clamped input behavior"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

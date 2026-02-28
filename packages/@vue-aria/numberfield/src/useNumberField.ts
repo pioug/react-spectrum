@@ -35,6 +35,9 @@ export interface NumberFieldAria {
     disabled?: true,
     id?: string,
     onClick: () => void,
+    onMouseDown: (event: MouseEvent) => void,
+    onPointerDown: (event: PointerEvent) => void,
+    tabIndex: -1,
     type: 'button'
   }>,
   descriptionProps: ComputedRef<{
@@ -55,6 +58,9 @@ export interface NumberFieldAria {
     disabled?: true,
     id?: string,
     onClick: () => void,
+    onMouseDown: (event: MouseEvent) => void,
+    onPointerDown: (event: PointerEvent) => void,
+    tabIndex: -1,
     type: 'button'
   }>,
   inputProps: ComputedRef<{
@@ -353,6 +359,10 @@ export function useNumberField(options: AriaNumberFieldOptions = {}): NumberFiel
     }
   };
 
+  let onStepperPointerDown = (event: Event) => {
+    event.preventDefault();
+  };
+
   return {
     commit,
     decrement,
@@ -367,7 +377,10 @@ export function useNumberField(options: AriaNumberFieldOptions = {}): NumberFiel
         ? `${decrementButtonId.value} ${stepperAriaLabelledBy.value}`
         : undefined,
       'aria-controls': inputId.value,
+      tabIndex: -1 as const,
       disabled: canDecrement.value ? undefined : true,
+      onMouseDown: onStepperPointerDown,
+      onPointerDown: onStepperPointerDown,
       onClick: decrement
     })),
     descriptionProps: computed(() => ({
@@ -393,7 +406,10 @@ export function useNumberField(options: AriaNumberFieldOptions = {}): NumberFiel
         ? `${incrementButtonId.value} ${stepperAriaLabelledBy.value}`
         : undefined,
       'aria-controls': inputId.value,
+      tabIndex: -1 as const,
       disabled: canIncrement.value ? undefined : true,
+      onMouseDown: onStepperPointerDown,
+      onPointerDown: onStepperPointerDown,
       onClick: increment
     })),
     inputProps: computed(() => ({

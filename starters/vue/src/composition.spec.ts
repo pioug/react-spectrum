@@ -6642,6 +6642,14 @@ describe('Vue migration composition components', () => {
     expect(numberField.decrementButtonProps.value['aria-label']).toBe('Decrease Story points');
     expect(numberField.incrementButtonProps.value['aria-controls']).toBe(numberField.inputProps.value.id);
     expect(numberField.decrementButtonProps.value['aria-controls']).toBe(numberField.inputProps.value.id);
+    expect(numberField.incrementButtonProps.value.tabIndex).toBe(-1);
+    expect(numberField.decrementButtonProps.value.tabIndex).toBe(-1);
+
+    let preventStepperFocus = vi.fn();
+    numberField.incrementButtonProps.value.onPointerDown({
+      preventDefault: preventStepperFocus
+    } as unknown as PointerEvent);
+    expect(preventStepperFocus).toHaveBeenCalledTimes(1);
 
     numberField.increment();
     expect(numberField.numberValue.value).toBe(6);
