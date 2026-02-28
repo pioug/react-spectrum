@@ -64,12 +64,15 @@ export function createLeafComponent<T extends object, P extends object, E extend
   collectionNodeClass: CollectionNodeClass<any> | string,
   render: (props: P, ref: ForwardedRef<E>, node: Node<T>) => ReactElement | null
 ): (props: P & React.RefAttributes<E>) => ReactElement | null;
-export function createLeafComponent(...args: unknown[]): unknown {
-  if (args.length === 1 && typeof args[0] === 'function') {
-    return createLeafComponentInternal(args[0] as (item: unknown, index: number) => unknown);
+export function createLeafComponent(
+  collectionNodeClassOrRender: unknown,
+  render?: unknown
+): unknown {
+  if (typeof collectionNodeClassOrRender === 'function' && render == null) {
+    return createLeafComponentInternal(collectionNodeClassOrRender as (item: unknown, index: number) => unknown);
   }
 
-  return (props: unknown) => (args[1] as (props: unknown, ref: ForwardedRef<Element>) => unknown)?.(props, {current: null});
+  return (props: unknown) => (render as (props: unknown, ref: ForwardedRef<Element>) => unknown)?.(props, {current: null});
 }
 
 export function createBranchComponent<T extends object, P extends {children?: any}, E extends Element>(
@@ -77,12 +80,17 @@ export function createBranchComponent<T extends object, P extends {children?: an
   render: (props: P, ref: ForwardedRef<E>, node: Node<T>) => ReactElement | null,
   useChildren: (props: P) => ReactNode
 ): (props: P & React.RefAttributes<E>) => ReactElement | null;
-export function createBranchComponent(...args: unknown[]): unknown {
-  if (args.length === 1 && typeof args[0] === 'function') {
-    return createBranchComponentInternal(args[0] as (item: unknown, index: number, children: unknown[]) => unknown);
+export function createBranchComponent(
+  collectionNodeClassOrRender: unknown,
+  render?: unknown,
+  useChildren?: unknown
+): unknown {
+  void useChildren;
+  if (typeof collectionNodeClassOrRender === 'function' && render == null) {
+    return createBranchComponentInternal(collectionNodeClassOrRender as (item: unknown, index: number, children: unknown[]) => unknown);
   }
 
-  return (props: unknown) => (args[1] as (props: unknown, ref: ForwardedRef<Element>, node: Node<unknown>) => unknown)?.(props, {current: null}, {});
+  return (props: unknown) => (render as (props: unknown, ref: ForwardedRef<Element>, node: Node<unknown>) => unknown)?.(props, {current: null}, {});
 }
 
 export function createHideableComponent<T, P = {}>(

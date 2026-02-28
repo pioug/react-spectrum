@@ -320,7 +320,14 @@ export function useDateSegment(
   ref: RefObject<HTMLElement | null>
 ): DateSegmentAria;
 export function useDateSegment(): DateSegmentAria;
-export function useDateSegment(): DateSegmentAria {
+export function useDateSegment(
+  segment?: DateSegment,
+  state?: DateFieldState,
+  refObject?: RefObject<HTMLElement | null>
+): DateSegmentAria {
+  void segment;
+  void state;
+  void refObject;
   return {
     segmentProps: {}
   };

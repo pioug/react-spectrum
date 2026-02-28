@@ -303,6 +303,12 @@ export function useGridListSection<T>(
   ref: RefObject<HTMLElement | null>
 ): GridListSectionAria;
 export function useGridListSection(props?: AriaGridListSectionProps): GridListSectionAria;
-export function useGridListSection(props: AriaGridListSectionProps = {}): GridListSectionAria {
+export function useGridListSection(
+  props: AriaGridListSectionProps = {},
+  state?: ListState<unknown>,
+  refObject?: RefObject<HTMLElement | null>
+): GridListSectionAria {
+  void state;
+  void refObject;
   return useGridListSectionInternal(props);
 }

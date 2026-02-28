@@ -126,7 +126,13 @@ export function setScrollLeft(element: Element, direction: Direction, scrollLeft
 }
 
 export function useScrollView(props: ScrollViewProps, ref: RefObject<HTMLElement | null>): ScrollViewAria;
-export function useScrollView() {
+export function useScrollView(): ScrollViewAria;
+export function useScrollView(
+  props?: ScrollViewProps,
+  refObject?: RefObject<HTMLElement | null>
+): ScrollViewAria {
+  void props;
+  void refObject;
   let scrollRef = ref<HTMLElement | null>(null);
   return {
     scrollViewProps: {},

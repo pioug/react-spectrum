@@ -454,8 +454,13 @@ export function useRangeCalendar<T extends DateValue>(
   ref: RefObject<FocusableElement | null>
 ): CalendarAria;
 export function useRangeCalendar(options?: AriaRangeCalendarOptions): RangeCalendarAria;
-export function useRangeCalendar(options?: AriaRangeCalendarOptions, state?: RangeCalendarState): CalendarAria | RangeCalendarAria {
+export function useRangeCalendar(
+  options?: AriaRangeCalendarOptions,
+  state?: RangeCalendarState,
+  refObject?: RefObject<FocusableElement | null>
+): CalendarAria | RangeCalendarAria {
   if (state) {
+    void refObject;
     let stateRecord = state as AnyRecord;
     let optionsRecord = (options ?? {}) as AnyRecord;
     let visibleDate = createVisibleDateRef(optionsRecord.visibleDate, stateRecord);

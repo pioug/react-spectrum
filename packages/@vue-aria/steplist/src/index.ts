@@ -33,8 +33,10 @@ export function useStepList<T>(
 export function useStepList(state: VueStepListAriaState, options?: VueAriaStepListOptions): StepListAria;
 export function useStepList(
   stateOrProps: VueStepListAriaState | VueAriaStepListOptions,
-  optionsOrState?: VueAriaStepListOptions | StepListState<unknown>
+  optionsOrState?: VueAriaStepListOptions | StepListState<unknown>,
+  refObject?: RefObject<HTMLOListElement | null>
 ): StepListAria {
+  void refObject;
   if (isStepListState(optionsOrState)) {
     return useStepListInternal(optionsOrState as unknown as VueStepListAriaState, stateOrProps as VueAriaStepListOptions);
   }
@@ -48,6 +50,11 @@ export function useStepListItem<T>(
   ref: RefObject<HTMLElement | null>
 ): StepListItemAria;
 export function useStepListItem(options: AriaStepListItemOptions, state: VueStepListAriaState): StepListItemAria;
-export function useStepListItem(options: AriaStepListItemOptions, state: VueStepListAriaState): StepListItemAria {
+export function useStepListItem(
+  options: AriaStepListItemOptions,
+  state: VueStepListAriaState,
+  refObject?: RefObject<HTMLElement | null>
+): StepListItemAria {
+  void refObject;
   return useStepListItemInternal(options, state);
 }

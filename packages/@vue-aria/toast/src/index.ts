@@ -28,7 +28,12 @@ export function useToast<T>(
   ref: RefObject<FocusableElement | null>
 ): ToastAria;
 export function useToast<T>(options: AriaToastOptions<T>, state: VueToastState<T>): ToastAria;
-export function useToast<T>(options: AriaToastOptions<T>, state: VueToastState<T>): ToastAria {
+export function useToast<T>(
+  options: AriaToastOptions<T>,
+  state: VueToastState<T>,
+  refObject?: RefObject<FocusableElement | null>
+): ToastAria {
+  void refObject;
   return useToastInternal(options, state);
 }
 
@@ -38,6 +43,11 @@ export function useToastRegion<T>(
   ref: RefObject<HTMLElement | null>
 ): ToastRegionAria;
 export function useToastRegion<T>(options: AriaToastRegionOptions, state: ToastRegionState<T>): ToastRegionAria;
-export function useToastRegion<T>(options: AriaToastRegionOptions, state: ToastRegionState<T>): ToastRegionAria {
+export function useToastRegion<T>(
+  options: AriaToastRegionOptions,
+  state: ToastRegionState<T>,
+  refObject?: RefObject<HTMLElement | null>
+): ToastRegionAria {
+  void refObject;
   return useToastRegionInternal(options, state);
 }

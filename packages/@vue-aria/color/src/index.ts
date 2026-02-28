@@ -426,8 +426,13 @@ export function useColorWheel(
   ref: RefObject<HTMLInputElement | null>
 ): ColorWheelAria;
 export function useColorWheel(options: AriaColorWheelOptions): ColorWheelAria;
-export function useColorWheel(options: AriaColorWheelOptions, state?: ColorWheelState): ColorWheelAria {
+export function useColorWheel(
+  options: AriaColorWheelOptions,
+  state?: ColorWheelState,
+  refObject?: RefObject<HTMLInputElement | null>
+): ColorWheelAria {
   if (state) {
+    void refObject;
     let stateRecord = state as AnyRecord;
     return useColorWheelInternal({
       ...options,
@@ -445,8 +450,13 @@ export function useColorField(
   ref: RefObject<HTMLInputElement | null>
 ): ColorFieldAria;
 export function useColorField(options: AriaColorFieldOptions): ColorFieldAria;
-export function useColorField(options: AriaColorFieldOptions, state?: ColorFieldState): ColorFieldAria {
+export function useColorField(
+  options: AriaColorFieldOptions,
+  state?: ColorFieldState,
+  refObject?: RefObject<HTMLInputElement | null>
+): ColorFieldAria {
   if (state) {
+    void refObject;
     let stateRecord = state as AnyRecord;
     let stateInvalid = stateRecord.isInvalid;
     let colorField = useColorFieldInternal({
@@ -484,9 +494,11 @@ export function useColorChannelField(
 export function useColorChannelField(options: AriaColorChannelFieldOptions): ColorChannelFieldAria;
 export function useColorChannelField(
   options: AriaColorChannelFieldOptions,
-  state?: ColorChannelFieldState
+  state?: ColorChannelFieldState,
+  refObject?: RefObject<HTMLInputElement | null>
 ): ColorChannelFieldAria {
   if (state) {
+    void refObject;
     let stateRecord = state as AnyRecord;
     let colorChannelField = useColorChannelFieldInternal({
       ...options,

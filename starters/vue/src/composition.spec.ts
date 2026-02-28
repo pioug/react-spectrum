@@ -8,10 +8,21 @@ import {useBreadcrumbItem, useBreadcrumbs} from '@vue-aria/breadcrumbs';
 import {useButton, useToggleButton, useToggleButtonGroup, useToggleButtonGroupItem} from '@vue-aria/button';
 import {useCalendar, useCalendarCell, useCalendarGrid, useRangeCalendar} from '@vue-aria/calendar';
 import {useCheckbox, useCheckboxGroup, useCheckboxGroupItem} from '@vue-aria/checkbox';
-import {CollectionBuilder, useCachedChildren} from '@vue-aria/collections';
+import {
+  CollectionBuilder,
+  createBranchComponent,
+  createLeafComponent,
+  useCachedChildren
+} from '@vue-aria/collections';
 import {useComboBox} from '@vue-aria/combobox';
 import {useColorArea, useColorChannelField, useColorField, useColorSlider, useColorSwatch, useColorWheel} from '@vue-aria/color';
-import {useDateField, useDatePicker, useDateRangePicker, useTimeField} from '@vue-aria/datepicker';
+import {
+  useDateField,
+  useDatePicker,
+  useDateRangePicker,
+  useDateSegment,
+  useTimeField
+} from '@vue-aria/datepicker';
 import {useDialog as useAriaDialog} from '@vue-aria/dialog';
 import {useDisclosure as useAriaDisclosure} from '@vue-aria/disclosure';
 import {useDrag, useDrop} from '@vue-aria/dnd';
@@ -1899,6 +1910,14 @@ describe('Vue migration composition components', () => {
     expect(secondPass[0]).toBe(firstPass[0]);
   });
 
+  it('supports react-style collections component creator overload signatures', () => {
+    let leafFactory = createLeafComponent('item', (props: {label: string}) => props.label) as (props: {label: string}) => string;
+    expect(leafFactory({label: 'Alpha'})).toBe('Alpha');
+
+    let branchFactory = createBranchComponent('section', (props: {label: string}) => props.label, () => null) as (props: {label: string}) => string;
+    expect(branchFactory({label: 'Section'})).toBe('Section');
+  });
+
   it('updates vue-aria color slider, channel field, and text field values', () => {
     let channelValue = ref(40);
     let slider = useColorSlider({
@@ -3315,6 +3334,14 @@ describe('Vue migration composition components', () => {
     });
     reactRangePicker.close();
     expect(rangePickerState.isOpen.value).toBe(false);
+
+    let dateSegment = useDateSegment({
+      text: '10',
+      type: 'day'
+    } as unknown as Parameters<typeof useDateSegment>[0], dateFieldState as unknown as Parameters<typeof useDateSegment>[1], {
+      current: null
+    } as unknown as Parameters<typeof useDateSegment>[2]);
+    expect(dateSegment.segmentProps).toEqual({});
   });
 
   it('manages vue-stately date and time field state', () => {
@@ -6838,6 +6865,11 @@ describe('Vue migration composition components', () => {
 
     let scrollView = useAriaScrollView();
     expect(scrollView.scrollViewProps).toEqual({});
+
+    let reactScrollView = useAriaScrollView({} as unknown as Parameters<typeof useAriaScrollView>[0], {
+      current: null
+    } as unknown as Parameters<typeof useAriaScrollView>[1]);
+    expect(reactScrollView.scrollViewProps).toEqual({});
 
     let virtualizerItem = useAriaVirtualizerItem({});
     expect(typeof virtualizerItem.updateSize).toBe('function');
@@ -11176,6 +11208,18 @@ describe('Vue migration composition components', () => {
 
     toast.closeButtonProps.value.onPress();
     expect(closedKeys).toEqual(['build-complete']);
+
+    let reactToastRegion = useAriaToastRegion({} as unknown as Parameters<typeof useAriaToastRegion>[0], toastState as unknown as Parameters<typeof useAriaToastRegion>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaToastRegion>[2]);
+    expect(reactToastRegion.regionProps.value.role).toBe('region');
+
+    let reactToast = useAriaToast({
+      toast: toastState.visibleToasts[0]
+    } as unknown as Parameters<typeof useAriaToast>[0], toastState as unknown as Parameters<typeof useAriaToast>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaToast>[2]);
+    expect(reactToast.toastProps.value.role).toBe('alertdialog');
   });
 
   it('computes vue-aria table wrappers and selection helpers', () => {
