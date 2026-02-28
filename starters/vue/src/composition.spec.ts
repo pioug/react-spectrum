@@ -772,6 +772,28 @@ describe('Vue migration composition components', () => {
     expect(nativeButton.buttonProps.value.value).toBe('save');
   });
 
+  it('supports react-style breadcrumb and button overload signatures', () => {
+    let breadcrumb = useBreadcrumbItem({
+      elementType: 'a',
+      href: '/docs'
+    } as unknown as Parameters<typeof useBreadcrumbItem>[0], {
+      current: null
+    } as unknown as Parameters<typeof useBreadcrumbItem>[1]);
+    expect(breadcrumb.itemProps.value.href).toBe('/docs');
+
+    let pressCount = 0;
+    let reactButton = useButton({
+      elementType: 'span',
+      onPress: () => {
+        pressCount += 1;
+      }
+    } as unknown as Parameters<typeof useButton>[0], {
+      current: null
+    } as unknown as Parameters<typeof useButton>[1]);
+    reactButton.press();
+    expect(pressCount).toBe(1);
+  });
+
   it('toggles vue-aria button selection and group-item radio state', () => {
     let isSelected = ref(false);
     let toggleButton = useToggleButton({

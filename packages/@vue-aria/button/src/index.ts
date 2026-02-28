@@ -63,7 +63,11 @@ export function useButton(options: AriaButtonOptions<'input'>, ref: RefObject<HT
 export function useButton(options: AriaButtonOptions<'span'>, ref: RefObject<HTMLSpanElement | null>): ButtonAria<HTMLAttributes<HTMLSpanElement>>;
 export function useButton(options: AriaButtonOptions<ElementType>, ref: RefObject<Element | null>): ButtonAria<DOMAttributes>;
 export function useButton(options: AriaButtonOptions): ButtonAria;
-export function useButton(options: AriaButtonOptions): ButtonAria {
+export function useButton(
+  options: AriaButtonOptions,
+  refObject?: RefObject<Element | null>
+): ButtonAria {
+  void refObject;
   return useButtonInternal(options);
 }
 

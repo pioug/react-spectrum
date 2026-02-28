@@ -14,7 +14,11 @@ export function useBreadcrumbItem(
   ref: RefObject<FocusableElement | null>
 ): BreadcrumbItemAria;
 export function useBreadcrumbItem(options?: AriaBreadcrumbItemOptions): BreadcrumbItemAria;
-export function useBreadcrumbItem(options?: AriaBreadcrumbItemOptions): BreadcrumbItemAria {
+export function useBreadcrumbItem(
+  options?: AriaBreadcrumbItemOptions,
+  refObject?: RefObject<FocusableElement | null>
+): BreadcrumbItemAria {
+  void refObject;
   return useBreadcrumbItemInternal(options);
 }
 
