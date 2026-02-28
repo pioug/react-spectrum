@@ -96,6 +96,14 @@ function getLastFocusableElement(root: Element, opts: FocusManagerOptions): Focu
   return lastFocusableElement;
 }
 
+function escapeCssSelectorValue(value: string): string {
+  if (typeof CSS !== 'undefined' && typeof CSS.escape === 'function') {
+    return CSS.escape(value);
+  }
+
+  return value.replace(/["\\]/g, '\\$&');
+}
+
 function getRadiosInGroup(element: HTMLInputElement): HTMLInputElement[] {
   if (!element.form) {
     let ownerDocument = element.ownerDocument;
@@ -103,15 +111,22 @@ function getRadiosInGroup(element: HTMLInputElement): HTMLInputElement[] {
       return [];
     }
 
-    return Array.from(ownerDocument.querySelectorAll<HTMLInputElement>(`input[type="radio"][name="${element.name}"]`)).filter((radio) => !radio.form);
+    return Array.from(ownerDocument.querySelectorAll<HTMLInputElement>(`input[type="radio"][name="${escapeCssSelectorValue(element.name)}"]`)).filter((radio) => !radio.form);
   }
 
   let radioList = element.form.elements.namedItem(element.name);
-  if (radioList instanceof RadioNodeList) {
-    return Array.from(radioList).filter((node): node is HTMLInputElement => node instanceof HTMLInputElement);
+  let ownerWindow = element.ownerDocument?.defaultView;
+  if (
+    ownerWindow &&
+    radioList instanceof ownerWindow.RadioNodeList
+  ) {
+    return Array.from(radioList).filter((node): node is HTMLInputElement => node instanceof ownerWindow.HTMLInputElement);
   }
 
-  if (radioList instanceof HTMLInputElement) {
+  if (
+    ownerWindow &&
+    radioList instanceof ownerWindow.HTMLInputElement
+  ) {
     return [radioList];
   }
 

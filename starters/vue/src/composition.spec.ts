@@ -4795,6 +4795,27 @@ describe('Vue migration composition components', () => {
     root.remove();
   });
 
+  it('supports react-style radio-group lookup for quoted names in @vue-aria/focus tree walker', () => {
+    let root = document.createElement('div');
+    let radioA = document.createElement('input');
+    radioA.type = 'radio';
+    radioA.name = 'group-"quoted"';
+    let radioB = document.createElement('input');
+    radioB.type = 'radio';
+    radioB.name = 'group-"quoted"';
+    radioB.checked = true;
+    root.append(radioA, radioB);
+    document.body.append(root);
+
+    let walker = getFocusableTreeWalkerFromPackage(root, {
+      tabbable: true
+    });
+    expect(() => walker.nextNode()).not.toThrow();
+    expect(walker.currentNode).toBe(radioB);
+    expect(walker.nextNode()).toBeNull();
+    root.remove();
+  });
+
   it('returns undefined from @vue-aria/focus useFocusManager outside scope context', () => {
     expect(useFocusManagerFromPackage()).toBeUndefined();
   });
