@@ -35,7 +35,7 @@ function addColorValue(color: Color | null, amount: number): Color {
 
 export function useColorFieldState(props: ColorFieldStateOptions = {}): ColorFieldState {
   let controlledColor = props.value;
-  let internalColorValue = ref<Color | null>(useColor(props.defaultValue));
+  let internalColorValue = ref<Color | null>(useColor(props.defaultValue) ?? null);
   let colorValue = controlledColor ?? internalColorValue;
   let inputValue = ref(colorValue.value ?? '');
 
@@ -55,7 +55,7 @@ export function useColorFieldState(props: ColorFieldStateOptions = {}): ColorFie
 
   return {
     colorValue,
-    defaultColorValue: useColor(props.defaultValue),
+    defaultColorValue: useColor(props.defaultValue) ?? null,
     inputValue,
     setColorValue,
     setInputValue: (nextValue: string) => {

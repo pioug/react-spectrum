@@ -2009,6 +2009,19 @@
    - full Vue tests: `yarn test:vue` (604 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Color invalid-initial fallback parity (`@vue-stately/color`)
+
+1. Closed invalid-default color fallback drift:
+   - `useColor` now treats non-color strings as invalid and returns `undefined` rather than coercing to a concrete fallback color.
+2. Aligned color-field initialization behavior:
+   - `useColorFieldState` now initializes invalid defaults to an empty color state (`null` + empty input) instead of coercing to `#000000`.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: explicit assertion that invalid default colors produce empty color-field state.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "color area/slider/field/channel/picker state baselines|color field empty when initialized with an invalid default value"`,
+   - full Vue tests: `yarn test:vue` (605 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

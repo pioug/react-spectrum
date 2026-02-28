@@ -1226,6 +1226,16 @@ describe('Vue migration composition components', () => {
     expect(parseStatelyColor('#abc')).toBe('#aabbcc');
   });
 
+  it('keeps vue-stately color field empty when initialized with an invalid default value', () => {
+    let field = useStatelyColorFieldState({
+      defaultValue: 'invalidColor' as string
+    });
+
+    expect(field.colorValue.value).toBeNull();
+    expect(field.inputValue.value).toBe('');
+    expect(field.defaultColorValue).toBeNull();
+  });
+
   it('warns when vue-stately color picker and channel-field switch between controlled and uncontrolled', async () => {
     let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
