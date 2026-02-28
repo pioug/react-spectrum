@@ -2752,6 +2752,21 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Button native form-prop surface parity remediation (`@vue-aria/button`)
+
+1. Closed native button prop-surface drift in `useButton`:
+   - native `button` rendering now forwards form-related props aligned with React contracts:
+     - `form`, `formAction`, `formEncType`, `formMethod`, `formNoValidate`, `formTarget`,
+     - plus `name` and `value`.
+2. Preserved existing non-native button semantics:
+   - role/tabindex/aria-disabled behavior for non-native element types remains unchanged.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` button composable assertions now verify native form prop forwarding on `elementType: 'button'`.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "button props and press interactions"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

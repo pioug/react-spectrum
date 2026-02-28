@@ -12,15 +12,23 @@ export interface AriaButtonOptions {
   ariaHasPopup?: MaybeRef<AriaHasPopup | undefined>,
   ariaPressed?: MaybeRef<boolean | undefined>,
   elementType?: MaybeRef<'a' | 'button' | 'div' | 'input' | 'span' | string>,
+  form?: MaybeRef<string | undefined>,
+  formAction?: MaybeRef<string | undefined>,
+  formEncType?: MaybeRef<string | undefined>,
+  formMethod?: MaybeRef<string | undefined>,
+  formNoValidate?: MaybeRef<boolean | undefined>,
+  formTarget?: MaybeRef<string | undefined>,
   href?: MaybeRef<string | undefined>,
   isDisabled?: MaybeRef<boolean>,
+  name?: MaybeRef<string | undefined>,
   onPress?: () => void,
   onPressChange?: (isPressed: boolean) => void,
   onPressEnd?: () => void,
   onPressStart?: () => void,
   rel?: MaybeRef<string | undefined>,
   target?: MaybeRef<string | undefined>,
-  type?: MaybeRef<'button' | 'reset' | 'submit' | string>
+  type?: MaybeRef<'button' | 'reset' | 'submit' | string>,
+  value?: MaybeRef<string | number | undefined>
 }
 
 export interface ButtonProps {
@@ -32,12 +40,20 @@ export interface ButtonProps {
   'aria-haspopup'?: AriaHasPopup,
   'aria-pressed'?: boolean,
   disabled?: boolean,
+  form?: string,
+  formAction?: string,
+  formEncType?: string,
+  formMethod?: string,
+  formNoValidate?: boolean,
+  formTarget?: string,
   href?: string,
+  name?: string,
   rel?: string,
   role?: 'button' | 'radio',
   tabindex?: number,
   target?: string,
-  type?: string
+  type?: string,
+  value?: string | number
 }
 
 export interface ButtonAria {
@@ -68,6 +84,14 @@ export function useButton(options: AriaButtonOptions = {}): ButtonAria {
     if (elementType.value === 'button') {
       nextButtonProps.type = resolvedType.value;
       nextButtonProps.disabled = isDisabled.value || undefined;
+      nextButtonProps.form = unref(options.form);
+      nextButtonProps.formAction = unref(options.formAction);
+      nextButtonProps.formEncType = unref(options.formEncType);
+      nextButtonProps.formMethod = unref(options.formMethod);
+      nextButtonProps.formNoValidate = unref(options.formNoValidate);
+      nextButtonProps.formTarget = unref(options.formTarget);
+      nextButtonProps.name = unref(options.name);
+      nextButtonProps.value = unref(options.value);
     } else {
       nextButtonProps.role = 'button';
       nextButtonProps.tabindex = isDisabled.value ? undefined : 0;

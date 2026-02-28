@@ -612,6 +612,28 @@ describe('Vue migration composition components', () => {
     });
     expect(disabledButton.buttonProps.value['aria-disabled']).toBe(true);
     expect(disabledButton.buttonProps.value.href).toBeUndefined();
+
+    let nativeButton = useButton({
+      elementType: 'button',
+      form: 'docs-form',
+      formAction: '/submit',
+      formEncType: 'multipart/form-data',
+      formMethod: 'post',
+      formNoValidate: true,
+      formTarget: '_blank',
+      name: 'action',
+      type: 'submit',
+      value: 'save'
+    });
+    expect(nativeButton.buttonProps.value.type).toBe('submit');
+    expect(nativeButton.buttonProps.value.form).toBe('docs-form');
+    expect(nativeButton.buttonProps.value.formAction).toBe('/submit');
+    expect(nativeButton.buttonProps.value.formEncType).toBe('multipart/form-data');
+    expect(nativeButton.buttonProps.value.formMethod).toBe('post');
+    expect(nativeButton.buttonProps.value.formNoValidate).toBe(true);
+    expect(nativeButton.buttonProps.value.formTarget).toBe('_blank');
+    expect(nativeButton.buttonProps.value.name).toBe('action');
+    expect(nativeButton.buttonProps.value.value).toBe('save');
   });
 
   it('toggles vue-aria button selection and group-item radio state', () => {
