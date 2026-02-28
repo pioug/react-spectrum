@@ -2652,6 +2652,22 @@ describe('Vue migration composition components', () => {
     expect(dialog.dialogProps.value['aria-label']).toBe('Critical alert');
   });
 
+  it('maps react-style aria dialog props through vue-aria overload signature', () => {
+    let reactOverloadDialog = useAriaDialog({
+      'aria-describedby': 'react-dialog-description',
+      'aria-label': 'React label',
+      'aria-labelledby': 'react-dialog-title',
+      role: 'alertdialog'
+    } as unknown as Parameters<typeof useAriaDialog>[0], {
+      current: null
+    });
+
+    expect(reactOverloadDialog.dialogProps.value.role).toBe('alertdialog');
+    expect(reactOverloadDialog.dialogProps.value['aria-label']).toBe('React label');
+    expect(reactOverloadDialog.dialogProps.value['aria-labelledby']).toBe('react-dialog-title');
+    expect(reactOverloadDialog.dialogProps.value['aria-describedby']).toBe('react-dialog-description');
+  });
+
   it('toggles vue-aria disclosure expanded state and panel visibility', () => {
     let changes: boolean[] = [];
     let disclosure = useAriaDisclosure({

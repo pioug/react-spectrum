@@ -15,5 +15,12 @@ export function useDialog(
   refObject?: RefObject<FocusableElement | null>
 ): DialogAria {
   void refObject;
-  return useDialogInternal(options);
+  let reactProps = options as AriaDialogProps & AriaDialogOptions;
+
+  return useDialogInternal({
+    ...options,
+    ariaDescribedby: reactProps.ariaDescribedby ?? reactProps['aria-describedby'],
+    ariaLabel: reactProps.ariaLabel ?? reactProps['aria-label'],
+    ariaLabelledby: reactProps.ariaLabelledby ?? reactProps['aria-labelledby']
+  });
 }
