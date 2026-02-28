@@ -1285,6 +1285,24 @@
    - full Vue tests: `yarn test:vue` (541 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — List/Table drag-drop warning parity (`@vue-spectrum/list`, `@vue-spectrum/table`)
+
+1. Aligned `ListView` dev warning behavior with React drag/drop lifecycle guardrails:
+   - added hook-presence transition warnings when `dragAndDropHooks` draggable support toggles across renders,
+   - added hook-presence transition warnings when `dragAndDropHooks` droppable support toggles across renders.
+2. Aligned `Table` dev warning behavior with React drag/drop lifecycle guardrails:
+   - added matching drag/drop hook-presence transition warnings across renders,
+   - added React warning parity when drag/drop hooks are present alongside expandable rows (`children` rows).
+3. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`:
+     - list drag/drop hook toggling warning assertions,
+     - table drag/drop hook toggling warning assertions,
+     - table expandable-row drag/drop warning assertion.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "warns when list view drag/drop hooks toggle across renders|warns when table drag/drop hooks toggle and with expandable rows|warns when resizable table columns include child columns|maps list view item state classes and hidden insertion indicators|maps table state classes, aria metadata, and hidden drop indicators"`,
+   - full Vue tests: `yarn test:vue` (543 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

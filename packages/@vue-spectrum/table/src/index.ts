@@ -14,7 +14,7 @@ import {
   type TableHeaderProps as VueStatelyTableHeaderProps
 } from '@vue-stately/table';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, type PropType, ref} from 'vue';
+import {computed, defineComponent, h, type PropType, ref, watch} from 'vue';
 const styles: {[key: string]: string} = {};
 
 
@@ -45,6 +45,7 @@ type TableColumn = {
 };
 
 type TableRow = Record<string, unknown> & {
+  children?: TableRow[],
   disabled?: boolean,
   id?: number | string,
   level?: number,
@@ -61,6 +62,9 @@ type SortDescriptor = {
 };
 
 const NESTED_RESIZABLE_COLUMN_WARNING = (columnKey: string) => `Column key: ${columnKey}. Columns with child columns don't allow resizing.`;
+const DRAG_HOOKS_WARNING = 'Drag hooks were provided during one render, but not another. This should be avoided as it may produce unexpected behavior.';
+const DROP_HOOKS_WARNING = 'Drop hooks were provided during one render, but not another. This should be avoided as it may produce unexpected behavior.';
+const EXPANDABLE_ROWS_DND_WARNING = 'Drag and drop is not yet fully supported with expandable rows and may produce unexpected results.';
 
 let tableId = 0;
 
@@ -217,6 +221,13 @@ export const Table = defineComponent({
       type: String as PropType<'compact' | 'regular' | 'spacious'>,
       default: 'regular'
     },
+    dragAndDropHooks: {
+      type: Object as PropType<{
+        useDraggableCollectionState?: unknown,
+        useDroppableCollectionState?: unknown
+      } | undefined>,
+      default: undefined
+    },
     disabledKeys: {
       type: [Array, Set] as PropType<Iterable<SelectionKey>>,
       default: () => []
@@ -282,6 +293,30 @@ export const Table = defineComponent({
     let warnedNestedResizableColumns = new Set<string>();
     let generatedId = `vs-table-${++tableId}`;
     let tableLabelId = computed(() => props.ariaLabelledby || (props.caption ? `${generatedId}-caption` : undefined));
+    let isTableDraggable = computed(() => Boolean(props.dragAndDropHooks?.useDraggableCollectionState));
+    let isTableDroppable = computed(() => Boolean(props.dragAndDropHooks?.useDroppableCollectionState));
+    let hasExpandableRows = computed(() => props.rows.some((row) => Array.isArray(row.children) && row.children.length > 0));
+    let dragHooksProvided = ref(isTableDraggable.value);
+    let dropHooksProvided = ref(isTableDroppable.value);
+
+    watch([isTableDraggable, isTableDroppable, hasExpandableRows], ([nextIsTableDraggable, nextIsTableDroppable, nextHasExpandableRows]) => {
+      if (process.env.NODE_ENV !== 'production') {
+        if (dragHooksProvided.value !== nextIsTableDraggable) {
+          console.warn(DRAG_HOOKS_WARNING);
+        }
+
+        if (dropHooksProvided.value !== nextIsTableDroppable) {
+          console.warn(DROP_HOOKS_WARNING);
+        }
+
+        if (nextHasExpandableRows && (nextIsTableDraggable || nextIsTableDroppable)) {
+          console.warn(EXPANDABLE_ROWS_DND_WARNING);
+        }
+      }
+
+      dragHooksProvided.value = nextIsTableDraggable;
+      dropHooksProvided.value = nextIsTableDroppable;
+    }, {immediate: true});
 
     let hoveredRow = ref<number | string | null>(null);
     let focusedRow = ref<number | string | null>(null);

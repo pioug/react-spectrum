@@ -4996,6 +4996,34 @@ describe('Vue migration primitives', () => {
     expect(onAction).toHaveBeenCalledTimes(2);
   });
 
+  it('warns when list view drag/drop hooks toggle across renders', async () => {
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let wrapper = mount(ListView, {
+      props: {
+        items: ['React'],
+        dragAndDropHooks: {
+          useDraggableCollectionState: () => {},
+          useDroppableCollectionState: () => {}
+        }
+      }
+    });
+
+    await wrapper.setProps({
+      dragAndDropHooks: {
+        useDraggableCollectionState: () => {}
+      }
+    });
+    expect(warn).toHaveBeenCalledWith('Drop hooks were provided during one render, but not another. This should be avoided as it may produce unexpected behavior.');
+
+    warn.mockClear();
+
+    await wrapper.setProps({
+      dragAndDropHooks: undefined
+    });
+    expect(warn).toHaveBeenCalledWith('Drag hooks were provided during one render, but not another. This should be avoided as it may produce unexpected behavior.');
+    warn.mockRestore();
+  });
+
   it('accepts list view iterable modelValue and selectedKeys sets', async () => {
     let modelValueWrapper = mount(ListView, {
       props: {
@@ -5487,6 +5515,48 @@ describe('Vue migration primitives', () => {
     });
 
     expect(warn).toHaveBeenCalledWith('Column key: group. Columns with child columns don\'t allow resizing.');
+    warn.mockRestore();
+  });
+
+  it('warns when table drag/drop hooks toggle and with expandable rows', async () => {
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let wrapper = mount(Table, {
+      props: {
+        dragAndDropHooks: {
+          useDraggableCollectionState: () => {},
+          useDroppableCollectionState: () => {}
+        },
+        columns: [
+          {key: 'name', label: 'Name'}
+        ],
+        rows: [
+          {
+            id: 1,
+            name: 'Vue',
+            children: [{id: '1-child', name: 'Vue child'}]
+          }
+        ]
+      }
+    });
+
+    expect(warn).toHaveBeenCalledWith('Drag and drop is not yet fully supported with expandable rows and may produce unexpected results.');
+
+    warn.mockClear();
+
+    await wrapper.setProps({
+      dragAndDropHooks: {
+        useDraggableCollectionState: () => {}
+      }
+    });
+    expect(warn).toHaveBeenCalledWith('Drop hooks were provided during one render, but not another. This should be avoided as it may produce unexpected behavior.');
+    expect(warn).toHaveBeenCalledWith('Drag and drop is not yet fully supported with expandable rows and may produce unexpected results.');
+
+    warn.mockClear();
+
+    await wrapper.setProps({
+      dragAndDropHooks: undefined
+    });
+    expect(warn).toHaveBeenCalledWith('Drag hooks were provided during one render, but not another. This should be avoided as it may produce unexpected behavior.');
     warn.mockRestore();
   });
 

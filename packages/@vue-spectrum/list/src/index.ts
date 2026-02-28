@@ -1,8 +1,10 @@
 import './styles.css';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, type PropType, ref} from 'vue';
+import {computed, defineComponent, h, type PropType, ref, watch} from 'vue';
 
 const listStyles: {[key: string]: string} = {};
+const DRAG_HOOKS_WARNING = 'Drag hooks were provided during one render, but not another. This should be avoided as it may produce unexpected behavior.';
+const DROP_HOOKS_WARNING = 'Drop hooks were provided during one render, but not another. This should be avoided as it may produce unexpected behavior.';
 
 export type ListItemRecord = {
   children?: ListItemRecord[],
@@ -115,6 +117,13 @@ export const ListView = defineComponent({
       type: String as PropType<'compact' | 'regular' | 'spacious'>,
       default: 'regular'
     },
+    dragAndDropHooks: {
+      type: Object as PropType<{
+        useDraggableCollectionState?: unknown,
+        useDroppableCollectionState?: unknown
+      } | undefined>,
+      default: undefined
+    },
     disabledBehavior: {
       type: String as PropType<DisabledBehavior>,
       default: 'selection'
@@ -191,6 +200,25 @@ export const ListView = defineComponent({
     let hoveredKey = ref<number | string | null>(null);
     let focusedKey = ref<number | string | null>(null);
     let activeKey = ref<number | string | null>(null);
+    let isListDraggable = computed(() => Boolean(props.dragAndDropHooks?.useDraggableCollectionState));
+    let isListDroppable = computed(() => Boolean(props.dragAndDropHooks?.useDroppableCollectionState));
+    let dragHooksProvided = ref(isListDraggable.value);
+    let dropHooksProvided = ref(isListDroppable.value);
+
+    watch([isListDraggable, isListDroppable], ([nextIsListDraggable, nextIsListDroppable]) => {
+      if (process.env.NODE_ENV !== 'production') {
+        if (dragHooksProvided.value !== nextIsListDraggable) {
+          console.warn(DRAG_HOOKS_WARNING);
+        }
+
+        if (dropHooksProvided.value !== nextIsListDroppable) {
+          console.warn(DROP_HOOKS_WARNING);
+        }
+      }
+
+      dragHooksProvided.value = nextIsListDraggable;
+      dropHooksProvided.value = nextIsListDroppable;
+    });
 
     let normalizedItems = computed(() => props.items.map((item, index) => normalizeItem(item, index)));
     let isControlledSelection = computed(() => props.selectedKeys !== undefined || props.modelValue !== undefined);
