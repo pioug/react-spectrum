@@ -677,6 +677,9 @@ export function useDroppableCollection(
   let onDragEnter = (input?: unknown): boolean => {
     let items = normalizeDropItems(input);
     if (isDisabled.value || !includesAcceptedType(acceptedTypes.value, items)) {
+      if (isDraggingOverCollection) {
+        onDragLeave(input);
+      }
       return false;
     }
 

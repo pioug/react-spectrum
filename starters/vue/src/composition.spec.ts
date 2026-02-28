@@ -4678,11 +4678,6 @@ describe('Vue migration composition components', () => {
       clientX: 12,
       clientY: 18
     })).toBe(true);
-    expect(droppableCollection.collectionProps.value.onDragEnter({
-      items: [{id: 'asset-1', type: 'file', value: {id: 2}}],
-      clientX: 7,
-      clientY: 9
-    })).toBe(false);
     expect(enterEvents).toEqual(['enter:12,18']);
 
     droppableCollection.collectionProps.value.onDragOver({
@@ -4896,6 +4891,39 @@ describe('Vue migration composition components', () => {
     });
 
     expect(exitEvents).toEqual(['exit:12,16']);
+    expect(dropState.target.value).toBeNull();
+  });
+
+  it('exits useDroppableCollection when dragenter payload becomes invalid', () => {
+    let exitEvents: Array<string> = [];
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item']
+    });
+    dropState.setTarget({type: 'root'});
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      onDropExit: (event) => {
+        exitEvents.push(`exit:${event.x},${event.y}`);
+      }
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDragEnter: (items?: unknown) => boolean
+      }}
+    };
+
+    expect(droppableCollection.collectionProps.value.onDragEnter({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 3,
+      clientY: 5
+    })).toBe(true);
+
+    expect(droppableCollection.collectionProps.value.onDragEnter({
+      items: [{id: 'asset-1', type: 'file', value: {id: 2}}],
+      clientX: 8,
+      clientY: 10
+    })).toBe(false);
+
+    expect(exitEvents).toEqual(['exit:8,10']);
     expect(dropState.target.value).toBeNull();
   });
 
