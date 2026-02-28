@@ -403,9 +403,7 @@ export function useDraggableItem(
 
   return {
     dragProps,
-    dragButtonProps,
-    draggableItemProps: dragProps,
-    dragItems
+    dragButtonProps
   };
 }
 
@@ -619,7 +617,6 @@ export function useDroppableItem(
 
   return {
     dropProps,
-    isDropTarget,
-    droppableItemProps: dropProps
+    isDropTarget
   };
 }
