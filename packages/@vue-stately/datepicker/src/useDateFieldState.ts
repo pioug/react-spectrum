@@ -1,6 +1,7 @@
 import {addDays, formatDateString, parseDateString} from './dateValueUtils';
 import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
 import {useDateField} from '@vue-aria/datepicker';
+import {useControlledState} from '@vue-stately/utils';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 
@@ -43,8 +44,17 @@ export interface DateFieldStateOptions<T extends DateValue = DateValue> {
 
 export function useDateFieldState<T extends DateValue = DateValue>(props: DateFieldStateOptions<T>): DateFieldState {
   let options = props ?? ({} as DateFieldStateOptions<T>);
-  let internalValue = ref(options.defaultValue ?? '');
-  let value = options.value ?? internalValue;
+  let [valueState, setValueInternal] = useControlledState(
+    options.value as Ref<string | undefined> | undefined,
+    options.defaultValue ?? '',
+    options.onChange
+  );
+  let value = computed<string>({
+    get: () => valueState.value,
+    set: (nextValue) => {
+      setValueInternal(nextValue);
+    }
+  }) as Ref<string>;
 
   let aria = useDateField({
     inputValue: value,
@@ -52,8 +62,7 @@ export function useDateFieldState<T extends DateValue = DateValue>(props: DateFi
     isReadOnly: options.isReadOnly,
     isRequired: options.isRequired,
     maxValue: options.maxValue,
-    minValue: options.minValue,
-    onChange: options.onChange
+    minValue: options.minValue
   });
 
   let increment = (amount = 1): void => {

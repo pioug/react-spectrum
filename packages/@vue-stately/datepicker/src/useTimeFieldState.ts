@@ -1,6 +1,7 @@
 import {addMinutes} from './dateValueUtils';
 import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
 import {useTimeField} from '@vue-aria/datepicker';
+import {useControlledState} from '@vue-stately/utils';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 export type TimeValue = string | number | Date;
@@ -33,8 +34,17 @@ export interface TimeFieldState {
 
 export function useTimeFieldState<T extends TimeValue = TimeValue>(props: TimeFieldStateOptions<T>): TimeFieldState {
   let options = props ?? ({} as TimeFieldStateOptions<T>);
-  let internalValue = ref(options.defaultValue ?? '');
-  let value = options.value ?? internalValue;
+  let [valueState, setValueInternal] = useControlledState(
+    options.value as Ref<string | undefined> | undefined,
+    options.defaultValue ?? '',
+    options.onChange
+  );
+  let value = computed<string>({
+    get: () => valueState.value,
+    set: (nextValue) => {
+      setValueInternal(nextValue);
+    }
+  }) as Ref<string>;
 
   let aria = useTimeField({
     inputValue: value,
@@ -42,8 +52,7 @@ export function useTimeFieldState<T extends TimeValue = TimeValue>(props: TimeFi
     isReadOnly: options.isReadOnly,
     isRequired: options.isRequired,
     maxValue: options.maxValue,
-    minValue: options.minValue,
-    onChange: options.onChange
+    minValue: options.minValue
   });
 
   let increment = (amount = 1): void => {

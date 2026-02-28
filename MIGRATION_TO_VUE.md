@@ -2400,6 +2400,21 @@
    - full Vue tests: `yarn test:vue` (632 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Date/time field helper parity remediation (`@vue-stately/datepicker`)
+
+1. Closed direct controlled-ref mutation paths in string-based date/time field hooks:
+   - `useDateFieldState` now routes value ownership through shared `useControlledState`,
+   - `useTimeFieldState` now routes value ownership through shared `useControlledState`.
+2. Preserved existing aria date/time field behavior:
+   - clamping, clear, increment/decrement, and validation state behavior remain unchanged.
+3. Updated and expanded regression coverage:
+   - `starters/vue/src/composition.spec.ts` baseline date/time field test now mirrors parent updates via `onChange` in controlled mode,
+   - added explicit controlled no-parent-sync assertions for date/time fields.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "date and time field"` and full `src/composition.spec.ts`,
+   - full Vue tests: `yarn test:vue` (633 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

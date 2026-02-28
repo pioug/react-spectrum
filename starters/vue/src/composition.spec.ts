@@ -2179,6 +2179,9 @@ describe('Vue migration composition components', () => {
     let dateField = useStatelyDateFieldState({
       maxValue: '2026-02-20',
       minValue: '2026-02-01',
+      onChange: (value) => {
+        dateValue.value = value;
+      },
       value: dateValue
     });
 
@@ -2192,6 +2195,9 @@ describe('Vue migration composition components', () => {
 
     let timeValue = ref('23:30');
     let timeField = useStatelyTimeFieldState({
+      onChange: (value) => {
+        timeValue.value = value;
+      },
       value: timeValue
     });
 
@@ -2201,6 +2207,36 @@ describe('Vue migration composition components', () => {
     expect(timeValue.value).toBe('00:00');
     timeField.clear();
     expect(timeValue.value).toBe('');
+  });
+
+  it('keeps vue-stately date and time field controlled without mutating control refs', () => {
+    let dateValue = ref('2026-02-10');
+    let dateChanges: string[] = [];
+    let dateField = useStatelyDateFieldState({
+      onChange: (value) => {
+        dateChanges.push(value);
+      },
+      value: dateValue
+    });
+
+    dateField.increment();
+    dateField.increment();
+    expect(dateValue.value).toBe('2026-02-10');
+    expect(dateChanges).toEqual(['2026-02-11']);
+
+    let timeValue = ref('23:30');
+    let timeChanges: string[] = [];
+    let timeField = useStatelyTimeFieldState({
+      onChange: (value) => {
+        timeChanges.push(value);
+      },
+      value: timeValue
+    });
+
+    timeField.increment(90);
+    timeField.increment(90);
+    expect(timeValue.value).toBe('23:30');
+    expect(timeChanges).toEqual(['01:00']);
   });
 
   it('manages vue-stately date picker open and selection state', () => {
