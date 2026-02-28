@@ -3966,12 +3966,15 @@ describe('Vue migration composition components', () => {
       selectedValue
     });
     let reactRadio = useAriaRadio({
+      children: 'React',
       value: 'react'
     }, radioGroup);
     let vueRadio = useAriaRadio({
+      children: 'Vue',
       value: 'vue'
     }, radioGroup);
     let disabledRadio = useAriaRadio({
+      children: 'Svelte',
       isDisabled: true,
       value: 'svelte'
     }, radioGroup);
@@ -4032,6 +4035,22 @@ describe('Vue migration composition components', () => {
     }, radioGroup);
     expect(reactRadio.inputProps.value['aria-labelledby']).toBe('external-react-radio-label');
     reactRadio.dispose();
+  });
+
+  it('warns when vue-aria radio is missing visible children and aria label', () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let radioGroup = useAriaRadioGroup({
+      label: 'Framework'
+    });
+
+    let radio = useAriaRadio({
+      value: 'react'
+    }, radioGroup);
+
+    expect(warnSpy).toHaveBeenCalledWith('If you do not provide children, you must specify an aria-label for accessibility');
+
+    radio.dispose();
+    warnSpy.mockRestore();
   });
 
   it('computes vue-aria search field submit and clear behavior', () => {
@@ -4773,6 +4792,15 @@ describe('Vue migration composition components', () => {
       validationState: 'invalid'
     });
     expect(invalidToggle.inputProps.value['aria-invalid']).toBe(true);
+  });
+
+  it('warns when vue-aria toggle is missing visible children and aria label', () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    useAriaToggle();
+
+    expect(warnSpy).toHaveBeenCalledWith('If you do not provide children, you must specify an aria-label for accessibility');
+    warnSpy.mockRestore();
   });
 
   it('computes vue-aria toolbar roles and keyboard focus navigation', () => {
@@ -6053,6 +6081,18 @@ describe('Vue migration composition components', () => {
       ClearPressResponder();
       document.body.removeChild(button);
     }
+  });
+
+  it('warns when vue-aria press responder has no pressable child', async () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let restorePressResponder = PressResponder();
+
+    await Promise.resolve();
+    expect(warnSpy).toHaveBeenCalledWith('A PressResponder was rendered without a pressable child. Either call the usePress hook, or wrap your DOM node with <Pressable> component.');
+
+    restorePressResponder();
+    ClearPressResponder();
+    warnSpy.mockRestore();
   });
 
   it('ignores vue-aria focus callbacks when active element does not match event target', () => {

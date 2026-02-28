@@ -9,6 +9,7 @@ export interface AriaToggleOptions {
   'aria-errormessage'?: MaybeRef<string | undefined>,
   'aria-label'?: MaybeRef<string | undefined>,
   'aria-labelledby'?: MaybeRef<string | undefined>,
+  children?: MaybeRef<unknown>,
   form?: MaybeRef<string | undefined>,
   isDisabled?: MaybeRef<boolean>,
   isInvalid?: MaybeRef<boolean>,
@@ -80,10 +81,10 @@ export function useToggle(options: AriaToggleOptions = {}): ToggleAria {
   let isInvalid = computed(() => Boolean(unref(options.isInvalid)) || unref(options.validationState) === 'invalid');
   let isPressed = ref(false);
 
-  let hasVisibleLabel = computed(() => Boolean(resolveOptionalString(options.label)));
+  let hasVisibleLabel = computed(() => unref(options.children) != null || Boolean(resolveOptionalString(options.label)));
   let hasAriaLabel = computed(() => Boolean(resolveOptionalString(options['aria-label']) || resolveOptionalString(options['aria-labelledby'])));
   if (!hasVisibleLabel.value && !hasAriaLabel.value && process.env.NODE_ENV !== 'production') {
-    console.warn('If you do not provide a visible label, you must specify an aria-label or aria-labelledby attribute for accessibility');
+    console.warn('If you do not provide children, you must specify an aria-label for accessibility');
   }
 
   let setSelected = (nextSelected: boolean) => {

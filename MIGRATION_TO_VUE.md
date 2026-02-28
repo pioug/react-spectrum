@@ -1386,6 +1386,25 @@
    - full Vue tests: `yarn test:vue` (549 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Radio/Toggle/PressResponder warning parity (`@vue-aria/radio`, `@vue-aria/toggle`, `@vue-aria/interactions`)
+
+1. Aligned `useRadio` warning behavior with React:
+   - added development warning parity when neither visible children nor `aria-label`/`aria-labelledby` are provided (`If you do not provide children, you must specify an aria-label for accessibility`).
+2. Aligned `useToggle` warning message contract with React:
+   - preserved visible-label detection while updating the emitted warning string to React wording (`If you do not provide children, you must specify an aria-label for accessibility`).
+3. Aligned `PressResponder` no-child guardrail with React:
+   - added deferred registration check that warns when a press responder context is created without a descendant `usePress` registration (`A PressResponder was rendered without a pressable child...`).
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - direct warning assertions for missing-label `useRadio`,
+     - direct warning assertions for missing-label `useToggle`,
+     - direct warning assertions for `PressResponder` without a pressable child,
+     - updated existing radio hook tests to provide explicit `children` where warnings are not expected.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria radio group selection and keyboard movement|composes vue-aria radio group and radio input labelling parity|warns when vue-aria radio is missing visible children and aria label|computes vue-aria toggle press behavior and accessibility props|warns when vue-aria toggle is missing visible children and aria label|merges vue-aria press responder context handlers with local usePress handlers|clears vue-aria press responder context handlers|warns when vue-aria press responder has no pressable child"`,
+   - full Vue tests: `yarn test:vue` (552 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

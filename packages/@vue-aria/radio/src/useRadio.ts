@@ -6,6 +6,7 @@ export interface AriaRadioOptions {
   'aria-describedby'?: MaybeRef<string | undefined>,
   'aria-label'?: MaybeRef<string | undefined>,
   'aria-labelledby'?: MaybeRef<string | undefined>,
+  children?: MaybeRef<unknown>,
   isDisabled?: MaybeRef<boolean>,
   onChange?: (value: string) => void,
   value: MaybeRef<string>
@@ -50,6 +51,12 @@ function resolveOptionalString(value: MaybeRef<string | undefined> | undefined):
 
 export function useRadio(options: AriaRadioOptions, group: RadioGroupAria): RadioAria {
   let value = computed(() => unref(options.value));
+  let hasChildren = computed(() => unref(options.children) != null);
+  let hasAriaLabel = computed(() => Boolean(resolveOptionalString(options['aria-label']) || resolveOptionalString(options['aria-labelledby'])));
+  if (!hasChildren.value && !hasAriaLabel.value && process.env.NODE_ENV !== 'production') {
+    console.warn('If you do not provide children, you must specify an aria-label for accessibility');
+  }
+
   let localDisabled = computed(() => Boolean(unref(options.isDisabled)));
   let isDisabled = computed(() => group.isDisabled.value || localDisabled.value);
   let isSelected = computed(() => group.selectedValue.value === value.value);
