@@ -1,6 +1,7 @@
-import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
 import {type FormValidationState, useFormValidationState, type ValidationErrors} from '@vue-stately/form';
 import {useNumberField as useAriaNumberField} from '@vue-aria/numberfield';
+import {useControlledState} from '@vue-stately/utils';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 
@@ -143,29 +144,23 @@ export function useNumberFieldState(options: NumberFieldStateOptions): NumberFie
     step.value
   );
 
-  let uncontrolledValue = ref(initialValue);
-  let isControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+  let controlledValue = computed<number | undefined>(() => {
+    let nextValue = options.value?.value;
+    if (nextValue === undefined) {
+      return undefined;
     }
-    wasControlled.value = nextIsControlled;
+
+    return normalizeValue(nextValue, minValue.value, maxValue.value, step.value);
   });
-
+  let [controlledNumberValue, setControlledNumberValue] = useControlledState<number>(
+    controlledValue,
+    initialValue,
+    options.onChange
+  );
   let value = computed<number>({
-    get: () => {
-      if (isControlled.value && options.value) {
-        return options.value.value as number;
-      }
-
-      return uncontrolledValue.value;
-    },
+    get: () => controlledNumberValue.value,
     set: (nextValue) => {
-      if (!isControlled.value) {
-        uncontrolledValue.value = nextValue;
-      }
+      setControlledNumberValue(nextValue);
     }
   }) as Ref<number>;
   let numberFormatter = computed(() => new Intl.NumberFormat(undefined, unref(options.formatOptions)));
@@ -187,7 +182,6 @@ export function useNumberFieldState(options: NumberFieldStateOptions): NumberFie
     isReadOnly: options.isReadOnly,
     maxValue,
     minValue,
-    onChange: options.onChange,
     onInputChange: options.onInputChange,
     step,
     value

@@ -2457,6 +2457,20 @@
    - full Vue tests: `yarn test:vue` (633 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Number-field controlled callback parity remediation (`@vue-stately/numberfield`)
+
+1. Closed controlled callback ownership drift in `useNumberFieldState`:
+   - routed controlled/uncontrolled number value ownership through shared `useControlledState`,
+   - normalized controlled ref inputs through existing min/max/step clamping before helper ownership.
+2. Removed duplicate callback path:
+   - `useNumberFieldState` no longer forwards `onChange` directly into `@vue-aria/numberfield`; helper-owned writable state now serves as the single callback channel (prevents duplicate `onChange` for same-turn repeated controlled writes).
+3. Updated regression coverage:
+   - `starters/vue/src/composition.spec.ts` controlled number-field test now asserts repeated same-turn increments that resolve to the same controlled next value emit only once when the parent does not sync.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "vue-stately number field"`,
+   - full Vue tests: `yarn test:vue` (633 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
