@@ -107,7 +107,6 @@ export class ToastQueue<T> {
     let index = this.queue.findIndex((toast) => toast.key === key);
     if (index >= 0) {
       let toast = this.queue[index];
-      toast.timer?.stop();
       toast.onClose?.();
       this.queue.splice(index, 1);
     }
@@ -116,11 +115,6 @@ export class ToastQueue<T> {
   }
 
   clear(): void {
-    for (let toast of this.queue) {
-      toast.timer?.stop();
-      toast.onClose?.();
-    }
-
     this.queue = [];
     this.updateVisibleToasts('clear');
   }
@@ -156,38 +150,25 @@ class Timer {
   constructor(callback: () => void, delay: number) {
     this.callback = callback;
     this.remaining = delay;
-    this.resume();
-  }
-
-  stop(): void {
-    if (this.timerId != null) {
-      clearTimeout(this.timerId);
-      this.timerId = null;
-    }
-
-    this.startedAt = null;
-    this.remaining = 0;
   }
 
   reset(delay: number): void {
-    this.stop();
     this.remaining = delay;
     this.resume();
   }
 
   pause(): void {
-    if (this.timerId == null || this.startedAt == null) {
+    if (this.timerId == null) {
       return;
     }
 
     clearTimeout(this.timerId);
     this.timerId = null;
-    this.remaining -= Date.now() - this.startedAt;
-    this.startedAt = null;
+    this.remaining -= Date.now() - this.startedAt!;
   }
 
   resume(): void {
-    if (this.timerId != null || this.remaining <= 0) {
+    if (this.remaining <= 0) {
       return;
     }
 

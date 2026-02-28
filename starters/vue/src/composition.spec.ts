@@ -3226,6 +3226,42 @@ describe('Vue migration composition components', () => {
     queue.close(queuedToastKey);
   });
 
+  it('starts vue-stately toast timers only after resumeAll is called', () => {
+    vi.useFakeTimers();
+
+    try {
+      let toastState = useStatelyToastState<string>();
+
+      toastState.add('Timed toast', {timeout: 100});
+      expect(toastState.visibleToasts.value).toHaveLength(1);
+
+      vi.advanceTimersByTime(100);
+      expect(toastState.visibleToasts.value).toHaveLength(1);
+
+      toastState.resumeAll();
+      vi.advanceTimersByTime(99);
+      expect(toastState.visibleToasts.value).toHaveLength(1);
+
+      vi.advanceTimersByTime(1);
+      expect(toastState.visibleToasts.value).toHaveLength(0);
+    } finally {
+      vi.runAllTimers();
+      vi.useRealTimers();
+    }
+  });
+
+  it('clears vue-stately toast queues without firing onClose callbacks', () => {
+    let onClose = vi.fn();
+    let queue = new StatelyToastQueue<string>({maxVisibleToasts: 2});
+    queue.add('First toast', {onClose});
+    queue.add('Second toast', {onClose});
+
+    queue.clear();
+
+    expect(onClose).not.toHaveBeenCalled();
+    expect(queue.visibleToasts).toEqual([]);
+  });
+
   it('manages vue-stately toggle and toggle-group selection behavior', () => {
     let controlledSelected = ref<boolean | undefined>(true);
     let toggleChanges: boolean[] = [];

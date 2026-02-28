@@ -1800,6 +1800,23 @@
    - full Vue tests: `yarn test:vue` (584 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Toast timer/clear lifecycle parity (`@vue-stately/toast`)
+
+1. Closed toast-timer start lifecycle drift:
+   - `Timer` instances in `useToastState` now start paused by default and only begin counting down after `resumeAll()`, matching React queue behavior.
+2. Closed `clear()` callback lifecycle drift:
+   - `ToastQueue.clear()` now mirrors React by clearing queue visibility without invoking queued toast `onClose` callbacks.
+3. Preserved close behavior and queue ordering:
+   - `close(key)` still invokes `onClose` for the removed toast and keeps queue visibility ordering unchanged.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - timers do not auto-expire before `resumeAll()` and expire after resume,
+     - `ToastQueue.clear()` does not fire `onClose` callbacks.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "toast queue visibility|toast timers only after resumeAll|toast queues without firing onClose"`,
+   - full Vue tests: `yarn test:vue` (587 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
