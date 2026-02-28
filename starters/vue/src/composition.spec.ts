@@ -2993,10 +2993,15 @@ describe('Vue migration composition components', () => {
     });
 
     let selectedKeys = ref(new Set<string>());
+    let selectionChanges: string[][] = [];
     let gridState = useStatelyGridState({
       collection,
       disabledKeys: ['row-2'],
       focusMode: 'cell',
+      onSelectionChange: (keys) => {
+        selectionChanges.push(Array.from(keys) as string[]);
+        selectedKeys.value = new Set(keys);
+      },
       selectedKeys,
       selectionMode: 'multiple'
     });
@@ -3013,6 +3018,48 @@ describe('Vue migration composition components', () => {
     expect(Array.from(gridState.selectionManager.selectedKeys.value)).toEqual(['row-1']);
     gridState.selectionManager.toggleSelection('row-2');
     expect(Array.from(gridState.selectionManager.selectedKeys.value)).toEqual(['row-1']);
+    expect(selectionChanges).toEqual([['row-1']]);
+  });
+
+  it('keeps vue-stately grid controlled without mutating selected key refs', () => {
+    let collection = new StatelyGridCollection({
+      columnCount: 2,
+      items: [
+        {
+          key: 'row-1',
+          textValue: 'Backlog',
+          childNodes: [
+            {key: 'row-1-cell-1', textValue: 'Backlog'},
+            {key: 'row-1-cell-2', textValue: 'Open'}
+          ]
+        },
+        {
+          key: 'row-2',
+          textValue: 'Done',
+          childNodes: [
+            {key: 'row-2-cell-1', textValue: 'Done'},
+            {key: 'row-2-cell-2', textValue: 'Closed'}
+          ]
+        }
+      ]
+    });
+
+    let selectedKeys = ref(new Set<string>(['row-1']));
+    let selectionChanges: string[][] = [];
+    let gridState = useStatelyGridState({
+      collection,
+      onSelectionChange: (keys) => {
+        selectionChanges.push(Array.from(keys) as string[]);
+      },
+      selectedKeys,
+      selectionMode: 'multiple'
+    });
+
+    gridState.selectionManager.toggleSelection('row-2');
+
+    expect(Array.from(selectedKeys.value)).toEqual(['row-1']);
+    expect(Array.from(gridState.selectionManager.selectedKeys.value)).toEqual(['row-1']);
+    expect(selectionChanges).toEqual([['row-1', 'row-2']]);
   });
 
   it('computes vue-stately list/grid/table/waterfall layout baselines', () => {

@@ -2498,13 +2498,27 @@
    - full Vue tests: `yarn test:vue` (633 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Grid selection ownership parity remediation (`@vue-stately/grid`)
+
+1. Closed controlled selection ownership drift in `useGridState`:
+   - replaced ad hoc direct `selectedKeys` ref mutation with `useMultipleSelectionState` ownership,
+   - wired `onSelectionChange` emission for grid selection updates, matching shared stately selection contracts.
+2. Preserved grid-specific focus behavior:
+   - retained cell-focus redirect semantics (`focusMode: 'cell'` row focus now maps to first/last child cell before delegating focus updates).
+3. Added controlled regression coverage:
+   - `starters/vue/src/composition.spec.ts` now includes a controlled no-parent-sync grid selection test asserting selected-key refs remain externally owned while change callbacks emit requested next selections.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "vue-stately grid"`,
+   - full Vue tests: `yarn test:vue` (634 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 633 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 634 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).
