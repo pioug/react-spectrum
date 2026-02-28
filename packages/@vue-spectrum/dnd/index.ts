@@ -1,1 +1,1 @@
-export {DropZone, VueDropZone} from './src';
+export * from './src';

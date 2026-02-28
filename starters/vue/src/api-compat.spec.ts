@@ -273,6 +273,12 @@ import {
 } from '../../../packages/@vue-spectrum/slider/index';
 import {DIRECTORY_DRAG_TYPE, DropZone as SpectrumDropZone, useDragAndDrop as useSpectrumDragAndDrop} from '@vue-spectrum/dnd';
 import {
+  DIRECTORY_DRAG_TYPE as RootDirectoryDragType,
+  DropZone as RootSpectrumDropZone,
+  useDragAndDrop as RootUseSpectrumDragAndDrop,
+  VueDropZone as RootVueDropZone
+} from '../../../packages/@vue-spectrum/dnd/index';
+import {
   Item as TabItem,
   TabList,
   TabPanels,
@@ -595,6 +601,13 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(hooks.dragAndDropHooks.useDroppableItem).toBeTypeOf('function');
     expect(hooks.dragAndDropHooks.useDropIndicator).toBeTypeOf('function');
     expect(hooks.dragAndDropHooks.isVirtualDragging).toBeTypeOf('function');
+  });
+
+  it('keeps root dnd entry exports aligned with source exports', () => {
+    expect(RootDirectoryDragType).toBe(DIRECTORY_DRAG_TYPE);
+    expect(RootSpectrumDropZone).toBe(SpectrumDropZone);
+    expect(RootVueDropZone).toBe(SpectrumDropZone);
+    expect(RootUseSpectrumDragAndDrop).toBe(useSpectrumDragAndDrop);
   });
 
   it('exports tabs collection item separately from VueTabs', () => {
