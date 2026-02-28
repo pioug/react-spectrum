@@ -1629,6 +1629,13 @@ describe('Vue migration composition components', () => {
     comboBox.open('first');
     expect(comboBox.isOpen.value).toBe(true);
     expect(comboBox.focusedKey.value).toBe('React');
+    expect(comboBox.buttonProps.value.tabIndex).toBe(-1);
+
+    let preventComboButtonFocus = vi.fn();
+    comboBox.buttonProps.value.onPointerDown({
+      preventDefault: preventComboButtonFocus
+    } as unknown as PointerEvent);
+    expect(preventComboButtonFocus).toHaveBeenCalledTimes(1);
 
     inputValue.value = 'vu';
     expect(comboBox.filteredItems.value.map((item) => item.textValue)).toEqual(['Vue']);

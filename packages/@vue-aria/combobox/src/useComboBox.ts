@@ -33,7 +33,10 @@ export interface ComboBoxAria {
     'aria-expanded': boolean,
     'aria-haspopup': 'listbox',
     'aria-label': string,
-    disabled: boolean
+    disabled: boolean,
+    onMouseDown: (event: MouseEvent) => void,
+    onPointerDown: (event: PointerEvent) => void,
+    tabIndex: -1
   }>,
   close: () => void,
   commit: () => void,
@@ -227,10 +230,17 @@ export function useComboBox(options: AriaComboBoxOptions): ComboBoxAria {
 
   let buttonProps = computed(() => ({
     disabled: isDisabled.value || isReadOnly.value,
+    tabIndex: -1 as const,
     'aria-haspopup': 'listbox' as const,
     'aria-controls': listBoxId,
     'aria-expanded': isOpen.value,
-    'aria-label': 'Toggle suggestions'
+    'aria-label': 'Toggle suggestions',
+    onMouseDown: (event: MouseEvent) => {
+      event.preventDefault();
+    },
+    onPointerDown: (event: PointerEvent) => {
+      event.preventDefault();
+    }
   }));
 
   let inputProps = computed(() => ({

@@ -3181,6 +3181,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — ComboBox trigger button focus/tab-order parity (`@vue-aria/combobox`)
+
+1. Closed trigger-button tab-order drift:
+   - `useComboBox.buttonProps` now sets `tabIndex: -1`, matching React combobox trigger exclusion from tab order.
+2. Closed trigger-button press-focus drift:
+   - `useComboBox.buttonProps` now prevents focus transfer on mouse/pointer press-start, matching React prevent-focus-on-press trigger behavior.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` combobox assertions now verify trigger `tabIndex` parity and pointer-down focus prevention.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "filters and selects options with vue-aria combobox composable state"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
