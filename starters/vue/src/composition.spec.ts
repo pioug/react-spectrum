@@ -590,9 +590,13 @@ describe('Vue migration composition components', () => {
 
   it('computes vue-aria button props and press interactions', () => {
     let pressCount = 0;
+    let clickCount = 0;
     let button = useButton({
       elementType: 'a',
       href: '/docs',
+      onClick: () => {
+        clickCount += 1;
+      },
       onPress: () => {
         pressCount += 1;
       }
@@ -604,6 +608,7 @@ describe('Vue migration composition components', () => {
     button.press();
     expect(button.isPressed.value).toBe(false);
     expect(pressCount).toBe(1);
+    expect(clickCount).toBe(1);
 
     let disabledButton = useButton({
       elementType: 'a',
@@ -612,6 +617,8 @@ describe('Vue migration composition components', () => {
     });
     expect(disabledButton.buttonProps.value['aria-disabled']).toBe(true);
     expect(disabledButton.buttonProps.value.href).toBeUndefined();
+    disabledButton.press();
+    expect(clickCount).toBe(1);
 
     let nativeButton = useButton({
       elementType: 'button',

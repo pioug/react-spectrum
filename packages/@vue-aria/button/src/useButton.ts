@@ -20,6 +20,7 @@ export interface AriaButtonOptions {
   formTarget?: MaybeRef<string | undefined>,
   href?: MaybeRef<string | undefined>,
   isDisabled?: MaybeRef<boolean>,
+  onClick?: () => void,
   name?: MaybeRef<string | undefined>,
   onPress?: () => void,
   onPressChange?: (isPressed: boolean) => void,
@@ -146,6 +147,7 @@ export function useButton(options: AriaButtonOptions = {}): ButtonAria {
 
     pressStart();
     options.onPress?.();
+    options.onClick?.();
     pressEnd();
   };
 
