@@ -3037,6 +3037,17 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Disclosure no-op expanded-change parity (`@vue-aria/disclosure`)
+
+1. Closed disclosure expanded-state no-op emission drift:
+   - `useDisclosure` now suppresses writes/callbacks when `setExpanded` receives the current expanded state.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` disclosure assertions now verify repeated `collapse()` calls at collapsed state do not emit duplicate `onExpandedChange`.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "toggles vue-aria disclosure expanded state and panel visibility|preserves controlled disclosure state when disabled"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

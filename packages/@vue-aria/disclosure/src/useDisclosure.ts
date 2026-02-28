@@ -48,6 +48,10 @@ export function useDisclosure(options: AriaDisclosureOptions = {}): DisclosureAr
       return;
     }
 
+    if (isExpanded.value === nextExpanded) {
+      return;
+    }
+
     if (options.isExpanded) {
       options.isExpanded.value = nextExpanded;
     } else {

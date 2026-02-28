@@ -2546,7 +2546,12 @@ describe('Vue migration composition components', () => {
   });
 
   it('toggles vue-aria disclosure expanded state and panel visibility', () => {
-    let disclosure = useAriaDisclosure();
+    let changes: boolean[] = [];
+    let disclosure = useAriaDisclosure({
+      onExpandedChange: (nextExpanded) => {
+        changes.push(nextExpanded);
+      }
+    });
     expect(disclosure.isExpanded.value).toBe(false);
     expect(disclosure.panelProps.value.hidden).toBe(true);
 
@@ -2557,6 +2562,8 @@ describe('Vue migration composition components', () => {
 
     disclosure.collapse();
     expect(disclosure.isExpanded.value).toBe(false);
+    disclosure.collapse();
+    expect(changes).toEqual([true, false]);
   });
 
   it('preserves controlled disclosure state when disabled', () => {
