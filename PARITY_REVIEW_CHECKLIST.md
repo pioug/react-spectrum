@@ -46,9 +46,10 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - [x] Story: LogicButton.stories.ts
   - [x] Story: ToggleButton.stories.ts
   - Evidence: React/Vue story-id parity is zero for `button-*` scope (`react=19`, `vue=19`, diff `0/0` from React `dist/9ba628661b71010349fd434fe6a68bd0d78e2a15/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`); Vue button internals were aligned to React behavior by adding `UNSAFE_style` passthrough support in `packages/@vue-spectrum/button/src/index.ts` so pending/press user-select behavior can match React story contracts while preserving style-prop semantics; button story parity was tightened in `packages/@vue-spectrum/button/stories/*.stories.ts` by matching React static-color container contract (background tokens/padding), replacing placeholder icon rendering with the workflow `Bell` icon component where React uses it, and expanding `PendingSpinner` coverage to the React-equivalent scenario set (`click`, icon, `onClick`, disabled, aria-label/icon-label/no-label icon-only, controlled, form submit); full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`) with side-by-side screenshot evidence under `.tmp/button-parity/`.
-- [ ] 1.09 `@vue-spectrum/buttongroup`
+- [x] 1.09 `@vue-spectrum/buttongroup`
   - Components: VueButtonGroup
-  - [ ] Story: ButtonGroup.stories.ts
+  - [x] Story: ButtonGroup.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `buttongroup--*` (`react=2`, `vue=2`, diff `0/0` from React `dist/9ba628661b71010349fd434fe6a68bd0d78e2a15/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`); Vue ButtonGroup story output was aligned to React in `packages/@vue-spectrum/buttongroup/stories/ButtonGroup.stories.ts` by using React-equivalent button label class wrappers for the expanding button content so the clicked overflow/line-wrap behavior matches the React story contract; full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`) with side-by-side screenshot evidence under `.tmp/buttongroup-parity/`.
 - [ ] 1.10 `@vue-spectrum/calendar`
   - Components: VueCalendar, VueRangeCalendar
   - [ ] Story: Calendar.stories.ts
