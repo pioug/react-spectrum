@@ -158,6 +158,49 @@ function resolveDropOperation(input: unknown, fallback?: DropOperation): DropOpe
   return DEFAULT_DROP_OPERATION;
 }
 
+function readPoint(input: unknown, ref: RefObject<HTMLElement | null>): {x: number, y: number} {
+  if (!input || typeof input !== 'object') {
+    return {x: 0, y: 0};
+  }
+
+  let record = input as AnyRecord;
+  let detail = record.detail;
+  let detailRecord = detail && typeof detail === 'object' ? detail as AnyRecord : null;
+
+  let pointSource = detailRecord ?? record;
+  let x = typeof pointSource.x === 'number'
+    ? pointSource.x
+    : typeof pointSource.clientX === 'number'
+      ? pointSource.clientX
+      : 0;
+  let y = typeof pointSource.y === 'number'
+    ? pointSource.y
+    : typeof pointSource.clientY === 'number'
+      ? pointSource.clientY
+      : 0;
+
+  let element = ref.current;
+  if (!element || typeof element.getBoundingClientRect !== 'function') {
+    return {x, y};
+  }
+
+  let rect = element.getBoundingClientRect();
+  let originX = typeof rect.x === 'number'
+    ? rect.x
+    : typeof rect.left === 'number'
+      ? rect.left
+      : 0;
+  let originY = typeof rect.y === 'number'
+    ? rect.y
+    : typeof rect.top === 'number'
+      ? rect.top
+      : 0;
+  return {
+    x: x - originX,
+    y: y - originY
+  };
+}
+
 function readDraggingKeys(stateRecord: AnyRecord): Set<DraggingKey> {
   let nextKeys = readMaybeRef<unknown>(stateRecord.draggingKeys);
   if (!(nextKeys instanceof Set)) {
@@ -416,6 +459,7 @@ export function useDroppableCollection(
       return false;
     }
 
+    let point = readPoint(input, ref);
     dropCollectionRef = ref;
     if (typeof stateRecord.enter === 'function') {
       stateRecord.enter(items);
@@ -425,7 +469,9 @@ export function useDroppableCollection(
       propsRecord.onDropEnter({
         items,
         target: readDropTarget(stateRecord),
-        type: 'dropenter'
+        type: 'dropenter',
+        x: point.x,
+        y: point.y
       });
     }
 
@@ -434,10 +480,11 @@ export function useDroppableCollection(
 
   let onDragOver = (input?: unknown): void => {
     let items = normalizeDropItems(input);
-    if (items.length === 0) {
+    if (items.length === 0 || isDisabled.value || !includesAcceptedType(acceptedTypes.value, items)) {
       return;
     }
 
+    let point = readPoint(input, ref);
     dropCollectionRef = ref;
     if (typeof stateRecord.move === 'function') {
       stateRecord.move(items);
@@ -447,12 +494,15 @@ export function useDroppableCollection(
       propsRecord.onDropMove({
         items,
         target: readDropTarget(stateRecord),
-        type: 'dropmove'
+        type: 'dropmove',
+        x: point.x,
+        y: point.y
       });
     }
   };
 
-  let onDragLeave = (): void => {
+  let onDragLeave = (input?: unknown): void => {
+    let point = readPoint(input, ref);
     if (typeof stateRecord.exit === 'function') {
       stateRecord.exit();
     }
@@ -460,7 +510,9 @@ export function useDroppableCollection(
     if (typeof propsRecord.onDropExit === 'function') {
       propsRecord.onDropExit({
         target: readDropTarget(stateRecord),
-        type: 'dropexit'
+        type: 'dropexit',
+        x: point.x,
+        y: point.y
       });
     }
 
@@ -470,10 +522,11 @@ export function useDroppableCollection(
   let onDrop = (input?: unknown, fallbackOperation?: DropOperation): DropOperation => {
     let items = normalizeDropItems(input);
     if (isDisabled.value || !includesAcceptedType(acceptedTypes.value, items)) {
-      onDragLeave();
+      onDragLeave(input);
       return 'cancel';
     }
 
+    let point = readPoint(input, ref);
     let requestedOperation = resolveDropOperation(input, fallbackOperation);
     let operation = requestedOperation;
     if (typeof stateRecord.getDropOperation === 'function') {
@@ -497,7 +550,9 @@ export function useDroppableCollection(
         target: readDropTarget(stateRecord),
         dropOperation: resolvedOperation,
         operation: resolvedOperation,
-        type: 'drop'
+        type: 'drop',
+        x: point.x,
+        y: point.y
       });
     }
 

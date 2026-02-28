@@ -4161,6 +4161,9 @@ describe('Vue migration composition components', () => {
         dropEvents.push(`drop:${event.operation}`);
       }
     });
+    let enterEvents: Array<string> = [];
+    let moveEvents: Array<string> = [];
+    let exitEvents: Array<string> = [];
 
     let collectionRef = {current: document.createElement('div')};
     useDraggableCollection({}, dragState, collectionRef);
@@ -4183,19 +4186,51 @@ describe('Vue migration composition components', () => {
     dropState.setTarget(target);
 
     let droppableCollection = useDroppableCollection({
-      acceptedDragTypes: ['item']
+      acceptedDragTypes: ['item'],
+      onDropEnter: (event) => {
+        enterEvents.push(`enter:${event.x},${event.y}`);
+      },
+      onDropMove: (event) => {
+        moveEvents.push(`move:${event.x},${event.y}`);
+      },
+      onDropExit: (event) => {
+        exitEvents.push(`exit:${event.x},${event.y}`);
+      }
     }, dropState, collectionRef) as {
       collectionProps: {value: {
         role: 'group',
         'data-drop-target': boolean,
         onDragEnter: (items: unknown) => boolean,
+        onDragLeave: (items?: unknown) => void,
+        onDragOver: (items?: unknown) => void,
         onDrop: (items: unknown, operation?: 'cancel' | 'copy' | 'link' | 'move') => 'cancel' | 'copy' | 'link' | 'move'
       }}
     };
     expect(droppableCollection.collectionProps.value.role).toBe('group');
     expect(droppableCollection.collectionProps.value['data-drop-target']).toBe(true);
-    expect(droppableCollection.collectionProps.value.onDragEnter([{id: 'item-1', type: 'item', value: {id: 1}}])).toBe(true);
-    expect(droppableCollection.collectionProps.value.onDragEnter([{id: 'asset-1', type: 'file', value: {id: 2}}])).toBe(false);
+    expect(droppableCollection.collectionProps.value.onDragEnter({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 12,
+      clientY: 18
+    })).toBe(true);
+    expect(droppableCollection.collectionProps.value.onDragEnter({
+      items: [{id: 'asset-1', type: 'file', value: {id: 2}}],
+      clientX: 7,
+      clientY: 9
+    })).toBe(false);
+    expect(enterEvents).toEqual(['enter:12,18']);
+
+    droppableCollection.collectionProps.value.onDragOver({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 21,
+      clientY: 34
+    });
+    droppableCollection.collectionProps.value.onDragOver({
+      items: [{id: 'asset-1', type: 'file', value: {id: 2}}],
+      clientX: 44,
+      clientY: 55
+    });
+    expect(moveEvents).toEqual(['move:21,34']);
 
     let droppableItem = useDroppableItem({target}, dropState, collectionRef) as {
       isDropTarget: {value: boolean}
@@ -4213,6 +4248,11 @@ describe('Vue migration composition components', () => {
 
     expect(droppableCollection.collectionProps.value.onDrop([{id: 'item-1', type: 'item', value: {id: 1}}], 'move')).toBe('move');
     expect(dropEvents).toEqual(['drop:move']);
+    droppableCollection.collectionProps.value.onDragLeave({
+      clientX: 5,
+      clientY: 6
+    });
+    expect(exitEvents).toEqual(['exit:5,6']);
 
     dragState.endDrag('cancel');
     expect(dragState.draggedKey.value).toBeNull();
