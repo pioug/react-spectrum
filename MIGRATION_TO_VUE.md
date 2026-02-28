@@ -1107,6 +1107,23 @@
    - full Vue tests: `yarn test:vue` (531 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Shared `useGridList`/`useMenu` label-warning parity (`@vue-aria/gridlist`, `@vue-aria/menu`)
+
+1. Aligned `useGridList` label prop forwarding and id behavior with React expectations:
+   - `useGridList` now accepts and forwards dashed label props (`aria-label`/`aria-labelledby`) in addition to camel aliases,
+   - row id derivation now uses the resolved grid id contract instead of a static fallback id.
+2. Aligned `useGridListSection` label input surface with React:
+   - section hooks now accept dashed `aria-label` and compose it consistently with existing label logic.
+3. Closed missing accessibility warning parity in `useMenu`:
+   - `useMenu` now emits the React warning when neither `aria-label` nor `aria-labelledby` is provided (dev only),
+   - menu label resolution now uses shared computed label paths for camel/dashed aliases.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: new assertions for dashed gridlist/menu/section labels and missing-label warning behavior.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria gridlist semantics, item state, and section props|computes vue-aria menu trigger and item selection semantics"`,
+   - full Vue tests: `yarn test:vue` (531 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

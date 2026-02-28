@@ -3,7 +3,16 @@ import {type MaybeRef} from './types';
 import {useLabels} from '@vue-aria/utils';
 
 export interface AriaGridListSectionProps {
+  'aria-label'?: MaybeRef<string | undefined>,
   ariaLabel?: MaybeRef<string | undefined>
+}
+
+function resolveOptionalString(value: MaybeRef<string | undefined> | undefined): string | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+
+  return unref(value);
 }
 
 export interface GridListSectionAria {
@@ -23,8 +32,9 @@ export interface GridListSectionAria {
 }
 
 export function useGridListSection(props: AriaGridListSectionProps = {}): GridListSectionAria {
+  let ariaLabel = computed(() => resolveOptionalString(props.ariaLabel) ?? resolveOptionalString(props['aria-label']));
   let headingId = computed(() => {
-    let label = unref(props.ariaLabel) ?? 'section';
+    let label = ariaLabel.value ?? 'section';
     let normalizedLabel = String(label).replace(/\s+/g, '-').toLowerCase();
     return `vue-gridlist-section-heading-${normalizedLabel}`;
   });
@@ -32,7 +42,7 @@ export function useGridListSection(props: AriaGridListSectionProps = {}): GridLi
   let labelProps = computed(() => {
     return useLabels({
       id: rowGroupId.value,
-      'aria-label': unref(props.ariaLabel),
+      'aria-label': ariaLabel.value,
       'aria-labelledby': headingId.value
     });
   });

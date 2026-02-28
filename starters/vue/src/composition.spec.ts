@@ -2907,6 +2907,21 @@ describe('Vue migration composition components', () => {
     expect(gridList.gridProps.value.role).toBe('grid');
     expect(gridList.gridProps.value['aria-rowcount']).toBe(2);
 
+    let dashedAriaGridList = useGridList({
+      'aria-label': 'Queued stories',
+      collection,
+      selectionMode: 'none'
+    });
+    expect(dashedAriaGridList.gridProps.value['aria-label']).toBe('Queued stories');
+
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    useGridList({
+      collection,
+      selectionMode: 'none'
+    });
+    expect(warn).toHaveBeenCalledWith('An aria-label or aria-labelledby prop is required for accessibility.');
+    warn.mockRestore();
+
     let item = useGridListItem({
       gridList,
       isVirtualized: true,
@@ -2936,6 +2951,11 @@ describe('Vue migration composition components', () => {
     let sectionLabelledByIds = section.rowGroupProps.value['aria-labelledby']?.split(/\s+/) ?? [];
     expect(sectionLabelledByIds).toContain(section.rowHeaderProps.value.id);
     expect(sectionLabelledByIds).toContain(section.rowGroupProps.value.id as string);
+
+    let dashedAriaSection = useGridListSection({
+      'aria-label': 'Queued stories'
+    });
+    expect(dashedAriaSection.rowGroupProps.value['aria-label']).toBe('Queued stories');
   });
 
   it('formats locale-sensitive values with vue-aria i18n helpers', () => {
@@ -3237,6 +3257,20 @@ describe('Vue migration composition components', () => {
 
     expect(menu.menuProps.value.role).toBe('menu');
     expect(menu.menuProps.value['aria-label']).toBe('Item actions');
+
+    let dashedMenu = useAriaMenu({
+      'aria-label': 'More actions',
+      selectionMode: 'none'
+    });
+    expect(dashedMenu.menuProps.value['aria-label']).toBe('More actions');
+
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    useAriaMenu({
+      selectionMode: 'none'
+    });
+    expect(warn).toHaveBeenCalledWith('An aria-label or aria-labelledby prop is required for accessibility.');
+    warn.mockRestore();
+
     expect(item.menuItemProps.value.role).toBe('menuitemcheckbox');
 
     item.menuItemProps.value.onFocus();

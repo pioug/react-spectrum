@@ -3,6 +3,8 @@ import {type GridAria, type GridSelectionMode, useGrid} from '@vue-aria/grid';
 import {type GridListCollection, type MaybeRef} from './types';
 
 export interface AriaGridListProps {
+  'aria-label'?: MaybeRef<string | undefined>,
+  'aria-labelledby'?: MaybeRef<string | undefined>,
   ariaLabel?: MaybeRef<string | undefined>,
   ariaLabelledby?: MaybeRef<string | undefined>,
   id?: MaybeRef<string | undefined>,
@@ -31,11 +33,19 @@ function normalizeKey(key: string): string {
   return String(key).replace(/\s*/g, '');
 }
 
+function resolveOptionalString(value: MaybeRef<string | undefined> | undefined): string | undefined {
+  if (value === undefined) {
+    return undefined;
+  }
+
+  return unref(value);
+}
+
 export function useGridList(options: AriaGridListOptions): GridListAria {
   let collection = computed(() => unref(options.collection));
   let keyboardNavigationBehavior = computed(() => unref(options.keyboardNavigationBehavior) ?? 'arrow');
   let shouldSelectOnPressUp = computed(() => Boolean(unref(options.shouldSelectOnPressUp)));
-  let id = computed(() => unref(options.id) ?? 'vue-gridlist');
+  let id = computed(() => resolveOptionalString(options.id));
 
   let gridCollection = computed(() => ({
     columnCount: 1,
@@ -58,6 +68,8 @@ export function useGridList(options: AriaGridListOptions): GridListAria {
   });
 
   let grid = useGrid({
+    'aria-label': options['aria-label'],
+    'aria-labelledby': options['aria-labelledby'],
     ariaLabel: options.ariaLabel,
     ariaLabelledby: options.ariaLabelledby,
     collection: gridCollection,
@@ -72,7 +84,7 @@ export function useGridList(options: AriaGridListOptions): GridListAria {
   });
 
   let rowId = (key: string) => {
-    return `${id.value}-${normalizeKey(key)}`;
+    return `${grid.gridProps.value.id}-${normalizeKey(key)}`;
   };
 
   return {

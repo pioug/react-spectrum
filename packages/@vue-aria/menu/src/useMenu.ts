@@ -44,6 +44,12 @@ export function useMenu(options: AriaMenuOptions = {}): MenuAria {
   let focusedKey = ref<MenuKey | null>(null);
   let selectedKeys = options.selectedKeys ?? ref(new Set<MenuKey>());
   let selectionMode = computed(() => unref(options.selectionMode) ?? 'none');
+  let ariaLabel = computed(() => resolveOptionalValue(options.ariaLabel) ?? resolveOptionalValue(options['aria-label']));
+  let ariaLabelledby = computed(() => resolveOptionalValue(options.ariaLabelledby) ?? resolveOptionalValue(options['aria-labelledby']));
+
+  if (!ariaLabel.value && !ariaLabelledby.value && process.env.NODE_ENV !== 'production') {
+    console.warn('An aria-label or aria-labelledby prop is required for accessibility.');
+  }
 
   let toggleSelection = (key: MenuKey) => {
     if (selectionMode.value === 'none') {
@@ -76,8 +82,8 @@ export function useMenu(options: AriaMenuOptions = {}): MenuAria {
     menuProps: computed(() => ({
       id: id.value,
       role: 'menu' as const,
-      'aria-label': resolveOptionalValue(options.ariaLabel) ?? resolveOptionalValue(options['aria-label']),
-      'aria-labelledby': resolveOptionalValue(options.ariaLabelledby) ?? resolveOptionalValue(options['aria-labelledby'])
+      'aria-label': ariaLabel.value,
+      'aria-labelledby': ariaLabelledby.value
     })),
     onAction: options.onAction,
     selectedKeys,
