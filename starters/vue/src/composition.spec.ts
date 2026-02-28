@@ -3062,6 +3062,67 @@ describe('Vue migration composition components', () => {
     expect(selectionChanges).toEqual([['row-1', 'row-2']]);
   });
 
+  it('repositions vue-stately grid focus when the focused row is removed from collection', async () => {
+    let options = reactive({
+      collection: new StatelyGridCollection({
+        columnCount: 2,
+        items: [
+          {
+            key: 'row-1',
+            childNodes: [
+              {key: 'row-1-cell-1', textValue: 'Backlog'},
+              {key: 'row-1-cell-2', textValue: 'Open'}
+            ]
+          },
+          {
+            key: 'row-2',
+            childNodes: [
+              {key: 'row-2-cell-1', textValue: 'In progress'},
+              {key: 'row-2-cell-2', textValue: 'Pending'}
+            ]
+          },
+          {
+            key: 'row-3',
+            childNodes: [
+              {key: 'row-3-cell-1', textValue: 'Done'},
+              {key: 'row-3-cell-2', textValue: 'Closed'}
+            ]
+          }
+        ]
+      }),
+      disabledKeys: ['row-3'],
+      focusMode: 'cell' as const,
+      selectionMode: 'multiple' as const
+    });
+
+    let gridState = useStatelyGridState(options);
+    gridState.selectionManager.setFocusedKey('row-2-cell-2');
+    expect(gridState.selectionManager.focusedKey.value).toBe('row-2-cell-2');
+
+    options.collection = new StatelyGridCollection({
+      columnCount: 2,
+      items: [
+        {
+          key: 'row-1',
+          childNodes: [
+            {key: 'row-1-cell-1', textValue: 'Backlog'},
+            {key: 'row-1-cell-2', textValue: 'Open'}
+          ]
+        },
+        {
+          key: 'row-3',
+          childNodes: [
+            {key: 'row-3-cell-1', textValue: 'Done'},
+            {key: 'row-3-cell-2', textValue: 'Closed'}
+          ]
+        }
+      ]
+    });
+
+    await nextTick();
+    expect(gridState.selectionManager.focusedKey.value).toBe('row-1-cell-2');
+  });
+
   it('computes vue-stately list/grid/table/waterfall layout baselines', () => {
     let items = [
       {key: 'item-1', index: 0, type: 'item'},

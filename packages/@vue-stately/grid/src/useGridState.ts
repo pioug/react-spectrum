@@ -1,5 +1,5 @@
 import {type GridCollection, type GridNode, type Key} from './GridCollection';
-import {computed, ref, type Ref} from 'vue';
+import {computed, ref, type Ref, watchEffect} from 'vue';
 import {useMultipleSelectionState} from '@vue-stately/selection';
 import type {DisabledBehavior, MultipleSelectionState, SelectionBehavior} from '@vue-stately/selection';
 
@@ -137,9 +137,77 @@ export function useGridState<T, C extends GridCollection<T>>(options: GridStateO
     }
   };
 
+  let cachedCollection = ref<C | null>(null);
+  watchEffect(() => {
+    let collection = options.collection;
+    let focusedKey = selectionState.focusedKey.value;
+    let previousCollection = cachedCollection.value;
+
+    if (focusedKey != null && previousCollection && !collection.getItem(focusedKey)) {
+      let previousNode = previousCollection.getItem(focusedKey);
+      let previousParentNode = previousNode?.parentKey != null && previousNode.type === 'cell'
+        ? previousCollection.getItem(previousNode.parentKey)
+        : previousNode;
+
+      if (!previousParentNode) {
+        selectionState.setFocusedKey(null);
+        cachedCollection.value = collection;
+        return;
+      }
+
+      let previousRows = previousCollection.rows;
+      let rows = collection.rows;
+      let diff = previousRows.length - rows.length;
+      let index = Math.min(
+        diff > 1
+          ? Math.max(previousParentNode.index - diff + 1, 0)
+          : previousParentNode.index,
+        rows.length - 1
+      );
+
+      let nextRow: GridNode<T> | null = null;
+      while (index >= 0) {
+        let row = rows[index];
+        if (row && !gridSelectionManager.isDisabled(row.key)) {
+          nextRow = row;
+          break;
+        }
+
+        if (index < rows.length - 1) {
+          index++;
+        } else {
+          if (index > previousParentNode.index) {
+            index = previousParentNode.index;
+          }
+          index--;
+        }
+      }
+
+      if (nextRow) {
+        let childNodes = nextRow.hasChildNodes ? getChildNodes(nextRow) : [];
+        let keyToFocus =
+          nextRow.hasChildNodes
+          && previousParentNode !== previousNode
+          && previousNode
+          && previousNode.index < childNodes.length
+            ? childNodes[previousNode.index].key
+            : nextRow.key;
+        selectionState.setFocusedKey(keyToFocus);
+      } else {
+        selectionState.setFocusedKey(null);
+      }
+    }
+
+    cachedCollection.value = collection;
+  });
+
   return {
-    collection: options.collection,
-    disabledKeys: selectionState.disabledKeys,
+    get collection() {
+      return options.collection;
+    },
+    get disabledKeys() {
+      return selectionState.disabledKeys;
+    },
     selectionManager: gridSelectionManager,
     isKeyboardNavigationDisabled: ref(false)
   };

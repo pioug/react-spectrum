@@ -2544,13 +2544,29 @@
    - full Vue tests: `yarn test:vue` (636 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Grid focused-row removal parity remediation (`@vue-stately/grid`)
+
+1. Closed focused-key lifecycle drift in `useGridState`:
+   - added React-like focused-row recovery when the currently focused row/cell disappears from the collection.
+2. Preserved focus behavior contracts during recovery:
+   - row focus re-targets to the nearest available non-disabled row,
+   - cell focus preserves the prior column index when moving to replacement rows.
+3. Improved reactive parity for derived grid state:
+   - `collection`/`disabledKeys` now read through reactive getters so runtime option changes stay in sync with state readers.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` now includes focused-row removal behavior with disabled-row fallback.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "vue-stately grid"`,
+   - full Vue tests: `yarn test:vue` (637 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 636 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 637 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).
