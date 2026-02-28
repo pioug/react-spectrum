@@ -1,15 +1,29 @@
 import './actionbar.css';
 import {ActionButton} from '@vue-spectrum/button';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
-import {computed, defineComponent, h, type PropType} from 'vue';
+import {announce} from '@vue-aria/live-announcer';
+import {computed, defineComponent, h, onMounted, type PropType, type VNodeChild} from 'vue';
 
 const ACTION_BAR_CLEAR_ICON_PATH = 'M11.697 10.283L7.414 6l4.283-4.283A1 1 0 1 0 10.283.303L6 4.586 1.717.303A1 1 0 1 0 .303 1.717L4.586 6 .303 10.283a1 1 0 1 0 1.414 1.414L6 7.414l4.283 4.283a1 1 0 1 0 1.414-1.414z';
+type ActionBarKey = string | number;
+type ActionBarItem = string | {
+  children?: string,
+  name: ActionBarKey
+};
 
-function normalizeActionKeyForComparison(value: string): string {
-  return value.trim().toLowerCase().replace(/\s+/g, '');
+function getActionBarItemLabel(item: ActionBarItem): string {
+  if (typeof item === 'string') {
+    return item;
+  }
+
+  if (typeof item.children === 'string' && item.children.length > 0) {
+    return item.children;
+  }
+
+  return String(item.name);
 }
 
-function renderActionBarClearIcon() {
+function renderActionBarClearIcon(): VNodeChild {
   return h('svg', {
     class: ['spectrum-Icon', 'spectrum-UIIcon-CrossLarge'],
     focusable: 'false',
@@ -31,24 +45,16 @@ export const ActionBar = defineComponent({
       type: String as PropType<'collapse' | 'hide' | 'show'>,
       default: 'collapse'
     },
-    clearLabel: {
-      type: String,
-      default: 'Clear selection'
-    },
     disabledKeys: {
-      type: [Array, Set] as PropType<Iterable<string>>,
+      type: [Array, Set] as PropType<Iterable<ActionBarKey>>,
       default: () => []
     },
-    emphasized: {
+    isEmphasized: {
       type: Boolean,
       default: false
     },
-    isEmphasized: {
-      type: Boolean as PropType<boolean | undefined>,
-      default: undefined
-    },
     items: {
-      type: Array as PropType<string[]>,
+      type: Array as PropType<ActionBarItem[]>,
       default: () => []
     },
     selectedItemCount: {
@@ -62,15 +68,6 @@ export const ActionBar = defineComponent({
   },
   setup(props, {attrs, emit, slots}) {
     let isOpen = computed(() => props.selectedItemCount === 'all' || props.selectedItemCount > 0);
-
-    let isEmphasized = computed(() => {
-      if (props.isEmphasized !== undefined) {
-        return props.isEmphasized;
-      }
-
-      return props.emphasized;
-    });
-
     let selectedLabel = computed(() => {
       if (props.selectedItemCount === 'all') {
         return 'All selected';
@@ -80,21 +77,10 @@ export const ActionBar = defineComponent({
       return `${count} selected`;
     });
 
-    let actionBarClassName = computed(() => [
-      'react-spectrum-ActionBar',
-      {
-        'is-open': isOpen.value,
-        'react-spectrum-ActionBar--emphasized': isEmphasized.value
+    onMounted(() => {
+      if (isOpen.value) {
+        announce('Actions available.');
       }
-    ]);
-
-    let resolvedDisabledKeys = computed(() => {
-      let disabledKeys = Array.from(props.disabledKeys);
-      let disabledKeySet = new Set(disabledKeys);
-      let normalizedDisabledKeys = new Set(disabledKeys.map((key) => normalizeActionKeyForComparison(key)));
-      return props.items.filter((item) => {
-        return disabledKeySet.has(item) || normalizedDisabledKeys.has(normalizeActionKeyForComparison(item));
-      });
     });
 
     return () => {
@@ -102,66 +88,59 @@ export const ActionBar = defineComponent({
         return null;
       }
 
+      let {class: className, ...domProps} = attrs as Record<string, unknown>;
+      let userKeyDown = domProps.onKeydown as ((event: KeyboardEvent) => void) | undefined;
       let renderItem = slots.item
-        ? (itemProps: {item: string, selected: boolean}) => slots.item?.(itemProps)
-        : ({item}: {item: string}) => h('span', {
+        ? (itemProps: {item: ActionBarItem, selected: boolean, hideButtonText: boolean}) => slots.item?.(itemProps)
+        : ({item}: {item: ActionBarItem}) => h('span', {
           class: 'spectrum-ActionButton-label'
-        }, item);
-
-      let actions = slots.default
-        ? slots.default()
-        : h(ActionGroup, {
-          class: ['react-spectrum-ActionBar-actionGroup', 'vs-spectrum-action-bar__actions'],
-          'data-vs-action-bar-actions': 'true',
-          'aria-label': 'Actions',
-          items: props.items,
-          selectionMode: 'none',
-          isQuiet: true,
-          overflowMode: 'collapse',
-          buttonLabelBehavior: props.buttonLabelBehavior,
-          staticColor: isEmphasized.value ? 'white' : undefined,
-          disabledKeys: resolvedDisabledKeys.value,
-          disabled: false,
-          onAction: (key: string) => emit('action', key)
-        }, {
-          item: renderItem
-        });
+        }, getActionBarItemLabel(item));
 
       return h('div', {
-        ...attrs,
+        ...domProps,
         class: [
-          actionBarClassName.value,
-          'vs-spectrum-action-bar',
-          isEmphasized.value ? 'is-emphasized' : null,
-          isOpen.value ? 'is-open' : null,
-          attrs.class
+          'react-spectrum-ActionBar',
+          {
+            'is-open': isOpen.value,
+            'react-spectrum-ActionBar--emphasized': props.isEmphasized
+          },
+          className
         ],
-        'data-vs-action-bar': 'true',
-        tabindex: 0,
-        'data-vac': '',
         onKeydown: (event: KeyboardEvent) => {
+          userKeyDown?.(event);
+
           if (event.key === 'Escape') {
             event.preventDefault();
             emit('clearSelection');
           }
         }
       }, [
-        h('div', {class: ['react-spectrum-ActionBar-bar', 'vs-spectrum-action-bar__bar']}, [
-          actions,
-          h(ActionButton, {
-            class: 'vs-spectrum-action-bar__clear',
+        h('div', {class: 'react-spectrum-ActionBar-bar'}, [
+          h(ActionGroup, {
+            class: 'react-spectrum-ActionBar-actionGroup',
+            'aria-label': 'Actions',
+            items: props.items,
+            selectionMode: 'none',
             isQuiet: true,
-            staticColor: isEmphasized.value ? 'white' : undefined,
-            'aria-label': props.clearLabel,
-            'data-vs-action-bar-clear': 'true',
+            overflowMode: 'collapse',
+            buttonLabelBehavior: props.buttonLabelBehavior,
+            staticColor: props.isEmphasized ? 'white' : undefined,
+            disabledKeys: props.disabledKeys,
+            onAction: (key: string) => emit('action', key)
+          }, {
+            item: renderItem
+          }),
+          h(ActionButton, {
+            isQuiet: true,
+            staticColor: props.isEmphasized ? 'white' : undefined,
+            'aria-label': 'Clear selection',
             style: {
               gridArea: 'clear'
             },
             onClick: () => emit('clearSelection')
           }, () => renderActionBarClearIcon()),
-          h('p', {
-            class: ['react-spectrum-ActionBar-selectedCount', 'vs-spectrum-action-bar__count'],
-            'data-vs-action-bar-count': 'true'
+          h('span', {
+            class: 'react-spectrum-ActionBar-selectedCount'
           }, selectedLabel.value)
         ])
       ]);
@@ -174,10 +153,11 @@ export const ActionBarContainer = defineComponent({
   inheritAttrs: false,
   setup(_props, {attrs, slots}) {
     return () => h('div', {
-      ...attrs,
-      class: ['ActionBarContainer', 'vs-spectrum-action-bar-container', attrs.class],
-      'data-vs-action-bar-container': 'true',
-      'data-vac': ''
+      ...(attrs as Record<string, unknown>),
+      class: [
+        'ActionBarContainer',
+        (attrs as Record<string, unknown>).class
+      ]
     }, slots.default ? slots.default() : []);
   }
 });

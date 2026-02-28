@@ -9,6 +9,11 @@ import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import Move from '@spectrum-icons-vue/workflow/Move';
 import {Table} from '@vue-spectrum/table';
 
+type ActionItemKey = 'copy' | 'delete' | 'duplicate' | 'edit' | 'move';
+type ActionItem = {
+  children: string,
+  name: ActionItemKey
+};
 type TableRow = {
   id: string,
   foo: string,
@@ -32,13 +37,19 @@ const defaultRows: TableRow[] = Array.from({length: 16}, (_unused, index) => {
   };
 });
 
-const actionItems = ['Edit', 'Copy', 'Delete', 'Move', 'Duplicate'];
-const actionItemIcons: Record<string, unknown> = {
-  Edit,
-  Copy,
-  Delete,
-  Move,
-  Duplicate
+const actionItems: ActionItem[] = [
+  {name: 'edit', children: 'Edit'},
+  {name: 'copy', children: 'Copy'},
+  {name: 'delete', children: 'Delete'},
+  {name: 'move', children: 'Move'},
+  {name: 'duplicate', children: 'Duplicate'}
+];
+const actionItemIcons: Record<ActionItemKey, unknown> = {
+  edit: Edit,
+  copy: Copy,
+  delete: Delete,
+  move: Move,
+  duplicate: Duplicate
 };
 
 function normalizeActionBarSelection(value: unknown): Set<string> {
@@ -82,7 +93,7 @@ const ActionBarExample = defineComponent({
       default: 300
     },
     disabledKeys: {
-      type: [Array, Set] as PropType<Iterable<string>>,
+      type: [Array, Set] as PropType<Iterable<string | number>>,
       default: () => []
     },
     isEmphasized: {
@@ -158,8 +169,8 @@ const ActionBarExample = defineComponent({
         @clear-selection="clearSelection"
         @action="handleAction">
         <template #item="{item}">
-          <component :is="actionItemIcons[item]" />
-          <span class="spectrum-ActionButton-label">{{ item }}</span>
+          <component :is="actionItemIcons[item.name]" />
+          <span class="spectrum-ActionButton-label">{{ item.children }}</span>
         </template>
       </ActionBar>
     </ActionBarContainer>

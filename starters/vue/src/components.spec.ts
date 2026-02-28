@@ -1504,23 +1504,26 @@ describe('Vue migration primitives', () => {
     }
   });
 
-  it('preserves actionbar action key casing and disabled key mapping', async () => {
+  it('emits actionbar item keys and maps disabled keys by key', async () => {
     let wrapper = mount(ActionBar, {
       props: {
         selectedItemCount: 1,
-        items: ['Edit', 'Copy'],
+        items: [
+          {name: 'edit', children: 'Edit'},
+          {name: 'copy', children: 'Copy'}
+        ],
         disabledKeys: new Set(['edit'])
       }
     });
 
-    expect(wrapper.find('button[data-vs-action-bar-clear="true"] svg path').exists()).toBe(true);
+    expect(wrapper.find('button[aria-label="Clear selection"] svg.spectrum-UIIcon-CrossLarge').exists()).toBe(true);
 
     let actionButtons = wrapper.findAll('button[data-vs-action-group-item="true"]');
     expect(actionButtons).toHaveLength(2);
     expect(actionButtons[0].attributes('disabled')).toBeDefined();
 
     await actionButtons[1].trigger('click');
-    expect(wrapper.emitted('action')?.[0]).toEqual(['Copy']);
+    expect(wrapper.emitted('action')?.[0]).toEqual(['copy']);
   });
 
   it('renders actionbar item slot with workflow icon content', () => {

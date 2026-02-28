@@ -14,9 +14,10 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - [x] Story: Accordion.stories.ts
   - [x] Story: Disclosure.stories.ts
   - Evidence: React/Vue story-id parity is zero for `accordion--*` and `disclosure--*` (including matching `React Aria Components/Disclosure*` ids in `packages/vue-aria-components/stories`); source/API parity pass fixed two Vue gaps in `packages/@vue-spectrum/accordion/src/index.ts` (default single expansion now matches React with `allowsMultipleExpanded` support and `multiple` alias fallback; `DisclosureTitle` DOM props/class now apply to heading like React); regression coverage added/updated in `starters/vue/src/components.spec.ts`; validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
-- [ ] 1.02 `@vue-spectrum/actionbar`
+- [x] 1.02 `@vue-spectrum/actionbar`
   - Components: ActionBar, ActionBarContainer
-  - [ ] Story: ActionBar.stories.ts
+  - [x] Story: ActionBar.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `actionbar--*`; Vue ActionBar internals were aligned to React contracts by removing Vue-only aliases/attrs (`clearLabel`, `emphasized`, `data-vs-action-bar*` hooks), keeping canonical class/ARIA structure (`react-spectrum-ActionBar*`, `aria-label="Actions"`, `Clear selection`), passing `disabledKeys` directly by key, and emitting keyed actions via React-style keyed story items (`edit/copy/delete/move/duplicate`); regression selectors/assertions were updated in `starters/vue/src/components.spec.ts`, `starters/vue/src/composition.spec.ts`, and `starters/vue/src/storybook-parity.spec.ts`; validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
 - [ ] 1.03 `@vue-spectrum/actiongroup`
   - Components: ActionGroup
   - [ ] Story: ActionGroup.stories.ts

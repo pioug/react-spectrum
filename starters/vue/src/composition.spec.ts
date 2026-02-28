@@ -17054,7 +17054,7 @@ describe('Vue migration composition components', () => {
     expect(wrapper.text()).toContain('2 selected');
 
     await actionButtons[1].trigger('click');
-    await wrapper.get('button[data-vs-action-bar-clear="true"]').trigger('click');
+    await wrapper.get('button[aria-label="Clear selection"]').trigger('click');
     expect(wrapper.emitted('action')?.[0]).toEqual(['Archive']);
     expect(wrapper.emitted('clearSelection')).toHaveLength(1);
   });

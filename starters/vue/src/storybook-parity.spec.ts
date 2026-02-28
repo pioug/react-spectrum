@@ -1570,22 +1570,22 @@ describe('Vue storybook helper parity', () => {
       let wrapper = mount(story);
       wrappers.push(wrapper);
 
-      expect(wrapper.find('[data-vs-action-bar="true"]').exists()).toBe(false);
+      expect(wrapper.find('.react-spectrum-ActionBar').exists()).toBe(false);
 
       let rowSelection = wrapper.findAll('tbody.vs-table__body input.vs-table__selection-checkbox');
       await rowSelection[0].setValue(true);
       await nextTick();
-      expect(wrapper.get('[data-vs-action-bar="true"]').exists()).toBe(true);
-      expect(wrapper.get('[data-vs-action-bar-count="true"]').text()).toContain('1 selected');
-      expect(wrapper.find('button[data-vs-action-bar-clear="true"] svg path').exists()).toBe(true);
+      expect(wrapper.get('.react-spectrum-ActionBar').exists()).toBe(true);
+      expect(wrapper.get('.react-spectrum-ActionBar-selectedCount').text()).toContain('1 selected');
+      expect(wrapper.find('button[aria-label="Clear selection"] svg.spectrum-UIIcon-CrossLarge').exists()).toBe(true);
 
       await rowSelection[1].setValue(true);
       await nextTick();
-      expect(wrapper.get('[data-vs-action-bar-count="true"]').text()).toContain('2 selected');
+      expect(wrapper.get('.react-spectrum-ActionBar-selectedCount').text()).toContain('2 selected');
 
-      await wrapper.get('button[data-vs-action-bar-clear="true"]').trigger('click');
+      await wrapper.get('button[aria-label="Clear selection"]').trigger('click');
       await nextTick();
-      expect(wrapper.find('[data-vs-action-bar="true"]').exists()).toBe(false);
+      expect(wrapper.find('.react-spectrum-ActionBar').exists()).toBe(false);
     } finally {
       for (let wrapper of wrappers) {
         wrapper.unmount();
@@ -2867,19 +2867,19 @@ describe('Vue storybook helper parity', () => {
       let actionBarStory = ListViewWithActionBarStory.render?.({}) as ReturnType<Exclude<typeof ListViewWithActionBarStory.render, undefined>>;
       let actionBarWrapper = mount(actionBarStory);
       wrappers.push(actionBarWrapper);
-      expect(actionBarWrapper.get('[data-vs-action-bar-count="true"]').text()).toContain('1 selected');
+      expect(actionBarWrapper.get('.react-spectrum-ActionBar-selectedCount').text()).toContain('1 selected');
 
       let actionBarListView = actionBarWrapper.getComponent({name: 'VueListView'});
       let actionBarSelectionHandler = (actionBarListView.vm.$.vnode.props as {'onUpdate:modelValue'?: (value: unknown) => void} | undefined)?.['onUpdate:modelValue'];
       expect(actionBarSelectionHandler).toBeTypeOf('function');
       actionBarSelectionHandler?.(new Set(['a', 'b']));
       await nextTick();
-      expect(actionBarWrapper.get('[data-vs-action-bar-count="true"]').text()).toContain('2 selected');
+      expect(actionBarWrapper.get('.react-spectrum-ActionBar-selectedCount').text()).toContain('2 selected');
 
-      await actionBarWrapper.get('button[data-vs-action-bar-clear="true"]').trigger('click');
+      await actionBarWrapper.get('button[aria-label="Clear selection"]').trigger('click');
       await nextTick();
       expect(actionBarWrapper.findAll('button.vs-listbox__item.is-selected')).toHaveLength(0);
-      expect(actionBarWrapper.find('[data-vs-action-bar="true"]').exists()).toBe(false);
+      expect(actionBarWrapper.find('.react-spectrum-ActionBar').exists()).toBe(false);
     } finally {
       for (let wrapper of wrappers) {
         wrapper.unmount();
