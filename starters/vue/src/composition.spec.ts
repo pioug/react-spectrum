@@ -936,6 +936,28 @@ describe('Vue migration composition components', () => {
     expect(changes).toEqual([['Docs']]);
   });
 
+  it('preserves vue-stately checkbox-group duplicate values for value/defaultValue/setValue parity', () => {
+    let controlledValues = ref(['Docs']);
+    let changes: string[][] = [];
+    let controlledState = useStatelyCheckboxGroupState({
+      onChange: (value) => {
+        changes.push([...value]);
+        controlledValues.value = value;
+      },
+      value: controlledValues
+    });
+
+    controlledState.setValue(['Docs', 'Docs', 'API']);
+    expect(controlledValues.value).toEqual(['Docs', 'Docs', 'API']);
+    expect(changes).toEqual([['Docs', 'Docs', 'API']]);
+
+    let uncontrolledState = useStatelyCheckboxGroupState({
+      defaultValue: ['One', 'One']
+    });
+    expect(uncontrolledState.value.value).toEqual(['One', 'One']);
+    expect(uncontrolledState.defaultValue).toEqual(['One', 'One']);
+  });
+
   it('warns when vue-stately checkbox group switches between controlled and uncontrolled', async () => {
     let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     let selectedValues = ref<string[] | undefined>(['Docs']);

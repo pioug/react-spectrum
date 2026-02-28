@@ -33,12 +33,8 @@ export interface CheckboxGroupStateOptions {
   value?: Ref<string[] | undefined>
 }
 
-function normalizeValues(values: readonly string[]): string[] {
-  return Array.from(new Set(values.map((value) => String(value))));
-}
-
 export function useCheckboxGroupState(options: CheckboxGroupStateOptions = {}): CheckboxGroupState {
-  let initialDefaultValue = normalizeValues(unref(options.defaultValue) ?? []);
+  let initialDefaultValue = [...(unref(options.defaultValue) ?? [])];
   let internalValue = ref(initialDefaultValue);
   let isControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
   let wasControlled = ref(isControlled.value);
@@ -67,7 +63,7 @@ export function useCheckboxGroupState(options: CheckboxGroupStateOptions = {}): 
     }
   }) as Ref<string[]>;
 
-  let initialValue = normalizeValues(value.value);
+  let initialValue = [...value.value];
   let invalidValues = ref(new Map<string, ValidationResult>());
 
   let isDisabled = computed(() => Boolean(unref(options.isDisabled)));
@@ -95,9 +91,8 @@ export function useCheckboxGroupState(options: CheckboxGroupStateOptions = {}): 
       return;
     }
 
-    let normalizedValue = normalizeValues(nextValue);
-    value.value = normalizedValue;
-    options.onChange?.(normalizedValue);
+    value.value = nextValue;
+    options.onChange?.(nextValue);
   };
 
   let isSelected = (nextValue: string): boolean => {

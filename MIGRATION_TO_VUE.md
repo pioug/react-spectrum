@@ -1872,6 +1872,20 @@
    - full Vue tests: `yarn test:vue` (593 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Checkbox-group duplicate-value parity (`@vue-stately/checkbox`)
+
+1. Closed checkbox-group value-normalization drift against React:
+   - removed Vue-only dedupe/coercion normalization for `defaultValue`, controlled `value`, and `setValue`,
+   - checkbox-group state now preserves array shape/order exactly as provided by caller, matching React behavior.
+2. Preserved existing selection helpers:
+   - `addValue`/`removeValue`/`toggleValue` behavior remains unchanged (single-add semantics still enforced via `isSelected` checks).
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: explicit assertions that controlled and uncontrolled checkbox-group paths preserve duplicate values for `value/defaultValue/setValue`.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "checkbox-group values and invalid flags|checkbox-group setValue identity semantics|duplicate values"`,
+   - full Vue tests: `yarn test:vue` (594 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
