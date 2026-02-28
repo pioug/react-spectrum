@@ -286,49 +286,77 @@ export function useDraggableItem(
     return toDragItems(stateRecord.getItems(key));
   });
 
-  let drag = useAriaDrag({
-    dragItems,
-    isDisabled,
-    onDragStart: () => {
-      if (key == null || typeof stateRecord.startDrag !== 'function') {
-        return;
-      }
-
-      stateRecord.startDrag(key);
-      draggingKeys = readDraggingKeys(stateRecord);
-    },
-    onDragMove: (point) => {
-      if (typeof stateRecord.moveDrag === 'function') {
-        stateRecord.moveDrag(point);
-      }
-    },
-    onDragEnd: (operation) => {
-      if (typeof stateRecord.endDrag === 'function') {
-        stateRecord.endDrag(operation);
-      }
-
-      draggingCollectionRef = null;
-      dropCollectionRef = null;
-      draggingKeys = new Set();
+  let isDragging = computed(() => {
+    if (key == null || typeof stateRecord.isDragging !== 'function') {
+      return false;
     }
+
+    return Boolean(stateRecord.isDragging(key));
   });
 
-  let dragButtonProps = computed(() => ({
-    'aria-grabbed': drag.isDragging.value,
-    isDisabled: isDisabled.value,
-    onClick: () => {
-      if (isDisabled.value) {
+  let startDrag = () => {
+    if (isDisabled.value || key == null || typeof stateRecord.startDrag !== 'function') {
+      return;
+    }
+
+    stateRecord.startDrag(key);
+    draggingKeys = readDraggingKeys(stateRecord);
+  };
+
+  let endDrag = (input?: unknown) => {
+    if (key == null || typeof stateRecord.endDrag !== 'function') {
+      return;
+    }
+
+    let operation = resolveDropOperation(input, 'cancel');
+    stateRecord.endDrag(operation);
+    draggingCollectionRef = null;
+    dropCollectionRef = null;
+    draggingKeys = new Set();
+  };
+
+  let dragProps = computed(() => ({
+    draggable: !isDisabled.value,
+    'aria-grabbed': isDragging.value,
+    onDragStart: () => {
+      startDrag();
+    },
+    onDrag: (event?: unknown) => {
+      if (!isDragging.value || typeof stateRecord.moveDrag !== 'function') {
         return;
       }
 
-      drag.startDrag();
+      let eventRecord = (event ?? {}) as AnyRecord;
+      let x = typeof eventRecord.clientX === 'number'
+        ? eventRecord.clientX
+        : typeof eventRecord.x === 'number'
+          ? eventRecord.x
+          : 0;
+      let y = typeof eventRecord.clientY === 'number'
+        ? eventRecord.clientY
+        : typeof eventRecord.y === 'number'
+          ? eventRecord.y
+          : 0;
+      stateRecord.moveDrag({x, y});
+    },
+    onDragEnd: (event?: unknown) => {
+      endDrag(event);
+    }
+  }));
+
+  let dragButtonProps = computed(() => ({
+    'aria-grabbed': isDragging.value,
+    isDisabled: isDisabled.value,
+    onClick: () => {
+      startDrag();
     }
   }));
 
   return {
-    dragProps: drag.dragProps,
+    dragProps,
     dragButtonProps,
-    draggableItemProps: drag.dragProps
+    draggableItemProps: dragProps,
+    dragItems
   };
 }
 

@@ -4167,11 +4167,13 @@ describe('Vue migration composition components', () => {
 
     let draggableItem = useDraggableItem({key: 'alpha'}, dragState) as {
       dragButtonProps: {value: {onClick: () => void}},
-      dragProps: {value: {draggable: boolean}}
+      dragProps: {value: {'aria-grabbed': boolean, draggable: boolean}}
     };
     expect(draggableItem.dragProps.value.draggable).toBe(true);
+    expect(draggableItem.dragProps.value['aria-grabbed']).toBe(false);
     draggableItem.dragButtonProps.value.onClick();
     expect(dragState.draggedKey.value).toBe('alpha');
+    expect(draggableItem.dragProps.value['aria-grabbed']).toBe(true);
 
     let target = {
       type: 'item' as const,
@@ -4214,6 +4216,7 @@ describe('Vue migration composition components', () => {
 
     dragState.endDrag('cancel');
     expect(dragState.draggedKey.value).toBeNull();
+    expect(draggableItem.dragProps.value['aria-grabbed']).toBe(false);
   });
 
   it('toggles vue-stately global feature flags', () => {
