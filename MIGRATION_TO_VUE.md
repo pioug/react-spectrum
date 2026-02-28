@@ -2498,16 +2498,18 @@
    - full Vue tests: `yarn test:vue` (633 passed),
    - typecheck: `yarn typecheck:vue`.
 
-### February 28, 2026 — Grid selection ownership parity remediation (`@vue-stately/grid`)
+### February 28, 2026 — Grid/table selection ownership parity remediation (`@vue-stately/grid`, `@vue-stately/table`)
 
 1. Closed controlled selection ownership drift in `useGridState`:
    - replaced ad hoc direct `selectedKeys` ref mutation with `useMultipleSelectionState` ownership,
    - wired `onSelectionChange` emission for grid selection updates, matching shared stately selection contracts.
 2. Preserved grid-specific focus behavior:
    - retained cell-focus redirect semantics (`focusMode: 'cell'` row focus now maps to first/last child cell before delegating focus updates).
-3. Added controlled regression coverage:
+3. Aligned table selection prop-surface passthrough:
+   - `useTableState` now forwards selection ownership props (`defaultSelectedKeys`, `onSelectionChange`, `selectionBehavior`, `disallowEmptySelection`, `allowDuplicateSelectionEvents`, and `disabledBehavior` defaulting to `'selection'`) into `useGridState`, matching React table-state composition.
+4. Added controlled regression coverage:
    - `starters/vue/src/composition.spec.ts` now includes a controlled no-parent-sync grid selection test asserting selected-key refs remain externally owned while change callbacks emit requested next selections.
-4. Validation after fix:
+5. Validation after fix:
    - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "vue-stately grid"`,
    - full Vue tests: `yarn test:vue` (634 passed),
    - typecheck: `yarn typecheck:vue`.

@@ -1,5 +1,6 @@
 import {computed, type Ref, ref} from 'vue';
 import {type GridCollection, type GridNode, type GridState, type Key, useGridState} from '@vue-stately/grid';
+import type {DisabledBehavior, SelectionBehavior} from '@vue-stately/selection';
 import {type TableCollection} from './TableCollection';
 
 export type SortDirection = 'ascending' | 'descending';
@@ -28,10 +29,16 @@ export interface TableState<T> extends GridState<T, FilterableCollection<T>> {
 }
 
 export interface TableStateProps<T> {
+  allowDuplicateSelectionEvents?: boolean,
   collection: FilterableCollection<T> | TableCollection<T>,
+  defaultSelectedKeys?: Iterable<Key>,
+  disabledBehavior?: DisabledBehavior,
   disabledKeys?: Iterable<Key>,
+  disallowEmptySelection?: boolean,
+  onSelectionChange?: (keys: Set<Key>) => void,
   onSortChange?: (descriptor: SortDescriptor) => void,
   selectedKeys?: Ref<Set<Key>>,
+  selectionBehavior?: SelectionBehavior,
   selectionMode?: 'multiple' | 'none' | 'single',
   showSelectionCheckboxes?: boolean,
   sortDescriptor?: Ref<SortDescriptor | null>
@@ -45,9 +52,15 @@ export function useTableState<T>(props: TableStateProps<T>): TableState<T> {
   let sortDescriptor = props.sortDescriptor ?? ref<SortDescriptor | null>(null);
 
   let gridState = useGridState<T, FilterableCollection<T>>({
+    allowDuplicateSelectionEvents: props.allowDuplicateSelectionEvents,
     collection: props.collection,
+    defaultSelectedKeys: props.defaultSelectedKeys,
+    disabledBehavior: props.disabledBehavior ?? 'selection',
     disabledKeys: props.disabledKeys,
+    disallowEmptySelection: props.disallowEmptySelection,
+    onSelectionChange: props.onSelectionChange,
     selectedKeys: props.selectedKeys,
+    selectionBehavior: props.selectionBehavior,
     selectionMode
   });
   gridState.isKeyboardNavigationDisabled.value = props.collection.size === 0;

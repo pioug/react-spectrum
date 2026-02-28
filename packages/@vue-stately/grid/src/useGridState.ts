@@ -1,7 +1,7 @@
 import {type GridCollection, type GridNode, type Key} from './GridCollection';
 import {computed, ref, type Ref} from 'vue';
 import {useMultipleSelectionState} from '@vue-stately/selection';
-import type {MultipleSelectionState, SelectionBehavior} from '@vue-stately/selection';
+import type {DisabledBehavior, MultipleSelectionState, SelectionBehavior} from '@vue-stately/selection';
 
 export interface SelectionManager {
   focusedKey: Ref<Key | null>,
@@ -26,6 +26,7 @@ export interface GridStateOptions<T, C extends GridCollection<T>> {
   allowDuplicateSelectionEvents?: boolean,
   collection: C,
   defaultSelectedKeys?: Iterable<Key>,
+  disabledBehavior?: DisabledBehavior,
   disabledKeys?: Iterable<Key>,
   disallowEmptySelection?: boolean,
   focusMode?: 'cell' | 'row',
@@ -47,6 +48,7 @@ export function useGridState<T, C extends GridCollection<T>>(options: GridStateO
   let selectionState = options.UNSAFE_selectionState ?? useMultipleSelectionState({
     allowDuplicateSelectionEvents: options.allowDuplicateSelectionEvents,
     defaultSelectedKeys: options.defaultSelectedKeys,
+    disabledBehavior: options.disabledBehavior,
     disabledKeys: options.disabledKeys,
     disallowEmptySelection: options.disallowEmptySelection,
     onSelectionChange: (keys) => {
