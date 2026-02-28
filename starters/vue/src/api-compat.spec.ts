@@ -9,6 +9,15 @@ import {
   VueButton
 } from '@vue-spectrum/button';
 import {
+  ActionButton as RootActionButton,
+  Button as RootButton,
+  ClearButton as RootClearButton,
+  FieldButton as RootFieldButton,
+  LogicButton as RootLogicButton,
+  ToggleButton as RootToggleButton,
+  VueButton as RootVueButton
+} from '../../../packages/@vue-spectrum/button/index';
+import {
   AlertDialog,
   Dialog,
   DialogContainer,
@@ -106,6 +115,16 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(LogicButton).not.toBeUndefined();
     expect(ClearButton).not.toBeUndefined();
     expect(ToggleButton).not.toBeUndefined();
+  });
+
+  it('keeps root button entry exports aligned with source exports', () => {
+    expect(RootButton).toBe(Button);
+    expect(RootVueButton).toBe(VueButton);
+    expect(RootActionButton).toBe(ActionButton);
+    expect(RootFieldButton).toBe(FieldButton);
+    expect(RootLogicButton).toBe(LogicButton);
+    expect(RootClearButton).toBe(ClearButton);
+    expect(RootToggleButton).toBe(ToggleButton);
   });
 
   it('exports dialog trigger/container as controllers and enforces dialog context', () => {

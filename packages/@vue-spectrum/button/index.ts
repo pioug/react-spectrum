@@ -1,1 +1,1 @@
-export {Button, VueButton} from './src';
+export * from './src';
