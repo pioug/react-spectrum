@@ -2811,6 +2811,22 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Search-autocomplete submit/clear-button parity remediation (`@vue-aria/autocomplete`)
+
+1. Closed submit-callback lifecycle drift in `useSearchAutocomplete`:
+   - submit now calls `onSubmit` only when no option is focused, matching React search-autocomplete behavior.
+2. Closed clear-button disabled-state drift:
+   - clear button disabled state now reflects disabled control state rather than input emptiness.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` search-autocomplete assertions now verify:
+     - no submit callback when an option is focused,
+     - submit callback with `focusedKey: null` when auto-focus-first is disabled,
+     - clear button disabled parity under disabled state.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "search autocomplete state"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

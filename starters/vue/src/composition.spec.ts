@@ -442,12 +442,30 @@ describe('Vue migration composition components', () => {
     });
 
     autocomplete.submit();
-    expect(submissions).toEqual([{value: 'rea', focusedKey: 'React'}]);
+    expect(submissions).toEqual([]);
 
     autocomplete.clear();
     expect(inputValue.value).toBe('');
     expect(clearCount).toBe(1);
-    expect(autocomplete.clearButtonProps.value.disabled).toBe(true);
+    expect(autocomplete.clearButtonProps.value.disabled).toBe(false);
+
+    let manualAutocomplete = useSearchAutocomplete({
+      inputValue: ref('rea'),
+      items: ['React', 'Vue'],
+      onSubmit: (value, focusedKey) => {
+        submissions.push({value, focusedKey});
+      },
+      shouldAutoFocusFirst: false
+    });
+    manualAutocomplete.submit();
+    expect(submissions).toEqual([{value: 'rea', focusedKey: null}]);
+
+    let disabledAutocomplete = useSearchAutocomplete({
+      disabled: true,
+      inputValue: ref('rea'),
+      items: ['React', 'Vue']
+    });
+    expect(disabledAutocomplete.clearButtonProps.value.disabled).toBe(true);
   });
 
   it('manages vue-stately autocomplete input and focused node state', () => {

@@ -1,5 +1,5 @@
 import {type AriaAutocompleteOptions, type AutocompleteAria, useAutocomplete} from './useAutocomplete';
-import {computed, type ComputedRef, type Ref} from 'vue';
+import {computed, type ComputedRef, type Ref, unref} from 'vue';
 
 export interface AriaSearchAutocompleteOptions extends Omit<AriaAutocompleteOptions, 'inputValue'> {
   inputValue: Ref<string>,
@@ -28,11 +28,13 @@ export function useSearchAutocomplete(options: AriaSearchAutocompleteOptions): S
   };
 
   let submit = () => {
-    options.onSubmit?.(options.inputValue.value, autocomplete.focusedKey.value);
+    if (autocomplete.focusedKey.value === null) {
+      options.onSubmit?.(options.inputValue.value, null);
+    }
   };
 
   let clearButtonProps = computed(() => ({
-    disabled: options.inputValue.value.length === 0,
+    disabled: Boolean(unref(options.disabled)),
     'aria-label': 'Clear search'
   }));
 
