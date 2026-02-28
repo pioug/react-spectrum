@@ -1,1 +1,1 @@
-export {Dialog, VueDialog} from './src';
+export * from './src';

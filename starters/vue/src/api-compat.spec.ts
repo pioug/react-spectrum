@@ -26,6 +26,14 @@ import {
   VueDialog
 } from '@vue-spectrum/dialog';
 import {
+  AlertDialog as RootAlertDialog,
+  Dialog as RootDialog,
+  DialogContainer as RootDialogContainer,
+  DialogTrigger as RootDialogTrigger,
+  useDialogContainer as RootUseDialogContainer,
+  VueDialog as RootVueDialog
+} from '../../../packages/@vue-spectrum/dialog/index';
+import {
   Cell,
   Column,
   Row,
@@ -133,6 +141,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(DialogTrigger).not.toBe(VueDialog);
     expect(DialogContainer).not.toBe(VueDialog);
     expect(() => useDialogContainer()).toThrow('Cannot call useDialogContext outside a <DialogTrigger> or <DialogContainer>.');
+  });
+
+  it('keeps root dialog entry exports aligned with source exports', () => {
+    expect(RootDialog).toBe(Dialog);
+    expect(RootVueDialog).toBe(VueDialog);
+    expect(RootAlertDialog).toBe(AlertDialog);
+    expect(RootDialogTrigger).toBe(DialogTrigger);
+    expect(RootDialogContainer).toBe(DialogContainer);
+    expect(RootUseDialogContainer).toBe(useDialogContainer);
   });
 
   it('exports table view as VueTable and collection primitives separately', () => {
