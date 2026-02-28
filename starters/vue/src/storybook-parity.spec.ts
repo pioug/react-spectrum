@@ -387,7 +387,7 @@ describe('Vue storybook helper parity', () => {
 
     expect(autocompleteDescription).toContain('Searchfield variant');
     expect(autocompleteDescription).not.toContain('parity fixture');
-    expect(listboxDescription).toContain('Hover and focus styling behavior');
+    expect(listboxDescription).toContain('Hover styles should have higher specificity than focus style');
     expect(listboxDescription).not.toContain('parity fixture');
     expect(tableDescription).toContain('drop targets are rejected');
     expect(tableDescription).not.toContain('parity fixture');

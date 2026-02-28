@@ -6540,17 +6540,28 @@ describe('Vue migration composition components', () => {
 
     menuTrigger.menuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
     expect(menuTrigger.isOpen.value).toBe(true);
+    expect(menuTrigger.menuProps.value.autoFocus).toBe('first');
     expect(menuTrigger.menuTriggerProps.value['aria-controls']).toBe(menuTrigger.menuProps.value.id);
     expect(menuTrigger.menuProps.value['aria-labelledby']).toBe(menuTrigger.menuTriggerProps.value.id);
+    menuTrigger.menuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowDown'}));
+    expect(menuTrigger.isOpen.value).toBe(false);
     menuTrigger.open();
-    expect(openChanges).toEqual([true]);
+    expect(openChanges).toEqual([true, false, true]);
     menuTrigger.close();
     expect(menuTrigger.isOpen.value).toBe(false);
     expect(menuTrigger.menuTriggerProps.value['aria-controls']).toBeUndefined();
     menuTrigger.menuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowUp'}));
     expect(menuTrigger.isOpen.value).toBe(true);
+    expect(menuTrigger.menuProps.value.autoFocus).toBe('last');
+    menuTrigger.menuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'ArrowUp'}));
+    expect(menuTrigger.isOpen.value).toBe(false);
+    menuTrigger.menuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Enter'}));
+    expect(menuTrigger.isOpen.value).toBe(true);
+    expect(menuTrigger.menuProps.value.autoFocus).toBe('first');
+    menuTrigger.menuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Enter'}));
+    expect(menuTrigger.isOpen.value).toBe(false);
     menuTrigger.close();
-    expect(openChanges).toEqual([true, false, true, false]);
+    expect(openChanges).toEqual([true, false, true, false, true, false, true, false]);
 
     let triggerButton = document.createElement('button');
     document.body.append(triggerButton);

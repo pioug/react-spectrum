@@ -12,6 +12,7 @@ export interface MenuTriggerAria {
   isOpen: Ref<boolean>,
   menuProps: ComputedRef<{
     'aria-labelledby': string,
+    autoFocus: true | 'first' | 'last',
     hidden: boolean,
     id: string,
     role: 'menu'
@@ -27,8 +28,8 @@ export interface MenuTriggerAria {
     onMouseDown: (event: MouseEvent) => void,
     onPointerDown: (event: PointerEvent) => void
   }>,
-  open: () => void,
-  toggle: () => void
+  open: (focusStrategy?: 'first' | 'last') => void,
+  toggle: (focusStrategy?: 'first' | 'last') => void
 }
 
 let menuTriggerCounter = 0;
@@ -40,8 +41,9 @@ export function useMenuTrigger(props: AriaMenuTriggerProps = {}): MenuTriggerAri
   let menuId = `vue-menu-${menuTriggerCounter}`;
   let internalOpen = ref(false);
   let isOpen = props.isOpen ?? internalOpen;
+  let focusStrategy = ref<'first' | 'last' | null>(null);
 
-  let setOpen = (nextOpen: boolean) => {
+  let setOpen = (nextOpen: boolean, nextFocusStrategy: 'first' | 'last' | null = null) => {
     if (unref(props.isDisabled) && nextOpen) {
       return;
     }
@@ -51,19 +53,20 @@ export function useMenuTrigger(props: AriaMenuTriggerProps = {}): MenuTriggerAri
     }
 
     isOpen.value = nextOpen;
+    focusStrategy.value = nextOpen ? nextFocusStrategy : null;
     props.onOpenChange?.(nextOpen);
   };
 
-  let open = () => {
-    setOpen(true);
+  let open = (nextFocusStrategy: 'first' | 'last' | null = null) => {
+    setOpen(true, nextFocusStrategy);
   };
 
   let close = () => {
     setOpen(false);
   };
 
-  let toggle = () => {
-    setOpen(!isOpen.value);
+  let toggle = (nextFocusStrategy: 'first' | 'last' | null = null) => {
+    setOpen(!isOpen.value, nextFocusStrategy);
   };
 
   let onKeyDown = (event: KeyboardEvent) => {
@@ -73,13 +76,15 @@ export function useMenuTrigger(props: AriaMenuTriggerProps = {}): MenuTriggerAri
 
     if (
       event.key === 'ArrowDown'
-      || event.key === 'ArrowUp'
       || event.key === 'Enter'
       || event.key === ' '
       || event.key === 'Spacebar'
     ) {
       event.preventDefault();
-      open();
+      toggle('first');
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      toggle('last');
     } else if (event.key === 'Escape') {
       event.preventDefault();
       close();
@@ -93,6 +98,7 @@ export function useMenuTrigger(props: AriaMenuTriggerProps = {}): MenuTriggerAri
       id: menuId,
       role: 'menu' as const,
       'aria-labelledby': triggerId,
+      autoFocus: focusStrategy.value ?? true,
       hidden: !isOpen.value
     })),
     menuTriggerProps: computed(() => ({
