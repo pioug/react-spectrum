@@ -2106,6 +2106,9 @@ describe('Vue migration composition components', () => {
   it('manages vue-stately date picker open and selection state', () => {
     let pickerValue = ref<string | null>(null);
     let picker = useStatelyDatePickerState({
+      onChange: (value) => {
+        pickerValue.value = value;
+      },
       value: pickerValue
     });
 
@@ -2129,6 +2132,12 @@ describe('Vue migration composition components', () => {
     });
 
     let rangePicker = useStatelyDateRangePickerState({
+      onChange: (value) => {
+        rangeValue.value = {
+          start: value.start,
+          end: value.end
+        };
+      },
       value: rangeValue
     });
 
@@ -2158,6 +2167,54 @@ describe('Vue migration composition components', () => {
       start: '2026-02-21',
       end: '2026-02-24'
     });
+  });
+
+  it('keeps vue-stately date picker and date range picker controlled without mutating control refs', () => {
+    let pickerValue = ref<string | null>(null);
+    let pickerChanges: Array<string | null> = [];
+    let picker = useStatelyDatePickerState({
+      onChange: (value) => {
+        pickerChanges.push(value);
+      },
+      value: pickerValue
+    });
+
+    picker.setDateValue('2026-02-22');
+    expect(pickerValue.value).toBeNull();
+    expect(picker.dateValue.value).toBeNull();
+    expect(pickerChanges).toEqual(['2026-02-22']);
+
+    let rangeValue = ref({
+      start: null as string | null,
+      end: null as string | null
+    });
+    let rangeChanges: Array<{end: string | null, start: string | null}> = [];
+    let rangePicker = useStatelyDateRangePickerState({
+      onChange: (value) => {
+        rangeChanges.push({
+          start: value.start,
+          end: value.end
+        });
+      },
+      value: rangeValue
+    });
+
+    rangePicker.setDateRange({
+      start: '2026-02-21',
+      end: '2026-02-24'
+    });
+    expect(rangeValue.value).toEqual({
+      start: null,
+      end: null
+    });
+    expect(rangePicker.dateRange.value).toEqual({
+      start: null,
+      end: null
+    });
+    expect(rangeChanges).toEqual([{
+      start: '2026-02-21',
+      end: '2026-02-24'
+    }]);
   });
 
   it('manages vue-aria dialog labeling and open state', () => {

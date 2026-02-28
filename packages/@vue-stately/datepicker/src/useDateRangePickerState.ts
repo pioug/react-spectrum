@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
 import {type DateRangeValue, useDateRangePicker} from '@vue-aria/datepicker';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
@@ -61,13 +61,36 @@ export interface DateRangePickerStateOptions<T extends DateValue = DateValue> {
   onChange?: (value: DateRangeValue) => void,
   onOpenChange?: (isOpen: boolean) => void,
   shouldCloseOnSelect?: boolean | (() => boolean),
-  value?: Ref<DateRangeValue>
+  value?: Ref<DateRangeValue | undefined>
 }
 
 export function useDateRangePickerState<T extends DateValue = DateValue>(props: DateRangePickerStateOptions<T>): DateRangePickerState {
   let options = props ?? ({} as DateRangePickerStateOptions<T>);
   let internalValue = ref(cloneRange(options.defaultValue));
-  let value = options.value ?? internalValue;
+  let isControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
+  let wasControlled = ref(isControlled.value);
+
+  watch(isControlled, (nextIsControlled) => {
+    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasControlled.value = nextIsControlled;
+  });
+
+  let value = computed<DateRangeValue>({
+    get: () => {
+      if (isControlled.value && options.value) {
+        return cloneRange(options.value.value);
+      }
+
+      return cloneRange(internalValue.value);
+    },
+    set: (nextValue) => {
+      if (!isControlled.value) {
+        internalValue.value = cloneRange(nextValue);
+      }
+    }
+  }) as Ref<DateRangeValue>;
   let timeRange = ref<TimeRangeValue>({
     start: null,
     end: null

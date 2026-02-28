@@ -2242,6 +2242,20 @@
    - full Vue tests: `yarn test:vue` (622 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Datepicker controlled ownership parity (`@vue-stately/datepicker`)
+
+1. Closed controlled ownership drift in datepicker state hooks:
+   - `useDatePickerState` no longer mutates controlled `value` refs directly,
+   - `useDateRangePickerState` no longer mutates controlled `value` refs directly.
+2. Added controlled-mode transition diagnostics:
+   - both hooks now warn on controlled/uncontrolled transitions in development, matching the rest of the Vue stately controlled-state surface.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: updated baseline controlled datepicker tests to mirror parent updates and added explicit controlled-no-parent-update assertions for both single and range picker state.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately date picker open and selection state|manages vue-stately date range picker date and time range state|keeps vue-stately date picker and date range picker controlled without mutating control refs"`,
+   - full Vue tests: `yarn test:vue` (623 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

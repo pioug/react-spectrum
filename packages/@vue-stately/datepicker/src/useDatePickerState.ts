@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
 import {useDatePicker} from '@vue-aria/datepicker';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
@@ -15,7 +15,7 @@ export interface DatePickerStateOptions<T extends DateValue = DateValue> {
   onChange?: (value: string | null) => void,
   onOpenChange?: (isOpen: boolean) => void,
   shouldCloseOnSelect?: boolean | (() => boolean),
-  value?: Ref<string | null>
+  value?: Ref<string | null | undefined>
 }
 
 export interface DatePickerState {
@@ -45,7 +45,30 @@ export interface DatePickerState {
 export function useDatePickerState<T extends DateValue = DateValue>(props: DatePickerStateOptions<T>): DatePickerState {
   let options = props ?? ({} as DatePickerStateOptions<T>);
   let internalValue = ref<string | null>(options.defaultValue ?? null);
-  let value = options.value ?? internalValue;
+  let isControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
+  let wasControlled = ref(isControlled.value);
+
+  watch(isControlled, (nextIsControlled) => {
+    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasControlled.value = nextIsControlled;
+  });
+
+  let value = computed<string | null>({
+    get: () => {
+      if (isControlled.value && options.value) {
+        return options.value.value ?? null;
+      }
+
+      return internalValue.value;
+    },
+    set: (nextValue) => {
+      if (!isControlled.value) {
+        internalValue.value = nextValue;
+      }
+    }
+  }) as Ref<string | null>;
   let timeValue = ref<string | null>(null);
 
   let aria = useDatePicker({
