@@ -1361,6 +1361,8 @@ describe('Vue migration composition components', () => {
     picker.setColorValue('#123456');
     expect(pickerValue.value).toBe('#abcdef');
     expect(pickerChanges).toEqual(['#123456']);
+    picker.setColorValue('#123456');
+    expect(pickerChanges).toEqual(['#123456']);
 
     let channelValue = ref('#112233');
     let channelChanges: string[] = [];
@@ -1374,6 +1376,8 @@ describe('Vue migration composition components', () => {
 
     channelState.setInputValue('64');
     expect(channelValue.value).toBe('#112233');
+    expect(channelChanges).toEqual(['#402233']);
+    channelState.setInputValue('64');
     expect(channelChanges).toEqual(['#402233']);
   });
 

@@ -1,5 +1,6 @@
 import {type Color, type ColorChannel, getChannelRange, getColorChannelValue, parseColor, setColorChannelValue} from './Color';
-import {computed, type ComputedRef, ref, type Ref, watch} from 'vue';
+import {computed, type ComputedRef, ref, type Ref} from 'vue';
+import {useControlledState} from '@vue-stately/utils';
 
 export interface ColorChannelFieldStateOptions {
   channel: ColorChannel,
@@ -23,31 +24,11 @@ function clamp(value: number, min: number, max: number): number {
 }
 
 export function useColorChannelFieldState(options: ColorChannelFieldStateOptions): ColorChannelFieldState {
-  let internalValue = ref(parseColor(options.defaultValue ?? '#000000'));
-  let isControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasControlled.value = nextIsControlled;
-  });
-
-  let colorValue = computed<Color>({
-    get: () => {
-      if (isControlled.value && options.value) {
-        return options.value.value;
-      }
-
-      return internalValue.value;
-    },
-    set: (nextValue) => {
-      if (!isControlled.value) {
-        internalValue.value = nextValue;
-      }
-    }
-  }) as Ref<Color>;
+  let [colorValue, setColorValueInternal] = useControlledState(
+    options.value,
+    parseColor(options.defaultValue ?? '#000000'),
+    options.onChange
+  );
   let range = getChannelRange(options.channel);
 
   let numberValue = computed(() => getColorChannelValue(colorValue.value, options.channel));
@@ -60,12 +41,8 @@ export function useColorChannelFieldState(options: ColorChannelFieldStateOptions
       return;
     }
 
-    if (!isControlled.value) {
-      colorValue.value = nextColor;
-    }
-
+    setColorValueInternal(nextColor);
     inputValue.value = String(getColorChannelValue(nextColor, options.channel));
-    options.onChange?.(nextColor);
   };
 
   let validate = (nextValue: string): boolean => {

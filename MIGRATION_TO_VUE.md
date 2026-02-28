@@ -2355,6 +2355,21 @@
    - full Vue tests: `yarn test:vue` (631 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Color picker/channel helper parity remediation (`@vue-stately/color`)
+
+1. Closed residual ad hoc controlled ownership drift in color state hooks:
+   - `useColorPickerState` now routes controlled/uncontrolled `colorValue` through shared `useControlledState`,
+   - `useColorChannelFieldState` now routes controlled/uncontrolled channel color state through shared `useControlledState`.
+2. Preserved color behavior contracts:
+   - picker open/close/toggle lifecycle remains unchanged,
+   - channel field input parsing/clamping behavior and range stepping remain unchanged.
+3. Expanded controlled no-parent-sync regression assertions:
+   - `starters/vue/src/composition.spec.ts` now verifies one-turn duplicate suppression for repeated identical controlled updates in color picker and channel field.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "color picker and channel-field"` and full `src/composition.spec.ts`,
+   - full Vue tests: `yarn test:vue` (631 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
