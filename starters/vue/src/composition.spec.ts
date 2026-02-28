@@ -4530,6 +4530,45 @@ describe('Vue migration composition components', () => {
     expect(drop.isDropTarget.value).toBe(false);
   });
 
+  it('emits vue-aria useDrop onDropExit after a successful drop', () => {
+    let events: Array<string> = [];
+    let drop = useDrop({
+      acceptedDragTypes: ['ticket'],
+      onDrop: (_items, operation) => {
+        events.push(`drop:${operation}`);
+      },
+      onDropExit: () => {
+        events.push('exit');
+      }
+    });
+    let ticketItems = [{id: 'ticket-2', type: 'ticket', value: {id: 2}}];
+
+    expect(drop.enter(ticketItems)).toBe(true);
+    expect(drop.drop(ticketItems, 'copy')).toBe('copy');
+    expect(events).toEqual(['drop:copy', 'exit']);
+    expect(drop.isDropTarget.value).toBe(false);
+  });
+
+  it('emits vue-aria useDrop onDropExit when an active drop is canceled', () => {
+    let onDrop = vi.fn();
+    let exitEvents = 0;
+    let drop = useDrop({
+      acceptedDragTypes: ['ticket'],
+      onDrop,
+      onDropExit: () => {
+        exitEvents += 1;
+      }
+    });
+    let ticketItems = [{id: 'ticket-2', type: 'ticket', value: {id: 2}}];
+    let fileItems = [{id: 'asset-1', type: 'file', value: {name: 'spec.pdf'}}];
+
+    expect(drop.enter(ticketItems)).toBe(true);
+    expect(drop.drop(fileItems)).toBe('cancel');
+    expect(onDrop).not.toHaveBeenCalled();
+    expect(exitEvents).toBe(1);
+    expect(drop.isDropTarget.value).toBe(false);
+  });
+
   it('preserves directory drag metadata in vue-aria useDrag items', () => {
     let drag = useDrag({
       dragItems: [{

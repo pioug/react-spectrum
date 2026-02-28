@@ -151,16 +151,26 @@ export function useDrop(options: AriaDropOptions = {}): DropAria {
   let drop = (items: DragItem[], operation?: DropOperation) => {
     let resolvedOperation = resolveOperation(options, items, operation);
     if (!canDrop(items) || resolvedOperation === 'cancel') {
-      isDropTarget.value = false;
       lastDropOperation.value = 'cancel';
+      if (isDropTarget.value) {
+        exit();
+      } else {
+        isDropTarget.value = false;
+      }
+
       return 'cancel';
     }
 
     markActiveDragSessionHandled();
     lastDropItems.value = items;
     lastDropOperation.value = resolvedOperation;
-    isDropTarget.value = false;
     options.onDrop?.(items, resolvedOperation);
+    if (isDropTarget.value) {
+      exit();
+    } else {
+      isDropTarget.value = false;
+    }
+
     return resolvedOperation;
   };
 
