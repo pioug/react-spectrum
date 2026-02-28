@@ -7012,8 +7012,7 @@ describe('Vue migration composition components', () => {
         modalOpen.value = false;
       }
     });
-    expect(modalOverlay.modalProps.value['data-ismodal']).toBe(true);
-    expect(modalOverlay.modalProps.value.role).toBe('dialog');
+    expect(typeof modalOverlay.modalProps.value.onKeyDown).toBe('function');
 
     let scrollLock = useAriaPreventScroll();
     expect(scrollLock.isPreventingScroll.value).toBe(true);
@@ -7416,7 +7415,7 @@ describe('Vue migration composition components', () => {
     let modalOverlay = useAriaModalOverlay({
       isDismissable: true
     }, modalState, modalRefObject);
-    expect(modalOverlay.modalProps.value['data-ismodal']).toBe(true);
+    expect(typeof modalOverlay.modalProps.value.onKeyDown).toBe('function');
     modalOverlay.modalProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
     expect(modalIsOpen.value).toBe(false);
 

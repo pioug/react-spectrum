@@ -16,9 +16,7 @@ export interface AriaModalOverlayOptions {
 export interface ModalOverlayAria {
   dispose: () => void,
   modalProps: ComputedRef<{
-    'data-ismodal': boolean,
-    onKeyDown: (event: KeyboardEvent) => void,
-    role: 'dialog'
+    onKeyDown: (event: KeyboardEvent) => void
   }>,
   underlayProps: ComputedRef<{
     onPointerDown: (event: PointerEvent) => void
@@ -61,8 +59,6 @@ export function useModalOverlay(options: AriaModalOverlayOptions): ModalOverlayA
       overlay.dispose();
     },
     modalProps: computed(() => ({
-      'data-ismodal': isOpen.value,
-      role: 'dialog' as const,
       onKeyDown: overlay.overlayProps.value.onKeyDown
     })),
     underlayProps: overlay.underlayProps
