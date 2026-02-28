@@ -4453,6 +4453,23 @@ describe('Vue migration composition components', () => {
     expect(onDrop).not.toHaveBeenCalled();
   });
 
+  it('rejects vue-aria useDrop cancel operations without acceptedDragTypes filters', () => {
+    let onDropEnter = vi.fn();
+    let onDrop = vi.fn();
+    let drop = useDrop({
+      getDropOperation: () => 'cancel',
+      onDropEnter,
+      onDrop
+    });
+    let ticketItems = [{id: 'ticket-2', type: 'ticket', value: {id: 2}}];
+
+    expect(drop.canDrop(ticketItems)).toBe(false);
+    expect(drop.enter(ticketItems)).toBe(false);
+    expect(drop.drop(ticketItems)).toBe('cancel');
+    expect(onDropEnter).not.toHaveBeenCalled();
+    expect(onDrop).not.toHaveBeenCalled();
+  });
+
   it('fires vue-aria useDrop onDropEnter once per active drop target session', () => {
     let enterEvents: Array<string> = [];
     let drop = useDrop({

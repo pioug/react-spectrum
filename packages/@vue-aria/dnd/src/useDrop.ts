@@ -87,20 +87,18 @@ export function useDrop(options: AriaDropOptions = {}): DropAria {
       return false;
     }
 
-    if (acceptedDragTypes.value.size === 0) {
-      return true;
-    }
-
-    let hasAcceptedType = items.some((item) => {
-      let itemTypes = getAcceptedItemTypes(item);
-      for (let type of itemTypes) {
-        if (acceptedDragTypes.value.has(type)) {
-          return true;
+    let hasAcceptedType = acceptedDragTypes.value.size === 0
+      ? true
+      : items.some((item) => {
+        let itemTypes = getAcceptedItemTypes(item);
+        for (let type of itemTypes) {
+          if (acceptedDragTypes.value.has(type)) {
+            return true;
+          }
         }
-      }
 
-      return false;
-    });
+        return false;
+      });
     if (!hasAcceptedType) {
       return false;
     }
