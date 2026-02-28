@@ -4307,6 +4307,42 @@ describe('Vue migration composition components', () => {
     expect(dropIndicator.isHidden.value).toBe(true);
   });
 
+  it('emits useDroppableCollection drop callback payload with coordinates and operation', () => {
+    let dropPayloads: Array<{dropOperation: string, type: string, x: number, y: number}> = [];
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: () => 'move'
+    });
+    dropState.setTarget({type: 'root'});
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      onDrop: (event) => {
+        dropPayloads.push({
+          type: String(event.type),
+          dropOperation: String(event.dropOperation),
+          x: Number(event.x),
+          y: Number(event.y)
+        });
+      }
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDrop: (input: unknown, operation?: 'cancel' | 'copy' | 'link' | 'move') => 'cancel' | 'copy' | 'link' | 'move'
+      }}
+    };
+
+    expect(droppableCollection.collectionProps.value.onDrop({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 33,
+      clientY: 44
+    }, 'move')).toBe('move');
+    expect(dropPayloads).toEqual([{
+      type: 'drop',
+      dropOperation: 'move',
+      x: 33,
+      y: 44
+    }]);
+  });
+
   it('toggles vue-stately global feature flags', () => {
     expect(statelyTableNestedRows()).toBe(false);
     expect(statelyShadowDOM()).toBe(false);
