@@ -25,6 +25,4 @@ export {Item};
 export {VueTabs};
 export type {TabItemData, TabsValue} from './VueTabs';
 
-export type SpectrumTabsProps = Record<string, unknown>;
-export type SpectrumTabListProps = SpectrumTabsProps;
-export type SpectrumTabPanelsProps = SpectrumTabsProps;
+export type {SpectrumTabListProps, SpectrumTabPanelsProps, SpectrumTabsProps} from '@vue-types/tabs';

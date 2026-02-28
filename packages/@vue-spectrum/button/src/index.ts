@@ -817,7 +817,9 @@ export const ClearButton = defineComponent({
   }
 });
 
-export type SpectrumButtonProps = Record<string, unknown>;
-export type SpectrumActionButtonProps = SpectrumButtonProps;
-export type SpectrumLogicButtonProps = SpectrumButtonProps;
-export type SpectrumToggleButtonProps = SpectrumButtonProps;
+export type {
+  SpectrumActionButtonProps,
+  SpectrumButtonProps,
+  SpectrumLogicButtonProps,
+  SpectrumToggleButtonProps
+} from '@vue-types/button';
