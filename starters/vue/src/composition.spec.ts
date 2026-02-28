@@ -5026,6 +5026,29 @@ describe('Vue migration composition components', () => {
     expect(tabPanel.tabPanelProps.value['aria-labelledby']).toBe(tabList.state.getTabId('details'));
     expect(tabPanel.tabPanelProps.value.tabIndex).toBe(0);
     expect(tabPanel.tabPanelProps.value['aria-describedby']).toBe('project-tabs-help');
+
+    let composedTabList = useAriaTabList({
+      'aria-label': 'Project sections',
+      'aria-labelledby': 'external-tablist-label',
+      id: 'project-tablist',
+      selectedKey: ref('overview'),
+      tabs: ['overview', 'details']
+    });
+
+    let composedTabListIds = composedTabList.tabListProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(composedTabListIds).toContain('external-tablist-label');
+    expect(composedTabListIds).toContain('project-tablist');
+    expect(composedTabList.tabListProps.value['aria-label']).toBe('Project sections');
+
+    let composedTabPanel = useAriaTabPanel({
+      'aria-label': 'Section panel',
+      id: 'project-tabpanel',
+      selectedKey: ref('overview')
+    }, composedTabList.state);
+    let composedTabPanelIds = composedTabPanel.tabPanelProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(composedTabPanelIds).toContain(composedTabList.state.getTabId('overview'));
+    expect(composedTabPanelIds).toContain('project-tabpanel');
+    expect(composedTabPanel.tabPanelProps.value['aria-label']).toBe('Section panel');
   });
 
   it('runs vue-aria test-utils long press and tester baselines', async () => {

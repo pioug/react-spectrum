@@ -62,7 +62,22 @@ export function useTabPanel(options: AriaTabPanelOptions = {}, state: TabListSta
     return resolveOptionalString(options.ariaLabelledby) ?? resolveOptionalString(options['aria-labelledby']);
   });
   let ariaLabelledby = computed(() => {
-    return resolvedAriaLabelledby.value ?? (state && selectedKey.value != null ? state.getTabId(selectedKey.value) : undefined);
+    let ids = new Set<string>();
+    let labelledBy = resolvedAriaLabelledby.value ?? (state && selectedKey.value != null ? state.getTabId(selectedKey.value) : undefined);
+    if (labelledBy) {
+      for (let nextId of labelledBy.trim().split(/\s+/)) {
+        if (nextId) {
+          ids.add(nextId);
+        }
+      }
+    }
+
+    let ariaLabel = resolveOptionalString(options.ariaLabel) ?? resolveOptionalString(options['aria-label']);
+    if (ariaLabel && ids.size > 0) {
+      ids.add(id.value);
+    }
+
+    return ids.size > 0 ? Array.from(ids).join(' ') : undefined;
   });
 
   let ariaLabel = computed(() => resolveOptionalString(options.ariaLabel) ?? resolveOptionalString(options['aria-label']));
@@ -73,7 +88,7 @@ export function useTabPanel(options: AriaTabPanelOptions = {}, state: TabListSta
       id: id.value,
       role: 'tabpanel' as const,
       tabIndex: hasTabbableChild.value ? undefined : 0,
-      'aria-label': ariaLabelledby.value ? undefined : ariaLabel.value,
+      'aria-label': ariaLabel.value,
       'aria-labelledby': ariaLabelledby.value,
       'aria-describedby': resolveOptionalString(options['aria-describedby']),
       'aria-details': resolveOptionalString(options['aria-details'])

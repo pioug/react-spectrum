@@ -973,6 +973,21 @@
    - full Vue tests: `yarn test:vue` (531 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 27, 2026 — Shared `useTabList`/`useTabPanel` label-composition parity (`@vue-aria/tabs`)
+
+1. Aligned tablist label ownership semantics with React `useLabels` behavior:
+   - tablist now preserves explicit `aria-label` even when `aria-labelledby` is present,
+   - when both are present, tablist id now participates in `aria-labelledby`.
+2. Aligned tabpanel label ownership semantics with React `useLabels` behavior:
+   - tabpanel now preserves explicit `aria-label` while still composing selected-tab ownership,
+   - when `aria-label` coexists with panel/tab `aria-labelledby` sources, panel id now participates in `aria-labelledby`.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: explicit tablist/tabpanel assertions for dual-label composition and self-id ownership.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "tabs semantics and manual activation behavior"`,
+   - full Vue tests: `yarn test:vue` (531 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

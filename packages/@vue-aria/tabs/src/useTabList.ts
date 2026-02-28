@@ -100,8 +100,24 @@ export function useTabList(options: AriaTabListOptions): TabListAria {
   let selectedKey = options.selectedKey ?? ref<TabKey | null>(null);
   let focusedKey = options.focusedKey ?? ref<TabKey | null>(null);
   let tabListId = computed(() => resolveOptionalString(options.id) ?? `vue-tablist-${tabListCounter}`);
-  let ariaLabel = computed(() => resolveOptionalString(options.ariaLabel) ?? resolveOptionalString(options['aria-label']) ?? 'Tabs');
+  let ariaLabel = computed(() => resolveOptionalString(options.ariaLabel) ?? resolveOptionalString(options['aria-label']));
   let ariaLabelledby = computed(() => resolveOptionalString(options.ariaLabelledby) ?? resolveOptionalString(options['aria-labelledby']));
+  let combinedAriaLabelledBy = computed(() => {
+    let ids = new Set<string>();
+    if (ariaLabelledby.value) {
+      for (let id of ariaLabelledby.value.trim().split(/\s+/)) {
+        if (id) {
+          ids.add(id);
+        }
+      }
+    }
+
+    if (ariaLabel.value && ids.size > 0) {
+      ids.add(tabListId.value);
+    }
+
+    return ids.size > 0 ? Array.from(ids).join(' ') : undefined;
+  });
 
   let containsKey = (key: TabKey): boolean => {
     return tabs.value.includes(String(key));
@@ -250,8 +266,8 @@ export function useTabList(options: AriaTabListOptions): TabListAria {
     tabListProps: computed(() => ({
       id: tabListId.value,
       role: 'tablist' as const,
-      'aria-label': ariaLabelledby.value ? undefined : ariaLabel.value,
-      'aria-labelledby': ariaLabelledby.value,
+      'aria-label': ariaLabel.value,
+      'aria-labelledby': combinedAriaLabelledBy.value,
       'aria-orientation': orientation.value,
       onKeyDown
     }))
