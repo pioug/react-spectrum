@@ -10383,6 +10383,47 @@ describe('Vue migration composition components', () => {
     expect(removedKeys).toEqual([['react'], ['react', 'vue'], ['vue']]);
   });
 
+  it('supports react-style tag overload signatures with list state', () => {
+    let removedKeys: string[][] = [];
+    let state = useStatelyListState({
+      collection: new StatelyListCollection([
+        {key: 'react', props: {isDisabled: false}, textValue: 'React', type: 'item'},
+        {key: 'vue', textValue: 'Vue', type: 'item'}
+      ]),
+      selectedKeys: ref(new Set<string>(['react'])),
+      selectionMode: 'multiple'
+    });
+
+    let reactTagGroup = useAriaTagGroup({
+      'aria-label': 'Framework tags',
+      onRemove: (keys) => {
+        removedKeys.push(Array.from(keys).sort());
+      }
+    } as unknown as Parameters<typeof useAriaTagGroup>[0], state as unknown as Parameters<typeof useAriaTagGroup>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaTagGroup>[2]);
+    expect(reactTagGroup.gridProps.value.role).toBe('grid');
+
+    let reactTag = useAriaTag({
+      item: state.collection.getItem('react')
+    } as unknown as Parameters<typeof useAriaTag>[0], state as unknown as Parameters<typeof useAriaTag>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaTag>[2]);
+    reactTag.rowProps.value.onKeyDown?.({
+      key: 'Delete',
+      preventDefault: vi.fn()
+    } as unknown as KeyboardEvent);
+    expect(removedKeys).toEqual([['react']]);
+
+    let vueTag = useAriaTag({
+      item: state.collection.getItem('vue')
+    } as unknown as Parameters<typeof useAriaTag>[0], state as unknown as Parameters<typeof useAriaTag>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaTag>[2]);
+    vueTag.removeButtonProps.value.onPress();
+    expect(removedKeys).toEqual([['react'], ['vue']]);
+  });
+
   it('computes vue-aria tabs semantics and manual activation behavior', () => {
     let selectedKey = ref<string | null>('overview');
     let focusedKey = ref<string | null>('overview');
