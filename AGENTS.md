@@ -19,16 +19,20 @@ Source of truth: this file (`AGENTS.md`)
 - Validate each component in all relevant Storybook namespaces:
   - `packages/@vue-spectrum/*/stories`
   - `packages/vue-aria-components/stories`
+- Use `PARITY_REVIEW_CHECKLIST.md` as the mandatory progression tracker for the re-review; work top-to-bottom unless explicitly reprioritized.
+- Mark checklist progress continuously while working (`[ ]` -> `[x]`) and record short evidence notes for each completed item.
 - Commit and push often in small, reviewable increments; keep changes scoped to one component family/behavior cluster.
 - Record scope, gaps, evidence, and validation outputs in commit/PR notes.
 
 ## Per-Component Workflow
 
-1. Build parity artifacts (React artifact + fresh Vue Storybook build).
-2. Compare the exact same story id in both iframes (`iframe.html?id=<story-id>&viewMode=story`).
-3. Compare React vs Vue source/API/props/states, and verify visual output, DOM structure, ARIA/data attributes, state classes/transitions, computed styles, and style-source wiring (imports/dependencies/selectors).
-4. Fix Vue internals and add/adjust regression tests for the gap.
-5. Run full validation gate; move to next component only after pass.
+1. Select the next unchecked item in `PARITY_REVIEW_CHECKLIST.md`.
+2. Build parity artifacts (React artifact + fresh Vue Storybook build).
+3. Compare the exact same story id in both iframes (`iframe.html?id=<story-id>&viewMode=story`).
+4. Compare React vs Vue source/API/props/states, and verify visual output, DOM structure, ARIA/data attributes, state classes/transitions, computed styles, and style-source wiring (imports/dependencies/selectors).
+5. Fix Vue internals and add/adjust regression tests for the gap.
+6. Run full validation gate; move to next component only after pass.
+7. Mark the checklist item complete and add brief evidence (gap + fix + validation).
 
 ## Systematic Gap Detection (Required)
 
@@ -80,3 +84,4 @@ Use this checklist for every component batch. Do not skip steps even when tests 
 ## Definition Of Done
 
 - Structure, behavior, styles, controls, and tests match React across all relevant namespaces, with evidence logged.
+- `PARITY_REVIEW_CHECKLIST.md` is fully completed for the reviewed scope, with each completed item checked and evidenced.
