@@ -1,1 +1,1 @@
-export {Radio, RadioGroup, VueRadio, VueRadioGroup} from './src';
+export * from './src';

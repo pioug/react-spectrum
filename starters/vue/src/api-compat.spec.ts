@@ -170,6 +170,18 @@ import {
   Switch as RootSwitch,
   VueSwitch as RootVueSwitch
 } from '../../../packages/@vue-spectrum/switch/index';
+import {
+  Radio,
+  RadioGroup,
+  VueRadio,
+  VueRadioGroup
+} from '@vue-spectrum/radio';
+import {
+  Radio as RootRadio,
+  RadioGroup as RootRadioGroup,
+  VueRadio as RootVueRadio,
+  VueRadioGroup as RootVueRadioGroup
+} from '../../../packages/@vue-spectrum/radio/index';
 import {DIRECTORY_DRAG_TYPE, DropZone as SpectrumDropZone, useDragAndDrop as useSpectrumDragAndDrop} from '@vue-spectrum/dnd';
 import {
   Item as TabItem,
@@ -362,6 +374,18 @@ describe('Vue Spectrum API compatibility aliases', () => {
   it('keeps root switch entry exports aligned with source exports', () => {
     expect(RootSwitch).toBe(Switch);
     expect(RootVueSwitch).toBe(VueSwitch);
+  });
+
+  it('keeps radio exports aligned with VueRadio and VueRadioGroup base entries', () => {
+    expect(Radio).toBe(VueRadio);
+    expect(RadioGroup).toBe(VueRadioGroup);
+  });
+
+  it('keeps root radio entry exports aligned with source exports', () => {
+    expect(RootRadio).toBe(Radio);
+    expect(RootRadioGroup).toBe(RadioGroup);
+    expect(RootVueRadio).toBe(VueRadio);
+    expect(RootVueRadioGroup).toBe(VueRadioGroup);
   });
 
   it('exports dnd drag/drop compatibility primitives', () => {
