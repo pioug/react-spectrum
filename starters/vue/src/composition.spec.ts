@@ -9938,6 +9938,101 @@ describe('Vue migration composition components', () => {
     expect(composedTabPanel.tabPanelProps.value['aria-label']).toBe('Section panel');
   });
 
+  it('supports react-style tabs overload signatures with external state', () => {
+    let selectedKeys = ref(new Set<string>(['overview']));
+    let focusedKey = ref<string | null>('overview');
+    let setSelectedKeysCalls: string[][] = [];
+    let collection = {
+      getKeys: () => ['overview', 'details', 'history'],
+      getItem: (key: string) => {
+        if (!['overview', 'details', 'history'].includes(key)) {
+          return null;
+        }
+
+        return {
+          type: 'item',
+          key,
+          props: {
+            isDisabled: key === 'history'
+          }
+        };
+      }
+    };
+    let selectionManager = {
+      focusedKey,
+      disabledKeys: new Set<string>(['history']),
+      setFocusedKey: (key: string | null) => {
+        focusedKey.value = key == null ? null : String(key);
+      },
+      setSelectedKeys: (keys: Iterable<string>) => {
+        selectedKeys.value = new Set(Array.from(keys, (key) => String(key)));
+        setSelectedKeysCalls.push(Array.from(selectedKeys.value));
+      }
+    };
+    let reactStyleState = {
+      collection,
+      disabledKeys: new Set<string>(['history']),
+      isDisabled: false,
+      selectionManager,
+      selectedKey: computed(() => Array.from(selectedKeys.value)[0] ?? null),
+      setSelectedKey: (key: string | null) => {
+        if (key == null || key === 'history') {
+          return;
+        }
+
+        selectedKeys.value = new Set([String(key)]);
+      }
+    };
+
+    let tabList = useAriaTabList({
+      keyboardActivation: 'manual'
+    } as unknown as Parameters<typeof useAriaTabList>[0], reactStyleState as unknown as Parameters<typeof useAriaTabList>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaTabList>[2]);
+    expect(tabList.tabListProps.value.role).toBe('tablist');
+    expect(tabList.state.isSelected('overview')).toBe(true);
+    expect(tabList.state.isDisabledKey('history')).toBe(true);
+
+    let preventArrowDefault = vi.fn();
+    tabList.tabListProps.value.onKeyDown({
+      key: 'ArrowRight',
+      preventDefault: preventArrowDefault
+    } as unknown as KeyboardEvent);
+    expect(preventArrowDefault).toHaveBeenCalledTimes(1);
+    expect(focusedKey.value).toBe('details');
+    expect(Array.from(selectedKeys.value)).toEqual(['overview']);
+
+    let preventEnterDefault = vi.fn();
+    tabList.tabListProps.value.onKeyDown({
+      key: 'Enter',
+      preventDefault: preventEnterDefault
+    } as unknown as KeyboardEvent);
+    expect(preventEnterDefault).toHaveBeenCalledTimes(1);
+    expect(Array.from(selectedKeys.value)).toEqual(['details']);
+
+    let detailsTab = useAriaTab({
+      key: 'details'
+    } as unknown as Parameters<typeof useAriaTab>[0], reactStyleState as unknown as Parameters<typeof useAriaTab>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaTab>[2]);
+    expect(detailsTab.isSelected.value).toBe(true);
+
+    let historyTab = useAriaTab({
+      key: 'history'
+    } as unknown as Parameters<typeof useAriaTab>[0], reactStyleState as unknown as Parameters<typeof useAriaTab>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaTab>[2]);
+    historyTab.press();
+    expect(Array.from(selectedKeys.value)).toEqual(['details']);
+
+    let tabPanel = useAriaTabPanel({} as unknown as Parameters<typeof useAriaTabPanel>[0], reactStyleState as unknown as Parameters<typeof useAriaTabPanel>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaTabPanel>[2]);
+    expect(tabPanel.tabPanelProps.value.id).toBe(tabList.state.getTabPanelId('details'));
+    expect(tabPanel.tabPanelProps.value['aria-labelledby']).toBe(tabList.state.getTabId('details'));
+    expect(setSelectedKeysCalls).toEqual([]);
+  });
+
   it('warns when vue-aria tab panel is used without tab list state', () => {
     let errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
