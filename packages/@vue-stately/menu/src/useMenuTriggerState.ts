@@ -47,7 +47,7 @@ export function useMenuTriggerState(props: MenuTriggerProps = {}): RootMenuTrigg
   let expandedKeysStack = ref<Key[]>([]);
 
   let setOpen = (nextOpen: boolean): void => {
-    if (unref(props.isDisabled)) {
+    if (unref(props.isDisabled) && nextOpen) {
       return;
     }
 

@@ -3497,6 +3497,16 @@ describe('Vue migration composition components', () => {
     expect(state.isOpen.value).toBe(false);
     expect(state.expandedKeysStack.value).toEqual([]);
     expect(openChanges).toEqual([true, false]);
+
+    let disabledState = useStatelyMenuTriggerState({
+      defaultOpen: true,
+      isDisabled: true
+    });
+    expect(disabledState.isOpen.value).toBe(true);
+    disabledState.close();
+    expect(disabledState.isOpen.value).toBe(false);
+    disabledState.open('first');
+    expect(disabledState.isOpen.value).toBe(false);
   });
 
   it('keeps vue-stately menu trigger controlled without mutating control refs', () => {

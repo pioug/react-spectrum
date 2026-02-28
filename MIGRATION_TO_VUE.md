@@ -2941,6 +2941,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Menu-trigger store disabled close parity (`@vue-stately/menu`)
+
+1. Closed disabled lifecycle drift in `useMenuTriggerState`:
+   - disabled state now blocks only open transitions (`nextOpen === true`) and allows close transitions, matching React overlay-trigger/menu-trigger semantics.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` menu-trigger-state assertions now verify:
+     - disabled default-open state can close,
+     - disabled state cannot reopen once closed.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately menu trigger open state and submenu stack"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
