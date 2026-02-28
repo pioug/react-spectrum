@@ -275,6 +275,8 @@ function useBaseButtonSemantics(
     let userBlur = attrs.onBlur as EventHandler<FocusEvent>;
     let userKeyDown = attrs.onKeydown as EventHandler<KeyboardEvent>;
     let userKeyUp = attrs.onKeyup as EventHandler<KeyboardEvent>;
+    let unsafeStyle = attrs.UNSAFE_style ?? attrs.unsafeStyle;
+    let styleValue = unsafeStyle ?? attrs.style;
 
     let propsForElement: Record<string, unknown> = {
       ...attrs,
@@ -293,10 +295,13 @@ function useBaseButtonSemantics(
       onPointerup: chainHandlers(userPointerUp, interaction.onPointerUp)
     };
 
+    delete propsForElement.UNSAFE_style;
+    delete propsForElement.unsafeStyle;
+
     if (interaction.isPressed.value) {
-      propsForElement.style = mergePressedUserSelectStyle(attrs.style);
+      propsForElement.style = mergePressedUserSelectStyle(styleValue);
     } else {
-      propsForElement.style = attrs.style ?? null;
+      propsForElement.style = styleValue ?? null;
       if (propsForElement.style === '') {
         propsForElement.style = null;
       }

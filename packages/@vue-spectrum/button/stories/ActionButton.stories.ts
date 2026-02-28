@@ -138,7 +138,7 @@ function renderWithBackground(backgroundColor: string, content: ReturnType<typeo
     style: {
       backgroundColor,
       display: 'inline-block',
-      padding: '24px'
+      padding: '80px'
     }
   }, [content]);
 }
@@ -248,7 +248,7 @@ export const StaticWhite: Story = {
   },
   render: (args: ActionButtonStoryArgs) => ({
     render() {
-      return wrapInProvider(renderWithBackground('rgb(9, 90, 186)', renderActionPair(
+      return wrapInProvider(renderWithBackground('rgb(0, 87, 190)', renderActionPair(
         args,
         [renderAddIcon(), h('span', {class: 'spectrum-ActionButton-label'}, 'Default')],
         [h('span', {class: 'spectrum-ActionButton-label'}, 'Disabled'), renderAddIcon()]
@@ -272,7 +272,7 @@ export const StaticBlack: Story = {
   },
   render: (args: ActionButtonStoryArgs) => ({
     render() {
-      return wrapInProvider(renderWithBackground('rgb(255, 216, 64)', renderActionPair(
+      return wrapInProvider(renderWithBackground('rgb(238, 205, 0)', renderActionPair(
         args,
         [renderAddIcon(), h('span', {class: 'spectrum-ActionButton-label'}, 'Default')],
         [h('span', {class: 'spectrum-ActionButton-label'}, 'Disabled'), renderAddIcon()]

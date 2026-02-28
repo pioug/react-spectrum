@@ -118,7 +118,7 @@ function renderBackground(backgroundColor: string, content: ReturnType<typeof h>
     style: {
       backgroundColor,
       display: 'inline-block',
-      padding: '24px'
+      padding: '80px'
     }
   }, [content]);
 }
@@ -252,7 +252,7 @@ export const StaticWhite: Story = {
       }
     }
   },
-  render: makePairRenderer([{}], 'rgb(9, 90, 186)'),
+  render: makePairRenderer([{}], 'rgb(0, 87, 190)'),
   name: 'staticColor: white'
 };
 
@@ -268,7 +268,7 @@ export const StaticBlack: Story = {
       }
     }
   },
-  render: makePairRenderer([{}], 'rgb(255, 216, 64)'),
+  render: makePairRenderer([{}], 'rgb(238, 205, 0)'),
   name: 'staticColor: black'
 };
 
@@ -280,7 +280,7 @@ export const WHCM: Story = {
       {isQuiet: true},
       {isEmphasized: true, isQuiet: true}
     ],
-    'rgb(255, 216, 64)'
+    'rgb(238, 205, 0)'
   )({}),
   name: 'styles to check WHCM support'
 };

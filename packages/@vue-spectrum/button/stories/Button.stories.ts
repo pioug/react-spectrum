@@ -1,5 +1,6 @@
 import {action} from 'storybook/actions';
 import {Button} from '@vue-spectrum/button';
+import Bell from '@spectrum-icons-vue/workflow/Bell';
 import {h, ref} from 'vue';
 import {Provider} from '@vue-spectrum/provider';
 import {theme as defaultTheme} from '@vue-spectrum/theme-default';
@@ -31,6 +32,8 @@ type ButtonRenderProps = Omit<
   ButtonStoryArgs,
   'onBlur' | 'onFocus' | 'onKeyUp' | 'onPress' | 'onPressChange' | 'onPressEnd' | 'onPressStart' | 'onPressUp'
 >;
+
+const PENDING_TIMEOUT = 5000;
 
 function pickButtonProps(args: ButtonStoryArgs): ButtonRenderProps {
   let {
@@ -124,21 +127,8 @@ function createPressActionHandlers(args: ButtonStoryArgs) {
   };
 }
 
-function renderBellIcon() {
-  return h('svg', {
-    'aria-hidden': 'true',
-    class: 'spectrum-Icon',
-    viewBox: '0 0 24 24',
-    width: '18',
-    height: '18'
-  }, [
-    h('circle', {
-      cx: '12',
-      cy: '12',
-      r: '7',
-      fill: 'currentColor'
-    })
-  ]);
+function renderBellIcon(ariaLabel?: string) {
+  return h(Bell, ariaLabel ? {'aria-label': ariaLabel} : {'aria-hidden': 'true'});
 }
 
 function wrapInProvider(args: ButtonStoryArgs, content: ReturnType<typeof h>) {
@@ -204,6 +194,23 @@ function makePairRenderer(
       return wrapInProvider(mergedArgs, renderButtonPair(mergedArgs, defaultChildren, disabledChildren));
     }
   });
+}
+
+function renderPendingButtonContainer(args: ButtonStoryArgs, content: ReturnType<typeof h>) {
+  let backgroundColor: string | undefined;
+  if (args.variant === 'overBackground' || args.staticColor === 'white') {
+    backgroundColor = 'rgb(9, 90, 186)';
+  } else if (args.staticColor === 'black') {
+    backgroundColor = 'var(--spectrum-global-color-static-yellow-200)';
+  }
+
+  return h('div', {
+    style: {
+      backgroundColor,
+      display: 'inline-block',
+      padding: '16px'
+    }
+  }, [content]);
 }
 
 const meta = {
@@ -367,25 +374,17 @@ export const UserSelect: Story = {
       }, [
         h(Button, {
           variant: 'cta',
-          style: 'fill',
+          UNSAFE_style: this.firstReady ? undefined : {background: 'red', userSelect: 'text'},
           onPointerdown: this.activateFirst
         }, {
-          default: () => [
-            h('span', {
-              style: this.firstReady ? undefined : {background: 'red', userSelect: 'text'}
-            }, 'Press and hold (overwrite)')
-          ]
+          default: () => ['Press and hold (overwrite)']
         }),
         h(Button, {
           variant: 'cta',
-          style: 'fill',
+          UNSAFE_style: this.secondReady ? undefined : {background: 'red'},
           onPointerdown: this.activateSecond
         }, {
-          default: () => [
-            h('span', {
-              style: this.secondReady ? undefined : {background: 'red'}
-            }, 'Press and hold (no overwrite)')
-          ]
+          default: () => ['Press and hold (no overwrite)']
         })
       ]));
     }
@@ -402,63 +401,183 @@ export const PendingSpinner: Story = {
     setup() {
       let pendingDefault = ref(false);
       let pendingIcon = ref(false);
+      let pendingOnClick = ref(false);
+      let pendingAriaLabel = ref(false);
+      let pendingIconAriaLabel = ref(false);
+      let pendingNoAriaLabel = ref(false);
+      let pendingTooltip = ref(false);
+      let pendingForm = ref(false);
 
-      let triggerPending = (target: 'default' | 'icon') => {
-        if (target === 'default') {
-          pendingDefault.value = true;
-          setTimeout(() => {
-            pendingDefault.value = false;
-          }, 5000);
-          return;
-        }
-
-        pendingIcon.value = true;
+      let startPending = (state: {value: boolean}) => {
+        state.value = true;
         setTimeout(() => {
-          pendingIcon.value = false;
-        }, 5000);
+          state.value = false;
+        }, PENDING_TIMEOUT);
+      };
+
+      let handleFormSubmit = (event: Event) => {
+        event.preventDefault();
+        if (!pendingForm.value) {
+          startPending(pendingForm);
+        }
       };
 
       return {
         buttonProps: pickButtonProps(args),
+        handleFormSubmit,
+        pendingAriaLabel,
         pendingDefault,
+        pendingForm,
         pendingIcon,
-        triggerPending
+        pendingIconAriaLabel,
+        pendingNoAriaLabel,
+        pendingOnClick,
+        pendingTooltip,
+        startPending
       };
     },
     render() {
+      let iconOnly = [renderBellIcon()];
+
       return wrapInProvider(args, h('div', {
         style: {
-          display: 'flex',
-          flexWrap: 'wrap',
-          gap: '16px'
+          display: 'grid',
+          rowGap: '8px'
         }
       }, [
-        h(Button, {
-          ...this.buttonProps,
-          isPending: this.pendingDefault,
-          onClick: (event: MouseEvent) => {
-            action('press')(event);
-            this.triggerPending('default');
+        h('div', {
+          style: {
+            display: 'flex',
+            flexWrap: 'wrap'
           }
-        }, {
-          default: () => ['click me!']
-        }),
-        h(Button, {
-          ...this.buttonProps,
-          isPending: this.pendingIcon,
-          onClick: (event: MouseEvent) => {
-            action('press')(event);
-            this.triggerPending('icon');
+        }, [
+          renderPendingButtonContainer(this.buttonProps, h(Button, {
+            ...this.buttonProps,
+            isPending: this.pendingDefault,
+            onClick: (event: MouseEvent) => {
+              action('press')(event);
+              this.startPending(this.pendingDefault);
+            }
+          }, {
+            default: () => ['click me!']
+          })),
+          renderPendingButtonContainer(this.buttonProps, h(Button, {
+            ...this.buttonProps,
+            isPending: this.pendingIcon,
+            onClick: (event: MouseEvent) => {
+              action('press')(event);
+              this.startPending(this.pendingIcon);
+            }
+          }, {
+            default: () => [renderBellIcon(), h('span', {class: 'spectrum-Button-label'}, 'I have an icon')]
+          })),
+          renderPendingButtonContainer(this.buttonProps, h(Button, {
+            ...this.buttonProps,
+            isPending: this.pendingOnClick,
+            onClick: (event: MouseEvent) => {
+              action('click')(event);
+              this.startPending(this.pendingOnClick);
+            }
+          }, {
+            default: () => [h('span', {class: 'spectrum-Button-label'}, 'with onClick')]
+          })),
+          renderPendingButtonContainer(this.buttonProps, h(Button, {
+            ...this.buttonProps,
+            isDisabled: true
+          }, {
+            default: () => ['disabled']
+          }))
+        ]),
+        h('div', {
+          style: {
+            alignItems: 'center',
+            display: 'flex',
+            flexWrap: 'wrap'
           }
-        }, {
-          default: () => [renderBellIcon(), h('span', {class: 'spectrum-Button-label'}, 'I have an icon')]
-        }),
-        h(Button, {
-          ...this.buttonProps,
-          isPending: args.isPending
-        }, {
-          default: () => [h('span', {class: 'spectrum-Button-label'}, 'Controlled')]
-        })
+        }, [
+          h('span', 'Aria-label "Button label" on button'),
+          renderPendingButtonContainer(this.buttonProps, h(Button, {
+            ...this.buttonProps,
+            'aria-label': 'Button label',
+            isPending: this.pendingAriaLabel,
+            onClick: (event: MouseEvent) => {
+              action('press')(event);
+              this.startPending(this.pendingAriaLabel);
+            }
+          }, {
+            default: () => iconOnly
+          })),
+          h('span', 'Aria-label "icon label" on icon'),
+          renderPendingButtonContainer(this.buttonProps, h(Button, {
+            ...this.buttonProps,
+            isPending: this.pendingIconAriaLabel,
+            onClick: (event: MouseEvent) => {
+              action('press')(event);
+              this.startPending(this.pendingIconAriaLabel);
+            }
+          }, {
+            default: () => [renderBellIcon('icon label')]
+          })),
+          h('span', 'No aria-labels--bad implementation'),
+          renderPendingButtonContainer(this.buttonProps, h(Button, {
+            ...this.buttonProps,
+            isPending: this.pendingNoAriaLabel,
+            onClick: (event: MouseEvent) => {
+              action('press')(event);
+              this.startPending(this.pendingNoAriaLabel);
+            }
+          }, {
+            default: () => iconOnly
+          })),
+          h('span', 'Tooltip and aria-label "Notifications" on button'),
+          renderPendingButtonContainer(this.buttonProps, h(Button, {
+            ...this.buttonProps,
+            'aria-label': 'Notifications',
+            isPending: this.pendingTooltip,
+            onClick: (event: MouseEvent) => {
+              action('press')(event);
+              this.startPending(this.pendingTooltip);
+            }
+          }, {
+            default: () => iconOnly
+          }))
+        ]),
+        h('div', {
+          style: {
+            alignItems: 'center',
+            display: 'flex',
+            flexWrap: 'wrap'
+          }
+        }, [
+          renderPendingButtonContainer(this.buttonProps, h(Button, {
+            ...this.buttonProps,
+            isPending: args.isPending,
+            onClick: () => {
+              action('press')('controlled');
+            }
+          }, {
+            default: () => [h('span', {class: 'spectrum-Button-label'}, 'Controlled')]
+          }))
+        ]),
+        h('div', {
+          style: {
+            alignItems: 'center',
+            display: 'flex',
+            flexWrap: 'wrap'
+          }
+        }, [
+          renderPendingButtonContainer(this.buttonProps, h('form', {
+            onSubmit: this.handleFormSubmit
+          }, [
+            h(Button, {
+              ...this.buttonProps,
+              isPending: this.pendingForm,
+              type: 'submit'
+            }, {
+              default: () => ['Form submit']
+            })
+          ]))
+        ])
       ]));
     }
   })

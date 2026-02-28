@@ -39,12 +39,13 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - Components: Breadcrumbs
   - [x] Story: Breadcrumbs.stories.ts
   - Evidence: React/Vue story-id parity is zero for `breadcrumbs--*` (`react=5`, `vue=5`, diff `0/0` from React `dist/9ba628661b71010349fd434fe6a68bd0d78e2a15/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`); Vue Breadcrumbs internals were aligned to React contracts in `packages/@vue-spectrum/breadcrumbs/src/index.ts` by replacing the Vue-only `ol`/text-separator structure with React-equivalent `nav`+`ul`+Spectrum classes, SVG chevron separators, and overflow menu button/list behavior (including width-based visible item computation, current-item focus support, and keyed action emission), and by adding React-equivalent Spectrum CSS imports for button/menu variants; story parity was tightened in `packages/@vue-spectrum/breadcrumbs/stories/Breadcrumbs.stories.ts` by mirroring the React `100vw` container behavior so overflow only appears under matching truncation constraints; regression selectors/assertions were updated in `starters/vue/src/components.spec.ts` and `starters/vue/src/composition.spec.ts`; full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`) with side-by-side screenshot evidence under `.tmp/breadcrumbs-parity/`.
-- [ ] 1.08 `@vue-spectrum/button`
+- [x] 1.08 `@vue-spectrum/button`
   - Components: ActionButton, ClearButton, FieldButton, LogicButton, ToggleButton, VueButton
-  - [ ] Story: ActionButton.stories.ts
-  - [ ] Story: Button.stories.ts
-  - [ ] Story: LogicButton.stories.ts
-  - [ ] Story: ToggleButton.stories.ts
+  - [x] Story: ActionButton.stories.ts
+  - [x] Story: Button.stories.ts
+  - [x] Story: LogicButton.stories.ts
+  - [x] Story: ToggleButton.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `button-*` scope (`react=19`, `vue=19`, diff `0/0` from React `dist/9ba628661b71010349fd434fe6a68bd0d78e2a15/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`); Vue button internals were aligned to React behavior by adding `UNSAFE_style` passthrough support in `packages/@vue-spectrum/button/src/index.ts` so pending/press user-select behavior can match React story contracts while preserving style-prop semantics; button story parity was tightened in `packages/@vue-spectrum/button/stories/*.stories.ts` by matching React static-color container contract (background tokens/padding), replacing placeholder icon rendering with the workflow `Bell` icon component where React uses it, and expanding `PendingSpinner` coverage to the React-equivalent scenario set (`click`, icon, `onClick`, disabled, aria-label/icon-label/no-label icon-only, controlled, form submit); full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`) with side-by-side screenshot evidence under `.tmp/button-parity/`.
 - [ ] 1.09 `@vue-spectrum/buttongroup`
   - Components: VueButtonGroup
   - [ ] Story: ButtonGroup.stories.ts
