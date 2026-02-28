@@ -31,7 +31,7 @@ export function useStepList(_state: StepListState, options: AriaStepListOptions 
   return {
     listProps: computed(() => ({
       role: 'list' as const,
-      'aria-label': ariaLabelledby.value ? undefined : ariaLabel.value,
+      'aria-label': ariaLabel.value,
       'aria-labelledby': ariaLabelledby.value
     }))
   };

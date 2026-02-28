@@ -4302,6 +4302,19 @@ describe('Vue migration composition components', () => {
     expect(stepList.listProps.value.role).toBe('list');
     expect(stepList.listProps.value['aria-label']).toBe('Step list');
 
+    let labelledbyStepList = useAriaStepList(stepListState, {
+      'aria-labelledby': 'external-step-list-label'
+    });
+    expect(labelledbyStepList.listProps.value['aria-label']).toBe('Step list');
+    expect(labelledbyStepList.listProps.value['aria-labelledby']).toBe('external-step-list-label');
+
+    let explicitAndLabelledbyStepList = useAriaStepList(stepListState, {
+      'aria-label': 'Release steps',
+      'aria-labelledby': 'external-step-list-label'
+    });
+    expect(explicitAndLabelledbyStepList.listProps.value['aria-label']).toBe('Release steps');
+    expect(explicitAndLabelledbyStepList.listProps.value['aria-labelledby']).toBe('external-step-list-label');
+
     let setupItem = useAriaStepListItem({key: 'setup'}, stepListState);
     expect(setupItem.stepProps.value['aria-current']).toBe('step');
 

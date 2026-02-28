@@ -1016,6 +1016,20 @@
    - full Vue tests: `yarn test:vue` (531 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 27, 2026 — Shared `useStepList` label precedence parity (`@vue-aria/steplist`)
+
+1. Aligned steplist label precedence with React behavior:
+   - list now keeps `aria-label` (explicit or default `"Step list"`) even when `aria-labelledby` is present,
+   - external `aria-labelledby` is preserved without suppressing the list label.
+2. Preserved steplist interaction behavior:
+   - item selection/disabled/current-step semantics and keyboard handling remain unchanged.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: steplist assertions for labelledby-only and explicit-label-plus-labelledby combinations.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "steplist list and step item semantics"`,
+   - full Vue tests: `yarn test:vue` (531 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
