@@ -155,7 +155,20 @@ function createSliderValueRef(stateRecord: AnyRecord): Ref<number> {
         return channelValue;
       }
 
-      return readNumber(stateRecord.value) ?? 0;
+      let value = readNumber(stateRecord.value);
+      if (value != null) {
+        return value;
+      }
+
+      let getThumbValue = stateRecord.getThumbValue;
+      if (typeof getThumbValue === 'function') {
+        let thumbValue = readNumber(getThumbValue(0));
+        if (thumbValue != null) {
+          return thumbValue;
+        }
+      }
+
+      return 0;
     },
     set: (value) => {
       let nextValue = Number(value);
@@ -166,6 +179,12 @@ function createSliderValueRef(stateRecord: AnyRecord): Ref<number> {
       let setChannelValue = stateRecord.setChannelValue;
       if (typeof setChannelValue === 'function') {
         setChannelValue(nextValue);
+        return;
+      }
+
+      let setThumbValue = stateRecord.setThumbValue;
+      if (typeof setThumbValue === 'function') {
+        setThumbValue(0, nextValue);
         return;
       }
 
@@ -366,12 +385,24 @@ export function useColorSlider(options: AriaColorSliderOptions, state?: ColorSli
           return;
         }
 
+        let incrementThumb = stateRecord.incrementThumb;
+        if (typeof incrementThumb === 'function') {
+          incrementThumb(0);
+          return;
+        }
+
         slider.increment();
       },
       decrement: () => {
         let decrement = stateRecord.decrement;
         if (typeof decrement === 'function') {
           decrement();
+          return;
+        }
+
+        let decrementThumb = stateRecord.decrementThumb;
+        if (typeof decrementThumb === 'function') {
+          decrementThumb(0);
           return;
         }
 

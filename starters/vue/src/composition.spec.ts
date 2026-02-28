@@ -1807,6 +1807,38 @@ describe('Vue migration composition components', () => {
     slider.decrement();
     expect(sliderValue.value).toBe(35);
 
+    let reactStyleSliderValue = ref([10]);
+    let setThumbValue = (index: number, value: number) => {
+      if (index !== 0) {
+        return;
+      }
+
+      reactStyleSliderValue.value = [value];
+    };
+    let reactStyleSliderState = {
+      getThumbValue: (index: number) => {
+        return reactStyleSliderValue.value[index] ?? 0;
+      },
+      setThumbValue,
+      incrementThumb: (index: number, amount = 1) => {
+        setThumbValue(index, (reactStyleSliderValue.value[index] ?? 0) + amount);
+      },
+      decrementThumb: (index: number, amount = 1) => {
+        setThumbValue(index, (reactStyleSliderValue.value[index] ?? 0) - amount);
+      },
+      step: 1
+    };
+    let sliderFromReactStyleSliderState = useColorSlider({
+      channel: 'hue'
+    } as unknown as Parameters<typeof useColorSlider>[0], reactStyleSliderState as unknown as Parameters<typeof useColorSlider>[1]);
+    expect(sliderFromReactStyleSliderState.trackProps.value['aria-valuenow']).toBe(10);
+    sliderFromReactStyleSliderState.increment();
+    expect(reactStyleSliderValue.value[0]).toBe(11);
+    sliderFromReactStyleSliderState.setValue(180);
+    expect(reactStyleSliderValue.value[0]).toBe(180);
+    sliderFromReactStyleSliderState.decrement();
+    expect(reactStyleSliderValue.value[0]).toBe(179);
+
     let statelySliderValue = ref('#000000');
     let statelySliderState = useStatelyColorSliderState({
       channel: 'hue',
