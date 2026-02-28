@@ -7013,9 +7013,13 @@ describe('Vue migration composition components', () => {
   });
 
   it('computes vue-aria radio group selection and keyboard movement', () => {
+    let selectionChanges: string[] = [];
     let selectedValue = ref<string | null>(null);
     let radioGroup = useAriaRadioGroup({
       label: 'Framework',
+      onChange: (value) => {
+        selectionChanges.push(value);
+      },
       selectedValue
     });
     let reactRadio = useAriaRadio({
@@ -7041,6 +7045,10 @@ describe('Vue migration composition components', () => {
     reactRadio.inputProps.value.onChange();
     expect(selectedValue.value).toBe('react');
     expect(reactRadio.isSelected.value).toBe(true);
+    expect(selectionChanges).toEqual(['react']);
+
+    reactRadio.inputProps.value.onChange();
+    expect(selectionChanges).toEqual(['react']);
 
     let targetInput = document.createElement('input');
     targetInput.type = 'radio';
@@ -7052,6 +7060,7 @@ describe('Vue migration composition components', () => {
     } as unknown as KeyboardEvent;
     radioGroup.radioGroupProps.value.onKeyDown(rightArrow);
     expect(selectedValue.value).toBe('vue');
+    expect(selectionChanges).toEqual(['react', 'vue']);
 
     let rtlProvider = I18nProvider({
       locale: 'ar-EG'

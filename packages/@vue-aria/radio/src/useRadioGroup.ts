@@ -127,6 +127,10 @@ export function useRadioGroup(options: AriaRadioGroupOptions = {}): RadioGroupAr
       return;
     }
 
+    if (selectedValue.value === value) {
+      return;
+    }
+
     selectedValue.value = value;
     options.onChange?.(value);
   };

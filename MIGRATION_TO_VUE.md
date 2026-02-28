@@ -3059,6 +3059,17 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Radio-group duplicate-change suppression parity (`@vue-aria/radio`)
+
+1. Closed duplicate radio-group change emission drift:
+   - `useRadioGroup.setSelectedValue` now suppresses callbacks when the requested value is already selected.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` radio-group assertions now verify repeated same-radio `onChange` interactions do not emit duplicate `onChange` callbacks.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria radio group selection and keyboard movement"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
