@@ -7454,6 +7454,35 @@ describe('Vue migration composition components', () => {
     }
   });
 
+  it('removes vue-aria landmark registrations when scope is disposed', () => {
+    let main = document.createElement('main');
+    main.tabIndex = -1;
+    document.body.append(main);
+
+    let controller = UNSTABLE_createLandmarkController();
+    let scope = effectScope();
+
+    try {
+      scope.run(() => {
+        useLandmark({
+          'aria-label': 'Scoped main',
+          role: 'main'
+        }, ref(main));
+      });
+
+      expect(controller.focusMain()).toBe(true);
+
+      scope.stop();
+
+      expect(controller.focusMain()).toBe(false);
+    } finally {
+      controller.dispose();
+      if (main.isConnected) {
+        document.body.removeChild(main);
+      }
+    }
+  });
+
   it('warns on landmark role conflicts and duplicate unlabeled roles', () => {
     let mainA = document.createElement('main');
     let mainB = document.createElement('main');

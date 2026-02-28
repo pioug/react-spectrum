@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, ref, type Ref, unref} from 'vue';
+import {computed, type ComputedRef, ref, type Ref, unref, watchEffect} from 'vue';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
 
@@ -72,6 +72,13 @@ function nodeContains(target: EventTarget | null, node: EventTarget | null): boo
 class LandmarkManager {
   landmarks: Landmark[] = [];
 
+  private pruneDisconnectedLandmarks(): void {
+    this.landmarks = this.landmarks.filter((landmark) => {
+      let element = unref(landmark.ref);
+      return element instanceof Element && element.isConnected;
+    });
+  }
+
   private getLandmarksByRole(role: AriaLandmarkRole): Landmark[] {
     return this.landmarks.filter((landmark) => landmark.role === role);
   }
@@ -102,6 +109,7 @@ class LandmarkManager {
   }
 
   addLandmark(landmark: Landmark): () => void {
+    this.pruneDisconnectedLandmarks();
     let existingIndex = this.landmarks.findIndex((candidate) => candidate.ref === landmark.ref);
     if (existingIndex >= 0) {
       this.landmarks[existingIndex] = landmark;
@@ -126,16 +134,20 @@ class LandmarkManager {
         // no-op placeholder for compatibility with the React API
       },
       focusMain: () => {
+        this.pruneDisconnectedLandmarks();
         let mainLandmark = this.landmarks.find((landmark) => landmark.role === 'main');
         return this.focusLandmark(mainLandmark, 'forward');
       },
       focusNext: (opts) => {
+        this.pruneDisconnectedLandmarks();
         return this.navigate('forward', opts);
       },
       focusPrevious: (opts) => {
+        this.pruneDisconnectedLandmarks();
         return this.navigate('backward', opts);
       },
       navigate: (direction, opts) => {
+        this.pruneDisconnectedLandmarks();
         return this.navigate(direction, opts);
       }
     };
@@ -196,6 +208,7 @@ class LandmarkManager {
   }
 
   private navigate(direction: 'backward' | 'forward', opts?: LandmarkControllerOptions): boolean {
+    this.pruneDisconnectedLandmarks();
     if (this.landmarks.length === 0) {
       return false;
     }
@@ -217,7 +230,16 @@ class LandmarkManager {
       }
     }
 
-    return this.focusLandmark(this.landmarks[nextIndex], direction);
+    for (let attempt = 0; attempt < this.landmarks.length; attempt += 1) {
+      let index = direction === 'backward'
+        ? (nextIndex - attempt + this.landmarks.length) % this.landmarks.length
+        : (nextIndex + attempt) % this.landmarks.length;
+      if (this.focusLandmark(this.landmarks[index], direction)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
 
@@ -251,17 +273,20 @@ export function useLandmark(props: AriaLandmarkProps, refObject: MaybeRef<Elemen
   let role = computed(() => unref(props.role));
   let labels = computed(() => resolveLabel(props));
 
-  landmarkManager.addLandmark({
-    ref: refObject,
-    role: role.value,
-    label: labels.value.label,
-    focus: (direction) => {
-      props.focus?.(direction);
-      isLandmarkFocused.value = true;
-    },
-    blur: () => {
-      isLandmarkFocused.value = false;
-    }
+  watchEffect((onCleanup) => {
+    let remove = landmarkManager.addLandmark({
+      ref: refObject,
+      role: role.value,
+      label: labels.value.label,
+      focus: (direction) => {
+        props.focus?.(direction);
+        isLandmarkFocused.value = true;
+      },
+      blur: () => {
+        isLandmarkFocused.value = false;
+      }
+    });
+    onCleanup(remove);
   });
 
   return {
