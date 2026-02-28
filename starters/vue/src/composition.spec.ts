@@ -5402,6 +5402,136 @@ describe('Vue migration composition components', () => {
     }]);
   });
 
+  it('dispatches useDroppableCollection onInsert by default when onDrop is omitted', () => {
+    let insertPayload: null | {
+      dropOperation: string,
+      target: {type: string, key: string, dropPosition: string},
+      itemCount: number
+    } = null;
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: () => 'move'
+    });
+    dropState.setTarget({
+      type: 'item',
+      key: 'beta',
+      dropPosition: 'before'
+    });
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      onInsert: (event) => {
+        insertPayload = {
+          dropOperation: String(event.dropOperation),
+          target: {
+            type: String(event.target.type),
+            key: String(event.target.key),
+            dropPosition: String(event.target.dropPosition)
+          },
+          itemCount: event.items.length
+        };
+      }
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDrop: (input: unknown, operation?: 'cancel' | 'copy' | 'link' | 'move') => 'cancel' | 'copy' | 'link' | 'move'
+      }}
+    };
+
+    expect(droppableCollection.collectionProps.value.onDrop({
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 9,
+      clientY: 11
+    }, 'move')).toBe('move');
+    expect(insertPayload).toEqual({
+      dropOperation: 'move',
+      target: {type: 'item', key: 'beta', dropPosition: 'before'},
+      itemCount: 1
+    });
+  });
+
+  it('dispatches internal useDroppableCollection onMove and onReorder defaults', () => {
+    let movePayload: null | {
+      keys: string[],
+      dropOperation: string,
+      target: {type: string, key: string, dropPosition: string}
+    } = null;
+    let reorderPayload: null | {
+      keys: string[],
+      dropOperation: string,
+      target: {type: string, key: string, dropPosition: string}
+    } = null;
+    let selectedKeys = ref(new Set<string>(['alpha']));
+    let dragState = useStatelyDraggableCollectionState({
+      collection: [
+        {key: 'alpha', value: {id: 1, label: 'Alpha'}}
+      ],
+      selectedKeys,
+      getItems: () => [{id: 'alpha', type: 'item', value: {id: 1}}]
+    });
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: () => 'move'
+    });
+    dropState.setTarget({
+      type: 'item',
+      key: 'alpha',
+      dropPosition: 'before'
+    });
+    let collectionRef = {current: document.createElement('div')};
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      onMove: (event) => {
+        movePayload = {
+          keys: Array.from(event.keys as Set<string>, (key) => String(key)),
+          dropOperation: String(event.dropOperation),
+          target: {
+            type: String(event.target.type),
+            key: String(event.target.key),
+            dropPosition: String(event.target.dropPosition)
+          }
+        };
+      },
+      onReorder: (event) => {
+        reorderPayload = {
+          keys: Array.from(event.keys as Set<string>, (key) => String(key)),
+          dropOperation: String(event.dropOperation),
+          target: {
+            type: String(event.target.type),
+            key: String(event.target.key),
+            dropPosition: String(event.target.dropPosition)
+          }
+        };
+      }
+    }, dropState, collectionRef) as {
+      collectionProps: {value: {
+        onDrop: (input: unknown, operation?: 'cancel' | 'copy' | 'link' | 'move') => 'cancel' | 'copy' | 'link' | 'move'
+      }}
+    };
+    useDraggableCollection({}, dragState, collectionRef);
+    let draggableItem = useDraggableItem({key: 'alpha'}, dragState) as {
+      dragButtonProps: {value: {onClick: () => void}}
+    };
+    draggableItem.dragButtonProps.value.onClick();
+    useDraggableCollection({}, dragState, collectionRef);
+
+    expect(droppableCollection.collectionProps.value.onDrop({
+      items: [{id: 'alpha', type: 'item', value: {id: 1}}],
+      clientX: 5,
+      clientY: 7
+    }, 'move')).toBe('move');
+    expect(movePayload).toEqual({
+      keys: ['alpha'],
+      dropOperation: 'move',
+      target: {type: 'item', key: 'alpha', dropPosition: 'before'}
+    });
+    expect(reorderPayload).toEqual({
+      keys: ['alpha'],
+      dropOperation: 'move',
+      target: {type: 'item', key: 'alpha', dropPosition: 'before'}
+    });
+
+    dragState.endDrag('cancel');
+  });
+
   it('fires useDroppableCollection onDropMove only when drag position changes', () => {
     let moveEvents: Array<string> = [];
     let dropState = useStatelyDroppableCollectionState({

@@ -824,6 +824,118 @@ export function useDroppableCollection(
     }));
   };
 
+  let getItemTypes = (item: DragItem): Set<string> => {
+    let itemRecord = item as AnyRecord;
+    if (itemRecord.kind === 'directory') {
+      return new Set([DIRECTORY_DRAG_TYPE]);
+    }
+
+    if (itemRecord.kind === 'file') {
+      let fileType = typeof itemRecord.type === 'string' ? itemRecord.type : '';
+      return fileType ? new Set([fileType]) : new Set();
+    }
+
+    if (itemRecord.types instanceof Set) {
+      return new Set(Array.from(itemRecord.types, (type) => String(type)));
+    }
+
+    if (Array.isArray(itemRecord.types)) {
+      return new Set(itemRecord.types.map((type) => String(type)));
+    }
+
+    if (typeof itemRecord.type === 'string') {
+      return new Set([itemRecord.type]);
+    }
+
+    return new Set();
+  };
+
+  let invokeDefaultCollectionDrop = (event: {
+    items: DragItem[],
+    target: DropTarget,
+    dropOperation: DropOperation
+  }) => {
+    let target = event.target as AnyRecord;
+    let isInternal = isInternalDrop(ref);
+    let accepted = acceptedTypes.value;
+    let shouldAcceptItemDrop = typeof propsRecord.shouldAcceptItemDrop === 'function'
+      ? propsRecord.shouldAcceptItemDrop as (target: DropTarget, itemTypes: Set<string>) => boolean
+      : null;
+    let filteredItems = event.items;
+
+    if (accepted || shouldAcceptItemDrop) {
+      filteredItems = event.items.filter((item) => {
+        let itemTypes = getItemTypes(item);
+        let matchesAcceptedType = !accepted || Array.from(itemTypes).some((type) => accepted.has(type));
+        if (!matchesAcceptedType) {
+          return false;
+        }
+
+        if (
+          target.type === 'item' &&
+          target.dropPosition === 'on' &&
+          shouldAcceptItemDrop
+        ) {
+          return shouldAcceptItemDrop(target as DropTarget, itemTypes);
+        }
+
+        return true;
+      });
+    }
+
+    if (filteredItems.length === 0) {
+      return;
+    }
+
+    if (target.type === 'root' && typeof propsRecord.onRootDrop === 'function') {
+      void propsRecord.onRootDrop({
+        items: filteredItems,
+        dropOperation: event.dropOperation
+      });
+    }
+
+    if (target.type !== 'item') {
+      return;
+    }
+
+    if (target.dropPosition === 'on' && typeof propsRecord.onItemDrop === 'function') {
+      void propsRecord.onItemDrop({
+        items: filteredItems,
+        dropOperation: event.dropOperation,
+        isInternal,
+        target: target as DropTarget
+      });
+    }
+
+    if (isInternal && typeof propsRecord.onMove === 'function') {
+      void propsRecord.onMove({
+        keys: new Set(draggingKeys),
+        dropOperation: event.dropOperation,
+        target: target as DropTarget
+      });
+    }
+
+    if (target.dropPosition === 'on') {
+      return;
+    }
+
+    if (!isInternal && typeof propsRecord.onInsert === 'function') {
+      void propsRecord.onInsert({
+        items: filteredItems,
+        dropOperation: event.dropOperation,
+        target: target as DropTarget
+      });
+    }
+
+    if (isInternal && typeof propsRecord.onReorder === 'function') {
+      void propsRecord.onReorder({
+        keys: new Set(draggingKeys),
+        dropOperation: event.dropOperation,
+        target: target as DropTarget
+      });
+    }
+  };
+
   let onDragEnter = (input?: unknown): boolean => {
     let items = normalizeDropItems(input);
     if (isDisabled.value || !includesAcceptedType(acceptedTypes.value, items)) {
@@ -986,15 +1098,23 @@ export function useDroppableCollection(
       return 'cancel';
     }
 
+    let dropEvent = {
+      items,
+      target,
+      dropOperation: resolvedOperation,
+      operation: resolvedOperation,
+      type: 'drop',
+      x: point.x,
+      y: point.y
+    };
+
     if (typeof propsRecord.onDrop === 'function') {
-      propsRecord.onDrop({
+      propsRecord.onDrop(dropEvent);
+    } else {
+      invokeDefaultCollectionDrop({
         items,
         target,
-        dropOperation: resolvedOperation,
-        operation: resolvedOperation,
-        type: 'drop',
-        x: point.x,
-        y: point.y
+        dropOperation: resolvedOperation
       });
     }
 
