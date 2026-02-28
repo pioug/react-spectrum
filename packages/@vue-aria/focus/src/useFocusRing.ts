@@ -1,3 +1,4 @@
+import {isFocusVisible as isGlobalFocusVisible, useFocus, useFocusVisibleListener, useFocusWithin} from '@vue-aria/interactions';
 import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
@@ -21,108 +22,52 @@ export interface FocusRingAria {
   isFocusVisible: Ref<boolean>
 }
 
-let globalFocusVisible = true;
-let listenersAttached = false;
-
-function onKeyboardInteraction(event: KeyboardEvent): void {
-  if (event.metaKey || event.ctrlKey || event.altKey) {
-    return;
-  }
-
-  globalFocusVisible = true;
-}
-
-function onPointerInteraction(): void {
-  globalFocusVisible = false;
-}
-
-function ensureGlobalListeners(): void {
-  if (listenersAttached || typeof window === 'undefined') {
-    return;
-  }
-
-  listenersAttached = true;
-  window.addEventListener('keydown', onKeyboardInteraction, true);
-  window.addEventListener('mousedown', onPointerInteraction, true);
-  window.addEventListener('pointerdown', onPointerInteraction, true);
-  window.addEventListener('touchstart', onPointerInteraction, true);
-}
-
-function nodeContains(target: Node, node: Node): boolean {
-  if (target === node) {
-    return true;
-  }
-
-  return Boolean(target.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY);
-}
-
 export function useFocusRing(props: AriaFocusRingProps = {}): FocusRingAria {
-  ensureGlobalListeners();
-
-  let within = computed(() => Boolean(unref(props.within)));
   let autoFocus = computed(() => Boolean(unref(props.autoFocus)));
+  let isTextInput = computed(() => Boolean(unref(props.isTextInput)));
+  let within = computed(() => Boolean(unref(props.within)));
+
+  let state = {
+    isFocused: false,
+    isFocusVisible: Boolean(autoFocus.value || isGlobalFocusVisible())
+  };
   let isFocused = ref(false);
-  let isFocusVisible = ref(Boolean(autoFocus.value || globalFocusVisible));
+  let isFocusVisible = ref(Boolean(state.isFocused && state.isFocusVisible));
 
-  let setFocused = (nextFocused: boolean) => {
+  let updateState = () => {
+    isFocusVisible.value = state.isFocused && state.isFocusVisible;
+  };
+
+  let onFocusChange = (nextFocused: boolean) => {
+    state.isFocused = nextFocused;
+    state.isFocusVisible = isGlobalFocusVisible();
     isFocused.value = nextFocused;
-    isFocusVisible.value = nextFocused && (autoFocus.value || globalFocusVisible);
+    updateState();
   };
 
-  let onFocus = () => {
-    if (within.value) {
-      return;
+  useFocusVisibleListener(
+    (nextFocusVisible) => {
+      state.isFocusVisible = nextFocusVisible;
+      updateState();
+    },
+    [],
+    {
+      enabled: isFocused,
+      isTextInput
     }
+  );
 
-    setFocused(true);
-  };
-
-  let onBlur = () => {
-    if (within.value) {
-      return;
-    }
-
-    setFocused(false);
-  };
-
-  let onFocusin = () => {
-    if (!within.value) {
-      return;
-    }
-
-    setFocused(true);
-  };
-
-  let onFocusout = (event: FocusEvent) => {
-    if (!within.value) {
-      return;
-    }
-
-    let currentTarget = event.currentTarget;
-    let relatedTarget = event.relatedTarget;
-    if (
-      currentTarget instanceof Element &&
-      relatedTarget instanceof Node &&
-      nodeContains(currentTarget, relatedTarget)
-    ) {
-      return;
-    }
-
-    setFocused(false);
-  };
+  let {focusProps: directFocusProps} = useFocus({
+    isDisabled: within,
+    onFocusChange
+  });
+  let {focusWithinProps} = useFocusWithin({
+    isDisabled: computed(() => !within.value),
+    onFocusWithinChange: onFocusChange
+  });
 
   let focusProps = computed<FocusRingProps>(() => {
-    if (within.value) {
-      return {
-        onFocusin,
-        onFocusout
-      };
-    }
-
-    return {
-      onBlur,
-      onFocus
-    };
+    return within.value ? focusWithinProps.value : directFocusProps.value;
   });
 
   return {

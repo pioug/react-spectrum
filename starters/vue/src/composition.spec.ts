@@ -5224,21 +5224,49 @@ describe('Vue migration composition components', () => {
 
   it('tracks vue-aria focus ring modality for direct and within focus flows', () => {
     let focusRing = useFocusRing();
-    window.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
-    focusRing.focusProps.value.onFocus?.(new FocusEvent('focus'));
-    expect(focusRing.isFocused.value).toBe(true);
-    expect(focusRing.isFocusVisible.value).toBe(false);
-
-    window.dispatchEvent(new KeyboardEvent('keydown', {key: 'Tab'}));
-    focusRing.focusProps.value.onBlur?.(new FocusEvent('blur'));
-    focusRing.focusProps.value.onFocus?.(new FocusEvent('focus'));
-    expect(focusRing.isFocusVisible.value).toBe(true);
+    let directTarget = document.createElement('button');
+    document.body.append(directTarget);
 
     let withinFocusRing = useFocusRing({within: true});
-    withinFocusRing.focusProps.value.onFocusin?.(new FocusEvent('focusin'));
-    expect(withinFocusRing.isFocused.value).toBe(true);
-    withinFocusRing.focusProps.value.onFocusout?.(new FocusEvent('focusout'));
-    expect(withinFocusRing.isFocused.value).toBe(false);
+    let withinTarget = document.createElement('div');
+    let withinButton = document.createElement('button');
+    let outsideButton = document.createElement('button');
+    withinTarget.append(withinButton);
+    document.body.append(withinTarget, outsideButton);
+
+    try {
+      if (focusRing.focusProps.value.onFocus) {
+        directTarget.addEventListener('focus', focusRing.focusProps.value.onFocus as EventListener);
+      }
+      if (focusRing.focusProps.value.onBlur) {
+        directTarget.addEventListener('blur', focusRing.focusProps.value.onBlur as EventListener);
+      }
+      if (withinFocusRing.focusProps.value.onFocusin) {
+        withinTarget.addEventListener('focusin', withinFocusRing.focusProps.value.onFocusin as EventListener);
+      }
+      if (withinFocusRing.focusProps.value.onFocusout) {
+        withinTarget.addEventListener('focusout', withinFocusRing.focusProps.value.onFocusout as EventListener);
+      }
+
+      document.body.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+      directTarget.focus();
+      expect(focusRing.isFocused.value).toBe(true);
+      expect(focusRing.isFocusVisible.value).toBe(false);
+
+      document.body.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'Tab'}));
+      directTarget.blur();
+      directTarget.focus();
+      expect(focusRing.isFocusVisible.value).toBe(true);
+
+      withinButton.focus();
+      expect(withinFocusRing.isFocused.value).toBe(true);
+      outsideButton.focus();
+      expect(withinFocusRing.isFocused.value).toBe(false);
+    } finally {
+      directTarget.remove();
+      withinTarget.remove();
+      outsideButton.remove();
+    }
   });
 
   it('treats virtual clicks as vue-aria virtual modality for focus-visible state', () => {
@@ -13697,10 +13725,10 @@ describe('Vue migration composition components', () => {
         element.addEventListener('blur', mergedProps.onBlur as EventListener);
       }
 
-      element.dispatchEvent(new FocusEvent('focus', {bubbles: true}));
+      element.focus();
       expect(focusRing.isFocused.value).toBe(true);
 
-      element.dispatchEvent(new FocusEvent('blur', {bubbles: true}));
+      element.blur();
       expect(focusRing.isFocused.value).toBe(false);
     } finally {
       document.body.removeChild(element);
