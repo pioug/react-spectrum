@@ -1,6 +1,8 @@
 import {computed, type ComputedRef, ref, type Ref, unref} from 'vue';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
+type ComboBoxFocusStrategy = 'first' | 'last' | 'manual';
+type ComboBoxMenuTriggerAction = 'focus' | 'input' | 'manual';
 
 export type ComboBoxItem = {
   id: string,
@@ -20,7 +22,7 @@ export interface AriaComboBoxOptions {
   isDisabled?: MaybeRef<boolean>,
   isReadOnly?: MaybeRef<boolean>,
   items: MaybeRef<ComboBoxItemInput[]>,
-  onOpenChange?: (isOpen: boolean) => void,
+  onOpenChange?: (isOpen: boolean, trigger?: ComboBoxMenuTriggerAction) => void,
   onSelectionChange?: (key: string | null) => void,
   selectedKey?: Ref<string | null>
 }
@@ -61,11 +63,11 @@ export interface ComboBoxAria {
     id: string,
     role: 'listbox'
   }>,
-  open: (focus?: 'first' | 'last' | 'manual') => void,
+  open: (focus?: ComboBoxFocusStrategy, trigger?: ComboBoxMenuTriggerAction) => void,
   revert: () => void,
   selectKey: (key: string | null) => void,
   selectedKey: ComputedRef<string | null>,
-  toggle: () => void,
+  toggle: (focus?: ComboBoxFocusStrategy, trigger?: ComboBoxMenuTriggerAction) => void,
   valueProps: ComputedRef<{
     id: string
   }>
@@ -126,7 +128,7 @@ export function useComboBox(options: AriaComboBoxOptions): ComboBoxAria {
     return items.value.filter((item) => item.textValue.toLocaleLowerCase().includes(query));
   });
 
-  let open = (focus: 'first' | 'last' | 'manual' = 'first') => {
+  let open = (focus: ComboBoxFocusStrategy = 'first', trigger?: ComboBoxMenuTriggerAction) => {
     if (isDisabled.value || isReadOnly.value) {
       return;
     }
@@ -140,7 +142,7 @@ export function useComboBox(options: AriaComboBoxOptions): ComboBoxAria {
         : null;
     }
 
-    options.onOpenChange?.(true);
+    options.onOpenChange?.(true, trigger);
   };
 
   let close = () => {
@@ -153,11 +155,11 @@ export function useComboBox(options: AriaComboBoxOptions): ComboBoxAria {
     options.onOpenChange?.(false);
   };
 
-  let toggle = () => {
+  let toggle = (focus: ComboBoxFocusStrategy = 'first', trigger?: ComboBoxMenuTriggerAction) => {
     if (isOpen.value) {
       close();
     } else {
-      open('first');
+      open(focus, trigger);
     }
   };
 

@@ -2,6 +2,7 @@ import {type AriaComboBoxOptions, type ComboBoxAria, type ComboBoxItem, useCombo
 import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
+type ComboBoxMenuTriggerAction = 'focus' | 'input' | 'manual';
 
 export interface ComboBoxState {
   defaultInputValue: string,
@@ -26,7 +27,7 @@ export interface ComboBoxStateOptions {
   inputValue?: Ref<string | undefined>,
   items: MaybeRef<Array<string | {id: string, textValue: string}>>,
   onInputChange?: (value: string) => void,
-  onOpenChange?: (isOpen: boolean) => void,
+  onOpenChange?: (isOpen: boolean, trigger?: ComboBoxMenuTriggerAction) => void,
   onSelectionChange?: (key: string | null) => void,
   selectedKey?: Ref<string | null | undefined>
 }

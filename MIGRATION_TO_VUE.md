@@ -1846,6 +1846,20 @@
    - full Vue tests: `yarn test:vue` (589 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — ComboBox open-trigger reason parity (`@vue-aria/combobox`, `@vue-stately/combobox`)
+
+1. Closed combobox `onOpenChange` trigger-reason drift against React behavior:
+   - `open` and `toggle` now support passing open trigger reasons (`focus`/`input`/`manual`),
+   - `onOpenChange` now receives `(isOpen, trigger)` on open transitions and `(false, undefined)` on close.
+2. Aligned combobox method signatures for parity:
+   - `useComboBox` now exposes `open(focus?, trigger?)` and `toggle(focus?, trigger?)` trigger-aware APIs.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: explicit `useComboBox` and `useStatelyComboBoxState` assertions for trigger-reason propagation across `open`, `toggle`, and `close` flows.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "combobox composable state|open trigger reasons"`,
+   - full Vue tests: `yarn test:vue` (591 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

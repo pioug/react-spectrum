@@ -1284,6 +1284,30 @@ describe('Vue migration composition components', () => {
     expect(comboBox.isOpen.value).toBe(false);
   });
 
+  it('reports vue-aria combobox open trigger reasons for open and toggle', () => {
+    let inputValue = ref('');
+    let openChanges: Array<[boolean, string | undefined]> = [];
+    let comboBox = useComboBox({
+      inputValue,
+      items: ['React', 'Vue'],
+      onOpenChange: (isOpen, trigger) => {
+        openChanges.push([isOpen, trigger]);
+      }
+    });
+
+    comboBox.open('first', 'focus');
+    comboBox.close();
+    comboBox.toggle('first', 'manual');
+    comboBox.toggle();
+
+    expect(openChanges).toEqual([
+      [true, 'focus'],
+      [false, undefined],
+      [true, 'manual'],
+      [false, undefined]
+    ]);
+  });
+
   it('reverts non-custom combobox input to last committed value', () => {
     let inputValue = ref('');
     let comboBox = useComboBox({
@@ -1331,6 +1355,30 @@ describe('Vue migration composition components', () => {
     state.revert();
     expect(inputValue.value).toBe('Vue');
     expect(state.isFocused.value).toBe(true);
+  });
+
+  it('reports vue-stately combobox open trigger reasons for open and toggle', () => {
+    let inputValue = ref('');
+    let openChanges: Array<[boolean, string | undefined]> = [];
+    let state = useStatelyComboBoxState({
+      inputValue,
+      items: ['React', 'Vue'],
+      onOpenChange: (isOpen, trigger) => {
+        openChanges.push([isOpen, trigger]);
+      }
+    });
+
+    state.open('first', 'input');
+    state.close();
+    state.toggle('first', 'focus');
+    state.toggle();
+
+    expect(openChanges).toEqual([
+      [true, 'input'],
+      [false, undefined],
+      [true, 'focus'],
+      [false, undefined]
+    ]);
   });
 
   it('warns when vue-stately combobox switches between controlled and uncontrolled', async () => {
