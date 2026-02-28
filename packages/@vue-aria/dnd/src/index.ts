@@ -1126,7 +1126,6 @@ export function useDroppableCollection(
       items,
       target,
       dropOperation: resolvedOperation,
-      operation: resolvedOperation,
       type: 'drop',
       x: point.x,
       y: point.y
