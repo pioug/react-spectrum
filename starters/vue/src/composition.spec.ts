@@ -1643,6 +1643,108 @@ describe('Vue migration composition components', () => {
     expect(asyncList.items.value.map((item) => item.id)).toEqual(['gamma']);
   });
 
+  it('prevents vue-stately async list loadMore while initial load is in progress', async () => {
+    vi.useFakeTimers();
+
+    try {
+      let load = vi.fn().mockImplementation(() => new Promise<{cursor: string, items: {id: number}[]}>((resolve) => {
+        setTimeout(() => {
+          resolve({
+            items: [{id: 1}, {id: 2}],
+            cursor: 'page-2'
+          });
+        }, 100);
+      }));
+
+      let asyncList = useStatelyAsyncList<{id: number}, string>({
+        load
+      });
+
+      expect(asyncList.isLoading.value).toBe(true);
+      asyncList.loadMore();
+      expect(load).toHaveBeenCalledTimes(1);
+      expect(asyncList.loadingState.value).toBe('loading');
+
+      vi.runAllTimers();
+      await Promise.resolve();
+
+      expect(asyncList.isLoading.value).toBe(false);
+      expect(asyncList.items.value.map((item) => item.id)).toEqual([1, 2]);
+    } finally {
+      vi.runAllTimers();
+      vi.useRealTimers();
+    }
+  });
+
+  it('handles vue-stately async list duplicate loadMore calls in quick succession', async () => {
+    vi.useFakeTimers();
+
+    try {
+      let load = vi.fn()
+        .mockImplementationOnce(() => new Promise<{cursor: string, items: {id: number}[]}>((resolve) => {
+          setTimeout(() => {
+            resolve({
+              items: [{id: 1}, {id: 2}],
+              cursor: 'page-2'
+            });
+          }, 100);
+        }))
+        .mockImplementationOnce(({signal}: {signal: AbortSignal}) => new Promise<{cursor: undefined, items: {id: number}[]}>((resolve, reject) => {
+          signal.addEventListener('abort', () => {
+            reject(new Error('aborted'));
+          });
+
+          setTimeout(() => {
+            resolve({
+              items: [{id: 3}, {id: 4}],
+              cursor: undefined
+            });
+          }, 100);
+        }))
+        .mockImplementationOnce(() => new Promise<{cursor: undefined, items: {id: number}[]}>((resolve) => {
+          setTimeout(() => {
+            resolve({
+              items: [{id: 999}],
+              cursor: undefined
+            });
+          }, 100);
+        }))
+        .mockImplementationOnce(() => new Promise<{cursor: undefined, items: {id: number}[]}>((resolve) => {
+          setTimeout(() => {
+            resolve({
+              items: [{id: 1000}],
+              cursor: undefined
+            });
+          }, 100);
+        }));
+
+      let asyncList = useStatelyAsyncList<{id: number}, string>({
+        load
+      });
+
+      vi.advanceTimersByTime(100);
+      await Promise.resolve();
+
+      expect(asyncList.items.value.map((item) => item.id)).toEqual([1, 2]);
+      expect(asyncList.loadingState.value).toBe('idle');
+
+      asyncList.loadMore();
+      asyncList.loadMore();
+      asyncList.loadMore();
+
+      vi.runAllTimers();
+      await Promise.resolve();
+
+      // First loadMore wins; Vue drops subsequent calls synchronously.
+      expect(asyncList.items.value.map((item) => item.id)).toEqual([1, 2, 3, 4]);
+      expect(asyncList.loadingState.value).toBe('idle');
+      expect(load).toHaveBeenCalledTimes(2);
+    } finally {
+      vi.runAllTimers();
+      vi.useRealTimers();
+    }
+  });
+
   it('keeps vue-stately async list all-selection when removing last loaded item while cursor remains', async () => {
     let asyncList = useStatelyAsyncList<{id: string}, string>({
       getKey: (item) => item.id,

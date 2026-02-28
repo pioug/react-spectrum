@@ -1899,6 +1899,19 @@
    - full Vue tests: `yarn test:vue` (595 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Async-list loadMore concurrency coverage expansion (`@vue-stately/data`)
+
+1. Expanded async-list concurrency regression coverage:
+   - added assertion that `loadMore()` is ignored while the initial `loading` request is still in flight,
+   - added assertion that rapid duplicate `loadMore()` calls only apply one appended page and end in `idle`.
+2. Parity probe outcome:
+   - visible state parity is preserved (`items`, `loadingState`, and single-page append semantics),
+   - Vue suppresses duplicate rapid calls synchronously before invoking extra `load` requests, while React can invoke duplicate requests and cancel them during reducer resolution due render-cycle timing.
+3. Validation after coverage expansion:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "prevents vue-stately async list loadMore while initial load is in progress|handles vue-stately async list duplicate loadMore calls in quick succession"`,
+   - full Vue tests: `yarn test:vue` (597 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
