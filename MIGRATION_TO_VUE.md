@@ -2443,13 +2443,27 @@
    - full Vue tests: `yarn test:vue` (633 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Slider controlled-callback identity parity remediation (`@vue-stately/slider`)
+
+1. Closed a controlled callback parity gap in `useSliderState`:
+   - replaced ad hoc controlled/uncontrolled ownership with shared `useControlledState`,
+   - aligned `onChange`/`onChangeEnd` value-shape mapping with React `createOnChange` semantics for single vs range slider outputs.
+2. Closed a Vue proxy identity mismatch that caused duplicate controlled emissions:
+   - switched slider internal `valuesRef` to `shallowRef` so same-reference array writes preserve `Object.is` semantics (matching React helper behavior).
+3. Updated regression coverage:
+   - `starters/vue/src/composition.spec.ts` slider controlled test now asserts repeated same-turn writes to the same snapped value emit `onChange` only once when the parent does not sync.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "vue-stately slider"`,
+   - full Vue tests: `yarn test:vue` (633 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 531 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 633 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

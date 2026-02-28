@@ -1,4 +1,5 @@
-import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, shallowRef, unref} from 'vue';
+import {useControlledState} from '@vue-stately/utils';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
 type Orientation = 'horizontal' | 'vertical';
@@ -46,20 +47,6 @@ function convertValue(value?: number | number[]): number[] | undefined {
   }
 
   return Array.isArray(value) ? value : [value];
-}
-
-function equalArrays(a: number[], b: number[]): boolean {
-  if (a.length !== b.length) {
-    return false;
-  }
-
-  for (let index = 0; index < a.length; index += 1) {
-    if (a[index] !== b[index]) {
-      return false;
-    }
-  }
-
-  return true;
 }
 
 export interface SliderState {
@@ -124,53 +111,18 @@ export function useSliderState<T extends number | number[]>(options: SliderState
   };
 
   let defaultValues = restrictValues(convertValue(options.defaultValue)) ?? [minValue];
-  let uncontrolledValues = ref(defaultValues);
-  let initialValues = options.value?.value != null
-    ? restrictValues(convertValue(options.value.value)) ?? defaultValues
-    : uncontrolledValues.value;
-
-  let isSingleValue = computed(() => {
-    let controlledValue = options.value?.value;
-    return typeof controlledValue === 'number' || typeof options.defaultValue === 'number';
+  let controlledValue = computed<number[] | undefined>(() => {
+    return restrictValues(convertValue(options.value?.value));
   });
-  let isControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
-  let wasControlled = ref(isControlled.value);
-
-  watch(isControlled, (nextIsControlled) => {
-    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
-      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
-    }
-    wasControlled.value = nextIsControlled;
-  });
-
-  let values = computed<number[]>(() => {
-    if (isControlled.value && options.value) {
-      return restrictValues(convertValue(options.value.value)) ?? defaultValues;
-    }
-
-    return uncontrolledValues.value;
-  });
-  let valuesRef = ref<number[]>(values.value);
-
-  let toOutputValue = (nextValues: number[]): T => {
-    if (isSingleValue.value) {
-      return (nextValues[0] ?? minValue) as T;
-    }
-
-    return nextValues as T;
-  };
+  let onChange = createOnChange(options.value, options.defaultValue, options.onChange, minValue);
+  let onChangeEnd = createOnChange(options.value, options.defaultValue, options.onChangeEnd, minValue);
+  let [values, setValuesState] = useControlledState<number[], T>(controlledValue, defaultValues, onChange);
+  let initialValues = ref(values.value);
+  let valuesRef = shallowRef<number[]>(values.value);
 
   let setValues = (nextValues: number[]): void => {
-    if (equalArrays(nextValues, values.value)) {
-      return;
-    }
-
     valuesRef.value = nextValues;
-    if (!isControlled.value) {
-      uncontrolledValues.value = nextValues;
-    }
-
-    options.onChange?.(toOutputValue(nextValues));
+    setValuesState(nextValues);
   };
 
   let isDraggings = ref<boolean[]>(new Array(values.value.length).fill(false));
@@ -265,8 +217,8 @@ export function useSliderState<T extends number | number[]>(options: SliderState
     let wasDragging = isDraggings.value[index] ?? false;
     isDraggings.value = replaceIndex(isDraggings.value, index, dragging);
 
-    if (options.onChangeEnd && wasDragging && !isDraggings.value.some(Boolean)) {
-      options.onChangeEnd(toOutputValue(valuesRef.value));
+    if (onChangeEnd && wasDragging && !isDraggings.value.some(Boolean)) {
+      onChangeEnd(valuesRef.value);
     }
   };
 
@@ -307,7 +259,7 @@ export function useSliderState<T extends number | number[]>(options: SliderState
 
   return {
     values,
-    defaultValues: options.defaultValue !== undefined ? defaultValues : initialValues,
+    defaultValues: options.defaultValue !== undefined ? defaultValues : initialValues.value,
     getThumbValue,
     setThumbValue,
     setThumbPercent,
@@ -330,5 +282,25 @@ export function useSliderState<T extends number | number[]>(options: SliderState
     pageSize,
     orientation,
     isDisabled
+  };
+}
+
+function createOnChange<T extends number | number[]>(
+  value: Ref<T | undefined> | undefined,
+  defaultValue: T | undefined,
+  onChange: ((value: T) => void) | undefined,
+  minValue: number
+): ((value: number[]) => void) | undefined {
+  if (!onChange) {
+    return undefined;
+  }
+
+  return (newValue: number[]) => {
+    if (typeof value?.value === 'number' || typeof defaultValue === 'number') {
+      onChange((newValue[0] ?? minValue) as T);
+      return;
+    }
+
+    onChange(newValue as T);
   };
 }
