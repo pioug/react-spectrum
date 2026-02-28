@@ -150,6 +150,14 @@ import {
   VueInlineAlert as RootVueInlineAlert
 } from '../../../packages/@vue-spectrum/inlinealert/index';
 import {
+  Avatar,
+  VueAvatar
+} from '@vue-spectrum/avatar';
+import {
+  Avatar as RootAvatar,
+  VueAvatar as RootVueAvatar
+} from '../../../packages/@vue-spectrum/avatar/index';
+import {
   ButtonGroup,
   VueButtonGroup
 } from '@vue-spectrum/buttongroup';
@@ -690,6 +698,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
   it('keeps root inlinealert entry exports aligned with source exports', () => {
     expect(RootInlineAlert).toBe(InlineAlert);
     expect(RootVueInlineAlert).toBe(VueInlineAlert);
+  });
+
+  it('keeps avatar exports aligned with VueAvatar base entry', () => {
+    expect(Avatar).toBe(VueAvatar);
+  });
+
+  it('keeps root avatar entry exports aligned with source exports', () => {
+    expect(RootAvatar).toBe(Avatar);
+    expect(RootVueAvatar).toBe(VueAvatar);
   });
 
   it('keeps buttongroup exports aligned with VueButtonGroup base entry', () => {
