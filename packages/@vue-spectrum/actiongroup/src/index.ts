@@ -288,7 +288,7 @@ export const ActionGroup = defineComponent({
         'spectrum-ActionGroup--justified': props.isJustified,
         'spectrum-ActionGroup--quiet': isQuiet.value,
         'spectrum-ActionGroup--vertical': isVertical.value,
-        'spectrum-ActionGroup--overflowCollapse': canCollapse.value
+        'spectrum-ActionGroup--overflowCollapse': props.overflowMode === 'collapse'
       }
     ));
 
@@ -573,12 +573,12 @@ export const ActionGroup = defineComponent({
 
     return () => h('div', {
       ref: wrapperRef,
-      class: ['flex-container', 'vs-action-group__wrapper']
+      class: ['flex-container', 'vs-spectrum-action-group__wrapper']
     }, [
       h('div', {
         ...attrs,
         ref: groupRef,
-        class: [className.value, 'vs-action-group', attrs.class],
+        class: [className.value, 'vs-spectrum-action-group', attrs.class],
         role: shouldHideGroupAria.value ? undefined : resolvedRole.value,
         'aria-orientation': shouldHideGroupAria.value ? undefined : props.orientation,
         'aria-label': shouldHideGroupAria.value ? undefined : attrs['aria-label'],
@@ -609,17 +609,22 @@ export const ActionGroup = defineComponent({
             },
             classNames(
               buttonStyles,
+              'i18nFontFamily',
               'spectrum-ActionButton',
+              'spectrum-BaseButton',
+              'spectrum-FocusRing',
+              'spectrum-FocusRing-ring',
               {
                 'spectrum-ActionButton--emphasized': isEmphasized.value,
                 'spectrum-ActionButton--quiet': isQuiet.value,
                 'spectrum-ActionButton--staticBlack': props.staticColor === 'black',
                 'spectrum-ActionButton--staticColor': !!props.staticColor,
                 'spectrum-ActionButton--staticWhite': props.staticColor === 'white',
+                'is-disabled': isItemDisabled,
                 'is-selected': isSelected
               }
             )
-          ), 'vs-action-group__item'],
+          ), 'vs-spectrum-action-group__item'],
           type: 'button',
           disabled: isItemDisabled,
           'aria-label': shouldHideButtonText.value ? itemLabel : undefined,
@@ -641,7 +646,7 @@ export const ActionGroup = defineComponent({
         ]);
       }),
       hasOverflow.value
-        ? h('div', {class: 'vs-action-group__overflow'}, [
+        ? h('div', {class: 'vs-spectrum-action-group__overflow'}, [
           h('button', {
             ref: overflowTriggerRef,
             class: [
@@ -651,7 +656,11 @@ export const ActionGroup = defineComponent({
                 'spectrum-ActionGroup-menu',
                 classNames(
                   buttonStyles,
+                  'i18nFontFamily',
                   'spectrum-ActionButton',
+                  'spectrum-BaseButton',
+                  'spectrum-FocusRing',
+                  'spectrum-FocusRing-ring',
                   {
                     'spectrum-ActionButton--emphasized': isEmphasized.value,
                     'spectrum-ActionButton--quiet': isQuiet.value,
@@ -662,8 +671,8 @@ export const ActionGroup = defineComponent({
                   }
                 )
               ),
-              'vs-action-group__item',
-              'vs-action-group__overflow-trigger'
+              'vs-spectrum-action-group__item',
+              'vs-spectrum-action-group__overflow-trigger'
             ],
             type: 'button',
             'aria-haspopup': 'menu',
@@ -710,13 +719,13 @@ export const ActionGroup = defineComponent({
               class: [
                 classNames(menuStyles, 'spectrum-Menu-wrapper'),
                 classNames(actionGroupStyles, 'spectrum-ActionGroup-menu-popover'),
-                'vs-action-group__overflow-menu-wrapper'
+                'vs-spectrum-action-group__overflow-menu-wrapper'
               ],
               role: 'presentation'
             }, [
               h('ul', {
                 id: groupId,
-                class: [classNames(menuStyles, 'spectrum-Menu'), 'vs-action-group__overflow-menu'],
+                class: [classNames(menuStyles, 'spectrum-Menu'), 'vs-spectrum-action-group__overflow-menu'],
                 role: 'menu',
                 'aria-label': 'More actions',
                 onKeydown: onOverflowMenuKeydown
@@ -726,7 +735,7 @@ export const ActionGroup = defineComponent({
                 let isItemDisabled = isDisabled.value || disabledKeySet.value.has(itemKey);
                 return h('li', {
                   key: `${itemKey}-overflow`,
-                  class: 'vs-action-group__overflow-item-wrapper'
+                  class: 'vs-spectrum-action-group__overflow-item-wrapper'
                 }, [
                   h('button', {
                     class: classNames(menuStyles, 'spectrum-Menu-item', {
@@ -773,7 +782,7 @@ export const ActionGroup = defineComponent({
       h('span', {
         hidden: true,
         'aria-hidden': 'true',
-        class: 'vs-action-group__hidden-marker'
+        class: 'vs-spectrum-action-group__hidden-marker'
       })
     ]),
       h('button', {
@@ -788,7 +797,11 @@ export const ActionGroup = defineComponent({
             'spectrum-ActionGroup-menu',
             classNames(
               buttonStyles,
+              'i18nFontFamily',
               'spectrum-ActionButton',
+              'spectrum-BaseButton',
+              'spectrum-FocusRing',
+              'spectrum-FocusRing-ring',
               {
                 'spectrum-ActionButton--emphasized': isEmphasized.value,
                 'spectrum-ActionButton--quiet': isQuiet.value,
@@ -798,7 +811,7 @@ export const ActionGroup = defineComponent({
               }
             )
           ),
-          'vs-action-group__overflow-measure'
+          'vs-spectrum-action-group__overflow-measure'
         ]
       }, [
         h('span', {

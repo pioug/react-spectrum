@@ -1086,10 +1086,10 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let items = wrapper.findAll('button.vs-action-group__item');
+    let items = wrapper.findAll('button[data-vs-action-group-item="true"]');
     expect(items).toHaveLength(2);
     expect(items[0].classes()).toContain('is-selected');
-    expect(wrapper.get('.vs-action-group').attributes('aria-label')).toBe('Row actions');
+    expect(wrapper.get('.vs-spectrum-action-group').attributes('aria-label')).toBe('Row actions');
     await items[1].trigger('mouseenter');
     expect(items[1].classes()).toContain('is-hovered');
     await items[1].trigger('click');
@@ -1103,7 +1103,7 @@ describe('Vue migration primitives', () => {
     let emittedSelectionChange = wrapper.emitted('selectionChange')?.[0]?.[0] as unknown;
     expect(emittedSelectionChange).toBeInstanceOf(Set);
     expect(Array.from(emittedSelectionChange as Set<string>)).toEqual(['One', 'Two']);
-    expect(wrapper.get('.vs-action-group__hidden-marker').attributes('hidden')).toBeDefined();
+    expect(wrapper.get('.vs-spectrum-action-group__hidden-marker').attributes('hidden')).toBeDefined();
   });
 
   it('accepts actiongroup disabledKeys as a Set and blocks disabled actions', async () => {
@@ -1115,7 +1115,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let items = wrapper.findAll('button.vs-action-group__item');
+    let items = wrapper.findAll('button[data-vs-action-group-item="true"]');
     expect(items).toHaveLength(2);
     expect(items[1].attributes('disabled')).toBeDefined();
     expect(items[1].attributes('aria-disabled')).toBe('true');
@@ -1148,7 +1148,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let items = wrapper.findAll('button.vs-action-group__item');
+    let items = wrapper.findAll('button[data-vs-action-group-item="true"]');
     expect(items).toHaveLength(2);
     expect(items[0].classes()).toContain('is-selected');
     expect(items[0].attributes('aria-pressed')).toBe('true');
@@ -1174,7 +1174,7 @@ describe('Vue migration primitives', () => {
 
     let originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
     let getBoundingClientRectSpy = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function getBoundingClientRect() {
-      if (this.classList.contains('vs-action-group__wrapper')) {
+      if (this.classList.contains('vs-spectrum-action-group__wrapper')) {
         return {
           width: 170,
           height: 40,
@@ -1188,7 +1188,7 @@ describe('Vue migration primitives', () => {
         } as DOMRect;
       }
 
-      if (this.classList.contains('vs-action-group__overflow-measure')) {
+      if (this.classList.contains('vs-spectrum-action-group__overflow-measure')) {
         return {
           width: 48,
           height: 30,
@@ -1238,9 +1238,9 @@ describe('Vue migration primitives', () => {
 
       let overflowButton = wrapper.get('[data-vs-action-group-overflow-trigger="true"]');
       await overflowButton.trigger('click');
-      expect(wrapper.findAll('.vs-action-group__overflow-menu .spectrum-Menu-item')).toHaveLength(2);
+      expect(wrapper.findAll('.vs-spectrum-action-group__overflow-menu .spectrum-Menu-item')).toHaveLength(2);
 
-      let overflowItems = wrapper.findAll('.vs-action-group__overflow-menu .spectrum-Menu-item');
+      let overflowItems = wrapper.findAll('.vs-spectrum-action-group__overflow-menu .spectrum-Menu-item');
       await overflowItems[0].trigger('click');
       expect(wrapper.emitted('action')?.[0]).toEqual(['Two']);
     } finally {
@@ -1258,7 +1258,7 @@ describe('Vue migration primitives', () => {
 
     let originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
     let getBoundingClientRectSpy = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function getBoundingClientRect() {
-      if (this.classList.contains('vs-action-group__wrapper')) {
+      if (this.classList.contains('vs-spectrum-action-group__wrapper')) {
         return {
           width: 170,
           height: 40,
@@ -1272,7 +1272,7 @@ describe('Vue migration primitives', () => {
         } as DOMRect;
       }
 
-      if (this.classList.contains('vs-action-group__overflow-measure')) {
+      if (this.classList.contains('vs-spectrum-action-group__overflow-measure')) {
         return {
           width: 48,
           height: 30,
@@ -1320,27 +1320,27 @@ describe('Vue migration primitives', () => {
       await overflowButton.trigger('keydown', {key: 'ArrowDown'});
       await nextTick();
 
-      let overflowItems = wrapper.findAll('.vs-action-group__overflow-menu button[role="menuitem"]');
+      let overflowItems = wrapper.findAll('.vs-spectrum-action-group__overflow-menu button[role="menuitem"]');
       expect(overflowItems).toHaveLength(2);
       expect(document.activeElement).toBe(overflowItems[0].element);
 
       await overflowItems[0].trigger('keydown', {key: 'ArrowDown'});
       await nextTick();
-      overflowItems = wrapper.findAll('.vs-action-group__overflow-menu button[role="menuitem"]');
+      overflowItems = wrapper.findAll('.vs-spectrum-action-group__overflow-menu button[role="menuitem"]');
       expect(document.activeElement).toBe(overflowItems[1].element);
 
       document.body.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
       await nextTick();
-      expect(wrapper.find('.vs-action-group__overflow-menu').exists()).toBe(false);
+      expect(wrapper.find('.vs-spectrum-action-group__overflow-menu').exists()).toBe(false);
 
       await overflowButton.trigger('keydown', {key: 'ArrowUp'});
       await nextTick();
-      overflowItems = wrapper.findAll('.vs-action-group__overflow-menu button[role="menuitem"]');
+      overflowItems = wrapper.findAll('.vs-spectrum-action-group__overflow-menu button[role="menuitem"]');
       expect(document.activeElement).toBe(overflowItems[overflowItems.length - 1].element);
 
       await overflowItems[overflowItems.length - 1].trigger('keydown', {key: 'Escape'});
       await nextTick();
-      expect(wrapper.find('.vs-action-group__overflow-menu').exists()).toBe(false);
+      expect(wrapper.find('.vs-spectrum-action-group__overflow-menu').exists()).toBe(false);
       expect(document.activeElement).toBe(overflowButton.element);
     } finally {
       getBoundingClientRectSpy.mockRestore();
@@ -1357,7 +1357,7 @@ describe('Vue migration primitives', () => {
 
     let originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
     let getBoundingClientRectSpy = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function getBoundingClientRect() {
-      if (this.classList.contains('vs-action-group__wrapper')) {
+      if (this.classList.contains('vs-spectrum-action-group__wrapper')) {
         return {
           width: 170,
           height: 40,
@@ -1371,7 +1371,7 @@ describe('Vue migration primitives', () => {
         } as DOMRect;
       }
 
-      if (this.classList.contains('vs-action-group__overflow-measure')) {
+      if (this.classList.contains('vs-spectrum-action-group__overflow-measure')) {
         return {
           width: 48,
           height: 30,
@@ -1439,7 +1439,7 @@ describe('Vue migration primitives', () => {
 
     let originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
     let getBoundingClientRectSpy = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function getBoundingClientRect() {
-      if (this.classList.contains('vs-action-group__wrapper')) {
+      if (this.classList.contains('vs-spectrum-action-group__wrapper')) {
         return {
           width: 160,
           height: 40,
@@ -1453,7 +1453,7 @@ describe('Vue migration primitives', () => {
         } as DOMRect;
       }
 
-      if (this.classList.contains('vs-action-group__overflow-measure')) {
+      if (this.classList.contains('vs-spectrum-action-group__overflow-measure')) {
         return {
           width: 48,
           height: 30,
@@ -1513,7 +1513,9 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let actionButtons = wrapper.findAll('button.vs-action-group__item');
+    expect(wrapper.find('button.vs-action-bar__clear svg path').exists()).toBe(true);
+
+    let actionButtons = wrapper.findAll('button[data-vs-action-group-item="true"]');
     expect(actionButtons).toHaveLength(2);
     expect(actionButtons[0].attributes('disabled')).toBeDefined();
 
@@ -1535,7 +1537,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let actionButton = wrapper.get('button.vs-action-group__item');
+    let actionButton = wrapper.get('button[data-vs-action-group-item="true"]');
     expect(actionButton.find('svg.spectrum-Icon').exists()).toBe(true);
     expect(actionButton.find('.spectrum-ActionButton-label').text()).toBe('Edit');
   });
@@ -3273,6 +3275,8 @@ describe('Vue migration primitives', () => {
     expect(wrapper.attributes('data-position')).toBe('top');
     expect(wrapper.attributes('data-placement')).toBe('end');
     expect(wrapper.findAll('.spectrum-Toast')).toHaveLength(2);
+    expect(wrapper.find('.spectrum-Toast-typeIcon path').exists()).toBe(true);
+    expect(wrapper.find('button[data-testid="rsp-Toast-closeButton"] svg path').exists()).toBe(true);
 
     await wrapper.get('button[data-testid="rsp-Toast-secondaryButton"]').trigger('click');
     await nextTick();

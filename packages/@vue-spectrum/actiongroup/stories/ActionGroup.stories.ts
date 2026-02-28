@@ -1,18 +1,25 @@
 import {action} from '@storybook/addon-actions';
 import {ActionGroup, type SpectrumActionGroupProps} from '../src';
 import Book from '@spectrum-icons-vue/workflow/Book';
+import Brush from '@spectrum-icons-vue/workflow/Brush';
 import {type Component, computed, defineComponent, h, type PropType, ref} from 'vue';
 import Copy from '@spectrum-icons-vue/workflow/Copy';
 import Delete from '@spectrum-icons-vue/workflow/Delete';
+import Document from '@spectrum-icons-vue/workflow/Document';
 import Draw from '@spectrum-icons-vue/workflow/Draw';
 import Duplicate from '@spectrum-icons-vue/workflow/Duplicate';
+import Heal from '@spectrum-icons-vue/workflow/Heal';
 import Info from '@spectrum-icons-vue/workflow/Info';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
-import Move from '@spectrum-icons-vue/workflow/Move';
 import MoveTo from '@spectrum-icons-vue/workflow/MoveTo';
 import Properties from '@spectrum-icons-vue/workflow/Properties';
+import Sampler from '@spectrum-icons-vue/workflow/Sampler';
+import Select from '@spectrum-icons-vue/workflow/Select';
+import Settings from '@spectrum-icons-vue/workflow/Settings';
 import Text from '@spectrum-icons-vue/workflow/Text';
 import {TooltipTrigger} from '@vue-spectrum/tooltip';
+import {View} from '@vue-spectrum/view';
+import VectorDraw from '@spectrum-icons-vue/workflow/VectorDraw';
 import ViewCard from '@spectrum-icons-vue/workflow/ViewCard';
 import ViewGrid from '@spectrum-icons-vue/workflow/ViewGrid';
 import ViewList from '@spectrum-icons-vue/workflow/ViewList';
@@ -42,12 +49,25 @@ const viewItems: ActionItem[] = [
   {children: 'List view', name: '2'},
   {children: 'Gallery view', name: '3'}
 ];
-const overflowItems = ['Edit', 'Copy', 'Delete', 'Move', 'Duplicate'];
-const toolItems = ['Select', 'Brush', 'Heal', 'Draw', 'Vector draw', 'Sampler'];
+const overflowItems: ActionItem[] = [
+  {children: 'Edit', name: '1'},
+  {children: 'Copy', name: '2'},
+  {children: 'Delete', name: '3'},
+  {children: 'Move', name: '4'},
+  {children: 'Duplicate', name: '5'}
+];
+const toolItems: ActionItem[] = [
+  {children: 'Select', name: 'select'},
+  {children: 'Text', name: 'text'},
+  {children: 'Heal', name: 'heal'},
+  {children: 'Brush', name: 'brush'},
+  {children: 'Pen', name: 'pen'},
+  {children: 'Eye dropper', name: 'eyedropper'}
+];
 
 const iconMap: Record<string, Component> = {
-  'Document setup': Book,
-  'Settings': Properties,
+  'Document setup': Document,
+  'Settings': Settings,
   'Grid view': ViewGrid,
   'List view': ViewList,
   'Gallery view': ViewCard,
@@ -57,14 +77,15 @@ const iconMap: Record<string, Component> = {
   'Properties': Properties,
   'Info': Info,
   'Keywords': Book,
-  'Move': Move,
+  'Move': MoveTo,
   'Move to': MoveTo,
   'Duplicate': Duplicate,
-  'Select': ViewGrid,
-  'Brush': Draw,
-  'Heal': Info,
-  'Vector draw': Draw,
-  'Sampler': ViewCard
+  'Select': Select,
+  'Text': Text,
+  'Heal': Heal,
+  'Brush': Brush,
+  'Pen': VectorDraw,
+  'Eye dropper': Sampler
 };
 
 const baseArgTypes = {
@@ -184,8 +205,11 @@ const ActionGroupDisplayExample = defineComponent({
         @action="props.args.onAction"
         @change="forwardSelection">
         <template #item="{item, hideButtonText}">
-          <component :is="iconMap[getLabel(item)]" />
-          <span v-if="!hideButtonText" class="spectrum-ActionButton-label">{{ getLabel(item) }}</span>
+          <span class="spectrum-ActionButton-label" :hidden="hideButtonText">{{ getLabel(item) }}</span>
+          <component
+            :is="iconMap[getLabel(item)]"
+            :class="hideButtonText ? 'spectrum-ActionGroup-itemIcon' : undefined"
+            size="S" />
         </template>
       </ActionGroup>
       <ActionGroup
@@ -195,7 +219,7 @@ const ActionGroupDisplayExample = defineComponent({
         @action="props.args.onAction"
         @change="forwardSelection">
         <template #item="{item}">
-          <component :is="iconMap[getLabel(item)]" />
+          <component :is="iconMap[getLabel(item)]" size="S" />
         </template>
       </ActionGroup>
     </div>
@@ -235,7 +259,7 @@ const OverflowActionGroupExample = defineComponent({
     }
   },
   setup(props) {
-    let selected = ref<string[]>([]);
+    let selected = ref<string[]>(normalizeStorySelectionKeys(props.args.modelValue ?? props.args.defaultSelectedKeys));
     let resolvedSelectionMode = computed(() => props.args.selectionMode ?? props.selectionMode);
     let getLabel = (item: ActionItem) => typeof item === 'string' ? item : item.children;
 
@@ -262,8 +286,11 @@ const OverflowActionGroupExample = defineComponent({
         @action="props.args.onAction"
         @change="forwardSelection">
         <template #item="{item, hideButtonText}">
-          <component :is="iconMap[getLabel(item)]" />
-          <span v-if="!hideButtonText" class="spectrum-ActionButton-label">{{ getLabel(item) }}</span>
+          <component
+            :is="iconMap[getLabel(item)]"
+            :class="hideButtonText ? 'spectrum-ActionGroup-itemIcon' : undefined"
+            size="S" />
+          <span class="spectrum-ActionButton-label" :hidden="hideButtonText">{{ getLabel(item) }}</span>
         </template>
       </ActionGroup>
     </div>
@@ -310,9 +337,12 @@ const TooltipActionGroupExample = defineComponent({
       button-label-behavior="hide"
       @action="props.args.onAction"
       @change="forwardSelection">
-      <template #item="{item}">
+      <template #item="{item, hideButtonText}">
         <TooltipTrigger :delay="0" trigger="hover">
-          <component :is="iconMap[getLabel(item)]" />
+          <component
+            :is="iconMap[getLabel(item)]"
+            :class="hideButtonText ? 'spectrum-ActionGroup-itemIcon' : undefined"
+            size="S" />
           <template #tooltip>
             {{ getLabel(item) }}
           </template>
@@ -469,7 +499,7 @@ export const StaticColorWhite: ActionGroupStory = {
     items: viewItems
   },
   render: (args) => ({
-    components: {ActionGroupDisplayExample},
+    components: {ActionGroupDisplayExample, View},
     setup() {
       return {
         args: {
@@ -479,9 +509,9 @@ export const StaticColorWhite: ActionGroupStory = {
       };
     },
     template: `
-      <div style="background-color: var(--spectrum-global-color-static-blue-700); padding: var(--spectrum-global-dimension-size-1000);">
+      <View background-color="static-blue-700" style="padding: var(--spectrum-global-dimension-size-1000);">
         <ActionGroupDisplayExample :args="args" />
-      </div>
+      </View>
     `
   }),
   name: 'staticColor=white'
@@ -494,7 +524,7 @@ export const StaticColorBlack: ActionGroupStory = {
     items: viewItems
   },
   render: (args) => ({
-    components: {ActionGroupDisplayExample},
+    components: {ActionGroupDisplayExample, View},
     setup() {
       return {
         args: {
@@ -504,9 +534,9 @@ export const StaticColorBlack: ActionGroupStory = {
       };
     },
     template: `
-      <div style="background-color: var(--spectrum-global-color-static-yellow-400); padding: var(--spectrum-global-dimension-size-1000);">
+      <View background-color="static-yellow-400" style="padding: var(--spectrum-global-dimension-size-1000);">
         <ActionGroupDisplayExample :args="args" />
-      </div>
+      </View>
     `
   }),
   name: 'staticColor=black'
@@ -525,7 +555,8 @@ export const WithTooltips: ActionGroupStory = {
 
 export const Overflow: ActionGroupStory = {
   args: {
-    disabledKeys: ['1', '5']
+    disabledKeys: ['1', '5'],
+    summaryIcon: h(Text)
   },
   render: (args) => ({
     components: {OverflowActionGroupExample},
@@ -573,12 +604,15 @@ export const VerticalOverflow: ActionGroupStory = {
       return {
         args: {
           ...args,
+          'aria-label': 'Tools',
+          buttonLabelBehavior: 'hide',
+          disallowEmptySelection: true,
+          isEmphasized: true,
+          isQuiet: true,
+          modelValue: new Set(['select']),
           orientation: 'vertical',
           overflowMode: 'collapse',
-          selectionMode: 'single',
-          buttonLabelBehavior: 'hide',
-          isEmphasized: true,
-          isQuiet: true
+          selectionMode: 'single'
         }
       };
     },

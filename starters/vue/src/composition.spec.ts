@@ -17049,7 +17049,7 @@ describe('Vue migration composition components', () => {
       }
     });
 
-    let actionButtons = wrapper.findAll('button.vs-action-group__item');
+    let actionButtons = wrapper.findAll('button[data-vs-action-group-item="true"]');
     expect(actionButtons).toHaveLength(2);
     expect(wrapper.text()).toContain('2 selected');
 
@@ -17068,7 +17068,7 @@ describe('Vue migration composition components', () => {
       }
     });
 
-    let buttons = wrapper.findAll('button.vs-action-group__item');
+    let buttons = wrapper.findAll('button[data-vs-action-group-item="true"]');
     expect(buttons[0].attributes('disabled')).toBeDefined();
     expect(buttons[0].attributes('aria-disabled')).toBe('true');
 
@@ -17088,7 +17088,7 @@ describe('Vue migration composition components', () => {
       }
     });
 
-    await wrapper.findAll('button.vs-action-group__item')[1].trigger('click');
+    await wrapper.findAll('button[data-vs-action-group-item="true"]')[1].trigger('click');
     expect(wrapper.emitted('action')?.[0]).toEqual(['Delete']);
     let emittedSelection = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
     expect(emittedSelection).toBeInstanceOf(Set);

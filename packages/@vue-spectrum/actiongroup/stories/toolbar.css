@@ -1,0 +1,13 @@
+.spectrum-Toolbar {
+  display: flex;
+  gap: 8px;
+  width: fit-content;
+}
+
+.spectrum-Toolbar[data-orientation="vertical"] {
+  flex-direction: column;
+}
+
+.spectrum-Toolbar[data-orientation="horizontal"] {
+  flex-direction: row;
+}

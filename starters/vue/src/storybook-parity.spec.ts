@@ -144,7 +144,9 @@ import {WithExpandedKeys as AccordionWithExpandedKeys} from '../../../packages/@
 import {Default as ActionBarDefaultStory} from '../../../packages/@vue-spectrum/actionbar/stories/ActionBar.stories';
 import {
   Default as ActionGroupDefault,
+  Overflow as ActionGroupOverflow,
   StaticColorWhite as ActionGroupStaticColorWhite,
+  VerticalOverflow as ActionGroupVerticalOverflow,
   WithTooltips as ActionGroupWithTooltips
 } from '../../../packages/@vue-spectrum/actiongroup/stories/ActionGroup.stories';
 import {
@@ -1575,6 +1577,7 @@ describe('Vue storybook helper parity', () => {
       await nextTick();
       expect(wrapper.get('.vs-action-bar').exists()).toBe(true);
       expect(wrapper.get('.vs-action-bar__count').text()).toContain('1 selected');
+      expect(wrapper.find('button.vs-action-bar__clear svg path').exists()).toBe(true);
 
       await rowSelection[1].setValue(true);
       await nextTick();
@@ -1598,7 +1601,7 @@ describe('Vue storybook helper parity', () => {
       let defaultStory = ActionGroupDefault.render?.({onAction, onSelectionChange: vi.fn()}) as ReturnType<Exclude<typeof ActionGroupDefault.render, undefined>>;
       let defaultWrapper = mount(defaultStory);
       wrappers.push(defaultWrapper);
-      let firstActionButton = defaultWrapper.findAll('.vs-action-group__item')[0];
+      let firstActionButton = defaultWrapper.findAll('[data-vs-action-group-item="true"]')[0];
       await firstActionButton.trigger('click');
       expect(onAction).toHaveBeenCalledWith('1');
 
@@ -1610,7 +1613,7 @@ describe('Vue storybook helper parity', () => {
       }) as ReturnType<Exclude<typeof ActionGroupDefault.render, undefined>>;
       let setDisabledWrapper = mount(defaultStoryWithSetDisabledKeys);
       wrappers.push(setDisabledWrapper);
-      let firstGroupButtons = setDisabledWrapper.findAll('.vs-action-group')[0]?.findAll('.vs-action-group__item') ?? [];
+      let firstGroupButtons = setDisabledWrapper.findAll('.vs-spectrum-action-group')[0]?.findAll('[data-vs-action-group-item="true"]') ?? [];
       expect(firstGroupButtons).toHaveLength(3);
       expect(firstGroupButtons[1].attributes('disabled')).toBeDefined();
       expect(firstGroupButtons[1].attributes('aria-disabled')).toBe('true');
@@ -1626,6 +1629,7 @@ describe('Vue storybook helper parity', () => {
       wrappers.push(staticColorWrapper);
       expect(staticColorWrapper.text()).toContain('Grid view');
       expect(staticColorWrapper.text()).not.toContain('[object Object]');
+      expect(staticColorWrapper.find('svg.vs-workflow-icon').exists()).toBe(true);
 
       let staticColorSetDefaultSelectedStory = ActionGroupStaticColorWhite.render?.({
         ...((ActionGroupStaticColorWhite.args as Record<string, unknown>) ?? {}),
@@ -1643,11 +1647,44 @@ describe('Vue storybook helper parity', () => {
       let withTooltipsWrapper = mount(withTooltipsStory);
       wrappers.push(withTooltipsWrapper);
       expect(withTooltipsWrapper.findAll('.vs-tooltip-trigger')).toHaveLength(3);
-      expect(withTooltipsWrapper.findAll('.vs-action-group__item').map((button) => button.attributes('aria-label'))).toEqual([
+      expect(withTooltipsWrapper.findAll('[data-vs-action-group-item="true"]').map((button) => button.attributes('aria-label'))).toEqual([
         'Grid view',
         'List view',
         'Gallery view'
       ]);
+
+      let overflowStory = ActionGroupOverflow.render?.({
+        ...((ActionGroupOverflow.args as Record<string, unknown>) ?? {}),
+        onAction: vi.fn(),
+        onSelectionChange: vi.fn()
+      }) as ReturnType<Exclude<typeof ActionGroupOverflow.render, undefined>>;
+      let overflowWrapper = mount(overflowStory);
+      wrappers.push(overflowWrapper);
+      let overflowExample = overflowWrapper.findComponent({name: 'OverflowActionGroupExample'});
+      let overflowArgs = overflowExample.props('args') as {disabledKeys?: Iterable<string>, summaryIcon?: unknown};
+      expect(Array.from(overflowArgs.disabledKeys ?? [])).toEqual(['1', '5']);
+      expect(overflowArgs.summaryIcon).toBeTruthy();
+      let overflowButtons = overflowWrapper.findAll('[data-vs-action-group-item="true"]');
+      expect(overflowButtons[0]?.attributes('disabled')).toBeDefined();
+      expect(overflowButtons[overflowButtons.length - 1]?.attributes('disabled')).toBeDefined();
+
+      let verticalOverflowStory = ActionGroupVerticalOverflow.render?.({onAction: vi.fn(), onSelectionChange: vi.fn()}) as ReturnType<Exclude<typeof ActionGroupVerticalOverflow.render, undefined>>;
+      let verticalOverflowWrapper = mount(verticalOverflowStory);
+      wrappers.push(verticalOverflowWrapper);
+      let verticalOverflowExample = verticalOverflowWrapper.findComponent({name: 'OverflowActionGroupExample'});
+      let verticalItems = verticalOverflowExample.props('items') as Array<{children?: string}>;
+      expect(verticalItems.map((item) => item.children)).toEqual(['Select', 'Text', 'Heal', 'Brush', 'Pen', 'Eye dropper']);
+      let verticalArgs = verticalOverflowExample.props('args') as {disallowEmptySelection?: boolean, modelValue?: Iterable<string>};
+      expect(verticalArgs.disallowEmptySelection).toBe(true);
+      expect(Array.from(verticalArgs.modelValue ?? [])).toEqual(['select']);
+      let verticalButtons = verticalOverflowWrapper.findAll('[data-vs-action-group-item="true"]');
+      expect(verticalButtons.length).toBeGreaterThan(0);
+      expect(verticalButtons[0].classes()).toContain('spectrum-ActionButton--quiet');
+      expect(verticalButtons[0].classes()).toContain('spectrum-ActionButton--emphasized');
+      expect(verticalButtons[0].classes()).toContain('spectrum-ActionGroup-item--iconOnly');
+      expect(verticalOverflowWrapper.find('.vs-spectrum-action-group.spectrum-ActionGroup--overflowCollapse').exists()).toBe(true);
+      expect(verticalButtons[0].find('svg.spectrum-Icon').exists()).toBe(true);
+      expect(verticalButtons[0].find('svg.spectrum-ActionGroup-itemIcon').exists()).toBe(true);
     } finally {
       for (let wrapper of wrappers) {
         wrapper.unmount();
@@ -1663,11 +1700,15 @@ describe('Vue storybook helper parity', () => {
       let defaultWrapper = mount(defaultStory);
       wrappers.push(defaultWrapper);
 
-      let defaultGroups = defaultWrapper.findAll('.vs-action-group');
+      let defaultToolbar = defaultWrapper.get('.spectrum-Toolbar');
+      expect(defaultToolbar.attributes('data-orientation')).toBe('horizontal');
+      expect(defaultWrapper.findAll('.spectrum-Rule')).toHaveLength(1);
+
+      let defaultGroups = defaultWrapper.findAll('.vs-spectrum-action-group');
       expect(defaultGroups).toHaveLength(2);
       expect(defaultWrapper.findAll('.vs-tooltip-trigger')).toHaveLength(3);
 
-      let defaultManageButtons = defaultGroups[0].findAll('.vs-action-group__item');
+      let defaultManageButtons = defaultGroups[0].findAll('[data-vs-action-group-item="true"]');
       expect(defaultManageButtons).toHaveLength(3);
       await defaultManageButtons[0].trigger('click');
       await defaultManageButtons[2].trigger('click');
@@ -1684,11 +1725,12 @@ describe('Vue storybook helper parity', () => {
       expect(manageDisabledKeys).toBeInstanceOf(Set);
       expect(Array.from(manageDisabledKeys ?? [])).toEqual(['copy']);
 
-      let disabledGroups = disabledWrapper.findAll('.vs-action-group');
+      let disabledGroups = disabledWrapper.findAll('.vs-spectrum-action-group');
       expect(disabledGroups).toHaveLength(3);
       expect(disabledWrapper.findAll('.vs-tooltip-trigger')).toHaveLength(3);
+      expect(disabledWrapper.findAll('.spectrum-Rule')).toHaveLength(2);
 
-      let disabledManageButtons = disabledGroups[0].findAll('.vs-action-group__item');
+      let disabledManageButtons = disabledGroups[0].findAll('[data-vs-action-group-item="true"]');
       expect(disabledManageButtons).toHaveLength(3);
       expect(disabledManageButtons[1].attributes('disabled')).toBeDefined();
       expect(disabledManageButtons[1].attributes('aria-disabled')).toBe('true');
@@ -2430,6 +2472,7 @@ describe('Vue storybook helper parity', () => {
       await nextTick();
       expect(defaultWrapper.get('section.react-spectrum-ToastContainer').attributes('aria-label')).toBe('Notifications');
       expect(defaultWrapper.find('.spectrum-Toast').exists()).toBe(true);
+      expect(defaultWrapper.find('button[data-testid="rsp-Toast-closeButton"] svg path').exists()).toBe(true);
 
       clearToastQueue();
       await nextTick();
@@ -2781,7 +2824,7 @@ describe('Vue storybook helper parity', () => {
       let actionGroupStory = ListViewActionsActionGroups.render?.({}) as ReturnType<Exclude<typeof ListViewActionsActionGroups.render, undefined>>;
       let actionGroupWrapper = mount(actionGroupStory);
       wrappers.push(actionGroupWrapper);
-      expect(actionGroupWrapper.find('.spectrum-ActionGroup, .vs-action-group').exists()).toBe(true);
+      expect(actionGroupWrapper.find('.spectrum-ActionGroup, .vs-spectrum-action-group').exists()).toBe(true);
       expect(actionGroupWrapper.get('.vs-list-view').exists()).toBe(true);
 
       let actionMenuStory = ListViewActionsActionMenus.render?.({}) as ReturnType<Exclude<typeof ListViewActionsActionMenus.render, undefined>>;
@@ -2795,7 +2838,7 @@ describe('Vue storybook helper parity', () => {
       let actionMenuGroupWrapper = mount(actionMenuGroupStory);
       wrappers.push(actionMenuGroupWrapper);
       await openMenuTriggerInStory(actionMenuGroupWrapper);
-      expect(actionMenuGroupWrapper.find('.spectrum-ActionGroup, .vs-action-group').exists()).toBe(true);
+      expect(actionMenuGroupWrapper.find('.spectrum-ActionGroup, .vs-spectrum-action-group').exists()).toBe(true);
       expect(actionMenuGroupWrapper.find('.vs-spectrum-menu').exists()).toBe(true);
       expect(actionMenuGroupWrapper.get('.vs-list-view').exists()).toBe(true);
     } finally {

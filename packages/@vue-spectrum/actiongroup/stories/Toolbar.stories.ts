@@ -1,4 +1,6 @@
+import './toolbar.css';
 import {ActionGroup} from '../src';
+import {Divider} from '@vue-spectrum/divider';
 import {type Component, computed, defineComponent, type PropType, ref} from 'vue';
 import Copy from '@spectrum-icons-vue/workflow/Copy';
 import Delete from '@spectrum-icons-vue/workflow/Delete';
@@ -16,44 +18,6 @@ type ToolbarOrientation = 'horizontal' | 'vertical';
 const manageItems = ['edit', 'copy', 'delete'];
 const viewItems = ['grid', 'list', 'card'];
 const inspectItems = ['properties', 'info'];
-const DEFAULT_CHILDREN = {
-  key: null,
-  ref: null,
-  props: {
-    children: [{
-      type: {},
-      key: null,
-      ref: null,
-      props: {
-        items: [
-          {id: 'edit', textValue: 'Edit'},
-          {id: 'copy', textValue: 'Copy'},
-          {id: 'delete', textValue: 'Delete'}
-        ],
-        'aria-label': 'manage',
-        selectionMode: 'single'
-      }
-    }, {
-      type: {},
-      key: null,
-      ref: null,
-      props: {}
-    }, {
-      type: {},
-      key: null,
-      ref: null,
-      props: {
-        items: [
-          {id: 'grid', textValue: 'Grid view'},
-          {id: 'list', textValue: 'List view'},
-          {id: 'card', textValue: 'Gallery view'}
-        ],
-        'aria-label': 'view',
-        selectionMode: 'single'
-      }
-    }]
-  }
-};
 
 const labelMap: Record<string, string> = {
   edit: 'Edit',
@@ -81,6 +45,7 @@ const ToolbarExample = defineComponent({
   name: 'ToolbarExample',
   components: {
     ActionGroup,
+    Divider,
     TooltipTrigger
   },
   props: {
@@ -96,34 +61,13 @@ const ToolbarExample = defineComponent({
       type: Boolean,
       default: false
     },
-    children: {
-      type: Object as PropType<unknown>,
-      default: undefined
-    }
   },
   setup(props) {
     let manageSelection = ref<string[]>([]);
     let viewSelection = ref<string[]>([]);
     let inspectSelection = ref<string[]>([]);
 
-    let isVertical = computed(() => props.orientation === 'vertical');
-    let toolbarStyle = computed(() => ({
-      display: 'flex',
-      gap: '8px',
-      width: 'fit-content',
-      flexDirection: isVertical.value ? 'column' : 'row'
-    }));
-    let dividerStyle = computed(() => isVertical.value
-      ? {
-        height: '1px',
-        width: '100%',
-        backgroundColor: 'var(--spectrum-global-color-gray-300)'
-      }
-      : {
-        width: '1px',
-        height: '32px',
-        backgroundColor: 'var(--spectrum-global-color-gray-300)'
-      });
+    let dividerOrientation = computed(() => props.orientation === 'horizontal' ? 'vertical' : 'horizontal');
 
     let manageDisabledKeys = computed(() => props.isDisabledKeysExample ? new Set(['copy']) : new Set<string>());
     let manageSelectionMode = computed(() => props.isDisabledKeysExample ? 'multiple' : 'single');
@@ -131,7 +75,7 @@ const ToolbarExample = defineComponent({
     let viewDisabled = computed(() => props.isDisabledKeysExample);
 
     return {
-      dividerStyle,
+      dividerOrientation,
       iconMap,
       inspectItems,
       inspectSelection,
@@ -141,7 +85,6 @@ const ToolbarExample = defineComponent({
       manageSelectionMode,
       manageSelection,
       props,
-      toolbarStyle,
       viewDisabled,
       viewItems,
       viewSelectionMode,
@@ -150,7 +93,8 @@ const ToolbarExample = defineComponent({
   },
   template: `
     <div
-      :style="toolbarStyle"
+      class="spectrum-Toolbar"
+      :data-orientation="props.orientation"
       role="toolbar"
       :aria-orientation="props.orientation"
       :aria-label="props.ariaLabel">
@@ -163,14 +107,14 @@ const ToolbarExample = defineComponent({
         v-model="manageSelection">
         <template #item="{item}">
           <TooltipTrigger :delay="0" trigger="hover">
-            <component :is="iconMap[item]" :aria-label="labelMap[item]" />
+            <component :is="iconMap[item]" :aria-label="labelMap[item]" size="S" />
             <template #tooltip>
               {{ labelMap[item] }}
             </template>
           </TooltipTrigger>
         </template>
       </ActionGroup>
-      <div aria-hidden="true" :style="dividerStyle" />
+      <Divider size="S" :orientation="dividerOrientation" />
       <ActionGroup
         aria-label="view"
         :selection-mode="viewSelectionMode"
@@ -179,11 +123,11 @@ const ToolbarExample = defineComponent({
         :is-disabled="viewDisabled"
         v-model="viewSelection">
         <template #item="{item}">
-          <component :is="iconMap[item]" :aria-label="labelMap[item]" />
+          <component :is="iconMap[item]" :aria-label="labelMap[item]" size="S" />
         </template>
       </ActionGroup>
       <template v-if="props.isDisabledKeysExample">
-        <div aria-hidden="true" :style="dividerStyle" />
+        <Divider size="S" :orientation="dividerOrientation" />
         <ActionGroup
           aria-label="inspect"
           selection-mode="single"
@@ -191,7 +135,7 @@ const ToolbarExample = defineComponent({
           :items="inspectItems"
           v-model="inspectSelection">
           <template #item="{item}">
-            <component :is="iconMap[item]" :aria-label="labelMap[item]" />
+            <component :is="iconMap[item]" :aria-label="labelMap[item]" size="S" />
           </template>
         </ActionGroup>
       </template>
@@ -199,11 +143,12 @@ const ToolbarExample = defineComponent({
   `
 });
 
+export const Toolbar = ToolbarExample;
+
 const meta: Meta = {
   title: 'Toolbar',
-  args: {
-    children: DEFAULT_CHILDREN
-  },
+  component: Toolbar,
+  excludeStories: ['Toolbar'],
   argTypes: {
     children: {
       table: {
@@ -232,8 +177,7 @@ export const Default: ToolbarStory = {
 
 export const DisabledKeys: ToolbarStory = {
   args: {
-    'aria-label': 'The big toolbar',
-    children: DEFAULT_CHILDREN
+    'aria-label': 'The big toolbar'
   },
   render: (args) => ({
     components: {ToolbarExample},
