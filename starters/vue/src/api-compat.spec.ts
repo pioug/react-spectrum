@@ -297,6 +297,14 @@ import {
   VueDropZone as RootVueDropZone
 } from '../../../packages/@vue-spectrum/dnd/index';
 import {
+  DropZone as SpectrumFileDropZone,
+  VueDropZone as SpectrumVueFileDropZone
+} from '@vue-spectrum/dropzone';
+import {
+  DropZone as RootSpectrumFileDropZone,
+  VueDropZone as RootSpectrumVueFileDropZone
+} from '../../../packages/@vue-spectrum/dropzone/index';
+import {
   Item as TabItem,
   TabList,
   TabPanels,
@@ -646,6 +654,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(RootSpectrumDropZone).toBe(SpectrumDropZone);
     expect(RootVueDropZone).toBe(SpectrumDropZone);
     expect(RootUseSpectrumDragAndDrop).toBe(useSpectrumDragAndDrop);
+  });
+
+  it('keeps dropzone exports aligned with VueDropZone base entry', () => {
+    expect(SpectrumFileDropZone).toBe(SpectrumVueFileDropZone);
+  });
+
+  it('keeps root dropzone entry exports aligned with source exports', () => {
+    expect(RootSpectrumFileDropZone).toBe(SpectrumFileDropZone);
+    expect(RootSpectrumVueFileDropZone).toBe(SpectrumVueFileDropZone);
   });
 
   it('exports tabs collection item separately from VueTabs', () => {
