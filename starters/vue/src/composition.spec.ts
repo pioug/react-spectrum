@@ -4648,6 +4648,37 @@ describe('Vue migration composition components', () => {
     expect(dropEvents).toEqual(['drop:copy:2']);
   });
 
+  it('defaults useDroppableCollection target to root when entering without a preset target', () => {
+    let dropEvents: Array<string> = [];
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: () => 'copy'
+    });
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item'],
+      onDrop: (event) => {
+        dropEvents.push(`drop:${event.dropOperation}:${String(event.target?.type)}`);
+      }
+    }, dropState, {current: document.createElement('div')}) as {
+      collectionProps: {value: {
+        onDragEnter: (input: unknown) => boolean,
+        onDrop: (input: unknown, operation?: 'cancel' | 'copy' | 'link' | 'move') => 'cancel' | 'copy' | 'link' | 'move'
+      }}
+    };
+
+    let payload = {
+      items: [{id: 'item-1', type: 'item', value: {id: 1}}],
+      clientX: 8,
+      clientY: 13
+    };
+
+    expect(dropState.target.value).toBeNull();
+    expect(droppableCollection.collectionProps.value.onDragEnter(payload)).toBe(true);
+    expect(dropState.target.value).toEqual({type: 'root'});
+    expect(droppableCollection.collectionProps.value.onDrop(payload)).toBe('copy');
+    expect(dropEvents).toEqual(['drop:copy:root']);
+  });
+
   it('rejects useDroppableCollection targets when getDropOperation resolves to cancel', () => {
     let onDropEnter = vi.fn();
     let onDropMove = vi.fn();

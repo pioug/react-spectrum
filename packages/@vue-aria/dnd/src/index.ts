@@ -706,6 +706,10 @@ export function useDroppableCollection(
       return true;
     }
 
+    if (readDropTarget(stateRecord) == null && typeof stateRecord.setTarget === 'function') {
+      stateRecord.setTarget({type: 'root'});
+    }
+
     let didEnter = true;
     if (typeof stateRecord.enter === 'function') {
       didEnter = stateRecord.enter(items) !== false;
