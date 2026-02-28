@@ -30,7 +30,10 @@ export interface TreeItemAria extends GridListItemAria {
     'data-expanded'?: true,
     'data-has-child-items'?: true,
     disabled: boolean,
+    onMouseDown: (event: MouseEvent) => void,
+    onPointerDown: (event: PointerEvent) => void,
     onPress: () => void
+    tabIndex: -1
   }>,
   isExpanded: ComputedRef<boolean>
 }
@@ -60,6 +63,9 @@ export function useTreeItem(options: AriaTreeItemOptions): TreeItemAria {
       'aria-labelledby': gridListItem.rowProps.value.id
     });
   });
+  let onExpandButtonPointerDown = (event: Event) => {
+    event.preventDefault();
+  };
 
   let toggleExpanded = () => {
     if (isDisabled.value || !options.expandedKeys) {
@@ -86,6 +92,9 @@ export function useTreeItem(options: AriaTreeItemOptions): TreeItemAria {
       'data-expanded': isExpanded.value ? true : undefined,
       'data-has-child-items': hasChildItems.value ? true : undefined,
       disabled: isDisabled.value,
+      tabIndex: -1 as const,
+      onMouseDown: onExpandButtonPointerDown,
+      onPointerDown: onExpandButtonPointerDown,
       onPress: toggleExpanded
     })),
     isExpanded

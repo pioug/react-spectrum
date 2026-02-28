@@ -3168,6 +3168,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Tree item expand-button focus/tab-order parity (`@vue-aria/tree`)
+
+1. Closed expand-button tab-order drift:
+   - `useTreeItem.expandButtonProps` now sets `tabIndex: -1`, matching React tree expander exclusion from tab order.
+2. Closed expand-button press-focus drift:
+   - `useTreeItem.expandButtonProps` now prevents focus transfer on mouse/pointer press-start, matching React prevent-focus-on-press expander behavior.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` treegrid assertions now verify expander `tabIndex` parity and pointer-down focus prevention.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria treegrid semantics and expandable tree item behavior"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

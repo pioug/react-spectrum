@@ -8243,6 +8243,13 @@ describe('Vue migration composition components', () => {
     expect(expandLabelledByIds).toContain(srcTreeItem.rowProps.value.id);
     expect(expandLabelledByIds).toContain(srcTreeItem.expandButtonProps.value.id as string);
     expect(srcTreeItem.expandButtonProps.value.disabled).toBe(false);
+    expect(srcTreeItem.expandButtonProps.value.tabIndex).toBe(-1);
+
+    let preventExpandButtonFocus = vi.fn();
+    srcTreeItem.expandButtonProps.value.onPointerDown({
+      preventDefault: preventExpandButtonFocus
+    } as unknown as PointerEvent);
+    expect(preventExpandButtonFocus).toHaveBeenCalledTimes(1);
 
     srcTreeItem.expandButtonProps.value.onPress();
     expect(expandedKeys.value.has('src')).toBe(true);
