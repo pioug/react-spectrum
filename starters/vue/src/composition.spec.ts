@@ -26,7 +26,14 @@ import {
 } from '@vue-aria/datepicker';
 import {useDialog as useAriaDialog} from '@vue-aria/dialog';
 import {useDisclosure as useAriaDisclosure} from '@vue-aria/disclosure';
-import {isVirtualDragging, useDrag, useDrop} from '@vue-aria/dnd';
+import {
+  isDirectoryDropItem,
+  isFileDropItem,
+  isTextDropItem,
+  isVirtualDragging,
+  useDrag,
+  useDrop
+} from '@vue-aria/dnd';
 import {EXAMPLE_THEME_CLASS, useExampleTheme} from '@vue-aria/example-theme';
 import {useFocusRing, useHasTabbableChild} from '@vue-aria/focus';
 import {useFormValidation} from '@vue-aria/form';
@@ -3992,6 +3999,28 @@ describe('Vue migration composition components', () => {
 
     drag.endDrag('cancel');
     expect(isVirtualDragging()).toBe(false);
+  });
+
+  it('matches react-aria dnd type guards using drop item kind', () => {
+    let textItem = {kind: 'text', text: 'ticket'};
+    let fileItem = {kind: 'file', name: 'ticket.txt'};
+    let directoryItem = {kind: 'directory', name: 'tickets'};
+    let mismatchedShape = {kind: 'text', name: 'should-not-be-file'};
+
+    expect(isTextDropItem(textItem)).toBe(true);
+    expect(isFileDropItem(textItem)).toBe(false);
+    expect(isDirectoryDropItem(textItem)).toBe(false);
+
+    expect(isFileDropItem(fileItem)).toBe(true);
+    expect(isTextDropItem(fileItem)).toBe(false);
+    expect(isDirectoryDropItem(fileItem)).toBe(false);
+
+    expect(isDirectoryDropItem(directoryItem)).toBe(true);
+    expect(isFileDropItem(directoryItem)).toBe(false);
+    expect(isTextDropItem(directoryItem)).toBe(false);
+
+    expect(isTextDropItem(mismatchedShape)).toBe(true);
+    expect(isFileDropItem(mismatchedShape)).toBe(false);
   });
 
   it('does not warn when vue-aria drags end via a useDrop target', () => {

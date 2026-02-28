@@ -88,15 +88,15 @@ export function useDrop(options: AriaDropOptions = {}): DropAria {
 }
 
 export function isDirectoryDropItem(dropItem: DropItem): dropItem is DirectoryDropItem {
-  return Boolean(dropItem) && typeof dropItem === 'object' && 'kind' in (dropItem as AnyRecord);
+  return Boolean(dropItem) && typeof dropItem === 'object' && (dropItem as AnyRecord).kind === 'directory';
 }
 
 export function isFileDropItem(dropItem: DropItem): dropItem is FileDropItem {
-  return Boolean(dropItem) && typeof dropItem === 'object' && 'name' in (dropItem as AnyRecord);
+  return Boolean(dropItem) && typeof dropItem === 'object' && (dropItem as AnyRecord).kind === 'file';
 }
 
 export function isTextDropItem(dropItem: DropItem): dropItem is TextDropItem {
-  return Boolean(dropItem) && typeof dropItem === 'object' && 'text' in (dropItem as AnyRecord);
+  return Boolean(dropItem) && typeof dropItem === 'object' && (dropItem as AnyRecord).kind === 'text';
 }
 
 export function isVirtualDragging(): boolean {
