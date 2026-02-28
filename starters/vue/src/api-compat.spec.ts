@@ -176,6 +176,14 @@ import {
   VueTextField as RootVueTextField
 } from '../../../packages/@vue-spectrum/textfield/index';
 import {
+  SearchField,
+  VueSearchField
+} from '@vue-spectrum/searchfield';
+import {
+  SearchField as RootSearchField,
+  VueSearchField as RootVueSearchField
+} from '../../../packages/@vue-spectrum/searchfield/index';
+import {
   Icon,
   Illustration,
   UIIcon,
@@ -477,6 +485,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(RootVueTextField).toBe(VueTextField);
     expect(RootTextFieldBase).toBe(TextFieldBase);
     expect(RootTextArea).toBe(TextArea);
+  });
+
+  it('keeps searchfield exports aligned with VueSearchField base entry', () => {
+    expect(SearchField).toBe(VueSearchField);
+  });
+
+  it('keeps root searchfield entry exports aligned with source exports', () => {
+    expect(RootSearchField).toBe(SearchField);
+    expect(RootVueSearchField).toBe(VueSearchField);
   });
 
   it('keeps icon exports wired to Vue icon primitives', () => {
