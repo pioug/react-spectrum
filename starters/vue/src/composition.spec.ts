@@ -1756,6 +1756,138 @@ describe('Vue migration composition components', () => {
     expect(swatch.swatchProps.value.style.backgroundColor).toBe('#ff00ff');
   });
 
+  it('supports react-style color overload signatures with external state', () => {
+    let areaPoint = ref({x: 0.2, y: 0.8});
+    let areaState = {
+      xValue: computed(() => areaPoint.value.x),
+      yValue: computed(() => areaPoint.value.y),
+      getThumbPosition: () => ({
+        x: areaPoint.value.x,
+        y: areaPoint.value.y
+      }),
+      setColorFromPoint: (x: number, y: number) => {
+        areaPoint.value = {
+          x,
+          y
+        };
+      }
+    };
+
+    let area = useColorArea({
+      'aria-label': 'React-style area'
+    } as unknown as Parameters<typeof useColorArea>[0], areaState as unknown as Parameters<typeof useColorArea>[1]);
+    area.setValue(0.4, 0.6);
+    expect(areaPoint.value.x).toBeCloseTo(0.4);
+    expect(areaPoint.value.y).toBeCloseTo(0.6);
+    expect(area.thumbProps.value.style.left).toBe('40%');
+    expect(area.thumbProps.value.style.top).toBe('60%');
+
+    let sliderValue = ref(120);
+    let sliderState = {
+      channelValue: computed(() => sliderValue.value),
+      step: 5,
+      setChannelValue: (nextValue: number) => {
+        sliderValue.value = nextValue;
+      },
+      increment: () => {
+        sliderValue.value += 5;
+      },
+      decrement: () => {
+        sliderValue.value -= 5;
+      }
+    };
+
+    let slider = useColorSlider({
+      channel: 'hue'
+    } as unknown as Parameters<typeof useColorSlider>[0], sliderState as unknown as Parameters<typeof useColorSlider>[1]);
+    slider.increment();
+    expect(sliderValue.value).toBe(125);
+    slider.setValue(40);
+    expect(sliderValue.value).toBe(40);
+    slider.decrement();
+    expect(sliderValue.value).toBe(35);
+
+    let hue = ref(0);
+    let saturation = ref(20);
+    let wheelState = {
+      hue,
+      saturation,
+      setHue: (nextHue: number) => {
+        hue.value = nextHue;
+      },
+      setSaturation: (nextSaturation: number) => {
+        saturation.value = nextSaturation;
+      }
+    };
+
+    let wheel = useColorWheel({
+      'aria-label': 'React-style wheel'
+    } as unknown as Parameters<typeof useColorWheel>[0], wheelState as unknown as Parameters<typeof useColorWheel>[1], {
+      current: null
+    } as unknown as Parameters<typeof useColorWheel>[2]);
+    wheel.setValue(450, 0.5);
+    expect(hue.value).toBe(90);
+    expect(saturation.value).toBe(50);
+
+    let textValue = ref('#123456');
+    let commitCalls = 0;
+    let colorFieldState = {
+      inputValue: textValue,
+      isInvalid: false,
+      setInputValue: (value: string) => {
+        textValue.value = value;
+      },
+      commit: () => {
+        commitCalls += 1;
+      }
+    };
+
+    let colorField = useColorField({} as unknown as Parameters<typeof useColorField>[0], colorFieldState as unknown as Parameters<typeof useColorField>[1], {
+      current: null
+    } as unknown as Parameters<typeof useColorField>[2]);
+    colorField.setValue('00ff00');
+    expect(textValue.value).toBe('#00ff00');
+    expect(commitCalls).toBe(1);
+
+    let channelNumber = ref(7);
+    let channelInput = ref('7');
+    let channelIncrementCalls = 0;
+    let channelDecrementCalls = 0;
+    let channelFieldState = {
+      numberValue: computed(() => channelNumber.value),
+      inputValue: channelInput,
+      setInputValue: (value: string) => {
+        channelInput.value = value;
+        channelNumber.value = Number(value);
+      },
+      increment: () => {
+        channelIncrementCalls += 1;
+        channelNumber.value += 1;
+        channelInput.value = String(channelNumber.value);
+      },
+      decrement: () => {
+        channelDecrementCalls += 1;
+        channelNumber.value -= 1;
+        channelInput.value = String(channelNumber.value);
+      }
+    };
+
+    let channelField = useColorChannelField({
+      channel: 'hue'
+    } as unknown as Parameters<typeof useColorChannelField>[0], channelFieldState as unknown as Parameters<typeof useColorChannelField>[1], {
+      current: null
+    } as unknown as Parameters<typeof useColorChannelField>[2]);
+    channelField.increment();
+    expect(channelIncrementCalls).toBe(1);
+    expect(channelNumber.value).toBe(8);
+    channelField.setValue(42);
+    expect(channelInput.value).toBe('42');
+    expect(channelNumber.value).toBe(42);
+    channelField.decrement();
+    expect(channelDecrementCalls).toBe(1);
+    expect(channelNumber.value).toBe(41);
+  });
+
   it('manages vue-stately color area/slider/field/channel/picker state baselines', () => {
     let areaValue = ref('#000000');
     let areaChanges: string[] = [];
