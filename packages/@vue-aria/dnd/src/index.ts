@@ -79,8 +79,144 @@ export const DragPreview = defineComponent({
 });
 
 export class ListDropTargetDelegate {
-  getDropTarget(): null {
-    return null;
+  private collection: Iterable<AnyRecord>;
+  private ref: RefObject<HTMLElement | null>;
+  private orientation: 'horizontal' | 'vertical';
+  private direction: 'ltr' | 'rtl';
+
+  constructor(collection: Iterable<AnyRecord>, ref: RefObject<HTMLElement | null>, options: AnyRecord = {}) {
+    this.collection = collection;
+    this.ref = ref;
+    this.orientation = options.orientation === 'horizontal' ? 'horizontal' : 'vertical';
+    this.direction = options.direction === 'rtl' ? 'rtl' : 'ltr';
+  }
+
+  private getPrimaryStart(rect: DOMRect): number {
+    return this.orientation === 'horizontal' ? rect.left : rect.top;
+  }
+
+  private getPrimaryEnd(rect: DOMRect): number {
+    return this.orientation === 'horizontal' ? rect.right : rect.bottom;
+  }
+
+  private getBeforePosition(): 'before' | 'after' {
+    return this.orientation === 'horizontal' && this.direction === 'rtl' ? 'after' : 'before';
+  }
+
+  private getAfterPosition(): 'before' | 'after' {
+    return this.orientation === 'horizontal' && this.direction === 'rtl' ? 'before' : 'after';
+  }
+
+  getDropTargetFromPoint(
+    x: number,
+    y: number,
+    isValidDropTarget: (target: DropTarget) => boolean
+  ): DropTarget {
+    let container = this.ref.current;
+    if (!container) {
+      return {type: 'root'};
+    }
+
+    let items = Array.from(this.collection).filter((item) => {
+      return item && typeof item === 'object' && (item as AnyRecord).type === 'item';
+    }) as AnyRecord[];
+    if (items.length === 0) {
+      return {type: 'root'};
+    }
+
+    let elements = new Map<string, HTMLElement>();
+    for (let element of container.querySelectorAll<HTMLElement>('[data-key]')) {
+      let key = element.dataset.key;
+      if (key != null) {
+        elements.set(key, element);
+      }
+    }
+
+    let primary = this.orientation === 'horizontal' ? x : y;
+    let firstItem: AnyRecord | null = null;
+    let firstStart = 0;
+    let lastItem: AnyRecord | null = null;
+    let lastEnd = 0;
+
+    for (let item of items) {
+      let key = String(item.key);
+      let element = elements.get(key);
+      if (!element) {
+        continue;
+      }
+
+      let rect = element.getBoundingClientRect();
+      let start = this.getPrimaryStart(rect);
+      let end = this.getPrimaryEnd(rect);
+      if (firstItem == null) {
+        firstItem = item;
+        firstStart = start;
+      }
+      lastItem = item;
+      lastEnd = end;
+
+      if (primary < start || primary > end) {
+        continue;
+      }
+
+      let onTarget = {
+        type: 'item' as const,
+        key: item.key,
+        dropPosition: 'on' as const
+      };
+      if (isValidDropTarget(onTarget)) {
+        return onTarget;
+      }
+
+      let mid = start + (end - start) / 2;
+      let beforeTarget = {
+        type: 'item' as const,
+        key: item.key,
+        dropPosition: this.getBeforePosition()
+      };
+      let afterTarget = {
+        type: 'item' as const,
+        key: item.key,
+        dropPosition: this.getAfterPosition()
+      };
+      let preferredTarget = primary <= mid ? beforeTarget : afterTarget;
+      if (isValidDropTarget(preferredTarget)) {
+        return preferredTarget;
+      }
+
+      let alternateTarget = primary <= mid ? afterTarget : beforeTarget;
+      if (isValidDropTarget(alternateTarget)) {
+        return alternateTarget;
+      }
+
+      return onTarget;
+    }
+
+    if (!firstItem || !lastItem) {
+      return {type: 'root'};
+    }
+
+    if (primary <= firstStart) {
+      return {
+        type: 'item',
+        key: firstItem.key,
+        dropPosition: this.getBeforePosition()
+      };
+    }
+
+    if (primary >= lastEnd) {
+      return {
+        type: 'item',
+        key: lastItem.key,
+        dropPosition: this.getAfterPosition()
+      };
+    }
+
+    return {
+      type: 'item',
+      key: lastItem.key,
+      dropPosition: this.getAfterPosition()
+    };
   }
 }
 

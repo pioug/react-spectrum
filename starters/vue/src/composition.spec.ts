@@ -28,6 +28,7 @@ import {useDialog as useAriaDialog} from '@vue-aria/dialog';
 import {useDisclosure as useAriaDisclosure} from '@vue-aria/disclosure';
 import {
   DIRECTORY_DRAG_TYPE,
+  ListDropTargetDelegate,
   isDirectoryDropItem,
   isFileDropItem,
   isTextDropItem,
@@ -4060,6 +4061,73 @@ describe('Vue migration composition components', () => {
 
     expect(isTextDropItem(mismatchedShape)).toBe(true);
     expect(isFileDropItem(mismatchedShape)).toBe(false);
+  });
+
+  it('resolves list drop targets from pointer coordinates via ListDropTargetDelegate', () => {
+    let container = document.createElement('div');
+    let first = document.createElement('div');
+    first.dataset.key = 'alpha';
+    let second = document.createElement('div');
+    second.dataset.key = 'beta';
+    container.append(first, second);
+    document.body.append(container);
+
+    first.getBoundingClientRect = () => {
+      return {
+        bottom: 40,
+        height: 40,
+        left: 0,
+        right: 100,
+        top: 0,
+        width: 100,
+        x: 0,
+        y: 0,
+        toJSON: () => ({})
+      } as DOMRect;
+    };
+    second.getBoundingClientRect = () => {
+      return {
+        bottom: 80,
+        height: 40,
+        left: 0,
+        right: 100,
+        top: 40,
+        width: 100,
+        x: 0,
+        y: 40,
+        toJSON: () => ({})
+      } as DOMRect;
+    };
+
+    let delegate = new ListDropTargetDelegate([
+      {key: 'alpha', type: 'item'},
+      {key: 'beta', type: 'item'}
+    ], {current: container});
+
+    expect(delegate.getDropTargetFromPoint(10, 10, () => true)).toEqual({
+      type: 'item',
+      key: 'alpha',
+      dropPosition: 'on'
+    });
+    expect(delegate.getDropTargetFromPoint(10, -5, () => true)).toEqual({
+      type: 'item',
+      key: 'alpha',
+      dropPosition: 'before'
+    });
+    expect(delegate.getDropTargetFromPoint(10, 90, () => true)).toEqual({
+      type: 'item',
+      key: 'beta',
+      dropPosition: 'after'
+    });
+    expect(delegate.getDropTargetFromPoint(10, 10, (target) => {
+      return target && typeof target === 'object' && (target as {dropPosition?: string}).dropPosition !== 'on';
+    })).toEqual({
+      type: 'item',
+      key: 'alpha',
+      dropPosition: 'before'
+    });
+
+    container.remove();
   });
 
   it('does not warn when vue-aria drags end via a useDrop target', () => {
