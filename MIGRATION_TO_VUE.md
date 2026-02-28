@@ -2708,6 +2708,21 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Formatted textfield `beforeinput` deletion parity remediation (`@vue-aria/textfield`)
+
+1. Closed `useFormattedTextField` `beforeinput` parity drift:
+   - Vue now computes next values for deletion-oriented input types (`deleteContent*`, cut/drag deletes, line deletes) and blocks invalid edits like React.
+   - explicit pass-through behavior for undo/redo and line-break input types now matches React semantics.
+2. Improved composition fallback parity:
+   - composition start now snapshots value + selection range,
+   - composition end rollback restores both value and selection range when composed input is invalid.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` now asserts invalid `deleteContentBackward` edits are prevented by formatted textfield `onBeforeInput`.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "textfield validation and formatted input guards"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

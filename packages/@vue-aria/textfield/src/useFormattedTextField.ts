@@ -6,12 +6,50 @@ export interface FormattedTextFieldState {
   validate: (value: string) => boolean
 }
 
-function getNextValue(input: HTMLInputElement, data: string | null): string {
+interface CompositionSnapshot {
+  selectionEnd: number | null,
+  selectionStart: number | null,
+  value: string
+}
+
+function getNextValue(input: HTMLInputElement, data: string): string {
   let selectionStart = input.selectionStart ?? input.value.length;
   let selectionEnd = input.selectionEnd ?? input.value.length;
-  let insertedText = data ?? '';
 
-  return `${input.value.slice(0, selectionStart)}${insertedText}${input.value.slice(selectionEnd)}`;
+  return `${input.value.slice(0, selectionStart)}${data}${input.value.slice(selectionEnd)}`;
+}
+
+function getNextValueFromBeforeInput(input: HTMLInputElement, event: InputEvent): string | null | undefined {
+  let selectionStart = input.selectionStart ?? 0;
+  let selectionEnd = input.selectionEnd ?? selectionStart;
+
+  switch (event.inputType) {
+    case 'historyUndo':
+    case 'historyRedo':
+    case 'insertLineBreak':
+      return undefined;
+    case 'deleteContent':
+    case 'deleteByCut':
+    case 'deleteByDrag':
+      return input.value.slice(0, selectionStart) + input.value.slice(selectionEnd);
+    case 'deleteContentForward':
+      return selectionEnd === selectionStart
+        ? input.value.slice(0, selectionStart) + input.value.slice(selectionEnd + 1)
+        : input.value.slice(0, selectionStart) + input.value.slice(selectionEnd);
+    case 'deleteContentBackward':
+      return selectionEnd === selectionStart
+        ? input.value.slice(0, Math.max(0, selectionStart - 1)) + input.value.slice(selectionStart)
+        : input.value.slice(0, selectionStart) + input.value.slice(selectionEnd);
+    case 'deleteSoftLineBackward':
+    case 'deleteHardLineBackward':
+      return input.value.slice(selectionStart);
+    default:
+      if (event.data != null) {
+        return getNextValue(input, event.data);
+      }
+
+      return null;
+  }
 }
 
 export function useFormattedTextField(
@@ -24,7 +62,7 @@ export function useFormattedTextField(
     inputRef
   });
 
-  let compositionStartValue = ref<string | null>(null);
+  let compositionStartState = ref<CompositionSnapshot | null>(null);
 
   return {
     ...textField,
@@ -32,12 +70,16 @@ export function useFormattedTextField(
       ...textField.inputProps.value,
       onBeforeInput: (event: InputEvent) => {
         let input = inputRef.value;
-        if (!input || event.data == null) {
+        if (!input) {
           return;
         }
 
-        let nextValue = getNextValue(input, event.data);
-        if (!state.validate(nextValue)) {
+        let nextValue = getNextValueFromBeforeInput(input, event);
+        if (nextValue === undefined) {
+          return;
+        }
+
+        if (nextValue == null || !state.validate(nextValue)) {
           event.preventDefault();
         }
       },
@@ -57,7 +99,16 @@ export function useFormattedTextField(
         state.setInputValue(nextValue);
       },
       onCompositionStart: () => {
-        compositionStartValue.value = inputRef.value?.value ?? null;
+        if (!inputRef.value) {
+          compositionStartState.value = null;
+          return;
+        }
+
+        compositionStartState.value = {
+          value: inputRef.value.value,
+          selectionStart: inputRef.value.selectionStart,
+          selectionEnd: inputRef.value.selectionEnd
+        };
       },
       onCompositionEnd: () => {
         let input = inputRef.value;
@@ -65,8 +116,11 @@ export function useFormattedTextField(
           return;
         }
 
-        let fallbackValue = compositionStartValue.value ?? '';
+        let fallbackValue = compositionStartState.value?.value ?? '';
+        let fallbackSelectionStart = compositionStartState.value?.selectionStart ?? fallbackValue.length;
+        let fallbackSelectionEnd = compositionStartState.value?.selectionEnd ?? fallbackSelectionStart;
         input.value = fallbackValue;
+        input.setSelectionRange(fallbackSelectionStart, fallbackSelectionEnd);
         textField.inputProps.value.onInput(fallbackValue);
         state.setInputValue(fallbackValue);
       }

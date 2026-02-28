@@ -8460,6 +8460,26 @@ describe('Vue migration composition components', () => {
     formattedField.inputProps.value.onInput('1234a');
     expect(formattedValue.value).toBe('1234');
     expect(formattedChanges).toEqual(['1234']);
+
+    let fixedLengthValue = ref('1234');
+    let fixedLengthInputRef = ref<HTMLInputElement | null>(document.createElement('input'));
+    fixedLengthInputRef.value.value = '1234';
+    fixedLengthInputRef.value.setSelectionRange(4, 4);
+    let fixedLengthField = useAriaFormattedTextField({
+      ariaLabel: 'PIN',
+      inputValue: fixedLengthValue
+    }, {
+      validate: (value) => /^\d{4}$/.test(value),
+      setInputValue: () => {}
+    }, fixedLengthInputRef);
+
+    let preventDeletion = vi.fn();
+    fixedLengthField.inputProps.value.onBeforeInput?.({
+      data: null,
+      inputType: 'deleteContentBackward',
+      preventDefault: preventDeletion
+    } as unknown as InputEvent);
+    expect(preventDeletion).toHaveBeenCalledTimes(1);
   });
 
   it('computes vue-aria toast region and toast item semantics', () => {
