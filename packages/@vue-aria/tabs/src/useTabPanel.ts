@@ -2,6 +2,7 @@ import {computed, type ComputedRef, type Ref, unref} from 'vue';
 import type {TabKey, TabListState} from './useTabList';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
+const TAB_ID_WARNING = 'There is no tab id, please check if you have rendered the tab panel before the tab list.';
 
 export interface AriaTabPanelOptions {
   'aria-describedby'?: MaybeRef<string | undefined>,
@@ -36,6 +37,7 @@ function resolveOptionalString(value: MaybeRef<string | undefined> | undefined):
 }
 
 export function useTabPanel(options: AriaTabPanelOptions = {}, state: TabListState | null): TabPanelAria {
+  let hasWarnedMissingState = false;
   let selectedKey = computed(() => {
     let overrideSelectedKey = options.selectedKey ? unref(options.selectedKey) : undefined;
     if (overrideSelectedKey !== undefined && overrideSelectedKey !== null) {
@@ -53,6 +55,11 @@ export function useTabPanel(options: AriaTabPanelOptions = {}, state: TabListSta
 
     if (state) {
       return state.getTabPanelId(selectedKey.value);
+    }
+
+    if (!hasWarnedMissingState && process.env.NODE_ENV !== 'production') {
+      console.error(TAB_ID_WARNING);
+      hasWarnedMissingState = true;
     }
 
     return 'vue-tabpanel';

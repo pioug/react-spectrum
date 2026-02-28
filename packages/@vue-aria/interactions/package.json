@@ -29,6 +29,7 @@
     "access": "public"
   },
   "dependencies": {
+    "@vue-aria/utils": "workspace:*",
     "@vue-types/shared": "^3.33.0"
   }
 }

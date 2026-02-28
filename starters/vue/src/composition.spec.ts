@@ -134,6 +134,7 @@ import {
   addWindowFocusTracking,
   ClearPressResponder,
   disableTextSelection,
+  Focusable,
   FocusableProvider,
   focusSafely,
   Pressable,
@@ -5309,6 +5310,18 @@ describe('Vue migration composition components', () => {
     expect(composedTabPanel.tabPanelProps.value['aria-label']).toBe('Section panel');
   });
 
+  it('warns when vue-aria tab panel is used without tab list state', () => {
+    let errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    try {
+      let tabPanel = useAriaTabPanel({}, null);
+      expect(tabPanel.tabPanelProps.value.id).toBe('vue-tabpanel');
+      expect(errorSpy).toHaveBeenCalledWith('There is no tab id, please check if you have rendered the tab panel before the tab list.');
+    } finally {
+      errorSpy.mockRestore();
+    }
+  });
+
   it('runs vue-aria test-utils long press and tester baselines', async () => {
     let previousMarkup = document.body.innerHTML;
     document.body.innerHTML = `
@@ -6081,14 +6094,74 @@ describe('Vue migration composition components', () => {
     }
   });
 
+  it('warns for vue-aria Focusable and Pressable ref, focusable, and role contracts', () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    try {
+      Focusable({
+        elementRef: ref<HTMLElement | null>(null)
+      });
+      expect(errorSpy).toHaveBeenCalledWith('<Focusable> child must forward its ref to a DOM element.');
+
+      Pressable({
+        ref: ref<Element | null>(null)
+      });
+      expect(errorSpy).toHaveBeenCalledWith('<Pressable> child must forward its ref to a DOM element.');
+
+      let nonFocusable = document.createElement('div');
+      Focusable({
+        elementRef: ref<HTMLElement | null>(nonFocusable)
+      });
+      expect(warnSpy).toHaveBeenCalledWith('<Focusable> child must be focusable. Please ensure the tabIndex prop is passed through.');
+
+      let focusableNoRole = document.createElement('div');
+      focusableNoRole.tabIndex = 0;
+      Focusable({
+        elementRef: ref<HTMLElement | null>(focusableNoRole)
+      });
+      expect(warnSpy).toHaveBeenCalledWith('<Focusable> child must have an interactive ARIA role.');
+
+      let focusableInvalidRole = document.createElement('div');
+      focusableInvalidRole.tabIndex = 0;
+      focusableInvalidRole.setAttribute('role', 'status');
+      Focusable({
+        elementRef: ref<HTMLElement | null>(focusableInvalidRole)
+      });
+      expect(warnSpy).toHaveBeenCalledWith('<Focusable> child must have an interactive ARIA role. Got "status".');
+
+      let pressableNoRole = document.createElement('div');
+      pressableNoRole.tabIndex = 0;
+      Pressable({
+        ref: ref<Element | null>(pressableNoRole)
+      });
+      expect(warnSpy).toHaveBeenCalledWith('<Pressable> child must have an interactive ARIA role.');
+
+      let pressableInvalidRole = document.createElement('div');
+      pressableInvalidRole.tabIndex = 0;
+      pressableInvalidRole.setAttribute('role', 'status');
+      Pressable({
+        ref: ref<Element | null>(pressableInvalidRole)
+      });
+      expect(warnSpy).toHaveBeenCalledWith('<Pressable> child must have an interactive ARIA role. Got "status".');
+    } finally {
+      warnSpy.mockRestore();
+      errorSpy.mockRestore();
+    }
+  });
+
   it('merges vue-aria pressable with focusable props for non-native targets', () => {
     let pressEvents: string[] = [];
+    let target = document.createElement('div');
+    target.setAttribute('role', 'button');
+    target.tabIndex = 0;
+    let targetRef = ref<Element | null>(target);
     let pressable = Pressable({
       onPress: () => {
         pressEvents.push('press');
-      }
+      },
+      ref: targetRef
     });
-    let target = document.createElement('div');
     document.body.append(target);
 
     try {

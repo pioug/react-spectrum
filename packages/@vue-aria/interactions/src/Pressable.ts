@@ -1,4 +1,5 @@
 import {computed} from 'vue';
+import {usePressableRoleWarnings} from './interactiveRoleWarnings';
 import type {FocusableElement, MaybeRef} from './types';
 import {useFocusable} from './useFocusable';
 import {type PressDOMProps, type PressHookProps, type PressResult, usePress} from './usePress';
@@ -19,6 +20,7 @@ function chainHandlers<T extends (...args: any[]) => void>(first?: T, second?: T
 }
 
 export function Pressable(props: PressHookProps = {}): PressResult {
+  usePressableRoleWarnings(props.ref as MaybeRef<FocusableElement | null> | undefined, props.isDisabled as MaybeRef<boolean> | undefined);
   let press = usePress(props);
   let focusable = useFocusable(props, props.ref as MaybeRef<FocusableElement | null>);
 

@@ -1320,6 +1320,26 @@
    - full Vue tests: `yarn test:vue` (544 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Interaction/tabs warning parity (`@vue-aria/interactions`, `@vue-aria/tabs`)
+
+1. Aligned wrapper guardrail warnings with React for `Focusable`/`Pressable`:
+   - added development warnings when wrapper refs do not resolve to DOM elements (`child must forward its ref...`),
+   - added development warnings when targets are not focusable (`tabIndex` passthrough guidance),
+   - added development warnings for missing interactive roles and invalid roles (`Got "<role>"` variants).
+2. Added shared warning helper in `@vue-aria/interactions`:
+   - centralized role/native-element contract checks for both wrappers, matching React role allowlists for each wrapper surface.
+3. Aligned tab-panel missing-id warning with React:
+   - `useTabPanel` now emits `There is no tab id...` when used without tab list state in development, while preserving fallback `vue-tabpanel` id behavior.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - warning assertions for `Focusable`/`Pressable` ref, focusability, and role contracts,
+     - tab-panel missing-state warning assertion,
+     - updated non-native Pressable merge test to pass a role+ref contract (avoids false-positive warnings in parity tests).
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "warns for vue-aria Focusable and Pressable ref, focusable, and role contracts|merges vue-aria pressable with focusable props for non-native targets|warns when vue-aria tab panel is used without tab list state|computes vue-aria tabs semantics and manual activation behavior"`,
+   - full Vue tests: `yarn test:vue` (546 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

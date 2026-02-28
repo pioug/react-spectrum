@@ -1,5 +1,6 @@
 import {computed, nextTick, type ComputedRef, unref} from 'vue';
 import {createEventHandler} from './createEventHandler';
+import {useFocusableRoleWarnings} from './interactiveRoleWarnings';
 import type {FocusableElement, MaybeRef} from './types';
 import {type FocusProps, useFocus} from './useFocus';
 import {focusSafely} from './focusSafely';
@@ -115,5 +116,6 @@ export interface FocusableComponentProps extends FocusableOptions {
 }
 
 export function Focusable(props: FocusableComponentProps = {}): FocusableAria {
+  useFocusableRoleWarnings(props.elementRef, props.isDisabled);
   return useFocusable(props, props.elementRef);
 }
