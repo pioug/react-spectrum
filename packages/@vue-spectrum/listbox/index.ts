@@ -1,1 +1,1 @@
-export {ListBox, VueListBox} from './src';
+export * from './src';

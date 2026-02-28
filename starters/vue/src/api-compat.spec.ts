@@ -77,6 +77,14 @@ import {
   VueListBox
 } from '@vue-spectrum/listbox';
 import {
+  Item as RootListBoxItem,
+  ListBox as RootListBox,
+  ListBoxBase as RootListBoxBase,
+  Section as RootListBoxSection,
+  useListBoxLayout as RootUseListBoxLayout,
+  VueListBox as RootVueListBox
+} from '../../../packages/@vue-spectrum/listbox/index';
+import {
   Item as PickerItem,
   Picker,
   Section as PickerSection,
@@ -198,6 +206,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(ListBoxItem).not.toBe(VueListBox);
     expect(ListBoxSection).not.toBe(VueListBox);
     expect(useListBoxLayout()).toEqual({layout: 'stack'});
+  });
+
+  it('keeps root listbox entry exports aligned with source exports', () => {
+    expect(RootListBox).toBe(ListBox);
+    expect(RootVueListBox).toBe(VueListBox);
+    expect(RootListBoxBase).toBe(ListBoxBase);
+    expect(RootListBoxItem).toBe(ListBoxItem);
+    expect(RootListBoxSection).toBe(ListBoxSection);
+    expect(RootUseListBoxLayout()).toEqual(useListBoxLayout());
   });
 
   it('exports picker collection primitives separately from VuePicker', () => {
