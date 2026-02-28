@@ -96,6 +96,18 @@ import {
   VueBadge as RootVueBadge
 } from '../../../packages/@vue-spectrum/badge/index';
 import {
+  Field,
+  HelpText,
+  Label,
+  VueLabel
+} from '@vue-spectrum/label';
+import {
+  Field as RootField,
+  HelpText as RootHelpText,
+  Label as RootLabel,
+  VueLabel as RootVueLabel
+} from '../../../packages/@vue-spectrum/label/index';
+import {
   ButtonGroup,
   VueButtonGroup
 } from '@vue-spectrum/buttongroup';
@@ -577,6 +589,19 @@ describe('Vue Spectrum API compatibility aliases', () => {
   it('keeps root badge entry exports aligned with source exports', () => {
     expect(RootBadge).toBe(Badge);
     expect(RootVueBadge).toBe(VueBadge);
+  });
+
+  it('keeps label exports aligned with VueLabel base entry and field helpers', () => {
+    expect(Label).toBe(VueLabel);
+    expect(HelpText).not.toBe(VueLabel);
+    expect(Field).not.toBe(VueLabel);
+  });
+
+  it('keeps root label entry exports aligned with source exports', () => {
+    expect(RootLabel).toBe(Label);
+    expect(RootVueLabel).toBe(VueLabel);
+    expect(RootHelpText).toBe(HelpText);
+    expect(RootField).toBe(Field);
   });
 
   it('keeps buttongroup exports aligned with VueButtonGroup base entry', () => {
