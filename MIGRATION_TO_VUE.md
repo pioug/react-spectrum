@@ -3253,6 +3253,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Table column-resizer outside-release parity (`@vue-aria/table`)
+
+1. Closed column-resizer outside-release drift:
+   - `useTableColumnResize` now installs window-level pointer/mouse release listeners while resizing and clears resize state when release happens outside the resizer element.
+2. Closed listener lifecycle drift:
+   - added scope-disposal listener cleanup so global release listeners are removed on composable teardown.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` table assertions now verify resize mode exits after `window` release events, not only local `onPointerUp`.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria table wrappers and selection helpers"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

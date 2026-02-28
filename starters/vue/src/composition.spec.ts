@@ -9077,6 +9077,12 @@ describe('Vue migration composition components', () => {
     } as unknown as PointerEvent);
     expect(preventResizerFocus).toHaveBeenCalledTimes(1);
     expect(columnResize.isResizing.value).toBe(true);
+    window.dispatchEvent(new MouseEvent('mouseup'));
+    expect(columnResize.isResizing.value).toBe(false);
+    columnResize.resizerProps.value.onPointerDown({
+      preventDefault: preventResizerFocus
+    } as unknown as PointerEvent);
+    expect(columnResize.isResizing.value).toBe(true);
     columnResize.inputProps.value.onChange('500');
     expect(columnWidth.value).toBe(400);
     expect(resizeUpdates).toEqual([400]);

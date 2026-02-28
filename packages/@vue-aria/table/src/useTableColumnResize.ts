@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
+import {computed, type ComputedRef, getCurrentScope, onScopeDispose, type Ref, ref, unref} from 'vue';
 import type {MaybeRef} from '@vue-aria/grid';
 
 export interface AriaTableColumnResizeProps {
@@ -61,6 +61,7 @@ function parseNumber(valueOrEvent: Event | number | string): number | null {
 
 export function useTableColumnResize(props: AriaTableColumnResizeProps): TableColumnResizeAria {
   let isResizing = ref(false);
+  let hasGlobalListeners = false;
   let min = computed(() => unref(props.minWidth) ?? 40);
   let max = computed(() => unref(props.maxWidth) ?? 1000);
   let isDisabled = computed(() => Boolean(unref(props.isDisabled)));
@@ -76,6 +77,37 @@ export function useTableColumnResize(props: AriaTableColumnResizeProps): TableCo
     props.width.value = clampedValue;
     props.onResize?.(clampedValue);
   };
+
+  let onGlobalPointerUp = () => {
+    isResizing.value = false;
+    removeGlobalListeners();
+  };
+
+  let addGlobalListeners = () => {
+    if (hasGlobalListeners || typeof window === 'undefined') {
+      return;
+    }
+
+    window.addEventListener('pointerup', onGlobalPointerUp);
+    window.addEventListener('mouseup', onGlobalPointerUp);
+    hasGlobalListeners = true;
+  };
+
+  let removeGlobalListeners = () => {
+    if (!hasGlobalListeners || typeof window === 'undefined') {
+      return;
+    }
+
+    window.removeEventListener('pointerup', onGlobalPointerUp);
+    window.removeEventListener('mouseup', onGlobalPointerUp);
+    hasGlobalListeners = false;
+  };
+
+  if (getCurrentScope()) {
+    onScopeDispose(() => {
+      removeGlobalListeners();
+    });
+  }
 
   return {
     inputProps: computed(() => ({
@@ -96,6 +128,7 @@ export function useTableColumnResize(props: AriaTableColumnResizeProps): TableCo
 
         event.preventDefault();
         isResizing.value = true;
+        addGlobalListeners();
       },
       onPointerDown: (event: PointerEvent) => {
         if (isDisabled.value) {
@@ -104,9 +137,11 @@ export function useTableColumnResize(props: AriaTableColumnResizeProps): TableCo
 
         event.preventDefault();
         isResizing.value = true;
+        addGlobalListeners();
       },
       onPointerUp: () => {
         isResizing.value = false;
+        removeGlobalListeners();
       },
       style: {
         touchAction: 'none' as const
