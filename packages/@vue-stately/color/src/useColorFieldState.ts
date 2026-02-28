@@ -40,7 +40,12 @@ export function useColorFieldState(props: ColorFieldStateOptions = {}): ColorFie
   let inputValue = ref(colorValue.value ?? '');
 
   let setColorValue = (nextColor: Color | null): void => {
-    colorValue.value = nextColor ? parseColor(nextColor) : null;
+    let parsedColor = nextColor ? parseColor(nextColor) : null;
+    if (parsedColor === colorValue.value) {
+      return;
+    }
+
+    colorValue.value = parsedColor;
     props.onChange?.(colorValue.value);
   };
 

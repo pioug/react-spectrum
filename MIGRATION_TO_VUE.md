@@ -1764,6 +1764,20 @@
    - full Vue tests: `yarn test:vue` (584 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Color wheel/field no-op and drag-end parity (`@vue-stately/color`)
+
+1. Closed `useColorWheelState` parity gaps:
+   - added `onChangeEnd` support on drag end (`setDragging(true -> false)`),
+   - `setValue` now no-ops for unchanged parsed colors to avoid duplicate `onChange` emissions.
+2. Closed `useColorFieldState` same-value emission drift:
+   - `setColorValue` now no-ops when the parsed next color equals current color, avoiding duplicate `onChange`.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: color state baseline test now asserts wheel same-hue no-op behavior, drag-end `onChangeEnd` emission, and color-field same-value no-op behavior.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately color area/slider/field/channel/picker state baselines"`,
+   - full Vue tests: `yarn test:vue` (584 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

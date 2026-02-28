@@ -4,6 +4,7 @@ import {computed, type ComputedRef, ref, type Ref} from 'vue';
 export interface ColorWheelStateOptions {
   defaultValue?: Color,
   onChange?: (value: Color) => void,
+  onChangeEnd?: (value: Color) => void,
   value?: Ref<Color>
 }
 
@@ -37,7 +38,12 @@ export function useColorWheelState(props: ColorWheelStateOptions): ColorWheelSta
   let saturation = computed(() => getColorChannelValue(value.value, 'saturation'));
 
   let setValue = (nextValue: Color): void => {
-    value.value = parseColor(nextValue);
+    let parsedValue = parseColor(nextValue);
+    if (parsedValue === value.value) {
+      return;
+    }
+
+    value.value = parsedValue;
     props.onChange?.(value.value);
   };
 
@@ -75,7 +81,11 @@ export function useColorWheelState(props: ColorWheelStateOptions): ColorWheelSta
     }),
     isDragging,
     setDragging: (nextDragging: boolean) => {
+      let wasDragging = isDragging.value;
       isDragging.value = nextDragging;
+      if (wasDragging && !nextDragging) {
+        props.onChangeEnd?.(value.value);
+      }
     }
   };
 }

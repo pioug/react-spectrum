@@ -203,6 +203,7 @@ import {
   useColorChannelFieldState as useStatelyColorChannelFieldState,
   useColorFieldState as useStatelyColorFieldState,
   useColorPickerState as useStatelyColorPickerState,
+  useColorWheelState as useStatelyColorWheelState,
   useColorSliderState as useStatelyColorSliderState
 } from '@vue-stately/color';
 import {useAsyncList as useStatelyAsyncList, useListData as useStatelyListData, useTreeData as useStatelyTreeData} from '@vue-stately/data';
@@ -1127,6 +1128,43 @@ describe('Vue migration composition components', () => {
     field.setInputValue('#445566');
     field.commit();
     expect(field.colorValue.value).toBe('#445566');
+
+    let controlledFieldValue = ref<string | null>('#445566');
+    let fieldChanges: Array<string | null> = [];
+    let controlledField = useStatelyColorFieldState({
+      onChange: (nextValue) => {
+        fieldChanges.push(nextValue);
+        controlledFieldValue.value = nextValue;
+      },
+      value: controlledFieldValue
+    });
+    controlledField.setColorValue('#445566');
+    expect(fieldChanges).toEqual([]);
+    controlledField.setColorValue('#556677');
+    expect(fieldChanges).toEqual(['#556677']);
+    controlledField.setColorValue('#556677');
+    expect(fieldChanges).toEqual(['#556677']);
+
+    let wheelValue = ref('#000000');
+    let wheelChanges: string[] = [];
+    let wheelChangeEnd: string[] = [];
+    let wheelState = useStatelyColorWheelState({
+      onChange: (nextValue) => {
+        wheelChanges.push(nextValue);
+        wheelValue.value = nextValue;
+      },
+      onChangeEnd: (nextValue) => {
+        wheelChangeEnd.push(nextValue);
+      },
+      value: wheelValue
+    });
+    wheelState.setHue(wheelState.hue.value);
+    expect(wheelChanges).toEqual([]);
+    wheelState.setHue(120);
+    expect(wheelChanges).toHaveLength(1);
+    wheelState.setDragging(true);
+    wheelState.setDragging(false);
+    expect(wheelChangeEnd).toEqual([wheelValue.value]);
 
     let channelState = useStatelyColorChannelFieldState({
       channel: 'green',
