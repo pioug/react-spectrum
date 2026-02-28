@@ -4402,6 +4402,51 @@ describe('Vue migration composition components', () => {
     wrapper.unmount();
   });
 
+  it('supports multiple clipboard items with multiple data types', async () => {
+    let onPaste = vi.fn();
+    let wrapper = mount(defineComponent({
+      setup() {
+        let {clipboardProps} = useClipboard({
+          getItems: () => [
+            {test: 'item 1', 'text/plain': 'item 1'},
+            {test: 'item 2', 'text/plain': 'item 2'}
+          ],
+          onPaste
+        });
+        return () => h('div', {
+          tabIndex: 0,
+          ...clipboardProps
+        });
+      }
+    }));
+
+    await wrapper.get('div').trigger('focus');
+    let clipboardData = createClipboardData();
+    dispatchClipboardEvent('copy', clipboardData);
+
+    expect(clipboardData.getData('test')).toBe('item 1');
+    expect(clipboardData.getData('text/plain')).toBe('item 1\nitem 2');
+    expect(JSON.parse(clipboardData.getData('application/vnd.react-aria.items+json'))).toEqual([
+      {test: 'item 1', 'text/plain': 'item 1'},
+      {test: 'item 2', 'text/plain': 'item 2'}
+    ]);
+
+    dispatchClipboardEvent('paste', clipboardData);
+    expect(onPaste).toHaveBeenCalledTimes(1);
+    let pastedItems = onPaste.mock.calls[0][0] as Array<{
+      getText: (type: string) => Promise<string>,
+      types: Set<string>
+    }>;
+    expect(pastedItems).toHaveLength(2);
+    expect(Array.from(pastedItems[0].types).sort()).toEqual(['test', 'text/plain']);
+    expect(Array.from(pastedItems[1].types).sort()).toEqual(['test', 'text/plain']);
+    expect(await pastedItems[0].getText('test')).toBe('item 1');
+    expect(await pastedItems[0].getText('text/plain')).toBe('item 1');
+    expect(await pastedItems[1].getText('test')).toBe('item 2');
+    expect(await pastedItems[1].getText('text/plain')).toBe('item 2');
+    wrapper.unmount();
+  });
+
   it('passes clipboard action details to getItems for copy and cut', async () => {
     let onCopy = vi.fn();
     let onCut = vi.fn();
