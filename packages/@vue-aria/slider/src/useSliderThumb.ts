@@ -122,9 +122,30 @@ export function useSliderThumb(opts: AriaSliderThumbOptions, state: SliderState)
     return `vue-slider-thumb-${sliderThumbCounter}-${index}`;
   });
   let thumbLabelId = computed(() => resolveOptionalString(opts['aria-label']) ? `${thumbId.value}-label` : undefined);
+  let ariaLabel = computed(() => resolveOptionalString(opts['aria-label']));
   let describedBy = computed(() => [thumbData.value?.['aria-describedby'], resolveOptionalString(opts['aria-describedby'])].filter(Boolean).join(' ') || undefined);
   let details = computed(() => [thumbData.value?.['aria-details'], resolveOptionalString(opts['aria-details'])].filter(Boolean).join(' ') || undefined);
-  let labelledBy = computed(() => [thumbData.value?.id, resolveOptionalString(opts['aria-labelledby'])].filter(Boolean).join(' ') || undefined);
+  let labelledBy = computed(() => {
+    let ids = new Set<string>();
+    if (thumbData.value?.id) {
+      ids.add(thumbData.value.id);
+    }
+
+    let externalLabelledBy = resolveOptionalString(opts['aria-labelledby']);
+    if (externalLabelledBy) {
+      for (let id of externalLabelledBy.trim().split(/\s+/)) {
+        if (id) {
+          ids.add(id);
+        }
+      }
+    }
+
+    if (ariaLabel.value && ids.size > 0) {
+      ids.add(thumbId.value);
+    }
+
+    return ids.size > 0 ? Array.from(ids).join(' ') : undefined;
+  });
 
   watchEffect(() => {
     state.setThumbEditable(index, !isDisabled.value);
@@ -309,7 +330,7 @@ export function useSliderThumb(opts: AriaSliderThumbOptions, state: SliderState)
       name: resolveOptionalString(opts.name),
       form: resolveOptionalString(opts.form),
       disabled: isDisabled.value ? true : undefined,
-      'aria-label': resolveOptionalString(opts['aria-label']),
+      'aria-label': ariaLabel.value,
       'aria-labelledby': labelledBy.value,
       'aria-orientation': orientation.value,
       'aria-valuetext': state.getThumbValueLabel(index),

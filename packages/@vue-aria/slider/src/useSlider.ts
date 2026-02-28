@@ -111,12 +111,33 @@ export function useSlider(
   let isDisabled = computed(() => resolveBoolean(options.isDisabled) || resolveBoolean(state.isDisabled));
   let ariaLabel = computed(() => resolveOptionalString(options.ariaLabel) ?? resolveOptionalString(options['aria-label']));
   let ariaLabelledby = computed(() => resolveOptionalString(options.ariaLabelledby) ?? resolveOptionalString(options['aria-labelledby']));
+  let combinedAriaLabelledBy = computed(() => {
+    let ids = new Set<string>();
+    if (labelId.value) {
+      ids.add(labelId.value);
+    }
+
+    let labelledBy = ariaLabelledby.value;
+    if (labelledBy) {
+      for (let id of labelledBy.trim().split(/\s+/)) {
+        if (id) {
+          ids.add(id);
+        }
+      }
+    }
+
+    if (ariaLabel.value && ids.size > 0) {
+      ids.add(sliderId.value);
+    }
+
+    return ids.size > 0 ? Array.from(ids).join(' ') : undefined;
+  });
   let ariaDescribedby = computed(() => resolveOptionalString(options.ariaDescribedby) ?? resolveOptionalString(options['aria-describedby']));
   let ariaDetails = computed(() => resolveOptionalString(options.ariaDetails) ?? resolveOptionalString(options['aria-details']));
 
   watchEffect(() => {
     sliderData.set(state, {
-      id: sliderId.value,
+      id: labelId.value ?? sliderId.value,
       'aria-describedby': ariaDescribedby.value,
       'aria-details': ariaDetails.value
     });
@@ -253,7 +274,7 @@ export function useSlider(
     groupProps: computed(() => ({
       role: 'group' as const,
       'aria-label': ariaLabel.value,
-      'aria-labelledby': ariaLabelledby.value ?? labelId.value,
+      'aria-labelledby': combinedAriaLabelledBy.value,
       'aria-describedby': ariaDescribedby.value,
       'aria-details': ariaDetails.value,
       'aria-disabled': isDisabled.value ? true : undefined

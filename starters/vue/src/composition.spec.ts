@@ -4074,6 +4074,93 @@ describe('Vue migration composition components', () => {
     expect(values.value[0]).toBe(5);
   });
 
+  it('composes vue-aria slider and thumb labelledby ownership parity', () => {
+    let values = ref([25]);
+    let focusedThumb = ref<number | undefined>(undefined);
+    let draggingThumbs = ref(new Set<number>());
+    let editableThumbs = ref(new Set([0]));
+
+    let setThumbValue = (index: number, value: number) => {
+      values.value[index] = Math.min(Math.max(Math.round(value), 0), 100);
+    };
+
+    let state = {
+      values,
+      focusedThumb,
+      pageSize: ref(10),
+      step: ref(1),
+      getPercentValue: (percent: number) => Math.round(percent * 100),
+      getThumbMaxValue: () => 100,
+      getThumbMinValue: () => 0,
+      getThumbPercent: (index: number) => (values.value[index] ?? 0) / 100,
+      getThumbValueLabel: (index: number) => `${values.value[index] ?? 0}`,
+      incrementThumb: (index: number, amount: number) => {
+        setThumbValue(index, (values.value[index] ?? 0) + amount);
+      },
+      decrementThumb: (index: number, amount: number) => {
+        setThumbValue(index, (values.value[index] ?? 0) - amount);
+      },
+      isThumbDragging: (index: number) => draggingThumbs.value.has(index),
+      isThumbEditable: (index: number) => editableThumbs.value.has(index),
+      setFocusedThumb: (index: number | undefined) => {
+        focusedThumb.value = index;
+      },
+      setThumbDragging: (index: number, isDragging: boolean) => {
+        let nextDraggingThumbs = new Set(draggingThumbs.value);
+        if (isDragging) {
+          nextDraggingThumbs.add(index);
+        } else {
+          nextDraggingThumbs.delete(index);
+        }
+        draggingThumbs.value = nextDraggingThumbs;
+      },
+      setThumbEditable: (index: number, isEditable: boolean) => {
+        let nextEditableThumbs = new Set(editableThumbs.value);
+        if (isEditable) {
+          nextEditableThumbs.add(index);
+        } else {
+          nextEditableThumbs.delete(index);
+        }
+        editableThumbs.value = nextEditableThumbs;
+      },
+      setThumbPercent: (index: number, percent: number) => {
+        setThumbValue(index, percent * 100);
+      },
+      setThumbValue
+    };
+
+    let trackElement = document.createElement('div');
+    trackElement.getBoundingClientRect = () => createDOMRect(0, 0, 200, 24);
+    let trackRef = ref<Element | null>(trackElement);
+
+    let slider = useAriaSlider({
+      'aria-label': 'Effort custom',
+      'aria-labelledby': 'external-effort-label',
+      id: 'effort-slider',
+      label: 'Effort'
+    }, state, trackRef);
+
+    let sliderLabelledByIds = slider.groupProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(sliderLabelledByIds).toContain('effort-slider-label');
+    expect(sliderLabelledByIds).toContain('external-effort-label');
+    expect(sliderLabelledByIds).toContain('effort-slider');
+    expect(slider.groupProps.value['aria-label']).toBe('Effort custom');
+
+    let thumb = useAriaSliderThumb({
+      'aria-label': 'Minimum effort',
+      'aria-labelledby': 'external-thumb-label',
+      index: 0,
+      inputRef: ref<HTMLInputElement | null>(document.createElement('input')),
+      trackRef
+    }, state);
+
+    let thumbLabelledByIds = thumb.inputProps.value['aria-labelledby']?.split(/\s+/) ?? [];
+    expect(thumbLabelledByIds).toContain('effort-slider-label');
+    expect(thumbLabelledByIds).toContain('external-thumb-label');
+    expect(thumbLabelledByIds).toContain(thumb.inputProps.value.id);
+    expect(thumb.inputProps.value['aria-label']).toBe('Minimum effort');
+  });
+
   it('computes vue-aria spinbutton keyboard and press interactions', () => {
     vi.useFakeTimers();
 

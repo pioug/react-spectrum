@@ -943,13 +943,29 @@
    - full Vue tests: `yarn test:vue` (530 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 27, 2026 — Shared `useSlider`/`useSliderThumb` ARIA composition parity (`@vue-aria/slider`)
+
+1. Aligned slider group labeling semantics with React dual-label behavior:
+   - visible slider label id now composes with external `aria-labelledby`,
+   - slider id now participates in group `aria-labelledby` when `aria-label` coexists with labelledby sources.
+2. Aligned slider-thumb labeling semantics with React `useLabel` ownership:
+   - `sliderData` id now follows label ownership (`labelId` when visible label exists, otherwise slider id),
+   - thumb `aria-labelledby` now composes slider label ownership + external ids,
+   - thumb id now participates in `aria-labelledby` when thumb `aria-label` coexists with labelledby sources.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: slider/slider-thumb assertions for composed group and thumb `aria-labelledby` ownership, including self-id composition.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "slider track and thumb interactions|slider and thumb labelledby ownership"`,
+   - full Vue tests: `yarn test:vue` (531 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 530 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 531 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).
