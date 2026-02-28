@@ -2944,6 +2944,62 @@ describe('Vue migration composition components', () => {
     ]);
   });
 
+  it('warns when vue-stately tree expandedKeys switches between controlled and uncontrolled', async () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let expandedKeys = ref<Set<string> | undefined>(new Set(['animals']));
+    useStatelyTreeState({
+      expandedKeys,
+      items: [
+        {
+          key: 'animals',
+          childNodes: [
+            {key: 'mammals'}
+          ]
+        }
+      ],
+      selectionMode: 'none'
+    });
+
+    try {
+      expandedKeys.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      expandedKeys.value = new Set(['animals']);
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it('keeps vue-stately tree expansion uncontrolled when expandedKeys ref is undefined', () => {
+    let expandedKeys = ref<Set<string> | undefined>(undefined);
+    let treeState = useStatelyTreeState({
+      defaultExpandedKeys: ['animals'],
+      expandedKeys,
+      items: [
+        {
+          key: 'animals',
+          childNodes: [
+            {
+              key: 'mammals',
+              childNodes: [
+                {key: 'bear'}
+              ]
+            }
+          ]
+        }
+      ],
+      selectionMode: 'none'
+    });
+
+    treeState.toggleKey('mammals');
+
+    expect(expandedKeys.value).toBeUndefined();
+    expect(Array.from(treeState.collection.getKeys())).toEqual(['animals', 'mammals', 'bear']);
+  });
+
   it('manages vue-stately utility state and numeric helper behavior', () => {
     let controlledValue = ref<string | undefined>('alpha');
     let changeEvents: string[] = [];

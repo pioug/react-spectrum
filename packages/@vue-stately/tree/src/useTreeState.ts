@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, type Ref, ref, shallowRef, unref} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, shallowRef, unref, watch} from 'vue';
 import {
   type DisabledBehavior,
   type SelectionBehavior,
@@ -77,12 +77,26 @@ function resolveCollection<T>(props: TreeProps<T>, expandedKeys: Set<Key>): Tree
  */
 export function useTreeState<T>(props: TreeProps<T>): TreeState<T> {
   let uncontrolledExpandedKeys = ref(new Set<Key>(props.defaultExpandedKeys ?? []));
+  let isExpandedKeysControlled = computed(() => props.expandedKeys !== undefined && props.expandedKeys.value !== undefined);
+  let wasExpandedKeysControlled = ref(isExpandedKeysControlled.value);
+
+  watch(isExpandedKeysControlled, (nextIsControlled) => {
+    if (wasExpandedKeysControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasExpandedKeysControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasExpandedKeysControlled.value = nextIsControlled;
+  });
+
   let expandedKeys = computed<Set<Key>>({
     get: () => {
-      return props.expandedKeys?.value ?? uncontrolledExpandedKeys.value;
+      if (isExpandedKeysControlled.value && props.expandedKeys) {
+        return props.expandedKeys.value;
+      }
+
+      return uncontrolledExpandedKeys.value;
     },
     set: (nextKeys) => {
-      if (props.expandedKeys) {
+      if (isExpandedKeysControlled.value && props.expandedKeys) {
         props.expandedKeys.value = nextKeys;
       } else {
         uncontrolledExpandedKeys.value = nextKeys;

@@ -1515,6 +1515,24 @@
    - full Vue tests: `yarn test:vue` (564 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Tree expandedKeys controlled ownership parity (`@vue-stately/tree`)
+
+1. Aligned `useTreeState` expanded-keys controlled semantics with React `useControlledState` behavior:
+   - `expandedKeys` is now treated as controlled only when the ref exists and `expandedKeys.value !== undefined`,
+   - ref-backed `undefined` expanded-keys refs now remain uncontrolled (internal updates) instead of forcing prop writes.
+2. Aligned controlled/uncontrolled transition warning behavior:
+   - `useTreeState` now emits `WARN: A component changed from ...` when `expandedKeys` ownership transitions in development.
+3. Preserved tree selection/focus behavior:
+   - no selection-manager, focus-reset, or toggle contract changes were introduced beyond controlled-state ownership handling.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - warning assertions for controlled->uncontrolled and uncontrolled->controlled `expandedKeys` transitions,
+     - assertion that ref-backed-`undefined` `expandedKeys` remains uncontrolled while expansion toggles update internal tree state.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately tree collection expansion and selection behavior|warns when vue-stately tree expandedKeys switches between controlled and uncontrolled|keeps vue-stately tree expansion uncontrolled when expandedKeys ref is undefined"`,
+   - full Vue tests: `yarn test:vue` (566 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
