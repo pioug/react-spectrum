@@ -108,7 +108,12 @@ export function useDrop(options: AriaDropOptions = {}): DropAria {
 
   let enter = (items: DragItem[]) => {
     if (!canDrop(items)) {
-      isDropTarget.value = false;
+      if (isDropTarget.value) {
+        exit();
+      } else {
+        isDropTarget.value = false;
+      }
+
       return false;
     }
 
