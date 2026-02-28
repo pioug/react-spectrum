@@ -1,6 +1,6 @@
 import {type AriaDragOptions, type DragAria, useDrag as useAriaDrag} from './useDrag';
 import {type AriaDropOptions, type DropAria, useDrop as useAriaDrop} from './useDrop';
-import {computed, defineComponent, unref} from 'vue';
+import {computed, defineComponent, unref, watch} from 'vue';
 import {DIRECTORY_DRAG_TYPE as INTERNAL_DIRECTORY_DRAG_TYPE, type DragItem, type DropOperation} from './types';
 import {isVirtualDraggingSessionActive} from './dragSession';
 
@@ -891,7 +891,7 @@ export function useDroppableCollection(
 export function useDroppableItem(
   props: DroppableItemOptions,
   state: DroppableCollectionState,
-  _ref: RefObject<HTMLElement | null>
+  ref: RefObject<HTMLElement | null>
 ): DroppableItemResult {
   let propsRecord = props as AnyRecord;
   let stateRecord = state as AnyRecord;
@@ -912,6 +912,15 @@ export function useDroppableItem(
   let dropProps = computed(() => ({
     'aria-hidden': isVirtualDragging() && !isDropTarget.value ? 'true' : undefined
   }));
+  watch(isDropTarget, (next, previous) => {
+    if (!next || previous || !isVirtualDragging()) {
+      return;
+    }
+
+    if (ref.current && typeof ref.current.focus === 'function') {
+      ref.current.focus();
+    }
+  });
 
   return {
     dropProps,

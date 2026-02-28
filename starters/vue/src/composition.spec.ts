@@ -4998,6 +4998,35 @@ describe('Vue migration composition components', () => {
     expect(dropIndicator.isHidden.value).toBe(true);
   });
 
+  it('focuses useDroppableItem target when virtual drag activates the drop target', async () => {
+    let drag = useDrag({
+      dragItems: [{id: 'item-1', type: 'item', value: {id: 1}}]
+    });
+    let dropState = useStatelyDroppableCollectionState({
+      acceptedDragTypes: ['item'],
+      getDropOperation: () => 'move'
+    });
+    let target = {
+      type: 'item' as const,
+      key: 'alpha',
+      dropPosition: 'on' as const
+    };
+    let refElement = document.createElement('button');
+    document.body.appendChild(refElement);
+
+    useDroppableItem({target}, dropState, {current: refElement});
+
+    drag.startDrag();
+    dropState.setTarget(target);
+    await nextTick();
+
+    expect(isVirtualDragging()).toBe(true);
+    expect(document.activeElement).toBe(refElement);
+
+    drag.endDrag('cancel');
+    refElement.remove();
+  });
+
   it('emits useDroppableCollection drop callback payload with coordinates and operation', () => {
     let dropPayloads: Array<{dropOperation: string, type: string, x: number, y: number}> = [];
     let dropState = useStatelyDroppableCollectionState({
