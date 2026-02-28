@@ -830,6 +830,7 @@ describe('Vue migration composition components', () => {
       value: selectedValues
     });
 
+    expect(state.defaultValue).toEqual(['Docs']);
     expect(state.isSelected('Docs')).toBe(true);
     state.toggleValue('Tests');
     expect(selectedValues.value).toEqual(['Docs', 'Tests']);
@@ -843,6 +844,39 @@ describe('Vue migration composition components', () => {
     state.setInvalid('Tests', {isInvalid: false});
     expect(state.isInvalid.value).toBe(false);
     expect(changes).toContainEqual(['Docs', 'Tests']);
+  });
+
+  it('warns when vue-stately checkbox group switches between controlled and uncontrolled', async () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    let selectedValues = ref<string[] | undefined>(['Docs']);
+    useStatelyCheckboxGroupState({
+      value: selectedValues
+    });
+
+    try {
+      selectedValues.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      selectedValues.value = ['Tests'];
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it('keeps vue-stately checkbox group uncontrolled when value ref is undefined', () => {
+    let selectedValues = ref<string[] | undefined>(undefined);
+    let state = useStatelyCheckboxGroupState({
+      defaultValue: ['Docs'],
+      value: selectedValues
+    });
+
+    state.addValue('Tests');
+
+    expect(selectedValues.value).toBeUndefined();
+    expect(state.value.value).toEqual(['Docs', 'Tests']);
   });
 
   it('builds and filters vue-aria collections with key navigation', () => {

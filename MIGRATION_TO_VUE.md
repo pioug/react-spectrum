@@ -1478,6 +1478,25 @@
    - full Vue tests: `yarn test:vue` (560 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Checkbox-group controlled ownership parity (`@vue-stately/checkbox`)
+
+1. Aligned `useCheckboxGroupState` controlled-state semantics with React `useControlledState` behavior:
+   - `value` is now treated as controlled only when the ref exists and `value.value !== undefined`,
+   - ref-backed `undefined` values now remain uncontrolled (internal updates) instead of forcing controlled writes.
+2. Aligned controlled/uncontrolled transition warning behavior:
+   - `useCheckboxGroupState` now emits `WARN: A component changed from ...` when ownership transitions in development.
+3. Closed default-value drift for controlled groups:
+   - `defaultValue` now mirrors React behavior by falling back to the initial effective selection when no explicit default is provided.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - warning assertions for controlled->uncontrolled and uncontrolled->controlled transitions,
+     - assertion that ref-backed-`undefined` `value` stays uncontrolled during updates,
+     - base checkbox-group state test now asserts controlled default-value parity.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately checkbox-group values and invalid flags|warns when vue-stately checkbox group switches between controlled and uncontrolled|keeps vue-stately checkbox group uncontrolled when value ref is undefined"`,
+   - full Vue tests: `yarn test:vue` (562 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
