@@ -718,14 +718,20 @@ export function useDropIndicator(
       let prevKey = collection && typeof collection.getItem === 'function'
         ? (collection.getItem(key) as AnyRecord | undefined)?.prevKey as DraggingKey | null | undefined
         : null;
-      beforeKey = prevKey ?? null;
+      let prevNode = prevKey != null && collection && typeof collection.getItem === 'function'
+        ? collection.getItem(prevKey) as AnyRecord | undefined
+        : null;
+      beforeKey = prevNode?.type === 'item' ? (prevNode.key as DraggingKey) : null;
       afterKey = key;
     } else {
       beforeKey = key;
       let nextKey = collection && typeof collection.getItem === 'function'
         ? (collection.getItem(key) as AnyRecord | undefined)?.nextKey as DraggingKey | null | undefined
         : null;
-      afterKey = nextKey ?? null;
+      let nextNode = nextKey != null && collection && typeof collection.getItem === 'function'
+        ? collection.getItem(nextKey) as AnyRecord | undefined
+        : null;
+      afterKey = nextNode?.type === 'item' ? (nextNode.key as DraggingKey) : null;
     }
 
     if (beforeKey != null && afterKey != null) {

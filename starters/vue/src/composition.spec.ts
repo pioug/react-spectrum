@@ -5177,6 +5177,54 @@ describe('Vue migration composition components', () => {
     expect(dropIndicator.dropIndicatorProps.value['aria-label']).toBe('Insert between One and Two');
   });
 
+  it('ignores non-item neighbors when building useDropIndicator insertion labels', () => {
+    let dropState = useStatelyDroppableCollectionState();
+    (dropState as unknown as {collection: unknown}).collection = {
+      getItem: (key: string) => {
+        if (key === 'two') {
+          return {key: 'two', prevKey: 'header', nextKey: 'footer', textValue: 'Two', type: 'item'};
+        }
+
+        if (key === 'header') {
+          return {key: 'header', prevKey: null, nextKey: 'two', textValue: 'Header', type: 'section'};
+        }
+
+        if (key === 'footer') {
+          return {key: 'footer', prevKey: 'two', nextKey: null, textValue: 'Footer', type: 'section'};
+        }
+
+        return null;
+      },
+      getTextValue: (key: string) => key === 'two' ? 'Two' : key
+    };
+    let collectionRef = {current: document.createElement('div')};
+    useDroppableCollection({
+      acceptedDragTypes: ['item']
+    }, dropState, collectionRef);
+
+    let beforeIndicator = useDropIndicator({
+      target: {
+        type: 'item',
+        key: 'two',
+        dropPosition: 'before'
+      }
+    }, dropState, collectionRef) as {
+      dropIndicatorProps: {value: {'aria-label': string}}
+    };
+    let afterIndicator = useDropIndicator({
+      target: {
+        type: 'item',
+        key: 'two',
+        dropPosition: 'after'
+      }
+    }, dropState, collectionRef) as {
+      dropIndicatorProps: {value: {'aria-label': string}}
+    };
+
+    expect(beforeIndicator.dropIndicatorProps.value['aria-label']).toBe('Insert before Two');
+    expect(afterIndicator.dropIndicatorProps.value['aria-label']).toBe('Insert after Two');
+  });
+
   it('does not fall back to item keys for useDropIndicator item labels', () => {
     let dropState = useStatelyDroppableCollectionState();
     (dropState as unknown as {collection: unknown}).collection = {
