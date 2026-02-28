@@ -5256,6 +5256,18 @@ describe('Vue migration composition components', () => {
     expect(dropIndicator.isHidden.value).toBe(true);
   });
 
+  it('clears useDroppableCollection aria-describedby to avoid duplicate root announcements', () => {
+    let dropState = useStatelyDroppableCollectionState();
+    let collectionRef = {current: document.createElement('div')};
+    let droppableCollection = useDroppableCollection({
+      acceptedDragTypes: ['item']
+    }, dropState, collectionRef) as {
+      collectionProps: {value: {'aria-describedby': null}}
+    };
+
+    expect(droppableCollection.collectionProps.value['aria-describedby']).toBeNull();
+  });
+
   it('adds root useDropIndicator accessibility labels', () => {
     let dropState = useStatelyDroppableCollectionState();
     let target = {type: 'root' as const};

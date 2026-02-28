@@ -1341,6 +1341,8 @@ export function useDroppableCollection(
 
   let collectionProps = computed(() => ({
     id: collectionId,
+    // Keep collection announcements owned by drop indicators, matching React behavior.
+    'aria-describedby': null,
     role: 'group',
     'data-drop-target': isDropTarget.value,
     'aria-disabled': isDisabled.value ? true as const : undefined,
