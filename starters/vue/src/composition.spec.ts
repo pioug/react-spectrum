@@ -9129,6 +9129,37 @@ describe('Vue migration composition components', () => {
     expect(Array.from(selectedKeys.value)).toEqual(['details']);
   });
 
+  it('supports react-style steplist overload signatures', () => {
+    let selectedKeys = ref<Set<string | number>>(new Set(['setup']));
+    let selectableList = useAriaSelectableList({
+      selectedKeys,
+      selectionMode: 'single'
+    });
+    let selectedKey = computed(() => Array.from(selectedKeys.value)[0] ?? null);
+    let stepListState = {
+      selectedKey,
+      selectionManager: selectableList.selectionManager,
+      isSelectable: (key: string | number) => key !== 'review'
+    };
+
+    let reactStepList = useAriaStepList({
+      'aria-label': 'Release steps'
+    } as unknown as Parameters<typeof useAriaStepList>[0], stepListState as unknown as Parameters<typeof useAriaStepList>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaStepList>[2]);
+    expect(reactStepList.listProps.value.role).toBe('list');
+    expect(reactStepList.listProps.value['aria-label']).toBe('Release steps');
+
+    let reactStepListItem = useAriaStepListItem({
+      key: 'details'
+    } as unknown as Parameters<typeof useAriaStepListItem>[0], stepListState as unknown as Parameters<typeof useAriaStepListItem>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaStepListItem>[2]);
+    reactStepListItem.stepProps.value.onClick();
+    expect(Array.from(selectedKeys.value)).toEqual(['details']);
+    expect(reactStepListItem.stepProps.value['aria-current']).toBe('step');
+  });
+
   it('computes vue-aria switch role and toggle behavior', () => {
     let selected = ref(false);
     let switchControl = useAriaSwitch({
