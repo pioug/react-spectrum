@@ -1231,6 +1231,15 @@
    - full Vue tests: `yarn test:vue` (537 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — `Image` warning environment parity (`@vue-spectrum/image`)
+
+1. Aligned image alt-warning environment behavior with React:
+   - missing-`alt` warning now emits only outside production builds (`process.env.NODE_ENV !== 'production'`), matching React behavior.
+2. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "renders image src/alt and handles image load errors"`,
+   - full Vue tests: `yarn test:vue` (537 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

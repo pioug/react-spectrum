@@ -74,7 +74,7 @@ export const Image = defineComponent({
     }
   },
   setup(props, {attrs}) {
-    if (props.alt == null) {
+    if (props.alt == null && process.env.NODE_ENV !== 'production') {
       console.warn(IMAGE_ALT_WARNING);
     }
 
