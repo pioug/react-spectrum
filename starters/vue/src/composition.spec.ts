@@ -4008,6 +4008,23 @@ describe('Vue migration composition components', () => {
     warnSpy.mockRestore();
   });
 
+  it('matches react useDrag dragProps contract without aria-grabbed', () => {
+    let enabledDrag = useDrag({
+      dragItems: [{id: 'ticket-enabled', type: 'ticket', value: {id: 8}}]
+    });
+    let enabledProps = enabledDrag.dragProps.value as {'aria-grabbed'?: boolean, draggable: boolean};
+    expect(enabledProps.draggable).toBe(true);
+    expect(enabledProps['aria-grabbed']).toBeUndefined();
+
+    let disabledDrag = useDrag({
+      dragItems: [{id: 'ticket-disabled', type: 'ticket', value: {id: 9}}],
+      isDisabled: true
+    });
+    let disabledProps = disabledDrag.dragProps.value as {'aria-grabbed'?: boolean, draggable: boolean};
+    expect(disabledProps.draggable).toBe(false);
+    expect(disabledProps['aria-grabbed']).toBeUndefined();
+  });
+
   it('fires vue-aria useDrag onDragMove only when coordinates change', () => {
     let dragMoves: Array<string> = [];
     let drag = useDrag({

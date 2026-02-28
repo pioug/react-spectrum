@@ -17,7 +17,6 @@ export interface AriaDragOptions {
 export interface DragAria {
   dragItems: ComputedRef<DragItem[]>,
   dragProps: ComputedRef<{
-    'aria-grabbed': boolean,
     draggable: boolean
   }>,
   endDrag: (operation?: DropOperation) => void,
@@ -101,8 +100,7 @@ export function useDrag(options: AriaDragOptions): DragAria {
   };
 
   let dragProps = computed(() => ({
-    draggable: !isDisabled.value,
-    'aria-grabbed': isDragging.value
+    draggable: !isDisabled.value
   }));
 
   return {
