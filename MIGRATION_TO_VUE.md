@@ -3310,6 +3310,25 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Submenu trigger ARIA ownership + disabled-input parity (`@vue-aria/menu`)
+
+1. Closed submenu trigger/menu linkage drift:
+   - `useSubmenuTrigger` now generates stable trigger/submenu ids and exposes:
+     - `submenuTriggerProps.id`,
+     - open-state `submenuTriggerProps['aria-controls']`,
+     - `submenuProps.id` + `submenuProps['aria-labelledby']`.
+2. Closed disabled submenu trigger input-path drift:
+   - disabled submenu trigger `onClick` and `onKeyDown` paths now no-op, matching React disabled trigger behavior.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` menu assertions now verify:
+     - closed/open submenu `aria-controls` ownership,
+     - submenu `aria-labelledby` wiring to trigger id,
+     - disabled submenu keyboard/click no-op behavior.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria menu trigger and item selection semantics"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

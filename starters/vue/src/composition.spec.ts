@@ -6602,10 +6602,14 @@ describe('Vue migration composition components', () => {
 
     let submenuTrigger = useSubmenuTrigger();
     expect(submenuTrigger.submenuTriggerProps.value['aria-haspopup']).toBe('menu');
+    expect(submenuTrigger.submenuTriggerProps.value['aria-controls']).toBeUndefined();
+    expect(submenuTrigger.submenuProps.value['aria-labelledby']).toBe(submenuTrigger.submenuTriggerProps.value.id);
     submenuTrigger.submenuTriggerProps.value.onMouseEnter();
     expect(submenuTrigger.isOpen.value).toBe(true);
+    expect(submenuTrigger.submenuTriggerProps.value['aria-controls']).toBe(submenuTrigger.submenuProps.value.id);
     submenuTrigger.submenuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
     expect(submenuTrigger.isOpen.value).toBe(false);
+    expect(submenuTrigger.submenuTriggerProps.value['aria-controls']).toBeUndefined();
 
     let submenuTriggerButton = document.createElement('button');
     document.body.append(submenuTriggerButton);
@@ -6639,8 +6643,11 @@ describe('Vue migration composition components', () => {
     expect(disabledSubmenuOpen.value).toBe(false);
     disabledSubmenuTrigger.open();
     expect(disabledSubmenuOpen.value).toBe(false);
+    disabledSubmenuOpen.value = true;
+    disabledSubmenuTrigger.submenuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
+    expect(disabledSubmenuOpen.value).toBe(true);
     disabledSubmenuTrigger.submenuTriggerProps.value.onClick();
-    expect(disabledSubmenuOpen.value).toBe(false);
+    expect(disabledSubmenuOpen.value).toBe(true);
   });
 
   it('computes vue-aria meter range, labels, and value text', () => {

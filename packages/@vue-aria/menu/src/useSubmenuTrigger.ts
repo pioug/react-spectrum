@@ -13,12 +13,16 @@ export interface SubmenuTriggerAria {
   open: () => void,
   submenuProps: ComputedRef<{
     'aria-hidden': boolean,
+    'aria-labelledby': string,
+    id: string,
     role: 'menu'
   }>,
   submenuTriggerProps: ComputedRef<{
+    'aria-controls': string | undefined,
     'aria-expanded': boolean,
     'aria-haspopup'?: 'menu',
     'aria-label': string,
+    id: string,
     onClick: (event?: MouseEvent) => void,
     onKeyDown: (event: KeyboardEvent) => void,
     onMouseEnter: () => void,
@@ -27,7 +31,13 @@ export interface SubmenuTriggerAria {
   toggle: () => void
 }
 
+let submenuTriggerCounter = 0;
+
 export function useSubmenuTrigger(props: AriaSubmenuTriggerProps = {}): SubmenuTriggerAria {
+  submenuTriggerCounter += 1;
+
+  let triggerId = `vue-submenu-trigger-${submenuTriggerCounter}`;
+  let submenuId = `vue-submenu-${submenuTriggerCounter}`;
   let internalOpen = ref(false);
   let isOpen = props.isOpen ?? internalOpen;
 
@@ -57,6 +67,10 @@ export function useSubmenuTrigger(props: AriaSubmenuTriggerProps = {}): SubmenuT
   };
 
   let onKeyDown = (event: KeyboardEvent) => {
+    if (unref(props.isDisabled)) {
+      return;
+    }
+
     if (event.key === 'ArrowRight' || event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
       event.preventDefault();
       open();
@@ -73,15 +87,23 @@ export function useSubmenuTrigger(props: AriaSubmenuTriggerProps = {}): SubmenuT
     isOpen,
     open,
     submenuProps: computed(() => ({
+      id: submenuId,
       role: 'menu' as const,
-      'aria-hidden': !isOpen.value
+      'aria-hidden': !isOpen.value,
+      'aria-labelledby': triggerId
     })),
     submenuTriggerProps: computed(() => ({
+      id: triggerId,
       role: 'menuitem' as const,
+      'aria-controls': isOpen.value ? submenuId : undefined,
       'aria-haspopup': unref(props.isDisabled) ? undefined : 'menu' as const,
       'aria-expanded': isOpen.value,
       'aria-label': 'Open submenu',
       onClick: (event?: MouseEvent) => {
+        if (unref(props.isDisabled)) {
+          return;
+        }
+
         if (event?.currentTarget instanceof HTMLElement) {
           event.currentTarget.focus();
         }
