@@ -3741,7 +3741,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let input = wrapper.get('input.vs-color-field__input');
+    let input = wrapper.get('input.vs-spectrum-color-field__input');
     await input.setValue('#10b981');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['#10b981']);
     expect(wrapper.emitted('change')?.[0]).toEqual(['#10b981']);
@@ -3758,7 +3758,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let labelledByInput = labelledByWrapper.get('input.vs-color-field__input');
+    let labelledByInput = labelledByWrapper.get('input.vs-spectrum-color-field__input');
     expect(labelledByInput.attributes('aria-labelledby')).toBe('external-color-label');
     expect(labelledByInput.attributes('aria-label')).toBeUndefined();
     expect(labelledByWrapper.attributes('aria-labelledby')).toBeUndefined();
@@ -3773,8 +3773,8 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let visibleLabel = visibleLabelWrapper.get('.vs-color-field__label');
-    let visibleLabelInput = visibleLabelWrapper.get('input.vs-color-field__input');
+    let visibleLabel = visibleLabelWrapper.get('.vs-spectrum-color-field__label');
+    let visibleLabelInput = visibleLabelWrapper.get('input.vs-spectrum-color-field__input');
     expect(visibleLabelInput.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
     expect(visibleLabelInput.attributes('aria-labelledby')).toContain('external-color-label');
     expect(visibleLabelInput.attributes('aria-label')).toBeUndefined();
@@ -3789,7 +3789,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let ariaLabelInput = ariaLabelWrapper.get('input.vs-color-field__input');
+    let ariaLabelInput = ariaLabelWrapper.get('input.vs-spectrum-color-field__input');
     expect(ariaLabelInput.attributes('aria-label')).toBe('Primary Color');
     expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
     expect(ariaLabelWrapper.attributes('aria-label')).toBeUndefined();
@@ -3807,7 +3807,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let labelledByInput = labelledByWrapper.get('input.vs-color-slider__input');
+    let labelledByInput = labelledByWrapper.get('input.vs-spectrum-color-slider__input');
     expect(labelledByInput.attributes('aria-labelledby')).toBe('external-color-slider-label');
     expect(labelledByInput.attributes('aria-label')).toBeUndefined();
     expect(labelledByWrapper.attributes('aria-labelledby')).toBeUndefined();
@@ -3823,8 +3823,8 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let visibleLabel = visibleLabelWrapper.get('.vs-color-slider__label');
-    let visibleLabelInput = visibleLabelWrapper.get('input.vs-color-slider__input');
+    let visibleLabel = visibleLabelWrapper.get('.vs-spectrum-color-slider__label');
+    let visibleLabelInput = visibleLabelWrapper.get('input.vs-spectrum-color-slider__input');
     expect(visibleLabelInput.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
     expect(visibleLabelInput.attributes('aria-labelledby')).toContain('external-color-slider-label');
     expect(visibleLabelInput.attributes('aria-label')).toBeUndefined();
@@ -3840,7 +3840,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let ariaLabelInput = ariaLabelWrapper.get('input.vs-color-slider__input');
+    let ariaLabelInput = ariaLabelWrapper.get('input.vs-spectrum-color-slider__input');
     expect(ariaLabelInput.attributes('aria-label')).toBe('Hue');
     expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
     expect(ariaLabelWrapper.attributes('aria-label')).toBeUndefined();
@@ -3857,12 +3857,12 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    await wrapper.findAll('button.vs-color-swatch-picker__item')[1].trigger('click');
+    await wrapper.findAll('button.vs-spectrum-color-swatch-picker__item')[1].trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['emerald']);
     expect(wrapper.emitted('change')?.[0]).toEqual([{id: 'emerald', label: 'Emerald', color: '#10b981'}]);
   });
 
-  it('emits color updates from color picker field edits', async () => {
+  it('emits color updates from color picker popover edits', async () => {
     let wrapper = mount(ColorPicker, {
       props: {
         modelValue: '#3366ff',
@@ -3870,9 +3870,12 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    await wrapper.get('input.vs-color-field__input').setValue('#f59e0b');
-    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['#f59e0b']);
-    expect(wrapper.emitted('change')?.[0]).toEqual(['#f59e0b']);
+    await wrapper.get('button.vs-spectrum-color-picker__trigger').trigger('click');
+    expect(wrapper.emitted('open')).toBeTruthy();
+
+    await wrapper.get('input.vs-spectrum-color-editor__channel-input').setValue('200');
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['#c866ff']);
+    expect(wrapper.emitted('change')?.[0]).toEqual(['#c866ff']);
   });
 
   it('emits update and change events from date picker inputs', async () => {

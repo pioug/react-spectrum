@@ -1,31 +1,11 @@
-import {ColorArea, ColorEditor, ColorPicker, ColorSwatchPicker, ColorWheel} from '../src';
-import {ref, watch} from 'vue';
+import {ColorArea, ColorEditor, ColorPicker, ColorSwatch, ColorSwatchPicker, ColorWheel} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type StoryArgs = Record<string, unknown>;
-type SwatchItem = {
-  color: string,
-  id: string,
-  label: string
-};
-
-const DEFAULT_SWATCH_ITEMS: SwatchItem[] = [
-  {id: '#A00', color: '#A00', label: '#A00'},
-  {id: '#f80', color: '#f80', label: '#F80'},
-  {id: '#080', color: '#080', label: '#080'},
-  {id: '#08f', color: '#08f', label: '#08F'},
-  {id: '#088', color: '#088', label: '#088'},
-  {id: '#008', color: '#008', label: '#008'}
-];
 
 const meta: Meta<typeof ColorPicker> = {
   title: 'ColorPicker',
   component: ColorPicker,
-  parameters: {
-    actions: {
-      argTypesRegex: '^$'
-    }
-  },
   argTypes: {
     value: {
       control: 'color'
@@ -52,29 +32,12 @@ function renderDefault(args: StoryArgs) {
   return {
     components: {ColorEditor, ColorPicker},
     setup() {
-      let color = ref(typeof args.value === 'string' ? args.value : '#f00');
-
-      watch(() => args.value, (nextValue) => {
-        if (typeof nextValue === 'string') {
-          color.value = nextValue;
-        }
-      });
-
-      return {
-        args,
-        color
-      };
+      return {args};
     },
     template: `
-      <div style="display: grid; gap: 12px; max-width: 320px;">
-        <ColorPicker
-          v-bind="args"
-          :model-value="color"
-          @update:model-value="color = $event" />
-        <ColorEditor
-          :model-value="color"
-          @update:model-value="color = $event" />
-      </div>
+      <ColorPicker v-bind="args" default-value="#f00">
+        <ColorEditor />
+      </ColorPicker>
     `
   };
 }
@@ -83,65 +46,42 @@ function renderCustom(args: StoryArgs) {
   return {
     components: {ColorArea, ColorPicker, ColorWheel},
     setup() {
-      let color = ref(typeof args.value === 'string' ? args.value : '#f00');
-
-      watch(() => args.value, (nextValue) => {
-        if (typeof nextValue === 'string') {
-          color.value = nextValue;
-        }
-      });
-
-      return {
-        args,
-        color
-      };
+      return {args};
     },
     template: `
-      <div style="display: grid; gap: 12px; max-width: 360px;">
-        <ColorPicker
-          v-bind="args"
-          :model-value="color"
-          @update:model-value="color = $event" />
-        <ColorWheel
-          :model-value="color"
-          @update:model-value="color = $event" />
+      <ColorPicker v-bind="args" default-value="#f00">
+        <ColorWheel />
         <ColorArea
-          label="Saturation/Brightness"
-          :model-value="{x: 65, y: 42}" />
-      </div>
+          color-space="hsb"
+          x-channel="saturation"
+          y-channel="brightness"
+          size="size-400"
+          style="position: absolute; top: calc(50% - var(--spectrum-global-dimension-size-400)); left: calc(50% - var(--spectrum-global-dimension-size-400));" />
+      </ColorPicker>
     `
   };
 }
 
 function renderSwatches(args: StoryArgs) {
   return {
-    components: {ColorPicker, ColorSwatchPicker},
+    components: {ColorEditor, ColorPicker, ColorSwatch, ColorSwatchPicker},
     setup() {
-      let color = ref(typeof args.value === 'string' ? args.value : '#A00');
-
-      watch(() => args.value, (nextValue) => {
-        if (typeof nextValue === 'string') {
-          color.value = nextValue;
-        }
-      });
-
-      return {
-        args,
-        color,
-        items: DEFAULT_SWATCH_ITEMS
-      };
+      return {args};
     },
     template: `
-      <div style="display: grid; gap: 12px; max-width: 420px;">
-        <ColorPicker
-          v-bind="args"
-          :model-value="color"
-          @update:model-value="color = $event" />
-        <ColorSwatchPicker
-          :items="items"
-          :model-value="color"
-          @update:model-value="color = $event" />
-      </div>
+      <ColorPicker v-bind="args" default-value="#A00">
+        <div style="display: flex; flex-direction: column; gap: var(--spectrum-global-dimension-size-300);">
+          <ColorEditor />
+          <ColorSwatchPicker>
+            <ColorSwatch color="#A00" />
+            <ColorSwatch color="#f80" />
+            <ColorSwatch color="#080" />
+            <ColorSwatch color="#08f" />
+            <ColorSwatch color="#088" />
+            <ColorSwatch color="#008" />
+          </ColorSwatchPicker>
+        </div>
+      </ColorPicker>
     `
   };
 }

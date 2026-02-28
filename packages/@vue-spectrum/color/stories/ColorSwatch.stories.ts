@@ -52,7 +52,7 @@ export const CustomWidth: Story = {
     setup() {
       return {args};
     },
-    template: '<ColorSwatch v-bind="args" style="width: 96px; height: 24px;" />'
+    template: '<ColorSwatch v-bind="args" width="size-1000" />'
   }),
   args: {
     ...Default.args

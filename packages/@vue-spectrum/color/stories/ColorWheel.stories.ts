@@ -1,5 +1,5 @@
 import {action} from 'storybook/actions';
-import {ColorWheel} from '../src';
+import {ColorSwatch, ColorWheel} from '../src';
 import {ref, watch} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
@@ -90,13 +90,13 @@ export const Default: Story = {
         hue
       };
     },
-    template: '<ColorWheel :is-disabled="Boolean(args.isDisabled)" :model-value="hue" @update:model-value="handleUpdate" />'
+    template: '<ColorWheel :is-disabled="Boolean(args.isDisabled)" :size="typeof args.size === \'string\' ? args.size : undefined" :model-value="hue" @update:model-value="handleUpdate" />'
   })
 };
 
 function renderControlledHSL(args: ControlledArgs = {}) {
   return {
-    components: {ColorWheel},
+    components: {ColorSwatch, ColorWheel},
     setup() {
       let value = ref(resolveHue(args.value ?? args.defaultValue));
       let handleUpdate = (nextValue: number) => {
@@ -128,12 +128,14 @@ function renderControlledHSL(args: ControlledArgs = {}) {
       };
     },
     template: `
-      <div style="display: flex; flex-direction: column; gap: 8px;">
+      <div style="display: flex; flex-direction: column; gap: 4px;">
         <ColorWheel
           :is-disabled="Boolean(args.isDisabled)"
+          :size="typeof args.size === 'string' ? args.size : undefined"
           :model-value="value"
           @update:model-value="handleUpdate" />
-        <div>Value: {{value}}</div>
+        <ColorSwatch :color="'hsl(' + value + ', 100%, 50%)'" size="L" />
+        <div>{{ 'hsl(' + value + ', 100%, 50%)' }}</div>
       </div>
     `
   };

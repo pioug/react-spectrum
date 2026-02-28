@@ -914,25 +914,25 @@ describe('Vue storybook helper parity', () => {
       let defaultStory = SpectrumColorFieldDefault.render?.({label: 'Primary Color'}) as ReturnType<Exclude<typeof SpectrumColorFieldDefault.render, undefined>>;
       let defaultWrapper = mount(defaultStory);
       wrappers.push(defaultWrapper);
-      let defaultInput = defaultWrapper.get('input.vs-color-field__input');
+      let defaultInput = defaultWrapper.get('input.vs-spectrum-color-field__input');
       expect(defaultInput.attributes('aria-labelledby')).toBeTruthy();
       expect(defaultInput.attributes('aria-label')).toBeUndefined();
 
       let labelledByStory = SpectrumColorFieldAriaLabelledBy.render?.({}) as ReturnType<Exclude<typeof SpectrumColorFieldAriaLabelledBy.render, undefined>>;
       let labelledByWrapper = mount(labelledByStory);
       wrappers.push(labelledByWrapper);
-      let labelledByInput = labelledByWrapper.get('input.vs-color-field__input');
+      let labelledByInput = labelledByWrapper.get('input.vs-spectrum-color-field__input');
       expect(labelledByInput.attributes('aria-labelledby')).toContain('label');
       expect(labelledByInput.attributes('aria-label')).toBeUndefined();
-      expect(labelledByWrapper.get('label.vs-color-field').attributes('aria-labelledby')).toBeUndefined();
+      expect(labelledByWrapper.get('.vs-spectrum-color-field').attributes('aria-labelledby')).toBeUndefined();
 
       let ariaLabelStory = SpectrumColorFieldDefault.render?.({label: '', 'aria-label': 'Primary Color'}) as ReturnType<Exclude<typeof SpectrumColorFieldDefault.render, undefined>>;
       let ariaLabelWrapper = mount(ariaLabelStory);
       wrappers.push(ariaLabelWrapper);
-      let ariaLabelInput = ariaLabelWrapper.get('input.vs-color-field__input');
+      let ariaLabelInput = ariaLabelWrapper.get('input.vs-spectrum-color-field__input');
       expect(ariaLabelInput.attributes('aria-label')).toBe('Primary Color');
       expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
-      expect(ariaLabelWrapper.get('label.vs-color-field').attributes('aria-label')).toBeUndefined();
+      expect(ariaLabelWrapper.get('.vs-spectrum-color-field').attributes('aria-label')).toBeUndefined();
     } finally {
       for (let wrapper of wrappers) {
         wrapper.unmount();
@@ -947,17 +947,17 @@ describe('Vue storybook helper parity', () => {
       let defaultStory = SpectrumColorSliderDefault.render?.({channel: 'hue', label: 'Hue'}) as ReturnType<Exclude<typeof SpectrumColorSliderDefault.render, undefined>>;
       let defaultWrapper = mount(defaultStory);
       wrappers.push(defaultWrapper);
-      let defaultInput = defaultWrapper.get('input.vs-color-slider__input');
+      let defaultInput = defaultWrapper.get('input.vs-spectrum-color-slider__input');
       expect(defaultInput.attributes('aria-labelledby')).toBeTruthy();
       expect(defaultInput.attributes('aria-label')).toBeUndefined();
 
       let ariaLabelStory = SpectrumColorSliderDefault.render?.({channel: 'hue', label: '', 'aria-label': 'Hue'}) as ReturnType<Exclude<typeof SpectrumColorSliderDefault.render, undefined>>;
       let ariaLabelWrapper = mount(ariaLabelStory);
       wrappers.push(ariaLabelWrapper);
-      let ariaLabelInput = ariaLabelWrapper.get('input.vs-color-slider__input');
+      let ariaLabelInput = ariaLabelWrapper.get('input.vs-spectrum-color-slider__input');
       expect(ariaLabelInput.attributes('aria-label')).toBe('Hue');
       expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
-      expect(ariaLabelWrapper.get('label.vs-color-slider').attributes('aria-label')).toBeUndefined();
+      expect(ariaLabelWrapper.get('.vs-spectrum-color-slider').attributes('aria-label')).toBeUndefined();
     } finally {
       for (let wrapper of wrappers) {
         wrapper.unmount();

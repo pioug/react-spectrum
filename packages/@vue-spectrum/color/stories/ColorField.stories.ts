@@ -1,6 +1,7 @@
 import {ColorField} from '../src';
+import {ContextualHelp} from '@vue-spectrum/contextualhelp';
 import {action} from 'storybook/actions';
-import {ref} from 'vue';
+import {h, ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type StoryArgs = Record<string, unknown>;
@@ -156,16 +157,15 @@ function renderContextualHelp(args: StoryArgs) {
   return {
     components: {ColorField},
     setup() {
-      return {args};
+      let contextualHelp = h(
+        ContextualHelp,
+        {title: 'What is a segment?'},
+        () => 'Segments identify who your visitors are, what devices and services they use, where they navigated from, and much more.'
+      );
+
+      return {args, contextualHelp};
     },
-    template: `
-      <div style="display: grid; gap: 8px; max-width: 420px;">
-        <ColorField v-bind="args" />
-        <aside style="font-size: 12px; opacity: 0.8;">
-          Segments identify who your visitors are, what devices and services they use, where they navigated from, and more.
-        </aside>
-      </div>
-    `
+    template: '<ColorField v-bind="args" :contextual-help="contextualHelp" />'
   };
 }
 
@@ -176,7 +176,7 @@ export const Default: Story = {
 export const DefaultValue: Story = {
   ...Default,
   args: {
-    modelValue: '#abcdef'
+    defaultValue: '#abcdef'
   }
 };
 
@@ -196,8 +196,5 @@ export const MinWidth: Story = {
 
 export const ContextualHelpStory: Story = {
   render: (args) => renderContextualHelp(args),
-  args: {
-    description: 'More information about color segments.'
-  },
   name: 'contextual help'
 };

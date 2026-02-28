@@ -1,51 +1,22 @@
-import {ColorSwatch, parseColor} from '../src';
+import {ColorThumb, parseColor} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
-import {computed} from 'vue';
 
-type ColorChannels = {
-  alpha: number,
-  blue: number,
-  green: number,
-  red: number
-};
-
-function toColorString(value: unknown): string {
-  if (typeof value === 'string') {
-    return value;
-  }
-
-  if (
-    value &&
-    typeof value === 'object' &&
-    'red' in value &&
-    'green' in value &&
-    'blue' in value &&
-    'alpha' in value
-  ) {
-    let channels = value as ColorChannels;
-    return `rgba(${channels.red}, ${channels.green}, ${channels.blue}, ${channels.alpha})`;
-  }
-
-  return 'rgba(255, 0, 0, 1)';
-}
-
-const meta: Meta<typeof ColorSwatch> = {
+const meta: Meta<typeof ColorThumb> = {
   title: 'ColorThumb',
-  component: ColorSwatch,
+  component: ColorThumb,
   argTypes: {
     value: {
-      control: 'object',
       table: {
         disable: true
       }
     },
-    isDisabled: {
+    isFocused: {
       control: 'boolean'
     },
     isDragging: {
       control: 'boolean'
     },
-    isFocused: {
+    isDisabled: {
       control: 'boolean'
     }
   }
@@ -57,38 +28,20 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    value: {
-      red: 255,
-      green: 0,
-      blue: 0,
-      alpha: 1
-    }
+    value: parseColor('#f00')
   },
   render: (args) => ({
-    components: {ColorSwatch},
+    components: {ColorThumb},
     setup() {
-      let resolvedArgs = computed(() => {
-        let {value, ...rest} = args;
-        return {
-          ...rest,
-          color: parseColor(toColorString(value))
-        };
-      });
-
-      return {resolvedArgs};
+      return {args};
     },
-    template: '<ColorSwatch v-bind="resolvedArgs" label="Color thumb" />'
+    template: '<ColorThumb v-bind="args" />'
   })
 };
 
 export const Alpha: Story = {
   ...Default,
   args: {
-    value: {
-      red: 255,
-      green: 255,
-      blue: 255,
-      alpha: 0
-    }
+    value: parseColor('hsla(0, 100%, 100%, 0)')
   }
 };

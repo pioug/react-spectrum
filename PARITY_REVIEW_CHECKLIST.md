@@ -70,16 +70,17 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - [x] Story: Checkbox.stories.ts
   - [x] Story: CheckboxGroup.stories.ts
   - Evidence: React/Vue story-id parity is zero for `checkbox--*` (`react=5`, `vue=5`) and `checkboxgroup--*` (`react=10`, `vue=10`) from React `dist/9ba628661b71010349fd434fe6a68bd0d78e2a15/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue checkbox internals were aligned in `packages/@vue-spectrum/checkbox/src/index.ts` by removing Vue-only input labelling (`aria-labelledby` from visible label text), forwarding DOM/ARIA attrs to the same target elements as React (checkbox attrs to input, group attrs to role=`group` container), adding React-equivalent child checkbox `aria-describedby` wiring for checkbox-group description/error text, and aligning input a11y attrs (`aria-invalid`, `aria-readonly`, `aria-required`) plus `excludeFromTabOrder` handling; regression assertions were updated in `starters/vue/src/components.spec.ts` to reflect React label/labelledby behavior; manual side-by-side Storybook checks on `checkbox--default`, `checkbox--no-label`, `checkboxgroup--default`, `checkboxgroup--fixed-width`, and `checkboxgroup--one-invalid-checkbox` confirm matching ARIA structure/labels/description wiring; full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
-- [ ] 1.13 `@vue-spectrum/color`
+- [x] 1.13 `@vue-spectrum/color`
   - Components: ColorArea, ColorEditor, ColorField, ColorPicker, ColorSlider, ColorSwatch, ColorSwatchPicker, ColorWheel
-  - [ ] Story: ColorArea.stories.ts
-  - [ ] Story: ColorField.stories.ts
-  - [ ] Story: ColorPicker.stories.ts
-  - [ ] Story: ColorSlider.stories.ts
-  - [ ] Story: ColorSwatch.stories.ts
-  - [ ] Story: ColorSwatchPicker.stories.ts
-  - [ ] Story: ColorThumb.stories.ts
-  - [ ] Story: ColorWheel.stories.ts
+  - [x] Story: ColorArea.stories.ts
+  - [x] Story: ColorField.stories.ts
+  - [x] Story: ColorPicker.stories.ts
+  - [x] Story: ColorSlider.stories.ts
+  - [x] Story: ColorSwatch.stories.ts
+  - [x] Story: ColorSwatchPicker.stories.ts
+  - [x] Story: ColorThumb.stories.ts
+  - [x] Story: ColorWheel.stories.ts
+  - Evidence: React/Vue story-id parity is zero for the full color scope (`colorarea--*`, `colorfield--*`, `colorpicker--*`, `colorslider--*`, `colorswatch--*`, `colorswatchpicker--*`, `colorthumb--*`, `colorwheel--*`; `react=54`, `vue=54`) from React `dist/ea2e442892f4f41b6bee35a0048cee7c4d266dc6/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue color internals were aligned in `packages/@vue-spectrum/color/src/index.ts` by renaming local helper classes to avoid RAC collisions (`vs-spectrum-color-*`), restoring React-equivalent ColorWheel track geometry/gradient/thumb positioning, adding `spectrum-ColorControl-hiddenField` usage on color controls, restoring ColorField defaults and width support, and making ColorSlider gradients/thumb color value-aware for RGB/HSL/HSB channels; color stories were aligned in `packages/@vue-spectrum/color/stories/ColorArea.stories.ts`, `ColorField.stories.ts`, `ColorSlider.stories.ts`, and `ColorWheel.stories.ts` to match React composition/default args/contextual help wiring and output text; manual side-by-side screenshot review in `.tmp/color-parity-latest/` confirms matching output for `colorarea--x-blue-y-green`, `colorfield--default`, `colorpicker--default`, `colorslider--default`, `colorswatch--default`, `colorswatchpicker--default`, `colorthumb--default`, and `colorwheel--default`; full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
 - [ ] 1.14 `@vue-spectrum/combobox`
   - Components: ComboBox
   - [ ] Story: ComboBox.stories.ts

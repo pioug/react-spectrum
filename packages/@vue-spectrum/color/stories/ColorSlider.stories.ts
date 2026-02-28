@@ -1,6 +1,7 @@
 import {ColorSlider, ColorSwatch} from '../src';
+import {ContextualHelp} from '@vue-spectrum/contextualhelp';
 import {action} from 'storybook/actions';
-import {computed, ref} from 'vue';
+import {computed, h, ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type StoryArgs = Record<string, unknown>;
@@ -131,10 +132,12 @@ function toSliderProps(args: StoryArgs): StoryArgs {
     disabled: Boolean(args.disabled),
     id: typeof args.id === 'string' ? args.id : undefined,
     isDisabled: typeof args.isDisabled === 'boolean' ? args.isDisabled : undefined,
-    label: typeof args.label === 'string' ? args.label : '',
+    label: typeof args.label === 'string' && args.label.length > 0 ? args.label : undefined,
     max,
     min,
     modelValue,
+    orientation: args.orientation === 'vertical' ? 'vertical' : 'horizontal',
+    showValueLabel: typeof args.showValueLabel === 'boolean' ? args.showValueLabel : undefined,
     step: typeof args.step === 'number' && Number.isFinite(args.step) ? args.step : 1
   };
 }
@@ -189,16 +192,19 @@ function renderContextualHelp(args: StoryArgs) {
   return {
     components: {ColorSlider},
     setup() {
-      return {args};
+      let contextualHelp = h(
+        ContextualHelp,
+        {title: 'What is Hue?'},
+        () => 'Hue is a degree on the color wheel from 0 to 360. 0 (or 360) is red, 120 is green, 240 is blue.'
+      );
+      let sliderArgs = computed(() => ({
+        ...toSliderProps(args),
+        contextualHelp
+      }));
+
+      return {sliderArgs};
     },
-    template: `
-      <div style="display: grid; gap: 8px; max-width: 420px;">
-        <ColorSlider v-bind="args" />
-        <aside style="font-size: 12px; opacity: 0.8;">
-          Hue is a degree on the color wheel from 0 to 360. 0 (or 360) is red, 120 is green, and 240 is blue.
-        </aside>
-      </div>
-    `
+    template: '<ColorSlider v-bind="sliderArgs" />'
   };
 }
 
