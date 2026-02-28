@@ -448,9 +448,10 @@ export function useColorField(options: AriaColorFieldOptions): ColorFieldAria;
 export function useColorField(options: AriaColorFieldOptions, state?: ColorFieldState): ColorFieldAria {
   if (state) {
     let stateRecord = state as AnyRecord;
+    let stateInvalid = stateRecord.isInvalid;
     let colorField = useColorFieldInternal({
       ...options,
-      isInvalid: options.isInvalid ?? Boolean(stateRecord.isInvalid),
+      isInvalid: options.isInvalid ?? (isRefLike<boolean>(stateInvalid) ? stateInvalid : Boolean(stateInvalid)),
       value: createColorFieldValueRef(stateRecord)
     });
 

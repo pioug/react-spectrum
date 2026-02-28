@@ -37,7 +37,7 @@ import {
   useTableSelectionCheckbox as useTableSelectionCheckboxInternal
 } from './useTableSelectionCheckbox';
 import type {GridAria, GridRowAria, GridRowGroupAria, GridRowProps} from '@vue-aria/grid';
-import {computed} from 'vue';
+import {computed, isRef} from 'vue';
 import {useTableRowGroup as useTableRowGroupInternal} from './useTableRowGroup';
 
 type AnyRecord = Record<string, unknown>;
@@ -47,17 +47,36 @@ type TableState<T> = AnyRecord;
 type TreeGridState<T> = AnyRecord;
 type TableColumnResizeState<T> = AnyRecord;
 
+function readMaybeRef<T>(value: unknown): T {
+  if (isRef(value)) {
+    return value.value as T;
+  }
+
+  return value as T;
+}
+
+function writeMaybeRef(record: AnyRecord, key: string, nextValue: unknown): void {
+  let currentValue = record[key];
+  if (isRef(currentValue)) {
+    currentValue.value = nextValue;
+    return;
+  }
+
+  record[key] = nextValue;
+}
+
 function toSet(values: unknown): Set<string | number> {
-  if (!values || typeof values !== 'object') {
+  let resolvedValues = readMaybeRef<unknown>(values);
+  if (!resolvedValues || typeof resolvedValues !== 'object') {
     return new Set();
   }
 
-  if (values instanceof Set) {
-    return new Set(values);
+  if (resolvedValues instanceof Set) {
+    return new Set(resolvedValues);
   }
 
-  if (Symbol.iterator in values) {
-    return new Set(Array.from(values as Iterable<string | number>));
+  if (Symbol.iterator in resolvedValues) {
+    return new Set(Array.from(resolvedValues as Iterable<string | number>));
   }
 
   return new Set();
@@ -68,11 +87,12 @@ function resolveAriaLabel(optionsRecord: AnyRecord): string | undefined {
 }
 
 function getCollectionRows(collection: unknown): AnyRecord[] {
-  if (!collection || typeof collection !== 'object') {
+  let resolvedCollection = readMaybeRef<unknown>(collection);
+  if (!resolvedCollection || typeof resolvedCollection !== 'object') {
     return [];
   }
 
-  let collectionRecord = collection as AnyRecord;
+  let collectionRecord = resolvedCollection as AnyRecord;
   let rows = collectionRecord.rows;
   if (Array.isArray(rows)) {
     return rows as AnyRecord[];
@@ -82,11 +102,12 @@ function getCollectionRows(collection: unknown): AnyRecord[] {
 }
 
 function findCollectionRow(collection: unknown, key: unknown): AnyRecord | undefined {
-  if (!collection || typeof collection !== 'object') {
+  let resolvedCollection = readMaybeRef<unknown>(collection);
+  if (!resolvedCollection || typeof resolvedCollection !== 'object') {
     return undefined;
   }
 
-  let collectionRecord = collection as AnyRecord;
+  let collectionRecord = resolvedCollection as AnyRecord;
   let getItem = collectionRecord.getItem;
   if (typeof getItem === 'function') {
     let match = getItem(key);
@@ -106,8 +127,8 @@ function createTableFromState(
 ): GridAria {
   return useTable({
     ariaLabel: resolveAriaLabel(optionsRecord) ?? 'table',
-    collection: stateRecord.collection,
-    disabledKeys: stateRecord.disabledKeys
+    collection: readMaybeRef(stateRecord.collection),
+    disabledKeys: readMaybeRef(stateRecord.disabledKeys)
   }, stateRecord, refObject);
 }
 
@@ -151,11 +172,11 @@ export function useTable(
     void refObject;
     let stateRecord = state as AnyRecord;
     let optionsRecord = options as AnyRecord;
-    let selectionManager = (stateRecord.selectionManager ?? {}) as AnyRecord;
+    let selectionManager = (readMaybeRef<unknown>(stateRecord.selectionManager) ?? {}) as AnyRecord;
 
     let focusedKey = computed<string | number | null>({
       get: () => {
-        let key = selectionManager.focusedKey;
+        let key = readMaybeRef<unknown>(selectionManager.focusedKey);
         return key == null ? null : (key as string | number);
       },
       set: (key) => {
@@ -165,7 +186,7 @@ export function useTable(
           return;
         }
 
-        selectionManager.focusedKey = key;
+        writeMaybeRef(selectionManager, 'focusedKey', key);
       }
     });
 
@@ -179,7 +200,7 @@ export function useTable(
           return;
         }
 
-        selectionManager.selectedKeys = nextKeys;
+        writeMaybeRef(selectionManager, 'selectedKeys', nextKeys);
       }
     });
 
@@ -189,7 +210,13 @@ export function useTable(
       disabledKeys: stateRecord.disabledKeys,
       focusedKey,
       selectedKeys,
-      selectionMode: selectionManager.selectionMode ?? optionsRecord.selectionMode,
+      selectionMode: isRef(selectionManager.selectionMode)
+        ? selectionManager.selectionMode as AnyRecord['selectionMode']
+        : ((selectionManager.selectionMode === 'multiple'
+          || selectionManager.selectionMode === 'single'
+          || selectionManager.selectionMode === 'none')
+          ? selectionManager.selectionMode
+          : optionsRecord.selectionMode) as AnyRecord['selectionMode'],
       onRowAction: (optionsRecord.onRowAction as ((key: string | number) => void) | undefined)
         ?? (optionsRecord.onAction as ((key: string | number) => void) | undefined)
     });
@@ -223,12 +250,17 @@ export function useTableColumnHeader(
     }, stateRecord, refObject as RefObject<HTMLElement | null> | undefined);
 
     let sortDescriptor = computed(() => {
-      let descriptor = stateRecord.sortDescriptor as AnyRecord | undefined;
-      if (!descriptor || descriptor.column !== node.key) {
+      let descriptor = readMaybeRef<unknown>(stateRecord.sortDescriptor);
+      if (!descriptor || typeof descriptor !== 'object') {
         return undefined;
       }
 
-      let direction = descriptor.direction;
+      let descriptorRecord = descriptor as AnyRecord;
+      if (descriptorRecord.column !== node.key) {
+        return undefined;
+      }
+
+      let direction = descriptorRecord.direction;
       return direction === 'ascending' || direction === 'descending' ? direction : undefined;
     });
 
@@ -388,14 +420,17 @@ export function useTableSelectAllCheckbox(
 ): TableSelectAllCheckboxAria {
   if (isTableSelectAllState(options) && !('keys' in options) && !('selectedKeys' in options)) {
     let stateRecord = options as AnyRecord;
-    let selectionManager = (stateRecord.selectionManager ?? {}) as AnyRecord;
+    let selectionManager = (readMaybeRef<unknown>(stateRecord.selectionManager) ?? {}) as AnyRecord;
     let rowKeys = computed(() => {
       return getCollectionRows(stateRecord.collection)
         .filter((row) => row.type !== 'loader')
         .map((row) => row.key as string | number);
     });
     let isCollectionEmpty = computed(() => {
-      let size = (stateRecord.collection as AnyRecord | undefined)?.size;
+      let collection = readMaybeRef<unknown>(stateRecord.collection);
+      let size = collection && typeof collection === 'object'
+        ? (collection as AnyRecord).size
+        : undefined;
       if (typeof size === 'number') {
         return size === 0;
       }
@@ -407,11 +442,31 @@ export function useTableSelectAllCheckbox(
       return rows.length === 1 && rows[0]?.type === 'loader';
     });
     let selectionMode = computed(() => {
-      let mode = selectionManager.selectionMode as string | undefined;
+      let mode = readMaybeRef<unknown>(selectionManager.selectionMode);
       return mode === 'none' || mode === 'single' || mode === 'multiple' ? mode : 'multiple';
     });
-    let checked = computed(() => Boolean(selectionManager.isSelectAll));
-    let isEmpty = computed(() => Boolean(selectionManager.isEmpty));
+    let getSelectedKeys = (): Set<string | number> => {
+      return toSet(selectionManager.selectedKeys);
+    };
+    let checked = computed(() => {
+      if (selectionManager.isSelectAll !== undefined) {
+        return Boolean(readMaybeRef<unknown>(selectionManager.isSelectAll));
+      }
+
+      if (rowKeys.value.length === 0) {
+        return false;
+      }
+
+      let selectedKeys = getSelectedKeys();
+      return rowKeys.value.every((key) => selectedKeys.has(key));
+    });
+    let isEmpty = computed(() => {
+      if (selectionManager.isEmpty !== undefined) {
+        return Boolean(readMaybeRef<unknown>(selectionManager.isEmpty));
+      }
+
+      return getSelectedKeys().size === 0;
+    });
     let disabled = computed(() => {
       return selectionMode.value !== 'multiple' || isCollectionEmpty.value || hasSingleLoaderRow.value;
     });
@@ -434,7 +489,7 @@ export function useTableSelectAllCheckbox(
         return;
       }
 
-      selectionManager.selectedKeys = next;
+      writeMaybeRef(selectionManager, 'selectedKeys', next);
     };
 
     return {

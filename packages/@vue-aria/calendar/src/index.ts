@@ -4,7 +4,7 @@ import {type AriaCalendarOptions, type CalendarAria, useCalendar as useCalendarI
 import {type AriaRangeCalendarOptions, type RangeCalendarAria, useRangeCalendar as useRangeCalendarInternal} from './useRangeCalendar';
 import type {DateRange} from './utils';
 import type {CalendarState, RangeCalendarState} from '@vue-stately/calendar';
-import {computed, ref, type Ref} from 'vue';
+import {computed, ref, type Ref, unref} from 'vue';
 export type {DateRange} from './utils';
 
 type AnyRecord = Record<string, unknown>;
@@ -546,8 +546,8 @@ export function useCalendarGrid(
         let existingGridProps = grid.gridProps.value as AnyRecord;
         return {
           ...existingGridProps,
-          'aria-disabled': Boolean(stateRecord.isDisabled) || undefined,
-          'aria-readonly': Boolean(stateRecord.isReadOnly) || undefined,
+          'aria-disabled': Boolean(unref(stateRecord.isDisabled as boolean | undefined)) || undefined,
+          'aria-readonly': Boolean(unref(stateRecord.isReadOnly as boolean | undefined)) || undefined,
           'aria-multiselectable': isRangeCalendarStateRecord(stateRecord) || undefined,
           onKeyDown: (event: KeyboardEvent) => {
             let onKeyDown = existingGridProps.onKeyDown;

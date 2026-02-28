@@ -1037,6 +1037,8 @@ describe('Vue migration composition components', () => {
     let selectedDate = ref<Date | null>(new Date(2025, 0, 15));
     let focusedDate = ref(new Date(2025, 0, 15));
     let isFocused = ref(false);
+    let isCalendarDisabled = ref(false);
+    let isCalendarReadOnly = ref(false);
     let selectCalls: Date[] = [];
     let nextPageCalls = 0;
     let previousPageCalls = 0;
@@ -1048,6 +1050,8 @@ describe('Vue migration composition components', () => {
         start: new Date(focusedDate.value.getFullYear(), focusedDate.value.getMonth(), 1),
         end: new Date(focusedDate.value.getFullYear(), focusedDate.value.getMonth() + 1, 0)
       })),
+      isDisabled: isCalendarDisabled,
+      isReadOnly: isCalendarReadOnly,
       isCellDisabled: (date: Date) => {
         return date.getDay() === 0;
       },
@@ -1105,6 +1109,12 @@ describe('Vue migration composition components', () => {
     expect(grid.headerProps.value['aria-hidden']).toBe(true);
     expect(grid.gridProps.value['aria-multiselectable']).toBeUndefined();
     expect(grid.weekDays.value[0]).toMatch(/^Mon/i);
+    expect(grid.gridProps.value['aria-disabled']).toBeUndefined();
+    expect(grid.gridProps.value['aria-readonly']).toBeUndefined();
+    isCalendarDisabled.value = true;
+    isCalendarReadOnly.value = true;
+    expect(grid.gridProps.value['aria-disabled']).toBe(true);
+    expect(grid.gridProps.value['aria-readonly']).toBe(true);
 
     let preventDefault = vi.fn();
     let stopPropagation = vi.fn();
@@ -1950,9 +1960,10 @@ describe('Vue migration composition components', () => {
 
     let textValue = ref('#123456');
     let commitCalls = 0;
+    let colorFieldInvalid = ref(false);
     let colorFieldState = {
       inputValue: textValue,
-      isInvalid: false,
+      isInvalid: colorFieldInvalid,
       setInputValue: (value: string) => {
         textValue.value = value;
       },
@@ -1964,9 +1975,12 @@ describe('Vue migration composition components', () => {
     let colorField = useColorField({} as unknown as Parameters<typeof useColorField>[0], colorFieldState as unknown as Parameters<typeof useColorField>[1], {
       current: null
     } as unknown as Parameters<typeof useColorField>[2]);
+    expect(colorField.inputProps.value['aria-invalid']).toBeUndefined();
     colorField.setValue('00ff00');
     expect(textValue.value).toBe('#00ff00');
     expect(commitCalls).toBe(1);
+    colorFieldInvalid.value = true;
+    expect(colorField.inputProps.value['aria-invalid']).toBe(true);
 
     let channelNumber = ref(7);
     let channelInput = ref('7');
@@ -10730,6 +10744,103 @@ describe('Vue migration composition components', () => {
     });
     expect(enabledRow.isDisabled.value).toBe(false);
     expect(disabledRow.isDisabled.value).toBe(true);
+  });
+
+  it('supports react-style table overloads with ref-backed selection manager and sort descriptor', () => {
+    let collection = {
+      columnCount: 2,
+      rows: [
+        {
+          key: 'row-1',
+          index: 0,
+          textValue: 'Backlog',
+          cells: [
+            {key: 'row-1-cell-1', colIndex: 0, textValue: 'Backlog'},
+            {key: 'status-open', colIndex: 1, textValue: 'Open'}
+          ]
+        },
+        {
+          key: 'row-2',
+          index: 1,
+          textValue: 'Done',
+          cells: [
+            {key: 'row-2-cell-1', colIndex: 0, textValue: 'Done'},
+            {key: 'status-closed', colIndex: 1, textValue: 'Closed'}
+          ]
+        }
+      ],
+      size: 2
+    };
+    let focusedKey = ref<string | number | null>(null);
+    let selectedKeys = ref<Set<string | number>>(new Set());
+    let selectionMode = ref<'multiple' | 'single' | 'none'>('multiple');
+    let sortDescriptor = ref<{column: string | number, direction: 'ascending' | 'descending'} | null>(null);
+    let sortCalls: Array<string | number> = [];
+    let state = {
+      collection: ref(collection),
+      disabledKeys: ref(new Set<string | number>()),
+      selectionManager: {
+        focusedKey,
+        selectedKeys,
+        selectionMode
+      },
+      sort: (key: string | number) => {
+        sortCalls.push(key);
+        sortDescriptor.value = {
+          column: key,
+          direction: 'ascending'
+        };
+      },
+      sortDescriptor
+    };
+
+    let table = useAriaTable({
+      'aria-label': 'React-style ref table'
+    } as unknown as Parameters<typeof useAriaTable>[0], state as unknown as Parameters<typeof useAriaTable>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaTable>[2]);
+    expect(table.gridProps.value['aria-multiselectable']).toBe('true');
+
+    table.setFocusedKey('row-1-cell-1');
+    expect(focusedKey.value).toBe('row-1-cell-1');
+
+    table.toggleSelection('row-1');
+    expect(Array.from(selectedKeys.value)).toEqual(['row-1']);
+
+    let selectAll = useAriaTableSelectAllCheckbox(state as unknown as Parameters<typeof useAriaTableSelectAllCheckbox>[0]);
+    expect(selectAll.checkboxProps.value.checked).toBe(false);
+    expect(selectAll.checkboxProps.value.indeterminate).toBe(true);
+    selectAll.toggleSelectAll();
+    expect(Array.from(selectedKeys.value).sort()).toEqual(['row-1', 'row-2']);
+    expect(selectAll.checkboxProps.value.checked).toBe(true);
+    expect(selectAll.checkboxProps.value.indeterminate).toBe(false);
+    selectAll.toggleSelectAll();
+    expect(Array.from(selectedKeys.value)).toEqual([]);
+
+    selectionMode.value = 'single';
+    expect(selectAll.checkboxProps.value['aria-label']).toBe('Select');
+    expect(selectAll.checkboxProps.value.disabled).toBe(true);
+
+    let columnHeader = useAriaTableColumnHeader({
+      node: {
+        colSpan: 1,
+        key: 'status',
+        props: {
+          allowsSorting: true
+        }
+      }
+    } as unknown as Parameters<typeof useAriaTableColumnHeader>[0], state as unknown as Parameters<typeof useAriaTableColumnHeader>[1], {
+      current: null
+    } as unknown as Parameters<typeof useAriaTableColumnHeader>[2]);
+    expect(columnHeader.columnHeaderProps.value['aria-sort']).toBe('none');
+    columnHeader.columnHeaderProps.value.onClick();
+    expect(sortCalls).toEqual(['status']);
+    expect(columnHeader.columnHeaderProps.value['aria-sort']).toBe('ascending');
+    sortDescriptor.value = {
+      column: 'status',
+      direction: 'descending'
+    };
+    expect(columnHeader.columnHeaderProps.value['aria-sort']).toBe('descending');
   });
 
   it('supports react-style useTableColumnHeader overload with node/state sorting', () => {
