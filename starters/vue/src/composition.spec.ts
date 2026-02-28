@@ -1911,6 +1911,22 @@ describe('Vue migration composition components', () => {
     expect(asyncList.items.value.map((item) => item.id)).toEqual(['gamma']);
   });
 
+  it('matches vue-stately async list default getKey fallback semantics for falsy ids', async () => {
+    let asyncList = useStatelyAsyncList<{id: number, key: string}>({
+      load: async () => ({
+        items: [{id: 0, key: 'zero-key'}]
+      })
+    });
+
+    await nextTick();
+    await Promise.resolve();
+
+    expect(asyncList.getItem('zero-key')).toEqual({id: 0, key: 'zero-key'});
+
+    asyncList.remove('zero-key');
+    expect(asyncList.items.value).toEqual([]);
+  });
+
   it('prevents vue-stately async list loadMore while initial load is in progress', async () => {
     vi.useFakeTimers();
 

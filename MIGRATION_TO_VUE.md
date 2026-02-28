@@ -2697,13 +2697,24 @@
    - full Vue tests: `yarn test:vue` (648 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Async-list default key fallback parity remediation (`@vue-stately/data`)
+
+1. Closed default `getKey` fallback drift in `useAsyncList`:
+   - Vue now matches React fallback semantics (`item.id || item.key`) for async-list default key resolution.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` now includes an async-list test asserting default key lookup/removal behavior when `id` is falsy (`0`) and `key` is provided.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "async list"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
    - latest typecheck run: `yarn typecheck:vue`
    - component suite: `yarn workspace vue-spectrum-starter test src/components.spec.ts`
    - story parity suite: `yarn workspace vue-spectrum-starter test src/storybook-parity.spec.ts`
-   - full Vue tests: `yarn test:vue` (latest logged: 648 tests passed)
+   - full Vue tests: `yarn test:vue` (latest logged: 649 tests passed)
    - latest Storybook build run: `yarn build:vue:storybook`
 2. Story/index parity checks remained zero-diff where logged against the React artifact.
 3. Known non-blocking warnings remained unchanged throughout (jsdom navigation warning in composition tests; Storybook CSS/chunk-size warnings).

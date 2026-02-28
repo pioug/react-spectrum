@@ -287,7 +287,7 @@ export function useAsyncList<T, C = string>(options: AsyncListOptions<T, C>): As
     sort,
     initialSelectedKeys,
     initialSortDescriptor,
-    getKey = (item: any) => item.id ?? item.key,
+    getKey = (item: any) => item.id || item.key,
     initialFilterText = ''
   } = options;
 
