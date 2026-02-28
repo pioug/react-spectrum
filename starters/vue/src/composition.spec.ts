@@ -44,6 +44,7 @@ import {
 } from '@vue-aria/dnd';
 import {EXAMPLE_THEME_CLASS, useExampleTheme} from '@vue-aria/example-theme';
 import {
+  FocusableProvider as focusPackageFocusableProvider,
   createFocusManager as createFocusManagerFromPackage,
   dispatchVirtualBlur as dispatchVirtualBlurFromPackage,
   dispatchVirtualFocus as dispatchVirtualFocusFromPackage,
@@ -53,6 +54,7 @@ import {
   isElementInChildOfActiveScope as isElementInChildOfActiveScopeFromPackage,
   isFocusable as focusIsFocusable,
   moveVirtualFocus as moveVirtualFocusFromPackage,
+  useFocusable as useFocusableFromFocusPackage,
   useFocusManager as useFocusManagerFromPackage,
   useFocusRing,
   useHasTabbableChild
@@ -6855,6 +6857,31 @@ describe('Vue migration composition components', () => {
     expect(focusSpy).toHaveBeenCalled();
     focusSpy.mockRestore();
     element.remove();
+  });
+
+  it('uses @vue-aria/interactions focusable contracts via @vue-aria/focus exports', () => {
+    let events: string[] = [];
+    let clearFocusableProvider = focusPackageFocusableProvider({
+      onFocus: () => {
+        events.push('focus');
+      }
+    });
+    let button = document.createElement('button');
+    document.body.append(button);
+    let focusable = useFocusableFromFocusPackage({}, ref(button));
+
+    try {
+      if (focusable.focusableProps.value.onFocus) {
+        button.addEventListener('focus', focusable.focusableProps.value.onFocus as EventListener);
+      }
+
+      button.dispatchEvent(new FocusEvent('focus', {bubbles: true}));
+      expect(events).toEqual(['focus']);
+      expect(focusable.focusableProps.value.tabindex).toBe(0);
+    } finally {
+      clearFocusableProvider();
+      button.remove();
+    }
   });
 
   it('navigates focusable elements with @vue-aria/focus createFocusManager contract', () => {

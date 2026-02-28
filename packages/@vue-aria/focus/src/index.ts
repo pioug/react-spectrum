@@ -1,11 +1,23 @@
 import {defineComponent} from 'vue';
-import {focusSafely as focusSafelyInteractions} from '@vue-aria/interactions';
+import {
+  Focusable as FocusableInteractions,
+  FocusableProvider as FocusableProviderInteractions,
+  focusSafely as focusSafelyInteractions,
+  useFocusable as useFocusableInteractions
+} from '@vue-aria/interactions';
+import type {
+  FocusableAria,
+  FocusableElement as InteractionsFocusableElement,
+  FocusableOptions,
+  FocusableProviderProps
+} from '@vue-aria/interactions';
 import {isFocusable as isFocusableUtils, isTabbable as isTabbableUtils, nodeContains as nodeContainsUtils} from '@vue-aria/utils';
 
 export type {AriaFocusRingProps, FocusRingAria, FocusRingProps} from './useFocusRing';
 export {useFocusRing} from './useFocusRing';
 export type {AriaHasTabbableChildOptions, MaybeElementRef} from './useHasTabbableChild';
 export {useHasTabbableChild} from './useHasTabbableChild';
+export type {FocusableAria, FocusableOptions, FocusableProviderProps} from '@vue-aria/interactions';
 
 export type FocusManagerOptions = {
   accept?: (node: Element) => boolean,
@@ -18,13 +30,8 @@ export type FocusScopeProps = {
   contain?: boolean,
   restoreFocus?: boolean
 };
-export type FocusableElement = Element & {focus?: () => void};
+export type FocusableElement = InteractionsFocusableElement;
 export type RefObject<T> = {current: T};
-export type FocusableOptions<T extends FocusableElement = FocusableElement> = Record<string, unknown>;
-export type FocusableAria = {
-  focusableProps: FocusableOptions
-};
-export type FocusableProviderProps = Record<string, unknown>;
 
 export interface FocusManager {
   focusNext: (opts?: FocusManagerOptions) => FocusableElement | null,
@@ -61,19 +68,8 @@ export const FocusRing = defineComponent({
   }
 });
 
-export const FocusableProvider = defineComponent({
-  name: 'VueAriaFocusableProvider',
-  setup(_, {slots}) {
-    return () => slots.default ? slots.default() : null;
-  }
-});
-
-export const Focusable = defineComponent({
-  name: 'VueAriaFocusable',
-  setup(_, {slots}) {
-    return () => slots.default ? slots.default() : null;
-  }
-});
+export const FocusableProvider = FocusableProviderInteractions;
+export const Focusable = FocusableInteractions;
 
 function focusElement(element: Element | null): FocusableElement | null {
   if (!element) {
@@ -365,9 +361,7 @@ export function isFocusable(element: Element): boolean {
 
 export function useFocusable<T extends FocusableElement = FocusableElement>(
   props: FocusableOptions<T> = {},
-  _ref: RefObject<FocusableElement | null> = {current: null}
+  ref: RefObject<FocusableElement | null> = {current: null}
 ): FocusableAria {
-  return {
-    focusableProps: props
-  };
+  return useFocusableInteractions(props, ref);
 }
