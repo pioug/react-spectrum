@@ -786,6 +786,75 @@ describe('Vue migration composition components', () => {
     expect(rangeChanges.length).toBeGreaterThan(0);
   });
 
+  it('warns when vue-stately calendar and range-calendar switch between controlled and uncontrolled', async () => {
+    let warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
+
+    try {
+      let selectedDate = ref<Date | null | undefined>(new Date(2025, 0, 15));
+      useStatelyCalendarState({
+        value: selectedDate
+      });
+
+      selectedDate.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      selectedDate.value = new Date(2025, 0, 16);
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+
+      let selectedRange = ref<{end: Date | null, start: Date | null} | undefined>({
+        start: new Date(2025, 0, 5),
+        end: new Date(2025, 0, 8)
+      });
+      useStatelyRangeCalendarState({
+        value: selectedRange
+      });
+
+      selectedRange.value = undefined;
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from controlled to uncontrolled.');
+
+      selectedRange.value = {
+        start: new Date(2025, 0, 10),
+        end: new Date(2025, 0, 12)
+      };
+      await nextTick();
+      expect(warnSpy).toHaveBeenLastCalledWith('WARN: A component changed from uncontrolled to controlled.');
+    } finally {
+      warnSpy.mockRestore();
+    }
+  });
+
+  it('keeps vue-stately calendar and range-calendar uncontrolled when value refs are undefined', () => {
+    let selectedDate = ref<Date | null | undefined>(undefined);
+    let calendarState = useStatelyCalendarState({
+      defaultValue: new Date(2025, 0, 15),
+      value: selectedDate
+    });
+
+    calendarState.selectDate(new Date(2025, 0, 16));
+    expect(selectedDate.value).toBeUndefined();
+    expect(calendarState.value.value?.getDate()).toBe(16);
+
+    let selectedRange = ref<{end: Date | null, start: Date | null} | undefined>(undefined);
+    let rangeState = useStatelyRangeCalendarState({
+      defaultValue: {
+        start: new Date(2025, 0, 5),
+        end: new Date(2025, 0, 8)
+      },
+      value: selectedRange
+    });
+
+    rangeState.setValue({
+      start: new Date(2025, 0, 10),
+      end: new Date(2025, 0, 12)
+    });
+    expect(selectedRange.value).toBeUndefined();
+    expect(rangeState.value.value.start?.getDate()).toBe(10);
+    expect(rangeState.value.value.end?.getDate()).toBe(12);
+  });
+
   it('toggles vue-aria checkbox selection and mixed state flags', () => {
     let isSelected = ref(false);
     let checkbox = useCheckbox({

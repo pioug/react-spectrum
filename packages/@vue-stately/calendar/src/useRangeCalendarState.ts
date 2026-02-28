@@ -1,5 +1,5 @@
 import {cloneDate, endOfMonth, normalizeDateRange, startOfMonth} from './utils';
-import {computed, type ComputedRef, type Ref, ref} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, watch} from 'vue';
 import type {DateRange, RangeCalendarState} from './types';
 import {useRangeCalendar} from '@vue-aria/calendar';
 
@@ -20,7 +20,7 @@ export interface RangeCalendarStateOptions<T extends DateValue = DateValue> {
   minValue?: MaybeRef<T | null | undefined>,
   onChange?: (value: RangeValue<T>) => void,
   onFocusChange?: (value: T) => void,
-  value?: Ref<RangeValue<T>>
+  value?: Ref<RangeValue<T> | undefined>
 }
 
 export function useRangeCalendarState<T extends DateValue = DateValue>(
@@ -31,7 +31,33 @@ export function useRangeCalendarState<T extends DateValue = DateValue>(
     start: null,
     end: null
   }));
-  let valueRef = (options.value as Ref<DateRange> | undefined) ?? internalValue;
+  let isControlled = computed(() => options.value !== undefined && options.value.value !== undefined);
+  let wasControlled = ref(isControlled.value);
+
+  watch(isControlled, (nextIsControlled) => {
+    if (wasControlled.value !== nextIsControlled && process.env.NODE_ENV !== 'production') {
+      console.warn(`WARN: A component changed from ${wasControlled.value ? 'controlled' : 'uncontrolled'} to ${nextIsControlled ? 'controlled' : 'uncontrolled'}.`);
+    }
+    wasControlled.value = nextIsControlled;
+  });
+
+  let valueRef = computed<DateRange>({
+    get: () => {
+      if (isControlled.value && options.value) {
+        return normalizeDateRange(options.value.value as unknown as DateRange);
+      }
+
+      return normalizeDateRange(internalValue.value);
+    },
+    set: (nextValue) => {
+      let normalized = normalizeDateRange(nextValue);
+      if (isControlled.value && options.value) {
+        options.value.value = normalized as unknown as RangeValue<T>;
+      } else {
+        internalValue.value = normalized;
+      }
+    }
+  }) as Ref<DateRange>;
 
   let initialFocusedDate = options.defaultFocusedValue
     ?? valueRef.value.start

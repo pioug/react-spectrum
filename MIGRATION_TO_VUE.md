@@ -1592,6 +1592,24 @@
    - full Vue tests: `yarn test:vue` (572 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Calendar controlled ownership parity (`@vue-stately/calendar`)
+
+1. Aligned controlled-state ownership semantics for calendar value refs:
+   - `useCalendarState` and `useRangeCalendarState` now treat `value` as controlled only when the ref exists and resolves to a non-`undefined` value,
+   - ref-backed `undefined` value refs now remain uncontrolled with internal fallback state.
+2. Aligned controlled/uncontrolled transition warning behavior:
+   - both hooks now emit `WARN: A component changed from ...` when value ownership transitions in development.
+3. Preserved calendar/range interactions:
+   - date selection, focused-date movement, visible-range navigation, and range highlighting behavior remain unchanged beyond ownership handling.
+4. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`:
+     - warning assertions for controlled->uncontrolled and uncontrolled->controlled value transitions in both hooks,
+     - assertions that ref-backed-`undefined` value refs remain uncontrolled while calendar/range updates proceed internally.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "manages vue-stately calendar and range-calendar state transitions|warns when vue-stately calendar and range-calendar switch between controlled and uncontrolled|keeps vue-stately calendar and range-calendar uncontrolled when value refs are undefined"`,
+   - full Vue tests: `yarn test:vue` (574 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
