@@ -5466,7 +5466,37 @@ describe('Vue migration composition components', () => {
       dropIndicatorProps: {value: {'aria-label': string}}
     };
 
-    expect(dropIndicator.dropIndicatorProps.value['aria-label']).toBe('Drop on');
+    expect(dropIndicator.dropIndicatorProps.value['aria-label'].replace(/\s+/g, ' ').trim()).toBe('Drop on');
+  });
+
+  it('keeps locale-specific item target wording when useDropIndicator item text is empty', () => {
+    let provider = I18nProvider({
+      locale: 'de-DE'
+    });
+
+    try {
+      let dropState = useStatelyDroppableCollectionState();
+      (dropState as unknown as {collection: unknown}).collection = {
+        getItem: () => null
+      };
+      let target = {
+        type: 'item' as const,
+        key: 'missing',
+        dropPosition: 'on' as const
+      };
+      let collectionRef = {current: document.createElement('div')};
+      useDroppableCollection({
+        acceptedDragTypes: ['item']
+      }, dropState, collectionRef);
+      let dropIndicator = useDropIndicator({target}, dropState, collectionRef) as {
+        dropIndicatorProps: {value: {'aria-label': string}}
+      };
+
+      let label = dropIndicator.dropIndicatorProps.value['aria-label'].replace(/\s+/g, ' ').trim();
+      expect(label).toBe('Auf ablegen');
+    } finally {
+      provider.clear();
+    }
   });
 
   it('adds virtual drop descriptions to useDropIndicator during active drag sessions', async () => {

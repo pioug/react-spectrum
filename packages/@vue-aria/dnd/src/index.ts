@@ -803,10 +803,7 @@ export function useDropIndicator(
 
     let key = target.key as DraggingKey | null;
     if (target.dropPosition === 'on') {
-      let itemText = getText(key);
-      return itemText
-        ? stringFormatter.format('dropOnItem', {itemText})
-        : stringFormatter.format('dropOnRoot');
+      return stringFormatter.format('dropOnItem', {itemText: getText(key)});
     }
 
     let collection = stateRecord.collection as AnyRecord | undefined;
@@ -851,7 +848,7 @@ export function useDropIndicator(
       });
     }
 
-    return stringFormatter.format('dropOnRoot');
+    return '';
   };
   let labelledBy = () => {
     let target = propsRecord.target as AnyRecord | undefined;
