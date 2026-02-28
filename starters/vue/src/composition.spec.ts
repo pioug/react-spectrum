@@ -6466,9 +6466,11 @@ describe('Vue migration composition components', () => {
 
     numberField.inputProps.value.onInput('abc');
     expect(numberField.isInvalid.value).toBe(true);
+    expect(numberField.groupProps.value['aria-invalid']).toBe(true);
     numberField.commit();
     expect(numberField.inputValue.value).toContain('8');
     expect(numberField.isInvalid.value).toBe(false);
+    expect(numberField.groupProps.value['aria-invalid']).toBeUndefined();
     expect(changedValues).toEqual([6, 4, 10, 8]);
   });
 

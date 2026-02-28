@@ -378,7 +378,8 @@ export function useNumberField(options: AriaNumberFieldOptions = {}): NumberFiel
     })),
     groupProps: computed(() => ({
       role: 'group' as const,
-      'aria-disabled': isDisabled.value ? true : undefined
+      'aria-disabled': isDisabled.value ? true : undefined,
+      'aria-invalid': isInvalid.value ? true : undefined
     })),
     increment,
     incrementButtonProps: computed(() => ({

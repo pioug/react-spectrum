@@ -2789,6 +2789,17 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Number-field group invalid-state parity remediation (`@vue-aria/numberfield`)
+
+1. Closed invalid-state ARIA drift in `useNumberField`:
+   - group wrapper now reflects invalid state with `aria-invalid` when the number field is invalid, matching React number-field group semantics.
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` number-field assertions now verify `groupProps['aria-invalid']` toggles on invalid text input and clears after commit normalization.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "number field stepping and clamped input behavior"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
