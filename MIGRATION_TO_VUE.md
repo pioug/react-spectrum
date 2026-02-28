@@ -3372,6 +3372,21 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Disclosure trigger click-contract parity (`@vue-aria/disclosure`)
+
+1. Closed disclosure trigger activation drift:
+   - `useDisclosure.buttonProps` now includes `onClick` wired to `toggle`, matching React disclosure trigger interaction behavior.
+2. Preserved disabled/no-op semantics:
+   - click-triggered toggles still route through existing disabled guard logic, so controlled disabled disclosures remain unchanged.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` disclosure assertions now verify:
+     - button-prop click toggles open/closed state,
+     - disabled button-prop click remains a no-op.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "toggles vue-aria disclosure expanded state and panel visibility|preserves controlled disclosure state when disabled"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

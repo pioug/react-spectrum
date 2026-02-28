@@ -14,7 +14,8 @@ export interface DisclosureAria {
     'aria-controls': string,
     'aria-expanded': boolean,
     disabled: boolean,
-    id: string
+    id: string,
+    onClick: () => void
   }>,
   collapse: () => void,
   expand: () => void,
@@ -77,7 +78,8 @@ export function useDisclosure(options: AriaDisclosureOptions = {}): DisclosureAr
     id: triggerId,
     disabled: isDisabled.value,
     'aria-expanded': isExpanded.value,
-    'aria-controls': panelId
+    'aria-controls': panelId,
+    onClick: toggle
   }));
 
   let panelProps = computed(() => ({

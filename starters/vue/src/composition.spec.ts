@@ -2614,13 +2614,14 @@ describe('Vue migration composition components', () => {
     expect(disclosure.isExpanded.value).toBe(false);
     expect(disclosure.panelProps.value.hidden).toBe(true);
 
-    disclosure.toggle();
+    disclosure.buttonProps.value.onClick();
     expect(disclosure.isExpanded.value).toBe(true);
     expect(disclosure.buttonProps.value['aria-expanded']).toBe(true);
     expect(disclosure.panelProps.value.hidden).toBe(false);
-
-    disclosure.collapse();
+    disclosure.buttonProps.value.onClick();
     expect(disclosure.isExpanded.value).toBe(false);
+    expect(disclosure.panelProps.value.hidden).toBe(true);
+
     disclosure.collapse();
     expect(changes).toEqual([true, false]);
   });
@@ -2636,7 +2637,7 @@ describe('Vue migration composition components', () => {
       }
     });
 
-    disclosure.toggle();
+    disclosure.buttonProps.value.onClick();
     expect(expanded.value).toBe(true);
     expect(disclosure.buttonProps.value.disabled).toBe(true);
     expect(changes).toEqual([]);
