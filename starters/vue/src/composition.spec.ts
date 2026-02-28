@@ -7200,6 +7200,25 @@ describe('Vue migration composition components', () => {
     expect(clearCount).toBe(1);
     expect(preventEscapeDefault).toHaveBeenCalledTimes(1);
     expect(searchField.clearButtonProps.value.disabled).toBe(false);
+    expect(searchField.clearButtonProps.value.tabIndex).toBe(-1);
+
+    let searchInput = document.createElement('input');
+    document.body.append(searchInput);
+    searchField.inputRef.value = searchInput;
+
+    let preventPointerDefault = vi.fn();
+    searchField.clearButtonProps.value.onPointerDown({
+      preventDefault: preventPointerDefault
+    } as unknown as PointerEvent);
+    expect(preventPointerDefault).toHaveBeenCalledTimes(1);
+    expect(document.activeElement).toBe(searchInput);
+
+    let preventTouchDefault = vi.fn();
+    searchField.clearButtonProps.value.onTouchStart({
+      preventDefault: preventTouchDefault
+    } as unknown as TouchEvent);
+    expect(preventTouchDefault).toHaveBeenCalledTimes(1);
+    expect(document.activeElement).toBe(searchInput);
 
     let continueEscapePropagation = vi.fn();
     let preventEscapeWhenEmpty = vi.fn();
@@ -7245,6 +7264,8 @@ describe('Vue migration composition components', () => {
       isRequired: true
     });
     expect(requiredSearchField.isInvalid.value).toBe(true);
+
+    searchInput.remove();
   });
 
   it('computes vue-aria select trigger, menu selection, and hidden select wiring', () => {

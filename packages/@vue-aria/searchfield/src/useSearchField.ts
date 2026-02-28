@@ -30,6 +30,9 @@ export interface SearchFieldAria {
     disabled: boolean,
     onClick: () => void,
     onMouseDown: (event: MouseEvent) => void,
+    onPointerDown: (event: PointerEvent) => void,
+    onTouchStart: (event: TouchEvent) => void,
+    tabIndex: -1,
     type: 'button'
   }>,
   descriptionProps: ComputedRef<{
@@ -193,17 +196,22 @@ export function useSearchField(options: AriaSearchFieldOptions = {}): SearchFiel
     }
   };
 
+  let focusInputWithoutBlurring = (event: Event) => {
+    event.preventDefault();
+    inputRef.value?.focus();
+  };
+
   return {
     clear,
     clearButtonProps: computed(() => ({
       type: 'button' as const,
       'aria-label': 'Clear search',
       disabled: isDisabled.value || isReadOnly.value,
+      tabIndex: -1 as const,
       onClick: clear,
-      onMouseDown: (event: MouseEvent) => {
-        event.preventDefault();
-        inputRef.value?.focus();
-      }
+      onMouseDown: focusInputWithoutBlurring,
+      onPointerDown: focusInputWithoutBlurring,
+      onTouchStart: focusInputWithoutBlurring
     })),
     descriptionProps: computed(() => ({
       id: descriptionId.value

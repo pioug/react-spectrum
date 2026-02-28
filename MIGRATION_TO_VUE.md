@@ -3142,6 +3142,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — SearchField clear-button focus/tab-order parity (`@vue-aria/searchfield`)
+
+1. Closed clear-button tab-order drift:
+   - `useSearchField.clearButtonProps` now sets `tabIndex: -1`, matching React clear-button exclusion from tab order.
+2. Closed clear-button press-focus drift:
+   - clear-button press-start handling now prevents focus transfer and re-focuses the input across mouse/pointer/touch press paths, matching React prevent-focus-on-press behavior.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` searchfield assertions now verify clear-button `tabIndex` parity and pointer/touch press focus preservation on the input.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria search field submit and clear behavior"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
