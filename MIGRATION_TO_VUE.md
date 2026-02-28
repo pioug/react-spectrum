@@ -1124,6 +1124,22 @@
    - full Vue tests: `yarn test:vue` (531 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — `Radio` roving-tabindex and label-warning parity (`@vue-spectrum/radio`)
+
+1. Aligned group keyboard tab-stop ownership with React `useRadio` behavior:
+   - radios inside `RadioGroup` now use roving tabindex semantics (`0` only for selected option, otherwise first enabled/last focused option; non-active options get `-1`),
+   - disabled options no longer expose a tabbable `tabindex`.
+2. Added group-level option registry/focus tracking in component internals:
+   - `RadioGroup` now tracks option order/disabled state and last-focused option to support React-like fallback behavior when no value is selected.
+3. Closed missing accessibility warning parity in `Radio`:
+   - in development, unlabeled radios (no visible label + no aria label props) now emit the React warning.
+4. Added regression coverage:
+   - `starters/vue/src/components.spec.ts`: roving tabindex assertions (selected/no-selection/disabled-leading option) and missing-label warning assertion.
+5. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/components.spec.ts -t "maps radio group field contract and radio state classes|matches radio roving tabindex behavior with group selection parity|maps radio aria label and labelledby precedence to react parity"`,
+   - full Vue tests: `yarn test:vue` (532 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

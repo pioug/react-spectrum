@@ -3,7 +3,7 @@ import '@adobe/spectrum-css-temp/components/fieldlabel/vars.css';
 import '@adobe/spectrum-css-temp/components/helptext/vars.css';
 import '@adobe/spectrum-css-temp/components/radio/vars.css';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, inject, type InjectionKey, type PropType, provide, ref, type Ref, watch} from 'vue';
+import {computed, defineComponent, h, inject, type InjectionKey, onBeforeUnmount, type PropType, provide, ref, type Ref, watch} from 'vue';
 import {filterDOMProps, getEventTarget} from '@vue-aria/utils';
 import type {SpectrumRadioGroupProps, SpectrumRadioProps} from '@vue-types/radio';
 
@@ -17,13 +17,19 @@ type NecessityIndicator = 'icon' | 'label';
 
 interface RadioGroupContextValue {
   disabled: Ref<boolean>,
+  getFirstEnabledValue: () => string | undefined,
+  getLastFocusedValue: () => string | undefined,
   isEmphasized: Ref<boolean>,
   isInvalid: Ref<boolean>,
   isReadOnly: Ref<boolean>,
   isRequired: Ref<boolean>,
   modelValue: Ref<string>,
   name: Ref<string | undefined>,
+  registerOption: (value: string, isDisabled: boolean) => void,
+  setLastFocusedValue: (value: string) => void,
+  setOptionDisabled: (value: string, isDisabled: boolean) => void,
   setValue: (value: string) => void
+  unregisterOption: (value: string) => void
 }
 
 const radioGroupContextKey: InjectionKey<RadioGroupContextValue> = Symbol('vue-spectrum-radio-group-context');
@@ -140,6 +146,9 @@ export const RadioGroup = defineComponent({
 
     let groupName = computed(() => props.name ?? generatedName);
     let selectedValue = computed(() => props.value ?? props.modelValue ?? uncontrolledValue.value);
+    let lastFocusedValue = ref<string | null>(null);
+    let optionOrder = ref<string[]>([]);
+    let optionDisabledMap = ref(new Map<string, boolean>());
     let isDisabled = computed(() => props.isDisabled ?? props.disabled);
     let isInvalid = computed(() => (props.isInvalid || props.invalid || props.validationState === 'invalid') && !isDisabled.value);
     let necessityIndicator = computed<NecessityIndicator | undefined>(() => {
@@ -178,12 +187,45 @@ export const RadioGroup = defineComponent({
 
     provide(radioGroupContextKey, {
       disabled: isDisabled,
+      getFirstEnabledValue: () => {
+        for (let value of optionOrder.value) {
+          if (!optionDisabledMap.value.get(value)) {
+            return value;
+          }
+        }
+
+        return undefined;
+      },
+      getLastFocusedValue: () => {
+        return lastFocusedValue.value ?? undefined;
+      },
       isEmphasized: computed(() => props.isEmphasized),
       isInvalid,
       isReadOnly: computed(() => props.isReadOnly),
       isRequired: computed(() => props.isRequired),
       modelValue: computed(() => selectedValue.value),
       name: computed(() => groupName.value),
+      registerOption: (value: string, optionIsDisabled: boolean) => {
+        if (!optionOrder.value.includes(value)) {
+          optionOrder.value = [...optionOrder.value, value];
+        }
+
+        let nextMap = new Map(optionDisabledMap.value);
+        nextMap.set(value, optionIsDisabled);
+        optionDisabledMap.value = nextMap;
+      },
+      setLastFocusedValue: (value: string) => {
+        lastFocusedValue.value = value;
+      },
+      setOptionDisabled: (value: string, optionIsDisabled: boolean) => {
+        if (!optionDisabledMap.value.has(value)) {
+          return;
+        }
+
+        let nextMap = new Map(optionDisabledMap.value);
+        nextMap.set(value, optionIsDisabled);
+        optionDisabledMap.value = nextMap;
+      },
       setValue: (value: string) => {
         if (isDisabled.value || props.isReadOnly) {
           return;
@@ -195,6 +237,18 @@ export const RadioGroup = defineComponent({
 
         emit('update:modelValue', value);
         emit('change', value);
+      },
+      unregisterOption: (value: string) => {
+        optionOrder.value = optionOrder.value.filter((optionValue) => optionValue !== value);
+        if (optionDisabledMap.value.has(value)) {
+          let nextMap = new Map(optionDisabledMap.value);
+          nextMap.delete(value);
+          optionDisabledMap.value = nextMap;
+        }
+
+        if (lastFocusedValue.value === value) {
+          lastFocusedValue.value = null;
+        }
       }
     });
 
@@ -393,9 +447,59 @@ export const Radio = defineComponent({
       let value = attrs['aria-label'];
       return typeof value === 'string' ? value : undefined;
     });
+    let hasAriaLabel = computed(() => Boolean(ariaLabel.value || ariaLabelledBy.value));
+
+    if (!hasVisibleLabel.value && !hasAriaLabel.value && process.env.NODE_ENV !== 'production') {
+      console.warn('If you do not provide children, you must specify an aria-label for accessibility');
+    }
 
     let isHovered = ref(false);
     let isFocusVisible = ref(false);
+    let stopOptionWatch: (() => void) | undefined;
+
+    if (group) {
+      stopOptionWatch = watch(
+        [() => props.value, isDisabled],
+        ([nextValue, nextIsDisabled], previousValues) => {
+          let previousValue = previousValues?.[0];
+          if (previousValue !== undefined && previousValue !== nextValue) {
+            group.unregisterOption(previousValue);
+          }
+          group.registerOption(nextValue, nextIsDisabled);
+          group.setOptionDisabled(nextValue, nextIsDisabled);
+        },
+        {
+          immediate: true
+        }
+      );
+    }
+
+    onBeforeUnmount(() => {
+      stopOptionWatch?.();
+      group?.unregisterOption(props.value);
+    });
+
+    let tabIndex = computed(() => {
+      if (isDisabled.value) {
+        return undefined;
+      }
+
+      if (!group) {
+        return 0;
+      }
+
+      let selected = group.modelValue.value;
+      if (selected !== undefined && selected !== null && selected !== '') {
+        return selected === props.value ? 0 : -1;
+      }
+
+      let lastFocused = group.getLastFocusedValue();
+      if (lastFocused !== undefined) {
+        return lastFocused === props.value ? 0 : -1;
+      }
+
+      return group.getFirstEnabledValue() === props.value ? 0 : -1;
+    });
 
     let rootClassName = computed(() => classNames(
       radioStyles,
@@ -441,7 +545,7 @@ export const Radio = defineComponent({
           checked: isChecked.value,
           disabled: isDisabled.value || undefined,
           readonly: isReadOnly.value || undefined,
-          tabindex: isDisabled.value ? undefined : 0,
+          tabindex: tabIndex.value,
           autofocus: props.autoFocus || attrs.autofocus || undefined,
           'aria-label': ariaLabel.value,
           'aria-labelledby': ariaLabelledBy.value,
@@ -466,6 +570,7 @@ export const Radio = defineComponent({
           onFocus: (event: FocusEvent) => {
             let target = getEventTarget(event);
             isFocusVisible.value = target instanceof HTMLElement ? target.matches(':focus-visible') : false;
+            group?.setLastFocusedValue(props.value);
             emit('focus', event);
           },
           onBlur: (event: FocusEvent) => {

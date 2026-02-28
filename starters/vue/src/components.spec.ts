@@ -5810,6 +5810,56 @@ describe('Vue migration primitives', () => {
     expect(disabled.get('input.spectrum-Radio-input').attributes('disabled')).toBeDefined();
   });
 
+  it('matches radio roving tabindex behavior with group selection parity', async () => {
+    let wrapper = mount({
+      components: {Radio, RadioGroup},
+      template: `
+        <RadioGroup v-model="value">
+          <Radio value="vue">Vue</Radio>
+          <Radio value="react">React</Radio>
+        </RadioGroup>
+      `,
+      data() {
+        return {
+          value: ''
+        };
+      }
+    });
+
+    let inputs = wrapper.findAll('input.spectrum-Radio-input');
+    expect(inputs[0]?.attributes('tabindex')).toBe('0');
+    expect(inputs[1]?.attributes('tabindex')).toBe('-1');
+
+    await inputs[1]?.trigger('focus');
+    inputs = wrapper.findAll('input.spectrum-Radio-input');
+    expect(inputs[0]?.attributes('tabindex')).toBe('-1');
+    expect(inputs[1]?.attributes('tabindex')).toBe('0');
+
+    await inputs[1]?.setValue(true);
+    inputs = wrapper.findAll('input.spectrum-Radio-input');
+    expect(inputs[0]?.attributes('tabindex')).toBe('-1');
+    expect(inputs[1]?.attributes('tabindex')).toBe('0');
+
+    let disabledLeadingOption = mount({
+      components: {Radio, RadioGroup},
+      template: `
+        <RadioGroup v-model="value">
+          <Radio :is-disabled="true" value="vue">Vue</Radio>
+          <Radio value="react">React</Radio>
+        </RadioGroup>
+      `,
+      data() {
+        return {
+          value: ''
+        };
+      }
+    });
+
+    let disabledInputs = disabledLeadingOption.findAll('input.spectrum-Radio-input');
+    expect(disabledInputs[0]?.attributes('tabindex')).toBeUndefined();
+    expect(disabledInputs[1]?.attributes('tabindex')).toBe('0');
+  });
+
   it('maps radio aria label and labelledby precedence to react parity', () => {
     let labelledByWrapper = mount(Radio, {
       attrs: {
@@ -5844,6 +5894,16 @@ describe('Vue migration primitives', () => {
     expect(ariaLabelInput.attributes('aria-label')).toBe('Vue');
     expect(ariaLabelInput.attributes('aria-labelledby')).toBeUndefined();
     expect(ariaLabelWrapper.attributes('aria-label')).toBeUndefined();
+
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    mount(Radio, {
+      props: {
+        label: '',
+        value: 'radio-no-label'
+      }
+    });
+    expect(warn).toHaveBeenCalledWith('If you do not provide children, you must specify an aria-label for accessibility');
+    warn.mockRestore();
   });
 
   it('maps radio group aria label and labelledby precedence to react parity', () => {
