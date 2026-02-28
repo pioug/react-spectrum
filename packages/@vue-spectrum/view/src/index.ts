@@ -108,7 +108,4 @@ export const Header = createElementComponent('VueSpectrumHeader', 'header');
 export const Content = createElementComponent('VueSpectrumContent', 'section');
 export const Footer = createElementComponent('VueSpectrumFooter', 'footer');
 
-export type ViewProps = Record<string, unknown>;
-export type HeaderProps = Record<string, unknown>;
-export type ContentProps = Record<string, unknown>;
-export type FooterProps = Record<string, unknown>;
+export type {ContentProps, FooterProps, HeaderProps, ViewProps} from '@vue-types/view';
