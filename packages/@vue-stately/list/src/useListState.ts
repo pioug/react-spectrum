@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, type Ref, ref, unref} from 'vue';
+import {computed, type ComputedRef, type Ref, ref, unref, watch} from 'vue';
 import {type Key, ListCollection, type ListNode} from './ListCollection';
 
 type MaybeRef<T> = T | ComputedRef<T> | Ref<T>;
@@ -345,8 +345,8 @@ function createSelectionManager<T>(context: SelectionContext<T>): SelectionManag
  * Provides state management for list collections with selection state.
  */
 export function useListState<T extends object>(props: ListProps<T>): ListState<T> {
-  let collection = resolveCollection(props);
-  let selectionMode = props.selectionMode ?? 'none';
+  let collection = ref(resolveCollection(props));
+  let selectionMode = computed(() => props.selectionMode ?? 'none');
   let disabledKeys = computed(() => {
     return props.disabledKeys ? new Set(props.disabledKeys) : new Set<Key>();
   });
@@ -356,26 +356,73 @@ export function useListState<T extends object>(props: ListProps<T>): ListState<T
 
   let context: SelectionContext<T> = {
     allowDuplicateSelectionEvents: Boolean(props.allowDuplicateSelectionEvents),
-    collection,
+    collection: collection.value,
     disabledKeys: disabledKeys.value,
     disallowEmptySelection: Boolean(props.disallowEmptySelection),
     focusedKey,
     isFocused,
     onSelectionChange: props.onSelectionChange,
     selectedKeys,
-    selectionMode
+    selectionMode: selectionMode.value
   };
 
   selectedKeys.value = normalizeSelection(selectedKeys.value, context);
 
   let selectionManager = createSelectionManager(context);
-  resetFocusedKeyIfMissing(collection, selectionManager, null);
+  resetFocusedKeyIfMissing(collection.value, selectionManager, null);
 
-  return {
-    collection,
+  let state: ListState<T> = {
+    collection: collection.value,
     disabledKeys: disabledKeys.value,
     selectionManager
   };
+
+  watch(disabledKeys, (nextDisabledKeys) => {
+    context.disabledKeys = nextDisabledKeys;
+    selectionManager.disabledKeys = nextDisabledKeys;
+    state.disabledKeys = nextDisabledKeys;
+    selectedKeys.value = normalizeSelection(selectedKeys.value, context);
+  }, {flush: 'sync'});
+
+  watch(
+    [
+      () => props.collection ? unref(props.collection) : undefined,
+      () => props.items ? unref(props.items) : undefined,
+      () => props.filter
+    ],
+    () => {
+      let previousCollection = context.collection;
+      let nextCollection = resolveCollection(props);
+      context.collection = nextCollection;
+      collection.value = nextCollection;
+      selectionManager.collection = nextCollection;
+      state.collection = nextCollection;
+      selectedKeys.value = normalizeSelection(selectedKeys.value, context);
+      resetFocusedKeyIfMissing(nextCollection, selectionManager, previousCollection);
+    },
+    {flush: 'sync'}
+  );
+
+  watch(selectionMode, (nextSelectionMode) => {
+    context.selectionMode = nextSelectionMode;
+    selectionManager.selectionMode = nextSelectionMode;
+    selectedKeys.value = normalizeSelection(selectedKeys.value, context);
+  }, {flush: 'sync'});
+
+  watch(() => props.disallowEmptySelection, (nextDisallowEmptySelection) => {
+    context.disallowEmptySelection = Boolean(nextDisallowEmptySelection);
+    selectedKeys.value = normalizeSelection(selectedKeys.value, context);
+  }, {flush: 'sync'});
+
+  watch(() => props.allowDuplicateSelectionEvents, (nextAllowDuplicateSelectionEvents) => {
+    context.allowDuplicateSelectionEvents = Boolean(nextAllowDuplicateSelectionEvents);
+  }, {flush: 'sync'});
+
+  watch(() => props.onSelectionChange, (nextOnSelectionChange) => {
+    context.onSelectionChange = nextOnSelectionChange;
+  }, {flush: 'sync'});
+
+  return state;
 }
 
 /**

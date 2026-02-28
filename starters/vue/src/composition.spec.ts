@@ -3217,6 +3217,29 @@ describe('Vue migration composition components', () => {
     expect(selectionChanges.length).toBeGreaterThan(0);
   });
 
+  it('repositions vue-stately list focus when the focused item is removed from collection', async () => {
+    let options = reactive({
+      items: [
+        {key: 'item-1', textValue: 'Vue', type: 'item', value: {label: 'Vue'}},
+        {key: 'item-2', textValue: 'React', type: 'item', value: {label: 'React'}},
+        {key: 'item-3', textValue: 'Svelte', type: 'item', value: {label: 'Svelte'}}
+      ] as StatelyListNode<{label: string}>[],
+      selectionMode: 'none' as const
+    });
+
+    let listState = useStatelyListState(options);
+    listState.selectionManager.setFocusedKey('item-2');
+    expect(listState.selectionManager.focusedKey.value).toBe('item-2');
+
+    options.items = [
+      {key: 'item-1', textValue: 'Vue', type: 'item', value: {label: 'Vue'}},
+      {key: 'item-3', textValue: 'Svelte', type: 'item', value: {label: 'Svelte'}}
+    ];
+    await nextTick();
+
+    expect(listState.selectionManager.focusedKey.value).toBe('item-3');
+  });
+
   it('manages vue-stately single-select list state and selected item lookups', () => {
     let nodes: StatelyListNode<{label: string}>[] = [
       {key: 'overview', textValue: 'Overview', type: 'item', value: {label: 'Overview'}},
