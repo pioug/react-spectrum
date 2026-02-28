@@ -96,6 +96,37 @@ function getLastFocusableElement(root: Element, opts: FocusManagerOptions): Focu
   return lastFocusableElement;
 }
 
+function getRadiosInGroup(element: HTMLInputElement): HTMLInputElement[] {
+  if (!element.form) {
+    let ownerDocument = element.ownerDocument;
+    if (!ownerDocument) {
+      return [];
+    }
+
+    return Array.from(ownerDocument.querySelectorAll<HTMLInputElement>(`input[type="radio"][name="${element.name}"]`)).filter((radio) => !radio.form);
+  }
+
+  let radioList = element.form.elements.namedItem(element.name);
+  if (radioList instanceof RadioNodeList) {
+    return Array.from(radioList).filter((node): node is HTMLInputElement => node instanceof HTMLInputElement);
+  }
+
+  if (radioList instanceof HTMLInputElement) {
+    return [radioList];
+  }
+
+  return [];
+}
+
+function isTabbableRadio(element: HTMLInputElement): boolean {
+  if (element.checked) {
+    return true;
+  }
+
+  let radios = getRadiosInGroup(element);
+  return radios.length > 0 && !radios.some((radio) => radio.checked);
+}
+
 export function createFocusManager(ref: RefObject<Element | null>, defaultOptions: FocusManagerOptions = {}): FocusManager {
   return {
     focusNext(opts: FocusManagerOptions = {}) {
@@ -219,6 +250,25 @@ export function getFocusableTreeWalker(
 
       if (hasScope && !scope.some((scopeElement) => nodeContainsUtils(scopeElement, node))) {
         return filterSkip;
+      }
+
+      if (
+        opts.tabbable &&
+        node.tagName === 'INPUT' &&
+        (node as HTMLInputElement).type === 'radio'
+      ) {
+        let currentNode = walker.currentNode as Element | null;
+        if (!isTabbableRadio(node as HTMLInputElement)) {
+          return filterReject;
+        }
+
+        if (
+          currentNode?.tagName === 'INPUT' &&
+          (currentNode as HTMLInputElement).type === 'radio' &&
+          (currentNode as HTMLInputElement).name === (node as HTMLInputElement).name
+        ) {
+          return filterReject;
+        }
       }
 
       if (!isValidNode(node)) {

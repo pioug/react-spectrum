@@ -4605,6 +4605,45 @@ describe('Vue migration composition components', () => {
     root.remove();
   });
 
+  it('applies react-style tabbable radio-group filtering in @vue-aria/focus tree walker', () => {
+    let root = document.createElement('div');
+    let radioA = document.createElement('input');
+    radioA.type = 'radio';
+    radioA.name = 'group-a';
+    let radioB = document.createElement('input');
+    radioB.type = 'radio';
+    radioB.name = 'group-a';
+    radioB.checked = true;
+    root.append(radioA, radioB);
+    document.body.append(root);
+
+    let walker = getFocusableTreeWalkerFromPackage(root, {
+      tabbable: true
+    });
+    expect(walker.nextNode()).toBe(radioB);
+    expect(walker.nextNode()).toBeNull();
+    root.remove();
+  });
+
+  it('keeps first radio tabbable when no radio in group is checked', () => {
+    let root = document.createElement('div');
+    let radioA = document.createElement('input');
+    radioA.type = 'radio';
+    radioA.name = 'group-b';
+    let radioB = document.createElement('input');
+    radioB.type = 'radio';
+    radioB.name = 'group-b';
+    root.append(radioA, radioB);
+    document.body.append(root);
+
+    let walker = getFocusableTreeWalkerFromPackage(root, {
+      tabbable: true
+    });
+    expect(walker.nextNode()).toBe(radioA);
+    expect(walker.nextNode()).toBeNull();
+    root.remove();
+  });
+
   it('returns undefined from @vue-aria/focus useFocusManager outside scope context', () => {
     expect(useFocusManagerFromPackage()).toBeUndefined();
   });
