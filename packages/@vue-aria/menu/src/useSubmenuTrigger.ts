@@ -19,6 +19,7 @@ export interface SubmenuTriggerAria {
     'aria-expanded': boolean,
     'aria-haspopup'?: 'menu',
     'aria-label': string,
+    onClick: (event?: MouseEvent) => void,
     onKeyDown: (event: KeyboardEvent) => void,
     onMouseEnter: () => void,
     role: 'menuitem'
@@ -80,6 +81,12 @@ export function useSubmenuTrigger(props: AriaSubmenuTriggerProps = {}): SubmenuT
       'aria-haspopup': unref(props.isDisabled) ? undefined : 'menu' as const,
       'aria-expanded': isOpen.value,
       'aria-label': 'Open submenu',
+      onClick: (event?: MouseEvent) => {
+        if (event?.currentTarget instanceof HTMLElement) {
+          event.currentTarget.focus();
+        }
+        open();
+      },
       onMouseEnter: () => {
         open();
       },

@@ -6567,6 +6567,16 @@ describe('Vue migration composition components', () => {
     submenuTrigger.submenuTriggerProps.value.onKeyDown(new KeyboardEvent('keydown', {key: 'Escape'}));
     expect(submenuTrigger.isOpen.value).toBe(false);
 
+    let submenuTriggerButton = document.createElement('button');
+    document.body.append(submenuTriggerButton);
+    submenuTrigger.submenuTriggerProps.value.onClick({
+      currentTarget: submenuTriggerButton
+    } as unknown as MouseEvent);
+    expect(submenuTrigger.isOpen.value).toBe(true);
+    expect(document.activeElement).toBe(submenuTriggerButton);
+    submenuTrigger.close();
+    submenuTriggerButton.remove();
+
     let submenuOpenChanges: boolean[] = [];
     let trackedSubmenuTrigger = useSubmenuTrigger({
       onOpenChange: (nextOpen) => {
@@ -6588,6 +6598,8 @@ describe('Vue migration composition components', () => {
     disabledSubmenuTrigger.close();
     expect(disabledSubmenuOpen.value).toBe(false);
     disabledSubmenuTrigger.open();
+    expect(disabledSubmenuOpen.value).toBe(false);
+    disabledSubmenuTrigger.submenuTriggerProps.value.onClick();
     expect(disabledSubmenuOpen.value).toBe(false);
   });
 

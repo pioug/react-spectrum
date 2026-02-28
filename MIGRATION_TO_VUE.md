@@ -3216,6 +3216,19 @@
    - full Vue tests: `yarn test:vue` (649 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Submenu trigger press-open parity (`@vue-aria/menu`)
+
+1. Closed submenu trigger press-open drift:
+   - `useSubmenuTrigger.submenuTriggerProps` now supports click/press open behavior (in addition to hover/keyboard), matching React submenu trigger open semantics for mouse/touch activation.
+2. Closed submenu trigger click-focus drift:
+   - click-triggered submenu open now focuses the trigger element before opening, preserving focus-restore behavior.
+3. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts` menu assertions now verify submenu trigger click opens/focuses and disabled submenu triggers remain closed on click.
+4. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "computes vue-aria menu trigger and item selection semantics"`,
+   - full Vue tests: `yarn test:vue` (649 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:
