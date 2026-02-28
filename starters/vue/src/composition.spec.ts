@@ -9855,6 +9855,209 @@ describe('Vue migration composition components', () => {
     expect(sortCalls).toEqual(['status', 'status']);
   });
 
+  it('supports react-style table row/cell/selection/resize overload helpers', () => {
+    let collection = {
+      columnCount: 2,
+      rows: [
+        {
+          key: 'row-1',
+          index: 0,
+          textValue: 'Backlog',
+          cells: [
+            {key: 'row-1-cell-1', colIndex: 0, parentKey: 'row-1', textValue: 'Backlog'},
+            {key: 'row-1-cell-2', colIndex: 1, parentKey: 'row-1', textValue: 'Open'}
+          ]
+        },
+        {
+          key: 'row-2',
+          index: 1,
+          textValue: 'Done',
+          cells: [
+            {key: 'row-2-cell-1', colIndex: 0, parentKey: 'row-2', textValue: 'Done'},
+            {key: 'row-2-cell-2', colIndex: 1, parentKey: 'row-2', textValue: 'Closed'}
+          ]
+        }
+      ],
+      size: 2
+    };
+
+    let focusedKey: string | number | null = null;
+    let selectedKeys = ref(new Set<string | number>());
+    let selectionMode = ref<'multiple' | 'single' | 'none'>('multiple');
+
+    let state = {
+      collection,
+      disabledKeys: new Set<string | number>(),
+      selectionManager: {
+        get focusedKey() {
+          return focusedKey;
+        },
+        get isEmpty() {
+          return selectedKeys.value.size === 0;
+        },
+        get isSelectAll() {
+          return selectedKeys.value.size === collection.rows.length;
+        },
+        get selectedKeys() {
+          return selectedKeys.value;
+        },
+        get selectionMode() {
+          return selectionMode.value;
+        },
+        setFocusedKey: (key: string | number | null) => {
+          focusedKey = key;
+        },
+        setSelectedKeys: (keys: Set<string | number>) => {
+          selectedKeys.value = new Set(keys);
+        },
+        toggleSelectAll: () => {
+          if (selectedKeys.value.size === collection.rows.length) {
+            selectedKeys.value = new Set();
+            return;
+          }
+
+          selectedKeys.value = new Set(collection.rows.map((row) => row.key));
+        }
+      }
+    };
+
+    let deprecatedRowActionCalls = 0;
+    let nodeRowActionCalls = 0;
+    let row = useAriaTableRow({
+      isVirtualized: true,
+      node: {
+        ...collection.rows[0],
+        props: {
+          onAction: () => {
+            nodeRowActionCalls += 1;
+          }
+        }
+      },
+      onAction: () => {
+        deprecatedRowActionCalls += 1;
+      }
+    } as unknown as Parameters<typeof useAriaTableRow>[0], state as unknown as Parameters<typeof useAriaTableRow>[1], {
+      current: null
+    });
+    expect(row.rowProps.value['aria-rowindex']).toBe(1);
+    row.press();
+    expect(Array.from(selectedKeys.value)).toEqual(['row-1']);
+    expect(deprecatedRowActionCalls).toBe(1);
+    expect(nodeRowActionCalls).toBe(1);
+
+    let headerRow = useAriaTableHeaderRow({
+      isVirtualized: true,
+      node: {
+        cells: [],
+        index: 2,
+        key: 'header-row'
+      }
+    } as unknown as Parameters<typeof useAriaTableHeaderRow>[0], state as unknown as Parameters<typeof useAriaTableHeaderRow>[1], {
+      current: null
+    });
+    expect(headerRow.rowProps.value['aria-rowindex']).toBe(3);
+
+    selectedKeys.value = new Set<string | number>();
+    let deprecatedCellActionCalls = 0;
+    let nodeCellActionCalls = 0;
+    let cell = useAriaTableCell({
+      node: {
+        ...collection.rows[0].cells[1],
+        colSpan: 1,
+        props: {
+          onAction: () => {
+            nodeCellActionCalls += 1;
+          }
+        }
+      },
+      onAction: () => {
+        deprecatedCellActionCalls += 1;
+      }
+    } as unknown as Parameters<typeof useAriaTableCell>[0], state as unknown as Parameters<typeof useAriaTableCell>[1], {
+      current: null
+    });
+    expect(cell.gridCellProps.value['aria-colindex']).toBe(2);
+    cell.focus();
+    expect(focusedKey).toBe('row-1-cell-2');
+    cell.press();
+    expect(Array.from(selectedKeys.value)).toEqual(['row-1']);
+    expect(deprecatedCellActionCalls).toBe(1);
+    expect(nodeCellActionCalls).toBe(1);
+
+    selectedKeys.value = new Set<string | number>();
+    let rowSelectionCheckbox = useAriaTableSelectionCheckbox({
+      key: 'row-1'
+    } as unknown as Parameters<typeof useAriaTableSelectionCheckbox>[0], state as unknown as Parameters<typeof useAriaTableSelectionCheckbox>[1]);
+    expect(rowSelectionCheckbox.checkboxProps.value.checked).toBe(false);
+    expect(rowSelectionCheckbox.checkboxProps.value['aria-labelledby']).toContain(rowSelectionCheckbox.checkboxProps.value.id);
+    rowSelectionCheckbox.toggleSelection();
+    expect(Array.from(selectedKeys.value)).toEqual(['row-1']);
+
+    selectedKeys.value = new Set<string | number>(['row-1']);
+    let selectAllCheckbox = useAriaTableSelectAllCheckbox(state as unknown as Parameters<typeof useAriaTableSelectAllCheckbox>[0]);
+    expect(selectAllCheckbox.checkboxProps.value['aria-label']).toBe('Select all');
+    expect(selectAllCheckbox.checkboxProps.value.checked).toBe(false);
+    expect(selectAllCheckbox.checkboxProps.value.indeterminate).toBe(true);
+    selectAllCheckbox.toggleSelectAll();
+    expect(Array.from(selectedKeys.value).sort()).toEqual(['row-1', 'row-2']);
+    expect(selectAllCheckbox.checkboxProps.value.checked).toBe(true);
+
+    selectionMode.value = 'single';
+    expect(selectAllCheckbox.checkboxProps.value['aria-label']).toBe('Select');
+    expect(selectAllCheckbox.checkboxProps.value.disabled).toBe(true);
+
+    let currentColumnWidth = 160;
+    let resizedColumns = new Map<string | number, number>();
+    let resizeStartCalls: Array<Map<string | number, unknown>> = [];
+    let resizeCalls: Array<Map<string | number, unknown>> = [];
+    let resizeEndCalls: Array<Map<string | number, unknown>> = [];
+    let resizeState = {
+      getColumnMaxWidth: () => 240,
+      getColumnMinWidth: () => 120,
+      getColumnWidth: () => currentColumnWidth,
+      resizedColumns,
+      updateResizedColumns: (key: string | number, width: number) => {
+        currentColumnWidth = width;
+        resizedColumns = new Map([[key, width]]);
+        resizeState.resizedColumns = resizedColumns;
+        return resizedColumns;
+      }
+    };
+
+    let columnResize = useAriaTableColumnResize({
+      'aria-label': 'Resize status',
+      column: {key: 'status'},
+      onResize: (widths: Map<string | number, unknown>) => {
+        resizeCalls.push(new Map(widths));
+      },
+      onResizeEnd: (widths: Map<string | number, unknown>) => {
+        resizeEndCalls.push(new Map(widths));
+      },
+      onResizeStart: (widths: Map<string | number, unknown>) => {
+        resizeStartCalls.push(new Map(widths));
+      }
+    } as unknown as Parameters<typeof useAriaTableColumnResize>[0], resizeState as unknown as Parameters<typeof useAriaTableColumnResize>[1], {
+      current: null
+    });
+
+    expect(columnResize.inputProps.value.value).toBe(160);
+    let preventResizerDefault = vi.fn();
+    columnResize.resizerProps.value.onPointerDown({
+      preventDefault: preventResizerDefault
+    } as unknown as PointerEvent);
+    expect(preventResizerDefault).toHaveBeenCalledTimes(1);
+    expect(columnResize.isResizing.value).toBe(true);
+    expect(resizeStartCalls).toHaveLength(1);
+    columnResize.inputProps.value.onChange('500');
+    expect(currentColumnWidth).toBe(240);
+    expect(resizeCalls).toHaveLength(1);
+    expect(resizeCalls[0].get('status')).toBe(240);
+    columnResize.resizerProps.value.onPointerUp();
+    expect(columnResize.isResizing.value).toBe(false);
+    expect(resizeEndCalls).toHaveLength(1);
+    expect(resizeEndCalls[0].get('status')).toBe(240);
+  });
+
   it('announces and clears live region messages with vue-aria live announcer', () => {
     destroyAnnouncer();
 

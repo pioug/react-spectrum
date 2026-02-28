@@ -48,18 +48,16 @@ export function useTableSelectionCheckbox(options: AriaTableSelectionCheckboxOpt
   let checkbox = useGridSelectionCheckbox(options);
   let rowLabelledBy = computed(() => {
     if (options.rowLabelledBy === undefined) {
-      return undefined;
+      return '';
     }
 
-    return unref(options.rowLabelledBy);
+    return unref(options.rowLabelledBy) ?? '';
   });
 
   return {
     checkboxProps: computed(() => ({
       ...checkbox.checkboxProps.value,
-      'aria-labelledby': rowLabelledBy.value
-        ? `${checkbox.checkboxProps.value.id} ${rowLabelledBy.value}`.trim()
-        : undefined
+      'aria-labelledby': `${checkbox.checkboxProps.value.id} ${rowLabelledBy.value}`.trim()
     })),
     toggleSelection: checkbox.toggleSelection
   };
