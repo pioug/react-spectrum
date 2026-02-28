@@ -18,6 +18,14 @@ import {
   VueButton as RootVueButton
 } from '../../../packages/@vue-spectrum/button/index';
 import {
+  ButtonGroup,
+  VueButtonGroup
+} from '@vue-spectrum/buttongroup';
+import {
+  ButtonGroup as RootButtonGroup,
+  VueButtonGroup as RootVueButtonGroup
+} from '../../../packages/@vue-spectrum/buttongroup/index';
+import {
   AlertDialog,
   Dialog,
   DialogContainer,
@@ -141,6 +149,15 @@ describe('Vue Spectrum API compatibility aliases', () => {
     expect(RootLogicButton).toBe(LogicButton);
     expect(RootClearButton).toBe(ClearButton);
     expect(RootToggleButton).toBe(ToggleButton);
+  });
+
+  it('keeps buttongroup exports aligned with VueButtonGroup base entry', () => {
+    expect(ButtonGroup).toBe(VueButtonGroup);
+  });
+
+  it('keeps root buttongroup entry exports aligned with source exports', () => {
+    expect(RootButtonGroup).toBe(ButtonGroup);
+    expect(RootVueButtonGroup).toBe(VueButtonGroup);
   });
 
   it('exports dialog trigger/container as controllers and enforces dialog context', () => {
