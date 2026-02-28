@@ -4883,6 +4883,16 @@ describe('Vue migration composition components', () => {
     let disabledInput = document.createElement('input');
     disabledInput.disabled = true;
     expect(focusIsFocusable(disabledInput)).toBe(false);
+
+    let displayNoneButton = document.createElement('button');
+    displayNoneButton.style.display = 'none';
+    expect(focusIsFocusable(displayNoneButton)).toBe(false);
+
+    let inertContainer = document.createElement('div');
+    (inertContainer as HTMLElement & {inert?: boolean}).inert = true;
+    let inertChild = document.createElement('button');
+    inertContainer.append(inertChild);
+    expect(focusIsFocusable(inertChild)).toBe(false);
   });
 
   it('uses @vue-aria/interactions focusSafely behavior via @vue-aria/focus export', () => {
@@ -5337,11 +5347,18 @@ describe('Vue migration composition components', () => {
     expect(hasTabbableChild.value).toBe(false);
 
     let childButton = document.createElement('button');
+    childButton.style.display = 'none';
     container.append(childButton);
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(hasTabbableChild.value).toBe(false);
+
+    childButton.remove();
+    let visibleChildButton = document.createElement('button');
+    container.append(visibleChildButton);
     await new Promise((resolve) => setTimeout(resolve, 0));
     expect(hasTabbableChild.value).toBe(true);
 
-    childButton.setAttribute('disabled', 'true');
+    visibleChildButton.setAttribute('disabled', 'true');
     await new Promise((resolve) => setTimeout(resolve, 0));
     expect(hasTabbableChild.value).toBe(false);
 

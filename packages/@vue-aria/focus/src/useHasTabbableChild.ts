@@ -1,4 +1,5 @@
 import {computed, type ComputedRef, getCurrentScope, onScopeDispose, type Ref, ref, unref, watch} from 'vue';
+import {isTabbable as isTabbableUtils} from '@vue-aria/utils';
 
 type MaybeRef<T> = T | Ref<T> | ComputedRef<T>;
 
@@ -8,59 +9,25 @@ export interface AriaHasTabbableChildOptions {
   isDisabled?: MaybeRef<boolean>
 }
 
-const TABBABLE_SELECTOR = [
-  'a[href]',
-  'button',
-  'input:not([type="hidden"])',
-  'select',
-  'textarea',
-  '[tabindex]',
-  'audio[controls]',
-  'video[controls]',
-  '[contenteditable]:not([contenteditable="false"])'
-].join(',');
-
-function isDisabledElement(element: Element): boolean {
-  return 'disabled' in (element as HTMLInputElement) && Boolean((element as HTMLInputElement).disabled);
-}
-
-function isHiddenElement(element: Element): boolean {
-  if (element.hasAttribute('hidden') || element.closest('[hidden]')) {
-    return true;
-  }
-
-  if (element.getAttribute('aria-hidden') === 'true') {
-    return true;
-  }
-
-  let hiddenAncestor = element.closest('[aria-hidden="true"]');
-  return Boolean(hiddenAncestor);
-}
-
-function isTabbable(element: Element): boolean {
-  if (isHiddenElement(element) || isDisabledElement(element)) {
-    return false;
-  }
-
-  let tabIndex = Number((element as HTMLElement).tabIndex);
-  if (Number.isNaN(tabIndex) || tabIndex < 0) {
-    return false;
-  }
-
-  if (element instanceof HTMLAnchorElement) {
-    return element.hasAttribute('href');
-  }
-
-  if (element instanceof HTMLInputElement) {
-    return element.type !== 'hidden';
-  }
-
-  return true;
-}
-
 function findTabbableChild(container: Element): boolean {
-  let tabbableCandidates = container.querySelectorAll(TABBABLE_SELECTOR);
-  return Array.from(tabbableCandidates).some((element) => isTabbable(element));
+  let ownerDocument = container.ownerDocument;
+  if (!ownerDocument || typeof ownerDocument.createTreeWalker !== 'function') {
+    return false;
+  }
+
+  let showElement = typeof NodeFilter === 'undefined' ? 1 : NodeFilter.SHOW_ELEMENT;
+  let filterAccept = typeof NodeFilter === 'undefined' ? 1 : NodeFilter.FILTER_ACCEPT;
+  let filterSkip = typeof NodeFilter === 'undefined' ? 3 : NodeFilter.FILTER_SKIP;
+  let walker = ownerDocument.createTreeWalker(container, showElement, {
+    acceptNode(node) {
+      if (!(node instanceof Element)) {
+        return filterSkip;
+      }
+
+      return isTabbableUtils(node) ? filterAccept : filterSkip;
+    }
+  });
+  return Boolean(walker.nextNode());
 }
 
 export function useHasTabbableChild(

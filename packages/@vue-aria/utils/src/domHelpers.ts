@@ -1,14 +1,23 @@
-const FOCUSABLE_SELECTOR = [
+const focusableElements = [
+  'input:not([disabled]):not([type=hidden])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  'button:not([disabled])',
   'a[href]',
-  'button',
-  'input:not([type="hidden"])',
-  'select',
-  'textarea',
-  '[tabindex]',
+  'area[href]',
+  'summary',
+  'iframe',
+  'object',
+  'embed',
   'audio[controls]',
   'video[controls]',
-  '[contenteditable]:not([contenteditable="false"])'
-].join(',');
+  '[contenteditable]:not([contenteditable^="false"])',
+  'permission'
+];
+
+const FOCUSABLE_SELECTOR = focusableElements.join(':not([hidden]),') + ',[tabindex]:not([disabled]):not([hidden])';
+const TABBABLE_SELECTOR = [...focusableElements, '[tabindex]:not([tabindex="-1"]):not([disabled])'].join(':not([hidden]):not([tabindex="-1"]),');
+const supportsCheckVisibility = typeof Element !== 'undefined' && 'checkVisibility' in Element.prototype;
 
 type SyntheticEvent<T = EventTarget> = {
   nativeEvent?: Event,
@@ -53,58 +62,91 @@ export function nodeContains(
   return Boolean(target.compareDocumentPosition(node) & Node.DOCUMENT_POSITION_CONTAINED_BY);
 }
 
-function isHiddenElement(element: Element): boolean {
-  if (element.hasAttribute('hidden') || element.closest('[hidden]')) {
-    return true;
-  }
-
-  if (element.getAttribute('aria-hidden') === 'true') {
-    return true;
-  }
-
-  return Boolean(element.closest('[aria-hidden="true"]'));
+function getOwnerWindow(element: Element): Window | null {
+  return element.ownerDocument?.defaultView ?? (typeof window !== 'undefined' ? window : null);
 }
 
-export function isFocusable(element: Element): boolean;
-export function isFocusable(element: Element | null): boolean;
-export function isFocusable(element: Element | null): boolean {
-  if (!(element instanceof HTMLElement) || isHiddenElement(element)) {
+function isStyleVisible(element: Element): boolean {
+  let ownerWindow = getOwnerWindow(element);
+  if (!ownerWindow) {
     return false;
   }
 
-  if ('disabled' in element && Boolean((element as HTMLInputElement).disabled)) {
+  if (!(element instanceof ownerWindow.HTMLElement) && !(element instanceof ownerWindow.SVGElement)) {
     return false;
   }
 
-  if (element instanceof HTMLAnchorElement) {
-    if (!element.hasAttribute('href')) {
-      return false;
+  let {display, visibility} = (element as HTMLElement).style;
+  let isVisible = display !== 'none' && visibility !== 'hidden' && visibility !== 'collapse';
+  if (isVisible) {
+    let computedStyle = ownerWindow.getComputedStyle(element);
+    isVisible = computedStyle.display !== 'none' && computedStyle.visibility !== 'hidden' && computedStyle.visibility !== 'collapse';
+  }
+
+  return isVisible;
+}
+
+function isAttributeVisible(element: Element, childElement?: Element): boolean {
+  return (
+    !element.hasAttribute('hidden') &&
+    !element.hasAttribute('data-react-aria-prevent-focus') &&
+    (element.nodeName === 'DETAILS' &&
+      childElement &&
+      childElement.nodeName !== 'SUMMARY'
+      ? element.hasAttribute('open')
+      : true)
+  );
+}
+
+function isElementVisible(element: Element, childElement?: Element): boolean {
+  if (supportsCheckVisibility && typeof (element as Element & {checkVisibility?: (options?: {visibilityProperty?: boolean}) => boolean}).checkVisibility === 'function') {
+    return (element as Element & {checkVisibility: (options?: {visibilityProperty?: boolean}) => boolean}).checkVisibility({visibilityProperty: true}) && !element.closest('[data-react-aria-prevent-focus]');
+  }
+
+  return (
+    element.nodeName !== '#comment' &&
+    isStyleVisible(element) &&
+    isAttributeVisible(element, childElement) &&
+    (!element.parentElement || isElementVisible(element.parentElement, element))
+  );
+}
+
+function isInert(element: Element): boolean {
+  let node: Element | null = element;
+  while (node != null) {
+    let ownerWindow = getOwnerWindow(node);
+    if (
+      ownerWindow &&
+      node instanceof ownerWindow.HTMLElement &&
+      Boolean((node as HTMLElement & {inert?: boolean}).inert)
+    ) {
+      return true;
     }
-  }
 
-  if (element instanceof HTMLInputElement && element.type === 'hidden') {
-    return false;
-  }
-
-  if (element.matches(FOCUSABLE_SELECTOR)) {
-    return element.tabIndex >= 0;
+    node = node.parentElement;
   }
 
   return false;
 }
 
+export function isFocusable(element: Element): boolean;
+export function isFocusable(element: Element | null): boolean;
+export function isFocusable(element: Element | null): boolean {
+  if (!(element instanceof Element)) {
+    return false;
+  }
+
+  return element.matches(FOCUSABLE_SELECTOR) && isElementVisible(element) && !isInert(element);
+}
+
 export function isTabbable(element: Element): boolean;
 export function isTabbable(element: Element | null): boolean;
 export function isTabbable(element: Element | null): boolean {
-  if (!isFocusable(element)) {
+  if (!(element instanceof Element)) {
     return false;
   }
 
-  if (!(element instanceof HTMLElement)) {
-    return false;
-  }
-
-  return element.tabIndex >= 0;
+  return element.matches(TABBABLE_SELECTOR) && isElementVisible(element) && !isInert(element);
 }
 
 export function isFocusWithin(target: Element | null | undefined): boolean {
