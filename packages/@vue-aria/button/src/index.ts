@@ -10,6 +10,7 @@ import {
   useToggleButtonGroupItem as useToggleButtonGroupItemInternal
 } from './useToggleButtonGroup';
 import {type AriaToggleButtonOptions as AriaToggleButtonOptionsBase, type ToggleButtonAria as ToggleButtonAriaBase, useToggleButton as useToggleButtonInternal} from './useToggleButton';
+import {computed, unref} from 'vue';
 
 type RefObject<T> = {
   current: T
@@ -68,6 +69,67 @@ export function useButton(options: AriaButtonOptions): ButtonAria {
 type ToggleState = Record<string, unknown>;
 type ToggleGroupState = Record<string, unknown>;
 
+function toKeySet(values: unknown): Set<string> {
+  if (!values || typeof values !== 'object') {
+    return new Set();
+  }
+
+  if (values instanceof Set) {
+    return new Set(Array.from(values, (key) => String(key)));
+  }
+
+  if (Symbol.iterator in values) {
+    return new Set(Array.from(values as Iterable<unknown>, (key) => String(key)));
+  }
+
+  return new Set();
+}
+
+function applySelectedKeysToState(stateRecord: ToggleGroupState, nextSelection: Set<string>): void {
+  let setSelectedKeys = stateRecord.setSelectedKeys;
+  if (typeof setSelectedKeys === 'function') {
+    setSelectedKeys(new Set(nextSelection));
+    return;
+  }
+
+  let previousSelection = toKeySet(stateRecord.selectedKeys);
+  let setSelected = stateRecord.setSelected;
+  if (typeof setSelected === 'function') {
+    for (let key of previousSelection) {
+      if (!nextSelection.has(key)) {
+        setSelected(key, false);
+      }
+    }
+
+    for (let key of nextSelection) {
+      if (!previousSelection.has(key)) {
+        setSelected(key, true);
+      }
+    }
+
+    return;
+  }
+
+  let toggleKey = stateRecord.toggleKey;
+  if (typeof toggleKey === 'function') {
+    for (let key of previousSelection) {
+      if (!nextSelection.has(key)) {
+        toggleKey(key);
+      }
+    }
+
+    for (let key of nextSelection) {
+      if (!previousSelection.has(key)) {
+        toggleKey(key);
+      }
+    }
+
+    return;
+  }
+
+  stateRecord.selectedKeys = new Set(nextSelection);
+}
+
 export function useToggleButton<T extends ElementType>(
   options: AriaToggleButtonOptions<T>,
   state: ToggleState,
@@ -80,7 +142,39 @@ export function useToggleButton(options: AriaToggleButtonOptions<'input'>, state
 export function useToggleButton(options: AriaToggleButtonOptions<'span'>, state: ToggleState, ref: RefObject<HTMLSpanElement | null>): ToggleButtonAria<HTMLAttributes<HTMLSpanElement>>;
 export function useToggleButton(options: AriaToggleButtonOptions<ElementType>, state: ToggleState, ref: RefObject<Element | null>): ToggleButtonAria<DOMAttributes>;
 export function useToggleButton(options: AriaToggleButtonOptions): ToggleButtonAria;
-export function useToggleButton(options: AriaToggleButtonOptions): ToggleButtonAria {
+export function useToggleButton(
+  options: AriaToggleButtonOptions,
+  state?: ToggleState,
+  refObject?: RefObject<Element | null>
+): ToggleButtonAria {
+  void refObject;
+  if (state) {
+    let stateRecord = state as ToggleState;
+    return useToggleButtonInternal({
+      ...options,
+      isSelected: computed(() => Boolean(stateRecord.isSelected)),
+      setSelected: (isSelected) => {
+        if (Boolean(stateRecord.isSelected) === isSelected) {
+          return;
+        }
+
+        let toggle = stateRecord.toggle;
+        if (typeof toggle === 'function') {
+          toggle();
+          return;
+        }
+
+        let setSelected = stateRecord.setSelected;
+        if (typeof setSelected === 'function') {
+          setSelected(isSelected);
+          return;
+        }
+
+        stateRecord.isSelected = isSelected;
+      }
+    });
+  }
+
   return useToggleButtonInternal(options);
 }
 
@@ -90,7 +184,38 @@ export function useToggleButtonGroup(
   ref: RefObject<HTMLElement | null>
 ): ToggleButtonGroupAria;
 export function useToggleButtonGroup(options: AriaToggleButtonGroupProps): ToggleButtonGroupAria;
-export function useToggleButtonGroup(options: AriaToggleButtonGroupProps): ToggleButtonGroupAria {
+export function useToggleButtonGroup(
+  options: AriaToggleButtonGroupProps,
+  state?: ToggleGroupState,
+  refObject?: RefObject<HTMLElement | null>
+): ToggleButtonGroupAria {
+  void refObject;
+  if (state) {
+    let stateRecord = state as ToggleGroupState;
+    let selectedKeys = computed<Set<string>>({
+      get: () => toKeySet(stateRecord.selectedKeys),
+      set: (nextSelection) => {
+        applySelectedKeysToState(stateRecord, new Set(nextSelection));
+      }
+    });
+    let selectionMode = computed(() => {
+      let mode = stateRecord.selectionMode;
+      if (mode === 'single' || mode === 'multiple') {
+        return mode;
+      }
+
+      let optionMode = unref(options.selectionMode);
+      return optionMode === 'single' ? 'single' : 'multiple';
+    });
+
+    return useToggleButtonGroupInternal({
+      ...options,
+      isDisabled: computed(() => Boolean(unref(options.isDisabled)) || Boolean(stateRecord.isDisabled)),
+      selectedKeys,
+      selectionMode
+    });
+  }
+
   return useToggleButtonGroupInternal(options);
 }
 
@@ -106,6 +231,34 @@ export function useToggleButtonGroupItem(options: AriaToggleButtonGroupItemOptio
 export function useToggleButtonGroupItem(options: AriaToggleButtonGroupItemOptions<'span'>, state: ToggleGroupState, ref: RefObject<HTMLSpanElement | null>): ToggleButtonAria<HTMLAttributes<HTMLSpanElement>>;
 export function useToggleButtonGroupItem(options: AriaToggleButtonGroupItemOptions<ElementType>, state: ToggleGroupState, ref: RefObject<Element | null>): ToggleButtonAria<DOMAttributes>;
 export function useToggleButtonGroupItem(options: AriaToggleButtonGroupItemOptions): ToggleButtonGroupItemAria;
-export function useToggleButtonGroupItem(options: AriaToggleButtonGroupItemOptions): ToggleButtonGroupItemAria {
+export function useToggleButtonGroupItem(
+  options: AriaToggleButtonGroupItemOptions,
+  state?: ToggleGroupState,
+  refObject?: RefObject<Element | null>
+): ToggleButtonGroupItemAria {
+  if (state) {
+    let stateRecord = state as ToggleGroupState;
+    let optionsRecord = options as Record<string, unknown>;
+    let group = useToggleButtonGroup({
+      isDisabled: computed(() => Boolean(stateRecord.isDisabled)),
+      selectedKeys: computed<Set<string>>({
+        get: () => toKeySet(stateRecord.selectedKeys),
+        set: (nextSelection) => {
+          applySelectedKeysToState(stateRecord, new Set(nextSelection));
+        }
+      }),
+      selectionMode: computed(() => {
+        let mode = stateRecord.selectionMode;
+        return mode === 'single' ? 'single' : 'multiple';
+      })
+    }, stateRecord, refObject as RefObject<HTMLElement | null> | undefined);
+
+    return useToggleButtonGroupItemInternal({
+      ...options,
+      group,
+      id: String(optionsRecord.id ?? '')
+    });
+  }
+
   return useToggleButtonGroupItemInternal(options);
 }

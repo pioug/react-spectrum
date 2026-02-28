@@ -764,6 +764,109 @@ describe('Vue migration composition components', () => {
     expect(Array.from(disabledKeys.value)).toEqual(['bold']);
   });
 
+  it('supports react-style toggle button and group overload signatures', () => {
+    let isSelected = ref(false);
+    let toggleCalls = 0;
+    let toggleState = {
+      get isSelected() {
+        return isSelected.value;
+      },
+      setSelected: (nextSelected: boolean) => {
+        isSelected.value = nextSelected;
+      },
+      toggle: () => {
+        toggleCalls += 1;
+        isSelected.value = !isSelected.value;
+      }
+    };
+
+    let toggleButton = useToggleButton({
+      'aria-label': 'React-style toggle'
+    } as unknown as Parameters<typeof useToggleButton>[0], toggleState as unknown as Parameters<typeof useToggleButton>[1], {
+      current: null
+    } as unknown as Parameters<typeof useToggleButton>[2]);
+
+    expect(toggleButton.isSelected.value).toBe(false);
+    toggleButton.press();
+    expect(toggleCalls).toBe(1);
+    expect(isSelected.value).toBe(true);
+    expect(toggleButton.buttonProps.value['aria-pressed']).toBe(true);
+
+    let selectedKeys = ref(new Set<string>(['bold']));
+    let selectionMode = ref<'multiple' | 'single'>('single');
+    let isGroupDisabled = ref(false);
+    let setSelectedCalls: Array<[string, boolean]> = [];
+    let groupState = {
+      get isDisabled() {
+        return isGroupDisabled.value;
+      },
+      get selectedKeys() {
+        return selectedKeys.value;
+      },
+      get selectionMode() {
+        return selectionMode.value;
+      },
+      setSelected: (key: string, nextSelected: boolean) => {
+        setSelectedCalls.push([String(key), nextSelected]);
+
+        if (selectionMode.value === 'single') {
+          selectedKeys.value = nextSelected
+            ? new Set([String(key)])
+            : new Set();
+          return;
+        }
+
+        let nextKeys = new Set(selectedKeys.value);
+        if (nextSelected) {
+          nextKeys.add(String(key));
+        } else {
+          nextKeys.delete(String(key));
+        }
+        selectedKeys.value = nextKeys;
+      },
+      toggleKey: (key: string) => {
+        let normalizedKey = String(key);
+        let isNextSelected = !selectedKeys.value.has(normalizedKey);
+        groupState.setSelected(normalizedKey, isNextSelected);
+      }
+    };
+
+    let group = useToggleButtonGroup({
+      'aria-label': 'Formatting'
+    } as unknown as Parameters<typeof useToggleButtonGroup>[0], groupState as unknown as Parameters<typeof useToggleButtonGroup>[1], {
+      current: null
+    } as unknown as Parameters<typeof useToggleButtonGroup>[2]);
+
+    expect(group.groupProps.value.role).toBe('radiogroup');
+    let italicItem = useToggleButtonGroupItem({
+      id: 'italic'
+    } as unknown as Parameters<typeof useToggleButtonGroupItem>[0], groupState as unknown as Parameters<typeof useToggleButtonGroupItem>[1], {
+      current: null
+    } as unknown as Parameters<typeof useToggleButtonGroupItem>[2]);
+    expect(italicItem.buttonProps.value.role).toBe('radio');
+    expect(italicItem.buttonProps.value['aria-checked']).toBe(false);
+
+    italicItem.press();
+    expect(setSelectedCalls).toEqual([
+      ['bold', false],
+      ['italic', true]
+    ]);
+    expect(Array.from(selectedKeys.value)).toEqual(['italic']);
+    expect(italicItem.buttonProps.value['aria-checked']).toBe(true);
+
+    selectionMode.value = 'multiple';
+    expect(group.groupProps.value.role).toBe('toolbar');
+
+    isGroupDisabled.value = true;
+    let disabledItem = useToggleButtonGroupItem({
+      id: 'bold'
+    } as unknown as Parameters<typeof useToggleButtonGroupItem>[0], groupState as unknown as Parameters<typeof useToggleButtonGroupItem>[1], {
+      current: null
+    } as unknown as Parameters<typeof useToggleButtonGroupItem>[2]);
+    disabledItem.press();
+    expect(Array.from(selectedKeys.value)).toEqual(['italic']);
+  });
+
   it('manages vue-aria calendar navigation and date selection', () => {
     let selectedDate = ref<Date | null>(new Date(2025, 0, 15));
     let visibleDate = ref(new Date(2025, 0, 1));
