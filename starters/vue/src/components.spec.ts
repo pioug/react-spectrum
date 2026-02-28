@@ -6204,7 +6204,8 @@ describe('Vue migration primitives', () => {
     await secondTrigger.trigger('click');
     await nextTick();
     let expandedKeys = (wrapper.vm as unknown as {expanded: Iterable<string>}).expanded;
-    expect(Array.from(expandedKeys)).toEqual(['one', 'two']);
+    expect(Array.from(expandedKeys)).toEqual(['two']);
+    expect(wrapper.get('#one-panel').attributes('aria-hidden')).toBe('true');
     expect(wrapper.get('#two-panel').attributes('aria-hidden')).toBe('false');
   });
 
@@ -6226,6 +6227,29 @@ describe('Vue migration primitives', () => {
     let indicator = wrapper.get('.spectrum-Accordion-itemIndicator');
     expect(indicator.classes()).toContain('spectrum-UIIcon-ChevronLeftMedium');
     expect(indicator.get('path').attributes('d')).toBe('M5.697 8.283L2.414 5l3.283-3.283A1 1 0 1 0 4.283.303l-3.98 3.99a1 1 0 0 0 0 1.414l3.98 3.99a1 1 0 1 0 1.414-1.414z');
+  });
+
+  it('applies disclosure title DOM props to the heading element to match react parity', () => {
+    let wrapper = mount({
+      components: {Disclosure, DisclosurePanel, DisclosureTitle},
+      template: `
+        <Disclosure id="files">
+          <DisclosureTitle id="custom-heading-id" class="custom-heading-class">
+            Files
+          </DisclosureTitle>
+          <DisclosurePanel>Files content</DisclosurePanel>
+        </Disclosure>
+      `
+    });
+
+    let heading = wrapper.get('#custom-heading-id');
+    expect(heading.element.tagName.toLowerCase()).toBe('h3');
+    expect(heading.classes()).toContain('custom-heading-class');
+    expect(heading.classes()).toContain('spectrum-Accordion-itemHeading');
+
+    let trigger = wrapper.get('#files-trigger');
+    expect(trigger.classes()).toContain('spectrum-Accordion-itemHeader');
+    expect(trigger.classes()).not.toContain('custom-heading-class');
   });
 
   it('supports uncontrolled accordion state via defaultExpandedKeys and accordion-level disabled aliases', async () => {
@@ -6286,5 +6310,59 @@ describe('Vue migration primitives', () => {
     let items = wrapper.findAll('.spectrum-Accordion-item');
     expect(items[0].classes()).not.toContain('is-expanded');
     expect(items[1].classes()).toContain('is-expanded');
+  });
+
+  it('supports allowsMultipleExpanded with a multiple alias for vue compatibility', async () => {
+    let wrapper = mount({
+      components: {Accordion, Disclosure, DisclosurePanel, DisclosureTitle},
+      data() {
+        return {
+          expanded: ['one']
+        };
+      },
+      template: `
+        <Accordion v-model="expanded" allows-multiple-expanded>
+          <Disclosure id="one">
+            <DisclosureTitle>One</DisclosureTitle>
+            <DisclosurePanel>Panel one</DisclosurePanel>
+          </Disclosure>
+          <Disclosure id="two">
+            <DisclosureTitle>Two</DisclosureTitle>
+            <DisclosurePanel>Panel two</DisclosurePanel>
+          </Disclosure>
+        </Accordion>
+      `
+    });
+
+    await wrapper.get('#two-trigger').trigger('click');
+    await nextTick();
+    let expandedKeys = (wrapper.vm as unknown as {expanded: Iterable<string>}).expanded;
+    expect(Array.from(expandedKeys)).toEqual(['one', 'two']);
+
+    let aliasWrapper = mount({
+      components: {Accordion, Disclosure, DisclosurePanel, DisclosureTitle},
+      data() {
+        return {
+          expanded: ['one']
+        };
+      },
+      template: `
+        <Accordion v-model="expanded" :multiple="true">
+          <Disclosure id="one">
+            <DisclosureTitle>One</DisclosureTitle>
+            <DisclosurePanel>Panel one</DisclosurePanel>
+          </Disclosure>
+          <Disclosure id="two">
+            <DisclosureTitle>Two</DisclosureTitle>
+            <DisclosurePanel>Panel two</DisclosurePanel>
+          </Disclosure>
+        </Accordion>
+      `
+    });
+
+    await aliasWrapper.get('#two-trigger').trigger('click');
+    await nextTick();
+    let aliasExpandedKeys = (aliasWrapper.vm as unknown as {expanded: Iterable<string>}).expanded;
+    expect(Array.from(aliasExpandedKeys)).toEqual(['one', 'two']);
   });
 });

@@ -57,6 +57,10 @@ export const Accordion = defineComponent({
   name: 'VueAccordion',
   inheritAttrs: false,
   props: {
+    allowsMultipleExpanded: {
+      type: Boolean,
+      default: false
+    },
     defaultExpandedKeys: {
       type: [Array, Set] as PropType<Iterable<string>>,
       default: () => []
@@ -82,8 +86,8 @@ export const Accordion = defineComponent({
       default: undefined
     },
     multiple: {
-      type: Boolean,
-      default: true
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
     },
     quiet: {
       type: Boolean,
@@ -97,6 +101,7 @@ export const Accordion = defineComponent({
   setup(props, {emit, slots, attrs}) {
     let internalExpandedKeys = ref(normalizeExpandedKeys(props.defaultExpandedKeys));
     let expandedKeys = computed(() => normalizeExpandedKeys(props.modelValue ?? props.expandedKeys ?? internalExpandedKeys.value));
+    let allowsMultipleExpanded = computed(() => props.multiple ?? props.allowsMultipleExpanded);
     let isDisabled = computed(() => props.isDisabled || props.disabled);
     let resolvedQuiet = computed(() => props.isQuiet ?? props.quiet);
 
@@ -106,7 +111,7 @@ export const Accordion = defineComponent({
 
       if (currentExpanded.includes(key)) {
         nextExpanded = currentExpanded.filter((item) => item !== key);
-      } else if (props.multiple) {
+      } else if (allowsMultipleExpanded.value) {
         nextExpanded = [...currentExpanded, key];
       } else {
         nextExpanded = [key];
@@ -299,10 +304,10 @@ export const DisclosureTitle = defineComponent({
 
       return h(headingTag.value, {
         ref: headingRef,
-        class: [classNames(styles, 'spectrum-Accordion-itemHeading')]
+        ...attrs,
+        class: [classNames(styles, 'spectrum-Accordion-itemHeading'), attrs.class]
       }, [
         h('button', {
-          ...attrs,
           class: [classNames(
             styles,
             'spectrum-Accordion-itemHeader',
@@ -311,7 +316,7 @@ export const DisclosureTitle = defineComponent({
               'is-pressed': isPressed.value && !disclosure.disabled.value,
               'focus-ring': isFocusVisible.value
             }
-          ), attrs.class],
+          )],
           id: `${disclosure.id.value}-trigger`,
           slot: 'trigger',
           type: 'button',

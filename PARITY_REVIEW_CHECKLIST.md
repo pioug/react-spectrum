@@ -1,6 +1,6 @@
 # Vue Migration Parity Review Checklist
 
-Generated: 2026-02-28T19:00:03Z
+Generated: 2026-03-01T03:33:00+08:00
 
 Use this as a progression checklist for parity re-review. Mark each line when complete.
 
@@ -13,11 +13,10 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - Components: Accordion, Disclosure, DisclosurePanel, DisclosureTitle
   - [x] Story: Accordion.stories.ts
   - [x] Story: Disclosure.stories.ts
-  - Evidence: React/Vue story exports and metadata align; targeted story-id parity is zero for `accordion--*` and `disclosure--*`; style-source wiring matches React (`@adobe/spectrum-css-temp/components/accordion/vars.css` with Spectrum selector contract only, no helper-class collisions); fixed RTL indicator parity in `DisclosureTitle` (Vue now renders left-chevron glyph in RTL like React) and added regression coverage in `starters/vue/src/components.spec.ts`; validation rerun passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
-- [x] 1.02 `@vue-spectrum/actionbar`
+  - Evidence: React/Vue story-id parity is zero for `accordion--*` and `disclosure--*` (including matching `React Aria Components/Disclosure*` ids in `packages/vue-aria-components/stories`); source/API parity pass fixed two Vue gaps in `packages/@vue-spectrum/accordion/src/index.ts` (default single expansion now matches React with `allowsMultipleExpanded` support and `multiple` alias fallback; `DisclosureTitle` DOM props/class now apply to heading like React); regression coverage added/updated in `starters/vue/src/components.spec.ts`; validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [ ] 1.02 `@vue-spectrum/actionbar`
   - Components: ActionBar, ActionBarContainer
-  - [x] Story: ActionBar.stories.ts
-  - Evidence: React/Vue story export surface and arg metadata align; targeted story-id parity is zero for `actionbar--*`; style-source parity uses shared React Spectrum selectors in `actionbar.css`; class-collision audit found `vs-action-bar*` overlap with `packages/vue-aria-components/src/styles.css`, so Vue Spectrum ActionBar helper classes were renamed to `vs-spectrum-action-bar*` and parity tests moved to stable `data-vs-action-bar*` hooks; validation rerun passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+  - [ ] Story: ActionBar.stories.ts
 - [ ] 1.03 `@vue-spectrum/actiongroup`
   - Components: ActionGroup
   - [ ] Story: ActionGroup.stories.ts
