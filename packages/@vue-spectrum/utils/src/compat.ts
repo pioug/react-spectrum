@@ -174,6 +174,22 @@ export function useStyleProps<T extends StyleProps>(
     ...convertStyleProps(props as ViewStyleProps, handlers, 'ltr', matchedBreakpoints)
   };
 
+  if ((props as AnyRecord).className && process.env.NODE_ENV !== 'production') {
+    console.warn(
+      'The className prop is unsafe and is unsupported in React Spectrum v3. ' +
+      'Please use style props with Spectrum variables, or UNSAFE_className if you absolutely must do something custom. ' +
+      'Note that this may break in future versions due to DOM structure changes.'
+    );
+  }
+
+  if ((props as AnyRecord).style && process.env.NODE_ENV !== 'production') {
+    console.warn(
+      'The style prop is unsafe and is unsupported in React Spectrum v3. ' +
+      'Please use style props with Spectrum variables, or UNSAFE_style if you absolutely must do something custom. ' +
+      'Note that this may break in future versions due to DOM structure changes.'
+    );
+  }
+
   let styleProps: HTMLAttributes<HTMLElement> = {
     style,
     className: props.UNSAFE_className

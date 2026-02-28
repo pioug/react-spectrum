@@ -10,6 +10,13 @@ export let shouldKeepSpectrumClassNames = false;
 
 export function keepSpectrumClassNames(): void {
   shouldKeepSpectrumClassNames = true;
+  if (process.env.NODE_ENV !== 'production') {
+    console.warn(
+      'Legacy spectrum-prefixed class names enabled for backward compatibility. ' +
+      'We recommend replacing instances of CSS overrides targeting spectrum selectors ' +
+      'in your app with custom class names of your own, and disabling this flag.'
+    );
+  }
 }
 
 function normalizeClassValue(

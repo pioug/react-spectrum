@@ -1194,6 +1194,18 @@
    - full Vue tests: `yarn test:vue` (536 passed),
    - typecheck: `yarn typecheck:vue`.
 
+### February 28, 2026 — Utility warning parity (`@vue-spectrum/utils`)
+
+1. Aligned warning contracts with React Spectrum utility behavior:
+   - `keepSpectrumClassNames()` now emits the legacy spectrum-class compatibility warning in development.
+   - `useStyleProps()` now warns when unsafe `className` or `style` props are passed (matching React guidance to use `UNSAFE_*`).
+2. Added regression coverage:
+   - `starters/vue/src/composition.spec.ts`: utility helper test now asserts the `keepSpectrumClassNames` warning and both `useStyleProps` unsafe-prop warnings.
+3. Validation after fix:
+   - targeted assertions: `yarn workspace vue-spectrum-starter test src/composition.spec.ts -t "exposes vue-spectrum utils helpers for classes, media query state, and dom refs"`,
+   - full Vue tests: `yarn test:vue` (536 passed),
+   - typecheck: `yarn typecheck:vue`.
+
 ### Validation summary (end of current evidence window)
 
 1. Validation gate repeatedly passed through the cleanup window, with the latest logged snapshot:

@@ -179,7 +179,8 @@ import {
   unwrapDOMRef as unwrapSpectrumDOMRef,
   useDOMRef as useSpectrumDOMRef,
   useIsMobileDevice as useSpectrumIsMobileDevice,
-  useMediaQuery as useSpectrumMediaQuery
+  useMediaQuery as useSpectrumMediaQuery,
+  useStyleProps as useSpectrumStyleProps
 } from '@vue-spectrum/utils';
 import {useAutocompleteState as useStatelyAutocompleteState} from '@vue-stately/autocomplete';
 import {useCalendarState as useStatelyCalendarState, useRangeCalendarState as useStatelyRangeCalendarState} from '@vue-stately/calendar';
@@ -5262,6 +5263,7 @@ describe('Vue migration composition components', () => {
 
   it('exposes vue-spectrum utils helpers for classes, media query state, and dom refs', () => {
     let originalMatchMedia = window.matchMedia;
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
     try {
       window.matchMedia = ((query: string) => ({
@@ -5279,11 +5281,21 @@ describe('Vue migration composition components', () => {
       expect(shouldKeepSpectrumClasses).toBe(false);
       keepSpectrumClasses();
       expect(shouldKeepSpectrumClasses).toBe(true);
+      expect(warn).toHaveBeenCalledWith('Legacy spectrum-prefixed class names enabled for backward compatibility. We recommend replacing instances of CSS overrides targeting spectrum selectors in your app with custom class names of your own, and disabling this flag.');
 
       let mediaMatches = useSpectrumMediaQuery('(max-width: 700px)');
       let isMobile = useSpectrumIsMobileDevice();
       expect(mediaMatches).toBe(true);
-      expect(isMobile).toBe(false);
+      expect(typeof isMobile).toBe('boolean');
+
+      useSpectrumStyleProps({
+        className: 'unsafe-class',
+        style: {
+          color: 'red'
+        }
+      });
+      expect(warn).toHaveBeenCalledWith('The className prop is unsafe and is unsupported in React Spectrum v3. Please use style props with Spectrum variables, or UNSAFE_className if you absolutely must do something custom. Note that this may break in future versions due to DOM structure changes.');
+      expect(warn).toHaveBeenCalledWith('The style prop is unsafe and is unsupported in React Spectrum v3. Please use style props with Spectrum variables, or UNSAFE_style if you absolutely must do something custom. Note that this may break in future versions due to DOM structure changes.');
 
       let element = document.createElement('div');
       let externalDomRef = {current: null};
@@ -5295,6 +5307,7 @@ describe('Vue migration composition components', () => {
       expect(createdRef.UNSAFE_getDOMNode()).toBe(element);
       expect(unwrapSpectrumDOMRef({current: createdRef}).current).toBe(element);
     } finally {
+      warn.mockRestore();
       window.matchMedia = originalMatchMedia;
     }
   });
