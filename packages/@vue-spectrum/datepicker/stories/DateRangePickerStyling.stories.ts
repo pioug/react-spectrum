@@ -125,17 +125,17 @@ export const _ContextualHelp: Story = {
 };
 
 export const InScrollableContainer: Story = {
-  render: (args) => ({
-    components: {DateRangePicker},
-    setup() {
-      return {args};
-    },
-    template: `
-      <div style="height: 200vh;">
-        <DateRangePicker v-bind="args" label="Date range" style="max-width: calc(100vw - 40px);" />
-      </div>
-    `
-  })
+  render: (args) => {
+    let baseStory = renderWithMeta({...args, granularity: 'second'});
+    return {
+      ...baseStory,
+      template: `
+        <div style="height: 200vh;">
+          ${baseStory.template}
+        </div>
+      `
+    };
+  }
 };
 
 export const ShouldFlipFalse: Story = {

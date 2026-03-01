@@ -2174,33 +2174,31 @@ describe('Vue storybook helper parity', () => {
     }
   });
 
-  it('renders date picker custom calendar stories with live locale/calendar descriptions', () => {
+  it('renders date picker custom calendar stories without locale/calendar control wrappers', () => {
     let wrappers: Array<ReturnType<typeof mount>> = [];
 
     try {
       let datePickerStory = DatePickerCustomCalendarStory.render?.({}) as ReturnType<Exclude<typeof DatePickerCustomCalendarStory.render, undefined>>;
       let datePickerWrapper = mount(datePickerStory);
       wrappers.push(datePickerWrapper);
-      expect(datePickerWrapper.findAll('select').length).toBeGreaterThanOrEqual(2);
+      expect(datePickerWrapper.findAll('select')).toHaveLength(0);
       expect(datePickerWrapper.get('.vs-date-picker').exists()).toBe(true);
       let datePickerInput = datePickerWrapper.get('.vs-date-picker input.vs-date-picker__input');
       expect(datePickerInput.attributes('aria-labelledby')).toBeTruthy();
       expect(datePickerInput.attributes('aria-label')).toBeUndefined();
       expect(datePickerWrapper.text()).toContain('Custom 4-5-4 calendar');
-      expect(datePickerWrapper.text()).toContain('Locale:');
-      expect(datePickerWrapper.text()).not.toContain('scenario preview');
+      expect(datePickerWrapper.text()).not.toContain('Locale:');
 
       let dateRangePickerStory = DateRangePickerCustomCalendarStory.render?.({}) as ReturnType<Exclude<typeof DateRangePickerCustomCalendarStory.render, undefined>>;
       let dateRangePickerWrapper = mount(dateRangePickerStory);
       wrappers.push(dateRangePickerWrapper);
-      expect(dateRangePickerWrapper.findAll('select').length).toBeGreaterThanOrEqual(2);
+      expect(dateRangePickerWrapper.findAll('select')).toHaveLength(0);
       expect(dateRangePickerWrapper.get('.vs-date-range-picker').exists()).toBe(true);
       let dateRangeStartInput = dateRangePickerWrapper.get('.vs-date-range-picker input[data-testid="start-date"]');
       expect(dateRangeStartInput.attributes('aria-labelledby')).toBeTruthy();
       expect(dateRangeStartInput.attributes('aria-label')).toBe('Start date');
       expect(dateRangePickerWrapper.text()).toContain('Custom 4-5-4 calendar');
-      expect(dateRangePickerWrapper.text()).toContain('Locale:');
-      expect(dateRangePickerWrapper.text()).not.toContain('scenario preview');
+      expect(dateRangePickerWrapper.text()).not.toContain('Locale:');
     } finally {
       for (let wrapper of wrappers) {
         wrapper.unmount();

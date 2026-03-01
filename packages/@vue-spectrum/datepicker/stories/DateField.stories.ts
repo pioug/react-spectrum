@@ -5,6 +5,37 @@ import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type StoryArgs = Record<string, unknown>;
 
+const CALENDARS = [
+  {key: 'gregory', name: 'Gregorian'},
+  {key: 'japanese', name: 'Japanese'},
+  {key: 'buddhist', name: 'Buddhist'},
+  {key: 'roc', name: 'Taiwan'},
+  {key: 'persian', name: 'Persian'},
+  {key: 'indian', name: 'Indian'},
+  {key: 'islamic-umalqura', name: 'Islamic (Umm al-Qura)'},
+  {key: 'islamic-civil', name: 'Islamic Civil'},
+  {key: 'islamic-tbla', name: 'Islamic Tabular'},
+  {key: 'hebrew', name: 'Hebrew'},
+  {key: 'coptic', name: 'Coptic'},
+  {key: 'ethiopic', name: 'Ethiopic'}
+];
+
+const LOCALE_PREFERENCES = [
+  {locale: '', label: 'Default', ordering: 'gregory'},
+  {locale: 'ar-DZ', label: 'Arabic (Algeria)', ordering: 'gregory islamic islamic-civil islamic-tbla'},
+  {locale: 'ar-AE', label: 'Arabic (United Arab Emirates)', ordering: 'gregory islamic-umalqura islamic islamic-civil islamic-tbla'},
+  {locale: 'ar-EG', label: 'Arabic (Egypt)', ordering: 'gregory coptic islamic islamic-civil islamic-tbla'},
+  {locale: 'ar-SA', label: 'Arabic (Saudi Arabia)', ordering: 'islamic-umalqura gregory islamic islamic-tbla'},
+  {locale: 'fa-AF', label: 'Farsi (Afghanistan)', ordering: 'persian gregory islamic islamic-civil islamic-tbla'},
+  {locale: 'am-ET', label: 'Amharic (Ethiopia)', ordering: 'gregory ethiopic'},
+  {locale: 'he-IL', label: 'Hebrew (Israel)', ordering: 'gregory hebrew islamic islamic-civil islamic-tbla'},
+  {locale: 'hi-IN', label: 'Hindi (India)', ordering: 'gregory indian'},
+  {locale: 'bn-IN', label: 'Bengali (India)', ordering: 'gregory indian'},
+  {locale: 'ja-JP', label: 'Japanese (Japan)', ordering: 'gregory japanese'},
+  {locale: 'th-TH', label: 'Thai (Thailand)', ordering: 'buddhist gregory'},
+  {locale: 'zh-TW', label: 'Chinese (Taiwan)', ordering: 'gregory roc'}
+];
+
 const meta: Meta<typeof DateField> = {
   title: 'Date and Time/DateField',
   component: DateField,
@@ -147,13 +178,94 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+function toComparableDate(input: string | Date): string {
+  if (input instanceof Date && !Number.isNaN(input.valueOf())) {
+    return input.toISOString().slice(0, 10);
+  }
+  if (typeof input === 'string') {
+    return input.slice(0, 10);
+  }
+  return '';
+}
+
+function useLocaleCalendarControls() {
+  let locale = ref(LOCALE_PREFERENCES[0].locale);
+  let calendar = ref(CALENDARS[0].key);
+
+  let preferredCalendars = computed(() => {
+    let pref = LOCALE_PREFERENCES.find((entry) => entry.locale === locale.value);
+    if (!pref) {
+      return [CALENDARS[0]];
+    }
+
+    return pref.ordering
+      .split(' ')
+      .map((key) => CALENDARS.find((calendarItem) => calendarItem.key === key))
+      .filter((calendarItem): calendarItem is {key: string, name: string} => Boolean(calendarItem));
+  });
+
+  let otherCalendars = computed(() => CALENDARS.filter((calendarItem) => !preferredCalendars.value.some((preferred) => preferred.key === calendarItem.key)));
+
+  let updateLocale = (nextLocale: string) => {
+    locale.value = nextLocale;
+    let pref = LOCALE_PREFERENCES.find((entry) => entry.locale === nextLocale);
+    if (!pref) {
+      calendar.value = CALENDARS[0].key;
+      return;
+    }
+
+    calendar.value = pref.ordering.split(' ')[0];
+  };
+
+  let readLocaleValue = (event: Event) => {
+    let target = event.target;
+    return target instanceof HTMLSelectElement ? target.value : LOCALE_PREFERENCES[0].locale;
+  };
+
+  return {
+    calendar,
+    locale,
+    localePreferences: LOCALE_PREFERENCES,
+    otherCalendars,
+    preferredCalendars,
+    readLocaleValue,
+    updateLocale
+  };
+}
+
 function render(args: StoryArgs = {}) {
   return {
     components: {DateField},
     setup() {
-      return {args};
+      return {
+        args,
+        ...useLocaleCalendarControls()
+      };
     },
-    template: '<DateField label="Date" v-bind="args" style="max-width: calc(100vw - 40px);" />'
+    template: `
+      <div style="display: grid; gap: 12px; max-width: 540px;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <label style="display: grid; gap: 4px;">
+            <span>Locale</span>
+            <select :value="locale" @change="updateLocale(readLocaleValue($event))">
+              <option v-for="item in localePreferences" :key="item.locale" :value="item.locale">{{item.label}}</option>
+            </select>
+          </label>
+          <label style="display: grid; gap: 4px;">
+            <span>Calendar</span>
+            <select v-model="calendar">
+              <optgroup label="Preferred">
+                <option v-for="item in preferredCalendars" :key="item.key" :value="item.key">{{item.name}}</option>
+              </optgroup>
+              <optgroup label="Other">
+                <option v-for="item in otherCalendars" :key="item.key" :value="item.key">{{item.name}}</option>
+              </optgroup>
+            </select>
+          </label>
+        </div>
+        <DateField label="Date" v-bind="args" style="max-width: calc(100vw - 40px);" />
+      </div>
+    `
   };
 }
 
@@ -162,21 +274,53 @@ function renderUnavailableDatesExample(args: StoryArgs) {
     components: {DateField},
     setup() {
       let value = ref('');
-      let isInvalid = computed(() => value.value >= '1980-01-01' && value.value <= '1980-01-08');
+      let isDateUnavailable = (date: Date) => {
+        let comparableDate = toComparableDate(date);
+        return comparableDate >= '1980-01-01' && comparableDate <= '1980-01-08';
+      };
+      let isInvalid = computed(() => {
+        let comparableDate = toComparableDate(value.value);
+        return comparableDate >= '1980-01-01' && comparableDate <= '1980-01-08';
+      });
+
       return {
         args,
+        isDateUnavailable,
         isInvalid,
-        value
+        value,
+        ...useLocaleCalendarControls()
       };
     },
     template: `
-      <DateField
-        v-bind="args"
-        :model-value="value"
-        :is-invalid="isInvalid"
-        :validation-state="isInvalid ? 'invalid' : undefined"
-        description="Any date between 1/1/1980 and 1/8/1980 is unavailable."
-        @update:model-value="value = $event" />
+      <div style="display: grid; gap: 12px; max-width: 540px;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <label style="display: grid; gap: 4px;">
+            <span>Locale</span>
+            <select :value="locale" @change="updateLocale(readLocaleValue($event))">
+              <option v-for="item in localePreferences" :key="item.locale" :value="item.locale">{{item.label}}</option>
+            </select>
+          </label>
+          <label style="display: grid; gap: 4px;">
+            <span>Calendar</span>
+            <select v-model="calendar">
+              <optgroup label="Preferred">
+                <option v-for="item in preferredCalendars" :key="item.key" :value="item.key">{{item.name}}</option>
+              </optgroup>
+              <optgroup label="Other">
+                <option v-for="item in otherCalendars" :key="item.key" :value="item.key">{{item.name}}</option>
+              </optgroup>
+            </select>
+          </label>
+        </div>
+        <DateField
+          v-bind="args"
+          :model-value="value"
+          :is-date-unavailable="isDateUnavailable"
+          :is-invalid="isInvalid"
+          :validation-state="isInvalid ? 'invalid' : undefined"
+          description="Date unavailable."
+          @update:model-value="value = $event" />
+      </div>
     `
   };
 }
@@ -197,11 +341,31 @@ function renderEventsExample(args: StoryArgs) {
         onFocus,
         onFocusChange,
         onKeyDown,
-        onKeyUp
+        onKeyUp,
+        ...useLocaleCalendarControls()
       };
     },
     template: `
-      <div @keydown="onKeyDown($event)" @keyup="onKeyUp($event)">
+      <div style="display: grid; gap: 12px; max-width: 540px;" @keydown="onKeyDown($event)" @keyup="onKeyUp($event)">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <label style="display: grid; gap: 4px;">
+            <span>Locale</span>
+            <select :value="locale" @change="updateLocale(readLocaleValue($event))">
+              <option v-for="item in localePreferences" :key="item.locale" :value="item.locale">{{item.label}}</option>
+            </select>
+          </label>
+          <label style="display: grid; gap: 4px;">
+            <span>Calendar</span>
+            <select v-model="calendar">
+              <optgroup label="Preferred">
+                <option v-for="item in preferredCalendars" :key="item.key" :value="item.key">{{item.name}}</option>
+              </optgroup>
+              <optgroup label="Other">
+                <option v-for="item in otherCalendars" :key="item.key" :value="item.key">{{item.name}}</option>
+              </optgroup>
+            </select>
+          </label>
+        </div>
         <DateField
           v-bind="args"
           @focus="onFocus($event); onFocusChange(true)"

@@ -210,14 +210,17 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function toComparableDate(input: string): string {
-  if (!input) {
-    return '';
+function toComparableDate(input: string | Date): string {
+  if (input instanceof Date && !Number.isNaN(input.valueOf())) {
+    return input.toISOString().slice(0, 10);
   }
-  return input.slice(0, 10);
+  if (typeof input === 'string') {
+    return input.slice(0, 10);
+  }
+  return '';
 }
 
-function inUnavailableInterval(value: string) {
+function inUnavailableInterval(value: string | Date) {
   let date = toComparableDate(value);
   if (!date) {
     return false;
@@ -226,100 +229,6 @@ function inUnavailableInterval(value: string) {
 }
 
 function render(args: StoryArgs = {}) {
-  return {
-    components: {DatePicker},
-    setup() {
-      return {args};
-    },
-    template: '<DatePicker label="Date" v-bind="args" style="max-width: calc(100vw - 40px);" />'
-  };
-}
-
-function renderControlledExample(args: StoryArgs) {
-  return {
-    components: {ActionButton, DatePicker},
-    setup() {
-      let value = ref(typeof args.modelValue === 'string' ? args.modelValue : '2020-02-03');
-      return {
-        args,
-        onChange: action('onChange'),
-        value
-      };
-    },
-    template: `
-      <div style="display: grid; gap: 8px; justify-items: start;">
-        <DatePicker
-          v-bind="args"
-          label="Controlled"
-          :model-value="value"
-          @update:model-value="value = $event"
-          @change="onChange($event)" />
-        <ActionButton @press="value = '2020-02-03'">Change value</ActionButton>
-        <ActionButton @press="value = ''">Clear</ActionButton>
-      </div>
-    `
-  };
-}
-
-function renderDateUnavailableExample(args: StoryArgs) {
-  return {
-    components: {DatePicker},
-    setup() {
-      let value = ref('');
-      let isInvalid = computed(() => inUnavailableInterval(value.value));
-      return {
-        args,
-        isInvalid,
-        value
-      };
-    },
-    template: `
-      <DatePicker
-        v-bind="args"
-        :model-value="value"
-        :is-invalid="isInvalid"
-        :validation-state="isInvalid ? 'invalid' : undefined"
-        description="Selected date may not be in unavailable intervals."
-        @update:model-value="value = $event" />
-    `
-  };
-}
-
-function renderEventsExample(args: StoryArgs) {
-  return {
-    components: {DatePicker},
-    setup() {
-      let onBlur = action('onBlur');
-      let onFocus = action('onFocus');
-      let onFocusChange = action('onFocusChange');
-      let onKeyDown = action('onKeyDown');
-      let onKeyUp = action('onKeyUp');
-      let onOpenChange = action('onOpenChange');
-
-      return {
-        args,
-        onBlur,
-        onFocus,
-        onFocusChange,
-        onKeyDown,
-        onKeyUp,
-        onOpenChange
-      };
-    },
-    template: `
-      <div @keydown="onKeyDown($event)" @keyup="onKeyUp($event)">
-        <DatePicker
-          v-bind="args"
-          @focus="onFocus($event); onFocusChange(true)"
-          @blur="onBlur($event); onFocusChange(false)"
-          @open="onOpenChange(true)"
-          @close="onOpenChange(false)" />
-      </div>
-    `
-  };
-}
-
-function renderCalendarPreferenceExample(args: StoryArgs) {
   return {
     components: {DatePicker},
     setup() {
@@ -385,12 +294,210 @@ function renderCalendarPreferenceExample(args: StoryArgs) {
             </select>
           </label>
         </div>
-        <DatePicker
-          v-bind="args"
-          label="Custom 4-5-4 calendar"
-          :description="'Locale: ' + (locale || 'default') + ', calendar: ' + calendar" />
+        <DatePicker label="Date" v-bind="args" style="max-width: calc(100vw - 40px);" />
       </div>
     `
+  };
+}
+
+function renderControlledExample(args: StoryArgs) {
+  return {
+    components: {ActionButton, DatePicker},
+    setup() {
+      let value = ref(typeof args.modelValue === 'string' ? args.modelValue : '2020-02-03');
+      return {
+        args,
+        onChange: action('onChange'),
+        value
+      };
+    },
+    template: `
+      <div style="display: grid; gap: 8px; justify-items: start;">
+        <DatePicker
+          v-bind="args"
+          label="Controlled"
+          :model-value="value"
+          @update:model-value="value = $event"
+          @change="onChange($event)" />
+        <ActionButton @press="value = '2020-02-03'">Change value</ActionButton>
+        <ActionButton @press="value = ''">Clear</ActionButton>
+      </div>
+    `
+  };
+}
+
+function renderDateUnavailableExample(args: StoryArgs) {
+  return {
+    components: {DatePicker},
+    setup() {
+      let locale = ref(LOCALE_PREFERENCES[0].locale);
+      let calendar = ref(CALENDARS[0].key);
+      let isDateUnavailable = (date: Date) => inUnavailableInterval(date);
+
+      let preferredCalendars = computed(() => {
+        let pref = LOCALE_PREFERENCES.find((entry) => entry.locale === locale.value);
+        if (!pref) {
+          return [CALENDARS[0]];
+        }
+        return pref.ordering
+          .split(' ')
+          .map((key) => CALENDARS.find((calendarItem) => calendarItem.key === key))
+          .filter((calendarItem): calendarItem is {key: string, name: string} => Boolean(calendarItem));
+      });
+
+      let otherCalendars = computed(() => CALENDARS.filter((calendarItem) => !preferredCalendars.value.some((preferred) => preferred.key === calendarItem.key)));
+
+      let updateLocale = (nextLocale: string) => {
+        locale.value = nextLocale;
+        let pref = LOCALE_PREFERENCES.find((entry) => entry.locale === nextLocale);
+        if (!pref) {
+          calendar.value = CALENDARS[0].key;
+          return;
+        }
+        calendar.value = pref.ordering.split(' ')[0];
+      };
+      let readLocaleValue = (event: Event) => {
+        let target = event.target;
+        return target instanceof HTMLSelectElement ? target.value : LOCALE_PREFERENCES[0].locale;
+      };
+
+      return {
+        args,
+        calendar,
+        isDateUnavailable,
+        locale,
+        localePreferences: LOCALE_PREFERENCES,
+        otherCalendars,
+        preferredCalendars,
+        readLocaleValue,
+        updateLocale
+      };
+    },
+    template: `
+      <div style="display: grid; gap: 12px; max-width: 540px;">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <label style="display: grid; gap: 4px;">
+            <span>Locale</span>
+            <select :value="locale" @change="updateLocale(readLocaleValue($event))">
+              <option v-for="item in localePreferences" :key="item.locale" :value="item.locale">{{item.label}}</option>
+            </select>
+          </label>
+          <label style="display: grid; gap: 4px;">
+            <span>Calendar</span>
+            <select v-model="calendar">
+              <optgroup label="Preferred">
+                <option v-for="item in preferredCalendars" :key="item.key" :value="item.key">{{item.name}}</option>
+              </optgroup>
+              <optgroup label="Other">
+                <option v-for="item in otherCalendars" :key="item.key" :value="item.key">{{item.name}}</option>
+              </optgroup>
+            </select>
+          </label>
+        </div>
+        <DatePicker
+          v-bind="args"
+          :is-date-unavailable="isDateUnavailable" />
+      </div>
+    `
+  };
+}
+
+function renderEventsExample(args: StoryArgs) {
+  return {
+    components: {DatePicker},
+    setup() {
+      let locale = ref(LOCALE_PREFERENCES[0].locale);
+      let calendar = ref(CALENDARS[0].key);
+      let onBlur = action('onBlur');
+      let onFocus = action('onFocus');
+      let onFocusChange = action('onFocusChange');
+      let onKeyDown = action('onKeyDown');
+      let onKeyUp = action('onKeyUp');
+      let onOpenChange = action('onOpenChange');
+
+      let preferredCalendars = computed(() => {
+        let pref = LOCALE_PREFERENCES.find((entry) => entry.locale === locale.value);
+        if (!pref) {
+          return [CALENDARS[0]];
+        }
+        return pref.ordering
+          .split(' ')
+          .map((key) => CALENDARS.find((calendarItem) => calendarItem.key === key))
+          .filter((calendarItem): calendarItem is {key: string, name: string} => Boolean(calendarItem));
+      });
+
+      let otherCalendars = computed(() => CALENDARS.filter((calendarItem) => !preferredCalendars.value.some((preferred) => preferred.key === calendarItem.key)));
+
+      let updateLocale = (nextLocale: string) => {
+        locale.value = nextLocale;
+        let pref = LOCALE_PREFERENCES.find((entry) => entry.locale === nextLocale);
+        if (!pref) {
+          calendar.value = CALENDARS[0].key;
+          return;
+        }
+        calendar.value = pref.ordering.split(' ')[0];
+      };
+      let readLocaleValue = (event: Event) => {
+        let target = event.target;
+        return target instanceof HTMLSelectElement ? target.value : LOCALE_PREFERENCES[0].locale;
+      };
+
+      return {
+        args,
+        calendar,
+        locale,
+        localePreferences: LOCALE_PREFERENCES,
+        otherCalendars,
+        onBlur,
+        onFocus,
+        onFocusChange,
+        onKeyDown,
+        onKeyUp,
+        onOpenChange,
+        preferredCalendars,
+        readLocaleValue,
+        updateLocale
+      };
+    },
+    template: `
+      <div style="display: grid; gap: 12px; max-width: 540px;" @keydown="onKeyDown($event)" @keyup="onKeyUp($event)">
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <label style="display: grid; gap: 4px;">
+            <span>Locale</span>
+            <select :value="locale" @change="updateLocale(readLocaleValue($event))">
+              <option v-for="item in localePreferences" :key="item.locale" :value="item.locale">{{item.label}}</option>
+            </select>
+          </label>
+          <label style="display: grid; gap: 4px;">
+            <span>Calendar</span>
+            <select v-model="calendar">
+              <optgroup label="Preferred">
+                <option v-for="item in preferredCalendars" :key="item.key" :value="item.key">{{item.name}}</option>
+              </optgroup>
+              <optgroup label="Other">
+                <option v-for="item in otherCalendars" :key="item.key" :value="item.key">{{item.name}}</option>
+              </optgroup>
+            </select>
+          </label>
+        </div>
+        <DatePicker
+          v-bind="args"
+          @focus="onFocus($event); onFocusChange(true)"
+          @blur="onBlur($event); onFocusChange(false)"
+          @open="onOpenChange(true)"
+          @close="onOpenChange(false)" />
+      </div>
+    `
+  };
+}
+
+function renderCustomCalendarExample(args: StoryArgs) {
+  return {
+    components: {DatePicker},
+    setup() {
+      return {args};
+    },
+    template: '<DatePicker label="Custom 4-5-4 calendar" v-bind="args" style="max-width: calc(100vw - 40px);" />'
   };
 }
 
@@ -501,7 +608,7 @@ export const ContextualHelpStory: Story = {
 };
 
 export const CustomCalendar: Story = {
-  render: (args) => renderCalendarPreferenceExample({
+  render: (args) => renderCustomCalendarExample({
     ...args,
     modelValue: '2024-02-13'
   })

@@ -89,14 +89,15 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - Components: ContextualHelp
   - [x] Story: ContextualHelp.stories.ts
   - Evidence: React/Vue story-id parity is zero for `contextualhelp--*` (`react=4`, `vue=4`, diff `0/0`) from React `dist/ea2e442892f4f41b6bee35a0048cee7c4d266dc6/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue ContextualHelp internals were aligned in `packages/@vue-spectrum/contextualhelp/src/index.ts` by removing Vue-only backdrop/header/close-button behavior, restoring React-equivalent popover/dialog structure and classes (`spectrum-Popover`, `spectrum-Dialog`, `react-spectrum-ContextualHelp-*`), importing missing Spectrum popover/dialog CSS, preserving label/labelledby trigger contracts, and supporting placement aliases plus offset/crossOffset positioning behavior; stories were aligned to the React story contract in `packages/@vue-spectrum/contextualhelp/stories/ContextualHelp.stories.ts` (direct JSX-equivalent content/footer templates and React-equivalent disabled Spectrum button composition for `with button`); regression selectors/assertions were updated in `starters/vue/src/components.spec.ts`, `starters/vue/src/composition.spec.ts`, and `starters/vue/src/storybook-parity.spec.ts` to assert React-structure selectors/escape+outside-close behavior; full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`) with refreshed side-by-side screenshot evidence in `.tmp/contextualhelp-parity-latest/` and `.tmp/contextualhelp-parity-open/` (open-state file-size deltas reduced to `0.60%–2.33%`).
-- [ ] 1.16 `@vue-spectrum/datepicker`
-  - Components: DateRangePicker
-  - [ ] Story: DateField.stories.ts
-  - [ ] Story: DatePicker.stories.ts
-  - [ ] Story: DateRangePicker.stories.ts
-  - [ ] Story: DateRangePickerStyling.stories.ts
-  - [ ] Story: TimeField.stories.ts
-  - [ ] Story: TimeFieldStyling.stories.ts
+- [x] 1.16 `@vue-spectrum/datepicker`
+  - Components: DateField, DatePicker, DateRangePicker, TimeField
+  - [x] Story: DateField.stories.ts
+  - [x] Story: DatePicker.stories.ts
+  - [x] Story: DateRangePicker.stories.ts
+  - [x] Story: DateRangePickerStyling.stories.ts
+  - [x] Story: TimeField.stories.ts
+  - [x] Story: TimeFieldStyling.stories.ts
+  - Evidence: React/Vue story-id parity is zero for the datepicker scope (`date-and-time-datefield--*`, `date-and-time-datepicker--*`, `date-and-time-daterangepicker--*`, `date-and-time-daterangepicker-styling--*`, `date-and-time-timefield--*`, `date-and-time-timefield-styling--*`; `react=112`, `vue=112`) from React `dist/ea2e442892f4f41b6bee35a0048cee7c4d266dc6/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue DatePicker internals were aligned in `packages/@vue-spectrum/datepicker/src/index.ts` by importing missing Spectrum dialog/popover CSS, replacing placeholder popover text with real `Calendar`/`RangeCalendar` content, supporting controlled/uncontrolled open props (`defaultOpen`, `isOpen`, `open`) with `open`/`close`/`openChange` emits, wiring `firstDayOfWeek`/`isDateUnavailable`/`maxVisibleMonths`, restoring input placeholder behavior, and enforcing hidden popover display and non-open role semantics to avoid overlay leakage; datepicker styles were aligned in `packages/@vue-spectrum/datepicker/src/styles.css` by adding relative overlay anchors and removing fieldset chrome for range picker; stories were tightened in `packages/@vue-spectrum/datepicker/stories/DateField.stories.ts`, `DatePicker.stories.ts`, `DateRangePicker.stories.ts`, and `DateRangePickerStyling.stories.ts` to match React composition contracts (locale/calendar control wrappers in default families, custom-calendar stories without wrappers, real `isDateUnavailable` callback wiring, max-visible-month stories, and scrollable styling wrapper behavior); regression coverage in `starters/vue/src/storybook-parity.spec.ts` was updated for custom-calendar wrapper contracts and popover dismiss behavior; refreshed side-by-side captures in `.tmp/datepicker-parity-current2/` show key stories within low delta (`datefield--default 0.11%`, `datepicker--default 3.02%`, `datepicker--custom-calendar 4.57%`, `datepicker--is-date-unavailable 1.21%`, `daterangepicker--default 0.81%`, `daterangepicker--custom-calendar 1.70%`, `daterangepicker-styling--in-scrollable-container 5.78%`), and full-scope size delta summary improved to average `9.09%` (median `6.57%`); full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
 - [ ] 1.17 `@vue-spectrum/dialog`
   - Components: AlertDialog, Dialog, DialogContainer, DialogTrigger
   - [ ] Story: AlertDialog.stories.ts

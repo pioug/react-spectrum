@@ -16,6 +16,18 @@
    max-width: 100%;
  }
 
+.vs-date-picker {
+  position: relative;
+}
+
+.vs-date-range-picker {
+  position: relative;
+  border: 0;
+  margin: 0;
+  min-inline-size: 0;
+  padding: 0;
+}
+
 .react-spectrum-Datepicker-startField {
   width: auto;
   padding-inline-end: var(--spectrum-global-dimension-size-100);

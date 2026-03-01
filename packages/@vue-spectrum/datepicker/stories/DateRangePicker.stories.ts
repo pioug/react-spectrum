@@ -78,11 +78,14 @@ function withRange(args: StoryArgs, modelValue: DateRangeValue): StoryArgs {
   };
 }
 
-function toComparableDate(input: string): string {
-  if (!input) {
-    return '';
+function toComparableDate(input: string | Date): string {
+  if (input instanceof Date && !Number.isNaN(input.valueOf())) {
+    return input.toISOString().slice(0, 10);
   }
-  return input.slice(0, 10);
+  if (typeof input === 'string') {
+    return input.slice(0, 10);
+  }
+  return '';
 }
 
 function overlaps(rangeA: DateRangeValue, rangeB: DateRangeValue): boolean {
@@ -98,109 +101,16 @@ function overlaps(rangeA: DateRangeValue, rangeB: DateRangeValue): boolean {
   return endA >= startB && startA <= endB;
 }
 
+function isUnavailableDate(date: Date): boolean {
+  let comparableDate = toComparableDate(date);
+  return UNAVAILABLE_RANGES.some((interval) => comparableDate >= interval.start && comparableDate <= interval.end);
+}
+
 export function render(args: StoryArgs = {}) {
-  return {
-    components: {DateRangePicker},
-    setup() {
-      return {args};
-    },
-    template: `
-      <div>
-        <DateRangePicker label="Date range" v-bind="args" style="max-width: calc(100vw - 40px);" />
-      </div>
-    `
-  };
+  return renderWithLocaleControls(args);
 }
 
-function renderControlledExample(args: StoryArgs) {
-  return {
-    components: {ActionButton, DateRangePicker},
-    setup() {
-      let value = ref<DateRangeValue>({start: '', end: ''});
-
-      return {
-        args,
-        onChange: action('onChange'),
-        value
-      };
-    },
-    template: `
-      <div style="display: grid; gap: 8px; justify-items: start;">
-        <DateRangePicker
-          v-bind="args"
-          label="Controlled"
-          :model-value="value"
-          @update:model-value="value = $event"
-          @change="onChange($event)" />
-        <ActionButton @press="value = {start: '2020-02-03', end: '2020-05-04'}">Change value</ActionButton>
-        <ActionButton @press="value = {start: '', end: ''}">Clear</ActionButton>
-      </div>
-    `
-  };
-}
-
-function renderUnavailableDatesExample(args: StoryArgs) {
-  return {
-    components: {DateRangePicker},
-    setup() {
-      let value = ref<DateRangeValue>({start: '', end: ''});
-      let isInvalid = computed(() => {
-        return UNAVAILABLE_RANGES.some((interval) => overlaps(value.value, interval));
-      });
-
-      return {
-        args,
-        isInvalid,
-        onChange: action('change'),
-        value
-      };
-    },
-    template: `
-      <DateRangePicker
-        v-bind="args"
-        :model-value="value"
-        :is-invalid="isInvalid"
-        :validation-state="isInvalid ? 'invalid' : undefined"
-        description="Selected ranges may not include unavailable dates."
-        @update:model-value="value = $event"
-        @change="onChange($event)" />
-    `
-  };
-}
-
-function renderEventExample(args: StoryArgs) {
-  return {
-    components: {DateRangePicker},
-    setup() {
-      let onBlur = action('onBlur');
-      let onFocus = action('onFocus');
-      let onOpenChange = action('onOpenChange');
-      let onKeyDown = action('onKeyDown');
-      let onKeyUp = action('onKeyUp');
-
-      return {
-        args,
-        onBlur,
-        onFocus,
-        onKeyDown,
-        onKeyUp,
-        onOpenChange
-      };
-    },
-    template: `
-      <div @keydown="onKeyDown($event)" @keyup="onKeyUp($event)">
-        <DateRangePicker
-          v-bind="args"
-          @focus="onFocus($event)"
-          @blur="onBlur($event)"
-          @open="onOpenChange(true)"
-          @close="onOpenChange(false)" />
-      </div>
-    `
-  };
-}
-
-function renderCalendarPreferencesExample(args: StoryArgs) {
+function renderWithLocaleControls(args: StoryArgs) {
   return {
     components: {DateRangePicker},
     setup() {
@@ -267,10 +177,107 @@ function renderCalendarPreferencesExample(args: StoryArgs) {
             </select>
           </label>
         </div>
+        <DateRangePicker label="Date range" v-bind="args" style="max-width: calc(100vw - 40px);" />
+      </div>
+    `
+  };
+}
+
+function renderCustomCalendarExample(args: StoryArgs) {
+  return {
+    components: {DateRangePicker},
+    setup() {
+      return {args};
+    },
+    template: '<DateRangePicker label="Custom 4-5-4 calendar" v-bind="args" style="max-width: calc(100vw - 40px);" />'
+  };
+}
+
+function renderControlledExample(args: StoryArgs) {
+  return {
+    components: {ActionButton, DateRangePicker},
+    setup() {
+      let value = ref<DateRangeValue>({start: '', end: ''});
+
+      return {
+        args,
+        onChange: action('onChange'),
+        value
+      };
+    },
+    template: `
+      <div style="display: grid; gap: 8px; justify-items: start;">
         <DateRangePicker
           v-bind="args"
-          label="Custom 4-5-4 calendar"
-          :description="'Locale: ' + (locale || 'default') + ', calendar: ' + calendar" />
+          label="Controlled"
+          :model-value="value"
+          @update:model-value="value = $event"
+          @change="onChange($event)" />
+        <ActionButton @press="value = {start: '2020-02-03', end: '2020-05-04'}">Change value</ActionButton>
+        <ActionButton @press="value = {start: '', end: ''}">Clear</ActionButton>
+      </div>
+    `
+  };
+}
+
+function renderUnavailableDatesExample(args: StoryArgs) {
+  return {
+    components: {DateRangePicker},
+    setup() {
+      let value = ref<DateRangeValue>({start: '', end: ''});
+      let isInvalid = computed(() => {
+        return UNAVAILABLE_RANGES.some((interval) => overlaps(value.value, interval));
+      });
+
+      return {
+        args,
+        isInvalid,
+        isUnavailableDate,
+        onChange: action('change'),
+        value
+      };
+    },
+    template: `
+      <DateRangePicker
+        v-bind="args"
+        :model-value="value"
+        :is-date-unavailable="isUnavailableDate"
+        :is-invalid="isInvalid"
+        :validation-state="isInvalid ? 'invalid' : undefined"
+        description="Selected ranges may not include unavailable dates."
+        @update:model-value="value = $event"
+        @change="onChange($event)" />
+    `
+  };
+}
+
+function renderEventExample(args: StoryArgs) {
+  return {
+    components: {DateRangePicker},
+    setup() {
+      let onBlur = action('onBlur');
+      let onFocus = action('onFocus');
+      let onOpenChange = action('onOpenChange');
+      let onKeyDown = action('onKeyDown');
+      let onKeyUp = action('onKeyUp');
+
+      return {
+        args,
+        onBlur,
+        onFocus,
+        onKeyDown,
+        onKeyUp,
+        onOpenChange
+      };
+    },
+    template: `
+      <div @keydown="onKeyDown($event)" @keyup="onKeyUp($event)">
+        <DateRangePicker
+          v-bind="args"
+          @focus="onFocus($event)"
+          @blur="onBlur($event)"
+          @open="onOpenChange(true)"
+          @close="onOpenChange(false)" />
       </div>
     `
   };
@@ -351,6 +358,7 @@ export const IsDateUnavailable: Story = {
 export const IsDateAvailableAllowsNonContiguousRanges: Story = {
   render: (args) => render({
     ...args,
+    isDateUnavailable: (date: Date) => date.getDay() === 0 || date.getDay() === 6,
     description: 'Allows non-contiguous ranges while treating weekends as unavailable.'
   }),
 };
@@ -365,6 +373,7 @@ export const PlaceholderValue198011: Story = {
 export const MaxVisibleMonths2: Story = {
   render: (args) => render({
     ...args,
+    maxVisibleMonths: 2,
     description: 'Max visible months: 2'
   }),
 };
@@ -372,6 +381,7 @@ export const MaxVisibleMonths2: Story = {
 export const MaxVisibleMonths3: Story = {
   render: (args) => render({
     ...args,
+    maxVisibleMonths: 3,
     description: 'Max visible months: 3'
   }),
 };
@@ -388,5 +398,5 @@ export const AllTheEvents: Story = {
 };
 
 export const CustomCalendar: Story = {
-  render: (args) => renderCalendarPreferencesExample(args),
+  render: (args) => renderCustomCalendarExample(args),
 };

@@ -1,9 +1,12 @@
 import '@adobe/spectrum-css-temp/components/button/vars.css';
+import '@adobe/spectrum-css-temp/components/dialog/vars.css';
 import '@adobe/spectrum-css-temp/components/fieldlabel/vars.css';
+import '@adobe/spectrum-css-temp/components/popover/vars.css';
 import '@adobe/spectrum-css-temp/components/textfield/vars.css';
 import '@adobe/spectrum-css-temp/components/inputgroup/vars.css';
+import {Calendar, RangeCalendar} from '@vue-spectrum/calendar';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, type PropType, ref} from 'vue';
+import {computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, type PropType, ref, watch} from 'vue';
 import './styles.css';
 import {getEventTarget} from '@vue-aria/utils';
 const buttonStyles: {[key: string]: string} = {};
@@ -101,9 +104,17 @@ function buildSingleField(
         type: String,
         default: ''
       },
+      defaultOpen: {
+        type: Boolean,
+        default: false
+      },
       disabled: {
         type: Boolean,
         default: false
+      },
+      firstDayOfWeek: {
+        type: String,
+        default: 'sun'
       },
       id: {
         type: String,
@@ -117,9 +128,17 @@ function buildSingleField(
         type: Boolean as PropType<boolean | undefined>,
         default: undefined
       },
+      isDateUnavailable: {
+        type: Function as PropType<(date: Date) => boolean>,
+        default: undefined
+      },
       isInvalid: {
         type: Boolean,
         default: false
+      },
+      isOpen: {
+        type: Boolean as PropType<boolean | undefined>,
+        default: undefined
       },
       isQuiet: {
         type: Boolean,
@@ -141,6 +160,10 @@ function buildSingleField(
         type: String,
         default: ''
       },
+      maxVisibleMonths: {
+        type: Number,
+        default: 1
+      },
       min: {
         type: String,
         default: ''
@@ -152,6 +175,10 @@ function buildSingleField(
       placeholder: {
         type: String,
         default: ''
+      },
+      open: {
+        type: Boolean as PropType<boolean | undefined>,
+        default: undefined
       },
       readOnly: {
         type: Boolean,
@@ -191,13 +218,21 @@ function buildSingleField(
       let isReadOnly = computed(() => resolveIsReadOnly(props));
       let isRequired = computed(() => resolveIsRequired(props));
       let isPlaceholder = computed(() => props.modelValue === '');
+      let placeholderText = computed(() => {
+        if (props.placeholder) {
+          return props.placeholder;
+        }
+
+        return inputType === 'time' ? '--:--' : 'mm / dd / yyyy';
+      });
 
       let isFocused = ref(false);
       let isFocusVisible = ref(false);
       let isHovered = ref(false);
-      let isOpen = ref(false);
+      let isOpen = ref(Boolean(props.defaultOpen));
       let rootRef = ref<HTMLElement | null>(null);
       let triggerRef = ref<HTMLButtonElement | null>(null);
+      let isOpenControlled = computed(() => props.isOpen !== undefined || props.open !== undefined);
 
       let groupClassName = computed(() => classNames(
         inputGroupStyles,
@@ -250,6 +285,16 @@ function buildSingleField(
         },
         classNames(inputGroupStyles, 'spectrum-FieldButton')
       ));
+      let popoverClassName = computed(() => classNames(
+        {},
+        'spectrum-Popover',
+        'spectrum-Popover--bottom',
+        'react-spectrum-Popover',
+        {
+          'is-open': isOpen.value,
+          'is-open--bottom': isOpen.value
+        }
+      ));
 
       let rootAttrs = computed(() => {
         let next: Record<string, unknown> = {};
@@ -285,14 +330,43 @@ function buildSingleField(
         return undefined;
       });
 
+      watch(() => props.isOpen, (nextValue) => {
+        if (nextValue !== undefined) {
+          isOpen.value = nextValue;
+        }
+      }, {immediate: true});
+
+      watch(() => props.open, (nextValue) => {
+        if (nextValue !== undefined && props.isOpen === undefined) {
+          isOpen.value = nextValue;
+        }
+      }, {immediate: true});
+
+      let setOpen = (nextValue: boolean) => {
+        if (isOpen.value === nextValue) {
+          return;
+        }
+
+        if (!isOpenControlled.value) {
+          isOpen.value = nextValue;
+        } else {
+          isOpen.value = nextValue;
+        }
+
+        if (nextValue) {
+          emit('open');
+        } else {
+          emit('close');
+        }
+        emit('openChange', nextValue);
+      };
+
       let openPopover = () => {
         if (!options.includeButton || isOpen.value || isDisabled.value || isReadOnly.value) {
           return;
         }
 
-        isOpen.value = true;
-        emit('open');
-        emit('openChange', true);
+        setOpen(true);
       };
 
       let closePopover = (restoreFocus = false) => {
@@ -300,9 +374,7 @@ function buildSingleField(
           return;
         }
 
-        isOpen.value = false;
-        emit('close');
-        emit('openChange', false);
+        setOpen(false);
         if (restoreFocus) {
           void nextTick(() => {
             triggerRef.value?.focus();
@@ -403,7 +475,7 @@ function buildSingleField(
               disabled: isDisabled.value,
               readonly: isReadOnly.value || undefined,
               required: isRequired.value || undefined,
-              placeholder: props.placeholder || undefined,
+              placeholder: placeholderText.value,
               'aria-label': ariaLabel.value,
               'aria-labelledby': ariaLabelledBy.value,
               'aria-describedby': descriptionId.value,
@@ -425,11 +497,6 @@ function buildSingleField(
                 emit('blur', event);
               }
             }),
-            h('span', {
-              class: classNames(datepickerStyles, 'react-spectrum-DatePicker-placeholder'),
-              hidden: !isPlaceholder.value,
-              'aria-hidden': 'true'
-            }, props.placeholder || '--'),
             isInvalid.value
               ? h('span', {
                 class: classNames(textfieldStyles, 'spectrum-Textfield-validationIcon'),
@@ -486,15 +553,44 @@ function buildSingleField(
             : null
         ]),
         options.includeButton
-          ? h('div', {
+          ? h('section', {
             id: popoverId.value,
-            class: classNames(datepickerStyles, 'react-spectrum-Datepicker-dialog'),
+            class: [
+              popoverClassName.value,
+              classNames(datepickerStyles, 'react-spectrum-Datepicker-dialog')
+            ],
+            role: isOpen.value ? 'dialog' : 'presentation',
             hidden: !isOpen.value,
-            'aria-hidden': isOpen.value ? 'false' : 'true'
+            'aria-hidden': isOpen.value ? 'false' : 'true',
+            'data-vs-overlay-surface': isOpen.value ? 'true' : undefined,
+            style: {
+              display: isOpen.value ? 'inline-flex' : 'none',
+              left: '0',
+              position: 'absolute',
+              top: 'calc(100% + 4px)',
+              zIndex: '1'
+            }
           }, [
             h('div', {
-              class: classNames(datepickerStyles, 'react-spectrum-Datepicker-dialogContent')
-            }, 'Calendar')
+              class: [
+                classNames({}, 'spectrum-Dialog', 'spectrum-Dialog--small', 'react-spectrum-Dialog'),
+                classNames(datepickerStyles, 'react-spectrum-Datepicker-dialogContent')
+              ]
+            }, [
+              h(Calendar, {
+                firstDayOfWeek: props.firstDayOfWeek,
+                isDateUnavailable: props.isDateUnavailable,
+                max: props.max || undefined,
+                min: props.min || undefined,
+                modelValue: props.modelValue || undefined,
+                visibleMonths: props.maxVisibleMonths,
+                onChange: (nextValue: string) => {
+                  emit('update:modelValue', nextValue);
+                  emit('change', nextValue);
+                  closePopover(true);
+                }
+              })
+            ])
           ])
           : null,
         props.description
@@ -529,9 +625,17 @@ export const DateRangePicker = defineComponent({
       type: String,
       default: ''
     },
+    defaultOpen: {
+      type: Boolean,
+      default: false
+    },
     disabled: {
       type: Boolean,
       default: false
+    },
+    firstDayOfWeek: {
+      type: String,
+      default: 'sun'
     },
     id: {
       type: String,
@@ -545,9 +649,17 @@ export const DateRangePicker = defineComponent({
       type: Boolean as PropType<boolean | undefined>,
       default: undefined
     },
+    isDateUnavailable: {
+      type: Function as PropType<(date: Date) => boolean>,
+      default: undefined
+    },
     isInvalid: {
       type: Boolean,
       default: false
+    },
+    isOpen: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
     },
     isQuiet: {
       type: Boolean,
@@ -569,6 +681,10 @@ export const DateRangePicker = defineComponent({
       type: String,
       default: ''
     },
+    maxVisibleMonths: {
+      type: Number,
+      default: 1
+    },
     min: {
       type: String,
       default: ''
@@ -583,6 +699,10 @@ export const DateRangePicker = defineComponent({
     placeholder: {
       type: String,
       default: ''
+    },
+    open: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
     },
     readOnly: {
       type: Boolean,
@@ -617,12 +737,14 @@ export const DateRangePicker = defineComponent({
     let isInvalid = computed(() => resolveIsInvalid(props, isDisabled.value));
     let isReadOnly = computed(() => resolveIsReadOnly(props));
     let isRequired = computed(() => resolveIsRequired(props));
+    let placeholderText = computed(() => props.placeholder || 'mm / dd / yyyy');
     let isFocused = ref(false);
     let isFocusVisible = ref(false);
     let isHovered = ref(false);
-    let isOpen = ref(false);
+    let isOpen = ref(Boolean(props.defaultOpen));
     let rootRef = ref<HTMLElement | null>(null);
     let triggerRef = ref<HTMLButtonElement | null>(null);
+    let isOpenControlled = computed(() => props.isOpen !== undefined || props.open !== undefined);
 
     let groupClassName = computed(() => classNames(
       inputGroupStyles,
@@ -673,6 +795,16 @@ export const DateRangePicker = defineComponent({
       },
       classNames(inputGroupStyles, 'spectrum-FieldButton')
     ));
+    let popoverClassName = computed(() => classNames(
+      {},
+      'spectrum-Popover',
+      'spectrum-Popover--bottom',
+      'react-spectrum-Popover',
+      {
+        'is-open': isOpen.value,
+        'is-open--bottom': isOpen.value
+      }
+    ));
 
     let rootAttrs = computed(() => {
       let next: Record<string, unknown> = {};
@@ -718,6 +850,18 @@ export const DateRangePicker = defineComponent({
       return fieldAriaLabelledBy.value;
     });
 
+    watch(() => props.isOpen, (nextValue) => {
+      if (nextValue !== undefined) {
+        isOpen.value = nextValue;
+      }
+    }, {immediate: true});
+
+    watch(() => props.open, (nextValue) => {
+      if (nextValue !== undefined && props.isOpen === undefined) {
+        isOpen.value = nextValue;
+      }
+    }, {immediate: true});
+
     let setFocusState = (event: FocusEvent, focused: boolean) => {
       isFocused.value = focused;
       if (focused) {
@@ -739,14 +883,31 @@ export const DateRangePicker = defineComponent({
       }
     };
 
+    let setOpen = (nextValue: boolean) => {
+      if (isOpen.value === nextValue) {
+        return;
+      }
+
+      if (!isOpenControlled.value) {
+        isOpen.value = nextValue;
+      } else {
+        isOpen.value = nextValue;
+      }
+
+      if (nextValue) {
+        emit('open');
+      } else {
+        emit('close');
+      }
+      emit('openChange', nextValue);
+    };
+
     let openPopover = () => {
       if (isOpen.value || isDisabled.value || isReadOnly.value) {
         return;
       }
 
-      isOpen.value = true;
-      emit('open');
-      emit('openChange', true);
+      setOpen(true);
     };
 
     let closePopover = (restoreFocus = false) => {
@@ -754,9 +915,7 @@ export const DateRangePicker = defineComponent({
         return;
       }
 
-      isOpen.value = false;
-      emit('close');
-      emit('openChange', false);
+      setOpen(false);
       if (restoreFocus) {
         void nextTick(() => {
           triggerRef.value?.focus();
@@ -845,7 +1004,7 @@ export const DateRangePicker = defineComponent({
             disabled: isDisabled.value,
             readonly: isReadOnly.value || undefined,
             required: isRequired.value || undefined,
-            placeholder: props.placeholder || undefined,
+            placeholder: placeholderText.value,
             'aria-label': 'Start date',
             'aria-labelledby': inputAriaLabelledBy.value,
             'aria-describedby': descriptionId.value,
@@ -880,7 +1039,7 @@ export const DateRangePicker = defineComponent({
             disabled: isDisabled.value,
             readonly: isReadOnly.value || undefined,
             required: isRequired.value || undefined,
-            placeholder: props.placeholder || undefined,
+            placeholder: placeholderText.value,
             'aria-label': 'End date',
             'aria-labelledby': inputAriaLabelledBy.value,
             'aria-describedby': descriptionId.value,
@@ -944,15 +1103,46 @@ export const DateRangePicker = defineComponent({
           ])
         ])
       ]),
-      h('div', {
+      h('section', {
         id: popoverId.value,
-        class: classNames(datepickerStyles, 'react-spectrum-Datepicker-dialog'),
+        class: [
+          popoverClassName.value,
+          classNames(datepickerStyles, 'react-spectrum-Datepicker-dialog')
+        ],
+        role: isOpen.value ? 'dialog' : 'presentation',
         hidden: !isOpen.value,
-        'aria-hidden': isOpen.value ? 'false' : 'true'
+        'aria-hidden': isOpen.value ? 'false' : 'true',
+        'data-vs-overlay-surface': isOpen.value ? 'true' : undefined,
+        style: {
+          display: isOpen.value ? 'inline-flex' : 'none',
+          left: '0',
+          position: 'absolute',
+          top: 'calc(100% + 4px)',
+          zIndex: '1'
+        }
       }, [
         h('div', {
-          class: classNames(datepickerStyles, 'react-spectrum-Datepicker-dialogContent')
-        }, 'Range calendar')
+          class: [
+            classNames({}, 'spectrum-Dialog', 'spectrum-Dialog--small', 'react-spectrum-Dialog'),
+            classNames(datepickerStyles, 'react-spectrum-Datepicker-dialogContent')
+          ]
+        }, [
+          h(RangeCalendar, {
+            firstDayOfWeek: props.firstDayOfWeek,
+            isDateUnavailable: props.isDateUnavailable,
+            max: props.max || undefined,
+            min: props.min || undefined,
+            modelValue: props.modelValue,
+            visibleMonths: props.maxVisibleMonths,
+            onChange: (nextValue: DateRangeValue) => {
+              emit('update:modelValue', nextValue);
+              emit('change', nextValue);
+              if (nextValue.start && nextValue.end) {
+                closePopover(true);
+              }
+            }
+          })
+        ])
       ]),
       props.description
         ? h('span', {
