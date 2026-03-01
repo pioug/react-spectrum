@@ -60,15 +60,6 @@ governing permissions and limitations under the License.
   touch-action: manipulation;
   cursor: default;
 
-  &:checked + .spectrum-ToggleSwitch-switch {
-    [dir='ltr'] &::before {
-      transform: translateX(calc(var(--spectrum-switch-track-width) - 100%));
-    }
-    [dir='rtl'] &::before {
-      transform: translateX(calc(100% - var(--spectrum-switch-track-width)));
-    }
-  }
-
   &:disabled,
   &[disabled] {
     cursor: default;
@@ -81,6 +72,14 @@ governing permissions and limitations under the License.
       }
     }
   }
+}
+
+[dir='ltr'] .spectrum-ToggleSwitch-input:checked + .spectrum-ToggleSwitch-switch::before {
+  transform: translateX(calc(var(--spectrum-switch-track-width) - 100%));
+}
+
+[dir='rtl'] .spectrum-ToggleSwitch-input:checked + .spectrum-ToggleSwitch-switch::before {
+  transform: translateX(calc(100% - var(--spectrum-switch-track-width)));
 }
 
 .spectrum-ToggleSwitch-label {

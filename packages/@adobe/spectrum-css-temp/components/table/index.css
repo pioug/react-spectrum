@@ -270,14 +270,14 @@ svg.spectrum-Table-sortedIcon {
   justify-content: center;
   outline: none;
   transition: transform ease var(--spectrum-global-animation-duration-100);
-  &.is-open {
-    [dir='ltr'] & {
-      transform: rotate(90deg);
-    }
-    [dir='rtl'] & {
-      transform: rotate(-90deg);
-    }
-  }
+}
+
+[dir='ltr'] .spectrum-Table-expandButton.is-open {
+  transform: rotate(90deg);
+}
+
+[dir='rtl'] .spectrum-Table-expandButton.is-open {
+  transform: rotate(-90deg);
 }
 
 .spectrum-Table-cell--hideHeader {

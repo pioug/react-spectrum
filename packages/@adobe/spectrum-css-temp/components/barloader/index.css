@@ -111,13 +111,14 @@ governing permissions and limitations under the License.
   animation-iteration-count: infinite;
   animation-timing-function: var(--spectrum-barloader-large-indeterminate-animation-ease);
   will-change: transform;
+}
 
-  [dir='ltr'] & {
-    animation-name: indeterminate-loop-ltr;
-  }
-  [dir='rtl'] & {
-    animation-name: indeterminate-loop-rtl;
-  }
+[dir='ltr'] .spectrum-BarLoader--indeterminate .spectrum-BarLoader-fill {
+  animation-name: indeterminate-loop-ltr;
+}
+
+[dir='rtl'] .spectrum-BarLoader--indeterminate .spectrum-BarLoader-fill {
+  animation-name: indeterminate-loop-rtl;
 }
 
 @keyframes indeterminate-loop-ltr {

@@ -121,19 +121,6 @@ governing permissions and limitations under the License.
 
 .spectrum-Accordion-item {
   &.is-expanded {
-    > .spectrum-Accordion-itemHeading {
-      > .spectrum-Accordion-itemHeader {
-        > .spectrum-Accordion-itemIndicator {
-          [dir='ltr'] & {
-            transform: rotate(90deg);
-          }
-          [dir='rtl'] & {
-            transform: rotate(-90deg);
-          }
-        }
-      }
-    }
-
     > .spectrum-Accordion-itemHeader::after {
       /* No bottom border when expanded, so be less tall */
       height: var(--spectrum-accordion-item-height-actual);
@@ -149,4 +136,12 @@ governing permissions and limitations under the License.
       cursor: default;
     }
   }
+}
+
+[dir='ltr'] .spectrum-Accordion-item.is-expanded > .spectrum-Accordion-itemHeading > .spectrum-Accordion-itemHeader > .spectrum-Accordion-itemIndicator {
+  transform: rotate(90deg);
+}
+
+[dir='rtl'] .spectrum-Accordion-item.is-expanded > .spectrum-Accordion-itemHeading > .spectrum-Accordion-itemHeader > .spectrum-Accordion-itemIndicator {
+  transform: rotate(-90deg);
 }
