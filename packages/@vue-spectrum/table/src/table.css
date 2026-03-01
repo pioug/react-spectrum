@@ -31,6 +31,14 @@
   min-width: 0;
 }
 
+.vs-table__table {
+  inline-size: 100%;
+}
+
+.vs-table:not(.spectrum-Table--quiet) .vs-table__table {
+  inline-size: calc(100% - var(--spectrum-table-border-size, 1px));
+}
+
 .vs-table__head-cell--selection,
 .vs-table__cell--selection {
   box-sizing: border-box;

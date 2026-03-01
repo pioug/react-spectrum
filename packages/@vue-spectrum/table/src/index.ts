@@ -676,6 +676,8 @@ export const Table = defineComponent({
               let nextRowId = rowIndex + 1 < renderedRows.value.length ? getRowId(renderedRows.value[rowIndex + 1], rowIndex + 1, props.rowKey) : null;
               let isPrevSelected = previousRowId != null ? selectedSet.value.has(previousRowId) : false;
               let isNextSelected = nextRowId != null ? selectedSet.value.has(nextRowId) : false;
+              let isFirstRow = rowIndex === 0;
+              let isLastRow = rowIndex === renderedRows.value.length - 1;
 
               let rowClassName = classNames(styles, 'spectrum-Table-row', {
                 'focus-ring': isRowFocused,
@@ -685,7 +687,9 @@ export const Table = defineComponent({
                 'is-hovered': isRowHovered,
                 'is-next-selected': isNextSelected,
                 'is-open': isRowOpen,
-                'is-selected': isRowSelected
+                'is-selected': isRowSelected,
+                'spectrum-Table-row--firstRow': isFirstRow,
+                'spectrum-Table-row--lastRow': isLastRow
               });
 
               return h('tr', {
