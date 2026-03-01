@@ -53,8 +53,20 @@
 .vs-table__head-cell {
   display: table-cell;
   height: 34px;
-  line-height: 0;
   vertical-align: middle;
+}
+
+.vs-table__head-cell-content {
+  align-items: center;
+  display: flex;
+  height: 34px;
+  line-height: 18.2px;
+}
+
+.vs-table__sort-button {
+  align-items: center;
+  display: flex;
+  height: 34px;
 }
 
 .vs-table__row.spectrum-Table-row.is-selected {
