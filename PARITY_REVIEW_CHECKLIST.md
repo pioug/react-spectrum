@@ -5,8 +5,8 @@ Generated: 2026-03-01T03:33:00+08:00
 Use this as a progression checklist for parity re-review. Mark each line when complete.
 
 ## Phase 0 - Gate
-- [ ] Run baseline gate: `yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`
-- [ ] Confirm story-id parity for the current batch before/after fixes
+- [x] Run baseline gate: `yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`
+- [x] Confirm story-id parity for the current batch before/after fixes
 - [ ] Overlay first-render token gate (dialog/overlays scope): verify at least one initially-open overlay story portals inside `.vs-provider` (not `body`) and computed modal/underlay surface backgrounds are non-transparent (theme tokens resolved)
 
 ## Phase 1 - @vue-spectrum Component Families + Stories
@@ -83,12 +83,12 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - [ ] Story: DateRangePickerStyling.stories.ts
   - [ ] Story: TimeField.stories.ts
   - [ ] Story: TimeFieldStyling.stories.ts
-- [ ] 1.17 `@vue-spectrum/dialog`
+- [x] 1.17 `@vue-spectrum/dialog`
   - Components: AlertDialog, Dialog, DialogContainer, DialogTrigger
-  - [ ] Story: AlertDialog.stories.ts
-  - [ ] Story: Dialog.stories.ts
-  - [ ] Story: DialogContainer.stories.ts
-  - [ ] Story: DialogTrigger.stories.ts
+  - [x] Story: AlertDialog.stories.ts
+  - [x] Story: Dialog.stories.ts
+  - [x] Story: DialogContainer.stories.ts
+  - [x] Story: DialogTrigger.stories.ts
 - [ ] 1.18 `@vue-spectrum/divider`
   - Components: Divider
   - [ ] Story: Divider.stories.ts

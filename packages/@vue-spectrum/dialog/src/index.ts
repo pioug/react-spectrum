@@ -450,10 +450,10 @@ export const AlertDialog = defineComponent({
       size: 'M',
       title: props.title
     }, {
-      divider: () => [h('hr', {class: 'vs-alert-dialog__divider'})],
+      divider: () => [h('hr', {class: 'spectrum-Dialog-divider'})],
       typeIcon: (props.variant === 'error' || props.variant === 'warning')
         ? () => [renderSpectrumIcon(
-          'spectrum-Icon spectrum-UIIcon-AlertMedium vs-alert-dialog__icon',
+          'spectrum-Icon spectrum-UIIcon-AlertMedium spectrum-Dialog-typeIcon',
           ALERT_ICON_PATH,
           {'aria-label': 'Alert'}
         )]
