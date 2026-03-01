@@ -1,5 +1,5 @@
 import type {Meta, StoryFn} from '@storybook/vue3-vite';
-import {VueComboBox} from 'vue-aria-components';
+import {VueComboBox} from '../src/components/VueComboBox';
 import {computed, ref} from 'vue';
 import '../../react-aria-components/stories/combobox-reproductions.css';
 import '../../react-aria-components/stories/styles.css';

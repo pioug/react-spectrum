@@ -591,7 +591,6 @@ Use this as a progression checklist for parity re-review. Mark each line when co
 
 ## Problems To Fix (Scan 2026-03-01, Sorted By Priority)
 - [ ] P0: No blocking gate failures found in this scan (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook` all exited successfully).
-- [ ] P2: `yarn build:vue:storybook` reports Rollup circular chunk warning for `VueComboBox` re-export through `packages/vue-aria-components/src/index.ts`.
 - [ ] P2: `yarn build:vue:storybook` reports CSS minification warnings (unsupported nesting transform target and `&button` nesting syntax warning).
 - [ ] P2: `yarn test:vue` emits runtime warnings to stderr (uncontrolled-to-controlled warning, jsdom navigation-not-implemented warning, repeated card focusability warnings).
 
