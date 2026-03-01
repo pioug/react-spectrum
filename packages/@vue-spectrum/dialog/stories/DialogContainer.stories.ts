@@ -2,6 +2,7 @@ import {ActionButton, Button} from '@vue-spectrum/button';
 import {ButtonGroup} from '@vue-spectrum/buttongroup';
 import {DialogContainer, useDialogContainer} from '../src';
 import {MenuTrigger} from '@vue-spectrum/menu';
+import {Heading} from '@vue-spectrum/text';
 import {defineComponent, ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
@@ -57,7 +58,7 @@ const DialogButtons = defineComponent({
 function renderDialogContainer(args: StoryArgs = {}, options: RenderOptions = {}) {
   let {useMenu = false} = options;
   return {
-    components: {ActionButton, DialogButtons, DialogContainer, MenuTrigger},
+    components: {ActionButton, DialogButtons, DialogContainer, MenuTrigger, Heading},
     setup() {
       let isOpen = ref(false);
       let onDismiss = () => {
@@ -87,7 +88,7 @@ function renderDialogContainer(args: StoryArgs = {}, options: RenderOptions = {}
         <ActionButton v-else @click="openDialog">Open dialog</ActionButton>
 
         <DialogContainer v-bind="args" :is-open="isOpen" @close="onDismiss">
-          <template #heading><h2>The Heading</h2></template>
+          <template #heading><Heading>The Heading</Heading></template>
           <template #header><div>The Header</div></template>
           <template #divider><hr /></template>
           <div>{{bodyText}}</div>
@@ -175,7 +176,7 @@ export const NestedDialogContainers: Story = {
           </template>
         </MenuTrigger>
         <DialogContainer :is-open="dialogKey !== null" is-dismissable @close="dismiss">
-          <template #heading><h2>{{dialogKey === 'doThis' ? 'This' : 'That'}}</h2></template>
+          <template #heading><Heading>{{dialogKey === 'doThis' ? 'This' : 'That'}}</Heading></template>
           <template #divider><hr /></template>
           <ActionButton auto-focus @click="toggleDialog">
             {{dialogKey === 'doThis' ? 'Do that' : 'Do this'}}

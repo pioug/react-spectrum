@@ -1,6 +1,7 @@
 import {ActionButton, Button} from '@vue-spectrum/button';
 import {AlertDialog, DialogTrigger} from '../src';
 import {MenuTrigger} from '@vue-spectrum/menu';
+import {Heading} from '@vue-spectrum/text';
 import {TooltipTrigger} from '@vue-spectrum/tooltip';
 import {useLocalizedStringFormatter} from '@vue-aria/i18n';
 import {action} from 'storybook/actions';
@@ -87,7 +88,7 @@ type Story = StoryObj<typeof meta>;
 
 function renderDialog(args: StoryArgs, content = DIALOG_BODY_TEXT) {
   return {
-    components: {ActionButton, Button, DialogTrigger},
+    components: {ActionButton, Button, DialogTrigger, Heading},
     setup() {
       let isOpen = ref(false);
       let openDialog = () => {
@@ -117,7 +118,7 @@ function renderDialog(args: StoryArgs, content = DIALOG_BODY_TEXT) {
             width: args.buttonWidth ? args.buttonWidth + 'px' : undefined
           }">Trigger</ActionButton>
         <DialogTrigger v-bind="args" :open="isOpen" @close="closeDialog">
-          <template #heading><h2>The Heading</h2></template>
+          <template #heading><Heading>The Heading</Heading></template>
           <template #header><div>The Header</div></template>
           <template #divider><hr /></template>
           <p>{{content}}</p>
@@ -269,7 +270,7 @@ export const NestedModalsFullscreentakeover: Story = {
 
 export const WithMenuTrigger: Story = {
   render: () => ({
-    components: {ActionButton, DialogTrigger, MenuTrigger},
+    components: {ActionButton, DialogTrigger, MenuTrigger, Heading},
     setup() {
       return {
         menuItems: [
@@ -285,7 +286,7 @@ export const WithMenuTrigger: Story = {
           <template #trigger="{open}">
             <ActionButton @click="open">Trigger</ActionButton>
           </template>
-          <template #heading><h2>The Heading</h2></template>
+          <template #heading><Heading>The Heading</Heading></template>
           <MenuTrigger :items="menuItems">
             <template #trigger="{toggle}">
               <ActionButton variant="secondary" @click="toggle">Test</ActionButton>
@@ -378,7 +379,7 @@ export const ShouldFlipWithWidth: Story = {
 
 export const CloseFunctionWithButtonPopover: Story = {
   render: () => ({
-    components: {ActionButton, Button, DialogTrigger},
+    components: {ActionButton, Button, DialogTrigger, Heading},
     setup() {
       let open = ref(false);
       return {
@@ -809,7 +810,7 @@ export const WithTranslations: Story = {
           <template #trigger>
             <ActionButton @click="openDialog">{{strings.format('koji')}}</ActionButton>
           </template>
-          <template #heading><h2>{{strings.format('kojiFoods')}}</h2></template>
+          <template #heading><Heading>{{strings.format('kojiFoods')}}</Heading></template>
           <template #header><div>{{strings.format('foodsMakeWithKoji')}}</div></template>
           <template #divider><hr /></template>
           <p>{{strings.format('soySauce')}}: {{strings.format('soySauceDescription')}}</p>

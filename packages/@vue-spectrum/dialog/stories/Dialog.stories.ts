@@ -1,6 +1,7 @@
 import {ActionButton, Button} from '@vue-spectrum/button';
 import {ButtonGroup} from '@vue-spectrum/buttongroup';
 import {Checkbox} from '@vue-spectrum/checkbox';
+import {Heading} from '@vue-spectrum/text';
 import {DialogTrigger} from '../src';
 import {Divider} from '@vue-spectrum/divider';
 import {Form} from '@vue-spectrum/form';
@@ -74,7 +75,7 @@ function renderBaseDialog(props: RenderProps = {}, options: {
   }
 
   return {
-    components: {ActionButton, Button, ButtonGroup, Checkbox, DialogTrigger},
+    components: {ActionButton, Button, ButtonGroup, Checkbox, DialogTrigger, Heading},
     setup() {
       let isOpen = ref(true);
       return {
@@ -108,7 +109,7 @@ function renderBaseDialog(props: RenderProps = {}, options: {
           </template>
 
           <template #heading>
-            <h2>The Heading</h2>
+            <Heading>The Heading</Heading>
           </template>
           <template #header>
             <div>The Header</div>
@@ -147,7 +148,7 @@ function renderIframe(props: RenderProps = {}) {
   }
 
   return {
-    components: {ActionButton, Button, ButtonGroup, DialogTrigger},
+    components: {ActionButton, Button, ButtonGroup, DialogTrigger, Heading},
     setup() {
       let isOpen = ref(true);
       return {
@@ -169,7 +170,7 @@ function renderIframe(props: RenderProps = {}) {
           <template #trigger>
             <ActionButton @click="openDialog">Trigger</ActionButton>
           </template>
-          <template #heading><h2>The Heading</h2></template>
+          <template #heading><Heading>The Heading</Heading></template>
           <template #header><div>The Header</div></template>
           <template #divider><hr /></template>
 
@@ -203,7 +204,8 @@ function renderWithForm(props: RenderProps = {}) {
       Picker,
       Radio,
       RadioGroup,
-      TextField
+      TextField,
+      Heading
     },
     setup() {
       let isOpen = ref(true);
@@ -228,7 +230,7 @@ function renderWithForm(props: RenderProps = {}) {
           <template #trigger>
             <ActionButton @click="openDialog">Trigger</ActionButton>
           </template>
-          <template #heading><h2>The Heading</h2></template>
+          <template #heading><Heading>The Heading</Heading></template>
           <template #header><div>The Header</div></template>
           <template #divider><hr /></template>
 
@@ -259,7 +261,7 @@ function renderThreeButtonsFooter(props: RenderProps = {}) {
   let {width = 'auto', ...dialogArgs} = props;
 
   return {
-    components: {ActionButton, Button, ButtonGroup, Checkbox, DialogTrigger},
+    components: {ActionButton, Button, ButtonGroup, Checkbox, DialogTrigger, Heading},
     setup() {
       let labels = [
         {
@@ -304,7 +306,7 @@ function renderThreeButtonsFooter(props: RenderProps = {}) {
           <template #trigger>
             <ActionButton @click="openDialog">Trigger</ActionButton>
           </template>
-          <template #heading><h2>{{labels[whichLabels].heading}}</h2></template>
+          <template #heading><Heading>{{labels[whichLabels].heading}}</Heading></template>
           <template #header><div>The Header</div></template>
           <template #divider><hr /></template>
 
@@ -331,7 +333,7 @@ function renderWithDividerInContent(props: RenderProps = {}) {
   let {width = 'auto', ...dialogArgs} = props;
 
   return {
-    components: {ActionButton, Button, ButtonGroup, DialogTrigger, Divider},
+    components: {ActionButton, Button, ButtonGroup, DialogTrigger, Divider, Heading},
     setup() {
       let isOpen = ref(true);
       return {
@@ -353,7 +355,7 @@ function renderWithDividerInContent(props: RenderProps = {}) {
           <template #trigger>
             <ActionButton @click="openDialog">Trigger</ActionButton>
           </template>
-          <template #heading><h2>The Heading</h2></template>
+          <template #heading><Heading>The Heading</Heading></template>
           <template #header><div>The Header</div></template>
           <template #divider><hr /></template>
 
@@ -383,7 +385,7 @@ function renderLongContent(props: RenderProps = {}) {
   let {width = 'auto', ...dialogArgs} = props;
 
   return {
-    components: {ActionButton, Button, ButtonGroup, DialogTrigger, TextField},
+    components: {ActionButton, Button, ButtonGroup, DialogTrigger, TextField, Heading},
     setup() {
       let isOpen = ref(false);
       return {
@@ -422,7 +424,7 @@ function renderLongContent(props: RenderProps = {}) {
             <ActionButton @click="openDialog">Trigger</ActionButton>
           </template>
           <template #heading>
-            <h2>The Heading is also very long and demonstrates what happens if there is no Header</h2>
+            <Heading level="3">The Heading is also very long and demonstrates what happens if there is no Header</Heading>
           </template>
           <template #divider><hr /></template>
 
@@ -450,7 +452,7 @@ function renderHorizontalScrolling(props: RenderProps = {}) {
   let {width = 'auto', ...dialogArgs} = props;
 
   return {
-    components: {ActionButton, Button, ButtonGroup, DialogTrigger, TextField},
+    components: {ActionButton, Button, ButtonGroup, DialogTrigger, TextField, Heading},
     setup() {
       let isOpen = ref(true);
       return {
@@ -475,7 +477,7 @@ function renderHorizontalScrolling(props: RenderProps = {}) {
           <template #trigger>
             <ActionButton @click="openDialog">Trigger</ActionButton>
           </template>
-          <template #heading><h2>The Heading</h2></template>
+          <template #heading><Heading>The Heading</Heading></template>
           <template #header><div>The Header</div></template>
           <template #divider><hr /></template>
 

@@ -466,7 +466,7 @@ export const FieldsNextToEachOther: Story = {
 
 export const FieldsWithAutoCompleteProperty: Story = {
   render: () => ({
-    components: {Checkbox, Flex, Form, Picker, TextArea, TextField, Well},
+    components: {Checkbox, Flex, Form, Heading, Picker, TextArea, TextField, Well},
     setup() {
       let sameAsBilling = ref(true);
       return {
@@ -478,7 +478,7 @@ export const FieldsWithAutoCompleteProperty: Story = {
     template: `
       <Form>
         <Well role="group" aria-labelledby="billing-legend">
-          <h2 id="billing-legend">Billing address</h2>
+          <Heading level="4" id="billing-legend">Billing address</Heading>
           <Flex>
             <TextField
               auto-complete="billing given-name"
@@ -549,7 +549,7 @@ export const FieldsWithAutoCompleteProperty: Story = {
         </Well>
 
         <Well role="group" aria-labelledby="shipping-legend">
-          <h2 id="shipping-legend">Shipping address</h2>
+          <Heading level="4" id="shipping-legend">Shipping address</Heading>
           <Checkbox :is-selected="sameAsBilling" @change="sameAsBilling = $event">
             Same as billing address
           </Checkbox>
