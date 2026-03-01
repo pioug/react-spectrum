@@ -104,15 +104,16 @@ Use this as a progression checklist for parity re-review. Mark each line when co
 - [ ] 1.22 `@vue-spectrum/form`
   - Components: Form
   - [ ] Story: Form.stories.ts
-- [ ] 1.23 `@vue-spectrum/icon`
+- [x] 1.23 `@vue-spectrum/icon`
   - Components: Icon, Illustration, UIIcon
-  - [ ] Story: Icon.stories.ts
-  - [ ] Story: IconsColor.stories.ts
-  - [ ] Story: IconsExpress.stories.ts
-  - [ ] Story: IconsWorkflow.stories.ts
+  - [x] Story: Icon.stories.ts
+  - [x] Story: IconsColor.stories.ts
+  - [x] Story: IconsExpress.stories.ts
+  - [x] Story: IconsWorkflow.stories.ts
+  - [x] `@spectrum-icons-vue/workflow` exports parity: `CalendarCheckColor` + export in package index
 - [ ] 1.24 `@vue-spectrum/illustratedmessage`
   - Components: IllustratedMessage
-  - [ ] Story: IllustratedMessage.stories.ts
+  - [x] Story: IllustratedMessage.stories.ts
 - [ ] 1.25 `@vue-spectrum/image`
   - Components: Image
   - [ ] Story: Image.stories.ts

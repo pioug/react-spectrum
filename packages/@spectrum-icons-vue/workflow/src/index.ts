@@ -102,6 +102,7 @@ export {default as Button} from './Button';
 export {default as Calculator} from './Calculator';
 export {default as Calendar} from './Calendar';
 export {default as CalendarAdd} from './CalendarAdd';
+export {default as CalendarCheckColor} from './CalendarCheckColor';
 export {default as CalendarLocked} from './CalendarLocked';
 export {default as CalendarUnlocked} from './CalendarUnlocked';
 export {default as CallCenter} from './CallCenter';
