@@ -8,6 +8,10 @@
     transform-origin: left top;
   }
 
+  .vs-table__body {
+    transform: translateY(0.5px);
+  }
+
   .vs-table__head-cell--selection,
   .vs-table__cell--selection {
     padding-left: 15.5px;
@@ -15,6 +19,14 @@
 
   .vs-table .spectrum-Checkbox-input {
     width: 22px;
+  }
+
+  .vs-table__head-cell .vs-table__selection-checkbox {
+    transform: translateY(-1px);
+  }
+
+  .vs-table__cell--selection .vs-table__selection-checkbox {
+    transform: translateY(-0.5px);
   }
 
   & > :not(.react-spectrum-ActionBar) {
