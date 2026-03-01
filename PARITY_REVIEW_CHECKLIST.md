@@ -238,9 +238,10 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - Components: (no `defineComponent` exports detected in `src`)
   - [x] Story: StyleMacro.stories.ts
   - Evidence: Source review confirms `packages/@vue-spectrum/style-macro-s1/src` exposes runtime helpers only (no Vue `defineComponent` exports), matching this item’s non-component scope; React/Vue story-id parity is zero for `s1-style-macro--*` (`react=1`, `vue=1`, diff `0/0`) from React `dist/97e3ff099844b1ee324814db73e293af78e250a4/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue runtime macro parity was fixed in `packages/@vue-spectrum/style-macro-s1/src/style-macro.ts` by adding runtime CSS rule generation/injection for emitted S1 class tokens (color, font size, spacing, radius mappings) so `StyleMacro.stories.ts` renders the same computed styles as React; regression coverage was added in `starters/vue/src/composition.spec.ts`; side-by-side capture/computed-style evidence in `.tmp/style-macro-s1-parity-current2/size-deltas.json` now matches key style contracts (`backgroundColor`, `color`, `fontSize`, `borderRadius`, paddings) with size delta `1.40%`; validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
-- [ ] 1.48 `@vue-spectrum/switch`
+- [x] 1.48 `@vue-spectrum/switch`
   - Components: Switch
-  - [ ] Story: Switch.stories.ts
+  - [x] Story: Switch.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `switch--*` (`react=12`, `vue=12`, diff `0/0`) from React `dist/97e3ff099844b1ee324814db73e293af78e250a4/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; side-by-side capture evidence for all switch stories in `.tmp/switch-parity-current1/size-deltas.json` shows exact file-size parity across the full scope (all story deltas `0.00%`, `12/12` captures successful, no missing/extra IDs); source/API/stories review for `packages/@vue-spectrum/switch/src/index.ts` and `packages/@vue-spectrum/switch/stories/Switch.stories.ts` did not reveal additional Vue-only placeholders or contract gaps after the prior provider-alignment work, so no further switch source changes were required; validation gate remained green (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
 - [ ] 1.49 `@vue-spectrum/table`
   - Components: Table, TableView
   - [ ] Story: Table.stories.ts
