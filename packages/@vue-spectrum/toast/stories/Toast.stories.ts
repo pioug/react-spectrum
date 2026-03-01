@@ -3,6 +3,7 @@ import {ButtonGroup} from '@vue-spectrum/buttongroup';
 import {Checkbox} from '@vue-spectrum/checkbox';
 import {Dialog} from '@vue-spectrum/dialog';
 import {UNSAFE_PortalProvider} from '@vue-aria/overlays';
+import {Heading} from '@vue-spectrum/text';
 import {action} from 'storybook/actions';
 import {clearToastQueue, ToastContainer, ToastQueue, type SpectrumToastOptions} from '../src';
 import {onBeforeUnmount, onMounted, ref} from 'vue';
@@ -147,7 +148,7 @@ export const WithTestId: Story = {
 
 export const WithDialog: Story = {
   render: (args) => ({
-    components: {ActionButton, Button, ButtonGroup, Dialog, ToastContainer},
+    components: {ActionButton, Button, ButtonGroup, Dialog, Heading, ToastContainer},
     setup() {
       clearToastQueue();
       let isOpen = ref(false);
@@ -172,7 +173,7 @@ export const WithDialog: Story = {
       <div style="display: grid; gap: 12px; justify-items: start;">
         <ActionButton @click="openDialog">Open dialog</ActionButton>
         <Dialog v-if="isOpen" title="Toasty" isDismissable @close="onDismiss">
-          <template #heading><h2>Toasty</h2></template>
+          <template #heading><Heading>Toasty</Heading></template>
           <ButtonGroup>
             <Button variant="secondary" @click="showNeutralToast">Show Neutral Toast</Button>
             <Button variant="primary" @click="showPositiveToast">Show Positive Toast</Button>

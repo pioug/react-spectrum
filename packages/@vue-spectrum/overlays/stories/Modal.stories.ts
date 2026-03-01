@@ -3,6 +3,7 @@ import {ButtonGroup} from '@vue-spectrum/buttongroup';
 import {Dialog, DialogTrigger} from '@vue-spectrum/dialog';
 import {Divider} from '@vue-spectrum/divider';
 import {Content} from '@vue-spectrum/view';
+import {Heading} from '@vue-spectrum/text';
 import {Text} from '@vue-spectrum/text';
 import {ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
@@ -59,7 +60,7 @@ function renderDefaultModal() {
 
 function renderUnmountingTrigger() {
   return {
-    components: {ActionButton, Button, ButtonGroup, Content, Dialog, DialogTrigger, Divider, Modal, Text},
+    components: {ActionButton, Button, ButtonGroup, Content, Dialog, DialogTrigger, Divider, Heading, Modal, Text},
     setup() {
       let isModalOpen = ref(false);
       let isPopoverOpen = ref(false);
@@ -83,7 +84,7 @@ function renderUnmountingTrigger() {
         <template #trigger="{open}">
           <ActionButton @click="open">Open popover</ActionButton>
         </template>
-        <template #heading><h2 class="spectrum-Dialog-heading">Title</h2></template>
+        <template #heading><Heading>Title</Heading></template>
         <template #divider><Divider /></template>
         <Content>
           <div style="display: flex; flex-direction: column; gap: var(--spectrum-global-dimension-size-100);">

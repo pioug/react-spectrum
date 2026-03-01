@@ -139,7 +139,7 @@ export const IsKeyboardDismissDisabled: Story = {
 
 export const NestedDialogContainers: Story = {
   render: () => ({
-    components: {ActionButton, DialogContainer, MenuTrigger},
+    components: {ActionButton, DialogContainer, Heading, MenuTrigger},
     setup() {
       let dialogKey = ref<'doThat' | 'doThis' | null>(null);
 
