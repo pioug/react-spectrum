@@ -287,8 +287,8 @@ export const WithMenuTrigger: Story = {
           </template>
           <template #heading><h2>The Heading</h2></template>
           <MenuTrigger :items="menuItems">
-            <template #trigger>
-              <ActionButton variant="secondary">Test</ActionButton>
+            <template #trigger="{toggle}">
+              <ActionButton variant="secondary" @click="toggle">Test</ActionButton>
             </template>
           </MenuTrigger>
         </DialogTrigger>
