@@ -6,12 +6,117 @@ const styles: {[key: string]: string} = {};
 let dropZoneId = 0;
 type DropOperation = 'copy' | 'move' | 'link' | 'cancel';
 
+type DropItem = {
+  kind: 'file',
+  type: string,
+  name: string,
+  getFile: () => Promise<File>,
+  getText: () => Promise<string>
+} | {
+  kind: 'text',
+  types: Set<string>,
+  getText: (type: string) => Promise<string>
+};
+
+type DropZoneDropEvent = {
+  type: 'drop',
+  x: number,
+  y: number,
+  dropOperation: DropOperation,
+  items: DropItem[]
+};
+
+type DropZonePointEvent = {
+  type: 'drop' | 'dropenter' | 'dropmove' | 'dropexit',
+  x: number,
+  y: number
+};
+
 function isEventObject(event: unknown): boolean {
   return typeof event === 'object' && event !== null;
 }
 
 function getTransferTypes(event: DragEvent): Set<string> {
   return new Set(Array.from(event.dataTransfer?.types ?? []));
+}
+
+function getDropOperationFromEvent(event: DragEvent, getDropOperation?: (types: Set<string>) => DropOperation | undefined): DropOperation {
+  if (!getDropOperation) {
+    let operation = event.dataTransfer?.dropEffect;
+    if (operation === 'move' || operation === 'copy' || operation === 'link') {
+      return operation;
+    }
+
+    return 'copy';
+  }
+
+  return getDropOperation(getTransferTypes(event)) ?? 'cancel';
+}
+
+function createDropItems(event: DragEvent, allowsMultiple: boolean): DropItem[] {
+  let files = Array.from(event.dataTransfer?.files ?? []);
+  let fileItems: DropItem[] = files.map((file) => ({
+    kind: 'file',
+    type: file.type,
+    name: file.name,
+    getFile: async () => file,
+    getText: async () => file.text()
+  }));
+
+  if (!allowsMultiple && fileItems.length > 1) {
+    fileItems = fileItems.slice(0, 1);
+  }
+
+  let textItems = Array.from(event.dataTransfer?.items ?? [])
+    .filter((item) => item.kind === 'string')
+    .map((item) => {
+      let textValue: string | null = null;
+      let textPromise: Promise<string> | null = null;
+
+      let readText = () => {
+        if (textValue !== null) {
+          return Promise.resolve(textValue);
+        }
+
+        if (!textPromise) {
+          textPromise = new Promise((resolve) => {
+            item.getAsString((value) => {
+              textValue = value;
+              resolve(value);
+            });
+          });
+        }
+
+        return textPromise;
+      };
+
+      return {
+        kind: 'text',
+        types: new Set([item.type || 'text/plain']),
+        getText: async (type: string): Promise<string> => {
+          if (type === 'text/plain' || type === item.type || !type) {
+            return readText();
+          }
+
+          return '';
+        }
+      };
+    });
+
+  return [...fileItems, ...textItems];
+}
+
+function createPointEvent(type: DropZonePointEvent['type'], event: DragEvent, target: HTMLElement | null): DropZonePointEvent {
+  if (!target) {
+    return {type, x: event.clientX, y: event.clientY};
+  }
+
+  let rect = target.getBoundingClientRect();
+  return {
+    type,
+    x: event.clientX - rect.left,
+    y: event.clientY - rect.top
+  };
 }
 
 const visuallyHiddenStyle = {
@@ -65,9 +170,10 @@ export const DropZone = defineComponent({
   },
   emits: {
     blur: (event: FocusEvent) => isEventObject(event),
-    drop: (event: DragEvent) => isEventObject(event),
-    dropEnter: (event: DragEvent) => isEventObject(event),
-    dropExit: (event: DragEvent) => isEventObject(event),
+    drop: (event: DropZoneDropEvent) => isEventObject(event),
+    dropEnter: (event: DropZonePointEvent) => isEventObject(event),
+    dropExit: (event: DropZonePointEvent) => isEventObject(event),
+    dropMove: (event: DropZonePointEvent) => isEventObject(event),
     filesDrop: (files: File[]) => Array.isArray(files),
     focus: (event: FocusEvent) => isEventObject(event),
     paste: (event: ClipboardEvent) => isEventObject(event),
@@ -75,7 +181,8 @@ export const DropZone = defineComponent({
   },
   setup(props, {attrs, emit, slots}) {
     let isOver = ref(false);
-    let id = `vs-drop-zone-${++dropZoneId}`;
+    let rootRef = ref<HTMLElement | null>(null);
+    let id = `vs-spectrum-dropzone-${++dropZoneId}`;
     let headingId = `${id}-heading`;
     let messageId = `${id}-message`;
 
@@ -130,11 +237,12 @@ export const DropZone = defineComponent({
 
       return h('div', {
         ...domProps,
+        ref: rootRef,
         class: [
           classNames(styles, 'spectrum-Dropzone', {
             'spectrum-Dropzone--filled': props.isFilled
           }),
-          'vs-drop-zone',
+          'vs-spectrum-dropzone',
           isDisabled.value ? 'is-disabled' : null,
           isOver.value ? 'is-over' : null,
           mergedClassName,
@@ -155,6 +263,7 @@ export const DropZone = defineComponent({
 
           event.preventDefault();
           isOver.value = true;
+          emit('dropMove', createPointEvent('dropmove', event, rootRef.value));
         },
         onDragenter: (event: DragEvent) => {
           if (!allowsDrop(event)) {
@@ -164,7 +273,7 @@ export const DropZone = defineComponent({
 
           event.preventDefault();
           isOver.value = true;
-          emit('dropEnter', event);
+          emit('dropEnter', createPointEvent('dropenter', event, rootRef.value));
         },
         onDragleave: (event: DragEvent) => {
           if (isDisabled.value) {
@@ -173,7 +282,7 @@ export const DropZone = defineComponent({
 
           event.preventDefault();
           isOver.value = false;
-          emit('dropExit', event);
+          emit('dropExit', createPointEvent('dropexit', event, rootRef.value));
         },
         onDrop: (event: DragEvent) => {
           if (!allowsDrop(event)) {
@@ -183,7 +292,14 @@ export const DropZone = defineComponent({
 
           event.preventDefault();
           isOver.value = false;
-          emit('drop', event);
+          let point = createPointEvent('drop', event, rootRef.value);
+          emit('drop', {
+            type: 'drop',
+            x: point.x,
+            y: point.y,
+            dropOperation: getDropOperationFromEvent(event, props.getDropOperation),
+            items: createDropItems(event, props.multiple)
+          });
           emitFiles(event.dataTransfer?.files);
 
           let text = event.dataTransfer?.getData('text/plain') ?? '';
@@ -207,20 +323,20 @@ export const DropZone = defineComponent({
       }, [
         h('span', {
           id: headingId,
-          class: 'vs-drop-zone__label',
+          class: 'vs-spectrum-dropzone__label',
           style: visuallyHiddenStyle
         }, props.label),
         slots.default
           ? h('div', {
-            class: [classNames(styles, 'spectrum-Dropzone-illustratedMessage'), 'vs-drop-zone__illustration']
+            class: [classNames(styles, 'spectrum-Dropzone-illustratedMessage'), 'vs-spectrum-dropzone__illustration']
           }, slots.default())
           : h('span', {class: 'react-aria-Text'}, props.label),
         h('div', {
-          class: [classNames(styles, 'spectrum-Dropzone-backdrop'), 'vs-drop-zone__backdrop']
+          class: [classNames(styles, 'spectrum-Dropzone-backdrop'), 'vs-spectrum-dropzone__backdrop']
         }),
         h('div', {
           id: messageId,
-          class: [classNames(styles, 'spectrum-Dropzone-banner'), 'vs-drop-zone__banner']
+          class: [classNames(styles, 'spectrum-Dropzone-banner'), 'vs-spectrum-dropzone__banner']
         }, props.replaceMessage || 'Drop to replace')
       ]);
     };

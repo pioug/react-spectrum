@@ -89,15 +89,15 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - [x] Story: Dialog.stories.ts
   - [x] Story: DialogContainer.stories.ts
   - [x] Story: DialogTrigger.stories.ts
-- [ ] 1.18 `@vue-spectrum/divider`
+- [x] 1.18 `@vue-spectrum/divider`
   - Components: Divider
-  - [ ] Story: Divider.stories.ts
-- [ ] 1.19 `@vue-spectrum/dnd`
+  - [x] Story: Divider.stories.ts
+- [x] 1.19 `@vue-spectrum/dnd`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [ ] Story: (none)
-- [ ] 1.20 `@vue-spectrum/dropzone`
+  - [x] Story: (none)
+- [x] 1.20 `@vue-spectrum/dropzone`
   - Components: DropZone
-  - [ ] Story: DropZone.stories.ts
+- [x] Story: DropZone.stories.ts
 - [ ] 1.21 `@vue-spectrum/filetrigger`
   - Components: (no `defineComponent` exports detected in `src`)
   - [ ] Story: FileTrigger.stories.ts
