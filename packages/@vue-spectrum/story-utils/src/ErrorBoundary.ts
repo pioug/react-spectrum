@@ -5,7 +5,7 @@ export const VueErrorBoundary = defineComponent({
   props: {
     message: {
       type: String,
-      default: 'Something went wrong.'
+      required: true
     }
   },
   setup(props, {slots}) {
@@ -18,9 +18,7 @@ export const VueErrorBoundary = defineComponent({
 
     return () => {
       if (hasError.value) {
-        return h('div', {
-          class: 'vs-story-utils__error-boundary'
-        }, props.message);
+        return h('div', props.message);
       }
 
       return slots.default ? slots.default() : null;

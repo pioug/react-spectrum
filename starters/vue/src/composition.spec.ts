@@ -13932,6 +13932,10 @@ describe('Vue migration composition components', () => {
     expect(combinations).toContainEqual({size: 'l'});
     expect(combinations).toContainEqual({isDisabled: false});
     expect(combinations).not.toContainEqual({size: 'm', isDisabled: true});
+    expect(generateStoryPowerset([
+      {size: ['m', 'l']},
+      {variant: 'secondary', isQuiet: true}
+    ])).toContainEqual({size: 'm', variant: 'secondary', isQuiet: true});
 
     let BrokenStory = defineComponent({
       name: 'BrokenStory',
@@ -13952,6 +13956,8 @@ describe('Vue migration composition components', () => {
 
     await nextTick();
     expect(wrapper.text()).toContain('Story fallback');
+    expect(wrapper.find('.vs-story-utils__error-boundary').exists()).toBe(false);
+    expect(wrapper.html()).toBe('<div>Story fallback</div>');
   });
 
   it('exposes vue-spectrum style-macro-s1 runtime helpers', () => {
@@ -16900,7 +16906,7 @@ describe('Vue migration composition components', () => {
       }
     });
 
-    await wrapper.get('button.vs-dialog__close').trigger('click');
+    await wrapper.get('button.spectrum-Dialog-closeButton').trigger('click');
     expect(wrapper.find('button.vs-dialog-layer__backdrop').exists()).toBe(false);
     expect(wrapper.emitted('close')).toHaveLength(1);
   });

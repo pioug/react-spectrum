@@ -117,97 +117,123 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - Components: DropZone
   - [x] Story: DropZone.stories.ts
   - Evidence: React/Vue story-id parity is zero for `dropzone--*` (`react=6`, `vue=6`, diff `0/0`) from React `dist/ea2e442892f4f41b6bee35a0048cee7c4d266dc6/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue DropZone internals were aligned in `packages/@vue-spectrum/dropzone/src/index.ts` by removing placeholder browse/input UI, adding React-equivalent drop shell contracts (`spectrum-Dropzone-illustratedMessage`, backdrop/banner structure, filled class, hidden heading id + `aria-labelledby` wiring), supporting disabled aliases and style/class aliases (`isDisabled`, `UNSAFE_*`), adding drop-operation gating (`getDropOperation`) and extra parity emits (`drop`, `dropEnter`, `dropExit`, `paste`) with environment-safe validators, and keeping convenience `filesDrop`/`textDrop` emits; dropzone stories were aligned in `packages/@vue-spectrum/dropzone/stories/DropZone.stories.ts` with a React-equivalent scenario set and compositions (`withDraggable`, `customAriaLabel`, `withButton`, `customBannerMessage`, `acceptsMultiple`, `filledDropzone`) including Spectrum illustration SVG paths, draggable control layout, image-filled flow, and shared story styling from `packages/@vue-spectrum/dropzone/stories/styles.css`; regression coverage was updated in `starters/vue/src/components.spec.ts` to assert drop-event file emission without a hidden file input dependency; refreshed side-by-side capture evidence in `.tmp/dropzone-parity-current/` reports low deltas across all stories (average `1.32%`, median `1.25%`, with key deltas `with-button 0.15%`, `custom-banner-message 0.53%`, `accepts-multiple 0.53%`, `with-draggable 2.37%`, `filled-dropzone 1.97%`); full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
-- [ ] 1.21 `@vue-spectrum/filetrigger`
+- [x] 1.21 `@vue-spectrum/filetrigger`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [ ] Story: FileTrigger.stories.ts
-- [ ] 1.22 `@vue-spectrum/form`
+  - [x] Story: FileTrigger.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `filetrigger--*` (`react=2`, `vue=2`, diff `0/0`) from React `dist/ea2e442892f4f41b6bee35a0048cee7c4d266dc6/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; source/API parity check confirms `packages/@vue-spectrum/filetrigger/src/index.ts` is a direct re-export alias to `vue-aria-components` `VueFileTrigger` matching the React package’s direct `FileTrigger` export shape with no Vue-only behavior fork; Vue stories in `packages/@vue-spectrum/filetrigger/stories/FileTrigger.stories.ts` mirror the React story contract exactly (`DefaultWithButton`, `DefaultWithLink`) and side-by-side capture evidence in `.tmp/filetrigger-parity-current/` reports `0.00%` deltas for both stories; validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.22 `@vue-spectrum/form`
   - Components: Form
-  - [ ] Story: Form.stories.ts
-- [ ] 1.23 `@vue-spectrum/icon`
+  - [x] Story: Form.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `form--*` (`react=27`, `vue=27`, diff `0/0`) from React `dist/ea2e442892f4f41b6bee35a0048cee7c4d266dc6/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue Form internals were aligned in `packages/@vue-spectrum/form/src/index.ts` by resolving provider props via `useProviderProps`, preserving React-equivalent form context defaults, and wrapping children with `Provider` so form-level quiet/required/disabled/readOnly/validation state contracts flow consistently; provider context propagation was fixed in `packages/@vue-spectrum/provider/src/index.ts` so `isQuiet`, `isEmphasized`, `isDisabled`, `isRequired`, `isReadOnly`, and `validationState` are retained across nested providers and exposed through `useProviderProps`; form stories were rebuilt in `packages/@vue-spectrum/form/stories/Form.stories.ts` to match React composition across all 27 scenarios (full mixed-field render, side/align variants, autocomplete billing/shipping layout, controlled reset/submit flows, native validation, form action, and translation matrix) while preserving matching story names/ids; refreshed side-by-side capture evidence in `.tmp/form-parity-current/size-deltas.json` improved aggregate size deltas from the prior baseline (~`74.53%` avg, `81.81%` median) to `10.06%` average and `8.36%` median (max `26.30%`, min `0.09%`); validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.23 `@vue-spectrum/icon`
   - Components: Icon, Illustration, UIIcon
-  - [ ] Story: Icon.stories.ts
-  - [ ] Story: IconsColor.stories.ts
-  - [ ] Story: IconsExpress.stories.ts
-  - [ ] Story: IconsWorkflow.stories.ts
-- [ ] 1.24 `@vue-spectrum/illustratedmessage`
+  - [x] Story: Icon.stories.ts
+  - [x] Story: IconsColor.stories.ts
+  - [x] Story: IconsExpress.stories.ts
+  - [x] Story: IconsWorkflow.stories.ts
+  - Evidence: React/Vue story-id parity is zero for the icon scope (`icons-custom--*` `1/1`, `icons-color--*` `1/1`, `icons-express--*` `6/6`, `icons-workflow--*` `7/7`, diff `0/0`) from React `dist/ea2e442892f4f41b6bee35a0048cee7c4d266dc6/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue icon internals were aligned in `packages/@vue-spectrum/icon/src/index.ts` and `packages/@spectrum-icons-vue/workflow/src/createIcon.ts` by restoring semantic icon color-token handling (`negative`/`notice`/`positive`/`informative` -> Spectrum semantic icon CSS vars) instead of treating token values as raw CSS colors; icon stories were aligned in `packages/@vue-spectrum/icon/stories/Icon.stories.ts`, `IconsColor.stories.ts`, `IconsExpress.stories.ts`, and `IconsWorkflow.stories.ts` to match React composition/contracts (story names, non-flex icon size matrix layout with `margin: 15px`, React-equivalent SVG glyphs for custom/express/color cases, and semantic alert color variants); refreshed side-by-side capture evidence in `.tmp/icon-parity-current/size-deltas.json` reports exact file-size parity across all 15 icon stories (average/median/max delta `0.00%`); validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.24 `@vue-spectrum/illustratedmessage`
   - Components: IllustratedMessage
-  - [ ] Story: IllustratedMessage.stories.ts
-- [ ] 1.25 `@vue-spectrum/image`
+  - [x] Story: IllustratedMessage.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `illustratedmessage--*` (`react=2`, `vue=2`, diff `0/0`) from React `dist/ea2e442892f4f41b6bee35a0048cee7c4d266dc6/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; side-by-side capture evidence in `.tmp/illustratedmessage-parity-current/size-deltas.json` reports exact parity for both stories (`not-found`, `no-heading-or-description`, all deltas `0.00%`); source/API review confirms Vue `packages/@vue-spectrum/illustratedmessage/src/index.ts` and story composition already match the React contract for this scope, so no source changes were required; validation gate remained green (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.25 `@vue-spectrum/image`
   - Components: Image
-  - [ ] Story: Image.stories.ts
-- [ ] 1.26 `@vue-spectrum/inlinealert`
+  - [x] Story: Image.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `image--*` (`react=2`, `vue=2`, diff `0/0`) from React `dist/ea2e442892f4f41b6bee35a0048cee7c4d266dc6/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue image story parity in `packages/@vue-spectrum/image/stories/Image.stories.ts` was aligned by wiring the fallback handler with Vue prop casing (`on-error`) so `ImageOnError` matches React’s broken-image -> fallback flow; side-by-side capture evidence in `.tmp/image-parity-current/size-deltas.json` reports exact parity for both stories (all deltas `0.00%`); full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.26 `@vue-spectrum/inlinealert`
   - Components: InlineAlert
-  - [ ] Story: InlineAlert.stories.ts
-- [ ] 1.27 `@vue-spectrum/label`
+  - [x] Story: InlineAlert.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `inlinealert--*` (`react=2`, `vue=2`, diff `0/0`) from React `dist/ea2e442892f4f41b6bee35a0048cee7c4d266dc6/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; side-by-side capture evidence in `.tmp/inlinealert-parity-current/size-deltas.json` reports exact parity for both stories (`default`, `dynamic`, all deltas `0.00%`); source/API review confirms Vue `packages/@vue-spectrum/inlinealert/src/index.ts` and story contract already align to React for this scope, so no further source changes were required; validation gate remained green (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.27 `@vue-spectrum/label`
   - Components: Field, HelpText, Label
-  - [ ] Story: HelpText.stories.ts
-  - [ ] Story: Label.stories.ts
-- [ ] 1.28 `@vue-spectrum/labeledvalue`
+  - [x] Story: HelpText.stories.ts
+  - [x] Story: Label.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `label--*` (`react=2`, `vue=2`) and `helptext--*` (`react=5`, `vue=5`, diff `0/0`) from React `dist/ea2e442892f4f41b6bee35a0048cee7c4d266dc6/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue label internals were aligned in `packages/@vue-spectrum/label/src/index.ts` by removing Vue-only placeholder hooks and restoring React-equivalent contracts across all three exports: `Label` now mirrors required/optional necessity semantics and icon DOM classes, `HelpText` now gates error state on `errorMessage` + invalid status and supports `showErrorIcon`/`descriptionProps`/`errorMessageProps`, and `Field` now resolves form/provider props, computes function-based error messages from validation payloads, applies `spectrum-Field-field` classing to the child control, and restores side/top/contextual-help wrapper structure; regression coverage was updated in `starters/vue/src/components.spec.ts` to lock help-text error gating/icon behavior and field child/help-text structure; side-by-side capture evidence in `.tmp/label-parity-current/size-deltas.json` reports low deltas across all seven stories (average `0.77%`, median `0.00%`, max `5.37%` on `helptext--aria-label` with all other stories at `0.00%`); validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.28 `@vue-spectrum/labeledvalue`
   - Components: LabeledValue
-  - [ ] Story: LabeledValue.stories.ts
-- [ ] 1.29 `@vue-spectrum/layout`
+  - [x] Story: LabeledValue.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `labeledvalue--*` (`react=17`, `vue=17`, diff `0/0`) from React `dist/ea2e442892f4f41b6bee35a0048cee7c4d266dc6/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue LabeledValue internals were aligned in `packages/@vue-spectrum/labeledvalue/src/index.ts` by restoring the React-equivalent composition through `Field` (including wrapper props/class contract), switching to locale-aware React-contract formatters (`useListFormatter`, `useNumberFormatter`, `useDateFormatter`) for string-list/number/date range rendering, preserving the editable-content guard on the mounted field root, and keeping width/label/contextual-help behavior wired through the shared field wrapper; story parity was fixed in `packages/@vue-spectrum/labeledvalue/stories/LabeledValue.stories.ts` by replacing the VNode-in-args placeholder pattern in `Custom component` with slot-based rendering to match React output and eliminate the Storybook circular-JSON render failure; side-by-side capture evidence in `.tmp/labeledvalue-parity-current/size-deltas.json` reports exact parity across all 17 stories (average/median/max delta `0.00%`); validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.29 `@vue-spectrum/layout`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [ ] Story: Flex.stories.ts
-  - [ ] Story: Grid.stories.ts
-- [ ] 1.30 `@vue-spectrum/link`
+  - [x] Story: Flex.stories.ts
+  - [x] Story: Grid.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `flex--*` and `grid--*` (`react=17`, `vue=17`, diff `0/0`) from React `dist/ea2e442892f4f41b6bee35a0048cee7c4d266dc6/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue layout internals were aligned in `packages/vue-aria-components/src/components/VueGrid.ts` and `packages/vue-aria-components/src/components/VueFlex.ts` by fixing responsive gap serialization to avoid empty longhand declarations clearing shorthand gap (`rowGap`/`columnGap` are now emitted only when provided), restoring React-equivalent default gap behavior (`gap` defaults to unset rather than `size-100`), expanding Flex support for `alignContent`/`rowGap`/`columnGap`, and keeping responsive dimension/token mapping parity for grid templates and auto rows/columns; layout stories were tightened in `packages/@vue-spectrum/layout/stories/Flex.stories.ts` and `packages/@vue-spectrum/layout/stories/Grid.stories.ts` to mirror React scenario structure and responsive token usage; regression coverage was added in `starters/vue/src/components.spec.ts` for the responsive-grid-gap bug path and Flex row/column gap contracts; refreshed side-by-side capture evidence in `.tmp/layout-parity-current/size-deltas.json` reports near-exact parity (average `0.02%`, median `0.00%`, max `0.26%`, `grid--responsive 0.00%`); validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.30 `@vue-spectrum/link`
   - Components: Link
-  - [ ] Story: Link.stories.ts
-- [ ] 1.31 `@vue-spectrum/list`
+  - [x] Story: Link.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `link--*` (`react=9`, `vue=9`, diff `0/0`) from React `dist/ea2e442892f4f41b6bee35a0048cee7c4d266dc6/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue Link internals were aligned in `packages/@vue-spectrum/link/src/index.ts` by removing non-React variant support (`negative`), matching React’s `href` default semantics (unset by default), and resolving provider-propagated link props before class/DOM generation while keeping wrapped-child, hover, focus-ring, and press event behavior aligned to existing React contracts; refreshed side-by-side capture evidence in `.tmp/link-parity-current/size-deltas.json` reports exact parity across all nine stories (average/median/max delta `0.00%`); validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.31 `@vue-spectrum/list`
   - Components: ListView
-  - [ ] Story: ListView.stories.ts
-  - [ ] Story: ListViewActions.stories.ts
-  - [ ] Story: ListViewDnD.stories.ts
-  - [ ] Story: ListViewDnDUtil.stories.ts
-  - [ ] Story: ListViewSelection.stories.ts
-- [ ] 1.32 `@vue-spectrum/listbox`
+  - [x] Story: ListView.stories.ts
+  - [x] Story: ListViewActions.stories.ts
+  - [x] Story: ListViewDnD.stories.ts
+  - [x] Story: ListViewDnDUtil.stories.ts
+  - [x] Story: ListViewSelection.stories.ts
+  - Evidence: React/Vue story-id parity is zero for the full list scope (`listview--*`, `listview-actions--*`, `listview-selection--*`, `listview-drag-and-drop--*`, `listview-drag-and-drop-util-handlers--*`; `react=50`, `vue=50`, diff `0/0`) from React `dist/ea2e442892f4f41b6bee35a0048cee7c4d266dc6/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue ListView internals were aligned in `packages/@vue-spectrum/list/src/index.ts` by removing Vue-only item truncation, adding React-like row rounding/selection adjacency logic, restoring checkbox-mode structure with `react-spectrum-ListViewItem-checkboxWrapper` + Spectrum checkbox rendering, adding button/anchor style resets to remove browser-default chrome, preserving `renderEmptyState`/loading centered wrapper behavior, and keeping href/disabled/selection contracts wired through item records; list stories were tightened in `packages/@vue-spectrum/list/stories/ListView.stories.ts`, `ListViewActions.stories.ts`, `ListViewSelection.stories.ts`, `ListViewDnD.stories.ts`, and `ListViewDnDUtil.stories.ts` by matching React item datasets/navigation flow, aligning row-action grid placement via action/actionmenu wrappers, restoring action-bar/default selection handlers (`@update:modelValue`), and restoring DnD drop-target shell test hooks/labels (`data-testid="drop-target"`, `aria-label/text "Drop target"`); refreshed side-by-side capture evidence in `.tmp/list-parity-current4/size-deltas.json` reports improved aggregate parity (average `4.77%`, median `3.44%`, max `16.92%`, min `0.00%`); full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.32 `@vue-spectrum/listbox`
   - Components: ListBox, ListBoxBase
-  - [ ] Story: ListBox.stories.ts
-- [ ] 1.33 `@vue-spectrum/menu`
+  - [x] Story: ListBox.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `listbox--*` (`react=36`, `vue=36`, diff `0/0`) from React `dist/9ba628661b71010349fd434fe6a68bd0d78e2a15/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue ListBox internals were aligned in `packages/@vue-spectrum/listbox/src/index.ts` by replacing the placeholder contract with React-equivalent selection aliases and events (`defaultSelectedKeys`, `selectedKeys`, `selectionChange`, `action`), restoring React-default selection behavior (`selectionMode='none'`), adding keyboard navigation/focus wrapping + autofocus support, adding loading option rendering with `ProgressCircle`, restoring Spectrum menu item structure/classes (`spectrum-Menu-itemGrid`, label/description/checkmark classes), adding section divider/heading structure, and applying button/anchor style resets so option chrome matches React; listbox stories were fully ported to React-equivalent compositions in `packages/@vue-spectrum/listbox/stories/ListBox.stories.ts` (decorator shell, sections/falsy-id/static/default/controlled/disabled/autoFocus/wrapping/semantic/loading/async/containers/restore-focus/translations/links/avatars/tree-data) while keeping matching story names/ids; regression assertions were updated in `starters/vue/src/storybook-parity.spec.ts` to match React semantic-multiple default-selection behavior; refreshed side-by-side capture evidence in `.tmp/listbox-parity-current3/size-deltas.json` reports strong aggregate parity (average `2.64%`, median `0.86%`, max `16.83%`, min `0.01%`), with the previous `listbox-containers` outlier reduced to `0.13%`; full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.33 `@vue-spectrum/menu`
   - Components: ActionMenu, Menu, MenuTrigger
-  - [ ] Story: ActionMenu.stories.ts
-  - [ ] Story: MenuTrigger.stories.ts
-  - [ ] Story: Submenu.stories.ts
-- [ ] 1.34 `@vue-spectrum/meter`
+  - [x] Story: ActionMenu.stories.ts
+  - [x] Story: MenuTrigger.stories.ts
+  - [x] Story: Submenu.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `actionmenu--*`, `menutrigger--*`, and `submenu--*` (`react=66`, `vue=66`, diff `0/0`) from React `dist/9ba628661b71010349fd434fe6a68bd0d78e2a15/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue menu internals were aligned in `packages/@vue-spectrum/menu/src/index.ts` by adding missing section rendering support (`isSection` item contract with Spectrum section heading/structure), adding blur-close and document scroll-lock behavior while menus are open, using viewport-based fixed overlay positioning to avoid scroll-container clipping and match React popover placement behavior, and restoring ActionMenu trigger parity (`More` icon + `autoFocus` forwarding); menu stories were aligned in `packages/@vue-spectrum/menu/stories/ActionMenu.stories.ts` and `packages/@vue-spectrum/menu/stories/MenuTrigger.stories.ts` by matching React default-open/controlled/blur/prevent-scroll/translation trigger compositions and section dataset semantics; regression assertions were updated in `starters/vue/src/storybook-parity.spec.ts` for the ActionMenu default-open contract; refreshed side-by-side capture evidence in `.tmp/menu-parity-current3/size-deltas.json` reports strong aggregate parity (average `0.77%`, median `0.00%`, max `6.92%`, min `0.00%`), with the prior `menutrigger--menu-should-prevent-scrolling` outlier reduced from `41.81%` baseline to `1.51%` spot-check in `.tmp/menu-parity-spot2/`; full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.34 `@vue-spectrum/meter`
   - Components: Meter
-  - [ ] Story: Meter.stories.ts
-- [ ] 1.35 `@vue-spectrum/numberfield`
+  - [x] Story: Meter.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `meter--*` (`react=10`, `vue=10`, diff `0/0`) from React `dist/9ba628661b71010349fd434fe6a68bd0d78e2a15/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; side-by-side capture evidence in `.tmp/meter-parity-current/size-deltas.json` reports exact parity across all meter stories (average/median/max delta `0.00%`); source/API review confirms Vue `packages/@vue-spectrum/meter/src/index.ts` and `packages/@vue-spectrum/meter/stories/Meter.stories.ts` already match the React contract for this scope, so no source changes were required; validation gate remained green (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.35 `@vue-spectrum/numberfield`
   - Components: NumberField
-  - [ ] Story: NumberField.stories.ts
-- [ ] 1.36 `@vue-spectrum/overlays`
+  - [x] Story: NumberField.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `numberfield--*` (`react=53`, `vue=53`, diff `0/0`) from React `dist/9ba628661b71010349fd434fe6a68bd0d78e2a15/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue NumberField internals were aligned in `packages/@vue-spectrum/numberfield/src/index.ts` by adding `formatOptions` support with locale formatter/parsing for formatted inputs, restoring optional necessity-label rendering (`(optional)` when `necessityIndicator='label'`), and handling controlled `NaN` values as blank state to match React reset behavior; stories were aligned in `packages/@vue-spectrum/numberfield/stories/NumberField.stories.ts` by porting React format options contracts (currency/percent/fraction-digit variants), restoring contextual-help composition through the `contextualHelp` prop, matching custom-width/min-width props, and fixing controlled/currency/focus/input event story compositions; regression coverage was expanded in `starters/vue/src/components.spec.ts` and `starters/vue/src/storybook-parity.spec.ts` for optional/currency/contextual-help/NaN reset contracts; refreshed side-by-side capture evidence in `.tmp/numberfield-parity-current/size-deltas.json` shows major improvement from baseline `.tmp/numberfield-parity-baseline/` (average delta `2.20%` -> `0.27%`, max `23.59%` -> `2.19%`, with prior top outliers now near zero: `custom-width-label-position-side 0.07%`, `currency-switcher 0.84%`, `optional 0.06%`, `focus-events 0.06%`, `input-dom-events 0.06%`, `controlled 0.06%`, `contextual-help 0.05%`); full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.36 `@vue-spectrum/overlays`
   - Components: Modal, OpenTransition, Overlay, Popover, Tray, Underlay
-  - [ ] Story: Modal.stories.ts
-- [ ] 1.37 `@vue-spectrum/picker`
+  - [x] Story: Modal.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `modal--*` (`react=2`, `vue=2`, diff `0/0`) from React `dist/97e3ff099844b1ee324814db73e293af78e250a4/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue overlays/dialog parity gaps were fixed by removing Vue-only `vs-dialog*` styling hooks from `packages/@vue-spectrum/dialog/src/index.ts` (which were pulling non-Spectrum dialog chrome from `vue-aria-components` global CSS), preserving Spectrum class-based structure for heading/divider/content/buttonGroup/close button, and keeping React-equivalent modal story composition in `packages/@vue-spectrum/overlays/stories/Modal.stories.ts`; regression selectors were updated from Vue-only classes to Spectrum classes in `starters/vue/src/storybook-parity.spec.ts` and `starters/vue/src/composition.spec.ts`; fresh open-state side-by-side capture evidence in `.tmp/overlays-modal-open-current7/size-deltas.json` reports exact parity for both stories (`modal--default` and `modal--unmounting-trigger`: size delta `0.00%`, pixel diff `0.00%`); validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.37 `@vue-spectrum/picker`
   - Components: Picker
-  - [ ] Story: Picker.stories.ts
-- [ ] 1.38 `@vue-spectrum/progress`
+  - [x] Story: Picker.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `picker--*` (`react=20`, `vue=20`, diff `0/0`) from React `dist/97e3ff099844b1ee324814db73e293af78e250a4/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue Picker internals were aligned in `packages/@vue-spectrum/picker/src/index.ts` by fixing trigger-ref resolution for `FieldButton` component refs so popover positioning uses the real trigger DOM rect instead of falling back to `(0,0)` in open-state flows, preserving React-equivalent trigger/listbox open behavior in default story interactions; picker stories were aligned in `packages/@vue-spectrum/picker/stories/Picker.stories.ts` by porting React-equivalent datasets and compositions across default/disabled/sections/dynamic/dynamic-sections/complex/avatars/long-text/falsy/labelledby/contextual-help/selected/default-selected/loading/async/focus/resize/scrolling/links/quiet cases (including quiet matrix sections, focus before/after inputs, and resize toggle shell), removing Vue-only add-item and non-parity wrapper behavior; regression selectors/assertions were updated in `starters/vue/src/storybook-parity.spec.ts` for React-keyed disabled option and labelled-by story contracts; refreshed side-by-side capture evidence in `.tmp/picker-parity-current3/size-deltas.json` reports major parity improvement from baseline `.tmp/picker-parity-baseline/` (average size delta `20.30%` -> `1.74%`, max size delta `80.77%` -> `16.03%`, average pixel diff `1.006%` -> `0.116%`), with former top outlier `picker--quiet` reduced from `80.77% / 2.534%` to `1.16% / 0.308%`; full validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.38 `@vue-spectrum/progress`
   - Components: ProgressBar, ProgressBarBase, ProgressCircle
-  - [ ] Story: ProgressBar.stories.ts
-  - [ ] Story: ProgressCircle.stories.ts
-- [ ] 1.39 `@vue-spectrum/provider`
+  - [x] Story: ProgressBar.stories.ts
+  - [x] Story: ProgressCircle.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `progress-progressbar--*` and `progress-progresscircle--*` (`react=43`, `vue=43`, diff `0/0`) from React `dist/97e3ff099844b1ee324814db73e293af78e250a4/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; side-by-side capture evidence in `.tmp/progress-parity-current/size-deltas.json` reports near-exact parity across the full scope (average size delta `0.09%`, median `0.00%`, max `2.06%`; average pixel diff `0.001%`, max `0.014%`); source/API review confirms Vue `packages/@vue-spectrum/progress/src/index.ts` and story compositions in `packages/@vue-spectrum/progress/stories/*.stories.ts` already align to React contracts for this scope, so no source changes were required; validation gate remained green (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.39 `@vue-spectrum/provider`
   - Components: Provider
-  - [ ] Story: Provider.stories.ts
-- [ ] 1.40 `@vue-spectrum/radio`
+  - [x] Story: Provider.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `provider--*` (`react=15`, `vue=15`, diff `0/0`) from React `dist/97e3ff099844b1ee324814db73e293af78e250a4/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; provider inheritance gaps were fixed in Vue internals by wiring provider-prop resolution through the controls exercised by provider stories (`packages/@vue-spectrum/button/src/index.ts`, `packages/@vue-spectrum/checkbox/src/index.ts`, `packages/@vue-spectrum/combobox/src/index.ts`, `packages/@vue-spectrum/numberfield/src/index.ts`, `packages/@vue-spectrum/searchfield/src/index.ts`, `packages/@vue-spectrum/switch/src/index.ts`, `packages/@vue-spectrum/textfield/src/index.ts`) and by aligning provider/radio ARIA semantics in `packages/@vue-spectrum/radio/src/index.ts`; provider story composition in `packages/@vue-spectrum/provider/stories/Provider.stories.ts` was aligned to React by removing the Vue-only default radio selection and matching controlled switch selection; semantic parity probes now match React exactly on key inheritance contracts (`isDisabled`: `disabledInputs 11/11`, `disabledAll 18/18`; `isReadOnly`: `disabledAll 3/3`, `readonlyAttrs 9/9`; `isRequired`: `requiredAttrs 5/5`); refreshed side-by-side capture evidence in `.tmp/provider-parity-current5/size-deltas.json` shows improved parity (average pixel diff `1.997%`, max `4.801%`); validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.40 `@vue-spectrum/radio`
   - Components: Radio, RadioGroup
-  - [ ] Story: Radio.stories.ts
-- [ ] 1.41 `@vue-spectrum/s2`
+  - [x] Story: Radio.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `radiogroup--*` (`react=14`, `vue=14`, diff `0/0`) from React `dist/97e3ff099844b1ee324814db73e293af78e250a4/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue radio internals were tightened in `packages/@vue-spectrum/radio/src/index.ts` by keeping provider-driven prop resolution, moving read-only semantics to the group container (`aria-readonly` on `radiogroup`) and removing invalid `readonly` attrs from individual radio inputs to match React ARIA output; radio story composition remains aligned in `packages/@vue-spectrum/radio/stories/Radio.stories.ts`; refreshed side-by-side evidence in `.tmp/radio-parity-current1/size-deltas.json` reports strong parity (average pixel diff `0.168%`, max `0.997%`); validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.41 `@vue-spectrum/s2`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [ ] Story: (none)
-- [ ] 1.42 `@vue-spectrum/searchfield`
+  - [x] Story: (none)
+  - Evidence: Source review confirms `packages/@vue-spectrum/s2/src` has no Vue `defineComponent` exports and no Spectrum Storybook namespace entries for this package, so there is no component/story parity surface for this checklist item; validation gate remained green (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.42 `@vue-spectrum/searchfield`
   - Components: SearchField
-  - [ ] Story: SearchField.stories.ts
-- [ ] 1.43 `@vue-spectrum/slider`
+  - [x] Story: SearchField.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `searchfield--*` (`react=14`, `vue=14`, diff `0/0`) from React `dist/97e3ff099844b1ee324814db73e293af78e250a4/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; SearchField provider-inheritance parity was tightened in `packages/@vue-spectrum/searchfield/src/index.ts` by resolving provider-derived disabled/readOnly/required/quiet/validation props before class/ARIA/DOM output so provider-level contracts match React; refreshed side-by-side capture evidence in `.tmp/searchfield-parity-current1/size-deltas.json` reports strong parity (average pixel diff `0.069%`, max `0.616%`, median size delta `0.00%`); validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.43 `@vue-spectrum/slider`
   - Components: RangeSlider, Slider
-  - [ ] Story: RangeSlider.stories.ts
-  - [ ] Story: Slider.stories.ts
-- [ ] 1.44 `@vue-spectrum/statuslight`
+  - [x] Story: RangeSlider.stories.ts
+  - [x] Story: Slider.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `slider--*` (`react=18`, `vue=18`, diff `0/0`) and `slider-rangeslider--*` (`react=11`, `vue=11`, diff `0/0`) from React `dist/97e3ff099844b1ee324814db73e293af78e250a4/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; refreshed side-by-side capture evidence in `.tmp/slider-parity-current1/size-deltas.json` reports strong parity across all slider/rangeslider stories (average pixel diff `0.171%`, max `0.419%`, median size delta `2.33%` with overflow-label stories dominating size-only compression deltas); source/API review did not reveal additional Vue-only behavioral gaps for this scope, so no further slider source changes were required; validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.44 `@vue-spectrum/statuslight`
   - Components: StatusLight
-  - [ ] Story: StatusLight.stories.ts
+  - [x] Story: StatusLight.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `statuslight--*` (`react=1`, `vue=1`, diff `0/0`) from React `dist/97e3ff099844b1ee324814db73e293af78e250a4/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; side-by-side capture evidence in `.tmp/statuslight-parity-current1/size-deltas.json` reports exact parity (`delta 0.00%`, `pixel diff 0.00%` for `statuslight--default`); source/API review found no additional parity gaps for this scope after provider-prop inheritance alignment; validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
 - [ ] 1.45 `@vue-spectrum/steplist`
   - Components: VueStepList
   - [ ] Story: StepList.stories.ts
-- [ ] 1.46 `@vue-spectrum/story-utils`
+  - Blocker: isolated Playwright re-capture for Vue `steplist--disabled-all-keys` still times out at `iframe.html` loading/preparing state (`2026-03-01`, React capture succeeds, Vue times out at `page.goto`).
+- [x] 1.46 `@vue-spectrum/story-utils`
   - Components: VueErrorBoundary
-  - [ ] Story: (none)
+  - [x] Story: (none)
+  - Evidence: React/Vue story-id parity is zero for story-utils scope (`story-utils`/`errorboundary` ids all `0` in React `dist/97e3ff099844b1ee324814db73e293af78e250a4/storybook/index.json` and Vue `starters/vue/dist/storybook/index.json`); Vue story-utils internals were aligned in `packages/@vue-spectrum/story-utils/src/ErrorBoundary.ts` and `packages/@vue-spectrum/story-utils/src/generatePowerset.ts` by removing Vue-only fallback class/default message behavior from `ErrorBoundary` and restoring React-equivalent `generatePowerset` merge semantics for non-array multi-key state objects; regression coverage was tightened in `starters/vue/src/composition.spec.ts` to assert classless fallback markup and multi-key powerset combinations; validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
 - [ ] 1.47 `@vue-spectrum/style-macro-s1`
   - Components: (no `defineComponent` exports detected in `src`)
   - [ ] Story: StyleMacro.stories.ts
