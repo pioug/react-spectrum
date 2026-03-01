@@ -24,10 +24,8 @@ type TreeNode = {
 };
 
 type StoryArgs = {
-  'aria-label'?: string,
   childrenKey?: string,
   defaultExpanded?: boolean,
-  disabledKeys?: TreeNodeId[],
   disabledBehavior?: 'all' | 'selection',
   disallowEmptySelection?: boolean,
   hidden?: boolean,
@@ -42,6 +40,8 @@ type StoryArgs = {
 };
 
 type RenderTreeOptions = {
+  ariaLabel: string,
+  disabledKeys?: TreeNodeId[],
   showActions?: boolean
 };
 
@@ -202,9 +202,8 @@ const DYNAMIC_ITEMS: TreeNode[] = [
 
 const DYNAMIC_ITEMS_WITH_LINKS = mapNodesWithHref(DYNAMIC_ITEMS, 'https://adobe.com/');
 
-const meta: Meta<typeof TreeView> = {
+const meta: Meta<StoryArgs> = {
   title: 'TreeView',
-  component: TreeView,
   excludeStories: [
     'renderEmptyState'
   ],
@@ -279,12 +278,14 @@ function nodeIcon(node: TreeNode) {
     : h(FileTxt, {'aria-hidden': 'true', size: 'S'});
 }
 
-function renderTree(defaultItems: TreeNode[] = STATIC_ITEMS, options: RenderTreeOptions = {}) {
+function renderTree(defaultItems: TreeNode[] = STATIC_ITEMS, options: RenderTreeOptions) {
   return (args: StoryArgs) => ({
     components: {TreeView},
     setup() {
       let selectedKey = ref<TreeNodeId | undefined>(normalizeNodeId(args.modelValue));
       let items = computed(() => normalizeItems(args.items, defaultItems));
+      let ariaLabel = options.ariaLabel;
+      let disabledKeys = options.disabledKeys ?? [];
       let showActions = options.showActions ?? true;
 
       watch(() => args.modelValue, (value) => {
@@ -330,7 +331,9 @@ function renderTree(defaultItems: TreeNode[] = STATIC_ITEMS, options: RenderTree
         : undefined;
 
       return {
+        ariaLabel,
         args,
+        disabledKeys,
         items,
         onExpandedChange,
         onItemAction,
@@ -344,6 +347,8 @@ function renderTree(defaultItems: TreeNode[] = STATIC_ITEMS, options: RenderTree
       <div style="width: 300px; resize: both; height: 90vh; overflow: auto;">
         <TreeView
           v-bind="args"
+          :aria-label="ariaLabel"
+          :disabled-keys="disabledKeys"
           :items="items"
           :model-value="selectedKey"
           :render-item="renderItem"
@@ -357,56 +362,61 @@ function renderTree(defaultItems: TreeNode[] = STATIC_ITEMS, options: RenderTree
 }
 
 export const TreeExampleStatic: Story = {
-  render: renderTree(STATIC_ITEMS, {showActions: true}),
-  args: {
-    ...TREE_SELECTION_ARGS,
-    'aria-label': 'test static tree',
+  render: renderTree(STATIC_ITEMS, {
+    ariaLabel: 'test static tree',
     disabledKeys: ['projects-1'],
-    items: STATIC_ITEMS
+    showActions: true
+  }),
+  args: {
+    ...TREE_SELECTION_ARGS
   },
   argTypes: TREE_SELECTION_ARG_TYPES
 };
 
 export const TreeExampleStaticNoActions: Story = {
-  render: renderTree(STATIC_ITEMS, {showActions: false}),
-  args: {
-    ...TREE_SELECTION_ARGS,
-    'aria-label': 'test static tree',
+  render: renderTree(STATIC_ITEMS, {
+    ariaLabel: 'test static tree',
     disabledKeys: ['projects-1'],
-    items: STATIC_ITEMS
+    showActions: false
+  }),
+  args: {
+    ...TREE_SELECTION_ARGS
   },
   argTypes: TREE_SELECTION_ARG_TYPES
 };
 
 export const ExampleNoActions: Story = {
-  render: renderTree(STATIC_ITEMS, {showActions: false}),
-  args: {
-    ...TREE_SELECTION_ARGS,
-    'aria-label': 'test static tree',
+  render: renderTree(STATIC_ITEMS, {
+    ariaLabel: 'test static tree',
     disabledKeys: ['projects-1'],
-    items: STATIC_ITEMS
+    showActions: false
+  }),
+  args: {
+    ...TREE_SELECTION_ARGS
   },
   argTypes: TREE_SELECTION_ARG_TYPES
 };
 
 export const TreeExampleDynamic: Story = {
-  render: renderTree(DYNAMIC_ITEMS, {showActions: true}),
-  args: {
-    ...TREE_SELECTION_ARGS,
-    'aria-label': 'test dynamic tree',
+  render: renderTree(DYNAMIC_ITEMS, {
+    ariaLabel: 'test dynamic tree',
     disabledKeys: ['reports-1AB'],
-    items: DYNAMIC_ITEMS
+    showActions: true
+  }),
+  args: {
+    ...TREE_SELECTION_ARGS
   },
   argTypes: TREE_SELECTION_ARG_TYPES
 };
 
 export const WithActions: Story = {
-  render: renderTree(DYNAMIC_ITEMS, {showActions: true}),
+  render: renderTree(DYNAMIC_ITEMS, {
+    ariaLabel: 'test dynamic tree',
+    disabledKeys: ['reports-1AB'],
+    showActions: true
+  }),
   args: {
     ...TREE_SELECTION_ARGS,
-    'aria-label': 'test dynamic tree',
-    disabledKeys: ['reports-1AB'],
-    items: DYNAMIC_ITEMS,
     onAction: action('onAction')
   },
   argTypes: TREE_SELECTION_ARG_TYPES,
@@ -414,15 +424,16 @@ export const WithActions: Story = {
 };
 
 export const WithLinks: Story = {
-  render: renderTree(DYNAMIC_ITEMS_WITH_LINKS, {showActions: true}),
-  args: {
-    ...TREE_SELECTION_ARGS,
-    'aria-label': 'test dynamic tree',
+  render: renderTree(DYNAMIC_ITEMS_WITH_LINKS, {
+    ariaLabel: 'test dynamic tree',
     disabledKeys: ['reports-1AB'],
-    items: DYNAMIC_ITEMS_WITH_LINKS
+    showActions: true
+  }),
+  args: {
+    ...TREE_SELECTION_ARGS
   },
   argTypes: TREE_SELECTION_ARG_TYPES,
-  name: 'Tree with links',
+  name: 'With Links',
   parameters: {
     description: {
       data: 'every tree item should link to adobe.com'
@@ -431,11 +442,13 @@ export const WithLinks: Story = {
 };
 
 export const EmptyTree: Story = {
-  render: renderTree([], {showActions: true}),
+  render: renderTree([], {
+    ariaLabel: 'test dynamic tree',
+    disabledKeys: ['reports-1AB'],
+    showActions: true
+  }),
   args: {
     ...TREE_SELECTION_ARGS,
-    'aria-label': 'test dynamic tree',
-    disabledKeys: ['reports-1AB'],
     items: [],
     renderEmptyState
   },
@@ -444,12 +457,13 @@ export const EmptyTree: Story = {
 };
 
 export const WithActionMenu: Story = {
-  render: renderTree(DYNAMIC_ITEMS, {showActions: true}),
-  args: {
-    ...TREE_SELECTION_ARGS,
-    'aria-label': 'test dynamic tree',
+  render: renderTree(DYNAMIC_ITEMS, {
+    ariaLabel: 'test dynamic tree',
     disabledKeys: ['reports-1AB'],
-    items: DYNAMIC_ITEMS
+    showActions: true
+  }),
+  args: {
+    ...TREE_SELECTION_ARGS
   },
   argTypes: TREE_SELECTION_ARG_TYPES
 };

@@ -222,9 +222,15 @@ export const Tree = defineComponent({
                   isExpanded ? 'is-expanded' : null
                 ],
                 type: 'button',
+                tabindex: -1,
                 'aria-label': isExpanded ? 'Collapse' : 'Expand',
+                onMousedown: (event: MouseEvent) => {
+                  // Keep focus on the row interaction target, not the chevron button.
+                  event.preventDefault();
+                },
                 onClick: (event: Event) => {
                   event.preventDefault();
+                  event.stopPropagation();
                   toggleExpanded(id);
                 }
               }, [

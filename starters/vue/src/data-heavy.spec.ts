@@ -79,6 +79,8 @@ describe('Vue migration data-heavy components', () => {
     expect(wrapper.findAll('button.vs-tree__item')).toHaveLength(1);
     await wrapper.get('button.vs-tree__toggle').trigger('click');
     expect(wrapper.findAll('button.vs-tree__item')).toHaveLength(2);
+    expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+    expect(wrapper.emitted('itemAction')).toBeUndefined();
   });
 
   it('renders href nodes and empty-state content when configured', async () => {
