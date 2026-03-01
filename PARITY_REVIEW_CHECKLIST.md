@@ -101,9 +101,9 @@ Use this as a progression checklist for parity re-review. Mark each line when co
 - [x] 1.21 `@vue-spectrum/filetrigger`
   - Components: (no `defineComponent` exports detected in `src`)
   - [x] Story: FileTrigger.stories.ts
-- [ ] 1.22 `@vue-spectrum/form`
+- [x] 1.22 `@vue-spectrum/form`
   - Components: Form
-  - [ ] Story: Form.stories.ts
+  - [x] Story: Form.stories.ts
 - [x] 1.23 `@vue-spectrum/icon`
   - Components: Icon, Illustration, UIIcon
   - [x] Story: Icon.stories.ts
@@ -111,7 +111,7 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - [x] Story: IconsExpress.stories.ts
   - [x] Story: IconsWorkflow.stories.ts
   - [x] `@spectrum-icons-vue/workflow` exports parity: `CalendarCheckColor` + export in package index
-- [ ] 1.24 `@vue-spectrum/illustratedmessage`
+- [x] 1.24 `@vue-spectrum/illustratedmessage`
   - Components: IllustratedMessage
   - [x] Story: IllustratedMessage.stories.ts
 - [ ] 1.25 `@vue-spectrum/image`
