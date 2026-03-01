@@ -3212,67 +3212,73 @@ describe('Vue migration primitives', () => {
   });
 
   it('respects disabled/readonly gating and emits completion changes for controlled updates', async () => {
-    let readOnly = mount(StepList, {
-      props: {
-        ariaLabel: 'Read only steps',
-        defaultLastCompletedStep: 'payment',
-        defaultSelectedKey: 'review',
-        isReadOnly: true,
-        items: [
-          {key: 'shipping', label: 'Shipping'},
-          {key: 'payment', label: 'Payment'},
-          {key: 'review', label: 'Review'}
-        ]
-      }
-    });
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-    let readOnlyLinks = readOnly.findAll('a.spectrum-Steplist-link');
-    expect(readOnlyLinks).toHaveLength(3);
-    expect(readOnlyLinks[0].attributes('aria-disabled')).toBe('true');
-    expect(readOnlyLinks[1].attributes('aria-disabled')).toBe('true');
-    expect(readOnlyLinks[2].attributes('aria-disabled')).toBe('true');
+    try {
+      let readOnly = mount(StepList, {
+        props: {
+          ariaLabel: 'Read only steps',
+          defaultLastCompletedStep: 'payment',
+          defaultSelectedKey: 'review',
+          isReadOnly: true,
+          items: [
+            {key: 'shipping', label: 'Shipping'},
+            {key: 'payment', label: 'Payment'},
+            {key: 'review', label: 'Review'}
+          ]
+        }
+      });
 
-    await readOnlyLinks[0].trigger('click');
-    expect(readOnly.emitted('update:modelValue')).toBeUndefined();
+      let readOnlyLinks = readOnly.findAll('a.spectrum-Steplist-link');
+      expect(readOnlyLinks).toHaveLength(3);
+      expect(readOnlyLinks[0].attributes('aria-disabled')).toBe('true');
+      expect(readOnlyLinks[1].attributes('aria-disabled')).toBe('true');
+      expect(readOnlyLinks[2].attributes('aria-disabled')).toBe('true');
 
-    let disabled = mount(StepList, {
-      props: {
-        ariaLabel: 'Disabled steps',
-        defaultLastCompletedStep: 'payment',
-        defaultSelectedKey: 'review',
-        isDisabled: true,
-        items: [
-          {key: 'shipping', label: 'Shipping'},
-          {key: 'payment', label: 'Payment'},
-          {key: 'review', label: 'Review'}
-        ]
-      }
-    });
+      await readOnlyLinks[0].trigger('click');
+      expect(readOnly.emitted('update:modelValue')).toBeUndefined();
 
-    let disabledLinks = disabled.findAll('a.spectrum-Steplist-link');
-    expect(disabledLinks).toHaveLength(3);
-    expect(disabledLinks[0].attributes('aria-disabled')).toBe('true');
-    expect(disabledLinks[1].attributes('aria-disabled')).toBe('true');
-    expect(disabledLinks[2].attributes('aria-disabled')).toBe('true');
+      let disabled = mount(StepList, {
+        props: {
+          ariaLabel: 'Disabled steps',
+          defaultLastCompletedStep: 'payment',
+          defaultSelectedKey: 'review',
+          isDisabled: true,
+          items: [
+            {key: 'shipping', label: 'Shipping'},
+            {key: 'payment', label: 'Payment'},
+            {key: 'review', label: 'Review'}
+          ]
+        }
+      });
 
-    await disabledLinks[1].trigger('click');
-    expect(disabled.emitted('update:modelValue')).toBeUndefined();
+      let disabledLinks = disabled.findAll('a.spectrum-Steplist-link');
+      expect(disabledLinks).toHaveLength(3);
+      expect(disabledLinks[0].attributes('aria-disabled')).toBe('true');
+      expect(disabledLinks[1].attributes('aria-disabled')).toBe('true');
+      expect(disabledLinks[2].attributes('aria-disabled')).toBe('true');
 
-    let controlled = mount(StepList, {
-      props: {
-        ariaLabel: 'Controlled steps',
-        selectedKey: 'shipping',
-        items: [
-          {key: 'shipping', label: 'Shipping'},
-          {key: 'payment', label: 'Payment'},
-          {key: 'review', label: 'Review'}
-        ]
-      }
-    });
+      await disabledLinks[1].trigger('click');
+      expect(disabled.emitted('update:modelValue')).toBeUndefined();
 
-    await controlled.setProps({selectedKey: 'review'});
-    expect(controlled.emitted('update:lastCompletedStep')?.[0]).toEqual(['payment']);
-    expect(controlled.emitted('lastCompletedStepChange')?.[0]).toEqual(['payment']);
+      let controlled = mount(StepList, {
+        props: {
+          ariaLabel: 'Controlled steps',
+          selectedKey: 'shipping',
+          items: [
+            {key: 'shipping', label: 'Shipping'},
+            {key: 'payment', label: 'Payment'},
+            {key: 'review', label: 'Review'}
+          ]
+        }
+      });
+
+      await controlled.setProps({selectedKey: 'review'});
+      expect(controlled.emitted('update:lastCompletedStep')?.[0]).toEqual(['payment']);
+      expect(controlled.emitted('lastCompletedStepChange')?.[0]).toEqual(['payment']);
+    } finally {
+      warn.mockRestore();
+    }
   });
 
   it('accepts step list disabledKeys as a Set iterable', async () => {
@@ -3687,132 +3693,162 @@ describe('Vue migration primitives', () => {
   });
 
   it('emits selection and action from card view items', async () => {
-    let wrapper = mount(CardView, {
-      props: {
-        modelValue: 'overview',
-        items: [
-          {id: 'overview', title: 'Overview'},
-          {id: 'quality', title: 'Quality'}
-        ],
-        selectionMode: 'single'
-      }
-    });
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-    await wrapper.findAll('[role="gridcell"]')[1].trigger('click');
-    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['quality']);
-    expect(wrapper.emitted('action')?.[0]).toEqual([{id: 'quality', title: 'Quality'}]);
-    expect(wrapper.findAll('[role=\"row\"]')[1].attributes('aria-rowindex')).toBe('2');
+    try {
+      let wrapper = mount(CardView, {
+        props: {
+          modelValue: 'overview',
+          items: [
+            {id: 'overview', title: 'Overview'},
+            {id: 'quality', title: 'Quality'}
+          ],
+          selectionMode: 'single'
+        }
+      });
+
+      await wrapper.findAll('[role="gridcell"]')[1].trigger('click');
+      expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['quality']);
+      expect(wrapper.emitted('action')?.[0]).toEqual([{id: 'quality', title: 'Quality'}]);
+      expect(wrapper.findAll('[role=\"row\"]')[1].attributes('aria-rowindex')).toBe('2');
+    } finally {
+      warn.mockRestore();
+    }
   });
 
   it('supports card view disabledKeys iterable and multiple selection mode', async () => {
-    let wrapper = mount(CardView, {
-      props: {
-        disabledKeys: new Set(['quality']),
-        items: [
-          {id: 'overview', title: 'Overview'},
-          {id: 'quality', title: 'Quality'}
-        ],
-        selectionMode: 'multiple'
-      }
-    });
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-    let cards = wrapper.findAll('[role="gridcell"]');
-    expect(cards).toHaveLength(2);
-    expect(cards[1].attributes('aria-disabled')).toBe('true');
+    try {
+      let wrapper = mount(CardView, {
+        props: {
+          disabledKeys: new Set(['quality']),
+          items: [
+            {id: 'overview', title: 'Overview'},
+            {id: 'quality', title: 'Quality'}
+          ],
+          selectionMode: 'multiple'
+        }
+      });
 
-    await cards[1].trigger('click');
-    expect(wrapper.emitted('action')).toBeUndefined();
-    expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+      let cards = wrapper.findAll('[role="gridcell"]');
+      expect(cards).toHaveLength(2);
+      expect(cards[1].attributes('aria-disabled')).toBe('true');
 
-    await cards[0].trigger('click');
-    expect(wrapper.emitted('action')?.[0]).toEqual([{id: 'overview', title: 'Overview'}]);
-    let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
-    expect(emittedModelValue).toBeInstanceOf(Set);
-    expect(Array.from(emittedModelValue as Set<string>)).toEqual(['overview']);
-    let emittedSelectionChange = wrapper.emitted('selectionChange')?.[0]?.[0] as unknown;
-    expect(emittedSelectionChange).toBeInstanceOf(Set);
-    expect(Array.from(emittedSelectionChange as Set<string>)).toEqual(['overview']);
+      await cards[1].trigger('click');
+      expect(wrapper.emitted('action')).toBeUndefined();
+      expect(wrapper.emitted('update:modelValue')).toBeUndefined();
+
+      await cards[0].trigger('click');
+      expect(wrapper.emitted('action')?.[0]).toEqual([{id: 'overview', title: 'Overview'}]);
+      let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+      expect(emittedModelValue).toBeInstanceOf(Set);
+      expect(Array.from(emittedModelValue as Set<string>)).toEqual(['overview']);
+      let emittedSelectionChange = wrapper.emitted('selectionChange')?.[0]?.[0] as unknown;
+      expect(emittedSelectionChange).toBeInstanceOf(Set);
+      expect(Array.from(emittedSelectionChange as Set<string>)).toEqual(['overview']);
+    } finally {
+      warn.mockRestore();
+    }
   });
 
   it('accepts card view modelValue as a Set iterable in multiple selection mode', async () => {
-    let wrapper = mount(CardView, {
-      props: {
-        modelValue: new Set(['overview']),
-        items: [
-          {id: 'overview', title: 'Overview'},
-          {id: 'quality', title: 'Quality'}
-        ],
-        selectionMode: 'multiple'
-      }
-    });
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-    let cards = wrapper.findAll('[role="gridcell"]');
-    expect(cards).toHaveLength(2);
-    expect(cards[0].classes()).toContain('is-selected');
-    expect(cards[1].classes()).not.toContain('is-selected');
+    try {
+      let wrapper = mount(CardView, {
+        props: {
+          modelValue: new Set(['overview']),
+          items: [
+            {id: 'overview', title: 'Overview'},
+            {id: 'quality', title: 'Quality'}
+          ],
+          selectionMode: 'multiple'
+        }
+      });
 
-    await cards[1].trigger('click');
-    let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
-    expect(emittedModelValue).toBeInstanceOf(Set);
-    expect(Array.from(emittedModelValue as Set<string>)).toEqual(['overview', 'quality']);
-    let emittedChange = wrapper.emitted('change')?.[0]?.[0] as unknown;
-    expect(emittedChange).toBeInstanceOf(Set);
-    expect(Array.from(emittedChange as Set<string>)).toEqual(['overview', 'quality']);
-    let emittedSelectionChange = wrapper.emitted('selectionChange')?.[0]?.[0] as unknown;
-    expect(emittedSelectionChange).toBeInstanceOf(Set);
-    expect(Array.from(emittedSelectionChange as Set<string>)).toEqual(['overview', 'quality']);
+      let cards = wrapper.findAll('[role="gridcell"]');
+      expect(cards).toHaveLength(2);
+      expect(cards[0].classes()).toContain('is-selected');
+      expect(cards[1].classes()).not.toContain('is-selected');
+
+      await cards[1].trigger('click');
+      let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+      expect(emittedModelValue).toBeInstanceOf(Set);
+      expect(Array.from(emittedModelValue as Set<string>)).toEqual(['overview', 'quality']);
+      let emittedChange = wrapper.emitted('change')?.[0]?.[0] as unknown;
+      expect(emittedChange).toBeInstanceOf(Set);
+      expect(Array.from(emittedChange as Set<string>)).toEqual(['overview', 'quality']);
+      let emittedSelectionChange = wrapper.emitted('selectionChange')?.[0]?.[0] as unknown;
+      expect(emittedSelectionChange).toBeInstanceOf(Set);
+      expect(Array.from(emittedSelectionChange as Set<string>)).toEqual(['overview', 'quality']);
+    } finally {
+      warn.mockRestore();
+    }
   });
 
   it('accepts card view numeric modelValue for numeric item ids', async () => {
-    let wrapper = mount(CardView, {
-      props: {
-        modelValue: 0,
-        items: [
-          {id: 0, title: 'Bob 1'},
-          {id: 1, title: 'Joe 1'}
-        ],
-        selectionMode: 'single'
-      }
-    });
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-    let cards = wrapper.findAll('[role="gridcell"]');
-    expect(cards).toHaveLength(2);
-    expect(cards[0].classes()).toContain('is-selected');
-    expect(cards[1].classes()).not.toContain('is-selected');
+    try {
+      let wrapper = mount(CardView, {
+        props: {
+          modelValue: 0,
+          items: [
+            {id: 0, title: 'Bob 1'},
+            {id: 1, title: 'Joe 1'}
+          ],
+          selectionMode: 'single'
+        }
+      });
 
-    await cards[1].trigger('click');
-    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([1]);
-    expect(wrapper.emitted('change')?.[0]).toEqual([1]);
-    expect(wrapper.emitted('selectionChange')?.[0]).toEqual([[1]]);
+      let cards = wrapper.findAll('[role="gridcell"]');
+      expect(cards).toHaveLength(2);
+      expect(cards[0].classes()).toContain('is-selected');
+      expect(cards[1].classes()).not.toContain('is-selected');
+
+      await cards[1].trigger('click');
+      expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([1]);
+      expect(wrapper.emitted('change')?.[0]).toEqual([1]);
+      expect(wrapper.emitted('selectionChange')?.[0]).toEqual([[1]]);
+    } finally {
+      warn.mockRestore();
+    }
   });
 
   it('emits numeric keys for card view multiple-selection updates with numeric ids', async () => {
-    let wrapper = mount(CardView, {
-      props: {
-        modelValue: new Set([0]),
-        items: [
-          {id: 0, title: 'Bob 1'},
-          {id: 1, title: 'Joe 1'}
-        ],
-        selectionMode: 'multiple'
-      }
-    });
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-    let cards = wrapper.findAll('[role="gridcell"]');
-    expect(cards).toHaveLength(2);
-    expect(cards[0].classes()).toContain('is-selected');
-    expect(cards[1].classes()).not.toContain('is-selected');
+    try {
+      let wrapper = mount(CardView, {
+        props: {
+          modelValue: new Set([0]),
+          items: [
+            {id: 0, title: 'Bob 1'},
+            {id: 1, title: 'Joe 1'}
+          ],
+          selectionMode: 'multiple'
+        }
+      });
 
-    await cards[1].trigger('click');
-    let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
-    expect(emittedModelValue).toBeInstanceOf(Set);
-    expect(Array.from(emittedModelValue as Set<number>)).toEqual([0, 1]);
-    let emittedChange = wrapper.emitted('change')?.[0]?.[0] as unknown;
-    expect(emittedChange).toBeInstanceOf(Set);
-    expect(Array.from(emittedChange as Set<number>)).toEqual([0, 1]);
-    let emittedSelectionChange = wrapper.emitted('selectionChange')?.[0]?.[0] as unknown;
-    expect(emittedSelectionChange).toBeInstanceOf(Set);
-    expect(Array.from(emittedSelectionChange as Set<number>)).toEqual([0, 1]);
+      let cards = wrapper.findAll('[role="gridcell"]');
+      expect(cards).toHaveLength(2);
+      expect(cards[0].classes()).toContain('is-selected');
+      expect(cards[1].classes()).not.toContain('is-selected');
+
+      await cards[1].trigger('click');
+      let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+      expect(emittedModelValue).toBeInstanceOf(Set);
+      expect(Array.from(emittedModelValue as Set<number>)).toEqual([0, 1]);
+      let emittedChange = wrapper.emitted('change')?.[0]?.[0] as unknown;
+      expect(emittedChange).toBeInstanceOf(Set);
+      expect(Array.from(emittedChange as Set<number>)).toEqual([0, 1]);
+      let emittedSelectionChange = wrapper.emitted('selectionChange')?.[0]?.[0] as unknown;
+      expect(emittedSelectionChange).toBeInstanceOf(Set);
+      expect(Array.from(emittedSelectionChange as Set<number>)).toEqual([0, 1]);
+    } finally {
+      warn.mockRestore();
+    }
   });
 
   it('resolves card view layout constructors to gallery and waterfall classes', () => {

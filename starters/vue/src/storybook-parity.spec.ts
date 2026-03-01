@@ -1,6 +1,6 @@
 import {mount} from '@vue/test-utils';
 import {nextTick} from 'vue';
-import {describe, expect, it} from 'vitest';
+import {describe, expect, it, vi} from 'vitest';
 import gridListMeta, {MyGridListItem} from '../../../packages/vue-aria-components/stories/GridList.stories';
 import listBoxMeta, {ListBoxExample, MyListBoxLoaderIndicator} from '../../../packages/vue-aria-components/stories/ListBox.stories';
 import tableMeta, {
@@ -3236,6 +3236,7 @@ describe('Vue storybook helper parity', () => {
   });
 
   it('renders card view disabled keys story with disabled-card contracts', async () => {
+    let warn = vi.spyOn(console, 'warn').mockImplementation(() => {});
     let wrappers: Array<ReturnType<typeof mount>> = [];
 
     try {
@@ -3282,6 +3283,7 @@ describe('Vue storybook helper parity', () => {
       let controlledSelectedCards = controlledWrapper.findAll('[role="gridcell"].is-selected').map((card) => card.attributes('aria-label'));
       expect(controlledSelectedCards).toEqual(['Bob 1']);
     } finally {
+      warn.mockRestore();
       for (let wrapper of wrappers) {
         wrapper.unmount();
       }

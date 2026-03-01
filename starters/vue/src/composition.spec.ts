@@ -15760,7 +15760,7 @@ describe('Vue migration composition components', () => {
       }
     });
     let link = document.createElement('a');
-    link.href = 'https://example.com';
+    link.href = '#example';
     document.body.append(link);
 
     try {
