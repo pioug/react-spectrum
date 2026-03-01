@@ -1,23 +1,21 @@
 import {action} from 'storybook/actions';
 import {Breadcrumbs} from '../src';
+import {Item} from '@vue-stately/collections';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-let defaultItems = ['The quick brown fox jumps over', 'My Documents', 'Kangaroos jump high'];
-let manyItems = [
-  'The quick brown fox jumps over',
-  'My Documents',
-  'Kangaroos jump high',
-  'Koalas are very cute',
-  'Wombat noses',
-  'Wattle trees',
-  'April 7'
+let defaultItems = [
+  {key: 'Folder 1', label: 'The quick brown fox jumps over'},
+  {key: 'Folder 2', label: 'My Documents'},
+  {key: 'Folder 3', label: 'Kangaroos jump high'}
 ];
-let linkItems = [
-  {href: 'https://example.com', key: 'example.com', label: 'Example.com'},
-  {href: 'https://example.com/foo', key: 'foo', label: 'Foo'},
-  {href: 'https://example.com/foo/bar', key: 'bar', label: 'Bar'},
-  {href: 'https://example.com/foo/bar/baz', key: 'baz', label: 'Baz'},
-  {href: 'https://example.com/foo/bar/baz/qux', key: 'qux', label: 'Qux'}
+let manyItems = [
+  {key: 'Folder 1', label: 'The quick brown fox jumps over'},
+  {key: 'Folder 2', label: 'My Documents'},
+  {key: 'Folder 3', label: 'Kangaroos jump high'},
+  {key: 'Folder 4', label: 'Koalas are very cute'},
+  {key: 'Folder 5', label: 'Wombat\'s noses'},
+  {key: 'Folder 6', label: 'Wattle trees'},
+  {key: 'Folder 7', label: 'April 7'}
 ];
 
 const meta = {
@@ -56,54 +54,92 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: (args) => ({
-    components: {Breadcrumbs},
+    components: {Breadcrumbs, Item},
     setup() {
       return {args, items: defaultItems};
     },
-    template: '<div style="width: 100vw;"><Breadcrumbs v-bind="args" :items="items" /></div>'
+    template: `
+      <div style="width: 100vw;">
+        <Breadcrumbs v-bind="args">
+          <Item v-for="item in items" :key="item.key">{{ item.label }}</Item>
+        </Breadcrumbs>
+      </div>
+    `
   }),
   name: '3 items'
 };
 
 export const DefaultTruncated: Story = {
   render: (args) => ({
-    components: {Breadcrumbs},
+    components: {Breadcrumbs, Item},
     setup() {
       return {args, items: defaultItems};
     },
-    template: '<div style="width: 100vw;"><div style="width: 120px;"><Breadcrumbs v-bind="args" :items="items" /></div></div>'
+    template: `
+      <div style="width: 100vw;">
+        <div style="width: 120px;">
+          <Breadcrumbs v-bind="args">
+            <Item v-for="item in items" :key="item.key">{{ item.label }}</Item>
+          </Breadcrumbs>
+        </div>
+      </div>
+    `
   }),
   name: 'truncated'
 };
 
 export const RenderMany: Story = {
   render: (args) => ({
-    components: {Breadcrumbs},
+    components: {Breadcrumbs, Item},
     setup() {
       return {args, items: manyItems};
     },
-    template: '<div style="width: 100vw;"><div style="min-width: 100px; width: 300px; padding: 10px; resize: horizontal; overflow: auto; background-color: var(--spectrum-global-color-gray-50);"><Breadcrumbs v-bind="args" :items="items" /></div></div>'
+    template: `
+      <div style="width: 100vw;">
+        <div style="min-width: 100px; width: 300px; padding: 10px; resize: horizontal; overflow: auto; background-color: var(--spectrum-global-color-gray-50);">
+          <Breadcrumbs v-bind="args">
+            <Item v-for="item in items" :key="item.key">{{ item.label }}</Item>
+          </Breadcrumbs>
+        </div>
+      </div>
+    `
   }),
   name: '7 items, resizable container'
 };
 
 export const OneItem: Story = {
   render: (args) => ({
-    components: {Breadcrumbs},
+    components: {Breadcrumbs, Item},
     setup() {
-      return {args, items: ['Root']};
+      return {args};
     },
-    template: '<div style="width: 100vw;"><Breadcrumbs v-bind="args" :items="items" /></div>'
+    template: `
+      <div style="width: 100vw;">
+        <Breadcrumbs v-bind="args">
+          <Item>Root</Item>
+        </Breadcrumbs>
+      </div>
+    `
   }),
   name: '1 item'
 };
 
 export const Links: Story = {
   render: (args) => ({
-    components: {Breadcrumbs},
+    components: {Breadcrumbs, Item},
     setup() {
-      return {args, items: linkItems};
+      return {args};
     },
-    template: '<div style="width: 100vw;"><Breadcrumbs v-bind="args" :items="items" /></div>'
+    template: `
+      <div style="width: 100vw;">
+        <Breadcrumbs v-bind="args">
+          <Item href="https://example.com">Example.com</Item>
+          <Item href="https://example.com/foo">Foo</Item>
+          <Item href="https://example.com/foo/bar">Bar</Item>
+          <Item href="https://example.com/foo/bar/baz">Baz</Item>
+          <Item href="https://example.com/foo/bar/baz/qux">Qux</Item>
+        </Breadcrumbs>
+      </div>
+    `
   })
 };

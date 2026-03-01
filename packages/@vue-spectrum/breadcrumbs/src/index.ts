@@ -1,8 +1,24 @@
 import '@adobe/spectrum-css-temp/components/breadcrumb/vars.css';
 import '@adobe/spectrum-css-temp/components/button/vars.css';
 import '@adobe/spectrum-css-temp/components/menu/vars.css';
+import {Item, Section} from '@vue-stately/collections';
 import {classNames, filterDOMProps} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, type PropType, ref, watch} from 'vue';
+import {
+  Comment,
+  computed,
+  defineComponent,
+  Fragment,
+  h,
+  isVNode,
+  nextTick,
+  onBeforeUnmount,
+  onMounted,
+  onUpdated,
+  type PropType,
+  ref,
+  type VNode,
+  watch
+} from 'vue';
 
 const styles: {[key: string]: string} = {};
 const buttonStyles: {[key: string]: string} = {};
@@ -41,6 +57,115 @@ type OverflowMenuItem = {
 };
 
 type RenderedBreadcrumbItem = NormalizedBreadcrumbItem | OverflowMenuItem;
+type ChildItem = BreadcrumbItemInput | string;
+type FlattenedVNodes = VNode[];
+
+function toChildArray(children: unknown): unknown[] {
+  if (children == null || typeof children === 'boolean') {
+    return [];
+  }
+
+  if (Array.isArray(children)) {
+    return children;
+  }
+
+  if (typeof children === 'function') {
+    return toChildArray(children());
+  }
+
+  if (typeof children === 'object') {
+    let defaultSlot = (children as {default?: () => unknown}).default;
+    if (typeof defaultSlot === 'function') {
+      return toChildArray(defaultSlot());
+    }
+  }
+
+  return [children];
+}
+
+function flattenChildren(nodes: unknown[]): FlattenedVNodes {
+  let result: FlattenedVNodes = [];
+
+  for (let node of nodes) {
+    if (Array.isArray(node)) {
+      result.push(...flattenChildren(node));
+      continue;
+    }
+
+    if (!isVNode(node) || node.type === Comment) {
+      continue;
+    }
+
+    if (node.type === Fragment) {
+      result.push(...flattenChildren(toChildArray(node.children)));
+      continue;
+    }
+
+    result.push(node);
+  }
+
+  return result;
+}
+
+function getNodeText(node: unknown): string {
+  if (typeof node === 'string' || typeof node === 'number') {
+    return String(node);
+  }
+
+  if (Array.isArray(node)) {
+    return node.map((child) => getNodeText(child)).join('');
+  }
+
+  if (!isVNode(node)) {
+    if (typeof node === 'function') {
+      return getNodeText(node());
+    }
+
+    if (node && typeof node === 'object') {
+      let defaultSlot = (node as {default?: () => unknown}).default;
+      if (typeof defaultSlot === 'function') {
+        return getNodeText(defaultSlot());
+      }
+    }
+
+    return '';
+  }
+
+  return getNodeText(toChildArray(node.children));
+}
+
+function normalizeChildItems(children: unknown[]): ChildItem[] {
+  let items: ChildItem[] = [];
+
+  for (let child of flattenChildren(children)) {
+    let itemProps = (child.props ?? {}) as Record<string, unknown>;
+
+    if (child.type === Section) {
+      items.push(...normalizeChildItems(toChildArray(child.children)));
+      continue;
+    }
+
+    if (child.type !== Item) {
+      continue;
+    }
+
+    let label = getNodeText(toChildArray(child.children)).trim();
+    let fallbackKey = child.key ?? itemProps.id ?? itemProps.key;
+    let textValue = typeof itemProps.textValue === 'string' ? itemProps.textValue : '';
+
+    items.push({
+      children: label,
+      href: typeof itemProps.href === 'string' ? itemProps.href : undefined,
+      id: fallbackKey != null ? String(fallbackKey) : undefined,
+      key: fallbackKey != null ? String(fallbackKey) : undefined,
+      label: label || textValue,
+      rel: typeof itemProps.rel === 'string' ? itemProps.rel : undefined,
+      target: typeof itemProps.target === 'string' ? itemProps.target : undefined
+    });
+  }
+
+  return items;
+}
 
 function normalizeBreadcrumbItem(item: BreadcrumbItemInput, index: number): NormalizedBreadcrumbItem {
   if (typeof item === 'string') {
@@ -52,7 +177,7 @@ function normalizeBreadcrumbItem(item: BreadcrumbItemInput, index: number): Norm
 
   let fallbackLabel = item.id != null ? String(item.id) : `Item ${index + 1}`;
   let label = item.label ?? item.children ?? fallbackLabel;
-  let key = item.key ?? item.id ?? label ?? index;
+  let key = item.key ?? item.id ?? index;
 
   return {
     href: item.href,
@@ -61,6 +186,58 @@ function normalizeBreadcrumbItem(item: BreadcrumbItemInput, index: number): Norm
     rel: item.rel,
     target: item.target
   };
+}
+
+function getCurrentKey(items: NormalizedBreadcrumbItem[], current: string): string {
+  if (current) {
+    let match = items.find((item) => item.key === current || item.label === current);
+    if (match) {
+      return match.key;
+    }
+  }
+
+  return items.at(-1)?.key ?? '';
+}
+
+function getRenderedItems(
+  items: NormalizedBreadcrumbItem[],
+  visibleItemCount: number,
+  showRoot: boolean
+): RenderedBreadcrumbItem[] {
+  let clampedVisibleItems = Math.max(0, Math.min(items.length, visibleItemCount || items.length));
+
+  if (items.length <= clampedVisibleItems) {
+    return items;
+  }
+
+  let selectedKey = items.at(-1)?.key ?? '';
+  let availableItems = [...items];
+  let contents: RenderedBreadcrumbItem[] = [];
+  let endItems = clampedVisibleItems;
+
+  if (showRoot && clampedVisibleItems > 1) {
+    let rootItem = availableItems.shift();
+    if (rootItem) {
+      contents.push(rootItem);
+      endItems--;
+    }
+  }
+
+  let safeEndItems = Math.max(1, endItems);
+  let hiddenItems = availableItems.slice(0, Math.max(0, availableItems.length - safeEndItems));
+  let tailItems = availableItems.slice(-safeEndItems);
+
+  if (hiddenItems.length > 0) {
+    contents.push({
+      type: 'menu',
+      key: 'menu',
+      items,
+      selectedKey
+    });
+  }
+
+  contents.push(...tailItems);
+  return contents;
 }
 
 function isOverflowMenuItem(item: RenderedBreadcrumbItem): item is OverflowMenuItem {
@@ -118,7 +295,7 @@ export const Breadcrumbs = defineComponent({
   emits: {
     action: (key: string) => typeof key === 'string'
   },
-  setup(props, {attrs, emit}) {
+  setup(props, {attrs, emit, slots}) {
     let currentItemRef = ref<HTMLElement | null>(null);
     let hoveredKey = ref<string | null>(null);
     let focusedKey = ref<string | null>(null);
@@ -127,20 +304,11 @@ export const Breadcrumbs = defineComponent({
     let navRef = ref<HTMLElement | null>(null);
     let visibleItems = ref(0);
     let resizeObserver: ResizeObserver | null = null;
+    let latestItemSignature = '';
+    let previousItemSignature = '';
+    let latestNormalizedItems: NormalizedBreadcrumbItem[] = [];
 
     let isDisabled = computed(() => props.isDisabled ?? props.disabled);
-    let normalizedItems = computed(() => props.items.map((item, index) => normalizeBreadcrumbItem(item, index)));
-    let currentKey = computed(() => {
-      if (props.current) {
-        let match = normalizedItems.value.find((item) => item.key === props.current || item.label === props.current);
-        if (match) {
-          return match.key;
-        }
-      }
-
-      let last = normalizedItems.value.at(-1);
-      return last?.key ?? '';
-    });
 
     let computeVisibleItems = (visibleCount: number) => {
       let currentList = listRef.value;
@@ -154,7 +322,7 @@ export const Breadcrumbs = defineComponent({
       }
 
       let containerWidth = currentList.offsetWidth;
-      let isShowingMenu = normalizedItems.value.length > visibleCount;
+      let isShowingMenu = latestNormalizedItems.length > visibleCount;
       let calculatedWidth = 0;
       let nextVisibleItems = 0;
       let maxVisibleItems = MAX_VISIBLE_ITEMS;
@@ -208,55 +376,18 @@ export const Breadcrumbs = defineComponent({
     };
 
     let updateOverflow = async () => {
-      visibleItems.value = normalizedItems.value.length;
+      let itemCount = latestNormalizedItems.length;
+      visibleItems.value = itemCount;
       await nextTick();
 
-      let nextVisibleItems = computeVisibleItems(normalizedItems.value.length);
+      let nextVisibleItems = computeVisibleItems(itemCount);
       visibleItems.value = nextVisibleItems;
       await nextTick();
 
-      if (nextVisibleItems < normalizedItems.value.length && nextVisibleItems > 1) {
+      if (nextVisibleItems < itemCount && nextVisibleItems > 1) {
         visibleItems.value = computeVisibleItems(nextVisibleItems);
       }
     };
-
-    let renderedItems = computed<RenderedBreadcrumbItem[]>(() => {
-      let items = normalizedItems.value;
-      let clampedVisibleItems = Math.max(0, Math.min(items.length, visibleItems.value || items.length));
-
-      if (items.length <= clampedVisibleItems) {
-        return items;
-      }
-
-      let selectedKey = items.at(-1)?.key ?? '';
-      let availableItems = [...items];
-      let contents: RenderedBreadcrumbItem[] = [];
-      let endItems = clampedVisibleItems;
-
-      if (props.showRoot && clampedVisibleItems > 1) {
-        let rootItem = availableItems.shift();
-        if (rootItem) {
-          contents.push(rootItem);
-          endItems--;
-        }
-      }
-
-      let safeEndItems = Math.max(1, endItems);
-      let hiddenItems = availableItems.slice(0, Math.max(0, availableItems.length - safeEndItems));
-      let tailItems = availableItems.slice(-safeEndItems);
-
-      if (hiddenItems.length > 0) {
-        contents.push({
-          type: 'menu',
-          key: 'menu',
-          items: hiddenItems,
-          selectedKey
-        });
-      }
-
-      contents.push(...tailItems);
-      return contents;
-    });
 
     let focusCurrentItem = () => {
       if (props.autoFocusCurrent) {
@@ -274,7 +405,8 @@ export const Breadcrumbs = defineComponent({
     };
 
     onMounted(() => {
-      visibleItems.value = normalizedItems.value.length;
+      visibleItems.value = latestNormalizedItems.length;
+      previousItemSignature = latestItemSignature;
       void updateOverflow();
       focusCurrentItem();
 
@@ -290,6 +422,15 @@ export const Breadcrumbs = defineComponent({
       document.addEventListener('mousedown', onDocumentMouseDown);
     });
 
+    onUpdated(() => {
+      if (latestItemSignature !== previousItemSignature) {
+        previousItemSignature = latestItemSignature;
+        isMenuOpen.value = false;
+        void updateOverflow();
+        focusCurrentItem();
+      }
+    });
+
     onBeforeUnmount(() => {
       resizeObserver?.disconnect();
       document.removeEventListener('mousedown', onDocumentMouseDown);
@@ -297,7 +438,6 @@ export const Breadcrumbs = defineComponent({
 
     watch(
       () => [
-        normalizedItems.value.map((item) => item.key).join('|'),
         props.showRoot,
         props.isMultiline,
         props.size
@@ -309,7 +449,7 @@ export const Breadcrumbs = defineComponent({
     );
 
     watch(
-      () => [currentKey.value, props.autoFocusCurrent],
+      () => [props.current, props.autoFocusCurrent],
       () => {
         focusCurrentItem();
       }
@@ -331,7 +471,15 @@ export const Breadcrumbs = defineComponent({
       } = domProps;
 
       let ariaLabel = (typeof attrs['aria-label'] === 'string' && attrs['aria-label']) || 'Breadcrumbs';
-      let breadcrumbItems = renderedItems.value;
+      let sourceItems = slots.default ? normalizeChildItems(slots.default()) : props.items;
+      let normalizedItems = sourceItems.map((item, index) => normalizeBreadcrumbItem(item, index));
+      let currentKey = getCurrentKey(normalizedItems, props.current);
+      let breadcrumbItems = getRenderedItems(normalizedItems, visibleItems.value, props.showRoot);
+
+      latestNormalizedItems = normalizedItems;
+      latestItemSignature = normalizedItems
+        .map((item) => `${item.key}:${item.label}:${item.href ?? ''}`)
+        .join('|');
 
       return h('nav', {
         ...restDomProps,
@@ -395,17 +543,37 @@ export const Breadcrumbs = defineComponent({
                   ? h('ul', {
                     class: classNames(menuStyles, 'spectrum-Menu'),
                     role: 'menu'
-                  }, item.items.map((menuItem) => h('li', {
-                    key: menuItem.key,
-                    class: classNames(menuStyles, 'spectrum-Menu-item'),
-                    role: 'menuitemradio',
-                    'aria-checked': menuItem.key === item.selectedKey ? 'true' : 'false',
-                    onClick: (event: MouseEvent) => {
-                      event.preventDefault();
-                      emitAction(menuItem.key);
+                  }, item.items.map((menuItem) => {
+                    let isSelected = menuItem.key === item.selectedKey;
+                    let onMenuItemClick = (event: MouseEvent) => {
+                      if (menuItem.href) {
+                        event.preventDefault();
+                      }
+
+                      if (!isSelected) {
+                        emitAction(menuItem.key);
+                      }
+
                       isMenuOpen.value = false;
-                    }
-                  }, menuItem.label)))
+                    };
+
+                    let menuItemProps = {
+                      key: menuItem.key,
+                      class: classNames(menuStyles, 'spectrum-Menu-item'),
+                      role: 'menuitemradio',
+                      'aria-checked': isSelected ? 'true' : 'false',
+                      onClick: onMenuItemClick
+                    };
+
+                    return menuItem.href
+                      ? h('a', {
+                        ...menuItemProps,
+                        href: menuItem.href,
+                        rel: menuItem.rel,
+                        target: menuItem.target
+                      }, menuItem.label)
+                      : h('span', menuItemProps, menuItem.label);
+                  }))
                   : null
               ]),
               renderIconPath(
@@ -415,7 +583,7 @@ export const Breadcrumbs = defineComponent({
             ]);
           }
 
-          let isCurrent = item.key === currentKey.value;
+          let isCurrent = item.key === currentKey;
           let isHovered = hoveredKey.value === item.key && !isDisabled.value && !isCurrent;
           let isFocused = focusedKey.value === item.key && !isCurrent;
           let commonProps = {

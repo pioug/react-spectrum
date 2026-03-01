@@ -10,7 +10,7 @@ import {Avatar} from '@vue-spectrum/avatar';
 import {Badge} from '@vue-spectrum/badge';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
 import {ActionBar} from '@vue-spectrum/actionbar';
-import {Breadcrumbs} from '@vue-spectrum/breadcrumbs';
+import {Breadcrumbs, Item} from '@vue-spectrum/breadcrumbs';
 import {ActionButton, Button, LogicButton, ToggleButton} from '@vue-spectrum/button';
 import {ButtonGroup} from '@vue-spectrum/buttongroup';
 import {Accordion, Disclosure, DisclosurePanel, DisclosureTitle} from '@vue-spectrum/accordion';
@@ -1607,8 +1607,14 @@ describe('Vue migration primitives', () => {
   it('maps breadcrumbs hovered/focus-ring/disabled states', async () => {
     let wrapper = mount(Breadcrumbs, {
       props: {
-        items: ['Home', 'Library', 'Current'],
         current: 'Current'
+      },
+      slots: {
+        default: () => [
+          h(Item, {key: 'home'}, () => 'Home'),
+          h(Item, {key: 'library'}, () => 'Library'),
+          h(Item, {key: 'current'}, () => 'Current')
+        ]
       }
     });
 
@@ -1621,8 +1627,13 @@ describe('Vue migration primitives', () => {
 
     let disabled = mount(Breadcrumbs, {
       props: {
-        items: ['One', 'Two'],
         disabled: true
+      },
+      slots: {
+        default: () => [
+          h(Item, {key: 'one'}, () => 'One'),
+          h(Item, {key: 'two'}, () => 'Two')
+        ]
       }
     });
     expect(disabled.find('.spectrum-Breadcrumbs').classes()).toContain('is-disabled');
@@ -1630,12 +1641,14 @@ describe('Vue migration primitives', () => {
     let withLinks = mount(Breadcrumbs, {
       props: {
         isMultiline: true,
-        items: [
-          {key: 'home', label: 'Home', href: 'https://example.com/home'},
-          {key: 'current', label: 'Current'}
-        ],
         showRoot: true,
         size: 'S'
+      },
+      slots: {
+        default: () => [
+          h(Item, {key: 'home', href: 'https://example.com/home'}, () => 'Home'),
+          h(Item, {key: 'current'}, () => 'Current')
+        ]
       }
     });
 
@@ -1648,6 +1661,52 @@ describe('Vue migration primitives', () => {
     expect(anchor.attributes('href')).toBe('https://example.com/home');
     await anchor.trigger('click');
     expect(withLinks.emitted('action')?.[0]).toEqual(['home']);
+  });
+
+  it('maps breadcrumb overflow menu links and current-item action behavior', async () => {
+    let offsetWidthSpy = vi.spyOn(HTMLElement.prototype, 'offsetWidth', 'get').mockImplementation(function () {
+      if (this instanceof HTMLUListElement) {
+        return 300;
+      }
+
+      return 100;
+    });
+
+    let wrapper = mount(Breadcrumbs, {
+      props: {
+        showRoot: true
+      },
+      slots: {
+        default: () => [
+          h(Item, {href: 'https://example.com'}, () => 'Example.com'),
+          h(Item, {href: 'https://example.com/foo'}, () => 'Foo'),
+          h(Item, {href: 'https://example.com/foo/bar'}, () => 'Bar'),
+          h(Item, {href: 'https://example.com/foo/bar/baz'}, () => 'Baz'),
+          h(Item, {href: 'https://example.com/foo/bar/baz/qux'}, () => 'Qux')
+        ]
+      }
+    });
+
+    await nextTick();
+    await nextTick();
+
+    let menuButton = wrapper.get('button[aria-haspopup="true"]');
+    await menuButton.trigger('click');
+
+    let menuItems = wrapper.findAll('[role="menuitemradio"]');
+    expect(menuItems).toHaveLength(5);
+    expect(menuItems[0].element.tagName).toBe('A');
+    expect(menuItems[0].attributes('href')).toBe('https://example.com');
+
+    await menuItems[4].trigger('click');
+    expect(wrapper.emitted('action')).toBeUndefined();
+
+    await menuButton.trigger('click');
+    let reopenedMenuItems = wrapper.findAll('[role="menuitemradio"]');
+    await reopenedMenuItems[1].trigger('click');
+    expect(wrapper.emitted('action')?.[0]).toEqual(['1']);
+
+    offsetWidthSpy.mockRestore();
   });
 
   it('maps link hovered and focus-ring classes', async () => {
