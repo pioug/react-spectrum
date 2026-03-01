@@ -356,7 +356,7 @@ export const VueTabs = defineComponent({
           ])
           : panelContent;
 
-      let tabListNode = h('div', {
+      let tabListInnerNode = h('div', {
         ...tabListProps,
         onKeydown: tabListProps.onKeyDown,
         class: [tabsClassName.value, classNames({}, 'spectrum-TabsPanel-tabs'), 'vs-tabs__list']
@@ -371,6 +371,11 @@ export const VueTabs = defineComponent({
           style: selectionIndicatorStyle.value
         })
       ]);
+      let tabListNode = props.orientation === 'vertical'
+        ? tabListInnerNode
+        : h('div', {
+          class: [classNames({}, 'spectrum-TabsPanel-collapseWrapper'), 'vs-tabs__collapse-wrapper']
+        }, [tabListInnerNode]);
 
       let tabPanelNode = h('div', {
         ...tabPanel.tabPanelProps.value,

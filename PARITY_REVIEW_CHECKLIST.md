@@ -242,15 +242,17 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - Components: Switch
   - [x] Story: Switch.stories.ts
   - Evidence: React/Vue story-id parity is zero for `switch--*` (`react=12`, `vue=12`, diff `0/0`) from React `dist/97e3ff099844b1ee324814db73e293af78e250a4/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; side-by-side capture evidence for all switch stories in `.tmp/switch-parity-current1/size-deltas.json` shows exact file-size parity across the full scope (all story deltas `0.00%`, `12/12` captures successful, no missing/extra IDs); source/API/stories review for `packages/@vue-spectrum/switch/src/index.ts` and `packages/@vue-spectrum/switch/stories/Switch.stories.ts` did not reveal additional Vue-only placeholders or contract gaps after the prior provider-alignment work, so no further switch source changes were required; validation gate remained green (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
-- [ ] 1.49 `@vue-spectrum/table`
+- [x] 1.49 `@vue-spectrum/table`
   - Components: Table, TableView
-  - [ ] Story: Table.stories.ts
-  - [ ] Story: TableDnD.stories.ts
-  - [ ] Story: TableDnDUtil.stories.ts
-  - [ ] Story: TreeGridTable.stories.ts
-- [ ] 1.50 `@vue-spectrum/tabs`
+  - [x] Story: Table.stories.ts
+  - [x] Story: TableDnD.stories.ts
+  - [x] Story: TableDnDUtil.stories.ts
+  - [x] Story: TreeGridTable.stories.ts
+  - Evidence: React/Vue story-id parity is zero for full table scope (`tableview--*`, `tableview-drag-and-drop--*`, `tableview-drag-and-drop-util-handlers--*`, `tableview-expandable-rows--*`; `react=79`, `vue=79`, diff `0/0`) from React `dist/97e3ff099844b1ee324814db73e293af78e250a4/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue table internals were tightened in `packages/@vue-spectrum/table/src/index.ts` (width/height style contract handling, loading-more empty-state copy parity, bounded row rendering for large datasets), and table stories were aligned in `packages/@vue-spectrum/table/stories/Table.stories.ts`, `TableDnD.stories.ts`, `TableDnDUtil.stories.ts`, and `TreeGridTable.stories.ts` by replacing placeholder async/performance datasets with React-like contracts, matching sizing defaults/row keys, restoring React-like controlled resize controls/composition, and tightening tree-grid/empty-state/drag-and-drop story shells; parity assertions in `starters/vue/src/storybook-parity.spec.ts` were updated for table contract changes (disabled keys fixture, selected-key expectations, links URL contract); refreshed side-by-side capture evidence in `.tmp/table-parity-current11/size-deltas.json` reports `79/79` shared stories captured with no failures, average size delta `11.283%` (improved from `.tmp/table-parity-current9` at `16.268%`), and max size delta `37.904%`; validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
+- [x] 1.50 `@vue-spectrum/tabs`
   - Components: TabList, TabPanels, VueTabs
-  - [ ] Story: Tabs.stories.ts
+  - [x] Story: Tabs.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `tabs--*` (`react=39`, `vue=39`, diff `0/0`) from React `dist/97e3ff099844b1ee324814db73e293af78e250a4/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue tabs internals/stories were aligned in `packages/@vue-spectrum/tabs/src/VueTabs.ts` and `packages/@vue-spectrum/tabs/stories/Tabs.stories.ts` by adding React-equivalent panel/list ordering support (`tabPlacement`), restoring horizontal collapse-wrapper DOM structure, wiring `maxWidth`/`width` through shared story rendering, and updating bottom/right placement stories to use the internal ordering contract rather than story-only hacks; targeted side-by-side captures for the two previously divergent placements are in `.tmp/tabs-parity-current7/size-deltas.json` (`tabs--tabs-at-the-bottom` delta `4.747%`, `tabs--tabs-on-the-right` delta `0.496%`) with manual visual checks confirming corrected ordering and right-side placement; validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
 - [ ] 1.51 `@vue-spectrum/tag`
   - Components: VueTagGroup
   - [ ] Story: TagGroup.stories.ts
