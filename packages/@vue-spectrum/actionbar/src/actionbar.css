@@ -3,6 +3,26 @@
   flex-direction: column;
   position: relative;
 
+  .vs-table:not(.spectrum-Table--quiet) {
+    border-end-start-radius: var(--spectrum-table-border-radius);
+    border-end-end-radius: var(--spectrum-table-border-radius);
+  }
+
+  .vs-table:not(.spectrum-Table--quiet)::after {
+    border-block-end: var(--spectrum-table-border-size, 1px) solid var(--spectrum-table-border-color);
+    border-end-end-radius: var(--spectrum-table-border-radius);
+    border-end-start-radius: var(--spectrum-table-border-radius);
+    border-inline-end: var(--spectrum-table-border-size, 1px) solid var(--spectrum-table-border-color);
+    border-inline-start: var(--spectrum-table-border-size, 1px) solid var(--spectrum-table-border-color);
+    content: '';
+    inset-block-end: 0;
+    inset-block-start: var(--spectrum-table-header-min-height, 34px);
+    inset-inline-end: 0;
+    inset-inline-start: 0;
+    pointer-events: none;
+    position: absolute;
+  }
+
   .vs-table__table {
     transform: translateX(0.5px);
     transform-origin: left top;
