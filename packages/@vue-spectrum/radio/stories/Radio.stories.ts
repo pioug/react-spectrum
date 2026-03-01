@@ -1,11 +1,15 @@
 import {action} from 'storybook/actions';
+import {Button} from '@vue-spectrum/button';
+import {Content} from '@vue-spectrum/view';
+import {Heading} from '@vue-spectrum/text';
+import {ContextualHelp} from '@vue-spectrum/contextualhelp';
 import {Provider} from '@vue-spectrum/provider';
 import {Radio, RadioGroup} from '../src';
-import {computed, defineComponent, ref} from 'vue';
+import {computed, defineComponent, h, ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type RadioStoryArgs = {
-  contextualHelp?: string,
+  contextualHelp?: unknown,
   defaultValue?: string,
   description?: string,
   errorMessage?: string,
@@ -35,7 +39,7 @@ type RadioOptionOverride = {
 
 const ControlledRovingTabPreview = defineComponent({
   name: 'ControlledRovingTabPreview',
-  components: {Radio, RadioGroup},
+  components: {Button, Radio, RadioGroup},
   setup() {
     let selected = ref('1');
 
@@ -46,7 +50,7 @@ const ControlledRovingTabPreview = defineComponent({
   },
   template: `
     <div style="display: flex; flex-direction: column; gap: 16px; align-items: center; margin: 16px;">
-      <button type="button" @click="selected = '2'">Make it "Two"</button>
+      <Button variant="primary" @click="selected = '2'">Make it "Two"</Button>
       <RadioGroup
         label="Lucky number? (controlled)"
         :model-value="selected"
@@ -56,7 +60,7 @@ const ControlledRovingTabPreview = defineComponent({
         <Radio value="3">Three</Radio>
         <Radio value="4">Four</Radio>
       </RadioGroup>
-      <button type="button" @click="selected = '3'">Make it "Three"</button>
+      <Button variant="primary" @click="selected = '3'">Make it "Three"</Button>
     </div>
   `
 });
@@ -226,8 +230,50 @@ export const WithDescriptionErrorMessageAndValidationFixedWidth: Story = {
 };
 
 export const _ContextualHelp: Story = {
-  render: renderRadioGroup({
-    contextualHelp: 'What is a segment? Segments identify who your visitors are, what devices and services they use, where they navigated from, and much more.'
+  render: (args) => ({
+    components: {Content, ContextualHelp, Heading, Radio, RadioGroup},
+    setup() {
+      let contextualHelp = h(ContextualHelp, null, {
+        default: () => [
+          h(Heading, {'element-type': 'h3'}, () => 'What is a segment?'),
+          h(Content, null, () => 'Segments identify who your visitors are, what devices and services they use, where they navigated from, and much more.')
+        ]
+      });
+
+      return {
+        contextualHelp,
+        rendered: computed<RadioStoryArgs>(() => ({...args, contextualHelp})),
+        onChange: action('onChange')
+      };
+    },
+    template: `
+      <RadioGroup
+        :contextual-help="rendered.contextualHelp"
+        :default-value="rendered.defaultValue"
+        :description="rendered.description"
+        :error-message="rendered.errorMessage"
+        :is-disabled="rendered.isDisabled"
+        :is-emphasized="rendered.isEmphasized"
+        :is-invalid="rendered.isInvalid"
+        :is-read-only="rendered.isReadOnly"
+        :is-required="rendered.isRequired"
+        :label="rendered.label"
+        :label-align="rendered.labelAlign"
+        :label-position="rendered.labelPosition"
+        :model-value="rendered.modelValue"
+        :name="rendered.name ?? 'favorite-pet-group'"
+        :necessity-indicator="rendered.necessityIndicator"
+        :orientation="rendered.orientation"
+        :show-error-icon="rendered.showErrorIcon"
+        :validation-state="rendered.validationState"
+        :value="rendered.value"
+        @change="onChange"
+        @update:model-value="onChange">
+        <Radio value="dogs">Dogs</Radio>
+        <Radio value="cats">Cats</Radio>
+        <Radio value="dragons">Dragons</Radio>
+      </RadioGroup>
+    `
   })
 };
 
@@ -263,18 +309,16 @@ export const ProviderControlIsDisabled: Story = {
     components: {Provider, Radio, RadioGroup},
     template: `
       <Provider :is-disabled="true">
-        <div style="display: grid; gap: 12px;">
-          <RadioGroup aria-label="Favorite pet" name="favorite-pet-group">
-            <Radio value="dogs">Dogs</Radio>
-            <Radio value="cats">Cats</Radio>
-            <Radio value="dragons">Dragons</Radio>
-          </RadioGroup>
-          <RadioGroup aria-label="Favorite cereal" name="favorite-cereal-group">
-            <Radio value="reeses">Reese's Peanut Butter Puffs</Radio>
-            <Radio value="honeynut">HoneyNut Cheerios</Radio>
-            <Radio value="cinnamon">Cinnamon Toast Crunch</Radio>
-          </RadioGroup>
-        </div>
+        <RadioGroup aria-label="Favorite pet" name="favorite-pet-group">
+          <Radio value="dogs">Dogs</Radio>
+          <Radio value="cats">Cats</Radio>
+          <Radio value="dragons">Dragons</Radio>
+        </RadioGroup>
+        <RadioGroup aria-label="Favorite cereal" name="favorite-cereal-group">
+          <Radio value="reeses">Reese's Peanut Butter Puffs</Radio>
+          <Radio value="honeynut">HoneyNut Cheerios</Radio>
+          <Radio value="cinnamon">Cinnamon Toast Crunch</Radio>
+        </RadioGroup>
       </Provider>
     `
   })

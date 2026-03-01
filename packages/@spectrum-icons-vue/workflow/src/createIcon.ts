@@ -6,6 +6,7 @@ const styles: {[key: string]: string} = {};
 
 type IconScaleSize = 'L' | 'M';
 export type WorkflowIconSize = 'XXL' | 'XXS' | 'XL' | 'XS' | 'L' | 'M' | 'S' | 'l' | 'm' | 's' | 'xl' | 'xs' | 'xxl' | 'xxs';
+const iconColorTokens = new Set(['negative', 'notice', 'positive', 'informative']);
 
 interface SvgAttributes {
   [name: string]: string
@@ -41,6 +42,14 @@ function resolveAriaHidden(hasLabel: boolean, hidden: boolean, explicitAriaHidde
   }
 
   return hasLabel ? undefined : 'true';
+}
+
+function resolveIconColor(color: string): string {
+  if (iconColorTokens.has(color)) {
+    return `var(--spectrum-semantic-${color}-color-icon)`;
+  }
+
+  return color;
 }
 
 export function createWorkflowIcon(componentName: string, svgAttributes: SvgAttributes, svgInnerHTML: string) {
@@ -83,7 +92,7 @@ export function createWorkflowIcon(componentName: string, svgAttributes: SvgAttr
             attrs.class
           ],
           style: [
-            {color: props.color},
+            {color: resolveIconColor(props.color)},
             attrs.style
           ],
           role: 'img',

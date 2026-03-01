@@ -5,6 +5,7 @@ import '@adobe/spectrum-css-temp/components/menu/vars.css';
 import '@adobe/spectrum-css-temp/components/popover/vars.css';
 import '@adobe/spectrum-css-temp/components/search/vars.css';
 import '@adobe/spectrum-css-temp/components/textfield/vars.css';
+import {useProviderProps} from '@vue-spectrum/provider';
 import {classNames, dimensionValue} from '@vue-spectrum/utils';
 import {computed, defineComponent, getCurrentInstance, h, nextTick, onBeforeUnmount, onMounted, type PropType, ref, watch} from 'vue';
 import './combobox.css';
@@ -296,6 +297,8 @@ export const ComboBox = defineComponent({
     'update:selectedKeys': (value: Iterable<OptionKey>) => isOptionKeyIterable(value)
   },
   setup(props, {attrs, emit}) {
+    let providerProps = useProviderProps(props);
+    let resolvedProviderProps = computed(() => Object.assign({}, props, providerProps));
     let generatedId = `vs-combobox-${++comboboxId}`;
     let activeOptionKey = ref<string | null>(null);
     let hasWarnedDeprecatedPlaceholder = ref(false);
@@ -330,9 +333,12 @@ export const ComboBox = defineComponent({
     let buttonId = computed(() => `${inputId.value}-button`);
     let labelId = computed(() => props.label ? `${inputId.value}-label` : undefined);
     let listId = computed(() => `${inputId.value}-list`);
-    let isDisabled = computed(() => props.isDisabled ?? props.disabled);
-    let isInvalid = computed(() => (props.isInvalid || props.invalid || props.validationState === 'invalid') && !isDisabled.value);
-    let isValid = computed(() => props.validationState === 'valid' && !isDisabled.value);
+    let isDisabled = computed(() => resolvedProviderProps.value.isDisabled ?? resolvedProviderProps.value.disabled);
+    let isReadOnly = computed(() => Boolean(resolvedProviderProps.value.isReadOnly));
+    let isQuiet = computed(() => Boolean(resolvedProviderProps.value.isQuiet));
+    let isRequired = computed(() => Boolean(resolvedProviderProps.value.isRequired));
+    let isInvalid = computed(() => (resolvedProviderProps.value.isInvalid || resolvedProviderProps.value.invalid || resolvedProviderProps.value.validationState === 'invalid') && !isDisabled.value);
+    let isValid = computed(() => resolvedProviderProps.value.validationState === 'valid' && !isDisabled.value);
     let resolvedFormValue = computed<FormValue>(() => props.allowsCustomValue ? 'text' : props.formValue);
     let allowsEmptyCollection = computed(() => props.allowsEmptyCollection || props.loadingState != null);
     let itemHeight = computed(() => Math.max(1, props.estimatedItemHeight));
@@ -467,7 +473,7 @@ export const ComboBox = defineComponent({
       fieldStyles,
       'spectrum-Field-field',
       {
-        'spectrum-InputGroup--quiet': props.isQuiet,
+        'spectrum-InputGroup--quiet': isQuiet.value,
         'spectrum-InputGroup--invalid': isInvalid.value,
         'is-disabled': isDisabled.value,
         'is-focused': isFocused.value,
@@ -485,7 +491,7 @@ export const ComboBox = defineComponent({
       textfieldStyles,
       'spectrum-Textfield-wrapper',
       {
-        'spectrum-Textfield-wrapper--quiet': props.isQuiet
+        'spectrum-Textfield-wrapper--quiet': isQuiet.value
       }
     ));
 
@@ -499,7 +505,7 @@ export const ComboBox = defineComponent({
       {
         'spectrum-Textfield--invalid': isInvalid.value,
         'spectrum-Textfield--valid': isValid.value,
-        'spectrum-Textfield--quiet': props.isQuiet
+        'spectrum-Textfield--quiet': isQuiet.value
       }
     ));
 
@@ -522,7 +528,7 @@ export const ComboBox = defineComponent({
       'spectrum-FocusRing',
       'spectrum-FocusRing-ring',
       {
-        'spectrum-FieldButton--quiet': props.isQuiet,
+        'spectrum-FieldButton--quiet': isQuiet.value,
         'spectrum-FieldButton--invalid': isInvalid.value,
         'is-active': isPressed.value || isExpanded.value,
         'is-disabled': isDisabled.value,
@@ -677,7 +683,7 @@ export const ComboBox = defineComponent({
     };
 
     let openMenu = (focus: 'first' | 'last' | 'manual' = 'first') => {
-      if (isExpanded.value || isDisabled.value || props.isReadOnly) {
+      if (isExpanded.value || isDisabled.value || isReadOnly.value) {
         return;
       }
 
@@ -1011,7 +1017,8 @@ export const ComboBox = defineComponent({
               value: resolvedInputValue.value,
               placeholder: props.placeholder || undefined,
               disabled: isDisabled.value,
-              readonly: props.isReadOnly || undefined,
+              readonly: isReadOnly.value || undefined,
+              required: isRequired.value || undefined,
               name: resolvedFormValue.value === 'text' ? props.name : undefined,
               form: props.form || undefined,
               role: 'combobox',
@@ -1024,6 +1031,7 @@ export const ComboBox = defineComponent({
               'aria-controls': isExpanded.value ? listId.value : undefined,
               'aria-expanded': isExpanded.value ? 'true' : 'false',
               'aria-invalid': isInvalid.value ? 'true' : undefined,
+              'aria-required': isRequired.value ? 'true' : undefined,
               'aria-label': ariaLabel.value,
               'aria-labelledby': ariaLabelledBy.value,
               autofocus: props.autoFocus || attrs.autofocus || undefined,
@@ -1124,7 +1132,7 @@ export const ComboBox = defineComponent({
           class: triggerClassName.value,
           type: 'button',
           tabindex: -1,
-          disabled: isDisabled.value,
+          disabled: isDisabled.value || isReadOnly.value,
           'data-react-aria-pressable': 'true',
           'aria-controls': isExpanded.value ? listId.value : undefined,
           'aria-expanded': isExpanded.value ? 'true' : 'false',
@@ -1133,7 +1141,7 @@ export const ComboBox = defineComponent({
           'aria-labelledby': [buttonId.value, labelId.value].filter((part): part is string => Boolean(part)).join(' ') || undefined,
           onMousedown: (event: MouseEvent) => {
             event.preventDefault();
-            if (isDisabled.value || props.isReadOnly) {
+            if (isDisabled.value || isReadOnly.value) {
               return;
             }
 
@@ -1148,7 +1156,7 @@ export const ComboBox = defineComponent({
             isPressed.value = false;
           },
           onClick: () => {
-            if (isDisabled.value || props.isReadOnly) {
+            if (isDisabled.value || isReadOnly.value) {
               return;
             }
 

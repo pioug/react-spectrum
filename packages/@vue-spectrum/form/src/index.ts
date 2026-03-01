@@ -1,4 +1,5 @@
 import '@adobe/spectrum-css-temp/components/fieldlabel/vars.css';
+import {Provider, useProviderProps} from '@vue-spectrum/provider';
 import type {Alignment, LabelPosition, SpectrumLabelableProps} from '@vue-types/shared';
 import {classNames, filterDOMProps} from '@vue-spectrum/utils';
 import {computed, type ComputedRef, defineComponent, h, inject, type InjectionKey, type PropType, provide} from 'vue';
@@ -47,20 +48,20 @@ export const Form = defineComponent({
       default: undefined
     },
     isDisabled: {
-      type: Boolean,
-      default: false
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
     },
     isEmphasized: {
-      type: Boolean,
-      default: false
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
     },
     isQuiet: {
-      type: Boolean,
-      default: false
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
     },
     isReadOnly: {
-      type: Boolean,
-      default: false
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
     },
     isRequired: {
       type: Boolean as PropType<boolean | undefined>,
@@ -80,6 +81,8 @@ export const Form = defineComponent({
     }
   },
   setup(props, {attrs, slots}) {
+    let providerProps = useProviderProps(props);
+    let resolvedProps = computed(() => Object.assign({}, props, providerProps));
     let parentContext = inject(
       formContextKey,
       computed<FormContextValue>(() => ({}))
@@ -87,10 +90,10 @@ export const Form = defineComponent({
 
     let context = computed<FormContextValue>(() => ({
       ...parentContext.value,
-      labelPosition: props.labelPosition ?? parentContext.value.labelPosition,
-      labelAlign: props.labelAlign ?? parentContext.value.labelAlign,
-      necessityIndicator: props.necessityIndicator ?? parentContext.value.necessityIndicator,
-      validationBehavior: props.validationBehavior ?? parentContext.value.validationBehavior
+      labelPosition: resolvedProps.value.labelPosition ?? parentContext.value.labelPosition,
+      labelAlign: resolvedProps.value.labelAlign ?? parentContext.value.labelAlign,
+      necessityIndicator: resolvedProps.value.necessityIndicator ?? parentContext.value.necessityIndicator,
+      validationBehavior: resolvedProps.value.validationBehavior ?? parentContext.value.validationBehavior
     }));
 
     provide(formContextKey, context);
@@ -106,16 +109,27 @@ export const Form = defineComponent({
             styles,
             'spectrum-Form',
             {
-              'spectrum-Form--positionSide': props.labelPosition === 'side',
-              'spectrum-Form--positionTop': props.labelPosition !== 'side'
+              'spectrum-Form--positionSide': resolvedProps.value.labelPosition === 'side',
+              'spectrum-Form--positionTop': resolvedProps.value.labelPosition !== 'side'
             }
           ),
           domClassName,
           domClass
         ],
         style: domStyle,
-        noValidate: props.validationBehavior !== 'native'
-      }, slots.default ? slots.default() : []);
+        noValidate: resolvedProps.value.validationBehavior !== 'native'
+      }, [
+        h(Provider, {
+          isQuiet: resolvedProps.value.isQuiet,
+          isEmphasized: resolvedProps.value.isEmphasized,
+          isDisabled: resolvedProps.value.isDisabled,
+          isReadOnly: resolvedProps.value.isReadOnly,
+          isRequired: resolvedProps.value.isRequired,
+          validationState: resolvedProps.value.validationState
+        }, {
+          default: () => slots.default ? slots.default() : []
+        })
+      ]);
     };
   }
 });

@@ -1,4 +1,5 @@
 import '@adobe/spectrum-css-temp/components/toggle/vars.css';
+import {useProviderProps} from '@vue-spectrum/provider';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, type PropType, ref} from 'vue';
 import {filterDOMProps} from '@vue-aria/utils';
@@ -54,13 +55,16 @@ export const Switch = defineComponent({
     'update:modelValue': (value: boolean) => typeof value === 'boolean'
   },
   setup(props, {emit, slots, attrs}) {
+    let providerProps = useProviderProps(props);
+    let resolvedProps = computed(() => Object.assign({}, props, providerProps));
     let generatedId = `vs-switch-${++switchId}`;
     let isHovered = ref(false);
     let isFocusVisible = ref(false);
-    let uncontrolledSelected = ref(props.defaultSelected);
-    let isDisabled = computed(() => props.isDisabled ?? props.disabled);
-    let isSelected = computed(() => props.isSelected ?? props.modelValue ?? uncontrolledSelected.value);
-    let hasVisibleLabel = computed(() => !!slots.default || !!props.label);
+    let uncontrolledSelected = ref(resolvedProps.value.defaultSelected);
+    let isDisabled = computed(() => resolvedProps.value.isDisabled ?? resolvedProps.value.disabled);
+    let isReadOnly = computed(() => resolvedProps.value.isReadOnly);
+    let isSelected = computed(() => resolvedProps.value.isSelected ?? resolvedProps.value.modelValue ?? uncontrolledSelected.value);
+    let hasVisibleLabel = computed(() => !!slots.default || !!resolvedProps.value.label);
     let labelId = computed(() => hasVisibleLabel.value ? `${generatedId}-label` : undefined);
     let externalAriaLabelledBy = computed(() => {
       let value = attrs['aria-labelledby'];
@@ -83,7 +87,7 @@ export const Switch = defineComponent({
       styles,
       'spectrum-ToggleSwitch',
       {
-        'spectrum-ToggleSwitch--quiet': !props.isEmphasized,
+        'spectrum-ToggleSwitch--quiet': !resolvedProps.value.isEmphasized,
         'is-disabled': isDisabled.value,
         'is-hovered': isHovered.value && !isDisabled.value,
         'focus-ring': isFocusVisible.value
@@ -122,8 +126,8 @@ export const Switch = defineComponent({
           tabindex: isDisabled.value ? undefined : 0,
           checked: isSelected.value,
           disabled: isDisabled.value,
-          readonly: props.isReadOnly || undefined,
-          autofocus: props.autoFocus || attrs.autofocus || undefined,
+          readonly: isReadOnly.value || undefined,
+          autofocus: resolvedProps.value.autoFocus || attrs.autofocus || undefined,
           'aria-label': ariaLabel.value,
           'aria-labelledby': ariaLabelledBy.value,
           onChange: (event: Event) => {
@@ -132,13 +136,13 @@ export const Switch = defineComponent({
               return;
             }
 
-            if (isDisabled.value || props.isReadOnly) {
+            if (isDisabled.value || isReadOnly.value) {
               target.checked = isSelected.value;
               return;
             }
 
             let checked = target.checked;
-            if (props.isSelected === undefined && props.modelValue === undefined) {
+            if (resolvedProps.value.isSelected === undefined && resolvedProps.value.modelValue === undefined) {
               uncontrolledSelected.value = checked;
             }
 
@@ -159,7 +163,7 @@ export const Switch = defineComponent({
           class: classNames(styles, 'spectrum-ToggleSwitch-switch')
         }),
         hasVisibleLabel.value
-          ? h('span', {id: labelId.value, class: classNames(styles, 'spectrum-ToggleSwitch-label')}, slots.default ? slots.default() : props.label)
+          ? h('span', {id: labelId.value, class: classNames(styles, 'spectrum-ToggleSwitch-label')}, slots.default ? slots.default() : resolvedProps.value.label)
           : null
       ]);
     };

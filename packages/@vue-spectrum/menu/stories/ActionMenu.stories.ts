@@ -16,23 +16,6 @@ type RenderOptions = {
 };
 
 const DEFAULT_ITEMS: MenuItem[] = ['One', 'Two', 'Three'];
-const NESTED_ITEMS: MenuItem[] = [
-  {
-    key: 'view',
-    label: 'View',
-    children: [
-      {
-        key: 'grid',
-        label: 'Grid view'
-      },
-      {
-        key: 'list',
-        label: 'List view'
-      }
-    ]
-  },
-  'Help'
-];
 
 const meta: Meta<typeof ActionMenu> = {
   title: 'ActionMenu',
@@ -56,9 +39,7 @@ function renderActionMenu(args: StoryArgs = {}, options: RenderOptions = {}) {
       };
     },
     template: `
-      <div style="display: grid; gap: 8px; width: 280px;">
-        <ActionMenu v-bind="args" :items="items" @action="onAction($event)"></ActionMenu>
-      </div>
+      <ActionMenu v-bind="args" :items="items" @action="onAction($event)" />
     `
   };
 }
@@ -116,10 +97,10 @@ export const AutoFocus: Story = {
 };
 
 export const DefaultOpen: Story = {
-  render: (args) => renderActionMenu({...args, items: NESTED_ITEMS, openKeys: new Set(['view'])}),
+  render: (args) => renderActionMenu(args),
   args: {
     defaultOpen: true,
-    onOpenChange: action('onOpenChange')
+    onOpenChange: action('openChange')
   }
 };
 
@@ -144,7 +125,13 @@ export const ControlledOpen: Story = {
         onOpenChange
       };
     },
-    template: '<ActionMenu v-bind="args" :is-open="isOpen" :items="items" @open-change="onOpenChange" />'
+    template: `
+      <ActionMenu
+        v-bind="args"
+        :is-open="isOpen"
+        :items="items"
+        @open-change="onOpenChange" />
+    `
   })
 };
 
@@ -165,31 +152,29 @@ export const DirectionAlignFlip: Story = {
       };
     },
     template: `
-      <div style="display: grid; gap: 8px; width: 360px;">
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <label>
-            Align
-            <select v-model="align">
-              <option value="start">start</option>
-              <option value="end">end</option>
-            </select>
-          </label>
-          <label>
-            Direction
-            <select v-model="direction">
-              <option value="bottom">bottom</option>
-              <option value="top">top</option>
-              <option value="left">left</option>
-              <option value="right">right</option>
-              <option value="start">start</option>
-              <option value="end">end</option>
-            </select>
-          </label>
-          <label>
-            <input v-model="shouldFlip" type="checkbox" />
-            shouldFlip
-          </label>
-        </div>
+      <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+        <label>
+          Align
+          <select v-model="align">
+            <option value="start">start</option>
+            <option value="end">end</option>
+          </select>
+        </label>
+        <label>
+          Direction
+          <select v-model="direction">
+            <option value="bottom">bottom</option>
+            <option value="top">top</option>
+            <option value="left">left</option>
+            <option value="right">right</option>
+            <option value="start">start</option>
+            <option value="end">end</option>
+          </select>
+        </label>
+        <label>
+          <input v-model="shouldFlip" type="checkbox" />
+          shouldFlip
+        </label>
         <ActionMenu
           v-bind="args"
           :align="align"
@@ -214,7 +199,7 @@ export const WithTooltip: Story = {
       return {args, onAction};
     },
     template: `
-      <TooltipTrigger>
+      <TooltipTrigger :delay="0">
         <ActionMenu
           v-bind="args"
           :items="[

@@ -43,9 +43,12 @@ const meta: Meta<typeof Table> = {
     ariaLabel: 'Drag and drop util table',
     columns: COLUMNS,
     density: 'regular',
+    height: 500,
     overflowMode: 'truncate',
+    rowKey: 'id',
     rows: BASE_ROWS,
-    selectionMode: 'multiple'
+    selectionMode: 'multiple',
+    width: 700
   },
   argTypes: {
     density: {

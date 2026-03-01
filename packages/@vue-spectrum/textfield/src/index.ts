@@ -1,6 +1,7 @@
 import '@adobe/spectrum-css-temp/components/fieldlabel/vars.css';
 import '@adobe/spectrum-css-temp/components/helptext/vars.css';
 import '@adobe/spectrum-css-temp/components/textfield/vars.css';
+import {useProviderProps} from '@vue-spectrum/provider';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, type PropType, ref, watch} from 'vue';
 import {getEventTarget} from '@vue-aria/utils';
@@ -172,8 +173,10 @@ function buildField(
       'update:modelValue': (value: string) => typeof value === 'string'
     },
     setup(props, {attrs, emit}) {
+      let providerProps = useProviderProps(props);
+      let resolvedProps = computed(() => Object.assign({}, props, providerProps));
       let generatedId = idFactory();
-      let inputId = computed(() => props.id ?? generatedId);
+      let inputId = computed(() => resolvedProps.value.id ?? generatedId);
       let inputRef = ref<HTMLInputElement | HTMLTextAreaElement | null>(null);
       let hasWarnedDeprecatedPlaceholder = ref(false);
 
@@ -199,22 +202,22 @@ function buildField(
         }
       }, {immediate: true});
 
-      let isDisabled = computed(() => resolveBoolean(props.isDisabled, props.disabled));
-      let isReadOnly = computed(() => props.isReadOnly || props.readOnly);
-      let isRequired = computed(() => resolveBoolean(props.isRequired, props.required));
+      let isDisabled = computed(() => resolveBoolean(resolvedProps.value.isDisabled, resolvedProps.value.disabled));
+      let isReadOnly = computed(() => resolvedProps.value.isReadOnly || resolvedProps.value.readOnly);
+      let isRequired = computed(() => resolveBoolean(resolvedProps.value.isRequired, resolvedProps.value.required));
       let necessityIndicator = computed<NecessityIndicator | undefined>(() => {
-        if (props.necessityIndicator) {
-          return props.necessityIndicator;
+        if (resolvedProps.value.necessityIndicator) {
+          return resolvedProps.value.necessityIndicator;
         }
 
         return isRequired.value ? 'icon' : undefined;
       });
       let effectiveValidationState = computed<ValidationState | undefined>(() => {
-        if (props.validationState) {
-          return props.validationState;
+        if (resolvedProps.value.validationState) {
+          return resolvedProps.value.validationState;
         }
 
-        if (props.isInvalid || props.invalid) {
+        if (resolvedProps.value.isInvalid || resolvedProps.value.invalid) {
           return 'invalid';
         }
 
@@ -224,13 +227,13 @@ function buildField(
       let isValid = computed(() => effectiveValidationState.value === 'valid' && !isDisabled.value);
       let currentValue = computed(() => props.value ?? props.modelValue ?? uncontrolledValue.value);
 
-      let labelId = computed(() => props.label ? `${inputId.value}-label` : undefined);
+      let labelId = computed(() => resolvedProps.value.label ? `${inputId.value}-label` : undefined);
       let helpText = computed(() => {
-        if (isInvalid.value && props.errorMessage) {
-          return props.errorMessage;
+        if (isInvalid.value && resolvedProps.value.errorMessage) {
+          return resolvedProps.value.errorMessage;
         }
 
-        return props.description;
+        return resolvedProps.value.description;
       });
       let helpTextId = computed(() => {
         if (!helpText.value) {
@@ -255,15 +258,15 @@ function buildField(
         fieldStyles,
         'spectrum-Field',
         {
-          'spectrum-Field--positionTop': props.labelPosition !== 'side',
-          'spectrum-Field--positionSide': props.labelPosition === 'side',
-          'spectrum-Field--alignEnd': props.labelAlign === 'end',
-          'spectrum-Field--hasContextualHelp': !!props.contextualHelp
+          'spectrum-Field--positionTop': resolvedProps.value.labelPosition !== 'side',
+          'spectrum-Field--positionSide': resolvedProps.value.labelPosition === 'side',
+          'spectrum-Field--alignEnd': resolvedProps.value.labelAlign === 'end',
+          'spectrum-Field--hasContextualHelp': !!resolvedProps.value.contextualHelp
         },
         textfieldStyles,
         'spectrum-Textfield-wrapper',
         {
-          'spectrum-Textfield-wrapper--quiet': props.isQuiet
+          'spectrum-Textfield-wrapper--quiet': resolvedProps.value.isQuiet
         }
       ));
 
@@ -271,8 +274,8 @@ function buildField(
         fieldStyles,
         'spectrum-FieldLabel',
         {
-          'spectrum-FieldLabel--positionSide': props.labelPosition === 'side',
-          'spectrum-FieldLabel--alignEnd': props.labelAlign === 'end'
+          'spectrum-FieldLabel--positionSide': resolvedProps.value.labelPosition === 'side',
+          'spectrum-FieldLabel--alignEnd': resolvedProps.value.labelAlign === 'end'
         }
       ));
 
@@ -286,7 +289,7 @@ function buildField(
         {
           'spectrum-Textfield--invalid': isInvalid.value,
           'spectrum-Textfield--valid': isValid.value,
-          'spectrum-Textfield--quiet': props.isQuiet,
+          'spectrum-Textfield--quiet': resolvedProps.value.isQuiet,
           'spectrum-Textfield--multiline': kind === 'textarea',
           'focus-ring': isFocusVisible.value
         }
@@ -297,7 +300,7 @@ function buildField(
         'spectrum-Textfield-input',
         'i18nFontFamily',
         {
-          'spectrum-Textfield-inputIcon': !!props.icon,
+          'spectrum-Textfield-inputIcon': !!resolvedProps.value.icon,
           'is-hovered': isHovered.value && !isDisabled.value
         }
       ));
@@ -367,16 +370,16 @@ function buildField(
           id: inputId.value,
           class: inputClassName.value,
           value: currentValue.value,
-          type: kind === 'textarea' ? undefined : props.type,
-          rows: kind === 'textarea' ? props.rows : undefined,
-          pattern: kind === 'textarea' ? undefined : props.pattern,
+          type: kind === 'textarea' ? undefined : resolvedProps.value.type,
+          rows: kind === 'textarea' ? resolvedProps.value.rows : undefined,
+          pattern: kind === 'textarea' ? undefined : resolvedProps.value.pattern,
           name: typeof attrs.name === 'string' ? attrs.name : undefined,
           tabindex: isDisabled.value ? undefined : attrs.tabindex ?? 0,
-          placeholder: props.placeholder || undefined,
+          placeholder: resolvedProps.value.placeholder || undefined,
           disabled: isDisabled.value || undefined,
           readonly: isReadOnly.value || undefined,
           required: isRequired.value || undefined,
-          autofocus: props.autoFocus || attrs.autofocus || undefined,
+          autofocus: resolvedProps.value.autoFocus || attrs.autofocus || undefined,
           'aria-invalid': isInvalid.value ? 'true' : undefined,
           'aria-label': ariaLabel.value,
           'aria-labelledby': ariaLabelledBy.value,
@@ -407,17 +410,17 @@ function buildField(
         });
 
         let iconNode: unknown = null;
-        if (props.icon !== undefined) {
-          if (typeof props.icon === 'string') {
+        if (resolvedProps.value.icon !== undefined) {
+          if (typeof resolvedProps.value.icon === 'string') {
             iconNode = h('span', {
               class: iconClassName.value,
               'aria-hidden': 'true'
-            }, props.icon);
+            }, resolvedProps.value.icon);
           } else {
             iconNode = h('span', {
               class: iconClassName.value,
               'aria-hidden': 'true'
-            }, [props.icon as never]);
+            }, [resolvedProps.value.icon as never]);
           }
         }
 
@@ -440,15 +443,15 @@ function buildField(
         return h('div', {
           ...passthroughRootAttrs.value,
           class: [rootClassName.value, attrs.class],
-          style: [{width: props.width}, attrs.style]
+          style: [{width: resolvedProps.value.width}, attrs.style]
         }, [
-          props.label
+          resolvedProps.value.label
             ? h('label', {
               id: labelId.value,
               class: labelClassName.value,
               for: inputId.value
             }, [
-              props.label,
+              resolvedProps.value.label,
               (necessityIndicator.value === 'label' || necessityIndicator.value === 'icon') && isRequired.value ? ' \u200b' : null,
               necessityIndicator.value === 'label' && isRequired.value
                 ? h('span', {'aria-hidden': 'true'}, '(required)')
@@ -461,10 +464,10 @@ function buildField(
                 : null
             ])
             : null,
-          props.label && props.contextualHelp
+          resolvedProps.value.label && resolvedProps.value.contextualHelp
             ? h('span', {
               class: classNames(fieldStyles, 'spectrum-Field-contextualHelp')
-            }, typeof props.contextualHelp === 'string' ? props.contextualHelp : [props.contextualHelp as never])
+            }, typeof resolvedProps.value.contextualHelp === 'string' ? resolvedProps.value.contextualHelp : [resolvedProps.value.contextualHelp as never])
             : null,
           h('div', {
             class: controlClassName.value

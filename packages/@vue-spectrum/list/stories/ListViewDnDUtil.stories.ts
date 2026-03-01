@@ -1,35 +1,49 @@
+import {action} from 'storybook/actions';
 import {ListView} from '../src';
+import {Text} from '@vue-spectrum/text';
+import Folder from '@spectrum-icons-vue/workflow/Folder';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-type ListViewItem = {
-  id: string,
-  label: string,
-  type?: 'folder' | 'item'
-};
-type RenderOptions = {
-  includeDropTarget?: boolean,
-  items?: ListViewItem[],
-  twoLists?: boolean
-};
 type StoryArgs = Record<string, unknown>;
 
-const BASE_ITEMS: ListViewItem[] = [
-  {id: '1', label: 'Folder 1', type: 'folder'},
-  {id: '2', label: 'File 1', type: 'item'},
-  {id: '3', label: 'File 2', type: 'item'}
+type UtilItem = {
+  childCount?: number,
+  identifier: string,
+  name: string,
+  type: 'file' | 'folder' | 'unique_type'
+};
+
+const FOLDER_LIST_1: UtilItem[] = [
+  {identifier: '1', type: 'file', name: 'Adobe Photoshop'},
+  {identifier: '2', type: 'file', name: 'Adobe XD'},
+  {identifier: '3', type: 'folder', name: 'Documents', childCount: 0},
+  {identifier: '4', type: 'file', name: 'Adobe InDesign'},
+  {identifier: '5', type: 'folder', name: 'Utilities', childCount: 0},
+  {identifier: '6', type: 'file', name: 'Adobe AfterEffects'}
 ];
 
-const SECOND_ITEMS: ListViewItem[] = [
-  {id: 'a', label: 'Inbox', type: 'folder'},
-  {id: 'b', label: 'Shared PSD', type: 'item'},
-  {id: 'c', label: 'Sprint notes', type: 'item'}
+const FOLDER_LIST_2: UtilItem[] = [
+  {identifier: '7', type: 'folder', name: 'Pictures', childCount: 0},
+  {identifier: '8', type: 'file', name: 'Adobe Fresco'},
+  {identifier: '9', type: 'folder', name: 'Apps', childCount: 0},
+  {identifier: '10', type: 'file', name: 'Adobe Illustrator'},
+  {identifier: '11', type: 'file', name: 'Adobe Lightroom'},
+  {identifier: '12', type: 'file', name: 'Adobe Dreamweaver'},
+  {identifier: '13', type: 'unique_type', name: 'invalid drag item'}
 ];
 
-const MANY_ITEMS: ListViewItem[] = Array.from({length: 100}, (_, index) => ({
-  id: `item-${index}`,
-  label: `Item ${index}`,
-  type: 'item'
+const MANY_ITEMS: UtilItem[] = Array.from({length: 100}, (_, i) => ({
+  identifier: `item${i}`,
+  type: 'file',
+  name: `Item ${i}`
 }));
+
+const OVERRIDE_LIST_1: UtilItem[] = [
+  {identifier: '1', type: 'file', name: 'Adobe Photoshop'},
+  {identifier: '2', type: 'file', name: 'Adobe XD'},
+  {identifier: '3', type: 'file', name: 'Adobe InDesign'},
+  {identifier: '4', type: 'file', name: 'Adobe AfterEffects'}
+];
 
 const meta: Meta<typeof ListView> = {
   title: 'ListView/Drag and Drop/Util Handlers',
@@ -73,61 +87,108 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function renderUtilStory(args: StoryArgs, options: RenderOptions = {}) {
-  let {
-    includeDropTarget = false,
-    items = BASE_ITEMS,
-    twoLists = false
-  } = options;
+function renderListTemplate(args: StoryArgs, options: {items: UtilItem[], ariaLabel: string, includeDropTarget?: boolean, height?: string}) {
   return {
-    components: {ListView},
+    components: {Folder, ListView, Text},
     setup() {
       return {
         args,
-        includeDropTarget,
-        items,
-        secondItems: SECOND_ITEMS,
-        twoLists
+        items: options.items,
+        onAction: action('onAction')
       };
     },
     template: `
-      <div style="display: grid; gap: 8px; width: 320px;">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px;">
+        <input v-if="${options.includeDropTarget ? 'true' : 'false'}" aria-label="input before" />
         <div
-          v-if="includeDropTarget"
+          v-if="${options.includeDropTarget ? 'true' : 'false'}"
+          data-testid="drop-target"
           role="region"
           aria-label="Drop target"
-          data-testid="drop-target"
-          style="border: 1px dashed #9ca3af; border-radius: 6px; padding: 6px 8px;">
+          style="width: 300px; height: 240px; border: 2px dashed var(--spectrum-alias-border-color-mid); display: grid; place-items: center;">
           Drop target
         </div>
-        <ListView v-bind="args" aria-label="util handlers list" :items="items" />
         <ListView
-          v-if="twoLists"
           v-bind="args"
-          aria-label="util handlers destination list"
-          :items="secondItems" />
+          :aria-label="'${options.ariaLabel}'"
+          width="300px"
+          height="${options.height ?? '300px'}"
+          selection-mode="multiple"
+          :items="items"
+          @action="onAction">
+          <template #item="{item}">
+            <Folder v-if="item.type === 'folder'" class="react-spectrum-ListViewItem-thumbnail" />
+            <Text class="react-spectrum-ListViewItem-content">{{ item.name }}</Text>
+            <Text v-if="item.type === 'folder'" class="react-spectrum-ListViewItem-description">contains {{ item.childCount || 0 }} dropped item(s)</Text>
+          </template>
+        </ListView>
+      </div>
+    `
+  };
+}
+
+function renderTwoLists(args: StoryArgs, options?: {firstItems?: UtilItem[], secondItems?: UtilItem[]}) {
+  return {
+    components: {Folder, ListView, Text},
+    setup() {
+      return {
+        args,
+        firstItems: options?.firstItems ?? FOLDER_LIST_1,
+        secondItems: options?.secondItems ?? FOLDER_LIST_2
+      };
+    },
+    template: `
+      <div style="display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start;">
+        <ListView v-bind="args" aria-label="First ListView in drag between list example" width="300px" height="300px" selection-mode="multiple" :items="firstItems">
+          <template #item="{item}">
+            <Folder v-if="item.type === 'folder'" class="react-spectrum-ListViewItem-thumbnail" />
+            <Text class="react-spectrum-ListViewItem-content">{{ item.name }}</Text>
+            <Text v-if="item.type === 'folder'" class="react-spectrum-ListViewItem-description">contains {{ item.childCount || 0 }} dropped item(s)</Text>
+          </template>
+        </ListView>
+        <ListView v-bind="args" aria-label="Second ListView in drag between list example" width="300px" height="300px" selection-mode="multiple" :items="secondItems">
+          <template #item="{item}">
+            <Folder v-if="item.type === 'folder'" class="react-spectrum-ListViewItem-thumbnail" />
+            <Text class="react-spectrum-ListViewItem-content">{{ item.name }}</Text>
+            <Text v-if="item.type === 'folder'" class="react-spectrum-ListViewItem-description">contains {{ item.childCount || 0 }} dropped item(s)</Text>
+          </template>
+        </ListView>
       </div>
     `
   };
 }
 
 export const DragOut: Story = {
-  render: (args) => renderUtilStory(args, {includeDropTarget: true}),
+  render: (args) => renderListTemplate(args, {
+    ariaLabel: 'Draggable ListView with dnd hook util handlers',
+    includeDropTarget: true,
+    items: FOLDER_LIST_1
+  }),
   name: 'Drag out of list'
 };
 
 export const DragWithin: Story = {
-  render: (args) => renderUtilStory(args),
+  render: (args) => renderListTemplate(args, {
+    ariaLabel: 'Reorderable ListView from util handlers',
+    items: FOLDER_LIST_1
+  }),
   name: 'Drag within list (Reorder}'
 };
 
 export const DragWithinMany: Story = {
-  render: (args) => renderUtilStory(args, {items: MANY_ITEMS}),
+  render: (args) => renderListTemplate(args, {
+    ariaLabel: 'Reorderable ListView from util handlers',
+    height: '400px',
+    items: MANY_ITEMS
+  }),
   name: 'Drag within list with many items'
 };
 
 export const DropOntoItem: Story = {
-  render: (args) => renderUtilStory(args),
+  render: (args) => renderListTemplate(args, {
+    ariaLabel: 'Item and folder droppable ListView from dnd hook util handlers',
+    items: FOLDER_LIST_1
+  }),
   name: 'drop onto item/folder',
   parameters: {
     description: {
@@ -137,7 +198,7 @@ export const DropOntoItem: Story = {
 };
 
 export const DropOntoRoot: Story = {
-  render: (args) => renderUtilStory(args, {twoLists: true}),
+  render: (args) => renderTwoLists(args),
   name: 'drop onto root',
   parameters: {
     description: {
@@ -147,7 +208,7 @@ export const DropOntoRoot: Story = {
 };
 
 export const DropBetween: Story = {
-  render: (args) => renderUtilStory(args, {twoLists: true}),
+  render: (args) => renderTwoLists(args),
   name: 'drop between items',
   parameters: {
     description: {
@@ -157,7 +218,7 @@ export const DropBetween: Story = {
 };
 
 export const DirectoryFileDrop: Story = {
-  render: (args) => renderUtilStory(args, {twoLists: true}),
+  render: (args) => renderTwoLists(args),
   name: 'allows directories and files from finder',
   parameters: {
     description: {
@@ -167,7 +228,7 @@ export const DirectoryFileDrop: Story = {
 };
 
 export const Complex: Story = {
-  render: (args) => renderUtilStory(args, {twoLists: true}),
+  render: (args) => renderTwoLists(args),
   name: 'complex drag between lists',
   parameters: {
     description: {
@@ -177,7 +238,7 @@ export const Complex: Story = {
 };
 
 export const GetDropOperationDefault: Story = {
-  render: (args) => renderUtilStory(args, {twoLists: true}),
+  render: (args) => renderTwoLists(args),
   name: 'using getDropOperations to determine default drop operation',
   parameters: {
     description: {
@@ -187,7 +248,10 @@ export const GetDropOperationDefault: Story = {
 };
 
 export const UtilOverride: Story = {
-  render: (args) => renderUtilStory(args, {twoLists: true}),
+  render: (args) => renderTwoLists(args, {
+    firstItems: OVERRIDE_LIST_1,
+    secondItems: FOLDER_LIST_2
+  }),
   name: 'util handlers overridden by onDrop and getDropOperations',
   parameters: {
     description: {

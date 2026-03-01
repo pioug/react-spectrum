@@ -8,9 +8,18 @@ const styles: {[key: string]: string} = {};
 
 type IconScaleSize = 'L' | 'M';
 type IconSize = 'XXL' | 'XXS' | 'XL' | 'XS' | 'L' | 'M' | 'S' | 'l' | 'm' | 's' | 'xl' | 'xs' | 'xxl' | 'xxs';
+const iconColorTokens = new Set(['negative', 'notice', 'positive', 'informative']);
 
 function resolveSize(size: IconSize): Exclude<IconSize, 'l' | 'm' | 's' | 'xl' | 'xs' | 'xxl' | 'xxs'> {
   return size.toUpperCase() as Exclude<IconSize, 'l' | 'm' | 's' | 'xl' | 'xs' | 'xxl' | 'xxs'>;
+}
+
+function resolveIconColor(color: string): string {
+  if (iconColorTokens.has(color)) {
+    return `var(--spectrum-semantic-${color}-color-icon)`;
+  }
+
+  return color;
 }
 
 function normalizeAriaHidden(explicitAriaHidden: unknown): string | undefined {
@@ -105,7 +114,7 @@ export const Icon = defineComponent({
         ],
         style: [
           domStyle,
-          props.color ? {color: props.color} : undefined
+          props.color ? {color: resolveIconColor(props.color)} : undefined
         ],
         focusable: 'false',
         role: 'img',

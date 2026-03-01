@@ -26,7 +26,8 @@ export const StatusLight = defineComponent({
     }
   },
   setup(props, {slots, attrs}) {
-    let resolvedProps = computed(() => useProviderProps(props));
+    let providerProps = useProviderProps(props);
+    let resolvedProps = computed(() => Object.assign({}, props, providerProps));
 
     return () => {
       let ariaLabel = attrs['aria-label'];

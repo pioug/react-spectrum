@@ -23,9 +23,17 @@
     "url": "https://github.com/adobe/react-spectrum"
   },
   "dependencies": {
+    "@adobe/spectrum-css-temp": "3.0.0-alpha.1",
+    "@vue-aria/i18n": "workspace:*",
+    "@vue-aria/interactions": "workspace:*",
     "@vue-aria/selection": "workspace:*",
     "@vue-aria/steplist": "workspace:*",
-    "@vue-stately/collections": "workspace:*"
+    "@vue-aria/utils": "workspace:*",
+    "@vue-aria/visually-hidden": "workspace:*",
+    "@vue-spectrum/provider": "workspace:*",
+    "@vue-spectrum/utils": "workspace:*",
+    "@vue-stately/collections": "workspace:*",
+    "@vue-stately/steplist": "workspace:*"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

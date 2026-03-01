@@ -6,6 +6,8 @@ import type {
   ProviderContext as ReactProviderContext,
   ProviderProps as ReactProviderProps
 } from '@vue-types/provider';
+import type {ValidationState} from '@vue-types/shared';
+import {BreakpointProvider, useMatchedBreakpoints} from '@vue-spectrum/utils';
 import {computed, type ComputedRef, defineComponent, getCurrentInstance, h, inject, type InjectionKey, nextTick, onMounted, type PropType, provide, ref, watch} from 'vue';
 import {type SpectrumContextValue, VueSpectrumProvider} from 'vue-aria-components';
 
@@ -32,12 +34,33 @@ type ProviderPropsCompat = Omit<ReactProviderProps, 'children' | 'theme'> & {
   theme?: ThemeLike
 };
 
+function resolveHTMLElementRef(value: unknown): HTMLElement | null {
+  if (value instanceof HTMLElement) {
+    return value;
+  }
+
+  if (value && typeof value === 'object') {
+    let element = (value as {$el?: unknown}).$el;
+    if (element instanceof HTMLElement) {
+      return element;
+    }
+  }
+
+  return null;
+}
+
 const defaultProviderContext: ProviderContextCompat = {
   version: '0.1.0',
   theme: defaultTheme as unknown as ThemeLike,
   colorScheme: 'light',
   scale: 'medium',
-  breakpoints: {} as Breakpoints,
+  breakpoints: {
+    S: 640,
+    M: 768,
+    L: 1024,
+    XL: 1280,
+    XXL: 1536
+  },
   locale: 'en-US',
   dir: 'ltr'
 };
@@ -64,18 +87,47 @@ export const Provider = defineComponent({
       type: String as PropType<string | undefined>,
       default: undefined
     },
+    breakpoints: {
+      type: Object as PropType<Breakpoints | undefined>,
+      default: undefined
+    },
     dir: {
       type: String as PropType<SpectrumContextValue['dir'] | undefined>,
+      default: undefined
+    },
+    isQuiet: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
+    },
+    isEmphasized: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
+    },
+    isDisabled: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
+    },
+    isRequired: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
+    },
+    isReadOnly: {
+      type: Boolean as PropType<boolean | undefined>,
+      default: undefined
+    },
+    validationState: {
+      type: String as PropType<ValidationState | undefined>,
       default: undefined
     }
   },
   setup(props, {slots, attrs}) {
     let instance = getCurrentInstance();
+    let providerRoot = ref<HTMLElement | null>(null);
     let hasWarnedNestedDirection = ref(false);
-    let parentContext = inject(
-      providerContextKey,
-      computed(() => defaultProviderContext)
-    );
+    let inheritedContext = inject(providerContextKey, null);
+    let hasParentProvider = inheritedContext !== null;
+
+    let parentContext = computed(() => inheritedContext?.value ?? defaultProviderContext);
 
     let context = computed<ProviderContextCompat>(() => {
       let parent = parentContext.value;
@@ -85,10 +137,38 @@ export const Provider = defineComponent({
         theme: props.theme ?? parent.theme ?? (defaultTheme as unknown as ThemeLike),
         colorScheme: props.colorScheme ?? parent.colorScheme,
         scale: props.scale ?? parent.scale,
+        breakpoints: props.breakpoints ?? parent.breakpoints,
         locale,
-        dir: props.dir ?? parent.dir
+        dir: props.dir ?? parent.dir,
+        isQuiet: props.isQuiet ?? parent.isQuiet,
+        isEmphasized: props.isEmphasized ?? parent.isEmphasized,
+        isDisabled: props.isDisabled ?? parent.isDisabled,
+        isRequired: props.isRequired ?? parent.isRequired,
+        isReadOnly: props.isReadOnly ?? parent.isReadOnly,
+        validationState: props.validationState ?? parent.validationState
       };
     });
+
+    let shouldRenderWrapper = computed(() => {
+      if (!hasParentProvider) {
+        return true;
+      }
+
+      let parent = parentContext.value;
+      let hasDomAttrs = Object.keys(attrs).length > 0;
+      return (
+        props.locale !== undefined ||
+        props.dir !== undefined ||
+        context.value.theme !== parent.theme ||
+        context.value.scale !== parent.scale ||
+        context.value.colorScheme !== parent.colorScheme ||
+        context.value.locale !== parent.locale ||
+        context.value.dir !== parent.dir ||
+        hasDomAttrs
+      );
+    });
+
+    let matchedBreakpoints = computed(() => useMatchedBreakpoints(context.value.breakpoints ?? defaultProviderContext.breakpoints));
 
     provide(providerContextKey, context);
 
@@ -97,7 +177,11 @@ export const Provider = defineComponent({
         return;
       }
 
-      let root = instance?.proxy?.$el;
+      if (!shouldRenderWrapper.value) {
+        return;
+      }
+
+      let root = providerRoot.value ?? resolveHTMLElementRef(instance?.proxy?.$el);
       if (!(root instanceof HTMLElement) || !context.value.dir) {
         return;
       }
@@ -117,14 +201,35 @@ export const Provider = defineComponent({
       nextTick().then(warnOnNestedDirection);
     });
 
-    return () => h(VueSpectrumProvider, {
-      ...attrs,
-      theme: context.value.theme,
-      scale: context.value.scale,
-      colorScheme: context.value.colorScheme,
-      locale: context.value.locale,
-      dir: context.value.dir
-    }, slots);
+    return () => {
+      let content = !shouldRenderWrapper.value
+        ? (slots.default ? slots.default() : [])
+        : [
+          h(VueSpectrumProvider, {
+            ...attrs,
+            ref: (value: unknown) => {
+              providerRoot.value = resolveHTMLElementRef(value);
+            },
+            theme: context.value.theme,
+            scale: context.value.scale,
+            colorScheme: context.value.colorScheme,
+            locale: context.value.locale,
+            dir: context.value.dir,
+            isQuiet: context.value.isQuiet,
+            isEmphasized: context.value.isEmphasized,
+            isDisabled: context.value.isDisabled,
+            isRequired: context.value.isRequired,
+            isReadOnly: context.value.isReadOnly,
+            validationState: context.value.validationState
+          }, slots)
+        ];
+
+      return h(BreakpointProvider, {
+        matchedBreakpoints: matchedBreakpoints.value
+      }, {
+        default: () => content
+      });
+    };
   }
 });
 
@@ -135,16 +240,34 @@ export function useProvider(): ProviderContextCompat {
   return context?.value ?? defaultProviderContext;
 }
 
+function toKebabCase(value: string): string {
+  return value.replace(/[A-Z]/g, (match) => `-${match.toLowerCase()}`);
+}
+
 export function useProviderProps<T>(props: T): T {
   let context = useProvider();
-  return Object.assign({}, {
+  let instance = getCurrentInstance();
+  let vnodeProps = (instance?.vnode.props ?? {}) as Record<string, unknown>;
+
+  let result = Object.assign({}, props) as Record<string, unknown>;
+  for (let [propName, contextValue] of Object.entries({
     isQuiet: context.isQuiet,
     isEmphasized: context.isEmphasized,
     isDisabled: context.isDisabled,
     isRequired: context.isRequired,
     isReadOnly: context.isReadOnly,
     validationState: context.validationState
-  }, props);
+  })) {
+    let kebabName = toKebabCase(propName);
+    let isProvided = Object.prototype.hasOwnProperty.call(vnodeProps, propName) ||
+      Object.prototype.hasOwnProperty.call(vnodeProps, kebabName);
+
+    if (!isProvided) {
+      result[propName] = contextValue;
+    }
+  }
+
+  return result as T;
 }
 
 export type {

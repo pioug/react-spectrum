@@ -1,124 +1,131 @@
+import {ActionButton} from '@vue-spectrum/button';
 import {ContextualHelp} from '@vue-spectrum/contextualhelp';
 import {Picker} from '../src';
 import {action} from 'storybook/actions';
 import {userEvent, within} from 'storybook/test';
-import {computed, defineComponent, ref, watch} from 'vue';
+import {computed, h, ref, watch} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
-type PickerStoryArgs = {
-  ariaLabel?: string,
-  autoFocus?: boolean,
-  description?: string,
-  disabledKeys?: Iterable<string>,
-  isDisabled?: boolean,
-  isInvalid?: boolean,
-  isQuiet?: boolean,
-  items?: Array<{id: string, label: string}>,
-  label?: string,
-  modelValue?: string,
-  placeholder?: string,
-  validationState?: 'invalid' | 'valid'
+type PickerKey = number | string;
+
+type PickerStoryItem = {
+  id: PickerKey,
+  label: string
 };
 
-const baseItems = [
-  {id: 'option-1', label: 'Option 1'},
-  {id: 'option-2', label: 'Option 2'},
-  {id: 'option-3', label: 'Option 3'},
-  {id: 'option-4', label: 'Option 4'}
+type PickerStoryArgs = {
+  align?: 'end' | 'start',
+  ariaLabel?: string | null,
+  autoFocus?: boolean,
+  contextualHelp?: unknown,
+  defaultSelectedKey?: PickerKey,
+  description?: string,
+  direction?: 'bottom' | 'top',
+  disabledKeys?: Iterable<PickerKey>,
+  isDisabled?: boolean,
+  isInvalid?: boolean,
+  isLoading?: boolean,
+  isQuiet?: boolean,
+  items?: Array<PickerStoryItem | {children: PickerStoryItem[], name: string}>,
+  label?: string | null,
+  menuWidth?: number | string,
+  modelValue?: PickerKey,
+  necessityIndicator?: 'icon' | 'label',
+  placeholder?: string,
+  selectedKey?: PickerKey,
+  validationState?: 'invalid' | 'valid',
+  width?: number | string
+};
+
+const DEFAULT_ITEMS: PickerStoryItem[] = [
+  {id: 'Short', label: 'Short'},
+  {id: 'Normal', label: 'Normal'},
+  {id: 'This item is very long and word wraps poorly', label: 'This item is very long and word wraps poorly'}
 ];
 
-const DynamicPicker = defineComponent({
-  name: 'DynamicPickerStory',
-  components: {Picker},
-  props: {
-    sections: {
-      type: Boolean,
-      default: false
-    }
+const FLAT_OPTIONS = [
+  {id: 1, name: 'Aardvark'},
+  {id: 2, name: 'Kangaroo'},
+  {id: 3, name: 'Snake'},
+  {id: 4, name: 'Danni'},
+  {id: 5, name: 'Devon'},
+  {id: 6, name: 'Ross'},
+  {id: 7, name: 'Puppy'},
+  {id: 8, name: 'Doggo'},
+  {id: 9, name: 'Floof'}
+];
+
+const LONG_ITEM_TEXT = [
+  {id: 'short', name: 'One'},
+  {id: 'long', name: 'your text here long long long long'},
+  {id: 'underscores', name: 'your_text_here_long_long_long_long'},
+  {id: 'hypens', name: 'your-text-here-long-long-long-long'},
+  {id: 'singleWord', name: 'supercalifragilisticexpialidocious'},
+  {id: 'always', name: 'This item is very long and word wraps poorly'}
+];
+
+const FALSY_KEY = [
+  {id: '', name: 'None'},
+  {id: 'One', name: 'One'},
+  {id: 'Two', name: 'Two'},
+  {id: 'Three', name: 'Three'}
+];
+
+const WITH_SECTION = [
+  {
+    name: 'Animals',
+    children: [
+      {id: 'Aardvark', label: 'Aardvark'},
+      {id: 'Kangaroo', label: 'Kangaroo'},
+      {id: 'Snake', label: 'Snake'}
+    ]
   },
-  setup(props) {
-    let items = ref(props.sections
-      ? [
-        {id: 'group-a-1', label: 'Group A / Item 1'},
-        {id: 'group-a-2', label: 'Group A / Item 2'},
-        {id: 'group-b-1', label: 'Group B / Item 1'}
-      ]
-      : [...baseItems]);
-    let selected = ref(items.value[0]?.id ?? '');
+  {
+    name: 'People',
+    children: [
+      {id: 'Danni', label: 'Danni'},
+      {id: 'Devon', label: 'Devon'},
+      {id: 'Ross', label: 'Ross'}
+    ]
+  }
+];
 
-    let addItem = () => {
-      let next = items.value.length + 1;
-      let id = `dynamic-${next}`;
-      items.value = [
-        ...items.value,
-        {
-          id,
-          label: props.sections ? `Group C / Item ${next}` : `Dynamic Item ${next}`
-        }
-      ];
-    };
+function mapItems(items: Array<{id: PickerKey, name: string}>): PickerStoryItem[] {
+  return items.map((item) => ({
+    id: item.id,
+    label: item.name
+  }));
+}
 
-    return {
-      items,
-      selected,
-      addItem
-    };
-  },
-  template: `
-    <div style="display: grid; gap: 8px; max-width: 280px;">
-      <Picker
-        label="Dynamic picker"
-        :items="items"
-        :model-value="selected"
-        @update:model-value="selected = $event" />
-      <button type="button" @click="addItem">Add item</button>
-    </div>
-  `
-});
-
-const AsyncLoadingPicker = defineComponent({
+const AsyncLoadingPicker = {
   name: 'AsyncLoadingPickerStory',
   components: {Picker},
   setup() {
-    let items = ref<Array<{id: string, label: string}>>([]);
-    let selected = ref('');
-    let isLoading = ref(false);
+    let items = ref<PickerStoryItem[]>([]);
+    let selected = ref<PickerKey | undefined>(undefined);
+    let isLoading = ref(true);
 
-    let loadItems = () => {
-      if (isLoading.value || items.value.length > 0) {
-        return;
-      }
-
-      isLoading.value = true;
-      window.setTimeout(() => {
-        items.value = [...baseItems];
-        selected.value = baseItems[0].id;
-        isLoading.value = false;
-      }, 350);
-    };
-
-    loadItems();
+    window.setTimeout(() => {
+      items.value = mapItems(FLAT_OPTIONS);
+      selected.value = FLAT_OPTIONS[0].id;
+      isLoading.value = false;
+    }, 1000);
 
     return {
-      items,
-      selected,
       isLoading,
-      loadItems
+      items,
+      selected
     };
   },
   template: `
-    <div style="display: grid; gap: 8px; max-width: 280px;">
-      <Picker
-        label="Async picker"
-        :items="items"
-        :model-value="selected"
-        :placeholder="isLoading ? 'Loading...' : 'Select...'
-        "
-        @update:model-value="selected = $event" />
-      <button type="button" :disabled="isLoading" @click="loadItems">Reload</button>
-    </div>
+    <Picker
+      :items="items"
+      :is-loading="isLoading"
+      label="Pick a Pokemon"
+      :model-value="selected"
+      @update:model-value="selected = $event" />
   `
-});
+};
 
 const meta: Meta<typeof Picker> = {
   title: 'Picker',
@@ -226,10 +233,10 @@ function renderPicker(baseArgs: Partial<PickerStoryArgs> = {}, wrapperStyle?: st
     components: {Picker},
     setup() {
       let mergedArgs = computed<PickerStoryArgs>(() => ({...args, ...baseArgs}));
-      let selected = ref('');
+      let selected = ref<PickerKey | undefined>(undefined);
 
       watch(mergedArgs, (nextArgs) => {
-        selected.value = nextArgs.modelValue ?? '';
+        selected.value = nextArgs.modelValue;
       }, {deep: true, immediate: true});
 
       return {
@@ -240,18 +247,27 @@ function renderPicker(baseArgs: Partial<PickerStoryArgs> = {}, wrapperStyle?: st
     template: `
       <div ${wrapperStyle ? `style="${wrapperStyle}"` : ''}>
         <Picker
-          :aria-label="mergedArgs.ariaLabel"
+          :align="mergedArgs.align"
+          :aria-label="mergedArgs.ariaLabel ?? undefined"
           :auto-focus="mergedArgs.autoFocus"
+          :contextual-help="mergedArgs.contextualHelp"
+          :default-selected-key="mergedArgs.defaultSelectedKey"
           :description="mergedArgs.description"
+          :direction="mergedArgs.direction"
           :disabled-keys="mergedArgs.disabledKeys"
           :is-disabled="mergedArgs.isDisabled"
           :is-invalid="mergedArgs.isInvalid"
+          :is-loading="mergedArgs.isLoading"
           :is-quiet="mergedArgs.isQuiet"
           :items="mergedArgs.items"
-          :label="mergedArgs.label"
+          :label="mergedArgs.label ?? undefined"
+          :menu-width="mergedArgs.menuWidth"
           :model-value="selected"
+          :necessity-indicator="mergedArgs.necessityIndicator"
           :placeholder="mergedArgs.placeholder"
+          :selected-key="mergedArgs.selectedKey"
           :validation-state="mergedArgs.validationState"
+          :width="mergedArgs.width"
           @update:model-value="selected = $event" />
       </div>
     `
@@ -259,7 +275,7 @@ function renderPicker(baseArgs: Partial<PickerStoryArgs> = {}, wrapperStyle?: st
 }
 
 export const Default: Story = {
-  render: renderPicker({items: [...baseItems]})
+  render: renderPicker({items: DEFAULT_ITEMS})
 };
 
 Default.play = async ({canvasElement}) => {
@@ -272,12 +288,8 @@ Default.play = async ({canvasElement}) => {
 
 export const Disabled: Story = {
   render: renderPicker({
-    items: [
-      {id: 'option-1', label: 'Option 1'},
-      {id: 'option-2', label: 'Option 2'},
-      {id: 'option-3', label: 'Option 3'}
-    ],
-    disabledKeys: ['option-2']
+    disabledKeys: ['Short'],
+    items: DEFAULT_ITEMS
   }),
   name: 'disabled keys'
 };
@@ -285,31 +297,28 @@ export const Disabled: Story = {
 export const Sections: Story = {
   render: renderPicker({
     items: [
-      {id: 'group-a-1', label: 'Group A / Item 1'},
-      {id: 'group-a-2', label: 'Group A / Item 2'},
-      {id: 'group-b-1', label: 'Group B / Item 1'}
+      {
+        children: [
+          {id: 'Aardvark', label: 'Aardvark'},
+          {id: 'Kangaroo', label: 'Kangaroo'},
+          {id: 'Snake', label: 'Snake'}
+        ],
+        name: 'Animals'
+      }
     ]
   })
 };
 
 export const Dynamic: Story = {
-  render: () => ({
-    setup() {
-      return {};
-    },
-    components: {DynamicPicker},
-    template: '<DynamicPicker />'
+  render: renderPicker({
+    items: mapItems(FLAT_OPTIONS)
   }),
   name: 'dynamic'
 };
 
 export const DynamicSections: Story = {
-  render: () => ({
-    setup() {
-      return {};
-    },
-    components: {DynamicPicker},
-    template: '<DynamicPicker :sections="true" />'
+  render: renderPicker({
+    items: WITH_SECTION as PickerStoryArgs['items']
   }),
   name: 'dynamic with sections'
 };
@@ -317,11 +326,23 @@ export const DynamicSections: Story = {
 export const ComplexItems: Story = {
   render: renderPicker({
     items: [
-      {id: 'usd', label: 'United States Dollar (USD)'},
-      {id: 'eur', label: 'Euro (EUR)'},
-      {id: 'jpy', label: 'Japanese Yen (JPY)'}
-    ],
-    modelValue: 'usd'
+      {
+        name: 'Section 1',
+        children: [
+          {id: 'Copy', label: 'Copy'},
+          {id: 'Cut', label: 'Cut'},
+          {id: 'Paste', label: 'Paste'}
+        ]
+      },
+      {
+        name: 'Section 2',
+        children: [
+          {id: 'Puppy', label: 'Puppy'},
+          {id: 'Doggo with really really really long long long text', label: 'Doggo with really really really long long long text'},
+          {id: 'Floof', label: 'Floof'}
+        ]
+      }
+    ]
   }),
   name: 'complex items'
 };
@@ -329,52 +350,68 @@ export const ComplexItems: Story = {
 export const WithAvatars: Story = {
   render: renderPicker({
     items: [
-      {id: 'avery', label: 'Avery'},
-      {id: 'kai', label: 'Kai'},
-      {id: 'lena', label: 'Lena'}
-    ]
+      {id: 'User 1', label: 'User 1'},
+      {id: 'User 2', label: 'User 2'},
+      {id: 'User 3', label: 'User 3'},
+      {id: 'User 4', label: 'User 4'}
+    ],
+    label: 'Select a user'
   })
 };
 
 export const LongItemText: Story = {
   render: renderPicker({
-    items: [
-      {id: 'long-1', label: 'Very long picker item text to validate truncation and overflow behavior in the trigger.'},
-      {id: 'long-2', label: 'Second long picker option for scrolling and clipping behavior.'}
-    ]
+    items: mapItems(LONG_ITEM_TEXT)
   }),
   name: 'long item text'
 };
 
 export const FalsyKey: Story = {
   render: renderPicker({
-    items: [
-      {id: '', label: 'Empty key option'},
-      {id: '0', label: 'Zero key option'},
-      {id: 'value', label: 'Value option'}
-    ],
-    modelValue: ''
+    items: mapItems(FALSY_KEY)
   }),
   name: 'falsy item key'
 };
 
 export const LabelledBy: Story = {
-  render: () => ({
+  args: {
+    'aria-label': null,
+    'aria-labelledby': true,
+    label: null
+  },
+  argTypes: {
+    'aria-label': {
+      control: 'text'
+    },
+    'aria-labelledby': {
+      control: 'boolean'
+    }
+  },
+  render: (args) => ({
     components: {Picker},
     setup() {
-      let selected = ref('option-1');
+      let resolvedArgs = computed(() => ({
+        'aria-label': null,
+        'aria-labelledby': true,
+        label: null,
+        ...args
+      }));
+      let selected = ref<PickerKey | undefined>(undefined);
+      let items = mapItems(FLAT_OPTIONS);
       return {
-        selected,
-        items: [...baseItems]
+        resolvedArgs,
+        items,
+        selected
       };
     },
     template: `
-      <div style="max-width: 280px;">
-        <p id="picker-label">Picker external label</p>
+      <div>
+        <div id="test">Test label</div>
         <Picker
-          aria-labelledby="picker-label"
+          :aria-label="resolvedArgs['aria-label'] ?? undefined"
+          :aria-labelledby="resolvedArgs['aria-labelledby'] ? 'test' : undefined"
           :items="items"
-          label=""
+          :label="resolvedArgs.label ?? undefined"
           :model-value="selected"
           @update:model-value="selected = $event" />
       </div>
@@ -389,49 +426,49 @@ export const LabelledBy: Story = {
 };
 
 export const ContextualHelpPicker: Story = {
-  render: () => ({
-    components: {ContextualHelp, Picker},
-    setup() {
-      let selected = ref('option-1');
-      return {
-        selected,
-        items: [...baseItems]
-      };
-    },
-    template: `
-      <div style="display: flex; align-items: end; gap: 8px; max-width: 420px;">
-        <Picker
-          label="Picker with help"
-          :items="items"
-          :model-value="selected"
-          @update:model-value="selected = $event" />
-        <ContextualHelp title="Picker help">Additional context for picker options.</ContextualHelp>
-      </div>
-    `
+  render: renderPicker({
+    contextualHelp: h(ContextualHelp, {title: 'What is a segment?'}, {
+      default: () => 'Segments identify who your visitors are, what devices and services they use, where they navigated from, and much more.'
+    }),
+    items: mapItems(FLAT_OPTIONS)
   }),
   name: 'contextual help'
 };
 
 export const SelectedKey: Story = {
-  render: renderPicker({modelValue: 'option-3'}),
+  render: renderPicker({
+    items: mapItems(FLAT_OPTIONS),
+    selectedKey: 7
+  }),
   name: 'selectedKey'
 };
 
 export const DefaultSelectedKey: Story = {
-  render: renderPicker({modelValue: 'option-2'}),
+  render: (args) => ({
+    components: {Picker},
+    setup() {
+      return {
+        args,
+        items: mapItems(FLAT_OPTIONS)
+      };
+    },
+    template: `
+      <Picker v-bind="args" :items="items" :default-selected-key="7" />
+    `
+  }),
   name: 'defaultSelectedKey (uncontrolled)'
 };
 
 export const Loading: Story = {
-  render: renderPicker({items: [], placeholder: 'Loading...'}),
+  render: renderPicker({
+    isLoading: true,
+    items: []
+  }),
   name: 'isLoading, no items'
 };
 
 export const AsyncLoading: Story = {
   render: () => ({
-    setup() {
-      return {};
-    },
     components: {AsyncLoadingPicker},
     template: '<AsyncLoadingPicker />'
   }),
@@ -439,38 +476,137 @@ export const AsyncLoading: Story = {
 };
 
 export const Focus: Story = {
-  render: renderPicker({autoFocus: true}),
+  render: (args) => ({
+    components: {Picker},
+    setup() {
+      return {
+        args,
+        items: mapItems(FLAT_OPTIONS)
+      };
+    },
+    template: `
+      <div style="display: flex; width: auto; margin: 250px 0; align-items: center; gap: 8px;">
+        <label for="focus-before">Focus before</label>
+        <input id="focus-before" data-testid="before" />
+        <Picker v-bind="args" label="Focus-Test" :items="items" />
+        <label for="focus-after">Focus after</label>
+        <input id="focus-after" data-testid="after" />
+      </div>
+    `
+  }),
   name: 'keyboard tab focus'
 };
 
 export const Resize: Story = {
-  render: renderPicker({}, 'min-width: 180px; width: 260px; resize: horizontal; overflow: auto; border: 1px solid var(--spectrum-global-color-gray-300); padding: 8px;'),
+  render: (args) => ({
+    components: {ActionButton, Picker},
+    setup() {
+      let isCompact = ref(true);
+      let toggleSize = () => {
+        isCompact.value = !isCompact.value;
+      };
+
+      return {
+        args,
+        isCompact,
+        items: [
+          {id: 'A1', label: 'A1'},
+          {id: 'A2', label: 'A2'},
+          {id: 'A3', label: 'A3'}
+        ],
+        toggleSize
+      };
+    },
+    template: `
+      <div style="display: grid; gap: 12px; justify-items: start;">
+        <div :style="{width: isCompact ? '200px' : '300px'}">
+          <Picker v-bind="args" label="Choose A" :items="items" width="100%" />
+        </div>
+        <ActionButton @click="toggleSize">Toggle size</ActionButton>
+      </div>
+    `
+  }),
   name: 'resize'
 };
 
 export const Scrolling: Story = {
-  render: renderPicker(
-    {
-      items: Array.from({length: 18}, (_, index) => ({
-        id: `item-${index + 1}`,
-        label: `Scrollable option ${index + 1}`
-      }))
+  render: (args) => ({
+    components: {Picker},
+    setup() {
+      return {
+        args,
+        items: [
+          {id: 'One', label: 'One'},
+          {id: 'Two', label: 'Two'},
+          {id: 'Three', label: 'Three'}
+        ]
+      };
     },
-    'max-height: 120px; overflow: auto; border: 1px solid var(--spectrum-global-color-gray-300); padding: 8px;'
-  ),
+    template: `
+      <div style="width: 300px; height: 120px; overflow: auto;">
+        <div style="width: 500px;">
+          <Picker v-bind="args" label="Test" :items="items" />
+        </div>
+      </div>
+    `
+  }),
   name: 'scrolling container'
 };
 
 export const Links: Story = {
   render: renderPicker({
     items: [
-      {id: 'https://adobe.com', label: 'https://adobe.com'},
-      {id: 'https://react-spectrum.adobe.com', label: 'https://react-spectrum.adobe.com'},
-      {id: 'https://vuejs.org', label: 'https://vuejs.org'}
+      {id: 'foo', label: 'Foo'},
+      {id: 'bar', label: 'Bar'},
+      {id: 'google', label: 'Google'}
     ]
   })
 };
 
 export const Quiet: Story = {
-  render: renderPicker({isQuiet: true})
+  render: () => ({
+    components: {Picker},
+    setup() {
+      return {
+        items: [
+          {id: 'rarely', label: 'Rarely'},
+          {id: 'sometimes', label: 'Sometimes'},
+          {id: 'always', label: 'Always'}
+        ],
+        longItems: [
+          {id: 'rarely', label: 'Rarely'},
+          {id: 'sometimes', label: 'This text is very long and will overflow the container'},
+          {id: 'always', label: 'Always'}
+        ],
+        wideItems: [
+          {id: 'rarely', label: 'Rarely'},
+          {id: 'sometimes', label: 'This text is very long the picker should expand to fit'},
+          {id: 'always', label: 'Always'}
+        ]
+      };
+    },
+    template: `
+      <div>
+        <div>
+          <h4>Quiet picker with label</h4>
+          <Picker label="Choose frequency" :items="items" is-quiet />
+        </div>
+        <hr />
+        <div>
+          <h4>Quiet picker without label</h4>
+          <Picker aria-label="Choose frequency" :items="items" is-quiet />
+        </div>
+        <hr />
+        <div style="width: 200px;">
+          <h4>Quiet picker with label and fixed width (200px)</h4>
+          <Picker default-selected-key="sometimes" is-quiet label="Choose frequency" :items="longItems" />
+        </div>
+        <hr />
+        <div style="width: 600px;">
+          <h4>Quiet picker with label and fixed width (600px)</h4>
+          <Picker default-selected-key="sometimes" is-quiet label="Choose frequency" :items="wideItems" />
+        </div>
+      </div>
+    `
+  })
 };

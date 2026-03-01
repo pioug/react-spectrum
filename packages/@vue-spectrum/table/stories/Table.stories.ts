@@ -1,4 +1,4 @@
-import {ActionButton} from '@vue-spectrum/button';
+import {ActionButton, Button} from '@vue-spectrum/button';
 import {DialogTrigger} from '@vue-spectrum/dialog';
 import {computed, ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
@@ -24,61 +24,182 @@ type TableRow = {
 };
 
 const BASE_COLUMNS: TableColumn[] = [
-  {key: 'name', label: 'Name', sortable: true},
-  {key: 'type', label: 'Type'},
-  {key: 'date', label: 'Date Modified', align: 'end'}
+  {key: 'foo', label: 'Foo'},
+  {key: 'bar', label: 'Bar'},
+  {key: 'baz', label: 'Baz'}
 ];
 
 const BASE_ROWS: TableRow[] = [
-  {id: 1, name: 'Adobe XD', type: 'Design', date: '2025-10-12'},
-  {id: 2, name: 'Daily Standup', type: 'Document', date: '2025-10-15'},
-  {id: 3, name: 'Quarterly Plan', type: 'Spreadsheet', date: '2025-10-18'},
-  {id: 4, name: 'Design Tokens', type: 'Code', date: '2025-10-22'},
-  {id: 5, name: 'Retro Notes', type: 'Document', date: '2025-10-24'}
+  {test: 'Test 1', foo: 'Foo 1', bar: 'Bar 1', yay: 'Yay 1', baz: 'Baz 1', id: 1},
+  {test: 'Test 2', foo: 'Foo 2', bar: 'Bar 2', yay: 'Yay 2', baz: 'Baz 2', id: 2},
+  {test: 'Test 1', foo: 'Foo 3', bar: 'Bar 1', yay: 'Yay 1', baz: 'Baz 1', id: 3},
+  {test: 'Test 2', foo: 'Foo 4', bar: 'Bar 2', yay: 'Yay 2', baz: 'Baz 2', id: 4},
+  {test: 'Test 1', foo: 'Foo 5', bar: 'Bar 1', yay: 'Yay 1', baz: 'Baz 1', id: 5},
+  {test: 'Test 2', foo: 'Foo 6', bar: 'Bar 2', yay: 'Yay 2', baz: 'Baz 2', id: 6},
+  {test: 'Test 1', foo: 'Foo 7', bar: 'Bar 1', yay: 'Yay 1', baz: 'Baz 1', id: 7},
+  {test: 'Test 2', foo: 'Foo 8', bar: 'Bar 2', yay: 'Yay 2', baz: 'Baz 2', id: 8}
+];
+
+const STATIC_ROWS: TableRow[] = [
+  {id: 's1', foo: 'One', bar: 'Two', baz: 'Three'},
+  {id: 's2', foo: 'One', bar: 'Two', baz: 'Three'}
 ];
 
 const FALSY_ROW_KEY_ROWS: TableRow[] = [
-  {id: 0, name: 'Row id=0', type: 'Edge Case', date: '2025-10-01'},
-  {id: 1, name: 'Row id=1', type: 'Normal', date: '2025-10-02'},
-  {id: 2, name: 'Row id=2', type: 'Normal', date: '2025-10-03'}
+  {id: 0, foo: 'Foo 1', bar: 'Bar 1', yay: 'Yay 1', baz: 'Baz 1'},
+  {id: 1, foo: 'Foo 2', bar: 'Bar 1', yay: 'Yay 1', baz: 'Baz 1'}
 ];
 
 const LONG_CONTENT_ROWS: TableRow[] = [
   {
-    id: 1,
-    name: 'A very long title that should wrap across multiple lines when overflowMode is set to wrap.',
-    type: 'Document with long description',
-    date: '2025-10-20'
+    id: 'l1',
+    foo: 'A very long title that should wrap across multiple lines when overflowMode is set to wrap.',
+    bar: 'PDF',
+    baz: '214 KB'
   },
   {
-    id: 2,
-    name: 'Another long row title that exercises truncation and wrapping behavior in the same table.',
-    type: 'Report',
-    date: '2025-10-21'
+    id: 'l2',
+    foo: 'Another long row title that exercises truncation and wrapping behavior in the same table.',
+    bar: 'XLS',
+    baz: '120 KB'
   }
 ];
 
-const MANY_COLUMNS: TableColumn[] = Array.from({length: 12}, (_, index) => ({
-  key: `col${index + 1}`,
-  label: `Column ${index + 1}`,
-  sortable: index % 2 === 0,
+const MANY_COLUMNS: TableColumn[] = Array.from({length: 100}, (_, index) => ({
+  key: `C${index}`,
+  label: `Column ${index}`,
+  minWidth: 100,
   resizable: true
 }));
 
-const MANY_ROWS: TableRow[] = Array.from({length: 80}, (_, rowIndex) => {
+const MANY_ROWS: TableRow[] = Array.from({length: 1000}, (_, rowIndex) => {
   let row: TableRow = {
-    id: rowIndex + 1
+    id: `R${rowIndex}`
   };
   for (let columnIndex = 0; columnIndex < MANY_COLUMNS.length; columnIndex++) {
-    row[`col${columnIndex + 1}`] = `R${rowIndex + 1}C${columnIndex + 1}`;
+    row[`C${columnIndex}`] = `${rowIndex}, ${columnIndex}`;
   }
   return row;
 });
 
 const NESTED_COLUMNS: TableColumn[] = [
-  {key: 'name', label: 'Name', sortable: true},
-  {key: 'type', label: 'Metadata / Type'},
-  {key: 'date', label: 'Metadata / Date Modified', align: 'end'}
+  {key: 'test', label: 'Test'},
+  {key: 'foo', label: 'Foo'},
+  {key: 'bar', label: 'Bar'},
+  {key: 'yay', label: 'Yay'},
+  {key: 'baz', label: 'Baz'}
+];
+
+const POKEMON_ROWS: TableRow[] = [
+  {id: 1, name: 'Charizard', type: 'Fire, Flying', level: '67', weight: '200lbs', height: '5\'7"'},
+  {id: 2, name: 'Blastoise', type: 'Water', level: '56', weight: '188lbs', height: '5\'3"'},
+  {id: 3, name: 'Venusaur', type: 'Grass, Poison', level: '83', weight: '220lbs', height: '6\'7"'},
+  {id: 4, name: 'Pikachu', type: 'Electric', level: '100', weight: '13lbs', height: '1\'4"'},
+  {id: 5, name: 'Charizard', type: 'Fire, Flying', level: '67', weight: '200lbs', height: '5\'7"'},
+  {id: 6, name: 'Blastoise', type: 'Water', level: '56', weight: '188lbs', height: '5\'3"'},
+  {id: 7, name: 'Venusaur', type: 'Grass, Poison', level: '83', weight: '220lbs', height: '6\'7"'},
+  {id: 8, name: 'Pikachu', type: 'Electric', level: '100', weight: '13lbs', height: '1\'4"'},
+  {id: 9, name: 'Charizard', type: 'Fire, Flying', level: '67', weight: '200lbs', height: '5\'7"'},
+  {id: 10, name: 'Blastoise', type: 'Water', level: '56', weight: '188lbs', height: '5\'3"'},
+  {id: 11, name: 'Venusaur', type: 'Grass, Poison', level: '83', weight: '220lbs', height: '6\'7"'},
+  {id: 12, name: 'Pikachu', type: 'Electric', level: '100', weight: '13lbs', height: '1\'4"'}
+];
+
+const PLAN_ROWS: TableRow[] = [
+  {id: 1, planName: 'Plan 1: $300k, digital', audienceType: 'Strategic', netBudget: '$300,000', targetOtp: '7.4%', reach: '11.52%'},
+  {id: 2, planName: 'Plan 2: $500k, digital', audienceType: 'Strategic', netBudget: '$500,000', targetOtp: '22.5%', reach: '11.5%'},
+  {id: 3, planName: 'Plan 3: $800k, digital', audienceType: 'Strategic', netBudget: '$800,000', targetOtp: '22.5%', reach: '11.5%'},
+  {id: 4, planName: 'Plan 4: $300k, MRI', audienceType: 'Demo+strategic', netBudget: '$300,000', targetOtp: '22.5%', reach: '11.5%'},
+  {id: 5, planName: 'Plan 5: $500k, MRI', audienceType: 'Demo+strategic', netBudget: '$500,000', targetOtp: '22.5%', reach: '11.5%'},
+  {id: 6, planName: 'Plan 6: $800k, MRI', audienceType: 'Demo+strategic', netBudget: '$800,000', targetOtp: '22.5%', reach: '11.5%'}
+];
+
+const ASYNC_NEWS_COLUMNS: TableColumn[] = [
+  {key: 'score', label: 'Score', sortable: true},
+  {key: 'title', label: 'Title', sortable: true},
+  {key: 'author', label: 'Author', sortable: true},
+  {key: 'num_comments', label: 'Comments', sortable: true}
+];
+
+const QUARRY_COLUMNS: TableColumn[] = [
+  {key: 'title', label: 'Title', sortable: true},
+  {key: 'ups', label: 'Upvotes', sortable: true},
+  {key: 'created', label: 'Created', sortable: true}
+];
+
+const QUARRY_ROWS: TableRow[] = Array.from({length: 10}, (_, index) => ({
+  id: `q${index}`,
+  title: 'cats',
+  ups: '7',
+  created: '+058133-09-04T03:49:44.000Z'
+}));
+
+const STAR_WARS_COLUMNS: TableColumn[] = [
+  {key: 'name', label: 'Name'},
+  {key: 'height', label: 'Height', align: 'end'},
+  {key: 'mass', label: 'Mass', align: 'end'},
+  {key: 'birth_year', label: 'Birth Year', align: 'end'}
+];
+
+const PROJECT_COLUMNS: TableColumn[] = [
+  {key: 'name', label: 'Name'},
+  {key: 'ownerName', label: 'Owner'}
+];
+
+const PROJECT_ROWS: TableRow[] = [
+  {id: 'xx', name: 'abc', ownerName: 'xx'},
+  {id: 'aa', name: 'efg', ownerName: 'aa'},
+  {id: 'yy', name: 'abcd', ownerName: 'yy'},
+  {id: 'bb', name: 'efgh', ownerName: 'bb'},
+  {id: 'zz', name: 'abce', ownerName: 'zz'},
+  {id: 'cc', name: 'efgi', ownerName: 'cc'}
+];
+
+const STAR_WARS_ROWS: TableRow[] = [
+  {id: 'sw1', name: 'Luke Skywalker', height: '172', mass: '77', birth_year: '19BBY'},
+  {id: 'sw2', name: 'C-3PO', height: '167', mass: '75', birth_year: '112BBY'},
+  {id: 'sw3', name: 'R2-D2', height: '96', mass: '32', birth_year: '33BBY'},
+  {id: 'sw4', name: 'Darth Vader', height: '202', mass: '136', birth_year: '41.9BBY'},
+  {id: 'sw5', name: 'Leia Organa', height: '150', mass: '49', birth_year: '19BBY'},
+  {id: 'sw6', name: 'Owen Lars', height: '178', mass: '120', birth_year: '52BBY'},
+  {id: 'sw7', name: 'Beru Whitesun lars', height: '165', mass: '75', birth_year: '47BBY'},
+  {id: 'sw8', name: 'R5-D4', height: '97', mass: '32', birth_year: 'unknown'}
+];
+
+const STAR_WARS_WRAP_ROWS: TableRow[] = [
+  {id: 'wrap-1', name: 'Luke Sky... Sky... Sky...', height: '172+... 172+... 172+...', mass: '77+... 77+... 77+...', birth_year: '19BB...'},
+  {id: 'wrap-2', name: 'C-3PO... 3PO... 3PO...', height: '167+... 167+... 167+...', mass: '75+... 75+... 75+...', birth_year: '112B...'},
+  {id: 'wrap-3', name: 'R2-D2... D2... D2...', height: '96+... 96+... 96+...', mass: '32+... 32+... 32+...', birth_year: '33BB...'}
+];
+
+const PERFORMANCE_COLUMNS: TableColumn[] = [
+  {key: 'airline', label: 'Airline'},
+  {key: 'destinations', label: 'Desti...'},
+  {key: 'scheduledAt', label: 'Sche...'},
+  {key: 'status', label: 'Status'},
+  {key: 'rating', label: 'Rating'},
+  {key: 'progress', label: 'Prog...'},
+  {key: 'url', label: 'URL'},
+  {key: 'overbooked', label: 'Over...'},
+  {key: 'action', label: 'Take ...'},
+  {key: 'rating2', label: 'Rating'}
+];
+
+const PERFORMANCE_ROWS: TableRow[] = [
+  {id: 'perf-1', airline: 'Kore...', destinations: 'I..', scheduledAt: '1/25/...', status: '🟠', rating: '★ ...', progress: '━━━━', url: 'https...', overbooked: '☑', action: 'View', rating2: '★ ...'},
+  {id: 'perf-2', airline: 'Hain...', destinations: 'C..', scheduledAt: '9/24/...', status: '🟢', rating: '★ ...', progress: '━━━', url: 'https...', overbooked: '☐', action: 'View', rating2: '★ ...'},
+  {id: 'perf-3', airline: 'SunE...', destinations: 'V..', scheduledAt: '5/20/...', status: '🟠', rating: '★ ...', progress: '━━━━', url: 'https...', overbooked: '☐', action: 'View', rating2: '★ ...'},
+  {id: 'perf-4', airline: 'Wingo', destinations: 'O..', scheduledAt: '6/2/...', status: '🟠', rating: '★ ...', progress: '━━━━', url: 'https...', overbooked: '☑', action: 'View', rating2: '★ ...'},
+  {id: 'perf-5', airline: 'Easyfly', destinations: 'C..', scheduledAt: '12/18...', status: '🔴', rating: '★ ...', progress: '━━━', url: 'https...', overbooked: '☐', action: 'View', rating2: '★ ...'},
+  {id: 'perf-6', airline: 'Wingo', destinations: 'M..', scheduledAt: '9/28/...', status: '🟠', rating: '★ ...', progress: '━━━━', url: 'https...', overbooked: '☑', action: 'View', rating2: '★ ...'},
+  {id: 'perf-7', airline: 'Tunis...', destinations: 'M..', scheduledAt: '3/21/...', status: '🔴', rating: '★ ...', progress: '━━━━', url: 'https...', overbooked: '☐', action: 'View', rating2: '★ ...'},
+  {id: 'perf-8', airline: 'LATA...', destinations: 'C..', scheduledAt: '11/28...', status: '🟢', rating: '★ ...', progress: '━━━━', url: 'https...', overbooked: '☐', action: 'View', rating2: '★ ...'},
+  {id: 'perf-9', airline: 'EasyJet', destinations: 'M..', scheduledAt: '4/30/...', status: '🔴', rating: '★ ...', progress: '━━━━', url: 'https...', overbooked: '☑', action: 'View', rating2: '★ ...'},
+  {id: 'perf-10', airline: 'Air N...', destinations: 'B..', scheduledAt: '6/19/...', status: '🔴', rating: '★ ...', progress: '━━━━', url: 'https...', overbooked: '☑', action: 'View', rating2: '★ ...'},
+  {id: 'perf-11', airline: 'Copa...', destinations: 'C..', scheduledAt: '9/19/...', status: '🟠', rating: '★ ...', progress: '━━━━', url: 'https...', overbooked: '☐', action: 'View', rating2: '★ ...'},
+  {id: 'perf-12', airline: 'Unite...', destinations: 'P..', scheduledAt: '3/18/...', status: '🟠', rating: '★ ...', progress: '━━━━', url: 'https...', overbooked: '☑', action: 'View', rating2: '★ ...'},
+  {id: 'perf-13', airline: 'Virgi...', destinations: 'C..', scheduledAt: '4/19/...', status: '🟢', rating: '★ ...', progress: '━━━━', url: 'https...', overbooked: '☑', action: 'View', rating2: '★ ...'},
+  {id: 'perf-14', airline: 'Asian...', destinations: 'L..', scheduledAt: '9/22/...', status: '🟠', rating: '★ ...', progress: '━━━━', url: 'https...', overbooked: '☐', action: 'View', rating2: '★ ...'}
 ];
 
 const RESIZABLE_COLUMNS = BASE_COLUMNS.map((column) => column.key);
@@ -93,9 +214,12 @@ const meta: Meta<typeof Table> = {
     'EmptyStateTable'
   ],
   args: {
-    ariaLabel: 'Files',
+    ariaLabel: 'TableView with static contents',
     columns: BASE_COLUMNS,
-    rows: BASE_ROWS
+    rows: STATIC_ROWS,
+    rowKey: 'foo',
+    width: 300,
+    height: 200
   },
   argTypes: {
     ariaLabel: {
@@ -130,6 +254,9 @@ const meta: Meta<typeof Table> = {
     isQuiet: {
       control: 'boolean'
     },
+    height: {
+      control: 'text'
+    },
     openKeys: {
       table: {
         disable: true
@@ -153,7 +280,8 @@ const meta: Meta<typeof Table> = {
       }
     },
     selectionMode: {
-      control: 'text'
+      control: 'select',
+      options: ['none', 'single', 'multiple']
     },
     sortDescriptor: {
       table: {
@@ -163,6 +291,9 @@ const meta: Meta<typeof Table> = {
     visibility: {
       control: 'select',
       options: ['hidden', 'visible']
+    },
+    width: {
+      control: 'text'
     }
   }
 };
@@ -203,38 +334,13 @@ function renderFocusableTable(args: StoryArgs) {
   };
 }
 
-function renderHorizontalTable(args: StoryArgs, flushBottom = false) {
+function renderAsyncTable(args: StoryArgs, loadMoreEnabled = false, wrap = false) {
   return {
     components: {Table},
     setup() {
-      return {args, flushBottom};
-    },
-    template: `
-      <div :style="{overflowX: 'auto', paddingBottom: flushBottom ? '0px' : '24px'}">
-        <div style="width: 1200px;">
-          <Table v-bind="args" />
-        </div>
-      </div>
-    `
-  };
-}
-
-function renderAsyncTable(args: StoryArgs, label: string, loadMoreEnabled = false, wrap = false) {
-  return {
-    components: {ActionButton, Table},
-    setup() {
       let allRows = [...BASE_ROWS, ...MANY_ROWS.slice(0, 10)];
       let rows = ref<TableRow[]>([]);
-      let query = ref('');
       let loading = ref(false);
-
-      let visibleRows = computed(() => {
-        if (!query.value) {
-          return rows.value;
-        }
-        let needle = query.value.toLowerCase();
-        return rows.value.filter((row) => String(row.name ?? '').toLowerCase().includes(needle));
-      });
 
       let loadRows = (append = false) => {
         loading.value = true;
@@ -245,32 +351,124 @@ function renderAsyncTable(args: StoryArgs, label: string, loadMoreEnabled = fals
             rows.value = allRows.slice(0, 8);
           }
           loading.value = false;
-        }, 250);
+        }, 1500);
       };
 
       loadRows(false);
 
       return {
         args,
-        label,
         loadMoreEnabled,
         loadRows,
         loading,
-        query,
-        visibleRows,
+        rows,
         wrap
       };
     },
     template: `
-      <div style="display: grid; gap: 8px;">
-        <div>{{label}}</div>
-        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
-          <input v-model="query" type="text" placeholder="Filter by name" />
-          <ActionButton @click="loadRows(false)">Reload</ActionButton>
-          <ActionButton v-if="loadMoreEnabled" @click="loadRows(true)">Load more</ActionButton>
+      <div>
+        <Table
+          v-bind="args"
+          :rows="rows"
+          :loading-state="loading ? (loadMoreEnabled ? 'loadingMore' : 'loading') : 'idle'"
+          :overflow-mode="wrap ? 'wrap' : args.overflowMode" />
+      </div>
+    `
+  };
+}
+
+function renderAsyncLoadingNewsShell(args: StoryArgs) {
+  return {
+    components: {ActionButton, Table},
+    setup() {
+      let rows = ref<TableRow[]>([]);
+      return {
+        args,
+        rows
+      };
+    },
+    template: `
+      <div>
+        <ActionButton style="margin-bottom: 10px;">Remove first item</ActionButton>
+        <Table v-bind="args" :rows="rows" />
+      </div>
+    `
+  };
+}
+
+function renderSearchTable(args: StoryArgs, rowsSource: TableRow[]) {
+  return {
+    components: {Table},
+    setup() {
+      let query = ref('');
+      let rows = computed(() => {
+        let needle = query.value.trim().toLowerCase();
+        if (!needle) {
+          return rowsSource;
+        }
+
+        return rowsSource.filter((row) =>
+          String(row.name ?? '').toLowerCase().includes(needle)
+        );
+      });
+      return {
+        args,
+        query,
+        rows
+      };
+    },
+    template: `
+      <div>
+        <input
+          v-model="query"
+          type="text"
+          aria-label="Search by name"
+          style="margin: 8px 0 8px 8px; width: 320px;" />
+        <Table v-bind="args" :rows="rows" />
+      </div>
+    `
+  };
+}
+
+function renderControllingResizeTable(args: StoryArgs, columns: TableColumn[]) {
+  return {
+    components: {Button, Table},
+    setup() {
+      let renderKey = ref(0);
+      let currentColumns = ref(columns.map((column) => ({...column})));
+      let savedWidths = ref(currentColumns.value.map((column) => ({key: column.key, width: column.width ?? null})));
+      let saveCols = () => {
+        savedWidths.value = currentColumns.value.map((column) => ({key: column.key, width: column.width ?? null}));
+      };
+      let restoreCols = () => {
+        let widthMap = new Map(savedWidths.value.map((entry) => [entry.key, entry.width]));
+        currentColumns.value = currentColumns.value.map((column) => ({
+          ...column,
+          width: widthMap.get(column.key) ?? undefined
+        }));
+        renderKey.value++;
+      };
+      let savedLabel = computed(() => `{${savedWidths.value.map((entry) => `${entry.key} => ${entry.width ?? 'null'}`).join(',')}}`);
+      return {
+        args,
+        currentColumns,
+        renderKey,
+        rows: POKEMON_ROWS,
+        restoreCols,
+        saveCols,
+        savedLabel
+      };
+    },
+    template: `
+      <div>
+        <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+          <Button variant="accent" @click="saveCols">Save Cols</Button>
+          <Button variant="accent" @click="restoreCols">Restore Cols</Button>
         </div>
-        <div v-if="loading">Loading…</div>
-        <Table v-bind="args" :rows="visibleRows" :overflow-mode="wrap ? 'wrap' : args.overflowMode" />
+        <div>Current saved column state: {{savedLabel}}</div>
+        <div :key="renderKey">
+          <Table v-bind="args" :columns="currentColumns" :rows="rows" row-key="id" />
+        </div>
       </div>
     `
   };
@@ -281,7 +479,9 @@ export const Static: Story = {
   render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS,
-    rows: BASE_ROWS
+    rows: STATIC_ROWS,
+    width: 300,
+    height: 200
   }
 };
 
@@ -290,7 +490,10 @@ export const Dynamic: Story = {
   render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS,
-    rows: [...BASE_ROWS]
+    rows: [...BASE_ROWS],
+    width: 300,
+    height: 200,
+    rowKey: 'foo'
   }
 };
 
@@ -299,25 +502,34 @@ export const DynamicFalsyRowKeys: Story = {
   render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS,
-    rows: FALSY_ROW_KEY_ROWS
+    rows: FALSY_ROW_KEY_ROWS,
+    rowKey: 'id',
+    width: 300,
+    height: 200
   }
 };
 
 export const HorizontalScrollingOnly: Story = {
   name: 'horizontal scrolling only',
-  render: (args) => renderHorizontalTable(args),
+  render: (args) => renderTable(args),
   args: {
-    columns: MANY_COLUMNS,
-    rows: MANY_ROWS.slice(0, 10)
+    columns: BASE_COLUMNS,
+    rows: BASE_ROWS.slice(0, 3),
+    rowKey: 'foo',
+    width: 200,
+    height: 220
   }
 };
 
 export const HorizontalScrollingOnlyFlushBottom: Story = {
   name: 'horizontal scrolling only flush bottom',
-  render: (args) => renderHorizontalTable(args, true),
+  render: (args) => renderTable(args),
   args: {
-    columns: MANY_COLUMNS,
-    rows: MANY_ROWS.slice(0, 10)
+    columns: BASE_COLUMNS,
+    rows: BASE_ROWS.slice(0, 3),
+    rowKey: 'foo',
+    width: 200,
+    height: 174
   }
 };
 
@@ -327,7 +539,10 @@ export const DynamicWithDisabledKeys: Story = {
   args: {
     columns: BASE_COLUMNS,
     rows: BASE_ROWS,
-    disabledKeys: new Set([1, 3])
+    rowKey: 'foo',
+    disabledKeys: new Set(['Foo 2', 'Foo 4']),
+    width: 300,
+    height: 200
   }
 };
 
@@ -336,7 +551,10 @@ export const DynamicShowDividers: Story = {
   render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS.map((column, index) => ({...column, showDivider: index < BASE_COLUMNS.length - 1})),
-    rows: BASE_ROWS
+    rows: BASE_ROWS,
+    rowKey: 'foo',
+    width: 300,
+    height: 200
   }
 };
 
@@ -346,8 +564,11 @@ export const DynamicSelectedKeys: Story = {
   args: {
     columns: BASE_COLUMNS,
     rows: BASE_ROWS,
+    rowKey: 'foo',
     selectionMode: 'multiple',
-    modelValue: new Set([1, 3])
+    modelValue: new Set(['Foo 2', 'Foo 4']),
+    width: 300,
+    height: 200
   },
   parameters: {
     controls: {
@@ -361,7 +582,10 @@ export const StaticNestedColumns: Story = {
   render: (args) => renderTable(args),
   args: {
     columns: NESTED_COLUMNS,
-    rows: BASE_ROWS
+    rows: BASE_ROWS,
+    rowKey: 'foo',
+    width: 300,
+    height: 200
   }
 };
 
@@ -370,7 +594,10 @@ export const DynamicNestedColumns: Story = {
   render: (args) => renderTable(args),
   args: {
     columns: NESTED_COLUMNS,
-    rows: [...BASE_ROWS]
+    rows: [...BASE_ROWS],
+    rowKey: 'foo',
+    width: 700,
+    height: 300
   }
 };
 
@@ -380,6 +607,9 @@ export const DynamicNestedColumnsWithResizing: Story = {
   args: {
     columns: NESTED_COLUMNS,
     rows: BASE_ROWS,
+    rowKey: 'foo',
+    width: 700,
+    height: 300,
     resizableColumns: NESTED_COLUMNS.map((column) => column.key)
   }
 };
@@ -388,10 +618,25 @@ export const TableColSpanExample: Story = {
   render: (args) => renderTable(args),
   args: {
     columns: [
-      {key: 'name', label: 'Name', colspan: 2},
-      {key: 'date', label: 'Date Modified'}
+      {key: 'time', label: 'Time'},
+      {key: 'mon', label: 'Monday'},
+      {key: 'tue', label: 'Tuesday'},
+      {key: 'wed', label: 'Wednesday'},
+      {key: 'thu', label: 'Thursday'},
+      {key: 'fri', label: 'Friday'}
     ],
-    rows: BASE_ROWS
+    rows: [
+      {id: 't1', time: '09:00', mon: 'Break', tue: '', wed: '', thu: '', fri: ''},
+      {id: 't2', time: '08:00', mon: 'Math', tue: 'History', wed: 'Science', thu: 'English', fri: 'Art'},
+      {id: 't3', time: '09:00', mon: 'Break', tue: '', wed: '', thu: '', fri: ''},
+      {id: 't4', time: '10:00', mon: 'Math', tue: 'History', wed: 'Science', thu: 'English', fri: 'Art'},
+      {id: 't5', time: '11:00', mon: 'Math', tue: 'History', wed: 'Science', thu: 'English', fri: 'Art'},
+      {id: 't6', time: '12:00', mon: 'Break', tue: '', wed: '', thu: '', fri: ''},
+      {id: 't7', time: '13:00', mon: 'History', tue: 'Math', wed: 'English', thu: 'Science', fri: 'Art'}
+    ],
+    rowKey: 'id',
+    width: 450,
+    height: 220
   }
 };
 
@@ -399,11 +644,14 @@ export const TableCellColSpanWithVariousSpansExample: Story = {
   render: (args) => renderTable(args),
   args: {
     columns: [
-      {key: 'name', label: 'Name', colspan: 1},
-      {key: 'type', label: 'Type', colspan: 2},
-      {key: 'date', label: 'Date Modified'}
+      {key: 'foo', label: 'Foo', colspan: 1},
+      {key: 'bar', label: 'Bar', colspan: 2},
+      {key: 'baz', label: 'Baz'}
     ],
-    rows: BASE_ROWS
+    rows: BASE_ROWS,
+    rowKey: 'foo',
+    width: 300,
+    height: 200
   }
 };
 
@@ -412,16 +660,22 @@ export const FocusableCells: Story = {
   render: (args) => renderFocusableTable(args),
   args: {
     columns: BASE_COLUMNS,
-    rows: BASE_ROWS
+    rows: BASE_ROWS.slice(0, 4),
+    rowKey: 'foo',
+    width: 450,
+    height: 200
   }
 };
 
 export const ManyColumnsAndRows: Story = {
   name: 'many columns and rows',
-  render: (args) => renderTable(args),
+  render: (args) => renderFocusableTable(args),
   args: {
     columns: MANY_COLUMNS,
-    rows: MANY_ROWS
+    rows: MANY_ROWS,
+    rowKey: 'id',
+    width: 700,
+    height: 500
   }
 };
 
@@ -439,8 +693,18 @@ export const ShouldFillCellWidth: Story = {
     `
   }),
   args: {
-    columns: BASE_COLUMNS,
-    rows: BASE_ROWS
+    columns: [
+      {key: 'fileName', label: 'File Name'},
+      {key: 'type', label: 'Type', align: 'center'},
+      {key: 'size', label: 'Size', align: 'end'},
+      {key: 'description', label: 'Description'}
+    ],
+    rows: [
+      {id: 'f1', fileName: '2018 Proposal', type: 'PDF', size: '214 KB', description: 'very very very very very very long long long long long description'},
+      {id: 'f2', fileName: 'Budget', type: 'XLS', size: '120 KB', description: 'very very very very very very long long long long long description'}
+    ],
+    width: 500,
+    height: 200
   }
 };
 
@@ -449,11 +713,16 @@ export const ColumnWidthsAndDividers: Story = {
   render: (args) => renderTable(args),
   args: {
     columns: [
-      {key: 'name', label: 'Name', width: 250, showDivider: true},
+      {key: 'fileName', label: 'File Name', width: 250, showDivider: true},
       {key: 'type', label: 'Type'},
-      {key: 'date', label: 'Date Modified', align: 'end'}
+      {key: 'size', label: 'Size', align: 'end'}
     ],
-    rows: BASE_ROWS
+    rows: [
+      {id: 'c1', fileName: '2018 Proposal', type: 'PDF', size: '214 KB'},
+      {id: 'c2', fileName: 'Budget', type: 'XLS', size: '120 KB'}
+    ],
+    width: 500,
+    height: 200
   }
 };
 
@@ -463,7 +732,10 @@ export const CellWithLongContent: Story = {
   args: {
     columns: BASE_COLUMNS,
     rows: LONG_CONTENT_ROWS,
-    overflowMode: 'wrap'
+    rowKey: 'id',
+    overflowMode: 'wrap',
+    width: 500,
+    height: 200
   },
   parameters: {
     description: {
@@ -488,7 +760,10 @@ export const CustomRowHeaderLabeling: Story = {
   }),
   args: {
     columns: BASE_COLUMNS,
-    rows: BASE_ROWS
+    rows: BASE_ROWS,
+    rowKey: 'foo',
+    width: 300,
+    height: 200
   },
   parameters: {
     description: {
@@ -506,9 +781,9 @@ export const CRUD: Story = {
       let addRow = () => {
         rows.value.push({
           id: nextId.value++,
-          name: `New row ${nextId.value}`,
-          type: 'Generated',
-          date: '2025-11-01'
+          foo: `Foo ${nextId.value}`,
+          bar: `Bar ${nextId.value}`,
+          baz: `Baz ${nextId.value}`
         });
       };
       let removeLast = () => {
@@ -533,7 +808,10 @@ export const CRUD: Story = {
   }),
   args: {
     columns: BASE_COLUMNS,
-    rows: BASE_ROWS
+    rows: BASE_ROWS,
+    rowKey: 'foo',
+    width: 500,
+    height: 300
   }
 };
 
@@ -556,7 +834,7 @@ export const InlineDeleteButtons: Story = {
       <div style="display: grid; gap: 8px;">
         <div style="display: flex; gap: 8px; flex-wrap: wrap;">
           <ActionButton v-for="row in rows" :key="row.id" @click="removeById(row.id)">
-            Delete {{row.name}}
+            Delete {{row.foo}}
           </ActionButton>
         </div>
         <Table v-bind="args" :rows="rows" />
@@ -565,35 +843,68 @@ export const InlineDeleteButtons: Story = {
   }),
   args: {
     columns: BASE_COLUMNS,
-    rows: BASE_ROWS
+    rows: BASE_ROWS,
+    rowKey: 'foo',
+    width: 500,
+    height: 300
   }
 };
 
 export const HidingColumnsExample: Story = {
   name: 'hiding columns',
   render: (args) => ({
-    components: {ActionButton, Table},
+    components: {Table},
     setup() {
-      let showDateColumn = ref(true);
-      let columns = computed(() => showDateColumn.value ? BASE_COLUMNS : BASE_COLUMNS.slice(0, 2));
+      let showAudienceType = ref(true);
+      let showNetBudget = ref(true);
+      let showTargetOtp = ref(true);
+      let showReach = ref(true);
+      let columns = computed(() => {
+        let visibleColumns: TableColumn[] = [
+          {key: 'planName', label: 'Plan Name'}
+        ];
+        if (showAudienceType.value) {
+          visibleColumns.push({key: 'audienceType', label: 'Audience Type'});
+        }
+        if (showNetBudget.value) {
+          visibleColumns.push({key: 'netBudget', label: 'Net Budget'});
+        }
+        if (showTargetOtp.value) {
+          visibleColumns.push({key: 'targetOtp', label: 'Target OTP'});
+        }
+        if (showReach.value) {
+          visibleColumns.push({key: 'reach', label: 'Reach'});
+        }
+        return visibleColumns;
+      });
       return {
         args,
         columns,
-        showDateColumn
+        rows: PLAN_ROWS,
+        showAudienceType,
+        showNetBudget,
+        showReach,
+        showTargetOtp
       };
     },
     template: `
-      <div style="display: grid; gap: 8px;">
-        <ActionButton @click="showDateColumn = !showDateColumn">
-          {{showDateColumn ? 'Hide' : 'Show'}} date column
-        </ActionButton>
-        <Table v-bind="args" :columns="columns" />
+      <div style="display: flex; gap: 16px; align-items: flex-start;">
+        <div style="display: grid; gap: 8px; min-width: 120px;">
+          <label><input v-model="showAudienceType" type="checkbox" /> Audience Type</label>
+          <label><input v-model="showNetBudget" type="checkbox" /> Net Budget</label>
+          <label><input v-model="showTargetOtp" type="checkbox" /> Target OTP</label>
+          <label><input v-model="showReach" type="checkbox" /> Reach</label>
+        </div>
+        <Table v-bind="args" :columns="columns" :rows="rows" row-key="id" />
       </div>
     `
   }),
   args: {
     columns: BASE_COLUMNS,
-    rows: BASE_ROWS
+    rows: [],
+    rowKey: 'id',
+    width: 900,
+    height: 300
   }
 };
 
@@ -601,9 +912,12 @@ export const IsLoading: Story = {
   name: 'isLoading',
   render: (args) => renderTable(args),
   args: {
-    columns: BASE_COLUMNS,
+    columns: MANY_COLUMNS,
     rows: [],
-    loadingState: 'loading'
+    rowKey: 'id',
+    loadingState: 'loading',
+    width: 700,
+    height: 200
   }
 };
 
@@ -611,68 +925,88 @@ export const IsLoadingMore: Story = {
   name: 'isLoading more',
   render: (args) => renderTable(args),
   args: {
-    columns: BASE_COLUMNS,
-    rows: BASE_ROWS.slice(0, 2),
-    loadingState: 'loadingMore'
+    columns: MANY_COLUMNS,
+    rows: [],
+    rowKey: 'id',
+    loadingState: 'loadingMore',
+    width: 700,
+    height: 200
   }
 };
 
 export const Filtering: Story = {
   name: 'filtering',
-  render: (args) => ({
-    components: {Table},
-    setup() {
-      let query = ref('');
-      let filteredRows = computed(() => {
-        let needle = query.value.toLowerCase();
-        if (!needle) {
-          return BASE_ROWS;
-        }
-        return BASE_ROWS.filter((row) => String(row.name).toLowerCase().includes(needle));
-      });
-      return {
-        args,
-        filteredRows,
-        query
-      };
-    },
-    template: `
-      <div style="display: grid; gap: 8px;">
-        <input v-model="query" type="text" placeholder="Filter rows" />
-        <Table v-bind="args" :rows="filteredRows" />
-      </div>
-    `
-  }),
+  render: (args) => renderTable(args),
   args: {
     columns: BASE_COLUMNS,
-    rows: BASE_ROWS
+    rows: BASE_ROWS,
+    rowKey: 'foo',
+    loadingState: 'filtering',
+    width: 700,
+    height: 200
   }
 };
 
 export const EmptyStateStory: Story = {
   name: 'renderEmptyState',
-  render: (args) => EmptyStateTable(args),
+  render: (args) => ({
+    components: {Table},
+    setup() {
+      let showItems = ref(false);
+      let columns = MANY_COLUMNS.slice(0, 7);
+      let rows = computed(() => showItems.value ? MANY_ROWS.slice(0, 8) : []);
+      return {
+        args,
+        columns,
+        rows,
+        showItems
+      };
+    },
+    template: `
+      <div style="display: grid; gap: 8px;">
+        <button type="button" @click="showItems = !showItems">Toggle items</button>
+        <Table v-bind="args" :columns="columns" :rows="rows" row-key="id" />
+        <div v-if="!showItems" style="display: grid; place-items: center; gap: 6px; margin-top: -190px; pointer-events: none;">
+          <svg width="70" height="48" viewBox="0 0 150 103" aria-hidden="true">
+            <path d="M133.7,8.5h-118c-1.9,0-3.5,1.6-3.5,3.5v27c0,0.8,0.7,1.5,1.5,1.5s1.5-0.7,1.5-1.5V23.5h119V92c0,0.3-0.2,0.5-0.5,0.5h-118c-0.3,0-0.5-0.2-0.5-0.5V69c0-0.8-0.7-1.5-1.5-1.5s-1.5,0.7-1.5,1.5v23c0,1.9,1.6,3.5,3.5,3.5h118c1.9,0,3.5-1.6,3.5-3.5V12C137.2,10.1,135.6,8.5,133.7,8.5z M15.2,21.5V12c0-0.3,0.2-0.5,0.5-0.5h118c0.3,0,0.5,0.2,0.5,0.5v9.5H15.2z" fill="currentColor" />
+          </svg>
+          <strong>No results</strong>
+          <span>No results found, press <a href="#">here</a> for more info.</span>
+        </div>
+      </div>
+    `
+  }),
   args: {
-    columns: BASE_COLUMNS,
-    rows: []
+    columns: MANY_COLUMNS.slice(0, 7),
+    rows: [],
+    width: 700,
+    height: 400
   }
 };
 
 export const AsyncLoading: Story = {
   name: 'async loading',
-  render: (args) => renderAsyncTable(args, 'Async loading'),
+  render: (args) => renderAsyncLoadingNewsShell(args),
   args: {
-    columns: BASE_COLUMNS,
-    rows: []
+    columns: ASYNC_NEWS_COLUMNS,
+    rows: [],
+    rowKey: 'id',
+    selectionMode: 'multiple',
+    width: 1000,
+    height: 400
   }
 };
 
 export const AsyncLoadingQuarryTest: Story = {
   name: 'async reload on sort',
-  render: (args) => renderAsyncTable(args, 'Async loading quarry test'),
+  render: (args) => renderTable(args),
   args: {
-    columns: BASE_COLUMNS,
-    rows: []
+    columns: QUARRY_COLUMNS,
+    rows: QUARRY_ROWS,
+    rowKey: 'id',
+    selectionMode: 'multiple',
+    width: '90vw',
+    height: 400
   }
 };
 
@@ -680,36 +1014,63 @@ export const HideHeader: Story = {
   name: 'hideHeader',
   render: (args) => renderTable(args),
   args: {
-    columns: BASE_COLUMNS,
-    rows: BASE_ROWS,
-    visibility: 'hidden'
+    columns: [
+      {key: 'foo', label: 'Foo'},
+      {key: 'addAction', label: 'Add Info', hideHeader: true},
+      {key: 'deleteAction', label: 'Delete Item', hideHeader: true, showDivider: true},
+      {key: 'bar', label: 'Bar'},
+      {key: 'baz', label: 'Baz'}
+    ],
+    rows: Array.from({length: 6}, (_, index) => ({
+      id: `h${index}`,
+      foo: 'One',
+      addAction: 'Add',
+      deleteAction: 'Delete',
+      bar: 'Two',
+      baz: 'Three'
+    })),
+    rowKey: 'id',
+    width: 350,
+    height: 200
   }
 };
 
 export const AsyncLoadingClientFiltering: Story = {
   name: 'async client side filter loading',
-  render: (args) => renderAsyncTable(args, 'Async loading with client filtering'),
+  render: (args) => renderSearchTable(args, PROJECT_ROWS),
   args: {
-    columns: BASE_COLUMNS,
-    rows: []
+    columns: PROJECT_COLUMNS,
+    rows: PROJECT_ROWS,
+    rowKey: 'id',
+    ariaLabel: 'Project list',
+    width: 600,
+    height: 700
   }
 };
 
 export const AsyncLoadingServerFiltering: Story = {
   name: 'async server side filter loading',
-  render: (args) => renderAsyncTable(args, 'Async loading with server filtering'),
+  render: (args) => renderSearchTable(args, STAR_WARS_ROWS),
   args: {
-    columns: BASE_COLUMNS,
-    rows: []
+    columns: STAR_WARS_COLUMNS,
+    rows: STAR_WARS_ROWS,
+    rowKey: 'id',
+    ariaLabel: 'Star Wars Characters',
+    width: 600,
+    height: 200
   }
 };
 
 export const AsyncLoadingServerFilteringLoadMore: Story = {
   name: 'loads more on scroll when contentSize.height < rect.height * 2',
-  render: (args) => renderAsyncTable(args, 'Async loading server filtering + load more', true),
+  render: (args) => renderSearchTable(args, STAR_WARS_ROWS),
   args: {
-    columns: BASE_COLUMNS,
-    rows: []
+    columns: STAR_WARS_COLUMNS,
+    rows: STAR_WARS_ROWS,
+    rowKey: 'id',
+    ariaLabel: 'Star Wars Characters',
+    height: 500,
+    width: 600
   }
 };
 
@@ -731,7 +1092,10 @@ export const WithDialogTrigger: Story = {
   }),
   args: {
     columns: BASE_COLUMNS,
-    rows: BASE_ROWS
+    rows: STATIC_ROWS,
+    rowKey: 'foo',
+    width: 300,
+    height: 200
   }
 };
 
@@ -751,17 +1115,31 @@ export const WithBreadcrumbNavigation: Story = {
   }),
   args: {
     columns: BASE_COLUMNS,
-    rows: BASE_ROWS
+    rows: BASE_ROWS,
+    rowKey: 'foo',
+    width: 500,
+    height: 300
   }
 };
 
 export const ResizingUncontrolledDynamicWidths: Story = {
   name: 'allowsResizing, uncontrolled, dynamic widths',
-  render: (args) => renderTable(args),
+  render: (args) => renderFocusableTable(args),
   args: {
-    columns: MANY_COLUMNS.slice(0, 8),
-    rows: MANY_ROWS.slice(0, 12),
-    resizableColumns: MANY_COLUMNS.slice(0, 8).map((column) => column.key)
+    columns: [
+      {key: 'fileName', label: 'File Name'},
+      {key: 'type', label: 'Type'},
+      {key: 'size', label: 'Size'},
+      {key: 'weight', label: 'Weight'}
+    ],
+    rows: [
+      {id: 'r1', fileName: '2018 Proposal', type: 'PDF', size: '214 KB', weight: '1 LB'},
+      {id: 'r2', fileName: 'Budget', type: 'XLS', size: '120 KB', weight: '20 LB'}
+    ],
+    rowKey: 'id',
+    width: 800,
+    height: 200,
+    resizableColumns: ['fileName', 'type', 'size', 'weight']
   }
 };
 
@@ -770,12 +1148,18 @@ export const ResizingUncontrolledStaticWidths: Story = {
   render: (args) => renderTable(args),
   args: {
     columns: [
-      {key: 'name', label: 'Name', width: 240},
-      {key: 'type', label: 'Type', width: 160},
-      {key: 'date', label: 'Date Modified', align: 'end', width: 200}
+      {key: 'fileName', label: 'File Name', width: '50%'},
+      {key: 'type', label: 'Type', width: '20%'},
+      {key: 'size', label: 'Size', width: 239}
     ],
-    rows: BASE_ROWS,
-    resizableColumns: RESIZABLE_COLUMNS
+    rows: [
+      {id: 'r1', fileName: '2018 Proposal', type: 'PDF', size: '214 KB'},
+      {id: 'r2', fileName: 'Budget', type: 'XLS', size: '120 KB'}
+    ],
+    rowKey: 'id',
+    width: 800,
+    height: 200,
+    resizableColumns: ['fileName', 'type', 'size']
   }
 };
 
@@ -783,9 +1167,19 @@ export const ResizingUncontrolledColumnDivider: Story = {
   name: 'allowsResizing, uncontrolled, column divider',
   render: (args) => renderTable(args),
   args: {
-    columns: BASE_COLUMNS.map((column, index) => ({...column, showDivider: index < BASE_COLUMNS.length - 1})),
-    rows: BASE_ROWS,
-    resizableColumns: RESIZABLE_COLUMNS
+    columns: [
+      {key: 'fileName', label: 'File Name', showDivider: true},
+      {key: 'type', label: 'Type'},
+      {key: 'size', label: 'Size'}
+    ],
+    rows: [
+      {id: 'r1', fileName: '2018 Proposal', type: 'PDF', size: '214 KB'},
+      {id: 'r2', fileName: 'Budget', type: 'XLS', size: '120 KB'}
+    ],
+    rowKey: 'id',
+    width: 800,
+    height: 200,
+    resizableColumns: ['fileName', 'type', 'size']
   }
 };
 
@@ -794,12 +1188,18 @@ export const ResizingUncontrolledMinMax: Story = {
   render: (args) => renderTable(args),
   args: {
     columns: [
-      {key: 'name', label: 'Name', minWidth: 180, maxWidth: 360},
-      {key: 'type', label: 'Type', minWidth: 120, maxWidth: 220},
-      {key: 'date', label: 'Date Modified', align: 'end', minWidth: 160, maxWidth: 280}
+      {key: 'fileName', label: 'File Name', width: 200, minWidth: 175, maxWidth: 300},
+      {key: 'size', label: 'Size', width: '1fr', minWidth: 175, maxWidth: 500},
+      {key: 'type', label: 'Type', width: 200, minWidth: 175, maxWidth: 300}
     ],
-    rows: BASE_ROWS,
-    resizableColumns: RESIZABLE_COLUMNS
+    rows: [
+      {id: 'r1', fileName: '2018 Proposal', type: 'PDF', size: '214 KB'},
+      {id: 'r2', fileName: 'Budget', type: 'XLS', size: '120 KB'}
+    ],
+    rowKey: 'id',
+    width: 800,
+    height: 200,
+    resizableColumns: ['fileName', 'type', 'size']
   }
 };
 
@@ -807,9 +1207,20 @@ export const ResizingUncontrolledSomeNotAllowed: Story = {
   name: 'allowsResizing, uncontrolled, some columns not allowed resizing',
   render: (args) => renderTable(args),
   args: {
-    columns: BASE_COLUMNS,
-    rows: BASE_ROWS,
-    resizableColumns: ['name']
+    columns: [
+      {key: 'fileName', label: 'File Name'},
+      {key: 'type', label: 'Type'},
+      {key: 'size', label: 'Size'},
+      {key: 'weight', label: 'Weight'}
+    ],
+    rows: [
+      {id: 'r1', fileName: '2018 Proposal', type: 'PDF', size: '214 KB', weight: '1 LB'},
+      {id: 'r2', fileName: 'Budget', type: 'XLS', size: '120 KB', weight: '20 LB'}
+    ],
+    rowKey: 'id',
+    width: 800,
+    height: 200,
+    resizableColumns: ['fileName', 'weight']
   }
 };
 
@@ -817,21 +1228,34 @@ export const ResizingUncontrolledNoHeightWidth: Story = {
   name: 'allowsResizing, uncontrolled, undefined table width and height',
   render: (args) => renderTable(args),
   args: {
-    columns: BASE_COLUMNS,
-    rows: BASE_ROWS,
-    resizableColumns: RESIZABLE_COLUMNS
+    columns: [
+      {key: 'fileName', label: 'File Name', width: 150},
+      {key: 'type', label: 'Type', width: 100},
+      {key: 'size', label: 'Size', width: 100},
+      {key: 'weight', label: 'Weight', width: 100}
+    ],
+    rows: [
+      {id: 'r1', fileName: '2018 Proposal', type: 'PDF', size: '214 KB', weight: '1 LB'},
+      {id: 'r2', fileName: 'Budget', type: 'XLS', size: '120 KB', weight: '20 LB'}
+    ],
+    rowKey: 'id',
+    resizableColumns: ['fileName', 'type', 'size', 'weight']
   }
 };
 
 export const ResizingUncontrolledSortableColumns: Story = {
   name: 'allowsResizing, uncontrolled, sortable columns',
-  render: (args) => renderTable(args),
+  render: (args) => renderAsyncLoadingNewsShell(args),
   args: {
-    columns: BASE_COLUMNS.map((column) => ({...column, sortable: true})),
-    rows: BASE_ROWS,
-    resizableColumns: RESIZABLE_COLUMNS,
+    columns: ASYNC_NEWS_COLUMNS,
+    rows: [],
+    rowKey: 'id',
+    width: 1000,
+    height: 400,
+    selectionMode: 'multiple',
+    resizableColumns: ['score', 'title', 'author', 'num_comments'],
     sortDescriptor: {
-      column: 'name',
+      column: 'score',
       direction: 'ascending'
     }
   }
@@ -839,10 +1263,13 @@ export const ResizingUncontrolledSortableColumns: Story = {
 
 export const ResizingManyColumnsRows: Story = {
   name: 'allowsResizing, many columns and rows',
-  render: (args) => renderTable(args),
+  render: (args) => renderFocusableTable(args),
   args: {
     columns: MANY_COLUMNS,
     rows: MANY_ROWS,
+    rowKey: 'id',
+    width: 700,
+    height: 500,
     resizableColumns: MANY_COLUMNS.map((column) => column.key)
   }
 };
@@ -850,29 +1277,59 @@ export const ResizingManyColumnsRows: Story = {
 export const ResizingHidingColumns: Story = {
   name: 'allowsResizing, hiding columns',
   render: (args) => ({
-    components: {ActionButton, Table},
+    components: {Table},
     setup() {
-      let showAll = ref(true);
-      let columns = computed(() => showAll.value ? MANY_COLUMNS.slice(0, 8) : MANY_COLUMNS.slice(0, 4));
+      let showAudienceType = ref(true);
+      let showNetBudget = ref(true);
+      let showTargetOtp = ref(true);
+      let showReach = ref(true);
+      let columns = computed(() => {
+        let visibleColumns: TableColumn[] = [{key: 'planName', label: 'Plan Name'}];
+        if (showAudienceType.value) {
+          visibleColumns.push({key: 'audienceType', label: 'Audience Type', sortable: true});
+        }
+        if (showNetBudget.value) {
+          visibleColumns.push({key: 'netBudget', label: 'Net Budget', sortable: true});
+        }
+        if (showTargetOtp.value) {
+          visibleColumns.push({key: 'targetOtp', label: 'Target OTP'});
+        }
+        if (showReach.value) {
+          visibleColumns.push({key: 'reach', label: 'Reach'});
+        }
+        return visibleColumns;
+      });
+      let resizableColumns = computed(() => columns.value.map((column) => column.key));
       return {
         args,
         columns,
-        showAll
+        resizableColumns,
+        rows: PLAN_ROWS,
+        showAudienceType,
+        showNetBudget,
+        showReach,
+        showTargetOtp
       };
     },
     template: `
-      <div style="display: grid; gap: 8px;">
-        <ActionButton @click="showAll = !showAll">
-          {{showAll ? 'Show fewer columns' : 'Show all columns'}}
-        </ActionButton>
-        <Table v-bind="args" :columns="columns" />
+      <div style="display: flex; gap: 16px; align-items: flex-start;">
+        <div style="display: grid; gap: 8px; min-width: 120px;">
+          <label><input v-model="showAudienceType" type="checkbox" /> Audience Type</label>
+          <label><input v-model="showNetBudget" type="checkbox" /> Net Budget</label>
+          <label><input v-model="showTargetOtp" type="checkbox" /> Target OTP</label>
+          <label><input v-model="showReach" type="checkbox" /> Reach</label>
+        </div>
+        <Table v-bind="args" :columns="columns" :rows="rows" :resizable-columns="resizableColumns" row-key="id" />
       </div>
     `
   }),
   args: {
-    columns: MANY_COLUMNS.slice(0, 8),
-    rows: MANY_ROWS.slice(0, 12),
-    resizableColumns: MANY_COLUMNS.slice(0, 8).map((column) => column.key)
+    columns: [],
+    rows: PLAN_ROWS,
+    rowKey: 'id',
+    width: 900,
+    height: 300,
+    resizableColumns: ['planName', 'audienceType', 'netBudget', 'targetOtp', 'reach']
   }
 };
 
@@ -890,9 +1347,20 @@ export const ResizingZoom: Story = {
     `
   }),
   args: {
-    columns: BASE_COLUMNS,
-    rows: BASE_ROWS,
-    resizableColumns: RESIZABLE_COLUMNS
+    columns: [
+      {key: 'name', label: 'Name', width: 200},
+      {key: 'type', label: 'Type', width: 200},
+      {key: 'height', label: 'Height', width: 200},
+      {key: 'weight', label: 'Weight', width: 200}
+    ],
+    rows: [
+      {id: 'z1', name: 'Bulbasaur', type: 'Grass', height: '2\'04\"', weight: '15.2 lbs'},
+      {id: 'z2', name: 'Ivysaur', type: 'Grass', height: '3\'03\"', weight: '28.7 lbs'}
+    ],
+    rowKey: 'id',
+    width: 900,
+    height: 300,
+    resizableColumns: ['name', 'type', 'height', 'weight']
   },
   parameters: {
     description: {
@@ -903,11 +1371,29 @@ export const ResizingZoom: Story = {
 
 export const ResizingControlledNoInitialWidths: Story = {
   name: 'allowsResizing, controlled, no widths',
-  render: (args) => renderTable(args),
+  render: (args) => renderControllingResizeTable(args, [
+    {key: 'name', label: 'Name'},
+    {key: 'type', label: 'Type'},
+    {key: 'height', label: 'Height'},
+    {key: 'weight', label: 'Weight'},
+    {key: 'level', label: 'Level'}
+  ]),
   args: {
-    columns: BASE_COLUMNS,
-    rows: BASE_ROWS,
-    resizableColumns: RESIZABLE_COLUMNS
+    columns: [
+      {key: 'name', label: 'Name'},
+      {key: 'type', label: 'Type'},
+      {key: 'height', label: 'Height'},
+      {key: 'weight', label: 'Weight'},
+      {key: 'level', label: 'Level'}
+    ],
+    rows: [
+      {id: 'p1', name: 'Bulbasaur', type: 'Grass', height: '2\'04\"', weight: '15.2 lbs', level: '5'},
+      {id: 'p2', name: 'Ivysaur', type: 'Grass', height: '3\'03\"', weight: '28.7 lbs', level: '16'}
+    ],
+    rowKey: 'id',
+    width: 900,
+    height: 500,
+    resizableColumns: ['name', 'type', 'height', 'weight', 'level']
   },
   parameters: {
     description: {
@@ -921,15 +1407,29 @@ export const ResizingControlledNoInitialWidths: Story = {
 
 export const ResizingControlledSomeInitialWidths: Story = {
   name: 'allowsResizing, controlled, some widths',
-  render: (args) => renderTable(args),
+  render: (args) => renderControllingResizeTable(args, [
+    {key: 'name', label: 'Name', width: '1fr'},
+    {key: 'type', label: 'Type', width: '1fr'},
+    {key: 'height', label: 'Height'},
+    {key: 'weight', label: 'Weight'},
+    {key: 'level', label: 'Level', width: '4fr'}
+  ]),
   args: {
     columns: [
-      {key: 'name', label: 'Name', width: 220},
-      {key: 'type', label: 'Type'},
-      {key: 'date', label: 'Date Modified', align: 'end', width: 180}
+      {key: 'name', label: 'Name', width: '1fr'},
+      {key: 'type', label: 'Type', width: '1fr'},
+      {key: 'height', label: 'Height'},
+      {key: 'weight', label: 'Weight'},
+      {key: 'level', label: 'Level', width: '4fr'}
     ],
-    rows: BASE_ROWS,
-    resizableColumns: RESIZABLE_COLUMNS
+    rows: [
+      {id: 'p1', name: 'Bulbasaur', type: 'Grass', height: '2\'04\"', weight: '15.2 lbs', level: '5'},
+      {id: 'p2', name: 'Ivysaur', type: 'Grass', height: '3\'03\"', weight: '28.7 lbs', level: '16'}
+    ],
+    rowKey: 'id',
+    width: 900,
+    height: 500,
+    resizableColumns: ['name', 'type', 'height', 'weight', 'level']
   },
   parameters: {
     description: {
@@ -946,15 +1446,25 @@ export const ResizingControlledSomeInitialWidths: Story = {
 
 export const ResizingControlledAllInitialWidths: Story = {
   name: 'allowsResizing, controlled, all widths',
-  render: (args) => renderTable(args),
+  render: (args) => renderControllingResizeTable(args, [
+    {key: 'name', label: 'Name', width: '1fr'},
+    {key: 'type', label: 'Type', width: '1fr'},
+    {key: 'level', label: 'Level', width: '4fr'}
+  ]),
   args: {
     columns: [
-      {key: 'name', label: 'Name', width: 220},
-      {key: 'type', label: 'Type', width: 180},
-      {key: 'date', label: 'Date Modified', align: 'end', width: 200}
+      {key: 'name', label: 'Name', width: '1fr'},
+      {key: 'type', label: 'Type', width: '1fr'},
+      {key: 'level', label: 'Level', width: '4fr'}
     ],
-    rows: BASE_ROWS,
-    resizableColumns: RESIZABLE_COLUMNS
+    rows: [
+      {id: 'p1', name: 'Bulbasaur', type: 'Grass', level: '5'},
+      {id: 'p2', name: 'Ivysaur', type: 'Grass', level: '16'}
+    ],
+    rowKey: 'id',
+    width: 900,
+    height: 500,
+    resizableColumns: ['name', 'type', 'level']
   },
   parameters: {
     description: {
@@ -970,12 +1480,25 @@ export const ResizingControlledAllInitialWidths: Story = {
 
 export const ResizingControlledHideHeader: Story = {
   name: 'allowsResizing, controlled, hideHeader',
-  render: (args) => renderTable(args),
+  render: (args) => renderControllingResizeTable(args, [
+    {key: 'name', label: 'Name', hideHeader: true},
+    {key: 'type', label: 'Type', width: 300, hideHeader: true},
+    {key: 'level', label: 'Level', width: '4fr'}
+  ]),
   args: {
-    columns: BASE_COLUMNS,
-    rows: BASE_ROWS,
-    resizableColumns: RESIZABLE_COLUMNS,
-    visibility: 'hidden'
+    columns: [
+      {key: 'name', label: 'Name', hideHeader: true},
+      {key: 'type', label: 'Type', width: 300, hideHeader: true},
+      {key: 'level', label: 'Level', width: '4fr'}
+    ],
+    rows: [
+      {id: 'p1', name: 'Bulbasaur', type: 'Grass', level: '5'},
+      {id: 'p2', name: 'Ivysaur', type: 'Grass', level: '16'}
+    ],
+    rowKey: 'id',
+    width: 900,
+    height: 500,
+    resizableColumns: ['name', 'type', 'level']
   },
   parameters: {
     description: {
@@ -991,9 +1514,16 @@ export const TypeaheadWithDialog: Story = {
     components: {DialogTrigger, Table},
     setup() {
       let query = ref('');
+      let typeAheadRows = [
+        ...Array.from({length: 100}, (_, index) => ({id: index, firstname: 'Aubrey', lastname: 'Sheppard', birthday: 'May 7', edit: 'Edit'})),
+        {id: 101, firstname: 'John', lastname: 'Doe', birthday: 'May 7', edit: 'Edit'}
+      ] as TableRow[];
       let filteredRows = computed(() => {
         let needle = query.value.toLowerCase();
-        return BASE_ROWS.filter((row) => String(row.name).toLowerCase().includes(needle));
+        if (!needle) {
+          return typeAheadRows;
+        }
+        return typeAheadRows.filter((row) => String(row.firstname ?? '').toLowerCase().includes(needle));
       });
       return {
         args,
@@ -1012,8 +1542,16 @@ export const TypeaheadWithDialog: Story = {
     `
   }),
   args: {
-    columns: BASE_COLUMNS,
-    rows: BASE_ROWS
+    columns: [
+      {key: 'firstname', label: 'First Name'},
+      {key: 'lastname', label: 'Last Name'},
+      {key: 'birthday', label: 'Birthday'},
+      {key: 'edit', label: 'Edit'}
+    ],
+    rows: [],
+    rowKey: 'id',
+    selectionMode: 'none',
+    height: '90vh'
   }
 };
 
@@ -1022,14 +1560,16 @@ export const Links: Story = {
   args: {
     columns: [
       {key: 'name', label: 'Name'},
-      {key: 'link', label: 'Link'},
-      {key: 'date', label: 'Date Modified'}
+      {key: 'url', label: 'URL'},
+      {key: 'dateAdded', label: 'Date added'}
     ],
     rows: [
-      {id: 1, name: 'Design System', link: 'https://react-spectrum.adobe.com', date: '2025-10-20'},
-      {id: 2, name: 'OpenAI', link: 'https://openai.com', date: '2025-10-21'},
-      {id: 3, name: 'Adobe', link: 'https://adobe.com', date: '2025-10-22'}
-    ]
+      {id: 'https://adobe.com/', name: 'Adobe', url: 'https://adobe.com/', dateAdded: 'January 28, 2023'},
+      {id: 'https://google.com/', name: 'Google', url: 'https://google.com/', dateAdded: 'April 5, 2023'},
+      {id: 'https://apple.com/', name: 'Apple', url: 'https://apple.com/', dateAdded: 'June 5, 2023'},
+      {id: 'https://nytimes.com/', name: 'New York Times', url: 'https://nytimes.com/', dateAdded: 'July 12, 2023'}
+    ],
+    rowKey: 'id'
   }
 };
 
@@ -1037,8 +1577,18 @@ export const ColumnHeaderFocusRingTable: Story = {
   name: 'column header focus after loading',
   render: (args) => renderTable(args),
   args: {
-    columns: BASE_COLUMNS.map((column) => ({...column, sortable: true})),
-    rows: BASE_ROWS
+    columns: [
+      {key: 'name', label: 'Name'},
+      {key: 'height', label: 'Height', sortable: true},
+      {key: 'birthday', label: 'Birthday'}
+    ],
+    rows: [
+      {id: 'sam', name: 'Sam', height: 66, birthday: 'May 3'},
+      {id: 'julia', name: 'Julia', height: 70, birthday: 'February 10'}
+    ],
+    rowKey: 'id',
+    selectionMode: 'multiple',
+    height: 300
   },
   parameters: {
     description: {
@@ -1049,10 +1599,12 @@ export const ColumnHeaderFocusRingTable: Story = {
 
 export const AsyncLoadOverflowWrapReproStory: Story = {
   name: 'async, overflow wrap scroll jumping reproduction',
-  render: (args) => renderAsyncTable(args, 'Async load overflow wrap repro', false, true),
+  render: (args) => renderTable(args),
   args: {
-    columns: BASE_COLUMNS,
-    rows: [],
+    columns: STAR_WARS_COLUMNS,
+    rows: STAR_WARS_WRAP_ROWS,
+    rowKey: 'id',
+    height: 'size-3000',
     overflowMode: 'wrap'
   },
   parameters: {
@@ -1067,7 +1619,11 @@ export const AsyncLoadOverflowWrapReproStory: Story = {
 export const Performance: Story = {
   render: (args) => renderTable(args),
   args: {
-    columns: MANY_COLUMNS,
-    rows: MANY_ROWS
+    columns: PERFORMANCE_COLUMNS,
+    rows: PERFORMANCE_ROWS,
+    rowKey: 'id',
+    width: 800,
+    height: 600,
+    selectionMode: 'multiple'
   }
 };

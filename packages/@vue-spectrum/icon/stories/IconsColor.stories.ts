@@ -1,4 +1,4 @@
-import Calendar from '@spectrum-icons-vue/workflow/Calendar';
+import {Icon} from '../src';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 const sizes = ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL'] as const;
@@ -13,7 +13,7 @@ type Story = StoryObj<typeof meta>;
 export const ColorIconWithSizes: Story = {
   render: () => ({
     components: {
-      Calendar
+      Icon
     },
     setup() {
       return {
@@ -21,12 +21,21 @@ export const ColorIconWithSizes: Story = {
       };
     },
     template: `
-      <div style="display: flex; flex-wrap: wrap; gap: 12px;">
-        <div v-for="size in sizes" :key="size" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px;">
-          <Calendar :size="size" aria-label="Adobe Analytics Color" style="color: #0070f3;" />
-        </div>
+      <div>
+        <Icon
+          v-for="size in sizes"
+          :key="size"
+          :size="size"
+          aria-label="Adobe Analytics Color"
+          style="margin: 15px;">
+          <svg viewBox="0 0 1152 1152">
+            <path opacity="0.65" d="M144 0h144v144H144zM768 0h144v144H768z" />
+            <path fill="#82AA46" d="M864 576c-159.028 0-288 128.912-288 288 0 159.107 128.972 288 288 288s288-128.893 288-288c0-159.088-128.972-288-288-288zm-72 444L660 888l60-60 72 72 204-204 60 60-264 264z" />
+            <path opacity="0.65" d="M1008 96h-48v96H720V96H336v96H96V96H48C0 96 0 144 0 144v864s0 48 48 48h483.368a384.425 384.425 0 0 1-21.146-42.477C496.423 980.904 487.309 946.91 482.963 912H336V768h144v48h2.963c4.345-34.906 13.46-68.897 27.258-101.516 16.217-38.337 38.309-73.369 65.778-104.457V528h101.998a385.03 385.03 0 0 1 36.519-17.79C761.916 490.164 812.21 480 864 480s102.084 10.164 149.483 30.21A384.534 384.534 0 0 1 1056 531.376V144s0-48-48-48zM240 912H96V768h144v144zm0-240H96V528h144v144zm0-240H96V288h144v144zm240 240H336V528h144v144zm0-240H336V288h144v144zm240 0H576V288h144v144zm240 0H816V288h144v144z" />
+          </svg>
+        </Icon>
       </div>
     `
   }),
-  name: 'Color Icon With Sizes'
+  name: 'Color icon with sizes'
 };

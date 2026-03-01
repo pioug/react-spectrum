@@ -1,6 +1,11 @@
 import {action} from 'storybook/actions';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
-import {computed, ref} from 'vue';
+import Audio from '@spectrum-icons-vue/workflow/Audio';
+import {Content} from '@vue-spectrum/view';
+import {ContextualHelp} from '@vue-spectrum/contextualhelp';
+import {Heading} from '@vue-spectrum/text';
+import {Link} from '@vue-spectrum/link';
+import {computed, h, ref, watch} from 'vue';
 import {TagGroup, type TagItemData} from '../src';
 
 type TagGroupStoryArgs = {
@@ -9,15 +14,23 @@ type TagGroupStoryArgs = {
   contextualHelp?: unknown,
   description?: string,
   emptyStateLabel?: string,
+  errorMessage?: string,
+  isInvalid?: boolean,
+  isRequired?: boolean,
   items?: TagItemData[],
   label?: string,
+  labelAlign?: 'end' | 'start',
+  labelPosition?: 'side' | 'top',
   maxRows?: number,
   modelValue?: Iterable<string>,
+  necessityIndicator?: 'icon' | 'label',
   onAction?: () => void,
   onRemove?: (keys: string[]) => void,
   renderEmptyState?: () => unknown,
   selectionMode?: 'multiple' | 'none' | 'single'
 };
+
+const AVATAR_URL = 'https://i.imgur.com/kJOwAdv.png';
 
 const baseItems: TagItemData[] = [
   {key: '1', label: 'Cool Tag 1'},
@@ -28,33 +41,28 @@ const baseItems: TagItemData[] = [
   {key: '6', label: 'Cool Tag 6'}
 ];
 
+const removableItems: TagItemData[] = [
+  {key: '1', label: 'Cool Tag 1'},
+  {key: '2', label: 'Another cool tag'},
+  {key: '3', label: 'This tag'},
+  {key: '4', label: 'What tag?'},
+  {key: '5', label: 'This tag is cool too'},
+  {key: '6', label: 'Shy tag'}
+];
+
 const manyItems: TagItemData[] = Array.from({length: 50}, (_, index) => ({
-  key: String(index + 1),
-  label: `Tag ${index + 1}`
+  key: String(index),
+  label: `Tag ${index}`
 }));
 
-const CONTEXTUAL_HELP_ARG = {
-  key: null,
-  ref: null,
-  type: {},
-  props: {
-    children: [{
-      key: null,
-      ref: null,
-      type: {},
-      props: {
-        children: 'What are these tags?'
-      }
-    }, {
-      key: null,
-      ref: null,
-      type: {},
-      props: {
-        children: 'Here is more information about the tag group.'
-      }
-    }]
-  }
-};
+function createContextualHelp() {
+  return h(ContextualHelp, null, {
+    default: () => [
+      h(Heading, null, () => 'What are these tags?'),
+      h(Content, null, () => 'Here is more information about the tag group.')
+    ]
+  });
+}
 
 function renderResizable(contentTemplate: string) {
   return `
@@ -96,13 +104,13 @@ const meta: Meta<typeof TagGroup> = {
         disable: true
       }
     },
-    maxRows: {
-      type: 'number'
-    },
     contextualHelp: {
       table: {
         disable: true
       }
+    },
+    maxRows: {
+      type: 'number'
     },
     isRequired: {
       control: 'boolean'
@@ -135,7 +143,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function renderTagGroup(baseArgs: Partial<TagGroupStoryArgs> = {items: baseItems}, wrapperTemplate?: string) {
+function renderTagGroup(baseArgs: Partial<TagGroupStoryArgs> = {}, wrapperTemplate?: string) {
   return (args: TagGroupStoryArgs) => ({
     components: {TagGroup},
     setup() {
@@ -143,10 +151,20 @@ function renderTagGroup(baseArgs: Partial<TagGroupStoryArgs> = {items: baseItems
         ...args,
         ...baseArgs
       }));
+      let hasExplicitItems = computed(() => Object.prototype.hasOwnProperty.call(args, 'items') || Object.prototype.hasOwnProperty.call(baseArgs, 'items'));
+      let resolvedArgs = computed(() => ({
+        ...mergedArgs.value,
+        items: hasExplicitItems.value ? mergedArgs.value.items : baseItems
+      }));
+
       let onRemove = (keys: string[]) => {
-        mergedArgs.value.onRemove?.(keys);
+        resolvedArgs.value.onRemove?.(keys);
       };
-      return {args: mergedArgs, onRemove};
+
+      return {
+        args: resolvedArgs,
+        onRemove
+      };
     },
     template: wrapperTemplate ?? `
       <TagGroup
@@ -157,15 +175,22 @@ function renderTagGroup(baseArgs: Partial<TagGroupStoryArgs> = {items: baseItems
   });
 }
 
-function renderOnRemove(baseArgs: Partial<TagGroupStoryArgs> = {}) {
+function renderOnRemove(baseArgs: Partial<TagGroupStoryArgs> = {}, wrapperTemplate?: string) {
   return (args: TagGroupStoryArgs) => ({
     components: {TagGroup},
     setup() {
+      let createInitialItems = (source?: TagItemData[]) => source ? source.map((item) => ({...item})) : [...removableItems];
       let mergedArgs = computed(() => ({
         ...args,
         ...baseArgs
       }));
-      let items = ref<TagItemData[]>([...baseItems]);
+      let items = ref<TagItemData[]>(createInitialItems(baseArgs.items));
+
+      watch(() => args.items, (nextItems) => {
+        if (nextItems) {
+          items.value = createInitialItems(nextItems);
+        }
+      });
 
       let handleRemove = (keys: string[]) => {
         let removed = new Set(keys);
@@ -173,9 +198,13 @@ function renderOnRemove(baseArgs: Partial<TagGroupStoryArgs> = {}) {
         mergedArgs.value.onRemove?.(keys);
       };
 
-      return {args: mergedArgs, items, handleRemove};
+      return {
+        args: mergedArgs,
+        items,
+        handleRemove
+      };
     },
-    template: `
+    template: wrapperTemplate ?? `
       <TagGroup
         v-bind="args"
         aria-label="Tag group with removable tags"
@@ -196,25 +225,17 @@ export const WithIcons: Story = {
       {key: '2', label: 'Cool Tag 2'}
     ]
   },
-  argTypes: {
-    items: {
-      control: 'object',
-      table: {
-        disable: true
-      }
-    }
-  },
   render: renderTagGroup({
     items: [
-      {key: '1', label: '🔊 Cool Tag 1'},
-      {key: '2', label: '🔊 Cool Tag 2'}
+      {key: '1', label: 'Cool Tag 1', icon: Audio},
+      {key: '2', label: 'Cool Tag 2', icon: Audio}
     ]
-  }),
-  name: 'With Icons'
+  })
 };
 
 export const OnRemove: Story = {
   render: renderOnRemove({
+    allowsRemoving: true,
     onRemove: action('onRemove')
   }),
   name: 'onRemove'
@@ -284,9 +305,16 @@ export const MaxRowsOnRemove: Story = {
     maxRows: 2
   },
   render: renderOnRemove({
+    allowsRemoving: true,
     maxRows: 2,
     onRemove: action('onRemove')
-  }),
+  }, renderResizable(`
+      <TagGroup
+        v-bind="args"
+        aria-label="Tag group with removable tags"
+        :items="items"
+        @remove="handleRemove" />
+  `)),
   name: 'maxRows + onRemove'
 };
 
@@ -297,18 +325,10 @@ export const WithAvatar: Story = {
       {key: '2', label: 'Cool Person 2'}
     ]
   },
-  argTypes: {
-    items: {
-      control: 'object',
-      table: {
-        disable: true
-      }
-    }
-  },
   render: renderTagGroup({
     items: [
-      {key: '1', label: '👤 Cool Person 1'},
-      {key: '2', label: '👤 Cool Person 2'}
+      {key: '1', label: 'Cool Person 1', avatarAlt: 'default Adobe avatar', avatarSrc: AVATAR_URL},
+      {key: '2', label: 'Cool Person 2'}
     ]
   }),
   name: 'with avatar'
@@ -316,10 +336,12 @@ export const WithAvatar: Story = {
 
 export const WithAvatarOnRemove: Story = {
   render: renderOnRemove({
-    items: [
-      {key: '1', label: '👤 Cool Person 1'},
-      {key: '2', label: '👤 Cool Person 2'}
-    ],
+    allowsRemoving: true,
+    items: removableItems.map((item) => ({
+      ...item,
+      avatarAlt: 'default Adobe avatar',
+      avatarSrc: AVATAR_URL
+    })),
     onRemove: action('onRemove')
   }),
   name: 'with avatar + onRemove'
@@ -331,17 +353,9 @@ export const WithAction: Story = {
     onAction: action('clear')
   },
   render: renderTagGroup({
-    onAction: action('clear'),
-    actionLabel: 'Clear'
-  }, `
-    <div style="display: grid; gap: 8px;">
-      <TagGroup
-        v-bind="args"
-        aria-label="Tag group"
-        @remove="onRemove" />
-      <button type="button" @click="args.onAction && args.onAction()">{{args.actionLabel || 'Clear'}}</button>
-    </div>
-  `),
+    actionLabel: 'Clear',
+    onAction: action('clear')
+  }),
   name: 'with action'
 };
 
@@ -352,46 +366,33 @@ export const WithActionAndMaxRows: Story = {
     onAction: action('clear')
   },
   render: renderTagGroup({
+    actionLabel: 'Clear',
     maxRows: 2,
-    onAction: action('clear'),
-    actionLabel: 'Clear'
+    onAction: action('clear')
   }, renderResizable(`
-      <div style="display: grid; gap: 8px;">
-        <TagGroup
-          v-bind="args"
-          aria-label="Tag group"
-          @remove="onRemove" />
-        <button type="button" @click="args.onAction && args.onAction()">{{args.actionLabel || 'Clear'}}</button>
-      </div>
+      <TagGroup
+        v-bind="args"
+        aria-label="Tag group"
+        @remove="onRemove" />
   `)),
   name: 'with action and maxRows'
 };
 
 export const WithLabelDescriptionContextualHelp: Story = {
   args: {
-    contextualHelp: CONTEXTUAL_HELP_ARG,
+    contextualHelp: createContextualHelp(),
     description: 'Here is a description about the tag group.',
     label: 'Some sample tags'
   },
-  argTypes: {
-    contextualHelp: {
-      control: 'object',
-      table: {
-        disable: true
-      }
-    }
-  },
   render: renderTagGroup({
+    contextualHelp: createContextualHelp(),
+    description: 'Here is a description about the tag group.',
     label: 'Some sample tags'
   }, renderResizable(`
-      <div style="display: grid; gap: 8px;">
-        <div>Here is a description about the tag group.</div>
-        <div>What are these tags? Here is more information about the tag group.</div>
-        <TagGroup
-          v-bind="args"
-          aria-label="Tag group"
-          @remove="onRemove" />
-      </div>
+      <TagGroup
+        v-bind="args"
+        aria-label="Tag group"
+        @remove="onRemove" />
   `)),
   name: 'with label, description, contextual help'
 };
@@ -399,33 +400,22 @@ export const WithLabelDescriptionContextualHelp: Story = {
 export const WithLabelDescriptionContextualHelpAndAction: Story = {
   args: {
     actionLabel: 'Clear',
-    contextualHelp: CONTEXTUAL_HELP_ARG,
+    contextualHelp: createContextualHelp(),
     description: 'Here is a description about the tag group.',
     label: 'Some sample tags',
     onAction: action('clear')
   },
-  argTypes: {
-    contextualHelp: {
-      control: 'object',
-      table: {
-        disable: true
-      }
-    }
-  },
   render: renderTagGroup({
+    actionLabel: 'Clear',
+    contextualHelp: createContextualHelp(),
+    description: 'Here is a description about the tag group.',
     label: 'Some sample tags',
-    onAction: action('clear'),
-    actionLabel: 'Clear'
+    onAction: action('clear')
   }, renderResizable(`
-      <div style="display: grid; gap: 8px;">
-        <div>Here is a description about the tag group.</div>
-        <div>What are these tags? Here is more information about the tag group.</div>
-        <TagGroup
-          v-bind="args"
-          aria-label="Tag group"
-          @remove="onRemove" />
-        <button type="button" @click="args.onAction && args.onAction()">{{args.actionLabel || 'Clear'}}</button>
-      </div>
+      <TagGroup
+        v-bind="args"
+        aria-label="Tag group"
+        @remove="onRemove" />
   `)),
   name: 'with label, description, contextual help + action'
 };
@@ -433,18 +423,22 @@ export const WithLabelDescriptionContextualHelpAndAction: Story = {
 export const EmptyState: Story = {
   render: renderTagGroup({
     items: [],
-    emptyStateLabel: 'No tags'
+    label: 'Tag group with empty state'
   }),
   name: 'Empty state'
 };
 
 export const CustomEmptyState: Story = {
-  argTypes: {
-    renderEmptyState: {}
-  },
   render: renderTagGroup({
     items: [],
-    renderEmptyState: () => 'No tags. Click here to add some.'
+    label: 'Tag group with empty state',
+    renderEmptyState: () => h('span', [
+      'No tags. ',
+      h(Link, {
+        href: '//react-spectrum.com'
+      }, () => 'Click here'),
+      ' to add some.'
+    ])
   }),
   name: 'Custom empty state'
 };
@@ -452,9 +446,9 @@ export const CustomEmptyState: Story = {
 export const Links: Story = {
   render: renderTagGroup({
     items: [
-      {key: 'adobe', label: 'Adobe'},
-      {key: 'google', label: 'Google'},
-      {key: 'apple', label: 'Apple'}
+      {key: 'adobe', label: 'Adobe', href: 'https://adobe.com'},
+      {key: 'google', label: 'Google', href: 'https://google.com'},
+      {key: 'apple', label: 'Apple', href: 'https://apple.com'}
     ]
   }),
   name: 'Links'

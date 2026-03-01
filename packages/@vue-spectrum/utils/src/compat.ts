@@ -10,7 +10,7 @@ import {
   useFocusableRef as useFocusableRefInternal,
   useUnwrapDOMRef as useUnwrapDOMRefInternal
 } from './useDOMRef';
-import {defineComponent} from 'vue';
+import {computed, defineComponent, inject, provide, type ComputedRef, type InjectionKey, type PropType} from 'vue';
 import {useResizeObserver as useAriaResizeObserver, useValueEffect as useAriaValueEffect} from '@vue-aria/utils';
 
 type AnyRecord = Record<string, unknown>;
@@ -57,6 +57,8 @@ type StyleHandler = (value: any, colorVersion?: number) => string | undefined;
 export interface StyleHandlers {
   [key: string]: [StyleName, StyleHandler]
 }
+
+const breakpointContextKey: InjectionKey<ComputedRef<BreakpointContext>> = Symbol('vue-spectrum-breakpoint-context');
 
 export const baseStyleProps: StyleHandlers = {
   margin: ['margin', dimensionValue]
@@ -168,7 +170,8 @@ export function useStyleProps<T extends StyleProps>(
   handlers: StyleHandlers = baseStyleProps,
   options: StylePropsOptions = {}
 ): {styleProps: HTMLAttributes<HTMLElement>} {
-  let matchedBreakpoints = options.matchedBreakpoints ?? ['base'];
+  let breakpointContext = useBreakpoint();
+  let matchedBreakpoints = options.matchedBreakpoints ?? breakpointContext?.matchedBreakpoints ?? ['base'];
   let style = {
     ...(props.UNSAFE_style ?? {}),
     ...convertStyleProps(props as ViewStyleProps, handlers, 'ltr', matchedBreakpoints)
@@ -262,20 +265,44 @@ export const ClearSlots = defineComponent({
 
 export const BreakpointProvider = defineComponent({
   name: 'VueSpectrumBreakpointProvider',
-  setup(_, {slots}) {
+  props: {
+    matchedBreakpoints: {
+      type: Array as PropType<string[]>,
+      default: () => ['base']
+    }
+  },
+  setup(props, {slots}) {
+    provide(breakpointContextKey, computed(() => ({
+      matchedBreakpoints: props.matchedBreakpoints
+    })));
+
     return () => slots.default ? slots.default() : null;
   }
 });
 
-export function useMatchedBreakpoints(_breakpoints: Breakpoints): string[] {
-  void _breakpoints;
-  return ['base'];
+export function useMatchedBreakpoints(breakpoints: Breakpoints): string[] {
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+    return ['base'];
+  }
+
+  let entries = Object.entries(breakpoints)
+    .filter(([, value]) => typeof value === 'number')
+    .sort(([, valueA], [, valueB]) => (valueB as number) - (valueA as number));
+
+  let matchedBreakpoints: string[] = [];
+  for (let [name, value] of entries) {
+    if (window.matchMedia(`(min-width: ${value}px)`).matches) {
+      matchedBreakpoints.push(name);
+    }
+  }
+
+  matchedBreakpoints.push('base');
+  return matchedBreakpoints;
 }
 
 export function useBreakpoint(): BreakpointContext | null {
-  return {
-    matchedBreakpoints: ['base']
-  };
+  let context = inject(breakpointContextKey, null);
+  return context?.value ?? null;
 }
 
 export function useResizeObserver<T extends Element>(options: useResizeObserverOptionsType<T>): void {

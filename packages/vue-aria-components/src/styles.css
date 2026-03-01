@@ -10,8 +10,6 @@
   --vs-radius-control: 6px;
   --vs-radius-surface: 8px;
   --vs-focus-ring: 0 0 0 2px rgba(20, 115, 230, 0.35);
-  background: var(--vs-color-bg);
-  color: var(--vs-color-fg);
   isolation: isolate;
   min-height: 100%;
 }

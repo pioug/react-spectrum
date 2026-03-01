@@ -1,6 +1,9 @@
 import {ActionButton, Button} from '@vue-spectrum/button';
-import {Dialog} from '@vue-spectrum/dialog';
+import {ButtonGroup} from '@vue-spectrum/buttongroup';
+import {Dialog, DialogTrigger} from '@vue-spectrum/dialog';
 import {Divider} from '@vue-spectrum/divider';
+import {Content} from '@vue-spectrum/view';
+import {Text} from '@vue-spectrum/text';
 import {ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {Modal} from '../src';
@@ -19,7 +22,7 @@ type Story = StoryObj<typeof meta>;
 
 function renderDefaultModal() {
   return {
-    components: {ActionButton, Button, Dialog, Divider, Modal},
+    components: {ActionButton, Button, ButtonGroup, Content, Dialog, Divider, Modal, Text},
     setup() {
       let isOpen = ref(false);
       let openModal = () => {
@@ -38,31 +41,28 @@ function renderDefaultModal() {
     template: `
       <ActionButton @click="openModal">Open modal</ActionButton>
       <Modal :is-open="isOpen" @close="closeModal">
-          <Dialog>
-            <template #heading>Title</template>
-            <template #divider>
-              <Divider />
-            </template>
-            <span role="none">I am a dialog</span>
-            <template #buttonGroup>
+        <Dialog title="Title">
+          <template #divider><Divider /></template>
+          <Content>
+            <Text>I am a dialog</Text>
+          </Content>
+          <template #buttonGroup>
+            <ButtonGroup>
               <Button variant="cta" @click="closeModal">Close</Button>
-            </template>
-          </Dialog>
-        </Modal>
+            </ButtonGroup>
+          </template>
+        </Dialog>
+      </Modal>
     `
   };
 }
 
 function renderUnmountingTrigger() {
   return {
-    components: {ActionButton, Button, Dialog, Divider, Modal},
+    components: {ActionButton, Button, ButtonGroup, Content, Dialog, DialogTrigger, Divider, Modal, Text},
     setup() {
       let isModalOpen = ref(false);
       let isPopoverOpen = ref(false);
-
-      let openPopover = () => {
-        isPopoverOpen.value = true;
-      };
       let openModalFromPopover = () => {
         isPopoverOpen.value = false;
         isModalOpen.value = true;
@@ -75,32 +75,36 @@ function renderUnmountingTrigger() {
         closeModal,
         isModalOpen,
         isPopoverOpen,
-        openModalFromPopover,
-        openPopover
+        openModalFromPopover
       };
     },
     template: `
-      <div style="display: grid; gap: 12px;">
-        <ActionButton @click="openPopover">Open popover</ActionButton>
-        <div
-          v-if="isPopoverOpen"
-          style="border: 1px solid #444; border-radius: 8px; padding: 12px; display: grid; gap: 8px; max-width: 280px;">
-          <p style="margin: 0;">I am a dialog</p>
-          <ActionButton @click="openModalFromPopover">Open modal</ActionButton>
-        </div>
-        <Modal :is-open="isModalOpen" @close="closeModal">
-          <Dialog>
-            <template #heading>Title</template>
-            <template #divider>
-              <Divider />
-            </template>
-            <span role="none">I am a dialog</span>
-            <template #buttonGroup>
+      <DialogTrigger type="popover" :is-open="isPopoverOpen" @open-change="isPopoverOpen = $event">
+        <template #trigger="{open}">
+          <ActionButton @click="open">Open popover</ActionButton>
+        </template>
+        <template #heading><h2 class="spectrum-Dialog-heading">Title</h2></template>
+        <template #divider><Divider /></template>
+        <Content>
+          <div style="display: flex; flex-direction: column; gap: var(--spectrum-global-dimension-size-100);">
+            <Text>I am a dialog</Text>
+            <ActionButton @click="openModalFromPopover">Open modal</ActionButton>
+          </div>
+        </Content>
+      </DialogTrigger>
+      <Modal :is-open="isModalOpen" @close="closeModal">
+        <Dialog title="Title">
+          <template #divider><Divider /></template>
+          <Content>
+            <Text>I am a dialog</Text>
+          </Content>
+          <template #buttonGroup>
+            <ButtonGroup>
               <Button variant="cta" @click="closeModal">Close</Button>
-            </template>
-          </Dialog>
-        </Modal>
-      </div>
+            </ButtonGroup>
+          </template>
+        </Dialog>
+      </Modal>
     `
   };
 }

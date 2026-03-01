@@ -1,5 +1,6 @@
 import '@adobe/spectrum-css-temp/components/contextualhelp/vars.css';
 import '@adobe/spectrum-css-temp/components/menu/vars.css';
+import More from '@spectrum-icons-vue/workflow/More';
 import {ActionButton} from '@vue-spectrum/button';
 import {Item, Section} from '@vue-stately/collections';
 import {classNames} from '@vue-spectrum/utils';
@@ -21,6 +22,7 @@ type MenuItemRecord = {
   disabled?: boolean,
   href?: string,
   id?: number | string,
+  isSection?: boolean,
   key?: number | string,
   label?: string,
   rel?: string,
@@ -30,9 +32,11 @@ type MenuItemRecord = {
 };
 
 type NormalizedMenuItem = {
+  ariaLabel?: string,
   children: NormalizedMenuItem[],
   disabled: boolean,
   href?: string,
+  isSection: boolean,
   key: number | string,
   label: string,
   original: MenuItemRecord | string,
@@ -103,10 +107,12 @@ function isSelectionIterable(value: unknown): value is Iterable<SelectionKey> {
 function normalizeItem(item: MenuItemRecord | string, index: number): NormalizedMenuItem {
   if (typeof item === 'string') {
     return {
+      ariaLabel: undefined,
       key: item,
       label: item,
       disabled: false,
       href: undefined,
+      isSection: false,
       selectable: true,
       children: [],
       original: item,
@@ -119,10 +125,12 @@ function normalizeItem(item: MenuItemRecord | string, index: number): Normalized
   let label = item.label ?? item.textValue ?? String(key);
 
   return {
+    ariaLabel: item.ariaLabel,
     key,
     label,
     disabled: !!item.disabled,
     href: item.href,
+    isSection: !!item.isSection,
     selectable: item.selectable ?? true,
     children: Array.isArray(item.children)
       ? item.children.map((child, childIndex) => normalizeItem(child, childIndex))
@@ -318,26 +326,49 @@ export const Menu = defineComponent({
 
     let getDirectMenuItems = (menuElement: HTMLElement): HTMLElement[] => {
       let directItems: HTMLElement[] = [];
+
+      let pushItemFromNode = (node: Element | null) => {
+        if (node instanceof HTMLElement && node.classList.contains('vs-spectrum-menu__item')) {
+          directItems.push(node);
+        }
+      };
+
       for (let childNode of Array.from(menuElement.children)) {
         if (!(childNode instanceof HTMLElement)) {
           continue;
         }
         if (childNode.classList.contains('vs-spectrum-menu__item')) {
-          directItems.push(childNode);
+          pushItemFromNode(childNode);
           continue;
         }
         if (!childNode.classList.contains('vs-spectrum-menu__item-wrapper')) {
-          continue;
-        }
-        for (let nestedChild of Array.from(childNode.children)) {
-          if (!(nestedChild instanceof HTMLElement)) {
+          if (!childNode.classList.contains('vs-spectrum-menu__section')) {
             continue;
           }
-          if (nestedChild.classList.contains('vs-spectrum-menu__item')) {
-            directItems.push(nestedChild);
-            break;
+
+          for (let sectionChild of Array.from(childNode.children)) {
+            if (!(sectionChild instanceof HTMLElement)) {
+              continue;
+            }
+
+            if (sectionChild.classList.contains('vs-spectrum-menu__item')) {
+              pushItemFromNode(sectionChild);
+              continue;
+            }
+
+            if (!sectionChild.classList.contains('vs-spectrum-menu__item-wrapper')) {
+              continue;
+            }
+
+            let sectionNestedItem = sectionChild.querySelector(':scope > .vs-spectrum-menu__item');
+            pushItemFromNode(sectionNestedItem);
           }
+
+          continue;
         }
+
+        let nestedItem = childNode.querySelector(':scope > .vs-spectrum-menu__item');
+        pushItemFromNode(nestedItem);
       }
       return directItems;
     };
@@ -549,6 +580,28 @@ export const Menu = defineComponent({
     };
 
     let renderItem = (item: NormalizedMenuItem, parentKey?: SelectionKey): VNode => {
+      if (item.isSection) {
+        let headingId = `vs-spectrum-menu-section-heading-${String(item.key)}`;
+        let hasVisibleHeading = item.label.trim().length > 0;
+
+        return h('div', {
+          key: `section-${String(item.key)}`,
+          class: [classNames(menuStyles, 'spectrum-Menu-section'), 'vs-spectrum-menu__section'],
+          role: 'presentation',
+          'aria-label': !hasVisibleHeading ? item.ariaLabel || undefined : undefined,
+          'aria-labelledby': hasVisibleHeading ? headingId : undefined
+        }, [
+          hasVisibleHeading
+            ? h('div', {
+              id: headingId,
+              class: [classNames(menuStyles, 'spectrum-Menu-sectionHeading'), 'vs-spectrum-menu__section-heading'],
+              role: 'presentation'
+            }, item.label)
+            : null,
+          ...item.children.map((child) => renderItem(child, parentKey))
+        ]);
+      }
+
       let hasChildren = item.children.length > 0;
       let isDisabled = props.isDisabled || item.disabled || disabledKeySet.value.has(item.key);
       let isSelected = selectedSet.value.has(item.key);
@@ -1104,6 +1157,55 @@ export const MenuTrigger = defineComponent({
       emit('menuOpenChange', keys);
     };
 
+    let rootTriggerWrapperContains = (target: EventTarget | null) => {
+      return target instanceof Node && triggerAnchorElement.value?.parentElement?.contains(target);
+    };
+
+    let onDocumentFocusIn = (event: FocusEvent) => {
+      if (!isExpanded.value || rootTriggerWrapperContains(event.target)) {
+        return;
+      }
+
+      closeMenu();
+    };
+
+    let shouldPreventDocumentScroll = (event: Event) => {
+      if (!isExpanded.value) {
+        return false;
+      }
+
+      let target = event.target;
+      return !(target instanceof Node && triggerAnchorElement.value?.parentElement?.contains(target));
+    };
+
+    let onDocumentWheel = (event: WheelEvent) => {
+      if (!shouldPreventDocumentScroll(event)) {
+        return;
+      }
+
+      event.preventDefault();
+    };
+
+    let onDocumentTouchMove = (event: TouchEvent) => {
+      if (!shouldPreventDocumentScroll(event)) {
+        return;
+      }
+
+      event.preventDefault();
+    };
+
+    onMounted(() => {
+      document.addEventListener('focusin', onDocumentFocusIn);
+      document.addEventListener('wheel', onDocumentWheel, {capture: true, passive: false});
+      document.addEventListener('touchmove', onDocumentTouchMove, {capture: true, passive: false});
+    });
+
+    onBeforeUnmount(() => {
+      document.removeEventListener('focusin', onDocumentFocusIn);
+      document.removeEventListener('wheel', onDocumentWheel, {capture: true});
+      document.removeEventListener('touchmove', onDocumentTouchMove, {capture: true});
+    });
+
     watch(isExpanded, (next) => {
       if (!next) {
         menuAutoFocusOverride.value = undefined;
@@ -1116,48 +1218,58 @@ export const MenuTrigger = defineComponent({
     });
 
     let menuSurfaceStyle = computed<Record<string, string>>(() => {
+      let triggerRect = triggerAnchorElement.value?.getBoundingClientRect();
+      if (!triggerRect) {
+        return {
+          position: 'absolute',
+          zIndex: '1'
+        };
+      }
+
       let style: Record<string, string> = {
-        position: 'absolute',
+        left: `${triggerRect.left}px`,
+        position: 'fixed',
+        top: `${triggerRect.bottom + 4}px`,
+        transform: 'translateX(0) translateY(0)',
         zIndex: '1'
       };
 
       if (props.direction === 'top') {
-        style.bottom = 'calc(100% + 4px)';
+        style.top = `${triggerRect.top - 4}px`;
+        style.transform = props.align === 'end'
+          ? 'translateX(-100%) translateY(-100%)'
+          : 'translateX(0) translateY(-100%)';
         if (props.align === 'end') {
-          style.right = '0';
-        } else {
-          style.left = '0';
+          style.left = `${triggerRect.right}px`;
         }
         return style;
       }
 
       if (props.direction === 'left' || props.direction === 'start') {
-        style.right = 'calc(100% + 4px)';
-        if (props.align === 'end') {
-          style.bottom = '0';
-        } else {
-          style.top = '0';
-        }
+        style.left = `${triggerRect.left - 4}px`;
+        style.top = props.align === 'end' ? `${triggerRect.bottom}px` : `${triggerRect.top}px`;
+        style.transform = props.align === 'end'
+          ? 'translateX(-100%) translateY(-100%)'
+          : 'translateX(-100%) translateY(0)';
         return style;
       }
 
       if (props.direction === 'right' || props.direction === 'end') {
-        style.left = 'calc(100% + 4px)';
-        if (props.align === 'end') {
-          style.bottom = '0';
-        } else {
-          style.top = '0';
-        }
+        style.left = `${triggerRect.right + 4}px`;
+        style.top = props.align === 'end' ? `${triggerRect.bottom}px` : `${triggerRect.top}px`;
+        style.transform = props.align === 'end'
+          ? 'translateX(0) translateY(-100%)'
+          : 'translateX(0) translateY(0)';
         return style;
       }
 
-      style.top = 'calc(100% + 4px)';
+      style.top = `${triggerRect.bottom + 4}px`;
+      style.transform = props.align === 'end'
+        ? 'translateX(-100%) translateY(0)'
+        : 'translateX(0) translateY(0)';
       if (props.align === 'end') {
-        style.right = '0';
-      } else {
-        style.left = '0';
+        style.left = `${triggerRect.right}px`;
       }
-
       return style;
     });
 
@@ -1388,11 +1500,13 @@ export const ActionMenu = defineComponent({
       trigger: (slotProps: {isOpen: boolean, toggle: () => void}) => (
         slots.trigger?.(slotProps) ?? [
           h(ActionButton, {
+            autoFocus: props.autoFocus === true,
             isDisabled: props.isDisabled,
             isQuiet: props.isQuiet,
+            id: attrs.id as string | undefined,
             'aria-label': triggerAriaLabel.value
           }, {
-            default: () => '⋯'
+            default: () => [h(More)]
           })
         ]
       )

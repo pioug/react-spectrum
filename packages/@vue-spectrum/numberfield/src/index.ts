@@ -2,6 +2,7 @@ import '@adobe/spectrum-css-temp/components/fieldlabel/vars.css';
 import '@adobe/spectrum-css-temp/components/helptext/vars.css';
 import '@adobe/spectrum-css-temp/components/stepper/vars.css';
 import '@adobe/spectrum-css-temp/components/textfield/vars.css';
+import {useProviderProps} from '@vue-spectrum/provider';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, type PropType, ref, watch} from 'vue';
 import {getEventTarget} from '@vue-aria/utils';
@@ -22,13 +23,74 @@ const CHECKMARK_PATH = 'M4.5 10a1.022 1.022 0 0 1-.799-.384l-2.488-3a1 1 0 0 1 1
 
 let numberFieldId = 0;
 
-function parseInputValue(rawValue: string): number | null {
-  if (rawValue === '') {
+function createNumberFormatter(formatOptions?: Intl.NumberFormatOptions): Intl.NumberFormat {
+  try {
+    return new Intl.NumberFormat(undefined, formatOptions);
+  } catch {
+    return new Intl.NumberFormat();
+  }
+}
+
+function parseInputValue(
+  rawValue: string,
+  formatter: Intl.NumberFormat,
+  formatOptions?: Intl.NumberFormatOptions
+): number | null {
+  if (rawValue.trim() === '') {
     return null;
   }
 
-  let parsedValue = Number(rawValue);
-  return Number.isFinite(parsedValue) ? parsedValue : null;
+  let sampleParts = formatter.formatToParts(-12345.6);
+  let group = sampleParts.find((part) => part.type === 'group')?.value ?? ',';
+  let decimal = sampleParts.find((part) => part.type === 'decimal')?.value ?? '.';
+  let minus = sampleParts.find((part) => part.type === 'minusSign')?.value ?? '-';
+  let percent = sampleParts.find((part) => part.type === 'percentSign')?.value ?? '%';
+  let normalized = rawValue.trim();
+  let isNegative = false;
+
+  if (normalized.includes('(') && normalized.includes(')')) {
+    isNegative = true;
+    normalized = normalized.replace(/[()]/g, '');
+  }
+
+  normalized = normalized.replace(/\s/g, '');
+  if (group) {
+    normalized = normalized.split(group).join('');
+  }
+
+  if (decimal && decimal !== '.') {
+    normalized = normalized.split(decimal).join('.');
+  }
+
+  if (minus && minus !== '-') {
+    normalized = normalized.split(minus).join('-');
+  }
+
+  normalized = normalized.replace(/[^\d+-.]/g, '');
+  if (
+    normalized === '' ||
+    normalized === '-' ||
+    normalized === '+' ||
+    normalized === '.' ||
+    normalized === '-.'
+  ) {
+    return null;
+  }
+
+  let parsedValue = Number(normalized);
+  if (!Number.isFinite(parsedValue)) {
+    return null;
+  }
+
+  if (isNegative) {
+    parsedValue = -Math.abs(parsedValue);
+  }
+
+  if (formatOptions?.style === 'percent' && rawValue.includes(percent)) {
+    parsedValue /= 100;
+  }
+
+  return parsedValue;
 }
 
 function clampValue(value: number, min?: number, max?: number): number {
@@ -108,6 +170,10 @@ export const NumberField = defineComponent({
     errorMessage: {
       type: [String, Number, Object, Function, Array] as PropType<unknown>,
       default: ''
+    },
+    formatOptions: {
+      type: Object as PropType<Intl.NumberFormatOptions | undefined>,
+      default: undefined
     },
     form: {
       type: String,
@@ -225,24 +291,21 @@ export const NumberField = defineComponent({
     'update:modelValue': (value: number | null) => value === null || typeof value === 'number'
   },
   setup(props, {attrs, emit}) {
+    let providerProps = useProviderProps(props);
+    let resolvedProps = computed(() => Object.assign({}, props, providerProps));
     let generatedId = `vs-number-field-${++numberFieldId}`;
-    let inputId = computed(() => props.id ?? generatedId);
+    let inputId = computed(() => resolvedProps.value.id ?? generatedId);
     let inputRef = ref<HTMLInputElement | null>(null);
-    let uncontrolledValue = ref<number | null>(props.defaultValue ?? null);
+    let uncontrolledValue = ref<number | null>(resolvedProps.value.defaultValue ?? null);
 
     watch(() => [props.value, props.modelValue], ([value, modelValue]) => {
-      if (typeof value === 'number' && Number.isFinite(value)) {
-        uncontrolledValue.value = value;
+      if (value !== undefined) {
+        uncontrolledValue.value = Number.isFinite(value) ? value : null;
         return;
       }
 
-      if (typeof modelValue === 'number' && Number.isFinite(modelValue)) {
-        uncontrolledValue.value = modelValue;
-        return;
-      }
-
-      if (modelValue === null) {
-        uncontrolledValue.value = null;
+      if (modelValue !== undefined) {
+        uncontrolledValue.value = Number.isFinite(modelValue) ? modelValue : null;
       }
     }, {immediate: true});
 
@@ -258,44 +321,62 @@ export const NumberField = defineComponent({
     let downFocusVisible = ref(false);
     let pointerFocusIntent = false;
 
-    let isDisabled = computed(() => resolveBoolean(props.isDisabled, props.disabled));
-    let isReadOnly = computed(() => resolveBoolean(props.isReadOnly, props.readOnly));
-    let isRequired = computed(() => resolveBoolean(props.isRequired, props.required));
-    let isInvalid = computed(() => resolveIsInvalid(props, isDisabled.value));
-    let isValid = computed(() => props.validationState === 'valid' && !isDisabled.value);
-    let minValue = computed(() => props.minValue ?? props.min);
-    let maxValue = computed(() => props.maxValue ?? props.max);
-    let showStepper = computed(() => !props.hideStepper);
+    let isDisabled = computed(() => resolveBoolean(resolvedProps.value.isDisabled, resolvedProps.value.disabled));
+    let isReadOnly = computed(() => resolveBoolean(resolvedProps.value.isReadOnly, resolvedProps.value.readOnly));
+    let isRequired = computed(() => resolveBoolean(resolvedProps.value.isRequired, resolvedProps.value.required));
+    let isInvalid = computed(() => resolveIsInvalid(resolvedProps.value, isDisabled.value));
+    let isValid = computed(() => resolvedProps.value.validationState === 'valid' && !isDisabled.value);
+    let minValue = computed(() => resolvedProps.value.minValue ?? resolvedProps.value.min);
+    let maxValue = computed(() => resolvedProps.value.maxValue ?? resolvedProps.value.max);
+    let showStepper = computed(() => !resolvedProps.value.hideStepper);
+    let numberFormatter = computed(() => createNumberFormatter(resolvedProps.value.formatOptions));
 
-    let currentValue = computed(() => {
-      if (typeof props.value === 'number' && Number.isFinite(props.value)) {
-        return props.value;
+    let currentValue = computed<number | null>(() => {
+      if (props.value !== undefined) {
+        return Number.isFinite(props.value) ? props.value : null;
       }
 
-      if (typeof props.modelValue === 'number' && Number.isFinite(props.modelValue)) {
-        return props.modelValue;
+      if (props.modelValue !== undefined) {
+        return Number.isFinite(props.modelValue) ? props.modelValue : null;
       }
 
       return uncontrolledValue.value;
     });
 
+    let displayValue = computed(() => {
+      if (currentValue.value === null) {
+        return '';
+      }
+
+      return numberFormatter.value.format(currentValue.value);
+    });
+
     let canStep = computed(() => !isDisabled.value && !isReadOnly.value);
     let necessityIndicator = computed<NecessityIndicator | undefined>(() => {
-      if (props.necessityIndicator) {
-        return props.necessityIndicator;
+      if (resolvedProps.value.necessityIndicator) {
+        return resolvedProps.value.necessityIndicator;
       }
 
       return isRequired.value ? 'icon' : undefined;
     });
-
-    let labelId = computed(() => props.label ? `${inputId.value}-label` : undefined);
-    let validIconId = computed(() => isValid.value ? `${inputId.value}-valid` : undefined);
-    let helpText = computed(() => {
-      if (isInvalid.value && props.errorMessage) {
-        return props.errorMessage;
+    let labelRequirementText = computed(() => {
+      if (necessityIndicator.value !== 'label') {
+        return undefined;
       }
 
-      return props.description;
+      return isRequired.value ? '(required)' : '(optional)';
+    });
+    let showRequiredIcon = computed(() => necessityIndicator.value === 'icon' && isRequired.value);
+    let showNecessitySpacer = computed(() => Boolean(labelRequirementText.value) || showRequiredIcon.value);
+
+    let labelId = computed(() => resolvedProps.value.label ? `${inputId.value}-label` : undefined);
+    let validIconId = computed(() => isValid.value ? `${inputId.value}-valid` : undefined);
+    let helpText = computed(() => {
+      if (isInvalid.value && resolvedProps.value.errorMessage) {
+        return resolvedProps.value.errorMessage;
+      }
+
+      return resolvedProps.value.description;
     });
     let helpTextId = computed(() => {
       if (!helpText.value) {
@@ -319,10 +400,10 @@ export const NumberField = defineComponent({
       fieldStyles,
       'spectrum-Field',
       {
-        'spectrum-Field--positionTop': props.labelPosition !== 'side',
-        'spectrum-Field--positionSide': props.labelPosition === 'side',
-        'spectrum-Field--alignEnd': props.labelAlign === 'end',
-        'spectrum-Field--hasContextualHelp': !!props.contextualHelp
+        'spectrum-Field--positionTop': resolvedProps.value.labelPosition !== 'side',
+        'spectrum-Field--positionSide': resolvedProps.value.labelPosition === 'side',
+        'spectrum-Field--alignEnd': resolvedProps.value.labelAlign === 'end',
+        'spectrum-Field--hasContextualHelp': !!resolvedProps.value.contextualHelp
       }
     ));
 
@@ -330,8 +411,8 @@ export const NumberField = defineComponent({
       fieldStyles,
       'spectrum-FieldLabel',
       {
-        'spectrum-FieldLabel--positionSide': props.labelPosition === 'side',
-        'spectrum-FieldLabel--alignEnd': props.labelAlign === 'end'
+        'spectrum-FieldLabel--positionSide': resolvedProps.value.labelPosition === 'side',
+        'spectrum-FieldLabel--alignEnd': resolvedProps.value.labelAlign === 'end'
       }
     ));
 
@@ -348,7 +429,7 @@ export const NumberField = defineComponent({
       fieldStyles,
       'spectrum-Field-field',
       {
-        'spectrum-Stepper--isQuiet': props.isQuiet,
+        'spectrum-Stepper--isQuiet': resolvedProps.value.isQuiet,
         'spectrum-Stepper--readonly': isReadOnly.value,
         'spectrum-Stepper--showStepper': showStepper.value,
         'is-disabled': isDisabled.value,
@@ -368,7 +449,7 @@ export const NumberField = defineComponent({
       textfieldStyles,
       'spectrum-Textfield-wrapper',
       {
-        'spectrum-Textfield-wrapper--quiet': props.isQuiet
+        'spectrum-Textfield-wrapper--quiet': resolvedProps.value.isQuiet
       }
     ));
 
@@ -382,7 +463,7 @@ export const NumberField = defineComponent({
       {
         'spectrum-Textfield--invalid': isInvalid.value,
         'spectrum-Textfield--valid': isValid.value,
-        'spectrum-Textfield--quiet': props.isQuiet
+        'spectrum-Textfield--quiet': resolvedProps.value.isQuiet
       }
     ));
 
@@ -403,9 +484,9 @@ export const NumberField = defineComponent({
       'spectrum-Stepper-button',
       'spectrum-BaseButton',
       'i18nFontFamily',
-      'spectrum-Stepper-button--stepUp',
+        'spectrum-Stepper-button--stepUp',
       {
-        'spectrum-Stepper-button--isQuiet': props.isQuiet,
+        'spectrum-Stepper-button--isQuiet': resolvedProps.value.isQuiet,
         'is-hovered': upHovered.value && canStep.value,
         'is-active': upPressed.value && canStep.value,
         'is-disabled': !canStep.value,
@@ -418,9 +499,9 @@ export const NumberField = defineComponent({
       'spectrum-Stepper-button',
       'spectrum-BaseButton',
       'i18nFontFamily',
-      'spectrum-Stepper-button--stepDown',
+        'spectrum-Stepper-button--stepDown',
       {
-        'spectrum-Stepper-button--isQuiet': props.isQuiet,
+        'spectrum-Stepper-button--isQuiet': resolvedProps.value.isQuiet,
         'is-hovered': downHovered.value && canStep.value,
         'is-active': downPressed.value && canStep.value,
         'is-disabled': !canStep.value,
@@ -504,12 +585,12 @@ export const NumberField = defineComponent({
     };
 
     let fieldLabel = computed(() => {
-      if (typeof props.label === 'string' && props.label.length > 0) {
-        return props.label;
+      if (typeof resolvedProps.value.label === 'string' && resolvedProps.value.label.length > 0) {
+        return resolvedProps.value.label;
       }
 
-      if (typeof props.label === 'number') {
-        return String(props.label);
+      if (typeof resolvedProps.value.label === 'number') {
+        return String(resolvedProps.value.label);
       }
 
       let attrLabel = attrs['aria-label'];
@@ -520,8 +601,15 @@ export const NumberField = defineComponent({
       return 'Value';
     });
 
-    let incrementAriaLabel = computed(() => props.incrementAriaLabel ?? `Increase ${fieldLabel.value}`);
-    let decrementAriaLabel = computed(() => props.decrementAriaLabel ?? `Decrease ${fieldLabel.value}`);
+    let incrementAriaLabel = computed(() => resolvedProps.value.incrementAriaLabel ?? `Increase ${fieldLabel.value}`);
+    let decrementAriaLabel = computed(() => resolvedProps.value.decrementAriaLabel ?? `Decrease ${fieldLabel.value}`);
+    let inputMode = computed<'decimal' | 'numeric'>(() => {
+      if (resolvedProps.value.formatOptions?.maximumFractionDigits === 0) {
+        return 'numeric';
+      }
+
+      return 'decimal';
+    });
 
     let focusInput = () => {
       if (!inputRef.value) {
@@ -534,20 +622,20 @@ export const NumberField = defineComponent({
     return () => h('div', {
       ...passthroughRootAttrs.value,
       class: [rootClassName.value, stepperContainerClassName.value, attrs.class],
-      style: [{width: props.width}, attrs.style]
+      style: [{width: resolvedProps.value.width}, attrs.style]
     }, [
-      props.label
+      resolvedProps.value.label
         ? h('label', {
           id: labelId.value,
           class: labelClassName.value,
           for: inputId.value
         }, [
-          props.label,
-          (necessityIndicator.value === 'label' || necessityIndicator.value === 'icon') && isRequired.value ? ' \u200b' : null,
-          necessityIndicator.value === 'label' && isRequired.value
-            ? h('span', {'aria-hidden': 'true'}, '(required)')
+          resolvedProps.value.label,
+          showNecessitySpacer.value ? ' \u200b' : null,
+          labelRequirementText.value
+            ? h('span', {'aria-hidden': 'true'}, labelRequirementText.value)
             : null,
-          necessityIndicator.value === 'icon' && isRequired.value
+          showRequiredIcon.value
             ? h('span', {
               class: classNames(fieldStyles, 'spectrum-FieldLabel-requiredIcon'),
               'aria-hidden': 'true'
@@ -555,14 +643,15 @@ export const NumberField = defineComponent({
             : null
         ])
         : null,
-      props.label && props.contextualHelp
+      resolvedProps.value.label && resolvedProps.value.contextualHelp
         ? h('span', {
           class: classNames(fieldStyles, 'spectrum-Field-contextualHelp')
-        }, props.contextualHelp as never)
+        }, resolvedProps.value.contextualHelp as never)
         : null,
       h('div', {
         class: groupClassName.value,
         role: 'group',
+        'aria-disabled': isDisabled.value ? 'true' : undefined,
         'aria-invalid': isInvalid.value ? 'true' : undefined,
         onMouseenter: () => {
           if (isDisabled.value) {
@@ -587,21 +676,25 @@ export const NumberField = defineComponent({
               ref: inputRef,
               class: inputClassName.value,
               type: 'text',
-              value: currentValue.value ?? '',
+              value: displayValue.value,
               autocomplete: 'off',
-              inputmode: 'numeric',
+              inputmode: inputMode.value,
               autocorrect: 'off',
               spellcheck: 'false',
               tabindex: isDisabled.value ? undefined : attrs.tabindex ?? 0,
-              placeholder: props.placeholder || undefined,
+              placeholder: resolvedProps.value.placeholder || undefined,
               disabled: isDisabled.value || undefined,
               readonly: isReadOnly.value || undefined,
               required: isRequired.value || undefined,
-              autofocus: props.autoFocus || attrs.autofocus || undefined,
+              autofocus: resolvedProps.value.autoFocus || attrs.autofocus || undefined,
+              role: 'spinbutton',
               'aria-label': ariaLabel.value,
               'aria-labelledby': ariaLabel.value ? undefined : ariaLabelledBy.value,
               'aria-describedby': describedBy.value,
               'aria-invalid': isInvalid.value ? 'true' : undefined,
+              'aria-valuenow': currentValue.value ?? undefined,
+              'aria-valuemin': minValue.value,
+              'aria-valuemax': maxValue.value,
               'aria-roledescription': 'Number field',
               onMouseenter: () => {
                 if (!isDisabled.value) {
@@ -612,7 +705,11 @@ export const NumberField = defineComponent({
                 inputHovered.value = false;
               },
               onInput: (event: Event) => {
-                let nextValue = parseInputValue(readInputValue(event));
+                let nextValue = parseInputValue(
+                  readInputValue(event),
+                  numberFormatter.value,
+                  resolvedProps.value.formatOptions
+                );
                 emitValue(nextValue);
               },
               onFocus: (event: FocusEvent) => {
@@ -666,6 +763,7 @@ export const NumberField = defineComponent({
             role: 'button',
             tabindex: -1,
             'data-react-aria-pressable': 'true',
+            'aria-disabled': !canStep.value ? 'true' : undefined,
             'aria-controls': inputId.value,
             'aria-label': incrementAriaLabel.value,
             onMouseenter: () => {
@@ -701,10 +799,10 @@ export const NumberField = defineComponent({
             onKeydown: (event: KeyboardEvent) => {
               if (event.key === 'Enter' || event.key === ' ') {
                 event.preventDefault();
-                stepBy(props.step);
+                stepBy(resolvedProps.value.step);
               }
             },
-            onClick: () => stepBy(props.step)
+            onClick: () => stepBy(resolvedProps.value.step)
           }, [
             h('svg', {
               class: classNames(
@@ -731,6 +829,7 @@ export const NumberField = defineComponent({
             role: 'button',
             tabindex: -1,
             'data-react-aria-pressable': 'true',
+            'aria-disabled': !canStep.value ? 'true' : undefined,
             'aria-controls': inputId.value,
             'aria-label': decrementAriaLabel.value,
             onMouseenter: () => {
@@ -766,10 +865,10 @@ export const NumberField = defineComponent({
             onKeydown: (event: KeyboardEvent) => {
               if (event.key === 'Enter' || event.key === ' ') {
                 event.preventDefault();
-                stepBy(-props.step);
+                stepBy(-resolvedProps.value.step);
               }
             },
-            onClick: () => stepBy(-props.step)
+            onClick: () => stepBy(-resolvedProps.value.step)
           }, [
             h('svg', {
               class: classNames(
@@ -790,12 +889,12 @@ export const NumberField = defineComponent({
             ])
           ])
           : null,
-        props.name
+        resolvedProps.value.name
           ? h('input', {
             type: 'hidden',
             hidden: true,
-            name: props.name,
-            form: props.form || undefined,
+            name: resolvedProps.value.name,
+            form: resolvedProps.value.form || undefined,
             value: currentValue.value ?? ''
           })
           : null

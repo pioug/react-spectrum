@@ -13,7 +13,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-function renderIconWithSizes(config: {ariaLabel: string, color?: string, component: unknown}) {
+function renderIconWithSizes(config: {ariaLabel: string, color?: 'informative' | 'negative' | 'notice' | 'positive', component: unknown}) {
   return {
     components: {
       Add,
@@ -30,50 +30,51 @@ function renderIconWithSizes(config: {ariaLabel: string, color?: string, compone
       };
     },
     template: `
-      <div style="display: flex; flex-wrap: wrap; gap: 12px;">
+      <div>
         <component
           :is="iconComponent"
           v-for="size in sizes"
           :key="size"
           :size="size"
           :aria-label="ariaLabel"
-          :style="{color: color || undefined}" />
+          :color="color"
+          style="margin: 15px;" />
       </div>
     `
   };
 }
 
-export const Icon3DMaterialsWithSizes: Story = {
-  render: () => renderIconWithSizes({component: Icon3DMaterials, ariaLabel: '3D Materials'}),
-  name: 'Icon 3 D Materials With Sizes'
-};
-
 export const IconAddWithSizes: Story = {
   render: () => renderIconWithSizes({component: Add, ariaLabel: 'Add'}),
-  name: 'Icon Add With Sizes'
+  name: 'icon: Add with sizes'
 };
 
 export const IconBellWithSizes: Story = {
   render: () => renderIconWithSizes({component: Bell, ariaLabel: 'Bell'}),
-  name: 'Icon Bell With Sizes'
+  name: 'icon: Bell with sizes'
+};
+
+export const Icon3DMaterialsWithSizes: Story = {
+  render: () => renderIconWithSizes({component: Icon3DMaterials, ariaLabel: '3D Materials'}),
+  name: 'icon: _3DMaterials with sizes'
 };
 
 export const IconAlertNegative: Story = {
-  render: () => renderIconWithSizes({component: Alert, ariaLabel: 'Alert', color: '#d31510'}),
-  name: 'Icon Alert Negative'
+  render: () => renderIconWithSizes({component: Alert, ariaLabel: 'Alert', color: 'negative'}),
+  name: 'icon: Alert negative'
 };
 
 export const IconAlertInformative: Story = {
-  render: () => renderIconWithSizes({component: Alert, ariaLabel: 'Alert', color: '#0265dc'}),
-  name: 'Icon Alert Informative'
+  render: () => renderIconWithSizes({component: Alert, ariaLabel: 'Alert', color: 'informative'}),
+  name: 'icon: Alert informative'
 };
 
 export const IconAlertPositive: Story = {
-  render: () => renderIconWithSizes({component: Alert, ariaLabel: 'Alert', color: '#12805c'}),
-  name: 'Icon Alert Positive'
+  render: () => renderIconWithSizes({component: Alert, ariaLabel: 'Alert', color: 'positive'}),
+  name: 'icon: Alert positive'
 };
 
 export const IconAlertNotice: Story = {
-  render: () => renderIconWithSizes({component: Alert, ariaLabel: 'Alert', color: '#b44c00'}),
-  name: 'Icon Alert Notice'
+  render: () => renderIconWithSizes({component: Alert, ariaLabel: 'Alert', color: 'notice'}),
+  name: 'icon: Alert notice'
 };

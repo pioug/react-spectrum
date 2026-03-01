@@ -1,5 +1,6 @@
 import '@adobe/spectrum-css-temp/components/button/vars.css';
 import './stateClassOverrides.css';
+import {useProviderProps} from '@vue-spectrum/provider';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, type ComputedRef, defineComponent, h, isVNode, onBeforeUnmount, type PropType, ref, Text as VueText, watch} from 'vue';
 import {getEventTarget} from '@vue-aria/utils';
@@ -401,6 +402,13 @@ export const VueButton = defineComponent({
     click: (event: MouseEvent) => event instanceof MouseEvent
   },
   setup(props, {attrs, emit, slots}) {
+    let providerProps = useProviderProps(props);
+    let resolvedProps = computed(() => Object.assign({}, props, providerProps));
+    let baseButtonProps = new Proxy(props as typeof props, {
+      get(_target, key) {
+        return (resolvedProps.value as Record<string, unknown>)[key as string];
+      }
+    }) as typeof props;
     let pendingTimer = ref<ReturnType<typeof setTimeout> | null>(null);
     let isProgressVisible = ref(false);
 
@@ -427,35 +435,35 @@ export const VueButton = defineComponent({
     });
 
     let resolvedVariant = computed(() => {
-      if (props.variant === 'cta') {
+      if (resolvedProps.value.variant === 'cta') {
         return 'accent';
       }
 
-      if (props.variant === 'overBackground') {
+      if (resolvedProps.value.variant === 'overBackground') {
         return 'primary';
       }
 
-      return props.variant;
+      return resolvedProps.value.variant;
     });
 
     let resolvedStyle = computed<ButtonStyle>(() => {
-      if (props.style) {
-        return props.style;
+      if (resolvedProps.value.style) {
+        return resolvedProps.value.style;
       }
 
-      return props.variant === 'accent' || props.variant === 'cta' ? 'fill' : 'outline';
+      return resolvedProps.value.variant === 'accent' || resolvedProps.value.variant === 'cta' ? 'fill' : 'outline';
     });
 
     let resolvedStaticColor = computed<StaticColor | undefined>(() => {
-      if (props.variant === 'overBackground') {
+      if (resolvedProps.value.variant === 'overBackground') {
         return 'white';
       }
 
-      return props.staticColor;
+      return resolvedProps.value.staticColor;
     });
 
     let buttonState = useBaseButtonSemantics(
-      props,
+      baseButtonProps,
       attrs as Record<string, unknown>,
       (event) => emit('click', event)
     );
@@ -491,7 +499,7 @@ export const VueButton = defineComponent({
       };
       let renderedChildren = Array.isArray(children) ? [...children] : [children];
 
-      if (props.isPending) {
+      if (resolvedProps.value.isPending) {
         buttonProps['aria-disabled'] = 'true';
         renderedChildren.push(
           h('div', {
@@ -507,8 +515,8 @@ export const VueButton = defineComponent({
         );
       }
 
-      if (props.render) {
-        return props.render(buttonProps, renderedChildren);
+      if (resolvedProps.value.render) {
+        return resolvedProps.value.render(buttonProps, renderedChildren);
       }
 
       return h(buttonState.elementType.value, buttonProps, renderedChildren);

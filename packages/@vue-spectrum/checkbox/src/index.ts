@@ -2,6 +2,7 @@ import '@adobe/spectrum-css-temp/components/checkbox/vars.css';
 import '@adobe/spectrum-css-temp/components/fieldgroup/vars.css';
 import '@adobe/spectrum-css-temp/components/fieldlabel/vars.css';
 import '@adobe/spectrum-css-temp/components/helptext/vars.css';
+import {useProviderProps} from '@vue-spectrum/provider';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, inject, type InjectionKey, type PropType, provide, ref, type Ref} from 'vue';
 import {filterDOMProps} from '@vue-aria/utils';
@@ -394,12 +395,14 @@ export const CheckboxGroup = defineComponent({
     change: (value: CheckboxValue[]) => Array.isArray(value)
   },
   setup(props, {attrs, slots, emit}) {
+    let providerProps = useProviderProps(props);
+    let resolvedProps = computed(() => Object.assign({}, props, providerProps));
     let groupId = `vs-checkbox-group-${++checkboxGroupId}`;
-    let uncontrolledValue = ref<CheckboxValue[]>(props.defaultValue ? [...props.defaultValue] : []);
-    let selectedValues = computed(() => props.value ?? props.modelValue ?? uncontrolledValue.value);
-    let labelId = computed(() => props.label ? `${groupId}-label` : undefined);
-    let descriptionId = computed(() => props.description ? `${groupId}-description` : undefined);
-    let errorMessageId = computed(() => props.errorMessage ? `${groupId}-error-message` : undefined);
+    let uncontrolledValue = ref<CheckboxValue[]>(resolvedProps.value.defaultValue ? [...resolvedProps.value.defaultValue] : []);
+    let selectedValues = computed(() => resolvedProps.value.value ?? resolvedProps.value.modelValue ?? uncontrolledValue.value);
+    let labelId = computed(() => resolvedProps.value.label ? `${groupId}-label` : undefined);
+    let descriptionId = computed(() => resolvedProps.value.description ? `${groupId}-description` : undefined);
+    let errorMessageId = computed(() => resolvedProps.value.errorMessage ? `${groupId}-error-message` : undefined);
     let externalAriaLabelledBy = computed(() => {
       let value = attrs['aria-labelledby'];
       return typeof value === 'string' && value.length > 0 ? value : undefined;
@@ -420,10 +423,10 @@ export const CheckboxGroup = defineComponent({
       let value = attrs['aria-label'];
       return typeof value === 'string' ? value : undefined;
     });
-    let groupName = computed(() => props.name);
-    let isInvalid = computed(() => (props.isInvalid || props.invalid || props.validationState === 'invalid') && !props.isDisabled);
-    let showErrorMessage = computed(() => isInvalid.value && !!props.errorMessage);
-    let helpText = computed(() => showErrorMessage.value ? props.errorMessage : props.description);
+    let groupName = computed(() => resolvedProps.value.name);
+    let isInvalid = computed(() => (resolvedProps.value.isInvalid || resolvedProps.value.invalid || resolvedProps.value.validationState === 'invalid') && !resolvedProps.value.isDisabled);
+    let showErrorMessage = computed(() => isInvalid.value && !!resolvedProps.value.errorMessage);
+    let helpText = computed(() => showErrorMessage.value ? resolvedProps.value.errorMessage : resolvedProps.value.description);
     let activeHelpTextId = computed(() => showErrorMessage.value ? errorMessageId.value : descriptionId.value);
     let ariaDescribedBy = computed(() => {
       let parts = [externalAriaDescribedBy.value, activeHelpTextId.value].filter((part): part is string => Boolean(part));
@@ -431,16 +434,16 @@ export const CheckboxGroup = defineComponent({
     });
 
     provide(checkboxGroupContextKey, {
-      disabled: computed(() => props.isDisabled),
+      disabled: computed(() => resolvedProps.value.isDisabled),
       descriptionId,
       errorMessageId,
-      isEmphasized: computed(() => props.isEmphasized),
-      isReadOnly: computed(() => props.isReadOnly),
+      isEmphasized: computed(() => resolvedProps.value.isEmphasized),
+      isReadOnly: computed(() => resolvedProps.value.isReadOnly),
       invalid: isInvalid,
       modelValue: computed(() => selectedValues.value),
       name: groupName,
       setChecked: (value: CheckboxValue, checked: boolean) => {
-        if (props.isDisabled || props.isReadOnly) {
+        if (resolvedProps.value.isDisabled || resolvedProps.value.isReadOnly) {
           return;
         }
 
@@ -451,7 +454,7 @@ export const CheckboxGroup = defineComponent({
           values.delete(value);
         }
         let next = Array.from(values);
-        if (props.value === undefined && props.modelValue === undefined) {
+        if (resolvedProps.value.value === undefined && resolvedProps.value.modelValue === undefined) {
           uncontrolledValue.value = next;
         }
         emit('update:modelValue', next);
@@ -478,10 +481,10 @@ export const CheckboxGroup = defineComponent({
             'spectrum-Field',
             'spectrum-FieldGroup',
             {
-              'spectrum-Field--positionTop': (props.labelPosition ?? 'top') !== 'side',
-              'spectrum-Field--positionSide': props.labelPosition === 'side',
-              'spectrum-Field--alignEnd': props.labelAlign === 'end',
-              'spectrum-Field--hasContextualHelp': !!props.contextualHelp
+              'spectrum-Field--positionTop': (resolvedProps.value.labelPosition ?? 'top') !== 'side',
+              'spectrum-Field--positionSide': resolvedProps.value.labelPosition === 'side',
+              'spectrum-Field--alignEnd': resolvedProps.value.labelAlign === 'end',
+              'spectrum-Field--hasContextualHelp': !!resolvedProps.value.contextualHelp
             }
           ),
           attrs.class,
@@ -490,14 +493,14 @@ export const CheckboxGroup = defineComponent({
         ],
         style: attrs.style ?? domStyle
       }, [
-        props.label
+        resolvedProps.value.label
           ? h('span', {
             id: labelId.value,
             class: classNames(fieldgroupStyles, 'spectrum-FieldLabel')
-          }, props.label)
+          }, resolvedProps.value.label)
           : null,
-        props.contextualHelp
-          ? h('span', {class: classNames(fieldgroupStyles, 'spectrum-Field-contextualHelp')}, props.contextualHelp as never)
+        resolvedProps.value.contextualHelp
+          ? h('span', {class: classNames(fieldgroupStyles, 'spectrum-Field-contextualHelp')}, resolvedProps.value.contextualHelp as never)
           : null,
         h('div', {
           ...groupDomProps,
@@ -508,14 +511,14 @@ export const CheckboxGroup = defineComponent({
             'spectrum-FieldGroup-group',
             'spectrum-Field-field',
             {
-              'spectrum-FieldGroup-group--horizontal': props.orientation === 'horizontal'
+              'spectrum-FieldGroup-group--horizontal': resolvedProps.value.orientation === 'horizontal'
             }
           ),
           'aria-labelledby': ariaLabelledBy.value,
           'aria-label': ariaLabel.value,
           'aria-describedby': ariaDescribedBy.value,
           'aria-invalid': isInvalid.value ? 'true' : undefined,
-          'aria-disabled': props.isDisabled ? 'true' : undefined,
+          'aria-disabled': resolvedProps.value.isDisabled ? 'true' : undefined,
           'aria-required': props.isRequired ? 'true' : undefined
         }, slots.default ? slots.default() : []),
         helpText.value
@@ -525,10 +528,10 @@ export const CheckboxGroup = defineComponent({
               fieldgroupStyles,
               'spectrum-HelpText',
               `spectrum-HelpText--${showErrorMessage.value ? 'negative' : 'neutral'}`,
-              {'is-disabled': props.isDisabled}
+              {'is-disabled': resolvedProps.value.isDisabled}
             )
           }, [
-            showErrorMessage.value && props.showErrorIcon
+            showErrorMessage.value && resolvedProps.value.showErrorIcon
               ? h('span', {
                 class: classNames(fieldgroupStyles, 'spectrum-HelpText-validationIcon'),
                 'aria-hidden': 'true'

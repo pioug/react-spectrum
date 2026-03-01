@@ -100,9 +100,11 @@ const meta: Meta<typeof Table> = {
   args: {
     ariaLabel: 'TableView with static expandable rows',
     columns: COLUMNS,
+    height: 300,
     openKeys: new Set(['row-1']),
     rowKey: 'id',
-    rows: NESTED_ROWS
+    rows: NESTED_ROWS,
+    width: 500
   },
   argTypes: {
     ariaLabel: {
@@ -132,6 +134,9 @@ const meta: Meta<typeof Table> = {
     isQuiet: {
       control: 'boolean'
     },
+    height: {
+      control: 'text'
+    },
     openKeys: {
       table: {
         disable: true
@@ -155,7 +160,8 @@ const meta: Meta<typeof Table> = {
       }
     },
     selectionMode: {
-      control: 'text'
+      control: 'select',
+      options: ['none', 'single', 'multiple']
     },
     sortDescriptor: {
       table: {
@@ -165,6 +171,9 @@ const meta: Meta<typeof Table> = {
     visibility: {
       control: 'select',
       options: ['hidden', 'visible']
+    },
+    width: {
+      control: 'text'
     }
   }
 };
@@ -289,13 +298,38 @@ export const ManyExpandableRowsStory: Story = {
 };
 
 export const EmptyTreeGridStory: Story = {
-  render: (args) => EmptyTreeGridStoryRender(args),
+  render: (args) => ({
+    components: {Table},
+    setup() {
+      let rows = ref<RowItem[]>([]);
+      let toggle = () => {
+        rows.value = rows.value.length > 0 ? [] : normalizeRows(args.rows);
+      };
+      return {
+        args,
+        rows,
+        toggle
+      };
+    },
+    template: `
+      <div style="display: grid; gap: 8px;">
+        <button type="button" @click="toggle">Toggle items</button>
+        <Table v-bind="args" :rows="rows" />
+        <div v-if="rows.length === 0" style="display: grid; place-items: center; gap: 6px; margin-top: -150px; pointer-events: none;">
+          <strong>No results</strong>
+          <span>No results found, press <a href="#">here</a> for more info.</span>
+        </div>
+      </div>
+    `
+  }),
   args: {
     ariaLabel: 'TableView with empty state',
-    columns: COLUMNS,
+    columns: Array.from({length: 7}, (_, index) => ({key: `col${index}`, label: `Column ${index}`})),
     rows: [],
     openKeys: new Set(),
-    rowKey: 'id'
+    rowKey: 'id',
+    width: 700,
+    height: 400
   },
   name: 'empty state'
 };
@@ -329,14 +363,16 @@ export const NestedColumnsStory: Story = {
 };
 
 export const ResizableColumnsStory: Story = {
-  render: (args) => renderExpandableTable(args),
+  render: (args) => renderExpandableTable(args, true),
   args: {
     ariaLabel: 'TableView with resizable columns',
     columns: COLUMNS,
-    rows: NESTED_ROWS,
-    openKeys: new Set(['row-1']),
+    rows: makeManyRows(3),
+    openKeys: new Set(['many-1', 'many-1-child', 'many-2', 'many-2-child', 'many-3', 'many-3-child']),
     resizableColumns: ['foo', 'bar', 'baz'],
-    rowKey: 'id'
+    rowKey: 'id',
+    width: 500,
+    height: 300
   },
   name: 'resizable columns'
 };

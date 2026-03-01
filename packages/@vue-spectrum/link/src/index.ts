@@ -1,11 +1,12 @@
 import '@adobe/spectrum-css-temp/components/link/vars.css';
 import {classNames} from '@vue-spectrum/utils';
 import {cloneVNode, computed, defineComponent, h, isVNode, mergeProps, type PropType, ref} from 'vue';
+import {useProviderProps} from '@vue-spectrum/provider';
 import {getEventTarget} from '@vue-aria/utils';
 const styles: {[key: string]: string} = {};
 
 
-type Variant = 'negative' | 'overBackground' | 'primary' | 'secondary';
+type Variant = 'overBackground' | 'primary' | 'secondary';
 
 export const Link = defineComponent({
   name: 'VueLink',
@@ -13,7 +14,7 @@ export const Link = defineComponent({
   props: {
     href: {
       type: String,
-      default: ''
+      default: undefined
     },
     isQuiet: {
       type: Boolean,
@@ -43,13 +44,15 @@ export const Link = defineComponent({
   setup(props, {slots, emit, attrs}) {
     let isHovered = ref(false);
     let isFocusVisible = ref(false);
+    let providerProps = useProviderProps(props);
+    let resolvedProps = computed(() => Object.assign({}, props, providerProps));
 
     let className = computed(() => classNames(
       styles,
       'spectrum-Link',
       {
-        'spectrum-Link--quiet': props.isQuiet,
-        [`spectrum-Link--${props.variant}`]: props.variant,
+        'spectrum-Link--quiet': resolvedProps.value.isQuiet,
+        [`spectrum-Link--${resolvedProps.value.variant}`]: resolvedProps.value.variant,
         'is-hovered': isHovered.value,
         'focus-ring': isFocusVisible.value
       }
@@ -57,7 +60,7 @@ export const Link = defineComponent({
 
     return () => {
       let contentNodes = slots.default ? slots.default() : [];
-      let wrappedChild = !props.href && contentNodes.length === 1 && isVNode(contentNodes[0]) ? contentNodes[0] : null;
+      let wrappedChild = !resolvedProps.value.href && contentNodes.length === 1 && isVNode(contentNodes[0]) ? contentNodes[0] : null;
       let wrappedChildType = wrappedChild && typeof wrappedChild.type === 'string' ? wrappedChild.type : null;
       let isWrappedAnchor = wrappedChildType === 'a';
       let tabIndex = attrs.tabindex ?? 0;
@@ -66,10 +69,10 @@ export const Link = defineComponent({
         class: [className.value, attrs.class],
         'data-react-aria-pressable': 'true',
         tabindex: tabIndex,
-        role: !props.href && !isWrappedAnchor ? 'link' : undefined,
-        ...(props.href ? {href: props.href} : {}),
-        ...(props.target ? {target: props.target} : {}),
-        ...(props.rel ? {rel: props.rel} : {}),
+        role: !resolvedProps.value.href && !isWrappedAnchor ? 'link' : undefined,
+        ...(resolvedProps.value.href ? {href: resolvedProps.value.href} : {}),
+        ...(resolvedProps.value.target ? {target: resolvedProps.value.target} : {}),
+        ...(resolvedProps.value.rel ? {rel: resolvedProps.value.rel} : {}),
         onMouseenter: () => {
           isHovered.value = true;
         },
@@ -115,8 +118,8 @@ export const Link = defineComponent({
         return cloneVNode(wrappedChild, mergeProps(wrappedChild.props ?? {}, attrs, baseProps));
       }
 
-      let tag = props.href ? 'a' : 'span';
-      return h(tag, mergeProps(attrs, baseProps), contentNodes.length > 0 ? contentNodes : (props.href || 'Link'));
+      let tag = resolvedProps.value.href ? 'a' : 'span';
+      return h(tag, mergeProps(attrs, baseProps), contentNodes.length > 0 ? contentNodes : []);
     };
   }
 });

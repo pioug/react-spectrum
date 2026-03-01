@@ -2,7 +2,7 @@ import '@adobe/spectrum-css-temp/components/dialog/vars.css';
 import {ActionButton, Button} from '@vue-spectrum/button';
 import {Modal, Popover, Tray} from '@vue-spectrum/overlays';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, type ComputedRef, defineComponent, getCurrentInstance, h, inject, nextTick, onBeforeUnmount, provide, ref, type InjectionKey, type PropType, type VNode, watch} from 'vue';
+import {cloneVNode, computed, type ComputedRef, defineComponent, getCurrentInstance, h, inject, isVNode, nextTick, onBeforeUnmount, provide, ref, type InjectionKey, type PropType, type VNode, watch} from 'vue';
 const styles: {[key: string]: string} = {};
 
 
@@ -222,64 +222,83 @@ export const Dialog = defineComponent({
         return null;
       }
 
-      let headingNode = null;
+      let headingNode: VNode | null = null;
       if (slots.heading) {
-        headingNode = h('div', {
-          id: titleId.value,
-          class: [headingClassName.value, 'vs-dialog__title']
-        }, slots.heading());
+        let headingContent = slots.heading();
+        let firstHeadingNode = headingContent.find((node) => isVNode(node));
+        if (firstHeadingNode && headingContent.length === 1) {
+          headingNode = cloneVNode(firstHeadingNode, {
+            id: titleId.value,
+            class: [firstHeadingNode.props?.class, headingClassName.value]
+          });
+        } else {
+          headingNode = h('h2', {
+            id: titleId.value,
+            class: headingClassName.value
+          }, headingContent);
+        }
       } else if (props.title) {
         headingNode = h('h2', {
           id: titleId.value,
-          class: [headingClassName.value, 'vs-dialog__title']
+          class: headingClassName.value
         }, props.title);
       }
 
       let typeIconNode = slots.typeIcon
-        ? h('div', {class: [typeIconClassName.value, 'vs-dialog__type-icon']}, slots.typeIcon())
+        ? h('div', {class: typeIconClassName.value}, slots.typeIcon())
         : null;
 
-      let headerContent = (slots.header
-        ? [
+      let headerNode: VNode | null = null;
+      if (slots.header) {
+        let headerContent = [
           ...slots.header(),
           typeIconNode,
           headingNode
-        ]
-        : [
-          typeIconNode,
-          headingNode
-        ]).filter((node) => node !== null);
+        ].filter((node) => node !== null);
 
-      let headerNode = (slots.header || headingNode || typeIconNode)
-        ? h('header', {class: [headerClassName.value, 'vs-dialog__header']}, headerContent)
-        : null;
+        headerNode = headerContent.length > 0
+          ? h('header', {class: headerClassName.value}, headerContent)
+          : null;
+      }
 
-      let dividerNode = slots.divider
-        ? h('div', {class: [dividerClassName.value, 'vs-dialog__divider']}, slots.divider())
-        : null;
+      let dividerNode: VNode | VNode[] | null = null;
+      if (slots.divider) {
+        let dividerContent = [...slots.divider()];
+        let firstDividerIndex = dividerContent.findIndex((node) => isVNode(node));
+        if (firstDividerIndex >= 0) {
+          let firstDividerNode = dividerContent[firstDividerIndex] as VNode;
+          dividerContent[firstDividerIndex] = cloneVNode(firstDividerNode, {
+            ...(typeof firstDividerNode.type === 'string' ? {} : {size: 'M'}),
+            class: [firstDividerNode.props?.class, dividerClassName.value]
+          });
+          dividerNode = dividerContent.length === 1 ? dividerContent[0] : dividerContent;
+        } else {
+          dividerNode = h('hr', {class: dividerClassName.value});
+        }
+      }
 
       let heroNode = slots.hero
-        ? h('div', {class: [heroClassName.value, 'vs-dialog__hero']}, slots.hero())
+        ? h('div', {class: heroClassName.value}, slots.hero())
         : null;
 
       let footerNode = slots.footer
-        ? h('footer', {class: [footerClassName.value, 'vs-dialog__footer']}, slots.footer())
+        ? h('footer', {class: footerClassName.value}, slots.footer())
         : null;
 
       let buttonGroupNode = slots.buttonGroup
-        ? h('div', {class: [buttonGroupClassName.value, 'vs-dialog__button-group']}, slots.buttonGroup())
+        ? h('div', {class: buttonGroupClassName.value}, slots.buttonGroup())
         : null;
 
       let closeButton = isDismissable.value
         ? h(ActionButton, {
-          class: [closeButtonClassName.value, 'vs-dialog__close'],
+          class: closeButtonClassName.value,
           isQuiet: true,
           'aria-label': 'Close dialog',
           onClick: closeDialog
         }, {
           default: () => [
             renderSpectrumIcon(
-              'spectrum-Icon spectrum-UIIcon-CrossLarge vs-dialog__close-icon',
+              'spectrum-Icon spectrum-UIIcon-CrossLarge',
               CLOSE_ICON_PATH,
               {'aria-hidden': 'true', viewBox: '0 0 12 12'}
             )
@@ -289,20 +308,24 @@ export const Dialog = defineComponent({
 
       let hidden = props.isHidden || attrs.hidden === '' || attrs.hidden === true;
 
+      let leadingNodes = slots.header
+        ? [headerNode]
+        : [typeIconNode, headingNode];
+
       return h('section', {
         ...attrs,
-        class: [dialogClassName.value, 'vs-dialog', attrs.class],
+        class: [dialogClassName.value, attrs.class],
         role: props.role,
         tabindex: -1,
         'aria-labelledby': ariaLabelledBy.value,
         hidden: hidden || undefined,
         'data-vac': ''
       }, [
-        h('div', {class: [gridClassName.value, 'vs-dialog__grid']}, [
+        h('div', {class: gridClassName.value}, [
           heroNode,
-          headerNode,
+          ...leadingNodes,
           dividerNode,
-          h('div', {class: [contentClassName.value, 'vs-dialog__body']}, slots.default ? slots.default() : []),
+          h('div', {class: contentClassName.value}, slots.default ? slots.default() : []),
           footerNode,
           buttonGroupNode,
           closeButton

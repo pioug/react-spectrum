@@ -1,9 +1,15 @@
 import {action} from 'storybook/actions';
+import {ActionMenu} from '@vue-spectrum/menu';
+import {Breadcrumbs} from '@vue-spectrum/breadcrumbs';
 import {ListView, type ListItemRecord} from '../src';
+import {items as listItems} from './ListView.stories';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {computed, ref} from 'vue';
+import {Text} from '@vue-spectrum/text';
+import Folder from '@spectrum-icons-vue/workflow/Folder';
 
 type SelectionStoryArgs = {
+  ariaLabel?: string,
   density?: 'compact' | 'regular' | 'spacious',
   disabledBehavior?: 'all' | 'selection',
   disabledKeys?: Iterable<number | string>,
@@ -42,46 +48,17 @@ function normalizeStorySelectionValue(value: unknown): Set<number | string> {
   return normalized;
 }
 
-const baseItems: ListItemRecord[] = [
-  {key: 'a', name: 'Adobe Photoshop', type: 'file'},
-  {key: 'b', name: 'Adobe XD', type: 'file'},
-  {
-    key: 'c',
-    name: 'Documents',
-    type: 'folder',
-    children: [
-      {key: 'c-1', name: 'Sales Pitch', type: 'file'},
-      {key: 'c-2', name: 'Demo', type: 'file'},
-      {key: 'c-3', name: 'Taxes', type: 'file'}
-    ]
-  },
-  {key: 'd', name: 'Adobe InDesign', type: 'file'},
-  {
-    key: 'e',
-    name: 'Utilities',
-    type: 'folder',
-    children: [
-      {key: 'e-1', name: 'Activity Monitor', type: 'file'}
-    ]
-  },
-  {key: 'f', name: 'Adobe AfterEffects', type: 'file'},
-  {key: 'm', name: 'Pictures', type: 'folder', children: [
-    {key: 'm-1', name: 'Yosemite', type: 'file'},
-    {key: 'm-2', name: 'Jackson Hole', type: 'file'}
-  ]}
-];
-
 const linkItems: ListItemRecord[] = [
-  {key: 'https://adobe.com/', label: 'Adobe'},
-  {key: 'https://google.com/', label: 'Google'},
-  {key: 'https://apple.com/', label: 'Apple'},
-  {key: 'https://nytimes.com/', label: 'New York Times'}
+  {key: 'https://adobe.com/', label: 'Adobe', href: 'https://adobe.com/'},
+  {key: 'https://google.com/', label: 'Google', href: 'https://google.com/'},
+  {key: 'https://apple.com/', label: 'Apple', href: 'https://apple.com/'},
+  {key: 'https://nytimes.com/', label: 'New York Times', href: 'https://nytimes.com/'}
 ];
 
 const meta: Meta<typeof ListView> = {
   title: 'ListView/Selection',
   component: ListView,
-  excludeStories: ['baseItems', 'linkItems', 'renderNavigationStory', 'renderSelectionStory'],
+  excludeStories: ['linkItems', 'renderNavigationStory', 'renderSelectionStory'],
   args: {
     density: 'regular',
     disabledBehavior: 'selection',
@@ -123,16 +100,17 @@ type Story = StoryObj<typeof meta>;
 
 function renderSelectionStory(baseArgs: Partial<SelectionStoryArgs> = {}) {
   return (args: SelectionStoryArgs) => ({
-    components: {ListView},
+    components: {ActionMenu, Folder, ListView, Text},
     setup() {
       let selectedKeys = ref<Set<number | string>>(new Set());
       let onAction = action('onAction');
       let onSelectionChange = action('onSelectionChange');
+      let onActionMenuAction = action('actionMenuAction');
       let merged = computed(() => ({
         ...args,
         ...baseArgs
       }));
-      let resolvedItems = computed(() => merged.value.items ?? baseItems);
+      let resolvedItems = computed(() => merged.value.items ?? listItems);
 
       let handleSelectionChange = (value: StorySelectionValue) => {
         let values = normalizeStorySelectionValue(value);
@@ -149,31 +127,42 @@ function renderSelectionStory(baseArgs: Partial<SelectionStoryArgs> = {}) {
         handleSelectionChange,
         items: resolvedItems,
         merged,
+        onActionMenuAction,
         selectedKeys
       };
     },
     template: `
-      <ListView
-        aria-label="ListView selection"
-        style="width: 250px; height: 400px;"
+        <ListView
+          :aria-label="merged.ariaLabel || 'default selection ListView'"
+          style="width: 250px; height: 400px;"
         :density="merged.density"
         :disabled-behavior="merged.disabledBehavior"
         :disabled-keys="merged.disabledKeys || []"
         :is-quiet="merged.isQuiet"
         :items="items"
         :overflow-mode="merged.overflowMode"
-        :selected-keys="selectedKeys"
-        :selection-mode="merged.selectionMode"
-        :selection-style="merged.selectionStyle"
-        @selection-change="handleSelectionChange"
-        @action="handleAction" />
+          :selected-keys="selectedKeys"
+          :selection-mode="merged.selectionMode"
+          :selection-style="merged.selectionStyle"
+          @selection-change="handleSelectionChange"
+          @action="handleAction">
+          <template #item="{item}">
+            <Folder v-if="item.type === 'folder'" class="react-spectrum-ListViewItem-thumbnail" />
+            <Text class="react-spectrum-ListViewItem-content">{{ item.name || item.label }}</Text>
+            <div v-if="merged.showActions" class="react-spectrum-ListViewItem-actionmenu">
+              <ActionMenu
+                :items="[{key: 'add', label: 'Add'}, {key: 'delete', label: 'Delete'}]"
+                @action="onActionMenuAction" />
+            </div>
+          </template>
+        </ListView>
     `
   });
 }
 
 function renderNavigationStory(baseArgs: Partial<SelectionStoryArgs> = {}) {
   return (args: SelectionStoryArgs) => ({
-    components: {ListView},
+    components: {ActionMenu, Breadcrumbs, Folder, ListView, Text},
     setup() {
       let merged = computed(() => ({
         ...args,
@@ -181,15 +170,20 @@ function renderNavigationStory(baseArgs: Partial<SelectionStoryArgs> = {}) {
       }));
       let onAction = action('onAction');
       let onSelectionChange = action('onSelectionChange');
+      let onActionMenuAction = action('actionMenuAction');
       let selectedKeys = ref<Set<number | string>>(new Set());
       let breadcrumbs = ref<Array<ListItemRecord>>([{
         key: 'root',
         name: 'Root',
         type: 'folder',
-        children: baseItems
+        children: listItems
       }]);
       let current = computed(() => breadcrumbs.value[breadcrumbs.value.length - 1]);
       let currentItems = computed(() => (current.value.children as ListItemRecord[]) ?? []);
+      let breadcrumbItems = computed(() => breadcrumbs.value.map((crumb) => ({
+        key: crumb.key as number | string,
+        label: String(crumb.name ?? crumb.label ?? crumb.key ?? '')
+      })));
       let disabledKeys = computed(() => {
         let disabledType = merged.value.disabledType;
         if (!disabledType) {
@@ -226,6 +220,7 @@ function renderNavigationStory(baseArgs: Partial<SelectionStoryArgs> = {}) {
 
       return {
         breadcrumbs,
+        breadcrumbItems,
         current,
         currentItems,
         disabledKeys,
@@ -233,18 +228,22 @@ function renderNavigationStory(baseArgs: Partial<SelectionStoryArgs> = {}) {
         handleSelectionChange,
         merged,
         onBreadcrumbAction,
+        onActionMenuAction,
         selectedKeys
       };
     },
     template: `
-      <div style="display: grid; gap: 8px;">
-        <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+      <div>
+        <Breadcrumbs
+          :items="breadcrumbItems"
+          @action="onBreadcrumbAction" />
+        <div style="display: none;">
           <button
             v-for="crumb in breadcrumbs"
-            :key="String(crumb.key)"
+            :key="'crumb-button-' + String(crumb.key)"
             type="button"
             @click="onBreadcrumbAction(crumb.key)">
-            {{ crumb.name }}
+            {{ crumb.name || crumb.label }}
           </button>
         </div>
         <ListView
@@ -260,7 +259,17 @@ function renderNavigationStory(baseArgs: Partial<SelectionStoryArgs> = {}) {
           selection-mode="multiple"
           selection-style="checkbox"
           @selection-change="handleSelectionChange"
-          @action="handleAction" />
+          @action="handleAction">
+          <template #item="{item}">
+            <Folder v-if="item.type === 'folder'" class="react-spectrum-ListViewItem-thumbnail" />
+            <Text class="react-spectrum-ListViewItem-content">{{ item.name || item.label }}</Text>
+            <div v-if="merged.showActions" class="react-spectrum-ListViewItem-actionmenu">
+              <ActionMenu
+                :items="[{key: 'add', label: 'Add'}, {key: 'delete', label: 'Delete'}]"
+                @action="onActionMenuAction" />
+            </div>
+          </template>
+        </ListView>
       </div>
     `
   });
@@ -273,6 +282,7 @@ export const Default: Story = {
 
 export const DisableFolders: Story = {
   render: renderSelectionStory({
+    ariaLabel: 'disabled folders ListView',
     disabledKeys: ['c', 'e', 'm']
   }),
   name: 'disable folders'
@@ -280,14 +290,17 @@ export const DisableFolders: Story = {
 
 export const DisableFolderSelection: Story = {
   render: renderSelectionStory({
+    ariaLabel: 'disabled folder selection ListView',
     disabledBehavior: 'selection',
-    disabledKeys: ['c', 'e', 'm']
+    disabledKeys: ['c', 'e', 'm'],
+    showActions: true
   }),
   name: 'disable folders selection'
 };
 
 export const Links: Story = {
   render: renderSelectionStory({
+    ariaLabel: 'ListView with links',
     items: linkItems
   })
 };

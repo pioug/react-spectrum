@@ -4,6 +4,7 @@ import '@adobe/spectrum-css-temp/components/textfield/vars.css';
 import '@adobe/spectrum-css-temp/components/fieldlabel/vars.css';
 import '@adobe/spectrum-css-temp/components/helptext/vars.css';
 import './stateClassOverrides.css';
+import {useProviderProps} from '@vue-spectrum/provider';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, type PropType, ref, watch} from 'vue';
 import {getEventTarget} from '@vue-aria/utils';
@@ -164,6 +165,8 @@ export const SearchField = defineComponent({
     'update:modelValue': (value: string) => typeof value === 'string'
   },
   setup(props, {attrs, emit}) {
+    let providerProps = useProviderProps(props);
+    let resolvedProps = computed(() => Object.assign({}, props, providerProps));
     let generatedId = `vs-search-field-${++searchFieldId}`;
     let inputRef = ref<HTMLInputElement | null>(null);
     let hasWarnedDeprecatedPlaceholder = ref(false);
@@ -194,24 +197,24 @@ export const SearchField = defineComponent({
       }
     }, {immediate: true});
 
-    let inputId = computed(() => props.id ?? generatedId);
-    let labelId = computed(() => props.label ? `${inputId.value}-label` : undefined);
-    let isDisabled = computed(() => resolveBoolean(props.isDisabled, props.disabled));
-    let isReadOnly = computed(() => props.isReadOnly || props.readOnly);
-    let isRequired = computed(() => resolveBoolean(props.isRequired, props.required));
+    let inputId = computed(() => resolvedProps.value.id ?? generatedId);
+    let labelId = computed(() => resolvedProps.value.label ? `${inputId.value}-label` : undefined);
+    let isDisabled = computed(() => resolveBoolean(resolvedProps.value.isDisabled, resolvedProps.value.disabled));
+    let isReadOnly = computed(() => resolvedProps.value.isReadOnly || resolvedProps.value.readOnly);
+    let isRequired = computed(() => resolveBoolean(resolvedProps.value.isRequired, resolvedProps.value.required));
     let necessityIndicator = computed<NecessityIndicator | undefined>(() => {
-      if (props.necessityIndicator) {
-        return props.necessityIndicator;
+      if (resolvedProps.value.necessityIndicator) {
+        return resolvedProps.value.necessityIndicator;
       }
 
       return isRequired.value ? 'icon' : undefined;
     });
     let effectiveValidationState = computed<ValidationState | undefined>(() => {
-      if (props.validationState) {
-        return props.validationState;
+      if (resolvedProps.value.validationState) {
+        return resolvedProps.value.validationState;
       }
 
-      if (props.isInvalid || props.invalid) {
+      if (resolvedProps.value.isInvalid || resolvedProps.value.invalid) {
         return 'invalid';
       }
 
@@ -224,11 +227,11 @@ export const SearchField = defineComponent({
     let canClear = computed(() => showClearButton.value && !isDisabled.value);
 
     let helpText = computed(() => {
-      if (isInvalid.value && props.errorMessage) {
-        return props.errorMessage;
+      if (isInvalid.value && resolvedProps.value.errorMessage) {
+        return resolvedProps.value.errorMessage;
       }
 
-      return props.description;
+      return resolvedProps.value.description;
     });
     let helpTextId = computed(() => {
       if (!helpText.value) {
@@ -253,26 +256,26 @@ export const SearchField = defineComponent({
       fieldStyles,
       'spectrum-Field',
       {
-        'spectrum-Field--positionTop': props.labelPosition !== 'side',
-        'spectrum-Field--positionSide': props.labelPosition === 'side',
-        'spectrum-Field--alignEnd': props.labelAlign === 'end',
-        'spectrum-Field--hasContextualHelp': !!props.contextualHelp
+        'spectrum-Field--positionTop': resolvedProps.value.labelPosition !== 'side',
+        'spectrum-Field--positionSide': resolvedProps.value.labelPosition === 'side',
+        'spectrum-Field--alignEnd': resolvedProps.value.labelAlign === 'end',
+        'spectrum-Field--hasContextualHelp': !!resolvedProps.value.contextualHelp
       },
-      searchStyles,
-      'spectrum-Search',
-      'spectrum-Textfield',
-      {
-        'is-disabled': isDisabled.value,
-        'is-quiet': props.isQuiet,
-        'spectrum-Search--invalid': isInvalid.value,
-        'spectrum-Search--valid': isValid.value
-      },
-      textfieldStyles,
-      'spectrum-Textfield-wrapper',
-      {
-        'spectrum-Textfield-wrapper--quiet': props.isQuiet
-      }
-    ));
+        searchStyles,
+        'spectrum-Search',
+        'spectrum-Textfield',
+        {
+          'is-disabled': isDisabled.value,
+          'is-quiet': resolvedProps.value.isQuiet,
+          'spectrum-Search--invalid': isInvalid.value,
+          'spectrum-Search--valid': isValid.value
+        },
+        textfieldStyles,
+        'spectrum-Textfield-wrapper',
+        {
+          'spectrum-Textfield-wrapper--quiet': resolvedProps.value.isQuiet
+        }
+      ));
 
     let fieldClassName = computed(() => classNames(
       textfieldStyles,
@@ -284,12 +287,12 @@ export const SearchField = defineComponent({
       {
         'spectrum-Textfield--invalid': isInvalid.value,
         'spectrum-Textfield--valid': isValid.value,
-        'spectrum-Textfield--quiet': props.isQuiet,
+        'spectrum-Textfield--quiet': resolvedProps.value.isQuiet,
         'focus-ring': isFocusVisible.value
       }
     ));
 
-    let hasInputIcon = computed(() => props.icon !== null);
+    let hasInputIcon = computed(() => resolvedProps.value.icon !== null);
     let inputClassName = computed(() => classNames(
       textfieldStyles,
       'spectrum-Textfield-input',
@@ -311,12 +314,12 @@ export const SearchField = defineComponent({
 
     let labelClassName = computed(() => classNames(
       fieldStyles,
-      'spectrum-FieldLabel',
-      {
-        'spectrum-FieldLabel--positionSide': props.labelPosition === 'side',
-        'spectrum-FieldLabel--alignEnd': props.labelAlign === 'end'
-      }
-    ));
+        'spectrum-FieldLabel',
+        {
+          'spectrum-FieldLabel--positionSide': resolvedProps.value.labelPosition === 'side',
+          'spectrum-FieldLabel--alignEnd': resolvedProps.value.labelAlign === 'end'
+        }
+      ));
 
     let clearButtonClassName = computed(() => classNames(
       buttonStyles,
@@ -407,9 +410,9 @@ export const SearchField = defineComponent({
 
     return () => {
       let iconNode: unknown = null;
-      if (props.icon === null) {
+      if (resolvedProps.value.icon === null) {
         iconNode = null;
-      } else if (props.icon === 'refresh') {
+      } else if (resolvedProps.value.icon === 'refresh') {
         iconNode = h('svg', {
           viewBox: '0 0 36 36',
           class: [iconClassName.value, 'spectrum-Icon--sizeS'],
@@ -420,8 +423,8 @@ export const SearchField = defineComponent({
           h('path', {'fill-rule': 'evenodd', d: REFRESH_PATH_A}),
           h('path', {'fill-rule': 'evenodd', d: REFRESH_PATH_B})
         ]);
-      } else if (props.icon !== undefined) {
-        iconNode = props.icon;
+      } else if (resolvedProps.value.icon !== undefined) {
+        iconNode = resolvedProps.value.icon;
       } else {
         iconNode = renderIconPath(
           `${iconClassName.value} spectrum-UIIcon-Magnifier`,
@@ -453,13 +456,13 @@ export const SearchField = defineComponent({
         class: [rootClassName.value, attrs.class],
         style: attrs.style
       }, [
-        props.label
+        resolvedProps.value.label
           ? h('label', {
             id: labelId.value,
             class: labelClassName.value,
             for: inputId.value
           }, [
-            props.label,
+            resolvedProps.value.label,
             (necessityIndicator.value === 'label' || necessityIndicator.value === 'icon') && isRequired.value ? ' \u200b' : null,
             necessityIndicator.value === 'label' && isRequired.value
               ? h('span', {'aria-hidden': 'true'}, '(required)')
@@ -472,10 +475,10 @@ export const SearchField = defineComponent({
               : null
           ])
           : null,
-        props.label && props.contextualHelp
+        resolvedProps.value.label && resolvedProps.value.contextualHelp
           ? h('span', {
             class: classNames(fieldStyles, 'spectrum-Field-contextualHelp')
-          }, typeof props.contextualHelp === 'string' ? props.contextualHelp : [props.contextualHelp as never])
+          }, typeof resolvedProps.value.contextualHelp === 'string' ? resolvedProps.value.contextualHelp : [resolvedProps.value.contextualHelp as never])
           : null,
         h('div', {
           class: fieldClassName.value
@@ -488,11 +491,11 @@ export const SearchField = defineComponent({
             value: currentValue.value,
             name: typeof attrs.name === 'string' ? attrs.name : undefined,
             tabindex: isDisabled.value ? undefined : attrs.tabindex ?? 0,
-            placeholder: props.placeholder || undefined,
+            placeholder: resolvedProps.value.placeholder || undefined,
             disabled: isDisabled.value || undefined,
             readonly: isReadOnly.value || undefined,
             required: isRequired.value || undefined,
-            autofocus: props.autoFocus || attrs.autofocus || undefined,
+            autofocus: resolvedProps.value.autoFocus || attrs.autofocus || undefined,
             'aria-invalid': isInvalid.value ? 'true' : undefined,
             'aria-label': ariaLabel.value,
             'aria-labelledby': ariaLabelledBy.value,

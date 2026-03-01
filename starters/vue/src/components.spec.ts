@@ -296,10 +296,25 @@ describe('Vue migration primitives', () => {
     expect(wrapper.classes()).toContain('vs-flex');
     expect(element.style.display).toBe('flex');
     expect(element.style.flexDirection).toBe('column');
-    expect(element.style.gap).toBe('16px');
+    expect(element.style.gap).toContain('var(--spectrum-global-dimension-size-200');
     expect(element.style.justifyContent).toBe('space-between');
     expect(element.style.alignItems).toBe('center');
     expect(element.style.flexWrap).toBe('wrap');
+  });
+
+  it('maps flex rowGap and columnGap props without clearing gap', () => {
+    let wrapper = mount(Flex, {
+      props: {
+        gap: 'size-200',
+        rowGap: 'size-300',
+        columnGap: 'size-100'
+      }
+    });
+
+    let style = wrapper.attributes('style') ?? '';
+    expect(style).toContain('gap: var(--spectrum-global-dimension-size-200');
+    expect(style).toContain('row-gap: var(--spectrum-global-dimension-size-300');
+    expect(style).toContain('column-gap: var(--spectrum-global-dimension-size-100');
   });
 
   it('renders grid layout styles and helper expressions', () => {
@@ -315,8 +330,35 @@ describe('Vue migration primitives', () => {
     expect(wrapper.classes()).toContain('vs-grid');
     expect(element.style.display).toBe('grid');
     expect(element.style.gridTemplateColumns).toContain('minmax(0, 1fr)');
-    expect(element.style.gap).toBe('8px');
+    expect(element.style.gap).toContain('var(--spectrum-global-dimension-size-100');
     expect(fitContent('240px')).toBe('fit-content(240px)');
+  });
+
+  it('keeps responsive grid gap when rowGap/columnGap are unset', () => {
+    let wrapper = mount(Grid, {
+      props: {
+        columns: {
+          base: repeat('auto-fit', 'size-800'),
+          M: repeat('auto-fit', 'size-1200'),
+          L: repeat('auto-fit', 'size-2000')
+        },
+        autoRows: {
+          base: 'size-800',
+          M: 'size-1200',
+          L: 'size-2000'
+        },
+        gap: {
+          base: 'size-100',
+          M: 'size-250',
+          L: 'size-350'
+        }
+      }
+    });
+
+    let style = wrapper.attributes('style') ?? '';
+    expect(style).toMatch(/gap: var\(--spectrum-global-dimension-size-(100|250|350)/);
+    expect(style).not.toContain('row-gap: ;');
+    expect(style).not.toContain('column-gap: ;');
   });
 
   it('maps inline alert DOM contract and variant class to react parity', () => {
@@ -678,20 +720,32 @@ describe('Vue migration primitives', () => {
     expect((wrapper.element as HTMLElement).style.width).toBe('80px');
   });
 
-  it('maps help text disabled/invalid states and field aria wiring', () => {
+  it('maps help text error-state gating and field structure to react parity', () => {
     let helpText = mount(HelpText, {
       props: {
         description: 'Enter a value',
         errorMessage: 'Required',
         isInvalid: true,
-        isDisabled: true
+        isDisabled: true,
+        showErrorIcon: true
       }
     });
 
     expect(helpText.classes()).toContain('spectrum-HelpText');
     expect(helpText.classes()).toContain('is-disabled');
-    expect(helpText.classes()).toContain('is-invalid');
     expect(helpText.find('.spectrum-HelpText-validationIcon').exists()).toBe(true);
+    expect(helpText.find('.spectrum-HelpText-text').text()).toContain('Required');
+
+    let descriptionWhenInvalidWithoutError = mount(HelpText, {
+      props: {
+        description: 'Description only',
+        isInvalid: true,
+        showErrorIcon: true
+      }
+    });
+    expect(descriptionWhenInvalidWithoutError.classes()).toContain('spectrum-HelpText--neutral');
+    expect(descriptionWhenInvalidWithoutError.find('.spectrum-HelpText-validationIcon').exists()).toBe(false);
+    expect(descriptionWhenInvalidWithoutError.find('.spectrum-HelpText-text').text()).toContain('Description only');
 
     let field = mount(Field, {
       props: {
@@ -699,10 +753,15 @@ describe('Vue migration primitives', () => {
         description: 'Description'
       },
       slots: {
-        default: '<input />'
+        default: '<input id=\"field-input\" />'
       }
     });
-    expect(field.attributes('aria-labelledby')).toBeTruthy();
+    expect(field.classes()).toContain('spectrum-Field');
+    expect(field.classes()).toContain('spectrum-Field--positionTop');
+    expect(field.attributes('aria-labelledby')).toBeUndefined();
+    expect(field.find('label.spectrum-FieldLabel').text()).toContain('Field label');
+    expect(field.get('input#field-input').classes()).toContain('spectrum-Field-field');
+    expect(field.find('.spectrum-HelpText-text').text()).toContain('Description');
   });
 
   it('maps labeled value DOM contract and list formatting to react parity', () => {
@@ -3077,7 +3136,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let links = wrapper.findAll('a.vs-steplist__link');
+    let links = wrapper.findAll('a.spectrum-Steplist-link');
     expect(wrapper.attributes('role')).toBe('list');
     expect(wrapper.attributes('aria-label')).toBe('Checkout steps');
     expect(links).toHaveLength(3);
@@ -3108,7 +3167,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let readOnlyLinks = readOnly.findAll('a.vs-steplist__link');
+    let readOnlyLinks = readOnly.findAll('a.spectrum-Steplist-link');
     expect(readOnlyLinks).toHaveLength(3);
     expect(readOnlyLinks[0].attributes('aria-disabled')).toBe('true');
     expect(readOnlyLinks[1].attributes('aria-disabled')).toBe('true');
@@ -3131,7 +3190,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let disabledLinks = disabled.findAll('a.vs-steplist__link');
+    let disabledLinks = disabled.findAll('a.spectrum-Steplist-link');
     expect(disabledLinks).toHaveLength(3);
     expect(disabledLinks[0].attributes('aria-disabled')).toBe('true');
     expect(disabledLinks[1].attributes('aria-disabled')).toBe('true');
@@ -3172,7 +3231,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let links = wrapper.findAll('a.vs-steplist__link');
+    let links = wrapper.findAll('a.spectrum-Steplist-link');
     expect(links).toHaveLength(3);
     expect(links[1].attributes('aria-disabled')).toBe('true');
 
@@ -3208,6 +3267,7 @@ describe('Vue migration primitives', () => {
   it('selects and removes tags within tag group interactions', async () => {
     let wrapper = mount(TagGroup, {
       props: {
+        allowsRemoving: true,
         label: 'Framework tags',
         selectionMode: 'single',
         modelValue: ['react'],
@@ -4442,17 +4502,51 @@ describe('Vue migration primitives', () => {
     expect(ariaLabelWrapper.attributes('aria-label')).toBeUndefined();
   });
 
+  it('maps numberfield optional indicator, formatted value output, and NaN controlled reset parity', () => {
+    let optionalWrapper = mount(NumberField, {
+      props: {
+        label: 'Width',
+        necessityIndicator: 'label'
+      }
+    });
+
+    expect(optionalWrapper.get('label.spectrum-FieldLabel').text()).toContain('(optional)');
+
+    let currencyWrapper = mount(NumberField, {
+      props: {
+        label: 'Price',
+        formatOptions: {style: 'currency', currency: 'EUR'},
+        modelValue: 10
+      }
+    });
+
+    let formattedValue = new Intl.NumberFormat(undefined, {style: 'currency', currency: 'EUR'}).format(10);
+    expect((currencyWrapper.get('input.spectrum-Stepper-input').element as HTMLInputElement).value).toBe(formattedValue);
+
+    let resetWrapper = mount(NumberField, {
+      attrs: {
+        'aria-label': 'numberfield to reset'
+      },
+      props: {
+        modelValue: Number.NaN
+      }
+    });
+
+    expect((resetWrapper.get('input.spectrum-Stepper-input').element as HTMLInputElement).value).toBe('');
+  });
+
   it('maps modal underlay and dialog surface contract to react parity', async () => {
     let wrapper = mount({
-      components: {Button, Dialog, Divider, Modal},
+      components: {Button, ButtonGroup, Content, Dialog, Divider, Modal, Text},
       template: `
         <Modal :is-open="true">
-          <Dialog>
-            <template #heading>Title</template>
+          <Dialog title="Title">
             <template #divider><Divider /></template>
-            <span role="none">I am a dialog</span>
+            <Content><Text>I am a dialog</Text></Content>
             <template #buttonGroup>
-              <Button variant="cta">Close</Button>
+              <ButtonGroup>
+                <Button variant="cta">Close</Button>
+              </ButtonGroup>
             </template>
           </Dialog>
         </Modal>
@@ -4478,6 +4572,9 @@ describe('Vue migration primitives', () => {
     let dialog = document.body.querySelector('[role=\"dialog\"]');
     expect(dialog).not.toBeNull();
     expect(dialog?.classList.contains('spectrum-Dialog')).toBe(true);
+    expect(dialog?.querySelector('header.spectrum-Dialog-header')).toBeNull();
+    expect(dialog?.querySelector('h2.spectrum-Dialog-heading')).not.toBeNull();
+    expect(dialog?.querySelector('hr.spectrum-Dialog-divider')).not.toBeNull();
     expect(dialog?.hasAttribute('aria-modal')).toBe(false);
     expect(document.body.querySelector('.vs-dialog-layer')).toBeNull();
     expect(document.body.querySelector('.vs-dialog-layer__backdrop')).toBeNull();
@@ -4621,15 +4718,17 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    await wrapper.get('select.vs-picker__select').trigger('focus');
-    expect(wrapper.emitted('openChange')?.at(-1)).toEqual([true]);
+    await wrapper.get('button.spectrum-Dropdown-trigger').trigger('click');
+    await nextTick();
+    expect(wrapper.emitted('openChange')?.[0]).toEqual([true]);
 
-    await wrapper.get('select.vs-picker__select').setValue('Q3');
+    let q3Option = document.body.querySelector('[role="option"][data-key="Q3"]') as HTMLButtonElement | null;
+    expect(q3Option).not.toBeNull();
+    q3Option?.click();
+    await nextTick();
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['Q3']);
     expect(wrapper.emitted('change')?.[0]).toEqual(['Q3']);
     expect(wrapper.emitted('selectionChange')?.[0]).toEqual(['Q3']);
-
-    await wrapper.get('select.vs-picker__select').trigger('blur');
     expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
   });
 
@@ -4645,9 +4744,9 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let labelledBySelect = labelledByWrapper.get('select.vs-picker__select');
-    expect(labelledBySelect.attributes('aria-labelledby')).toBe('external-picker-label');
-    expect(labelledBySelect.attributes('aria-label')).toBeUndefined();
+    let labelledByTrigger = labelledByWrapper.get('button.spectrum-Dropdown-trigger');
+    expect(labelledByTrigger.attributes('aria-labelledby')).toContain('external-picker-label');
+    expect(labelledByTrigger.attributes('aria-label')).toBeUndefined();
     expect(labelledByWrapper.attributes('aria-labelledby')).toBeUndefined();
 
     let visibleLabelWrapper = mount(Picker, {
@@ -4658,10 +4757,10 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let visibleLabel = visibleLabelWrapper.get('span.vs-picker__label');
-    let visibleLabelSelect = visibleLabelWrapper.get('select.vs-picker__select');
-    expect(visibleLabelSelect.attributes('aria-labelledby')).toBe(visibleLabel.attributes('id'));
-    expect(visibleLabelSelect.attributes('aria-label')).toBeUndefined();
+    let visibleLabel = visibleLabelWrapper.get('span.spectrum-FieldLabel');
+    let visibleLabelTrigger = visibleLabelWrapper.get('button.spectrum-Dropdown-trigger');
+    expect(visibleLabelTrigger.attributes('aria-labelledby')).toContain(visibleLabel.attributes('id'));
+    expect(visibleLabelTrigger.attributes('aria-label')).toBeUndefined();
 
     let ariaLabelWrapper = mount(Picker, {
       props: {
@@ -4674,9 +4773,9 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let ariaLabelSelect = ariaLabelWrapper.get('select.vs-picker__select');
-    expect(ariaLabelSelect.attributes('aria-label')).toBe('Roadmap milestone');
-    expect(ariaLabelSelect.attributes('aria-labelledby')).toBeUndefined();
+    let ariaLabelTrigger = ariaLabelWrapper.get('button.spectrum-Dropdown-trigger');
+    expect(ariaLabelTrigger.attributes('aria-label')).toBeUndefined();
+    expect(ariaLabelTrigger.attributes('aria-labelledby')).toContain('vs-picker');
   });
 
   it('maps picker disabled, invalid, hovered, and placeholder classes', async () => {
@@ -4692,7 +4791,7 @@ describe('Vue migration primitives', () => {
     let disabledDropdown = disabledInvalidWrapper.get('.spectrum-Dropdown');
     expect(disabledDropdown.classes()).toContain('is-disabled');
     expect(disabledDropdown.classes()).not.toContain('is-invalid');
-    expect(disabledInvalidWrapper.get('select.vs-picker__select').classes()).toContain('is-placeholder');
+    expect(disabledInvalidWrapper.get('.spectrum-Dropdown-label').classes()).toContain('is-placeholder');
 
     let interactiveWrapper = mount(Picker, {
       props: {
@@ -4703,8 +4802,8 @@ describe('Vue migration primitives', () => {
     });
 
     expect(interactiveWrapper.get('.spectrum-Dropdown').classes()).toContain('is-invalid');
-    await interactiveWrapper.get('.vs-picker__dropdown').trigger('mouseenter');
-    expect(interactiveWrapper.get('select.vs-picker__select').classes()).toContain('is-hovered');
+    await interactiveWrapper.get('button.spectrum-Dropdown-trigger').trigger('mouseenter');
+    expect(interactiveWrapper.get('button.spectrum-Dropdown-trigger').classes()).toContain('is-hovered');
   });
 
   it('maps picker disabledKeys to disabled option contracts', async () => {
@@ -4720,11 +4819,17 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let options = wrapper.findAll('select.vs-picker__select option');
-    let disabledOption = options.find((option) => option.attributes('value') === 'option-2');
-    expect(disabledOption?.attributes('disabled')).toBeDefined();
+    await wrapper.get('button.spectrum-Dropdown-trigger').trigger('click');
+    await nextTick();
+    let disabledOption = document.body.querySelector('[role="option"][data-key="option-2"]') as HTMLElement | null;
+    expect(disabledOption).not.toBeNull();
+    expect(disabledOption?.getAttribute('aria-disabled')).toBe('true');
+    expect(disabledOption?.classList.contains('is-disabled')).toBe(true);
 
-    await wrapper.get('select.vs-picker__select').setValue('option-3');
+    let option3 = document.body.querySelector('[role="option"][data-key="option-3"]') as HTMLButtonElement | null;
+    expect(option3).not.toBeNull();
+    option3?.click();
+    await nextTick();
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['option-3']);
     expect(wrapper.emitted('change')?.[0]).toEqual(['option-3']);
   });

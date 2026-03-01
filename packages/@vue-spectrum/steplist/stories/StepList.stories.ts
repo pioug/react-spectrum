@@ -1,7 +1,11 @@
 import {action} from 'storybook/actions';
 import {computed, ref, watch} from 'vue';
+import {Button} from '@vue-spectrum/button';
+import {ButtonGroup} from '@vue-spectrum/buttongroup';
+import {Flex} from '@vue-spectrum/layout';
 import {Picker} from '@vue-spectrum/picker';
 import {StepList, type StepListItemData, type StepListValue} from '../src';
+import {View} from '@vue-spectrum/view';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type StepListStoryArgs = {
@@ -128,32 +132,22 @@ function renderDefault(baseArgs: Partial<StepListStoryArgs> = {}) {
 
 function renderWithButtons(baseArgs: Partial<StepListStoryArgs> = {}) {
   return (args: StepListStoryArgs) => ({
-    components: {StepList},
+    components: {Button, ButtonGroup, Flex, StepList, View},
     setup() {
-      let keys = options.map((item) => String(item.key));
+      let keys = options.map((item) => item.key);
       let mergedArgs = computed(() => ({
         ...args,
         ...baseArgs,
         items: options
       }));
-      let selectedKey = ref<string>(keys[0] ?? '');
+      let stepNumber = ref(0);
 
       watch(mergedArgs, (nextArgs) => {
         let maybeSelectedKey = nextArgs.selectedKey ?? nextArgs.defaultSelectedKey;
-        if (typeof maybeSelectedKey === 'string' || typeof maybeSelectedKey === 'number') {
-          selectedKey.value = String(maybeSelectedKey);
-          return;
-        }
-
-        if (!keys.includes(selectedKey.value) && keys[0]) {
-          selectedKey.value = keys[0];
-        }
+        stepNumber.value = keys.findIndex((key) => key === maybeSelectedKey) + 1;
       }, {immediate: true, deep: true});
 
-      let stepNumber = computed(() => {
-        let index = keys.indexOf(selectedKey.value);
-        return index < 0 ? 1 : index + 1;
-      });
+      let selectedKey = computed<StepListValue | undefined>(() => keys[stepNumber.value - 1]);
 
       let stepListArgs = computed(() => {
         let nextArgs = {...mergedArgs.value, selectedKey: selectedKey.value};
@@ -168,12 +162,12 @@ function renderWithButtons(baseArgs: Partial<StepListStoryArgs> = {}) {
         }
 
         let clampedStep = Math.max(1, Math.min(keys.length, nextStep));
-        selectedKey.value = keys[clampedStep - 1];
+        stepNumber.value = clampedStep;
       };
 
       let handleSelectionChange = (value: StepListValue) => {
         if (typeof value === 'string' || typeof value === 'number') {
-          selectedKey.value = String(value);
+          stepNumber.value = keys.findIndex((key) => key === value) + 1;
         }
 
         mergedArgs.value.onSelectionChange?.(value);
@@ -188,32 +182,34 @@ function renderWithButtons(baseArgs: Partial<StepListStoryArgs> = {}) {
       };
     },
     template: `
-      <div>
+      <View>
         <StepList
           v-bind="stepListArgs"
           @selection-change="handleSelectionChange" />
-        <div style="margin-top: var(--spectrum-global-dimension-size-300); display: flex; gap: var(--spectrum-global-dimension-size-100);">
-          <button
-            type="button"
-            :disabled="stepNumber === 1"
-            @click="goToStep(stepNumber - 1)">
-            Back
-          </button>
-          <button
-            type="button"
-            :disabled="stepNumber === keys.length"
-            @click="goToStep(stepNumber + 1)">
-            Next
-          </button>
-        </div>
-      </div>
+        <Flex margin-top="size-300">
+          <ButtonGroup>
+            <Button
+              :is-disabled="stepNumber === 1"
+              variant="secondary"
+              @click="goToStep(stepNumber - 1)">
+              Back
+            </Button>
+            <Button
+              :is-disabled="stepNumber === keys.length"
+              variant="cta"
+              @click="goToStep(stepNumber + 1)">
+              Next
+            </Button>
+          </ButtonGroup>
+        </Flex>
+      </View>
     `
   });
 }
 
 function renderControlled(args: StepListStoryArgs) {
   return {
-    components: {Picker, StepList},
+    components: {Flex, Picker, StepList, View},
     setup() {
       let pickerItems = options.map((item) => ({
         id: String(item.key),
@@ -270,14 +266,14 @@ function renderControlled(args: StepListStoryArgs) {
       };
     },
     template: `
-      <div style="display: grid; gap: var(--spectrum-global-dimension-size-300); max-width: 640px;">
+      <View>
         <StepList
           v-bind="stepListArgs"
           :last-completed-step="lastCompletedStep"
           :selected-key="selectedKey"
           @last-completed-step-change="handleLastCompletedStepChange"
           @selection-change="handleSelectionChange" />
-        <div style="display: flex; gap: var(--spectrum-global-dimension-size-300);">
+        <Flex margin-top="size-300">
           <Picker
             label="lastCompletedStep"
             :items="pickerItems"
@@ -288,8 +284,8 @@ function renderControlled(args: StepListStoryArgs) {
             :items="pickerItems"
             :model-value="typeof selectedKey === 'string' ? selectedKey : ''"
             @update:model-value="setSelectedKey" />
-        </div>
-      </div>
+        </Flex>
+      </View>
     `
   };
 }

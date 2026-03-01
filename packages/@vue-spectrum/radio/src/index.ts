@@ -2,6 +2,7 @@ import '@adobe/spectrum-css-temp/components/fieldgroup/vars.css';
 import '@adobe/spectrum-css-temp/components/fieldlabel/vars.css';
 import '@adobe/spectrum-css-temp/components/helptext/vars.css';
 import '@adobe/spectrum-css-temp/components/radio/vars.css';
+import {useProviderProps} from '@vue-spectrum/provider';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, inject, type InjectionKey, onBeforeUnmount, type PropType, provide, ref, type Ref, watch} from 'vue';
 import {filterDOMProps, getEventTarget} from '@vue-aria/utils';
@@ -130,10 +131,12 @@ export const RadioGroup = defineComponent({
     'update:modelValue': (value: string) => typeof value === 'string'
   },
   setup(props, {emit, slots, attrs}) {
+    let providerProps = useProviderProps(props);
+    let resolvedProps = computed(() => Object.assign({}, props, providerProps));
     let generatedName = `vs-radio-group-${++radioGroupId}`;
-    let uncontrolledValue = ref(props.defaultValue ?? '');
+    let uncontrolledValue = ref(resolvedProps.value.defaultValue ?? '');
 
-    watch(() => [props.value, props.modelValue], ([value, modelValue]) => {
+    watch(() => [resolvedProps.value.value, resolvedProps.value.modelValue], ([value, modelValue]) => {
       if (typeof value === 'string') {
         uncontrolledValue.value = value;
         return;
@@ -144,23 +147,23 @@ export const RadioGroup = defineComponent({
       }
     }, {immediate: true});
 
-    let groupName = computed(() => props.name ?? generatedName);
-    let selectedValue = computed(() => props.value ?? props.modelValue ?? uncontrolledValue.value);
+    let groupName = computed(() => resolvedProps.value.name ?? generatedName);
+    let selectedValue = computed(() => resolvedProps.value.value ?? resolvedProps.value.modelValue ?? uncontrolledValue.value);
     let lastFocusedValue = ref<string | null>(null);
     let optionOrder = ref<string[]>([]);
     let optionDisabledMap = ref(new Map<string, boolean>());
-    let isDisabled = computed(() => props.isDisabled ?? props.disabled);
-    let isInvalid = computed(() => (props.isInvalid || props.invalid || props.validationState === 'invalid') && !isDisabled.value);
+    let isDisabled = computed(() => resolvedProps.value.isDisabled ?? resolvedProps.value.disabled);
+    let isInvalid = computed(() => (resolvedProps.value.isInvalid || resolvedProps.value.invalid || resolvedProps.value.validationState === 'invalid') && !isDisabled.value);
     let necessityIndicator = computed<NecessityIndicator | undefined>(() => {
-      if (props.necessityIndicator) {
-        return props.necessityIndicator;
+      if (resolvedProps.value.necessityIndicator) {
+        return resolvedProps.value.necessityIndicator;
       }
 
-      return props.isRequired ? 'icon' : undefined;
+      return resolvedProps.value.isRequired ? 'icon' : undefined;
     });
-    let showErrorMessage = computed(() => isInvalid.value && !!props.errorMessage);
-    let helpText = computed(() => showErrorMessage.value ? props.errorMessage : props.description);
-    let labelId = computed(() => props.label ? `${groupName.value}-label` : undefined);
+    let showErrorMessage = computed(() => isInvalid.value && !!resolvedProps.value.errorMessage);
+    let helpText = computed(() => showErrorMessage.value ? resolvedProps.value.errorMessage : resolvedProps.value.description);
+    let labelId = computed(() => resolvedProps.value.label ? `${groupName.value}-label` : undefined);
     let helpTextId = computed(() => {
       if (!helpText.value) {
         return undefined;
@@ -199,10 +202,10 @@ export const RadioGroup = defineComponent({
       getLastFocusedValue: () => {
         return lastFocusedValue.value ?? undefined;
       },
-      isEmphasized: computed(() => props.isEmphasized),
+      isEmphasized: computed(() => resolvedProps.value.isEmphasized),
       isInvalid,
-      isReadOnly: computed(() => props.isReadOnly),
-      isRequired: computed(() => props.isRequired),
+      isReadOnly: computed(() => resolvedProps.value.isReadOnly),
+      isRequired: computed(() => resolvedProps.value.isRequired),
       modelValue: computed(() => selectedValue.value),
       name: computed(() => groupName.value),
       registerOption: (value: string, optionIsDisabled: boolean) => {
@@ -227,11 +230,11 @@ export const RadioGroup = defineComponent({
         optionDisabledMap.value = nextMap;
       },
       setValue: (value: string) => {
-        if (isDisabled.value || props.isReadOnly) {
+        if (isDisabled.value || resolvedProps.value.isReadOnly) {
           return;
         }
 
-        if (props.value === undefined && props.modelValue === undefined) {
+        if (resolvedProps.value.value === undefined && resolvedProps.value.modelValue === undefined) {
           uncontrolledValue.value = value;
         }
 
@@ -268,38 +271,38 @@ export const RadioGroup = defineComponent({
         class: [
           classNames(
             fieldGroupStyles,
-            'spectrum-Field',
-            'spectrum-FieldGroup',
-            {
-              'spectrum-Field--positionTop': (props.labelPosition ?? 'top') !== 'side',
-              'spectrum-Field--positionSide': props.labelPosition === 'side',
-              'spectrum-Field--alignEnd': props.labelAlign === 'end',
-              'spectrum-Field--hasContextualHelp': !!props.contextualHelp
-            }
-          ),
+              'spectrum-Field',
+              'spectrum-FieldGroup',
+              {
+              'spectrum-Field--positionTop': (resolvedProps.value.labelPosition ?? 'top') !== 'side',
+              'spectrum-Field--positionSide': resolvedProps.value.labelPosition === 'side',
+              'spectrum-Field--alignEnd': resolvedProps.value.labelAlign === 'end',
+              'spectrum-Field--hasContextualHelp': !!resolvedProps.value.contextualHelp
+              }
+            ),
           domClassName,
           domClass
         ],
         style: domStyle
       }, [
-        props.label
+        resolvedProps.value.label
           ? h('span', {
             id: labelId.value,
             class: classNames(
               fieldGroupStyles,
               'spectrum-FieldLabel',
               {
-                'spectrum-FieldLabel--positionSide': props.labelPosition === 'side',
-                'spectrum-FieldLabel--alignEnd': props.labelAlign === 'end'
+                'spectrum-FieldLabel--positionSide': resolvedProps.value.labelPosition === 'side',
+                'spectrum-FieldLabel--alignEnd': resolvedProps.value.labelAlign === 'end'
               }
             )
           }, [
-            props.label,
-            (necessityIndicator.value === 'label' || necessityIndicator.value === 'icon') && props.isRequired ? ' \u200b' : null,
-            necessityIndicator.value === 'label' && props.isRequired
+            resolvedProps.value.label,
+            (necessityIndicator.value === 'label' || necessityIndicator.value === 'icon') && resolvedProps.value.isRequired ? ' \u200b' : null,
+            necessityIndicator.value === 'label' && resolvedProps.value.isRequired
               ? h('span', {'aria-hidden': 'true'}, '(required)')
               : null,
-            necessityIndicator.value === 'icon' && props.isRequired
+            necessityIndicator.value === 'icon' && resolvedProps.value.isRequired
               ? h('span', {
                 class: classNames(fieldGroupStyles, 'spectrum-FieldLabel-requiredIcon'),
                 'aria-hidden': 'true'
@@ -307,10 +310,10 @@ export const RadioGroup = defineComponent({
               : null
           ])
           : null,
-        props.label && props.contextualHelp
+        resolvedProps.value.label && resolvedProps.value.contextualHelp
           ? h('span', {
             class: classNames(fieldGroupStyles, 'spectrum-Field-contextualHelp')
-          }, props.contextualHelp as never)
+          }, resolvedProps.value.contextualHelp as never)
           : null,
         h('div', {
           role: 'radiogroup',
@@ -319,7 +322,7 @@ export const RadioGroup = defineComponent({
             'spectrum-FieldGroup-group',
             'spectrum-Field-field',
             {
-              'spectrum-FieldGroup-group--horizontal': props.orientation === 'horizontal'
+              'spectrum-FieldGroup-group--horizontal': resolvedProps.value.orientation === 'horizontal'
             }
           ),
           'aria-labelledby': ariaLabelledBy.value,
@@ -327,7 +330,8 @@ export const RadioGroup = defineComponent({
           'aria-describedby': helpTextId.value,
           'aria-invalid': isInvalid.value ? 'true' : undefined,
           'aria-disabled': isDisabled.value ? 'true' : undefined,
-          'aria-required': props.isRequired ? 'true' : undefined
+          'aria-readonly': resolvedProps.value.isReadOnly ? 'true' : undefined,
+          'aria-required': resolvedProps.value.isRequired ? 'true' : undefined
         }, slots.default ? slots.default() : []),
         helpText.value
           ? h('div', {
@@ -338,7 +342,7 @@ export const RadioGroup = defineComponent({
               {'is-disabled': isDisabled.value}
             )
           }, [
-            showErrorMessage.value && props.showErrorIcon
+            showErrorMessage.value && resolvedProps.value.showErrorIcon
               ? h('span', {
                 class: classNames(fieldGroupStyles, 'spectrum-HelpText-validationIcon'),
                 'aria-hidden': 'true'
@@ -411,15 +415,17 @@ export const Radio = defineComponent({
     'update:modelValue': (value: string) => typeof value === 'string'
   },
   setup(props, {attrs, emit, slots}) {
+    let providerProps = useProviderProps(props);
+    let resolvedProps = computed(() => Object.assign({}, props, providerProps));
     let generatedId = `vs-radio-${++radioId}`;
     let group = inject(radioGroupContextKey, null);
 
-    let isDisabled = computed(() => (props.isDisabled ?? props.disabled) || (group ? group.disabled.value : false));
-    let isReadOnly = computed(() => props.isReadOnly || (group ? group.isReadOnly.value : false));
-    let isInvalid = computed(() => (props.isInvalid || props.invalid || (group ? group.isInvalid.value : false)) && !isDisabled.value);
+    let isDisabled = computed(() => (resolvedProps.value.isDisabled ?? resolvedProps.value.disabled) || (group ? group.disabled.value : false));
+    let isReadOnly = computed(() => resolvedProps.value.isReadOnly || (group ? group.isReadOnly.value : false));
+    let isInvalid = computed(() => (resolvedProps.value.isInvalid || resolvedProps.value.invalid || (group ? group.isInvalid.value : false)) && !isDisabled.value);
     let isEmphasized = computed(() => {
-      if (props.isEmphasized !== undefined) {
-        return props.isEmphasized;
+      if (resolvedProps.value.isEmphasized !== undefined) {
+        return resolvedProps.value.isEmphasized;
       }
 
       return group ? group.isEmphasized.value : false;
@@ -544,7 +550,6 @@ export const Radio = defineComponent({
           value: props.value,
           checked: isChecked.value,
           disabled: isDisabled.value || undefined,
-          readonly: isReadOnly.value || undefined,
           tabindex: tabIndex.value,
           autofocus: props.autoFocus || attrs.autofocus || undefined,
           'aria-label': ariaLabel.value,

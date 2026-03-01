@@ -27,6 +27,7 @@ const FLAT_MENU_ITEMS = [
 const SECTION_STATIC_ITEMS = [
   {
     key: 'section-1',
+    isSection: true,
     label: 'Section 1',
     children: [
       {key: 'one', label: 'One'},
@@ -36,6 +37,7 @@ const SECTION_STATIC_ITEMS = [
   },
   {
     key: 'section-2',
+    isSection: true,
     label: 'Section 2',
     children: [
       {key: 'four', label: 'Four'},
@@ -48,6 +50,7 @@ const SECTION_STATIC_ITEMS = [
 const SECTION_GENERATIVE_ITEMS = [
   {
     key: 'animals',
+    isSection: true,
     label: 'Animals',
     children: [
       {key: 'Aardvark', label: 'Aardvark'},
@@ -57,6 +60,7 @@ const SECTION_GENERATIVE_ITEMS = [
   },
   {
     key: 'people',
+    isSection: true,
     label: 'People',
     children: [
       {key: 'Danni', label: 'Danni'},
@@ -69,6 +73,7 @@ const SECTION_GENERATIVE_ITEMS = [
 const SECTION_GENERATIVE_MANY_ITEMS = [
   {
     key: 'section-1',
+    isSection: true,
     label: 'Section 1',
     children: Array.from({length: 50}, (_, index) => ({
       key: `s1-${index}`,
@@ -77,6 +82,7 @@ const SECTION_GENERATIVE_MANY_ITEMS = [
   },
   {
     key: 'section-2',
+    isSection: true,
     label: 'Section 2',
     children: Array.from({length: 50}, (_, index) => ({
       key: `s2-${index}`,
@@ -89,6 +95,7 @@ const TITLELESS_SECTION_ITEMS = [
   {
     key: 'section-a',
     ariaLabel: 'Section 1',
+    isSection: true,
     children: [
       {key: 'one', label: 'One'},
       {key: 'two', label: 'Two'},
@@ -98,6 +105,7 @@ const TITLELESS_SECTION_ITEMS = [
   {
     key: 'section-b',
     ariaLabel: 'Section 2',
+    isSection: true,
     children: [
       {key: 'four', label: 'Four'},
       {key: 'five', label: 'Five'},
@@ -109,6 +117,7 @@ const TITLELESS_SECTION_ITEMS = [
 const FALSY_ITEM_KEYS = [
   {
     key: 1,
+    isSection: true,
     label: 'Animals',
     children: [
       {key: 0, label: 'id=0'},
@@ -117,6 +126,7 @@ const FALSY_ITEM_KEYS = [
   },
   {
     key: 3,
+    isSection: true,
     label: 'People',
     children: [
       {key: 4, label: 'Danni'},
@@ -129,6 +139,7 @@ const FALSY_ITEM_KEYS = [
 const SELECTION_STATIC_ITEMS = [
   {
     key: 'section-1',
+    isSection: true,
     label: 'Section 1',
     children: [
       {key: '1', label: 'One'},
@@ -138,6 +149,7 @@ const SELECTION_STATIC_ITEMS = [
   },
   {
     key: 'section-2',
+    isSection: true,
     label: 'Section 2',
     children: [
       {key: '4', label: 'Four'},
@@ -155,13 +167,9 @@ const SEMANTIC_ITEMS = [
 ];
 
 const TRANSLATED_ITEMS = [
-  {key: 'en', label: 'English'},
-  {key: 'ar', label: 'العربية'},
-  {key: 'he', label: 'עברית'},
-  {key: 'ja', label: '日本語'},
-  {key: 'ko', label: '한국어'},
-  {key: 'zh-cn', label: '简体中文'},
-  {key: 'zh-tw', label: '繁體中文'}
+  {key: 'copy', label: 'Copy  ⌘C'},
+  {key: 'cut', label: 'Cut  ⌘X'},
+  {key: 'paste', label: 'Paste  ⌘V'}
 ];
 
 const LINK_ITEMS = [
@@ -198,12 +206,18 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function renderMenu(args: StoryArgs) {
+type RenderMenuOptions = {
+  triggerLabel?: string
+};
+
+function renderMenu(args: StoryArgs, options: RenderMenuOptions = {}) {
+  let {triggerLabel = 'Menu Button'} = options;
   return {
     components: {ActionButton, MenuTrigger},
     setup() {
       return {
         args,
+        triggerLabel,
         onActionEvent: action('onAction'),
         onOpenChange: action('onOpenChange')
       };
@@ -216,7 +230,7 @@ function renderMenu(args: StoryArgs) {
           @open-change="onOpenChange($event)">
           <template #trigger>
             <ActionButton :is-disabled="Boolean(args.isDisabled)">
-              Menu Button
+              {{ triggerLabel }}
             </ActionButton>
           </template>
         </MenuTrigger>
@@ -483,14 +497,14 @@ export const ShouldFlip: Story = {
 export const IsOpen: Story = {
   render: () => renderMenu({
     items: SECTION_GENERATIVE_ITEMS,
-    isExpanded: true
+    isOpen: true
   })
 };
 
 export const DefaultOpen: Story = {
   render: () => renderMenu({
     items: SECTION_GENERATIVE_ITEMS,
-    isExpanded: true
+    defaultOpen: true
   })
 };
 
@@ -550,20 +564,26 @@ export const MenuShouldPreventScrolling: Story = {
     setup() {
       return {
         args: {
+          defaultOpen: true,
+          direction: 'top',
           items: SECTION_GENERATIVE_ITEMS
         }
       };
     },
     template: `
-      <div style="height: 200px; overflow: auto; border: 1px solid #d4d4d8; padding: 12px;">
-        <div style="height: 320px; display: grid; align-content: start; gap: 12px;">
-          <div>Scroll this area. Menu should remain usable.</div>
-          <MenuTrigger v-bind="args">
-            <template #trigger>
-              <ActionButton>Menu Button</ActionButton>
-            </template>
-          </MenuTrigger>
-          <div>Extra content to force scrolling.</div>
+      <div style="height: 100px; display: flex;">
+        <div style="padding-top: 100px; height: 100px; overflow: auto; background: antiquewhite;">
+          <div style="height: 200px;">
+            <div>Shouldn't be able to scroll here while Menu is open.</div>
+            <MenuTrigger v-bind="args">
+              <template #trigger>
+                <ActionButton>Menu Button</ActionButton>
+              </template>
+            </MenuTrigger>
+          </div>
+        </div>
+        <div style="padding-top: 100px; height: 100px; overflow: auto; flex: 1; background: grey;">
+          <div style="height: 200px;">Also shouldn't be able to scroll here while Menu is open.</div>
         </div>
       </div>
     `
@@ -574,30 +594,23 @@ export const MenuClosesOnBlur: Story = {
   render: () => ({
     components: {ActionButton, MenuTrigger},
     setup() {
-      let expanded = ref(true);
       return {
-        expanded
+        items: SECTION_GENERATIVE_ITEMS
       };
     },
     template: `
-      <div style="display: grid; gap: 10px;" @click="expanded = false">
-        <div>Click outside the menu region to close.</div>
-        <div @click.stop style="display: grid; gap: 8px;">
-          <ActionButton @click="expanded = true">Open menu</ActionButton>
-          <MenuTrigger
-            label="Menu"
-            :items="[
-              {key: 'one', label: 'One'},
-              {key: 'two', label: 'Two'},
-              {key: 'three', label: 'Three'}
-            ]"
-            :is-open="expanded"
-            @open-change="expanded = $event">
-            <template #trigger>
-              <ActionButton>Menu Button</ActionButton>
-            </template>
-          </MenuTrigger>
-        </div>
+      <div style="display: flex; width: auto; margin: 250px 0;">
+        <label for="focus-before">Focus before</label>
+        <input id="focus-before" />
+        <MenuTrigger
+          :items="items"
+          :disabled-keys="['Snake', 'Ross']">
+          <template #trigger>
+            <ActionButton>Menu Button</ActionButton>
+          </template>
+        </MenuTrigger>
+        <label for="focus-after">Focus after</label>
+        <input id="focus-after" />
       </div>
     `
   })
@@ -606,8 +619,9 @@ export const MenuClosesOnBlur: Story = {
 export const WithFalsyKey: Story = {
   render: () => renderMenu({
     items: [
-      {key: 0, label: 'Key = 0'},
-      {key: 1, label: 'Key = 1'}
+      {key: '1', label: 'One'},
+      {key: '', label: 'Two'},
+      {key: '3', label: 'Three'}
     ]
   })
 };
@@ -629,16 +643,13 @@ export const ControlledIsOpen: Story = {
       };
     },
     template: `
-      <div style="display: grid; gap: 10px; justify-items: start;">
-        <ActionButton @click="expanded = !expanded">
-          {{expanded ? 'Close menu' : 'Open menu'}}
-        </ActionButton>
+      <div style="display: flex; width: auto; margin: 250px 0;">
         <MenuTrigger
           label="Menu"
           :items="[
-            {key: 'Aardvark', label: 'Aardvark'},
-            {key: 'Kangaroo', label: 'Kangaroo'},
-            {key: 'Snake', label: 'Snake'}
+            {key: '1', label: 'One'},
+            {key: '', label: 'Two'},
+            {key: '3', label: 'Three'}
           ]"
           :is-open="expanded"
           @open-change="expanded = $event">
@@ -653,8 +664,9 @@ export const ControlledIsOpen: Story = {
 
 export const WithTranslations: Story = {
   render: () => renderMenu({
-    label: 'Languages',
     items: TRANSLATED_ITEMS
+  }, {
+    triggerLabel: 'Edit'
   }),
   parameters: {
     description: {
@@ -699,19 +711,22 @@ export const MenuItemUnavailableToggling: Story = {
       };
     },
     template: `
-      <div style="display: grid; gap: 10px;">
+      <div>
         <ToggleButton v-model="unavailable">Toggle item 2</ToggleButton>
-        <MenuTrigger
-          label="Menu"
-          :items="[
-            {key: '1', label: 'One'},
-            {key: '2', label: 'Two', disabled: unavailable},
-            {key: '3', label: 'Three'}
-          ]">
-          <template #trigger>
-            <ActionButton>Menu Button</ActionButton>
-          </template>
-        </MenuTrigger>
+        <div style="display: flex; width: auto; margin: 250px 0;">
+          <MenuTrigger
+            label="Menu"
+            :items="[
+              {key: '1', label: 'One'},
+              {key: '2', label: 'Two', disabled: unavailable},
+              {key: '3', label: 'Three'}
+            ]">
+            <template #trigger>
+              <ActionButton>Menu Button</ActionButton>
+            </template>
+          </MenuTrigger>
+          <input />
+        </div>
       </div>
     `
   })

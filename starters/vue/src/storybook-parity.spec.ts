@@ -3260,15 +3260,16 @@ describe('Vue storybook helper parity', () => {
       wrappers.push(disabledWrapper);
       let disabledRows = disabledWrapper.findAll('tr.vs-table__row.is-disabled');
       expect(disabledRows).toHaveLength(2);
-      expect(disabledRows.map((row) => row.find('.vs-table__cell-text').text())).toEqual(expect.arrayContaining(['Adobe XD', 'Quarterly Plan']));
+      expect(disabledRows.map((row) => row.find('.vs-table__cell-text').text())).toEqual(expect.arrayContaining(['Foo 2', 'Foo 4']));
       expect(disabledWrapper.emitted('update:modelValue')).toBeUndefined();
 
       let openSetStory = TableDynamicWithDisabledKeys.render?.({
         ...disabledArgs,
         rows: [
-          {id: 1, name: 'Parent row', type: 'Folder', date: '2025-10-12', children: [{id: '1-1', name: 'Child row', type: 'Doc', date: '2025-10-13'}]},
-          {id: 2, name: 'Sibling row', type: 'Document', date: '2025-10-14'}
+          {id: 1, foo: 'Parent row', bar: 'Folder', baz: '2025-10-12', children: [{id: '1-1', foo: 'Child row', bar: 'Doc', baz: '2025-10-13'}]},
+          {id: 2, foo: 'Sibling row', bar: 'Document', baz: '2025-10-14'}
         ],
+        rowKey: 'id',
         openKeys: new Set([1]),
         disabledKeys: []
       }) as ReturnType<Exclude<typeof TableDynamicWithDisabledKeys.render, undefined>>;
@@ -3281,16 +3282,16 @@ describe('Vue storybook helper parity', () => {
 
       let selectedKeysArgs = (TableDynamicSelectedKeys as {args?: Record<string, unknown>}).args ?? {};
       expect(selectedKeysArgs.modelValue).toBeInstanceOf(Set);
-      expect(Array.from(selectedKeysArgs.modelValue as Set<number>)).toEqual([1, 3]);
+      expect(Array.from(selectedKeysArgs.modelValue as Set<string>)).toEqual(['Foo 2', 'Foo 4']);
       let selectedSetStory = TableDynamicSelectedKeys.render?.({
         ...selectedKeysArgs,
-        modelValue: new Set([1, 3])
+        modelValue: new Set(['Foo 2', 'Foo 4'])
       }) as ReturnType<Exclude<typeof TableDynamicSelectedKeys.render, undefined>>;
       let selectedSetWrapper = mount(selectedSetStory);
       wrappers.push(selectedSetWrapper);
       let selectedRows = selectedSetWrapper.findAll('tr.vs-table__row.is-selected');
       expect(selectedRows).toHaveLength(2);
-      expect(selectedRows.map((row) => row.find('.vs-table__cell-text').text())).toEqual(expect.arrayContaining(['Adobe XD', 'Quarterly Plan']));
+      expect(selectedRows.map((row) => row.find('.vs-table__cell-text').text())).toEqual(expect.arrayContaining(['Foo 2', 'Foo 4']));
 
       let dividerArgs = (TableDynamicShowDividers as {args?: Record<string, unknown>}).args ?? {};
       let dividerStory = TableDynamicShowDividers.render?.({...dividerArgs}) as ReturnType<Exclude<typeof TableDynamicShowDividers.render, undefined>>;
@@ -3331,7 +3332,7 @@ describe('Vue storybook helper parity', () => {
       let linksWrapper = mount(linksStory);
       wrappers.push(linksWrapper);
       let link = linksWrapper.get('a.vs-table__cell-link');
-      expect(link.attributes('href')).toBe('https://react-spectrum.adobe.com');
+      expect(link.attributes('href')).toBe('https://adobe.com/');
       expect(link.attributes('target')).toBe('_blank');
     } finally {
       for (let wrapper of wrappers) {

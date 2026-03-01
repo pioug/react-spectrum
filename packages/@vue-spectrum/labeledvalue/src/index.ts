@@ -1,7 +1,9 @@
 import '@adobe/spectrum-css-temp/components/fieldlabel/vars.css';
 import {CalendarDate, CalendarDateTime, getLocalTimeZone, Time, toCalendarDateTime, today, ZonedDateTime} from '@internationalized/date';
+import {Field} from '@vue-spectrum/label';
+import {useDateFormatter, useListFormatter, useNumberFormatter} from '@vue-aria/i18n';
 import {classNames, filterDOMProps} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, isVNode, onMounted, ref, type PropType, type VNode} from 'vue';
+import {computed, defineComponent, h, isVNode, onMounted, ref, type PropType, type VNode, type VNodeChild} from 'vue';
 const styles: {[key: string]: string} = {};
 
 type DateTime = Date | CalendarDate | CalendarDateTime | ZonedDateTime | Time;
@@ -110,105 +112,108 @@ export const LabeledValue = defineComponent({
     }
   },
   setup(props, {attrs, slots}) {
-    let rootRef = ref<HTMLElement | null>(null);
+    let rootRef = ref<HTMLElement | {$el?: Element | null} | null>(null);
 
     onMounted(() => {
-      if (rootRef.value?.querySelector('input, [contenteditable], textarea')) {
+      let rootElement = rootRef.value instanceof HTMLElement
+        ? rootRef.value
+        : rootRef.value && '$el' in rootRef.value && rootRef.value.$el instanceof HTMLElement
+          ? rootRef.value.$el
+          : null;
+
+      if (rootElement?.querySelector('input, [contenteditable], textarea')) {
         throw new Error('LabeledValue cannot contain an editable value.');
       }
     });
 
+    let listFormatter = computed(() => useListFormatter(props.formatOptions as Intl.ListFormatOptions | undefined));
+    let numberFormatter = computed(() => useNumberFormatter(props.formatOptions as Intl.NumberFormatOptions | undefined));
+
     let formattedValue = computed(() => {
       let value = props.value as SpectrumLabeledValueData;
-
-      if (isVNode(value)) {
-        return value;
-      }
+      let content: VNodeChild = '';
 
       if (Array.isArray(value) && value.every((item) => typeof item === 'string')) {
-        return new Intl.ListFormat(undefined, props.formatOptions as Intl.ListFormatOptions | undefined).format(value);
+        content = listFormatter.value.format(value);
       }
 
       if (isRangeValue(value) && typeof value.start === 'number' && typeof value.end === 'number') {
-        let formatter = new Intl.NumberFormat(undefined, props.formatOptions as Intl.NumberFormatOptions | undefined);
+        let formatter = numberFormatter.value;
         let withRange = formatter as Intl.NumberFormat & {formatRange?: (start: number, end: number) => string};
         if (typeof withRange.formatRange === 'function') {
-          return withRange.formatRange(value.start, value.end);
+          content = withRange.formatRange(value.start, value.end);
+        } else {
+          content = `${formatter.format(value.start)} \u2013 ${formatter.format(value.end)}`;
         }
-
-        return `${formatter.format(value.start)} - ${formatter.format(value.end)}`;
       }
 
       if (typeof value === 'number') {
-        return new Intl.NumberFormat(undefined, props.formatOptions as Intl.NumberFormatOptions | undefined).format(value);
+        content = numberFormatter.value.format(value);
       }
 
       if (isRangeValue(value) && isDateTime(value.start) && isDateTime(value.end)) {
         let options = props.formatOptions as Intl.DateTimeFormatOptions | undefined;
         let resolvedOptions = options ?? defaultFormatOptions(value.start);
-        let formatter = new Intl.DateTimeFormat(undefined, resolvedOptions);
-        let withRange = formatter as Intl.DateTimeFormat & {formatRange?: (start: Date, end: Date) => string};
-        let timeZone = formatter.resolvedOptions().timeZone || getLocalTimeZone();
+        let formatter = useDateFormatter(resolvedOptions);
+        let timeZone = new Intl.DateTimeFormat(undefined, resolvedOptions).resolvedOptions().timeZone || getLocalTimeZone();
         let start = toDate(value.start, timeZone);
         let end = toDate(value.end, timeZone);
-        if (typeof withRange.formatRange === 'function') {
-          return withRange.formatRange(start, end);
+        if (typeof formatter.formatRange === 'function') {
+          content = formatter.formatRange(start, end);
+        } else {
+          content = `${formatter.format(start)} \u2013 ${formatter.format(end)}`;
         }
-
-        return `${formatter.format(start)} - ${formatter.format(end)}`;
       }
 
       if (isDateTime(value)) {
         let options = props.formatOptions as Intl.DateTimeFormatOptions | undefined;
         let resolvedOptions = options ?? defaultFormatOptions(value);
-        let formatter = new Intl.DateTimeFormat(undefined, resolvedOptions);
-        let timeZone = formatter.resolvedOptions().timeZone || getLocalTimeZone();
-        return formatter.format(toDate(value, timeZone));
+        let formatter = useDateFormatter(resolvedOptions);
+        let timeZone = new Intl.DateTimeFormat(undefined, resolvedOptions).resolvedOptions().timeZone || getLocalTimeZone();
+        content = formatter.format(toDate(value, timeZone));
       }
 
-      return value;
+      if (typeof value === 'string') {
+        content = value;
+      }
+
+      if (isVNode(value)) {
+        content = value;
+      }
+
+      return content;
     });
 
     return () => {
       let domProps = filterDOMProps(attrs as Record<string, unknown>, {labelable: true}) as Record<string, unknown>;
       let {class: domClass, className: domClassName, style: domStyle, ...restDomProps} = domProps;
       let width = toDimensionValue(props.width);
-      let contextualHelp = slots.contextualHelp ? slots.contextualHelp() : props.contextualHelp;
       let valueContent = slots.default
         ? slots.default()
         : isVNode(formattedValue.value)
           ? [formattedValue.value]
           : formattedValue.value;
 
-      return h('div', {
-        ...restDomProps,
+      return h(Field, {
         ref: rootRef,
-        class: [
-          classNames(
-            styles,
-            'spectrum-Field',
-            'spectrum-LabeledValue',
-            {
-              'spectrum-Field--alignEnd': props.labelAlign === 'end',
-              'spectrum-Field--hasContextualHelp': !!contextualHelp,
-              'spectrum-Field--positionSide': props.labelPosition === 'side',
-              'spectrum-Field--positionTop': props.labelPosition !== 'side'
-            }
-          ),
-          domClassName,
-          domClass
+        label: slots.label ? undefined : props.label,
+        labelAlign: props.labelAlign ?? undefined,
+        labelPosition: props.labelPosition === null ? undefined : props.labelPosition ?? undefined,
+        contextualHelp: slots.contextualHelp ? undefined : props.contextualHelp,
+        elementType: 'span',
+        wrapperClassName: classNames(styles, 'spectrum-LabeledValue'),
+        wrapperProps: {
+          ...restDomProps,
+          class: [domClassName, domClass],
+          style: [domStyle, width ? {width} : undefined]
+        }
+      }, {
+        default: () => [
+          h('span', valueContent as never)
         ],
-        style: [
-          domStyle,
-          width ? {width} : undefined
-        ]
-      }, [
-        h('span', {class: classNames(styles, 'spectrum-FieldLabel')}, slots.label ? slots.label() : props.label as never),
-        contextualHelp
-          ? h('span', {class: classNames(styles, 'spectrum-Field-contextualHelp')}, contextualHelp as never)
-          : null,
-        h('span', {class: classNames(styles, 'spectrum-Field-field')}, valueContent as never)
-      ]);
+        label: slots.label,
+        contextualHelp: slots.contextualHelp
+      });
     };
   }
 });

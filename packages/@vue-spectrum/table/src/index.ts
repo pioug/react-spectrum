@@ -189,6 +189,28 @@ function toCssSize(value: number | string | undefined): string | undefined {
   return undefined;
 }
 
+function toPixelNumber(value: number | string | undefined): number | undefined {
+  if (typeof value === 'number' && Number.isFinite(value) && value > 0) {
+    return value;
+  }
+
+  if (typeof value === 'string') {
+    let trimmed = value.trim();
+    if (trimmed === '') {
+      return undefined;
+    }
+
+    if (trimmed.endsWith('px')) {
+      let parsed = Number.parseFloat(trimmed.slice(0, -2));
+      if (Number.isFinite(parsed) && parsed > 0) {
+        return parsed;
+      }
+    }
+  }
+
+  return undefined;
+}
+
 function isLikelyUrl(text: string): boolean {
   return /^https?:\/\//i.test(text);
 }
@@ -240,6 +262,10 @@ export const Table = defineComponent({
       type: Boolean,
       default: false
     },
+    height: {
+      type: [Number, String] as PropType<number | string | undefined>,
+      default: undefined
+    },
     loadingState: {
       type: String as PropType<TableLoadingState>,
       default: 'idle'
@@ -278,6 +304,10 @@ export const Table = defineComponent({
     },
     visibility: {
       type: String as PropType<'hidden' | 'visible' | undefined>,
+      default: undefined
+    },
+    width: {
+      type: [Number, String] as PropType<number | string | undefined>,
       default: undefined
     }
   },
@@ -326,6 +356,23 @@ export const Table = defineComponent({
     let selectedSet = computed(() => new Set(normalizeSelectedValue(props.modelValue)));
     let disabledKeySet = computed(() => new Set(normalizeSelectionKeys(props.disabledKeys)));
     let openSet = computed(() => new Set(props.openKeys));
+    let estimatedVisibleRowCount = computed(() => {
+      let pixelHeight = toPixelNumber(props.height);
+      if (pixelHeight == null) {
+        return undefined;
+      }
+
+      // Keep render cost bounded for very large datasets while preserving top-of-table behavior.
+      return Math.max(1, Math.ceil(pixelHeight / 36) + 2);
+    });
+    let renderedRows = computed(() => {
+      let visibleCount = estimatedVisibleRowCount.value;
+      if (visibleCount == null || props.rows.length <= visibleCount) {
+        return props.rows;
+      }
+
+      return props.rows.slice(0, visibleCount);
+    });
     let hasMultipleSelection = computed(() => props.selectionMode === 'multiple');
     let selectionColumnOffset = computed(() => hasMultipleSelection.value ? 1 : 0);
     let isRowDisabledByContract = (row: TableRow, rowId: SelectionKey) => (
@@ -430,6 +477,8 @@ export const Table = defineComponent({
     };
 
     return () => {
+      let tableWidth = toCssSize(props.width);
+      let tableHeight = toCssSize(props.height);
       let rootClassName = classNames(
         styles,
         'spectrum-Table',
@@ -450,7 +499,12 @@ export const Table = defineComponent({
         'aria-labelledby': tableLabelId.value || attrs['aria-labelledby'],
         'data-testid': props.dataTestid || attrs['data-testid'],
         'data-loading-state': props.loadingState,
-        style: [attrs.style, {visibility: props.visibility}],
+        style: [attrs.style, {
+          visibility: props.visibility,
+          ...(tableWidth != null ? {width: tableWidth} : {}),
+          ...(tableHeight != null ? {height: tableHeight} : {}),
+          ...(tableWidth != null || tableHeight != null ? {overflow: 'auto'} : {})
+        }],
         'data-vac': ''
       }, [
         h('table', {class: 'vs-table__table'}, [
@@ -616,9 +670,9 @@ export const Table = defineComponent({
             })
             ])
           ]),
-          h('tbody', {class: [classNames(styles, 'spectrum-Table-body'), 'vs-table__body'], role: 'rowgroup'}, props.rows.length > 0
+          h('tbody', {class: [classNames(styles, 'spectrum-Table-body'), 'vs-table__body'], role: 'rowgroup'}, renderedRows.value.length > 0
             ? [
-              ...props.rows.map((row, rowIndex) => {
+              ...renderedRows.value.map((row, rowIndex) => {
               let rowId = getRowId(row, rowIndex, props.rowKey);
               let rowChildren = row.children;
               let hasChildren = Array.isArray(rowChildren) && rowChildren.length > 0;
@@ -630,8 +684,8 @@ export const Table = defineComponent({
               let isRowActive = activeRow.value === rowId && !isRowDisabled;
               let isRowOpen = row.open ?? openSet.value.has(rowId);
 
-              let previousRowId = rowIndex > 0 ? getRowId(props.rows[rowIndex - 1], rowIndex - 1, props.rowKey) : null;
-              let nextRowId = rowIndex + 1 < props.rows.length ? getRowId(props.rows[rowIndex + 1], rowIndex + 1, props.rowKey) : null;
+              let previousRowId = rowIndex > 0 ? getRowId(renderedRows.value[rowIndex - 1], rowIndex - 1, props.rowKey) : null;
+              let nextRowId = rowIndex + 1 < renderedRows.value.length ? getRowId(renderedRows.value[rowIndex + 1], rowIndex + 1, props.rowKey) : null;
               let isPrevSelected = previousRowId != null ? selectedSet.value.has(previousRowId) : false;
               let isNextSelected = nextRowId != null ? selectedSet.value.has(nextRowId) : false;
 
@@ -799,7 +853,9 @@ export const Table = defineComponent({
                   class: ['vs-table__cell', classNames(styles, 'spectrum-Table-cell')],
                   role: 'gridcell',
                   'aria-colspan': Math.max(1, props.columns.length + selectionColumnOffset.value)
-                }, props.loadingState === 'loading' || props.loadingState === 'filtering' ? 'Loading…' : 'No rows')
+                }, props.loadingState === 'loadingMore'
+                  ? 'Loading more…'
+                  : (props.loadingState === 'loading' || props.loadingState === 'filtering' ? 'Loading…' : 'No rows'))
               ])
             ]),
           h('tbody', {class: 'vs-table__drop-indicators', role: 'rowgroup'}, [

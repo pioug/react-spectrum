@@ -44,7 +44,7 @@ export const ImageOnError: Story = {
         onErrorHandler
       };
     },
-    template: '<Image v-bind="args" width="500px" height="500px" :src="isImageMissing ? DEFAULT_IMAGE : BROKEN_IMAGE" alt="starry sky" :onError="onErrorHandler" />'
+    template: '<Image v-bind="args" width="500px" height="500px" :src="isImageMissing ? DEFAULT_IMAGE : BROKEN_IMAGE" alt="starry sky" :on-error="onErrorHandler" />'
   }),
   parameters: {
     description: {

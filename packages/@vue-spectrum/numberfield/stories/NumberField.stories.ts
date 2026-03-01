@@ -4,7 +4,7 @@ import {ContextualHelp} from '@vue-spectrum/contextualhelp';
 import {Form} from '@vue-spectrum/form';
 import {NumberField} from '../src';
 import {Picker} from '@vue-spectrum/picker';
-import {computed, defineComponent, ref, type PropType} from 'vue';
+import {computed, defineComponent, h, ref, type PropType} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type NumberFieldStoryArgs = {
@@ -12,6 +12,7 @@ type NumberFieldStoryArgs = {
   defaultValue?: number,
   description?: string,
   errorMessage?: string,
+  formatOptions?: Intl.NumberFormatOptions,
   hideStepper?: boolean,
   isDisabled?: boolean,
   isInvalid?: boolean,
@@ -30,7 +31,8 @@ type NumberFieldStoryArgs = {
   placeholder?: string,
   step?: number,
   validationState?: 'invalid' | 'valid',
-  value?: number
+  value?: number,
+  width?: string | number
 };
 
 const NumberFieldControlled = defineComponent({
@@ -63,6 +65,7 @@ const NumberFieldControlled = defineComponent({
     <NumberField
       v-bind="props.args"
       class="custom_classname"
+      :format-options="{style: 'currency', currency: 'EUR'}"
       label="Price"
       :model-value="value"
       @change="handleChange"
@@ -109,7 +112,12 @@ const NumberFieldWithCurrencySelect = defineComponent({
       {id: 'name', label: 'Name'}
     ];
 
-    let description = computed(() => `Currency: ${currency.value}, sign: ${currencySign.value}, display: ${currencyDisplay.value}`);
+    let formatOptions = computed(() => ({
+      currency: currency.value,
+      currencyDisplay: currencyDisplay.value as 'code' | 'name' | 'symbol' | 'narrowSymbol',
+      currencySign: currencySign.value as 'standard' | 'accounting',
+      style: 'currency' as const
+    }));
 
     let handleChange = (nextValue: number | null) => {
       value.value = nextValue;
@@ -125,7 +133,7 @@ const NumberFieldWithCurrencySelect = defineComponent({
       currencyItems,
       currencySign,
       currencySignItems: signItems,
-      description,
+      formatOptions,
       handleChange
     };
   },
@@ -134,8 +142,8 @@ const NumberFieldWithCurrencySelect = defineComponent({
       <NumberField
         v-bind="props.args"
         class="custom_classname"
+        :format-options="formatOptions"
         label="Price"
-        :description="description"
         :model-value="value"
         @change="handleChange"
         @update:model-value="value = $event" />
@@ -165,10 +173,10 @@ const NumberFieldControlledStateReset = defineComponent({
     NumberField
   },
   setup() {
-    let controlledValue = ref<number | null>(12);
+    let controlledValue = ref<number>(12);
 
     let reset = () => {
-      controlledValue.value = null;
+      controlledValue.value = Number.NaN;
     };
 
     return {
@@ -177,16 +185,12 @@ const NumberFieldControlledStateReset = defineComponent({
     };
   },
   template: `
-    <div style="display: flex; align-items: end; gap: var(--spectrum-global-dimension-size-200);">
-      <NumberField
-        aria-label="numberfield to reset"
-        class="custom_classname"
-        label=""
-        :model-value="controlledValue"
-        @change="controlledValue = $event"
-        @update:model-value="controlledValue = $event" />
-      <Button variant="primary" @click="reset">Reset</Button>
-    </div>
+    <NumberField
+      aria-label="numberfield to reset"
+      :model-value="controlledValue"
+      @change="controlledValue = $event ?? Number.NaN"
+      @update:model-value="controlledValue = $event ?? Number.NaN" />
+    <Button variant="primary" @click="reset">Reset</Button>
   `
 });
 
@@ -267,47 +271,56 @@ export const Value10: Story = {
 };
 
 export const MaximumFractionDigits0: Story = {
-  render: renderNumberField({step: 1})
+  render: renderNumberField({formatOptions: {maximumFractionDigits: 0}})
 };
 
 export const Currency: Story = {
-  render: renderNumberField({label: 'Price'})
+  render: renderNumberField({
+    formatOptions: {style: 'currency', currency: 'EUR'},
+    label: 'Price'
+  })
 };
 
 export const Percent: Story = {
-  render: renderNumberField({label: 'Tax'})
+  render: renderNumberField({
+    formatOptions: {style: 'percent'},
+    label: 'Tax'
+  })
 };
 
 export const PercentMaxFractionDigits2NoMinFractionDigits: Story = {
   render: renderNumberField({
+    formatOptions: {style: 'percent', maximumFractionDigits: 2},
     label: 'Tax',
-    step: 0.01
   })
 };
 
 export const PercentMin2Max2FractionDigits: Story = {
   render: renderNumberField({
+    formatOptions: {style: 'percent', minimumFractionDigits: 2, maximumFractionDigits: 2},
     label: 'Tax',
-    step: 0.01
   })
 };
 
 export const PercentMin2Max3FractionDigits: Story = {
   render: renderNumberField({
+    formatOptions: {style: 'percent', minimumFractionDigits: 2, maximumFractionDigits: 3},
     label: 'Tax',
-    step: 0.001
   })
 };
 
 export const MinValue00FractionDigits: Story = {
   render: renderNumberField({
-    minValue: 0,
-    step: 1
+    formatOptions: {maximumFractionDigits: 0},
+    minValue: 0
   })
 };
 
 export const PercentUsingSign: Story = {
-  render: renderNumberField({label: 'Tax'})
+  render: renderNumberField({
+    formatOptions: {style: 'percent', signDisplay: 'always'},
+    label: 'Tax'
+  })
 };
 
 export const Disabled: Story = {
@@ -498,47 +511,57 @@ export const WithErrorMessageLabelPositionSide: Story = {
 export const _ContextualHelp: Story = {
   render: (args: NumberFieldStoryArgs) => ({
     components: {
-      ContextualHelp,
       NumberField
     },
     setup() {
+      let mergedArgs = computed(() => ({
+        label: 'Width',
+        ...args
+      }));
+      let contextualHelp = h(ContextualHelp, null, {
+        default: () => [
+          h('h3', {style: 'margin: 0 0 8px 0;'}, 'What is a segment?'),
+          h('p', {style: 'margin: 0;'}, 'Segments identify who your visitors are, what devices and services they use, where they navigated from, and much more.')
+        ]
+      });
+
       return {
-        args,
+        contextualHelp,
+        mergedArgs,
         onBlur: action('onBlur'),
         onChange: action('onChange'),
         onFocus: action('onFocus')
       };
     },
     template: `
-      <div style="display: flex; align-items: end; gap: var(--spectrum-global-dimension-size-200);">
-        <NumberField
-          v-bind="args"
-          class="custom_classname"
-          @blur="onBlur"
-          @change="onChange"
-          @focus="onFocus" />
-        <ContextualHelp title="What is a segment?">
-          Segments identify who your visitors are, what devices and services they use, where they navigated from, and much more.
-        </ContextualHelp>
-      </div>
+      <NumberField
+        v-bind="mergedArgs"
+        class="custom_classname"
+        :contextual-help="contextualHelp"
+        @blur="onBlur"
+        @change="onChange"
+        @focus="onFocus" />
     `
   })
 };
 
 export const CustomWidth: Story = {
-  render: renderNumberField({}, 'width: var(--spectrum-global-dimension-size-3000);')
+  render: renderNumberField({width: 'size-3000'})
 };
 
 export const QuietCustomWidth: Story = {
-  render: renderNumberField({isQuiet: true}, 'width: var(--spectrum-global-dimension-size-3000);')
+  render: renderNumberField({isQuiet: true, width: 'size-3000'})
 };
 
 export const CustomWidthNoVisibleLabel: Story = {
-  render: renderNoLabel({isRequired: true}, 'Width', 'width: var(--spectrum-global-dimension-size-3000);')
+  render: renderNoLabel({isRequired: true, width: 'size-3000'}, 'Width')
 };
 
 export const CustomWidthLabelPositionSide: Story = {
-  render: renderNumberField({description: 'labelPosition: side'}, 'width: var(--spectrum-global-dimension-size-3000);')
+  render: renderNumberField({
+    width: 'size-3000',
+    labelPosition: 'side'
+  })
 };
 
 export const Controlled: Story = {
@@ -579,15 +602,16 @@ export const Flexed: Story = {
 };
 
 export const MinWidth: Story = {
-  render: renderNumberField({}, 'width: 0; min-width: 0;')
+  render: renderNumberField({width: 0})
 };
 
 export const FocusEvents: Story = {
   render: (args: NumberFieldStoryArgs) => ({
     components: {NumberField},
     setup() {
+      let mergedArgs = computed(() => ({label: 'Width', ...args}));
       return {
-        args,
+        mergedArgs,
         onBlur: action('onBlur'),
         onChange: action('onChange'),
         onFocus: action('onFocus'),
@@ -598,7 +622,7 @@ export const FocusEvents: Story = {
     },
     template: `
       <NumberField
-        v-bind="args"
+        v-bind="mergedArgs"
         class="custom_classname"
         @blur="onBlur"
         @change="onChange"
@@ -615,8 +639,9 @@ export const InputDomEvents: Story = {
   render: (args: NumberFieldStoryArgs) => ({
     components: {NumberField},
     setup() {
+      let mergedArgs = computed(() => ({label: 'Width', ...args}));
       return {
-        args,
+        mergedArgs,
         onBeforeInput: action('onBeforeInput'),
         onBlur: action('onBlur'),
         onChange: action('onChange'),
@@ -633,7 +658,7 @@ export const InputDomEvents: Story = {
     },
     template: `
       <NumberField
-        v-bind="args"
+        v-bind="mergedArgs"
         class="custom_classname"
         @beforeinput="onBeforeInput"
         @blur="onBlur"

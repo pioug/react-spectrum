@@ -16,7 +16,6 @@ import {ContextualHelp} from '@vue-spectrum/contextualhelp';
 import {Heading} from '@vue-spectrum/text';
 import {LabeledValue} from '../src';
 import {Link} from '@vue-spectrum/link';
-import {h} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 const meta: Meta<typeof LabeledValue> = {
@@ -153,10 +152,21 @@ export const NumberRange: Story = {
 };
 
 export const CustomComponent: Story = {
-  render: (args) => renderLabeledValue(args),
+  render: (args) => ({
+    components: {LabeledValue, Link},
+    setup() {
+      return {args};
+    },
+    template: `
+      <LabeledValue v-bind="args">
+        <template #default>
+          <Link href="https://www.adobe.com">Adobe</Link>
+        </template>
+      </LabeledValue>
+    `
+  }),
   args: {
-    label: 'Test',
-    value: h(Link, {href: 'https://www.adobe.com'}, () => 'Adobe')
+    label: 'Test'
   },
   name: 'Custom component'
 };

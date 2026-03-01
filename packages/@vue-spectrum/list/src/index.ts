@@ -1,4 +1,6 @@
 import './styles.css';
+import {Checkbox} from '@vue-spectrum/checkbox';
+import {ProgressCircle} from '@vue-spectrum/progress';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, type PropType, ref, watch} from 'vue';
 
@@ -10,10 +12,13 @@ export type ListItemRecord = {
   children?: ListItemRecord[],
   description?: string,
   disabled?: boolean,
+  href?: string,
   id?: number | string,
   key?: number | string,
   label?: string,
   name?: string,
+  rel?: string,
+  target?: string,
   textValue?: string
 } & Record<string, unknown>;
 
@@ -28,6 +33,10 @@ type NormalizedListItem = {
   label: string,
   original: ListItemRecord | string
 };
+
+const UNIT_RE = /(%|px|em|rem|vw|vh|auto|cm|mm|in|pt|pc|ex|ch|rem|vmin|vmax|fr)$/;
+const FUNC_RE = /^\s*\w+\(/;
+const SPECTRUM_VARIABLE_RE = /(static-)?size-\d+|single-line-(height|width)/g;
 
 function normalizeItem(item: ListItemRecord | string, index: number): NormalizedListItem {
   if (typeof item === 'string') {
@@ -105,6 +114,26 @@ function toBooleanString(value: boolean): 'false' | 'true' {
   return value ? 'true' : 'false';
 }
 
+function toDimensionValue(value: string | number | null | undefined): string | undefined {
+  if (typeof value === 'number') {
+    return `${value}px`;
+  }
+
+  if (!value) {
+    return undefined;
+  }
+
+  if (UNIT_RE.test(value)) {
+    return value;
+  }
+
+  if (FUNC_RE.test(value)) {
+    return value.replace(SPECTRUM_VARIABLE_RE, 'var(--spectrum-global-dimension-$&, var(--spectrum-alias-$&))');
+  }
+
+  return `var(--spectrum-global-dimension-${value}, var(--spectrum-alias-${value}))`;
+}
+
 export const ListView = defineComponent({
   name: 'VueListView',
   inheritAttrs: false,
@@ -152,6 +181,10 @@ export const ListView = defineComponent({
       type: String as PropType<'idle' | 'loading' | 'loadingMore'>,
       default: 'idle'
     },
+    renderEmptyState: {
+      type: Function as PropType<(() => unknown) | undefined>,
+      default: undefined
+    },
     modelValue: {
       type: [String, Number, Array, Set] as PropType<SelectionValue | undefined>,
       default: undefined
@@ -179,6 +212,14 @@ export const ListView = defineComponent({
     selectionStyle: {
       type: String as PropType<SelectionStyle>,
       default: 'highlight'
+    },
+    width: {
+      type: [String, Number] as PropType<number | string | undefined>,
+      default: undefined
+    },
+    height: {
+      type: [String, Number] as PropType<number | string | undefined>,
+      default: undefined
     }
   },
   emits: {
@@ -266,6 +307,7 @@ export const ListView = defineComponent({
 
     return () => {
       let items = normalizedItems.value;
+      let renderedItems = items;
       let hasAnyChildren = items.some((item) => {
         if (typeof item.original === 'string') {
           return false;
@@ -291,9 +333,19 @@ export const ListView = defineComponent({
         }
       );
 
+      let emptyStateContent = props.renderEmptyState
+        ? props.renderEmptyState()
+        : (slots.empty ? slots.empty() : 'No items');
+
+      let rootStyle = {
+        width: toDimensionValue(props.width),
+        height: toDimensionValue(props.height)
+      };
+
       return h('div', {
         ...attrs,
         class: [rootClassName, 'vs-list-view', 'vs-listbox', attrs.class],
+        style: [rootStyle, attrs.style],
         role: 'grid',
         'aria-label': props.ariaLabel || attrs['aria-label'],
         'data-vac': ''
@@ -329,22 +381,32 @@ export const ListView = defineComponent({
                 }
               )
             }, [
-              h('div', {role: 'gridcell'}, slots.default ? slots.default() : 'No items')
+              h('div', {role: 'gridcell'}, props.loadingState === 'loading'
+                ? h(ProgressCircle, {isIndeterminate: true, 'aria-label': 'Loading'})
+                : emptyStateContent)
             ])
-            : items.map((item, index) => {
+            : renderedItems.map((item, index) => {
+              let itemRecord = typeof item.original === 'string' ? undefined : item.original;
               let isItemDisabled = props.isDisabled || item.disabled || hasKey(props.disabledKeys, item.key);
               let isTotallyDisabled = props.isDisabled || (isItemDisabled && props.disabledBehavior === 'all');
               let isSelected = selectedKeys.value.has(item.key);
               let isFocused = focusedKey.value === item.key && !isTotallyDisabled;
               let isHovered = hoveredKey.value === item.key && !isTotallyDisabled;
               let isActive = activeKey.value === item.key && !isTotallyDisabled;
-              let prevSelected = index > 0 ? selectedKeys.value.has(items[index - 1].key) : false;
-              let nextSelected = index + 1 < items.length ? selectedKeys.value.has(items[index + 1].key) : false;
+              let prevSelected = index > 0 ? selectedKeys.value.has(renderedItems[index - 1].key) : false;
+              let nextSelected = index + 1 < renderedItems.length ? selectedKeys.value.has(renderedItems[index + 1].key) : false;
+              let itemDescription = itemRecord?.description;
+              let showCheckbox = props.selectionMode !== 'none' && props.selectionStyle === 'checkbox';
+              let previousKey = index > 0 ? renderedItems[index - 1].key : null;
+              let nextKey = index + 1 < renderedItems.length ? renderedItems[index + 1].key : null;
+              let roundTops = !prevSelected && focusedKey.value !== previousKey;
+              let roundBottoms = !nextSelected && focusedKey.value !== nextKey;
+              let roundForHover = isHovered && !isSelected && focusedKey.value !== item.key;
 
               let rowClassName = classNames(listStyles, 'react-spectrum-ListView-row', {
                 'focus-ring': isFocused,
-                'round-bottoms': true,
-                'round-tops': true
+                'round-bottoms': roundBottoms || roundForHover,
+                'round-tops': roundTops || roundForHover
               });
 
               let itemClassName = classNames(listStyles, 'react-spectrum-ListViewItem', {
@@ -358,15 +420,94 @@ export const ListView = defineComponent({
                 'is-selected': isSelected,
                 'react-spectrum-ListViewItem--dropTarget': false,
                 'react-spectrum-ListViewItem--firstRow': index === 0,
-                'react-spectrum-ListViewItem--hasDescription': false,
-                'react-spectrum-ListViewItem--isFlushBottom': index === items.length - 1,
-                'react-spectrum-ListViewItem--lastRow': index === items.length - 1
+                'react-spectrum-ListViewItem--hasDescription': Boolean(itemDescription),
+                'react-spectrum-ListViewItem--isFlushBottom': index === renderedItems.length - 1,
+                'react-spectrum-ListViewItem--lastRow': index === renderedItems.length - 1,
+                'has-checkbox': showCheckbox
               });
+
+              let itemContent = slots.item
+                ? slots.item({
+                  index,
+                  isDisabled: isItemDisabled,
+                  isSelected,
+                  item: itemRecord ?? item.original
+                })
+                : [
+                  h('div', {class: classNames(listStyles, 'react-spectrum-ListViewItem-content')}, item.label),
+                  itemDescription
+                    ? h('div', {class: classNames(listStyles, 'react-spectrum-ListViewItem-description')}, itemDescription)
+                    : null
+                ];
+              let itemHref = itemRecord?.href;
+
+              let itemProps: Record<string, unknown> = {
+                class: [itemClassName, 'vs-list-view__item', 'vs-listbox__item'],
+                role: 'option',
+                'aria-disabled': isTotallyDisabled ? 'true' : undefined,
+                'aria-selected': props.selectionMode === 'none' ? undefined : toBooleanString(isSelected),
+                style: {
+                  appearance: 'none',
+                  background: 'none',
+                  border: 0,
+                  color: 'inherit',
+                  font: 'inherit',
+                  margin: 0,
+                  outline: 'none',
+                  padding: 0,
+                  textAlign: 'start',
+                  textDecoration: 'none',
+                  width: '100%'
+                },
+                onFocus: () => {
+                  focusedKey.value = item.key;
+                },
+                onBlur: () => {
+                  if (focusedKey.value === item.key) {
+                    focusedKey.value = null;
+                  }
+                },
+                onClick: (event: MouseEvent) => {
+                  if (itemHref && props.selectionMode !== 'none') {
+                    event.preventDefault();
+                  }
+                  activeKey.value = null;
+                  onSelectItem(item, {
+                    isSelectionDisabled: isItemDisabled,
+                    isTotallyDisabled
+                  });
+                }
+              };
+
+              if (itemHref && !isTotallyDisabled) {
+                itemProps.href = itemHref;
+                itemProps.target = itemRecord?.target;
+                itemProps.rel = itemRecord?.rel;
+              } else {
+                itemProps.type = 'button';
+                itemProps.disabled = isTotallyDisabled;
+              }
+
+              let checkboxNode = showCheckbox
+                ? h('div', {class: classNames(listStyles, 'react-spectrum-ListViewItem-checkboxWrapper')}, [
+                  h(Checkbox, {
+                    class: classNames(listStyles, 'react-spectrum-ListViewItem-checkbox'),
+                    'aria-label': 'Select',
+                    excludeFromTabOrder: true,
+                    isDisabled: isItemDisabled,
+                    isSelected
+                  })
+                ])
+                : null;
+              let itemGridChildren = Array.isArray(itemContent)
+                ? [checkboxNode, ...itemContent]
+                : [checkboxNode, itemContent];
 
               return h('div', {
                 key: String(item.key),
                 role: 'row',
                 class: [rowClassName, 'vs-list-view__row'],
+                'data-href': itemHref ? '' : undefined,
                 tabindex: isTotallyDisabled ? -1 : 0,
                 'aria-rowindex': index + 1,
                 onMouseenter: () => {
@@ -395,31 +536,8 @@ export const ListView = defineComponent({
                   role: 'gridcell',
                   class: 'vs-list-view__cell'
                 }, [
-                  h('button', {
-                    type: 'button',
-                    class: [itemClassName, 'vs-list-view__item', 'vs-listbox__item'],
-                    disabled: isTotallyDisabled,
-                    role: 'option',
-                    'aria-selected': props.selectionMode === 'none' ? undefined : toBooleanString(isSelected),
-                    onFocus: () => {
-                      focusedKey.value = item.key;
-                    },
-                    onBlur: () => {
-                      if (focusedKey.value === item.key) {
-                        focusedKey.value = null;
-                      }
-                    },
-                    onClick: () => {
-                      activeKey.value = null;
-                      onSelectItem(item, {
-                        isSelectionDisabled: isItemDisabled,
-                        isTotallyDisabled
-                      });
-                    }
-                  }, [
-                    h('div', {class: classNames(listStyles, 'react-spectrum-ListViewItem-grid')}, [
-                      h('span', {class: 'vs-list-view__item-label'}, item.label)
-                    ])
+                  h(itemHref && !isTotallyDisabled ? 'a' : 'button', itemProps, [
+                    h('div', {class: classNames(listStyles, 'react-spectrum-ListViewItem-grid')}, itemGridChildren)
                   ])
                 ]),
                 h('div', {
@@ -437,7 +555,21 @@ export const ListView = defineComponent({
                   })
                 ])
               ]);
-            })
+            }),
+          props.loadingState === 'loadingMore' && items.length > 0
+            ? h('div', {
+              role: 'row',
+              class: classNames(
+                listStyles,
+                'react-spectrum-ListView-centeredWrapper',
+                'react-spectrum-ListView-centeredWrapper--loadingMore'
+              )
+            }, [
+              h('div', {role: 'gridcell'}, [
+                h(ProgressCircle, {isIndeterminate: true, 'aria-label': 'Loading more'})
+              ])
+            ])
+            : null
         ])
       ]);
     };
