@@ -116,20 +116,21 @@ export const ActionBar = defineComponent({
         }
       }, [
         h('div', {class: 'react-spectrum-ActionBar-bar'}, [
-          h(ActionGroup, {
-            class: 'react-spectrum-ActionBar-actionGroup',
-            'aria-label': 'Actions',
-            items: props.items,
-            selectionMode: 'none',
-            isQuiet: true,
-            overflowMode: 'collapse',
-            buttonLabelBehavior: props.buttonLabelBehavior,
-            staticColor: props.isEmphasized ? 'white' : undefined,
-            disabledKeys: props.disabledKeys,
-            onAction: (key: string) => emit('action', key)
-          }, {
-            item: renderItem
-          }),
+          h('div', {class: 'react-spectrum-ActionBar-actionGroup'}, [
+            h(ActionGroup, {
+              'aria-label': 'Actions',
+              items: props.items,
+              selectionMode: 'none',
+              isQuiet: true,
+              overflowMode: 'collapse',
+              buttonLabelBehavior: props.buttonLabelBehavior,
+              staticColor: props.isEmphasized ? 'white' : undefined,
+              disabledKeys: props.disabledKeys,
+              onAction: (key: string) => emit('action', key)
+            }, {
+              item: renderItem
+            })
+          ]),
           h(ActionButton, {
             isQuiet: true,
             staticColor: props.isEmphasized ? 'white' : undefined,

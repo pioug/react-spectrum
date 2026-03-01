@@ -37,8 +37,9 @@
   inline-size: 38px;
   min-inline-size: 38px;
   max-inline-size: 38px;
-  padding-inline: 0;
-  text-align: center;
+  padding-left: 16px;
+  padding-right: 8px;
+  text-align: start;
 }
 
 .vs-table__selection-checkbox {
@@ -51,7 +52,14 @@
 
 .vs-table__head-cell {
   display: table-cell;
+  height: 34px;
+  line-height: 0;
   vertical-align: middle;
+}
+
+.vs-table__row.spectrum-Table-row.is-selected {
+  background: transparent;
+  background-color: transparent;
 }
 
 .react-spectrum-Table-cell {
