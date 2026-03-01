@@ -10,10 +10,10 @@ Use this as a progression checklist for parity re-review. Mark each line when co
 - [ ] Overlay first-render token gate (dialog/overlays scope): verify at least one initially-open overlay story portals inside `.vs-provider` (not `body`) and computed modal/underlay surface backgrounds are non-transparent (theme tokens resolved)
 
 ## Phase 1 - @vue-spectrum Component Families + Stories
-- [ ] 1.01 `@vue-spectrum/accordion`
+- [x] 1.01 `@vue-spectrum/accordion`
   - Components: Accordion, Disclosure, DisclosurePanel, DisclosureTitle
-- [ ] Story: Accordion.stories.ts
-- [ ] Story: Disclosure.stories.ts
+  - [x] Story: Accordion.stories.ts
+  - [x] Story: Disclosure.stories.ts
 - [ ] 1.02 `@vue-spectrum/actionbar`
   - Components: ActionBar, ActionBarContainer
   - [ ] Story: ActionBar.stories.ts
