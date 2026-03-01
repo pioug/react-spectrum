@@ -9,7 +9,7 @@ Source of truth: this file (`AGENTS.md`)
 - Do not add parity scripts, migration counters, or checklist validators.
 - Passing automated tests protects from regressions but does not prove parity.
 - Tests are a post-fix regression gate, not a parity gap discovery method.
-- Never treat a green test run as evidence that React↔Vue parity gaps do not exist.
+- Never treat a green test run as proof that React↔Vue parity gaps do not exist.
 - Compare Vue against React source, API contracts, and existing React tests before implementing.
 - Do not improvise Vue-only behavior logic; idiomatic Vue differences are valid only when the React behavior contract is preserved.
 - Reuse/copy React/Spectrum styles where possible; avoid Vue-only style forks unless there is no React-equivalent DOM.
@@ -20,9 +20,9 @@ Source of truth: this file (`AGENTS.md`)
   - `packages/@vue-spectrum/*/stories`
   - `packages/vue-aria-components/stories`
 - Use `PARITY_REVIEW_CHECKLIST.md` as the mandatory progression tracker for the re-review; work top-to-bottom unless explicitly reprioritized.
-- Mark checklist progress continuously while working (`[ ]` -> `[x]`) and record short evidence notes for each completed item.
+- Mark checklist progress continuously while working (`[ ]` -> `[x]`).
 - Commit and push often in small, reviewable increments; keep changes scoped to one component family/behavior cluster.
-- Record scope, gaps, evidence, and validation outputs in commit/PR notes.
+- Record scope, gaps, and validation outputs in commit/PR notes.
 
 ## Per-Component Workflow
 
@@ -32,7 +32,7 @@ Source of truth: this file (`AGENTS.md`)
 4. Compare React vs Vue source/API/props/states, and verify visual output, DOM structure, ARIA/data attributes, state classes/transitions, computed styles, and style-source wiring (imports/dependencies/selectors).
 5. Fix Vue internals and add/adjust regression tests for the gap.
 6. Run full validation gate; move to next component only after pass.
-7. Mark the checklist item complete and add brief evidence (gap + fix + validation).
+7. Mark the checklist item complete.
 
 ## Systematic Gap Detection (Required)
 
@@ -71,8 +71,8 @@ Use this checklist for every component batch. Do not skip steps even when tests 
    - Add/adjust targeted regression coverage in existing Vue parity tests.
    - Prefer extending current parity specs over introducing new parity scripts.
 
-6. **Evidence and sign-off**
-   - Log checked story ids, detected gaps, root cause, fix location, and validation results.
+6. **Sign-off**
+   - Keep checklist status current for completed items.
    - Only move to the next component family after the Validation Gate passes.
 
 ## Validation Gate
@@ -86,5 +86,5 @@ Use this checklist for every component batch. Do not skip steps even when tests 
 
 ## Definition Of Done
 
-- Structure, behavior, styles, controls, and tests match React across all relevant namespaces, with evidence logged.
-- `PARITY_REVIEW_CHECKLIST.md` is fully completed for the reviewed scope, with each completed item checked and evidenced.
+- Structure, behavior, styles, controls, and tests match React across all relevant namespaces.
+- `PARITY_REVIEW_CHECKLIST.md` is fully completed for the reviewed scope, with each completed item checked.
