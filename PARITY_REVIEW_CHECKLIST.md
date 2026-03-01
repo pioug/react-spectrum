@@ -5,34 +5,34 @@ Generated: 2026-03-01T03:33:00+08:00
 Use this as a progression checklist for parity re-review. Mark each line when complete.
 
 ## Phase 0 - Gate
-- [x] Run baseline gate: `yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`
-- [x] Confirm story-id parity for the current batch before/after fixes
-- [ ] Overlay first-render token gate (dialog/overlays scope): verify at least one initially-open overlay story portals inside `.vs-provider` (not `body`) and computed modal/underlay surface backgrounds are non-transparent (theme tokens resolved)
+- [ ] Run baseline gate: `yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`
+- [ ] Confirm story-id parity for the current batch before/after fixes
+- [x] Overlay first-render token gate (dialog/overlays scope): verify at least one initially-open overlay story portals inside `.vs-provider` (not `body`) and computed modal/underlay surface backgrounds are non-transparent (theme tokens resolved)
 
 ## Phase 1 - @vue-spectrum Component Families + Stories
-- [x] 1.01 `@vue-spectrum/accordion`
+- [ ] 1.01 `@vue-spectrum/accordion`
   - Components: Accordion, Disclosure, DisclosurePanel, DisclosureTitle
-  - [x] Story: Accordion.stories.ts
-  - [x] Story: Disclosure.stories.ts
-- [x] 1.02 `@vue-spectrum/actionbar`
+  - [ ] Story: Accordion.stories.ts
+  - [ ] Story: Disclosure.stories.ts
+- [ ] 1.02 `@vue-spectrum/actionbar`
   - Components: ActionBar, ActionBarContainer
-  - [x] Story: ActionBar.stories.ts
-- [x] 1.03 `@vue-spectrum/actiongroup`
+  - [ ] Story: ActionBar.stories.ts
+- [ ] 1.03 `@vue-spectrum/actiongroup`
   - Components: ActionGroup
-  - [x] Story: ActionGroup.stories.ts
-  - [x] Story: Toolbar.stories.ts
+  - [ ] Story: ActionGroup.stories.ts
+  - [ ] Story: Toolbar.stories.ts
 - [ ] 1.04 `@vue-spectrum/autocomplete`
   - Components: SearchAutocomplete
   - [ ] Story: SearchAutocomplete.stories.ts
-- [x] 1.05 `@vue-spectrum/avatar`
+- [ ] 1.05 `@vue-spectrum/avatar`
   - Components: Avatar
-  - [x] Story: Avatar.stories.ts
-- [x] 1.06 `@vue-spectrum/badge`
+  - [ ] Story: Avatar.stories.ts
+- [ ] 1.06 `@vue-spectrum/badge`
   - Components: Badge
-  - [x] Story: Badge.stories.ts
-- [x] 1.07 `@vue-spectrum/breadcrumbs`
+  - [ ] Story: Badge.stories.ts
+- [ ] 1.07 `@vue-spectrum/breadcrumbs`
   - Components: Breadcrumbs
-  - [x] Story: Breadcrumbs.stories.ts
+  - [ ] Story: Breadcrumbs.stories.ts
 - [ ] 1.08 `@vue-spectrum/button`
   - Components: ActionButton, ClearButton, FieldButton, LogicButton, ToggleButton, VueButton
   - [ ] Story: ActionButton.stories.ts
@@ -83,47 +83,47 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - [ ] Story: DateRangePickerStyling.stories.ts
   - [ ] Story: TimeField.stories.ts
   - [ ] Story: TimeFieldStyling.stories.ts
-- [x] 1.17 `@vue-spectrum/dialog`
+- [ ] 1.17 `@vue-spectrum/dialog`
   - Components: AlertDialog, Dialog, DialogContainer, DialogTrigger
-  - [x] Story: AlertDialog.stories.ts
-  - [x] Story: Dialog.stories.ts
-  - [x] Story: DialogContainer.stories.ts
-  - [x] Story: DialogTrigger.stories.ts
-- [x] 1.18 `@vue-spectrum/divider`
+  - [ ] Story: AlertDialog.stories.ts
+  - [ ] Story: Dialog.stories.ts
+  - [ ] Story: DialogContainer.stories.ts
+  - [ ] Story: DialogTrigger.stories.ts
+- [ ] 1.18 `@vue-spectrum/divider`
   - Components: Divider
-  - [x] Story: Divider.stories.ts
-- [x] 1.19 `@vue-spectrum/dnd`
+  - [ ] Story: Divider.stories.ts
+- [ ] 1.19 `@vue-spectrum/dnd`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [x] Story: (none)
-- [x] 1.20 `@vue-spectrum/dropzone`
+  - [ ] Story: (none)
+- [ ] 1.20 `@vue-spectrum/dropzone`
   - Components: DropZone
-- [x] Story: DropZone.stories.ts
-- [x] 1.21 `@vue-spectrum/filetrigger`
+- [ ] Story: DropZone.stories.ts
+- [ ] 1.21 `@vue-spectrum/filetrigger`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [x] Story: FileTrigger.stories.ts
-- [x] 1.22 `@vue-spectrum/form`
+  - [ ] Story: FileTrigger.stories.ts
+- [ ] 1.22 `@vue-spectrum/form`
   - Components: Form
-  - [x] Story: Form.stories.ts
-- [x] 1.23 `@vue-spectrum/icon`
+  - [ ] Story: Form.stories.ts
+- [ ] 1.23 `@vue-spectrum/icon`
   - Components: Icon, Illustration, UIIcon
-  - [x] Story: Icon.stories.ts
-  - [x] Story: IconsColor.stories.ts
-  - [x] Story: IconsExpress.stories.ts
-  - [x] Story: IconsWorkflow.stories.ts
-  - [x] `@spectrum-icons-vue/workflow` exports parity: `CalendarCheckColor` + export in package index
-- [x] 1.24 `@vue-spectrum/illustratedmessage`
+  - [ ] Story: Icon.stories.ts
+  - [ ] Story: IconsColor.stories.ts
+  - [ ] Story: IconsExpress.stories.ts
+  - [ ] Story: IconsWorkflow.stories.ts
+  - [ ] `@spectrum-icons-vue/workflow` exports parity: `CalendarCheckColor` + export in package index
+- [ ] 1.24 `@vue-spectrum/illustratedmessage`
   - Components: IllustratedMessage
-  - [x] Story: IllustratedMessage.stories.ts
-- [x] 1.25 `@vue-spectrum/image`
+  - [ ] Story: IllustratedMessage.stories.ts
+- [ ] 1.25 `@vue-spectrum/image`
   - Components: Image
-  - [x] Story: Image.stories.ts
-- [x] 1.26 `@vue-spectrum/inlinealert`
+  - [ ] Story: Image.stories.ts
+- [ ] 1.26 `@vue-spectrum/inlinealert`
   - Components: InlineAlert
-  - [x] Story: InlineAlert.stories.ts
-- [x] 1.27 `@vue-spectrum/label`
+  - [ ] Story: InlineAlert.stories.ts
+- [ ] 1.27 `@vue-spectrum/label`
   - Components: Field, HelpText, Label
-  - [x] Story: HelpText.stories.ts
-  - [x] Story: Label.stories.ts
+  - [ ] Story: HelpText.stories.ts
+  - [ ] Story: Label.stories.ts
 - [ ] 1.28 `@vue-spectrum/labeledvalue`
   - Components: LabeledValue
   - [ ] Story: LabeledValue.stories.ts
@@ -588,6 +588,15 @@ Use this as a progression checklist for parity re-review. Mark each line when co
 ## Phase 4 - Sign-off
 - [ ] Keep checklist status up to date for each completed item
 - [ ] Re-run full gate after each component family cluster
+
+## Problems To Fix (Scan 2026-03-01, Sorted By Priority)
+- [ ] P0: No blocking gate failures found in this scan (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook` all exited successfully).
+- [ ] P1: Checklist contract drift in item `1.62 @vue-spectrum/utils`: listed components `BreakpointProvider`, `ClearSlots`, and `SlotProvider` are not exported from `packages/@vue-spectrum/utils/src/index.ts`.
+- [ ] P1: Story parity mapping risk for `1.21 @vue-spectrum/filetrigger`: `FileTrigger.stories.ts` has no same-package React counterpart; nearest counterparts are `packages/@react-spectrum/dropzone/stories/FileTrigger.stories.tsx` and `packages/react-aria-components/stories/FileTrigger.stories.tsx`.
+- [ ] P1: Story parity mapping risk for `1.23 @vue-spectrum/icon`: `IconsColor/IconsExpress/IconsWorkflow.stories.ts` have no same-package React counterparts; nearest counterparts are in `packages/@spectrum-icons/{color,express,workflow}/stories/*.stories.tsx`.
+- [ ] P2: `yarn build:vue:storybook` reports Rollup circular chunk warning for `VueComboBox` re-export through `packages/vue-aria-components/src/index.ts`.
+- [ ] P2: `yarn build:vue:storybook` reports CSS minification warnings (unsupported nesting transform target and `&button` nesting syntax warning).
+- [ ] P2: `yarn test:vue` emits runtime warnings to stderr (uncontrolled-to-controlled warning, jsdom navigation-not-implemented warning, repeated card focusability warnings).
 
 ---
 Checklist stats:
