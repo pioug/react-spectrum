@@ -76,4 +76,12 @@ describe('Vue Storybook index parity story ids', () => {
     expect(titleFromSource(vueIconsWorkflow)).toBe(titleFromSource(reactIconsWorkflow));
     expect(storyExportKeysFromSource(vueIconsWorkflow)).toEqual(storyExportKeysFromSource(reactIconsWorkflow));
   });
+
+  it('keeps TreeView story mapping aligned with @react-spectrum/tree', () => {
+    const vueTreeView = storySource('../../../packages/@vue-spectrum/tree/stories/TreeView.stories.ts');
+    const reactTreeView = storySource('../../../packages/@react-spectrum/tree/stories/TreeView.stories.tsx');
+
+    expect(titleFromSource(vueTreeView)).toBe(titleFromSource(reactTreeView));
+    expect(storyExportKeysFromSource(vueTreeView)).toEqual(storyExportKeysFromSource(reactTreeView));
+  });
 });

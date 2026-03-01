@@ -1,0 +1,140 @@
+/*
+ * Copyright 2020 Adobe. All rights reserved.
+ * This file is licensed to you under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License. You may obtain a copy
+ * of the License at http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under
+ * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
+ * OF ANY KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+
+.react-spectrum-TreeView {
+  display: block;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  outline: none;
+}
+
+.react-spectrum-TreeView .spectrum-TreeView {
+  height: auto;
+  width: 100%;
+}
+
+.react-spectrum-TreeView .vs-tree__list {
+  display: block;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.react-spectrum-TreeView .vs-tree__list--root {
+  min-height: 0;
+  height: 100%;
+}
+
+.react-spectrum-TreeView .vs-tree__node {
+  min-height: var(--spectrum-global-dimension-size-500);
+  overflow: visible;
+}
+
+.react-spectrum-TreeView .vs-tree__row {
+  display: grid;
+  align-items: center;
+  grid-template-columns: var(--spectrum-global-dimension-size-500) minmax(0, 1fr) auto;
+  gap: 0;
+  min-height: var(--spectrum-global-dimension-size-500);
+  height: var(--spectrum-global-dimension-size-500);
+  width: 100%;
+}
+
+.react-spectrum-TreeView .vs-tree__row.is-selected {
+  background: transparent;
+}
+
+.react-spectrum-TreeView .vs-tree__toggle,
+.react-spectrum-TreeView .vs-tree__spacer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--spectrum-global-dimension-size-500);
+  block-size: var(--spectrum-global-dimension-size-500);
+  flex: 0 0 auto;
+}
+
+.react-spectrum-TreeView .vs-tree__toggle {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+
+.react-spectrum-TreeView .vs-tree__toggle-icon {
+  display: block;
+  inline-size: var(--spectrum-global-dimension-size-75);
+  block-size: var(--spectrum-global-dimension-size-125);
+  transition: transform var(--spectrum-global-animation-duration-100) ease;
+}
+
+.react-spectrum-TreeView .vs-tree__toggle.is-expanded .vs-tree__toggle-icon {
+  transform: rotate(90deg);
+}
+
+.react-spectrum-TreeView .vs-tree__spacer {
+  cursor: default;
+}
+
+.react-spectrum-TreeView .spectrum-TreeView-itemLink {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  height: 100%;
+  min-height: var(--spectrum-global-dimension-size-500);
+  min-width: 0;
+  text-align: start;
+  flex: 1 1 auto;
+}
+
+.react-spectrum-TreeView a.vs-tree__item,
+.react-spectrum-TreeView button.vs-tree__item {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+.react-spectrum-TreeView .vs-tree__item-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  min-width: 0;
+}
+
+.react-spectrum-TreeView .vs-tree__item-content > .spectrum-Icon,
+.react-spectrum-TreeView .vs-tree__item-content > .vs-workflow-icon {
+  display: block;
+  inline-size: var(--spectrum-alias-icon-size-s, 18px);
+  block-size: var(--spectrum-alias-icon-size-s, 18px);
+}
+
+.react-spectrum-TreeView .vs-tree__actions {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+  padding-inline: 3px;
+  margin-inline: 0;
+}
+
+.react-spectrum-TreeView .vs-tree__empty {
+  margin: auto;
+  max-width: 100%;
+}

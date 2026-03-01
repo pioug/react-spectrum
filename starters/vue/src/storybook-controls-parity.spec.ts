@@ -56,6 +56,7 @@ import textFieldMeta from '../../../packages/@vue-spectrum/textfield/stories/Tex
 import toggleButtonMeta from '../../../packages/@vue-spectrum/button/stories/ToggleButton.stories';
 import tooltipTriggerMeta from '../../../packages/@vue-spectrum/tooltip/stories/TooltipTrigger.stories';
 import toastMeta from '../../../packages/@vue-spectrum/toast/stories/Toast.stories';
+import treeViewMeta from '../../../packages/@vue-spectrum/tree/stories/TreeView.stories';
 import viewMeta from '../../../packages/@vue-spectrum/view/stories/View.stories';
 import wellMeta from '../../../packages/@vue-spectrum/well/stories/Well.stories';
 
@@ -229,6 +230,16 @@ describe('Vue Storybook controls parity', () => {
     expect(Object.keys(args)).toEqual([]);
     expect(Object.keys(argTypes)).toEqual(['children']);
     expect((argTypes.children.control as string)).toBe('object');
+  });
+
+  it('matches top-level TreeView controls contract with React stories', () => {
+    let args = (treeViewMeta as {args?: Record<string, unknown>}).args ?? {};
+    let argTypes = (treeViewMeta as {argTypes?: Record<string, Record<string, unknown>>}).argTypes ?? {};
+
+    expect(Object.keys(args)).toEqual([]);
+    expect(Object.keys(argTypes).sort()).toEqual(['items', 'renderEmptyState']);
+    expect((argTypes.items.table as {disable?: boolean}).disable).toBe(true);
+    expect((argTypes.renderEmptyState.table as {disable?: boolean}).disable).toBe(true);
   });
 
   it('matches top-level Switch controls contract with React stories', () => {

@@ -61,6 +61,45 @@ describe('Vue migration data-heavy components', () => {
     ]);
   });
 
+  it('starts tree branches collapsed by default and expands on toggle', async () => {
+    let wrapper = mount(Tree, {
+      props: {
+        items: [
+          {
+            id: 'project-alpha',
+            label: 'Project Alpha',
+            children: [
+              {id: 'alpha-ui', label: 'UI'}
+            ]
+          }
+        ]
+      }
+    });
+
+    expect(wrapper.findAll('button.vs-tree__item')).toHaveLength(1);
+    await wrapper.get('button.vs-tree__toggle').trigger('click');
+    expect(wrapper.findAll('button.vs-tree__item')).toHaveLength(2);
+  });
+
+  it('renders href nodes and empty-state content when configured', async () => {
+    let wrapper = mount(Tree, {
+      props: {
+        items: [
+          {
+            id: 'docs',
+            label: 'Docs',
+            href: 'https://adobe.com'
+          }
+        ],
+        renderEmptyState: () => 'No results found.'
+      }
+    });
+
+    expect(wrapper.get('a.vs-tree__item').attributes('href')).toBe('https://adobe.com');
+    await wrapper.setProps({items: []});
+    expect(wrapper.text()).toContain('No results found.');
+  });
+
   it('emits dropped files and dropped text from drop zone', async () => {
     let wrapper = mount(DropZone, {
       props: {
