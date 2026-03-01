@@ -110,7 +110,7 @@ const ActionBarExample = defineComponent({
     },
     tableWidth: {
       type: String,
-      default: '265px'
+      default: undefined
     }
   },
   setup(props) {
