@@ -591,9 +591,6 @@ Use this as a progression checklist for parity re-review. Mark each line when co
 
 ## Problems To Fix (Scan 2026-03-01, Sorted By Priority)
 - [ ] P0: No blocking gate failures found in this scan (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook` all exited successfully).
-- [ ] P1: Checklist contract drift in item `1.62 @vue-spectrum/utils`: listed components `BreakpointProvider`, `ClearSlots`, and `SlotProvider` are not exported from `packages/@vue-spectrum/utils/src/index.ts`.
-- [ ] P1: Story parity mapping risk for `1.21 @vue-spectrum/filetrigger`: `FileTrigger.stories.ts` has no same-package React counterpart; nearest counterparts are `packages/@react-spectrum/dropzone/stories/FileTrigger.stories.tsx` and `packages/react-aria-components/stories/FileTrigger.stories.tsx`.
-- [ ] P1: Story parity mapping risk for `1.23 @vue-spectrum/icon`: `IconsColor/IconsExpress/IconsWorkflow.stories.ts` have no same-package React counterparts; nearest counterparts are in `packages/@spectrum-icons/{color,express,workflow}/stories/*.stories.tsx`.
 - [ ] P2: `yarn build:vue:storybook` reports Rollup circular chunk warning for `VueComboBox` re-export through `packages/vue-aria-components/src/index.ts`.
 - [ ] P2: `yarn build:vue:storybook` reports CSS minification warnings (unsupported nesting transform target and `&button` nesting syntax warning).
 - [ ] P2: `yarn test:vue` emits runtime warnings to stderr (uncontrolled-to-controlled warning, jsdom navigation-not-implemented warning, repeated card focusability warnings).
