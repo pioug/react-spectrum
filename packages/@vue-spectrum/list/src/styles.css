@@ -267,7 +267,7 @@
 }
 
 .react-spectrum-ListViewItem {
-  display: grid; /* TODO: define grid areas */
+  display: grid;
   box-sizing: border-box;
   font-size: var(--spectrum-table-cell-text-size, var(--spectrum-alias-font-size-default));
   font-weight: var(--spectrum-table-cell-text-font-weight, var(--spectrum-global-font-weight-regular));
