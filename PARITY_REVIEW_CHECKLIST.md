@@ -114,9 +114,9 @@ Use this as a progression checklist for parity re-review. Mark each line when co
 - [x] 1.24 `@vue-spectrum/illustratedmessage`
   - Components: IllustratedMessage
   - [x] Story: IllustratedMessage.stories.ts
-- [ ] 1.25 `@vue-spectrum/image`
+- [x] 1.25 `@vue-spectrum/image`
   - Components: Image
-  - [ ] Story: Image.stories.ts
+  - [x] Story: Image.stories.ts
 - [ ] 1.26 `@vue-spectrum/inlinealert`
   - Components: InlineAlert
   - [ ] Story: InlineAlert.stories.ts
