@@ -226,10 +226,10 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - Components: StatusLight
   - [x] Story: StatusLight.stories.ts
   - Evidence: React/Vue story-id parity is zero for `statuslight--*` (`react=1`, `vue=1`, diff `0/0`) from React `dist/97e3ff099844b1ee324814db73e293af78e250a4/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; side-by-side capture evidence in `.tmp/statuslight-parity-current1/size-deltas.json` reports exact parity (`delta 0.00%`, `pixel diff 0.00%` for `statuslight--default`); source/API review found no additional parity gaps for this scope after provider-prop inheritance alignment; validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
-- [ ] 1.45 `@vue-spectrum/steplist`
+- [x] 1.45 `@vue-spectrum/steplist`
   - Components: VueStepList
-  - [ ] Story: StepList.stories.ts
-  - Blocker: isolated Playwright re-capture for Vue `steplist--disabled-all-keys` still times out at `iframe.html` loading/preparing state (`2026-03-01`, React capture succeeds, Vue times out at `page.goto`).
+  - [x] Story: StepList.stories.ts
+  - Evidence: React/Vue story-id parity is zero for `steplist--*` (`react=11`, `vue=11`, diff `0/0`) from React `dist/97e3ff099844b1ee324814db73e293af78e250a4/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue StepList internals and stories were aligned in `packages/@vue-spectrum/steplist/src/VueStepList.ts` and `packages/@vue-spectrum/steplist/stories/StepList.stories.ts` (Spectrum class/DOM/state parity, icon/segment/marker structure, locale number formatting, provider prop flow, controlled completion sync, and React-equivalent story compositions), and the remaining disabled-all-keys Storybook stall was fixed in `packages/@vue-stately/steplist/src/useStepListState.ts` by preventing completion fallback churn when no selectable fallback key exists; targeted regression coverage was added in `starters/vue/src/storybook-parity.spec.ts`; refreshed side-by-side captures for all 11 steplist stories are in `.tmp/steplist-parity-current7/size-deltas.json` (`22/22` captures succeeded, including `steplist--disabled-all-keys`), with per-story size deltas now in the `0.07%–2.16%` range; validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
 - [x] 1.46 `@vue-spectrum/story-utils`
   - Components: VueErrorBoundary
   - [x] Story: (none)

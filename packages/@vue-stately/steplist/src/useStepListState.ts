@@ -135,17 +135,19 @@ export function useStepListState<T extends object>(props: StepListProps<T>): Ste
     let selectedKey = state.selectedKey.value;
     if (state.selectionManager.isEmpty || selectedKey == null || !state.collection.getItem(selectedKey)) {
       let fallbackKey = findDefaultSelectedKey();
-      if (fallbackKey != null) {
+      if (fallbackKey != null && !state.disabledKeys.has(fallbackKey)) {
         state.selectionManager.replaceSelection(fallbackKey);
-        selectedKey = fallbackKey;
+        selectedKey = state.selectedKey.value ?? fallbackKey;
+      } else {
+        selectedKey = state.selectedKey.value;
       }
     }
 
     if (state.selectionManager.focusedKey.value == null) {
-      state.selectionManager.setFocusedKey(selectedKey);
+      state.selectionManager.setFocusedKey(selectedKey ?? null);
     }
 
-    let selectedIndex = selectedKey == null ? undefined : indexMap.get(selectedKey);
+    let selectedIndex = selectedKey == null || state.disabledKeys.has(selectedKey) ? undefined : indexMap.get(selectedKey);
     let completedIndex = lastCompletedStep.value == null ? -1 : (indexMap.get(lastCompletedStep.value) ?? -1);
     if (selectedIndex != null && selectedIndex > 0 && selectedIndex > completedIndex + 1) {
       let previousKey = previousKeyMap.get(selectedKey!) ?? null;

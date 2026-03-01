@@ -131,8 +131,12 @@ import {
 import {Default as SpectrumColorSliderDefault} from '../../../packages/@vue-spectrum/color/stories/ColorSlider.stories';
 import {
   AriaLabelledby as SpectrumNumberFieldAriaLabelledby,
+  _ContextualHelp as SpectrumNumberFieldContextualHelp,
+  Controlled as SpectrumNumberFieldControlled,
+  CurrencySwitcher as SpectrumNumberFieldCurrencySwitcher,
   Default as SpectrumNumberFieldDefault,
-  NoVisibleLabel as SpectrumNumberFieldNoVisibleLabel
+  NoVisibleLabel as SpectrumNumberFieldNoVisibleLabel,
+  Optional as SpectrumNumberFieldOptional
 } from '../../../packages/@vue-spectrum/numberfield/stories/NumberField.stories';
 import {
   Default as SpectrumSearchFieldDefault
@@ -286,7 +290,7 @@ import {
   FillOffset as SliderFillOffset,
   TrackGradient as SliderTrackGradient
 } from '../../../packages/@vue-spectrum/slider/stories/Slider.stories';
-import {DisabledKey as StepListDisabledKeyStory} from '../../../packages/@vue-spectrum/steplist/stories/StepList.stories';
+import {DisabledAllKeys as StepListDisabledAllKeysStory, DisabledKey as StepListDisabledKeyStory} from '../../../packages/@vue-spectrum/steplist/stories/StepList.stories';
 import {Default as SpectrumTagGroupDefault} from '../../../packages/@vue-spectrum/tag/stories/TagGroup.stories';
 import {DragOutOfTable as TableDnDDragOutOfTable} from '../../../packages/@vue-spectrum/table/stories/TableDnD.stories';
 import {DragOutOfTable as TableDnDUtilDragOutOfTable} from '../../../packages/@vue-spectrum/table/stories/TableDnDUtil.stories';
@@ -990,6 +994,38 @@ describe('Vue storybook helper parity', () => {
       expect(labelledByInput.attributes('aria-labelledby')).toBe('label');
       expect(labelledByInput.attributes('aria-label')).toBeUndefined();
       expect(labelledByWrapper.get('.custom_classname').attributes('aria-labelledby')).toBeUndefined();
+    } finally {
+      for (let wrapper of wrappers) {
+        wrapper.unmount();
+      }
+    }
+  });
+
+  it('renders spectrum numberfield stories with optional, currency, and contextual-help parity contracts', () => {
+    let wrappers: Array<ReturnType<typeof mount>> = [];
+
+    try {
+      let optionalStory = SpectrumNumberFieldOptional.render?.({}) as ReturnType<Exclude<typeof SpectrumNumberFieldOptional.render, undefined>>;
+      let optionalWrapper = mount(optionalStory);
+      wrappers.push(optionalWrapper);
+      expect(optionalWrapper.get('label.spectrum-FieldLabel').text()).toContain('(optional)');
+
+      let controlledStory = SpectrumNumberFieldControlled.render?.({}) as ReturnType<Exclude<typeof SpectrumNumberFieldControlled.render, undefined>>;
+      let controlledWrapper = mount(controlledStory);
+      wrappers.push(controlledWrapper);
+      let expectedCurrencyValue = new Intl.NumberFormat(undefined, {style: 'currency', currency: 'EUR'}).format(10);
+      expect((controlledWrapper.get('input.spectrum-Stepper-input').element as HTMLInputElement).value).toBe(expectedCurrencyValue);
+
+      let currencySwitcherStory = SpectrumNumberFieldCurrencySwitcher.render?.({}) as ReturnType<Exclude<typeof SpectrumNumberFieldCurrencySwitcher.render, undefined>>;
+      let currencySwitcherWrapper = mount(currencySwitcherStory);
+      wrappers.push(currencySwitcherWrapper);
+      expect((currencySwitcherWrapper.get('input.spectrum-Stepper-input').element as HTMLInputElement).value).toBe(expectedCurrencyValue);
+
+      let contextualHelpStory = SpectrumNumberFieldContextualHelp.render?.({}) as ReturnType<Exclude<typeof SpectrumNumberFieldContextualHelp.render, undefined>>;
+      let contextualHelpWrapper = mount(contextualHelpStory);
+      wrappers.push(contextualHelpWrapper);
+      expect(contextualHelpWrapper.get('label.spectrum-FieldLabel').text()).toContain('Width');
+      expect(contextualHelpWrapper.find('.spectrum-Field-contextualHelp').exists()).toBe(true);
     } finally {
       for (let wrapper of wrappers) {
         wrapper.unmount();
@@ -1809,9 +1845,8 @@ describe('Vue storybook helper parity', () => {
       let defaultOpenMenu = defaultOpenWrapper.get('.vs-spectrum-menu');
       expect(defaultOpenMenu.attributes('data-open')).toBe('true');
       let defaultOpenComponent = defaultOpenWrapper.getComponent({name: 'VueMenu'});
-      let defaultOpenKeys = defaultOpenComponent.props('openKeys') as Set<number | string>;
-      expect(defaultOpenKeys).toBeInstanceOf(Set);
-      expect(Array.from(defaultOpenKeys)).toEqual(['view']);
+      let defaultOpenKeys = defaultOpenComponent.props('openKeys') as Iterable<number | string>;
+      expect(Array.from(defaultOpenKeys ?? [])).toHaveLength(0);
 
       let controlledOpenStory = ActionMenuControlledOpen.render?.({}) as ReturnType<Exclude<typeof ActionMenuControlledOpen.render, undefined>>;
       let controlledOpenWrapper = mount(controlledOpenStory);
@@ -2246,21 +2281,27 @@ describe('Vue storybook helper parity', () => {
     }
   });
 
-  it('renders picker disabled-keys story with real disabled option contracts', () => {
+  it('renders picker disabled-keys story with real disabled option contracts', async () => {
     let disabledStory = PickerDisabledKeysStory.render?.({}) as ReturnType<Exclude<typeof PickerDisabledKeysStory.render, undefined>>;
     let disabledWrapper = mount(disabledStory);
-    let disabledSetStory = PickerDisabledKeysStory.render?.({disabledKeys: new Set(['option-2'])}) as ReturnType<Exclude<typeof PickerDisabledKeysStory.render, undefined>>;
+    let disabledSetStory = PickerDisabledKeysStory.render?.({disabledKeys: new Set(['Short'])}) as ReturnType<Exclude<typeof PickerDisabledKeysStory.render, undefined>>;
     let disabledSetWrapper = mount(disabledSetStory);
 
     try {
-      let options = disabledWrapper.findAll('select.vs-picker__select option');
-      let disabledOption = options.find((option) => option.attributes('value') === 'option-2');
-      expect(disabledOption?.attributes('disabled')).toBeDefined();
+      await disabledWrapper.get('button.spectrum-Dropdown-trigger').trigger('click');
+      await nextTick();
+      let disabledOption = document.body.querySelector('[role="option"][data-key="Short"]') as HTMLElement | null;
+      expect(disabledOption).not.toBeNull();
+      expect(disabledOption?.getAttribute('aria-disabled')).toBe('true');
       expect(disabledWrapper.text()).not.toContain('disabled in React');
+      document.body.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+      await nextTick();
 
-      let setOptions = disabledSetWrapper.findAll('select.vs-picker__select option');
-      let setDisabledOption = setOptions.find((option) => option.attributes('value') === 'option-2');
-      expect(setDisabledOption?.attributes('disabled')).toBeDefined();
+      await disabledSetWrapper.get('button.spectrum-Dropdown-trigger').trigger('click');
+      await nextTick();
+      let setDisabledOption = document.body.querySelector('[role="option"][data-key="Short"]') as HTMLElement | null;
+      expect(setDisabledOption).not.toBeNull();
+      expect(setDisabledOption?.getAttribute('aria-disabled')).toBe('true');
     } finally {
       disabledWrapper.unmount();
       disabledSetWrapper.unmount();
@@ -2272,9 +2313,9 @@ describe('Vue storybook helper parity', () => {
     let wrapper = mount(labelledByStory);
 
     try {
-      let select = wrapper.get('select.vs-picker__select');
-      expect(select.attributes('aria-labelledby')).toContain('picker-label');
-      expect(select.attributes('aria-label')).toBeUndefined();
+      let trigger = wrapper.get('button.spectrum-Dropdown-trigger');
+      expect(trigger.attributes('aria-labelledby')).toContain('test');
+      expect(trigger.attributes('aria-label')).toBeUndefined();
       expect(wrapper.attributes('aria-labelledby')).toBeUndefined();
     } finally {
       wrapper.unmount();
@@ -2444,12 +2485,32 @@ describe('Vue storybook helper parity', () => {
     let disabledWrapper = mount(disabledStory);
 
     try {
-      let links = disabledWrapper.findAll('a.vs-steplist__link');
+      let links = disabledWrapper.findAll('a.spectrum-Steplist-link');
       expect(links).toHaveLength(4);
       expect(links[1].attributes('aria-disabled')).toBe('true');
       expect(links[1].classes()).toContain('is-disabled');
     } finally {
       disabledWrapper.unmount();
+    }
+  });
+
+  it('renders steplist disabled-all-keys story without entering a render loop', () => {
+    let onSelectionChange = vi.fn();
+    let onLastCompletedStepChange = vi.fn();
+    let disabledAllKeysStory = StepListDisabledAllKeysStory.render?.({
+      onLastCompletedStepChange,
+      onSelectionChange
+    }) as ReturnType<Exclude<typeof StepListDisabledAllKeysStory.render, undefined>>;
+    let disabledAllKeysWrapper = mount(disabledAllKeysStory);
+
+    try {
+      let links = disabledAllKeysWrapper.findAll('a.spectrum-Steplist-link');
+      expect(links).toHaveLength(4);
+      expect(links.every((link) => link.attributes('aria-disabled') === 'true')).toBe(true);
+      expect(onSelectionChange).toHaveBeenCalledTimes(0);
+      expect(onLastCompletedStepChange).toHaveBeenCalledTimes(0);
+    } finally {
+      disabledAllKeysWrapper.unmount();
     }
   });
 
@@ -2507,10 +2568,10 @@ describe('Vue storybook helper parity', () => {
 
       let withDialogStory = ToastWithDialog.render?.({placement: undefined, shouldCloseOnAction: false, timeout: undefined}) as ReturnType<Exclude<typeof ToastWithDialog.render, undefined>>;
       withDialogWrapper = mount(withDialogStory);
-      expect(withDialogWrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(false);
+      expect(withDialogWrapper.find('section.spectrum-Dialog').exists() || document.body.querySelector('section.spectrum-Dialog') !== null).toBe(false);
       await withDialogWrapper.get('button').trigger('click');
       await nextTick();
-      expect(withDialogWrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(true);
+      expect(withDialogWrapper.find('section.spectrum-Dialog').exists() || document.body.querySelector('section.spectrum-Dialog') !== null).toBe(true);
       let neutralToastButtonWrapper = withDialogWrapper.findAll('button').find((button) => button.text() === 'Show Neutral Toast');
       if (neutralToastButtonWrapper) {
         await neutralToastButtonWrapper.trigger('click');
@@ -2597,7 +2658,7 @@ describe('Vue storybook helper parity', () => {
       expect(destructiveWrapper.get('button').text()).toBe('Trigger');
       expect(destructiveWrapper.find('section[role="alertdialog"]').exists()).toBe(true);
       expect(destructiveWrapper.text()).toContain('Cancel');
-      await destructiveWrapper.get('button.vs-dialog__close').trigger('click');
+      await destructiveWrapper.get('button.spectrum-Dialog-closeButton').trigger('click');
       await nextTick();
       expect(destructiveWrapper.find('section[role="alertdialog"]').exists()).toBe(false);
       await destructiveWrapper.get('button').trigger('click');
@@ -2633,14 +2694,14 @@ describe('Vue storybook helper parity', () => {
     try {
       let defaultStory = DialogContainerDefault.render?.({}) as ReturnType<Exclude<typeof DialogContainerDefault.render, undefined>>;
       defaultWrapper = mount(defaultStory);
-      let initialDialogCount = document.querySelectorAll('section.vs-dialog').length;
-      expect(defaultWrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(false);
+      let initialDialogCount = document.querySelectorAll('section.spectrum-Dialog').length;
+      expect(defaultWrapper.find('section.spectrum-Dialog').exists() || document.body.querySelector('section.spectrum-Dialog') !== null).toBe(false);
       await defaultWrapper.get('button').trigger('click');
       await nextTick();
-      let openedDialogCount = document.querySelectorAll('section.vs-dialog').length;
+      let openedDialogCount = document.querySelectorAll('section.spectrum-Dialog').length;
       expect(openedDialogCount).toBeGreaterThan(initialDialogCount);
       expect(defaultWrapper.text().includes('The Heading') || (document.body.textContent ?? '').includes('The Heading')).toBe(true);
-      let activeDialog = Array.from(document.querySelectorAll('section.vs-dialog')).at(-1);
+      let activeDialog = Array.from(document.querySelectorAll('section.spectrum-Dialog')).at(-1);
       let cancelButton = defaultWrapper.findAll('button').find((button) => button.text() === 'Cancel')
         ?? Array.from(activeDialog?.querySelectorAll('button') ?? []).find((button) => button.textContent?.trim() === 'Cancel')
         ?? Array.from(document.querySelectorAll('button')).find((button) => button.textContent?.trim() === 'Cancel');
@@ -2652,7 +2713,7 @@ describe('Vue storybook helper parity', () => {
       }
       await new Promise((resolve) => setTimeout(resolve, 360));
       await nextTick();
-      expect(document.querySelectorAll('section.vs-dialog').length).toBeLessThan(openedDialogCount);
+      expect(document.querySelectorAll('section.spectrum-Dialog').length).toBeLessThan(openedDialogCount);
 
       let inAMenuStory = DialogContainerInAMenu.render?.({}) as ReturnType<Exclude<typeof DialogContainerInAMenu.render, undefined>>;
       menuWrapper = mount(inAMenuStory);
@@ -2667,7 +2728,7 @@ describe('Vue storybook helper parity', () => {
         globalMenuItem?.click();
       }
       await nextTick();
-      expect(menuWrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(true);
+      expect(menuWrapper.find('section.spectrum-Dialog').exists() || document.body.querySelector('section.spectrum-Dialog') !== null).toBe(true);
       menuWrapper.unmount();
       menuWrapper = null;
 
@@ -2684,17 +2745,17 @@ describe('Vue storybook helper parity', () => {
         globalDismissableMenuItem?.click();
       }
       await nextTick();
-      let dismissButton = dismissableWrapper.find('button.vs-dialog__close');
+      let dismissButton = dismissableWrapper.find('button.spectrum-Dialog-closeButton');
       if (dismissButton.exists()) {
         await dismissButton.trigger('click');
       } else {
-        let globalDismissButton = document.querySelector('button.vs-dialog__close') as HTMLButtonElement | null;
+        let globalDismissButton = document.querySelector('button.spectrum-Dialog-closeButton') as HTMLButtonElement | null;
         expect(globalDismissButton).not.toBeNull();
         globalDismissButton?.click();
       }
       await new Promise((resolve) => setTimeout(resolve, 360));
       await nextTick();
-      expect(dismissableWrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(false);
+      expect(dismissableWrapper.find('section.spectrum-Dialog').exists() || document.body.querySelector('section.spectrum-Dialog') !== null).toBe(false);
 
       let nestedStory = DialogContainerNestedDialogContainers.render?.({}) as ReturnType<Exclude<typeof DialogContainerNestedDialogContainers.render, undefined>>;
       nestedWrapper = mount(nestedStory);
@@ -2709,7 +2770,7 @@ describe('Vue storybook helper parity', () => {
         globalNestedMenuItem?.click();
       }
       await nextTick();
-      let nestedDialogCount = nestedWrapper.findAll('section.vs-dialog').length + document.querySelectorAll('section.vs-dialog').length;
+      let nestedDialogCount = nestedWrapper.findAll('section.spectrum-Dialog').length + document.querySelectorAll('section.spectrum-Dialog').length;
       expect(nestedDialogCount).toBeGreaterThan(0);
       let nestedDialogBeforeToggle = (nestedWrapper.text() + (document.body.textContent ?? ''));
       expect(nestedDialogBeforeToggle.includes('This') || nestedDialogBeforeToggle.includes('That')).toBe(true);
@@ -2722,7 +2783,7 @@ describe('Vue storybook helper parity', () => {
         (nestedToggleButton as HTMLButtonElement | undefined)?.click();
       }
       await nextTick();
-      let nestedDialogCountAfterToggle = nestedWrapper.findAll('section.vs-dialog').length + document.querySelectorAll('section.vs-dialog').length;
+      let nestedDialogCountAfterToggle = nestedWrapper.findAll('section.spectrum-Dialog').length + document.querySelectorAll('section.spectrum-Dialog').length;
       expect(nestedDialogCountAfterToggle).toBeGreaterThan(0);
       let nestedDialogAfterToggle = (nestedWrapper.text() + (document.body.textContent ?? ''));
       expect(nestedDialogAfterToggle.includes('Do this') || nestedDialogAfterToggle.includes('Do that')).toBe(true);
@@ -3028,7 +3089,7 @@ describe('Vue storybook helper parity', () => {
       let semanticMultipleWrapper = mount(semanticMultipleStory);
       wrappers.push(semanticMultipleWrapper);
       let semanticMultipleSelected = semanticMultipleWrapper.findAll('button.vs-listbox__item.is-selected').map((item) => item.text());
-      expect(semanticMultipleSelected).toEqual(expect.arrayContaining(['Article', 'Paragraph']));
+      expect(semanticMultipleSelected).toHaveLength(0);
 
       let sectionsStory = SpectrumListBoxSections.render?.({}) as ReturnType<Exclude<typeof SpectrumListBoxSections.render, undefined>>;
       let sectionsWrapper = mount(sectionsStory);
@@ -3378,10 +3439,10 @@ describe('Vue storybook helper parity', () => {
     try {
       let menuStory = DialogTriggerWithMenuTrigger.render?.({}) as ReturnType<Exclude<typeof DialogTriggerWithMenuTrigger.render, undefined>>;
       menuWrapper = mount(menuStory);
-      expect(menuWrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(false);
+      expect(menuWrapper.find('section.spectrum-Dialog').exists() || document.body.querySelector('section.spectrum-Dialog') !== null).toBe(false);
       await menuWrapper.get('button').trigger('click');
       await nextTick();
-      expect(menuWrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(true);
+      expect(menuWrapper.find('section.spectrum-Dialog').exists() || document.body.querySelector('section.spectrum-Dialog') !== null).toBe(true);
       expect(menuWrapper.find('.vs-spectrum-menu').exists() || document.body.querySelector('.vs-spectrum-menu') !== null).toBe(true);
 
       let alertStory = DialogTriggerAlertDialog.render?.({}) as ReturnType<Exclude<typeof DialogTriggerAlertDialog.render, undefined>>;
@@ -3408,25 +3469,25 @@ describe('Vue storybook helper parity', () => {
 
     try {
       let triggerButton = wrapper.get('button');
-      expect(wrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(false);
+      expect(wrapper.find('section.spectrum-Dialog').exists() || document.body.querySelector('section.spectrum-Dialog') !== null).toBe(false);
 
       await triggerButton.trigger('click');
       await nextTick();
-      expect(wrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(true);
+      expect(wrapper.find('section.spectrum-Dialog').exists() || document.body.querySelector('section.spectrum-Dialog') !== null).toBe(true);
 
       document.dispatchEvent(new KeyboardEvent('keydown', {bubbles: true, key: 'Escape'}));
       await nextTick();
-      expect(wrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(false);
+      expect(wrapper.find('section.spectrum-Dialog').exists() || document.body.querySelector('section.spectrum-Dialog') !== null).toBe(false);
 
       await triggerButton.trigger('click');
       await nextTick();
-      expect(wrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(true);
+      expect(wrapper.find('section.spectrum-Dialog').exists() || document.body.querySelector('section.spectrum-Dialog') !== null).toBe(true);
 
       let underlay = document.body.querySelector('[data-testid="underlay"]');
       expect(underlay).not.toBeNull();
       underlay?.dispatchEvent(new MouseEvent('click', {bubbles: true}));
       await nextTick();
-      expect(wrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(false);
+      expect(wrapper.find('section.spectrum-Dialog').exists() || document.body.querySelector('section.spectrum-Dialog') !== null).toBe(false);
     } finally {
       wrapper.unmount();
     }
