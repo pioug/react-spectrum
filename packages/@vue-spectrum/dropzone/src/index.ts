@@ -1,10 +1,30 @@
 import '@adobe/spectrum-css-temp/components/dropzone/vars.css';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, ref} from 'vue';
+import {computed, defineComponent, h, ref, type PropType} from 'vue';
 const styles: {[key: string]: string} = {};
 
-
 let dropZoneId = 0;
+type DropOperation = 'copy' | 'move' | 'link' | 'cancel';
+
+function isEventObject(event: unknown): boolean {
+  return typeof event === 'object' && event !== null;
+}
+
+function getTransferTypes(event: DragEvent): Set<string> {
+  return new Set(Array.from(event.dataTransfer?.types ?? []));
+}
+
+const visuallyHiddenStyle = {
+  border: 0,
+  clip: 'rect(0 0 0 0)',
+  height: '1px',
+  margin: '-1px',
+  overflow: 'hidden',
+  padding: 0,
+  position: 'absolute',
+  whiteSpace: 'nowrap',
+  width: '1px'
+} as const;
 
 export const DropZone = defineComponent({
   name: 'VueDropZone',
@@ -18,6 +38,10 @@ export const DropZone = defineComponent({
       type: Boolean,
       default: false
     },
+    isDisabled: {
+      type: Boolean,
+      default: undefined
+    },
     isFilled: {
       type: Boolean,
       default: false
@@ -30,117 +54,176 @@ export const DropZone = defineComponent({
       type: Boolean,
       default: true
     },
+    getDropOperation: {
+      type: Function as PropType<(types: Set<string>) => DropOperation | undefined>,
+      default: undefined
+    },
     replaceMessage: {
       type: String,
       default: ''
     }
   },
   emits: {
-    blur: (event: FocusEvent) => event instanceof FocusEvent,
+    blur: (event: FocusEvent) => isEventObject(event),
+    drop: (event: DragEvent) => isEventObject(event),
+    dropEnter: (event: DragEvent) => isEventObject(event),
+    dropExit: (event: DragEvent) => isEventObject(event),
     filesDrop: (files: File[]) => Array.isArray(files),
-    focus: (event: FocusEvent) => event instanceof FocusEvent,
+    focus: (event: FocusEvent) => isEventObject(event),
+    paste: (event: ClipboardEvent) => isEventObject(event),
     textDrop: (text: string) => typeof text === 'string'
   },
   setup(props, {attrs, emit, slots}) {
     let isOver = ref(false);
-    let inputRef = ref<HTMLInputElement | null>(null);
     let id = `vs-drop-zone-${++dropZoneId}`;
-
     let headingId = `${id}-heading`;
     let messageId = `${id}-message`;
 
+    let isDisabled = computed(() => {
+      if (props.isDisabled !== undefined) {
+        return props.isDisabled;
+      }
+
+      return props.disabled;
+    });
+
     let ariaLabelledby = computed(() => props.isFilled ? `${headingId} ${messageId}` : headingId);
 
-    let emitFiles = (list: FileList | null) => {
+    let emitFiles = (list: FileList | null | undefined) => {
       if (!list || list.length === 0) {
         return;
       }
 
-      emit('filesDrop', Array.from(list));
+      let files = Array.from(list);
+      if (!props.multiple) {
+        files = files.slice(0, 1);
+      }
+
+      emit('filesDrop', files);
     };
 
-    return () => h('div', {
-      ...attrs,
-      class: [
-        classNames(styles, 'spectrum-Dropzone', {
-          'spectrum-Dropzone--filled': props.isFilled
-        }),
-        'vs-drop-zone',
-        props.disabled ? 'is-disabled' : null,
-        isOver.value ? 'is-over' : null,
-        attrs.class
-      ],
-      'aria-labelledby': ariaLabelledby.value,
-      'data-vac': '',
-      onDragover: (event: DragEvent) => {
-        if (props.disabled) {
-          return;
-        }
+    let allowsDrop = (event: DragEvent) => {
+      if (isDisabled.value) {
+        return false;
+      }
 
-        event.preventDefault();
-        isOver.value = true;
-      },
-      onDragleave: (event: DragEvent) => {
-        if (props.disabled) {
-          return;
-        }
+      if (!props.getDropOperation) {
+        return true;
+      }
 
-        event.preventDefault();
-        isOver.value = false;
-      },
-      onDrop: (event: DragEvent) => {
-        if (props.disabled) {
-          return;
-        }
+      return props.getDropOperation(getTransferTypes(event)) !== 'cancel';
+    };
 
-        event.preventDefault();
-        isOver.value = false;
-        emitFiles(event.dataTransfer?.files ?? null);
+    return () => {
+      let {
+        class: className,
+        style,
+        UNSAFE_className: unsafeClassName,
+        unsafeClassName: unsafeClassNameAlias,
+        UNSAFE_style: unsafeStyle,
+        unsafeStyle: unsafeStyleAlias,
+        ...domProps
+      } = attrs as Record<string, unknown>;
 
-        let text = event.dataTransfer?.getData('text/plain') ?? '';
-        if (text) {
-          emit('textDrop', text);
-        }
-      },
-      onFocus: (event: FocusEvent) => emit('focus', event),
-      onBlur: (event: FocusEvent) => emit('blur', event)
-    }, [
-      h('p', {
-        id: headingId,
-        class: ['vs-drop-zone__label']
-      }, props.label),
-      slots.default ? h('div', {
-        class: [classNames(styles, 'spectrum-Dropzone-illustratedMessage'), 'vs-drop-zone__illustration']
-      }, slots.default()) : null,
-      h('button', {
-        class: 'vs-drop-zone__browse',
-        type: 'button',
-        disabled: props.disabled,
-        onClick: () => inputRef.value?.click()
-      }, 'Browse files'),
-      h('input', {
-        ref: inputRef,
-        class: 'vs-drop-zone__input',
-        type: 'file',
-        accept: props.accept || undefined,
-        multiple: props.multiple,
-        disabled: props.disabled,
-        onInput: (event: Event) => {
-          let target = event.currentTarget as HTMLInputElement | null;
-          emitFiles(target?.files ?? null);
-          if (target) {
-            target.value = '';
+      let mergedClassName = unsafeClassName ?? unsafeClassNameAlias;
+      let mergedStyle = unsafeStyle ?? unsafeStyleAlias;
+
+      return h('div', {
+        ...domProps,
+        class: [
+          classNames(styles, 'spectrum-Dropzone', {
+            'spectrum-Dropzone--filled': props.isFilled
+          }),
+          'vs-drop-zone',
+          isDisabled.value ? 'is-disabled' : null,
+          isOver.value ? 'is-over' : null,
+          mergedClassName,
+          className
+        ],
+        style: [style, mergedStyle],
+        'aria-labelledby': ariaLabelledby.value,
+        'aria-disabled': isDisabled.value ? 'true' : undefined,
+        'data-vac': '',
+        'data-drop-target': isOver.value ? 'true' : undefined,
+        role: 'button',
+        tabindex: isDisabled.value ? undefined : 0,
+        onDragover: (event: DragEvent) => {
+          if (!allowsDrop(event)) {
+            isOver.value = false;
+            return;
+          }
+
+          event.preventDefault();
+          isOver.value = true;
+        },
+        onDragenter: (event: DragEvent) => {
+          if (!allowsDrop(event)) {
+            isOver.value = false;
+            return;
+          }
+
+          event.preventDefault();
+          isOver.value = true;
+          emit('dropEnter', event);
+        },
+        onDragleave: (event: DragEvent) => {
+          if (isDisabled.value) {
+            return;
+          }
+
+          event.preventDefault();
+          isOver.value = false;
+          emit('dropExit', event);
+        },
+        onDrop: (event: DragEvent) => {
+          if (!allowsDrop(event)) {
+            isOver.value = false;
+            return;
+          }
+
+          event.preventDefault();
+          isOver.value = false;
+          emit('drop', event);
+          emitFiles(event.dataTransfer?.files);
+
+          let text = event.dataTransfer?.getData('text/plain') ?? '';
+          if (text.length > 0) {
+            emit('textDrop', text);
+          }
+        },
+        onFocus: (event: FocusEvent) => emit('focus', event),
+        onBlur: (event: FocusEvent) => emit('blur', event),
+        onPaste: (event: ClipboardEvent) => {
+          if (isDisabled.value) {
+            return;
+          }
+
+          emit('paste', event);
+          let text = event.clipboardData?.getData('text/plain') ?? '';
+          if (text.length > 0) {
+            emit('textDrop', text);
           }
         }
-      }),
-      h('div', {
-        class: [classNames(styles, 'spectrum-Dropzone-backdrop'), 'vs-drop-zone__backdrop']
-      }),
-      h('div', {
-        id: messageId,
-        class: [classNames(styles, 'spectrum-Dropzone-banner'), 'vs-drop-zone__banner']
-      }, props.replaceMessage || 'Drop to replace')
-    ]);
+      }, [
+        h('span', {
+          id: headingId,
+          class: 'vs-drop-zone__label',
+          style: visuallyHiddenStyle
+        }, props.label),
+        slots.default
+          ? h('div', {
+            class: [classNames(styles, 'spectrum-Dropzone-illustratedMessage'), 'vs-drop-zone__illustration']
+          }, slots.default())
+          : h('span', {class: 'react-aria-Text'}, props.label),
+        h('div', {
+          class: [classNames(styles, 'spectrum-Dropzone-backdrop'), 'vs-drop-zone__backdrop']
+        }),
+        h('div', {
+          id: messageId,
+          class: [classNames(styles, 'spectrum-Dropzone-banner'), 'vs-drop-zone__banner']
+        }, props.replaceMessage || 'Drop to replace')
+      ]);
+    };
   }
 });
 

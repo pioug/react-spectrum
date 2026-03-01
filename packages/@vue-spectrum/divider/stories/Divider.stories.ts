@@ -28,7 +28,7 @@ export const LargeDefault: Story = {
       </section>
     `
   }),
-  name: 'Large Default'
+  name: 'Large (Default)'
 };
 
 export const Medium: Story = {
@@ -65,17 +65,17 @@ export const Small: Story = {
 
 export const VerticalLargeDefault: Story = {
   render: () => renderVertical(),
-  name: 'Vertical Large Default'
+  name: 'Vertical, Large (Default)'
 };
 
 export const VerticalMedium: Story = {
   render: () => renderVertical({size: 'M'}),
-  name: 'Vertical Medium'
+  name: 'Vertical, Medium'
 };
 
 export const VerticalSmall: Story = {
   render: () => renderVertical({size: 'S'}),
-  name: 'Vertical Small'
+  name: 'Vertical, Small'
 };
 
 function renderVertical(args: Record<string, unknown> = {}) {

@@ -5857,14 +5857,13 @@ describe('Vue migration primitives', () => {
     expect(labelledby).toContain('-message');
     expect(wrapper.find('.spectrum-Dropzone-banner').text()).toContain('Replace current file');
 
-    let input = wrapper.get('input[type=\"file\"]');
     let file = new File(['abc'], 'asset.txt', {type: 'text/plain'});
-    Object.defineProperty(input.element, 'files', {
-      configurable: true,
-      value: [file]
+    await wrapper.get('.spectrum-Dropzone').trigger('drop', {
+      dataTransfer: {
+        files: [file],
+        getData: () => ''
+      }
     });
-
-    await input.trigger('input');
     expect(wrapper.emitted('filesDrop')?.[0]?.[0]?.[0]?.name).toBe('asset.txt');
   });
 
