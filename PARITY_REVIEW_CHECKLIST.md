@@ -117,13 +117,13 @@ Use this as a progression checklist for parity re-review. Mark each line when co
 - [x] 1.25 `@vue-spectrum/image`
   - Components: Image
   - [x] Story: Image.stories.ts
-- [ ] 1.26 `@vue-spectrum/inlinealert`
+- [x] 1.26 `@vue-spectrum/inlinealert`
   - Components: InlineAlert
-  - [ ] Story: InlineAlert.stories.ts
-- [ ] 1.27 `@vue-spectrum/label`
+  - [x] Story: InlineAlert.stories.ts
+- [x] 1.27 `@vue-spectrum/label`
   - Components: Field, HelpText, Label
-  - [ ] Story: HelpText.stories.ts
-  - [ ] Story: Label.stories.ts
+  - [x] Story: HelpText.stories.ts
+  - [x] Story: Label.stories.ts
 - [ ] 1.28 `@vue-spectrum/labeledvalue`
   - Components: LabeledValue
   - [ ] Story: LabeledValue.stories.ts
