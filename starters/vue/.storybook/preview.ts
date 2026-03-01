@@ -1,5 +1,6 @@
 import type {Preview} from '@storybook/vue3-vite';
-import {h} from 'vue';
+import {computed, h, onBeforeUnmount, ref} from 'vue';
+import {addons} from 'storybook/preview-api';
 import {Provider} from '@vue-spectrum/provider';
 import {theme as defaultTheme} from '@vue-spectrum/theme-default';
 import {theme as darkTheme} from '@vue-spectrum/theme-dark';
@@ -47,6 +48,46 @@ let expressThemes = Object.fromEntries(
   ]))
 );
 
+const PROVIDER_THEME_ITEMS = [
+  {title: 'Auto', value: 'auto'},
+  {title: 'Light', value: 'light'},
+  {title: 'Lightest', value: 'lightest'},
+  {title: 'Dark', value: 'dark'},
+  {title: 'Darkest', value: 'darkest'}
+];
+
+const PROVIDER_SCALE_ITEMS = [
+  {title: 'Auto', value: 'auto'},
+  {title: 'Medium', value: 'medium'},
+  {title: 'Large', value: 'large'}
+];
+
+const PROVIDER_EXPRESS_ITEMS = [
+  {title: 'Standard', value: false},
+  {title: 'Express', value: true}
+];
+
+function normalizeProviderValue(value: unknown): string | undefined {
+  return typeof value === 'string' && value !== '' && value !== 'auto'
+    ? value
+    : undefined;
+}
+
+function getProviderSwitcherValues(params: URLSearchParams, globals: any) {
+  return {
+    locale: params.get('providerSwitcher-locale') || undefined,
+    theme: normalizeProviderValue(globals?.providerTheme)
+      ?? normalizeProviderValue(params.get('providerSwitcher-theme'))
+      ?? undefined,
+    scale: normalizeProviderValue(globals?.providerScale)
+      ?? normalizeProviderValue(params.get('providerSwitcher-scale'))
+      ?? undefined,
+    express: typeof globals?.providerExpress === 'boolean'
+      ? globals.providerExpress
+      : params.get('providerSwitcher-express') === 'true'
+  };
+}
+
 function withScrollingSwitcher(story: any) {
   let params = new URLSearchParams(window.location.search);
   let isScrolling = params.get('scrolling') === 'true';
@@ -83,34 +124,94 @@ function withScrollingSwitcher(story: any) {
 
 function withProviderSwitcher(story: any, context: any) {
   let params = new URLSearchParams(window.location.search);
-  let localeValue = params.get('providerSwitcher-locale') || undefined;
-  let themeValue = params.get('providerSwitcher-theme') || undefined;
-  let scaleValue = params.get('providerSwitcher-scale') || undefined;
-  let expressValue = params.get('providerSwitcher-express') === 'true';
-  let selectedThemes = expressValue ? expressThemes : themes;
-  let theme = selectedThemes[themeValue || 'light'] || defaultTheme;
-  let colorScheme = themeValue ? themeValue.replace(/est$/, '') : undefined;
+  let initialValues = getProviderSwitcherValues(params, context?.globals);
   let includeMainElement = context?.parameters?.providerSwitcher?.mainElement == null;
   let Story = story();
 
   return {
-    render() {
-      let storyNode = h(Story);
-      let content = includeMainElement ? h('main', [storyNode]) : storyNode;
+    setup() {
+      let localeValue = ref(initialValues.locale);
+      let themeValue = ref(initialValues.theme);
+      let scaleValue = ref(initialValues.scale);
+      let expressValue = ref(initialValues.express);
+      let storyReady = ref(window.parent === window || window.parent !== window.top);
+      let channel = addons.getChannel();
+      let providerUpdate = (event: any) => {
+        localeValue.value = event?.locale;
+        themeValue.value = normalizeProviderValue(event?.theme);
+        scaleValue.value = normalizeProviderValue(event?.scale);
+        expressValue.value = Boolean(event?.express);
+        storyReady.value = true;
+      };
 
-      return h(Provider, {
-        theme,
-        colorScheme,
-        scale: scaleValue,
-        locale: localeValue
-      }, {
-        default: () => [content]
+      channel.on('provider/updated', providerUpdate);
+      channel.emit('rsp/ready-for-update');
+
+      onBeforeUnmount(() => {
+        channel.removeListener('provider/updated', providerUpdate);
       });
+
+      let selectedTheme = computed(() => {
+        let selectedThemes = expressValue.value ? expressThemes : themes;
+        return selectedThemes[themeValue.value || 'light'] || defaultTheme;
+      });
+
+      let colorScheme = computed(() => (
+        themeValue.value
+          ? themeValue.value.replace(/est$/, '')
+          : undefined
+      ));
+
+      return () => {
+        let storyNode = storyReady.value ? h(Story) : null;
+        let content = includeMainElement ? h('main', [storyNode]) : storyNode;
+
+        return h(Provider, {
+          theme: selectedTheme.value,
+          colorScheme: colorScheme.value,
+          scale: scaleValue.value,
+          locale: localeValue.value
+        }, {
+          default: () => [content]
+        });
+      };
     }
   };
 }
 
 const preview: Preview = {
+  globalTypes: {
+    providerTheme: {
+      name: 'Theme',
+      description: 'Spectrum provider theme',
+      defaultValue: 'auto',
+      toolbar: {
+        icon: 'paintbrush',
+        items: PROVIDER_THEME_ITEMS,
+        dynamicTitle: true
+      }
+    },
+    providerScale: {
+      name: 'Scale',
+      description: 'Spectrum provider scale',
+      defaultValue: 'auto',
+      toolbar: {
+        icon: 'expand',
+        items: PROVIDER_SCALE_ITEMS,
+        dynamicTitle: true
+      }
+    },
+    providerExpress: {
+      name: 'Express',
+      description: 'Use Express tokens in Provider theme',
+      defaultValue: false,
+      toolbar: {
+        icon: 'contrast',
+        items: PROVIDER_EXPRESS_ITEMS,
+        dynamicTitle: true
+      }
+    }
+  },
   parameters: {
     options: {
       storySort: (a, b) => a.title === b.title ? 0 : a.id.localeCompare(b.id, undefined, {numeric: true})

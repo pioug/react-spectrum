@@ -8,7 +8,7 @@ import type {
 } from '@vue-types/provider';
 import type {ValidationState} from '@vue-types/shared';
 import {BreakpointProvider, useMatchedBreakpoints} from '@vue-spectrum/utils';
-import {computed, type ComputedRef, defineComponent, getCurrentInstance, h, inject, type InjectionKey, nextTick, onMounted, type PropType, provide, ref, watch} from 'vue';
+import {computed, type ComputedRef, defineComponent, getCurrentInstance, h, inject, type InjectionKey, nextTick, onBeforeUnmount, onMounted, type PropType, provide, ref, watch} from 'vue';
 import {type SpectrumContextValue, VueSpectrumProvider} from 'vue-aria-components';
 
 type ThemeSectionLike = {
@@ -33,6 +33,73 @@ type ProviderContextCompat = Omit<ReactProviderContext, 'theme'> & {
 type ProviderPropsCompat = Omit<ReactProviderProps, 'children' | 'theme'> & {
   theme?: ThemeLike
 };
+
+function supportsColorScheme(theme: ThemeLike | undefined, colorScheme: SpectrumContextValue['colorScheme']): boolean {
+  if (!theme) {
+    return false;
+  }
+
+  return colorScheme === 'dark'
+    ? Boolean(theme.dark)
+    : Boolean(theme.light);
+}
+
+function resolveAutoColorScheme(
+  theme: ThemeLike | undefined,
+  defaultColorScheme: SpectrumContextValue['colorScheme'],
+  matchesDark: boolean,
+  matchesLight: boolean
+): SpectrumContextValue['colorScheme'] {
+  // Keep parity with React Provider: OS preference > defaultColorScheme > available theme section.
+  if (supportsColorScheme(theme, 'dark') && matchesDark) {
+    return 'dark';
+  }
+
+  if (supportsColorScheme(theme, 'light') && matchesLight) {
+    return 'light';
+  }
+
+  if (supportsColorScheme(theme, 'dark') && defaultColorScheme === 'dark') {
+    return 'dark';
+  }
+
+  if (supportsColorScheme(theme, 'light') && defaultColorScheme === 'light') {
+    return 'light';
+  }
+
+  if (!supportsColorScheme(theme, 'dark')) {
+    return 'light';
+  }
+
+  if (!supportsColorScheme(theme, 'light')) {
+    return 'dark';
+  }
+
+  return 'light';
+}
+
+function useMediaQueryMatch(query: string) {
+  let matches = ref(false);
+  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') {
+    return matches;
+  }
+
+  let mediaQueryList = window.matchMedia(query);
+  let update = () => {
+    matches.value = mediaQueryList.matches;
+  };
+
+  update();
+  if (typeof mediaQueryList.addEventListener === 'function') {
+    mediaQueryList.addEventListener('change', update);
+    onBeforeUnmount(() => mediaQueryList.removeEventListener('change', update));
+  } else {
+    mediaQueryList.addListener?.(update);
+    onBeforeUnmount(() => mediaQueryList.removeListener?.(update));
+  }
+
+  return matches;
+}
 
 function resolveHTMLElementRef(value: unknown): HTMLElement | null {
   if (value instanceof HTMLElement) {
@@ -83,6 +150,10 @@ export const Provider = defineComponent({
       type: String as PropType<SpectrumContextValue['colorScheme'] | undefined>,
       default: undefined
     },
+    defaultColorScheme: {
+      type: String as PropType<SpectrumContextValue['colorScheme'] | undefined>,
+      default: undefined
+    },
     locale: {
       type: String as PropType<string | undefined>,
       default: undefined
@@ -128,14 +199,25 @@ export const Provider = defineComponent({
     let hasParentProvider = inheritedContext !== null;
 
     let parentContext = computed(() => inheritedContext?.value ?? defaultProviderContext);
+    let matchesDark = useMediaQueryMatch('(prefers-color-scheme: dark)');
+    let matchesLight = useMediaQueryMatch('(prefers-color-scheme: light)');
 
     let context = computed<ProviderContextCompat>(() => {
       let parent = parentContext.value;
       let locale = props.locale ?? parent.locale;
+      let resolvedTheme = props.theme ?? parent.theme ?? (defaultTheme as unknown as ThemeLike);
+      let prevColorScheme = hasParentProvider ? parent.colorScheme : undefined;
+      let usePrevColorScheme = prevColorScheme ? supportsColorScheme(resolvedTheme, prevColorScheme) : false;
+      let autoColorScheme = resolveAutoColorScheme(
+        resolvedTheme,
+        props.defaultColorScheme ?? 'light',
+        matchesDark.value,
+        matchesLight.value
+      );
       return {
         ...parent,
-        theme: props.theme ?? parent.theme ?? (defaultTheme as unknown as ThemeLike),
-        colorScheme: props.colorScheme ?? parent.colorScheme,
+        theme: resolvedTheme,
+        colorScheme: props.colorScheme ?? (usePrevColorScheme ? prevColorScheme : autoColorScheme),
         scale: props.scale ?? parent.scale,
         breakpoints: props.breakpoints ?? parent.breakpoints,
         locale,

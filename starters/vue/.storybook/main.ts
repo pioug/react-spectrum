@@ -14,7 +14,8 @@ const config: StorybookConfig = {
   addons: [
     'storybook/actions',
     '@storybook/addon-links',
-    '@storybook/addon-a11y'
+    '@storybook/addon-a11y',
+    './custom-addons/provider/register.js'
   ],
   framework: {
     name: '@storybook/vue3-vite',
