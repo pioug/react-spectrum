@@ -1,5 +1,6 @@
 import '@adobe/spectrum-css-temp/components/table/vars.css';
 import './table.css';
+import {Checkbox} from '@vue-spectrum/checkbox';
 import {
   Cell as StatelyCell,
   Column as StatelyColumn,
@@ -503,7 +504,7 @@ export const Table = defineComponent({
           visibility: props.visibility,
           ...(tableWidth != null ? {width: tableWidth} : {}),
           ...(tableHeight != null ? {height: tableHeight} : {}),
-          ...(tableWidth != null || tableHeight != null ? {overflow: 'auto'} : {})
+          overflow: 'auto'
         }],
         'data-vac': ''
       }, [
@@ -527,28 +528,15 @@ export const Table = defineComponent({
                   ],
                   'aria-colindex': 1
                 }, [
-                  h('input', {
+                  h(Checkbox, {
                     class: [classNames(styles, 'spectrum-Table-checkbox'), 'vs-table__selection-checkbox'],
-                    type: 'checkbox',
-                    checked: allRowsSelected.value,
-                    disabled: props.isDisabled || selectableRowIds.value.length === 0,
                     'aria-label': 'Select all',
-                    ref: (element: Element | null) => {
-                      if (element instanceof HTMLInputElement) {
-                        element.indeterminate = someRowsSelected.value && !allRowsSelected.value;
-                      }
-                    },
-                    onClick: (event: Event) => {
-                      event.stopPropagation();
-                    },
-                    onMousedown: (event: Event) => {
-                      event.stopPropagation();
-                    },
-                    onChange: (event: Event) => {
-                      let target = event.target;
-                      if (target instanceof HTMLInputElement) {
-                        onToggleSelectAll(target.checked);
-                      }
+                    isDisabled: props.isDisabled || selectableRowIds.value.length === 0,
+                    isEmphasized: true,
+                    isIndeterminate: someRowsSelected.value && !allRowsSelected.value,
+                    isSelected: allRowsSelected.value,
+                    onChange: (checked: boolean) => {
+                      onToggleSelectAll(checked);
                     }
                   })
                 ])
@@ -756,20 +744,20 @@ export const Table = defineComponent({
                       'vs-table__cell',
                       'vs-table__cell--selection'
                     ],
-                    'aria-colindex': 1
+                    'aria-colindex': 1,
+                    onClick: (event: MouseEvent) => {
+                      event.stopPropagation();
+                    },
+                    onMousedown: (event: MouseEvent) => {
+                      event.stopPropagation();
+                    }
                   }, [
-                    h('input', {
+                    h(Checkbox, {
                       class: [classNames(styles, 'spectrum-Table-checkbox'), 'vs-table__selection-checkbox'],
-                      type: 'checkbox',
-                      checked: isRowSelected,
-                      disabled: isRowDisabled,
                       'aria-label': `Select row ${rowIndex + 1}`,
-                      onClick: (event: Event) => {
-                        event.stopPropagation();
-                      },
-                      onMousedown: (event: Event) => {
-                        event.stopPropagation();
-                      },
+                      isDisabled: isRowDisabled,
+                      isEmphasized: true,
+                      isSelected: isRowSelected,
                       onChange: () => {
                         onSelectRow(row, rowId);
                       }

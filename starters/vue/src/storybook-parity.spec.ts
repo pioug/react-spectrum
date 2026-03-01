@@ -1616,7 +1616,7 @@ describe('Vue storybook helper parity', () => {
 
       expect(wrapper.find('.react-spectrum-ActionBar').exists()).toBe(false);
 
-      let rowSelection = wrapper.findAll('tbody.vs-table__body input.vs-table__selection-checkbox');
+      let rowSelection = wrapper.findAll('tbody.vs-table__body .vs-table__selection-checkbox input');
       await rowSelection[0].setValue(true);
       await nextTick();
       expect(wrapper.get('.react-spectrum-ActionBar').exists()).toBe(true);

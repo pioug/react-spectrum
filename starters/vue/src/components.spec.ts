@@ -5874,11 +5874,11 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let selectAll = wrapper.get('thead input.vs-table__selection-checkbox');
-    let rowSelection = wrapper.findAll('tbody.vs-table__body input.vs-table__selection-checkbox');
+    let selectAll = wrapper.get('thead .vs-table__selection-checkbox input');
+    let rowSelection = wrapper.findAll('tbody.vs-table__body .vs-table__selection-checkbox input');
     expect(rowSelection).toHaveLength(2);
     expect(wrapper.findAll('th.vs-table__head-cell--selection')).toHaveLength(1);
-    expect(selectAll.classes()).toContain('spectrum-Table-checkbox');
+    expect(wrapper.get('thead .vs-table__selection-checkbox').classes()).toContain('spectrum-Table-checkbox');
 
     await selectAll.setValue(true);
     let selectAllUpdate = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
@@ -5913,10 +5913,10 @@ describe('Vue migration primitives', () => {
     expect(rows[1].classes()).toContain('is-disabled');
     expect(rows[1].attributes('tabindex')).toBe('-1');
 
-    let rowSelection = wrapper.findAll('tbody.vs-table__body input.vs-table__selection-checkbox');
+    let rowSelection = wrapper.findAll('tbody.vs-table__body .vs-table__selection-checkbox input');
     expect(rowSelection[1].attributes('disabled')).toBeDefined();
 
-    let selectAll = wrapper.get('thead input.vs-table__selection-checkbox');
+    let selectAll = wrapper.get('thead .vs-table__selection-checkbox input');
     await selectAll.setValue(true);
     let disabledSelectAllUpdate = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
     expect(disabledSelectAllUpdate).toBeInstanceOf(Set);
