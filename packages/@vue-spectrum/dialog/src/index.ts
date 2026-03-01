@@ -250,15 +250,7 @@ export const Dialog = defineComponent({
 
       let headerNode: VNode | null = null;
       if (slots.header) {
-        let headerContent = [
-          ...slots.header(),
-          typeIconNode,
-          headingNode
-        ].filter((node) => node !== null);
-
-        headerNode = headerContent.length > 0
-          ? h('header', {class: headerClassName.value}, headerContent)
-          : null;
+        headerNode = h('header', {class: headerClassName.value}, slots.header());
       }
 
       let dividerNode: VNode | VNode[] | null = null;
@@ -308,9 +300,7 @@ export const Dialog = defineComponent({
 
       let hidden = props.isHidden || attrs.hidden === '' || attrs.hidden === true;
 
-      let leadingNodes = slots.header
-        ? [headerNode]
-        : [typeIconNode, headingNode];
+      let leadingNodes = [typeIconNode, headingNode, headerNode];
 
       return h('section', {
         ...attrs,

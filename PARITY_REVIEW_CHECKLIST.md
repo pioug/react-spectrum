@@ -7,6 +7,7 @@ Use this as a progression checklist for parity re-review. Mark each line when co
 ## Phase 0 - Gate
 - [x] Run baseline gate: `yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`
 - [x] Confirm story-id parity for the current batch before/after fixes
+- [x] Overlay first-render token gate (dialog/overlays scope): verify at least one initially-open overlay story portals inside `.vs-provider` (not `body`) and computed modal/underlay surface backgrounds are non-transparent (theme tokens resolved)
 
 ## Phase 1 - @vue-spectrum Component Families + Stories
 - [x] 1.01 `@vue-spectrum/accordion`

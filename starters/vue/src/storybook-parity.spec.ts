@@ -169,9 +169,12 @@ import {
   WithTooltip as ActionMenuWithTooltip
 } from '../../../packages/@vue-spectrum/menu/stories/ActionMenu.stories';
 import {Default as DialogContainerDefault, InAMenu as DialogContainerInAMenu, IsDismissable as DialogContainerIsDismissable, NestedDialogContainers as DialogContainerNestedDialogContainers} from '../../../packages/@vue-spectrum/dialog/stories/DialogContainer.stories';
+import {Default as DialogDefaultStory} from '../../../packages/@vue-spectrum/dialog/stories/Dialog.stories';
 import {
   _AlertDialog as DialogTriggerAlertDialog,
+  TargetRef as DialogTriggerTargetRef,
   TypeModalIsDismissable as DialogTriggerTypeModalIsDismissable,
+  WithTranslations as DialogTriggerWithTranslations,
   WithMenuTrigger as DialogTriggerWithMenuTrigger,
   MobileTypeFullscreen as DialogTriggerMobileTypeFullscreen,
   MobileTypeFullscreenTakeover as DialogTriggerMobileTypeFullscreenTakeover,
@@ -2795,6 +2798,41 @@ describe('Vue storybook helper parity', () => {
     }
   });
 
+  it('renders default dialog story with close-on-action parity behavior', async () => {
+    let defaultStory = DialogDefaultStory.render?.({}) as ReturnType<Exclude<typeof DialogDefaultStory.render, undefined>>;
+    let wrapper = mount(defaultStory);
+
+    try {
+      expect(wrapper.find('section.spectrum-Dialog').exists() || document.body.querySelector('section.spectrum-Dialog') !== null).toBe(true);
+      let cancelButton = wrapper.findAll('button').find((button) => button.text() === 'Cancel')
+        ?? Array.from(document.querySelectorAll('button')).find((button) => button.textContent?.trim() === 'Cancel');
+      expect(cancelButton).toBeDefined();
+      if (cancelButton && 'trigger' in cancelButton) {
+        await cancelButton.trigger('click');
+      } else {
+        (cancelButton as HTMLButtonElement | undefined)?.click();
+      }
+
+      await nextTick();
+      expect(wrapper.find('section.spectrum-Dialog').exists() || document.body.querySelector('section.spectrum-Dialog') !== null).toBe(false);
+      await wrapper.get('button').trigger('click');
+      await nextTick();
+      expect(wrapper.find('section.spectrum-Dialog').exists() || document.body.querySelector('section.spectrum-Dialog') !== null).toBe(true);
+      let reopenCancelButton = wrapper.findAll('button').find((button) => button.text() === 'Cancel')
+        ?? Array.from(document.querySelectorAll('button')).find((button) => button.textContent?.trim() === 'Cancel');
+      expect(reopenCancelButton).toBeDefined();
+      if (reopenCancelButton && 'trigger' in reopenCancelButton) {
+        await reopenCancelButton.trigger('click');
+      } else {
+        (reopenCancelButton as HTMLButtonElement | undefined)?.click();
+      }
+      await nextTick();
+      expect(wrapper.find('section.spectrum-Dialog').exists() || document.body.querySelector('section.spectrum-Dialog') !== null).toBe(false);
+    } finally {
+      wrapper.unmount();
+    }
+  });
+
   it('renders drag and drop stories with live drag/drop targets and state updates', async () => {
     let wrappers: Array<ReturnType<typeof mount>> = [];
 
@@ -3433,6 +3471,20 @@ describe('Vue storybook helper parity', () => {
     expect(edgeStory.template).not.toContain('scenario');
   });
 
+  it('keeps dialog trigger target/menu/translation stories aligned to react composition contracts', () => {
+    let targetRefStory = DialogTriggerTargetRef.render?.({}) as ReturnType<Exclude<typeof DialogTriggerTargetRef.render, undefined>>;
+    expect(targetRefStory.template).toContain(':target-ref="targetRef"');
+    expect(targetRefStory.template).toContain('ref="targetRef"');
+
+    let withMenuStory = DialogTriggerWithMenuTrigger.render?.({}) as ReturnType<Exclude<typeof DialogTriggerWithMenuTrigger.render, undefined>>;
+    expect(withMenuStory.template).toContain('<MenuTrigger');
+    expect(withMenuStory.template).not.toContain('<Menu :items');
+
+    let withTranslationsStory = DialogTriggerWithTranslations.render?.({}) as ReturnType<Exclude<typeof DialogTriggerWithTranslations.render, undefined>>;
+    expect(withTranslationsStory.template).toContain('strings.format(\'koji\')');
+    expect(withTranslationsStory.template).not.toContain('v-for="locale in locales"');
+  });
+
   it('renders dialog trigger alert/menu stories with live trigger and open-state contracts', async () => {
     let menuWrapper: ReturnType<typeof mount> | null = null;
     let alertWrapper: ReturnType<typeof mount> | null = null;
@@ -3444,6 +3496,15 @@ describe('Vue storybook helper parity', () => {
       await menuWrapper.get('button').trigger('click');
       await nextTick();
       expect(menuWrapper.find('section.spectrum-Dialog').exists() || document.body.querySelector('section.spectrum-Dialog') !== null).toBe(true);
+      let testButton = menuWrapper.findAll('button').find((button) => button.text() === 'Test')
+        ?? Array.from(document.querySelectorAll('button')).find((button) => button.textContent?.trim() === 'Test');
+      expect(testButton).toBeDefined();
+      if (testButton && 'trigger' in testButton) {
+        await testButton.trigger('click');
+      } else {
+        (testButton as HTMLButtonElement | undefined)?.click();
+      }
+      await nextTick();
       expect(menuWrapper.find('.vs-spectrum-menu').exists() || document.body.querySelector('.vs-spectrum-menu') !== null).toBe(true);
 
       let alertStory = DialogTriggerAlertDialog.render?.({}) as ReturnType<Exclude<typeof DialogTriggerAlertDialog.render, undefined>>;

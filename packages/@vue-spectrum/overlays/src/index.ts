@@ -230,9 +230,16 @@ export const Overlay = defineComponent({
     }
   },
   setup(props, {attrs, slots}) {
+    let hasMounted = ref(false);
     let resolvedContainer = computed<OverlayContainer>(() => {
       if (props.container !== undefined && props.container !== null) {
         return props.container;
+      }
+
+      // During first render, provider markup may not be in the DOM yet.
+      // Re-resolve after mount so initially-open overlays portal into the provider container.
+      if (!hasMounted.value) {
+        return 'body';
       }
 
       if (typeof document === 'undefined') {
@@ -284,6 +291,10 @@ export const Overlay = defineComponent({
 
     onBeforeUnmount(() => {
       clearExitTimer();
+    });
+
+    onMounted(() => {
+      hasMounted.value = true;
     });
 
     let shouldRender = computed(() => resolvedIsOpen.value || !exited.value);

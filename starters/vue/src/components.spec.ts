@@ -4582,6 +4582,69 @@ describe('Vue migration primitives', () => {
     wrapper.unmount();
   });
 
+  it('renders dialog heading/header as separate grid siblings when both are present', async () => {
+    let wrapper = mount({
+      components: {Content, Dialog, Modal},
+      template: `
+        <Modal :is-open="true">
+          <Dialog>
+            <template #heading><h2>Dialog heading</h2></template>
+            <template #header><div>Dialog header</div></template>
+            <Content>Dialog body</Content>
+          </Dialog>
+        </Modal>
+      `
+    });
+
+    await nextTick();
+
+    let dialog = document.body.querySelector('[role=\"dialog\"]');
+    expect(dialog).not.toBeNull();
+    let grid = dialog?.querySelector('.spectrum-Dialog-grid');
+    expect(grid).not.toBeNull();
+
+    let heading = Array.from(grid?.children ?? []).find((node) => node.classList.contains('spectrum-Dialog-heading')) as HTMLElement | undefined;
+    let header = Array.from(grid?.children ?? []).find((node) => node.classList.contains('spectrum-Dialog-header')) as HTMLElement | undefined;
+    expect(heading).toBeDefined();
+    expect(header).toBeDefined();
+    expect(header?.contains(heading as Node)).toBe(false);
+    expect(heading?.textContent).toContain('Dialog heading');
+    expect(header?.textContent).toContain('Dialog header');
+
+    wrapper.unmount();
+  });
+
+  it('portals initially-open modal overlays into the provider container after mount', async () => {
+    let container = document.createElement('div');
+    document.body.appendChild(container);
+    let wrapper = mount({
+      components: {Modal, Provider},
+      template: `
+        <Provider>
+          <Modal :is-open="true">
+            <div>Modal content</div>
+          </Modal>
+        </Provider>
+      `
+    }, {
+      attachTo: container
+    });
+
+    await nextTick();
+    await nextTick();
+
+    let provider = wrapper.get('.vs-provider').element as HTMLElement;
+    let underlay = document.querySelector('[data-testid=\"underlay\"]');
+    let modal = document.querySelector('[data-testid=\"modal\"]');
+    expect(underlay).not.toBeNull();
+    expect(modal).not.toBeNull();
+    expect(provider.contains(underlay as Node)).toBe(true);
+    expect(provider.contains(modal as Node)).toBe(true);
+
+    wrapper.unmount();
+    container.remove();
+  });
+
   it('closes dismissable overlays on Escape and keeps non-dismissable modal open', async () => {
     let modal = mount(Modal, {
       props: {

@@ -76,20 +76,31 @@ function renderBaseDialog(props: RenderProps = {}, options: {
   return {
     components: {ActionButton, Button, ButtonGroup, Checkbox, DialogTrigger},
     setup() {
+      let isOpen = ref(true);
       return {
         dialogArgs,
-        onButtonPress: action('buttonPress'),
-        onDialogClose: action('dialogClose'),
+        isOpen,
+        onDialogButtonPress: (label: string) => {
+          action('buttonPress')(label);
+          isOpen.value = false;
+        },
+        onDialogClose: () => {
+          action('dialogClose')();
+          isOpen.value = false;
+        },
         options,
+        openDialog: () => {
+          isOpen.value = true;
+        },
         singleParagraphText: singleParagraph(),
         width
       };
     },
     template: `
       <div :style="{display: 'flex', width, margin: '100px 0'}">
-        <DialogTrigger v-bind="dialogArgs" default-open @close="onDialogClose()">
-          <template #trigger="{open}">
-            <ActionButton @click="open">Trigger</ActionButton>
+        <DialogTrigger v-bind="dialogArgs" :open="isOpen" @close="onDialogClose" @open-change="isOpen = $event">
+          <template #trigger>
+            <ActionButton @click="openDialog">Trigger</ActionButton>
           </template>
 
           <template v-if="options.hero" #hero>
@@ -114,12 +125,12 @@ function renderBaseDialog(props: RenderProps = {}, options: {
 
           <template v-if="!Boolean(dialogArgs.isDismissable)" #buttonGroup>
             <ButtonGroup :orientation="options.verticalButtons ? 'vertical' : 'horizontal'">
-              <Button v-if="!options.withThreeButtons" variant="secondary" @click="onButtonPress('Cancel')">Cancel</Button>
-              <Button v-if="!options.withThreeButtons" variant="cta" @click="onButtonPress('Confirm')">Confirm</Button>
+              <Button v-if="!options.withThreeButtons" variant="secondary" @click="onDialogButtonPress('Cancel')">Cancel</Button>
+              <Button v-if="!options.withThreeButtons" variant="cta" @click="onDialogButtonPress('Confirm')">Confirm</Button>
 
-              <Button v-if="options.withThreeButtons" variant="secondary" @click="onButtonPress('Secondary')">Secondary</Button>
-              <Button v-if="options.withThreeButtons" variant="primary" @click="onButtonPress('Primary')">Primary</Button>
-              <Button v-if="options.withThreeButtons" variant="cta" @click="onButtonPress('CTA')">CTA</Button>
+              <Button v-if="options.withThreeButtons" variant="secondary" @click="onDialogButtonPress('Secondary')">Secondary</Button>
+              <Button v-if="options.withThreeButtons" variant="primary" @click="onDialogButtonPress('Primary')">Primary</Button>
+              <Button v-if="options.withThreeButtons" variant="cta" @click="onDialogButtonPress('CTA')">CTA</Button>
             </ButtonGroup>
           </template>
         </DialogTrigger>
@@ -138,17 +149,25 @@ function renderIframe(props: RenderProps = {}) {
   return {
     components: {ActionButton, Button, ButtonGroup, DialogTrigger},
     setup() {
+      let isOpen = ref(true);
       return {
         dialogArgs,
-        onButtonPress: action('buttonPress'),
+        isOpen,
+        onDialogButtonPress: (label: string) => {
+          action('buttonPress')(label);
+          isOpen.value = false;
+        },
+        openDialog: () => {
+          isOpen.value = true;
+        },
         width
       };
     },
     template: `
       <div :style="{display: 'flex', width, margin: '100px 0'}">
-        <DialogTrigger v-bind="dialogArgs" default-open>
-          <template #trigger="{open}">
-            <ActionButton @click="open">Trigger</ActionButton>
+        <DialogTrigger v-bind="dialogArgs" :open="isOpen" @open-change="isOpen = $event">
+          <template #trigger>
+            <ActionButton @click="openDialog">Trigger</ActionButton>
           </template>
           <template #heading><h2>The Heading</h2></template>
           <template #header><div>The Header</div></template>
@@ -160,8 +179,8 @@ function renderIframe(props: RenderProps = {}) {
 
           <template v-if="!Boolean(dialogArgs.isDismissable)" #buttonGroup>
             <ButtonGroup>
-              <Button variant="secondary" @click="onButtonPress('Cancel')">Cancel</Button>
-              <Button variant="cta" @click="onButtonPress('Confirm')">Confirm</Button>
+              <Button variant="secondary" @click="onDialogButtonPress('Cancel')">Cancel</Button>
+              <Button variant="cta" @click="onDialogButtonPress('Confirm')">Confirm</Button>
             </ButtonGroup>
           </template>
         </DialogTrigger>
@@ -187,9 +206,17 @@ function renderWithForm(props: RenderProps = {}) {
       TextField
     },
     setup() {
+      let isOpen = ref(true);
       return {
         dialogArgs,
-        onButtonPress: action('buttonPress'),
+        isOpen,
+        onDialogButtonPress: (label: string) => {
+          action('buttonPress')(label);
+          isOpen.value = false;
+        },
+        openDialog: () => {
+          isOpen.value = true;
+        },
         pickerItems: PICKER_ITEMS,
         jobs: JOB_ITEMS,
         width
@@ -197,9 +224,9 @@ function renderWithForm(props: RenderProps = {}) {
     },
     template: `
       <div :style="{display: 'flex', width, margin: '100px 0'}">
-        <DialogTrigger v-bind="dialogArgs" default-open>
-          <template #trigger="{open}">
-            <ActionButton @click="open">Trigger</ActionButton>
+        <DialogTrigger v-bind="dialogArgs" :open="isOpen" @open-change="isOpen = $event">
+          <template #trigger>
+            <ActionButton @click="openDialog">Trigger</ActionButton>
           </template>
           <template #heading><h2>The Heading</h2></template>
           <template #header><div>The Header</div></template>
@@ -218,8 +245,8 @@ function renderWithForm(props: RenderProps = {}) {
 
           <template #buttonGroup>
             <ButtonGroup>
-              <Button variant="secondary" @click="onButtonPress('Cancel')">Cancel</Button>
-              <Button variant="cta" @click="onButtonPress('Confirm')">Confirm</Button>
+              <Button variant="secondary" @click="onDialogButtonPress('Cancel')">Cancel</Button>
+              <Button variant="cta" @click="onDialogButtonPress('Confirm')">Confirm</Button>
             </ButtonGroup>
           </template>
         </DialogTrigger>
@@ -249,11 +276,19 @@ function renderThreeButtonsFooter(props: RenderProps = {}) {
         }
       ];
       let whichLabels = ref(0);
+      let isOpen = ref(true);
 
       return {
         dialogArgs,
+        isOpen,
         labels,
-        onButtonPress: action('buttonPress'),
+        onDialogButtonPress: (label: string) => {
+          action('buttonPress')(label);
+          isOpen.value = false;
+        },
+        openDialog: () => {
+          isOpen.value = true;
+        },
         singleParagraphText: singleParagraph(),
         toggleLabels: () => {
           whichLabels.value = whichLabels.value ? 0 : 1;
@@ -265,9 +300,9 @@ function renderThreeButtonsFooter(props: RenderProps = {}) {
     template: `
       <div :style="{display: 'flex', width, margin: '100px 0'}">
         <Button variant="primary" @click="toggleLabels">Toggle labels</Button>
-        <DialogTrigger v-bind="dialogArgs" default-open>
-          <template #trigger="{open}">
-            <ActionButton @click="open">Trigger</ActionButton>
+        <DialogTrigger v-bind="dialogArgs" :open="isOpen" @open-change="isOpen = $event">
+          <template #trigger>
+            <ActionButton @click="openDialog">Trigger</ActionButton>
           </template>
           <template #heading><h2>{{labels[whichLabels].heading}}</h2></template>
           <template #header><div>The Header</div></template>
@@ -281,9 +316,9 @@ function renderThreeButtonsFooter(props: RenderProps = {}) {
 
           <template #buttonGroup>
             <ButtonGroup>
-              <Button variant="secondary" @click="onButtonPress('Secondary')">{{labels[whichLabels].secondaryButtonLabel}}</Button>
-              <Button variant="primary" @click="onButtonPress('Primary')">{{labels[whichLabels].primaryButtonLabel}}</Button>
-              <Button variant="cta" @click="onButtonPress('CTA')">CTA</Button>
+              <Button variant="secondary" @click="onDialogButtonPress('Secondary')">{{labels[whichLabels].secondaryButtonLabel}}</Button>
+              <Button variant="primary" @click="onDialogButtonPress('Primary')">{{labels[whichLabels].primaryButtonLabel}}</Button>
+              <Button variant="cta" @click="onDialogButtonPress('CTA')">CTA</Button>
             </ButtonGroup>
           </template>
         </DialogTrigger>
@@ -298,17 +333,25 @@ function renderWithDividerInContent(props: RenderProps = {}) {
   return {
     components: {ActionButton, Button, ButtonGroup, DialogTrigger, Divider},
     setup() {
+      let isOpen = ref(true);
       return {
         dialogArgs,
-        onButtonPress: action('buttonPress'),
+        isOpen,
+        onDialogButtonPress: (label: string) => {
+          action('buttonPress')(label);
+          isOpen.value = false;
+        },
+        openDialog: () => {
+          isOpen.value = true;
+        },
         width
       };
     },
     template: `
       <div :style="{display: 'flex', width, margin: '100px 0'}">
-        <DialogTrigger v-bind="dialogArgs" default-open>
-          <template #trigger="{open}">
-            <ActionButton @click="open">Trigger</ActionButton>
+        <DialogTrigger v-bind="dialogArgs" :open="isOpen" @open-change="isOpen = $event">
+          <template #trigger>
+            <ActionButton @click="openDialog">Trigger</ActionButton>
           </template>
           <template #heading><h2>The Heading</h2></template>
           <template #header><div>The Header</div></template>
@@ -326,8 +369,8 @@ function renderWithDividerInContent(props: RenderProps = {}) {
 
           <template #buttonGroup>
             <ButtonGroup>
-              <Button variant="primary" @click="onButtonPress('Primary')">Primary</Button>
-              <Button variant="cta" @click="onButtonPress('CTA')">CTA</Button>
+              <Button variant="primary" @click="onDialogButtonPress('Primary')">Primary</Button>
+              <Button variant="cta" @click="onDialogButtonPress('CTA')">CTA</Button>
             </ButtonGroup>
           </template>
         </DialogTrigger>
@@ -342,10 +385,18 @@ function renderLongContent(props: RenderProps = {}) {
   return {
     components: {ActionButton, Button, ButtonGroup, DialogTrigger, TextField},
     setup() {
+      let isOpen = ref(false);
       return {
         dialogArgs,
         fiveParagraphs: FIVE_PARAGRAPHS,
-        onButtonPress: action('buttonPress'),
+        isOpen,
+        onDialogButtonPress: (label: string) => {
+          action('buttonPress')(label);
+          isOpen.value = false;
+        },
+        openDialog: () => {
+          isOpen.value = true;
+        },
         width
       };
     },
@@ -366,9 +417,9 @@ function renderLongContent(props: RenderProps = {}) {
 
         <p v-for="(paragraph, index) in fiveParagraphs" :key="'before-' + index">{{paragraph}}</p>
 
-        <DialogTrigger v-bind="dialogArgs">
-          <template #trigger="{open}">
-            <ActionButton @click="open">Trigger</ActionButton>
+        <DialogTrigger v-bind="dialogArgs" :open="isOpen" @open-change="isOpen = $event">
+          <template #trigger>
+            <ActionButton @click="openDialog">Trigger</ActionButton>
           </template>
           <template #heading>
             <h2>The Heading is also very long and demonstrates what happens if there is no Header</h2>
@@ -383,8 +434,8 @@ function renderLongContent(props: RenderProps = {}) {
 
           <template #buttonGroup>
             <ButtonGroup>
-              <Button variant="secondary" @click="onButtonPress('Cancel')">Cancel</Button>
-              <Button auto-focus variant="cta" @click="onButtonPress('Confirm')">Confirm</Button>
+              <Button variant="secondary" @click="onDialogButtonPress('Cancel')">Cancel</Button>
+              <Button auto-focus variant="cta" @click="onDialogButtonPress('Confirm')">Confirm</Button>
             </ButtonGroup>
           </template>
         </DialogTrigger>
@@ -401,10 +452,18 @@ function renderHorizontalScrolling(props: RenderProps = {}) {
   return {
     components: {ActionButton, Button, ButtonGroup, DialogTrigger, TextField},
     setup() {
+      let isOpen = ref(true);
       return {
         dialogArgs,
         fiveParagraphs: FIVE_PARAGRAPHS,
-        onButtonPress: action('buttonPress'),
+        isOpen,
+        onDialogButtonPress: (label: string) => {
+          action('buttonPress')(label);
+          isOpen.value = false;
+        },
+        openDialog: () => {
+          isOpen.value = true;
+        },
         width
       };
     },
@@ -412,9 +471,9 @@ function renderHorizontalScrolling(props: RenderProps = {}) {
       <div :style="{display: 'flex', flexDirection: 'column', alignItems: 'start', width}">
         <p v-for="(paragraph, index) in fiveParagraphs" :key="'before-' + index">{{paragraph}}</p>
 
-        <DialogTrigger v-bind="dialogArgs" default-open>
-          <template #trigger="{open}">
-            <ActionButton @click="open">Trigger</ActionButton>
+        <DialogTrigger v-bind="dialogArgs" :open="isOpen" @open-change="isOpen = $event">
+          <template #trigger>
+            <ActionButton @click="openDialog">Trigger</ActionButton>
           </template>
           <template #heading><h2>The Heading</h2></template>
           <template #header><div>The Header</div></template>
@@ -427,8 +486,8 @@ function renderHorizontalScrolling(props: RenderProps = {}) {
 
           <template #buttonGroup>
             <ButtonGroup>
-              <Button variant="secondary" @click="onButtonPress('Cancel')">Cancel</Button>
-              <Button auto-focus variant="cta" @click="onButtonPress('Confirm')">Confirm</Button>
+              <Button variant="secondary" @click="onDialogButtonPress('Cancel')">Cancel</Button>
+              <Button auto-focus variant="cta" @click="onDialogButtonPress('Confirm')">Confirm</Button>
             </ButtonGroup>
           </template>
         </DialogTrigger>

@@ -8,69 +8,7 @@ import type {Meta, StoryObj} from '@storybook/vue3-vite';
 type StoryArgs = Record<string, unknown>;
 
 const meta: Meta<typeof AlertDialog> = {
-  title: 'Dialog/Alert',
-  component: AlertDialog,
-  argTypes: {
-    autoFocusButton: {
-      control: 'text'
-    },
-    cancelLabel: {
-      control: 'text'
-    },
-    dismissable: {
-      control: 'boolean'
-    },
-    isDismissable: {
-      control: 'boolean'
-    },
-    isHidden: {
-      control: 'boolean'
-    },
-    isOpen: {
-      control: 'boolean'
-    },
-    isPrimaryActionDisabled: {
-      control: 'boolean'
-    },
-    isSecondaryActionDisabled: {
-      control: 'boolean'
-    },
-    onCancel: {
-      table: {
-        disable: true
-      }
-    },
-    onClose: {
-      table: {
-        disable: true
-      }
-    },
-    onPrimaryAction: {
-      table: {
-        disable: true
-      }
-    },
-    onSecondaryAction: {
-      table: {
-        disable: true
-      }
-    },
-    open: {
-      control: 'boolean'
-    },
-    primaryActionLabel: {
-      control: 'text'
-    },
-    secondaryActionLabel: {
-      control: 'text'
-    },
-    title: {
-      control: 'text'
-    },
-    variant: {
-      control: 'text'
-    }
-  }
+  title: 'Dialog/Alert'
 };
 
 export default meta;
@@ -79,7 +17,6 @@ type Story = StoryObj<typeof meta>;
 
 function baseAlertArgs(overrides: StoryArgs = {}): StoryArgs {
   return {
-    isOpen: true,
     title: 'Error: Danger Will Robinson',
     primaryActionLabel: 'Accept',
     cancelLabel: 'Cancel',
@@ -93,22 +30,29 @@ function renderAlert(args: StoryArgs) {
     components: {ActionButton, AlertDialog},
     setup() {
       let isOpen = ref(true);
-      let openDialog = () => {
-        isOpen.value = true;
-      };
       let closeDialog = () => {
         isOpen.value = false;
       };
-
       return {
         args,
         bodyText: singleParagraph(),
         closeDialog,
         isOpen,
-        onCancel: action('cancel'),
-        onPrimaryAction: action('primary'),
-        onSecondaryAction: action('secondary'),
-        openDialog
+        onCancel: () => {
+          action('cancel')();
+          closeDialog();
+        },
+        onPrimaryAction: () => {
+          action('primary')();
+          closeDialog();
+        },
+        onSecondaryAction: () => {
+          action('secondary')();
+          closeDialog();
+        },
+        openDialog: () => {
+          isOpen.value = true;
+        }
       };
     },
     template: `
@@ -117,8 +61,8 @@ function renderAlert(args: StoryArgs) {
         <AlertDialog
           v-bind="args"
           :is-open="isOpen"
-          @cancel="onCancel"
           @close="closeDialog"
+          @cancel="onCancel"
           @primary-action="onPrimaryAction"
           @secondary-action="onSecondaryAction">
           {{bodyText}}

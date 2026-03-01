@@ -1,13 +1,16 @@
 import {ActionButton, Button} from '@vue-spectrum/button';
 import {AlertDialog, DialogTrigger} from '../src';
-import {Menu} from '@vue-spectrum/menu';
+import {MenuTrigger} from '@vue-spectrum/menu';
 import {TooltipTrigger} from '@vue-spectrum/tooltip';
+import {useLocalizedStringFormatter} from '@vue-aria/i18n';
 import {action} from 'storybook/actions';
 import {ref} from 'vue';
+import intlMessages from '../../../@react-spectrum/dialog/chromatic/intlMessages.json';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type StoryArgs = Record<string, unknown>;
 const DIALOG_BODY_TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus. In sit amet suscipit lorem. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In condimentum imperdiet metus non condimentum. Duis eu velit et quam accumsan tempus at id velit. Duis elementum elementum purus, id tempus mauris posuere a. Nunc vestibulum sapien pellentesque lectus commodo ornare.';
+const ALERT_ICON_PATH = 'M8.564 1.289L.2 16.256A.5.5 0 0 0 .636 17h16.728a.5.5 0 0 0 .436-.744L9.436 1.289a.5.5 0 0 0-.872 0zM10 14.75a.25.25 0 0 1-.25.25h-1.5a.25.25 0 0 1-.25-.25v-1.5a.25.25 0 0 1 .25-.25h1.5a.25.25 0 0 1 .25.25zm0-3a.25.25 0 0 1-.25.25h-1.5a.25.25 0 0 1-.25-.25v-6a.25.25 0 0 1 .25-.25h1.5a.25.25 0 0 1 .25.25z';
 
 const meta: Meta<typeof DialogTrigger> = {
   title: 'DialogTrigger',
@@ -135,8 +138,7 @@ export const Default: Story = {
 export const TypePopover: Story = {
   ...Default,
   args: {
-    type: 'popover',
-    size: 'S'
+    type: 'popover'
   }
 };
 
@@ -267,27 +269,28 @@ export const NestedModalsFullscreentakeover: Story = {
 
 export const WithMenuTrigger: Story = {
   render: () => ({
-    components: {ActionButton, DialogTrigger, Menu},
+    components: {ActionButton, DialogTrigger, MenuTrigger},
     setup() {
-      let isOpen = ref(false);
       return {
-        isOpen,
         menuItems: [
           {key: 'one', label: 'Item 1'},
           {key: 'two', label: 'Item 2'},
           {key: 'three', label: 'Item 3'}
-        ],
-        onClose: () => {
-          isOpen.value = false;
-        }
+        ]
       };
     },
     template: `
       <div style="display: flex; margin: 100px 0;">
-        <ActionButton @click="isOpen = true">Trigger</ActionButton>
-        <DialogTrigger type="popover" title="The Heading" :open="isOpen" @close="onClose">
-          <ActionButton variant="secondary">Test</ActionButton>
-          <Menu :items="menuItems" />
+        <DialogTrigger type="popover">
+          <template #trigger="{open}">
+            <ActionButton @click="open">Trigger</ActionButton>
+          </template>
+          <template #heading><h2>The Heading</h2></template>
+          <MenuTrigger :items="menuItems">
+            <template #trigger>
+              <ActionButton variant="secondary">Test</ActionButton>
+            </template>
+          </MenuTrigger>
         </DialogTrigger>
       </div>
     `
@@ -402,17 +405,18 @@ export const TargetRef: Story = {
   render: (args) => ({
     components: {ActionButton, DialogTrigger},
     setup() {
-      return {args};
+      let targetRef = ref<HTMLElement | null>(null);
+      return {args, targetRef};
     },
     template: `
       <div style="display: flex; align-items: center; gap: 24px;">
-        <DialogTrigger v-bind="args" type="popover" title="TargetRef">
+        <DialogTrigger v-bind="args" type="popover" title="TargetRef" :target-ref="targetRef">
           <template #trigger="{open}">
             <ActionButton @click="open">Trigger</ActionButton>
           </template>
           <p>${DIALOG_BODY_TEXT}</p>
         </DialogTrigger>
-        <span style="margin-inline-start: 200px;">Popover appears over here</span>
+        <span ref="targetRef" style="margin-inline-start: 200px;">Popover appears over here</span>
       </div>
     `
   })
@@ -622,14 +626,27 @@ export const _AdjustableDialog: Story = {
       let showHeader = ref(false);
       let showTypeIcon = ref(false);
       let isDismissable = ref(false);
+      let isOpen = ref(false);
       let showFooter = ref(false);
       let longTitle = ref(false);
       let longButtonLabels = ref(false);
 
       return {
         isDismissable,
+        isOpen,
         longButtonLabels,
         longTitle,
+        onCancel: () => {
+          action('cancel')();
+          isOpen.value = false;
+        },
+        onConfirm: () => {
+          action('confirm')();
+          isOpen.value = false;
+        },
+        openDialog: () => {
+          isOpen.value = true;
+        },
         showHero,
         showFooter,
         showHeader,
@@ -648,10 +665,12 @@ export const _AdjustableDialog: Story = {
           <label><input v-model="longButtonLabels" type="checkbox"> Show long button labels</label>
         </div>
         <DialogTrigger
+          :open="isOpen"
           :is-dismissable="isDismissable"
+          @open-change="isOpen = $event"
           :title="longTitle ? 'The Heading of Maximum Truth That is Really Long to Go On and On a a a a a Again and Wraps' : 'The Heading'">
-          <template #trigger="{open}">
-            <ActionButton @click="open">Trigger</ActionButton>
+          <template #trigger>
+            <ActionButton @click="openDialog">Trigger</ActionButton>
           </template>
           <template v-if="showHero" #hero>
             <img src="https://i.imgur.com/Z7AzH2c.png" alt="" style="width: 100%; object-fit: cover;" />
@@ -660,7 +679,9 @@ export const _AdjustableDialog: Story = {
             <div>This is a long header</div>
           </template>
           <template v-if="showTypeIcon" #typeIcon>
-            <span aria-label="Alert">!</span>
+            <svg aria-label="Alert" class="spectrum-Icon spectrum-UIIcon-AlertMedium" viewBox="0 0 18 18">
+              <path d="${ALERT_ICON_PATH}" />
+            </svg>
           </template>
           <template #divider><hr /></template>
           <p>${DIALOG_BODY_TEXT}</p>
@@ -668,8 +689,8 @@ export const _AdjustableDialog: Story = {
             <label><input type="checkbox"> I have read and accept the terms of use and privacy policy</label>
           </template>
           <template #buttonGroup>
-            <Button variant="secondary">Cancel {{longButtonLabels ? 'and close this dialog' : ''}}</Button>
-            <Button variant="cta">Confirm {{longButtonLabels ? 'and close this dialog' : ''}}</Button>
+            <Button variant="secondary" @click="onCancel">Cancel {{longButtonLabels ? 'and close this dialog' : ''}}</Button>
+            <Button variant="cta" @click="onConfirm">Confirm {{longButtonLabels ? 'and close this dialog' : ''}}</Button>
           </template>
         </DialogTrigger>
       </div>
@@ -762,27 +783,42 @@ export const WithTooltipTrigger: Story = {
 
 export const WithTranslations: Story = {
   render: () => ({
-    components: {DialogTrigger},
+    components: {ActionButton, Button, DialogTrigger},
     setup() {
+      let isOpen = ref(false);
+      let strings = useLocalizedStringFormatter(intlMessages as Record<string, Record<string, string>>);
       return {
-        locales: [
-          {label: 'English', text: 'Confirm'},
-          {label: 'Arabic', text: 'تأكيد'},
-          {label: 'Hebrew', text: 'אישור'},
-          {label: 'Japanese', text: '確認'},
-          {label: 'Korean', text: '확인'},
-          {label: 'Simplified Chinese', text: '确认'},
-          {label: 'Traditional Chinese', text: '確認'}
-        ]
+        isOpen,
+        onCancel: () => {
+          action('cancel')();
+          isOpen.value = false;
+        },
+        onConfirm: () => {
+          action('confirm')();
+          isOpen.value = false;
+        },
+        openDialog: () => {
+          isOpen.value = true;
+        },
+        strings
       };
     },
     template: `
-      <div style="display: grid; gap: 10px;">
-        <DialogTrigger
-          v-for="locale in locales"
-          :key="locale.label"
-          title="Translations">
-          <p>{{locale.label}}: {{locale.text}}</p>
+      <div style="display: flex; width: auto; margin: 100px 0;">
+        <DialogTrigger :open="isOpen" @open-change="isOpen = $event">
+          <template #trigger>
+            <ActionButton @click="openDialog">{{strings.format('koji')}}</ActionButton>
+          </template>
+          <template #heading><h2>{{strings.format('kojiFoods')}}</h2></template>
+          <template #header><div>{{strings.format('foodsMakeWithKoji')}}</div></template>
+          <template #divider><hr /></template>
+          <p>{{strings.format('soySauce')}}: {{strings.format('soySauceDescription')}}</p>
+          <p>{{strings.format('miso')}}: {{strings.format('misoDescription')}}</p>
+          <p>{{strings.format('amazake')}}: {{strings.format('amazakeDescription')}}</p>
+          <template #buttonGroup>
+            <Button variant="secondary" @click="onCancel">{{strings.format('cancel')}}</Button>
+            <Button variant="cta" @click="onConfirm">{{strings.format('confirm')}}</Button>
+          </template>
         </DialogTrigger>
       </div>
     `
