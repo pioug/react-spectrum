@@ -75,7 +75,6 @@ const meta: Meta<typeof TreeView> = {
   title: 'TreeView',
   component: TreeView,
   excludeStories: [
-    'renderTree',
     'renderEmptyState'
   ],
   args: {

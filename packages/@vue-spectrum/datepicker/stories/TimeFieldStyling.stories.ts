@@ -6,35 +6,7 @@ type StoryArgs = Record<string, unknown>;
 
 const meta: Meta<typeof TimeField> = {
   title: 'Date and Time/TimeField/styling',
-  component: TimeField,
-  args: {
-    label: 'Time',
-    step: 60
-  },
-  argTypes: {
-    autoFocus: {control: 'boolean'},
-    description: {control: 'text'},
-    disabled: {control: 'boolean'},
-    id: {control: 'text'},
-    invalid: {control: 'boolean'},
-    isDisabled: {control: 'boolean'},
-    isInvalid: {control: 'boolean'},
-    isQuiet: {control: 'boolean'},
-    isReadOnly: {control: 'boolean'},
-    isRequired: {control: 'boolean'},
-    label: {control: 'text'},
-    max: {control: 'text'},
-    min: {control: 'text'},
-    modelValue: {control: 'text'},
-    placeholder: {control: 'text'},
-    readOnly: {control: 'boolean'},
-    required: {control: 'boolean'},
-    step: {control: 'number'},
-    validationState: {
-      control: 'select',
-      options: ['invalid', 'valid']
-    }
-  }
+  component: TimeField
 };
 
 export default meta;

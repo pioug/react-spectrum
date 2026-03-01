@@ -61,13 +61,6 @@ const multipleTooltipItems = [{
 const meta: Meta<typeof TooltipTrigger> = {
   title: 'TooltipTrigger',
   component: TooltipTrigger,
-  excludeStories: [
-    'DEFAULT_CHILDREN',
-    'multipleTooltipItems',
-    'renderTrigger',
-    'renderMultipleTooltips',
-    'renderControlledMultipleTooltips'
-  ],
   args: {
     children: [...DEFAULT_CHILDREN],
     onOpenChange: action('openChange'),

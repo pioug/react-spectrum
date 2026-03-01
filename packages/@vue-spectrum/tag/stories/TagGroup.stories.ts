@@ -81,13 +81,6 @@ const meta: Meta<typeof TagGroup> = {
       argTypesRegex: '^$'
     }
   },
-  excludeStories: [
-    'baseItems',
-    'manyItems',
-    'renderResizable',
-    'renderTagGroup',
-    'renderOnRemove'
-  ],
   argTypes: {
     items: {
       table: {

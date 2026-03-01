@@ -1,6 +1,7 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {ref} from 'vue';
 import {Table} from '../src';
+import defaultConfig from './Table.stories';
 
 type StoryArgs = Record<string, unknown>;
 type RowItem = {
@@ -87,6 +88,7 @@ function makeManyRows(count = 5): RowItem[] {
 }
 
 const meta: Meta<typeof Table> = {
+  ...defaultConfig,
   title: 'TableView/Expandable rows',
   component: Table,
   excludeStories: [
@@ -98,6 +100,7 @@ const meta: Meta<typeof Table> = {
     'LoadingTreeGridStoryRender'
   ],
   args: {
+    ...defaultConfig.args,
     ariaLabel: 'TableView with static expandable rows',
     columns: COLUMNS,
     height: 300,

@@ -58,7 +58,6 @@ const linkItems: ListItemRecord[] = [
 const meta: Meta<typeof ListView> = {
   title: 'ListView/Selection',
   component: ListView,
-  excludeStories: ['linkItems', 'renderNavigationStory', 'renderSelectionStory'],
   args: {
     density: 'regular',
     disabledBehavior: 'selection',

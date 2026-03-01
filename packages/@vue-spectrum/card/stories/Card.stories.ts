@@ -152,9 +152,6 @@ const DEFAULT_CHILDREN = {
 const meta: Meta<typeof Card> = {
   title: 'Card/default',
   component: Card,
-  args: {
-    children: DEFAULT_CHILDREN
-  },
   argTypes: {
     children: {
       control: 'object',

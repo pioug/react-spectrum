@@ -81,7 +81,6 @@ function dateValueWithOffset(days = 0): CalendarDate {
 const meta: Meta<typeof RangeCalendar> = {
   title: 'Date and Time/RangeCalendar',
   component: RangeCalendar,
-  excludeStories: ['normalizeRange', 'toDateString'],
   args: {
     onChange: action('onChange')
   },

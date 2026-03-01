@@ -39,7 +39,6 @@ const meta = {
   title: 'TextField',
   component: TextField,
   providerSwitcher: {status: 'positive'},
-  excludeStories: ['renderTextField', 'localeStrings', 'zalgoString'],
   args: {
     label: 'Street address',
     isQuiet: false,

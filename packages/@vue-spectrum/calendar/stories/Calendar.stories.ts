@@ -117,7 +117,6 @@ function dateValueWithOffset(days = 0): CalendarDate {
 const meta: Meta<typeof Calendar> = {
   title: 'Date and Time/Calendar',
   component: Calendar,
-  excludeStories: ['toDateString'],
   args: {
     onChange: action('onChange')
   },

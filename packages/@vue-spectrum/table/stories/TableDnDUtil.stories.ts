@@ -1,5 +1,6 @@
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 import {Table} from '../src';
+import defaultConfig from './Table.stories';
 
 type StoryArgs = Record<string, unknown>;
 type TableColumn = {
@@ -37,32 +38,17 @@ const SECOND_ROWS: TableRow[] = [
 ];
 
 const meta: Meta<typeof Table> = {
+  ...defaultConfig,
   title: 'TableView/Drag and Drop/Util Handlers',
   component: Table,
   args: {
+    ...defaultConfig.args,
     ariaLabel: 'Drag and drop util table',
     columns: COLUMNS,
-    density: 'regular',
-    height: 500,
-    overflowMode: 'truncate',
     rowKey: 'id',
     rows: BASE_ROWS,
-    selectionMode: 'multiple',
-    width: 700
-  },
-  argTypes: {
-    density: {
-      control: 'select',
-      options: ['compact', 'regular', 'spacious']
-    },
-    overflowMode: {
-      control: 'radio',
-      options: ['truncate', 'wrap']
-    },
-    selectionMode: {
-      control: 'radio',
-      options: ['none', 'single', 'multiple']
-    }
+    width: 700,
+    height: 500
   }
 };
 

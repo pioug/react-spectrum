@@ -49,13 +49,6 @@ const oddOptions: StepListItemData[] = options.map((item) => ({
 const meta: Meta<typeof StepList> = {
   title: 'StepList',
   component: StepList,
-  excludeStories: [
-    'options',
-    'oddOptions',
-    'renderDefault',
-    'renderWithButtons',
-    'renderControlled'
-  ],
   args: {
     onSelectionChange: action('onSelectionChange'),
     onLastCompletedStepChange: action('onLastCompletedStepChange')

@@ -48,7 +48,6 @@ const meta = {
   title: 'TextArea',
   providerSwitcher: {status: 'positive'},
   component: TextArea,
-  excludeStories: ['renderTextArea', 'renderInFlexLayouts', 'renderValidationExample', 'localeStrings', 'zalgoString'],
   args: {
     label: 'Comments',
     isQuiet: false,

@@ -6,37 +6,7 @@ type StoryArgs = Record<string, unknown>;
 
 const meta: Meta<typeof DateRangePicker> = {
   title: 'Date and Time/DateRangePicker/styling',
-  component: DateRangePicker,
-  args: {
-    label: 'Date range'
-  },
-  argTypes: {
-    autoFocus: {control: 'boolean'},
-    description: {control: 'text'},
-    disabled: {control: 'boolean'},
-    id: {control: 'text'},
-    invalid: {control: 'boolean'},
-    isDisabled: {control: 'boolean'},
-    isInvalid: {control: 'boolean'},
-    isQuiet: {control: 'boolean'},
-    isReadOnly: {control: 'boolean'},
-    isRequired: {control: 'boolean'},
-    label: {control: 'text'},
-    max: {control: 'text'},
-    min: {control: 'text'},
-    modelValue: {
-      table: {
-        disable: true
-      }
-    },
-    placeholder: {control: 'text'},
-    readOnly: {control: 'boolean'},
-    required: {control: 'boolean'},
-    validationState: {
-      control: 'select',
-      options: ['invalid', 'valid']
-    }
-  }
+  component: DateRangePicker
 };
 
 export default meta;
