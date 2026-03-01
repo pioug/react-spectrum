@@ -3,6 +3,20 @@
   flex-direction: column;
   position: relative;
 
+  .vs-table__table {
+    transform: translateX(0.5px);
+    transform-origin: left top;
+  }
+
+  .vs-table__head-cell--selection,
+  .vs-table__cell--selection {
+    padding-left: 15.5px;
+  }
+
+  .vs-table .spectrum-Checkbox-input {
+    width: 22px;
+  }
+
   & > :not(.react-spectrum-ActionBar) {
     flex: 1;
     min-height: 0;
