@@ -33,9 +33,11 @@
 
 .vs-table__head-cell--selection,
 .vs-table__cell--selection {
-  inline-size: var(--spectrum-global-dimension-size-300);
-  min-inline-size: var(--spectrum-global-dimension-size-300);
-  padding-inline: var(--spectrum-global-dimension-size-75);
+  box-sizing: border-box;
+  inline-size: 38px;
+  min-inline-size: 38px;
+  max-inline-size: 38px;
+  padding-inline: 0;
   text-align: center;
 }
 

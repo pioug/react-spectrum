@@ -22,9 +22,9 @@ type TableRow = {
 };
 
 const columns = [
-  {label: 'Foo', key: 'foo'},
-  {label: 'Bar', key: 'bar'},
-  {label: 'Baz', key: 'baz'}
+  {label: 'Foo', key: 'foo', width: 75},
+  {label: 'Bar', key: 'bar', width: 75},
+  {label: 'Baz', key: 'baz', width: 75}
 ];
 
 const defaultRows: TableRow[] = Array.from({length: 16}, (_unused, index) => {
@@ -110,7 +110,7 @@ const ActionBarExample = defineComponent({
     },
     tableWidth: {
       type: String,
-      default: undefined
+      default: '265px'
     }
   },
   setup(props) {
