@@ -1,32 +1,54 @@
-import {Button} from '@vue-spectrum/button';
+import {ActionButton, Button} from '@vue-spectrum/button';
+import {ButtonGroup} from '@vue-spectrum/buttongroup';
 import {Checkbox} from '@vue-spectrum/checkbox';
-import {Dialog} from '../src';
+import {DialogTrigger} from '../src';
+import {Divider} from '@vue-spectrum/divider';
+import {Form} from '@vue-spectrum/form';
+import {Picker} from '@vue-spectrum/picker';
+import {Radio, RadioGroup} from '@vue-spectrum/radio';
 import {TextField} from '@vue-spectrum/textfield';
 import {action} from 'storybook/actions';
 import {ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type StoryArgs = Record<string, unknown>;
-type DialogRenderOptions = {
-  buttons?: 'none' | 'three' | 'three-footer' | 'three-vertical' | 'two',
-  content?: 'default' | 'form' | 'horizontal' | 'iframe' | 'long',
-  footer?: boolean,
-  hero?: boolean,
+
+type RenderProps = {
   isDismissable?: boolean,
   size?: 'L' | 'M' | 'S',
   type?: 'fullscreenTakeover' | 'modal',
-  withContentDivider?: boolean
-};
+  width?: string
+} & StoryArgs;
 
-const LONG_PARAGRAPHS = [
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-  'Eleifend quam adipiscing vitae proin sagittis nisl. Diam donec adipiscing tristique risus. In fermentum posuere urna nec tincidunt.',
-  'Risus ultricies tristique nulla aliquet enim tortor at. Ac placerat vestibulum lectus mauris. Sed viverra tellus in hac habitasse.',
-  'Ut porttitor leo a diam sollicitudin tempor id eu nisl. Tristique senectus et netus et malesuada fames ac turpis egestas.'
+const FIVE_PARAGRAPHS = [
+  'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Mi proin sed libero enim. Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Sed enim ut sem viverra aliquet eget sit amet tellus. Diam quis enim lobortis scelerisque fermentum dui faucibus in ornare. Diam quam nulla porttitor massa id. Eleifend mi in nulla posuere sollicitudin. Turpis nunc eget lorem dolor sed viverra ipsum nunc. Faucibus in ornare quam viverra. Risus commodo viverra maecenas accumsan lacus vel facilisis volutpat est. Nam libero justo laoreet sit amet cursus sit. Netus et malesuada fames ac. Dictum fusce ut placerat orci nulla pellentesque dignissim enim sit. Eros donec ac odio tempor orci. Ut etiam sit amet nisl purus in mollis nunc. Nisl rhoncus mattis rhoncus urna neque viverra. Convallis aenean et tortor at risus. Diam phasellus vestibulum lorem sed risus ultricies.',
+  'Eleifend quam adipiscing vitae proin sagittis nisl. Diam donec adipiscing tristique risus. In fermentum posuere urna nec tincidunt praesent semper. Suspendisse in est ante in. Egestas diam in arcu cursus euismod quis viverra nibh cras. Aliquam sem fringilla ut morbi tincidunt augue interdum. Lacus sed turpis tincidunt id aliquet risus feugiat. Praesent semper feugiat nibh sed pulvinar proin. In massa tempor nec feugiat nisl pretium fusce id velit. Non nisi est sit amet facilisis. Mi in nulla posuere sollicitudin aliquam ultrices. Morbi leo urna molestie at elementum. Laoreet non curabitur gravida arcu ac tortor dignissim convallis. Risus quis varius quam quisque id. Platea dictumst quisque sagittis purus. Etiam non quam lacus suspendisse faucibus interdum posuere. Semper feugiat nibh sed pulvinar proin gravida hendrerit lectus.',
+  'Risus ultricies tristique nulla aliquet enim tortor at. Ac placerat vestibulum lectus mauris. Sed viverra tellus in hac habitasse platea dictumst vestibulum rhoncus. Suspendisse ultrices gravida dictum fusce ut placerat orci nulla pellentesque. Sit amet nulla facilisi morbi tempus iaculis urna. Ut etiam sit amet nisl purus in. Risus at ultrices mi tempus imperdiet. Magna fermentum iaculis eu non diam phasellus. Orci sagittis eu volutpat odio. Volutpat blandit aliquam etiam erat velit scelerisque in dictum non. Amet nulla facilisi morbi tempus iaculis urna id. Iaculis eu non diam phasellus. Eu lobortis elementum nibh tellus molestie nunc. At tempor commodo ullamcorper a lacus vestibulum sed. Mi sit amet mauris commodo quis. Tellus elementum sagittis vitae et leo duis. Vel risus commodo viverra maecenas accumsan lacus.',
+  'Ut porttitor leo a diam sollicitudin tempor id eu nisl. Tristique senectus et netus et malesuada fames ac turpis egestas. Tellus in hac habitasse platea dictumst vestibulum rhoncus est. Integer feugiat scelerisque varius morbi enim nunc faucibus a. Tempus quam pellentesque nec nam aliquam sem et. Quam viverra orci sagittis eu volutpat odio facilisis mauris. Nunc lobortis mattis aliquam faucibus purus in massa tempor. Tincidunt dui ut ornare lectus sit amet est. Magna fermentum iaculis eu non. Posuere sollicitudin aliquam ultrices sagittis orci a scelerisque. Vitae aliquet nec ullamcorper sit amet risus nullam eget felis. Vitae proin sagittis nisl rhoncus mattis rhoncus. Nunc vel risus commodo viverra maecenas. Diam in arcu cursus euismod. Dolor morbi non arcu risus quis varius quam. Amet nisl suscipit adipiscing bibendum. Nulla pellentesque dignissim enim sit amet venenatis. Nunc congue nisi vitae suscipit tellus mauris a diam maecenas. In hac habitasse platea dictumst vestibulum rhoncus est pellentesque elit.',
+  'Cras semper auctor neque vitae tempus quam pellentesque nec. Maecenas ultricies mi eget mauris pharetra et ultrices neque ornare. Vulputate enim nulla aliquet porttitor lacus luctus accumsan tortor posuere. Pellentesque habitant morbi tristique senectus et. Ipsum dolor sit amet consectetur adipiscing elit pellentesque. Sem et tortor consequat id porta nibh venenatis. Viverra nibh cras pulvinar mattis nunc sed blandit. Urna porttitor rhoncus dolor purus. Vivamus arcu felis bibendum ut. Cras sed felis eget velit aliquet. Sed tempus urna et pharetra pharetra. Viverra adipiscing at in tellus integer feugiat scelerisque varius morbi. Ac tortor vitae purus faucibus ornare suspendisse sed nisi lacus. Ultrices neque ornare aenean euismod elementum nisi quis eleifend quam. Vel turpis nunc eget lorem. Quisque egestas diam in arcu cursus euismod quis viverra. At tempor commodo ullamcorper a lacus vestibulum sed. Id aliquet lectus proin nibh nisl condimentum id venenatis. Quis viverra nibh cras pulvinar. Purus in mollis nunc sed.'
 ];
 
-const meta: Meta<typeof Dialog> = {
+const PICKER_ITEMS = [
+  {id: 'Aardvark', label: 'Aardvark'},
+  {id: 'Kangaroo', label: 'Kangaroo'},
+  {id: 'Snake', label: 'Snake'}
+];
+
+const JOB_ITEMS = [
+  {value: 'battery', label: 'Battery'},
+  {value: 'storage', label: 'Information Storage'},
+  {value: 'processor', label: 'Processor'},
+  {value: 'zoo', label: 'Zoo stock'},
+  {value: 'translator', label: 'Emotional Translator'},
+  {value: 'hunter', label: 'Bounty Hunter'},
+  {value: 'actor', label: 'Actor'},
+  {value: 'tester', label: 'Waterslide Tester'},
+  {value: 'psychiatrist', label: 'Psychiatrist'}
+];
+
+const meta: Meta<typeof DialogTrigger> = {
   title: 'Dialog',
+  component: DialogTrigger,
   providerSwitcher: {status: 'notice'},
   excludeStories: ['singleParagraph']
 };
@@ -36,51 +58,44 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export function singleParagraph() {
-  return 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus. In sit amet suscipit lorem.';
+  return 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus. In sit amet suscipit lorem. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In condimentum imperdiet metus non condimentum. Duis eu velit et quam accumsan tempus at id velit. Duis elementum elementum purus, id tempus mauris posuere a. Nunc vestibulum sapien pellentesque lectus commodo ornare.';
 }
 
-function renderDialog(args: StoryArgs = {}, options: DialogRenderOptions = {}) {
-  let mergedArgs: StoryArgs = {
-    isDismissable: false,
-    ...args
-  };
-
-  if (options.isDismissable !== undefined) {
-    mergedArgs.isDismissable = options.isDismissable;
+function renderBaseDialog(props: RenderProps = {}, options: {
+  footer?: boolean,
+  hero?: boolean,
+  verticalButtons?: boolean,
+  withThreeButtons?: boolean
+} = {}) {
+  let {width = 'auto', isDismissable, ...otherProps} = props;
+  let dialogArgs: StoryArgs = {...otherProps};
+  if (isDismissable !== undefined) {
+    dialogArgs.isDismissable = isDismissable;
   }
-  if (options.size) {
-    mergedArgs.size = options.size;
-  }
-  if (options.type) {
-    mergedArgs.type = options.type;
-  }
-
-  let buttons = options.buttons ?? ((mergedArgs.isDismissable as boolean) ? 'none' : 'two');
-  let contentType = options.content ?? 'default';
-  let wrapperStyle = contentType === 'horizontal'
-    ? 'display: flex; width: 420px; margin: 100px 0; overflow-x: auto;'
-    : 'display: flex; width: auto; margin: 100px 0;';
 
   return {
-    components: {Button, Checkbox, Dialog, TextField},
+    components: {ActionButton, Button, ButtonGroup, Checkbox, DialogTrigger},
     setup() {
       return {
-        dialogArgs: mergedArgs,
-        longParagraphs: LONG_PARAGRAPHS,
+        dialogArgs,
         onButtonPress: action('buttonPress'),
         onDialogClose: action('dialogClose'),
+        options,
         singleParagraphText: singleParagraph(),
-        options: {
-          ...options,
-          buttons,
-          contentType,
-          wrapperStyle
-        }
+        width
       };
     },
     template: `
-      <div :style="options.wrapperStyle">
-        <Dialog v-bind="dialogArgs" @close="onDialogClose()">
+      <div :style="{display: 'flex', width, margin: '100px 0'}">
+        <DialogTrigger v-bind="dialogArgs" default-open @close="onDialogClose()">
+          <template #trigger="{open}">
+            <ActionButton @click="open">Trigger</ActionButton>
+          </template>
+
+          <template v-if="options.hero" #hero>
+            <img src="https://i.imgur.com/Z7AzH2c.png" alt="" style="width: 100%; object-fit: cover;" />
+          </template>
+
           <template #heading>
             <h2>The Heading</h2>
           </template>
@@ -91,156 +106,403 @@ function renderDialog(args: StoryArgs = {}, options: DialogRenderOptions = {}) {
             <hr />
           </template>
 
-          <img
-            v-if="options.hero"
-            src="https://i.imgur.com/Z7AzH2c.png"
-            alt=""
-            style="width: 100%; object-fit: cover; border-radius: 6px;" />
-
-          <div v-if="options.contentType === 'iframe'">
-            <iframe width="100%" title="wikipedia" src="https://wikipedia.org/wiki/Main_Page" />
-          </div>
-
-          <div v-else-if="options.contentType === 'form'" style="display: grid; gap: 12px;">
-            <TextField label="Last Words" />
-            <Checkbox>Acknowledge robot overlords</Checkbox>
-            <TextField label="Additional context" />
-            <div>Preferred Job: Battery / Information Storage / Processor</div>
-          </div>
-
-          <div v-else-if="options.contentType === 'long'" style="display: grid; gap: 12px;">
-            <TextField label="Top textfield" />
-            <p v-for="paragraph in longParagraphs" :key="paragraph">{{paragraph}}</p>
-            <TextField label="Bottom textfield" />
-          </div>
-
-          <div v-else-if="options.contentType === 'horizontal'" style="width: 1200px; white-space: nowrap;">
-            Horizontal scrolling dialog content preview with intentionally long line to force overflow.
-          </div>
-
-          <div v-else>
-            {{singleParagraphText}}
-            <hr v-if="options.withContentDivider" />
-            <div v-if="options.withContentDivider">Additional cleared content area.</div>
-          </div>
+          <div>{{singleParagraphText}}</div>
 
           <template v-if="options.footer" #footer>
             <Checkbox>I accept</Checkbox>
           </template>
 
-          <template v-if="options.buttons !== 'none'" #buttonGroup>
-            <div :style="options.buttons === 'three-vertical' ? 'display: grid; gap: 8px;' : 'display: flex; gap: 8px; flex-wrap: wrap;'">
-              <Button v-if="options.buttons === 'two'" variant="secondary" @press="onButtonPress('Cancel')">Cancel</Button>
-              <Button v-if="options.buttons === 'two'" variant="primary" @press="onButtonPress('Confirm')">Confirm</Button>
-              <Button v-if="options.buttons !== 'two'" variant="secondary" @press="onButtonPress('Secondary')">Secondary</Button>
-              <Button v-if="options.buttons !== 'two'" variant="primary" @press="onButtonPress('Primary')">Primary</Button>
-              <Button v-if="options.buttons !== 'two'" variant="primary" @press="onButtonPress('CTA')">CTA</Button>
-            </div>
+          <template v-if="!Boolean(dialogArgs.isDismissable)" #buttonGroup>
+            <ButtonGroup :orientation="options.verticalButtons ? 'vertical' : 'horizontal'">
+              <Button v-if="!options.withThreeButtons" variant="secondary" @click="onButtonPress('Cancel')">Cancel</Button>
+              <Button v-if="!options.withThreeButtons" variant="cta" @click="onButtonPress('Confirm')">Confirm</Button>
+
+              <Button v-if="options.withThreeButtons" variant="secondary" @click="onButtonPress('Secondary')">Secondary</Button>
+              <Button v-if="options.withThreeButtons" variant="primary" @click="onButtonPress('Primary')">Primary</Button>
+              <Button v-if="options.withThreeButtons" variant="cta" @click="onButtonPress('CTA')">CTA</Button>
+            </ButtonGroup>
           </template>
-        </Dialog>
+        </DialogTrigger>
       </div>
     `
   };
 }
 
-function renderThreeButtonsFooter(args: StoryArgs = {}) {
+function renderIframe(props: RenderProps = {}) {
+  let {width = 'auto', isDismissable, ...otherProps} = props;
+  let dialogArgs: StoryArgs = {...otherProps};
+  if (isDismissable !== undefined) {
+    dialogArgs.isDismissable = isDismissable;
+  }
+
   return {
-    components: {Button, Dialog},
+    components: {ActionButton, Button, ButtonGroup, DialogTrigger},
     setup() {
-      let selectedAction = ref('CTA');
       return {
-        dialogArgs: {isDismissable: false, ...args},
-        singleParagraphText: singleParagraph(),
-        selectedAction
+        dialogArgs,
+        onButtonPress: action('buttonPress'),
+        width
       };
     },
     template: `
-      <div style="display: flex; width: auto; margin: 100px 0;">
-        <Dialog v-bind="dialogArgs">
+      <div :style="{display: 'flex', width, margin: '100px 0'}">
+        <DialogTrigger v-bind="dialogArgs" default-open>
+          <template #trigger="{open}">
+            <ActionButton @click="open">Trigger</ActionButton>
+          </template>
           <template #heading><h2>The Heading</h2></template>
           <template #header><div>The Header</div></template>
           <template #divider><hr /></template>
-          <div>{{singleParagraphText}}</div>
-          <template #footer>
-            <div>Selected action: {{selectedAction}}</div>
+
+          <div>
+            <iframe width="100%" title="wikipedia" src="https://wikipedia.org/wiki/Main_Page" />
+          </div>
+
+          <template v-if="!Boolean(dialogArgs.isDismissable)" #buttonGroup>
+            <ButtonGroup>
+              <Button variant="secondary" @click="onButtonPress('Cancel')">Cancel</Button>
+              <Button variant="cta" @click="onButtonPress('Confirm')">Confirm</Button>
+            </ButtonGroup>
           </template>
+        </DialogTrigger>
+      </div>
+    `
+  };
+}
+
+function renderWithForm(props: RenderProps = {}) {
+  let {width = 'auto', ...dialogArgs} = props;
+
+  return {
+    components: {
+      ActionButton,
+      Button,
+      ButtonGroup,
+      Checkbox,
+      DialogTrigger,
+      Form,
+      Picker,
+      Radio,
+      RadioGroup,
+      TextField
+    },
+    setup() {
+      return {
+        dialogArgs,
+        onButtonPress: action('buttonPress'),
+        pickerItems: PICKER_ITEMS,
+        jobs: JOB_ITEMS,
+        width
+      };
+    },
+    template: `
+      <div :style="{display: 'flex', width, margin: '100px 0'}">
+        <DialogTrigger v-bind="dialogArgs" default-open>
+          <template #trigger="{open}">
+            <ActionButton @click="open">Trigger</ActionButton>
+          </template>
+          <template #heading><h2>The Heading</h2></template>
+          <template #header><div>The Header</div></template>
+          <template #divider><hr /></template>
+
+          <Form>
+            <TextField label="Last Words" auto-focus />
+            <Checkbox>Acknowledge robot overlords</Checkbox>
+            <Picker aria-label="Animals" :items="pickerItems" is-disabled />
+            <Button variant="primary" UNSAFE_style="display: none;">Hidden</Button>
+            <Button variant="primary" UNSAFE_style="visibility: hidden; position: absolute;">Hidden</Button>
+            <RadioGroup label="Preferred Job" name="jobs">
+              <Radio v-for="job in jobs" :key="job.value" :value="job.value">{{job.label}}</Radio>
+            </RadioGroup>
+          </Form>
+
           <template #buttonGroup>
-            <div style="display: flex; gap: 8px;">
-              <Button variant="secondary" @press="selectedAction = 'Secondary'">Secondary</Button>
-              <Button variant="primary" @press="selectedAction = 'Primary'">Primary</Button>
-              <Button variant="primary" @press="selectedAction = 'CTA'">CTA</Button>
-            </div>
+            <ButtonGroup>
+              <Button variant="secondary" @click="onButtonPress('Cancel')">Cancel</Button>
+              <Button variant="cta" @click="onButtonPress('Confirm')">Confirm</Button>
+            </ButtonGroup>
           </template>
-        </Dialog>
+        </DialogTrigger>
+      </div>
+    `
+  };
+}
+
+function renderThreeButtonsFooter(props: RenderProps = {}) {
+  let {width = 'auto', ...dialogArgs} = props;
+
+  return {
+    components: {ActionButton, Button, ButtonGroup, Checkbox, DialogTrigger},
+    setup() {
+      let labels = [
+        {
+          heading: 'The Heading',
+          checkboxLabel: 'I have read and accept',
+          secondaryButtonLabel: 'Secondary',
+          primaryButtonLabel: 'Primary'
+        },
+        {
+          heading: 'Terms of Service',
+          checkboxLabel: 'I have read and accept the terms of use and privacy policy',
+          secondaryButtonLabel: 'Secondary and best button',
+          primaryButtonLabel: 'Primary and worst'
+        }
+      ];
+      let whichLabels = ref(0);
+
+      return {
+        dialogArgs,
+        labels,
+        onButtonPress: action('buttonPress'),
+        singleParagraphText: singleParagraph(),
+        toggleLabels: () => {
+          whichLabels.value = whichLabels.value ? 0 : 1;
+        },
+        whichLabels,
+        width
+      };
+    },
+    template: `
+      <div :style="{display: 'flex', width, margin: '100px 0'}">
+        <Button variant="primary" @click="toggleLabels">Toggle labels</Button>
+        <DialogTrigger v-bind="dialogArgs" default-open>
+          <template #trigger="{open}">
+            <ActionButton @click="open">Trigger</ActionButton>
+          </template>
+          <template #heading><h2>{{labels[whichLabels].heading}}</h2></template>
+          <template #header><div>The Header</div></template>
+          <template #divider><hr /></template>
+
+          <div>{{singleParagraphText}}</div>
+
+          <template #footer>
+            <Checkbox>{{labels[whichLabels].checkboxLabel}}</Checkbox>
+          </template>
+
+          <template #buttonGroup>
+            <ButtonGroup>
+              <Button variant="secondary" @click="onButtonPress('Secondary')">{{labels[whichLabels].secondaryButtonLabel}}</Button>
+              <Button variant="primary" @click="onButtonPress('Primary')">{{labels[whichLabels].primaryButtonLabel}}</Button>
+              <Button variant="cta" @click="onButtonPress('CTA')">CTA</Button>
+            </ButtonGroup>
+          </template>
+        </DialogTrigger>
+      </div>
+    `
+  };
+}
+
+function renderWithDividerInContent(props: RenderProps = {}) {
+  let {width = 'auto', ...dialogArgs} = props;
+
+  return {
+    components: {ActionButton, Button, ButtonGroup, DialogTrigger, Divider},
+    setup() {
+      return {
+        dialogArgs,
+        onButtonPress: action('buttonPress'),
+        width
+      };
+    },
+    template: `
+      <div :style="{display: 'flex', width, margin: '100px 0'}">
+        <DialogTrigger v-bind="dialogArgs" default-open>
+          <template #trigger="{open}">
+            <ActionButton @click="open">Trigger</ActionButton>
+          </template>
+          <template #heading><h2>The Heading</h2></template>
+          <template #header><div>The Header</div></template>
+          <template #divider><hr /></template>
+
+          <div style="padding: 10px; display: flex; align-items: stretch;">
+            <div style="flex-grow: 1; flex-basis: 0;">
+              Column number one. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </div>
+            <Divider orientation="vertical" size="S" UNSAFE_style="margin-inline: 10px;" />
+            <div style="flex-grow: 1; flex-basis: 0;">
+              Column number two. Eleifend quam adipiscing vitae proin sagittis nisl. Diam donec adipiscing tristique risus.
+            </div>
+          </div>
+
+          <template #buttonGroup>
+            <ButtonGroup>
+              <Button variant="primary" @click="onButtonPress('Primary')">Primary</Button>
+              <Button variant="cta" @click="onButtonPress('CTA')">CTA</Button>
+            </ButtonGroup>
+          </template>
+        </DialogTrigger>
+      </div>
+    `
+  };
+}
+
+function renderLongContent(props: RenderProps = {}) {
+  let {width = 'auto', ...dialogArgs} = props;
+
+  return {
+    components: {ActionButton, Button, ButtonGroup, DialogTrigger, TextField},
+    setup() {
+      return {
+        dialogArgs,
+        fiveParagraphs: FIVE_PARAGRAPHS,
+        onButtonPress: action('buttonPress'),
+        width
+      };
+    },
+    template: `
+      <div :style="{display: 'flex', flexDirection: 'column', alignItems: 'start', width, padding: '0 20px'}">
+        <p>Test instructions on mobile:</p>
+        <ol>
+          <li>Scroll down and open dialog.</li>
+          <li>Tap on the top input. Dialog should resize when the keyboard comes up and remain at the top of the screen. The rest of the page should not scroll (the first time you do this it may scroll slightly due to the bottom toolbar showing).</li>
+          <li>Close the software keyboard.</li>
+          <li>Scroll down and tap on the bottom input. Dialog should resize as before, and focused input should scroll into view.</li>
+          <li>Tap the previous button in the software keyboard. Focus should move to the first input in the dialog. Dialog should not move and page should not scroll.</li>
+          <li>Tap the previous button again. Focus should stay on the first input in the dialog and not move out to the textfield outside the dialog. The page may jump slightly, and come back but there is nothing we can do about this.</li>
+        </ol>
+        <p>Note: all this only works outside the storybook iframe due to VisualViewport limitations.</p>
+
+        <TextField label="Outer textfield" />
+
+        <p v-for="(paragraph, index) in fiveParagraphs" :key="'before-' + index">{{paragraph}}</p>
+
+        <DialogTrigger v-bind="dialogArgs">
+          <template #trigger="{open}">
+            <ActionButton @click="open">Trigger</ActionButton>
+          </template>
+          <template #heading>
+            <h2>The Heading is also very long and demonstrates what happens if there is no Header</h2>
+          </template>
+          <template #divider><hr /></template>
+
+          <div>
+            <TextField label="Top textfield" />
+            <p v-for="(paragraph, index) in fiveParagraphs" :key="'inner-' + index">{{paragraph}}</p>
+            <TextField label="Bottom textfield" />
+          </div>
+
+          <template #buttonGroup>
+            <ButtonGroup>
+              <Button variant="secondary" @click="onButtonPress('Cancel')">Cancel</Button>
+              <Button auto-focus variant="cta" @click="onButtonPress('Confirm')">Confirm</Button>
+            </ButtonGroup>
+          </template>
+        </DialogTrigger>
+
+        <p v-for="(paragraph, index) in fiveParagraphs" :key="'after-' + index">{{paragraph}}</p>
+      </div>
+    `
+  };
+}
+
+function renderHorizontalScrolling(props: RenderProps = {}) {
+  let {width = 'auto', ...dialogArgs} = props;
+
+  return {
+    components: {ActionButton, Button, ButtonGroup, DialogTrigger, TextField},
+    setup() {
+      return {
+        dialogArgs,
+        fiveParagraphs: FIVE_PARAGRAPHS,
+        onButtonPress: action('buttonPress'),
+        width
+      };
+    },
+    template: `
+      <div :style="{display: 'flex', flexDirection: 'column', alignItems: 'start', width}">
+        <p v-for="(paragraph, index) in fiveParagraphs" :key="'before-' + index">{{paragraph}}</p>
+
+        <DialogTrigger v-bind="dialogArgs" default-open>
+          <template #trigger="{open}">
+            <ActionButton @click="open">Trigger</ActionButton>
+          </template>
+          <template #heading><h2>The Heading</h2></template>
+          <template #header><div>The Header</div></template>
+          <template #divider><hr /></template>
+
+          <div style="overflow: auto; touch-action: pan-x;">
+            <TextField label="Top textfield" UNSAFE_style="min-width: 100vw;" />
+            <p>scroll this content horizontally</p>
+          </div>
+
+          <template #buttonGroup>
+            <ButtonGroup>
+              <Button variant="secondary" @click="onButtonPress('Cancel')">Cancel</Button>
+              <Button auto-focus variant="cta" @click="onButtonPress('Confirm')">Confirm</Button>
+            </ButtonGroup>
+          </template>
+        </DialogTrigger>
+
+        <p v-for="(paragraph, index) in fiveParagraphs" :key="'after-' + index">{{paragraph}}</p>
       </div>
     `
   };
 }
 
 export const Default: Story = {
-  render: (args) => renderDialog(args)
+  render: () => renderBaseDialog({})
 };
 
 export const IsDismissable: Story = {
-  render: (args) => renderDialog(args, {isDismissable: true, buttons: 'none'})
+  render: () => renderBaseDialog({isDismissable: true})
 };
 
 export const LongContent: Story = {
-  render: (args) => renderDialog(args, {content: 'long'})
+  render: () => renderLongContent({})
 };
 
 export const WithHero: Story = {
-  render: (args) => renderDialog(args, {hero: true})
+  render: () => renderBaseDialog({}, {hero: true})
 };
 
 export const WithHeroIsDimissable: Story = {
-  render: (args) => renderDialog(args, {hero: true, isDismissable: true, buttons: 'none'})
+  render: () => renderBaseDialog({isDismissable: true}, {hero: true})
 };
 
 export const WithFooter: Story = {
-  render: (args) => renderDialog(args, {footer: true})
+  render: () => renderBaseDialog({}, {footer: true})
 };
 
 export const Small: Story = {
-  render: (args) => renderDialog(args, {size: 'S'})
+  render: () => renderBaseDialog({size: 'S'})
 };
 
 export const Medium: Story = {
-  render: (args) => renderDialog(args, {size: 'M'})
+  render: () => renderBaseDialog({size: 'M'})
 };
 
 export const Large: Story = {
-  render: (args) => renderDialog(args, {size: 'L'})
+  render: () => renderBaseDialog({size: 'L'})
 };
 
 export const _Form: Story = {
-  render: (args) => renderDialog(args, {content: 'form'})
+  render: () => renderWithForm({})
 };
 
 export const FullscreenTakeoverForm: Story = {
-  render: (args) => renderDialog(args, {content: 'form', type: 'fullscreenTakeover'})
+  render: () => renderWithForm({type: 'fullscreenTakeover'})
 };
 
 export const ThreeButtons: Story = {
-  render: (args) => renderDialog(args, {buttons: 'three'})
+  render: () => renderBaseDialog({}, {withThreeButtons: true})
 };
 
 export const ThreeButtonsVerticalOrientation: Story = {
-  render: (args) => renderDialog(args, {buttons: 'three-vertical'})
+  render: () => renderBaseDialog({}, {verticalButtons: true, withThreeButtons: true})
 };
 
 export const ThreeButtonsFooter: Story = {
-  render: (args) => renderThreeButtonsFooter(args)
+  render: () => renderThreeButtonsFooter({})
 };
 
 export const ClearedContent: Story = {
-  render: (args) => renderDialog(args, {withContentDivider: true})
+  render: () => renderWithDividerInContent({})
 };
 
 export const WithIframe: Story = {
-  render: (args) => renderDialog(args, {content: 'iframe'})
+  render: () => renderIframe({})
 };
 
 export const HorizontalScrolling: Story = {
-  render: (args) => renderDialog(args, {content: 'horizontal'})
+  render: () => renderHorizontalScrolling({})
 };

@@ -7,7 +7,7 @@ import {ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type StoryArgs = Record<string, unknown>;
-const DIALOG_BODY_TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus. In sit amet suscipit lorem. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.';
+const DIALOG_BODY_TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus. In sit amet suscipit lorem. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In condimentum imperdiet metus non condimentum. Duis eu velit et quam accumsan tempus at id velit. Duis elementum elementum purus, id tempus mauris posuere a. Nunc vestibulum sapien pellentesque lectus commodo ornare.';
 
 const meta: Meta<typeof DialogTrigger> = {
   title: 'DialogTrigger',
@@ -82,7 +82,7 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-function renderDialog(args: StoryArgs, content = 'Dialog content') {
+function renderDialog(args: StoryArgs, content = DIALOG_BODY_TEXT) {
   return {
     components: {ActionButton, Button, DialogTrigger},
     setup() {
@@ -129,7 +129,7 @@ function renderDialog(args: StoryArgs, content = 'Dialog content') {
 }
 
 export const Default: Story = {
-  render: (args) => renderDialog(args, 'Dialog content')
+  render: (args) => renderDialog(args, DIALOG_BODY_TEXT)
 };
 
 export const TypePopover: Story = {
@@ -177,7 +177,7 @@ export const TypeTray: Story = {
 };
 
 export const MobileTypeFullscreen: Story = {
-  render: (args) => renderDialog(args, 'Dialog content'),
+  render: (args) => renderDialog(args, DIALOG_BODY_TEXT),
   args: {
     mobileType: 'fullscreen',
     type: 'modal'
@@ -185,7 +185,7 @@ export const MobileTypeFullscreen: Story = {
 };
 
 export const MobileTypeFullscreenTakeover: Story = {
-  render: (args) => renderDialog(args, 'Dialog content'),
+  render: (args) => renderDialog(args, DIALOG_BODY_TEXT),
   args: {
     mobileType: 'fullscreenTakeover',
     type: 'modal'
@@ -193,7 +193,7 @@ export const MobileTypeFullscreenTakeover: Story = {
 };
 
 export const PopoverWithMobileTypeModal: Story = {
-  render: (args) => renderDialog(args, 'Dialog content'),
+  render: (args) => renderDialog(args, DIALOG_BODY_TEXT),
   args: {
     mobileType: 'modal',
     type: 'popover'
@@ -201,7 +201,7 @@ export const PopoverWithMobileTypeModal: Story = {
 };
 
 export const PopoverWithMobileTypeTray: Story = {
-  render: (args) => renderDialog(args, 'Dialog content'),
+  render: (args) => renderDialog(args, DIALOG_BODY_TEXT),
   args: {
     mobileType: 'tray',
     type: 'popover'
@@ -215,13 +215,20 @@ export const NestedModals: Story = {
     },
     components: {ActionButton, DialogTrigger},
     template: `
-      <div style="display: grid; gap: 12px; padding-top: 40px;">
+      <div style="display: grid; gap: 12px; padding-top: 100px;">
         <input aria-label="test input" />
         <DialogTrigger type="modal" is-dismissable title="Outer dialog">
-          <p>Outer dialog content</p>
-          <ActionButton variant="secondary">Trigger nested dialog</ActionButton>
+          <template #trigger="{open}">
+            <ActionButton @click="open">Trigger</ActionButton>
+          </template>
+          <input />
+          <input />
           <DialogTrigger type="modal" is-dismissable title="Nested dialog">
-            <p>Nested dialog content</p>
+            <template #trigger="{open}">
+              <ActionButton @click="open">Trigger</ActionButton>
+            </template>
+            <input />
+            <input />
           </DialogTrigger>
         </DialogTrigger>
       </div>
@@ -237,11 +244,22 @@ export const NestedModalsFullscreentakeover: Story = {
     components: {ActionButton, DialogTrigger},
     template: `
       <DialogTrigger type="fullscreenTakeover" title="The Heading">
-        <p>Fullscreen takeover content</p>
-        <ActionButton variant="secondary">Trigger nested dialog</ActionButton>
+        <template #trigger="{open}">
+          <ActionButton @click="open">Trigger</ActionButton>
+        </template>
+        <template #header><div>The Header</div></template>
+        <template #divider><hr /></template>
         <DialogTrigger type="modal" is-dismissable title="Nested dialog">
-          <p>Nested dialog in fullscreen takeover.</p>
+          <template #trigger="{open}">
+            <ActionButton variant="secondary" @click="open">Trigger</ActionButton>
+          </template>
+          <input />
+          <input />
         </DialogTrigger>
+        <template #buttonGroup>
+          <Button variant="secondary">Cancel</Button>
+          <Button variant="cta">Confirm</Button>
+        </template>
       </DialogTrigger>
     `
   })
@@ -283,11 +301,17 @@ export const NestedPopovers: Story = {
     },
     components: {ActionButton, DialogTrigger},
     template: `
-      <div style="padding-top: 40px;">
+      <div style="padding-top: 100px;">
         <DialogTrigger type="popover" title="Outer popover">
-          <p>Outer popover content</p>
-          <ActionButton variant="secondary">Trigger nested popover</ActionButton>
+          <template #trigger="{open}">
+            <ActionButton @click="open">Trigger</ActionButton>
+          </template>
+          <input />
+          <input />
           <DialogTrigger type="popover" title="Inner popover">
+            <template #trigger="{open}">
+              <ActionButton @click="open">Trigger</ActionButton>
+            </template>
             <p>Hi!</p>
           </DialogTrigger>
         </DialogTrigger>
@@ -301,18 +325,22 @@ export const PopoverInsideScrollView: Story = {
     setup() {
       return {};
     },
-    components: {DialogTrigger},
+    components: {ActionButton, DialogTrigger},
     template: `
-      <div style="height: 140px; display: flex; gap: 16px;">
-        <div style="padding-top: 80px; height: 140px; overflow: auto;">
-          <div style="height: 220px;">
+      <div style="height: 100px; display: flex;">
+        <div style="padding-top: 100px; height: 100px; overflow: auto;">
+          <div style="height: 200px;">
             <DialogTrigger type="popover" title="Popover in scroll container">
-              <p>Scrollable dialog content</p>
+              <template #trigger="{open}">
+                <ActionButton @click="open">Trigger</ActionButton>
+              </template>
+              <input />
+              <input />
             </DialogTrigger>
           </div>
         </div>
-        <div style="padding-top: 80px; height: 140px; overflow: auto; flex: 1;">
-          <div style="height: 220px;">other</div>
+        <div style="padding-top: 100px; height: 100px; overflow: auto; flex: 1;">
+          <div style="height: 200px;">other</div>
         </div>
       </div>
     `
@@ -328,14 +356,17 @@ export const PopoverInsideScrollView: Story = {
 
 export const ShouldFlipWithWidth: Story = {
   render: (args) => ({
-    components: {DialogTrigger},
+    components: {ActionButton, DialogTrigger},
     setup() {
       return {args};
     },
     template: `
-      <div style="display: flex; width: calc(100vh - 100px); margin: 40px 0;">
+      <div style="display: flex; width: calc(100vh - 100px); margin: 100px 0;">
         <DialogTrigger v-bind="args" type="popover" title="Popover width constrained">
-          <p>Dialog content constrained by viewport width.</p>
+          <template #trigger="{open}">
+            <ActionButton @click="open">Trigger</ActionButton>
+          </template>
+          <p>${DIALOG_BODY_TEXT}</p>
         </DialogTrigger>
       </div>
     `
@@ -369,14 +400,17 @@ export const CloseFunctionWithButtonPopover: Story = {
 
 export const TargetRef: Story = {
   render: (args) => ({
-    components: {DialogTrigger},
+    components: {ActionButton, DialogTrigger},
     setup() {
       return {args};
     },
     template: `
       <div style="display: flex; align-items: center; gap: 24px;">
         <DialogTrigger v-bind="args" type="popover" title="TargetRef">
-          <p>Popover target example.</p>
+          <template #trigger="{open}">
+            <ActionButton @click="open">Trigger</ActionButton>
+          </template>
+          <p>${DIALOG_BODY_TEXT}</p>
         </DialogTrigger>
         <span style="margin-inline-start: 200px;">Popover appears over here</span>
       </div>
@@ -435,20 +469,98 @@ export const CrossoffsetExamples: Story = {
     setup() {
       return {};
     },
-    components: {DialogTrigger},
+    components: {ActionButton, DialogTrigger},
     template: `
-      <div style="display: flex; gap: 16px;">
-        <div style="display: grid; gap: 8px;">
+      <div style="display: flex; gap: 16px; align-items: flex-start;">
+        <div style="display: grid; gap: 8px; align-items: flex-start;">
           <span>Left Top</span>
-          <DialogTrigger type="popover" title="crossOffset -50"><p>-50</p></DialogTrigger>
-          <DialogTrigger type="popover" title="crossOffset 0"><p>0</p></DialogTrigger>
-          <DialogTrigger type="popover" title="crossOffset 50"><p>50</p></DialogTrigger>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span>-50</span>
+            <DialogTrigger type="popover" placement="left top" :cross-offset="-50">
+              <template #trigger="{open}">
+                <ActionButton @click="open">Trigger</ActionButton>
+              </template>
+              <p>${DIALOG_BODY_TEXT}</p>
+            </DialogTrigger>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span>0</span>
+            <DialogTrigger type="popover" placement="left top">
+              <template #trigger="{open}">
+                <ActionButton @click="open">Trigger</ActionButton>
+              </template>
+              <p>${DIALOG_BODY_TEXT}</p>
+            </DialogTrigger>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span>50</span>
+            <DialogTrigger type="popover" placement="left top" :cross-offset="50">
+              <template #trigger="{open}">
+                <ActionButton @click="open">Trigger</ActionButton>
+              </template>
+              <p>${DIALOG_BODY_TEXT}</p>
+            </DialogTrigger>
+          </div>
         </div>
-        <div style="display: grid; gap: 8px;">
+        <div style="display: grid; gap: 8px; align-items: flex-start;">
           <span>Left</span>
-          <DialogTrigger type="popover" title="crossOffset -50"><p>-50</p></DialogTrigger>
-          <DialogTrigger type="popover" title="crossOffset 0"><p>0</p></DialogTrigger>
-          <DialogTrigger type="popover" title="crossOffset 50"><p>50</p></DialogTrigger>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span>-50</span>
+            <DialogTrigger type="popover" placement="left" :cross-offset="-50">
+              <template #trigger="{open}">
+                <ActionButton @click="open">Trigger</ActionButton>
+              </template>
+              <p>${DIALOG_BODY_TEXT}</p>
+            </DialogTrigger>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span>0</span>
+            <DialogTrigger type="popover" placement="left">
+              <template #trigger="{open}">
+                <ActionButton @click="open">Trigger</ActionButton>
+              </template>
+              <p>${DIALOG_BODY_TEXT}</p>
+            </DialogTrigger>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span>50</span>
+            <DialogTrigger type="popover" placement="left" :cross-offset="50">
+              <template #trigger="{open}">
+                <ActionButton @click="open">Trigger</ActionButton>
+              </template>
+              <p>${DIALOG_BODY_TEXT}</p>
+            </DialogTrigger>
+          </div>
+        </div>
+        <div style="display: grid; gap: 8px; align-items: flex-start;">
+          <span>Left Bottom</span>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span>-50</span>
+            <DialogTrigger type="popover" placement="left bottom" :cross-offset="-50">
+              <template #trigger="{open}">
+                <ActionButton @click="open">Trigger</ActionButton>
+              </template>
+              <p>${DIALOG_BODY_TEXT}</p>
+            </DialogTrigger>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span>0</span>
+            <DialogTrigger type="popover" placement="left bottom">
+              <template #trigger="{open}">
+                <ActionButton @click="open">Trigger</ActionButton>
+              </template>
+              <p>${DIALOG_BODY_TEXT}</p>
+            </DialogTrigger>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <span>50</span>
+            <DialogTrigger type="popover" placement="left bottom" :cross-offset="50">
+              <template #trigger="{open}">
+                <ActionButton @click="open">Trigger</ActionButton>
+              </template>
+              <p>${DIALOG_BODY_TEXT}</p>
+            </DialogTrigger>
+          </div>
         </div>
       </div>
     `
@@ -464,11 +576,13 @@ export const TriggerVisibleThroughUnderlay: Story = {
     template: `
       <div style="position: absolute; top: 100px; left: 100px; display: grid; gap: 8px;">
         <div>
-          action button should not get events through underlay.
+          action button shouldn't get any events if the underlay is up and you try to click it through the underlay
         </div>
-        <ActionButton variant="primary">Trigger</ActionButton>
         <DialogTrigger v-bind="args" is-dismissable title="Underlay visibility">
-          <p>Dialog content visible with an active underlay.</p>
+          <template #trigger="{open}">
+            <ActionButton variant="primary" @click="open">Trigger</ActionButton>
+          </template>
+          <p>${DIALOG_BODY_TEXT}</p>
         </DialogTrigger>
       </div>
     `
@@ -480,13 +594,19 @@ export const _2Popovers: Story = {
     setup() {
       return {};
     },
-    components: {DialogTrigger},
+    components: {ActionButton, DialogTrigger},
     template: `
       <div style="display: flex; gap: 16px;">
         <DialogTrigger type="popover" title="Popover one">
-          <p>Popover one content</p>
+          <template #trigger="{open}">
+            <ActionButton @click="open">Trigger</ActionButton>
+          </template>
+          <p>${DIALOG_BODY_TEXT}</p>
         </DialogTrigger>
         <DialogTrigger type="popover" title="Popover two">
+          <template #trigger="{open}">
+            <ActionButton @click="open">Trigger</ActionButton>
+          </template>
           <p>Hi!</p>
         </DialogTrigger>
       </div>
@@ -496,17 +616,21 @@ export const _2Popovers: Story = {
 
 export const _AdjustableDialog: Story = {
   render: () => ({
-    components: {DialogTrigger},
+    components: {ActionButton, Button, DialogTrigger},
     setup() {
+      let showHero = ref(false);
       let showHeader = ref(false);
       let showTypeIcon = ref(false);
       let isDismissable = ref(false);
       let showFooter = ref(false);
       let longTitle = ref(false);
+      let longButtonLabels = ref(false);
 
       return {
         isDismissable,
+        longButtonLabels,
         longTitle,
+        showHero,
         showFooter,
         showHeader,
         showTypeIcon
@@ -515,24 +639,37 @@ export const _AdjustableDialog: Story = {
     template: `
       <div style="display: flex; gap: 16px;">
         <div style="display: grid; gap: 8px; width: 220px;">
+          <label><input v-model="showHero" type="checkbox"> Show hero</label>
           <label><input v-model="longTitle" type="checkbox"> Toggle heading values</label>
           <label><input v-model="showHeader" type="checkbox"> Show header</label>
           <label><input v-model="showTypeIcon" type="checkbox"> Show type icon</label>
           <label><input v-model="isDismissable" type="checkbox"> Show dismissable</label>
           <label><input v-model="showFooter" type="checkbox"> Show footer</label>
+          <label><input v-model="longButtonLabels" type="checkbox"> Show long button labels</label>
         </div>
         <DialogTrigger
           :is-dismissable="isDismissable"
-          :title="longTitle ? 'The Heading of Maximum Truth That is Really Long to Go On and On' : 'The Heading'">
+          :title="longTitle ? 'The Heading of Maximum Truth That is Really Long to Go On and On a a a a a Again and Wraps' : 'The Heading'">
+          <template #trigger="{open}">
+            <ActionButton @click="open">Trigger</ActionButton>
+          </template>
+          <template v-if="showHero" #hero>
+            <img src="https://i.imgur.com/Z7AzH2c.png" alt="" style="width: 100%; object-fit: cover;" />
+          </template>
           <template v-if="showHeader" #header>
             <div>This is a long header</div>
           </template>
           <template v-if="showTypeIcon" #typeIcon>
             <span aria-label="Alert">!</span>
           </template>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <template #divider><hr /></template>
+          <p>${DIALOG_BODY_TEXT}</p>
           <template v-if="showFooter" #footer>
-            <label><input type="checkbox"> I have read and accept the terms.</label>
+            <label><input type="checkbox"> I have read and accept the terms of use and privacy policy</label>
+          </template>
+          <template #buttonGroup>
+            <Button variant="secondary">Cancel {{longButtonLabels ? 'and close this dialog' : ''}}</Button>
+            <Button variant="cta">Confirm {{longButtonLabels ? 'and close this dialog' : ''}}</Button>
           </template>
         </DialogTrigger>
       </div>
@@ -545,11 +682,15 @@ export const WithTooltip: Story = {
     setup() {
       return {};
     },
-    components: {Button, DialogTrigger, TooltipTrigger},
+    components: {ActionButton, Button, DialogTrigger, TooltipTrigger},
     template: `
-      <div style="display: flex; width: auto; margin: 40px 0;">
+      <div style="display: flex; width: auto; margin: 100px 0;">
         <DialogTrigger is-dismissable title="Has tooltip">
-          <p>Pressing escape when tooltip is open should close tooltip first.</p>
+          <template #trigger="{open}">
+            <ActionButton @click="open">Trigger</ActionButton>
+          </template>
+          <template #divider><hr /></template>
+          <p>Pressing escape when Tooltip is open closes Tooltip and not Dialog too.</p>
           <TooltipTrigger>
             <Button variant="cta">Has tooltip</Button>
             <template #tooltip>
@@ -571,6 +712,9 @@ export const WithTooltipTrigger: Story = {
     template: `
       <div style="display: flex; flex-wrap: wrap; gap: 10px;">
         <DialogTrigger title="DialogTrigger only">
+          <template #trigger="{open}">
+            <ActionButton @click="open">DialogTrigger only</ActionButton>
+          </template>
           <p>Dialog content</p>
           <Button variant="cta">Close</Button>
         </DialogTrigger>
@@ -580,13 +724,37 @@ export const WithTooltipTrigger: Story = {
           <template #tooltip>This is a tooltip</template>
         </TooltipTrigger>
 
+        <TooltipTrigger>
+          <ActionButton :is-disabled="true">TooltipTrigger only</ActionButton>
+          <template #tooltip>This is a tooltip</template>
+        </TooltipTrigger>
+
         <DialogTrigger title="DialogTrigger + TooltipTrigger">
-          <TooltipTrigger>
-            <ActionButton>DialogTrigger + TooltipTrigger</ActionButton>
-            <template #tooltip>This is a tooltip</template>
-          </TooltipTrigger>
+          <template #trigger="{open}">
+            <span @click="open">
+              <TooltipTrigger>
+                <ActionButton>DialogTrigger + TooltipTrigger</ActionButton>
+                <template #tooltip>This is a tooltip</template>
+              </TooltipTrigger>
+            </span>
+          </template>
           <p>Dialog content</p>
+          <Button variant="cta">Close</Button>
         </DialogTrigger>
+
+        <DialogTrigger title="DialogTrigger + TooltipTrigger">
+          <template #trigger="{open}">
+            <span @click="open">
+              <TooltipTrigger>
+                <ActionButton :is-disabled="true">DialogTrigger + TooltipTrigger</ActionButton>
+                <template #tooltip>This is a tooltip</template>
+              </TooltipTrigger>
+            </span>
+          </template>
+          <p>Dialog content</p>
+          <Button variant="cta">Close</Button>
+        </DialogTrigger>
+
       </div>
     `
   })
@@ -628,35 +796,115 @@ export const WithTranslations: Story = {
 
 export const TriggersOnEdges: Story = {
   render: () => ({
-    components: {DialogTrigger},
+    components: {ActionButton, DialogTrigger},
     setup() {
       return {
-        placements: [
-          'top',
-          'top start',
-          'top end',
-          'bottom',
-          'bottom start',
-          'bottom end',
-          'start',
-          'start top',
-          'start bottom',
-          'end',
-          'end top',
-          'end bottom'
+        bottomItems: [
+          {content: 'Placement End', placement: 'end'},
+          {content: 'Placement End Bottom', placement: 'end bottom'},
+          {content: 'Placement End Top', placement: 'end top'},
+          {content: 'Placement Start', placement: 'start'},
+          {content: 'Placement Start Bottom', placement: 'start bottom'},
+          {content: 'Placement Start top', placement: 'start top'},
+          {content: 'Placement top', placement: 'top'},
+          {content: 'No Placement (default is bottom)'}
+        ],
+        endItems: [
+          {content: 'Placement Top', placement: 'top', triggerLabel: 'T'},
+          {content: 'Placement Top End', placement: 'top end', triggerLabel: 'T'},
+          {content: 'Placement Top Start', placement: 'top start', triggerLabel: 'T'},
+          {content: 'Placement Bottom', placement: 'bottom', triggerLabel: 'T'},
+          {content: 'Placement Bottom End', placement: 'bottom end', triggerLabel: 'T'},
+          {content: 'Placement Bottom Start', placement: 'bottom start', triggerLabel: 'T'},
+          {content: 'Placement Start', placement: 'start', triggerLabel: 'T'},
+          {content: 'No Placement (default is bottom)', triggerLabel: 'Trigger'}
+        ],
+        startItems: [
+          {content: 'Placement Top', placement: 'top', triggerLabel: 'T'},
+          {content: 'Placement Top Start', placement: 'top start', triggerLabel: 'T'},
+          {content: 'Placement Top End', placement: 'top end', triggerLabel: 'T'},
+          {content: 'Placement Bottom', placement: 'bottom', triggerLabel: 'T'},
+          {content: 'Placement Bottom Start', placement: 'bottom start', triggerLabel: 'T'},
+          {content: 'Placement Bottom End', placement: 'bottom end', triggerLabel: 'T'},
+          {content: 'Placement End', placement: 'end', triggerLabel: 'T'},
+          {content: 'No Placement (default is bottom)', triggerLabel: 'Trigger'}
+        ],
+        topItems: [
+          {content: 'Placement Start', placement: 'end'},
+          {content: 'Placement End Top', placement: 'end top'},
+          {content: 'Placement End Bottom', placement: 'end bottom'},
+          {content: 'Placement End', placement: 'start'},
+          {content: 'Placement Start Top', placement: 'start top'},
+          {content: 'Placement Start Bottom', placement: 'start bottom'},
+          {content: 'Placement Bottom', placement: 'bottom'},
+          {content: 'No Placement (default is bottom)'}
         ]
       };
     },
     template: `
-      <div style="display: grid; gap: 12px;">
-        <div style="display: grid; grid-template-columns: repeat(4, minmax(120px, 1fr)); gap: 8px;">
-          <DialogTrigger
-            v-for="placement in placements"
-            :key="placement"
-            type="popover"
-            title="Placement">
-            <p>Placement {{placement}}</p>
-          </DialogTrigger>
+      <div style="width: 100%; overflow: auto;">
+        <div style="display: grid; grid-template-areas: 'top top' 'start end' 'bottom bottom'; grid-template-columns: auto auto; grid-template-rows: 72px auto 72px; min-height: 1600px; width: calc(100vw + 100px); margin: 20px 0; gap: 8px;">
+          <div style="grid-area: top; justify-self: center;">
+            <DialogTrigger
+              v-for="(item, index) in topItems"
+              :key="'top-' + index"
+              type="popover"
+              :placement="item.placement"
+              :should-flip="false"
+              title="Placement">
+              <template #trigger="{open}">
+                <ActionButton @click="open">Trigger</ActionButton>
+              </template>
+              <p>{{item.content}}</p>
+            </DialogTrigger>
+          </div>
+
+          <div style="grid-area: start; justify-self: start; align-self: center; padding-inline-start: 20px;">
+            <template v-for="(item, index) in startItems" :key="'start-' + index">
+              <DialogTrigger
+                type="popover"
+                :placement="item.placement"
+                :should-flip="false"
+                title="Placement">
+                <template #trigger="{open}">
+                  <ActionButton @click="open">{{item.triggerLabel}}</ActionButton>
+                </template>
+                <p>{{item.content}}</p>
+              </DialogTrigger>
+              <br />
+            </template>
+          </div>
+
+          <div style="grid-area: end; justify-self: end; align-self: center; padding-inline-end: 20px;">
+            <template v-for="(item, index) in endItems" :key="'end-' + index">
+              <DialogTrigger
+                type="popover"
+                :placement="item.placement"
+                :should-flip="false"
+                title="Placement">
+                <template #trigger="{open}">
+                  <ActionButton @click="open">{{item.triggerLabel}}</ActionButton>
+                </template>
+                <p>{{item.content}}</p>
+              </DialogTrigger>
+              <br />
+            </template>
+          </div>
+
+          <div style="grid-area: bottom; justify-self: center;">
+            <DialogTrigger
+              v-for="(item, index) in bottomItems"
+              :key="'bottom-' + index"
+              type="popover"
+              :placement="item.placement"
+              :should-flip="false"
+              title="Placement">
+              <template #trigger="{open}">
+                <ActionButton @click="open">Trigger</ActionButton>
+              </template>
+              <p>{{item.content}}</p>
+            </DialogTrigger>
+          </div>
         </div>
       </div>
     `

@@ -1,8 +1,7 @@
-import {ActionButton} from '@vue-spectrum/button';
-import {Button} from '@vue-spectrum/button';
+import {ActionButton, Button} from '@vue-spectrum/button';
 import {ButtonGroup} from '@vue-spectrum/buttongroup';
 import {DialogContainer, useDialogContainer} from '../src';
-import {Menu} from '@vue-spectrum/menu';
+import {MenuTrigger} from '@vue-spectrum/menu';
 import {defineComponent, ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
@@ -15,11 +14,12 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 type StoryArgs = Record<string, unknown>;
+
 type RenderOptions = {
   useMenu?: boolean
 };
 
-const DIALOG_BODY_TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus. In sit amet suscipit lorem. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.';
+const DIALOG_BODY_TEXT = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus. In sit amet suscipit lorem. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. In condimentum imperdiet metus non condimentum. Duis eu velit et quam accumsan tempus at id velit. Duis elementum elementum purus, id tempus mauris posuere a. Nunc vestibulum sapien pellentesque lectus commodo ornare.';
 
 const DIALOG_MENU_ITEMS = [
   {
@@ -57,7 +57,7 @@ const DialogButtons = defineComponent({
 function renderDialogContainer(args: StoryArgs = {}, options: RenderOptions = {}) {
   let {useMenu = false} = options;
   return {
-    components: {ActionButton, DialogButtons, DialogContainer, Menu},
+    components: {ActionButton, DialogButtons, DialogContainer, MenuTrigger},
     setup() {
       let isOpen = ref(false);
       let onDismiss = () => {
@@ -73,15 +73,19 @@ function renderDialogContainer(args: StoryArgs = {}, options: RenderOptions = {}
         isOpen,
         menuItems: DIALOG_MENU_ITEMS,
         onDismiss,
-        onMenuAction: openDialog,
         openDialog,
         useMenu
       };
     },
     template: `
       <div style="display: grid; gap: 12px; justify-items: start;">
-        <Menu v-if="useMenu" :items="menuItems" @action="onMenuAction" />
+        <MenuTrigger v-if="useMenu" :items="menuItems" @action="openDialog">
+          <template #trigger>
+            <ActionButton>Open menu</ActionButton>
+          </template>
+        </MenuTrigger>
         <ActionButton v-else @click="openDialog">Open dialog</ActionButton>
+
         <DialogContainer v-bind="args" :is-open="isOpen" @close="onDismiss">
           <template #heading><h2>The Heading</h2></template>
           <template #header><div>The Header</div></template>
@@ -134,49 +138,48 @@ export const IsKeyboardDismissDisabled: Story = {
 
 export const NestedDialogContainers: Story = {
   render: () => ({
-    components: {ActionButton, DialogContainer, Menu},
+    components: {ActionButton, DialogContainer, MenuTrigger},
     setup() {
-      let outerOpen = ref(false);
-      let innerOpen = ref(false);
       let dialogKey = ref<'doThat' | 'doThis' | null>(null);
 
       let onAction = (key: number | string) => {
         dialogKey.value = key === 'doThat' ? 'doThat' : 'doThis';
-        outerOpen.value = true;
-        innerOpen.value = false;
       };
-      let closeOuter = () => {
-        outerOpen.value = false;
-        innerOpen.value = false;
+      let dismiss = () => {
         dialogKey.value = null;
       };
-      let toggleInner = () => {
-        innerOpen.value = !innerOpen.value;
+      let toggleDialog = () => {
+        if (dialogKey.value === 'doThat') {
+          dialogKey.value = 'doThis';
+          return;
+        }
+
+        if (dialogKey.value === 'doThis') {
+          dialogKey.value = 'doThat';
+        }
       };
 
       return {
-        closeOuter,
         dialogKey,
-        innerOpen,
+        dismiss,
         items: NESTED_DIALOG_MENU_ITEMS,
         onAction,
-        outerOpen,
-        toggleInner
+        toggleDialog
       };
     },
     template: `
       <div style="display: grid; gap: 12px; justify-items: start;">
-        <Menu :items="items" @action="onAction" />
-        <DialogContainer :is-open="outerOpen" isDismissable @close="closeOuter">
-          <template #heading><h2>{{dialogKey === 'doThat' ? 'That' : 'This'}}</h2></template>
+        <MenuTrigger :items="items" @action="onAction">
+          <template #trigger>
+            <ActionButton aria-label="Actions">Open menu</ActionButton>
+          </template>
+        </MenuTrigger>
+        <DialogContainer :is-open="dialogKey !== null" is-dismissable @close="dismiss">
+          <template #heading><h2>{{dialogKey === 'doThis' ? 'This' : 'That'}}</h2></template>
           <template #divider><hr /></template>
-          <div style="display: grid; gap: 8px;">
-            <ActionButton autoFocus @click="toggleInner">{{dialogKey === 'doThat' ? 'Do this' : 'Do that'}}</ActionButton>
-            <DialogContainer :is-open="innerOpen" @close="innerOpen = false">
-              <template #heading><h3>Nested dialog</h3></template>
-              <div>Nested dialog content</div>
-            </DialogContainer>
-          </div>
+          <ActionButton auto-focus @click="toggleDialog">
+            {{dialogKey === 'doThis' ? 'Do that' : 'Do this'}}
+          </ActionButton>
         </DialogContainer>
       </div>
     `

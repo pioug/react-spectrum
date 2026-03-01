@@ -2,6 +2,7 @@ import {ActionButton} from '@vue-spectrum/button';
 import {AlertDialog} from '../src';
 import {action} from 'storybook/actions';
 import {ref} from 'vue';
+import {singleParagraph} from './Dialog.stories';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type StoryArgs = Record<string, unknown>;
@@ -79,11 +80,10 @@ type Story = StoryObj<typeof meta>;
 function baseAlertArgs(overrides: StoryArgs = {}): StoryArgs {
   return {
     isOpen: true,
-    variant: 'error',
     title: 'Error: Danger Will Robinson',
     primaryActionLabel: 'Accept',
-    secondaryActionLabel: 'Secondary button',
     cancelLabel: 'Cancel',
+    variant: 'error',
     ...overrides
   };
 }
@@ -102,6 +102,7 @@ function renderAlert(args: StoryArgs) {
 
       return {
         args,
+        bodyText: singleParagraph(),
         closeDialog,
         isOpen,
         onCancel: action('cancel'),
@@ -111,7 +112,7 @@ function renderAlert(args: StoryArgs) {
       };
     },
     template: `
-      <div style="display: grid; gap: 8px; width: 420px; margin: 100px 0;">
+      <div style="display: flex; width: auto; margin: 100px 0;">
         <ActionButton @click="openDialog">Trigger</ActionButton>
         <AlertDialog
           v-bind="args"
@@ -120,7 +121,7 @@ function renderAlert(args: StoryArgs) {
           @close="closeDialog"
           @primary-action="onPrimaryAction"
           @secondary-action="onSecondaryAction">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin sit amet tristique risus.
+          {{bodyText}}
         </AlertDialog>
       </div>
     `
@@ -177,21 +178,24 @@ export const PrimaryDisabled: Story = {
 export const AutoFocusPrimary: Story = {
   render: (args) => renderAlert(args),
   args: baseAlertArgs({
-    autoFocusButton: 'primary'
+    autoFocusButton: 'primary',
+    secondaryActionLabel: 'Secondary button'
   })
 };
 
 export const SecondaryDisabled: Story = {
   render: (args) => renderAlert(args),
   args: baseAlertArgs({
-    isSecondaryActionDisabled: true
+    isSecondaryActionDisabled: true,
+    secondaryActionLabel: 'Secondary button'
   })
 };
 
 export const AutoFocusSecondary: Story = {
   render: (args) => renderAlert(args),
   args: baseAlertArgs({
-    autoFocusButton: 'secondary'
+    autoFocusButton: 'secondary',
+    secondaryActionLabel: 'Secondary button'
   })
 };
 
@@ -199,6 +203,7 @@ export const AutoFocusCancel: Story = {
   render: (args) => renderAlert(args),
   args: baseAlertArgs({
     autoFocusButton: 'cancel',
-    dataTestid: 'alert-dialog'
+    'data-testid': 'alert-dialog',
+    secondaryActionLabel: 'Secondary button'
   })
 };

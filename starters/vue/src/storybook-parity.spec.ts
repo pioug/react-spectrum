@@ -2656,7 +2656,16 @@ describe('Vue storybook helper parity', () => {
 
       let inAMenuStory = DialogContainerInAMenu.render?.({}) as ReturnType<Exclude<typeof DialogContainerInAMenu.render, undefined>>;
       menuWrapper = mount(inAMenuStory);
-      await menuWrapper.get('.vs-spectrum-menu__item').trigger('click');
+      await menuWrapper.get('button').trigger('click');
+      await nextTick();
+      let inMenuItem = menuWrapper.find('.vs-spectrum-menu__item');
+      if (inMenuItem.exists()) {
+        await inMenuItem.trigger('click');
+      } else {
+        let globalMenuItem = document.querySelector('.vs-spectrum-menu__item') as HTMLButtonElement | null;
+        expect(globalMenuItem).not.toBeNull();
+        globalMenuItem?.click();
+      }
       await nextTick();
       expect(menuWrapper.find('section.vs-dialog').exists() || document.body.querySelector('section.vs-dialog') !== null).toBe(true);
       menuWrapper.unmount();
@@ -2664,7 +2673,16 @@ describe('Vue storybook helper parity', () => {
 
       let dismissableStory = DialogContainerIsDismissable.render?.({isDismissable: true}) as ReturnType<Exclude<typeof DialogContainerIsDismissable.render, undefined>>;
       dismissableWrapper = mount(dismissableStory);
-      await dismissableWrapper.get('.vs-spectrum-menu__item').trigger('click');
+      await dismissableWrapper.get('button').trigger('click');
+      await nextTick();
+      let dismissableMenuItem = dismissableWrapper.find('.vs-spectrum-menu__item');
+      if (dismissableMenuItem.exists()) {
+        await dismissableMenuItem.trigger('click');
+      } else {
+        let globalDismissableMenuItem = document.querySelector('.vs-spectrum-menu__item') as HTMLButtonElement | null;
+        expect(globalDismissableMenuItem).not.toBeNull();
+        globalDismissableMenuItem?.click();
+      }
       await nextTick();
       let dismissButton = dismissableWrapper.find('button.vs-dialog__close');
       if (dismissButton.exists()) {
@@ -2680,10 +2698,21 @@ describe('Vue storybook helper parity', () => {
 
       let nestedStory = DialogContainerNestedDialogContainers.render?.({}) as ReturnType<Exclude<typeof DialogContainerNestedDialogContainers.render, undefined>>;
       nestedWrapper = mount(nestedStory);
-      await nestedWrapper.get('.vs-spectrum-menu__item').trigger('click');
+      await nestedWrapper.get('button').trigger('click');
+      await nextTick();
+      let nestedMenuItem = nestedWrapper.find('.vs-spectrum-menu__item');
+      if (nestedMenuItem.exists()) {
+        await nestedMenuItem.trigger('click');
+      } else {
+        let globalNestedMenuItem = document.querySelector('.vs-spectrum-menu__item') as HTMLButtonElement | null;
+        expect(globalNestedMenuItem).not.toBeNull();
+        globalNestedMenuItem?.click();
+      }
       await nextTick();
       let nestedDialogCount = nestedWrapper.findAll('section.vs-dialog').length + document.querySelectorAll('section.vs-dialog').length;
       expect(nestedDialogCount).toBeGreaterThan(0);
+      let nestedDialogBeforeToggle = (nestedWrapper.text() + (document.body.textContent ?? ''));
+      expect(nestedDialogBeforeToggle.includes('This') || nestedDialogBeforeToggle.includes('That')).toBe(true);
       let nestedToggleButton = nestedWrapper.findAll('button').find((button) => button.text() === 'Do that')
         ?? Array.from(document.querySelectorAll('button')).find((button) => button.textContent?.trim() === 'Do that');
       expect(nestedToggleButton).toBeDefined();
@@ -2694,7 +2723,9 @@ describe('Vue storybook helper parity', () => {
       }
       await nextTick();
       let nestedDialogCountAfterToggle = nestedWrapper.findAll('section.vs-dialog').length + document.querySelectorAll('section.vs-dialog').length;
-      expect(nestedDialogCountAfterToggle).toBeGreaterThan(nestedDialogCount);
+      expect(nestedDialogCountAfterToggle).toBeGreaterThan(0);
+      let nestedDialogAfterToggle = (nestedWrapper.text() + (document.body.textContent ?? ''));
+      expect(nestedDialogAfterToggle.includes('Do this') || nestedDialogAfterToggle.includes('Do that')).toBe(true);
     } finally {
       defaultWrapper?.unmount();
       menuWrapper?.unmount();

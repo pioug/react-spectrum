@@ -1,5 +1,5 @@
 import '@adobe/spectrum-css-temp/components/dialog/vars.css';
-import {Button} from '@vue-spectrum/button';
+import {ActionButton, Button} from '@vue-spectrum/button';
 import {Modal, Popover, Tray} from '@vue-spectrum/overlays';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, type ComputedRef, defineComponent, getCurrentInstance, h, inject, nextTick, onBeforeUnmount, provide, ref, type InjectionKey, type PropType, type VNode, watch} from 'vue';
@@ -8,7 +8,7 @@ const styles: {[key: string]: string} = {};
 
 type DialogType = 'modal' | 'popover' | 'tray' | 'fullscreen' | 'fullscreenTakeover';
 type DialogSize = 'S' | 'M' | 'L' | 'fullscreen' | 'fullscreenTakeover';
-type AlertDialogVariant = 'confirmation' | 'destructive' | 'error' | 'warning';
+type AlertDialogVariant = 'confirmation' | 'destructive' | 'error' | 'information' | 'warning';
 type AutoFocusButton = 'cancel' | 'primary' | 'secondary';
 
 type EventHandler = (() => void) | undefined;
@@ -27,6 +27,20 @@ let sizeMap: Record<DialogSize, string> = {
   fullscreen: 'fullscreen',
   fullscreenTakeover: 'fullscreenTakeover'
 };
+
+const ALERT_ICON_PATH = 'M8.564 1.289L.2 16.256A.5.5 0 0 0 .636 17h16.728a.5.5 0 0 0 .436-.744L9.436 1.289a.5.5 0 0 0-.872 0zM10 14.75a.25.25 0 0 1-.25.25h-1.5a.25.25 0 0 1-.25-.25v-1.5a.25.25 0 0 1 .25-.25h1.5a.25.25 0 0 1 .25.25zm0-3a.25.25 0 0 1-.25.25h-1.5a.25.25 0 0 1-.25-.25v-6a.25.25 0 0 1 .25-.25h1.5a.25.25 0 0 1 .25.25z';
+const CLOSE_ICON_PATH = 'M11.697 10.283L7.414 6l4.283-4.283A1 1 0 1 0 10.283.303L6 4.586 1.717.303A1 1 0 1 0 .303 1.717L4.586 6 .303 10.283a1 1 0 1 0 1.414 1.414L6 7.414l4.283 4.283a1 1 0 1 0 1.414-1.414z';
+
+function renderSpectrumIcon(className: string, path: string, attrs: Record<string, unknown> = {}) {
+  return h('svg', {
+    class: className,
+    focusable: 'false',
+    role: 'img',
+    ...attrs
+  }, [
+    h('path', {d: path})
+  ]);
+}
 
 let dialogContainerContextKey: InjectionKey<DialogContainerContextValue> = Symbol('VueSpectrumDialogContainerContext');
 
@@ -168,6 +182,7 @@ export const Dialog = defineComponent({
     let contentClassName = computed(() => classNames(styles, 'spectrum-Dialog-content'));
     let dividerClassName = computed(() => classNames(styles, 'spectrum-Dialog-divider'));
     let footerClassName = computed(() => classNames(styles, 'spectrum-Dialog-footer'));
+    let heroClassName = computed(() => classNames(styles, 'spectrum-Dialog-hero'));
     let buttonGroupClassName = computed(() => classNames(styles, 'spectrum-Dialog-buttonGroup', {'spectrum-Dialog-buttonGroup--noFooter': !hasFooter.value}));
     let gridClassName = computed(() => classNames(styles, 'spectrum-Dialog-grid'));
     let typeIconClassName = computed(() => classNames(styles, 'spectrum-Dialog-typeIcon'));
@@ -243,6 +258,10 @@ export const Dialog = defineComponent({
         ? h('div', {class: [dividerClassName.value, 'vs-dialog__divider']}, slots.divider())
         : null;
 
+      let heroNode = slots.hero
+        ? h('div', {class: [heroClassName.value, 'vs-dialog__hero']}, slots.hero())
+        : null;
+
       let footerNode = slots.footer
         ? h('footer', {class: [footerClassName.value, 'vs-dialog__footer']}, slots.footer())
         : null;
@@ -252,12 +271,20 @@ export const Dialog = defineComponent({
         : null;
 
       let closeButton = isDismissable.value
-        ? h('button', {
-          type: 'button',
+        ? h(ActionButton, {
           class: [closeButtonClassName.value, 'vs-dialog__close'],
+          isQuiet: true,
           'aria-label': 'Close dialog',
           onClick: closeDialog
-        }, '\u00d7')
+        }, {
+          default: () => [
+            renderSpectrumIcon(
+              'spectrum-Icon spectrum-UIIcon-CrossLarge vs-dialog__close-icon',
+              CLOSE_ICON_PATH,
+              {'aria-hidden': 'true', viewBox: '0 0 12 12'}
+            )
+          ]
+        })
         : null;
 
       let hidden = props.isHidden || attrs.hidden === '' || attrs.hidden === true;
@@ -272,6 +299,7 @@ export const Dialog = defineComponent({
         'data-vac': ''
       }, [
         h('div', {class: [gridClassName.value, 'vs-dialog__grid']}, [
+          heroNode,
           headerNode,
           dividerNode,
           h('div', {class: [contentClassName.value, 'vs-dialog__body']}, slots.default ? slots.default() : []),
@@ -411,10 +439,11 @@ export const AlertDialog = defineComponent({
     }, {
       divider: () => [h('hr', {class: 'vs-alert-dialog__divider'})],
       typeIcon: (props.variant === 'error' || props.variant === 'warning')
-        ? () => [h('span', {
-          class: 'vs-alert-dialog__icon',
-          'aria-label': 'Alert'
-        }, '!')]
+        ? () => [renderSpectrumIcon(
+          'spectrum-Icon spectrum-UIIcon-AlertMedium vs-alert-dialog__icon',
+          ALERT_ICON_PATH,
+          {'aria-label': 'Alert'}
+        )]
         : undefined,
       default: () => slots.default ? slots.default() : [],
       buttonGroup: () => [
