@@ -13961,6 +13961,15 @@ describe('Vue migration composition components', () => {
   });
 
   it('exposes vue-spectrum style-macro-s1 runtime helpers', () => {
+    let runtimeClass = s1Style({
+      backgroundColor: 'orange-500',
+      borderRadius: 'default',
+      color: 'black',
+      fontSize: 'lg',
+      paddingX: 8,
+      paddingY: 4
+    })();
+
     let buttonStyles = s1Style({
       backgroundColor: {
         default: 'gray-500',
@@ -13977,6 +13986,13 @@ describe('Vue migration composition components', () => {
     expect(buttonStyles({})).toContain('s1-backgroundcolor-gray-500');
     expect(buttonStyles({isPressed: true})).toContain('s1-backgroundcolor-gray-600');
     expect(buttonStyles({density: 'compact'})).toContain('s1-size-s');
+    expect(runtimeClass).toContain('s1-backgroundcolor-orange-500');
+    expect(runtimeClass).toContain('s1-fontsize-lg');
+    let runtimeStyleTag = document.head.querySelector('style[data-vue-spectrum-style-macro-s1]');
+    expect(runtimeStyleTag?.textContent).toContain('.s1-backgroundcolor-orange-500');
+    expect(runtimeStyleTag?.textContent).toContain('background-color: var(--spectrum-orange-500);');
+    expect(runtimeStyleTag?.textContent).toContain('.s1-paddingx-8');
+    expect(runtimeStyleTag?.textContent).toContain('padding-inline: 32px;');
     expect(s1Raw('var(--accent-color)')).toBe('[var(--accent-color)]');
     expect(s1Keyframes({from: {opacity: 0}, to: {opacity: 1}})).toContain('s1-keyframes-');
 

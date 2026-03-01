@@ -234,9 +234,10 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - Components: VueErrorBoundary
   - [x] Story: (none)
   - Evidence: React/Vue story-id parity is zero for story-utils scope (`story-utils`/`errorboundary` ids all `0` in React `dist/97e3ff099844b1ee324814db73e293af78e250a4/storybook/index.json` and Vue `starters/vue/dist/storybook/index.json`); Vue story-utils internals were aligned in `packages/@vue-spectrum/story-utils/src/ErrorBoundary.ts` and `packages/@vue-spectrum/story-utils/src/generatePowerset.ts` by removing Vue-only fallback class/default message behavior from `ErrorBoundary` and restoring React-equivalent `generatePowerset` merge semantics for non-array multi-key state objects; regression coverage was tightened in `starters/vue/src/composition.spec.ts` to assert classless fallback markup and multi-key powerset combinations; validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
-- [ ] 1.47 `@vue-spectrum/style-macro-s1`
+- [x] 1.47 `@vue-spectrum/style-macro-s1`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [ ] Story: StyleMacro.stories.ts
+  - [x] Story: StyleMacro.stories.ts
+  - Evidence: Source review confirms `packages/@vue-spectrum/style-macro-s1/src` exposes runtime helpers only (no Vue `defineComponent` exports), matching this item’s non-component scope; React/Vue story-id parity is zero for `s1-style-macro--*` (`react=1`, `vue=1`, diff `0/0`) from React `dist/97e3ff099844b1ee324814db73e293af78e250a4/storybook/index.json` vs Vue `starters/vue/dist/storybook/index.json`; Vue runtime macro parity was fixed in `packages/@vue-spectrum/style-macro-s1/src/style-macro.ts` by adding runtime CSS rule generation/injection for emitted S1 class tokens (color, font size, spacing, radius mappings) so `StyleMacro.stories.ts` renders the same computed styles as React; regression coverage was added in `starters/vue/src/composition.spec.ts`; side-by-side capture/computed-style evidence in `.tmp/style-macro-s1-parity-current2/size-deltas.json` now matches key style contracts (`backgroundColor`, `color`, `fontSize`, `borderRadius`, paddings) with size delta `1.40%`; validation gate passed (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`).
 - [ ] 1.48 `@vue-spectrum/switch`
   - Components: Switch
   - [ ] Story: Switch.stories.ts
