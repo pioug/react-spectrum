@@ -98,9 +98,9 @@ Use this as a progression checklist for parity re-review. Mark each line when co
 - [x] 1.20 `@vue-spectrum/dropzone`
   - Components: DropZone
 - [x] Story: DropZone.stories.ts
-- [ ] 1.21 `@vue-spectrum/filetrigger`
+- [x] 1.21 `@vue-spectrum/filetrigger`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [ ] Story: FileTrigger.stories.ts
+  - [x] Story: FileTrigger.stories.ts
 - [ ] 1.22 `@vue-spectrum/form`
   - Components: Form
   - [ ] Story: Form.stories.ts
