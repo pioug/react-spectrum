@@ -27,6 +27,15 @@ function resolveVisibleDate(calendar: CalendarAria): Date {
   return startOfMonth(new Date());
 }
 
+function resolveVisibleRangeStart(calendar: CalendarAria): Date | null {
+  let visibleRange = (calendar as unknown as {visibleRange?: {start?: Date} | {value?: {start?: Date}}}).visibleRange;
+  if (visibleRange && typeof visibleRange === 'object' && 'value' in visibleRange) {
+    return visibleRange.value?.start ?? null;
+  }
+
+  return visibleRange?.start ?? null;
+}
+
 function cloneDate(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
@@ -49,6 +58,11 @@ function addMonths(date: Date, months: number): Date {
   let nextDate = cloneDate(date);
   nextDate.setMonth(nextDate.getMonth() + months);
   return nextDate;
+}
+
+function todayUTC(): Date {
+  let now = new Date();
+  return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
 }
 
 function startOfWeek(date: Date): Date {
@@ -140,7 +154,7 @@ const CalendarGridView = defineComponent({
         return startOfWeek(monthDate.value);
       }
 
-      return monthDate.value;
+      return resolveVisibleRangeStart(props.calendar) ?? monthDate.value;
     });
     let rows = computed(() => {
       return Array.from({length: weekCount.value}, (_week, weekIndex) => {
@@ -181,7 +195,7 @@ function renderCalendar(config: CalendarStoryConfig) {
       CalendarGridView
     },
     setup() {
-      let selectedDate = ref<Date | null>(config.defaultValueToday ? new Date() : null);
+      let selectedDate = ref<Date | null>(config.defaultValueToday ? todayUTC() : null);
       let calendar = useCalendar({
         value: selectedDate,
         visibleDuration: config.visibleDuration,
@@ -212,10 +226,10 @@ function renderCalendar(config: CalendarStoryConfig) {
         </div>
         <div>
           <button type="button" style="position: relative; display: inline-flex; align-items: center; background: transparent; border: 2px solid rgb(213, 213, 213);" @click="prevPage()">
-            <span role="none">prev</span>
+            <span role="none" style="color: rgb(34, 34, 34);">prev</span>
           </button>
           <button type="button" style="position: relative; display: inline-flex; align-items: center; background: transparent; border: 2px solid rgb(213, 213, 213);" @click="nextPage()">
-            <span role="none">next</span>
+            <span role="none" style="color: rgb(34, 34, 34);">next</span>
           </button>
         </div>
       </div>

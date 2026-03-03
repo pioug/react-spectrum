@@ -17,6 +17,7 @@ type ColumnUid = 'height' | 'level' | 'name' | 'type' | 'weight';
 
 type TableArgs = {
   controlled?: boolean,
+  docVariant?: boolean,
   includeExtraColumns?: boolean,
   resizable?: boolean,
   showControls?: boolean,
@@ -263,6 +264,18 @@ function renderTable(args: TableArgs) {
         background: rowIndex % 2 === 0 ? 'var(--spectrum-gray-75)' : 'var(--spectrum-gray-100)'
       });
 
+      let getDocCellStyle = () => ({
+        width: '100px',
+        display: 'block'
+      });
+
+      let getDocRowStyle = (rowIndex: number) => ({
+        display: 'flex',
+        background: rowIndex % 2 === 0 ? 'none' : 'var(--spectrum-alias-highlight-hover)',
+        outline: 'none',
+        boxShadow: 'none'
+      });
+
       return {
         activeColumns,
         args,
@@ -277,6 +290,8 @@ function renderTable(args: TableArgs) {
           }
         }),
         getColumnHeaderProps: (columnUid: ColumnUid) => columnHeaderMap.get(columnUid)?.columnHeaderProps.value,
+        getDocCellStyle,
+        getDocRowStyle,
         getResizableCellStyle,
         getResizableHeaderStyle,
         getResizeInputProps: (columnUid: ColumnUid) => resizeMap.get(columnUid)?.inputProps.value,
@@ -304,7 +319,41 @@ function renderTable(args: TableArgs) {
       };
     },
     template: `
-      <div v-if="args.controlled && args.resizable && args.showControls">
+      <table v-if="args.docVariant" v-bind="gridProps" style="display: block; position: relative;">
+        <thead v-bind="headerRowGroupProps" style="display: block; position: sticky;">
+          <tr v-bind="headerRowProps" style="display: flex; color: rgb(34, 34, 34);">
+            <th
+              v-for="column in activeColumns"
+              :key="column.uid"
+              v-bind="getColumnHeaderProps(column.uid)"
+              style="width: 100px; display: block;">
+              <div style="display: flex; position: relative;">
+                <button type="button" style="background: transparent; border: 0px; padding: 0px;">{{column.name}}</button>
+                <div role="presentation" style="touch-action: none; background: gray; color: transparent;">
+                  <input v-bind="getResizeInputProps(column.uid)" type="range" :style="hiddenRangeInputStyle">
+                </div>
+              </div>
+            </th>
+          </tr>
+        </thead>
+        <tbody v-bind="bodyRowGroupProps" style="display: block;">
+          <tr
+            v-for="(row, rowIndex) in collection.rows"
+            :key="row.key"
+            v-bind="getRowProps(row.key)"
+            :style="getDocRowStyle(rowIndex)">
+            <td
+              v-for="(cell, cellIndex) in row.cells"
+              :key="cell.key"
+              v-bind="getCellProps(row.key, cell.key)"
+              :role="cellIndex === 0 ? 'rowheader' : 'gridcell'"
+              :style="getDocCellStyle()">
+              {{cell.textValue}}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div v-else-if="args.controlled && args.resizable && args.showControls">
         <button @click="saveColumnWidths">Save Cols</button>
         <button @click="restoreColumnWidths">Restore Cols</button>
         <div>Current saved column state: {{savedColumnWidthText}}</div>
@@ -328,12 +377,12 @@ function renderTable(args: TableArgs) {
                 </th>
               </tr>
             </thead>
-            <tbody v-bind="bodyRowGroupProps">
+            <tbody v-bind="bodyRowGroupProps" style="display: block;">
               <tr
                 v-for="(row, rowIndex) in collection.rows"
                 :key="row.key"
                 v-bind="getRowProps(row.key)"
-                style="outline: none;">
+                style="display: flex; outline: none;">
                 <td
                   v-for="(cell, cellIndex) in row.cells"
                   :key="cell.key"
@@ -386,12 +435,12 @@ function renderTable(args: TableArgs) {
               </th>
             </tr>
           </thead>
-          <tbody v-bind="bodyRowGroupProps" :style="args.resizable ? undefined : {display: 'block', overflow: 'auto', maxHeight: '200px'}">
+          <tbody v-bind="bodyRowGroupProps" :style="args.resizable ? {display: 'block'} : {display: 'block', overflow: 'auto', maxHeight: '200px'}">
             <tr
               v-for="(row, rowIndex) in collection.rows"
               :key="row.key"
               v-bind="getRowProps(row.key)"
-              :style="{background: args.resizable ? undefined : (rowIndex % 2 === 1 ? 'lightgray' : 'none'), outline: 'none'}">
+              :style="{display: args.resizable ? 'flex' : undefined, background: args.resizable ? undefined : (rowIndex % 2 === 1 ? 'lightgray' : 'none'), outline: 'none'}">
               <td v-if="withSelection" role="gridcell">
                 <input
                   type="checkbox"
@@ -484,11 +533,11 @@ export const TableWithSomeResizingFRsControlled: Story = {
 };
 
 export const DocExample: Story = {
-  render: () => renderTable({resizable: true, withSelection: false}),
+  render: () => renderTable({docVariant: true, resizable: true, withSelection: false}),
   name: 'Doc Example'
 };
 
 export const DocExampleControlled: Story = {
-  render: () => renderTable({controlled: true, resizable: true, withSelection: false}),
+  render: () => renderTable({controlled: true, docVariant: true, resizable: true, withSelection: false}),
   name: 'Doc Example Controlled'
 };
