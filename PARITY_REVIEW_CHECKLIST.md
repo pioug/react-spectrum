@@ -237,7 +237,7 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - Components: VueTooltip, VueTooltipTrigger
   - [ ] Story: Tooltip.stories.ts
   - [ ] Story: TooltipTrigger.stories.ts
-- [ ] 1.61 `@vue-spectrum/tree`
+- [x] 1.61 `@vue-spectrum/tree`
   - Components: Tree, TreeView, TreeViewItem, TreeViewItemContent
   - [x] Story: TreeView.stories.ts
 - [ ] 1.62 `@vue-spectrum/utils`

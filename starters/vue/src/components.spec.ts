@@ -6204,26 +6204,42 @@ describe('Vue migration primitives', () => {
     expect(input.attributes('directory')).toBeUndefined();
   });
 
-  it('maps tree hidden visibility signal and emits item actions', async () => {
+  it('maps tree treegrid structure, hidden visibility, and row actions', async () => {
     let hidden = mount(Tree, {
       props: {
         hidden: true,
         items: [{id: 'one', label: 'One'}]
       }
     });
+    expect(hidden.element.tagName).toBe('DIV');
+    expect(hidden.attributes('role')).toBe('treegrid');
     expect(hidden.attributes('hidden')).toBeDefined();
     expect(hidden.attributes('aria-hidden')).toBe('true');
-    expect(hidden.find('.vs-tree__hidden-marker').attributes('hidden')).toBeDefined();
+    expect(hidden.attributes('data-rac')).toBe('');
+    expect(hidden.find('.vs-tree__hidden-marker').exists()).toBe(false);
 
     let wrapper = mount(Tree, {
       props: {
+        selectionMode: 'single',
         items: [
           {id: 'one', label: 'One'},
           {id: 'two', label: 'Two'}
         ]
       }
     });
-    await wrapper.findAll('button.vs-tree__item')[1].trigger('click');
+
+    let rows = wrapper.findAll('[role="row"]');
+    expect(rows).toHaveLength(2);
+    expect(rows[0].element.tagName).toBe('DIV');
+    expect(rows[0].attributes('tabindex')).toBe('-1');
+    expect(rows[1].attributes('tabindex')).toBe('-1');
+    expect(wrapper.find('[role="rowgroup"]').exists()).toBe(false);
+
+    await rows[1].trigger('click');
+
+    rows = wrapper.findAll('[role="row"]');
+    expect(rows[0].attributes('tabindex')).toBe('-1');
+    expect(rows[1].attributes('tabindex')).toBe('0');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['two']);
     expect(wrapper.emitted('itemAction')?.[0]).toEqual([{id: 'two', label: 'Two'}]);
   });

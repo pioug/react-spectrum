@@ -312,8 +312,8 @@ function renderTree(defaultItems: TreeNode[] = STATIC_ITEMS, options: RenderTree
       };
       let onActionGroupAction = action('onActionGroup action');
       let renderItem = (node: TreeNode) => [
-        nodeIcon(node),
-        h('span', {class: 'vs-tree-story__label'}, node.label)
+        h('span', {class: 'vs-tree-story__label'}, node.label),
+        nodeIcon(node)
       ];
       let renderItemActions = showActions
         ? () => [

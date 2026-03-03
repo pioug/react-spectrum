@@ -31,6 +31,7 @@ describe('Vue migration data-heavy components', () => {
   it('emits model updates and item action from tree items', async () => {
     let wrapper = mount(Tree, {
       props: {
+        selectionMode: 'single',
         items: [
           {
             id: 'project-alpha',
@@ -48,7 +49,7 @@ describe('Vue migration data-heavy components', () => {
       }
     });
 
-    await wrapper.findAll('button.vs-tree__item')[0].trigger('click');
+    await wrapper.findAll('[role="row"]')[0].trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['project-alpha']);
     expect(wrapper.emitted('itemAction')?.[0]).toEqual([
       {
@@ -76,9 +77,9 @@ describe('Vue migration data-heavy components', () => {
       }
     });
 
-    expect(wrapper.findAll('button.vs-tree__item')).toHaveLength(1);
-    await wrapper.get('button.vs-tree__toggle').trigger('click');
-    expect(wrapper.findAll('button.vs-tree__item')).toHaveLength(2);
+    expect(wrapper.findAll('[role="row"]')).toHaveLength(1);
+    await wrapper.get('.vs-tree__toggle[role="button"]').trigger('click');
+    expect(wrapper.findAll('[role="row"]')).toHaveLength(2);
     expect(wrapper.emitted('update:modelValue')).toBeUndefined();
     expect(wrapper.emitted('itemAction')).toBeUndefined();
   });
@@ -97,7 +98,7 @@ describe('Vue migration data-heavy components', () => {
       }
     });
 
-    expect(wrapper.get('a.vs-tree__item').attributes('href')).toBe('https://adobe.com');
+    expect(wrapper.get('[role="row"]').attributes('data-href')).toBe('https://adobe.com');
     await wrapper.setProps({items: []});
     expect(wrapper.text()).toContain('No results found.');
   });

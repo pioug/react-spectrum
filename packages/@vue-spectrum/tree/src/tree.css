@@ -22,6 +22,7 @@
   border-width: 2px 0;
   overflow: auto;
   outline: none;
+  outline-offset: -2px;
 }
 
 .react-spectrum-TreeView .spectrum-TreeView {
@@ -29,39 +30,47 @@
   width: 100%;
 }
 
-.react-spectrum-TreeView .vs-tree__list {
-  display: block;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.react-spectrum-TreeView .vs-tree__list--root {
-  min-height: 0;
-  height: 100%;
-}
-
-.react-spectrum-TreeView .vs-tree__node {
-  min-height: var(--spectrum-global-dimension-size-500);
-  overflow: visible;
-}
-
 .react-spectrum-TreeView .vs-tree__row {
-  display: grid;
-  align-items: center;
-  grid-template-columns: var(--spectrum-global-dimension-size-500) minmax(0, 1fr) auto;
-  gap: 0;
-  min-height: var(--spectrum-global-dimension-size-500);
+  position: relative;
+  display: flex;
   height: var(--spectrum-global-dimension-size-500);
   width: 100%;
+  overflow: visible;
+  box-sizing: border-box;
+  font-size: var(--spectrum-global-dimension-font-size-100, 14px);
+  line-height: 200%;
+  color: var(--spectrum-alias-text-color);
+  outline: none;
+  cursor: default;
+  gap: normal;
+  grid-template-columns: none;
+}
+
+.react-spectrum-TreeView .vs-tree__row.is-link {
+  cursor: pointer;
 }
 
 .react-spectrum-TreeView .vs-tree__row.is-selected {
   background: transparent;
 }
 
+.react-spectrum-TreeView .vs-tree__cell-grid {
+  display: grid;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: minmax(0, auto) minmax(0, auto) minmax(0, auto) var(--spectrum-global-dimension-size-500) minmax(0, auto) 1fr minmax(0, auto) auto;
+  grid-template-areas: "drag-handle checkbox level-padding expand-button icon content actions actionmenu";
+  cursor: inherit;
+}
+
+.react-spectrum-TreeView .vs-tree__level-padding {
+  grid-area: level-padding;
+}
+
 .react-spectrum-TreeView .vs-tree__toggle,
 .react-spectrum-TreeView .vs-tree__spacer {
+  grid-area: expand-button;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -74,9 +83,9 @@
   border: 0;
   background: transparent;
   color: inherit;
-  cursor: pointer;
   margin: 0;
   padding: 0;
+  cursor: inherit;
 }
 
 .react-spectrum-TreeView .vs-tree__toggle:focus,
@@ -100,33 +109,24 @@
   cursor: default;
 }
 
-.react-spectrum-TreeView .spectrum-TreeView-itemLink {
-  position: relative;
+.react-spectrum-TreeView .vs-tree__item-icon {
+  grid-area: icon;
   display: flex;
   align-items: center;
-  gap: 0;
-  height: 100%;
-  min-height: var(--spectrum-global-dimension-size-500);
+  margin-inline-end: var(--spectrum-global-dimension-size-100);
   min-width: 0;
-  text-align: start;
-  flex: 1 1 auto;
-}
-
-.react-spectrum-TreeView a.vs-tree__item,
-.react-spectrum-TreeView button.vs-tree__item {
-  border: 0;
-  background: transparent;
-  color: inherit;
-  font: inherit;
-  margin: 0;
-  padding: 0;
 }
 
 .react-spectrum-TreeView .vs-tree__item-content {
-  display: inline-flex;
+  grid-area: content;
+  display: flex;
   align-items: center;
   gap: 0;
   min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: inherit;
 }
 
 .react-spectrum-TreeView .vs-tree__item-content > .spectrum-Icon,
@@ -137,13 +137,31 @@
 }
 
 .react-spectrum-TreeView .vs-tree__actions {
+  grid-area: actions;
   display: inline-flex;
   align-items: center;
   flex: 0 0 auto;
-  padding-inline-start: 3px;
-  padding-inline-end: 2px;
-  margin-inline-start: 0;
-  margin-inline-end: 2px;
+  padding-inline-start: 0;
+  padding-inline-end: 0;
+  margin-inline-start: 2px;
+  margin-inline-end: 4px;
+  cursor: inherit;
+}
+
+.react-spectrum-TreeView .vs-tree__actions-toolbar {
+  display: flex;
+  align-items: center;
+  margin-inline-start: -1px;
+  margin-inline-end: -1px;
+}
+
+.react-spectrum-TreeView .vs-tree__actions-toolbar > .spectrum-ActionButton {
+  width: 34px;
+  min-width: 32px;
+  margin-inline-start: 1px;
+  margin-inline-end: 1px;
+  padding-inline-start: 0;
+  padding-inline-end: 7px;
 }
 
 .react-spectrum-TreeView .vs-tree__empty {
