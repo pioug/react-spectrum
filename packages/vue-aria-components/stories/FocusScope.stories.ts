@@ -9,7 +9,7 @@ interface StoryProps {
   restoreFocus?: boolean
 }
 
-const Example = defineComponent({
+export const Example = defineComponent({
   name: 'VueFocusScopeExample',
   props: {
     contain: {

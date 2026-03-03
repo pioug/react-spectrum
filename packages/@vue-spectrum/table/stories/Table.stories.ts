@@ -1616,7 +1616,7 @@ export const AsyncLoadOverflowWrapReproStory: Story = {
   }
 };
 
-export const Performance: Story = {
+const Performance: Story = {
   render: (args) => renderTable(args),
   args: {
     columns: PERFORMANCE_COLUMNS,

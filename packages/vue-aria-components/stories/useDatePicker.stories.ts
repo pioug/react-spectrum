@@ -3,14 +3,15 @@ import {useDatePicker} from '@vue-aria/datepicker';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 const meta = {
-  title: 'Date and Time/useDatePicker'
+  title: 'Date and Time/useDatePicker',
+  excludeStories: ['ProgrammaticSetValueExampleRender']
 } satisfies Meta;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const ProgrammaticSetValueExample: Story = {
-  render: () => ({
+export function ProgrammaticSetValueExampleRender() {
+  return {
     setup() {
       let value = ref<string | null>(null);
       let datePicker = useDatePicker({
@@ -42,6 +43,10 @@ export const ProgrammaticSetValueExample: Story = {
         <button data-testid="set" @click="setValue">Set</button>
       </div>
     `
-  }),
+  };
+}
+
+export const ProgrammaticSetValueExample: Story = {
+  render: ProgrammaticSetValueExampleRender,
   name: 'Programmatic Set Value Example'
 };

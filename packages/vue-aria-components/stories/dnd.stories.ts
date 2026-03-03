@@ -373,9 +373,13 @@ export const Default: Story = {
   name: 'Default'
 };
 
-export const DraggableStory: Story = {
+export const Draggable: Story = {
   render: () => renderDnD(),
   name: 'Draggable'
+};
+
+export const DraggableStory: Story = {
+  ...Draggable
 };
 
 export const DraggableDisabled: Story = {
@@ -388,9 +392,13 @@ export const DraggableEnabledDisabledControl: Story = {
   name: 'Draggable Enable/Disable control'
 };
 
-export const DroppableStory: Story = {
+export const Droppable: Story = {
   render: () => renderDnD(),
   name: 'Droppable'
+};
+
+export const DroppableStory: Story = {
+  ...Droppable
 };
 
 export const DroppableEnabledDisabledControl: Story = {

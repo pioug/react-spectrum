@@ -325,6 +325,52 @@ export const SubdialogExample: SubmenuExampleStory = {
   }
 };
 
+export const UnavailableMenuItemExample: MenuStory = () => createTriggerMenuStory([
+  {
+    items: [
+      {key: 'favorite', label: 'Favorite'},
+      {
+        key: 'edit',
+        label: 'Edit',
+        childSections: [
+          {
+            items: [
+              {
+                key: 'edit-info',
+                label: 'Contact your administrator for permissions to edit this item.',
+                disabled: true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        key: 'delete',
+        label: 'Delete (i)',
+        childSections: [
+          {
+            items: [
+              {
+                key: 'delete-info',
+                label: 'Contact your administrator for permissions to delete this item.',
+                disabled: true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        key: 'share',
+        label: 'Share',
+        children: [
+          {key: 'sms', label: 'SMS'},
+          {key: 'email', label: 'Email'}
+        ]
+      }
+    ]
+  }
+]);
+
 export const MenuCustomRender: MenuStory = () => createTriggerMenuStory([
   {
     label: 'Custom render menu',
