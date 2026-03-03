@@ -18,7 +18,7 @@ export const Default: Story = {
       });
 
       let startPreventScroll = () => {
-        window.setTimeout(() => {
+        window.setInterval(() => {
           preventScroll.value = true;
         }, 1000);
       };
@@ -30,8 +30,9 @@ export const Default: Story = {
     },
     template: `
       <div style="height: 300vh;">
-        <button type="button" @click="startPreventScroll">Click me and then scroll</button>
-        <p>isPreventingScroll: {{String(preventScrollAria.isPreventingScroll)}}</p>
+        <button type="button" @click="startPreventScroll" style="display: inline-flex; align-items: center;">
+          <span role="none">Click Me in safari and then scroll</span>
+        </button>
         <p>Should be able to scroll the range input on iOS Safari</p>
         <input type="range" />
       </div>

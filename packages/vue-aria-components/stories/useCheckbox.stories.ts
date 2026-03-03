@@ -34,6 +34,8 @@ export const Example: Story = {
         <label v-bind="labelProps" style="display: block;">Unsubscribe</label>
         <input
           v-bind="inputProps"
+          type="checkbox"
+          style="display: block;"
           @change="toggle"
           @focus="onFocus"
           @blur="onBlur" />

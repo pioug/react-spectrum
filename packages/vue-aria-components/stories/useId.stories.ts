@@ -75,8 +75,8 @@ export const GCuseId: Story = {
             <AsyncComponent />
           </template>
         </Suspense>
-        <button type="button" @click="toggle">toggle</button>
-        <button type="button" @click="logIds">See ids held</button>
+        <button @click="toggle">toggle</button>
+        <button @click="logIds">See ids held</button>
       </div>
     `
   }),

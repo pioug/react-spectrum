@@ -88,44 +88,53 @@ function renderComboBox(args: {isDisabled?: boolean, shouldFocusWrap?: boolean})
       };
 
       return {
-        comboBox,
+        ...comboBox,
         onInput,
         onKeyDown
       };
     },
     template: `
-      <div style="display: grid; gap: 8px; max-width: 280px;">
-        <label v-bind="comboBox.labelProps">Example</label>
-        <div style="display: flex;">
+      <div style="display: inline-flex; flex-direction: column;">
+        <label v-bind="labelProps">Example</label>
+        <div style="position: relative; display: inline-block;">
           <input
-            v-bind="comboBox.inputProps"
+            v-bind="inputProps"
             type="text"
             @input="onInput"
             @keydown="onKeyDown"
-            style="flex: 1; min-height: 32px; border: 1px solid #999; padding: 0 8px;">
+            style="height: 24px; box-sizing: border-box; margin-right: 0; font-size: 16px;">
           <button
-            v-bind="comboBox.buttonProps"
+            v-bind="buttonProps"
             type="button"
-            @click="comboBox.toggle()"
-            style="min-width: 32px; border: 1px solid #999; border-left: 0;">
-            ▼
+            @click="toggle()"
+            style="height: 24px; margin-left: 0;">
+            <span aria-hidden="true" style="padding: 0 2px;">▼</span>
           </button>
+          <div
+            v-if="isOpen"
+            style="position: absolute; width: 100%; border: 1px solid gray; background: lightgray; margin-top: 4px;">
+            <ul
+              v-bind="listBoxProps"
+              style="margin: 0; padding: 0; list-style: none; max-height: 150px; overflow: auto;">
+              <li
+                v-for="item in filteredItems"
+                :key="item.id"
+                :id="listBoxProps.id + '-option-' + item.id"
+                role="option"
+                :aria-selected="selectedKey === item.id"
+                :style="{
+                  background: selectedKey === item.id ? 'blueviolet' : (focusedKey === item.id ? 'gray' : 'transparent'),
+                  color: selectedKey === item.id ? 'white' : 'black',
+                  padding: '2px 5px',
+                  outline: 'none',
+                  cursor: 'pointer'
+                }"
+                @mousedown.prevent="selectKey(item.id)">
+                {{item.textValue}}
+              </li>
+            </ul>
+          </div>
         </div>
-        <ul
-          v-show="comboBox.isOpen"
-          v-bind="comboBox.listBoxProps"
-          style="border: 1px solid #ccc; max-height: 180px; overflow: auto; list-style: none; margin: 0; padding: 4px;">
-          <li
-            v-for="item in comboBox.filteredItems"
-            :key="item.id"
-            :id="comboBox.listBoxProps.id + '-option-' + item.id"
-            role="option"
-            :aria-selected="comboBox.selectedKey === item.id"
-            :style="{padding: '4px 8px', cursor: 'pointer', background: comboBox.focusedKey === item.id ? '#e8e8e8' : 'transparent'}"
-            @mousedown.prevent="comboBox.selectKey(item.id)">
-            {{item.textValue}}
-          </li>
-        </ul>
       </div>
     `
   };

@@ -95,7 +95,7 @@ export const Default: Story = {
     },
     template: `
       <div style="display: grid; gap: 12px; max-width: 420px;">
-        <button type="button" @click="addToast">Add toast</button>
+        <button @click="addToast">Add toast</button>
         <section
           v-if="hasToast"
           v-bind="regionProps"

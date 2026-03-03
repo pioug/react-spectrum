@@ -29,13 +29,13 @@ function renderInputField(args: TextFieldStoryArgs) {
       return {
         args,
         inputRef,
-        textField
+        ...textField
       };
     },
     template: `
-      <div style="display: grid; gap: 6px; max-width: 280px;">
-        <label v-bind="textField.labelProps">{{args.label}}</label>
-        <input ref="inputRef" v-bind="textField.inputProps" type="text" />
+      <div>
+        <label v-bind="labelProps">{{args.label}}</label>
+        <input ref="inputRef" v-bind="inputProps" type="text" />
       </div>
     `
   };
@@ -55,13 +55,13 @@ function renderTextAreaField(args: TextFieldStoryArgs) {
       return {
         args,
         inputRef,
-        textField
+        ...textField
       };
     },
     template: `
-      <div style="display: grid; gap: 6px; max-width: 320px;">
-        <label v-bind="textField.labelProps">{{args.label}}</label>
-        <textarea ref="inputRef" v-bind="textField.inputProps" />
+      <div>
+        <label v-bind="labelProps">{{args.label}}</label>
+        <textarea ref="inputRef" v-bind="inputProps" />
       </div>
     `
   };

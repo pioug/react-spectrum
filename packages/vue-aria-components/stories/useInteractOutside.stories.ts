@@ -59,7 +59,7 @@ export const ClickingButtonShouldFireOnInteractOutside: Story = {
         <div
           ref="orangeRef"
           style="width: 100px; height: 100px; background: orange;" />
-        <button ref="buttonRef" v-bind="pressProps" type="button">My Button</button>
+        <button ref="buttonRef" v-bind="pressProps">My Button</button>
       </div>
     `
   })

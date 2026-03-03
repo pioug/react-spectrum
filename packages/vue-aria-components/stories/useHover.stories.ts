@@ -66,7 +66,7 @@ export const HoverDisabling: Story = {
       <HoverButton :isDisabled="isDisabled" @press="isDisabled = true">
         Hover & Press
       </HoverButton>
-      <button type="button" @click="isDisabled = false">Reset</button>
+      <button @click="isDisabled = false">Reset</button>
     `
   }),
   name: 'hover disabling'

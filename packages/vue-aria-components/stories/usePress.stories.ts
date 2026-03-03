@@ -57,7 +57,7 @@ export const TouchIssue: Story = {
         <div class="side-by-side">
           <div>Some text</div>
           <a href="https://www.google.com" class="visit-link">Another Link</a>
-          <button class="my-btn" type="button" @click="onNativeClick">On Click</button>
+          <button class="my-btn" @click="onNativeClick">On Click</button>
         </div>
 
         <div v-if="opened" class="fake-modal">
@@ -199,7 +199,7 @@ export const SoftwareKeyboardIssue: Story = {
           <a @click="onAnchorClick" style="font-size: 64px;">Don't click me</a>
           <div style="display: flex; gap: 8px; margin-top: 110px;">
             <button v-bind="ariaPressProps" type="button" style="height: 36px;">Aria press me</button>
-            <button type="button" style="height: 36px;" @click="onNativeClick">native press me</button>
+            <button style="height: 36px;" @click="onNativeClick">native press me</button>
           </div>
         </div>
       </div>
