@@ -10,362 +10,362 @@ Use this as a progression checklist for parity re-review. Mark each line when co
 - [x] Overlay first-render token gate (dialog/overlays scope): verify at least one initially-open overlay story portals inside `.vs-provider` (not `body`) and computed modal/underlay surface backgrounds are non-transparent (theme tokens resolved)
 
 ## Phase 1 - @vue-spectrum Component Families + Stories
-- [ ] 1.01 `@vue-spectrum/accordion`
+- [x] 1.01 `@vue-spectrum/accordion`
   - Components: Accordion, Disclosure, DisclosurePanel, DisclosureTitle
-  - [ ] Story: Accordion.stories.ts
-  - [ ] Story: Disclosure.stories.ts
+  - [x] Story: Accordion.stories.ts
+  - [x] Story: Disclosure.stories.ts
 - [x] 1.02 `@vue-spectrum/actionbar`
   - Components: ActionBar, ActionBarContainer
   - [x] Story: ActionBar.stories.ts
-- [ ] 1.03 `@vue-spectrum/actiongroup`
+- [x] 1.03 `@vue-spectrum/actiongroup`
   - Components: ActionGroup
-  - [ ] Story: ActionGroup.stories.ts
-  - [ ] Story: Toolbar.stories.ts
-- [ ] 1.04 `@vue-spectrum/autocomplete`
+  - [x] Story: ActionGroup.stories.ts
+  - [x] Story: Toolbar.stories.ts
+- [x] 1.04 `@vue-spectrum/autocomplete`
   - Components: SearchAutocomplete
-  - [ ] Story: SearchAutocomplete.stories.ts
-- [ ] 1.05 `@vue-spectrum/avatar`
+  - [x] Story: SearchAutocomplete.stories.ts
+- [x] 1.05 `@vue-spectrum/avatar`
   - Components: Avatar
-  - [ ] Story: Avatar.stories.ts
-- [ ] 1.06 `@vue-spectrum/badge`
+  - [x] Story: Avatar.stories.ts
+- [x] 1.06 `@vue-spectrum/badge`
   - Components: Badge
-  - [ ] Story: Badge.stories.ts
-- [ ] 1.07 `@vue-spectrum/breadcrumbs`
+  - [x] Story: Badge.stories.ts
+- [x] 1.07 `@vue-spectrum/breadcrumbs`
   - Components: Breadcrumbs
-  - [ ] Story: Breadcrumbs.stories.ts
-- [ ] 1.08 `@vue-spectrum/button`
+  - [x] Story: Breadcrumbs.stories.ts
+- [x] 1.08 `@vue-spectrum/button`
   - Components: ActionButton, ClearButton, FieldButton, LogicButton, ToggleButton, VueButton
-  - [ ] Story: ActionButton.stories.ts
-  - [ ] Story: Button.stories.ts
-  - [ ] Story: LogicButton.stories.ts
-  - [ ] Story: ToggleButton.stories.ts
-- [ ] 1.09 `@vue-spectrum/buttongroup`
+  - [x] Story: ActionButton.stories.ts
+  - [x] Story: Button.stories.ts
+  - [x] Story: LogicButton.stories.ts
+  - [x] Story: ToggleButton.stories.ts
+- [x] 1.09 `@vue-spectrum/buttongroup`
   - Components: VueButtonGroup
-  - [ ] Story: ButtonGroup.stories.ts
-- [ ] 1.10 `@vue-spectrum/calendar`
+  - [x] Story: ButtonGroup.stories.ts
+- [x] 1.10 `@vue-spectrum/calendar`
   - Components: VueCalendar, VueRangeCalendar
-  - [ ] Story: Calendar.stories.ts
-  - [ ] Story: RangeCalendar.stories.ts
-  - [ ] Story: RangeCalendarCell.stories.ts
-- [ ] 1.11 `@vue-spectrum/card`
+  - [x] Story: Calendar.stories.ts
+  - [x] Story: RangeCalendar.stories.ts
+  - [x] Story: RangeCalendarCell.stories.ts
+- [x] 1.11 `@vue-spectrum/card`
   - Components: Card, CardView
-  - [ ] Story: Card.stories.ts
-  - [ ] Story: GalleryCardView.stories.ts
-  - [ ] Story: GridCardView.stories.ts
-  - [ ] Story: HorizontalCard.stories.ts
-  - [ ] Story: QuietCard.stories.ts
-  - [ ] Story: WaterfallCardView.stories.ts
-- [ ] 1.12 `@vue-spectrum/checkbox`
+  - [x] Story: Card.stories.ts
+  - [x] Story: GalleryCardView.stories.ts
+  - [x] Story: GridCardView.stories.ts
+  - [x] Story: HorizontalCard.stories.ts
+  - [x] Story: QuietCard.stories.ts
+  - [x] Story: WaterfallCardView.stories.ts
+- [x] 1.12 `@vue-spectrum/checkbox`
   - Components: Checkbox, CheckboxGroup
-  - [ ] Story: Checkbox.stories.ts
-  - [ ] Story: CheckboxGroup.stories.ts
-- [ ] 1.13 `@vue-spectrum/color`
+  - [x] Story: Checkbox.stories.ts
+  - [x] Story: CheckboxGroup.stories.ts
+- [x] 1.13 `@vue-spectrum/color`
   - Components: ColorArea, ColorEditor, ColorField, ColorPicker, ColorSlider, ColorSwatch, ColorSwatchPicker, ColorWheel
-  - [ ] Story: ColorArea.stories.ts
-  - [ ] Story: ColorField.stories.ts
-  - [ ] Story: ColorPicker.stories.ts
-  - [ ] Story: ColorSlider.stories.ts
-  - [ ] Story: ColorSwatch.stories.ts
-  - [ ] Story: ColorSwatchPicker.stories.ts
-  - [ ] Story: ColorThumb.stories.ts
-  - [ ] Story: ColorWheel.stories.ts
-- [ ] 1.14 `@vue-spectrum/combobox`
+  - [x] Story: ColorArea.stories.ts
+  - [x] Story: ColorField.stories.ts
+  - [x] Story: ColorPicker.stories.ts
+  - [x] Story: ColorSlider.stories.ts
+  - [x] Story: ColorSwatch.stories.ts
+  - [x] Story: ColorSwatchPicker.stories.ts
+  - [x] Story: ColorThumb.stories.ts
+  - [x] Story: ColorWheel.stories.ts
+- [x] 1.14 `@vue-spectrum/combobox`
   - Components: ComboBox
-  - [ ] Story: ComboBox.stories.ts
-- [ ] 1.15 `@vue-spectrum/contextualhelp`
+  - [x] Story: ComboBox.stories.ts
+- [x] 1.15 `@vue-spectrum/contextualhelp`
   - Components: ContextualHelp
-  - [ ] Story: ContextualHelp.stories.ts
-- [ ] 1.16 `@vue-spectrum/datepicker`
+  - [x] Story: ContextualHelp.stories.ts
+- [x] 1.16 `@vue-spectrum/datepicker`
   - Components: DateField, DatePicker, DateRangePicker, TimeField
-  - [ ] Story: DateField.stories.ts
-  - [ ] Story: DatePicker.stories.ts
-  - [ ] Story: DateRangePicker.stories.ts
-  - [ ] Story: DateRangePickerStyling.stories.ts
-  - [ ] Story: TimeField.stories.ts
-  - [ ] Story: TimeFieldStyling.stories.ts
-- [ ] 1.17 `@vue-spectrum/dialog`
+  - [x] Story: DateField.stories.ts
+  - [x] Story: DatePicker.stories.ts
+  - [x] Story: DateRangePicker.stories.ts
+  - [x] Story: DateRangePickerStyling.stories.ts
+  - [x] Story: TimeField.stories.ts
+  - [x] Story: TimeFieldStyling.stories.ts
+- [x] 1.17 `@vue-spectrum/dialog`
   - Components: AlertDialog, Dialog, DialogContainer, DialogTrigger
-  - [ ] Story: AlertDialog.stories.ts
-  - [ ] Story: Dialog.stories.ts
-  - [ ] Story: DialogContainer.stories.ts
-  - [ ] Story: DialogTrigger.stories.ts
-- [ ] 1.18 `@vue-spectrum/divider`
+  - [x] Story: AlertDialog.stories.ts
+  - [x] Story: Dialog.stories.ts
+  - [x] Story: DialogContainer.stories.ts
+  - [x] Story: DialogTrigger.stories.ts
+- [x] 1.18 `@vue-spectrum/divider`
   - Components: Divider
-  - [ ] Story: Divider.stories.ts
-- [ ] 1.19 `@vue-spectrum/dnd`
+  - [x] Story: Divider.stories.ts
+- [x] 1.19 `@vue-spectrum/dnd`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [ ] Story: (none)
-- [ ] 1.20 `@vue-spectrum/dropzone`
+  - [x] Story: (none)
+- [x] 1.20 `@vue-spectrum/dropzone`
   - Components: DropZone
-- [ ] Story: DropZone.stories.ts
-- [ ] 1.21 `@vue-spectrum/filetrigger`
+- [x] Story: DropZone.stories.ts
+- [x] 1.21 `@vue-spectrum/filetrigger`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [ ] Story: FileTrigger.stories.ts
-- [ ] 1.22 `@vue-spectrum/form`
+  - [x] Story: FileTrigger.stories.ts
+- [x] 1.22 `@vue-spectrum/form`
   - Components: Form
-  - [ ] Story: Form.stories.ts
-- [ ] 1.23 `@vue-spectrum/icon`
+  - [x] Story: Form.stories.ts
+- [x] 1.23 `@vue-spectrum/icon`
   - Components: Icon, Illustration, UIIcon
-  - [ ] Story: Icon.stories.ts
-  - [ ] Story: IconsColor.stories.ts
-  - [ ] Story: IconsExpress.stories.ts
-  - [ ] Story: IconsWorkflow.stories.ts
-  - [ ] `@spectrum-icons-vue/workflow` exports parity: `CalendarCheckColor` + export in package index
-- [ ] 1.24 `@vue-spectrum/illustratedmessage`
+  - [x] Story: Icon.stories.ts
+  - [x] Story: IconsColor.stories.ts
+  - [x] Story: IconsExpress.stories.ts
+  - [x] Story: IconsWorkflow.stories.ts
+  - [x] `@spectrum-icons-vue/workflow` exports parity: `CalendarCheckColor` + export in package index
+- [x] 1.24 `@vue-spectrum/illustratedmessage`
   - Components: IllustratedMessage
-  - [ ] Story: IllustratedMessage.stories.ts
-- [ ] 1.25 `@vue-spectrum/image`
+  - [x] Story: IllustratedMessage.stories.ts
+- [x] 1.25 `@vue-spectrum/image`
   - Components: Image
-  - [ ] Story: Image.stories.ts
-- [ ] 1.26 `@vue-spectrum/inlinealert`
+  - [x] Story: Image.stories.ts
+- [x] 1.26 `@vue-spectrum/inlinealert`
   - Components: InlineAlert
-  - [ ] Story: InlineAlert.stories.ts
-- [ ] 1.27 `@vue-spectrum/label`
+  - [x] Story: InlineAlert.stories.ts
+- [x] 1.27 `@vue-spectrum/label`
   - Components: Field, HelpText, Label
-  - [ ] Story: HelpText.stories.ts
-  - [ ] Story: Label.stories.ts
-- [ ] 1.28 `@vue-spectrum/labeledvalue`
+  - [x] Story: HelpText.stories.ts
+  - [x] Story: Label.stories.ts
+- [x] 1.28 `@vue-spectrum/labeledvalue`
   - Components: LabeledValue
-  - [ ] Story: LabeledValue.stories.ts
-- [ ] 1.29 `@vue-spectrum/layout`
+  - [x] Story: LabeledValue.stories.ts
+- [x] 1.29 `@vue-spectrum/layout`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [ ] Story: Flex.stories.ts
-  - [ ] Story: Grid.stories.ts
-- [ ] 1.30 `@vue-spectrum/link`
+  - [x] Story: Flex.stories.ts
+  - [x] Story: Grid.stories.ts
+- [x] 1.30 `@vue-spectrum/link`
   - Components: Link
-  - [ ] Story: Link.stories.ts
-- [ ] 1.31 `@vue-spectrum/list`
+  - [x] Story: Link.stories.ts
+- [x] 1.31 `@vue-spectrum/list`
   - Components: ListView
-  - [ ] Story: ListView.stories.ts
-  - [ ] Story: ListViewActions.stories.ts
-  - [ ] Story: ListViewDnD.stories.ts
-  - [ ] Story: ListViewDnDUtil.stories.ts
-  - [ ] Story: ListViewSelection.stories.ts
-- [ ] 1.32 `@vue-spectrum/listbox`
+  - [x] Story: ListView.stories.ts
+  - [x] Story: ListViewActions.stories.ts
+  - [x] Story: ListViewDnD.stories.ts
+  - [x] Story: ListViewDnDUtil.stories.ts
+  - [x] Story: ListViewSelection.stories.ts
+- [x] 1.32 `@vue-spectrum/listbox`
   - Components: ListBox, ListBoxBase
-  - [ ] Story: ListBox.stories.ts
-- [ ] 1.33 `@vue-spectrum/menu`
+  - [x] Story: ListBox.stories.ts
+- [x] 1.33 `@vue-spectrum/menu`
   - Components: ActionMenu, Menu, MenuTrigger
-  - [ ] Story: ActionMenu.stories.ts
-  - [ ] Story: MenuTrigger.stories.ts
-  - [ ] Story: Submenu.stories.ts
-- [ ] 1.34 `@vue-spectrum/meter`
+  - [x] Story: ActionMenu.stories.ts
+  - [x] Story: MenuTrigger.stories.ts
+  - [x] Story: Submenu.stories.ts
+- [x] 1.34 `@vue-spectrum/meter`
   - Components: Meter
-  - [ ] Story: Meter.stories.ts
-- [ ] 1.35 `@vue-spectrum/numberfield`
+  - [x] Story: Meter.stories.ts
+- [x] 1.35 `@vue-spectrum/numberfield`
   - Components: NumberField
-  - [ ] Story: NumberField.stories.ts
-- [ ] 1.36 `@vue-spectrum/overlays`
+  - [x] Story: NumberField.stories.ts
+- [x] 1.36 `@vue-spectrum/overlays`
   - Components: Modal, OpenTransition, Overlay, Popover, Tray, Underlay
-  - [ ] Story: Modal.stories.ts
-- [ ] 1.37 `@vue-spectrum/picker`
+  - [x] Story: Modal.stories.ts
+- [x] 1.37 `@vue-spectrum/picker`
   - Components: Picker
-  - [ ] Story: Picker.stories.ts
-- [ ] 1.38 `@vue-spectrum/progress`
+  - [x] Story: Picker.stories.ts
+- [x] 1.38 `@vue-spectrum/progress`
   - Components: ProgressBar, ProgressBarBase, ProgressCircle
-  - [ ] Story: ProgressBar.stories.ts
-  - [ ] Story: ProgressCircle.stories.ts
-- [ ] 1.39 `@vue-spectrum/provider`
+  - [x] Story: ProgressBar.stories.ts
+  - [x] Story: ProgressCircle.stories.ts
+- [x] 1.39 `@vue-spectrum/provider`
   - Components: Provider
-  - [ ] Story: Provider.stories.ts
-- [ ] 1.40 `@vue-spectrum/radio`
+  - [x] Story: Provider.stories.ts
+- [x] 1.40 `@vue-spectrum/radio`
   - Components: Radio, RadioGroup
-  - [ ] Story: Radio.stories.ts
-- [ ] 1.41 `@vue-spectrum/s2`
+  - [x] Story: Radio.stories.ts
+- [x] 1.41 `@vue-spectrum/s2`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [ ] Story: (none)
-- [ ] 1.42 `@vue-spectrum/searchfield`
+  - [x] Story: (none)
+- [x] 1.42 `@vue-spectrum/searchfield`
   - Components: SearchField
-  - [ ] Story: SearchField.stories.ts
-- [ ] 1.43 `@vue-spectrum/slider`
+  - [x] Story: SearchField.stories.ts
+- [x] 1.43 `@vue-spectrum/slider`
   - Components: RangeSlider, Slider
-  - [ ] Story: RangeSlider.stories.ts
-  - [ ] Story: Slider.stories.ts
-- [ ] 1.44 `@vue-spectrum/statuslight`
+  - [x] Story: RangeSlider.stories.ts
+  - [x] Story: Slider.stories.ts
+- [x] 1.44 `@vue-spectrum/statuslight`
   - Components: StatusLight
-  - [ ] Story: StatusLight.stories.ts
-- [ ] 1.45 `@vue-spectrum/steplist`
+  - [x] Story: StatusLight.stories.ts
+- [x] 1.45 `@vue-spectrum/steplist`
   - Components: VueStepList
-  - [ ] Story: StepList.stories.ts
-- [ ] 1.46 `@vue-spectrum/story-utils`
+  - [x] Story: StepList.stories.ts
+- [x] 1.46 `@vue-spectrum/story-utils`
   - Components: VueErrorBoundary
-  - [ ] Story: (none)
-- [ ] 1.47 `@vue-spectrum/style-macro-s1`
+  - [x] Story: (none)
+- [x] 1.47 `@vue-spectrum/style-macro-s1`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [ ] Story: StyleMacro.stories.ts
-- [ ] 1.48 `@vue-spectrum/switch`
+  - [x] Story: StyleMacro.stories.ts
+- [x] 1.48 `@vue-spectrum/switch`
   - Components: Switch
-  - [ ] Story: Switch.stories.ts
-- [ ] 1.49 `@vue-spectrum/table`
+  - [x] Story: Switch.stories.ts
+- [x] 1.49 `@vue-spectrum/table`
   - Components: Table, TableView
-  - [ ] Story: Table.stories.ts
-  - [ ] Story: TableDnD.stories.ts
-  - [ ] Story: TableDnDUtil.stories.ts
-  - [ ] Story: TreeGridTable.stories.ts
-- [ ] 1.50 `@vue-spectrum/tabs`
+  - [x] Story: Table.stories.ts
+  - [x] Story: TableDnD.stories.ts
+  - [x] Story: TableDnDUtil.stories.ts
+  - [x] Story: TreeGridTable.stories.ts
+- [x] 1.50 `@vue-spectrum/tabs`
   - Components: TabList, TabPanels, VueTabs
-  - [ ] Story: Tabs.stories.ts
-- [ ] 1.51 `@vue-spectrum/tag`
+  - [x] Story: Tabs.stories.ts
+- [x] 1.51 `@vue-spectrum/tag`
   - Components: VueTagGroup
-  - [ ] Story: TagGroup.stories.ts
-- [ ] 1.52 `@vue-spectrum/test-utils`
+  - [x] Story: TagGroup.stories.ts
+- [x] 1.52 `@vue-spectrum/test-utils`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [ ] Story: (none)
-- [ ] 1.53 `@vue-spectrum/text`
+  - [x] Story: (none)
+- [x] 1.53 `@vue-spectrum/text`
   - Components: Heading, Keyboard, Text
-  - [ ] Story: (none)
-- [ ] 1.54 `@vue-spectrum/textfield`
+  - [x] Story: (none)
+- [x] 1.54 `@vue-spectrum/textfield`
   - Components: TextFieldBase
-  - [ ] Story: TextArea.stories.ts
-  - [ ] Story: TextField.stories.ts
-- [ ] 1.55 `@vue-spectrum/theme-dark`
+  - [x] Story: TextArea.stories.ts
+  - [x] Story: TextField.stories.ts
+- [x] 1.55 `@vue-spectrum/theme-dark`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [ ] Story: (none)
-- [ ] 1.56 `@vue-spectrum/theme-default`
+  - [x] Story: (none)
+- [x] 1.56 `@vue-spectrum/theme-default`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [ ] Story: (none)
-- [ ] 1.57 `@vue-spectrum/theme-express`
+  - [x] Story: (none)
+- [x] 1.57 `@vue-spectrum/theme-express`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [ ] Story: (none)
-- [ ] 1.58 `@vue-spectrum/theme-light`
+  - [x] Story: (none)
+- [x] 1.58 `@vue-spectrum/theme-light`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [ ] Story: (none)
-- [ ] 1.59 `@vue-spectrum/toast`
+  - [x] Story: (none)
+- [x] 1.59 `@vue-spectrum/toast`
   - Components: VueToastContainer
-  - [ ] Story: Toast.stories.ts
-- [ ] 1.60 `@vue-spectrum/tooltip`
+  - [x] Story: Toast.stories.ts
+- [x] 1.60 `@vue-spectrum/tooltip`
   - Components: VueTooltip, VueTooltipTrigger
-  - [ ] Story: Tooltip.stories.ts
-  - [ ] Story: TooltipTrigger.stories.ts
+  - [x] Story: Tooltip.stories.ts
+  - [x] Story: TooltipTrigger.stories.ts
 - [x] 1.61 `@vue-spectrum/tree`
   - Components: Tree, TreeView, TreeViewItem, TreeViewItemContent
   - [x] Story: TreeView.stories.ts
-- [ ] 1.62 `@vue-spectrum/utils`
+- [x] 1.62 `@vue-spectrum/utils`
   - Components: BreakpointProvider, ClearSlots, SlotProvider
-  - [ ] Story: (none)
-- [ ] 1.63 `@vue-spectrum/view`
+  - [x] Story: (none)
+- [x] 1.63 `@vue-spectrum/view`
   - Components: (no `defineComponent` exports detected in `src`)
-  - [ ] Story: View.stories.ts
-- [ ] 1.64 `@vue-spectrum/well`
+  - [x] Story: View.stories.ts
+- [x] 1.64 `@vue-spectrum/well`
   - Components: Well
-  - [ ] Story: Well.stories.ts
+  - [x] Story: Well.stories.ts
 
 ## Phase 2 - vue-aria-components (Component Wrappers + Stories)
-- [ ] 2.01 `vue-aria-components/src/components`
-  - [ ] Component: VueAccordion.ts
-  - [ ] Component: VueActionBar.ts
-  - [ ] Component: VueActionGroup.ts
-  - [ ] Component: VueAvatar.ts
-  - [ ] Component: VueBadge.ts
-  - [ ] Component: VueBreadcrumbs.ts
-  - [ ] Component: VueButton.ts
-  - [ ] Component: VueButtonGroup.ts
-  - [ ] Component: VueCalendar.ts
-  - [ ] Component: VueCard.ts
-  - [ ] Component: VueCheckbox.ts
-  - [ ] Component: VueColor.ts
-  - [ ] Component: VueComboBox.ts
-  - [ ] Component: VueContextualHelp.ts
-  - [ ] Component: VueDatePicker.ts
-  - [ ] Component: VueDialog.ts
-  - [ ] Component: VueDivider.ts
-  - [ ] Component: VueDropZone.ts
-  - [ ] Component: VueFileTrigger.ts
-  - [ ] Component: VueFlex.ts
-  - [ ] Component: VueForm.ts
-  - [ ] Component: VueGrid.ts
-  - [ ] Component: VueIcon.ts
-  - [ ] Component: VueIllustratedMessage.ts
-  - [ ] Component: VueImage.ts
-  - [ ] Component: VueInlineAlert.ts
-  - [ ] Component: VueLabel.ts
-  - [ ] Component: VueLabeledValue.ts
-  - [ ] Component: VueLink.ts
-  - [ ] Component: VueListBox.ts
-  - [ ] Component: VueMenu.ts
-  - [ ] Component: VueMeter.ts
-  - [ ] Component: VueNumberField.ts
-  - [ ] Component: VuePicker.ts
-  - [ ] Component: VuePopover.ts
-  - [ ] Component: VueProgressBar.ts
-  - [ ] Component: VueRadioGroup.ts
-  - [ ] Component: VueSearchField.ts
-  - [ ] Component: VueSlider.ts
-  - [ ] Component: VueSpectrumProvider.ts
-  - [ ] Component: VueStatusLight.ts
-  - [ ] Component: VueSwitch.ts
-  - [ ] Component: VueTable.ts
-  - [ ] Component: VueText.ts
-  - [ ] Component: VueTextField.ts
-  - [ ] Component: VueTree.ts
-  - [ ] Component: VueView.ts
-  - [ ] Component: VueWell.ts
-- [ ] 2.02 `vue-aria-components/stories`
-  - [ ] Story: Autocomplete.stories.ts
-  - [ ] Story: Breadcrumbs.stories.ts
-  - [ ] Story: Button.stories.ts
-  - [ ] Story: Calendar.stories.ts
-  - [ ] Story: Checkbox.stories.ts
-  - [ ] Story: CheckboxGroup.stories.ts
-  - [ ] Story: ColorArea.stories.ts
-  - [ ] Story: ColorField.stories.ts
-  - [ ] Story: ColorPicker.stories.ts
-  - [ ] Story: ColorSlider.stories.ts
-  - [ ] Story: ColorSwatch.stories.ts
-  - [ ] Story: ColorWheel.stories.ts
-  - [ ] Story: ComboBox.stories.ts
-  - [ ] Story: ComboBoxReproductions.stories.ts
-  - [ ] Story: DateField.stories.ts
-  - [ ] Story: DatePicker.stories.ts
-  - [ ] Story: Disclosure.stories.ts
-  - [ ] Story: DisclosureGroup.stories.ts
-  - [ ] Story: Dropzone.stories.ts
-  - [ ] Story: FileTrigger.stories.ts
-  - [ ] Story: FocusScope.stories.ts
-  - [ ] Story: Form.stories.ts
-  - [ ] Story: GridList.stories.ts
-  - [ ] Story: Landmark.stories.ts
-  - [ ] Story: Link.stories.ts
-  - [ ] Story: ListBox.stories.ts
-  - [ ] Story: Menu.stories.ts
-  - [ ] Story: Meter.stories.ts
-  - [ ] Story: Modal.stories.ts
-  - [ ] Story: NumberField.stories.ts
-  - [ ] Story: Popover.stories.ts
-  - [ ] Story: ProgressBar.stories.ts
-  - [ ] Story: RadioGroup.stories.ts
-  - [ ] Story: SearchField.stories.ts
-  - [ ] Story: Select.stories.ts
-  - [ ] Story: Slider.stories.ts
-  - [ ] Story: SliderHooks.stories.ts
-  - [ ] Story: Switch.stories.ts
-  - [ ] Story: Table.stories.ts
-  - [ ] Story: Tabs.stories.ts
-  - [ ] Story: TagGroup.stories.ts
-  - [ ] Story: TextField.stories.ts
-  - [ ] Story: TimeField.stories.ts
-  - [ ] Story: ToggleButton.stories.ts
-  - [ ] Story: Toolbar.stories.ts
-  - [ ] Story: Tooltip.stories.ts
-  - [ ] Story: Tree.stories.ts
-  - [ ] Story: UseOverlayPosition.stories.ts
-  - [ ] Story: animations.stories.ts
-  - [ ] Story: dnd.stories.ts
-  - [ ] Story: platform.stories.ts
-  - [ ] Story: useButton.stories.ts
+- [x] 2.01 `vue-aria-components/src/components`
+  - [x] Component: VueAccordion.ts
+  - [x] Component: VueActionBar.ts
+  - [x] Component: VueActionGroup.ts
+  - [x] Component: VueAvatar.ts
+  - [x] Component: VueBadge.ts
+  - [x] Component: VueBreadcrumbs.ts
+  - [x] Component: VueButton.ts
+  - [x] Component: VueButtonGroup.ts
+  - [x] Component: VueCalendar.ts
+  - [x] Component: VueCard.ts
+  - [x] Component: VueCheckbox.ts
+  - [x] Component: VueColor.ts
+  - [x] Component: VueComboBox.ts
+  - [x] Component: VueContextualHelp.ts
+  - [x] Component: VueDatePicker.ts
+  - [x] Component: VueDialog.ts
+  - [x] Component: VueDivider.ts
+  - [x] Component: VueDropZone.ts
+  - [x] Component: VueFileTrigger.ts
+  - [x] Component: VueFlex.ts
+  - [x] Component: VueForm.ts
+  - [x] Component: VueGrid.ts
+  - [x] Component: VueIcon.ts
+  - [x] Component: VueIllustratedMessage.ts
+  - [x] Component: VueImage.ts
+  - [x] Component: VueInlineAlert.ts
+  - [x] Component: VueLabel.ts
+  - [x] Component: VueLabeledValue.ts
+  - [x] Component: VueLink.ts
+  - [x] Component: VueListBox.ts
+  - [x] Component: VueMenu.ts
+  - [x] Component: VueMeter.ts
+  - [x] Component: VueNumberField.ts
+  - [x] Component: VuePicker.ts
+  - [x] Component: VuePopover.ts
+  - [x] Component: VueProgressBar.ts
+  - [x] Component: VueRadioGroup.ts
+  - [x] Component: VueSearchField.ts
+  - [x] Component: VueSlider.ts
+  - [x] Component: VueSpectrumProvider.ts
+  - [x] Component: VueStatusLight.ts
+  - [x] Component: VueSwitch.ts
+  - [x] Component: VueTable.ts
+  - [x] Component: VueText.ts
+  - [x] Component: VueTextField.ts
+  - [x] Component: VueTree.ts
+  - [x] Component: VueView.ts
+  - [x] Component: VueWell.ts
+- [x] 2.02 `vue-aria-components/stories`
+  - [x] Story: Autocomplete.stories.ts
+  - [x] Story: Breadcrumbs.stories.ts
+  - [x] Story: Button.stories.ts
+  - [x] Story: Calendar.stories.ts
+  - [x] Story: Checkbox.stories.ts
+  - [x] Story: CheckboxGroup.stories.ts
+  - [x] Story: ColorArea.stories.ts
+  - [x] Story: ColorField.stories.ts
+  - [x] Story: ColorPicker.stories.ts
+  - [x] Story: ColorSlider.stories.ts
+  - [x] Story: ColorSwatch.stories.ts
+  - [x] Story: ColorWheel.stories.ts
+  - [x] Story: ComboBox.stories.ts
+  - [x] Story: ComboBoxReproductions.stories.ts
+  - [x] Story: DateField.stories.ts
+  - [x] Story: DatePicker.stories.ts
+  - [x] Story: Disclosure.stories.ts
+  - [x] Story: DisclosureGroup.stories.ts
+  - [x] Story: Dropzone.stories.ts
+  - [x] Story: FileTrigger.stories.ts
+  - [x] Story: FocusScope.stories.ts
+  - [x] Story: Form.stories.ts
+  - [x] Story: GridList.stories.ts
+  - [x] Story: Landmark.stories.ts
+  - [x] Story: Link.stories.ts
+  - [x] Story: ListBox.stories.ts
+  - [x] Story: Menu.stories.ts
+  - [x] Story: Meter.stories.ts
+  - [x] Story: Modal.stories.ts
+  - [x] Story: NumberField.stories.ts
+  - [x] Story: Popover.stories.ts
+  - [x] Story: ProgressBar.stories.ts
+  - [x] Story: RadioGroup.stories.ts
+  - [x] Story: SearchField.stories.ts
+  - [x] Story: Select.stories.ts
+  - [x] Story: Slider.stories.ts
+  - [x] Story: SliderHooks.stories.ts
+  - [x] Story: Switch.stories.ts
+  - [x] Story: Table.stories.ts
+  - [x] Story: Tabs.stories.ts
+  - [x] Story: TagGroup.stories.ts
+  - [x] Story: TextField.stories.ts
+  - [x] Story: TimeField.stories.ts
+  - [x] Story: ToggleButton.stories.ts
+  - [x] Story: Toolbar.stories.ts
+  - [x] Story: Tooltip.stories.ts
+  - [x] Story: Tree.stories.ts
+  - [x] Story: UseOverlayPosition.stories.ts
+  - [x] Story: animations.stories.ts
+  - [x] Story: dnd.stories.ts
+  - [x] Story: platform.stories.ts
+  - [x] Story: useButton.stories.ts
   - [x] Story: useCalendar.stories.ts
   - [x] Story: useCheckbox.stories.ts
   - [x] Story: useComboBox.stories.ts
   - [x] Story: useDatePicker.stories.ts
-  - [ ] Story: useField.stories.ts
-  - [ ] Story: useFocusRing.stories.ts
+  - [x] Story: useField.stories.ts
+  - [x] Story: useFocusRing.stories.ts
   - [x] Story: useGrid.stories.ts
   - [x] Story: useHover.stories.ts
   - [x] Story: useId.stories.ts
   - [x] Story: useInteractOutside.stories.ts
   - [x] Story: useMenu.stories.ts
   - [x] Story: useModal.stories.ts
-  - [ ] Story: useMove.stories.ts
+  - [x] Story: useMove.stories.ts
   - [x] Story: usePress.stories.ts
   - [x] Story: usePreventScroll.stories.ts
   - [x] Story: useSelect.stories.ts
@@ -374,8 +374,8 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - [x] Story: useTable.stories.ts
   - [x] Story: useTextField.stories.ts
   - [x] Story: useToast.stories.ts
-  - [ ] Story: useTreeState.stories.ts
-  - [ ] Story: useViewportSize.stories.ts
+  - [x] Story: useTreeState.stories.ts
+  - [x] Story: useViewportSize.stories.ts
 
 ## Phase 3 - @vue-aria Composables + Hook Stories
 - [x] 3.actiongroup `@vue-aria/actiongroup`
@@ -586,11 +586,11 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - [x] Story: useViewportSize.stories.ts
 
 ## Phase 4 - Sign-off
-- [ ] Keep checklist status up to date for each completed item
-- [ ] Re-run full gate after each component family cluster
+- [x] Keep checklist status up to date for each completed item
+- [x] Re-run full gate after each component family cluster
 
 ## Problems To Fix (Scan 2026-03-01, Sorted By Priority)
-- [ ] P0: No blocking gate failures found in this scan (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook` all exited successfully).
+- [x] P0: No blocking gate failures found in this scan (`yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook` all exited successfully).
 
 ---
 Checklist stats:
