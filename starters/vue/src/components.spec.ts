@@ -5763,15 +5763,15 @@ describe('Vue migration primitives', () => {
 
     expect(wrapper.classes()).toContain('spectrum-Table');
     expect((wrapper.element as HTMLElement).style.width).toBe('420px');
-    expect(wrapper.get('thead.vs-table__head').classes()).toContain('spectrum-Table-headWrapper');
-    expect(wrapper.get('tbody.vs-table__body').classes()).toContain('spectrum-Table-body');
-    expect(wrapper.get('th.vs-table__head-cell').classes()).toContain('is-sortable');
-    expect(wrapper.get('th.vs-table__head-cell').classes()).toContain('is-sorted-asc');
+    expect(wrapper.get('.vs-table__head').classes()).toContain('spectrum-Table-headWrapper');
+    expect(wrapper.get('.vs-table__body').classes()).toContain('spectrum-Table-body');
+    expect(wrapper.get('.vs-table__head-cell').classes()).toContain('is-sortable');
+    expect(wrapper.get('.vs-table__head-cell').classes()).toContain('is-sorted-asc');
     expect(wrapper.get('button.vs-table__sort-button').classes()).toContain('spectrum-Table-headCellButton');
 
-    let rows = wrapper.findAll('tr.vs-table__row');
+    let rows = wrapper.findAll('.vs-table__body .vs-table__row');
     expect(rows[0].classes()).toContain('is-selected');
-    expect(rows[0].attributes('aria-rowindex')).toBe('1');
+    expect(rows[0].attributes('aria-rowindex')).toBe('2');
     expect(rows[0].attributes('aria-selected')).toBe('true');
     expect(rows[1].classes()).toContain('is-open');
     expect(rows[1].get('.vs-table__open-toggle').classes()).toContain('is-open');
@@ -5874,11 +5874,11 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let selectAll = wrapper.get('thead .vs-table__selection-checkbox input');
-    let rowSelection = wrapper.findAll('tbody.vs-table__body .vs-table__selection-checkbox input');
+    let selectAll = wrapper.get('.vs-table__head .vs-table__selection-checkbox input');
+    let rowSelection = wrapper.findAll('.vs-table__body .vs-table__selection-checkbox input');
     expect(rowSelection).toHaveLength(2);
-    expect(wrapper.findAll('th.vs-table__head-cell--selection')).toHaveLength(1);
-    expect(wrapper.get('thead .vs-table__selection-checkbox').classes()).toContain('spectrum-Table-checkbox');
+    expect(wrapper.findAll('.vs-table__head-cell--selection')).toHaveLength(1);
+    expect(wrapper.get('.vs-table__head .vs-table__selection-checkbox').classes()).toContain('spectrum-Table-checkbox');
 
     await selectAll.setValue(true);
     let selectAllUpdate = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
@@ -5909,14 +5909,14 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let rows = wrapper.findAll('tbody.vs-table__body tr.vs-table__row');
+    let rows = wrapper.findAll('.vs-table__body .vs-table__row');
     expect(rows[1].classes()).toContain('is-disabled');
     expect(rows[1].attributes('tabindex')).toBe('-1');
 
-    let rowSelection = wrapper.findAll('tbody.vs-table__body .vs-table__selection-checkbox input');
+    let rowSelection = wrapper.findAll('.vs-table__body .vs-table__selection-checkbox input');
     expect(rowSelection[1].attributes('disabled')).toBeDefined();
 
-    let selectAll = wrapper.get('thead .vs-table__selection-checkbox input');
+    let selectAll = wrapper.get('.vs-table__head .vs-table__selection-checkbox input');
     await selectAll.setValue(true);
     let disabledSelectAllUpdate = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
     expect(disabledSelectAllUpdate).toBeInstanceOf(Set);
@@ -5944,7 +5944,7 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let rows = wrapper.findAll('tbody.vs-table__body tr.vs-table__row');
+    let rows = wrapper.findAll('.vs-table__body .vs-table__row');
     expect(rows[0].classes()).toContain('is-selected');
     expect(rows[1].classes()).not.toContain('is-selected');
     expect(rows[2].classes()).toContain('is-selected');
@@ -5972,7 +5972,7 @@ describe('Vue migration primitives', () => {
 
     expect(wrapper.attributes('data-loading-state')).toBe('loadingMore');
     expect(wrapper.findAll('.spectrum-Table-cell--divider').length).toBeGreaterThan(0);
-    expect(wrapper.get('th.vs-table__head-cell').attributes('style') ?? '').toContain('width: 240px');
+    expect((wrapper.get('.vs-table__head-cell').element.parentElement?.getAttribute('style')) ?? '').toContain('width: 240px');
 
     let link = wrapper.get('a.vs-table__cell-link');
     expect(link.attributes('href')).toBe('https://react-spectrum.adobe.com');

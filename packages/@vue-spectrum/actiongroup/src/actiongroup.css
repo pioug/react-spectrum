@@ -1,6 +1,5 @@
 .vs-spectrum-action-group__wrapper {
   min-width: 0;
-  position: relative;
 }
 
 .vs-spectrum-action-group {
@@ -53,4 +52,10 @@
 
 .spectrum-ActionGroup-item--iconOnly .spectrum-ActionButton-label {
   display: none;
+}
+
+/* Match React slot icon sizing inside ActionGroup action buttons. */
+.spectrum-ActionGroup-item .vs-workflow-icon.spectrum-Icon--sizeM {
+  block-size: var(--spectrum-alias-workflow-icon-size);
+  inline-size: var(--spectrum-alias-workflow-icon-size);
 }

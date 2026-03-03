@@ -115,6 +115,12 @@ export function calculateVisibleItemsForCollapse({
     }
   }
 
+  // Match React ActionGroup collapse behavior by always keeping at least one action visible
+  // when selection is not enabled, even in very constrained layouts.
+  if (selectionMode === 'none' && visibleItems === 0 && itemSizes.length > 0) {
+    return 1;
+  }
+
   if (selectionMode !== 'none' && visibleItems < itemSizes.length) {
     return 0;
   }
@@ -573,7 +579,7 @@ export const ActionGroup = defineComponent({
 
     return () => h('div', {
       ref: wrapperRef,
-      class: ['flex-container', 'vs-spectrum-action-group__wrapper']
+      class: ['flex-container', 'vs-spectrum-action-group__wrapper', attrs.class]
     }, [
       h('div', {
         ...attrs,

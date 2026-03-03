@@ -31,12 +31,17 @@
   min-width: 0;
 }
 
-.vs-table__table {
-  inline-size: 100%;
+.vs-table__cell-wrapper {
+  display: inline-block;
+  min-width: 0;
+  vertical-align: top;
 }
 
-.vs-table:not(.spectrum-Table--quiet) .vs-table__table {
-  inline-size: calc(100% - var(--spectrum-table-border-size, 1px));
+.vs-table__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 .vs-table__head-cell--selection,
@@ -54,15 +59,9 @@
   margin: 0;
 }
 
-.vs-table__head-row {
-  display: table-row;
-}
-
 .vs-table__head-cell {
-  display: table-cell;
   padding-top: 0;
   padding-bottom: 0;
-  vertical-align: middle;
 }
 
 .vs-table__head-cell-content {
@@ -82,6 +81,10 @@
 .vs-table__row.spectrum-Table-row.is-selected {
   background: transparent;
   background-color: transparent;
+}
+
+.vs-table__cell {
+  border: 0;
 }
 
 .react-spectrum-Table-cell {

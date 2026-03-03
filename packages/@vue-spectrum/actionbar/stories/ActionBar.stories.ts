@@ -22,9 +22,9 @@ type TableRow = {
 };
 
 const columns = [
-  {label: 'Foo', key: 'foo', width: 75},
-  {label: 'Bar', key: 'bar', width: 75},
-  {label: 'Baz', key: 'baz', width: 75}
+  {label: 'Foo', key: 'foo'},
+  {label: 'Bar', key: 'bar'},
+  {label: 'Baz', key: 'baz'}
 ];
 
 const defaultRows: TableRow[] = Array.from({length: 16}, (_unused, index) => {

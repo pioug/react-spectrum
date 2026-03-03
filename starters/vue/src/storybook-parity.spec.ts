@@ -1616,7 +1616,7 @@ describe('Vue storybook helper parity', () => {
 
       expect(wrapper.find('.react-spectrum-ActionBar').exists()).toBe(false);
 
-      let rowSelection = wrapper.findAll('tbody.vs-table__body .vs-table__selection-checkbox input');
+      let rowSelection = wrapper.findAll('.vs-table__body .vs-table__selection-checkbox input');
       await rowSelection[0].setValue(true);
       await nextTick();
       expect(wrapper.get('.react-spectrum-ActionBar').exists()).toBe(true);
@@ -3298,7 +3298,7 @@ describe('Vue storybook helper parity', () => {
       let disabledStory = TableDynamicWithDisabledKeys.render?.({...disabledArgs}) as ReturnType<Exclude<typeof TableDynamicWithDisabledKeys.render, undefined>>;
       let disabledWrapper = mount(disabledStory);
       wrappers.push(disabledWrapper);
-      let disabledRows = disabledWrapper.findAll('tr.vs-table__row.is-disabled');
+      let disabledRows = disabledWrapper.findAll('.vs-table__row.is-disabled');
       expect(disabledRows).toHaveLength(2);
       expect(disabledRows.map((row) => row.find('.vs-table__cell-text').text())).toEqual(expect.arrayContaining(['Foo 2', 'Foo 4']));
       expect(disabledWrapper.emitted('update:modelValue')).toBeUndefined();
@@ -3315,7 +3315,7 @@ describe('Vue storybook helper parity', () => {
       }) as ReturnType<Exclude<typeof TableDynamicWithDisabledKeys.render, undefined>>;
       let openSetWrapper = mount(openSetStory);
       wrappers.push(openSetWrapper);
-      let openRows = openSetWrapper.findAll('tr.vs-table__row.is-open');
+      let openRows = openSetWrapper.findAll('.vs-table__row.is-open');
       expect(openRows).toHaveLength(1);
       expect(openRows[0].find('.vs-table__cell-text').text()).toBe('Parent row');
       expect(openRows[0].get('.vs-table__open-toggle').classes()).toContain('is-open');
@@ -3329,7 +3329,7 @@ describe('Vue storybook helper parity', () => {
       }) as ReturnType<Exclude<typeof TableDynamicSelectedKeys.render, undefined>>;
       let selectedSetWrapper = mount(selectedSetStory);
       wrappers.push(selectedSetWrapper);
-      let selectedRows = selectedSetWrapper.findAll('tr.vs-table__row.is-selected');
+      let selectedRows = selectedSetWrapper.findAll('.vs-table__row.is-selected');
       expect(selectedRows).toHaveLength(2);
       expect(selectedRows.map((row) => row.find('.vs-table__cell-text').text())).toEqual(expect.arrayContaining(['Foo 2', 'Foo 4']));
 
@@ -3344,7 +3344,7 @@ describe('Vue storybook helper parity', () => {
       let widthStory = TableColumnWidthsAndDividers.render?.({...widthArgs}) as ReturnType<Exclude<typeof TableColumnWidthsAndDividers.render, undefined>>;
       let widthWrapper = mount(widthStory);
       wrappers.push(widthWrapper);
-      expect(widthWrapper.find('th.vs-table__head-cell').attributes('style') ?? '').toContain('width');
+      expect((widthWrapper.find('.vs-table__head-cell').element.parentElement?.getAttribute('style')) ?? '').toContain('width');
 
       let focusArgs = (TableFocusableCells as {args?: Record<string, unknown>}).args ?? {};
       let focusStory = TableFocusableCells.render?.({...focusArgs}) as ReturnType<Exclude<typeof TableFocusableCells.render, undefined>>;
@@ -3390,7 +3390,7 @@ describe('Vue storybook helper parity', () => {
     let wrapper = mount(treeGridStory);
 
     try {
-      let openRows = wrapper.findAll('tr.vs-table__row.is-open');
+      let openRows = wrapper.findAll('.vs-table__row.is-open');
       expect(openRows).toHaveLength(1);
       expect(openRows[0].find('.vs-table__cell-text').text()).toBe('Lvl 1 Foo 1');
       expect(openRows[0].get('.vs-table__open-toggle').classes()).toContain('is-open');

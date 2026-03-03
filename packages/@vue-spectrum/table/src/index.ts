@@ -480,6 +480,9 @@ export const Table = defineComponent({
     return () => {
       let tableWidth = toCssSize(props.width);
       let tableHeight = toCssSize(props.height);
+      let defaultAutoColumnWidth = props.columns.length > 0
+        ? `calc((100% - ${hasMultipleSelection.value ? 38 : 0}px) / ${props.columns.length})`
+        : undefined;
       let rootClassName = classNames(
         styles,
         'spectrum-Table',
@@ -491,11 +494,142 @@ export const Table = defineComponent({
           'is-disabled': props.isDisabled
         }
       );
+      let headerRowHeight = 34;
+      let bodyRowHeight = 40;
+      let bodyRowOuterHeight = bodyRowHeight + 1;
+      let selectionColumnWidth = hasMultipleSelection.value ? 38 : 0;
+      let tableContentWidth = tableWidth != null
+        ? (props.isQuiet ? tableWidth : `calc(${tableWidth} - 2px)`)
+        : '100%';
+      let selectionColumnLeft = `${selectionColumnWidth}px`;
+      let headWrapperStyle = {
+        height: `${headerRowHeight}px`,
+        overflow: 'hidden',
+        position: 'relative',
+        scrollPaddingInlineStart: selectionColumnLeft
+      };
+      let headRowgroupStyle = {
+        position: 'sticky',
+        display: 'inline-block',
+        overflow: 'visible',
+        opacity: 1,
+        zIndex: 1,
+        contain: 'size layout style',
+        top: '0px',
+        left: '0px',
+        width: tableContentWidth,
+        height: `${headerRowHeight}px`
+      };
+      let headRowStyle = {
+        position: 'absolute',
+        overflow: 'visible',
+        opacity: 1,
+        zIndex: 0,
+        contain: 'size layout style',
+        top: '0px',
+        left: '0px',
+        width: tableContentWidth,
+        height: `${headerRowHeight}px`
+      };
+      let selectionHeadWrapperStyle = {
+        position: 'sticky',
+        display: 'inline-block',
+        overflow: 'visible',
+        opacity: 1,
+        zIndex: props.columns.length + 2,
+        contain: 'size layout style',
+        top: '0px',
+        left: '0px',
+        width: `${selectionColumnWidth}px`,
+        height: `${headerRowHeight}px`
+      };
+      let selectionBodyWrapperStyle = {
+        position: 'sticky',
+        display: 'inline-block',
+        overflow: 'visible',
+        opacity: 1,
+        zIndex: 2,
+        contain: 'size layout style',
+        top: '0px',
+        left: '0px',
+        width: `${selectionColumnWidth}px`,
+        height: `${bodyRowHeight}px`
+      };
+      let columnLayouts = (() => {
+        let left = selectionColumnLeft;
+        return props.columns.map((column) => {
+          let width = toCssSize(column.width) ?? defaultAutoColumnWidth;
+          let minWidth = toCssSize(column.minWidth);
+          let maxWidth = toCssSize(column.maxWidth);
+          let next = {
+            left,
+            maxWidth,
+            minWidth,
+            width
+          };
+          left = `calc(${left} + ${width})`;
+          return next;
+        });
+      })();
+      let getBodyRowStyle = (rowIndex: number) => ({
+        position: 'absolute',
+        overflow: 'visible',
+        opacity: 1,
+        zIndex: 0,
+        contain: 'size layout style',
+        top: `${rowIndex * bodyRowOuterHeight}px`,
+        left: '0px',
+        width: tableContentWidth,
+        height: `${bodyRowOuterHeight}px`
+      });
+      let bodyRowCount = renderedRows.value.length === 0
+        ? 1
+        : renderedRows.value.length + (props.loadingState === 'loadingMore' ? 1 : 0);
+      let bodyContentHeight = `${Math.max(1, bodyRowCount) * bodyRowOuterHeight}px`;
+      let bodyScrollerStyle = {
+        padding: '0px',
+        flex: '1 1 0%',
+        scrollPaddingInlineStart: selectionColumnLeft,
+        overflow: 'hidden auto'
+      };
+      let bodyLayoutStyle = {
+        width: tableContentWidth,
+        height: bodyContentHeight,
+        pointerEvents: 'auto',
+        position: 'relative',
+        overflow: 'visible'
+      };
+      let bodyRowsLayerStyle = {
+        position: 'absolute',
+        overflow: 'visible',
+        opacity: 1,
+        zIndex: 0,
+        contain: 'size layout style',
+        top: '0px',
+        left: '0px',
+        width: tableContentWidth,
+        height: bodyContentHeight
+      };
+      let fullWidthBodyCellWrapperStyle = {
+        position: 'absolute',
+        overflow: 'visible',
+        opacity: 1,
+        zIndex: 1,
+        contain: 'size layout style',
+        top: '0px',
+        left: '0px',
+        width: tableContentWidth,
+        height: `${bodyRowHeight}px`
+      };
 
       return h('div', {
         ...attrs,
         class: [rootClassName, classNames(stylesOverrides, 'react-spectrum-Table'), 'vs-table', attrs.class],
         role: 'grid',
+        tabindex: 0,
+        'aria-colcount': Math.max(1, props.columns.length + selectionColumnOffset.value),
+        'aria-rowcount': Math.max(1, renderedRows.value.length + 1),
+        'aria-multiselectable': props.selectionMode === 'multiple' ? 'true' : undefined,
         'aria-label': props.ariaLabel || attrs['aria-label'],
         'aria-labelledby': tableLabelId.value || attrs['aria-labelledby'],
         'data-testid': props.dataTestid || attrs['data-testid'],
@@ -503,364 +637,491 @@ export const Table = defineComponent({
         style: [attrs.style, {
           visibility: props.visibility,
           ...(tableWidth != null ? {width: tableWidth} : {}),
-          ...(tableHeight != null ? {height: tableHeight} : {}),
-          overflow: 'auto'
+          ...(tableHeight != null ? {height: tableHeight} : {})
         }],
         'data-vac': ''
       }, [
-        h('table', {class: 'vs-table__table'}, [
-          props.caption
-            ? h('caption', {id: `${generatedId}-caption`, class: 'vs-table__caption'}, props.caption)
-            : null,
-          h('thead', {class: [classNames(styles, 'spectrum-Table-headWrapper'), 'vs-table__head'], role: 'rowgroup'}, [
-            h('tr', {
-              class: [classNames(styles, 'spectrum-Table-head'), 'vs-table__head-row'],
-              role: 'row'
+        props.caption
+          ? h('div', {id: `${generatedId}-caption`, class: 'vs-table__caption'}, props.caption)
+          : null,
+        h('div', {
+          class: [classNames(styles, 'spectrum-Table-headWrapper'), 'vs-table__head'],
+          role: 'presentation',
+          style: headWrapperStyle
+        }, [
+          h('div', {
+            class: classNames(styles, 'spectrum-Table-head'),
+            role: 'rowgroup',
+            style: headRowgroupStyle
+          }, [
+            h('div', {
+              role: 'row',
+              style: headRowStyle
             }, [
               hasMultipleSelection.value
-                ? h('th', {
-                  key: '__selection__',
-                  role: 'columnheader',
+                ? h('div', {
+                  key: '__selection__-wrapper',
+                  role: 'presentation',
                   class: [
-                    classNames(styles, 'spectrum-Table-headCell', 'spectrum-Table-checkboxCell'),
-                    'vs-table__head-cell',
-                    'vs-table__head-cell--selection'
+                    classNames(styles, 'spectrum-Table-cellWrapper'),
+                    classNames(stylesOverrides, 'react-spectrum-Table-cellWrapper'),
+                    'vs-table__cell-wrapper'
                   ],
-                  'aria-colindex': 1
+                  style: selectionHeadWrapperStyle
                 }, [
-                  h(Checkbox, {
-                    class: [classNames(styles, 'spectrum-Table-checkbox'), 'vs-table__selection-checkbox'],
-                    'aria-label': 'Select all',
-                    isDisabled: props.isDisabled || selectableRowIds.value.length === 0,
-                    isEmphasized: true,
-                    isIndeterminate: someRowsSelected.value && !allRowsSelected.value,
-                    isSelected: allRowsSelected.value,
-                    onChange: (checked: boolean) => {
-                      onToggleSelectAll(checked);
-                    }
-                  })
+                  h('div', {
+                    role: 'columnheader',
+                    tabindex: -1,
+                    class: [
+                      classNames(styles, 'spectrum-Table-headCell', 'spectrum-Table-checkboxCell'),
+                      classNames(stylesOverrides, 'react-spectrum-Table-cell'),
+                      'vs-table__head-cell',
+                      'vs-table__head-cell--selection'
+                    ],
+                    'aria-colindex': 1
+                  }, [
+                    h(Checkbox, {
+                      class: [classNames(styles, 'spectrum-Table-checkbox'), 'vs-table__selection-checkbox'],
+                      'aria-label': 'Select all',
+                      isDisabled: props.isDisabled || selectableRowIds.value.length === 0,
+                      isEmphasized: true,
+                      isIndeterminate: someRowsSelected.value && !allRowsSelected.value,
+                      isSelected: allRowsSelected.value,
+                      onChange: (checked: boolean) => {
+                        onToggleSelectAll(checked);
+                      }
+                    })
+                  ])
                 ])
                 : null,
               ...props.columns.map((column, columnIndex) => {
-              let isResizable = column.resizable || props.resizableColumns.includes(column.key);
-              let childColumns = (column as TableColumn & {children?: unknown}).children;
-              if (
-                Array.isArray(childColumns)
-                && childColumns.length > 0
-                && isResizable
-                && !warnedNestedResizableColumns.has(column.key)
-                && process.env.NODE_ENV !== 'production'
-              ) {
-                console.warn(NESTED_RESIZABLE_COLUMN_WARNING(column.key));
-                warnedNestedResizableColumns.add(column.key);
-              }
-              let isSortable = !!column.sortable;
-              let isSortedAsc = props.sortDescriptor?.column === column.key && props.sortDescriptor.direction === 'ascending';
-              let isSortedDesc = props.sortDescriptor?.column === column.key && props.sortDescriptor.direction === 'descending';
-              let isDividerCell = !!column.showDivider && columnIndex < props.columns.length - 1;
-              let columnWidth = toCssSize(column.width);
-              let columnMinWidth = toCssSize(column.minWidth);
-              let columnMaxWidth = toCssSize(column.maxWidth);
-
-              let headerClassName = classNames(
-                styles,
-                'spectrum-Table-headCell',
-                {
-                  'is-resizable': isResizable,
-                  'is-sortable': isSortable,
-                  'is-sorted-asc': isSortedAsc,
-                  'is-sorted-desc': isSortedDesc,
-                  'spectrum-Table-cell--divider': isDividerCell,
-                  'spectrum-Table-cell--hideHeader': !!column.hideHeader
+                let isResizable = column.resizable || props.resizableColumns.includes(column.key);
+                let childColumns = (column as TableColumn & {children?: unknown}).children;
+                if (
+                  Array.isArray(childColumns)
+                  && childColumns.length > 0
+                  && isResizable
+                  && !warnedNestedResizableColumns.has(column.key)
+                  && process.env.NODE_ENV !== 'production'
+                ) {
+                  console.warn(NESTED_RESIZABLE_COLUMN_WARNING(column.key));
+                  warnedNestedResizableColumns.add(column.key);
                 }
-              );
+                let isSortable = !!column.sortable;
+                let isSortedAsc = props.sortDescriptor?.column === column.key && props.sortDescriptor.direction === 'ascending';
+                let isSortedDesc = props.sortDescriptor?.column === column.key && props.sortDescriptor.direction === 'descending';
+                let isDividerCell = !!column.showDivider && columnIndex < props.columns.length - 1;
+                let columnLayout = columnLayouts[columnIndex];
 
-              let alignToken = alignToSpectrumToken(column.align);
-              let alignClassName = column.align
-                ? `react-spectrum-Table-cell--align${alignToken}`
-                : 'react-spectrum-Table-cell--alignStart';
+                let headerClassName = classNames(
+                  styles,
+                  'spectrum-Table-headCell',
+                  {
+                    'is-resizable': isResizable,
+                    'is-sortable': isSortable,
+                    'is-sorted-asc': isSortedAsc,
+                    'is-sorted-desc': isSortedDesc,
+                    'spectrum-Table-cell--divider': isDividerCell,
+                    'spectrum-Table-cell--hideHeader': !!column.hideHeader
+                  }
+                );
 
-              let headerContent = isSortable
-                ? h('button', {
-                  class: [
-                    classNames(
-                      styles,
-                      'spectrum-Table-headCellButton',
-                      `spectrum-Table-headCellButton--align${alignToken}`
-                    ),
-                    'vs-table__sort-button'
-                  ],
-                  type: 'button',
-                  onClick: () => onToggleSort(column)
-                }, [
-                  h('span', {
+                let alignToken = alignToSpectrumToken(column.align);
+                let alignClassName = column.align
+                  ? `react-spectrum-Table-cell--align${alignToken}`
+                  : 'react-spectrum-Table-cell--alignStart';
+
+                let headerContent = isSortable
+                  ? h('button', {
+                    class: [
+                      classNames(
+                        styles,
+                        'spectrum-Table-headCellButton',
+                        `spectrum-Table-headCellButton--align${alignToken}`
+                      ),
+                      'vs-table__sort-button'
+                    ],
+                    type: 'button',
+                    onClick: () => onToggleSort(column)
+                  }, [
+                    h('span', {
+                      class: [
+                        classNames(styles, 'spectrum-Table-headCellContents', 'spectrum-Table-headerCellText'),
+                        'vs-table__head-cell-content'
+                      ]
+                    }, column.label ?? column.key)
+                  ])
+                  : h('span', {
                     class: [
                       classNames(styles, 'spectrum-Table-headCellContents', 'spectrum-Table-headerCellText'),
                       'vs-table__head-cell-content'
                     ]
-                  }, column.label ?? column.key)
-                ])
-                : h('span', {
+                  }, column.label ?? column.key);
+
+                return h('div', {
+                  key: `${column.key}-wrapper`,
+                  role: 'presentation',
                   class: [
-                    classNames(styles, 'spectrum-Table-headCellContents', 'spectrum-Table-headerCellText'),
-                    'vs-table__head-cell-content'
-                  ]
-                }, column.label ?? column.key);
-
-              return h('th', {
-                key: column.key,
-                role: 'columnheader',
-                class: [headerClassName, alignClassName, 'vs-table__head-cell'],
-                'aria-colindex': columnIndex + 1 + selectionColumnOffset.value,
-                'aria-colspan': column.colspan,
-                'aria-level': column.level,
-                'aria-posinset': column.posInSet,
-                'aria-setsize': column.setSize,
-                hidden: !!column.hideHeader,
-                'aria-hidden': column.hideHeader ? 'true' : undefined,
-                style: {
-                  width: columnWidth,
-                  minWidth: columnMinWidth,
-                  maxWidth: columnMaxWidth
-                }
-              }, [
-                headerContent,
-                isResizable
-                  ? h('div', {
-                    class: [classNames(styles, 'spectrum-Table-columnResizer', {'focus-ring': focusedResizer.value === column.key}), 'vs-table__resizer']
-                  }, [
-                    h('input', {
-                      class: 'vs-table__resizer-input',
-                      type: 'range',
-                      min: 1,
-                      max: 100,
-                      value: 50,
-                      'aria-label': column.ariaLabel || `${column.label ?? column.key} column resizer`,
-                      onFocus: () => {
-                        focusedResizer.value = column.key;
-                      },
-                      onBlur: () => {
-                        if (focusedResizer.value === column.key) {
-                          focusedResizer.value = null;
-                        }
-                      }
-                    })
-                  ])
-                  : null,
-                isResizable
-                  ? h('div', {
-                    'aria-hidden': 'true',
-                    hidden: true,
-                    class: [classNames(styles, 'spectrum-Table-columnResizerPlaceholder'), 'vs-table__resizer-placeholder']
-                  })
-                  : null
-              ]);
-            })
-            ])
-          ]),
-          h('tbody', {class: [classNames(styles, 'spectrum-Table-body'), 'vs-table__body'], role: 'rowgroup'}, renderedRows.value.length > 0
-            ? [
-              ...renderedRows.value.map((row, rowIndex) => {
-              let rowId = getRowId(row, rowIndex, props.rowKey);
-              let rowChildren = row.children;
-              let hasChildren = Array.isArray(rowChildren) && rowChildren.length > 0;
-
-              let isRowDisabled = isRowDisabledByContract(row, rowId);
-              let isRowSelected = row.selected ?? selectedSet.value.has(rowId);
-              let isRowHovered = hoveredRow.value === rowId && !isRowDisabled;
-              let isRowFocused = focusedRow.value === rowId && !isRowDisabled;
-              let isRowActive = activeRow.value === rowId && !isRowDisabled;
-              let isRowOpen = row.open ?? openSet.value.has(rowId);
-
-              let previousRowId = rowIndex > 0 ? getRowId(renderedRows.value[rowIndex - 1], rowIndex - 1, props.rowKey) : null;
-              let nextRowId = rowIndex + 1 < renderedRows.value.length ? getRowId(renderedRows.value[rowIndex + 1], rowIndex + 1, props.rowKey) : null;
-              let isPrevSelected = previousRowId != null ? selectedSet.value.has(previousRowId) : false;
-              let isNextSelected = nextRowId != null ? selectedSet.value.has(nextRowId) : false;
-              let isFirstRow = rowIndex === 0;
-              let isLastRow = rowIndex === renderedRows.value.length - 1;
-
-              let rowClassName = classNames(styles, 'spectrum-Table-row', {
-                'focus-ring': isRowFocused,
-                'is-active': isRowActive,
-                'is-disabled': isRowDisabled,
-                'is-focused': isRowFocused,
-                'is-hovered': isRowHovered,
-                'is-next-selected': isNextSelected,
-                'is-open': isRowOpen,
-                'is-selected': isRowSelected,
-                'spectrum-Table-row--firstRow': isFirstRow,
-                'spectrum-Table-row--lastRow': isLastRow
-              });
-
-              return h('tr', {
-                key: String(rowId),
-                class: [rowClassName, 'vs-table__row', isPrevSelected ? 'is-prev-selected' : null],
-                role: 'row',
-                tabindex: isRowDisabled ? -1 : 0,
-                'aria-rowindex': rowIndex + 1,
-                'aria-selected': props.selectionMode === 'none' ? undefined : toBooleanString(isRowSelected),
-                'aria-level': typeof row.level === 'number' ? row.level : 1,
-                'aria-posinset': typeof row.posInSet === 'number' ? row.posInSet : rowIndex + 1,
-                'aria-setsize': typeof row.setSize === 'number' ? row.setSize : props.rows.length,
-                onMouseenter: () => {
-                  hoveredRow.value = rowId;
-                },
-                onMouseleave: () => {
-                  if (hoveredRow.value === rowId) {
-                    hoveredRow.value = null;
-                  }
-                  if (activeRow.value === rowId) {
-                    activeRow.value = null;
-                  }
-                },
-                onMousedown: () => {
-                  if (!isRowDisabled) {
-                    activeRow.value = rowId;
-                  }
-                },
-                onMouseup: () => {
-                  if (activeRow.value === rowId) {
-                    activeRow.value = null;
-                  }
-                },
-                onFocus: () => {
-                  focusedRow.value = rowId;
-                },
-                onBlur: () => {
-                  if (focusedRow.value === rowId) {
-                    focusedRow.value = null;
-                  }
-                },
-                onDblclick: () => {
-                  onToggleOpen(row, rowId);
-                },
-                onClick: () => {
-                  activeRow.value = null;
-                  onSelectRow(row, rowId);
-                }
-              }, [
-                hasMultipleSelection.value
-                  ? h('td', {
-                    key: `${String(rowId)}-selection`,
-                    role: 'gridcell',
-                    class: [
-                      classNames(styles, 'spectrum-Table-cell', 'spectrum-Table-checkboxCell'),
-                      'vs-table__cell',
-                      'vs-table__cell--selection'
-                    ],
-                    'aria-colindex': 1,
-                    onClick: (event: MouseEvent) => {
-                      event.stopPropagation();
-                    },
-                    onMousedown: (event: MouseEvent) => {
-                      event.stopPropagation();
-                    }
-                  }, [
-                    h(Checkbox, {
-                      class: [classNames(styles, 'spectrum-Table-checkbox'), 'vs-table__selection-checkbox'],
-                      'aria-label': `Select row ${rowIndex + 1}`,
-                      isDisabled: isRowDisabled,
-                      isEmphasized: true,
-                      isSelected: isRowSelected,
-                      onChange: () => {
-                        onSelectRow(row, rowId);
-                      }
-                    })
-                  ])
-                  : null,
-                ...props.columns.map((column, columnIndex) => {
-                let cellVisibility = row.visible === false ? 'hidden' : 'visible';
-                let alignClassName = column.align
-                  ? `react-spectrum-Table-cell--align${column.align[0].toUpperCase()}${column.align.slice(1)}`
-                  : 'react-spectrum-Table-cell--alignStart';
-                let isCellHidden = row.visible === false;
-                let isDividerCell = !!column.showDivider && columnIndex < props.columns.length - 1;
-                let cellText = getCellTextValue(row, column.key);
-                let cellWidth = toCssSize(column.width);
-                let cellMinWidth = toCssSize(column.minWidth);
-                let cellMaxWidth = toCssSize(column.maxWidth);
-
-                return h('td', {
-                  key: `${String(rowId)}-${column.key}`,
-                  role: 'gridcell',
-                  class: [
-                    classNames(styles, 'spectrum-Table-cell', {
-                      'spectrum-Table-cell--divider': isDividerCell,
-                      'spectrum-Table-cell--hideHeader': !!column.hideHeader
-                    }),
-                    alignClassName,
-                    'vs-table__cell'
+                    classNames(styles, 'spectrum-Table-cellWrapper'),
+                    classNames(stylesOverrides, 'react-spectrum-Table-cellWrapper'),
+                    'vs-table__cell-wrapper'
                   ],
-                  'aria-colindex': columnIndex + 1 + selectionColumnOffset.value,
-                  'aria-colspan': column.colspan,
-                  hidden: isCellHidden,
-                  'aria-hidden': isCellHidden ? 'true' : undefined,
                   style: {
-                    visibility: cellVisibility,
-                    width: cellWidth,
-                    minWidth: cellMinWidth,
-                    maxWidth: cellMaxWidth
+                    position: 'absolute',
+                    overflow: 'visible',
+                    opacity: 1,
+                    zIndex: props.columns.length - columnIndex + 1,
+                    contain: 'size layout style',
+                    top: '0px',
+                    left: columnLayout.left,
+                    width: columnLayout.width,
+                    minWidth: columnLayout.minWidth,
+                    maxWidth: columnLayout.maxWidth,
+                    height: `${headerRowHeight}px`
                   }
                 }, [
-                  hasChildren && columnIndex === 0
-                    ? h('button', {
-                      class: ['vs-table__open-toggle', isRowOpen ? 'is-open' : null],
-                      type: 'button',
-                      'aria-label': isRowOpen ? 'Collapse row' : 'Expand row',
-                      onClick: (event: Event) => {
-                        event.stopPropagation();
-                        onToggleOpen(row, rowId);
-                      }
-                    }, isRowOpen ? '▾' : '▸')
-                    : null,
-                  isLikelyUrl(cellText)
-                    ? h('a', {
-                      class: ['vs-table__cell-text', 'vs-table__cell-link'],
-                      href: cellText,
-                      rel: 'noreferrer',
-                      target: '_blank'
-                    }, cellText)
-                    : h('span', {class: 'vs-table__cell-text'}, cellText)
+                  h('div', {
+                    role: 'columnheader',
+                    tabindex: -1,
+                    class: [headerClassName, classNames(stylesOverrides, 'react-spectrum-Table-cell'), alignClassName, 'vs-table__head-cell'],
+                    'aria-colindex': columnIndex + 1 + selectionColumnOffset.value,
+                    'aria-colspan': column.colspan,
+                    'aria-level': column.level,
+                    'aria-posinset': column.posInSet,
+                    'aria-setsize': column.setSize,
+                    hidden: !!column.hideHeader,
+                    'aria-hidden': column.hideHeader ? 'true' : undefined
+                  }, [
+                    headerContent,
+                    isResizable
+                      ? h('div', {
+                        class: [classNames(styles, 'spectrum-Table-columnResizer', {'focus-ring': focusedResizer.value === column.key}), 'vs-table__resizer']
+                      }, [
+                        h('input', {
+                          class: 'vs-table__resizer-input',
+                          type: 'range',
+                          min: 1,
+                          max: 100,
+                          value: 50,
+                          'aria-label': column.ariaLabel || `${column.label ?? column.key} column resizer`,
+                          onFocus: () => {
+                            focusedResizer.value = column.key;
+                          },
+                          onBlur: () => {
+                            if (focusedResizer.value === column.key) {
+                              focusedResizer.value = null;
+                            }
+                          }
+                        })
+                      ])
+                      : null,
+                    isResizable
+                      ? h('div', {
+                        'aria-hidden': 'true',
+                        hidden: true,
+                        class: [classNames(styles, 'spectrum-Table-columnResizerPlaceholder'), 'vs-table__resizer-placeholder']
+                      })
+                      : null
+                  ])
                 ]);
               })
-              ]);
-            }),
-              ...(props.loadingState === 'loadingMore'
-                ? [h('tr', {
-                  class: ['vs-table__row', 'is-loading-more'],
+            ])
+          ])
+        ]),
+        h('div', {
+          class: [
+            classNames(styles, 'spectrum-Table-body'),
+            classNames(stylesOverrides, 'react-spectrum-Table-body'),
+            'vs-table__body'
+          ],
+          role: 'rowgroup',
+          style: bodyScrollerStyle
+        }, [
+          h('div', {
+            role: 'presentation',
+            style: bodyLayoutStyle
+          }, [
+            h('div', {
+              role: 'presentation',
+              style: bodyRowsLayerStyle
+            }, renderedRows.value.length > 0
+              ? [
+                ...renderedRows.value.map((row, rowIndex) => {
+                  let rowId = getRowId(row, rowIndex, props.rowKey);
+                  let rowChildren = row.children;
+                  let hasChildren = Array.isArray(rowChildren) && rowChildren.length > 0;
+
+                  let isRowDisabled = isRowDisabledByContract(row, rowId);
+                  let isRowSelected = row.selected ?? selectedSet.value.has(rowId);
+                  let isRowHovered = hoveredRow.value === rowId && !isRowDisabled;
+                  let isRowFocused = focusedRow.value === rowId && !isRowDisabled;
+                  let isRowActive = activeRow.value === rowId && !isRowDisabled;
+                  let isRowOpen = row.open ?? openSet.value.has(rowId);
+
+                  let previousRowId = rowIndex > 0 ? getRowId(renderedRows.value[rowIndex - 1], rowIndex - 1, props.rowKey) : null;
+                  let nextRowId = rowIndex + 1 < renderedRows.value.length ? getRowId(renderedRows.value[rowIndex + 1], rowIndex + 1, props.rowKey) : null;
+                  let isPrevSelected = previousRowId != null ? selectedSet.value.has(previousRowId) : false;
+                  let isNextSelected = nextRowId != null ? selectedSet.value.has(nextRowId) : false;
+                  let isFirstRow = rowIndex === 0;
+                  let isLastRow = rowIndex === renderedRows.value.length - 1;
+
+                  let rowClassName = classNames(styles, 'spectrum-Table-row', {
+                    'focus-ring': isRowFocused,
+                    'is-active': isRowActive,
+                    'is-disabled': isRowDisabled,
+                    'is-focused': isRowFocused,
+                    'is-hovered': isRowHovered,
+                    'is-next-selected': isNextSelected,
+                    'is-open': isRowOpen,
+                    'is-selected': isRowSelected,
+                    'spectrum-Table-row--firstRow': isFirstRow,
+                    'spectrum-Table-row--lastRow': isLastRow
+                  });
+
+                  return h('div', {
+                    key: String(rowId),
+                    class: [rowClassName, classNames(stylesOverrides, 'react-spectrum-Table-row'), 'vs-table__row', isPrevSelected ? 'is-prev-selected' : null],
+                    role: 'row',
+                    tabindex: -1,
+                    'aria-rowindex': rowIndex + 2,
+                    'aria-selected': props.selectionMode === 'none' ? undefined : toBooleanString(isRowSelected),
+                    'aria-level': typeof row.level === 'number' ? row.level : 1,
+                    'aria-posinset': typeof row.posInSet === 'number' ? row.posInSet : rowIndex + 1,
+                    'aria-setsize': typeof row.setSize === 'number' ? row.setSize : props.rows.length,
+                    style: getBodyRowStyle(rowIndex),
+                    onMouseenter: () => {
+                      hoveredRow.value = rowId;
+                    },
+                    onMouseleave: () => {
+                      if (hoveredRow.value === rowId) {
+                        hoveredRow.value = null;
+                      }
+                      if (activeRow.value === rowId) {
+                        activeRow.value = null;
+                      }
+                    },
+                    onMousedown: () => {
+                      if (!isRowDisabled) {
+                        activeRow.value = rowId;
+                      }
+                    },
+                    onMouseup: () => {
+                      if (activeRow.value === rowId) {
+                        activeRow.value = null;
+                      }
+                    },
+                    onFocus: () => {
+                      focusedRow.value = rowId;
+                    },
+                    onBlur: () => {
+                      if (focusedRow.value === rowId) {
+                        focusedRow.value = null;
+                      }
+                    },
+                    onDblclick: () => {
+                      onToggleOpen(row, rowId);
+                    },
+                    onClick: () => {
+                      activeRow.value = null;
+                      onSelectRow(row, rowId);
+                    }
+                  }, [
+                    hasMultipleSelection.value
+                      ? h('div', {
+                        key: `${String(rowId)}-selection-wrapper`,
+                        role: 'presentation',
+                        class: [
+                          classNames(styles, 'spectrum-Table-cellWrapper'),
+                          classNames(stylesOverrides, 'react-spectrum-Table-cellWrapper'),
+                          'vs-table__cell-wrapper'
+                        ],
+                        style: selectionBodyWrapperStyle
+                      }, [
+                        h('div', {
+                          role: 'gridcell',
+                          tabindex: -1,
+                          class: [
+                            classNames(styles, 'spectrum-Table-cell', 'spectrum-Table-checkboxCell'),
+                            classNames(stylesOverrides, 'react-spectrum-Table-cell'),
+                            'vs-table__cell',
+                            'vs-table__cell--selection'
+                          ],
+                          'aria-colindex': 1,
+                          onClick: (event: MouseEvent) => {
+                            event.stopPropagation();
+                          },
+                          onMousedown: (event: MouseEvent) => {
+                            event.stopPropagation();
+                          }
+                        }, [
+                          h(Checkbox, {
+                            class: [classNames(styles, 'spectrum-Table-checkbox'), 'vs-table__selection-checkbox'],
+                            'aria-label': `Select row ${rowIndex + 1}`,
+                            isDisabled: isRowDisabled,
+                            isEmphasized: true,
+                            isSelected: isRowSelected,
+                            onChange: () => {
+                              onSelectRow(row, rowId);
+                            }
+                          })
+                        ])
+                      ])
+                      : null,
+                    ...props.columns.map((column, columnIndex) => {
+                      let cellVisibility = row.visible === false ? 'hidden' : 'visible';
+                      let alignClassName = column.align
+                        ? `react-spectrum-Table-cell--align${column.align[0].toUpperCase()}${column.align.slice(1)}`
+                        : 'react-spectrum-Table-cell--alignStart';
+                      let isCellHidden = row.visible === false;
+                      let isDividerCell = !!column.showDivider && columnIndex < props.columns.length - 1;
+                      let cellText = getCellTextValue(row, column.key);
+                      let columnLayout = columnLayouts[columnIndex];
+
+                      return h('div', {
+                        key: `${String(rowId)}-${column.key}-wrapper`,
+                        role: 'presentation',
+                        class: [
+                          classNames(styles, 'spectrum-Table-cellWrapper'),
+                          classNames(stylesOverrides, 'react-spectrum-Table-cellWrapper'),
+                          'vs-table__cell-wrapper'
+                        ],
+                        style: {
+                          position: 'absolute',
+                          overflow: 'visible',
+                          opacity: 1,
+                          zIndex: 1,
+                          contain: 'size layout style',
+                          top: '0px',
+                          left: columnLayout.left,
+                          width: columnLayout.width,
+                          minWidth: columnLayout.minWidth,
+                          maxWidth: columnLayout.maxWidth,
+                          height: `${bodyRowHeight}px`
+                        }
+                      }, [
+                        h('div', {
+                          key: `${String(rowId)}-${column.key}`,
+                          role: columnIndex === 0 ? 'rowheader' : 'gridcell',
+                          tabindex: -1,
+                          class: [
+                            classNames(styles, 'spectrum-Table-cell', {
+                              'spectrum-Table-cell--divider': isDividerCell,
+                              'spectrum-Table-cell--hideHeader': !!column.hideHeader
+                            }),
+                            classNames(stylesOverrides, 'react-spectrum-Table-cell'),
+                            alignClassName,
+                            'vs-table__cell'
+                          ],
+                          'aria-colindex': columnIndex + 1 + selectionColumnOffset.value,
+                          'aria-colspan': column.colspan,
+                          hidden: isCellHidden,
+                          'aria-hidden': isCellHidden ? 'true' : undefined,
+                          style: {
+                            visibility: cellVisibility
+                          }
+                        }, [
+                          hasChildren && columnIndex === 0
+                            ? h('button', {
+                              class: ['vs-table__open-toggle', isRowOpen ? 'is-open' : null],
+                              type: 'button',
+                              'aria-label': isRowOpen ? 'Collapse row' : 'Expand row',
+                              onClick: (event: Event) => {
+                                event.stopPropagation();
+                                onToggleOpen(row, rowId);
+                              }
+                            }, isRowOpen ? '▾' : '▸')
+                            : null,
+                          isLikelyUrl(cellText)
+                            ? h('a', {
+                              class: ['vs-table__cell-text', 'vs-table__cell-link'],
+                              href: cellText,
+                              rel: 'noreferrer',
+                              target: '_blank'
+                            }, cellText)
+                            : h('span', {class: 'vs-table__cell-text'}, cellText)
+                        ])
+                      ]);
+                    })
+                  ]);
+                }),
+                ...(props.loadingState === 'loadingMore'
+                  ? [h('div', {
+                    class: ['vs-table__row', classNames(stylesOverrides, 'react-spectrum-Table-row'), 'is-loading-more'],
+                    role: 'row',
+                    tabindex: -1,
+                    key: 'loading-more',
+                    style: getBodyRowStyle(renderedRows.value.length)
+                  }, [
+                    h('div', {
+                      role: 'presentation',
+                      class: [
+                        classNames(styles, 'spectrum-Table-cellWrapper'),
+                        classNames(stylesOverrides, 'react-spectrum-Table-cellWrapper'),
+                        'vs-table__cell-wrapper'
+                      ],
+                      style: fullWidthBodyCellWrapperStyle
+                    }, [
+                      h('div', {
+                        class: ['vs-table__cell', classNames(styles, 'spectrum-Table-cell'), classNames(stylesOverrides, 'react-spectrum-Table-cell')],
+                        role: 'gridcell',
+                        tabindex: -1,
+                        'aria-colspan': Math.max(1, props.columns.length + selectionColumnOffset.value)
+                      }, 'Loading more…')
+                    ])
+                  ])]
+                  : [])
+              ]
+              : [
+                h('div', {
+                  class: ['vs-table__row', classNames(stylesOverrides, 'react-spectrum-Table-row'), 'is-empty'],
                   role: 'row',
-                  key: 'loading-more'
+                  tabindex: -1,
+                  key: 'empty',
+                  style: getBodyRowStyle(0)
                 }, [
-                  h('td', {
-                    class: ['vs-table__cell', classNames(styles, 'spectrum-Table-cell')],
-                    role: 'gridcell',
-                    'aria-colspan': Math.max(1, props.columns.length + selectionColumnOffset.value)
-                  }, 'Loading more…')
-                ])]
-                : [])
-            ]
-            : [
-              h('tr', {class: ['vs-table__row', 'is-empty'], role: 'row', key: 'empty'}, [
-                h('td', {
-                  class: ['vs-table__cell', classNames(styles, 'spectrum-Table-cell')],
-                  role: 'gridcell',
-                  'aria-colspan': Math.max(1, props.columns.length + selectionColumnOffset.value)
-                }, props.loadingState === 'loadingMore'
-                  ? 'Loading more…'
-                  : (props.loadingState === 'loading' || props.loadingState === 'filtering' ? 'Loading…' : 'No rows'))
+                  h('div', {
+                    role: 'presentation',
+                    class: [
+                      classNames(styles, 'spectrum-Table-cellWrapper'),
+                      classNames(stylesOverrides, 'react-spectrum-Table-cellWrapper'),
+                      'vs-table__cell-wrapper'
+                    ],
+                    style: fullWidthBodyCellWrapperStyle
+                  }, [
+                    h('div', {
+                      class: ['vs-table__cell', classNames(styles, 'spectrum-Table-cell'), classNames(stylesOverrides, 'react-spectrum-Table-cell')],
+                      role: 'gridcell',
+                      tabindex: -1,
+                      'aria-colspan': Math.max(1, props.columns.length + selectionColumnOffset.value)
+                    }, props.loadingState === 'loadingMore'
+                      ? 'Loading more…'
+                      : (props.loadingState === 'loading' || props.loadingState === 'filtering' ? 'Loading…' : 'No rows'))
+                  ])
+                ])
               ])
-            ]),
-          h('tbody', {class: 'vs-table__drop-indicators', role: 'rowgroup'}, [
-            h('tr', {
-              role: 'row',
-              hidden: true,
-              'aria-hidden': 'true',
-              style: {
-                visibility: 'hidden'
-              }
+          ])
+        ]),
+        h('div', {class: 'vs-table__drop-indicators', role: 'rowgroup'}, [
+          h('div', {
+            role: 'row',
+            hidden: true,
+            'aria-hidden': 'true',
+            class: ['vs-table__row', classNames(stylesOverrides, 'react-spectrum-Table-row')],
+            style: {
+              visibility: 'hidden'
+            }
+          }, [
+            h('div', {
+              role: 'presentation',
+              class: [
+                classNames(styles, 'spectrum-Table-cellWrapper'),
+                classNames(stylesOverrides, 'react-spectrum-Table-cellWrapper'),
+                'vs-table__cell-wrapper'
+              ]
             }, [
-              h('td', {
+              h('div', {
                 role: 'gridcell',
+                class: ['vs-table__cell', classNames(styles, 'spectrum-Table-cell'), classNames(stylesOverrides, 'react-spectrum-Table-cell')],
                 'aria-colspan': Math.max(1, props.columns.length + selectionColumnOffset.value),
                 'aria-selected': 'false'
               }, [

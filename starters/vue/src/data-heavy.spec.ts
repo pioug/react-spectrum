@@ -23,7 +23,7 @@ describe('Vue migration data-heavy components', () => {
       }
     });
 
-    await wrapper.get('tbody tr').trigger('click');
+    await wrapper.get('[role="row"][aria-rowindex]').trigger('click');
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['T-401']);
     expect(wrapper.emitted('rowAction')?.[0]).toEqual([{ticket: 'T-401', owner: 'Avery'}]);
   });

@@ -3,40 +3,6 @@
   flex-direction: column;
   position: relative;
 
-  .vs-table:not(.spectrum-Table--quiet) {
-    border-end-start-radius: var(--spectrum-table-border-radius);
-    border-end-end-radius: var(--spectrum-table-border-radius);
-  }
-
-  .vs-table:not(.spectrum-Table--quiet)::after {
-    border-block-end: var(--spectrum-table-border-size, 1px) solid var(--spectrum-table-border-color);
-    border-end-end-radius: var(--spectrum-table-border-radius);
-    border-end-start-radius: var(--spectrum-table-border-radius);
-    border-inline-end: var(--spectrum-table-border-size, 1px) solid var(--spectrum-table-border-color);
-    border-inline-start: var(--spectrum-table-border-size, 1px) solid var(--spectrum-table-border-color);
-    content: '';
-    inset-block-end: 0;
-    inset-block-start: var(--spectrum-table-header-min-height, 34px);
-    inset-inline-end: 0;
-    inset-inline-start: 0;
-    pointer-events: none;
-    position: absolute;
-  }
-
-  .vs-table__table {
-    transform: translateX(0.5px);
-    transform-origin: left top;
-  }
-
-  .vs-table__head-cell--selection,
-  .vs-table__cell--selection {
-    padding-left: 15.5px;
-  }
-
-  .vs-table .spectrum-Checkbox-input {
-    width: 22px;
-  }
-
   & > :not(.react-spectrum-ActionBar) {
     flex: 1;
     min-height: 0;
@@ -110,32 +76,7 @@
 
   .react-spectrum-ActionBar-actionGroup {
     grid-area: actiongroup;
-    min-width: 76px;
-    width: 76px;
-
-    .vs-spectrum-action-group__wrapper {
-      width: 100%;
-    }
-
-    .flex-gap {
-      width: auto;
-      height: auto;
-      margin: 0;
-      --row-gap: 0px;
-      --column-gap: 0px;
-      column-gap: var(--spectrum-global-dimension-size-100);
-      row-gap: 0;
-    }
-
-    .spectrum-ActionGroup-item,
-    .spectrum-ActionGroup-menu {
-      inline-size: 34px;
-      min-inline-size: 34px;
-    }
-
-    .flex-container .flex-gap > * {
-      margin: 0;
-    }
+    min-width: 0;
   }
 }
 
