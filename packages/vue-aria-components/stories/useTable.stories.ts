@@ -19,6 +19,8 @@ type TableArgs = {
   controlled?: boolean,
   includeExtraColumns?: boolean,
   resizable?: boolean,
+  showControls?: boolean,
+  withSelection?: boolean,
   withFocusableSiblings?: boolean,
   withRowAction?: boolean
 };
@@ -65,6 +67,8 @@ mimics what would happen if an app reloaded the whole page and restored a saved
 column width state.
 `;
 
+const hiddenRangeInputStyle = 'border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; width: 1px; white-space: nowrap;';
+
 const meta = {
   title: 'useTable'
 } satisfies Meta;
@@ -86,6 +90,7 @@ function getColumns(includeExtraColumns?: boolean): TableColumn[] {
 }
 
 function renderTable(args: TableArgs) {
+  let withSelection = args.withSelection !== false;
   let activeColumns = getColumns(args.includeExtraColumns);
   let cellColumnKey = new Map<string, ColumnUid>();
   let collection = {
@@ -119,7 +124,7 @@ function renderTable(args: TableArgs) {
           }
           : undefined,
         selectedKeys,
-        selectionMode: 'multiple'
+        selectionMode: withSelection ? 'multiple' : undefined
       });
 
       let headerRowGroup = useTableRowGroup();
@@ -132,27 +137,17 @@ function renderTable(args: TableArgs) {
         }
       });
 
-      let sortDirections = ref<Record<string, 'ascending' | 'descending' | undefined>>({});
       let initialWidths = Object.fromEntries(
         activeColumns.map((column) => [column.uid, column.uid === 'level' ? 260 : 180])
       ) as Record<ColumnUid, number>;
       let columnWidths = ref(initialWidths);
       let savedColumnWidths = ref({...initialWidths});
+      let tableRenderKey = ref(0);
 
       let columnHeaderMap = new Map(activeColumns.map((column) => [
         column.uid,
         useTableColumnHeader({
-          allowsSorting: true,
           columnKey: column.uid,
-          onSort: (columnKey) => {
-            let key = String(columnKey);
-            let currentDirection = sortDirections.value[key];
-            sortDirections.value = {
-              ...sortDirections.value,
-              [key]: currentDirection === 'ascending' ? 'descending' : 'ascending'
-            };
-          },
-          sortDirection: computed(() => sortDirections.value[column.uid]),
           table
         })
       ]));
@@ -223,6 +218,7 @@ function renderTable(args: TableArgs) {
         columnWidths.value = {
           ...savedColumnWidths.value
         };
+        tableRenderKey.value += 1;
       };
 
       let savedColumnWidthText = computed(() => {
@@ -231,12 +227,47 @@ function renderTable(args: TableArgs) {
           .join(',')}}`;
       });
 
+      let getCellWidth = (cellKey: string) => {
+        let columnKey = cellColumnKey.get(cellKey);
+        if (!columnKey) {
+          return 180;
+        }
+
+        return columnWidths.value[columnKey] ?? 180;
+      };
+
+      let getResizableHeaderStyle = (columnUid: ColumnUid) => ({
+        width: `${getCellWidth(`row-1-${columnUid}`)}px`,
+        textAlign: 'left',
+        padding: '5px 10px',
+        borderBottom: '2px solid gray',
+        outline: 'none',
+        cursor: 'default',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        display: 'block',
+        flex: '0 0 auto'
+      });
+
+      let getResizableCellStyle = (cellKey: string, rowIndex: number) => ({
+        width: `${getCellWidth(cellKey)}px`,
+        padding: '5px 10px',
+        outline: 'none',
+        cursor: 'default',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        display: 'block',
+        flex: '0 0 auto',
+        background: rowIndex % 2 === 0 ? 'var(--spectrum-gray-75)' : 'var(--spectrum-gray-100)'
+      });
+
       return {
         activeColumns,
         args,
-        bodyRowGroup,
+        bodyRowGroupProps: bodyRowGroup.rowGroupProps,
         collection,
-        columnWidths,
         getCellProps: (_rowKey: string, cellKey: string) => ({
           ...cellMap.get(cellKey)?.gridCellProps.value,
           onClick: (event: MouseEvent) => {
@@ -245,17 +276,10 @@ function renderTable(args: TableArgs) {
             table.setFocused(true);
           }
         }),
-        getCellWidth: (cellKey: string) => {
-          let columnKey = cellColumnKey.get(cellKey);
-          if (!columnKey) {
-            return 180;
-          }
-
-          return columnWidths.value[columnKey] ?? 180;
-        },
         getColumnHeaderProps: (columnUid: ColumnUid) => columnHeaderMap.get(columnUid)?.columnHeaderProps.value,
+        getResizableCellStyle,
+        getResizableHeaderStyle,
         getResizeInputProps: (columnUid: ColumnUid) => resizeMap.get(columnUid)?.inputProps.value,
-        getResizeResizerProps: (columnUid: ColumnUid) => resizeMap.get(columnUid)?.resizerProps.value,
         getRowCheckboxProps: (rowKey: string) => rowCheckboxMap.get(rowKey)?.checkboxProps.value,
         getRowProps: (rowKey: string) => ({
           ...rowMap.get(rowKey)?.rowProps.value,
@@ -265,38 +289,75 @@ function renderTable(args: TableArgs) {
             table.setFocusedKey(rowKey);
           }
         }),
-        headerRow,
-        headerRowGroup,
-        isCellFocused: (cellKey: string) => table.focusedKey.value === cellKey,
-        isColumnResizing: (columnUid: ColumnUid) => Boolean(resizeMap.get(columnUid)?.isResizing.value),
-        isRowFocused: (rowKey: string) => table.focusedKey.value === rowKey,
-        isRowSelected: (rowKey: string) => table.isSelected(rowKey),
+        gridProps: table.gridProps,
+        headerRowGroupProps: headerRowGroup.rowGroupProps,
+        headerRowProps: headerRow.rowProps,
+        hiddenRangeInputStyle,
         restoreColumnWidths,
         saveColumnWidths,
         savedColumnWidthText,
         selectAllCheckbox,
-        table,
+        tableRenderKey,
         toggleRowSelection: (rowKey: string) => rowCheckboxMap.get(rowKey)?.toggleSelection(),
-        toggleSelectAll: () => selectAllCheckbox.toggleSelectAll()
+        toggleSelectAll: () => selectAllCheckbox.toggleSelectAll(),
+        withSelection
       };
     },
     template: `
-      <div style="display: grid; gap: 8px; max-width: 900px;">
-        <div v-if="args.controlled && args.resizable" style="display: flex; gap: 8px;">
-          <button type="button" @click="saveColumnWidths">Save Cols</button>
-          <button type="button" @click="restoreColumnWidths">Restore Cols</button>
+      <div v-if="args.controlled && args.resizable && args.showControls">
+        <button @click="saveColumnWidths">Save Cols</button>
+        <button @click="restoreColumnWidths">Restore Cols</button>
+        <div>Current saved column state: {{savedColumnWidthText}}</div>
+        <div :key="tableRenderKey">
+          <table v-bind="gridProps" style="width: 100%; display: block; position: relative;">
+            <thead v-bind="headerRowGroupProps" style="display: block; position: sticky; background: rgb(248, 248, 248);">
+              <tr v-bind="headerRowProps" style="display: flex;">
+                <th
+                  v-for="column in activeColumns"
+                  :key="column.uid"
+                  v-bind="getColumnHeaderProps(column.uid)"
+                  :style="getResizableHeaderStyle(column.uid)">
+                  <div style="display: flex; position: relative;">
+                    <div style="flex: 1 1 auto;">{{column.name}}</div>
+                    <div role="presentation" style="touch-action: none;">
+                      <div :style="hiddenRangeInputStyle">
+                        <input v-bind="getResizeInputProps(column.uid)" type="range" :style="hiddenRangeInputStyle">
+                      </div>
+                    </div>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody v-bind="bodyRowGroupProps">
+              <tr
+                v-for="(row, rowIndex) in collection.rows"
+                :key="row.key"
+                v-bind="getRowProps(row.key)"
+                style="outline: none;">
+                <td
+                  v-for="(cell, cellIndex) in row.cells"
+                  :key="cell.key"
+                  v-bind="getCellProps(row.key, cell.key)"
+                  :role="cellIndex === 0 ? 'rowheader' : 'gridcell'"
+                  :style="getResizableCellStyle(cell.key, rowIndex)">
+                  {{cell.textValue}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <div v-if="args.controlled && args.resizable" style="font-size: 12px; color: #666;">
-          Current saved column state: {{savedColumnWidthText}}
-        </div>
+      </div>
+      <template v-else>
         <label v-if="args.withFocusableSiblings" for="focusable-before">Focusable before</label>
         <input v-if="args.withFocusableSiblings" id="focusable-before">
         <table
-          v-bind="table.gridProps"
-          style="width: 100%; border-collapse: collapse;">
-          <thead v-bind="headerRowGroup.rowGroupProps">
-            <tr v-bind="headerRow.rowProps">
-              <th role="columnheader" style="width: 42px; border: 1px solid #ddd; padding: 6px;">
+          v-bind="gridProps"
+          :style="args.resizable ? {width: '100%', display: 'block', position: 'relative'} : {borderCollapse: 'collapse'}">
+          <thead
+            v-bind="headerRowGroupProps"
+            :style="args.resizable ? {display: 'block', position: 'sticky', background: 'rgb(248, 248, 248)'} : {borderBottom: '2px solid gray', display: 'block'}">
+            <tr v-bind="headerRowProps" :style="args.resizable ? {display: 'flex'} : undefined">
+              <th v-if="withSelection" role="columnheader">
                 <input
                   type="checkbox"
                   :aria-label="selectAllCheckbox.checkboxProps['aria-label']"
@@ -308,27 +369,30 @@ function renderTable(args: TableArgs) {
                 v-for="column in activeColumns"
                 :key="column.uid"
                 v-bind="getColumnHeaderProps(column.uid)"
-                :style="{textAlign: 'left', border: '1px solid #ddd', padding: '6px', width: columnWidths[column.uid] + 'px'}">
-                <span>{{column.name}}</span>
-                <span aria-hidden="true" style="margin-left: 6px;">
-                  {{getColumnHeaderProps(column.uid)?.['aria-sort'] === 'ascending' ? '▲' : getColumnHeaderProps(column.uid)?.['aria-sort'] === 'descending' ? '▼' : '↕'}}
-                </span>
-                <input
-                  v-if="args.resizable"
-                  v-bind="getResizeInputProps(column.uid)"
-                  :style="{width: '92px', marginLeft: '8px', opacity: isColumnResizing(column.uid) ? '1' : '0.7'}"
-                  @pointerdown="getResizeResizerProps(column.uid)?.onPointerDown()"
-                  @pointerup="getResizeResizerProps(column.uid)?.onPointerUp()">
+                :style="args.resizable
+                  ? getResizableHeaderStyle(column.uid)
+                  : {textAlign: 'left', padding: '5px 10px', outline: 'none', cursor: 'default'}">
+                <template v-if="args.resizable">
+                  <div style="display: flex; position: relative;">
+                    <div style="flex: 1 1 auto;">{{column.name}}</div>
+                    <div role="presentation" style="touch-action: none;">
+                      <div :style="hiddenRangeInputStyle">
+                        <input v-bind="getResizeInputProps(column.uid)" type="range" :style="hiddenRangeInputStyle">
+                      </div>
+                    </div>
+                  </div>
+                </template>
+                <template v-else>{{column.name}}</template>
               </th>
             </tr>
           </thead>
-          <tbody v-bind="bodyRowGroup.rowGroupProps">
+          <tbody v-bind="bodyRowGroupProps" :style="args.resizable ? undefined : {display: 'block', overflow: 'auto', maxHeight: '200px'}">
             <tr
-              v-for="row in collection.rows"
+              v-for="(row, rowIndex) in collection.rows"
               :key="row.key"
               v-bind="getRowProps(row.key)"
-              :style="{background: isRowSelected(row.key) ? '#edf3ff' : undefined, outline: isRowFocused(row.key) ? '2px solid #6b8afd' : undefined}">
-              <td role="gridcell" style="width: 42px; border: 1px solid #ddd; padding: 6px;">
+              :style="{background: args.resizable ? undefined : (rowIndex % 2 === 1 ? 'lightgray' : 'none'), outline: 'none'}">
+              <td v-if="withSelection" role="gridcell">
                 <input
                   type="checkbox"
                   :aria-label="getRowCheckboxProps(row.key)?.['aria-label']"
@@ -337,18 +401,21 @@ function renderTable(args: TableArgs) {
                   @change.stop="toggleRowSelection(row.key)">
               </td>
               <td
-                v-for="cell in row.cells"
+                v-for="(cell, cellIndex) in row.cells"
                 :key="cell.key"
                 v-bind="getCellProps(row.key, cell.key)"
-                :style="{border: '1px solid #ddd', padding: '6px', width: getCellWidth(cell.key) + 'px', outline: isCellFocused(cell.key) ? '1px solid #0b66ff' : undefined}">
+                :role="cellIndex === 0 ? 'rowheader' : 'gridcell'"
+                :style="args.resizable
+                  ? getResizableCellStyle(cell.key, rowIndex)
+                  : {padding: '5px 10px', outline: 'none', cursor: 'default'}">
                 {{cell.textValue}}
               </td>
             </tr>
           </tbody>
         </table>
-        <label v-if="args.withFocusableSiblings" for="focusable-after">Focusable after</label>
-        <input v-if="args.withFocusableSiblings" id="focusable-after">
-      </div>
+        <label v-if="args.withFocusableSiblings" for="focus-after">Focusable after</label>
+        <input v-if="args.withFocusableSiblings" id="focus-after">
+      </template>
     `
   };
 }
@@ -359,7 +426,7 @@ export const ScrollTesting: Story = {
 };
 
 export const ActionTesting: Story = {
-  render: () => renderTable({withFocusableSiblings: true, withRowAction: true}),
+  render: () => renderTable({withFocusableSiblings: true, withRowAction: true, withSelection: false}),
   name: 'Action Testing',
   parameters: {
     a11y: {
@@ -373,7 +440,7 @@ export const ActionTesting: Story = {
 };
 
 export const BackwardCompatActionTesting: Story = {
-  render: () => renderTable({withFocusableSiblings: true, withRowAction: true}),
+  render: () => renderTable({withFocusableSiblings: true, withRowAction: true, withSelection: false}),
   name: 'Backward Compat Action Testing',
   parameters: {
     a11y: {
@@ -387,17 +454,17 @@ export const BackwardCompatActionTesting: Story = {
 };
 
 export const TableWithResizingNoProps: Story = {
-  render: () => renderTable({resizable: true}),
+  render: () => renderTable({resizable: true, withSelection: false}),
   name: 'Table With Resizing No Props'
 };
 
 export const TableWithResizingFRs: Story = {
-  render: () => renderTable({resizable: true}),
+  render: () => renderTable({resizable: true, withSelection: false}),
   name: 'Table With Resizing F Rs'
 };
 
 export const TableWithResizingFRsControlled: Story = {
-  render: () => renderTable({controlled: true, resizable: true}),
+  render: () => renderTable({controlled: true, resizable: true, showControls: true, withSelection: false}),
   name: 'Table With Resizing F Rs Controlled',
   parameters: {
     description: {
@@ -407,7 +474,7 @@ export const TableWithResizingFRsControlled: Story = {
 };
 
 export const TableWithSomeResizingFRsControlled: Story = {
-  render: () => renderTable({controlled: true, includeExtraColumns: true, resizable: true}),
+  render: () => renderTable({controlled: true, includeExtraColumns: true, resizable: true, showControls: true, withSelection: false}),
   name: 'Table With Some Resizing F Rs Controlled',
   parameters: {
     description: {
@@ -417,11 +484,11 @@ export const TableWithSomeResizingFRsControlled: Story = {
 };
 
 export const DocExample: Story = {
-  render: () => renderTable({resizable: true}),
+  render: () => renderTable({resizable: true, withSelection: false}),
   name: 'Doc Example'
 };
 
 export const DocExampleControlled: Story = {
-  render: () => renderTable({controlled: true, resizable: true}),
+  render: () => renderTable({controlled: true, resizable: true, withSelection: false}),
   name: 'Doc Example Controlled'
 };

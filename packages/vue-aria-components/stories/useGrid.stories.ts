@@ -82,35 +82,31 @@ function renderGrid(args: GridArgs) {
       }
 
       return {
-        args,
         collection,
         getCellProps: (key: string) => cellProps.get(key)?.() ?? {},
+        gridProps: grid.gridProps,
         getRowProps: (key: string) => rowProps.get(key)?.() ?? {},
-        grid,
         isCellFocused: (key: string) => grid.focusedKey.value === key,
         isRowFocused: (key: string) => grid.focusedKey.value === key,
         switchesByRow
       };
     },
     template: `
-      <div style="display: grid; gap: 10px;">
-        <div style="font-size: 12px; color: #666;">gridFocusMode={{args.gridFocusMode}}, cellFocusMode={{args.cellFocusMode}}</div>
-        <div v-bind="grid.gridProps" style="display: grid; gap: 4px; width: 100%; max-width: 480px;">
-          <div
-            v-for="row in collection.rows"
-            :key="row.key"
-            v-bind="getRowProps(row.key)"
-            :style="{outline: isRowFocused(row.key) ? '2px solid red' : undefined}">
+      <div v-bind="gridProps">
+        <div
+          v-for="row in collection.rows"
+          :key="row.key"
+          v-bind="getRowProps(row.key)"
+          :style="{outline: isRowFocused(row.key) ? '2px solid red' : undefined}">
             <div
               v-for="cell in row.cells"
               :key="cell.key"
               v-bind="getCellProps(cell.key)"
-              :style="{outline: isCellFocused(cell.key) ? '2px solid green' : undefined, display: 'flex', gap: '10px', padding: '4px'}">
-              <label v-for="switchLabel in switchesByRow[row.key]" :key="switchLabel" style="display: inline-flex; align-items: center; gap: 4px;">
-                <input type="checkbox" :aria-label="switchLabel">
-                <span>{{switchLabel}}</span>
-              </label>
-            </div>
+              :style="{outline: isCellFocused(cell.key) ? '2px solid green' : undefined}">
+            <label v-for="switchLabel in switchesByRow[row.key]" :key="switchLabel" style="display: inline-flex; position: relative;">
+              <input type="checkbox" role="switch" :aria-label="switchLabel" style="display: block; position: absolute;">
+              <span style="position: relative; display: block; background: rgb(213, 213, 213);"></span>
+            </label>
           </div>
         </div>
       </div>

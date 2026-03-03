@@ -14,6 +14,19 @@ type CalendarStoryConfig = {
   visibleDuration: CalendarVisibleDuration
 };
 
+function resolveVisibleDate(calendar: CalendarAria): Date {
+  let candidate = (calendar as unknown as {visibleDate?: Date | {value?: Date}}).visibleDate;
+  if (candidate && typeof candidate === 'object' && 'value' in candidate && candidate.value instanceof Date) {
+    return candidate.value;
+  }
+
+  if (candidate instanceof Date) {
+    return candidate;
+  }
+
+  return startOfMonth(new Date());
+}
+
 function cloneDate(date: Date): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate());
 }
@@ -51,10 +64,6 @@ function getWeeksInMonth(date: Date): number {
   return Math.ceil(dayCount / 7);
 }
 
-function formatMonthLabel(date: Date): string {
-  return date.toLocaleDateString('en-US', {month: 'long', year: 'numeric'});
-}
-
 const CalendarCellItem = defineComponent({
   props: {
     calendar: {
@@ -73,22 +82,22 @@ const CalendarCellItem = defineComponent({
     });
 
     return {
-      cell,
+      ...cell,
       onPress: () => {
         cell.press();
       }
     };
   },
   template: `
-    <div v-bind="cell.cellProps" style="display: inline-block;">
-      <button
-        v-bind="cell.buttonProps"
-        type="button"
+    <div v-bind="cellProps" style="display: inline-block;">
+      <span
+        v-bind="buttonProps"
+        role="button"
         style="display: block; width: 42px; height: 42px;"
-        :style="{background: cell.isSelected ? 'blue' : '', color: cell.isSelected ? 'white' : ''}"
+        :style="{background: isSelected ? 'blue' : '', color: isSelected ? 'white' : ''}"
         @click="onPress">
-        {{cell.formattedDate}}
-      </button>
+        {{formattedDate}}
+      </span>
     </div>
   `
 });
@@ -113,7 +122,7 @@ const CalendarGridView = defineComponent({
   },
   setup(props) {
     let monthDate = computed(() => {
-      return addMonths(startOfMonth(props.calendar.visibleDate.value), props.offset);
+      return addMonths(startOfMonth(resolveVisibleDate(props.calendar)), props.offset);
     });
     let grid = useCalendarGrid({
       visibleDate: monthDate
@@ -180,33 +189,34 @@ function renderCalendar(config: CalendarStoryConfig) {
       });
       let gridCount = computed(() => Math.max(config.visibleDuration.months ?? 1, 1));
       let monthOffsets = computed(() => Array.from({length: gridCount.value}, (_, index) => index));
-      let monthLabel = (offset: number) => {
-        return formatMonthLabel(addMonths(startOfMonth(calendar.visibleDate.value), offset));
-      };
 
       return {
         calendar,
-        monthLabel,
+        ...calendar,
         monthOffsets,
         visibleDuration: config.visibleDuration
       };
     },
     template: `
-      <div v-bind="calendar.calendarProps">
+      <div v-bind="calendarProps">
         <div style="text-align: center;" data-testid="range">
-          {{calendar.calendarProps['aria-label']}}
+          {{calendarProps['aria-label']}}
         </div>
         <div :style="{display: 'grid', gridTemplateColumns: 'repeat(' + monthOffsets.length + ', 1fr)', gap: '1em'}">
-          <div v-for="offset in monthOffsets" :key="offset">
-            <div style="font-size: 12px; margin-bottom: 6px; text-align: center;">
-              {{monthLabel(offset)}}
-            </div>
-            <CalendarGridView :calendar="calendar" :offset="offset" :visibleDuration="visibleDuration" />
-          </div>
+          <CalendarGridView
+            v-for="offset in monthOffsets"
+            :key="offset"
+            :calendar="calendar"
+            :offset="offset"
+            :visibleDuration="visibleDuration" />
         </div>
-        <div style="display: flex; gap: 8px; margin-top: 8px;">
-          <button type="button" @click="calendar.prevPage()">prev</button>
-          <button type="button" @click="calendar.nextPage()">next</button>
+        <div>
+          <button type="button" style="position: relative; display: inline-flex; align-items: center; background: transparent; border: 2px solid rgb(213, 213, 213);" @click="prevPage()">
+            <span role="none">prev</span>
+          </button>
+          <button type="button" style="position: relative; display: inline-flex; align-items: center; background: transparent; border: 2px solid rgb(213, 213, 213);" @click="nextPage()">
+            <span role="none">next</span>
+          </button>
         </div>
       </div>
     `

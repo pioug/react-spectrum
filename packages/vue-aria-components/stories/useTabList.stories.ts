@@ -64,20 +64,19 @@ function renderTabList(args: {shouldSelectOnPressUp?: boolean}) {
       };
     },
     template: `
-      <div style="display: grid; gap: 8px; max-width: 720px;">
+      <div style="height: 150px;">
         <div
           v-bind="tabListProps"
-          style="display: flex; gap: 4px; overflow-x: auto; padding-bottom: 6px; border-bottom: 1px solid #ccc;">
-          <button
+          style="display: flex; border-bottom: 1px solid grey; border-left: 10px solid grey; border-right: 20px solid grey; max-width: 400px; overflow: auto;">
+          <div
             v-for="item in items"
             :key="item.key"
             v-bind="getTabProps(item.key)"
-            type="button"
-            :style="{padding: '6px 10px', border: '1px solid #999', background: isSelected(item.key) ? '#e8e8e8' : 'white', whiteSpace: 'nowrap'}">
+            :style="{padding: '10px', borderBottom: isSelected(item.key) ? '3px solid blue' : undefined}">
             {{item.label}}
-          </button>
+          </div>
         </div>
-        <div v-bind="tabPanelProps" style="padding: 8px; border: 1px solid #ddd;">
+        <div v-bind="tabPanelProps" style="padding: 10px;">
           {{selectedTab?.content}}
         </div>
       </div>

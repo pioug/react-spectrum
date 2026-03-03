@@ -1,4 +1,5 @@
-import {ref} from 'vue';
+import {computed, ref} from 'vue';
+import {useDatePicker} from '@vue-aria/datepicker';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 const meta = {
@@ -11,29 +12,34 @@ type Story = StoryObj<typeof meta>;
 export const ProgrammaticSetValueExample: Story = {
   render: () => ({
     setup() {
-      let value = ref('2026-02-25');
-      let setToday = () => {
-        value.value = '2026-02-25';
-      };
-      let setFuture = () => {
-        value.value = '2026-12-31';
+      let value = ref<string | null>(null);
+      let datePicker = useDatePicker({
+        value
+      });
+      let segments = computed(() => {
+        if (!value.value) {
+          return ['mm', '/', 'dd', '/', 'yyyy'];
+        }
+
+        let [year = '', month = '', day = ''] = value.value.split('-');
+        return [month, '/', day, '/', year];
+      });
+      let setValue = () => {
+        datePicker.setValue('2020-01-01');
       };
 
       return {
-        setFuture,
-        setToday,
-        value
+        groupProps: datePicker.groupProps,
+        segments,
+        setValue
       };
     },
     template: `
-      <div style="display: grid; gap: 8px; max-width: 280px;">
-        <label for="date-picker-programmatic">Event date</label>
-        <input id="date-picker-programmatic" v-model="value" type="date" />
-        <div style="display: flex; gap: 8px;">
-          <button type="button" @click="setToday">Set today</button>
-          <button type="button" @click="setFuture">Set Dec 31</button>
+      <div>
+        <div v-bind="groupProps" data-testid="field">
+          <span v-for="(segment, index) in segments" :key="index">{{segment}}</span>
         </div>
-        <output>Current: {{value}}</output>
+        <button data-testid="set" @click="setValue">Set</button>
       </div>
     `
   }),

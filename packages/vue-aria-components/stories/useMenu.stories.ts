@@ -1,5 +1,5 @@
 import {action} from 'storybook/actions';
-import {computed, ref, type Ref} from 'vue';
+import {computed, reactive, ref, type Ref} from 'vue';
 import {useInteractOutside} from '@vue-aria/interactions';
 import {useMenu, useMenuItem, useMenuTrigger} from '@vue-aria/menu';
 import {useOverlay} from '@vue-aria/overlays';
@@ -63,9 +63,9 @@ function createMenuState(
     isOpen: menuTrigger.isOpen,
     menuProps: computed(() => ({
       ...menu.menuProps.value,
-      ...menuTrigger.menuProps.value,
-      ...overlay.overlayProps.value
+      ...menuTrigger.menuProps.value
     })),
+    overlayProps: overlay.overlayProps,
     menuTriggerProps: menuTrigger.menuTriggerProps,
     getItemProps: (key: string) => itemMap.get(key)?.menuItemProps.value,
     isFocused: (key: string) => Boolean(itemMap.get(key)?.isFocused.value)
@@ -78,8 +78,8 @@ export const DoubleMenuFiresOnInteractOutside: Story = {
       let firstOverlayRef = ref<HTMLElement | null>(null);
       let secondOverlayRef = ref<HTMLElement | null>(null);
 
-      let firstMenu = createMenuState('Actions', 'onInteractOutside', firstOverlayRef);
-      let secondMenu = createMenuState('Actions2', 'onInteractOutside', secondOverlayRef);
+      let firstMenu = reactive(createMenuState('Actions', 'onInteractOutside', firstOverlayRef));
+      let secondMenu = reactive(createMenuState('Actions2', 'onInteractOutside', secondOverlayRef));
 
       return {
         firstMenu,
@@ -90,50 +90,50 @@ export const DoubleMenuFiresOnInteractOutside: Story = {
       };
     },
     template: `
-      <div style="display: grid; gap: 8px;">
+      <div>
         <div>
           This should just be there to show that onInteractOutside fires when clicking on another trigger.
         </div>
-        <div style="display: flex; gap: 12px;">
-          <div style="position: relative; display: inline-block;">
-            <button v-bind="firstMenu.menuTriggerProps" type="button" style="height: 30px; font-size: 14px;">
-              Actions
-              <span aria-hidden="true" style="padding-left: 5px;">▼</span>
-            </button>
-            <div v-if="firstMenu.isOpen" ref="firstOverlayRef">
-              <ul
-                v-bind="firstMenu.menuProps"
-                style="position: absolute; width: 100%; margin: 4px 0 0 0; padding: 0; list-style: none; border: 1px solid gray; background: lightgray;">
-                <li
-                  v-for="option in menuOptions"
-                  :key="option.key"
-                  v-bind="firstMenu.getItemProps(option.key)"
-                  :style="{background: firstMenu.isFocused(option.key) ? 'gray' : 'transparent', color: firstMenu.isFocused(option.key) ? 'white' : 'black', padding: '2px 5px', outline: 'none', cursor: 'pointer'}"
-                  tabindex="0">
-                  {{option.label}}
-                </li>
-              </ul>
-            </div>
+        <div style="position: relative; display: inline-block;">
+          <button v-bind="firstMenu.menuTriggerProps" type="button" style="height: 30px; font-size: 14px;">
+            Actions
+            <span aria-hidden="true" style="padding-left: 5px;">
+              ▼
+            </span>
+          </button>
+          <div v-if="firstMenu.isOpen" ref="firstOverlayRef" v-bind="firstMenu.overlayProps">
+            <ul
+              v-bind="firstMenu.menuProps"
+              style="position: absolute; width: 100%; margin: 4px 0 0 0; padding: 0; list-style: none; border: 1px solid gray; background: lightgray;">
+              <li
+                v-for="option in menuOptions"
+                :key="option.key"
+                v-bind="firstMenu.getItemProps(option.key)"
+                :style="{background: firstMenu.isFocused(option.key) ? 'gray' : 'transparent', color: firstMenu.isFocused(option.key) ? 'white' : 'black', padding: '2px 5px', outline: 'none', cursor: 'pointer'}">
+                {{option.label}}
+              </li>
+            </ul>
           </div>
-          <div style="position: relative; display: inline-block;">
-            <button v-bind="secondMenu.menuTriggerProps" type="button" style="height: 30px; font-size: 14px;">
-              Actions2
-              <span aria-hidden="true" style="padding-left: 5px;">▼</span>
-            </button>
-            <div v-if="secondMenu.isOpen" ref="secondOverlayRef">
-              <ul
-                v-bind="secondMenu.menuProps"
-                style="position: absolute; width: 100%; margin: 4px 0 0 0; padding: 0; list-style: none; border: 1px solid gray; background: lightgray;">
-                <li
-                  v-for="option in menuOptions"
-                  :key="option.key"
-                  v-bind="secondMenu.getItemProps(option.key)"
-                  :style="{background: secondMenu.isFocused(option.key) ? 'gray' : 'transparent', color: secondMenu.isFocused(option.key) ? 'white' : 'black', padding: '2px 5px', outline: 'none', cursor: 'pointer'}"
-                  tabindex="0">
-                  {{option.label}}
-                </li>
-              </ul>
-            </div>
+        </div>
+        <div style="position: relative; display: inline-block;">
+          <button v-bind="secondMenu.menuTriggerProps" type="button" style="height: 30px; font-size: 14px;">
+            Actions2
+            <span aria-hidden="true" style="padding-left: 5px;">
+              ▼
+            </span>
+          </button>
+          <div v-if="secondMenu.isOpen" ref="secondOverlayRef" v-bind="secondMenu.overlayProps">
+            <ul
+              v-bind="secondMenu.menuProps"
+              style="position: absolute; width: 100%; margin: 4px 0 0 0; padding: 0; list-style: none; border: 1px solid gray; background: lightgray;">
+              <li
+                v-for="option in menuOptions"
+                :key="option.key"
+                v-bind="secondMenu.getItemProps(option.key)"
+                :style="{background: secondMenu.isFocused(option.key) ? 'gray' : 'transparent', color: secondMenu.isFocused(option.key) ? 'white' : 'black', padding: '2px 5px', outline: 'none', cursor: 'pointer'}">
+                {{option.label}}
+              </li>
+            </ul>
           </div>
         </div>
         <input aria-label="input after">

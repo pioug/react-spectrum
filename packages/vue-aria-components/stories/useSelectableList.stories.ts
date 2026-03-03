@@ -78,6 +78,23 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+function stripRoleProps(props: Record<string, unknown> | undefined): Record<string, unknown> {
+  if (!props) {
+    return {};
+  }
+
+  let {
+    role: _role,
+    'aria-label': _ariaLabel,
+    'aria-labelledby': _ariaLabelledBy,
+    ...rest
+  } = props;
+  void _role;
+  void _ariaLabel;
+  void _ariaLabelledBy;
+  return rest;
+}
+
 function renderGroupedSelectableList(args: SelectableListArgs) {
   const flatOptions = groupedOptions.flatMap((group) => group.items);
 
@@ -107,10 +124,10 @@ function renderGroupedSelectableList(args: SelectableListArgs) {
 
       return {
         args,
-        getItemProps: (key: string) => itemMap.get(key)?.itemProps.value,
+        getItemProps: (key: string) => stripRoleProps(itemMap.get(key)?.itemProps.value as Record<string, unknown> | undefined),
         getItemStates: (key: string) => itemMap.get(key)?.states.value,
         groupedOptions,
-        listProps
+        listProps: computed(() => stripRoleProps(listProps.value as Record<string, unknown>))
       };
     },
     template: `

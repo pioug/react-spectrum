@@ -37,19 +37,19 @@ function renderAppStory(useAlternateContainer = false) {
       };
     },
     template: `
-      <div style="display: grid; gap: 8px;">
-        <button type="button" @click="toggle">Toggle</button>
-        <div id="alternateContainer" data-testid="alternate-container" style="border: 1px dashed #aaa; padding: 8px;">
-          <OverlayProvider data-testid="root-provider">
-            This is the root provider.
-            <OverlayContainer
-              v-if="showModal"
-              :portal-container="useAlternateContainer ? alternateContainer : undefined"
-              data-testid="modal-provider">
-              <div data-testid="modal" v-bind="modalProps">The Modal</div>
-            </OverlayContainer>
-          </OverlayProvider>
-        </div>
+      <button type="button" @click="toggle" style="position: relative; display: inline-flex; align-items: center; border: 1px solid rgb(144, 144, 144); background: rgb(253, 253, 253);">
+        <span role="none" style="color: rgb(34, 34, 34);">Toggle</span>
+      </button>
+      <div id="alternateContainer" data-testid="alternate-container">
+        <OverlayProvider data-testid="root-provider">
+          This is the root provider.
+          <OverlayContainer
+            v-if="showModal"
+            :portal-container="useAlternateContainer ? alternateContainer : undefined"
+            data-testid="modal-provider">
+            <div data-testid="modal" v-bind="modalProps">The Modal</div>
+          </OverlayContainer>
+        </OverlayProvider>
       </div>
     `
   };
@@ -89,20 +89,22 @@ function renderBadContainerStory() {
       };
     },
     template: `
-      <div id="alternateContainer" data-testid="alternate-container" style="display: grid; gap: 8px;">
-        <button type="button" @click="toggleOuter">Toggle 1</button>
+      <div id="alternateContainer" data-testid="alternate-container">
+        <button type="button" @click="toggleOuter" style="position: relative; display: inline-flex; align-items: center; border: 1px solid rgb(144, 144, 144); background: rgb(253, 253, 253);">
+          <span role="none" style="color: rgb(34, 34, 34);">Toggle 1</span>
+        </button>
         <OverlayProvider v-if="showOuter" data-testid="root-provider">
-          <div style="display: grid; gap: 8px;">
-            This is the root provider.
-            <div id="nestedContainer"></div>
-            <button type="button" @click="toggleInner">Toggle 2</button>
-            <OverlayContainer
-              v-if="showInner"
-              :portal-container="nestedContainer"
-              data-testid="inner-modal-provider">
-              <div data-testid="inner-modal" v-bind="innerModalProps">Inner</div>
-            </OverlayContainer>
-          </div>
+          This is the root provider.
+          <div id="nestedContainer"></div>
+          <button type="button" @click="toggleInner" style="position: relative; display: inline-flex; align-items: center; border: 1px solid rgb(144, 144, 144); background: rgb(253, 253, 253);">
+            <span role="none" style="color: rgb(34, 34, 34);">Toggle 2</span>
+          </button>
+          <OverlayContainer
+            v-if="showInner"
+            :portal-container="nestedContainer"
+            data-testid="inner-modal-provider">
+            <div data-testid="inner-modal" v-bind="innerModalProps">Inner</div>
+          </OverlayContainer>
         </OverlayProvider>
       </div>
     `

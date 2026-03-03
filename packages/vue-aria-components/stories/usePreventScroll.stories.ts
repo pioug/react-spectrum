@@ -30,8 +30,11 @@ export const Default: Story = {
     },
     template: `
       <div style="height: 300vh;">
-        <button type="button" @click="startPreventScroll" style="display: inline-flex; align-items: center;">
-          <span role="none">Click Me in safari and then scroll</span>
+        <button
+          type="button"
+          @click="startPreventScroll"
+          style="position: relative; display: inline-flex; align-items: center; border: 1px solid rgb(144, 144, 144); background: rgb(253, 253, 253); margin: 20px;">
+          <span role="none" style="color: rgb(34, 34, 34);">Click Me in safari and then scroll</span>
         </button>
         <p>Should be able to scroll the range input on iOS Safari</p>
         <input type="range" />
