@@ -60,6 +60,44 @@ function addMonths(date: Date, months: number): Date {
   return nextDate;
 }
 
+function getVisibleDayCount(visibleDuration: CalendarVisibleDuration): number {
+  if (visibleDuration.days && visibleDuration.days > 0) {
+    return visibleDuration.days;
+  }
+
+  if (visibleDuration.weeks && visibleDuration.weeks > 0) {
+    return visibleDuration.weeks * 7;
+  }
+
+  return 0;
+}
+
+function getSinglePageRangeStart(selectedDate: Date, visibleDuration: CalendarVisibleDuration): Date {
+  let normalizedSelectedDate = cloneDate(selectedDate);
+  if (visibleDuration.days && visibleDuration.days > 0) {
+    return addDays(normalizedSelectedDate, -Math.floor(visibleDuration.days / 2));
+  }
+
+  if (visibleDuration.weeks && visibleDuration.weeks > 0) {
+    let centeredDate = addDays(normalizedSelectedDate, -(Math.floor(visibleDuration.weeks / 2) * 7));
+    return startOfWeek(centeredDate);
+  }
+
+  return startOfMonth(normalizedSelectedDate);
+}
+
+function formatRangeLabel(startDate: Date, visibleDuration: CalendarVisibleDuration, locale: string): string {
+  let dayCount = getVisibleDayCount(visibleDuration);
+  if (dayCount <= 0) {
+    return '';
+  }
+
+  let endDate = addDays(startDate, dayCount - 1);
+  let startFormatter = new Intl.DateTimeFormat(locale, {month: 'long', day: 'numeric'});
+  let endFormatter = new Intl.DateTimeFormat(locale, {month: 'long', day: 'numeric', year: 'numeric'});
+  return `${startFormatter.format(startDate)} to ${endFormatter.format(endDate)}`;
+}
+
 function todayUTC(): Date {
   let now = new Date();
   return new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
@@ -108,7 +146,7 @@ const CalendarCellItem = defineComponent({
         v-bind="buttonProps"
         role="button"
         style="display: block; width: 42px; height: 42px;"
-        :style="{background: isSelected ? 'blue' : '', color: isSelected ? 'white' : ''}"
+        :style="{background: isSelected ? 'blue' : ''}"
         @click="onPress">
         {{formattedDate}}
       </span>
@@ -132,6 +170,10 @@ const CalendarGridView = defineComponent({
     visibleDuration: {
       type: Object as PropType<CalendarVisibleDuration>,
       required: true
+    },
+    rangeStartDate: {
+      type: Date as PropType<Date | null>,
+      default: null
     }
   },
   setup(props) {
@@ -152,6 +194,10 @@ const CalendarGridView = defineComponent({
     let startDate = computed(() => {
       if (props.visibleDuration.months) {
         return startOfWeek(monthDate.value);
+      }
+
+      if (props.rangeStartDate) {
+        return cloneDate(props.rangeStartDate);
       }
 
       return resolveVisibleRangeStart(props.calendar) ?? monthDate.value;
@@ -201,20 +247,46 @@ function renderCalendar(config: CalendarStoryConfig) {
         visibleDuration: config.visibleDuration,
         pageBehavior: config.pageBehavior
       });
+      let locale = 'en-US';
       let gridCount = computed(() => Math.max(config.visibleDuration.months ?? 1, 1));
       let monthOffsets = computed(() => Array.from({length: gridCount.value}, (_, index) => index));
+      let singlePageRangeStart = computed(() => {
+        if (config.pageBehavior !== 'single' || !selectedDate.value) {
+          return null;
+        }
+
+        if (!config.visibleDuration.days && !config.visibleDuration.weeks) {
+          return null;
+        }
+
+        return getSinglePageRangeStart(selectedDate.value, config.visibleDuration);
+      });
+      let visibleRangeLabel = computed(() => {
+        if (singlePageRangeStart.value) {
+          return formatRangeLabel(singlePageRangeStart.value, config.visibleDuration, locale);
+        }
+
+        return calendar.calendarProps.value['aria-label'] ?? '';
+      });
+      let calendarRootProps = computed(() => ({
+        ...calendar.calendarProps.value,
+        'aria-label': visibleRangeLabel.value || calendar.calendarProps.value['aria-label']
+      }));
 
       return {
+        calendarRootProps,
         calendar,
         ...calendar,
         monthOffsets,
+        singlePageRangeStart,
+        visibleRangeLabel,
         visibleDuration: config.visibleDuration
       };
     },
     template: `
-      <div v-bind="calendarProps">
+      <div v-bind="calendarRootProps">
         <div style="text-align: center;" data-testid="range">
-          {{calendarProps['aria-label']}}
+          {{visibleRangeLabel}}
         </div>
         <div :style="{display: 'grid', gridTemplateColumns: 'repeat(' + monthOffsets.length + ', 1fr)', gap: '1em'}">
           <CalendarGridView
@@ -222,13 +294,14 @@ function renderCalendar(config: CalendarStoryConfig) {
             :key="offset"
             :calendar="calendar"
             :offset="offset"
+            :range-start-date="singlePageRangeStart"
             :visibleDuration="visibleDuration" />
         </div>
         <div>
-          <button type="button" style="position: relative; display: inline-flex; align-items: center; background: transparent; border: 2px solid rgb(213, 213, 213);" @click="prevPage()">
+          <button type="button" style="position: relative; display: inline-flex; align-items: center; justify-content: center; background: transparent; border: 2px solid rgb(213, 213, 213); height: 32px; padding: 3px 14px 5px; line-height: 1.3; margin: 0px;" @click="prevPage()">
             <span role="none" style="color: rgb(34, 34, 34);">prev</span>
           </button>
-          <button type="button" style="position: relative; display: inline-flex; align-items: center; background: transparent; border: 2px solid rgb(213, 213, 213);" @click="nextPage()">
+          <button type="button" style="position: relative; display: inline-flex; align-items: center; justify-content: center; background: transparent; border: 2px solid rgb(213, 213, 213); height: 32px; padding: 3px 14px 5px; line-height: 1.3; margin: 0px;" @click="nextPage()">
             <span role="none" style="color: rgb(34, 34, 34);">next</span>
           </button>
         </div>

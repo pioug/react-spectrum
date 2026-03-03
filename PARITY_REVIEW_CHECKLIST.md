@@ -5,8 +5,8 @@ Generated: 2026-03-01T03:33:00+08:00
 Use this as a progression checklist for parity re-review. Mark each line when complete.
 
 ## Phase 0 - Gate
-- [ ] Run baseline gate: `yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`
-- [ ] Confirm story-id parity for the current batch before/after fixes
+- [x] Run baseline gate: `yarn typecheck:vue`, `yarn test:vue`, `yarn build:vue:storybook`
+- [x] Confirm story-id parity for the current batch before/after fixes
 - [x] Overlay first-render token gate (dialog/overlays scope): verify at least one initially-open overlay story portals inside `.vs-provider` (not `body`) and computed modal/underlay surface backgrounds are non-transparent (theme tokens resolved)
 
 ## Phase 1 - @vue-spectrum Component Families + Stories
@@ -559,31 +559,31 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - [x] Composable: src/useLabels.ts
 - [x] 3.visually-hidden `@vue-aria/visually-hidden`
   - [x] Composable: src/useVisuallyHidden.ts
-- [ ] 3.hook-stories `vue-aria-components/stories/use*.stories.ts`
-  - [ ] Story: useButton.stories.ts
-  - [ ] Story: useCalendar.stories.ts
-  - [ ] Story: useCheckbox.stories.ts
+- [x] 3.hook-stories `vue-aria-components/stories/use*.stories.ts`
+  - [x] Story: useButton.stories.ts
+  - [x] Story: useCalendar.stories.ts
+  - [x] Story: useCheckbox.stories.ts
   - [x] Story: useComboBox.stories.ts
-  - [ ] Story: useDatePicker.stories.ts
-  - [ ] Story: useField.stories.ts
-  - [ ] Story: useFocusRing.stories.ts
-  - [ ] Story: useGrid.stories.ts
-  - [ ] Story: useHover.stories.ts
-  - [ ] Story: useId.stories.ts
-  - [ ] Story: useInteractOutside.stories.ts
-  - [ ] Story: useMenu.stories.ts
-  - [ ] Story: useModal.stories.ts
-  - [ ] Story: useMove.stories.ts
-  - [ ] Story: usePress.stories.ts
-  - [ ] Story: usePreventScroll.stories.ts
-  - [ ] Story: useSelect.stories.ts
-  - [ ] Story: useSelectableList.stories.ts
-  - [ ] Story: useTabList.stories.ts
-  - [ ] Story: useTable.stories.ts
-  - [ ] Story: useTextField.stories.ts
-  - [ ] Story: useToast.stories.ts
-  - [ ] Story: useTreeState.stories.ts
-  - [ ] Story: useViewportSize.stories.ts
+  - [x] Story: useDatePicker.stories.ts
+  - [x] Story: useField.stories.ts
+  - [x] Story: useFocusRing.stories.ts
+  - [x] Story: useGrid.stories.ts
+  - [x] Story: useHover.stories.ts
+  - [x] Story: useId.stories.ts
+  - [x] Story: useInteractOutside.stories.ts
+  - [x] Story: useMenu.stories.ts
+  - [x] Story: useModal.stories.ts
+  - [x] Story: useMove.stories.ts
+  - [x] Story: usePress.stories.ts
+  - [x] Story: usePreventScroll.stories.ts
+  - [x] Story: useSelect.stories.ts
+  - [x] Story: useSelectableList.stories.ts
+  - [x] Story: useTabList.stories.ts
+  - [x] Story: useTable.stories.ts
+  - [x] Story: useTextField.stories.ts
+  - [x] Story: useToast.stories.ts
+  - [x] Story: useTreeState.stories.ts
+  - [x] Story: useViewportSize.stories.ts
 
 ## Phase 4 - Sign-off
 - [ ] Keep checklist status up to date for each completed item

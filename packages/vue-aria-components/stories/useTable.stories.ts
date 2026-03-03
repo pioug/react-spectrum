@@ -90,6 +90,28 @@ function getColumns(includeExtraColumns?: boolean): TableColumn[] {
   ];
 }
 
+function getInitialColumnWidth(args: TableArgs, columnUid: ColumnUid): number {
+  if (args.docVariant) {
+    if (args.controlled) {
+      if (columnUid === 'name' || columnUid === 'type') {
+        return 43;
+      }
+
+      if (columnUid === 'level') {
+        return 214;
+      }
+    }
+
+    return 100;
+  }
+
+  if (columnUid === 'level') {
+    return 260;
+  }
+
+  return 180;
+}
+
 function renderTable(args: TableArgs) {
   let withSelection = args.withSelection !== false;
   let activeColumns = getColumns(args.includeExtraColumns);
@@ -139,7 +161,7 @@ function renderTable(args: TableArgs) {
       });
 
       let initialWidths = Object.fromEntries(
-        activeColumns.map((column) => [column.uid, column.uid === 'level' ? 260 : 180])
+        activeColumns.map((column) => [column.uid, getInitialColumnWidth(args, column.uid)])
       ) as Record<ColumnUid, number>;
       let columnWidths = ref(initialWidths);
       let savedColumnWidths = ref({...initialWidths});
@@ -228,13 +250,17 @@ function renderTable(args: TableArgs) {
           .join(',')}}`;
       });
 
+      let getColumnWidth = (columnUid: ColumnUid) => {
+        return columnWidths.value[columnUid] ?? initialWidths[columnUid] ?? 180;
+      };
+
       let getCellWidth = (cellKey: string) => {
         let columnKey = cellColumnKey.get(cellKey);
         if (!columnKey) {
           return 180;
         }
 
-        return columnWidths.value[columnKey] ?? 180;
+        return getColumnWidth(columnKey);
       };
 
       let getResizableHeaderStyle = (columnUid: ColumnUid) => ({
@@ -264,13 +290,91 @@ function renderTable(args: TableArgs) {
         background: rowIndex % 2 === 0 ? 'var(--spectrum-gray-75)' : 'var(--spectrum-gray-100)'
       });
 
-      let getDocCellStyle = () => ({
-        width: '100px',
-        display: 'block'
+      let docTableStyle = {
+        borderCollapse: 'collapse',
+        width: '300px',
+        height: '200px',
+        display: 'block',
+        position: 'relative',
+        overflow: 'auto'
+      };
+
+      let docHeaderRowGroupStyle = {
+        display: 'block',
+        borderBottom: '2px solid var(--spectrum-global-color-gray-800)',
+        position: 'sticky',
+        top: '0px',
+        background: 'var(--spectrum-gray-100)',
+        width: 'fit-content'
+      };
+
+      let docBodyRowGroupStyle = {
+        display: 'block',
+        maxHeight: '200px'
+      };
+
+      let getDocHeaderCellStyle = (columnUid: ColumnUid) => ({
+        width: `${getColumnWidth(columnUid)}px`,
+        padding: '5px 10px',
+        outline: 'none',
+        cursor: 'default',
+        display: 'block',
+        flex: '0 0 auto',
+        boxSizing: 'border-box',
+        textAlign: 'left'
+      });
+
+      let getDocHeaderInnerStyle = (columnUid: ColumnUid) => ({
+        display: 'flex',
+        position: 'relative',
+        width: `${Math.max(getColumnWidth(columnUid) - 20, 0)}px`,
+        height: '30px'
+      });
+
+      let getDocHeaderButtonStyle = () => ({
+        width: '100%',
+        textAlign: 'left',
+        border: 'none',
+        background: 'transparent',
+        flex: '1 1 auto',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        marginInlineStart: '-6px',
+        outline: 'none'
+      });
+
+      let getDocResizerStyle = () => ({
+        width: '15px',
+        backgroundColor: 'gray',
+        cursor: 'col-resize',
+        height: '30px',
+        touchAction: 'none',
+        flex: '0 0 auto',
+        boxSizing: 'border-box',
+        border: '5px solid transparent',
+        borderTopStyle: 'none',
+        borderBottomStyle: 'none',
+        backgroundClip: 'content-box'
+      });
+
+      let getDocCellStyle = (cellKey: string) => ({
+        width: `${getCellWidth(cellKey)}px`,
+        padding: '5px 10px',
+        outline: 'none',
+        cursor: 'default',
+        display: 'block',
+        flex: '0 0 auto',
+        boxSizing: 'border-box',
+        boxShadow: 'none',
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis'
       });
 
       let getDocRowStyle = (rowIndex: number) => ({
         display: 'flex',
+        width: 'fit-content',
         background: rowIndex % 2 === 0 ? 'none' : 'var(--spectrum-alias-highlight-hover)',
         outline: 'none',
         boxShadow: 'none'
@@ -290,7 +394,14 @@ function renderTable(args: TableArgs) {
           }
         }),
         getColumnHeaderProps: (columnUid: ColumnUid) => columnHeaderMap.get(columnUid)?.columnHeaderProps.value,
+        docBodyRowGroupStyle,
+        docHeaderRowGroupStyle,
+        docTableStyle,
         getDocCellStyle,
+        getDocHeaderButtonStyle,
+        getDocHeaderCellStyle,
+        getDocHeaderInnerStyle,
+        getDocResizerStyle,
         getDocRowStyle,
         getResizableCellStyle,
         getResizableHeaderStyle,
@@ -319,35 +430,38 @@ function renderTable(args: TableArgs) {
       };
     },
     template: `
-      <table v-if="args.docVariant" v-bind="gridProps" style="display: block; position: relative;">
-        <thead v-bind="headerRowGroupProps" style="display: block; position: sticky;">
-          <tr v-bind="headerRowProps" style="display: flex; color: rgb(34, 34, 34);">
+      <table v-if="args.docVariant" v-bind="gridProps" class="aria-table" :style="docTableStyle">
+        <thead v-bind="headerRowGroupProps" class="aria-table-rowGroup aria-table-rowGroupHeader" :style="docHeaderRowGroupStyle">
+          <tr v-bind="headerRowProps" class="aria-table-row" style="display: flex; width: fit-content; color: rgb(34, 34, 34);">
             <th
               v-for="column in activeColumns"
               :key="column.uid"
               v-bind="getColumnHeaderProps(column.uid)"
-              style="width: 100px; display: block;">
-              <div style="display: flex; position: relative;">
-                <button type="button" style="background: transparent; border: 0px; padding: 0px;">{{column.name}}</button>
-                <div role="presentation" style="touch-action: none; background: gray; color: transparent;">
+              class="aria-table-headerCell"
+              :style="getDocHeaderCellStyle(column.uid)">
+              <div :style="getDocHeaderInnerStyle(column.uid)">
+                <button type="button" class="aria-table-headerTitle" :style="getDocHeaderButtonStyle()">{{column.name}}</button>
+                <div role="presentation" class="aria-table-resizer" :style="getDocResizerStyle()">
                   <input v-bind="getResizeInputProps(column.uid)" type="range" :style="hiddenRangeInputStyle">
                 </div>
               </div>
             </th>
           </tr>
         </thead>
-        <tbody v-bind="bodyRowGroupProps" style="display: block;">
+        <tbody v-bind="bodyRowGroupProps" class="aria-table-rowGroup aria-table-rowGroupBody" :style="docBodyRowGroupStyle">
           <tr
             v-for="(row, rowIndex) in collection.rows"
             :key="row.key"
+            class="aria-table-row"
             v-bind="getRowProps(row.key)"
             :style="getDocRowStyle(rowIndex)">
             <td
               v-for="(cell, cellIndex) in row.cells"
               :key="cell.key"
               v-bind="getCellProps(row.key, cell.key)"
+              class="aria-table-cell"
               :role="cellIndex === 0 ? 'rowheader' : 'gridcell'"
-              :style="getDocCellStyle()">
+              :style="getDocCellStyle(cell.key)">
               {{cell.textValue}}
             </td>
           </tr>
