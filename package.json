@@ -261,6 +261,7 @@
         "packages/@react-spectrum/s2/stories/**",
         ".storybook-s2/**",
         "packages/dev/s2-docs/**",
+        "packages/vue-aria-components/**",
         "starters/**"
       ]
     },

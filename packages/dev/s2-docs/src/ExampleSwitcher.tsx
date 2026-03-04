@@ -61,6 +61,18 @@ const themePicker = style({
 export const ExampleSwitcherContext = createContext<Key | null>(null);
 
 const DEFAULT_EXAMPLES = ['Vanilla CSS', 'Tailwind'];
+const THEME_TINTS: Record<string, {base: string, hover: string}> = {
+  indigo: {base: '#5f5af6', hover: '#4a47d1'},
+  blue: {base: '#1473e6', hover: '#0d66d0'},
+  cyan: {base: '#0e7490', hover: '#155e75'},
+  turquoise: {base: '#0f766e', hover: '#115e59'},
+  green: {base: '#2f855a', hover: '#276749'},
+  yellow: {base: '#a16207', hover: '#854d0e'},
+  orange: {base: '#c05621', hover: '#9c4221'},
+  red: {base: '#c53030', hover: '#9b2c2c'},
+  pink: {base: '#b83280', hover: '#97266d'},
+  purple: {base: '#7e22ce', hover: '#6b21a8'}
+};
 
 export function ExampleSwitcher({type = 'style', examples = DEFAULT_EXAMPLES, children}) {
   let [selected, setSelected] = useLocalStorage(type, examples[0]);
@@ -77,6 +89,9 @@ export function ExampleSwitcher({type = 'style', examples = DEFAULT_EXAMPLES, ch
 
   useLayoutEffect(() => {
     document.documentElement.style.setProperty('--tint', `var(--${theme})`);
+    let tint = THEME_TINTS[theme] ?? THEME_TINTS.indigo;
+    document.documentElement.style.setProperty('--vs-tint', tint.base);
+    document.documentElement.style.setProperty('--vs-tint-hover', tint.hover);
   }, [theme]);
 
   let onSelectionChange = (key: Key) => {
@@ -90,6 +105,8 @@ export function ExampleSwitcher({type = 'style', examples = DEFAULT_EXAMPLES, ch
   let onThemeChange = (key: Key | null) => {
     setTheme(String(key));
   };
+
+  let exampleChildren = Array.isArray(children) ? children : [children];
 
   return (
     <div className={exampleStyle} data-example-switcher>
@@ -125,7 +142,7 @@ export function ExampleSwitcher({type = 'style', examples = DEFAULT_EXAMPLES, ch
       }
       <div style={{gridArea: 'example'}}>
         <ExampleSwitcherContext.Provider value={selected}>
-          {children[examples.indexOf(selected)]}
+          {exampleChildren[examples.indexOf(selected)]}
         </ExampleSwitcherContext.Provider>
       </div>
     </div>

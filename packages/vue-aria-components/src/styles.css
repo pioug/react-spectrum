@@ -2,14 +2,14 @@
   --vs-color-bg: #f8f8f8;
   --vs-color-fg: #222222;
   --vs-color-border: #b8b8b8;
-  --vs-color-primary: #1473e6;
-  --vs-color-primary-hover: #0d66d0;
+  --vs-color-primary: var(--vs-tint, #1473e6);
+  --vs-color-primary-hover: var(--vs-tint-hover, #0d66d0);
   --vs-color-secondary-bg: #ffffff;
   --vs-color-secondary-hover: #f2f2f2;
   --vs-color-danger: #d31510;
   --vs-radius-control: 6px;
   --vs-radius-surface: 8px;
-  --vs-focus-ring: 0 0 0 2px rgba(20, 115, 230, 0.35);
+  --vs-focus-ring: 0 0 0 2px var(--vs-tint, rgba(20, 115, 230, 0.35));
   isolation: isolate;
   min-height: 100%;
 }
