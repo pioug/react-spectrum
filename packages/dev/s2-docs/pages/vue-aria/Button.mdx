@@ -28,7 +28,7 @@ export const description = 'Allows a user to perform an action, with mouse, touc
     initialProps={{children: 'Press me'}}
     importSource="vue-aria-components"
     type="vanilla"
-    files={["starters/docs/src/Button.tsx", "starters/docs/src/Button.css"]} />
+    files={["starters/vue/src/snippets/Button.vue", "starters/docs/src/Button.css"]} />
   <VisualExample
     component={VueTailwindButtonExample}
     docs={tailwindDocs.exports.Button}
@@ -85,40 +85,33 @@ function handlePressEnd() {
 
 Use the `isPending` prop to display a pending state. Pending buttons remain focusable, but are otherwise disabled. Pending state changes are announced to assistive technologies.
 
-```tsx render
+```tsx render hideImports files={["starters/vue/src/snippets/ButtonPending.vue"]} defaultSelected="ButtonPending.vue" hideExtraFiles
 "use client";
-import {VueButtonPendingDemo} from '../../src/VueInterop';
+import {useState} from 'react';
+import {VueButtonExample as Button} from '../../src/VueInterop';
 
-<VueButtonPendingDemo />
-```
+function PendingButton() {
+  let [isPending, setPending] = useState(false);
 
-```vue
-<script setup lang="ts">
-import {ref} from 'vue';
-import {VueButton} from 'vue-aria-components';
+  return (
+    <Button
+      ///- begin highlight -///
+      isPending={isPending}
+      ///- end highlight -///
+      onPress={() => {
+        if (isPending) {
+          return;
+        }
 
-let isPending = ref(false);
-
-function save() {
-  if (isPending.value) {
-    return;
-  }
-
-  isPending.value = true;
-  setTimeout(() => {
-    isPending.value = false;
-  }, 5000);
+        setPending(true);
+        setTimeout(() => {
+          setPending(false);
+        }, 5000);
+      }}>
+      Save
+    </Button>
+  );
 }
-</script>
-
-<template>
-  <VueButton
-    class="react-aria-Button button-base"
-    :isPending="isPending"
-    @press="save">
-    Save
-  </VueButton>
-</template>
 ```
 
 <InlineAlert variant="notice">

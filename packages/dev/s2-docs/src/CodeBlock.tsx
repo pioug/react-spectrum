@@ -67,10 +67,12 @@ interface CodeBlockProps extends VisualExampleProps {
   files?: string[],
   expanded?: boolean,
   hidden?: boolean,
-  showCoachMark?: boolean
+  showCoachMark?: boolean,
+  defaultSelected?: string,
+  hideExtraFiles?: boolean
 }
 
-export function CodeBlock({render, children, dir, files, expanded, hidden, ...props}: CodeBlockProps) {
+export function CodeBlock({render, children, dir, files, expanded, hidden, defaultSelected, hideExtraFiles, ...props}: CodeBlockProps) {
   if (hidden) {
     return null;
   }
@@ -126,7 +128,9 @@ export function CodeBlock({render, children, dir, files, expanded, hidden, ...pr
             files={files}
             downloadFiles={downloadFiles.files}
             maxLines={expanded ? Infinity : 6}
-            type={props.type}>
+            type={props.type}
+            defaultSelected={defaultSelected}
+            hideExtraFiles={hideExtraFiles}>
             {content}
           </Files>
         : content}
@@ -182,17 +186,18 @@ interface FilesProps {
   downloadFiles?: DownloadFiles['files'],
   type?: 'vanilla' | 'tailwind' | 's2',
   defaultSelected?: string,
-  maxLines?: number
+  maxLines?: number,
+  hideExtraFiles?: boolean
 }
 
-export function Files({children, files, downloadFiles, type, defaultSelected, maxLines}: FilesProps) {
+export function Files({children, files, downloadFiles, type, defaultSelected, maxLines, hideExtraFiles}: FilesProps) {
   let fileMap: {[name: string]: ReactElement} = {};
   for (let file of files) {
     fileMap[path.basename(file)] = <File filename={file} maxLines={maxLines} type={type} />;
   }
 
   let extraFiles: {[name: string]: ReactElement} = {};
-  if (downloadFiles) {
+  if (!hideExtraFiles && downloadFiles) {
     for (let name in downloadFiles) {
       if (!files[name]) {
         extraFiles[name] = (
