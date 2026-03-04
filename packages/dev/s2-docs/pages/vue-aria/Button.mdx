@@ -5,7 +5,7 @@ import {Content, Heading, InlineAlert} from '@react-spectrum/s2';
 import docs from 'docs:react-aria-components';
 import vanillaDocs from 'docs:vanilla-starter/Button';
 import typesDocs from 'docs:@react-types/shared/src/events.d.ts';
-import {VueButtonExample, VueButtonEventsDemo, VueButtonPendingDemo, VueLinkButtonDemo} from '../../src/VueInterop';
+import {VueButtonExample} from '../../src/VueInterop';
 
 export const tags = ['btn'];
 export const relatedPages = [{'title': 'useButton', 'url': 'Button/useButton.html'}];
@@ -15,16 +15,14 @@ export const description = 'Allows a user to perform an action, with mouse, touc
 
 <PageDescription>{docs.exports.Button.description}</PageDescription>
 
-<ExampleSwitcher examples={['Vue']}>
-  <VisualExample
-    component={VueButtonExample}
-    docs={vanillaDocs.exports.Button}
-    links={vanillaDocs.links}
-    props={['variant', 'isPending', 'isDisabled']}
-    initialProps={{children: 'Press me'}}
-    importSource="vue-aria-components"
-    type="vanilla" />
-</ExampleSwitcher>
+<VisualExample
+  component={VueButtonExample}
+  docs={vanillaDocs.exports.Button}
+  links={vanillaDocs.links}
+  props={['variant', 'isPending', 'isDisabled']}
+  initialProps={{children: 'Press me'}}
+  importSource="vue-aria-components"
+  type="vanilla" />
 
 ## Events
 
@@ -32,52 +30,52 @@ Use the `@press` event handler to handle interactions via mouse, keyboard, and t
 
 The `@press-start`, `@press-end`, and `@press-change` events are also emitted as the user interacts with the button. `@press-start` and `@press-end` each receive a <TypeLink links={typesDocs.links} type={typesDocs.exports.PressEvent} />, which provides information about the target and interaction method. See [usePress](usePress) for more details.
 
-<VueButtonEventsDemo />
+```tsx render
+"use client";
+import {VueButtonExample} from '../../src/VueInterop';
+import {useState} from 'react';
 
-```vue
-<script setup lang="ts">
-import {ref} from 'vue';
-import {VueButton} from 'vue-aria-components';
+function Example() {
+  let [pointerType, setPointerType] = useState('');
 
-let pointerType = ref('');
-</script>
-
-<template>
-  <VueButton
-    @press-start="event => pointerType = event.pointerType"
-    @press-end="() => pointerType = ''">
-    Press me
-  </VueButton>
-  <p>{{ pointerType ? `You are pressing the button with a ${pointerType}!` : 'Ready to be pressed.' }}</p>
-</template>
+  return (
+    <>
+      <VueButtonExample
+        onPressStart={e => setPointerType((e as {pointerType: string}).pointerType)}
+        onPressEnd={() => setPointerType('')}>
+        Press me
+      </VueButtonExample>
+      <p>{pointerType ? `You are pressing the button with a ${pointerType}!` : 'Ready to be pressed.'}</p>
+    </>
+  );
+}
 ```
 
 ## Pending
 
 Use the `isPending` prop to display a pending state. Pending buttons remain focusable, but are otherwise disabled. Pending state changes are announced to assistive technologies.
 
-<VueButtonPendingDemo />
+```tsx render
+"use client";
+import {VueButtonExample} from '../../src/VueInterop';
+import {useState} from 'react';
 
-```vue
-<script setup lang="ts">
-import {ref} from 'vue';
-import {VueButton} from 'vue-aria-components';
+function PendingButton() {
+  let [isPending, setPending] = useState(false);
 
-let isPending = ref(false);
-</script>
-
-<template>
-  <VueButton
-    :is-pending="isPending"
-    @press="() => {
-      isPending = true;
-      setTimeout(() => {
-        isPending = false;
-      }, 5000);
-    }">
-    Save
-  </VueButton>
-</template>
+  return (
+    <VueButtonExample
+      isPending={isPending}
+      onPress={() => {
+        setPending(true);
+        setTimeout(() => {
+          setPending(false);
+        }, 5000);
+      }}>
+      Save
+    </VueButtonExample>
+  );
+}
 ```
 
 <InlineAlert variant="notice">
@@ -90,18 +88,11 @@ let isPending = ref(false);
 
 The `VueButton` component always represents a button semantically. To create a link that visually looks like a button, use the `VueLink` component instead. You can reuse the same styles you apply to the `VueButton` component on `VueLink`.
 
+```tsx render
+"use client";
+import {VueLinkButtonDemo} from '../../src/VueInterop';
+
 <VueLinkButtonDemo />
-
-```vue
-<script setup lang="ts">
-import {VueLink} from 'vue-aria-components';
-</script>
-
-<template>
-  <VueLink class="react-aria-Button button-base" href="https://adobe.com/" target="_blank">
-    Adobe
-  </VueLink>
-</template>
 ```
 
 ## Examples
