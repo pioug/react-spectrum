@@ -17,10 +17,12 @@ function save() {
 </script>
 
 <template>
+  <!--- begin highlight -->
   <VueButton
     class="react-aria-Button button-base"
     :isPending="isPending"
     @press="save">
     Save
   </VueButton>
+  <!--- end highlight -->
 </template>

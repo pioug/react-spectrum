@@ -15,11 +15,13 @@ function handlePressEnd() {
 </script>
 
 <template>
+  <!--- begin highlight -->
   <VueButton
     class="react-aria-Button button-base"
     @press-start="handlePressStart"
     @press-end="handlePressEnd">
     Press me
   </VueButton>
+  <!--- end highlight -->
   <p>{{ pointerType ? `You are pressing the button with a ${pointerType}!` : 'Ready to be pressed.' }}</p>
 </template>

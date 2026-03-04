@@ -130,6 +130,7 @@ const highlightCode = cache((children: string, lang: string, hideImports = true,
   // @ts-ignore
   let highlighted = highlightHast(children, Language[language]);
   let lineNodes = lines(highlighted);
+  lineNodes = groupLinesByMarkerComments(lineNodes);
   let idx = lineNodes.findIndex(line => !/^(["']use client["']|(\s*$))/.test(text(line)));
   if (idx > 0) {
     lineNodes = lineNodes.slice(idx);
@@ -181,6 +182,66 @@ const highlightCode = cache((children: string, lang: string, hideImports = true,
 
   return renderChildren(lineNodes, '0', links);
 });
+
+type Marker = {
+  kind: 'begin' | 'end',
+  tag: string
+} | null;
+
+function parseLineMarker(line: string): Marker {
+  // JS/TS markers (existing docs pattern): /*- begin highlight -*/ or ///- begin highlight -///
+  let jsMarker = line.match(/^(?:\/\/\/|\/\*)-\s*(begin|end)\s+([a-z-]+)\s*-(?:\/\/\/|\*\/)$/i);
+  if (jsMarker) {
+    return {kind: jsMarker[1].toLowerCase() as 'begin' | 'end', tag: jsMarker[2].toLowerCase()};
+  }
+
+  // Vue template markers: <!--- begin highlight -->
+  let htmlMarker = line.match(/^<!---\s*(begin|end)\s+([a-z-]+)\s*-?-->$/i);
+  if (htmlMarker) {
+    return {kind: htmlMarker[1].toLowerCase() as 'begin' | 'end', tag: htmlMarker[2].toLowerCase()};
+  }
+
+  return null;
+}
+
+function groupLinesByMarkerComments(lineNodes: HastNode[]): HastNode[] {
+  let grouped: HastNode[] = [];
+  let currentGroup: HastNode | null = null;
+  let currentTag: string | null = null;
+
+  for (let line of lineNodes) {
+    let marker = parseLineMarker(text(line).trim());
+    if (marker?.kind === 'begin') {
+      currentTag = marker.tag;
+      currentGroup = {
+        type: 'element',
+        tagName: marker.tag,
+        children: []
+      } as HastNode;
+      continue;
+    }
+
+    if (marker?.kind === 'end' && currentGroup && currentTag === marker.tag) {
+      grouped.push(currentGroup);
+      currentGroup = null;
+      currentTag = null;
+      continue;
+    }
+
+    if (currentGroup) {
+      currentGroup.children.push(line);
+    } else {
+      grouped.push(line);
+    }
+  }
+
+  // In case markers are mismatched, preserve accumulated lines.
+  if (currentGroup) {
+    grouped.push(...currentGroup.children);
+  }
+
+  return grouped;
+}
 
 function lines(node: HastNode) {
   let resultLines: HastNode[] = [];

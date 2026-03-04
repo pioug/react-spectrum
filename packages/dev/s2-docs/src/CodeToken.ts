@@ -11,6 +11,10 @@ export enum TokenType {
   constructor = tag,
   comment = 5,
   variable = 6,
+  type = variable,
+  constant = variable,
+  builtin = variable,
+  operator = keyword,
   import = 7
 }
 
