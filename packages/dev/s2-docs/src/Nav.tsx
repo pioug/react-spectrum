@@ -34,15 +34,12 @@ export function Nav() {
 
     let library = getLibraryFromPage(page);
 
-    if (currentLibrary === 'react-spectrum' && library !== currentLibrary) {
+    if ((currentLibrary === 'react-spectrum' || currentLibrary === 'vue-spectrum') && library !== currentLibrary) {
       continue;
     }
 
-    // React Aria and Vue Aria both include internationalized pages, but should not include each other.
-    if (currentLibrary === 'react-aria' && (library === 'react-spectrum' || library === 'vue-aria')) {
-      continue;
-    }
-    if (currentLibrary === 'vue-aria' && (library === 'react-spectrum' || library === 'react-aria')) {
+    // Keep React Aria and Vue Aria isolated to their own docs trees.
+    if ((currentLibrary === 'react-aria' || currentLibrary === 'vue-aria') && library !== currentLibrary) {
       continue;
     }
 

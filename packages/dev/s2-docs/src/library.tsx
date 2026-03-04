@@ -10,7 +10,13 @@ export function getLibraryFromUrl(name: string): Library {
   if (name.startsWith('vue-aria/')) {
     return 'vue-aria';
   }
+  if (name.startsWith('vue-spectrum/')) {
+    return 'vue-spectrum';
+  }
   if (name.startsWith('s2/')) {
+    if (process.env.LIBRARY === 'vue-spectrum') {
+      return 'vue-spectrum';
+    }
     return 'react-spectrum';
   }
   return 'react-spectrum';
@@ -22,6 +28,8 @@ export function getLibraryFromPage(page: {name: string}): Library {
 
 export function getLibraryLabel(library: Library): string {
   switch (library) {
+    case 'vue-spectrum':
+      return 'Vue Spectrum';
     case 'react-aria':
       return 'React Aria';
     case 'vue-aria':
@@ -36,6 +44,7 @@ export function getLibraryIcon(library: Library): React.ReactNode {
     case 'react-aria':
     case 'vue-aria':
       return <ReactAriaLogo />;
+    case 'vue-spectrum':
     default:
       return <AdobeLogo />;
   }

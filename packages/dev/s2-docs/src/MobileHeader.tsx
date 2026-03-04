@@ -158,8 +158,8 @@ export function MobileHeader({toc}) {
   let {currentPage} = useRouter();
   let library = getLibraryFromPage(currentPage);
   let icon = getLibraryIcon(library);
-  let subdirectory: 's2' | 'react-aria' | 'vue-aria' = 's2';
-  if (library === 'react-aria' || library === 'vue-aria') {
+  let subdirectory: 's2' | 'react-aria' | 'vue-aria' | 'vue-spectrum' = 's2';
+  if (library === 'react-aria' || library === 'vue-aria' || library === 'vue-spectrum') {
     subdirectory = library;
   }
 
@@ -307,7 +307,7 @@ export function MobileHeader({toc}) {
           {toc}
         </div>
       )}
-      {library === 'react-spectrum' && <ColorSchemeToggle />}
+      {(library === 'react-spectrum' || library === 'vue-spectrum') && <ColorSchemeToggle />}
       <DialogTrigger
         isOpen={isOpen}
         onOpenChange={onOpenChange}>

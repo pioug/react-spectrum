@@ -18,7 +18,7 @@ export function BaseLink({ref, ...props}: RACLinkProps & {ref?: Ref<HTMLAnchorEl
 }
 
 export function Link({href, ...props}: LinkProps) {
-  if (href?.startsWith('s2:') || href?.startsWith('react-aria:') || href?.startsWith('vue-aria:')) {
+  if (href?.startsWith('s2:') || href?.startsWith('react-aria:') || href?.startsWith('vue-aria:') || href?.startsWith('vue-spectrum:')) {
     let url = new URL(href);
     href = getBaseUrl(url.protocol.slice(0, -1) as any) + '/' + url.pathname;
   }
@@ -29,7 +29,7 @@ export function Link({href, ...props}: LinkProps) {
 }
 
 export function LinkButton({href, ...props}: LinkButtonProps) {
-  if (href?.startsWith('s2:') || href?.startsWith('react-aria:') || href?.startsWith('vue-aria:')) {
+  if (href?.startsWith('s2:') || href?.startsWith('react-aria:') || href?.startsWith('vue-aria:') || href?.startsWith('vue-spectrum:')) {
     let url = new URL(href);
     href = getBaseUrl(url.protocol.slice(0, -1) as any) + '/' + url.pathname;
   }

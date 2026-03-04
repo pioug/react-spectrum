@@ -483,6 +483,13 @@ export function getResourceTags(library: Library): Tag[] {
       {id: 'v3', name: 'React Spectrum v3', href: getBaseUrl('s2') + '/v3/getting-started.html'}
     ];
   }
+  if (library === 'vue-spectrum') {
+    return [
+      {id: 'icons', name: 'Icons'},
+      {id: 'colors', name: 'Colors'},
+      {id: 'typography', name: 'Typography'}
+    ];
+  }
   return [];
 }
 

@@ -55,13 +55,17 @@ function getUrl(name: string) {
   }
 
   let library = name.slice(0, name.indexOf('/'));
-  let baseUrl = getBaseUrl(library as any);
   if (library === 'react-aria') {
-    return `${baseUrl}/${name.slice(11)}`;
+    return `${getBaseUrl('react-aria')}/${name.slice(11)}`;
   } else if (library === 'vue-aria') {
-    return `${baseUrl}/${name.slice(9)}`;
+    return `${getBaseUrl('vue-aria')}/${name.slice(9)}`;
+  } else if (library === 'vue-spectrum') {
+    return `${getBaseUrl('vue-spectrum')}/${name.slice(13)}`;
   } else if (library === 's2') {
-    return `${baseUrl}/${name.slice(3)}`;
+    let base = process.env.LIBRARY === 'vue-spectrum'
+      ? getBaseUrl('vue-spectrum')
+      : getBaseUrl('s2');
+    return `${base}/${name.slice(3)}`;
   } else if (!process.env.LIBRARY) {
     return `http://localhost:1234/${name}`;
   } else {
