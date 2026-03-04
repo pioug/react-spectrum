@@ -5,7 +5,7 @@ import {Content, Heading, InlineAlert} from '@react-spectrum/s2';
 import docs from 'docs:react-aria-components';
 import vanillaDocs from 'docs:vanilla-starter/Button';
 import typesDocs from 'docs:@react-types/shared/src/events.d.ts';
-import {VueButtonExample} from '../../src/VueInterop';
+import {VueButtonExample, VueButtonEventsDemo, VueButtonPendingDemo, VueLinkButtonDemo} from '../../src/VueInterop';
 import '../../../../vue-aria-components/src/styles.css';
 import 'vanilla-starter/Button.css';
 
@@ -34,52 +34,69 @@ Use the `@press` event handler to handle interactions via mouse, keyboard, and t
 
 The `@press-start`, `@press-end`, and `@press-change` events are also emitted as the user interacts with the button. `@press-start` and `@press-end` each receive a <TypeLink links={typesDocs.links} type={typesDocs.exports.PressEvent} />, which provides information about the target and interaction method. See [usePress](usePress) for more details.
 
-```tsx render
-"use client";
-import {VueButtonExample} from '../../src/VueInterop';
-import {useState} from 'react';
+<VueButtonEventsDemo />
 
-function Example() {
-  let [pointerType, setPointerType] = useState('');
+```vue
+<script setup lang="ts">
+import {ref} from 'vue';
+import {VueButton} from 'vue-aria-components';
+import type {PressEvent} from '@react-types/shared';
 
-  return (
-    <>
-      <VueButtonExample
-        onPressStart={e => setPointerType((e as {pointerType: string}).pointerType)}
-        onPressEnd={() => setPointerType('')}>
-        Press me
-      </VueButtonExample>
-      <p>{pointerType ? `You are pressing the button with a ${pointerType}!` : 'Ready to be pressed.'}</p>
-    </>
-  );
+let pointerType = ref('');
+
+function handlePressStart(event: PressEvent) {
+  pointerType.value = event.pointerType;
 }
+
+function handlePressEnd() {
+  pointerType.value = '';
+}
+</script>
+
+<template>
+  <VueButton
+    class="react-aria-Button button-base"
+    @press-start="handlePressStart"
+    @press-end="handlePressEnd">
+    Press me
+  </VueButton>
+  <p>{{ pointerType ? `You are pressing the button with a ${pointerType}!` : 'Ready to be pressed.' }}</p>
+</template>
 ```
 
 ## Pending
 
 Use the `isPending` prop to display a pending state. Pending buttons remain focusable, but are otherwise disabled. Pending state changes are announced to assistive technologies.
 
-```tsx render
-"use client";
-import {VueButtonExample} from '../../src/VueInterop';
-import {useState} from 'react';
+<VueButtonPendingDemo />
 
-function PendingButton() {
-  let [isPending, setPending] = useState(false);
+```vue
+<script setup lang="ts">
+import {ref} from 'vue';
+import {VueButton} from 'vue-aria-components';
 
-  return (
-    <VueButtonExample
-      isPending={isPending}
-      onPress={() => {
-        setPending(true);
-        setTimeout(() => {
-          setPending(false);
-        }, 5000);
-      }}>
-      Save
-    </VueButtonExample>
-  );
+let isPending = ref(false);
+
+function save() {
+  if (isPending.value) {
+    return;
+  }
+
+  isPending.value = true;
+  setTimeout(() => {
+    isPending.value = false;
+  }, 5000);
 }
+</script>
+
+<template>
+  <VueButton
+    class="react-aria-Button button-base"
+    :isPending="isPending"
+    @press="save">
+    Save
+  </VueButton>
+</template>
 ```
 
 <InlineAlert variant="notice">
@@ -92,11 +109,21 @@ function PendingButton() {
 
 The `VueButton` component always represents a button semantically. To create a link that visually looks like a button, use the `VueLink` component instead. You can reuse the same styles you apply to the `VueButton` component on `VueLink`.
 
-```tsx render
-"use client";
-import {VueLinkButtonDemo} from '../../src/VueInterop';
-
 <VueLinkButtonDemo />
+
+```vue
+<script setup lang="ts">
+import {VueLink} from 'vue-aria-components';
+</script>
+
+<template>
+  <VueLink
+    class="react-aria-Button button-base"
+    href="https://adobe.com/"
+    target="_blank">
+    Adobe
+  </VueLink>
+</template>
 ```
 
 ## Examples

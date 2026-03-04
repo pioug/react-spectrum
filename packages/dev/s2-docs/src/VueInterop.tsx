@@ -1,7 +1,7 @@
 'use client';
 
 import React, {ReactNode, useEffect, useRef, useState} from 'react';
-import {createApp, h, type App as VueApp, type Component as VueComponent} from 'vue';
+import {createApp, h, ref as vueRef, type App as VueApp, type Component as VueComponent, type Ref as VueRef} from 'vue';
 import {VueButton} from '../../../vue-aria-components/src/components/VueButton';
 import {VueLink} from '../../../vue-aria-components/src/components/VueLink';
 import {VueSpectrumProvider} from '../../../vue-aria-components/src/components/VueSpectrumProvider';
@@ -47,6 +47,8 @@ function normalizeProps(componentProps: Record<string, unknown> | undefined) {
 export function VueComponentHost({component, componentProps, children}: VueComponentHostProps) {
   let mountRef = useRef<HTMLDivElement | null>(null);
   let appRef = useRef<VueApp | null>(null);
+  let propsRef = useRef<VueRef<Record<string, unknown>> | null>(null);
+  let slotTextRef = useRef<VueRef<string | null> | null>(null);
 
   useEffect(() => {
     if (!mountRef.current) {
@@ -56,8 +58,10 @@ export function VueComponentHost({component, componentProps, children}: VueCompo
     appRef.current?.unmount();
     mountRef.current.innerHTML = '';
 
-    let slotText = getSlotText(children);
-    let props = normalizeProps(componentProps);
+    let currentProps = vueRef(normalizeProps(componentProps));
+    let currentSlotText = vueRef(getSlotText(children));
+    propsRef.current = currentProps;
+    slotTextRef.current = currentSlotText;
 
     let app = createApp({
       render() {
@@ -65,7 +69,7 @@ export function VueComponentHost({component, componentProps, children}: VueCompo
           VueSpectrumProvider,
           {style: {display: 'inline-flex'}},
           {
-            default: () => h(component as any, props as any, slotText ? {default: () => slotText} : undefined)
+            default: () => h(component as any, currentProps.value as any, currentSlotText.value ? {default: () => currentSlotText.value} : undefined)
           }
         );
       }
@@ -77,8 +81,20 @@ export function VueComponentHost({component, componentProps, children}: VueCompo
     return () => {
       appRef.current?.unmount();
       appRef.current = null;
+      propsRef.current = null;
+      slotTextRef.current = null;
     };
-  }, [children, component, componentProps]);
+  }, [component]);
+
+  useEffect(() => {
+    if (propsRef.current) {
+      propsRef.current.value = normalizeProps(componentProps);
+    }
+
+    if (slotTextRef.current) {
+      slotTextRef.current.value = getSlotText(children);
+    }
+  }, [children, componentProps]);
 
   return <div ref={mountRef} />;
 }
