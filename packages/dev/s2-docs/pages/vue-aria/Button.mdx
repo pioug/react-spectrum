@@ -5,7 +5,7 @@ import {Content, Heading, InlineAlert} from '@react-spectrum/s2';
 import docs from 'docs:react-aria-components';
 import vanillaDocs from 'docs:vanilla-starter/Button';
 import typesDocs from 'docs:@react-types/shared/src/events.d.ts';
-import {VueButtonExample, VueButtonEventsDemo, VueButtonPendingDemo, VueLinkButtonDemo} from '../../src/VueInterop';
+import {VueButtonExample} from '../../src/VueInterop';
 import '../../../../vue-aria-components/src/styles.css';
 import 'vanilla-starter/Button.css';
 
@@ -34,7 +34,12 @@ Use the `@press` event handler to handle interactions via mouse, keyboard, and t
 
 The `@press-start`, `@press-end`, and `@press-change` events are also emitted as the user interacts with the button. `@press-start` and `@press-end` each receive a <TypeLink links={typesDocs.links} type={typesDocs.exports.PressEvent} />, which provides information about the target and interaction method. See [usePress](usePress) for more details.
 
+```tsx render
+"use client";
+import {VueButtonEventsDemo} from '../../src/VueInterop';
+
 <VueButtonEventsDemo />
+```
 
 ```vue
 <script setup lang="ts">
@@ -68,7 +73,12 @@ function handlePressEnd() {
 
 Use the `isPending` prop to display a pending state. Pending buttons remain focusable, but are otherwise disabled. Pending state changes are announced to assistive technologies.
 
+```tsx render
+"use client";
+import {VueButtonPendingDemo} from '../../src/VueInterop';
+
 <VueButtonPendingDemo />
+```
 
 ```vue
 <script setup lang="ts">
@@ -109,7 +119,12 @@ function save() {
 
 The `VueButton` component always represents a button semantically. To create a link that visually looks like a button, use the `VueLink` component instead. You can reuse the same styles you apply to the `VueButton` component on `VueLink`.
 
+```tsx render
+"use client";
+import {VueLinkButtonDemo} from '../../src/VueInterop';
+
 <VueLinkButtonDemo />
+```
 
 ```vue
 <script setup lang="ts">
