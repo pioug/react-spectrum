@@ -10,7 +10,7 @@ const preview = style({
   aspectRatio: 'square',
   contain: 'strict',
   marginStart: 'calc(var(--card-padding-x) * -1)',
-  marginEnd: '--card-padding-x',
+  marginEnd: 'calc(var(--card-padding-x) * -1)',
   marginY: 'calc(var(--card-padding-y) * -1)'
 });
 
