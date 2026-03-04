@@ -135,12 +135,12 @@ export const VueButton = defineComponent({
     let isUnavailable = computed(() => isDisabled.value || props.isPending);
     let attrsRecord = attrs as Record<string, unknown>;
     let externalClass = computed(() => attrsRecord.class);
-    let usesExternalButtonBase = computed(() => hasClassToken(externalClass.value, 'button-base'));
+    let usesExternalButtonStyles = computed(() => hasClassToken(externalClass.value, 'button-base') || hasClassToken(externalClass.value, 'tailwind-base'));
 
     let classes = computed(() => ([
-      usesExternalButtonBase.value ? null : 'vs-button',
-      usesExternalButtonBase.value ? null : `vs-button--${props.variant}`,
-      usesExternalButtonBase.value ? null : (context.value.scale === 'large' ? 'vs-button--large' : 'vs-button--medium'),
+      usesExternalButtonStyles.value ? null : 'vs-button',
+      usesExternalButtonStyles.value ? null : `vs-button--${props.variant}`,
+      usesExternalButtonStyles.value ? null : (context.value.scale === 'large' ? 'vs-button--large' : 'vs-button--medium'),
       isDisabled.value ? 'is-disabled' : null,
       props.isPending ? 'is-pending' : null,
       isPressed.value ? 'is-pressed' : null

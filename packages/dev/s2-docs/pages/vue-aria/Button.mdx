@@ -4,10 +4,12 @@ export default Layout;
 import {Content, Heading, InlineAlert} from '@react-spectrum/s2';
 import docs from 'docs:react-aria-components';
 import vanillaDocs from 'docs:vanilla-starter/Button';
+import tailwindDocs from 'docs:tailwind-starter/Button';
 import typesDocs from 'docs:@react-types/shared/src/events.d.ts';
-import {VueButtonExample} from '../../src/VueInterop';
+import {VueButtonExample, VueTailwindButtonExample} from '../../src/VueInterop';
 import '../../../../vue-aria-components/src/styles.css';
 import 'vanilla-starter/Button.css';
+import '../../tailwind/tailwind.css';
 
 export const tags = ['btn'];
 export const relatedPages = [{'title': 'useButton', 'url': 'Button/useButton.html'}];
@@ -17,7 +19,7 @@ export const description = 'Allows a user to perform an action, with mouse, touc
 
 <PageDescription>{docs.exports.Button.description}</PageDescription>
 
-<ExampleSwitcher examples={['Vanilla CSS']}>
+<ExampleSwitcher examples={['Vanilla CSS', 'Tailwind']}>
   <VisualExample
     component={VueButtonExample}
     docs={vanillaDocs.exports.Button}
@@ -27,6 +29,14 @@ export const description = 'Allows a user to perform an action, with mouse, touc
     importSource="vue-aria-components"
     type="vanilla"
     files={["starters/docs/src/Button.css"]} />
+  <VisualExample
+    component={VueTailwindButtonExample}
+    docs={tailwindDocs.exports.Button}
+    links={tailwindDocs.links}
+    props={['variant', 'isPending', 'isDisabled']}
+    initialProps={{children: 'Press me'}}
+    importSource="vue-aria-components"
+    type="tailwind" />
 </ExampleSwitcher>
 
 ## Events

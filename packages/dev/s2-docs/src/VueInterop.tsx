@@ -114,9 +114,66 @@ type VueButtonExampleProps = {
   onPressUp?: (event: unknown) => void
 };
 
+type VueTailwindButtonVariant = 'primary' | 'secondary' | 'destructive' | 'quiet';
+type VueTailwindButtonExampleProps = Omit<VueButtonExampleProps, 'variant'> & {
+  variant?: VueTailwindButtonVariant
+};
+
+const TAILWIND_BUTTON_BASE_CLASS = [
+  'tailwind-base',
+  'relative inline-flex items-center justify-center gap-2',
+  'border border-transparent dark:border-white/10',
+  'h-9 box-border px-3.5 py-0',
+  'font-sans text-sm text-center transition rounded-lg cursor-default',
+  '[-webkit-tap-highlight-color:transparent]',
+  'outline outline-blue-600 dark:outline-blue-500 forced-colors:outline-[Highlight] outline-offset-2',
+  'focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-0',
+  'data-[pending]:cursor-progress'
+].join(' ');
+
+const TAILWIND_BUTTON_VARIANT_CLASS: Record<VueTailwindButtonVariant, string> = {
+  primary: 'bg-blue-600 hover:bg-blue-700 pressed:bg-blue-800 text-white',
+  secondary: 'border-black/10 bg-neutral-50 hover:bg-neutral-100 pressed:bg-neutral-200 text-neutral-800 dark:bg-neutral-700 dark:hover:bg-neutral-600 dark:pressed:bg-neutral-500 dark:text-neutral-100',
+  destructive: 'bg-red-700 hover:bg-red-800 pressed:bg-red-900 text-white',
+  quiet: 'border-0 bg-transparent hover:bg-neutral-200 pressed:bg-neutral-300 text-neutral-800 dark:hover:bg-neutral-700 dark:pressed:bg-neutral-600 dark:text-neutral-100'
+};
+
+const TAILWIND_BUTTON_DISABLED_CLASS = 'border-transparent dark:border-transparent bg-neutral-100 dark:bg-neutral-800 text-neutral-300 dark:text-neutral-600 forced-colors:text-[GrayText]';
+const TAILWIND_BUTTON_QUIET_DISABLED_CLASS = 'bg-transparent dark:bg-transparent';
+
+function getTailwindButtonClassName(variant: VueTailwindButtonVariant, isDisabled: boolean) {
+  let classes = [TAILWIND_BUTTON_BASE_CLASS, TAILWIND_BUTTON_VARIANT_CLASS[variant]];
+
+  if (isDisabled) {
+    classes.push(TAILWIND_BUTTON_DISABLED_CLASS);
+    if (variant === 'quiet') {
+      classes.push(TAILWIND_BUTTON_QUIET_DISABLED_CLASS);
+    }
+  }
+
+  return classes.join(' ');
+}
+
 export function VueButtonExample({children, isDisabled, disabled, ...props}: VueButtonExampleProps) {
   return (
     <VueComponentHost component={VueButton} componentProps={{...props, className: 'react-aria-Button button-base', isDisabled: disabled ?? isDisabled}}>
+      {children}
+    </VueComponentHost>
+  );
+}
+
+export function VueTailwindButtonExample({children, isDisabled, disabled, variant = 'primary', ...props}: VueTailwindButtonExampleProps) {
+  let resolvedIsDisabled = disabled ?? isDisabled ?? false;
+
+  return (
+    <VueComponentHost
+      component={VueButton}
+      componentProps={{
+        ...props,
+        className: getTailwindButtonClassName(variant, resolvedIsDisabled),
+        isDisabled: resolvedIsDisabled,
+        variant
+      }}>
       {children}
     </VueComponentHost>
   );
