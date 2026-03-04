@@ -1,7 +1,7 @@
 'use client';
 
 import React, {ReactNode, useEffect, useRef, useState} from 'react';
-import {createApp, h, ref as vueRef, type App as VueApp, type Component as VueComponent, type Ref as VueRef} from 'vue';
+import {createApp, h, type App as VueApp, type Component as VueComponent} from 'vue';
 import {VueButton} from '../../../vue-aria-components/src/components/VueButton';
 import {VueLink} from '../../../vue-aria-components/src/components/VueLink';
 import {VueSpectrumProvider} from '../../../vue-aria-components/src/components/VueSpectrumProvider';
@@ -47,8 +47,7 @@ function normalizeProps(componentProps: Record<string, unknown> | undefined) {
 export function VueComponentHost({component, componentProps, children}: VueComponentHostProps) {
   let mountRef = useRef<HTMLDivElement | null>(null);
   let appRef = useRef<VueApp | null>(null);
-  let propsRef = useRef<VueRef<Record<string, unknown>> | null>(null);
-  let slotTextRef = useRef<VueRef<string | null> | null>(null);
+  let rootStateRef = useRef<{componentPropsState: Record<string, unknown>, slotTextState: string | null} | null>(null);
 
   useEffect(() => {
     if (!mountRef.current) {
@@ -58,41 +57,39 @@ export function VueComponentHost({component, componentProps, children}: VueCompo
     appRef.current?.unmount();
     mountRef.current.innerHTML = '';
 
-    let currentProps = vueRef(normalizeProps(componentProps));
-    let currentSlotText = vueRef(getSlotText(children));
-    propsRef.current = currentProps;
-    slotTextRef.current = currentSlotText;
-
     let app = createApp({
+      data() {
+        return {
+          componentPropsState: normalizeProps(componentProps),
+          slotTextState: getSlotText(children)
+        };
+      },
       render() {
+        let state = this as {componentPropsState: Record<string, unknown>, slotTextState: string | null};
         return h(
           VueSpectrumProvider,
           {style: {display: 'inline-flex'}},
           {
-            default: () => h(component as any, currentProps.value as any, currentSlotText.value ? {default: () => currentSlotText.value} : undefined)
+            default: () => h(component as any, state.componentPropsState as any, state.slotTextState ? {default: () => state.slotTextState} : undefined)
           }
         );
       }
     });
 
-    app.mount(mountRef.current);
+    rootStateRef.current = app.mount(mountRef.current) as unknown as {componentPropsState: Record<string, unknown>, slotTextState: string | null};
     appRef.current = app;
 
     return () => {
       appRef.current?.unmount();
       appRef.current = null;
-      propsRef.current = null;
-      slotTextRef.current = null;
+      rootStateRef.current = null;
     };
   }, [component]);
 
   useEffect(() => {
-    if (propsRef.current) {
-      propsRef.current.value = normalizeProps(componentProps);
-    }
-
-    if (slotTextRef.current) {
-      slotTextRef.current.value = getSlotText(children);
+    if (rootStateRef.current) {
+      rootStateRef.current.componentPropsState = normalizeProps(componentProps);
+      rootStateRef.current.slotTextState = getSlotText(children);
     }
   }, [children, componentProps]);
 
