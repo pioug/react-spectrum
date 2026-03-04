@@ -46,7 +46,7 @@ Use the `@press` event handler to handle interactions via mouse, keyboard, and t
 
 The `@press-start`, `@press-end`, and `@press-change` events are also emitted as the user interacts with the button. `@press-start` and `@press-end` each receive a <TypeLink links={typesDocs.links} type={typesDocs.exports.PressEvent} />, which provides information about the target and interaction method. See [usePress](usePress) for more details.
 
-```tsx render
+```tsx render snippetFile="starters/vue/src/snippets/ButtonEvents.vue"
 "use client";
 import {useState} from 'react';
 import {VueButtonExample as Button} from '../../src/VueInterop';
@@ -73,7 +73,7 @@ function Example() {
 
 Use the `isPending` prop to display a pending state. Pending buttons remain focusable, but are otherwise disabled. Pending state changes are announced to assistive technologies.
 
-```tsx render
+```tsx render snippetFile="starters/vue/src/snippets/ButtonPending.vue"
 "use client";
 import {useState} from 'react';
 import {VueButtonExample as Button} from '../../src/VueInterop';
@@ -112,7 +112,7 @@ function PendingButton() {
 
 The `VueButton` component always represents a button semantically. To create a link that visually looks like a button, use the `VueLink` component instead. You can reuse the same styles you apply to the `VueButton` component on `VueLink`.
 
-```tsx render hideImports
+```tsx render hideImports snippetFile="starters/vue/src/snippets/ButtonLink.vue"
 "use client";
 import {VueLinkButtonDemo} from '../../src/VueInterop';
 

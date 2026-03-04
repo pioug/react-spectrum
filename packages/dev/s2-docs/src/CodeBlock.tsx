@@ -64,25 +64,33 @@ interface CodeBlockProps extends VisualExampleProps {
   render?: ReactNode,
   children: string,
   dir?: string,
+  lang?: string,
   files?: string[],
   expanded?: boolean,
   hidden?: boolean,
   showCoachMark?: boolean,
   defaultSelected?: string,
-  hideExtraFiles?: boolean
+  hideExtraFiles?: boolean,
+  snippetFile?: string
 }
 
-export function CodeBlock({render, children, dir, files, expanded, hidden, defaultSelected, hideExtraFiles, ...props}: CodeBlockProps) {
+export function CodeBlock({render, children, dir, lang: fencedLang, files, expanded, hidden, defaultSelected, hideExtraFiles, snippetFile, ...props}: CodeBlockProps) {
   if (hidden) {
     return null;
   }
 
+  let lang = fencedLang;
   let displayCode = children.replace(/(vanilla-starter|tailwind-starter)\//g, './');
+  if (snippetFile) {
+    let file = path.isAbsolute(snippetFile) ? snippetFile : path.resolve('../../../', snippetFile);
+    displayCode = readFile(file).replace(/(vanilla-starter|tailwind-starter)\//g, './');
+    lang ||= path.extname(snippetFile).slice(1);
+  }
 
   if (!render) {
     return (
       <pre className={standaloneCode}>
-        <Code {...props} styles={style({display: 'block', width: 'fit', minWidth: 'full'})}>{displayCode}</Code>
+        <Code {...props} lang={lang} styles={style({display: 'block', width: 'fit', minWidth: 'full'})}>{displayCode}</Code>
       </pre>
     );
   }
@@ -91,7 +99,7 @@ export function CodeBlock({render, children, dir, files, expanded, hidden, defau
   let downloadFiles = getExampleFiles(resolveFrom, children, props.type);
 
   let code = (
-    <TruncatedCode maxLines={expanded ? Infinity : 6} {...props}>
+    <TruncatedCode maxLines={expanded ? Infinity : 6} {...props} lang={lang}>
       {displayCode}
     </TruncatedCode>
   );
