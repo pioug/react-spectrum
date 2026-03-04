@@ -124,7 +124,7 @@ const TAILWIND_BUTTON_BASE_CLASS = [
   'font-sans text-sm text-center transition rounded-lg cursor-default',
   '[-webkit-tap-highlight-color:transparent]',
   'outline outline-blue-600 dark:outline-blue-500 forced-colors:outline-[Highlight] outline-offset-2',
-  'focus-visible:outline-2 focus-visible:outline-offset-2 focus:outline-0',
+  'outline-0 focus-visible:outline-2 focus-visible:outline-offset-2',
   'data-[pending]:cursor-progress'
 ].join(' ');
 
