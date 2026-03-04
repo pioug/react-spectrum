@@ -71,6 +71,7 @@
 
 .vs-button {
   align-items: center;
+  appearance: none;
   border-radius: var(--vs-radius-control);
   border: 1px solid transparent;
   cursor: pointer;
@@ -80,6 +81,10 @@
   gap: 8px;
   justify-content: center;
   line-height: 1;
+  margin: 0;
+  position: relative;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
   transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease, box-shadow 120ms ease;
 }
 
@@ -119,9 +124,47 @@
   background: var(--vs-color-secondary-hover);
 }
 
+.vs-button--quiet {
+  background: transparent;
+  border-color: transparent;
+  color: var(--vs-color-fg);
+}
+
+.vs-button--quiet:hover:not(.is-disabled) {
+  background: var(--vs-color-secondary-hover);
+}
+
 .vs-button.is-disabled {
   cursor: not-allowed;
   opacity: 0.5;
+}
+
+.vs-button.is-pressed {
+  transform: scale(0.98);
+}
+
+.vs-button.is-pending {
+  cursor: progress;
+}
+
+.vs-button__label {
+  display: inline-flex;
+}
+
+.vs-button__spinner {
+  animation: vs-button-spinner 600ms linear infinite;
+  border-radius: 999px;
+  border: 2px solid currentColor;
+  border-inline-end-color: transparent;
+  block-size: 1em;
+  inline-size: 1em;
+  position: absolute;
+}
+
+@keyframes vs-button-spinner {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .vs-button-group {

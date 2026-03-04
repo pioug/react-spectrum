@@ -1,0 +1,113 @@
+import {Layout} from '../../src/Layout';
+export default Layout;
+
+import {Content, Heading, InlineAlert} from '@react-spectrum/s2';
+import docs from 'docs:react-aria-components';
+import vanillaDocs from 'docs:vanilla-starter/Button';
+import typesDocs from 'docs:@react-types/shared/src/events.d.ts';
+import {VueButtonExample, VueButtonEventsDemo, VueButtonPendingDemo, VueLinkButtonDemo} from '../../src/VueInterop';
+
+export const tags = ['btn'];
+export const relatedPages = [{'title': 'useButton', 'url': 'Button/useButton.html'}];
+export const description = 'Allows a user to perform an action, with mouse, touch, and keyboard interactions.';
+
+# Button
+
+<PageDescription>{docs.exports.Button.description}</PageDescription>
+
+<ExampleSwitcher examples={['Vue']}>
+  <VisualExample
+    component={VueButtonExample}
+    docs={vanillaDocs.exports.Button}
+    links={vanillaDocs.links}
+    props={['variant', 'isPending', 'isDisabled']}
+    initialProps={{children: 'Press me'}}
+    importSource="vue-aria-components"
+    type="vanilla" />
+</ExampleSwitcher>
+
+## Events
+
+Use the `@press` event handler to handle interactions via mouse, keyboard, and touch. This is similar to `@click`, but normalized for consistency across browsers, devices, and interaction methods. Read our [blog post](blog/building-a-button-part-1) to learn more.
+
+The `@press-start`, `@press-end`, and `@press-change` events are also emitted as the user interacts with the button. `@press-start` and `@press-end` each receive a <TypeLink links={typesDocs.links} type={typesDocs.exports.PressEvent} />, which provides information about the target and interaction method. See [usePress](usePress) for more details.
+
+<VueButtonEventsDemo />
+
+```vue
+<script setup lang="ts">
+import {ref} from 'vue';
+import {VueButton} from 'vue-aria-components';
+
+let pointerType = ref('');
+</script>
+
+<template>
+  <VueButton
+    @press-start="event => pointerType = event.pointerType"
+    @press-end="() => pointerType = ''">
+    Press me
+  </VueButton>
+  <p>{{ pointerType ? `You are pressing the button with a ${pointerType}!` : 'Ready to be pressed.' }}</p>
+</template>
+```
+
+## Pending
+
+Use the `isPending` prop to display a pending state. Pending buttons remain focusable, but are otherwise disabled. Pending state changes are announced to assistive technologies.
+
+<VueButtonPendingDemo />
+
+```vue
+<script setup lang="ts">
+import {ref} from 'vue';
+import {VueButton} from 'vue-aria-components';
+
+let isPending = ref(false);
+</script>
+
+<template>
+  <VueButton
+    :is-pending="isPending"
+    @press="() => {
+      isPending = true;
+      setTimeout(() => {
+        isPending = false;
+      }, 5000);
+    }">
+    Save
+  </VueButton>
+</template>
+```
+
+<InlineAlert variant="notice">
+  <Heading>Accessibility</Heading>
+  <Content><p style={{marginTop: 0}}>The `ProgressBar` must be in the accessibility tree as soon as the button becomes pending, even if it is not visible. To delay showing a spinner until a minimum amount of time passes, use `opacity: 0`. Do not use `visibility: hidden` or `display: none` as these remove the element from the accessibility tree.</p>
+  <p style={{marginBottom: 0}}>To reserve space for the button's label while pending, either set it to `visibility: hidden` with a descriptive ProgressBar `aria-label` (e.g. "Saving"), or set it to `opacity: 0` to combine the button's label with the `aria-label` of the ProgressBar (e.g. "Save, pending").</p></Content>
+</InlineAlert>
+
+## Link buttons
+
+The `VueButton` component always represents a button semantically. To create a link that visually looks like a button, use the `VueLink` component instead. You can reuse the same styles you apply to the `VueButton` component on `VueLink`.
+
+<VueLinkButtonDemo />
+
+```vue
+<script setup lang="ts">
+import {VueLink} from 'vue-aria-components';
+</script>
+
+<template>
+  <VueLink class="react-aria-Button button-base" href="https://adobe.com/" target="_blank">
+    Adobe
+  </VueLink>
+</template>
+```
+
+## Examples
+
+<ExampleList tag="button" pages={props.pages} />
+
+## API
+
+<PropTable component={docs.exports.Button} links={docs.links} />
