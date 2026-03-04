@@ -64,6 +64,7 @@ import {Well} from '@vue-spectrum/well';
 import {theme as darkTheme} from '@vue-spectrum/theme-dark';
 import {theme as expressTheme} from '@vue-spectrum/theme-express';
 import {theme as lightTheme} from '@vue-spectrum/theme-light';
+import {VueButton as RacButton} from '../../../packages/vue-aria-components/src/components/VueButton';
 import {VueDropZone as RacDropZone} from '../../../packages/vue-aria-components/src/components/VueDropZone';
 
 describe('Vue migration primitives', () => {
@@ -6140,6 +6141,24 @@ describe('Vue migration primitives', () => {
     let dropZone = wrapper.get('.react-aria-DropZone');
     await dropZone.trigger('drop');
     expect(wrapper.emitted('drop')).toBeUndefined();
+  });
+
+  it('emits pressEnd when pointer interaction ends without pointerup on rac button', async () => {
+    let wrapper = mount(RacButton, {
+      slots: {
+        default: 'Press me'
+      }
+    });
+
+    let button = wrapper.get('button');
+    await button.trigger('pointerdown', {button: 0, pointerType: 'mouse'});
+    expect(wrapper.emitted('pressStart')).toHaveLength(1);
+    expect(wrapper.emitted('pressChange')).toEqual([[true]]);
+
+    await button.trigger('pointerleave', {pointerType: 'mouse'});
+    expect(wrapper.emitted('pressEnd')).toHaveLength(1);
+    expect(wrapper.emitted('pressUp')).toBeUndefined();
+    expect(wrapper.emitted('pressChange')).toEqual([[true], [false]]);
   });
 
   it('emits selected files from file trigger input', async () => {

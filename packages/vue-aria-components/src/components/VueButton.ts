@@ -41,7 +41,7 @@ function isPressKeyboardEvent(event: KeyboardEvent) {
 }
 
 function getPointerType(event: Event): PressPointerType {
-  if (event instanceof PointerEvent) {
+  if (typeof PointerEvent !== 'undefined' && event instanceof PointerEvent) {
     if (event.pointerType === 'mouse' || event.pointerType === 'pen' || event.pointerType === 'touch') {
       return event.pointerType;
     }
@@ -133,6 +133,18 @@ export const VueButton = defineComponent({
       emit('pressChange', nextPressed);
     };
 
+    let endPress = (event: Event, options: {emitPressUp?: boolean} = {}) => {
+      if (!isPressed.value) {
+        return;
+      }
+
+      emit('pressEnd', toPressEvent('pressend', event, activePointerType.value));
+      if (options.emitPressUp) {
+        emit('pressUp', toPressEvent('pressup', event, activePointerType.value));
+      }
+      setPressed(false);
+    };
+
     let onPointerDown = (event: PointerEvent) => {
       invokeAttrHandler(attrsRecord, ['onPointerdown', 'onPointerDown'], event);
       if (isUnavailable.value || event.button !== 0) {
@@ -151,16 +163,12 @@ export const VueButton = defineComponent({
       }
 
       activePointerType.value = getPointerType(event);
-      emit('pressEnd', toPressEvent('pressend', event, activePointerType.value));
-      emit('pressUp', toPressEvent('pressup', event, activePointerType.value));
-      setPressed(false);
+      endPress(event, {emitPressUp: true});
     };
 
     let onPointerCancel = (event: PointerEvent) => {
       invokeAttrHandler(attrsRecord, ['onPointercancel', 'onPointerCancel'], event);
-      if (isPressed.value) {
-        setPressed(false);
-      }
+      endPress(event);
     };
 
     let onPointerEnter = (event: PointerEvent) => {
@@ -173,9 +181,7 @@ export const VueButton = defineComponent({
     let onPointerLeave = (event: PointerEvent) => {
       invokeAttrHandler(attrsRecord, ['onPointerleave', 'onPointerLeave'], event);
       isHovered.value = false;
-      if (isPressed.value) {
-        setPressed(false);
-      }
+      endPress(event);
     };
 
     let onMouseEnter = (event: MouseEvent) => {
@@ -204,10 +210,7 @@ export const VueButton = defineComponent({
       isFocused.value = false;
       isFocusVisible.value = false;
 
-      if (isPressed.value) {
-        emit('pressEnd', toPressEvent('pressend', event, activePointerType.value));
-        setPressed(false);
-      }
+      endPress(event);
     };
 
     let onKeyDown = (event: KeyboardEvent) => {
@@ -228,9 +231,7 @@ export const VueButton = defineComponent({
       }
 
       activePointerType.value = 'keyboard';
-      emit('pressEnd', toPressEvent('pressend', event, activePointerType.value));
-      emit('pressUp', toPressEvent('pressup', event, activePointerType.value));
-      setPressed(false);
+      endPress(event, {emitPressUp: true});
     };
 
     let onClick = (event: MouseEvent) => {
