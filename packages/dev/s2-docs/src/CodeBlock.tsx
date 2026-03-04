@@ -140,8 +140,24 @@ export function CodeBlock({render, children, dir, files, expanded, hidden, defau
 }
 
 export function CodeBlockBase({children, lang}: {children: string, lang: string}) {
+  let key = lang.toUpperCase();
+  if (key === 'VUE') {
+    key = 'TSX';
+  } else if (key === 'JSON') {
+    key = 'JS';
+  }
+
+  // Fallback to plain text when a language is unsupported.
+  if (!(key in Language)) {
+    return (
+      <pre className="m-0">
+        <code className="source" style={{fontFamily: 'inherit', WebkitTextSizeAdjust: 'none'}}>{children}</code>
+      </pre>
+    );
+  }
+
   // @ts-ignore
-  let highlighted = highlight(children, Language[lang.toUpperCase()]);
+  let highlighted = highlight(children, Language[key]);
   return (
     <pre className="m-0">
       <code className="source" style={{fontFamily: 'inherit', WebkitTextSizeAdjust: 'none'}} dangerouslySetInnerHTML={{__html: highlighted}} />

@@ -62,10 +62,25 @@ export interface ICodeProps {
   styles?: StyleString
 }
 
+const LANGUAGE_ALIASES: Record<string, keyof typeof Language> = {
+  css: 'CSS',
+  js: 'JS',
+  json: 'JS',
+  jsx: 'JSX',
+  ts: 'TS',
+  tsx: 'TSX',
+  // tree-sitter-highlight does not include a Vue grammar in this project.
+  // TSX is the closest fallback for <template> tags + script setup blocks.
+  vue: 'TSX'
+};
+
 // Check if a language is supported by tree-sitter for syntax highlighting
 function isSupportedLanguage(lang: string): boolean {
-  const supported = ['js', 'jsx', 'ts', 'tsx', 'css', 'json'];
-  return supported.includes(lang.toLowerCase());
+  return lang.toLowerCase() in LANGUAGE_ALIASES;
+}
+
+function resolveLanguage(lang: string): keyof typeof Language | null {
+  return LANGUAGE_ALIASES[lang.toLowerCase()] ?? null;
 }
 
 export function Code({children, lang, isFencedBlock, hideImports = true, links, styles}: ICodeProps) {
@@ -107,8 +122,13 @@ export function Code({children, lang, isFencedBlock, hideImports = true, links, 
 }
 
 const highlightCode = cache((children: string, lang: string, hideImports = true, links?: Links): Token[] => {
+  let language = resolveLanguage(lang);
+  if (!language) {
+    return [children];
+  }
+
   // @ts-ignore
-  let highlighted = highlightHast(children, Language[lang === 'json' ? 'JS' : lang.toUpperCase()]);
+  let highlighted = highlightHast(children, Language[language]);
   let lineNodes = lines(highlighted);
   let idx = lineNodes.findIndex(line => !/^(["']use client["']|(\s*$))/.test(text(line)));
   if (idx > 0) {
