@@ -1,4 +1,4 @@
-import {computed, defineComponent, h, type PropType, provide} from 'vue';
+import {computed, defineComponent, h, type PropType, provide} from '@vue/runtime-core';
 import {isRtlLocale} from '../utils';
 import {spectrumContextKey, type SpectrumContextValue} from '../context';
 

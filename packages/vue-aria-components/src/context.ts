@@ -1,4 +1,4 @@
-import {computed, type ComputedRef, inject, type InjectionKey} from 'vue';
+import {computed, type ComputedRef, inject, type InjectionKey} from '@vue/runtime-core';
 
 export interface SpectrumContextValue {
   scale: 'medium' | 'large',

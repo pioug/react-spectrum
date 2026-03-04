@@ -1,4 +1,4 @@
-import {computed, defineComponent, h, ref, type PropType} from 'vue';
+import {computed, defineComponent, h, ref, type PropType} from '@vue/runtime-core';
 import {getSpectrumContext} from '../context';
 
 type ButtonVariant = 'primary' | 'secondary' | 'quiet';
