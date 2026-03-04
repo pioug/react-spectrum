@@ -124,26 +124,11 @@ function PendingButton() {
 
 The `VueButton` component always represents a button semantically. To create a link that visually looks like a button, use the `VueLink` component instead. You can reuse the same styles you apply to the `VueButton` component on `VueLink`.
 
-```tsx render
+```tsx render hideImports files={["starters/vue/src/snippets/ButtonLink.vue"]} defaultSelected="ButtonLink.vue" hideExtraFiles
 "use client";
 import {VueLinkButtonDemo} from '../../src/VueInterop';
 
 <VueLinkButtonDemo />
-```
-
-```vue
-<script setup lang="ts">
-import {VueLink} from 'vue-aria-components';
-</script>
-
-<template>
-  <VueLink
-    class="react-aria-Button button-base"
-    href="https://adobe.com/"
-    target="_blank">
-    Adobe
-  </VueLink>
-</template>
 ```
 
 ## Examples
