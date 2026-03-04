@@ -158,10 +158,9 @@ export function MobileHeader({toc}) {
   let {currentPage} = useRouter();
   let library = getLibraryFromPage(currentPage);
   let icon = getLibraryIcon(library);
-  let subdirectory: 's2' | 'react-aria' = 's2';
-  if (library === 'react-aria') {
-    // the internationalized library has no homepage so i've chosen to route it to the react aria homepage
-    subdirectory = 'react-aria';
+  let subdirectory: 's2' | 'react-aria' | 'vue-aria' = 's2';
+  if (library === 'react-aria' || library === 'vue-aria') {
+    subdirectory = library;
   }
 
   let baseUrl = getBaseUrl(subdirectory);
@@ -308,7 +307,7 @@ export function MobileHeader({toc}) {
           {toc}
         </div>
       )}
-      {library !== 'react-aria' && <ColorSchemeToggle />}
+      {library === 'react-spectrum' && <ColorSchemeToggle />}
       <DialogTrigger
         isOpen={isOpen}
         onOpenChange={onOpenChange}>

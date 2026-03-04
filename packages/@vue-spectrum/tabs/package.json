@@ -24,8 +24,8 @@
   },
   "dependencies": {
     "@vue-aria/tabs": "workspace:*",
-    "@vue-types/tabs": "^3.3.21",
-    "@vue-stately/collections": "workspace:*"
+    "@vue-stately/collections": "workspace:*",
+    "@vue-types/tabs": "^3.3.21"
   },
   "peerDependencies": {
     "vue": "^3.4.0"

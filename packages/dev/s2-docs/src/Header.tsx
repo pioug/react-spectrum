@@ -180,10 +180,9 @@ export default function Header() {
   });
 
   let library = getLibraryFromPage(currentPage);
-  let subdirectory: 's2' | 'react-aria' = 's2';
-  if (library === 'react-aria') {
-    // the internationalized library has no homepage so i've chosen to route it to the react aria homepage
-    subdirectory = 'react-aria';
+  let subdirectory: 's2' | 'react-aria' | 'vue-aria' = 's2';
+  if (library === 'react-aria' || library === 'vue-aria') {
+    subdirectory = library;
   }
 
   let baseUrl = getBaseUrl(subdirectory);
@@ -191,7 +190,11 @@ export default function Header() {
   let docs = `${baseUrl}/getting-started`;
   let release = `${baseUrl}/releases/`;
   let blog = `${getBaseUrl('react-aria')}/blog/`;
-  let npm = subdirectory === 's2' ? '@react-spectrum/s2' : 'react-aria-components';
+  let npm = subdirectory === 's2'
+    ? '@react-spectrum/s2'
+    : subdirectory === 'vue-aria'
+      ? 'vue-aria-components'
+      : 'react-aria-components';
 
   return (
     <>
@@ -231,7 +234,7 @@ export default function Header() {
             <HeaderLink href={blog} target={subdirectory === 's2' ? '_blank' : ''} rel="noopener noreferrer">Blog</HeaderLink>
             <HeaderLink aria-label="GitHub" href="https://github.com/adobe/react-spectrum" target="_blank" rel="noopener noreferrer" ><GithubLogo /></HeaderLink>
             <HeaderLink aria-label="npm" href={`https://npmjs.com/${npm}`} target="_blank" rel="noopener noreferrer"><NpmLogo /></HeaderLink>
-            {library !== 'react-aria' && (
+            {library === 'react-spectrum' && (
               <>
                 <Divider orientation="vertical" UNSAFE_style={{marginBlock: 4}} />
                 <ColorSchemeToggle />

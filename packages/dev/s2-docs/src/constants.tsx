@@ -2,7 +2,7 @@ import {AdobeLogo} from './icons/AdobeLogo';
 import {ReactAriaLogo} from './icons/ReactAriaLogo';
 import {ReactNode} from 'react';
 
-export type Library = 'react-spectrum' | 'react-aria';
+export type Library = 'react-spectrum' | 'react-aria' | 'vue-aria';
 
 type TabDef = {
   label: string,
@@ -20,6 +20,10 @@ export const TAB_DEFS: Record<Library, TabDef> = {
     label: 'React Aria',
     description: 'Style-free components and hooks for building accessible UIs',
     icon: <ReactAriaLogo />
+  },
+  'vue-aria': {
+    label: 'Vue Aria',
+    description: 'Vue port of style-free components for building accessible UIs',
+    icon: <ReactAriaLogo />
   }
 };
-

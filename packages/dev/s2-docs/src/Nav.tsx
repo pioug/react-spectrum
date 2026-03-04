@@ -38,8 +38,11 @@ export function Nav() {
       continue;
     }
 
-    // If the current library is React Aria, we only want to skip pages in React Spectrum so that include Internationalized pages in the side nav
-    if (currentLibrary === 'react-aria' && library === 'react-spectrum') {
+    // React Aria and Vue Aria both include internationalized pages, but should not include each other.
+    if (currentLibrary === 'react-aria' && (library === 'react-spectrum' || library === 'vue-aria')) {
+      continue;
+    }
+    if (currentLibrary === 'vue-aria' && (library === 'react-spectrum' || library === 'react-aria')) {
       continue;
     }
 

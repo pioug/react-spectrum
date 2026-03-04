@@ -58,6 +58,8 @@ function getUrl(name: string) {
   let baseUrl = getBaseUrl(library as any);
   if (library === 'react-aria') {
     return `${baseUrl}/${name.slice(11)}`;
+  } else if (library === 'vue-aria') {
+    return `${baseUrl}/${name.slice(9)}`;
   } else if (library === 's2') {
     return `${baseUrl}/${name.slice(3)}`;
   } else if (!process.env.LIBRARY) {

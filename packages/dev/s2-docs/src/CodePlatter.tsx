@@ -76,7 +76,7 @@ export function CodePlatter({children, type, showCoachMark}: CodePlatterProps) {
   let getText = () => getTextContent(codeRef.current!.querySelector('pre')!);
   let {library} = useContext(CodePlatterContext);
   if (!type) {
-    if (library === 'react-aria') {
+    if (library === 'react-aria' || library === 'vue-aria') {
       type = 'vanilla';
     } else if (library === 'react-spectrum') {
       type = 's2';

@@ -7682,6 +7682,8 @@ __metadata:
     ts-morph: "npm:^26.0.0"
     unified: "npm:^11.0.5"
     unist-util-visit: "npm:^5.0.0"
+    vue: "npm:^3.4.0"
+    vue-aria-components: "workspace:*"
   languageName: unknown
   linkType: soft
 
@@ -12038,6 +12040,7 @@ __metadata:
   resolution: "@vue-spectrum/actionbar@workspace:packages/@vue-spectrum/actionbar"
   dependencies:
     "@spectrum-icons-vue/workflow": "workspace:*"
+    "@vue-aria/live-announcer": "workspace:*"
     "@vue-spectrum/utils": "workspace:*"
     "@vue-stately/collections": "workspace:*"
     "@vue-types/actionbar": "npm:^3.1.20"
@@ -12154,6 +12157,7 @@ __metadata:
   dependencies:
     "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
     "@vue-aria/utils": "workspace:*"
+    "@vue-spectrum/progress": "workspace:*"
     "@vue-spectrum/utils": "workspace:*"
     "@vue-types/card": "npm:3.0.0-alpha.42"
   peerDependencies:
@@ -12192,6 +12196,7 @@ __metadata:
   dependencies:
     "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
     "@vue-aria/utils": "workspace:*"
+    "@vue-spectrum/progress": "workspace:*"
     "@vue-spectrum/utils": "workspace:*"
     "@vue-stately/collections": "workspace:*"
     "@vue-types/combobox": "npm:^3.13.11"
@@ -12610,9 +12615,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@vue-spectrum/steplist@workspace:packages/@vue-spectrum/steplist"
   dependencies:
+    "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-aria/i18n": "workspace:*"
+    "@vue-aria/interactions": "workspace:*"
     "@vue-aria/selection": "workspace:*"
     "@vue-aria/steplist": "workspace:*"
+    "@vue-aria/utils": "workspace:*"
+    "@vue-aria/visually-hidden": "workspace:*"
+    "@vue-spectrum/provider": "workspace:*"
+    "@vue-spectrum/utils": "workspace:*"
     "@vue-stately/collections": "workspace:*"
+    "@vue-stately/steplist": "workspace:*"
   peerDependencies:
     vue: ^3.4.0
   languageName: unknown
@@ -12654,6 +12667,7 @@ __metadata:
   resolution: "@vue-spectrum/table@workspace:packages/@vue-spectrum/table"
   dependencies:
     "@adobe/spectrum-css-temp": "npm:3.0.0-alpha.1"
+    "@vue-spectrum/checkbox": "workspace:*"
     "@vue-spectrum/utils": "workspace:*"
     "@vue-stately/table": "workspace:*"
   peerDependencies:
@@ -32843,7 +32857,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:^3.5.13":
+"vue@npm:^3.4.0, vue@npm:^3.5.13":
   version: 3.5.29
   resolution: "vue@npm:3.5.29"
   dependencies:
