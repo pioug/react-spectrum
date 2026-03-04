@@ -1,5 +1,25 @@
 import {defineComponent, h} from 'vue';
 
+function hasClassToken(value: unknown, token: string): boolean {
+  if (!value) {
+    return false;
+  }
+
+  if (typeof value === 'string') {
+    return value.split(/\s+/).includes(token);
+  }
+
+  if (Array.isArray(value)) {
+    return value.some(item => hasClassToken(item, token));
+  }
+
+  if (typeof value === 'object') {
+    return Object.entries(value as Record<string, unknown>).some(([key, enabled]) => Boolean(enabled) && key === token);
+  }
+
+  return false;
+}
+
 export const VueLink = defineComponent({
   name: 'VueLink',
   props: {
@@ -20,10 +40,17 @@ export const VueLink = defineComponent({
     click: (event: MouseEvent) => event instanceof MouseEvent
   },
   setup(props, {slots, emit, attrs}) {
+    let classAttr = attrs.class;
+    let usesExternalButtonBase = hasClassToken(classAttr, 'button-base');
+    let {
+      class: _classAttr,
+      ...forwardedAttrs
+    } = attrs;
+
     return function render() {
       return h('a', {
-        ...attrs,
-        class: ['vs-link', attrs.class],
+        ...forwardedAttrs,
+        class: [usesExternalButtonBase ? null : 'vs-link', classAttr],
         'data-vac': '',
         href: props.href,
         target: props.target,

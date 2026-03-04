@@ -100,7 +100,7 @@ type VueButtonExampleProps = {
 
 export function VueButtonExample({children, isDisabled, disabled, ...props}: VueButtonExampleProps) {
   return (
-    <VueComponentHost component={VueButton} componentProps={{...props, isDisabled: disabled ?? isDisabled}}>
+    <VueComponentHost component={VueButton} componentProps={{...props, className: 'react-aria-Button button-base', isDisabled: disabled ?? isDisabled}}>
       {children}
     </VueComponentHost>
   );
@@ -126,25 +126,6 @@ export function VueButtonEventsDemo() {
 }
 
 const PENDING_TIMEOUT_MS = 5000;
-
-const LINK_BUTTON_INLINE_STYLE = {
-  appearance: 'none',
-  border: 'none',
-  borderRadius: 'var(--radius, 8px)',
-  margin: 0,
-  height: 'var(--spacing-8, 32px)',
-  padding: '0 var(--spacing-3, 12px)',
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: 'var(--spacing-1, 4px)',
-  textDecoration: 'none',
-  WebkitTapHighlightColor: 'transparent',
-  font: 'var(--font-size, 14px) system-ui',
-  fontWeight: 500,
-  background: 'var(--button-background, oklch(0.981187 0.125245 284.23))',
-  color: 'var(--button-text, oklch(0.296725 0.25049 284.23))'
-} as const;
 
 export function VueButtonPendingDemo() {
   let [isPending, setPending] = useState(false);
@@ -178,7 +159,7 @@ export function VueButtonPendingDemo() {
 
 export function VueLinkButtonDemo() {
   return (
-    <VueComponentHost component={VueLink} componentProps={{className: 'react-aria-Button button-base', href: 'https://adobe.com/', style: LINK_BUTTON_INLINE_STYLE, target: '_blank'}}>
+    <VueComponentHost component={VueLink} componentProps={{className: 'react-aria-Button button-base', href: 'https://adobe.com/', target: '_blank'}}>
       Adobe
     </VueComponentHost>
   );

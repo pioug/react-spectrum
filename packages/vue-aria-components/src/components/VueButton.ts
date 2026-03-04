@@ -15,6 +15,26 @@ type PressEvent = {
   type: 'press' | 'pressend' | 'pressstart' | 'pressup'
 };
 
+function hasClassToken(value: unknown, token: string): boolean {
+  if (!value) {
+    return false;
+  }
+
+  if (typeof value === 'string') {
+    return value.split(/\s+/).includes(token);
+  }
+
+  if (Array.isArray(value)) {
+    return value.some(item => hasClassToken(item, token));
+  }
+
+  if (typeof value === 'object') {
+    return Object.entries(value as Record<string, unknown>).some(([key, enabled]) => Boolean(enabled) && key === token);
+  }
+
+  return false;
+}
+
 function invokeEventHandler<EventType>(handler: EventHandler<EventType>, event: EventType) {
   if (!handler) {
     return;
@@ -114,11 +134,13 @@ export const VueButton = defineComponent({
     let isDisabled = computed(() => props.disabled || props.isDisabled);
     let isUnavailable = computed(() => isDisabled.value || props.isPending);
     let attrsRecord = attrs as Record<string, unknown>;
+    let externalClass = computed(() => attrsRecord.class);
+    let usesExternalButtonBase = computed(() => hasClassToken(externalClass.value, 'button-base'));
 
     let classes = computed(() => ([
-      'vs-button',
-      `vs-button--${props.variant}`,
-      context.value.scale === 'large' ? 'vs-button--large' : 'vs-button--medium',
+      usesExternalButtonBase.value ? null : 'vs-button',
+      usesExternalButtonBase.value ? null : `vs-button--${props.variant}`,
+      usesExternalButtonBase.value ? null : (context.value.scale === 'large' ? 'vs-button--large' : 'vs-button--medium'),
       isDisabled.value ? 'is-disabled' : null,
       props.isPending ? 'is-pending' : null,
       isPressed.value ? 'is-pressed' : null
@@ -246,6 +268,11 @@ export const VueButton = defineComponent({
     };
 
     return function render() {
+      let {
+        class: _classAttr,
+        ...forwardedAttrs
+      } = attrsRecord;
+
       let children = slots.default ? slots.default() : ['Button'];
       if (props.isPending) {
         children = [
@@ -259,8 +286,8 @@ export const VueButton = defineComponent({
       }
 
       return h('button', {
-        ...attrs,
-        class: [classes.value, attrs.class],
+        ...forwardedAttrs,
+        class: [classes.value, externalClass.value],
         type: props.type === 'submit' && props.isPending ? 'button' : props.type,
         disabled: isDisabled.value || undefined,
         tabindex: isDisabled.value ? undefined : attrs.tabindex ?? 0,
@@ -272,6 +299,7 @@ export const VueButton = defineComponent({
         'data-hovered': isHovered.value || undefined,
         'data-pending': props.isPending || undefined,
         'data-pressed': isPressed.value || undefined,
+        'data-variant': props.variant,
         'aria-disabled': isUnavailable.value ? 'true' : undefined,
         onBlur,
         onClick,
