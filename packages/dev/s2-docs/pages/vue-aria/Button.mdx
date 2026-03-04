@@ -48,9 +48,25 @@ The `@press-start`, `@press-end`, and `@press-change` events are also emitted as
 
 ```tsx render
 "use client";
-import {VueButtonEventsDemo} from '../../src/VueInterop';
+import {useState} from 'react';
+import {VueButtonExample as Button} from '../../src/VueInterop';
 
-<VueButtonEventsDemo />
+function Example() {
+  let [pointerType, setPointerType] = useState('');
+
+  return (
+    <>
+      <Button
+        /*- begin highlight -*/
+        onPressStart={event => setPointerType((event as {pointerType: string}).pointerType)}
+        onPressEnd={() => setPointerType('')}>
+        {/*- end highlight -*/}
+        Press me
+      </Button>
+      <p>{pointerType ? `You are pressing the button with a ${pointerType}!` : 'Ready to be pressed.'}</p>
+    </>
+  );
+}
 ```
 
 ## Pending
@@ -67,9 +83,9 @@ function PendingButton() {
 
   return (
     <Button
-      ///- begin highlight -///
+      /*- begin highlight -*/
       isPending={isPending}
-      ///- end highlight -///
+      /*- end highlight -*/
       onPress={() => {
         if (isPending) {
           return;
