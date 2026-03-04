@@ -28,7 +28,7 @@ export const description = 'Allows a user to perform an action, with mouse, touc
     initialProps={{children: 'Press me'}}
     importSource="vue-aria-components"
     type="vanilla"
-    files={["starters/docs/src/Button.css"]} />
+    files={["starters/docs/src/Button.tsx", "starters/docs/src/Button.css"]} />
   <VisualExample
     component={VueTailwindButtonExample}
     docs={tailwindDocs.exports.Button}
@@ -36,7 +36,8 @@ export const description = 'Allows a user to perform an action, with mouse, touc
     props={['variant', 'isPending', 'isDisabled']}
     initialProps={{children: 'Press me'}}
     importSource="vue-aria-components"
-    type="tailwind" />
+    type="tailwind"
+    files={["starters/tailwind/src/Button.tsx"]} />
 </ExampleSwitcher>
 
 ## Events
