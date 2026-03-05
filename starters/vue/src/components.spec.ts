@@ -6468,6 +6468,19 @@ describe('Vue migration primitives', () => {
     expect(ariaLabelGroup.attributes('aria-labelledby')).toBeUndefined();
   });
 
+  function getAccordionTrigger(wrapper: ReturnType<typeof mount>, text: string) {
+    let trigger = wrapper.findAll('button.spectrum-Accordion-itemHeader')
+      .find((button) => button.text().trim().includes(text));
+
+    expect(trigger).toBeDefined();
+    return trigger!;
+  }
+
+  function getAccordionPanel(wrapper: ReturnType<typeof mount>, text: string) {
+    let trigger = getAccordionTrigger(wrapper, text);
+    return wrapper.get(`#${trigger.attributes('aria-controls')}`);
+  }
+
   it('maps accordion disclosure state classes and hidden/aria-hidden panel signals', async () => {
     let wrapper = mount({
       components: {Accordion, Disclosure, DisclosurePanel, DisclosureTitle},
@@ -6493,15 +6506,20 @@ describe('Vue migration primitives', () => {
     let items = wrapper.findAll('.spectrum-Accordion-item');
     expect(items[0].classes()).toContain('is-expanded');
     expect(items[1].classes()).not.toContain('is-expanded');
+    expect(items[0].attributes('data-expanded')).toBe('true');
+    expect(items[1].attributes('data-expanded')).toBeUndefined();
 
-    let secondPanel = wrapper.get('#two-panel');
+    let secondTrigger = getAccordionTrigger(wrapper, 'Two');
+    expect(secondTrigger.attributes('data-react-aria-pressable')).toBe('true');
+    expect(secondTrigger.attributes('tabindex')).toBe('0');
+
+    let secondPanel = wrapper.get(`#${secondTrigger.attributes('aria-controls')}`);
     expect(secondPanel.attributes('hidden')).toBeDefined();
     expect(secondPanel.attributes('aria-hidden')).toBe('true');
     expect(secondPanel.attributes('role')).toBe('group');
     expect(secondPanel.classes()).toContain('spectrum-Accordion-itemContent');
     expect(secondPanel.attributes('hidden')).not.toBeUndefined();
 
-    let secondTrigger = wrapper.get('#two-trigger');
     let indicator = secondTrigger.find('.spectrum-Accordion-itemIndicator');
     expect(indicator.exists()).toBe(true);
     expect(indicator.element.tagName.toLowerCase()).toBe('svg');
@@ -6520,8 +6538,8 @@ describe('Vue migration primitives', () => {
     await nextTick();
     let expandedKeys = (wrapper.vm as unknown as {expanded: Iterable<string>}).expanded;
     expect(Array.from(expandedKeys)).toEqual(['two']);
-    expect(wrapper.get('#one-panel').attributes('aria-hidden')).toBe('true');
-    expect(wrapper.get('#two-panel').attributes('aria-hidden')).toBe('false');
+    expect(getAccordionPanel(wrapper, 'One').attributes('aria-hidden')).toBe('true');
+    expect(getAccordionPanel(wrapper, 'Two').attributes('aria-hidden')).toBe('false');
   });
 
   it('renders disclosure title chevron direction from rtl context to match react parity', async () => {
@@ -6562,7 +6580,7 @@ describe('Vue migration primitives', () => {
     expect(heading.classes()).toContain('custom-heading-class');
     expect(heading.classes()).toContain('spectrum-Accordion-itemHeading');
 
-    let trigger = wrapper.get('#files-trigger');
+    let trigger = heading.get('button.spectrum-Accordion-itemHeader');
     expect(trigger.classes()).toContain('spectrum-Accordion-itemHeader');
     expect(trigger.classes()).not.toContain('custom-heading-class');
   });
@@ -6586,18 +6604,20 @@ describe('Vue migration primitives', () => {
 
     let filesItem = wrapper.find('.spectrum-Accordion-item');
     expect(filesItem.classes()).toContain('is-expanded');
+    expect(filesItem.attributes('data-expanded')).toBe('true');
 
-    let filesPanel = wrapper.get('#files-panel');
+    let filesPanel = getAccordionPanel(wrapper, 'Files');
     expect(filesPanel.attributes('aria-hidden')).toBe('false');
     expect(filesPanel.attributes('role')).toBe('group');
 
-    let peopleTrigger = wrapper.get('#people-trigger');
+    let peopleTrigger = getAccordionTrigger(wrapper, 'People');
     expect(peopleTrigger.attributes('disabled')).toBeDefined();
-    expect(wrapper.get('#people-panel').attributes('aria-hidden')).toBe('true');
+    expect(peopleTrigger.attributes('data-disabled')).toBe('true');
+    expect(getAccordionPanel(wrapper, 'People').attributes('aria-hidden')).toBe('true');
 
     await peopleTrigger.trigger('click');
     await nextTick();
-    expect(wrapper.get('#people-panel').attributes('aria-hidden')).toBe('true');
+    expect(getAccordionPanel(wrapper, 'People').attributes('aria-hidden')).toBe('true');
   });
 
   it('accepts accordion expandedKeys as a Set iterable in controlled mode', async () => {
@@ -6649,7 +6669,7 @@ describe('Vue migration primitives', () => {
       `
     });
 
-    await wrapper.get('#two-trigger').trigger('click');
+    await getAccordionTrigger(wrapper, 'Two').trigger('click');
     await nextTick();
     let expandedKeys = (wrapper.vm as unknown as {expanded: Iterable<string>}).expanded;
     expect(Array.from(expandedKeys)).toEqual(['one', 'two']);
@@ -6675,7 +6695,7 @@ describe('Vue migration primitives', () => {
       `
     });
 
-    await aliasWrapper.get('#two-trigger').trigger('click');
+    await getAccordionTrigger(aliasWrapper, 'Two').trigger('click');
     await nextTick();
     let aliasExpandedKeys = (aliasWrapper.vm as unknown as {expanded: Iterable<string>}).expanded;
     expect(Array.from(aliasExpandedKeys)).toEqual(['one', 'two']);

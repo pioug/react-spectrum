@@ -1,5 +1,5 @@
 import '@adobe/spectrum-css-temp/components/accordion/vars.css';
-import {classNames} from '@vue-spectrum/utils';
+import {classNames, useId} from '@vue-spectrum/utils';
 import {computed, type ComputedRef, defineComponent, h, inject, type InjectionKey, onMounted, onUpdated, type PropType, provide, ref, watch} from 'vue';
 import {getEventTarget} from '@vue-aria/utils';
 const styles: {[key: string]: string} = {};
@@ -19,6 +19,8 @@ interface DisclosureContextValue {
   expanded: ComputedRef<boolean>,
   id: ComputedRef<string>,
   isQuiet: ComputedRef<boolean>,
+  panelId: ComputedRef<string>,
+  triggerId: ComputedRef<string>,
   toggle: () => void
 }
 
@@ -51,6 +53,16 @@ function isExpandedKeyIterable(value: unknown): value is Iterable<string> {
   }
 
   return true;
+}
+
+function toReactAriaDomId(id: string): string {
+  let match = id.match(/^(.*)-(\d+)$/);
+  if (!match) {
+    return id;
+  }
+
+  let [, prefix, counter] = match;
+  return `${prefix}-_r_${counter}_`;
 }
 
 export const Accordion = defineComponent({
@@ -136,8 +148,7 @@ export const Accordion = defineComponent({
     return () => h('div', {
       ...attrs,
       class: [classNames(styles, 'spectrum-Accordion'), attrs.class],
-      'data-rac': '',
-      'data-vac': ''
+      'data-rac': ''
     }, slots.default ? slots.default() : []);
   }
 });
@@ -186,14 +197,18 @@ export const Disclosure = defineComponent({
   },
   setup(props, {emit, slots, attrs}) {
     let accordion = inject(accordionContextKey, null);
-    let generatedId = `vs-disclosure-${++disclosureId}`;
-    let disclosureKey = computed(() => props.id ?? generatedId);
+    let generatedKey = `vs-disclosure-${++disclosureId}`;
+    let disclosureKey = computed(() => props.id ?? generatedKey);
     let localExpanded = ref(props.defaultExpanded);
     let isControlled = computed(() => props.isExpanded !== undefined || props.expanded !== undefined);
     let disabled = computed(() => props.isDisabled || props.disabled || accordion?.isDisabled.value || false);
     let expanded = computed(() => accordion
       ? accordion.expandedKeys.value.includes(disclosureKey.value)
       : (props.isExpanded ?? props.expanded ?? localExpanded.value));
+    let triggerId = useId();
+    let panelId = useId();
+    let triggerIdValue = computed(() => toReactAriaDomId(triggerId));
+    let panelIdValue = computed(() => toReactAriaDomId(panelId));
     let resolvedQuiet = computed(() => {
       if (accordion) {
         return accordion.isQuiet.value;
@@ -225,6 +240,8 @@ export const Disclosure = defineComponent({
       expanded,
       id: disclosureKey,
       isQuiet: resolvedQuiet,
+      panelId: panelIdValue,
+      triggerId: triggerIdValue,
       toggle
     });
 
@@ -241,7 +258,8 @@ export const Disclosure = defineComponent({
         }
       ), attrs.class],
       'data-rac': '',
-      'data-vac': ''
+      'data-disabled': disabled.value ? 'true' : undefined,
+      'data-expanded': expanded.value ? 'true' : undefined
     }, slots.default ? slots.default() : []);
   }
 });
@@ -295,8 +313,7 @@ export const DisclosureTitle = defineComponent({
         return h(headingTag.value, {
           ref: headingRef,
           ...attrs,
-          class: [classNames(styles, 'spectrum-Accordion-itemHeading'), attrs.class],
-          'data-vac': ''
+          class: [classNames(styles, 'spectrum-Accordion-itemHeading'), attrs.class]
         }, slots.default ? slots.default() : []);
       }
 
@@ -317,12 +334,15 @@ export const DisclosureTitle = defineComponent({
               'focus-ring': isFocusVisible.value
             }
           )],
-          id: `${disclosure.id.value}-trigger`,
+          id: disclosure.triggerId.value,
           slot: 'trigger',
           type: 'button',
           disabled: disclosure.disabled.value,
-          'aria-controls': `${disclosure.id.value}-panel`,
+          tabindex: disclosure.disabled.value ? undefined : 0,
+          'aria-controls': disclosure.panelId.value,
           'aria-expanded': disclosure.expanded.value ? 'true' : 'false',
+          'data-disabled': disclosure.disabled.value ? 'true' : undefined,
+          'data-react-aria-pressable': 'true',
           onMouseenter: () => {
             if (disclosure.disabled.value) {
               return;
@@ -353,8 +373,7 @@ export const DisclosureTitle = defineComponent({
             isPressed.value = false;
             disclosure.toggle();
           },
-          'data-rac': '',
-          'data-vac': ''
+          'data-rac': ''
         }, [
           h('svg', {
             class: [
@@ -418,8 +437,8 @@ export const DisclosurePanel = defineComponent({
     });
 
     return () => {
-      let panelId = disclosure ? `${disclosure.id.value}-panel` : attrs.id;
-      let labelledBy = disclosure ? `${disclosure.id.value}-trigger` : attrs['aria-labelledby'];
+      let panelId = disclosure ? disclosure.panelId.value : attrs.id;
+      let labelledBy = disclosure ? disclosure.triggerId.value : attrs['aria-labelledby'];
 
       return h('div', {
         ...attrs,
@@ -431,8 +450,7 @@ export const DisclosurePanel = defineComponent({
         style: [panelSizeVars.value, attrs.style],
         'aria-hidden': isExpanded.value ? 'false' : 'true',
         'aria-labelledby': labelledBy,
-        'data-rac': '',
-        'data-vac': ''
+        'data-rac': ''
       }, slots.default ? slots.default() : []);
     };
   }

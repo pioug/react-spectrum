@@ -1598,7 +1598,10 @@ describe('Vue storybook helper parity', () => {
       expect(accordionItems).toHaveLength(2);
       expect(accordionItems[0].classes()).not.toContain('is-expanded');
       expect(accordionItems[1].classes()).toContain('is-expanded');
-      expect(expandedWrapper.get('#people-panel').attributes('aria-hidden')).toBe('false');
+      let peopleTrigger = expandedWrapper.findAll('button.spectrum-Accordion-itemHeader')
+        .find((button) => button.text().trim().includes('People'));
+      expect(peopleTrigger).toBeDefined();
+      expect(expandedWrapper.get(`#${peopleTrigger!.attributes('aria-controls')}`).attributes('aria-hidden')).toBe('false');
     } finally {
       for (let wrapper of wrappers) {
         wrapper.unmount();
