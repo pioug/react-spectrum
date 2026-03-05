@@ -2,7 +2,15 @@ import {CodeClient} from './CodeClient';
 import {CodeFold} from './CodeFold';
 import {CodeLink} from './Link';
 import {CodeProps} from './VisualExampleClient';
-import {HastNode, HastTextNode, highlightHast, Language} from 'tree-sitter-highlight';
+import {createHighlighterCoreSync} from '@shikijs/core';
+import cssLang from '@shikijs/langs/css';
+import javascriptLang from '@shikijs/langs/javascript';
+import jsonLang from '@shikijs/langs/json';
+import jsxLang from '@shikijs/langs/jsx';
+import tsxLang from '@shikijs/langs/tsx';
+import typescriptLang from '@shikijs/langs/typescript';
+import vueLang from '@shikijs/langs/vue';
+import {createJavaScriptRegexEngine} from '@shikijs/engine-javascript';
 import React, {cache} from 'react';
 import {style, StyleString} from '@react-spectrum/s2/style' with {type: 'macro'};
 import {TabLink} from './FileTabs';
@@ -62,22 +70,168 @@ export interface ICodeProps {
   styles?: StyleString
 }
 
-const LANGUAGE_ALIASES: Record<string, keyof typeof Language> = {
-  css: 'CSS',
-  js: 'JS',
-  json: 'JS',
-  jsx: 'JSX',
-  ts: 'TS',
-  tsx: 'TSX'
+type HastTextNode = {
+  type: 'text',
+  value: string
 };
 
-// Check if a language is supported by tree-sitter for syntax highlighting
-function isSupportedLanguage(lang: string): boolean {
-  let normalized = lang.toLowerCase();
-  return normalized === 'vue' || normalized in LANGUAGE_ALIASES;
+type HastNode = {
+  type: 'element',
+  tagName: string,
+  properties?: {
+    className?: string
+  },
+  children: (HastNode | HastTextNode)[]
+};
+
+type ShikiToken = {
+  content: string,
+  color?: string
+};
+
+type SupportedLanguage = 'css' | 'javascript' | 'json' | 'jsx' | 'tsx' | 'typescript' | 'vue';
+type Highlighter = ReturnType<typeof createHighlighterCoreSync>;
+
+const LANGUAGE_ALIASES: Record<string, SupportedLanguage> = {
+  css: 'css',
+  js: 'javascript',
+  json: 'json',
+  jsx: 'jsx',
+  ts: 'typescript',
+  tsx: 'tsx',
+  vue: 'vue'
+};
+
+const SHIKI_THEME_NAME = 'react-spectrum-docs';
+const SHIKI_THEME = {
+  name: SHIKI_THEME_NAME,
+  type: 'light',
+  colors: {
+    'editor.foreground': 'var(--rsp-code-plain)',
+    'editor.background': 'transparent'
+  },
+  tokenColors: [
+    {
+      scope: ['comment', 'string.quoted.docstring.multi'],
+      settings: {foreground: 'var(--rsp-code-comment)'}
+    },
+    {
+      scope: [
+        'constant.numeric',
+        'constant.language',
+        'constant.character',
+        'constant.other.placeholder',
+        'constant.character.format.placeholder'
+      ],
+      settings: {foreground: 'var(--rsp-code-number)'}
+    },
+    {
+      scope: [
+        'meta.property-name',
+        'meta.object-literal.key',
+        'meta.property-value',
+        'support.type.property-name.json',
+        'variable.other.property',
+        'entity.name.property'
+      ],
+      settings: {foreground: 'var(--rsp-code-property)'}
+    },
+    {
+      scope: ['entity.other.attribute-name'],
+      settings: {foreground: 'var(--rsp-code-attribute)'}
+    },
+    {
+      scope: [
+        'support.function',
+        'entity.name.function',
+        'entity.name.type',
+        'entity.other.inherited-class',
+        'meta.function-call',
+        'meta.instance.constructor',
+        'support.class.component'
+      ],
+      settings: {foreground: 'var(--rsp-code-function)'}
+    },
+    {
+      scope: ['entity.name.tag'],
+      settings: {foreground: 'var(--rsp-code-tag)'}
+    },
+    {
+      scope: [
+        'string',
+        'markup.fenced_code',
+        'markup.inline'
+      ],
+      settings: {foreground: 'var(--rsp-code-string)'}
+    },
+    {
+      scope: [
+        'variable',
+        'variable.parameter',
+        'variable.language.this',
+        'variable.other.readwrite',
+        'variable.other.object',
+        'variable.other.constant'
+      ],
+      settings: {foreground: 'var(--rsp-code-variable)'}
+    },
+    {
+      scope: [
+        'keyword',
+        'storage.type',
+        'storage.modifier',
+        'storage.control',
+        'keyword.operator',
+        'punctuation.separator.key-value',
+        'punctuation.definition.template-expression'
+      ],
+      settings: {foreground: 'var(--rsp-code-keyword)'}
+    }
+  ]
+} as const;
+
+const TOKEN_COLOR_TO_CLASS = new Map<string, keyof typeof styles>([
+  ['var(--rsp-code-keyword)', 'keyword'],
+  ['var(--rsp-code-string)', 'string'],
+  ['var(--rsp-code-number)', 'number'],
+  ['var(--rsp-code-property)', 'property'],
+  ['var(--rsp-code-attribute)', 'attribute'],
+  ['var(--rsp-code-function)', 'function'],
+  ['var(--rsp-code-tag)', 'tag'],
+  ['var(--rsp-code-comment)', 'comment'],
+  ['var(--rsp-code-variable)', 'variable']
+]);
+
+const globalHighlighter = globalThis as typeof globalThis & {
+  __s2DocsHighlighter?: Highlighter
+};
+
+function getHighlighter(): Highlighter {
+  if (!globalHighlighter.__s2DocsHighlighter) {
+    globalHighlighter.__s2DocsHighlighter = createHighlighterCoreSync({
+      themes: [SHIKI_THEME],
+      langs: [
+        cssLang,
+        javascriptLang,
+        jsonLang,
+        jsxLang,
+        tsxLang,
+        typescriptLang,
+        vueLang
+      ],
+      engine: createJavaScriptRegexEngine()
+    });
+  }
+
+  return globalHighlighter.__s2DocsHighlighter;
 }
 
-function resolveLanguage(lang: string): keyof typeof Language | null {
+// Check if a language is supported by the server-side syntax highlighter.
+function isSupportedLanguage(lang: string): boolean {
+  return lang.toLowerCase() in LANGUAGE_ALIASES;
+}
+
+function resolveLanguage(lang: string): SupportedLanguage | null {
   return LANGUAGE_ALIASES[lang.toLowerCase()] ?? null;
 }
 
@@ -120,9 +274,7 @@ export function Code({children, lang, isFencedBlock, hideImports = true, links, 
 }
 
 const highlightCode = cache((children: string, lang: string, hideImports = true, links?: Links): Token[] => {
-  let lineNodes = lang.toLowerCase() === 'vue'
-    ? highlightVueLines(children)
-    : highlightLanguageLines(children, resolveLanguage(lang));
+  let lineNodes = highlightLanguageLines(children, resolveLanguage(lang));
 
   if (!lineNodes.length) {
     return [children];
@@ -181,37 +333,24 @@ const highlightCode = cache((children: string, lang: string, hideImports = true,
   return renderChildren(lineNodes, '0', links);
 });
 
-function highlightLanguageLines(children: string, language: keyof typeof Language | null): HastNode[] {
+function highlightLanguageLines(children: string, language: SupportedLanguage | null): HastNode[] {
   if (!language) {
     return [];
   }
 
   try {
-    return lines(highlightHast(children, Language[language]));
+    let highlighter = getHighlighter();
+    let tokens = highlighter.codeToTokensBase(children, {
+      lang: language,
+      theme: SHIKI_THEME_NAME
+    });
+    return shikiTokensToLines(tokens);
   } catch {
     return plainTextLines(children);
   }
 }
 
-function highlightInlineCode(children: string, language: keyof typeof Language): (HastNode | HastTextNode)[] {
-  if (!children) {
-    return [];
-  }
-
-  try {
-    let highlighted = highlightHast(children, Language[language]);
-    return highlighted.children as (HastNode | HastTextNode)[];
-  } catch {
-    return [textNode(children)];
-  }
-}
-
 function isCollapsiblePreludeLine(line: string, lang: string): boolean {
-  let normalized = lang.toLowerCase();
-  if (normalized === 'vue') {
-    return /^(["']use client["']|@?import|(\s*$)|<(?:script|style)\b[^>]*>|<\/(?:script|style)>$)$/.test(line);
-  }
-
   return /^(["']use client["']|@?import|(\s*$))/.test(line);
 }
 
@@ -245,288 +384,21 @@ function lineNode(children: (HastNode | HastTextNode)[]): HastNode {
   } as HastNode;
 }
 
-function highlightVueLines(children: string): HastNode[] {
-  let result: HastNode[] = [];
-  let mode: 'template' | 'script' | 'style' | null = null;
-  let blockLanguage: keyof typeof Language = 'JS';
-  let blockLines: string[] = [];
-  let templateState = {inTag: false};
-
-  let flushBlock = () => {
-    if (!blockLines.length) {
-      return;
-    }
-
-    result.push(...highlightLanguageLines(blockLines.join('\n'), blockLanguage));
-    blockLines = [];
-  };
-
-  for (let line of children.split('\n')) {
-    let trimmed = line.trim();
-
-    if (mode === 'script' || mode === 'style') {
-      if (trimmed === `</${mode}>`) {
-        flushBlock();
-        result.push(highlightVueTemplateLine(line, {inTag: false}));
-        mode = null;
-        continue;
-      }
-
-      blockLines.push(line);
-      continue;
-    }
-
-    if (mode === 'template') {
-      if (trimmed === '</template>') {
-        result.push(highlightVueTemplateLine(line, {inTag: false}));
-        templateState.inTag = false;
-        mode = null;
-        continue;
-      }
-
-      result.push(highlightVueTemplateLine(line, templateState));
-      continue;
-    }
-
-    if (/^<template\b/.test(trimmed)) {
-      result.push(highlightVueTemplateLine(line, {inTag: false}));
-      mode = 'template';
-      templateState.inTag = false;
-      continue;
-    }
-
-    if (/^<script\b/.test(trimmed)) {
-      result.push(highlightVueTemplateLine(line, {inTag: false}));
-      mode = 'script';
-      blockLanguage = resolveVueScriptLanguage(line);
-      continue;
-    }
-
-    if (/^<style\b/.test(trimmed)) {
-      result.push(highlightVueTemplateLine(line, {inTag: false}));
-      mode = 'style';
-      blockLanguage = 'CSS';
-      continue;
-    }
-
-    result.push(highlightVueTemplateLine(line, {inTag: false}));
-  }
-
-  flushBlock();
-  return result;
+function shikiTokensToLines(lines: ShikiToken[][]): HastNode[] {
+  return lines.map(line => lineNode(line.flatMap(renderShikiToken)));
 }
 
-function resolveVueScriptLanguage(line: string): keyof typeof Language {
-  let match = line.match(/\blang\s*=\s*["']([^"']+)["']/i);
-  let language = match?.[1].toLowerCase();
-
-  switch (language) {
-    case 'jsx':
-      return 'JSX';
-    case 'tsx':
-      return 'TSX';
-    case 'ts':
-    case 'typescript':
-      return 'TS';
-    default:
-      return 'JS';
-  }
-}
-
-function highlightVueTemplateLine(line: string, state: {inTag: boolean}): HastNode {
-  let children: (HastNode | HastTextNode)[] = [];
-  let index = 0;
-
-  while (index < line.length) {
-    if (!state.inTag && line.startsWith('<!--', index)) {
-      let end = line.indexOf('-->', index + 4);
-      let comment = end >= 0 ? line.slice(index, end + 3) : line.slice(index);
-      children.push(tokenNode('comment', comment));
-      index += comment.length;
-      continue;
-    }
-
-    if (!state.inTag && line.startsWith('{{', index)) {
-      let end = line.indexOf('}}', index + 2);
-      if (end < 0) {
-        children.push(textNode(line.slice(index)));
-        break;
-      }
-
-      children.push(textNode('{{'));
-      children.push(...highlightVueInterpolation(line.slice(index + 2, end)));
-      children.push(textNode('}}'));
-      index = end + 2;
-      continue;
-    }
-
-    if (!state.inTag && line[index] === '<') {
-      let tag = highlightVueTagFragment(line, index, false);
-      children.push(...tag.children);
-      index = tag.index;
-      state.inTag = tag.inTag;
-      continue;
-    }
-
-    if (state.inTag) {
-      let tag = highlightVueTagFragment(line, index, true);
-      children.push(...tag.children);
-      index = tag.index;
-      state.inTag = tag.inTag;
-      continue;
-    }
-
-    let nextTag = line.indexOf('<', index);
-    let nextComment = line.indexOf('<!--', index);
-    let nextInterpolation = line.indexOf('{{', index);
-    let nextIndex = [nextTag, nextComment, nextInterpolation]
-      .filter(value => value >= 0)
-      .reduce((min, value) => Math.min(min, value), line.length);
-    children.push(textNode(line.slice(index, nextIndex)));
-    index = nextIndex;
+function renderShikiToken(token: ShikiToken): (HastNode | HastTextNode)[] {
+  if (!token.content) {
+    return [];
   }
 
-  return lineNode(children);
-}
-
-function highlightVueInterpolation(expression: string): (HastNode | HastTextNode)[] {
-  let leading = expression.match(/^\s*/)?.[0] ?? '';
-  let trailing = expression.match(/\s*$/)?.[0] ?? '';
-  let content = expression.slice(leading.length, expression.length - trailing.length);
-  let children: (HastNode | HastTextNode)[] = [];
-
-  if (leading) {
-    children.push(textNode(leading));
+  let className = token.color ? TOKEN_COLOR_TO_CLASS.get(token.color) : undefined;
+  if (className) {
+    return [tokenNode(className, token.content)];
   }
 
-  children.push(...highlightInlineCode(content, 'TS'));
-
-  if (trailing) {
-    children.push(textNode(trailing));
-  }
-
-  return children;
-}
-
-function highlightVueTagFragment(line: string, start: number, isContinuation: boolean): {
-  children: (HastNode | HastTextNode)[],
-  index: number,
-  inTag: boolean
-} {
-  let children: (HastNode | HastTextNode)[] = [];
-  let index = start;
-
-  if (!isContinuation) {
-    if (line.startsWith('</', index)) {
-      children.push(textNode('</'));
-      index += 2;
-    } else {
-      children.push(textNode('<'));
-      index += 1;
-    }
-
-    let tagEnd = index;
-    while (tagEnd < line.length && !/[\s/>]/.test(line[tagEnd])) {
-      tagEnd++;
-    }
-
-    if (tagEnd > index) {
-      children.push(tokenNode('tag', line.slice(index, tagEnd)));
-    }
-
-    index = tagEnd;
-  }
-
-  while (index < line.length) {
-    if (/\s/.test(line[index])) {
-      let whitespaceEnd = index + 1;
-      while (whitespaceEnd < line.length && /\s/.test(line[whitespaceEnd])) {
-        whitespaceEnd++;
-      }
-
-      children.push(textNode(line.slice(index, whitespaceEnd)));
-      index = whitespaceEnd;
-      continue;
-    }
-
-    if (line.startsWith('/>', index)) {
-      children.push(textNode('/>'));
-      return {children, index: index + 2, inTag: false};
-    }
-
-    if (line[index] === '>') {
-      children.push(textNode('>'));
-      return {children, index: index + 1, inTag: false};
-    }
-
-    let attributeEnd = index;
-    while (attributeEnd < line.length && !/[\s=/>]/.test(line[attributeEnd])) {
-      attributeEnd++;
-    }
-
-    if (attributeEnd > index) {
-      children.push(tokenNode('attribute', line.slice(index, attributeEnd)));
-    }
-
-    index = attributeEnd;
-
-    let whitespaceEnd = index;
-    while (whitespaceEnd < line.length && /\s/.test(line[whitespaceEnd])) {
-      whitespaceEnd++;
-    }
-
-    if (whitespaceEnd > index) {
-      children.push(textNode(line.slice(index, whitespaceEnd)));
-      index = whitespaceEnd;
-    }
-
-    if (line[index] !== '=') {
-      continue;
-    }
-
-    children.push(textNode('='));
-    index += 1;
-
-    whitespaceEnd = index;
-    while (whitespaceEnd < line.length && /\s/.test(line[whitespaceEnd])) {
-      whitespaceEnd++;
-    }
-
-    if (whitespaceEnd > index) {
-      children.push(textNode(line.slice(index, whitespaceEnd)));
-      index = whitespaceEnd;
-    }
-
-    if (index >= line.length) {
-      break;
-    }
-
-    let quote = line[index];
-    if (quote === '"' || quote === '\'') {
-      let valueEnd = index + 1;
-      while (valueEnd < line.length && line[valueEnd] !== quote) {
-        valueEnd++;
-      }
-
-      if (valueEnd < line.length) {
-        valueEnd++;
-      }
-
-      children.push(tokenNode('string', line.slice(index, valueEnd)));
-      index = valueEnd;
-      continue;
-    }
-
-    let valueEnd = index;
-    while (valueEnd < line.length && !/[\s>]/.test(line[valueEnd])) {
-      valueEnd++;
-    }
-
-    children.push(tokenNode('string', line.slice(index, valueEnd)));
-    index = valueEnd;
-  }
-
-  return {children, index, inTag: true};
+  return [textNode(token.content)];
 }
 
 type Marker = {
@@ -589,87 +461,6 @@ function groupLinesByMarkerComments(lineNodes: HastNode[]): HastNode[] {
   return grouped;
 }
 
-function lines(node: HastNode) {
-  let resultLines: HastNode[] = [];
-  let currentLine: (HastNode | HastTextNode)[] = [];
-  // let properties: Record<string, string> = {};
-  let grouping: HastNode | null = null;
-  let skip = false;
-  let endLine = () => {
-    if (skip) {
-      skip = false;
-      currentLine = [];
-      return;
-    }
-    let childNode = {
-      type: 'element',
-      tagName: 'div',
-      children: [{...node, children: currentLine}]
-    } as HastNode;
-    if (grouping) {
-      grouping.children.push(childNode);
-    } else {
-      resultLines.push(childNode);
-    }
-    currentLine = [];
-  };
-
-  for (let child of node.children) {
-    if (child.type === 'text' && 'value' in child) {
-      let parts = child.value.split('\n');
-      for (let part of parts.slice(0, -1)) {
-        if (part.length) {
-          currentLine.push({type: 'text', value: part});
-        }
-        endLine();
-      }
-      let last = parts.at(-1);
-      if (last?.length) {
-        currentLine.push({type: 'text', value: last});
-      }
-      continue;
-    } else if ('properties' in child && child.properties?.className === 'comment') {
-      let comment = text(child);
-      let begin = comment.match(/^(?:\/\/\/|\/\*)- begin (.+) -(?:\/\/\/|\*\/)$/);
-      if (begin) {
-        grouping = {
-          type: 'element',
-          tagName: begin[1],
-          children: []
-        } as any;
-        currentLine = [];
-        skip = true;
-        continue;
-      } else if (grouping && (comment.startsWith('///- end ') || comment.startsWith('/*- end '))) {
-        resultLines.push(grouping);
-        grouping = null;
-        currentLine = [];
-        skip = true;
-        continue;
-      }
-    }
-
-    let result = lines(child as HastNode);
-    if (result.length) {
-      currentLine.push(...result[0].children);
-    }
-    if (result.length > 1) {
-      endLine();
-      for (let i = 1; i < result.length - 1; i++) {
-        currentLine = result[i].children;
-        endLine();
-      }
-      currentLine = result.at(-1)!.children;
-    }
-  }
-
-  if (currentLine.length) {
-    endLine();
-  }
-
-  return resultLines;
-}
-
 // Renders a Hast Node to a list of tokens. A token is either a string, a React element, or a token type (number) + string.
 // These are flattened into an array that gets sent to the client. This format significantly reduces the payload size vs JSX.
 function renderHast(node: HastNode | HastTextNode, key: string, links?: Links, indent = ''): Token | Token[] {
@@ -683,7 +474,7 @@ function renderHast(node: HastNode | HastTextNode, key: string, links?: Links, i
       }
     }
 
-    let tokenType = node.properties?.className.split(' ').map(c => TokenType[c]).filter(v => v != null) || [];
+    let tokenType = node.properties?.className?.split(' ').map(c => TokenType[c]).filter(v => v != null) || [];
     if (node.properties?.className === 'comment' && text(node) === '/* PROPS */') {
       return <CodeProps key={key} indent={indent} />;
     }
@@ -738,7 +529,7 @@ function renderHast(node: HastNode | HastTextNode, key: string, links?: Links, i
       return [tokenType[0], children];
     }
 
-    let className = node.properties?.className.split(' ').map(c => styles[c]).filter(Boolean).join(' ') || undefined;
+    let className = node.properties?.className?.split(' ').map(c => styles[c]).filter(Boolean).join(' ') || undefined;
     return React.createElement(type, {...properties, className, key, tokens: childArray});
   } else {
     // @ts-ignore

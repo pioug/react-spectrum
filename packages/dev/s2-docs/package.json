@@ -29,7 +29,9 @@
         ]
       },
       "includeNodeModules": {
-        "tree-sitter-highlight": false,
+        "@shikijs/core": false,
+        "@shikijs/engine-javascript": false,
+        "@shikijs/langs": false,
         "json5": false,
         "globals-docs": false,
         "@parcel/rust": false
@@ -48,6 +50,9 @@
     "@react-spectrum/utils": "^3.12.6",
     "@react-types/shared": "^3.30.0",
     "@react-types/textfield": "^3.12.3",
+    "@shikijs/core": "^4.0.1",
+    "@shikijs/engine-javascript": "^4.0.1",
+    "@shikijs/langs": "^4.0.1",
     "emojibase-data": "^16.0.3",
     "fast-glob": "^3.3.3",
     "globals-docs": "^2.4.1",
@@ -65,7 +70,6 @@
     "remark-stringify": "^11.0.0",
     "satori": "^0.16.1",
     "sharp": "^0.33.5",
-    "tree-sitter-highlight": "^1.0.1",
     "ts-morph": "^26.0.0",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0",
