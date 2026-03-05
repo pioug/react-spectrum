@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {VueLink} from 'vue-aria-components';
+import 'vanilla-starter/Button.css';
 </script>
 
 <template>

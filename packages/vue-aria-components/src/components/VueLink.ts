@@ -1,4 +1,4 @@
-import {defineComponent, h} from 'vue';
+import {defineComponent, h} from '@vue/runtime-core';
 
 function hasClassToken(value: unknown, token: string): boolean {
   if (!value) {

@@ -6,7 +6,7 @@ import docs from 'docs:react-aria-components';
 import vanillaDocs from 'docs:vanilla-starter/Button';
 import tailwindDocs from 'docs:tailwind-starter/Button';
 import typesDocs from 'docs:@react-types/shared/src/events.d.ts';
-import {VueButtonExample, VueTailwindButtonExample} from '../../src/VueInterop';
+import {VueButtonEventsDemo, VueButtonExample, VueButtonPendingDemo, VueLinkButtonDemo, VueTailwindButtonExample} from '../../src/VueInterop';
 import '../../../../vue-aria-components/src/styles.css';
 import 'vanilla-starter/Button.css';
 import '../../tailwind/tailwind.css';
@@ -44,85 +44,55 @@ export const description = 'Allows a user to perform an action, with mouse, touc
 
 Use the `@press` event handler to handle interactions via mouse, keyboard, and touch. This is similar to `@click`, but normalized for consistency across browsers, devices, and interaction methods. Read our [blog post](blog/building-a-button-part-1) to learn more.
 
-The `@press-start`, `@press-end`, and `@press-change` events are also emitted as the user interacts with the button. `@press-start` and `@press-end` each receive a <TypeLink links={typesDocs.links} type={typesDocs.exports.PressEvent} />, which provides information about the target and interaction method. See [usePress](usePress) for more details.
+The `@press-start`, `@press`, and `@press-end` events each receive a <TypeLink links={typesDocs.links} type={typesDocs.exports.PressEvent} />, which provides information about the target and interaction method. The `@press-change` event receives the current pressed state as a boolean. See [usePress](usePress) for more details.
 
-```tsx render snippetFile="starters/vue/src/snippets/ButtonEvents.vue"
-"use client";
-import {useState} from 'react';
-import {VueButtonExample as Button} from '../../src/VueInterop';
-
-function Example() {
-  let [pointerType, setPointerType] = useState('');
-
-  return (
-    <>
-      <Button
-        /*- begin highlight -*/
-        onPressStart={event => setPointerType((event as {pointerType: string}).pointerType)}
-        onPressEnd={() => setPointerType('')}>
-        {/*- end highlight -*/}
-        Press me
-      </Button>
-      <p>{pointerType ? `You are pressing the button with a ${pointerType}!` : 'Ready to be pressed.'}</p>
-    </>
-  );
-}
-```
+<VisualExample
+  component={VueButtonEventsDemo}
+  docs={docs.exports.Button}
+  links={docs.links}
+  props={[]}
+  type="vanilla"
+  files={["starters/vue/src/snippets/ButtonEvents.vue"]}
+  hideShadcn />
 
 ## Pending
 
-Use the `isPending` prop to display a pending state. Pending buttons remain focusable, but are otherwise disabled. Pending state changes are announced to assistive technologies.
+Use the `isPending` prop to display a pending state. Pending buttons remain focusable, but are otherwise disabled. `VueButton` renders a built-in spinner with `role="progressbar"` while pending so the state stays exposed to assistive technologies.
 
-```tsx render snippetFile="starters/vue/src/snippets/ButtonPending.vue"
-"use client";
-import {useState} from 'react';
-import {VueButtonExample as Button} from '../../src/VueInterop';
-
-function PendingButton() {
-  let [isPending, setPending] = useState(false);
-
-  return (
-    <Button
-      /*- begin highlight -*/
-      isPending={isPending}
-      /*- end highlight -*/
-      onPress={() => {
-        if (isPending) {
-          return;
-        }
-
-        setPending(true);
-        setTimeout(() => {
-          setPending(false);
-        }, 5000);
-      }}>
-      Save
-    </Button>
-  );
-}
-```
+<VisualExample
+  component={VueButtonPendingDemo}
+  docs={docs.exports.Button}
+  links={docs.links}
+  props={[]}
+  type="vanilla"
+  files={["starters/vue/src/snippets/ButtonPending.vue"]}
+  hideShadcn />
 
 <InlineAlert variant="notice">
   <Heading>Accessibility</Heading>
-  <Content><p style={{marginTop: 0}}>The `ProgressBar` must be in the accessibility tree as soon as the button becomes pending, even if it is not visible. To delay showing a spinner until a minimum amount of time passes, use `opacity: 0`. Do not use `visibility: hidden` or `display: none` as these remove the element from the accessibility tree.</p>
-  <p style={{marginBottom: 0}}>To reserve space for the button's label while pending, either set it to `visibility: hidden` with a descriptive ProgressBar `aria-label` (e.g. "Saving"), or set it to `opacity: 0` to combine the button's label with the `aria-label` of the ProgressBar (e.g. "Save, pending").</p></Content>
+  <Content><p style={{marginTop: 0}}>If you restyle the built-in pending indicator, it must remain in the accessibility tree as soon as the button becomes pending, even if it is not visible. To delay showing it visually, use `opacity: 0`. Do not use `visibility: hidden` or `display: none` on the indicator because that removes it from the accessibility tree.</p>
+  <p style={{marginBottom: 0}}>When the pending message should describe a specific action, pass an `aria-label` to the button so the spinner can announce a more descriptive label such as "Save pending" instead of the default "Pending".</p></Content>
 </InlineAlert>
 
 ## Link buttons
 
 The `VueButton` component always represents a button semantically. To create a link that visually looks like a button, use the `VueLink` component instead. You can reuse the same styles you apply to the `VueButton` component on `VueLink`.
 
-```tsx render hideImports snippetFile="starters/vue/src/snippets/ButtonLink.vue"
-"use client";
-import {VueLinkButtonDemo} from '../../src/VueInterop';
-
-<VueLinkButtonDemo />
-```
+<VisualExample
+  component={VueLinkButtonDemo}
+  docs={docs.exports.Button}
+  links={docs.links}
+  props={[]}
+  type="vanilla"
+  files={["starters/vue/src/snippets/ButtonLink.vue"]}
+  hideShadcn />
 
 ## Examples
 
 <ExampleList tag="button" pages={props.pages} />
 
 ## API
+
+The prop table below reflects the shared React Aria contract. In Vue templates, use the default slot for button contents, `class` instead of `className`, and kebab-case event listeners such as `@press-start` instead of `onPressStart`.
 
 <PropTable component={docs.exports.Button} links={docs.links} />

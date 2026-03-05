@@ -2,6 +2,7 @@
 import {ref} from 'vue';
 import {VueButton} from 'vue-aria-components';
 import type {PressEvent} from '@react-types/shared';
+import 'vanilla-starter/Button.css';
 
 const pointerType = ref('');
 

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {ref} from 'vue';
 import {VueButton} from 'vue-aria-components';
+import 'vanilla-starter/Button.css';
 
 const isPending = ref(false);
 
