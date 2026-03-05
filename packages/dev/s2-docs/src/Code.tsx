@@ -68,15 +68,13 @@ const LANGUAGE_ALIASES: Record<string, keyof typeof Language> = {
   json: 'JS',
   jsx: 'JSX',
   ts: 'TS',
-  tsx: 'TSX',
-  // tree-sitter-highlight does not include a Vue grammar in this project.
-  // TSX is the closest fallback for <template> tags + script setup blocks.
-  vue: 'TSX'
+  tsx: 'TSX'
 };
 
 // Check if a language is supported by tree-sitter for syntax highlighting
 function isSupportedLanguage(lang: string): boolean {
-  return lang.toLowerCase() in LANGUAGE_ALIASES;
+  let normalized = lang.toLowerCase();
+  return normalized === 'vue' || normalized in LANGUAGE_ALIASES;
 }
 
 function resolveLanguage(lang: string): keyof typeof Language | null {
@@ -122,14 +120,14 @@ export function Code({children, lang, isFencedBlock, hideImports = true, links, 
 }
 
 const highlightCode = cache((children: string, lang: string, hideImports = true, links?: Links): Token[] => {
-  let language = resolveLanguage(lang);
-  if (!language) {
+  let lineNodes = lang.toLowerCase() === 'vue'
+    ? highlightVueLines(children)
+    : highlightLanguageLines(children, resolveLanguage(lang));
+
+  if (!lineNodes.length) {
     return [children];
   }
 
-  // @ts-ignore
-  let highlighted = highlightHast(children, Language[language]);
-  let lineNodes = lines(highlighted);
   lineNodes = groupLinesByMarkerComments(lineNodes);
   let idx = lineNodes.findIndex(line => !/^(["']use client["']|(\s*$))/.test(text(line)));
   if (idx > 0) {
@@ -145,7 +143,7 @@ const highlightCode = cache((children: string, lang: string, hideImports = true,
     let seenNonImportLine = false;
     let hasHighlight = false;
     for (let line of lineNodes) {
-      if (!seenNonImportLine && /^(["']use client["']|@?import|(\s*$))/.test(text(line))) {
+      if (!seenNonImportLine && isCollapsiblePreludeLine(text(line), lang)) {
         hidden.push(line);
       } else {
         seenNonImportLine = true;
@@ -182,6 +180,354 @@ const highlightCode = cache((children: string, lang: string, hideImports = true,
 
   return renderChildren(lineNodes, '0', links);
 });
+
+function highlightLanguageLines(children: string, language: keyof typeof Language | null): HastNode[] {
+  if (!language) {
+    return [];
+  }
+
+  try {
+    return lines(highlightHast(children, Language[language]));
+  } catch {
+    return plainTextLines(children);
+  }
+}
+
+function highlightInlineCode(children: string, language: keyof typeof Language): (HastNode | HastTextNode)[] {
+  if (!children) {
+    return [];
+  }
+
+  try {
+    let highlighted = highlightHast(children, Language[language]);
+    return highlighted.children as (HastNode | HastTextNode)[];
+  } catch {
+    return [textNode(children)];
+  }
+}
+
+function isCollapsiblePreludeLine(line: string, lang: string): boolean {
+  let normalized = lang.toLowerCase();
+  if (normalized === 'vue') {
+    return /^(["']use client["']|@?import|(\s*$)|<(?:script|style)\b[^>]*>|<\/(?:script|style)>$)$/.test(line);
+  }
+
+  return /^(["']use client["']|@?import|(\s*$))/.test(line);
+}
+
+function plainTextLines(children: string): HastNode[] {
+  return children.split('\n').map(line => lineNode([textNode(line)]));
+}
+
+function textNode(value: string): HastTextNode {
+  return {type: 'text', value} as HastTextNode;
+}
+
+function spanNode(children: (HastNode | HastTextNode)[], className?: string): HastNode {
+  let properties = className ? {className} : undefined;
+  return {
+    type: 'element',
+    tagName: 'span',
+    properties,
+    children
+  } as HastNode;
+}
+
+function tokenNode(className: keyof typeof styles, value: string): HastNode {
+  return spanNode([textNode(value)], className);
+}
+
+function lineNode(children: (HastNode | HastTextNode)[]): HastNode {
+  return {
+    type: 'element',
+    tagName: 'div',
+    children: [spanNode(children.length ? children : [textNode('')])]
+  } as HastNode;
+}
+
+function highlightVueLines(children: string): HastNode[] {
+  let result: HastNode[] = [];
+  let mode: 'template' | 'script' | 'style' | null = null;
+  let blockLanguage: keyof typeof Language = 'JS';
+  let blockLines: string[] = [];
+  let templateState = {inTag: false};
+
+  let flushBlock = () => {
+    if (!blockLines.length) {
+      return;
+    }
+
+    result.push(...highlightLanguageLines(blockLines.join('\n'), blockLanguage));
+    blockLines = [];
+  };
+
+  for (let line of children.split('\n')) {
+    let trimmed = line.trim();
+
+    if (mode === 'script' || mode === 'style') {
+      if (trimmed === `</${mode}>`) {
+        flushBlock();
+        result.push(highlightVueTemplateLine(line, {inTag: false}));
+        mode = null;
+        continue;
+      }
+
+      blockLines.push(line);
+      continue;
+    }
+
+    if (mode === 'template') {
+      if (trimmed === '</template>') {
+        result.push(highlightVueTemplateLine(line, {inTag: false}));
+        templateState.inTag = false;
+        mode = null;
+        continue;
+      }
+
+      result.push(highlightVueTemplateLine(line, templateState));
+      continue;
+    }
+
+    if (/^<template\b/.test(trimmed)) {
+      result.push(highlightVueTemplateLine(line, {inTag: false}));
+      mode = 'template';
+      templateState.inTag = false;
+      continue;
+    }
+
+    if (/^<script\b/.test(trimmed)) {
+      result.push(highlightVueTemplateLine(line, {inTag: false}));
+      mode = 'script';
+      blockLanguage = resolveVueScriptLanguage(line);
+      continue;
+    }
+
+    if (/^<style\b/.test(trimmed)) {
+      result.push(highlightVueTemplateLine(line, {inTag: false}));
+      mode = 'style';
+      blockLanguage = 'CSS';
+      continue;
+    }
+
+    result.push(highlightVueTemplateLine(line, {inTag: false}));
+  }
+
+  flushBlock();
+  return result;
+}
+
+function resolveVueScriptLanguage(line: string): keyof typeof Language {
+  let match = line.match(/\blang\s*=\s*["']([^"']+)["']/i);
+  let language = match?.[1].toLowerCase();
+
+  switch (language) {
+    case 'jsx':
+      return 'JSX';
+    case 'tsx':
+      return 'TSX';
+    case 'ts':
+    case 'typescript':
+      return 'TS';
+    default:
+      return 'JS';
+  }
+}
+
+function highlightVueTemplateLine(line: string, state: {inTag: boolean}): HastNode {
+  let children: (HastNode | HastTextNode)[] = [];
+  let index = 0;
+
+  while (index < line.length) {
+    if (!state.inTag && line.startsWith('<!--', index)) {
+      let end = line.indexOf('-->', index + 4);
+      let comment = end >= 0 ? line.slice(index, end + 3) : line.slice(index);
+      children.push(tokenNode('comment', comment));
+      index += comment.length;
+      continue;
+    }
+
+    if (!state.inTag && line.startsWith('{{', index)) {
+      let end = line.indexOf('}}', index + 2);
+      if (end < 0) {
+        children.push(textNode(line.slice(index)));
+        break;
+      }
+
+      children.push(textNode('{{'));
+      children.push(...highlightVueInterpolation(line.slice(index + 2, end)));
+      children.push(textNode('}}'));
+      index = end + 2;
+      continue;
+    }
+
+    if (!state.inTag && line[index] === '<') {
+      let tag = highlightVueTagFragment(line, index, false);
+      children.push(...tag.children);
+      index = tag.index;
+      state.inTag = tag.inTag;
+      continue;
+    }
+
+    if (state.inTag) {
+      let tag = highlightVueTagFragment(line, index, true);
+      children.push(...tag.children);
+      index = tag.index;
+      state.inTag = tag.inTag;
+      continue;
+    }
+
+    let nextTag = line.indexOf('<', index);
+    let nextComment = line.indexOf('<!--', index);
+    let nextInterpolation = line.indexOf('{{', index);
+    let nextIndex = [nextTag, nextComment, nextInterpolation]
+      .filter(value => value >= 0)
+      .reduce((min, value) => Math.min(min, value), line.length);
+    children.push(textNode(line.slice(index, nextIndex)));
+    index = nextIndex;
+  }
+
+  return lineNode(children);
+}
+
+function highlightVueInterpolation(expression: string): (HastNode | HastTextNode)[] {
+  let leading = expression.match(/^\s*/)?.[0] ?? '';
+  let trailing = expression.match(/\s*$/)?.[0] ?? '';
+  let content = expression.slice(leading.length, expression.length - trailing.length);
+  let children: (HastNode | HastTextNode)[] = [];
+
+  if (leading) {
+    children.push(textNode(leading));
+  }
+
+  children.push(...highlightInlineCode(content, 'TS'));
+
+  if (trailing) {
+    children.push(textNode(trailing));
+  }
+
+  return children;
+}
+
+function highlightVueTagFragment(line: string, start: number, isContinuation: boolean): {
+  children: (HastNode | HastTextNode)[],
+  index: number,
+  inTag: boolean
+} {
+  let children: (HastNode | HastTextNode)[] = [];
+  let index = start;
+
+  if (!isContinuation) {
+    if (line.startsWith('</', index)) {
+      children.push(textNode('</'));
+      index += 2;
+    } else {
+      children.push(textNode('<'));
+      index += 1;
+    }
+
+    let tagEnd = index;
+    while (tagEnd < line.length && !/[\s/>]/.test(line[tagEnd])) {
+      tagEnd++;
+    }
+
+    if (tagEnd > index) {
+      children.push(tokenNode('tag', line.slice(index, tagEnd)));
+    }
+
+    index = tagEnd;
+  }
+
+  while (index < line.length) {
+    if (/\s/.test(line[index])) {
+      let whitespaceEnd = index + 1;
+      while (whitespaceEnd < line.length && /\s/.test(line[whitespaceEnd])) {
+        whitespaceEnd++;
+      }
+
+      children.push(textNode(line.slice(index, whitespaceEnd)));
+      index = whitespaceEnd;
+      continue;
+    }
+
+    if (line.startsWith('/>', index)) {
+      children.push(textNode('/>'));
+      return {children, index: index + 2, inTag: false};
+    }
+
+    if (line[index] === '>') {
+      children.push(textNode('>'));
+      return {children, index: index + 1, inTag: false};
+    }
+
+    let attributeEnd = index;
+    while (attributeEnd < line.length && !/[\s=/>]/.test(line[attributeEnd])) {
+      attributeEnd++;
+    }
+
+    if (attributeEnd > index) {
+      children.push(tokenNode('attribute', line.slice(index, attributeEnd)));
+    }
+
+    index = attributeEnd;
+
+    let whitespaceEnd = index;
+    while (whitespaceEnd < line.length && /\s/.test(line[whitespaceEnd])) {
+      whitespaceEnd++;
+    }
+
+    if (whitespaceEnd > index) {
+      children.push(textNode(line.slice(index, whitespaceEnd)));
+      index = whitespaceEnd;
+    }
+
+    if (line[index] !== '=') {
+      continue;
+    }
+
+    children.push(textNode('='));
+    index += 1;
+
+    whitespaceEnd = index;
+    while (whitespaceEnd < line.length && /\s/.test(line[whitespaceEnd])) {
+      whitespaceEnd++;
+    }
+
+    if (whitespaceEnd > index) {
+      children.push(textNode(line.slice(index, whitespaceEnd)));
+      index = whitespaceEnd;
+    }
+
+    if (index >= line.length) {
+      break;
+    }
+
+    let quote = line[index];
+    if (quote === '"' || quote === '\'') {
+      let valueEnd = index + 1;
+      while (valueEnd < line.length && line[valueEnd] !== quote) {
+        valueEnd++;
+      }
+
+      if (valueEnd < line.length) {
+        valueEnd++;
+      }
+
+      children.push(tokenNode('string', line.slice(index, valueEnd)));
+      index = valueEnd;
+      continue;
+    }
+
+    let valueEnd = index;
+    while (valueEnd < line.length && !/[\s>]/.test(line[valueEnd])) {
+      valueEnd++;
+    }
+
+    children.push(tokenNode('string', line.slice(index, valueEnd)));
+    index = valueEnd;
+  }
+
+  return {children, index, inTag: true};
+}
 
 type Marker = {
   kind: 'begin' | 'end',

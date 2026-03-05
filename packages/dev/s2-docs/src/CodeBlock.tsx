@@ -9,7 +9,6 @@ import {FileTabs} from './FileTabs';
 import {findPackageJSON} from 'module';
 import fs from 'fs';
 import {getBaseUrl} from './pageUtils';
-import {highlight, Language} from 'tree-sitter-highlight';
 import path from 'path';
 import {style} from '@react-spectrum/s2/style' with {type: 'macro'};
 import {VisualExample, VisualExampleProps} from './VisualExample';
@@ -148,27 +147,11 @@ export function CodeBlock({render, children, dir, lang: fencedLang, files, expan
 }
 
 export function CodeBlockBase({children, lang}: {children: string, lang: string}) {
-  let key = lang.toUpperCase();
-  if (key === 'VUE') {
-    key = 'TSX';
-  } else if (key === 'JSON') {
-    key = 'JS';
-  }
-
-  // Fallback to plain text when a language is unsupported.
-  if (!(key in Language)) {
-    return (
-      <pre className="m-0">
-        <code className="source" style={{fontFamily: 'inherit', WebkitTextSizeAdjust: 'none'}}>{children}</code>
-      </pre>
-    );
-  }
-
-  // @ts-ignore
-  let highlighted = highlight(children, Language[key]);
   return (
     <pre className="m-0">
-      <code className="source" style={{fontFamily: 'inherit', WebkitTextSizeAdjust: 'none'}} dangerouslySetInnerHTML={{__html: highlighted}} />
+      <Code lang={lang} hideImports={false} styles={style({display: 'block'})}>
+        {children}
+      </Code>
     </pre>
   );
 }
