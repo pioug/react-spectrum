@@ -5,14 +5,17 @@ import './actiongroup.css';
 import More from '@spectrum-icons-vue/workflow/More';
 import {classNames} from '@vue-spectrum/utils';
 import {
+  cloneVNode,
   computed,
   defineComponent,
   h,
+  isVNode,
   nextTick,
   onBeforeUnmount,
   onMounted,
   type PropType,
   ref,
+  type VNodeChild,
   watch
 } from 'vue';
 const actionGroupStyles: {[key: string]: string} = {};
@@ -21,6 +24,7 @@ const menuStyles: {[key: string]: string} = {};
 
 
 type SelectionMode = 'none' | 'single' | 'multiple';
+type ActionGroupRole = 'group' | 'radiogroup' | 'toolbar';
 type ActionGroupItem = string | {
   children?: string,
   name: string
@@ -28,6 +32,13 @@ type ActionGroupItem = string | {
 type ActionGroupKey = string | number;
 type ActionGroupSelectionValue = Iterable<ActionGroupKey>;
 type MenuFocusTarget = 'first' | 'last' | 'manual';
+const CHEVRON_DOWN_MEDIUM_PATH = 'M9.99 1.01A1 1 0 0 0 8.283.303L5 3.586 1.717.303A1 1 0 1 0 .303 1.717l3.99 3.98a1 1 0 0 0 1.414 0l3.99-3.98a.997.997 0 0 0 .293-.707z';
+const MORE_ITEMS_LABEL = 'More items';
+const ACTION_GROUP_ROLE_BY_SELECTION_MODE: Record<SelectionMode, ActionGroupRole> = {
+  none: 'toolbar',
+  single: 'radiogroup',
+  multiple: 'toolbar'
+};
 
 let actionGroupOverflowId = 0;
 
@@ -151,6 +162,84 @@ function outerSize(
     + (ignoreEndMargin ? 0 : toNumber(style.marginBottom));
 }
 
+function getActionGroupRole(selectionMode: SelectionMode, isInToolbar: boolean): ActionGroupRole {
+  let role = ACTION_GROUP_ROLE_BY_SELECTION_MODE[selectionMode];
+  if (isInToolbar && role === 'toolbar') {
+    return 'group';
+  }
+
+  return role;
+}
+
+function getActionGroupItemRole(selectionMode: SelectionMode): 'checkbox' | 'radio' | undefined {
+  if (selectionMode === 'single') {
+    return 'radio';
+  }
+
+  if (selectionMode === 'multiple') {
+    return 'checkbox';
+  }
+
+  return undefined;
+}
+
+function toClassTokens(value: unknown): string[] {
+  if (typeof value === 'string') {
+    return value.split(/\s+/).filter(Boolean);
+  }
+
+  if (Array.isArray(value)) {
+    return value.flatMap((entry) => toClassTokens(entry));
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.entries(value)
+      .filter(([, isEnabled]) => Boolean(isEnabled))
+      .map(([className]) => className);
+  }
+
+  return [];
+}
+
+function normalizeActionGroupSlotContent(
+  content: VNodeChild,
+  options: {
+    hideButtonText: boolean,
+    labelId: string
+  }
+): VNodeChild {
+  if (Array.isArray(content)) {
+    return content.map((entry) => normalizeActionGroupSlotContent(entry, options));
+  }
+
+  if (!isVNode(content)) {
+    return content;
+  }
+
+  let classTokens = toClassTokens(content.props?.class);
+  if (!classTokens.includes('spectrum-ActionButton-label')) {
+    return content;
+  }
+
+  return cloneVNode(content, {
+    hidden: options.hideButtonText || content.props?.hidden,
+    id: options.labelId,
+    role: content.props?.role ?? 'none'
+  }, true);
+}
+
+function slotContentHasActionButtonLabel(content: VNodeChild): boolean {
+  if (Array.isArray(content)) {
+    return content.some((entry) => slotContentHasActionButtonLabel(entry));
+  }
+
+  if (!isVNode(content)) {
+    return false;
+  }
+
+  return toClassTokens(content.props?.class).includes('spectrum-ActionButton-label');
+}
+
 export const ActionGroup = defineComponent({
   name: 'VueActionGroup',
   inheritAttrs: false,
@@ -211,6 +300,10 @@ export const ActionGroup = defineComponent({
       type: String as PropType<'wrap' | 'collapse'>,
       default: 'wrap'
     },
+    summaryIcon: {
+      type: null as unknown as PropType<VNodeChild | undefined>,
+      default: undefined
+    },
     selectionMode: {
       type: String as PropType<SelectionMode>,
       default: 'none'
@@ -233,11 +326,14 @@ export const ActionGroup = defineComponent({
     let overflowMeasureRef = ref<HTMLElement | null>(null);
     let overflowTriggerRef = ref<HTMLElement | null>(null);
     let overflowMenuRef = ref<HTMLElement | null>(null);
+    let focusedActionKey = ref<string | null>(null);
     let focusedOverflowKey = ref<string | null>(null);
     let hoveredOverflowKey = ref<string | null>(null);
     let hoveredKey = ref<string | null>(null);
     let visibleItems = ref(props.items.length);
     let isOverflowMenuOpen = ref(false);
+    let isMeasuring = ref(false);
+    let isInToolbar = ref(false);
     let rafId = 0;
     let resizeObserver: ResizeObserver | null = null;
 
@@ -260,7 +356,7 @@ export const ActionGroup = defineComponent({
 
       return true;
     });
-    let resolvedRole = computed(() => props.selectionMode === 'none' ? 'toolbar' : 'group');
+    let resolvedRole = computed<ActionGroupRole>(() => getActionGroupRole(props.selectionMode, isInToolbar.value));
     let resolvedVisibleItems = computed(() => {
       if (!canCollapse.value) {
         return props.items.length;
@@ -270,8 +366,16 @@ export const ActionGroup = defineComponent({
     });
     let visibleActionItems = computed(() => props.items.slice(0, resolvedVisibleItems.value));
     let overflowItems = computed(() => props.items.slice(resolvedVisibleItems.value));
+    let overflowTriggerFocusKey = computed(() => overflowItems.value[0] ? getItemKey(overflowItems.value[0]) : null);
     let hasOverflow = computed(() => canCollapse.value && overflowItems.value.length > 0);
     let shouldHideGroupAria = computed(() => hasOverflow.value && resolvedVisibleItems.value === 0);
+    let isGroupDisabled = computed(() => {
+      if (isDisabled.value) {
+        return true;
+      }
+
+      return props.items.every((item) => disabledKeySet.value.has(getItemKey(item)));
+    });
     let shouldHideButtonText = computed(() => {
       if (!slots.item) {
         return false;
@@ -297,6 +401,8 @@ export const ActionGroup = defineComponent({
         'spectrum-ActionGroup--overflowCollapse': props.overflowMode === 'collapse'
       }
     ));
+
+    let getItemTabIndex = (itemKey: string) => focusedActionKey.value == null || focusedActionKey.value === itemKey ? 0 : -1;
 
     let onAction = (itemKey: string) => {
       let isItemDisabled = isDisabled.value || disabledKeySet.value.has(itemKey);
@@ -329,19 +435,70 @@ export const ActionGroup = defineComponent({
       emit('selectionChange', new Set(next));
     };
 
+    let getFocusableGroupActions = () => {
+      if (!groupRef.value) {
+        return [] as HTMLButtonElement[];
+      }
+
+      return Array.from(groupRef.value.querySelectorAll<HTMLButtonElement>('[data-vs-action-group-item="true"], [data-vs-action-group-overflow-trigger="true"]'))
+        .filter((item) => !item.disabled);
+    };
+
+    let moveGroupFocus = (step: -1 | 1) => {
+      let items = getFocusableGroupActions();
+      if (items.length === 0) {
+        return;
+      }
+
+      let activeIndex = items.findIndex((item) => item === document.activeElement);
+      let nextIndex = activeIndex < 0
+        ? 0
+        : (activeIndex + step + items.length) % items.length;
+      items[nextIndex]?.focus();
+    };
+
+    let onGroupKeydown = (event: KeyboardEvent) => {
+      let target = event.target;
+      if (!(target instanceof Node) || !groupRef.value?.contains(target) || overflowMenuRef.value?.contains(target)) {
+        return;
+      }
+
+      let isRtl = !isVertical.value && typeof window !== 'undefined' && groupRef.value
+        ? window.getComputedStyle(groupRef.value).direction === 'rtl'
+        : false;
+
+      switch (event.key) {
+        case 'ArrowRight':
+        case 'ArrowDown':
+          event.preventDefault();
+          event.stopPropagation();
+          moveGroupFocus(event.key === 'ArrowRight' && isRtl ? -1 : 1);
+          break;
+        case 'ArrowLeft':
+        case 'ArrowUp':
+          event.preventDefault();
+          event.stopPropagation();
+          moveGroupFocus(event.key === 'ArrowLeft' && isRtl ? 1 : -1);
+          break;
+      }
+    };
+
     let updateOverflow = async () => {
       if (!canCollapse.value) {
         visibleItems.value = itemCount.value;
         isOverflowMenuOpen.value = false;
+        isMeasuring.value = false;
         return;
       }
 
       if (itemCount.value === 0) {
         visibleItems.value = 0;
         isOverflowMenuOpen.value = false;
+        isMeasuring.value = false;
         return;
       }
 
+      isMeasuring.value = true;
       if (visibleItems.value !== itemCount.value) {
         visibleItems.value = itemCount.value;
       }
@@ -375,6 +532,7 @@ export const ActionGroup = defineComponent({
       });
 
       visibleItems.value = nextVisibleItems;
+      isMeasuring.value = false;
       if (nextVisibleItems >= itemCount.value) {
         isOverflowMenuOpen.value = false;
       }
@@ -531,6 +689,8 @@ export const ActionGroup = defineComponent({
       document.addEventListener('pointerdown', onDocumentPointerDown, true);
       document.addEventListener('touchstart', onDocumentPointerDown, true);
 
+      isInToolbar.value = Boolean(groupRef.value?.parentElement?.closest('[role="toolbar"]'));
+
       if (typeof ResizeObserver !== 'undefined') {
         resizeObserver = new ResizeObserver(() => {
           scheduleOverflowUpdate();
@@ -564,6 +724,9 @@ export const ActionGroup = defineComponent({
         if (isOverflowMenuOpen.value && overflowItems.value.length === 0) {
           closeOverflowMenu();
         }
+        if (focusedActionKey.value != null && !props.items.some((item) => getItemKey(item) === focusedActionKey.value)) {
+          focusedActionKey.value = null;
+        }
         scheduleOverflowUpdate();
       },
       {immediate: true}
@@ -579,16 +742,19 @@ export const ActionGroup = defineComponent({
 
     return () => h('div', {
       ref: wrapperRef,
-      class: ['flex-container', 'vs-spectrum-action-group__wrapper', attrs.class]
+      class: ['flex-container', attrs.class],
+      style: isOverflowMenuOpen.value ? {position: 'relative'} : undefined
     }, [
       h('div', {
         ...attrs,
         ref: groupRef,
-        class: [className.value, 'vs-spectrum-action-group', attrs.class],
+        class: [className.value, attrs.class],
         role: shouldHideGroupAria.value ? undefined : resolvedRole.value,
-        'aria-orientation': shouldHideGroupAria.value ? undefined : props.orientation,
+        'aria-orientation': shouldHideGroupAria.value || resolvedRole.value !== 'toolbar' ? undefined : props.orientation,
         'aria-label': shouldHideGroupAria.value ? undefined : attrs['aria-label'],
         'aria-labelledby': shouldHideGroupAria.value ? undefined : attrs['aria-labelledby'],
+        'aria-disabled': shouldHideGroupAria.value || !isGroupDisabled.value ? undefined : 'true',
+        onKeydown: onGroupKeydown,
         'data-vac': ''
       }, [
       ...visibleActionItems.value.map((item) => {
@@ -596,10 +762,26 @@ export const ActionGroup = defineComponent({
         let itemLabel = getItemLabel(item);
         let isSelected = selectedKeySet.value.has(itemKey);
         let isItemDisabled = isDisabled.value || disabledKeySet.value.has(itemKey);
-        let ariaPressed: 'true' | 'false' | undefined = undefined;
-        if (props.selectionMode !== 'none') {
-          ariaPressed = isSelected ? 'true' : 'false';
-        }
+        let itemRole = getActionGroupItemRole(props.selectionMode);
+        let labelId = `${groupId}-label-${itemKey}`;
+        let rawItemContent = slots.item?.({item, selected: isSelected, hideButtonText: shouldHideButtonText.value, labelId});
+        let hasActionButtonLabel = rawItemContent ? slotContentHasActionButtonLabel(rawItemContent) : false;
+        let itemContent = slots.item
+          ? normalizeActionGroupSlotContent(
+            rawItemContent,
+            {
+              hideButtonText: shouldHideButtonText.value,
+              labelId
+            }
+          )
+          : [
+            h('span', {
+              class: classNames(actionGroupStyles, 'spectrum-ActionButton-label'),
+              hidden: shouldHideButtonText.value,
+              id: labelId,
+              role: 'none'
+            }, itemLabel)
+          ];
 
         return h('button', {
           key: itemKey,
@@ -623,19 +805,25 @@ export const ActionGroup = defineComponent({
               {
                 'spectrum-ActionButton--emphasized': isEmphasized.value,
                 'spectrum-ActionButton--quiet': isQuiet.value,
-                'spectrum-ActionButton--staticBlack': props.staticColor === 'black',
-                'spectrum-ActionButton--staticColor': !!props.staticColor,
-                'spectrum-ActionButton--staticWhite': props.staticColor === 'white',
-                'is-disabled': isItemDisabled,
-                'is-selected': isSelected
-              }
-            )
-          ), 'vs-spectrum-action-group__item'],
+              'spectrum-ActionButton--staticBlack': props.staticColor === 'black',
+              'spectrum-ActionButton--staticColor': !!props.staticColor,
+              'spectrum-ActionButton--staticWhite': props.staticColor === 'white',
+              'is-disabled': isItemDisabled,
+              'is-selected': isSelected
+            }
+          )
+        )],
           type: 'button',
           disabled: isItemDisabled,
-          'aria-label': shouldHideButtonText.value ? itemLabel : undefined,
-          'aria-pressed': ariaPressed,
+          role: itemRole,
+          tabindex: getItemTabIndex(itemKey),
+          'aria-label': shouldHideButtonText.value && (!slots.item || !hasActionButtonLabel) ? itemLabel : undefined,
+          'aria-checked': itemRole ? (isSelected ? 'true' : 'false') : undefined,
           'aria-disabled': isItemDisabled ? 'true' : undefined,
+          'aria-labelledby': shouldHideButtonText.value && hasActionButtonLabel ? labelId : undefined,
+          onFocus: () => {
+            focusedActionKey.value = itemKey;
+          },
           onMouseenter: () => {
             if (isItemDisabled) {
               return;
@@ -647,12 +835,10 @@ export const ActionGroup = defineComponent({
             hoveredKey.value = null;
           },
           onClick: () => onAction(itemKey)
-        }, slots.item ? slots.item({item, selected: isSelected, hideButtonText: shouldHideButtonText.value}) : [
-          h('span', {class: classNames(actionGroupStyles, 'spectrum-ActionButton-label')}, itemLabel)
-        ]);
+        }, itemContent);
       }),
       hasOverflow.value
-        ? h('div', {class: 'vs-spectrum-action-group__overflow'}, [
+        ? [
           h('button', {
             ref: overflowTriggerRef,
             class: [
@@ -677,16 +863,21 @@ export const ActionGroup = defineComponent({
                   }
                 )
               ),
-              'vs-spectrum-action-group__item',
-              'vs-spectrum-action-group__overflow-trigger'
+              props.summaryIcon && props.selectionMode !== 'none'
+                ? 'spectrum-ActionGroup-menu-summaryIcon'
+                : undefined
             ],
             type: 'button',
-            'aria-haspopup': 'menu',
+            tabindex: overflowTriggerFocusKey.value ? getItemTabIndex(overflowTriggerFocusKey.value) : 0,
+            'aria-haspopup': 'true',
             'aria-expanded': isOverflowMenuOpen.value ? 'true' : 'false',
             'aria-controls': isOverflowMenuOpen.value ? groupId : undefined,
-            'aria-label': shouldHideGroupAria.value ? attrs['aria-label'] ?? 'More actions' : 'More actions',
+            'aria-label': shouldHideGroupAria.value ? attrs['aria-label'] ?? MORE_ITEMS_LABEL : MORE_ITEMS_LABEL,
             'aria-labelledby': shouldHideGroupAria.value ? attrs['aria-labelledby'] : undefined,
             'data-vs-action-group-overflow-trigger': 'true',
+            onFocus: () => {
+              focusedActionKey.value = overflowTriggerFocusKey.value;
+            },
             onClick: () => {
               if (isOverflowMenuOpen.value) {
                 closeOverflowMenu();
@@ -697,12 +888,14 @@ export const ActionGroup = defineComponent({
             onKeydown: (event: KeyboardEvent) => {
               if (event.key === 'ArrowDown') {
                 event.preventDefault();
+                event.stopPropagation();
                 openOverflowMenu('first');
                 return;
               }
 
               if (event.key === 'ArrowUp') {
                 event.preventDefault();
+                event.stopPropagation();
                 openOverflowMenu('last');
                 return;
               }
@@ -714,10 +907,25 @@ export const ActionGroup = defineComponent({
               }
             }
           }, [
-            h('span', {
-              class: classNames(actionGroupStyles, 'spectrum-ActionGroup-menu-contents'),
-              'aria-hidden': 'true'
-            }, [h(More)])
+            props.summaryIcon && props.selectionMode !== 'none'
+              ? [
+                h('svg', {
+                  class: classNames(actionGroupStyles, 'spectrum-ActionGroup-menu-chevron'),
+                  focusable: 'false',
+                  'aria-hidden': 'true',
+                  role: 'img',
+                  viewBox: '0 0 10 6'
+                }, [
+                  h('path', {
+                    d: CHEVRON_DOWN_MEDIUM_PATH
+                  })
+                ]),
+                h('span', {
+                  class: classNames(actionGroupStyles, 'spectrum-ActionGroup-menu-contents'),
+                  'aria-hidden': 'true'
+                }, [props.summaryIcon])
+              ]
+              : h(More, {size: 'S'})
           ]),
           isOverflowMenuOpen.value
             ? h('div', {
@@ -733,7 +941,7 @@ export const ActionGroup = defineComponent({
                 id: groupId,
                 class: [classNames(menuStyles, 'spectrum-Menu'), 'vs-spectrum-action-group__overflow-menu'],
                 role: 'menu',
-                'aria-label': 'More actions',
+                'aria-label': MORE_ITEMS_LABEL,
                 onKeydown: onOverflowMenuKeydown
               }, overflowItems.value.map((item) => {
                 let itemKey = getItemKey(item);
@@ -783,15 +991,10 @@ export const ActionGroup = defineComponent({
               }))
             ])
             : null
-        ])
+        ]
         : null,
-      h('span', {
-        hidden: true,
-        'aria-hidden': 'true',
-        class: 'vs-spectrum-action-group__hidden-marker'
-      })
     ]),
-      h('div', {
+      isMeasuring.value ? h('div', {
         ref: overflowMeasureRef,
         role: 'presentation',
         'aria-hidden': 'true',
@@ -819,11 +1022,26 @@ export const ActionGroup = defineComponent({
           'vs-spectrum-action-group__overflow-measure'
         ]
       }, [
-        h('span', {
-          class: classNames(actionGroupStyles, 'spectrum-ActionGroup-menu-contents'),
-          'aria-hidden': 'true'
-        }, [h(More)])
-      ])
+        props.summaryIcon && props.selectionMode !== 'none'
+          ? [
+            h('svg', {
+              class: classNames(actionGroupStyles, 'spectrum-ActionGroup-menu-chevron'),
+              focusable: 'false',
+              'aria-hidden': 'true',
+              role: 'img',
+              viewBox: '0 0 10 6'
+            }, [
+              h('path', {
+                d: CHEVRON_DOWN_MEDIUM_PATH
+              })
+            ]),
+            h('span', {
+              class: classNames(actionGroupStyles, 'spectrum-ActionGroup-menu-contents'),
+              'aria-hidden': 'true'
+            }, [props.summaryIcon])
+          ]
+          : h(More, {size: 'S'})
+      ]) : null
     ]);
   }
 });

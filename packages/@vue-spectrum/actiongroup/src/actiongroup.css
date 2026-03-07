@@ -1,15 +1,3 @@
-.vs-spectrum-action-group__wrapper {
-  min-width: 0;
-}
-
-.vs-spectrum-action-group {
-  min-width: 0;
-}
-
-.vs-spectrum-action-group__overflow {
-  position: relative;
-}
-
 .vs-spectrum-action-group__overflow-menu-wrapper {
   margin-top: var(--spectrum-global-dimension-size-50);
   position: absolute;

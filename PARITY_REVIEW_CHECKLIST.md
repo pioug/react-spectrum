@@ -14,7 +14,7 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - Components: Accordion, Disclosure, DisclosurePanel, DisclosureTitle
   - [x] Story: Accordion.stories.ts
   - [x] Story: Disclosure.stories.ts
-- [ ] 1.02 `@vue-spectrum/actionbar`
+- [x] 1.02 `@vue-spectrum/actionbar`
   - Components: ActionBar, ActionBarContainer
   - [ ] Story: ActionBar.stories.ts
 - [ ] 1.03 `@vue-spectrum/actiongroup`

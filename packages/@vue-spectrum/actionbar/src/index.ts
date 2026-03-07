@@ -2,7 +2,7 @@ import './actionbar.css';
 import {ActionButton} from '@vue-spectrum/button';
 import {ActionGroup} from '@vue-spectrum/actiongroup';
 import {announce} from '@vue-aria/live-announcer';
-import {computed, defineComponent, h, onMounted, type PropType, type VNodeChild} from 'vue';
+import {cloneVNode, computed, defineComponent, h, isVNode, onMounted, type PropType, type VNodeChild} from 'vue';
 
 const ACTION_BAR_CLEAR_ICON_PATH = 'M11.697 10.283L7.414 6l4.283-4.283A1 1 0 1 0 10.283.303L6 4.586 1.717.303A1 1 0 1 0 .303 1.717L4.586 6 .303 10.283a1 1 0 1 0 1.414 1.414L6 7.414l4.283 4.283a1 1 0 1 0 1.414-1.414z';
 type ActionBarKey = string | number;
@@ -10,6 +10,24 @@ type ActionBarItem = string | {
   children?: string,
   name: ActionBarKey
 };
+
+function toClassTokens(value: unknown): string[] {
+  if (typeof value === 'string') {
+    return value.split(/\s+/).filter(Boolean);
+  }
+
+  if (Array.isArray(value)) {
+    return value.flatMap((entry) => toClassTokens(entry));
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.entries(value)
+      .filter(([, isEnabled]) => Boolean(isEnabled))
+      .map(([className]) => className);
+  }
+
+  return [];
+}
 
 function getActionBarItemLabel(item: ActionBarItem): string {
   if (typeof item === 'string') {
@@ -21,6 +39,32 @@ function getActionBarItemLabel(item: ActionBarItem): string {
   }
 
   return String(item.name);
+}
+
+function normalizeActionBarItemContent(content: VNodeChild, hideButtonText: boolean): VNodeChild {
+  if (Array.isArray(content)) {
+    return content.map((entry) => normalizeActionBarItemContent(entry, hideButtonText));
+  }
+
+  if (!isVNode(content)) {
+    return content;
+  }
+
+  if (toClassTokens(content.props?.class).includes('spectrum-ActionButton-label')) {
+    return content;
+  }
+
+  if (typeof content.type === 'string' && content.type !== 'svg') {
+    return content;
+  }
+
+  return cloneVNode(content, {
+    class: [
+      content.props?.class,
+      hideButtonText ? 'spectrum-ActionGroup-itemIcon' : undefined
+    ],
+    size: content.props?.size ?? 'S'
+  }, true);
 }
 
 function renderActionBarClearIcon(): VNodeChild {
@@ -91,9 +135,10 @@ export const ActionBar = defineComponent({
       let {class: className, ...domProps} = attrs as Record<string, unknown>;
       let userKeyDown = domProps.onKeydown as ((event: KeyboardEvent) => void) | undefined;
       let renderItem = slots.item
-        ? (itemProps: {item: ActionBarItem, selected: boolean, hideButtonText: boolean}) => slots.item?.(itemProps)
+        ? (itemProps: {item: ActionBarItem, selected: boolean, hideButtonText: boolean, labelId: string}) => normalizeActionBarItemContent(slots.item?.(itemProps) ?? [], itemProps.hideButtonText)
         : ({item}: {item: ActionBarItem}) => h('span', {
-          class: 'spectrum-ActionButton-label'
+          class: 'spectrum-ActionButton-label',
+          role: 'none'
         }, getActionBarItemLabel(item));
 
       return h('div', {
@@ -140,7 +185,8 @@ export const ActionBar = defineComponent({
             onClick: () => emit('clearSelection')
           }, () => renderActionBarClearIcon()),
           h('span', {
-            class: 'react-spectrum-ActionBar-selectedCount'
+            class: 'react-spectrum-ActionBar-selectedCount',
+            role: 'none'
           }, selectedLabel.value)
         ])
       ]);

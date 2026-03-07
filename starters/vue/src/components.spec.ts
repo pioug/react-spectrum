@@ -1149,7 +1149,14 @@ describe('Vue migration primitives', () => {
     let items = wrapper.findAll('button[data-vs-action-group-item="true"]');
     expect(items).toHaveLength(2);
     expect(items[0].classes()).toContain('is-selected');
-    expect(wrapper.get('.vs-spectrum-action-group').attributes('aria-label')).toBe('Row actions');
+    let group = wrapper.get('.spectrum-ActionGroup');
+    expect(group.attributes('aria-label')).toBe('Row actions');
+    expect(group.attributes('role')).toBe('toolbar');
+    expect(group.attributes('aria-orientation')).toBe('horizontal');
+    expect(items[0].attributes('role')).toBe('checkbox');
+    expect(items[0].attributes('aria-checked')).toBe('true');
+    expect(items[1].attributes('role')).toBe('checkbox');
+    expect(items[1].attributes('aria-checked')).toBe('false');
     await items[1].trigger('mouseenter');
     expect(items[1].classes()).toContain('is-hovered');
     await items[1].trigger('click');
@@ -1163,7 +1170,6 @@ describe('Vue migration primitives', () => {
     let emittedSelectionChange = wrapper.emitted('selectionChange')?.[0]?.[0] as unknown;
     expect(emittedSelectionChange).toBeInstanceOf(Set);
     expect(Array.from(emittedSelectionChange as Set<string>)).toEqual(['One', 'Two']);
-    expect(wrapper.get('.vs-spectrum-action-group__hidden-marker').attributes('hidden')).toBeDefined();
   });
 
   it('accepts actiongroup disabledKeys as a Set and blocks disabled actions', async () => {
@@ -1211,7 +1217,8 @@ describe('Vue migration primitives', () => {
     let items = wrapper.findAll('button[data-vs-action-group-item="true"]');
     expect(items).toHaveLength(2);
     expect(items[0].classes()).toContain('is-selected');
-    expect(items[0].attributes('aria-pressed')).toBe('true');
+    expect(items[0].attributes('role')).toBe('checkbox');
+    expect(items[0].attributes('aria-checked')).toBe('true');
 
     await items[1].trigger('click');
     let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
@@ -1225,6 +1232,47 @@ describe('Vue migration primitives', () => {
     expect(Array.from(emittedSelectionChange as Set<string>)).toEqual(['One', 'Two']);
   });
 
+  it('uses radiogroup semantics and arrow-key focus management in single selection mode', async () => {
+    let wrapper = mount(ActionGroup, {
+      attachTo: document.body,
+      props: {
+        items: ['One', 'Two'],
+        modelValue: new Set(['One']),
+        selectionMode: 'single'
+      },
+      attrs: {
+        'aria-label': 'Tools'
+      }
+    });
+
+    try {
+      let group = wrapper.get('.spectrum-ActionGroup');
+      let items = wrapper.findAll('button[data-vs-action-group-item="true"]');
+      expect(group.attributes('role')).toBe('radiogroup');
+      expect(group.attributes('aria-orientation')).toBeUndefined();
+      expect(items[0].attributes('role')).toBe('radio');
+      expect(items[0].attributes('aria-checked')).toBe('true');
+      expect(items[0].attributes('aria-pressed')).toBeUndefined();
+      expect(items[1].attributes('role')).toBe('radio');
+      expect(items[1].attributes('aria-checked')).toBe('false');
+
+      items[0].element.focus();
+      await nextTick();
+      expect(document.activeElement).toBe(items[0].element);
+
+      await items[0].trigger('keydown', {key: 'ArrowRight'});
+      await nextTick();
+      expect(document.activeElement).toBe(items[1].element);
+
+      await items[1].trigger('click');
+      let emittedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as unknown;
+      expect(emittedModelValue).toBeInstanceOf(Set);
+      expect(Array.from(emittedModelValue as Set<string>)).toEqual(['Two']);
+    } finally {
+      wrapper.unmount();
+    }
+  });
+
   it('collapses overflowing action group items into a menu trigger', async () => {
     vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
       callback(0);
@@ -1234,7 +1282,7 @@ describe('Vue migration primitives', () => {
 
     let originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
     let getBoundingClientRectSpy = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function getBoundingClientRect() {
-      if (this.classList.contains('vs-spectrum-action-group__wrapper')) {
+      if (this.classList.contains('flex-container') && this.firstElementChild?.classList.contains('spectrum-ActionGroup')) {
         return {
           width: 170,
           height: 40,
@@ -1318,7 +1366,7 @@ describe('Vue migration primitives', () => {
 
     let originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
     let getBoundingClientRectSpy = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function getBoundingClientRect() {
-      if (this.classList.contains('vs-spectrum-action-group__wrapper')) {
+      if (this.classList.contains('flex-container') && this.firstElementChild?.classList.contains('spectrum-ActionGroup')) {
         return {
           width: 170,
           height: 40,
@@ -1417,7 +1465,7 @@ describe('Vue migration primitives', () => {
 
     let originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
     let getBoundingClientRectSpy = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function getBoundingClientRect() {
-      if (this.classList.contains('vs-spectrum-action-group__wrapper')) {
+      if (this.classList.contains('flex-container') && this.firstElementChild?.classList.contains('spectrum-ActionGroup')) {
         return {
           width: 170,
           height: 40,
@@ -1499,7 +1547,7 @@ describe('Vue migration primitives', () => {
 
     let originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
     let getBoundingClientRectSpy = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function getBoundingClientRect() {
-      if (this.classList.contains('vs-spectrum-action-group__wrapper')) {
+      if (this.classList.contains('flex-container') && this.firstElementChild?.classList.contains('spectrum-ActionGroup')) {
         return {
           width: 160,
           height: 40,
