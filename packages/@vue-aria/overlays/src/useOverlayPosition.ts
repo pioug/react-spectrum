@@ -23,16 +23,18 @@ export interface AriaOverlayPositionOptions {
 export interface PositionAria {
   arrowProps: ComputedRef<{
     style: {
-      left: string,
-      top: string
+      left?: string,
+      top?: string
     }
   }>,
   dispose: () => void,
   overlayProps: ComputedRef<{
     style: {
-      left: string,
+      bottom?: string,
+      left?: string,
       position: 'absolute',
-      top: string
+      right?: string,
+      top?: string
     }
   }>,
   placement: ComputedRef<OverlayPlacement>,
@@ -41,10 +43,15 @@ export interface PositionAria {
 }
 
 interface PositionState {
+  arrowOffset: {left?: number, top?: number} | null,
   left: number,
   placement: OverlayPlacement,
   top: number,
   triggerAnchorPoint: {x: number, y: number} | null
+}
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.min(Math.max(value, min), max);
 }
 
 function resolvePlacement(placement: OverlayPlacement | undefined): OverlayPlacement {
@@ -53,6 +60,7 @@ function resolvePlacement(placement: OverlayPlacement | undefined): OverlayPlace
 
 export function useOverlayPosition(options: AriaOverlayPositionOptions): PositionAria {
   let positionState = ref<PositionState>({
+    arrowOffset: null,
     left: 0,
     placement: resolvePlacement(unref(options.placement)),
     top: 0,
@@ -104,14 +112,37 @@ export function useOverlayPosition(options: AriaOverlayPositionOptions): Positio
       nextTop += crossOffset.value;
     }
 
+    let triggerAnchorPoint = {
+      x: Math.round(targetRect.left + targetRect.width / 2 + window.scrollX),
+      y: Math.round(targetRect.top + targetRect.height / 2 + window.scrollY)
+    };
+    let overlayArrowInset = 8;
+    let arrowOffset = placement.value.startsWith('top') || placement.value.startsWith('bottom')
+      ? {
+        left: Math.round(
+          clamp(
+            triggerAnchorPoint.x - nextLeft,
+            overlayArrowInset,
+            Math.max(overlayArrowInset, overlayRect.width - overlayArrowInset)
+          )
+        )
+      }
+      : {
+        top: Math.round(
+          clamp(
+            triggerAnchorPoint.y - nextTop,
+            overlayArrowInset,
+            Math.max(overlayArrowInset, overlayRect.height - overlayArrowInset)
+          )
+        )
+      };
+
     positionState.value = {
+      arrowOffset,
       left: Math.round(nextLeft),
       placement: nextPlacement,
       top: Math.round(nextTop),
-      triggerAnchorPoint: {
-        x: Math.round(targetRect.left + targetRect.width / 2 + window.scrollX),
-        y: Math.round(targetRect.top + targetRect.height / 2 + window.scrollY)
-      }
+      triggerAnchorPoint
     };
   };
 
@@ -141,20 +172,45 @@ export function useOverlayPosition(options: AriaOverlayPositionOptions): Positio
 
   return {
     arrowProps: computed(() => ({
-      style: {
-        left: '50%',
-        top: '50%'
-      }
+      style: positionState.value.arrowOffset?.left != null
+        ? {left: `${positionState.value.arrowOffset.left}px`}
+        : positionState.value.arrowOffset?.top != null
+          ? {top: `${positionState.value.arrowOffset.top}px`}
+          : {}
     })),
     dispose: () => {
       stopWatch();
     },
     overlayProps: computed(() => ({
-      style: {
-        position: 'absolute' as const,
-        top: `${positionState.value.top}px`,
-        left: `${positionState.value.left}px`
-      }
+      style: (() => {
+        let placement = positionState.value.placement;
+        let top = positionState.value.top;
+        let left = positionState.value.left;
+        let overlayElement = options.overlayRef.value;
+        let overlayRect = overlayElement?.getBoundingClientRect();
+
+        if (placement.startsWith('top') && overlayRect) {
+          return {
+            bottom: `${window.innerHeight - ((top - window.scrollY) + overlayRect.height)}px`,
+            left: `${left}px`,
+            position: 'absolute' as const
+          };
+        }
+
+        if (placement === 'left' && overlayRect) {
+          return {
+            position: 'absolute' as const,
+            right: `${window.innerWidth - ((left - window.scrollX) + overlayRect.width)}px`,
+            top: `${top}px`
+          };
+        }
+
+        return {
+          left: `${left}px`,
+          position: 'absolute' as const,
+          top: `${top}px`
+        };
+      })()
     })),
     placement: computed(() => positionState.value.placement),
     triggerAnchorPoint: computed(() => positionState.value.triggerAnchorPoint),

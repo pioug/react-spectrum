@@ -1652,6 +1652,23 @@ describe('Vue storybook helper parity', () => {
       let firstActionButton = defaultWrapper.findAll('[data-vs-action-group-item="true"]')[0];
       await firstActionButton.trigger('click');
       expect(onAction).toHaveBeenCalledWith('1');
+      let defaultGroups = defaultWrapper.findAll('.spectrum-ActionGroup');
+      expect(defaultGroups).toHaveLength(3);
+      expect(defaultGroups[0].findAll('[data-vs-action-group-item="true"]').map((button) => button.attributes('aria-label') ?? null)).toEqual([
+        null,
+        null,
+        null
+      ]);
+      expect(defaultGroups[1].findAll('[data-vs-action-group-item="true"]').map((button) => button.attributes('aria-label') ?? null)).toEqual([
+        'Grid view',
+        'List view',
+        'Gallery view'
+      ]);
+      expect(defaultGroups[2].findAll('[data-vs-action-group-item="true"]').map((button) => button.attributes('aria-label') ?? null)).toEqual([
+        'Grid view',
+        'List view',
+        'Gallery view'
+      ]);
 
       let disabledOnAction = vi.fn();
       let defaultStoryWithSetDisabledKeys = ActionGroupDefault.render?.({
@@ -1664,7 +1681,7 @@ describe('Vue storybook helper parity', () => {
       let firstGroupButtons = setDisabledWrapper.findAll('.spectrum-ActionGroup')[0]?.findAll('[data-vs-action-group-item="true"]') ?? [];
       expect(firstGroupButtons).toHaveLength(3);
       expect(firstGroupButtons[1].attributes('disabled')).toBeDefined();
-      expect(firstGroupButtons[1].attributes('aria-disabled')).toBe('true');
+      expect(firstGroupButtons[1].attributes('aria-disabled')).toBeUndefined();
       await firstGroupButtons[1].trigger('click');
       expect(disabledOnAction).not.toHaveBeenCalled();
 
@@ -1694,7 +1711,7 @@ describe('Vue storybook helper parity', () => {
       let withTooltipsStory = ActionGroupWithTooltips.render?.({onAction: vi.fn(), onSelectionChange: vi.fn()}) as ReturnType<Exclude<typeof ActionGroupWithTooltips.render, undefined>>;
       let withTooltipsWrapper = mount(withTooltipsStory);
       wrappers.push(withTooltipsWrapper);
-      expect(withTooltipsWrapper.findAll('.vs-tooltip-trigger')).toHaveLength(3);
+      expect(withTooltipsWrapper.findAll('.vs-tooltip-trigger')).toHaveLength(0);
       expect(withTooltipsWrapper.findAll('[data-vs-action-group-item="true"]').map((button) => button.attributes('aria-label'))).toEqual([
         'Grid view',
         'List view',
@@ -1711,8 +1728,10 @@ describe('Vue storybook helper parity', () => {
       let overflowExample = overflowWrapper.findComponent({name: 'OverflowActionGroupExample'});
       let overflowArgs = overflowExample.props('args') as {disabledKeys?: Iterable<string>, summaryIcon?: unknown};
       expect(Array.from(overflowArgs.disabledKeys ?? [])).toEqual(['1', '5']);
-      expect(overflowArgs.summaryIcon).toBeTruthy();
+      expect(overflowArgs.summaryIcon).toBeUndefined();
       let overflowButtons = overflowWrapper.findAll('[data-vs-action-group-item="true"]');
+      expect(overflowWrapper.find('button[data-testid="edit"]').exists()).toBe(true);
+      expect(overflowWrapper.find('button[data-testid="duplicate"]').exists()).toBe(true);
       expect(overflowButtons[0]?.attributes('disabled')).toBeDefined();
       expect(overflowButtons[overflowButtons.length - 1]?.attributes('disabled')).toBeDefined();
 
@@ -1785,7 +1804,7 @@ describe('Vue storybook helper parity', () => {
       let disabledManageButtons = disabledGroups[0].findAll('[data-vs-action-group-item="true"]');
       expect(disabledManageButtons).toHaveLength(3);
       expect(disabledManageButtons[1].attributes('disabled')).toBeDefined();
-      expect(disabledManageButtons[1].attributes('aria-disabled')).toBe('true');
+      expect(disabledManageButtons[1].attributes('aria-disabled')).toBeUndefined();
 
       await disabledManageButtons[0].trigger('click');
       await disabledManageButtons[2].trigger('click');

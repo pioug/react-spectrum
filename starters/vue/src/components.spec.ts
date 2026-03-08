@@ -1172,6 +1172,28 @@ describe('Vue migration primitives', () => {
     expect(Array.from(emittedSelectionChange as Set<string>)).toEqual(['One', 'Two']);
   });
 
+  it('adds focus-ring to keyboard-focused actiongroup items', async () => {
+    let wrapper = mount(ActionGroup, {
+      attachTo: document.body,
+      props: {
+        items: ['One', 'Two']
+      }
+    });
+
+    try {
+      setInteractionModality('keyboard');
+      let items = wrapper.findAll('button[data-vs-action-group-item="true"]');
+      items[0].element.focus();
+      await nextTick();
+
+      expect(items[0].classes()).toContain('focus-ring');
+      expect(items[1].classes()).not.toContain('focus-ring');
+    } finally {
+      setInteractionModality('keyboard');
+      wrapper.unmount();
+    }
+  });
+
   it('accepts actiongroup disabledKeys as a Set and blocks disabled actions', async () => {
     let wrapper = mount(ActionGroup, {
       props: {
@@ -1184,7 +1206,7 @@ describe('Vue migration primitives', () => {
     let items = wrapper.findAll('button[data-vs-action-group-item="true"]');
     expect(items).toHaveLength(2);
     expect(items[1].attributes('disabled')).toBeDefined();
-    expect(items[1].attributes('aria-disabled')).toBe('true');
+    expect(items[1].attributes('aria-disabled')).toBeUndefined();
 
     await items[1].trigger('click');
     expect(wrapper.emitted('action')).toBeUndefined();
@@ -1273,6 +1295,29 @@ describe('Vue migration primitives', () => {
     }
   });
 
+  it('passes actiongroup item DOM props through to rendered buttons', () => {
+    let wrapper = mount(ActionGroup, {
+      props: {
+        items: [
+          {
+            name: 'one',
+            children: 'One',
+            'aria-describedby': 'actiongroup-item-description',
+            'aria-label': 'Primary action',
+            'data-testid': 'actiongroup-item'
+          }
+        ],
+        selectionMode: 'single'
+      }
+    });
+
+    let button = wrapper.get('button[data-vs-action-group-item="true"]');
+    expect(button.attributes('aria-describedby')).toBe('actiongroup-item-description');
+    expect(button.attributes('aria-label')).toBe('Primary action');
+    expect(button.attributes('aria-labelledby')).toBeUndefined();
+    expect(button.attributes('data-testid')).toBe('actiongroup-item');
+  });
+
   it('collapses overflowing action group items into a menu trigger', async () => {
     vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
       callback(0);
@@ -1351,6 +1396,87 @@ describe('Vue migration primitives', () => {
       let overflowItems = wrapper.findAll('.vs-spectrum-action-group__overflow-menu .spectrum-Menu-item');
       await overflowItems[0].trigger('click');
       expect(wrapper.emitted('action')?.[0]).toEqual(['Two']);
+    } finally {
+      getBoundingClientRectSpy.mockRestore();
+      vi.unstubAllGlobals();
+    }
+  });
+
+  it('passes actiongroup item DOM props through to overflow menu items', async () => {
+    vi.stubGlobal('requestAnimationFrame', (callback: FrameRequestCallback) => {
+      callback(0);
+      return 1;
+    });
+    vi.stubGlobal('cancelAnimationFrame', () => {});
+
+    let originalGetBoundingClientRect = HTMLElement.prototype.getBoundingClientRect;
+    let getBoundingClientRectSpy = vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(function getBoundingClientRect() {
+      if (this.classList.contains('flex-container') && this.firstElementChild?.classList.contains('spectrum-ActionGroup')) {
+        return {
+          width: 170,
+          height: 40,
+          top: 0,
+          right: 170,
+          bottom: 40,
+          left: 0,
+          x: 0,
+          y: 0,
+          toJSON: () => ({})
+        } as DOMRect;
+      }
+
+      if (this.classList.contains('vs-spectrum-action-group__overflow-measure')) {
+        return {
+          width: 48,
+          height: 30,
+          top: 0,
+          right: 48,
+          bottom: 30,
+          left: 0,
+          x: 0,
+          y: 0,
+          toJSON: () => ({})
+        } as DOMRect;
+      }
+
+      if (this.getAttribute('data-vs-action-group-item') === 'true') {
+        return {
+          width: 72,
+          height: 30,
+          top: 0,
+          right: 72,
+          bottom: 30,
+          left: 0,
+          x: 0,
+          y: 0,
+          toJSON: () => ({})
+        } as DOMRect;
+      }
+
+      return originalGetBoundingClientRect.call(this);
+    });
+
+    try {
+      let wrapper = mount(ActionGroup, {
+        props: {
+          items: [
+            {name: '1', children: 'Edit', 'data-testid': 'edit'},
+            {name: '2', children: 'Copy', 'aria-label': 'Copy action', 'data-testid': 'copy'},
+            {name: '3', children: 'Delete', 'data-testid': 'delete'}
+          ],
+          overflowMode: 'collapse'
+        }
+      });
+
+      await nextTick();
+      await nextTick();
+
+      await wrapper.get('[data-vs-action-group-overflow-trigger="true"]').trigger('click');
+
+      let overflowCopyButton = wrapper.get('.vs-spectrum-action-group__overflow-menu button[data-testid="copy"]');
+      let overflowDeleteButton = wrapper.get('.vs-spectrum-action-group__overflow-menu button[data-testid="delete"]');
+      expect(overflowCopyButton.attributes('aria-label')).toBe('Copy action');
+      expect(overflowDeleteButton.attributes('data-testid')).toBe('delete');
     } finally {
       getBoundingClientRectSpy.mockRestore();
       vi.unstubAllGlobals();
@@ -3490,14 +3616,23 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    expect(wrapper.classes()).toContain('vs-tooltip--info');
-    expect(wrapper.classes()).toContain('vs-tooltip--right');
+    expect(wrapper.classes()).toContain('spectrum-Tooltip');
+    expect(wrapper.classes()).toContain('spectrum-overlay');
+    expect(wrapper.classes()).toContain('spectrum-overlay--open');
+    expect(wrapper.classes()).toContain('spectrum-overlay--right--open');
+    expect(wrapper.classes()).toContain('spectrum-Tooltip--info');
+    expect(wrapper.classes()).toContain('spectrum-Tooltip--right');
+    expect(wrapper.classes()).toContain('is-open');
+    expect(wrapper.classes()).toContain('is-open--right');
     expect(wrapper.text()).toContain('Migration tip');
-    expect(wrapper.find('.vs-tooltip__icon').exists()).toBe(true);
+    expect(wrapper.find('.spectrum-Tooltip-typeIcon').exists()).toBe(true);
+    expect(wrapper.find('.spectrum-Tooltip-label').exists()).toBe(true);
+    expect(wrapper.find('.spectrum-Tooltip-tip').exists()).toBe(true);
   });
 
   it('emits close updates from tooltip trigger keyboard interactions', async () => {
     let wrapper = mount(TooltipTrigger, {
+      attachTo: document.body,
       props: {
         content: 'Tooltip details',
         modelValue: true
@@ -3507,26 +3642,32 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    expect(wrapper.find('.vs-tooltip').exists()).toBe(true);
+    try {
+      expect(document.body.querySelector('.spectrum-Tooltip')).not.toBeNull();
+      expect(wrapper.find('.vs-tooltip-trigger').exists()).toBe(false);
 
-    await wrapper.get('.vs-tooltip-trigger__target').trigger('keydown', {key: 'Escape'});
-    await nextTick();
+      await wrapper.get('button[type="button"]').trigger('keydown', {key: 'Escape'});
+      await nextTick();
 
-    let modelUpdates = wrapper.emitted('update:modelValue') ?? [];
-    let openUpdates = wrapper.emitted('update:isOpen') ?? [];
-    let changeEvents = wrapper.emitted('change') ?? [];
-    let openChangeEvents = wrapper.emitted('openChange') ?? [];
-    expect(modelUpdates[modelUpdates.length - 1]).toEqual([false]);
-    expect(openUpdates[openUpdates.length - 1]).toEqual([false]);
-    expect(changeEvents[changeEvents.length - 1]).toEqual([false]);
-    expect(openChangeEvents[openChangeEvents.length - 1]).toEqual([false]);
-    await wrapper.setProps({modelValue: false});
-    await nextTick();
-    expect(wrapper.find('.vs-tooltip').exists()).toBe(false);
+      let modelUpdates = wrapper.emitted('update:modelValue') ?? [];
+      let openUpdates = wrapper.emitted('update:isOpen') ?? [];
+      let changeEvents = wrapper.emitted('change') ?? [];
+      let openChangeEvents = wrapper.emitted('openChange') ?? [];
+      expect(modelUpdates[modelUpdates.length - 1]).toEqual([false]);
+      expect(openUpdates[openUpdates.length - 1]).toEqual([false]);
+      expect(changeEvents[changeEvents.length - 1]).toEqual([false]);
+      expect(openChangeEvents[openChangeEvents.length - 1]).toEqual([false]);
+      await wrapper.setProps({modelValue: false});
+      await nextTick();
+      expect(document.body.querySelector('.spectrum-Tooltip')).toBeNull();
+    } finally {
+      wrapper.unmount();
+    }
   });
 
   it('supports defaultOpen and isOpen control aliases on tooltip trigger', async () => {
     let wrapper = mount(TooltipTrigger, {
+      attachTo: document.body,
       props: {
         content: 'Tooltip details',
         defaultOpen: true,
@@ -3537,10 +3678,14 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    expect(wrapper.find('.vs-tooltip').exists()).toBe(true);
-    await wrapper.setProps({isOpen: false});
-    await nextTick();
-    expect(wrapper.find('.vs-tooltip').exists()).toBe(false);
+    try {
+      expect(document.body.querySelector('.spectrum-Tooltip')).not.toBeNull();
+      await wrapper.setProps({isOpen: false});
+      await nextTick();
+      expect(document.body.querySelector('.spectrum-Tooltip')).toBeNull();
+    } finally {
+      wrapper.unmount();
+    }
   });
 
   it('honors tooltip trigger delay and closeDelay timing on hover', async () => {
@@ -3548,6 +3693,7 @@ describe('Vue migration primitives', () => {
 
     try {
       let wrapper = mount(TooltipTrigger, {
+        attachTo: document.body,
         props: {
           closeDelay: 80,
           content: 'Tooltip details',
@@ -3559,30 +3705,31 @@ describe('Vue migration primitives', () => {
       });
 
       setInteractionModality('pointer');
-      let trigger = wrapper.get('.vs-tooltip-trigger__target');
+      let trigger = wrapper.get('button[type="button"]');
       await trigger.trigger('pointerenter', {pointerType: 'mouse'});
       await nextTick();
-      expect(wrapper.find('.vs-tooltip').exists()).toBe(false);
+      expect(document.body.querySelector('.spectrum-Tooltip')).toBeNull();
 
       vi.advanceTimersByTime(119);
       await nextTick();
-      expect(wrapper.find('.vs-tooltip').exists()).toBe(false);
+      expect(document.body.querySelector('.spectrum-Tooltip')).toBeNull();
 
       vi.advanceTimersByTime(1);
       await nextTick();
-      expect(wrapper.find('.vs-tooltip').exists()).toBe(true);
+      expect(document.body.querySelector('.spectrum-Tooltip')).not.toBeNull();
 
       await trigger.trigger('pointerleave', {pointerType: 'mouse'});
       await nextTick();
-      expect(wrapper.find('.vs-tooltip').exists()).toBe(true);
+      expect(document.body.querySelector('.spectrum-Tooltip')).not.toBeNull();
 
       vi.advanceTimersByTime(79);
       await nextTick();
-      expect(wrapper.find('.vs-tooltip').exists()).toBe(true);
+      expect(document.body.querySelector('.spectrum-Tooltip')).not.toBeNull();
 
       vi.advanceTimersByTime(1);
       await nextTick();
-      expect(wrapper.find('.vs-tooltip').exists()).toBe(false);
+      expect(document.body.querySelector('.spectrum-Tooltip')).toBeNull();
+      wrapper.unmount();
     } finally {
       setInteractionModality('keyboard');
       vi.useRealTimers();
@@ -3591,6 +3738,7 @@ describe('Vue migration primitives', () => {
 
   it('closes tooltip trigger when disabled after opening', async () => {
     let wrapper = mount(TooltipTrigger, {
+      attachTo: document.body,
       props: {
         content: 'Tooltip details',
         modelValue: true
@@ -3600,16 +3748,20 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    expect(wrapper.find('.vs-tooltip').exists()).toBe(true);
-    await wrapper.setProps({isDisabled: true});
-    await wrapper.get('.vs-tooltip-trigger__target').trigger('keydown', {key: 'Escape'});
-    await nextTick();
+    try {
+      expect(document.body.querySelector('.spectrum-Tooltip')).not.toBeNull();
+      await wrapper.setProps({isDisabled: true});
+      await wrapper.get('button[type="button"]').trigger('keydown', {key: 'Escape'});
+      await nextTick();
 
-    let modelUpdates = wrapper.emitted('update:modelValue') ?? [];
-    expect(modelUpdates[modelUpdates.length - 1]).toEqual([false]);
-    await wrapper.setProps({modelValue: false});
-    await nextTick();
-    expect(wrapper.find('.vs-tooltip').exists()).toBe(false);
+      let modelUpdates = wrapper.emitted('update:modelValue') ?? [];
+      expect(modelUpdates[modelUpdates.length - 1]).toEqual([false]);
+      await wrapper.setProps({modelValue: false});
+      await nextTick();
+      expect(document.body.querySelector('.spectrum-Tooltip')).toBeNull();
+    } finally {
+      wrapper.unmount();
+    }
   });
 
   it('emits press events from standalone cards', async () => {

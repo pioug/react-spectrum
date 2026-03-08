@@ -3,7 +3,8 @@ import '@adobe/spectrum-css-temp/components/button/vars.css';
 import '@adobe/spectrum-css-temp/components/menu/vars.css';
 import './actiongroup.css';
 import More from '@spectrum-icons-vue/workflow/More';
-import {classNames} from '@vue-spectrum/utils';
+import {classNames, filterDOMProps} from '@vue-spectrum/utils';
+import {isFocusVisible as isGlobalFocusVisible} from '@vue-aria/interactions';
 import {
   cloneVNode,
   computed,
@@ -25,10 +26,47 @@ const menuStyles: {[key: string]: string} = {};
 
 type SelectionMode = 'none' | 'single' | 'multiple';
 type ActionGroupRole = 'group' | 'radiogroup' | 'toolbar';
-type ActionGroupItem = string | {
+interface ActionGroupObjectItem {
   children?: string,
-  name: string
+  name: string,
+  wrapper?: (content: VNodeChild) => VNodeChild,
+  [key: string]: unknown
+}
+type ActionGroupItem = string | ActionGroupObjectItem;
+type ActionGroupDomProps = Record<string, unknown>;
+type ActionGroupLabelableDomPropName = 'aria-describedby' | 'aria-details' | 'aria-errormessage' | 'aria-label' | 'aria-labelledby';
+const ACTION_GROUP_LABELABLE_DOM_PROP_NAMES: ActionGroupLabelableDomPropName[] = [
+  'aria-describedby',
+  'aria-details',
+  'aria-errormessage',
+  'aria-label',
+  'aria-labelledby'
+];
+
+type ActionGroupItemDomAccessibilityProps = {
+  [K in ActionGroupLabelableDomPropName]?: string | undefined
 };
+
+function getActionGroupItemDOMProps(item: ActionGroupItem): ActionGroupDomProps {
+  if (typeof item === 'string') {
+    return {};
+  }
+
+  return filterDOMProps(item as Record<string, unknown>, {labelable: true}) as ActionGroupDomProps;
+}
+
+function getActionGroupItemDomAccessibilityProps(itemDOMProps: ActionGroupDomProps): ActionGroupItemDomAccessibilityProps {
+  let accessibilityProps: ActionGroupItemDomAccessibilityProps = {};
+
+  for (let propName of ACTION_GROUP_LABELABLE_DOM_PROP_NAMES) {
+    let propValue = itemDOMProps[propName];
+    if (typeof propValue === 'string') {
+      accessibilityProps[propName] = propValue;
+    }
+  }
+
+  return accessibilityProps;
+}
 type ActionGroupKey = string | number;
 type ActionGroupSelectionValue = Iterable<ActionGroupKey>;
 type MenuFocusTarget = 'first' | 'last' | 'manual';
@@ -223,7 +261,7 @@ function normalizeActionGroupSlotContent(
 
   return cloneVNode(content, {
     hidden: options.hideButtonText || content.props?.hidden,
-    id: options.labelId,
+    id: options.hideButtonText ? options.labelId : content.props?.id,
     role: content.props?.role ?? 'none'
   }, true);
 }
@@ -327,6 +365,7 @@ export const ActionGroup = defineComponent({
     let overflowTriggerRef = ref<HTMLElement | null>(null);
     let overflowMenuRef = ref<HTMLElement | null>(null);
     let focusedActionKey = ref<string | null>(null);
+    let focusVisibleActionKey = ref<string | null>(null);
     let focusedOverflowKey = ref<string | null>(null);
     let hoveredOverflowKey = ref<string | null>(null);
     let hoveredKey = ref<string | null>(null);
@@ -403,6 +442,22 @@ export const ActionGroup = defineComponent({
     ));
 
     let getItemTabIndex = (itemKey: string) => focusedActionKey.value == null || focusedActionKey.value === itemKey ? 0 : -1;
+    let updateFocusVisibleActionKey = (itemKey: string | null, event: FocusEvent) => {
+      let target = event.target;
+      if (target instanceof HTMLElement) {
+        try {
+          if (target.matches(':focus-visible')) {
+            focusVisibleActionKey.value = itemKey;
+            return;
+          }
+        } catch {
+          // Fall back to the global modality tracker in test environments
+          // that do not implement :focus-visible.
+        }
+      }
+
+      focusVisibleActionKey.value = isGlobalFocusVisible() ? itemKey : null;
+    };
 
     let onAction = (itemKey: string) => {
       let isItemDisabled = isDisabled.value || disabledKeySet.value.has(itemKey);
@@ -740,13 +795,26 @@ export const ActionGroup = defineComponent({
       {immediate: true}
     );
 
-    return () => h('div', {
-      ref: wrapperRef,
-      class: ['flex-container', attrs.class],
-      style: isOverflowMenuOpen.value ? {position: 'relative'} : undefined
-    }, [
-      h('div', {
-        ...attrs,
+    return () => {
+      let groupAttrs = Object.fromEntries(
+        Object.entries(attrs).filter(([key]) => key !== 'class' && key !== 'style')
+      );
+
+      return [
+        h('span', {
+          'data-focus-scope-start': 'true',
+          hidden: true
+        }),
+        h('div', {
+        ref: wrapperRef,
+        class: ['flex-container', attrs.class],
+        style: [
+          attrs.style,
+          isOverflowMenuOpen.value ? {position: 'relative'} : undefined
+        ]
+      }, [
+        h('div', {
+        ...groupAttrs,
         ref: groupRef,
         class: [className.value, attrs.class],
         role: shouldHideGroupAria.value ? undefined : resolvedRole.value,
@@ -760,6 +828,8 @@ export const ActionGroup = defineComponent({
       ...visibleActionItems.value.map((item) => {
         let itemKey = getItemKey(item);
         let itemLabel = getItemLabel(item);
+        let itemDOMProps = getActionGroupItemDOMProps(item);
+        let itemDomAccessibilityProps = getActionGroupItemDomAccessibilityProps(itemDOMProps);
         let isSelected = selectedKeySet.value.has(itemKey);
         let isItemDisabled = isDisabled.value || disabledKeySet.value.has(itemKey);
         let itemRole = getActionGroupItemRole(props.selectionMode);
@@ -778,14 +848,16 @@ export const ActionGroup = defineComponent({
             h('span', {
               class: classNames(actionGroupStyles, 'spectrum-ActionButton-label'),
               hidden: shouldHideButtonText.value,
-              id: labelId,
+              id: shouldHideButtonText.value ? labelId : undefined,
               role: 'none'
             }, itemLabel)
           ];
 
-        return h('button', {
+        let buttonContent = h('button', {
           key: itemKey,
+          ...itemDOMProps,
           'data-vs-action-group-item': 'true',
+          'data-react-aria-pressable': 'true',
           class: [classNames(
             actionGroupStyles,
             'spectrum-ActionGroup-item',
@@ -803,6 +875,7 @@ export const ActionGroup = defineComponent({
               'spectrum-FocusRing',
               'spectrum-FocusRing-ring',
               {
+                'focus-ring': focusVisibleActionKey.value === itemKey && !isItemDisabled,
                 'spectrum-ActionButton--emphasized': isEmphasized.value,
                 'spectrum-ActionButton--quiet': isQuiet.value,
               'spectrum-ActionButton--staticBlack': props.staticColor === 'black',
@@ -817,12 +890,26 @@ export const ActionGroup = defineComponent({
           disabled: isItemDisabled,
           role: itemRole,
           tabindex: getItemTabIndex(itemKey),
-          'aria-label': shouldHideButtonText.value && (!slots.item || !hasActionButtonLabel) ? itemLabel : undefined,
+          'aria-describedby': itemDomAccessibilityProps['aria-describedby'],
+          'aria-details': itemDomAccessibilityProps['aria-details'],
+          'aria-errormessage': itemDomAccessibilityProps['aria-errormessage'],
+          'aria-label': itemDomAccessibilityProps['aria-label']
+            ?? (shouldHideButtonText.value && (!slots.item || !hasActionButtonLabel) ? itemLabel : undefined),
           'aria-checked': itemRole ? (isSelected ? 'true' : 'false') : undefined,
-          'aria-disabled': isItemDisabled ? 'true' : undefined,
-          'aria-labelledby': shouldHideButtonText.value && hasActionButtonLabel ? labelId : undefined,
-          onFocus: () => {
+          'aria-labelledby': itemDomAccessibilityProps['aria-label'] == null
+            ? (
+              itemDomAccessibilityProps['aria-labelledby']
+                ?? (shouldHideButtonText.value && hasActionButtonLabel ? labelId : undefined)
+            )
+            : itemDomAccessibilityProps['aria-labelledby'],
+          onBlur: () => {
+            if (focusVisibleActionKey.value === itemKey) {
+              focusVisibleActionKey.value = null;
+            }
+          },
+          onFocus: (event: FocusEvent) => {
             focusedActionKey.value = itemKey;
+            updateFocusVisibleActionKey(itemKey, event);
           },
           onMouseenter: () => {
             if (isItemDisabled) {
@@ -834,8 +921,17 @@ export const ActionGroup = defineComponent({
           onMouseleave: () => {
             hoveredKey.value = null;
           },
+          onPointerdown: () => {
+            if (focusVisibleActionKey.value === itemKey) {
+              focusVisibleActionKey.value = null;
+            }
+          },
           onClick: () => onAction(itemKey)
         }, itemContent);
+
+        return typeof item === 'string' || typeof item.wrapper !== 'function'
+          ? buttonContent
+          : item.wrapper(buttonContent);
       }),
       hasOverflow.value
         ? [
@@ -854,6 +950,7 @@ export const ActionGroup = defineComponent({
                   'spectrum-FocusRing',
                   'spectrum-FocusRing-ring',
                   {
+                    'focus-ring': focusVisibleActionKey.value === overflowTriggerFocusKey.value,
                     'spectrum-ActionButton--emphasized': isEmphasized.value,
                     'spectrum-ActionButton--quiet': isQuiet.value,
                     'spectrum-ActionButton--staticBlack': props.staticColor === 'black',
@@ -874,9 +971,16 @@ export const ActionGroup = defineComponent({
             'aria-controls': isOverflowMenuOpen.value ? groupId : undefined,
             'aria-label': shouldHideGroupAria.value ? attrs['aria-label'] ?? MORE_ITEMS_LABEL : MORE_ITEMS_LABEL,
             'aria-labelledby': shouldHideGroupAria.value ? attrs['aria-labelledby'] : undefined,
+            'data-react-aria-pressable': 'true',
             'data-vs-action-group-overflow-trigger': 'true',
-            onFocus: () => {
+            onBlur: () => {
+              if (focusVisibleActionKey.value === overflowTriggerFocusKey.value) {
+                focusVisibleActionKey.value = null;
+              }
+            },
+            onFocus: (event: FocusEvent) => {
               focusedActionKey.value = overflowTriggerFocusKey.value;
+              updateFocusVisibleActionKey(overflowTriggerFocusKey.value, event);
             },
             onClick: () => {
               if (isOverflowMenuOpen.value) {
@@ -904,6 +1008,11 @@ export const ActionGroup = defineComponent({
                 event.preventDefault();
                 event.stopPropagation();
                 closeOverflowMenu(true);
+              }
+            },
+            onPointerdown: () => {
+              if (focusVisibleActionKey.value === overflowTriggerFocusKey.value) {
+                focusVisibleActionKey.value = null;
               }
             }
           }, [
@@ -946,12 +1055,15 @@ export const ActionGroup = defineComponent({
               }, overflowItems.value.map((item) => {
                 let itemKey = getItemKey(item);
                 let itemLabel = getItemLabel(item);
+                let itemDOMProps = getActionGroupItemDOMProps(item);
+                let itemDomAccessibilityProps = getActionGroupItemDomAccessibilityProps(itemDOMProps);
                 let isItemDisabled = isDisabled.value || disabledKeySet.value.has(itemKey);
                 return h('li', {
                   key: `${itemKey}-overflow`,
                   class: 'vs-spectrum-action-group__overflow-item-wrapper'
                 }, [
                   h('button', {
+                    ...itemDOMProps,
                     class: classNames(menuStyles, 'spectrum-Menu-item', {
                       'is-disabled': isItemDisabled,
                       'is-focused': focusedOverflowKey.value === itemKey && !isItemDisabled,
@@ -960,6 +1072,11 @@ export const ActionGroup = defineComponent({
                     type: 'button',
                     disabled: isItemDisabled,
                     role: 'menuitem',
+                    'aria-describedby': itemDomAccessibilityProps['aria-describedby'],
+                    'aria-details': itemDomAccessibilityProps['aria-details'],
+                    'aria-errormessage': itemDomAccessibilityProps['aria-errormessage'],
+                    'aria-label': itemDomAccessibilityProps['aria-label'],
+                    'aria-labelledby': itemDomAccessibilityProps['aria-labelledby'],
                     'data-key': itemKey,
                     onBlur: () => {
                       if (focusedOverflowKey.value === itemKey) {
@@ -993,7 +1110,7 @@ export const ActionGroup = defineComponent({
             : null
         ]
         : null,
-    ]),
+      ]),
       isMeasuring.value ? h('div', {
         ref: overflowMeasureRef,
         role: 'presentation',
@@ -1042,7 +1159,13 @@ export const ActionGroup = defineComponent({
           ]
           : h(More, {size: 'S'})
       ]) : null
-    ]);
+    ]),
+        h('span', {
+          'data-focus-scope-end': 'true',
+          hidden: true
+        })
+      ];
+    };
   }
 });
 

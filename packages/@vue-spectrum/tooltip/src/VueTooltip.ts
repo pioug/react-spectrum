@@ -1,4 +1,23 @@
-import {computed, defineComponent, h, type PropType, ref} from 'vue';
+import '@adobe/spectrum-css-temp/components/tooltip/vars.css';
+import {Overlay, useOverlayPosition} from '@vue-aria/overlays';
+import {Provider, useProvider} from '@vue-spectrum/provider';
+import {
+  cloneVNode,
+  computed,
+  defineComponent,
+  Fragment,
+  h,
+  isVNode,
+  mergeProps,
+  nextTick,
+  onBeforeUnmount,
+  type ComponentPublicInstance,
+  type PropType,
+  ref,
+  type VNode,
+  type VNodeChild,
+  watch
+} from 'vue';
 import {useTooltip as createTooltip, useTooltipTrigger as createTooltipTrigger, type TooltipTriggerAria, type TooltipTriggerMode} from '@vue-aria/tooltip';
 import {useTooltipTriggerState} from '@vue-stately/tooltip';
 
@@ -11,12 +30,57 @@ export interface TooltipSharedProps {
   variant?: TooltipVariant
 }
 
+type TooltipArrowStyle = {
+  left?: string,
+  top?: string
+};
+
 const iconByVariant: Record<TooltipVariant, string> = {
   neutral: '',
   info: 'i',
   positive: '✓',
   negative: '!'
 };
+const DEFAULT_CROSS_OFFSET = 0;
+const DEFAULT_OFFSET = -1;
+
+function resolveTooltipTriggerVNode(content: VNodeChild): VNode | null {
+  if (!Array.isArray(content)) {
+    return isVNode(content) ? content : null;
+  }
+
+  let vnodeChildren = content.filter((entry): entry is VNode => isVNode(entry));
+  return vnodeChildren.length === 1 ? vnodeChildren[0] : null;
+}
+
+function isNativeInteractiveTriggerVNode(node: VNode | null): node is VNode {
+  return node != null
+    && typeof node.type === 'string'
+    && ['a', 'button', 'input', 'textarea'].includes(node.type);
+}
+
+function resolveTooltipTriggerElement(value: Element | ComponentPublicInstance | null): HTMLElement | null {
+  if (value instanceof HTMLElement) {
+    return value;
+  }
+
+  let maybeElement = value != null && '$el' in value ? value.$el : null;
+  return maybeElement instanceof HTMLElement ? maybeElement : null;
+}
+
+function assignVNodeRef(
+  targetRef: VNode['ref'],
+  value: Element | ComponentPublicInstance | null
+): void {
+  if (typeof targetRef === 'function') {
+    targetRef(value, {});
+    return;
+  }
+
+  if (targetRef && typeof targetRef === 'object' && 'value' in targetRef) {
+    targetRef.value = value;
+  }
+}
 
 export const VueTooltip = defineComponent({
   name: 'VueTooltip',
@@ -27,6 +91,10 @@ export const VueTooltip = defineComponent({
     },
     ariaLabelledby: {
       type: String,
+      default: undefined
+    },
+    arrowStyle: {
+      type: Object as PropType<TooltipArrowStyle | undefined>,
       default: undefined
     },
     id: {
@@ -70,10 +138,25 @@ export const VueTooltip = defineComponent({
       let slotContent = slots.default?.();
       let icon = props.showIcon && props.variant !== 'neutral'
         ? h('span', {
-          class: 'vs-tooltip__icon',
+          class: 'spectrum-Tooltip-typeIcon',
           'aria-hidden': 'true'
         }, iconByVariant[props.variant])
         : null;
+      let children: VNodeChild[] = [];
+      if (icon) {
+        children.push(icon);
+      }
+      if (slotContent != null) {
+        children.push(h('span', {
+          class: 'spectrum-Tooltip-label'
+        }, slotContent));
+      }
+      children.push(h('span', {
+        'aria-hidden': 'true',
+        class: 'spectrum-Tooltip-tip',
+        role: 'presentation',
+        style: props.arrowStyle
+      }));
 
       return h('div', {
         ...attrs,
@@ -82,21 +165,21 @@ export const VueTooltip = defineComponent({
         'aria-label': tooltipProps['aria-label'],
         'aria-labelledby': tooltipProps['aria-labelledby'],
         class: [
-          'vs-tooltip',
-          `vs-tooltip--${props.variant}`,
-          `vs-tooltip--${props.placement}`,
+          'spectrum-Tooltip',
+          'spectrum-overlay',
+          'spectrum-overlay--open',
+          `spectrum-overlay--${props.placement}--open`,
+          `spectrum-Tooltip--${props.variant}`,
+          `spectrum-Tooltip--${props.placement}`,
+          'is-open',
+          `is-open--${props.placement}`,
           attrs.class
         ],
         onMouseenter: tooltipProps.onMouseEnter,
         onMouseleave: tooltipProps.onMouseLeave,
         onPointerenter: tooltipProps.onPointerEnter,
         onPointerleave: tooltipProps.onPointerLeave
-      }, [
-        icon,
-        h('span', {
-          class: 'vs-tooltip__label'
-        }, slotContent)
-      ]);
+      }, children);
     };
   }
 });
@@ -164,7 +247,9 @@ export const VueTooltipTrigger = defineComponent({
     'update:modelValue': (value: boolean) => typeof value === 'boolean'
   },
   setup(props, {attrs, emit, slots}) {
+    let overlayRef = ref<HTMLElement | null>(null);
     let triggerRef = ref<HTMLElement | null>(null);
+    let provider = useProvider();
     let controlledOpen = computed<boolean | undefined>(() => {
       if (typeof props.isOpen === 'boolean') {
         return props.isOpen;
@@ -200,11 +285,113 @@ export const VueTooltipTrigger = defineComponent({
       trigger: computed(() => props.trigger),
       triggerRef
     });
+    let overlayPosition = useOverlayPosition({
+      crossOffset: computed(() => DEFAULT_CROSS_OFFSET),
+      isOpen: tooltipState.isOpen,
+      offset: computed(() => DEFAULT_OFFSET),
+      overlayRef,
+      placement: computed(() => props.placement),
+      targetRef: triggerRef
+    });
+
+    watch(
+      () => [tooltipState.isOpen.value, props.placement] as const,
+      async ([isOpen]) => {
+        if (!isOpen) {
+          return;
+        }
+
+        await nextTick();
+        overlayPosition.updatePosition();
+      },
+      {flush: 'post'}
+    );
+
+    onBeforeUnmount(() => {
+      overlayPosition.dispose();
+    });
 
     return () => {
       let triggerProps = tooltipTrigger.triggerProps.value;
+      let triggerDomProps = {
+        ...(triggerProps.tabindex != null ? {tabindex: triggerProps.tabindex} : {}),
+        ...(triggerProps['aria-describedby'] != null ? {'aria-describedby': triggerProps['aria-describedby']} : {}),
+        ...(triggerProps.onBlur ? {onBlur: triggerProps.onBlur} : {}),
+        ...(triggerProps.onFocus ? {onFocus: triggerProps.onFocus} : {}),
+        ...(triggerProps.onKeyDown ? {onKeydown: triggerProps.onKeyDown} : {}),
+        ...(triggerProps.onKeyUp ? {onKeyup: triggerProps.onKeyUp} : {}),
+        ...(triggerProps.onMouseEnter ? {onMouseenter: triggerProps.onMouseEnter} : {}),
+        ...(triggerProps.onMouseLeave ? {onMouseleave: triggerProps.onMouseLeave} : {}),
+        ...(triggerProps.onPointerDown ? {onPointerdown: triggerProps.onPointerDown} : {}),
+        ...(triggerProps.onPointerEnter ? {onPointerenter: triggerProps.onPointerEnter} : {}),
+        ...(triggerProps.onPointerLeave ? {onPointerleave: triggerProps.onPointerLeave} : {})
+      };
       let triggerChildren = slots.default?.({isOpen: tooltipTrigger.isOpen.value}) ?? 'Tooltip trigger';
       let tooltipChildren = slots.tooltip?.({isOpen: tooltipTrigger.isOpen.value}) ?? props.content;
+      let triggerNode = resolveTooltipTriggerVNode(triggerChildren);
+      let tooltipNode = tooltipTrigger.isOpen.value
+        ? h(Overlay, {
+          disableFocusManagement: true
+        }, {
+          default: () => [
+            h('span', {
+              'data-focus-scope-start': 'true',
+              hidden: true
+            }),
+            h(Provider, {
+              colorScheme: provider.colorScheme,
+              dir: provider.dir,
+              isDisabled: false,
+              locale: provider.locale,
+              scale: provider.scale,
+              theme: provider.theme,
+              style: {
+                background: 'transparent',
+                isolation: 'isolate'
+              }
+            }, {
+              default: () => h(VueTooltip, {
+                ref: (value: Element | ComponentPublicInstance | null) => {
+                  overlayRef.value = resolveTooltipTriggerElement(value);
+                },
+                arrowStyle: overlayPosition.arrowProps.value.style,
+                id: tooltipTrigger.tooltipProps.value.id,
+                isOpen: tooltipTrigger.isOpen.value,
+                placement: overlayPosition.placement.value,
+                showIcon: props.showIcon,
+                state: tooltipTrigger,
+                style: {
+                  ...overlayPosition.overlayProps.value.style,
+                  maxHeight: '420px',
+                  zIndex: '100000'
+                },
+                variant: props.variant
+              }, {
+                default: () => tooltipChildren
+              })
+            }),
+            h('span', {
+              'data-focus-scope-end': 'true',
+              hidden: true
+            })
+          ]
+        })
+        : null;
+
+      if (isNativeInteractiveTriggerVNode(triggerNode)) {
+        let existingRef = triggerNode.ref;
+        let clonedTrigger = cloneVNode(triggerNode, mergeProps(attrs, triggerDomProps, {
+          ref: (value: Element | ComponentPublicInstance | null) => {
+            triggerRef.value = resolveTooltipTriggerElement(value);
+            assignVNodeRef(existingRef, value);
+          }
+        }), true);
+
+        return h(Fragment, null, [
+          clonedTrigger,
+          tooltipNode
+        ]);
+      }
 
       return h('span', {
         ...attrs,
@@ -214,28 +401,9 @@ export const VueTooltipTrigger = defineComponent({
         h('span', {
           ref: triggerRef,
           class: 'vs-tooltip-trigger__target',
-          tabindex: triggerProps.tabindex,
-          'aria-describedby': triggerProps['aria-describedby'],
-          onBlur: triggerProps.onBlur,
-          onFocus: triggerProps.onFocus,
-          onKeydown: triggerProps.onKeyDown,
-          onKeyup: triggerProps.onKeyUp,
-          onMouseenter: triggerProps.onMouseEnter,
-          onMouseleave: triggerProps.onMouseLeave,
-          onPointerdown: triggerProps.onPointerDown,
-          onPointerenter: triggerProps.onPointerEnter,
-          onPointerleave: triggerProps.onPointerLeave
+          ...triggerDomProps
         }, triggerChildren),
-        h(VueTooltip, {
-          id: tooltipTrigger.tooltipProps.value.id,
-          isOpen: tooltipTrigger.isOpen.value,
-          placement: props.placement,
-          showIcon: props.showIcon,
-          state: tooltipTrigger,
-          variant: props.variant
-        }, {
-          default: () => tooltipChildren
-        })
+        tooltipNode
       ]);
     };
   }

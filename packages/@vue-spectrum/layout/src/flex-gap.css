@@ -21,16 +21,14 @@
 
 .flex-gap {
   --gap: 0px;
-  --column-gap: var(--gap);
-  --row-gap: var(--gap);
 
   /* apply a negative margin to counteract the margin on each item at the edges */
-  margin: calc(var(--row-gap) / -2) calc(var(--column-gap) / -2);
+  margin: calc(var(--row-gap, var(--gap)) / -2) calc(var(--column-gap, var(--gap)) / -2);
 
   /* increase the width and height to account for this margin */
   /* Add 1px to fix rounding error in Safari (╯°□°)╯︵ ┻━┻ */
-  width: calc(100% + calc(var(--column-gap) + 1px));
-  height: calc(100% + var(--row-gap));
+  width: calc(100% + calc(var(--column-gap, var(--gap)) + 1px));
+  height: calc(100% + var(--row-gap, var(--gap)));
 }
 
 /* If the selector was .flex-gap > *, it wouldn't override when components have a margin 0 specified by a single
@@ -39,5 +37,5 @@
  */
 .flex-container .flex-gap > * {
   /* apply half of the gap to each side of every item */
-  margin: calc(var(--row-gap) / 2) calc(var(--column-gap) / 2);
+  margin: calc(var(--row-gap, var(--gap)) / 2) calc(var(--column-gap, var(--gap)) / 2);
 }

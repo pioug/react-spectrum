@@ -23,7 +23,9 @@
     "url": "https://github.com/adobe/react-spectrum"
   },
   "dependencies": {
+    "@vue-aria/overlays": "workspace:*",
     "@vue-aria/tooltip": "workspace:*",
+    "@vue-spectrum/provider": "workspace:*",
     "@vue-types/tooltip": "^3.5.1"
   },
   "peerDependencies": {

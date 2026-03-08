@@ -26,7 +26,9 @@ import ViewList from '@spectrum-icons-vue/workflow/ViewList';
 
 type ActionItem = string | {
   children: string,
-  name: string
+  name: string,
+  'aria-label'?: string,
+  'data-testid'?: string
 };
 
 function normalizeStorySelectionKeys(value: unknown): string[] {
@@ -49,12 +51,22 @@ const viewItems: ActionItem[] = [
   {children: 'List view', name: '2'},
   {children: 'Gallery view', name: '3'}
 ];
+const labelledViewItems: ActionItem[] = viewItems.map((item) => {
+  if (typeof item === 'string') {
+    return item;
+  }
+
+  return {
+    ...item,
+    'aria-label': item.children
+  };
+});
 const overflowItems: ActionItem[] = [
-  {children: 'Edit', name: '1'},
-  {children: 'Copy', name: '2'},
-  {children: 'Delete', name: '3'},
-  {children: 'Move', name: '4'},
-  {children: 'Duplicate', name: '5'}
+  {children: 'Edit', name: '1', 'data-testid': 'edit'},
+  {children: 'Copy', name: '2', 'data-testid': 'copy'},
+  {children: 'Delete', name: '3', 'data-testid': 'delete'},
+  {children: 'Move', name: '4', 'data-testid': 'move'},
+  {children: 'Duplicate', name: '5', 'data-testid': 'duplicate'}
 ];
 const toolItems: ActionItem[] = [
   {children: 'Select', name: 'select'},
@@ -151,6 +163,12 @@ const baseArgTypes = {
   }
 } satisfies Meta<SpectrumActionGroupProps>['argTypes'];
 
+const onSelectionChange = action('onSelectionChange');
+
+function logSelectionChange(value: Iterable<string> | undefined) {
+  onSelectionChange(Array.from(value ?? []));
+}
+
 const ActionGroupDisplayExample = defineComponent({
   name: 'ActionGroupDisplayExample',
   components: {
@@ -180,6 +198,7 @@ const ActionGroupDisplayExample = defineComponent({
       iconMap,
       getLabel,
       iconSelection,
+      labelledViewItems,
       textSelection,
       viewItems,
       forwardSelection,
@@ -187,7 +206,7 @@ const ActionGroupDisplayExample = defineComponent({
     };
   },
   template: `
-    <div style="display: flex; flex-direction: column; gap: var(--spectrum-global-dimension-size-300); margin: var(--spectrum-global-dimension-size-100); width: 100%;">
+    <div class="flex" style="display: flex; margin: var(--spectrum-global-dimension-size-100, var(--spectrum-alias-size-100)); width: 100%; flex-direction: column; gap: var(--spectrum-global-dimension-size-300, var(--spectrum-alias-size-300));">
       <ActionGroup
         v-bind="props.args"
         v-model="textSelection"
@@ -201,7 +220,7 @@ const ActionGroupDisplayExample = defineComponent({
       <ActionGroup
         v-bind="props.args"
         v-model="bothSelection"
-        :items="viewItems"
+        :items="labelledViewItems"
         @action="props.args.onAction"
         @change="forwardSelection">
         <template #item="{item, hideButtonText}">
@@ -215,7 +234,7 @@ const ActionGroupDisplayExample = defineComponent({
       <ActionGroup
         v-bind="props.args"
         v-model="iconSelection"
-        :items="viewItems"
+        :items="labelledViewItems"
         @action="props.args.onAction"
         @change="forwardSelection">
         <template #item="{item}">
@@ -261,6 +280,7 @@ const OverflowActionGroupExample = defineComponent({
   setup(props) {
     let selected = ref<string[]>(normalizeStorySelectionKeys(props.args.modelValue ?? props.args.defaultSelectedKeys));
     let resolvedSelectionMode = computed(() => props.args.selectionMode ?? props.selectionMode);
+    let resolvedSummaryIcon = computed(() => props.args.summaryIcon ?? h(Text));
     let getLabel = (item: ActionItem) => typeof item === 'string' ? item : item.children;
 
     let forwardSelection = (keys: string[]) => {
@@ -271,6 +291,7 @@ const OverflowActionGroupExample = defineComponent({
       getLabel,
       iconMap,
       props,
+      resolvedSummaryIcon,
       selected,
       resolvedSelectionMode,
       forwardSelection
@@ -283,6 +304,8 @@ const OverflowActionGroupExample = defineComponent({
         v-model="selected"
         :items="props.items"
         :selection-mode="resolvedSelectionMode"
+        :summary-icon="resolvedSummaryIcon"
+        style="max-height: 100%;"
         @action="props.args.onAction"
         @change="forwardSelection">
         <template #item="{item, hideButtonText}">
@@ -315,6 +338,19 @@ const TooltipActionGroupExample = defineComponent({
   setup(props) {
     let selected = ref<string[]>([]);
     let getLabel = (item: ActionItem) => typeof item === 'string' ? item : item.children;
+    let tooltipItems = computed(() => labelledViewItems.map((item) => {
+      if (typeof item === 'string') {
+        return item;
+      }
+
+      return {
+        ...item,
+        wrapper: (button) => h(TooltipTrigger, null, {
+          default: () => button,
+          tooltip: () => getLabel(item)
+        })
+      };
+    }));
 
     let forwardSelection = (keys: string[]) => {
       props.args.onSelectionChange?.(keys);
@@ -325,7 +361,7 @@ const TooltipActionGroupExample = defineComponent({
       iconMap,
       props,
       selected,
-      viewItems,
+      tooltipItems,
       forwardSelection
     };
   },
@@ -333,20 +369,13 @@ const TooltipActionGroupExample = defineComponent({
     <ActionGroup
       v-bind="props.args"
       v-model="selected"
-      :items="viewItems"
-      button-label-behavior="hide"
+      :items="tooltipItems"
       @action="props.args.onAction"
       @change="forwardSelection">
-      <template #item="{item, hideButtonText}">
-        <TooltipTrigger :delay="0" trigger="hover">
-          <component
-            :is="iconMap[getLabel(item)]"
-            :class="hideButtonText ? 'spectrum-ActionGroup-itemIcon' : undefined"
-            size="S" />
-          <template #tooltip>
-            {{ getLabel(item) }}
-          </template>
-        </TooltipTrigger>
+      <template #item="{item}">
+        <component
+          :is="iconMap[getLabel(item)]"
+          size="S" />
       </template>
     </ActionGroup>
   `
@@ -422,7 +451,7 @@ const VerticalOverflowExample = defineComponent({
     };
   },
   template: `
-    <div style="display: flex; flex-direction: column;">
+    <div class="flex" style="display: flex; flex-direction: column;">
       <p>Note: this is currently unsupported by Spectrum. Container should scroll.</p>
       <OverflowActionGroupExample
         :args="props.args"
@@ -444,7 +473,7 @@ const meta: Meta<SpectrumActionGroupProps> = {
   component: ActionGroup,
   args: {
     onAction: action('onAction'),
-    onSelectionChange: action('onSelectionChange')
+    onSelectionChange: (keys) => logSelectionChange(keys as Iterable<string> | undefined)
   },
   argTypes: baseArgTypes
 };
@@ -509,7 +538,7 @@ export const StaticColorWhite: ActionGroupStory = {
       };
     },
     template: `
-      <View background-color="static-blue-700" style="padding: var(--spectrum-global-dimension-size-1000);">
+      <View background-color="static-blue-700" padding="size-1000">
         <ActionGroupDisplayExample :args="args" />
       </View>
     `
@@ -534,7 +563,7 @@ export const StaticColorBlack: ActionGroupStory = {
       };
     },
     template: `
-      <View background-color="static-yellow-400" style="padding: var(--spectrum-global-dimension-size-1000);">
+      <View background-color="static-yellow-400" padding="size-1000">
         <ActionGroupDisplayExample :args="args" />
       </View>
     `
@@ -555,8 +584,7 @@ export const WithTooltips: ActionGroupStory = {
 
 export const Overflow: ActionGroupStory = {
   args: {
-    disabledKeys: ['1', '5'],
-    summaryIcon: h(Text)
+    disabledKeys: ['1', '5']
   },
   render: (args) => ({
     components: {OverflowActionGroupExample},
