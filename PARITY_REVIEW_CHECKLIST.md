@@ -24,7 +24,7 @@ Use this as a progression checklist for parity re-review. Mark each line when co
 - [x] 1.04 `@vue-spectrum/autocomplete`
   - Components: SearchAutocomplete
   - [ ] Story: SearchAutocomplete.stories.ts
-- [ ] 1.05 `@vue-spectrum/avatar`
+- [x] 1.05 `@vue-spectrum/avatar`
   - Components: Avatar
   - [ ] Story: Avatar.stories.ts
 - [ ] 1.06 `@vue-spectrum/badge`
