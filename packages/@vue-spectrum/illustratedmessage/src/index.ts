@@ -1,8 +1,55 @@
 import '@adobe/spectrum-css-temp/components/illustratedmessage/vars.css';
 import {classNames} from '@vue-spectrum/utils';
-import {defineComponent, h} from 'vue';
+import {cloneVNode, Comment, defineComponent, Fragment, h, isVNode, Text, type VNode} from 'vue';
 import {filterDOMProps} from '@vue-aria/utils';
 const styles: {[key: string]: string} = {};
+
+function flattenChildren(nodes: unknown[]): VNode[] {
+  let result: VNode[] = [];
+
+  for (let node of nodes) {
+    if (!isVNode(node) || node.type === Comment) {
+      continue;
+    }
+
+    if (node.type === Fragment && Array.isArray(node.children)) {
+      result.push(...flattenChildren(node.children));
+      continue;
+    }
+
+    if (node.type === Text) {
+      let text = typeof node.children === 'string' ? node.children : '';
+      if (!text.trim()) {
+        continue;
+      }
+    }
+
+    result.push(node);
+  }
+
+  return result;
+}
+
+function decorateChild(node: VNode): VNode {
+  if (typeof node.type !== 'object' || node.type == null) {
+    return node;
+  }
+
+  let componentName = (node.type as {name?: string}).name ?? '';
+  if (componentName === 'VueSpectrumHeading') {
+    return cloneVNode(node, {
+      class: [node.props?.class, classNames(styles, 'spectrum-IllustratedMessage-heading')]
+    }, true);
+  }
+
+  if (componentName === 'VueSpectrumContent') {
+    return cloneVNode(node, {
+      class: [node.props?.class, classNames(styles, 'spectrum-IllustratedMessage-description')]
+    }, true);
+  }
+
+  return node;
+}
 
 export const IllustratedMessage = defineComponent({
   name: 'VueIllustratedMessage',
@@ -16,6 +63,7 @@ export const IllustratedMessage = defineComponent({
         style: domStyle,
         ...otherDomProps
       } = domProps;
+      let children = slots.default ? flattenChildren(slots.default()).map(decorateChild) : [];
 
       return h('div', {
         ...otherDomProps,
@@ -25,7 +73,7 @@ export const IllustratedMessage = defineComponent({
           domClass
         ],
         style: domStyle
-      }, slots.default ? slots.default() : []);
+      }, children);
     };
   }
 });

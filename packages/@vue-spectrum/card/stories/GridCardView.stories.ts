@@ -1,22 +1,31 @@
 import {action} from 'storybook/actions';
 import {ActionButton} from '@vue-spectrum/button';
-import {Content} from '@vue-spectrum/view';
+import {Card, CardView} from '../src';
+import {Content, View} from '@vue-spectrum/view';
 import {Flex} from '@vue-spectrum/layout';
-import {Heading} from '@vue-spectrum/text';
+import {Heading, Text} from '@vue-spectrum/text';
 import {IllustratedMessage} from '@vue-spectrum/illustratedmessage';
+import {Image} from '@vue-spectrum/image';
 import {Link} from '@vue-spectrum/link';
 import {TextField} from '@vue-spectrum/textfield';
-import {CardView} from '../src';
-import {Fragment, computed, h, ref} from 'vue';
+import {Fragment, computed, h, onBeforeUnmount, onMounted, ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type GridCardItem = {
   description?: string,
+  detail?: string,
   height: number,
   id?: number | string,
   src: string,
   title: string,
   width: number
+};
+
+type ResizeObserverShot = {
+  alt: string,
+  id: number,
+  label: string,
+  src: string
 };
 
 let items: GridCardItem[] = [
@@ -42,6 +51,25 @@ let items: GridCardItem[] = [
   {width: 1001, height: 381, src: 'https://i.imgur.com/Z7AzH2c.jpg', title: 'Joe 7', id: 'Joe 7'},
   {width: 1516, height: 1009, src: 'https://i.imgur.com/1nScMIH.jpg', title: 'Jane 7', id: 'Jane 7'},
   {width: 1215, height: 121, src: 'https://i.imgur.com/zzwWogn.jpg', title: 'Bob 8', id: 'Bob 8'}
+];
+
+const DEFAULT_DESCRIPTION = 'Very very very very very very very very very very very very very long description';
+
+const staticItems: GridCardItem[] = [
+  {...items[0], description: DEFAULT_DESCRIPTION, detail: 'PNG', title: 'Bob 1', id: 'Bob 1'},
+  {...items[1], detail: 'PNG', title: 'Joe 1', id: 'Joe 1'},
+  {...items[2], description: 'Description', detail: 'PNG', title: 'Jane 1', id: 'Jane 1'},
+  {...items[3], description: DEFAULT_DESCRIPTION, detail: 'PNG', title: 'Bob 2', id: 'Bob 2'},
+  {...items[4], description: 'Description', detail: 'PNG', title: 'Joe 2', id: 'Joe 2'}
+];
+
+const resizeObserverShots: ResizeObserverShot[] = [
+  {id: 1, src: 'https://i.imgur.com/Z7AzH2c.jpg', alt: 'foo', label: 'foo'},
+  {id: 2, src: 'https://i.imgur.com/Z7AzH2c.jpg', alt: 'bar', label: 'bar'},
+  {id: 3, src: 'https://i.imgur.com/Z7AzH2c.jpg', alt: 'baz', label: 'baz'},
+  {id: 4, src: 'https://i.imgur.com/Z7AzH2c.jpg', alt: 'qux', label: 'qux'},
+  {id: 5, src: 'https://i.imgur.com/Z7AzH2c.jpg', alt: 'foobar', label: 'foobar'},
+  {id: 6, src: 'https://i.imgur.com/Z7AzH2c.jpg', alt: 'foobaz', label: 'foobaz'}
 ];
 
 export let falsyItems = [
@@ -82,6 +110,15 @@ function normalizeStorySelectionValue(value: unknown): StorySelectionValue {
 
 function GridLayout() {
   return {layoutType: 'grid'};
+}
+
+function getImageFullData(index: number) {
+  let image = items[index % items.length];
+  return {
+    height: image.height,
+    src: image.src,
+    width: image.width
+  };
 }
 
 function splitCardViewArgs(args: Record<string, unknown>, baseStyle: Record<string, string> = {}) {
@@ -135,6 +172,75 @@ function renderEmptyState() {
       ' for more info.'
     ])
   ]);
+}
+
+function renderStandardCard(item: Partial<GridCardItem> & Pick<GridCardItem, 'src' | 'title'>) {
+  return h(Card, {
+    key: item.id ?? item.title
+  }, {
+    default: () => [
+      h(Image, {src: item.src, alt: ''}),
+      h(Heading, null, () => item.title),
+      h(Text, {slot: 'detail'}, () => item.detail ?? 'PNG'),
+      item.description != null ? h(Content, null, () => item.description) : null
+    ].filter(Boolean)
+  });
+}
+
+function renderStandardCardViewSlots() {
+  return {
+    default: ({item}: {item: GridCardItem}) => [
+      renderStandardCard({
+        ...item,
+        description: item.description ?? DEFAULT_DESCRIPTION,
+        detail: item.detail ?? 'PNG'
+      })
+    ]
+  };
+}
+
+function renderResizeObserverCrashCard(shot: ResizeObserverShot) {
+  return h(Card, {
+    key: shot.id
+  }, {
+    default: () => [
+      h(Flex, {
+        UNSAFE_style: {
+          position: 'absolute'
+        },
+        alignItems: 'center',
+        direction: 'column',
+        gap: 'size-150',
+        height: 'calc(100% - 78px)',
+        justifyContent: 'center',
+        width: '100%'
+      }, {
+        default: () => [
+          h(Image, {
+            alt: shot.alt,
+            height: '200px',
+            src: shot.src,
+            width: '200px'
+          })
+        ]
+      }),
+      h(Flex, {
+        alignItems: 'start',
+        direction: 'column',
+        marginTop: 'size-100'
+      }, {
+        default: () => [
+          h(Heading, {
+            level: 4,
+            style: {
+              alignSelf: 'auto',
+              fontWeight: 500
+            }
+          }, () => shot.label)
+        ]
+      })
+    ]
+  });
 }
 
 function removeNthItem(value: string, sourceItems: GridCardItem[]) {
@@ -232,7 +338,7 @@ export const DynamicCards: Story = {
               ...this.actionProps,
               items: this.dynamicItems,
               style: this.cardViewStyle
-            })
+            }, renderStandardCardViewSlots())
           ]
         })
       ]);
@@ -270,9 +376,9 @@ export const StaticCards: Story = {
         h(CardView, {
           ...this.cardViewArgs,
           ...this.actionProps,
-          items: items.slice(0, 5),
+          items: staticItems,
           style: this.cardViewStyle
-        })
+        }, renderStandardCardViewSlots())
       ]);
     }
   }),
@@ -335,7 +441,7 @@ export const FalsyIds: Story = {
           ...this.actionProps,
           items: falsyItems,
           style: this.cardViewStyle
-        })
+        }, renderStandardCardViewSlots())
       ]);
     }
   }),
@@ -424,7 +530,7 @@ export const ControlledCards: Story = {
                 this.selectedKeys = nextSelection;
                 action('onSelectionChange')(nextSelection);
               }
-            })
+            }, renderStandardCardViewSlots())
           ]
         })
       ]);
@@ -465,19 +571,74 @@ export const NoCards: Story = {
           ...this.actionProps,
           items: this.show ? items : [],
           style: this.cardViewStyle
-        })
+        }, renderStandardCardViewSlots())
       ]);
     }
   })
 };
 
-export const ResizeObserverCrash: Story = NoCards;
+export const ResizeObserverCrash: Story = {
+  render: () => ({
+    render() {
+      return h(View, {
+        backgroundColor: 'gray-75',
+        height: '100vh',
+        width: '100vw'
+      }, {
+        default: () => [
+          h('div', {
+            style: {
+              height: '100%',
+              position: 'relative',
+              width: '100%'
+            }
+          }, [
+            h('div', {
+              style: {
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%'
+              }
+            }, [
+              h(Flex, {
+                alignItems: 'center',
+                gap: 'size-200',
+                margin: 'size-350'
+              }, {
+                default: () => [
+                  h(Heading, {
+                    level: 3,
+                    style: {
+                      margin: 0
+                    }
+                  }, () => 'My Demo Asset')
+                ]
+              }),
+              h(CardView, {
+                items: resizeObserverShots,
+                layout: GridLayout,
+                position: 'relative',
+                selectionMode: 'none',
+                width: '100%',
+                flex: true
+              }, {
+                default: ({item}: {item: ResizeObserverShot}) => [renderResizeObserverCrashCard(item)]
+              })
+            ])
+          ])
+        ]
+      });
+    }
+  })
+};
 
 export const IsLoadingHeightGrid: Story = {
   ...NoCards,
   args: {
     ...NoCards.args,
-    loadingState: 'loading'
+    height: '800px',
+    loadingState: 'loading',
+    width: '800px'
   },
   name: 'loadingState = loading, set height'
 };
@@ -504,7 +665,9 @@ export const EmptyWithHeightGrid: Story = {
   ...NoCards,
   args: {
     ...NoCards.args,
-    renderEmptyState
+    height: '800px',
+    renderEmptyState,
+    width: '800px'
   },
   name: 'empty, set height'
 };
@@ -518,11 +681,33 @@ export const AsyncLoading: Story = {
         height: '100%',
         width: '100%'
       }));
+      let abortController = new AbortController();
+      let timeoutId: number | undefined;
 
-      setTimeout(() => {
-        asyncItems.value = items.slice(0, 8);
-        loadingState.value = 'idle';
-      }, 1500);
+      onMounted(() => {
+        timeoutId = window.setTimeout(async () => {
+          try {
+            let response = await fetch('https://swapi.py4e.com/api/people/?search', {
+              signal: abortController.signal
+            });
+            let json = await response.json() as {results?: Array<{name?: string}>};
+            asyncItems.value = (json.results ?? []).map((element, index) => ({
+              ...getImageFullData(index),
+              id: element.name ?? `person-${index}`,
+              title: element.name ?? `Person ${index + 1}`
+            }));
+          } finally {
+            loadingState.value = 'idle';
+          }
+        }, 1500);
+      });
+
+      onBeforeUnmount(() => {
+        abortController.abort();
+        if (timeoutId != null) {
+          window.clearTimeout(timeoutId);
+        }
+      });
 
       return {
         actionProps: actionHandlers(),
@@ -547,7 +732,7 @@ export const AsyncLoading: Story = {
           items: this.asyncItems,
           loadingState: this.loadingState,
           style: this.cardViewStyle
-        })
+        }, renderStandardCardViewSlots())
       ]);
     }
   }),
