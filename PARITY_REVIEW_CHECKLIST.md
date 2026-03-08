@@ -30,7 +30,7 @@ Use this as a progression checklist for parity re-review. Mark each line when co
 - [x] 1.06 `@vue-spectrum/badge`
   - Components: Badge
   - [ ] Story: Badge.stories.ts
-- [ ] 1.07 `@vue-spectrum/breadcrumbs`
+- [x] 1.07 `@vue-spectrum/breadcrumbs`
   - Components: Breadcrumbs
   - [ ] Story: Breadcrumbs.stories.ts
 - [ ] 1.08 `@vue-spectrum/button`

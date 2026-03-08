@@ -1,9 +1,14 @@
 import '@adobe/spectrum-css-temp/components/breadcrumb/vars.css';
 import '@adobe/spectrum-css-temp/components/button/vars.css';
+import '@adobe/spectrum-css-temp/components/icon/vars.css';
 import '@adobe/spectrum-css-temp/components/menu/vars.css';
+import '@adobe/spectrum-css-temp/components/popover/vars.css';
+import '@adobe/spectrum-css-temp/components/underlay/vars.css';
 import {Item, Section} from '@vue-stately/collections';
+import {Underlay} from '@vue-spectrum/overlays';
 import {classNames, filterDOMProps} from '@vue-spectrum/utils';
 import {
+  type CSSProperties,
   Comment,
   computed,
   defineComponent,
@@ -14,6 +19,7 @@ import {
   onBeforeUnmount,
   onMounted,
   onUpdated,
+  Teleport,
   type PropType,
   ref,
   type VNode,
@@ -29,6 +35,20 @@ const MAX_VISIBLE_ITEMS = 4;
 
 const FOLDER_BREADCRUMB_PATH = 'M16.5 4l-7.166.004-1.652-1.7A1 1 0 0 0 6.965 2H2a1 1 0 0 0-1 1v11.5a.5.5 0 0 0 .5.5h15a.5.5 0 0 0 .5-.5v-10a.5.5 0 0 0-.5-.5zM2 3h4.965l1.943 2H2zm10.354 5.854l-3 3a.5.5 0 0 1-.707 0l-3-3a.5.5 0 0 1 .707-.707L9 10.793l2.646-2.646a.5.5 0 0 1 .707.707z';
 const CHEVRON_RIGHT_SMALL_PATH = 'M5.5 4a.747.747 0 0 0-.22-.53C4.703 2.862 3.242 1.5 2.04.23A.75.75 0 1 0 .98 1.29L3.69 4 .98 6.71a.75.75 0 1 0 1.06 1.06l3.24-3.24A.747.747 0 0 0 5.5 4z';
+const CHECKMARK_MEDIUM_PATH = 'M4.5 10a1.022 1.022 0 0 1-.799-.384l-2.488-3a1 1 0 0 1 1.576-1.233L4.5 7.376l4.712-5.991a1 1 0 1 1 1.576 1.23l-5.51 7A.978.978 0 0 1 4.5 10z';
+const MENU_VIEWPORT_PADDING = 12;
+const VISUALLY_HIDDEN_STYLE: CSSProperties = {
+  border: '0px',
+  clip: 'rect(0px, 0px, 0px, 0px)',
+  clipPath: 'inset(50%)',
+  height: '1px',
+  margin: '-1px',
+  overflow: 'hidden',
+  padding: '0px',
+  position: 'absolute',
+  whiteSpace: 'nowrap',
+  width: '1px'
+};
 
 type BreadcrumbItemInput = string | {
   children?: string,
@@ -255,6 +275,28 @@ function renderIconPath(className: string, path: string) {
   ]);
 }
 
+function renderDismissButton(id: string) {
+  return h('div', {
+    style: VISUALLY_HIDDEN_STYLE
+  }, [
+    h('button', {
+      id,
+      'aria-label': 'Dismiss',
+      tabindex: '-1',
+      style: {
+        height: '1px',
+        width: '1px'
+      }
+    })
+  ]);
+}
+
+function toClassList(...values: Array<string | undefined>) {
+  return values.filter((value): value is string => typeof value === 'string' && value.length > 0);
+}
+
+let breadcrumbMenuId = 0;
+
 export const Breadcrumbs = defineComponent({
   name: 'VueBreadcrumbs',
   inheritAttrs: false,
@@ -296,11 +338,26 @@ export const Breadcrumbs = defineComponent({
     action: (key: string) => typeof key === 'string'
   },
   setup(props, {attrs, emit, slots}) {
+    let baseId = `vs-breadcrumbs-${++breadcrumbMenuId}`;
     let currentItemRef = ref<HTMLElement | null>(null);
     let hoveredKey = ref<string | null>(null);
     let focusedKey = ref<string | null>(null);
     let isMenuOpen = ref(false);
     let listRef = ref<HTMLUListElement | null>(null);
+    let menuButtonRef = ref<HTMLElement | null>(null);
+    let menuWrapperRef = ref<HTMLElement | null>(null);
+    let menuPopoverStyle = ref<CSSProperties>({
+      borderWidth: '0px',
+      clipPath: 'unset',
+      filter: 'unset',
+      left: '0px',
+      maxHeight: '0px',
+      overflow: 'visible',
+      position: 'absolute',
+      top: '0px',
+      zIndex: '100000'
+    });
+    let menuViewportOffset = ref('0px');
     let navRef = ref<HTMLElement | null>(null);
     let visibleItems = ref(0);
     let resizeObserver: ResizeObserver | null = null;
@@ -309,6 +366,32 @@ export const Breadcrumbs = defineComponent({
     let latestNormalizedItems: NormalizedBreadcrumbItem[] = [];
 
     let isDisabled = computed(() => props.isDisabled ?? props.disabled);
+    let menuButtonId = `${baseId}-menu-button`;
+    let menuId = `${baseId}-menu`;
+
+    let resolveMenuSurfaceStyle = () => {
+      let menuButton = menuButtonRef.value;
+      if (!menuButton) {
+        return;
+      }
+
+      let rect = menuButton.getBoundingClientRect();
+      let popoverLeft = Math.max(rect.left, MENU_VIEWPORT_PADDING);
+      let viewportHeight = typeof window === 'undefined' ? rect.bottom : window.innerHeight;
+
+      menuViewportOffset.value = `${-popoverLeft}px`;
+      menuPopoverStyle.value = {
+        borderWidth: '0px',
+        clipPath: 'unset',
+        filter: 'unset',
+        left: `${popoverLeft}px`,
+        maxHeight: `${Math.max(0, viewportHeight - rect.bottom - MENU_VIEWPORT_PADDING)}px`,
+        overflow: 'visible',
+        position: 'absolute',
+        top: `${rect.bottom}px`,
+        zIndex: '100000'
+      };
+    };
 
     let computeVisibleItems = (visibleCount: number) => {
       let currentList = listRef.value;
@@ -387,6 +470,11 @@ export const Breadcrumbs = defineComponent({
       if (nextVisibleItems < itemCount && nextVisibleItems > 1) {
         visibleItems.value = computeVisibleItems(nextVisibleItems);
       }
+
+      if (isMenuOpen.value) {
+        await nextTick();
+        resolveMenuSurfaceStyle();
+      }
     };
 
     let focusCurrentItem = () => {
@@ -397,10 +485,42 @@ export const Breadcrumbs = defineComponent({
       }
     };
 
+    let isBreadcrumbEventTarget = (target: EventTarget | null) => {
+      if (!(target instanceof Node)) {
+        return false;
+      }
+
+      return Boolean(
+        navRef.value?.contains(target)
+        || menuWrapperRef.value?.contains(target)
+      );
+    };
+
     let onDocumentMouseDown = (event: MouseEvent) => {
       let target = event.target as Node | null;
-      if (!target || !navRef.value?.contains(target)) {
+      if (!target || !isBreadcrumbEventTarget(target)) {
         isMenuOpen.value = false;
+      }
+    };
+
+    let onDocumentFocusIn = (event: FocusEvent) => {
+      if (!isMenuOpen.value || isBreadcrumbEventTarget(event.target)) {
+        return;
+      }
+
+      isMenuOpen.value = false;
+    };
+
+    let onDocumentKeydown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isMenuOpen.value) {
+        isMenuOpen.value = false;
+        menuButtonRef.value?.focus();
+      }
+    };
+
+    let onViewportChange = () => {
+      if (isMenuOpen.value) {
+        resolveMenuSurfaceStyle();
       }
     };
 
@@ -420,6 +540,10 @@ export const Breadcrumbs = defineComponent({
       }
 
       document.addEventListener('mousedown', onDocumentMouseDown);
+      document.addEventListener('focusin', onDocumentFocusIn);
+      document.addEventListener('keydown', onDocumentKeydown);
+      document.addEventListener('scroll', onViewportChange, true);
+      window.addEventListener('resize', onViewportChange);
     });
 
     onUpdated(() => {
@@ -434,6 +558,10 @@ export const Breadcrumbs = defineComponent({
     onBeforeUnmount(() => {
       resizeObserver?.disconnect();
       document.removeEventListener('mousedown', onDocumentMouseDown);
+      document.removeEventListener('focusin', onDocumentFocusIn);
+      document.removeEventListener('keydown', onDocumentKeydown);
+      document.removeEventListener('scroll', onViewportChange, true);
+      window.removeEventListener('resize', onViewportChange);
     });
 
     watch(
@@ -455,6 +583,18 @@ export const Breadcrumbs = defineComponent({
       }
     );
 
+    watch(isMenuOpen, (nextOpen) => {
+      if (!nextOpen) {
+        return;
+      }
+
+      void nextTick(() => {
+        resolveMenuSurfaceStyle();
+        let selectedMenuItem = menuWrapperRef.value?.querySelector('[role="menuitemradio"][tabindex="0"]') as HTMLElement | null | undefined;
+        selectedMenuItem?.focus();
+      });
+    });
+
     let emitAction = (key: string) => {
       if (!isDisabled.value) {
         emit('action', key);
@@ -475,16 +615,166 @@ export const Breadcrumbs = defineComponent({
       let normalizedItems = sourceItems.map((item, index) => normalizeBreadcrumbItem(item, index));
       let currentKey = getCurrentKey(normalizedItems, props.current);
       let breadcrumbItems = getRenderedItems(normalizedItems, visibleItems.value, props.showRoot);
+      let overflowMenuItem = breadcrumbItems.find(isOverflowMenuItem) ?? null;
+      let overlayContainer = navRef.value?.closest('.vs-provider') ?? 'body';
 
       latestNormalizedItems = normalizedItems;
       latestItemSignature = normalizedItems
         .map((item) => `${item.key}:${item.label}:${item.href ?? ''}`)
         .join('|');
 
-      return h('nav', {
+      let renderOverflowMenuEntry = (menuItem: NormalizedBreadcrumbItem, menuIndex: number) => {
+        let isSelected = menuItem.key === overflowMenuItem?.selectedKey;
+        let labelId = `${menuId}-label-${menuIndex}`;
+        let commonProps = {
+          key: menuItem.key,
+          id: `${menuId}-item-${menuIndex}`,
+          role: 'menuitemradio',
+          'aria-checked': isSelected ? 'true' : 'false',
+          'aria-labelledby': labelId,
+          tabindex: isSelected ? 0 : -1,
+          'data-key': menuItem.key,
+          'data-react-aria-pressable': 'true',
+          class: classNames(menuStyles, 'spectrum-Menu-item', {
+            'is-selectable': true,
+            'is-selected': isSelected
+          })
+        };
+        let contentChildren = [
+          h('span', {
+            role: 'none',
+            id: labelId,
+            class: classNames(menuStyles, 'spectrum-Menu-itemLabel')
+          }, menuItem.label)
+        ];
+
+        if (isSelected) {
+          contentChildren.push(
+            renderIconPath(
+              classNames(menuStyles, 'spectrum-Menu-checkmark', 'spectrum-Icon', 'spectrum-UIIcon-CheckmarkMedium'),
+              CHECKMARK_MEDIUM_PATH
+            )
+          );
+        }
+
+        let content = h('div', {
+          class: classNames(menuStyles, 'spectrum-Menu-itemGrid'),
+          style: {
+            display: 'grid'
+          }
+        }, contentChildren);
+
+        let onMenuItemClick = (event: MouseEvent) => {
+          if (menuItem.href) {
+            event.preventDefault();
+          }
+
+          if (!isSelected) {
+            emitAction(menuItem.key);
+          }
+
+          isMenuOpen.value = false;
+          menuButtonRef.value?.focus();
+        };
+
+        return menuItem.href
+          ? h('a', {
+            ...commonProps,
+            href: menuItem.href,
+            rel: menuItem.rel,
+            target: menuItem.target,
+            onClick: onMenuItemClick
+          }, content)
+          : h('div', {
+            ...commonProps,
+            onClick: onMenuItemClick
+          }, content);
+      };
+
+      let menuPopover = overflowMenuItem && isMenuOpen.value
+        ? h(Teleport, {to: overlayContainer}, [
+          h('div', [
+            h(Underlay, {
+              inert: '',
+              isOpen: true,
+              isTransparent: true,
+              onClick: () => {
+                isMenuOpen.value = false;
+              }
+            }),
+            h('section', {
+              role: 'presentation',
+              'data-testid': 'popover',
+              'data-vs-overlay-surface': 'true',
+              class: [
+                classNames(
+                  {},
+                  'spectrum-Popover',
+                  'spectrum-overlay',
+                  'spectrum-Popover--bottom',
+                  {
+                    'is-open': true,
+                    'is-open--bottom': true,
+                    'spectrum-overlay--bottom--open': true,
+                    'spectrum-overlay--open': true
+                  }
+                ),
+                classNames({}, 'spectrum-Popover', 'react-spectrum-Popover')
+              ],
+              style: menuPopoverStyle.value
+            }, [
+              renderDismissButton(`${baseId}-dismiss-start`),
+              h('div'),
+              h('span', {
+                'data-focus-scope-start': 'true',
+                hidden: true
+              }),
+              h('div', {
+                ref: (element: Element | null) => {
+                  menuWrapperRef.value = element instanceof HTMLElement ? element : null;
+                },
+                'aria-hidden': 'false',
+                'data-testid': 'menu-wrapper',
+                class: classNames(menuStyles, 'spectrum-Menu-wrapper')
+              }, [
+                h('div', {
+                  role: 'presentation',
+                  class: classNames(menuStyles, 'spectrum-Submenu-wrapper')
+                }, [
+                  h('div', {
+                    id: menuId,
+                    role: 'menu',
+                    tabindex: '-1',
+                    'aria-labelledby': menuButtonId,
+                    class: [
+                      classNames(menuStyles, 'spectrum-Menu'),
+                      classNames(menuStyles, 'spectrum-Menu-popover')
+                    ]
+                  }, overflowMenuItem.items.map((menuItem, menuIndex) => renderOverflowMenuEntry(menuItem, menuIndex)))
+                ])
+              ]),
+              h('div', {
+                style: {
+                  left: menuViewportOffset.value,
+                  position: 'absolute',
+                  top: '-5px',
+                  width: '100vw'
+                }
+              }),
+              h('span', {
+                'data-focus-scope-end': 'true',
+                hidden: true
+              }),
+              renderDismissButton(`${baseId}-dismiss-end`)
+            ])
+          ])
+        ])
+        : null;
+      let navClass = toClassList(domClassName, domClass);
+      let navNode = h('nav', {
         ...restDomProps,
         ref: navRef,
-        class: [domClassName, domClass],
+        class: navClass.length > 0 ? navClass : undefined,
         style: domStyle,
         'aria-label': ariaLabel
       }, [
@@ -507,8 +797,11 @@ export const Breadcrumbs = defineComponent({
               key: item.key,
               class: classNames(styles, 'spectrum-Breadcrumbs-item')
             }, [
-              h('span', null, [
+              h('span', {class: ''}, [
                 h('button', {
+                  ref: (element: Element | null) => {
+                    menuButtonRef.value = element instanceof HTMLElement ? element : null;
+                  },
                   class: classNames(
                     buttonStyles,
                     'spectrum-ActionButton',
@@ -517,13 +810,18 @@ export const Breadcrumbs = defineComponent({
                     'spectrum-FocusRing',
                     'spectrum-FocusRing-ring',
                     'spectrum-ActionButton--quiet',
+                    {
+                      'is-active': isMenuOpen.value
+                    },
                     classNames(styles, 'spectrum-Breadcrumbs-actionButton')
                   ),
                   type: 'button',
+                  id: menuButtonId,
                   tabIndex: 0,
                   disabled: isDisabled.value,
                   'aria-haspopup': 'true',
                   'aria-expanded': isMenuOpen.value ? 'true' : 'false',
+                  'aria-controls': isMenuOpen.value ? menuId : undefined,
                   'data-react-aria-pressable': 'true',
                   'aria-label': '…',
                   onClick: (event: MouseEvent) => {
@@ -538,43 +836,7 @@ export const Breadcrumbs = defineComponent({
                     classNames(buttonStyles, 'spectrum-Icon', 'spectrum-UIIcon-FolderBreadcrumb', 'spectrum-Icon'),
                     FOLDER_BREADCRUMB_PATH
                   )
-                ]),
-                isMenuOpen.value
-                  ? h('ul', {
-                    class: classNames(menuStyles, 'spectrum-Menu'),
-                    role: 'menu'
-                  }, item.items.map((menuItem) => {
-                    let isSelected = menuItem.key === item.selectedKey;
-                    let onMenuItemClick = (event: MouseEvent) => {
-                      if (menuItem.href) {
-                        event.preventDefault();
-                      }
-
-                      if (!isSelected) {
-                        emitAction(menuItem.key);
-                      }
-
-                      isMenuOpen.value = false;
-                    };
-
-                    let menuItemProps = {
-                      key: menuItem.key,
-                      class: classNames(menuStyles, 'spectrum-Menu-item'),
-                      role: 'menuitemradio',
-                      'aria-checked': isSelected ? 'true' : 'false',
-                      onClick: onMenuItemClick
-                    };
-
-                    return menuItem.href
-                      ? h('a', {
-                        ...menuItemProps,
-                        href: menuItem.href,
-                        rel: menuItem.rel,
-                        target: menuItem.target
-                      }, menuItem.label)
-                      : h('span', menuItemProps, menuItem.label);
-                  }))
-                  : null
+                ])
               ]),
               renderIconPath(
                 classNames(styles, 'spectrum-Breadcrumbs-itemSeparator', 'spectrum-Icon', 'spectrum-UIIcon-ChevronRightSmall'),
@@ -654,6 +916,13 @@ export const Breadcrumbs = defineComponent({
           ]);
         }))
       ]);
+
+      return menuPopover
+        ? h(Fragment, null, [
+          navNode,
+          menuPopover
+        ])
+        : navNode;
     };
   }
 });

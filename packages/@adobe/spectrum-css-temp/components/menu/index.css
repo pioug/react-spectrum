@@ -92,7 +92,7 @@ governing permissions and limitations under the License.
     Renamed from padding-y to padding-height to fix docs issue where fallback var replaced this value
     (due to old spectrum-css postcss-custom-properties-custom-mapping plugin).
   */
-  padding-block-start: calc(var(--spectrum-selectlist-option-icon-padding-y) - var(--spectrum-selectlist-option-padding-height));
+  padding-block-start: calc(var(--spectrum-selectlist-option-icon-padding-y) - var(--spectrum-selectlist-option-padding-height, 7px));
 }
 
 .spectrum-Menu-item {
@@ -104,10 +104,10 @@ governing permissions and limitations under the License.
 
   margin: 0;
 
-  border-inline-start: var(--spectrum-selectlist-border-size-key-focus) solid transparent;
+  border-inline-start: var(--spectrum-selectlist-border-size-key-focus, var(--spectrum-global-dimension-static-size-25)) solid transparent;
 
-  font-size: var(--spectrum-selectlist-option-text-size);
-  font-weight: var(--spectrum-selectlist-option-text-font-weight);
+  font-size: var(--spectrum-selectlist-option-text-size, var(--spectrum-alias-font-size-default));
+  font-weight: var(--spectrum-selectlist-option-text-font-weight, var(--spectrum-global-font-weight-regular));
   font-style: normal;
   text-decoration: none;
 
@@ -137,7 +137,7 @@ governing permissions and limitations under the License.
 
 .spectrum-Menu-itemLabel {
   grid-area: text;
-  line-height: var(--spectrum-global-font-line-height-small);
+  line-height: var(--spectrum-global-font-line-height-small, 1.3);
   word-break: break-word;
 }
 
@@ -197,12 +197,12 @@ governing permissions and limitations under the License.
 
 .spectrum-Menu-itemGrid {
   display: grid;
-  grid-template-columns: calc(var(--spectrum-selectlist-option-padding) - var(--spectrum-selectlist-border-size-key-focus)) auto 1fr auto auto auto auto var(--spectrum-selectlist-option-padding);
+  grid-template-columns: calc(var(--spectrum-selectlist-option-padding, var(--spectrum-global-dimension-size-150)) - var(--spectrum-selectlist-border-size-key-focus, var(--spectrum-global-dimension-static-size-25))) auto 1fr auto auto auto auto var(--spectrum-selectlist-option-padding, var(--spectrum-global-dimension-size-150));
   /*
     Renamed from padding-y to padding-height to fix docs issue where fallback var replaced this value
     (due to old spectrum-css postcss-custom-properties-custom-mapping plugin).
   */
-  grid-template-rows: var(--spectrum-selectlist-option-padding-height) 1fr auto var(--spectrum-selectlist-option-padding-height);
+  grid-template-rows: var(--spectrum-selectlist-option-padding-height, 7px) 1fr auto var(--spectrum-selectlist-option-padding-height, 7px);
   grid-template-areas:
     ". .    .            .         .     .         .        ."
     ". icon text         checkmark end   keyboard  chevron  ."
@@ -212,7 +212,7 @@ governing permissions and limitations under the License.
 
 .spectrum-Menu-item.is-selectable {
   .spectrum-Menu-itemGrid {
-    grid-template-columns: calc(var(--spectrum-selectlist-option-padding) - var(--spectrum-selectlist-border-size-key-focus)) auto 1fr calc(var(--spectrum-icon-checkmark-medium-width) + var(--spectrum-selectlist-option-icon-padding-x)) auto auto var(--spectrum-selectlist-option-padding);
+    grid-template-columns: calc(var(--spectrum-selectlist-option-padding, var(--spectrum-global-dimension-size-150)) - var(--spectrum-selectlist-border-size-key-focus, var(--spectrum-global-dimension-static-size-25))) auto 1fr calc(var(--spectrum-icon-checkmark-medium-width, var(--spectrum-global-dimension-size-150)) + var(--spectrum-selectlist-option-icon-padding-x, var(--spectrum-global-dimension-size-150))) auto auto var(--spectrum-selectlist-option-padding, var(--spectrum-global-dimension-size-150));
   }
 }
 
@@ -238,7 +238,7 @@ governing permissions and limitations under the License.
 }
 .spectrum-Menu-description {
   grid-area: description;
-  line-height: var(--spectrum-global-font-line-height-small);
+  line-height: var(--spectrum-global-font-line-height-small, 1.3);
   font-size: var(--spectrum-global-dimension-size-150);
 }
 .spectrum-Menu-keyboard {

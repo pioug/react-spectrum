@@ -73,8 +73,8 @@ governing permissions and limitations under the License.
   block-size: var(--spectrum-fieldlabel-asterisk-size);
 }
 .spectrum-UIIcon-CheckmarkMedium {
-  inline-size: var(--spectrum-icon-checkmark-medium-width);
-  block-size: var(--spectrum-icon-checkmark-medium-height);
+  inline-size: var(--spectrum-icon-checkmark-medium-width, var(--spectrum-global-dimension-size-150));
+  block-size: var(--spectrum-icon-checkmark-medium-height, var(--spectrum-global-dimension-size-150));
 }
 .spectrum-UIIcon-CheckmarkSmall {
   inline-size: var(--spectrum-icon-checkmark-small-width);
@@ -137,8 +137,8 @@ governing permissions and limitations under the License.
   block-size: var(--spectrum-icon-doublegripper-height);
 }
 .spectrum-UIIcon-FolderBreadcrumb {
-  inline-size: var(--spectrum-icon-folderbreadcrumb-width);
-  block-size: var(--spectrum-icon-folderbreadcrumb-height);
+  inline-size: var(--spectrum-icon-folderbreadcrumb-width, var(--spectrum-global-dimension-size-225));
+  block-size: var(--spectrum-icon-folderbreadcrumb-height, var(--spectrum-global-dimension-size-225));
 }
 .spectrum-UIIcon-HelpMedium {
   inline-size: var(--spectrum-icon-info-medium-width);

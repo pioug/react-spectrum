@@ -1886,18 +1886,26 @@ describe('Vue migration primitives', () => {
 
     let menuButton = wrapper.get('button[aria-haspopup="true"]');
     await menuButton.trigger('click');
+    await nextTick();
 
-    let menuItems = wrapper.findAll('[role="menuitemradio"]');
+    expect(wrapper.get('button[aria-haspopup="true"]').attributes('aria-controls')).toBeDefined();
+    expect(document.body.querySelector('[data-testid="menu-wrapper"]')).not.toBeNull();
+
+    let menuItems = Array.from(document.body.querySelectorAll('[role="menuitemradio"]')) as HTMLElement[];
     expect(menuItems).toHaveLength(5);
-    expect(menuItems[0].element.tagName).toBe('A');
-    expect(menuItems[0].attributes('href')).toBe('https://example.com');
+    expect(menuItems[0]?.tagName).toBe('A');
+    expect(menuItems[0]?.getAttribute('href')).toBe('https://example.com');
 
-    await menuItems[4].trigger('click');
+    menuItems[4]?.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    await nextTick();
     expect(wrapper.emitted('action')).toBeUndefined();
 
     await menuButton.trigger('click');
-    let reopenedMenuItems = wrapper.findAll('[role="menuitemradio"]');
-    await reopenedMenuItems[1].trigger('click');
+    await nextTick();
+
+    let reopenedMenuItems = Array.from(document.body.querySelectorAll('[role="menuitemradio"]')) as HTMLElement[];
+    reopenedMenuItems[1]?.dispatchEvent(new MouseEvent('click', {bubbles: true}));
+    await nextTick();
     expect(wrapper.emitted('action')?.[0]).toEqual(['1']);
 
     offsetWidthSpy.mockRestore();
