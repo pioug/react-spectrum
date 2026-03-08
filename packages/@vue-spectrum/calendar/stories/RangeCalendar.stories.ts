@@ -328,14 +328,14 @@ export const DateUnavailableInvalid: Story = {
 };
 
 export const Custom454Story: Story = {
-  ...Default,
-  args: {
+  render: (args) => renderRangeCalendar({
+    ...args,
     createCalendar: () => new Custom454Calendar(),
     visibleMonths: 3,
     defaultValue: {
       start: new CalendarDate(2023, 8, 6),
       end: new CalendarDate(2023, 10, 7)
     }
-  },
+  }),
   name: 'Custom calendar'
 };

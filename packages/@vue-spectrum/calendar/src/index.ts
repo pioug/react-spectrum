@@ -36,7 +36,7 @@ import {HelpText} from '@vue-spectrum/label';
 import {LocalizedStringDictionary, LocalizedStringFormatter} from '@vue-aria/i18n';
 import {useProvider, useProviderProps} from '@vue-spectrum/provider';
 import {classNames, useId} from '@vue-spectrum/utils';
-import {computed, defineComponent, h, nextTick, onMounted, ref, shallowRef, type PropType, watch} from 'vue';
+import {computed, defineComponent, h, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, type PropType, watch} from 'vue';
 
 const styles: {[key: string]: string} = {};
 const ariaIntlMessages = Object.fromEntries(
@@ -566,14 +566,36 @@ function getSelectedDateDescription(
     day: 'numeric',
     era: getEraFormat(start) || getEraFormat(end),
     month: 'long',
+    weekday: 'long',
     year: 'numeric'
   }, stringFormatter as LocalizedStringFormatter<'dateRange', string>);
   return stringFormatter.format('selectedRangeDescription', {dateRange});
 }
 
+function isInvalidSelectedDate(state: CalendarState | RangeCalendarState, date: CalendarDate): boolean {
+  if (!state.isValueInvalid) {
+    return false;
+  }
+
+  if ('highlightedRange' in state) {
+    return Boolean(
+      !state.anchorDate
+      && state.highlightedRange
+      && date.compare(state.highlightedRange.start) >= 0
+      && date.compare(state.highlightedRange.end) <= 0
+    );
+  }
+
+  return Boolean(state.value && isSameDay(date, state.value));
+}
+
+function isSelectedDate(state: CalendarState | RangeCalendarState, date: CalendarDate): boolean {
+  return state.isSelected(date) || isInvalidSelectedDate(state, date);
+}
+
 function renderChevronIcon(path: string, iconName: 'ChevronLeftLarge' | 'ChevronRightLarge') {
   return h('svg', {
-    class: [`spectrum-UIIcon-${iconName}`],
+    class: ['spectrum-Icon', `spectrum-UIIcon-${iconName}`],
     fill: 'currentColor',
     focusable: 'false',
     'aria-hidden': 'true',
@@ -1069,10 +1091,10 @@ function createRangeCalendarState(
   let focusedDate = controlledFocusedDate ?? store.uncontrolledFocusedDate.value ?? defaultFocusedDate;
 
   let initialAlignment: 'center' | 'start' = 'center';
-  if ((displayValue?.start as CalendarDate | null) && (displayValue.end as CalendarDate | null)) {
-    let centeredStart = alignCenter(displayValue.start as CalendarDate, visibleDuration, locale, minValue, maxValue);
+  if (normalizedValue?.start && normalizedValue.end) {
+    let centeredStart = alignCenter(toCalendarDate(normalizedValue.start), visibleDuration, locale, minValue, maxValue);
     let centeredEnd = shiftDurationStart(centeredStart, visibleDuration);
-    if ((displayValue.end as CalendarDate).compare(centeredEnd) > 0) {
+    if (toCalendarDate(normalizedValue.end).compare(centeredEnd) > 0) {
       initialAlignment = 'start';
     }
   }
@@ -1308,7 +1330,7 @@ function createCellAriaLabel(
   >,
   selectedDateDescription: string
 ): string {
-  let isSelected = state.isSelected(date);
+  let isSelected = isSelectedDate(state, date);
   let label = formatDateValue(date, locale, timeZone, {
     day: 'numeric',
     era: getEraFormat(date),
@@ -1350,6 +1372,7 @@ function renderCalendarGrid(
   focusVisibleKey: string | null,
   hoveredKey: string | null,
   pressedKey: string | null,
+  rangeSelectionDescriptionId: string,
   registerCellRef: (key: string, element: HTMLElement | null) => void,
   setFocusVisibleKey: (key: string | null) => void,
   setHoveredKey: (key: string | null) => void,
@@ -1382,19 +1405,8 @@ function renderCalendarGrid(
       let cellKey = date.toString();
       let isDisabled = !isSameMonth(date, monthDate) || state.isCellDisabled(date);
       let isUnavailable = state.isCellUnavailable(date) && !isDisabled;
-      let isSelected = state.isSelected(date);
-      let isInvalid = state.isValueInvalid && Boolean(
-        'highlightedRange' in state
-          ? !state.anchorDate
-            && state.highlightedRange
-            && date.compare(state.highlightedRange.start) >= 0
-            && date.compare(state.highlightedRange.end) <= 0
-          : state.value && isSameDay(date, state.value)
-      );
-
-      if (isInvalid) {
-        isSelected = true;
-      }
+      let isInvalid = isInvalidSelectedDate(state, date);
+      let isSelected = isSelectedDate(state, date);
 
       let highlightedRange = 'highlightedRange' in state ? state.highlightedRange : null;
       let isSelectionStart = Boolean(isSelected && highlightedRange && isSameDay(date, highlightedRange.start));
@@ -1406,7 +1418,7 @@ function renderCalendarGrid(
       let isRangeEnd = Boolean(isSelected && (isLastSelectedBeforeDisabled || dayOfWeek === 6 || date.day === monthDate.calendar.getDaysInMonth(monthDate)));
       let isFocused = state.isCellFocused(date) && !isDisabled && !(!isSameMonth(date, monthDate));
       let isFocusVisible = focusVisibleKey === cellKey;
-      let tabIndex = !isDisabled && isSameDay(date, state.focusedDate) ? 0 : -1;
+      let tabIndex = isDisabled ? undefined : isSameDay(date, state.focusedDate) ? 0 : -1;
       let isSelectable = !isDisabled && !isUnavailable && !state.isReadOnly;
       let rangeSelectionPrompt = '';
       if ('anchorDate' in state && isFocused && !state.isReadOnly && !isDisabled && !isUnavailable) {
@@ -1417,7 +1429,7 @@ function renderCalendarGrid(
 
       let describedBy = [
         isInvalid ? errorMessageId : undefined,
-        rangeSelectionPrompt ? `${cellKey}-description` : undefined
+        rangeSelectionPrompt ? rangeSelectionDescriptionId : undefined
       ].filter(Boolean).join(' ') || undefined;
 
       return h('td', {
@@ -1558,12 +1570,6 @@ function renderCalendarGrid(
             }
           }
         }, [
-          rangeSelectionPrompt
-            ? h('span', {
-              id: `${cellKey}-description`,
-              style: VISUALLY_HIDDEN_STYLE
-            }, rangeSelectionPrompt)
-            : null,
           h('span', {class: classNames(styles, 'spectrum-Calendar-dateText')}, [
             h('span', formatDateValue(date, locale, state.timeZone, {
               day: 'numeric'
@@ -1642,20 +1648,16 @@ function setupCalendarComponent(
     maxValue: normalizedMaxValue.value,
     minValue: normalizedMinValue.value,
     pageBehavior: resolvedProps.value.pageBehavior ?? 'visible',
-    selectionAlignment: resolvedProps.value.selectionAlignment ?? 'center',
+    selectionAlignment: resolvedProps.value.selectionAlignment,
     validationState: resolvedProps.value.validationState,
     visibleMonths: Math.max(resolvedProps.value.visibleMonths ?? 1, 1)
   }));
 
-  let initialDate = toCalendarMonthValue(today(fallbackTimeZone.value), displayCalendar.value);
   let calendarStore: CalendarStore = {
     isFocused: ref(Boolean(resolvedProps.value.autoFocus)),
     rawValue: ref(resolvedProps.value.defaultValue as CalendarInputValue),
-    uncontrolledFocusedDate: ref(initialDate),
-    visibleRange: ref({
-      start: startOfMonth(initialDate),
-      end: shiftDurationStart(startOfMonth(initialDate), {months: Math.max(resolvedProps.value.visibleMonths ?? 1, 1)})
-    })
+    uncontrolledFocusedDate: ref(undefined as unknown as CalendarDate),
+    visibleRange: ref({} as {end: CalendarDate, start: CalendarDate})
   };
   let rangeStore: RangeCalendarStore = {
     anchorDate: ref(null),
@@ -1663,25 +1665,30 @@ function setupCalendarComponent(
     isDragging: ref(false),
     isFocused: ref(Boolean(resolvedProps.value.autoFocus)),
     rawValue: ref(resolvedProps.value.defaultValue as RangeInputValue),
-    uncontrolledFocusedDate: ref(initialDate),
-    visibleRange: ref({
-      start: startOfMonth(initialDate),
-      end: shiftDurationStart(startOfMonth(initialDate), {months: Math.max(resolvedProps.value.visibleMonths ?? 1, 1)})
-    })
+    uncontrolledFocusedDate: ref(undefined as unknown as CalendarDate),
+    visibleRange: ref({} as {end: CalendarDate, start: CalendarDate})
   };
 
   watch(displayCalendar, (nextCalendar, previousCalendar) => {
     if (previousCalendar && !isEqualCalendar(nextCalendar, previousCalendar)) {
-      calendarStore.uncontrolledFocusedDate.value = toCalendar(calendarStore.uncontrolledFocusedDate.value, nextCalendar);
-      calendarStore.visibleRange.value = {
-        start: toCalendar(calendarStore.visibleRange.value.start, nextCalendar),
-        end: toCalendar(calendarStore.visibleRange.value.end, nextCalendar)
-      };
-      rangeStore.uncontrolledFocusedDate.value = toCalendar(rangeStore.uncontrolledFocusedDate.value, nextCalendar);
-      rangeStore.visibleRange.value = {
-        start: toCalendar(rangeStore.visibleRange.value.start, nextCalendar),
-        end: toCalendar(rangeStore.visibleRange.value.end, nextCalendar)
-      };
+      if (calendarStore.uncontrolledFocusedDate.value) {
+        calendarStore.uncontrolledFocusedDate.value = toCalendar(calendarStore.uncontrolledFocusedDate.value, nextCalendar);
+      }
+      if (calendarStore.visibleRange.value.start && calendarStore.visibleRange.value.end) {
+        calendarStore.visibleRange.value = {
+          start: toCalendar(calendarStore.visibleRange.value.start, nextCalendar),
+          end: toCalendar(calendarStore.visibleRange.value.end, nextCalendar)
+        };
+      }
+      if (rangeStore.uncontrolledFocusedDate.value) {
+        rangeStore.uncontrolledFocusedDate.value = toCalendar(rangeStore.uncontrolledFocusedDate.value, nextCalendar);
+      }
+      if (rangeStore.visibleRange.value.start && rangeStore.visibleRange.value.end) {
+        rangeStore.visibleRange.value = {
+          start: toCalendar(rangeStore.visibleRange.value.start, nextCalendar),
+          end: toCalendar(rangeStore.visibleRange.value.end, nextCalendar)
+        };
+      }
       rangeStore.anchorDate.value = rangeStore.anchorDate.value ? toCalendar(rangeStore.anchorDate.value, nextCalendar) : null;
     }
   });
@@ -1714,6 +1721,25 @@ function setupCalendarComponent(
   let pressedKey = ref<string | null>(null);
   let cellRefs = new Map<string, HTMLElement>();
   let errorMessageId = useId();
+  let rangeSelectionDescriptionId = useId();
+  let rangeSelectionDescriptionText = computed(() => {
+    if (!isRange || !('anchorDate' in state.value) || state.value.isReadOnly) {
+      return '';
+    }
+
+    return createCalendarLabelFormatter(locale.value).format(
+      state.value.anchorDate ? 'finishRangeSelectionPrompt' : 'startRangeSelectionPrompt'
+    );
+  });
+  let rangeSelectionDescriptionElement: HTMLDivElement | null = null;
+
+  let syncRangeSelectionDescription = () => {
+    if (!rangeSelectionDescriptionElement) {
+      return;
+    }
+
+    rangeSelectionDescriptionElement.textContent = rangeSelectionDescriptionText.value;
+  };
 
   let registerCellRef = (key: string, element: HTMLElement | null) => {
     if (element) {
@@ -1734,6 +1760,14 @@ function setupCalendarComponent(
   }, {flush: 'post'});
 
   onMounted(async () => {
+    if (typeof document !== 'undefined' && isRange) {
+      rangeSelectionDescriptionElement = document.createElement('div');
+      rangeSelectionDescriptionElement.id = rangeSelectionDescriptionId;
+      rangeSelectionDescriptionElement.style.display = 'none';
+      document.body.appendChild(rangeSelectionDescriptionElement);
+      syncRangeSelectionDescription();
+    }
+
     if (!state.value.isFocused) {
       return;
     }
@@ -1741,12 +1775,29 @@ function setupCalendarComponent(
     cellRefs.get(state.value.focusedDate.toString())?.focus();
   });
 
+  watch(rangeSelectionDescriptionText, () => {
+    syncRangeSelectionDescription();
+  }, {immediate: true});
+
+  onBeforeUnmount(() => {
+    rangeSelectionDescriptionElement?.remove();
+    rangeSelectionDescriptionElement = null;
+  });
+
   let selectedDateDescription = computed(() => getSelectedDateDescription(
     locale.value,
     state.value,
     createCalendarLabelFormatter(locale.value) as LocalizedStringFormatter<'dateRange' | 'selectedDateDescription' | 'selectedRangeDescription', string>
   ));
-  let rootAriaLabel = computed(() => buildCalendarRootAriaLabel(baseProps.value['aria-label'], state.value.title));
+  let rootAriaDescription = computed(() => getVisibleRangeDescription(
+    locale.value,
+    state.value.visibleRange.start,
+    state.value.visibleRange.end,
+    state.value.timeZone,
+    true,
+    createCalendarLabelFormatter(locale.value) as LocalizedStringFormatter<'dateRange', string>
+  ));
+  let rootAriaLabel = computed(() => buildCalendarRootAriaLabel(baseProps.value['aria-label'], rootAriaDescription.value));
 
   return {
     errorMessageId,
@@ -1754,6 +1805,7 @@ function setupCalendarComponent(
     hoveredKey,
     locale,
     pressedKey,
+    rangeSelectionDescriptionId,
     registerCellRef,
     rootAriaLabel,
     selectedDateDescription,
@@ -1851,7 +1903,7 @@ export const VueCalendar = defineComponent({
     },
     selectionAlignment: {
       type: String as PropType<SelectionAlignment>,
-      default: 'center'
+      default: undefined
     },
     validationState: {
       type: String as PropType<'invalid' | 'valid' | undefined>,
@@ -1887,9 +1939,9 @@ export const VueCalendar = defineComponent({
         'aria-label': calendar.rootAriaLabel.value,
         class: [classNames(styles, 'spectrum-Calendar'), attrs.class]
       }, [
-        h('h2', {
-          style: VISUALLY_HIDDEN_STYLE
-        }, calendar.rootAriaLabel.value),
+        h('div', {style: VISUALLY_HIDDEN_STYLE}, [
+          h('h2', calendar.rootAriaLabel.value)
+        ]),
         h('div', {class: classNames(styles, 'spectrum-Calendar-header')}, monthStarts.map((monthDate, index) => {
           let titleDate = monthDate.calendar.getFormattableMonth ? monthDate.calendar.getFormattableMonth(monthDate) : monthDate;
           return h('div', {
@@ -1943,6 +1995,7 @@ export const VueCalendar = defineComponent({
             calendar.focusVisibleKey.value,
             calendar.hoveredKey.value,
             calendar.pressedKey.value,
+            calendar.rangeSelectionDescriptionId,
             calendar.registerCellRef,
             (key) => {
               calendar.focusVisibleKey.value = key;
@@ -2071,7 +2124,7 @@ export const VueRangeCalendar = defineComponent({
     },
     selectionAlignment: {
       type: String as PropType<SelectionAlignment>,
-      default: 'center'
+      default: undefined
     },
     validationState: {
       type: String as PropType<'invalid' | 'valid' | undefined>,
@@ -2107,9 +2160,9 @@ export const VueRangeCalendar = defineComponent({
         'aria-label': calendar.rootAriaLabel.value,
         class: [classNames(styles, 'spectrum-Calendar'), attrs.class]
       }, [
-        h('h2', {
-          style: VISUALLY_HIDDEN_STYLE
-        }, calendar.rootAriaLabel.value),
+        h('div', {style: VISUALLY_HIDDEN_STYLE}, [
+          h('h2', calendar.rootAriaLabel.value)
+        ]),
         h('div', {class: classNames(styles, 'spectrum-Calendar-header')}, monthStarts.map((monthDate, index) => {
           let titleDate = monthDate.calendar.getFormattableMonth ? monthDate.calendar.getFormattableMonth(monthDate) : monthDate;
           return h('div', {
@@ -2163,6 +2216,7 @@ export const VueRangeCalendar = defineComponent({
             calendar.focusVisibleKey.value,
             calendar.hoveredKey.value,
             calendar.pressedKey.value,
+            calendar.rangeSelectionDescriptionId,
             calendar.registerCellRef,
             (key) => {
               calendar.focusVisibleKey.value = key;

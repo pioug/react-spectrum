@@ -259,13 +259,14 @@ function normalizeButtonChildren(
     }
 
     if (typeof value.type !== 'string') {
-      iconProps.class = mergeClassTokens(value.props?.class, options.iconClassName);
+      iconProps.class = mergeClassTokens(options.iconClassName);
       iconProps.size = value.props?.size ?? 'S';
     } else if (value.type === 'svg') {
+      let shouldAddDefaultIconSize = !classTokens.includes(options.iconClassName)
+        && !classTokens.some((token) => token.startsWith('spectrum-Icon--size'));
       iconProps.class = mergeClassTokens(
-        value.props?.class,
         options.iconClassName,
-        classTokens.some((token) => token.startsWith('spectrum-Icon--size')) ? undefined : 'spectrum-Icon--sizeS'
+        shouldAddDefaultIconSize ? 'spectrum-Icon--sizeS' : undefined
       );
       iconProps.focusable = value.props?.focusable ?? 'false';
       iconProps.role = value.props?.role ?? 'img';

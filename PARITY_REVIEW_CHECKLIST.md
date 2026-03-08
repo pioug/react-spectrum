@@ -42,7 +42,7 @@ Use this as a progression checklist for parity re-review. Mark each line when co
 - [x] 1.09 `@vue-spectrum/buttongroup`
   - Components: VueButtonGroup
   - [ ] Story: ButtonGroup.stories.ts
-- [ ] 1.10 `@vue-spectrum/calendar`
+- [x] 1.10 `@vue-spectrum/calendar`
   - Components: VueCalendar, VueRangeCalendar
   - [ ] Story: Calendar.stories.ts
   - [ ] Story: RangeCalendar.stories.ts
