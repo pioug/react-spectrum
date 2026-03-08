@@ -3,6 +3,7 @@ import {describe, expect, it, vi} from 'vitest';
 import {h, nextTick} from 'vue';
 import {readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
+import {CalendarDate} from '@internationalized/date';
 import {setInteractionModality} from '@vue-aria/interactions';
 import Bell from '@spectrum-icons-vue/workflow/Bell';
 import EditWorkflow from '@spectrum-icons-vue/workflow/Edit';
@@ -6357,13 +6358,21 @@ describe('Vue migration primitives', () => {
   it('updates model value from calendar date input', async () => {
     let wrapper = mount(Calendar, {
       props: {
-        modelValue: ''
+        defaultFocusedValue: new CalendarDate(2026, 3, 1)
       }
     });
 
-    await wrapper.get('input[type="date"]').setValue('2026-03-01');
-    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['2026-03-01']);
-    expect(wrapper.emitted('change')?.[0]).toEqual(['2026-03-01']);
+    let marchTenth = wrapper.findAll('.spectrum-Calendar-date').find((cell) => cell.text().trim() === '10');
+    expect(marchTenth).toBeDefined();
+
+    await marchTenth!.trigger('click');
+
+    let updatedModelValue = wrapper.emitted('update:modelValue')?.[0]?.[0] as CalendarDate;
+    let changedValue = wrapper.emitted('change')?.[0]?.[0] as CalendarDate;
+    expect(updatedModelValue).toBeInstanceOf(CalendarDate);
+    expect(updatedModelValue.toString()).toBe('2026-03-10');
+    expect(changedValue).toBeInstanceOf(CalendarDate);
+    expect(changedValue.toString()).toBe('2026-03-10');
   });
 
   it('supports calendar compatibility aliases for value and bounds', async () => {
@@ -6378,13 +6387,19 @@ describe('Vue migration primitives', () => {
     });
 
     expect(wrapper.find('.spectrum-Calendar-date.is-selected').exists()).toBe(true);
-    let input = wrapper.get('input[type="date"]');
-    expect(input.attributes('min')).toBe('2026-03-10');
-    expect(input.attributes('max')).toBe('2026-03-20');
+    expect(wrapper.find('.spectrum-Calendar-date.is-disabled').exists()).toBe(true);
+    expect(wrapper.attributes('aria-label')).toBe('March 2026');
 
-    await input.setValue('2026-03-18');
-    expect(wrapper.emitted('update:value')?.[0]).toEqual(['2026-03-18']);
-    expect(onChange).toHaveBeenCalledWith('2026-03-18');
+    let marchEighteenth = wrapper.findAll('.spectrum-Calendar-date').find((cell) => cell.text().trim() === '18');
+    expect(marchEighteenth).toBeDefined();
+
+    await marchEighteenth!.trigger('click');
+
+    let emittedValue = wrapper.emitted('update:value')?.[0]?.[0] as CalendarDate;
+    expect(emittedValue).toBeInstanceOf(CalendarDate);
+    expect(emittedValue.toString()).toBe('2026-03-18');
+    expect(onChange).toHaveBeenCalled();
+    expect((onChange.mock.calls.at(-1)?.[0] as CalendarDate).toString()).toBe('2026-03-18');
   });
 
   it('applies spectrum calendar state classes for selected and unavailable dates', () => {
@@ -6397,15 +6412,16 @@ describe('Vue migration primitives', () => {
     });
 
     expect(wrapper.find('.spectrum-Calendar-date.is-selected').exists()).toBe(true);
-    expect(wrapper.find('.spectrum-Calendar-date.is-unavailable').exists()).toBe(true);
-    expect(wrapper.attributes('aria-label')).toBe('Calendar');
+    expect(wrapper.find('.spectrum-Calendar-date.is-disabled').exists()).toBe(true);
+    expect(wrapper.find('[role="grid"]').exists()).toBe(true);
+    expect(wrapper.attributes('aria-label')).toBe('March 2026');
   });
 
   it('marks custom unavailable dates from isDateUnavailable in calendar', () => {
     let wrapper = mount(Calendar, {
       props: {
-        defaultValue: '2026-03-15',
-        isDateUnavailable: (date: Date) => date.getDay() === 0 || date.getDay() === 6
+        defaultValue: new CalendarDate(2026, 3, 15),
+        isDateUnavailable: (date: CalendarDate) => date.day >= 10 && date.day <= 12
       }
     });
 
@@ -6416,23 +6432,32 @@ describe('Vue migration primitives', () => {
     let wrapper = mount({
       components: {RangeCalendar},
       data: () => ({
-        range: {
-          start: '',
-          end: ''
-        }
+        range: null as {end: CalendarDate, start: CalendarDate} | null
       }),
       template: `
-        <RangeCalendar v-model="range" />
+        <RangeCalendar v-model="range" :default-focused-value="new CalendarDate(2026, 3, 1)" />
       `
+      ,
+      setup() {
+        return {
+          CalendarDate
+        };
+      }
     });
 
-    let inputs = wrapper.findAll('input[type="date"]');
-    await inputs[0].setValue('2026-03-01');
-    await inputs[1].setValue('2026-03-05');
-    expect((wrapper.vm as unknown as {range: {start: string, end: string}}).range).toEqual({
-      start: '2026-03-01',
-      end: '2026-03-05'
-    });
+    let marchFirst = wrapper.findAll('.spectrum-Calendar-date').find((cell) => cell.text().trim() === '1');
+    let marchFifth = wrapper.findAll('.spectrum-Calendar-date').find((cell) => cell.text().trim() === '5');
+    expect(marchFirst).toBeDefined();
+    expect(marchFifth).toBeDefined();
+
+    await marchFirst!.trigger('click');
+    await marchFifth!.trigger('click');
+
+    let range = (wrapper.vm as unknown as {range: {end: CalendarDate, start: CalendarDate} | null}).range;
+    expect(range?.start).toBeInstanceOf(CalendarDate);
+    expect(range?.end).toBeInstanceOf(CalendarDate);
+    expect(range?.start.toString()).toBe('2026-03-01');
+    expect(range?.end.toString()).toBe('2026-03-05');
   });
 
   it('supports range calendar compatibility aliases for value and bounds', async () => {
@@ -6449,19 +6474,26 @@ describe('Vue migration primitives', () => {
       }
     });
 
-    let inputs = wrapper.findAll('input[type="date"]');
-    expect(inputs[0].attributes('min')).toBe('2026-03-01');
-    expect(inputs[1].attributes('max')).toBe('2026-03-20');
+    expect(wrapper.find('.spectrum-Calendar-date.is-selection-start').exists()).toBe(true);
+    expect(wrapper.find('.spectrum-Calendar-date.is-selection-end').exists()).toBe(true);
+    expect(wrapper.find('.spectrum-Calendar-date.is-disabled').exists()).toBe(true);
 
-    await inputs[1].setValue('2026-03-16');
-    expect(wrapper.emitted('update:value')?.[0]?.[0]).toEqual({
-      start: '2026-03-10',
-      end: '2026-03-16'
-    });
-    expect(onChange).toHaveBeenCalledWith({
-      start: '2026-03-10',
-      end: '2026-03-16'
-    });
+    let marchTenth = wrapper.findAll('.spectrum-Calendar-date').find((cell) => cell.text().trim() === '10');
+    let marchSixteenth = wrapper.findAll('.spectrum-Calendar-date').find((cell) => cell.text().trim() === '16');
+    expect(marchTenth).toBeDefined();
+    expect(marchSixteenth).toBeDefined();
+
+    await marchTenth!.trigger('click');
+    await marchSixteenth!.trigger('click');
+
+    let emittedValue = wrapper.emitted('update:value')?.[0]?.[0] as {end: CalendarDate, start: CalendarDate};
+    expect(emittedValue.start).toBeInstanceOf(CalendarDate);
+    expect(emittedValue.end).toBeInstanceOf(CalendarDate);
+    expect(emittedValue.start.toString()).toBe('2026-03-10');
+    expect(emittedValue.end.toString()).toBe('2026-03-16');
+    expect(onChange).toHaveBeenCalled();
+    expect((onChange.mock.calls.at(-1)?.[0] as {end: CalendarDate, start: CalendarDate}).start.toString()).toBe('2026-03-10');
+    expect((onChange.mock.calls.at(-1)?.[0] as {end: CalendarDate, start: CalendarDate}).end.toString()).toBe('2026-03-16');
   });
 
   it('applies range-selection classes for range calendar values', () => {

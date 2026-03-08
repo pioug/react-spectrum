@@ -1,10 +1,19 @@
 import {action} from 'storybook/actions';
-import {CalendarDate, getLocalTimeZone, today} from '@internationalized/date';
-import {computed, ref} from 'vue';
+import {
+  CalendarDate,
+  CalendarDateTime,
+  getLocalTimeZone,
+  isWeekend,
+  parseZonedDateTime,
+  today
+} from '@internationalized/date';
+import {Custom454Calendar} from '../../../@internationalized/date/tests/customCalendarImpl';
+import {ref} from 'vue';
 import {Flex} from '@vue-spectrum/layout';
 import {Meta, StoryObj} from '@storybook/vue3-vite';
 import {RangeCalendar} from '../src';
 import {TimeField} from '@vue-spectrum/datepicker';
+import type {DateValue} from '@vue-types/calendar';
 
 type DateRangeLike = {
   end?: unknown,
@@ -14,65 +23,19 @@ type DateRangeLike = {
 type RangeCalendarStoryArgs = {
   'aria-label'?: string,
   allowsNonContiguousRanges?: boolean,
+  createCalendar?: () => Custom454Calendar,
   defaultValue?: DateRangeLike,
   errorMessage?: string,
   firstDayOfWeek?: 'sun' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat',
-  isDateUnavailable?: (date: Date) => boolean,
+  isDateUnavailable?: (date: DateValue) => boolean,
   isDisabled?: boolean,
   label?: string,
   maxValue?: unknown,
   minValue?: unknown,
-  onChange?: (value: {end: string, start: string}) => void,
+  onChange?: (value: {end: DateValue | null, start: DateValue | null} | null) => void,
   value?: DateRangeLike,
   visibleMonths?: number
 };
-
-function toDateString(value: unknown): string {
-  if (value == null) {
-    return '';
-  }
-
-  if (typeof value === 'string') {
-    let match = value.match(/\d{4}-\d{2}-\d{2}/);
-    return match?.[0] ?? '';
-  }
-
-  if (value instanceof Date) {
-    if (Number.isNaN(value.getTime())) {
-      return '';
-    }
-    return value.toISOString().slice(0, 10);
-  }
-
-  if (typeof value === 'object') {
-    let candidate = value as {day?: number, month?: number, toString?: () => string, year?: number};
-    if (
-      typeof candidate.year === 'number'
-      && typeof candidate.month === 'number'
-      && typeof candidate.day === 'number'
-    ) {
-      return `${candidate.year}-${String(candidate.month).padStart(2, '0')}-${String(candidate.day).padStart(2, '0')}`;
-    }
-
-    if (typeof candidate.toString === 'function') {
-      let match = candidate.toString().match(/\d{4}-\d{2}-\d{2}/);
-      return match?.[0] ?? '';
-    }
-  }
-
-  return '';
-}
-
-function normalizeRange(value: DateRangeLike | undefined): {end: string, start: string} {
-  return {
-    start: toDateString(value?.start),
-    end: toDateString(value?.end)
-  };
-}
-
-function dateParts(year: number, month: number, day: number): {day: number, month: number, year: number} {
-  return {year, month, day};
-}
 
 function dateValueWithOffset(days = 0): CalendarDate {
   return today(getLocalTimeZone()).add({days});
@@ -154,11 +117,11 @@ function renderRangeCalendar(args: RangeCalendarStoryArgs) {
   return {
     components: {RangeCalendar},
     setup() {
-      let range = ref(normalizeRange(args.value ?? args.defaultValue));
-      let minValue = computed(() => toDateString(args.minValue));
-      let maxValue = computed(() => toDateString(args.maxValue));
+      let range = ref<{end: DateValue | null, start: DateValue | null} | null>(
+        (args.value ?? args.defaultValue ?? null) as {end: DateValue | null, start: DateValue | null} | null
+      );
 
-      let handleChange = (value: {end: string, start: string}) => {
+      let handleChange = (value: {end: DateValue | null, start: DateValue | null} | null) => {
         range.value = value;
         args.onChange?.(value);
       };
@@ -166,8 +129,6 @@ function renderRangeCalendar(args: RangeCalendarStoryArgs) {
       return {
         args,
         handleChange,
-        maxValue,
-        minValue,
         range
       };
     },
@@ -176,15 +137,16 @@ function renderRangeCalendar(args: RangeCalendarStoryArgs) {
         <RangeCalendar
           :aria-label="args['aria-label']"
           :allows-non-contiguous-ranges="args.allowsNonContiguousRanges"
+          :create-calendar="args.createCalendar"
           :default-value="args.defaultValue"
           :error-message="args.errorMessage"
           :first-day-of-week="args.firstDayOfWeek"
           :is-date-unavailable="args.isDateUnavailable"
           :is-disabled="args.isDisabled"
           :label="args.label"
-          :max-value="maxValue"
-          :min-value="minValue"
-          :value="args.value || range"
+          :max-value="args.maxValue"
+          :min-value="args.minValue"
+          :value="args.value ?? range"
           :visible-months="args.visibleMonths"
           @change="handleChange" />
       </div>
@@ -192,18 +154,22 @@ function renderRangeCalendar(args: RangeCalendarStoryArgs) {
   };
 }
 
-function renderRangeCalendarWithTime(args: RangeCalendarStoryArgs, initialRange: {end: string, start: string}, initialTimes: {end: string, start: string}) {
+function renderRangeCalendarWithTime(
+  args: RangeCalendarStoryArgs,
+  initialRange: {end: DateValue, start: DateValue},
+  initialTimes: {end: string, start: string}
+) {
   return {
     components: {Flex, RangeCalendar, TimeField},
     setup() {
-      let range = ref(normalizeRange(args.value ?? initialRange));
-      let minValue = computed(() => toDateString(args.minValue));
-      let maxValue = computed(() => toDateString(args.maxValue));
+      let range = ref<{end: DateValue, start: DateValue}>((args.value ?? initialRange) as {end: DateValue, start: DateValue});
       let startTime = ref(initialTimes.start);
       let endTime = ref(initialTimes.end);
 
-      let handleChange = (value: {end: string, start: string}) => {
-        range.value = value;
+      let handleChange = (value: {end: DateValue | null, start: DateValue | null} | null) => {
+        if (value?.start && value.end) {
+          range.value = value as {end: DateValue, start: DateValue};
+        }
         args.onChange?.(value);
       };
 
@@ -211,8 +177,6 @@ function renderRangeCalendarWithTime(args: RangeCalendarStoryArgs, initialRange:
         args,
         endTime,
         handleChange,
-        maxValue,
-        minValue,
         range,
         startTime
       };
@@ -222,13 +186,14 @@ function renderRangeCalendarWithTime(args: RangeCalendarStoryArgs, initialRange:
         <RangeCalendar
           :aria-label="args['aria-label']"
           :allows-non-contiguous-ranges="args.allowsNonContiguousRanges"
+          :create-calendar="args.createCalendar"
           :error-message="args.errorMessage"
           :first-day-of-week="args.firstDayOfWeek"
           :is-date-unavailable="args.isDateUnavailable"
           :is-disabled="args.isDisabled"
           :label="args.label"
-          :max-value="maxValue"
-          :min-value="minValue"
+          :max-value="args.maxValue"
+          :min-value="args.minValue"
           :value="range"
           :visible-months="args.visibleMonths"
           @change="handleChange" />
@@ -273,8 +238,8 @@ export const ControlledValue: Story = {
 
 export const WithTime: Story = {
   render: (args) => renderRangeCalendarWithTime(args, {
-    start: '2019-06-05',
-    end: '2019-06-10'
+    start: new CalendarDateTime(2019, 6, 5, 8),
+    end: new CalendarDateTime(2019, 6, 10, 12)
   }, {
     start: '8:00 AM',
     end: '12:00 PM'
@@ -283,8 +248,8 @@ export const WithTime: Story = {
 
 export const ZonedTime: Story = {
   render: (args) => renderRangeCalendarWithTime(args, {
-    start: '2021-03-10',
-    end: '2021-03-26'
+    start: parseZonedDateTime('2021-03-10T00:45-05:00[America/New_York]'),
+    end: parseZonedDateTime('2021-03-26T18:05-07:00[America/Los_Angeles]')
   }, {
     start: '12:45 AM',
     end: '6:05 PM'
@@ -317,12 +282,12 @@ export const DefaultMinMax: Story = {
 export const DateUnavailable: Story = {
   ...Default,
   args: {
-    isDateUnavailable: (date: Date) => {
-      let value = date.toISOString().slice(0, 10);
+    isDateUnavailable: (date: DateValue) => {
       let disabledIntervals = [
         [dateValueWithOffset(0).toString(), dateValueWithOffset(7).toString()],
         [dateValueWithOffset(14).toString(), dateValueWithOffset(21).toString()]
       ];
+      let value = date.toString();
       return disabledIntervals.some(([start, end]) => value > start && value < end);
     }
   },
@@ -354,10 +319,10 @@ export const DateUnavailableInvalid: Story = {
   args: {
     allowsNonContiguousRanges: true,
     defaultValue: {
-      start: dateParts(2021, 10, 3),
-      end: dateParts(2021, 10, 16)
+      start: new CalendarDate(2021, 10, 3),
+      end: new CalendarDate(2021, 10, 16)
     },
-    isDateUnavailable: (date: Date) => date.getDay() === 0 || date.getDay() === 6
+    isDateUnavailable: (date: DateValue) => isWeekend(date, Intl.DateTimeFormat().resolvedOptions().locale || 'en-US')
   },
   name: 'isDateUnavailable, invalid'
 };
@@ -365,10 +330,11 @@ export const DateUnavailableInvalid: Story = {
 export const Custom454Story: Story = {
   ...Default,
   args: {
+    createCalendar: () => new Custom454Calendar(),
     visibleMonths: 3,
     defaultValue: {
-      start: dateParts(2023, 8, 6),
-      end: dateParts(2023, 10, 7)
+      start: new CalendarDate(2023, 8, 6),
+      end: new CalendarDate(2023, 10, 7)
     }
   },
   name: 'Custom calendar'

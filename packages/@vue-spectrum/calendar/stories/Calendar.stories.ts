@@ -1,13 +1,22 @@
 import {action} from 'storybook/actions';
 import {ActionButton} from '@vue-spectrum/button';
 import {Calendar} from '../src';
-import {CalendarDate, getLocalTimeZone, today} from '@internationalized/date';
+import {
+  CalendarDate,
+  CalendarDateTime,
+  getLocalTimeZone,
+  parseZonedDateTime,
+  today,
+  type ZonedDateTime
+} from '@internationalized/date';
+import {Custom454Calendar} from '../../../@internationalized/date/tests/customCalendarImpl';
 import {computed, ref} from 'vue';
 import {Flex} from '@vue-spectrum/layout';
 import {Meta, StoryObj} from '@storybook/vue3-vite';
 import {Picker} from '@vue-spectrum/picker';
 import {Provider} from '@vue-spectrum/provider';
 import {TimeField} from '@vue-spectrum/datepicker';
+import type {DateValue} from '@vue-types/calendar';
 
 type CalendarStoryArgs = {
   'aria-label'?: string,
@@ -16,13 +25,13 @@ type CalendarStoryArgs = {
   errorMessage?: string,
   firstDayOfWeek?: 'sun' | 'mon' | 'tue' | 'wed' | 'thu' | 'fri' | 'sat',
   focusedValue?: unknown,
-  isDateUnavailable?: (date: Date) => boolean,
+  isDateUnavailable?: (date: DateValue) => boolean,
   isDisabled?: boolean,
   label?: string,
   maxValue?: unknown,
   minValue?: unknown,
-  onChange?: (value: string) => void,
-  onFocusChange?: (value: string | null) => void,
+  onChange?: (value: DateValue | null) => void,
+  onFocusChange?: (value: CalendarDate) => void,
   value?: unknown,
   visibleMonths?: number
 };
@@ -69,46 +78,6 @@ const calendars: CalendarOption[] = [
   {id: 'ethiopic', label: 'Ethiopic'},
   {id: 'ethioaa', label: 'Ethiopic (Amete Alem)'}
 ];
-
-function toDateString(value: unknown): string {
-  if (value == null) {
-    return '';
-  }
-
-  if (typeof value === 'string') {
-    let match = value.match(/\d{4}-\d{2}-\d{2}/);
-    return match?.[0] ?? '';
-  }
-
-  if (value instanceof Date) {
-    if (Number.isNaN(value.getTime())) {
-      return '';
-    }
-    return value.toISOString().slice(0, 10);
-  }
-
-  if (typeof value === 'object') {
-    let candidate = value as {day?: number, month?: number, toString?: () => string, year?: number};
-    if (
-      typeof candidate.year === 'number'
-      && typeof candidate.month === 'number'
-      && typeof candidate.day === 'number'
-    ) {
-      return `${candidate.year}-${String(candidate.month).padStart(2, '0')}-${String(candidate.day).padStart(2, '0')}`;
-    }
-
-    if (typeof candidate.toString === 'function') {
-      let match = candidate.toString().match(/\d{4}-\d{2}-\d{2}/);
-      return match?.[0] ?? '';
-    }
-  }
-
-  return '';
-}
-
-function dateParts(year: number, month: number, day: number): {day: number, month: number, year: number} {
-  return {year, month, day};
-}
 
 function dateValueWithOffset(days = 0): CalendarDate {
   return today(getLocalTimeZone()).add({days});
@@ -195,10 +164,8 @@ function renderCalendarExample(args: CalendarStoryArgs) {
   return {
     components: {Calendar, Flex, Picker, Provider},
     setup() {
-      let selected = ref(toDateString(args.value ?? args.defaultValue));
-      let focused = ref<string | null>(toDateString(args.focusedValue ?? args.defaultFocusedValue) || null);
-      let minValue = computed(() => toDateString(args.minValue));
-      let maxValue = computed(() => toDateString(args.maxValue));
+      let selected = ref<DateValue | null>((args.value ?? args.defaultValue ?? null) as DateValue | null);
+      let focused = ref<CalendarDate | null>((args.focusedValue ?? args.defaultFocusedValue ?? null) as CalendarDate | null);
       let locale = ref(preferences[0].id);
       let calendar = ref(calendars[0].id);
       let defaultLocale = ref(Intl.DateTimeFormat().resolvedOptions().locale || 'en-US');
@@ -242,12 +209,12 @@ function renderCalendarExample(args: CalendarStoryArgs) {
         calendar.value = preference.ordering.split(' ')[0];
       };
 
-      let handleChange = (value: string) => {
+      let handleChange = (value: DateValue | null) => {
         selected.value = value;
         args.onChange?.(value);
       };
 
-      let handleFocusChange = (value: string | null) => {
+      let handleFocusChange = (value: CalendarDate) => {
         focused.value = value;
         args.onFocusChange?.(value);
       };
@@ -261,8 +228,6 @@ function renderCalendarExample(args: CalendarStoryArgs) {
         handleFocusChange,
         locale,
         localeItems,
-        maxValue,
-        minValue,
         providerLocale,
         selected,
         updateLocale
@@ -290,13 +255,13 @@ function renderCalendarExample(args: CalendarStoryArgs) {
               :default-value="args.defaultValue"
               :error-message="args.errorMessage"
               :first-day-of-week="args.firstDayOfWeek"
-              :focused-value="args.focusedValue || focused"
+              :focused-value="args.focusedValue ?? focused"
               :is-date-unavailable="args.isDateUnavailable"
               :is-disabled="args.isDisabled"
               :label="args.label"
-              :max-value="maxValue"
-              :min-value="minValue"
-              :value="args.value || selected"
+              :max-value="args.maxValue"
+              :min-value="args.minValue"
+              :value="args.value ?? selected"
               :visible-months="args.visibleMonths"
               @change="handleChange"
               @focus-change="handleFocusChange" />
@@ -307,16 +272,14 @@ function renderCalendarExample(args: CalendarStoryArgs) {
   };
 }
 
-function renderCalendarWithTime(args: CalendarStoryArgs, initialDate: string, initialTime: string) {
+function renderCalendarWithTime(args: CalendarStoryArgs, initialValue: DateValue, initialTime: string) {
   return {
     components: {Calendar, Flex, TimeField},
     setup() {
-      let selected = ref(toDateString(args.value) || initialDate);
+      let selected = ref<DateValue | null>((args.value ?? initialValue) as DateValue | null);
       let timeValue = ref(initialTime);
-      let minValue = computed(() => toDateString(args.minValue));
-      let maxValue = computed(() => toDateString(args.maxValue));
 
-      let handleChange = (value: string) => {
+      let handleChange = (value: DateValue | null) => {
         selected.value = value;
         args.onChange?.(value);
       };
@@ -324,8 +287,6 @@ function renderCalendarWithTime(args: CalendarStoryArgs, initialDate: string, in
       return {
         args,
         handleChange,
-        maxValue,
-        minValue,
         selected,
         timeValue
       };
@@ -341,8 +302,8 @@ function renderCalendarWithTime(args: CalendarStoryArgs, initialDate: string, in
           :is-date-unavailable="args.isDateUnavailable"
           :is-disabled="args.isDisabled"
           :label="args.label"
-          :max-value="maxValue"
-          :min-value="minValue"
+          :max-value="args.maxValue"
+          :min-value="args.minValue"
           :value="selected"
           :visible-months="args.visibleMonths"
           @change="handleChange" />
@@ -355,19 +316,23 @@ function renderCalendarWithTime(args: CalendarStoryArgs, initialDate: string, in
   };
 }
 
-function renderControlledFocus(args: CalendarStoryArgs, initialFocusedDate: {day: number, month: number, year: number}) {
+function renderControlledFocus(
+  args: CalendarStoryArgs,
+  initialFocusedDate: CalendarDate,
+  createCalendarFactory?: () => Custom454Calendar
+) {
   return {
     components: {ActionButton, Calendar, Flex},
     setup() {
-      let initial = {...initialFocusedDate};
-      let focused = ref<{day: number, month: number, year: number} | string | null>(initial);
+      let focused = ref<CalendarDate>(initialFocusedDate.copy());
 
       let resetFocusedDate = () => {
-        focused.value = {...initial};
+        focused.value = initialFocusedDate.copy();
       };
 
       return {
         args,
+        createCalendarFactory,
         focused,
         resetFocusedDate
       };
@@ -377,6 +342,7 @@ function renderControlledFocus(args: CalendarStoryArgs, initialFocusedDate: {day
         <ActionButton @click="resetFocusedDate">Reset focused date</ActionButton>
         <Calendar
           :aria-label="args['aria-label']"
+          :create-calendar="createCalendarFactory"
           :error-message="args.errorMessage"
           :first-day-of-week="args.firstDayOfWeek"
           :focused-value="focused"
@@ -409,11 +375,11 @@ export const ControlledValue: Story = {
 };
 
 export const WithTime: Story = {
-  render: (args) => renderCalendarWithTime(args, '2019-06-05', '8:00 AM')
+  render: (args) => renderCalendarWithTime(args, new CalendarDateTime(2019, 6, 5, 8), '8:00 AM')
 };
 
 export const ZonedTime: Story = {
-  render: (args) => renderCalendarWithTime(args, '2021-03-14', '12:45 AM'),
+  render: (args) => renderCalendarWithTime(args, parseZonedDateTime('2021-03-14T00:45-08:00[America/Los_Angeles]') as ZonedDateTime, '12:45 AM'),
   name: 'with zoned time'
 };
 
@@ -440,12 +406,12 @@ export const DateUnavailable: Story = {
   ...Default,
   args: {
     defaultValue: dateValueWithOffset(1),
-    isDateUnavailable: (date: Date) => {
-      let value = date.toISOString().slice(0, 10);
+    isDateUnavailable: (date: DateValue) => {
       let disabledIntervals = [
         [dateValueWithOffset(0).toString(), dateValueWithOffset(7).toString()],
         [dateValueWithOffset(14).toString(), dateValueWithOffset(21).toString()]
       ];
+      let value = date.toString();
       return disabledIntervals.some(([start, end]) => value > start && value < end);
     }
   },
@@ -478,11 +444,11 @@ export const DefaultFocusedValue: Story = {
 };
 
 export const FocusedValue: Story = {
-  render: (args) => renderControlledFocus(args, dateParts(2019, 6, 5)),
+  render: (args) => renderControlledFocus(args, new CalendarDate(2019, 6, 5)),
   name: 'focusedValue'
 };
 
 export const Custom454Example: Story = {
-  render: (args) => renderControlledFocus(args, dateParts(2023, 2, 5)),
+  render: (args) => renderControlledFocus(args, new CalendarDate(2023, 2, 5), () => new Custom454Calendar()),
   name: 'Custom calendar'
 };
