@@ -327,29 +327,65 @@ function toKebabCase(value: string): string {
 }
 
 export function useProviderProps<T>(props: T): T {
-  let context = useProvider();
   let instance = getCurrentInstance();
   let vnodeProps = (instance?.vnode.props ?? {}) as Record<string, unknown>;
+  let providerContext = inject(providerContextKey, null);
+  let providerPropNames = [
+    'isQuiet',
+    'isEmphasized',
+    'isDisabled',
+    'isRequired',
+    'isReadOnly',
+    'validationState'
+  ] as const;
 
-  let result = Object.assign({}, props) as Record<string, unknown>;
-  for (let [propName, contextValue] of Object.entries({
-    isQuiet: context.isQuiet,
-    isEmphasized: context.isEmphasized,
-    isDisabled: context.isDisabled,
-    isRequired: context.isRequired,
-    isReadOnly: context.isReadOnly,
-    validationState: context.validationState
-  })) {
-    let kebabName = toKebabCase(propName);
-    let isProvided = Object.prototype.hasOwnProperty.call(vnodeProps, propName) ||
-      Object.prototype.hasOwnProperty.call(vnodeProps, kebabName);
+  let resolveValue = (key: PropertyKey) => {
+    if (typeof key === 'string' && providerPropNames.includes(key as typeof providerPropNames[number])) {
+      let kebabName = toKebabCase(key);
+      let isProvided = Object.prototype.hasOwnProperty.call(vnodeProps, key) ||
+        Object.prototype.hasOwnProperty.call(vnodeProps, kebabName);
 
-    if (!isProvided) {
-      result[propName] = contextValue;
+      if (!isProvided) {
+        return (providerContext?.value ?? defaultProviderContext)[key as keyof ProviderContextCompat];
+      }
     }
-  }
 
-  return result as T;
+    return (props as Record<PropertyKey, unknown>)[key];
+  };
+
+  return new Proxy(props as Record<PropertyKey, unknown>, {
+    get(target, key, receiver) {
+      let resolved = resolveValue(key);
+      if (resolved !== undefined || !(key in target)) {
+        return resolved;
+      }
+
+      return Reflect.get(target, key, receiver);
+    },
+    getOwnPropertyDescriptor(target, key) {
+      let descriptor = Reflect.getOwnPropertyDescriptor(target, key);
+      if (descriptor) {
+        return descriptor;
+      }
+
+      if (typeof key === 'string' && providerPropNames.includes(key as typeof providerPropNames[number])) {
+        return {
+          configurable: true,
+          enumerable: true,
+          writable: true,
+          value: resolveValue(key)
+        };
+      }
+
+      return undefined;
+    },
+    ownKeys(target) {
+      return Array.from(new Set([
+        ...Reflect.ownKeys(target),
+        ...providerPropNames
+      ]));
+    }
+  }) as T;
 }
 
 export type {

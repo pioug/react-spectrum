@@ -53,10 +53,32 @@ function resolveTooltipTriggerVNode(content: VNodeChild): VNode | null {
   return vnodeChildren.length === 1 ? vnodeChildren[0] : null;
 }
 
-function isNativeInteractiveTriggerVNode(node: VNode | null): node is VNode {
-  return node != null
-    && typeof node.type === 'string'
-    && ['a', 'button', 'input', 'textarea'].includes(node.type);
+function getVNodeDisplayName(node: VNode): string | undefined {
+  let type = node.type;
+  if (typeof type === 'object' && type != null) {
+    let namedType = type as {displayName?: string, name?: string};
+    return namedType.displayName || namedType.name;
+  }
+
+  if (typeof type === 'function') {
+    let namedType = type as {displayName?: string, name?: string};
+    return namedType.displayName || namedType.name;
+  }
+
+  return undefined;
+}
+
+function isDirectTriggerVNode(node: VNode | null): node is VNode {
+  if (node == null) {
+    return false;
+  }
+
+  if (typeof node.type === 'string') {
+    return ['a', 'button', 'input', 'textarea'].includes(node.type);
+  }
+
+  let displayName = getVNodeDisplayName(node);
+  return typeof displayName === 'string' && /(Button|Link)$/.test(displayName);
 }
 
 function resolveTooltipTriggerElement(value: Element | ComponentPublicInstance | null): HTMLElement | null {
@@ -219,6 +241,10 @@ export const VueTooltipTrigger = defineComponent({
       type: Function as PropType<((isOpen: boolean) => void) | undefined>,
       default: undefined
     },
+    offset: {
+      type: Number,
+      default: DEFAULT_OFFSET
+    },
     placement: {
       type: String as PropType<TooltipPlacement>,
       default: 'top'
@@ -288,7 +314,7 @@ export const VueTooltipTrigger = defineComponent({
     let overlayPosition = useOverlayPosition({
       crossOffset: computed(() => DEFAULT_CROSS_OFFSET),
       isOpen: tooltipState.isOpen,
-      offset: computed(() => DEFAULT_OFFSET),
+      offset: computed(() => props.offset),
       overlayRef,
       placement: computed(() => props.placement),
       targetRef: triggerRef
@@ -378,7 +404,7 @@ export const VueTooltipTrigger = defineComponent({
         })
         : null;
 
-      if (isNativeInteractiveTriggerVNode(triggerNode)) {
+      if (isDirectTriggerVNode(triggerNode)) {
         let existingRef = triggerNode.ref;
         let clonedTrigger = cloneVNode(triggerNode, mergeProps(attrs, triggerDomProps, {
           ref: (value: Element | ComponentPublicInstance | null) => {
@@ -387,10 +413,11 @@ export const VueTooltipTrigger = defineComponent({
           }
         }), true);
 
-        return h(Fragment, null, [
-          clonedTrigger,
-          tooltipNode
-        ]);
+        if (!tooltipNode) {
+          return clonedTrigger;
+        }
+
+        return h(Fragment, null, [clonedTrigger, tooltipNode]);
       }
 
       return h('span', {

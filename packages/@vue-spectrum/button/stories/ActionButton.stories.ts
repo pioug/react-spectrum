@@ -1,6 +1,7 @@
 import {ActionButton} from '@vue-spectrum/button';
 import {action} from 'storybook/actions';
 import {h} from 'vue';
+import Add from '@spectrum-icons-vue/workflow/Add';
 import {Provider} from '@vue-spectrum/provider';
 import {theme as defaultTheme} from '@vue-spectrum/theme-default';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
@@ -90,18 +91,9 @@ function createPressActionHandlers(args: ActionButtonStoryArgs) {
 }
 
 function renderAddIcon() {
-  return h('svg', {
-    'aria-hidden': 'true',
-    class: 'spectrum-Icon',
-    viewBox: '0 0 24 24',
-    width: '18',
-    height: '18'
-  }, [
-    h('path', {
-      d: 'M12 5c.41 0 .75.34.75.75v5.5h5.5a.75.75 0 0 1 0 1.5h-5.5v5.5a.75.75 0 0 1-1.5 0v-5.5h-5.5a.75.75 0 0 1 0-1.5h5.5v-5.5c0-.41.34-.75.75-.75z',
-      fill: 'currentColor'
-    })
-  ]);
+  return h(Add, {
+    'aria-hidden': 'true'
+  });
 }
 
 function wrapInProvider(content: ReturnType<typeof h>) {

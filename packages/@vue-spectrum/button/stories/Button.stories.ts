@@ -5,6 +5,7 @@ import {Form} from '@vue-spectrum/form';
 import {h, ref} from 'vue';
 import {Provider} from '@vue-spectrum/provider';
 import {theme as defaultTheme} from '@vue-spectrum/theme-default';
+import {TooltipTrigger} from '@vue-spectrum/tooltip';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type ButtonStoryArgs = {
@@ -298,18 +299,28 @@ export const IconOnly: Story = {
           gap: '16px'
         }
       }, [
-        h(Button, {
-          ...args,
-          'aria-label': 'Notifications'
+        h(TooltipTrigger, {
+          content: 'Notifications',
+          offset: 2
         }, {
-          default: () => [renderBellIcon()]
+          default: () => h(Button, {
+            ...args,
+            'aria-label': 'Notifications'
+          }, {
+            default: () => [renderBellIcon()]
+          })
         }),
-        h(Button, {
-          ...args,
-          isDisabled: true,
-          'aria-label': 'Notifications (disabled)'
+        h(TooltipTrigger, {
+          content: 'Notifications',
+          offset: 2
         }, {
-          default: () => [renderBellIcon()]
+          default: () => h(Button, {
+            ...args,
+            isDisabled: true,
+            'aria-label': 'Notifications (disabled)'
+          }, {
+            default: () => [renderBellIcon()]
+          })
         })
       ]));
     }
@@ -423,24 +434,10 @@ export const PendingSpinner: Story = {
         }
       };
 
-      return {
-        buttonProps: pickButtonProps(args),
-        handleFormSubmit,
-        pendingAriaLabel,
-        pendingDefault,
-        pendingForm,
-        pendingIcon,
-        pendingIconAriaLabel,
-        pendingNoAriaLabel,
-        pendingOnClick,
-        pendingTooltip,
-        startPending
-      };
-    },
-    render() {
+      let buttonProps = pickButtonProps(args);
       let iconOnly = [renderBellIcon()];
 
-      return wrapInProvider(args, h('div', {
+      return () => wrapInProvider(args, h('div', {
         style: {
           display: 'grid',
           rowGap: '8px'
@@ -452,38 +449,38 @@ export const PendingSpinner: Story = {
             flexWrap: 'wrap'
           }
         }, [
-          renderPendingButtonContainer(this.buttonProps, h(Button, {
-            ...this.buttonProps,
-            isPending: this.pendingDefault,
+          renderPendingButtonContainer(buttonProps, h(Button, {
+            ...buttonProps,
+            isPending: pendingDefault.value,
             onClick: (event: MouseEvent) => {
               action('press')(event);
-              this.startPending(this.pendingDefault);
+              startPending(pendingDefault);
             }
           }, {
             default: () => ['click me!']
           })),
-          renderPendingButtonContainer(this.buttonProps, h(Button, {
-            ...this.buttonProps,
-            isPending: this.pendingIcon,
+          renderPendingButtonContainer(buttonProps, h(Button, {
+            ...buttonProps,
+            isPending: pendingIcon.value,
             onClick: (event: MouseEvent) => {
               action('press')(event);
-              this.startPending(this.pendingIcon);
+              startPending(pendingIcon);
             }
           }, {
             default: () => [renderBellIcon(), h('span', {class: 'spectrum-Button-label'}, 'I have an icon')]
           })),
-          renderPendingButtonContainer(this.buttonProps, h(Button, {
-            ...this.buttonProps,
-            isPending: this.pendingOnClick,
+          renderPendingButtonContainer(buttonProps, h(Button, {
+            ...buttonProps,
+            isPending: pendingOnClick.value,
             onClick: (event: MouseEvent) => {
               action('click')(event);
-              this.startPending(this.pendingOnClick);
+              startPending(pendingOnClick);
             }
           }, {
             default: () => [h('span', {class: 'spectrum-Button-label'}, 'with onClick')]
           })),
-          renderPendingButtonContainer(this.buttonProps, h(Button, {
-            ...this.buttonProps,
+          renderPendingButtonContainer(buttonProps, h(Button, {
+            ...buttonProps,
             isDisabled: true
           }, {
             default: () => ['disabled']
@@ -497,50 +494,55 @@ export const PendingSpinner: Story = {
           }
         }, [
           h('span', 'Aria-label "Button label" on button'),
-          renderPendingButtonContainer(this.buttonProps, h(Button, {
-            ...this.buttonProps,
+          renderPendingButtonContainer(buttonProps, h(Button, {
+            ...buttonProps,
             'aria-label': 'Button label',
-            isPending: this.pendingAriaLabel,
+            isPending: pendingAriaLabel.value,
             onClick: (event: MouseEvent) => {
               action('press')(event);
-              this.startPending(this.pendingAriaLabel);
+              startPending(pendingAriaLabel);
             }
           }, {
             default: () => iconOnly
           })),
           h('span', 'Aria-label "icon label" on icon'),
-          renderPendingButtonContainer(this.buttonProps, h(Button, {
-            ...this.buttonProps,
-            isPending: this.pendingIconAriaLabel,
+          renderPendingButtonContainer(buttonProps, h(Button, {
+            ...buttonProps,
+            isPending: pendingIconAriaLabel.value,
             onClick: (event: MouseEvent) => {
               action('press')(event);
-              this.startPending(this.pendingIconAriaLabel);
+              startPending(pendingIconAriaLabel);
             }
           }, {
             default: () => [renderBellIcon('icon label')]
           })),
           h('span', 'No aria-labels--bad implementation'),
-          renderPendingButtonContainer(this.buttonProps, h(Button, {
-            ...this.buttonProps,
-            isPending: this.pendingNoAriaLabel,
+          renderPendingButtonContainer(buttonProps, h(Button, {
+            ...buttonProps,
+            isPending: pendingNoAriaLabel.value,
             onClick: (event: MouseEvent) => {
               action('press')(event);
-              this.startPending(this.pendingNoAriaLabel);
+              startPending(pendingNoAriaLabel);
             }
           }, {
             default: () => iconOnly
           })),
           h('span', 'Tooltip and aria-label "Notifications" on button'),
-          renderPendingButtonContainer(this.buttonProps, h(Button, {
-            ...this.buttonProps,
-            'aria-label': 'Notifications',
-            isPending: this.pendingTooltip,
-            onClick: (event: MouseEvent) => {
-              action('press')(event);
-              this.startPending(this.pendingTooltip);
-            }
+          renderPendingButtonContainer(buttonProps, h(TooltipTrigger, {
+            content: 'Click here to view',
+            offset: 2
           }, {
-            default: () => iconOnly
+            default: () => h(Button, {
+              ...buttonProps,
+              'aria-label': 'Notifications',
+              isPending: pendingTooltip.value,
+              onClick: (event: MouseEvent) => {
+                action('press')(event);
+                startPending(pendingTooltip);
+              }
+            }, {
+              default: () => iconOnly
+            })
           }))
         ]),
         h('div', {
@@ -550,8 +552,8 @@ export const PendingSpinner: Story = {
             flexWrap: 'wrap'
           }
         }, [
-          renderPendingButtonContainer(this.buttonProps, h(Button, {
-            ...this.buttonProps,
+          renderPendingButtonContainer(buttonProps, h(Button, {
+            ...buttonProps,
             isPending: args.isPending,
             onClick: () => {
               action('press')('controlled');
@@ -567,13 +569,13 @@ export const PendingSpinner: Story = {
             flexWrap: 'wrap'
           }
         }, [
-          renderPendingButtonContainer(this.buttonProps, h(Form, {
-            onSubmit: this.handleFormSubmit
+          renderPendingButtonContainer(buttonProps, h(Form, {
+            onSubmit: handleFormSubmit
           }, {
             default: () => [
               h(Button, {
-                ...this.buttonProps,
-                isPending: this.pendingForm,
+                ...buttonProps,
+                isPending: pendingForm.value,
                 type: 'submit'
               }, {
                 default: () => ['Form submit']

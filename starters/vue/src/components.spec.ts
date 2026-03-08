@@ -990,6 +990,40 @@ describe('Vue migration primitives', () => {
     }
   });
 
+  it('updates pending button semantics when isPending changes after mount', async () => {
+    vi.useFakeTimers();
+
+    let wrapper = mount(Button, {
+      props: {
+        isPending: false
+      },
+      slots: {
+        default: () => [h(Bell), 'Pending button']
+      }
+    });
+
+    try {
+      expect(wrapper.attributes('aria-label')).toBeUndefined();
+      expect(wrapper.find('.spectrum-Button-circleLoader').exists()).toBe(false);
+
+      await wrapper.setProps({isPending: true});
+      await nextTick();
+
+      expect(wrapper.attributes('aria-disabled')).toBe('true');
+      expect(wrapper.attributes('aria-label')).toBe('pending');
+      expect(wrapper.get('.spectrum-Button-circleLoader').attributes('style')).toContain('visibility: hidden');
+
+      vi.advanceTimersByTime(1000);
+      await nextTick();
+
+      expect(wrapper.get('.spectrum-Button-circleLoader').attributes('style')).toContain('visibility: visible');
+      expect(wrapper.get('[role="progressbar"]').attributes('aria-label')).toBe('pending');
+    } finally {
+      wrapper.unmount();
+      vi.useRealTimers();
+    }
+  });
+
   it('maps action button DOM contract, classes, and keyboard focus-ring parity', async () => {
     let wrapper = mount(ActionButton, {
       props: {
@@ -3772,6 +3806,32 @@ describe('Vue migration primitives', () => {
       await wrapper.setProps({modelValue: false});
       await nextTick();
       expect(document.body.querySelector('.spectrum-Tooltip')).toBeNull();
+    } finally {
+      wrapper.unmount();
+    }
+  });
+
+  it('clones vue button triggers without inserting wrapper spans', async () => {
+    let wrapper = mount(TooltipTrigger, {
+      attachTo: document.body,
+      props: {
+        content: 'Tooltip details',
+        modelValue: true,
+        offset: 2
+      },
+      slots: {
+        default: () => h(Button, {
+          'aria-label': 'Notifications'
+        }, {
+          default: () => [h(Bell)]
+        })
+      }
+    });
+
+    try {
+      expect(wrapper.find('.vs-tooltip-trigger').exists()).toBe(false);
+      expect(wrapper.get('button').attributes('offset')).toBeUndefined();
+      expect(document.body.querySelector('.spectrum-Tooltip')).not.toBeNull();
     } finally {
       wrapper.unmount();
     }
