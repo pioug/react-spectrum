@@ -21,7 +21,7 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - Components: ActionGroup
   - [ ] Story: ActionGroup.stories.ts
   - [ ] Story: Toolbar.stories.ts
-- [ ] 1.04 `@vue-spectrum/autocomplete`
+- [x] 1.04 `@vue-spectrum/autocomplete`
   - Components: SearchAutocomplete
   - [ ] Story: SearchAutocomplete.stories.ts
 - [ ] 1.05 `@vue-spectrum/avatar`

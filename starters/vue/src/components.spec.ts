@@ -1206,7 +1206,7 @@ describe('Vue migration primitives', () => {
     let items = wrapper.findAll('button[data-vs-action-group-item="true"]');
     expect(items).toHaveLength(2);
     expect(items[1].attributes('disabled')).toBeDefined();
-    expect(items[1].attributes('aria-disabled')).toBeUndefined();
+    expect(items[1].attributes('aria-disabled')).toBe('true');
 
     await items[1].trigger('click');
     expect(wrapper.emitted('action')).toBeUndefined();
@@ -2552,6 +2552,7 @@ describe('Vue migration primitives', () => {
 
   it('maps search autocomplete icon variants and clear behavior', async () => {
     let wrapper = mount(SearchAutocomplete, {
+      attachTo: document.body,
       props: {
         icon: 'filter',
         label: 'Search with Autocomplete',
@@ -2571,10 +2572,11 @@ describe('Vue migration primitives', () => {
     expect(input.attributes('autocomplete')).toBe('off');
     expect(input.attributes('autocorrect')).toBe('off');
     expect(input.attributes('spellcheck')).toBe('false');
+    expect(input.attributes('tabindex')).toBe('0');
 
     await input.trigger('focus');
     expect(wrapper.find('.spectrum-InputGroup').classes()).not.toContain('focus-ring');
-    expect(wrapper.emitted('openChange')?.[0]).toEqual([true]);
+    expect(wrapper.emitted('openChange')?.[0]).toEqual([true, 'input']);
 
     let autocompleteInput = input.element as HTMLInputElement;
     let originalMatches = autocompleteInput.matches.bind(autocompleteInput);
@@ -2588,16 +2590,28 @@ describe('Vue migration primitives', () => {
     await input.trigger('focus');
     expect(wrapper.find('.spectrum-InputGroup').classes()).toContain('focus-ring');
     matchesSpy.mockRestore();
-    await input.trigger('blur');
-    expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
 
-    await input.setValue('Mechanical');
-    expect(wrapper.emitted('inputChange')?.some((call) => call[0] === 'Mechanical')).toBe(true);
+    await input.setValue('Me');
+    await wrapper.setProps({modelValue: 'Me'});
+    expect(wrapper.emitted('inputChange')?.some((call) => call[0] === 'Me')).toBe(true);
+    expect(wrapper.emitted('openChange')?.at(-1)).toEqual([true, 'input']);
+    expect(document.body.querySelector('[data-testid="popover"]')).not.toBeNull();
+    expect(document.body.querySelector('[role="listbox"]')).not.toBeNull();
+    expect(document.body.querySelectorAll('[role="option"]')).toHaveLength(1);
+
+    let option = document.body.querySelector('[role="option"]') as HTMLElement | null;
+    expect(option?.textContent).toContain('Mechanical');
+    option?.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+    await nextTick();
+
     expect(wrapper.emitted('selectionChange')?.at(-1)).toEqual(['Mechanical']);
+    expect(wrapper.emitted('submit')?.at(-1)).toEqual([null, 'Mechanical']);
+    expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual(['Mechanical']);
+    expect(document.body.querySelector('[role="listbox"]')).toBeNull();
 
     await wrapper.setProps({modelValue: 'Mechanical'});
     await input.trigger('keydown', {key: 'Enter'});
-    expect(wrapper.emitted('submit')?.at(-1)).toEqual(['Mechanical', 'Mechanical']);
+    expect(wrapper.emitted('submit')?.at(-1)).toEqual([null, 'Mechanical']);
 
     await wrapper.get('div.spectrum-ClearButton[role="button"]').trigger('click');
     expect(wrapper.emitted('update:modelValue')?.at(-1)).toEqual(['']);
@@ -2605,7 +2619,11 @@ describe('Vue migration primitives', () => {
     expect(wrapper.emitted('selectionChange')?.at(-1)).toEqual([null]);
     expect(wrapper.emitted('clear')).toHaveLength(1);
 
+    await input.trigger('blur');
+    expect(wrapper.emitted('openChange')?.at(-1)).toEqual([false]);
+
     let noIcon = mount(SearchAutocomplete, {
+      attachTo: document.body,
       props: {
         icon: null,
         label: 'Search with Autocomplete',
@@ -2616,6 +2634,9 @@ describe('Vue migration primitives', () => {
 
     expect(noIcon.find('[data-testid="searchicon"]').exists()).toBe(false);
     expect(noIcon.get('input[type="text"]').classes()).not.toContain('spectrum-Textfield-inputIcon');
+
+    wrapper.unmount();
+    noIcon.unmount();
   });
 
   it('maps search autocomplete aria label and labelledby precedence to react parity', () => {

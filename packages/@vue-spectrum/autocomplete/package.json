@@ -24,6 +24,9 @@
   },
   "dependencies": {
     "@adobe/spectrum-css-temp": "3.0.0-alpha.1",
+    "@vue-spectrum/avatar": "workspace:*",
+    "@vue-spectrum/overlays": "workspace:*",
+    "@vue-spectrum/progress": "workspace:*",
     "@vue-aria/utils": "workspace:*",
     "@vue-spectrum/utils": "workspace:*",
     "@vue-stately/collections": "workspace:*",

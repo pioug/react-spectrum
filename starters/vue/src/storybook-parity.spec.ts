@@ -1541,7 +1541,7 @@ describe('Vue storybook helper parity', () => {
     }
   });
 
-  it('renders search autocomplete icon and avatar scenarios with real story content', () => {
+  it('renders search autocomplete icon and avatar scenarios with real story content', async () => {
     let wrappers: Array<ReturnType<typeof mount>> = [];
 
     try {
@@ -1553,6 +1553,10 @@ describe('Vue storybook helper parity', () => {
       expect(defaultInput.attributes('aria-label')).toBeUndefined();
       expect(defaultInput.attributes('role')).toBe('combobox');
       expect(defaultInput.attributes('aria-autocomplete')).toBe('list');
+      await defaultInput.setValue('a');
+      expect(document.body.querySelector('[role="listbox"]')).not.toBeNull();
+      expect(document.body.querySelectorAll('[role="option"]').length).toBeGreaterThan(0);
+      await defaultInput.trigger('blur');
 
       let iconFilterStory = SearchAutocompleteIconFilter.render?.({}) as ReturnType<Exclude<typeof SearchAutocompleteIconFilter.render, undefined>>;
       let iconFilterWrapper = mount(iconFilterStory);
@@ -1572,6 +1576,11 @@ describe('Vue storybook helper parity', () => {
       expect(withAvatarsWrapper.text()).not.toContain('With avatars');
       expect(withAvatarsWrapper.find('input[type="text"]').exists()).toBe(true);
       expect(withAvatarsWrapper.find('datalist').exists()).toBe(false);
+      await withAvatarsWrapper.get('input[type="text"]').setValue('user');
+      let listboxes = Array.from(document.body.querySelectorAll('[role="listbox"]'));
+      let activeListbox = listboxes[listboxes.length - 1];
+      expect(activeListbox?.querySelector('.spectrum-Menu-avatar')).not.toBeNull();
+      expect(activeListbox?.querySelector('[role="option"]')?.textContent).toContain('User 1');
 
       let noVisibleLabelStory = SearchAutocompleteNoVisibleLabel.render?.({}) as ReturnType<Exclude<typeof SearchAutocompleteNoVisibleLabel.render, undefined>>;
       let noVisibleLabelWrapper = mount(noVisibleLabelStory);
@@ -1681,7 +1690,7 @@ describe('Vue storybook helper parity', () => {
       let firstGroupButtons = setDisabledWrapper.findAll('.spectrum-ActionGroup')[0]?.findAll('[data-vs-action-group-item="true"]') ?? [];
       expect(firstGroupButtons).toHaveLength(3);
       expect(firstGroupButtons[1].attributes('disabled')).toBeDefined();
-      expect(firstGroupButtons[1].attributes('aria-disabled')).toBeUndefined();
+      expect(firstGroupButtons[1].attributes('aria-disabled')).toBe('true');
       await firstGroupButtons[1].trigger('click');
       expect(disabledOnAction).not.toHaveBeenCalled();
 
@@ -1804,7 +1813,7 @@ describe('Vue storybook helper parity', () => {
       let disabledManageButtons = disabledGroups[0].findAll('[data-vs-action-group-item="true"]');
       expect(disabledManageButtons).toHaveLength(3);
       expect(disabledManageButtons[1].attributes('disabled')).toBeDefined();
-      expect(disabledManageButtons[1].attributes('aria-disabled')).toBeUndefined();
+      expect(disabledManageButtons[1].attributes('aria-disabled')).toBe('true');
 
       await disabledManageButtons[0].trigger('click');
       await disabledManageButtons[2].trigger('click');
