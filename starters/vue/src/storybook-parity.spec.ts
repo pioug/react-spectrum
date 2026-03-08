@@ -1703,7 +1703,7 @@ describe('Vue storybook helper parity', () => {
       wrappers.push(staticColorWrapper);
       expect(staticColorWrapper.text()).toContain('Grid view');
       expect(staticColorWrapper.text()).not.toContain('[object Object]');
-      expect(staticColorWrapper.find('svg.vs-workflow-icon').exists()).toBe(true);
+      expect(staticColorWrapper.find('svg.spectrum-Icon').exists()).toBe(true);
 
       let staticColorSetDefaultSelectedStory = ActionGroupStaticColorWhite.render?.({
         ...((ActionGroupStaticColorWhite.args as Record<string, unknown>) ?? {}),

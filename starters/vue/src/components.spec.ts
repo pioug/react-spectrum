@@ -598,8 +598,27 @@ describe('Vue migration primitives', () => {
     expect(wrapper.element.tagName).toBe('svg');
     expect(wrapper.classes()).toContain('spectrum-Icon');
     expect(wrapper.classes()).toContain('spectrum-Icon--sizeS');
+    expect(wrapper.classes()).not.toContain('vs-workflow-icon');
     expect(wrapper.attributes('aria-label')).toBe('Edit item');
+    expect(wrapper.attributes('data-scale')).toBeUndefined();
+    expect(wrapper.attributes('data-vac')).toBeUndefined();
+    expect(wrapper.attributes('style')).toBeUndefined();
     expect(wrapper.find('path').exists()).toBe(true);
+  });
+
+  it('renders workflow icon size from provider scale when explicit size is not passed', () => {
+    let wrapper = mount(Provider, {
+      props: {
+        scale: 'large'
+      },
+      slots: {
+        default: () => h(EditWorkflow, {'aria-label': 'Edit item'})
+      }
+    });
+
+    let icon = wrapper.get('svg');
+    expect(icon.classes()).toContain('spectrum-Icon');
+    expect(icon.classes()).toContain('spectrum-Icon--sizeL');
   });
 
   it('renders image src/alt and handles image load errors', async () => {

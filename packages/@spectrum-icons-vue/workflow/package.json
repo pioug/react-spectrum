@@ -34,6 +34,7 @@
   },
   "dependencies": {
     "@adobe/spectrum-css-temp": "3.0.0-alpha.1",
+    "@vue-spectrum/provider": "workspace:*",
     "@vue-spectrum/utils": "workspace:*"
   },
   "peerDependencies": {

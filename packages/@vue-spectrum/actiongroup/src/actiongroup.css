@@ -43,7 +43,7 @@
 }
 
 /* Match React slot icon sizing inside ActionGroup action buttons. */
-.spectrum-ActionGroup-item .vs-workflow-icon.spectrum-Icon--sizeM {
+.spectrum-ActionGroup-item .spectrum-Icon.spectrum-Icon--sizeM {
   block-size: var(--spectrum-alias-workflow-icon-size);
   inline-size: var(--spectrum-alias-workflow-icon-size);
 }

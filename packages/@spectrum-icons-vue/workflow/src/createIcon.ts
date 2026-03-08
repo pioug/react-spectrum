@@ -2,6 +2,7 @@ import '@adobe/spectrum-css-temp/components/icon/vars.css';
 import '@adobe/spectrum-css-temp/components/icon/workflow-icons.css';
 import {classNames} from '@vue-spectrum/utils';
 import {computed, defineComponent, h, type PropType} from 'vue';
+import {useProvider} from '@vue-spectrum/provider';
 const styles: {[key: string]: string} = {};
 
 type IconScaleSize = 'L' | 'M';
@@ -12,11 +13,14 @@ interface SvgAttributes {
   [name: string]: string
 }
 
-function resolveSize(size: WorkflowIconSize | undefined): {scale: IconScaleSize, token: Exclude<WorkflowIconSize, 'l' | 'm' | 's' | 'xl' | 'xs' | 'xxl' | 'xxs'>} {
+function resolveSize(
+  size: WorkflowIconSize | undefined,
+  providerScale: IconScaleSize
+): {scale: IconScaleSize, token: Exclude<WorkflowIconSize, 'l' | 'm' | 's' | 'xl' | 'xs' | 'xxl' | 'xxs'>} {
   if (!size) {
     return {
-      scale: 'M',
-      token: 'M'
+      scale: providerScale,
+      token: providerScale
     };
   }
 
@@ -59,7 +63,7 @@ export function createWorkflowIcon(componentName: string, svgAttributes: SvgAttr
     props: {
       color: {
         type: String,
-        default: 'currentColor'
+        default: undefined
       },
       hidden: {
         type: Boolean,
@@ -75,7 +79,9 @@ export function createWorkflowIcon(componentName: string, svgAttributes: SvgAttr
       }
     },
     setup(props, {attrs}) {
-      let resolvedSize = computed(() => resolveSize(props.size));
+      let provider = useProvider();
+      let providerScale = computed<IconScaleSize>(() => provider.scale === 'large' ? 'L' : 'M');
+      let resolvedSize = computed(() => resolveSize(props.size, providerScale.value));
 
       return () => {
         let ariaLabel = props.label || attrs['aria-label'];
@@ -88,11 +94,10 @@ export function createWorkflowIcon(componentName: string, svgAttributes: SvgAttr
           ...attrs,
           class: [
             classNames(styles, 'spectrum-Icon', `spectrum-Icon--size${resolvedSize.value.token}`),
-            'vs-workflow-icon',
             attrs.class
           ],
           style: [
-            {color: resolveIconColor(props.color)},
+            props.color ? {color: resolveIconColor(props.color)} : undefined,
             attrs.style
           ],
           role: 'img',
@@ -101,8 +106,6 @@ export function createWorkflowIcon(componentName: string, svgAttributes: SvgAttr
           'aria-label': typeof ariaLabel === 'string' ? ariaLabel : undefined,
           'aria-labelledby': typeof ariaLabelledby === 'string' ? ariaLabelledby : undefined,
           'aria-hidden': ariaHidden,
-          'data-scale': resolvedSize.value.scale,
-          'data-vac': '',
           innerHTML: svgInnerHTML
         });
       };
