@@ -46,7 +46,7 @@ function renderButtonGroup(args: ButtonGroupStoryArgs, showExtraText: boolean, t
       }, {
         default: () => [
           h(Bell, {'aria-hidden': 'true'}),
-          h('span', {class: 'spectrum-Button-label'}, 'Click me to make Button larger '),
+          h('span', {class: 'spectrum-Button-label'}, 'Click me to make Button larger'),
           showExtraText ? h('span', {class: 'spectrum-Button-label'}, 'to test overflow resizing :D') : null
         ]
       })

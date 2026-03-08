@@ -39,7 +39,7 @@ Use this as a progression checklist for parity re-review. Mark each line when co
   - [ ] Story: Button.stories.ts
   - [ ] Story: LogicButton.stories.ts
   - [ ] Story: ToggleButton.stories.ts
-- [ ] 1.09 `@vue-spectrum/buttongroup`
+- [x] 1.09 `@vue-spectrum/buttongroup`
   - Components: VueButtonGroup
   - [ ] Story: ButtonGroup.stories.ts
 - [ ] 1.10 `@vue-spectrum/calendar`
