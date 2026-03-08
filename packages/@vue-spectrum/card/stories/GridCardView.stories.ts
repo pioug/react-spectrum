@@ -1,6 +1,13 @@
 import {action} from 'storybook/actions';
+import {ActionButton} from '@vue-spectrum/button';
+import {Content} from '@vue-spectrum/view';
+import {Flex} from '@vue-spectrum/layout';
+import {Heading} from '@vue-spectrum/text';
+import {IllustratedMessage} from '@vue-spectrum/illustratedmessage';
+import {Link} from '@vue-spectrum/link';
+import {TextField} from '@vue-spectrum/textfield';
 import {CardView} from '../src';
-import {h, onMounted, ref} from 'vue';
+import {Fragment, computed, h, ref} from 'vue';
 import type {Meta, StoryObj} from '@storybook/vue3-vite';
 
 type GridCardItem = {
@@ -77,6 +84,30 @@ function GridLayout() {
   return {layoutType: 'grid'};
 }
 
+function splitCardViewArgs(args: Record<string, unknown>, baseStyle: Record<string, string> = {}) {
+  let {
+    height,
+    style,
+    width,
+    ...cardViewArgs
+  } = args;
+
+  let cardViewStyle: Record<string, string> = {...baseStyle};
+  if (typeof width === 'number' || typeof width === 'string') {
+    cardViewStyle.width = String(width);
+  }
+
+  if (typeof height === 'number' || typeof height === 'string') {
+    cardViewStyle.height = String(height);
+  }
+
+  if (style && typeof style === 'object' && !Array.isArray(style)) {
+    Object.assign(cardViewStyle, style as Record<string, string>);
+  }
+
+  return {cardViewArgs, cardViewStyle};
+}
+
 function actionHandlers() {
   return {
     onAction: action('action'),
@@ -87,7 +118,7 @@ function actionHandlers() {
 }
 
 function renderEmptyState() {
-  return h('div', [
+  return h(IllustratedMessage, null, [
     h('svg', {
       height: '103',
       viewBox: '0 0 150 103',
@@ -97,10 +128,10 @@ function renderEmptyState() {
         d: 'M133.7,8.5h-118c-1.9,0-3.5,1.6-3.5,3.5v27c0,0.8,0.7,1.5,1.5,1.5s1.5-0.7,1.5-1.5V23.5h119V92c0,0.3-0.2,0.5-0.5,0.5h-118c-0.3,0-0.5-0.2-0.5-0.5V69c0-0.8-0.7-1.5-1.5-1.5s-1.5,0.7-1.5,1.5v23c0,1.9,1.6,3.5,3.5,3.5h118c1.9,0,3.5-1.6,3.5-3.5V12C137.2,10.1,135.6,8.5,133.7,8.5z M15.2,21.5V12c0-0.3,0.2-0.5,0.5-0.5h118c0.3,0,0.5,0.2,0.5,0.5v9.5H15.2z M32.6,16.5c0,0.6-0.4,1-1,1h-10c-0.6,0-1-0.4-1-1s0.4-1,1-1h10C32.2,15.5,32.6,15.9,32.6,16.5z M13.6,56.1l-8.6,8.5C4.8,65,4.4,65.1,4,65.1c-0.4,0-0.8-0.1-1.1-0.4c-0.6-0.6-0.6-1.5,0-2.1l8.6-8.5l-8.6-8.5c-0.6-0.6-0.6-1.5,0-2.1c0.6-0.6,1.5-0.6,2.1,0l8.6,8.5l8.6-8.5c0.6-0.6,1.5-0.6,2.1,0c0.6,0.6,0.6,1.5,0,2.1L15.8,54l8.6,8.5c0.6,0.6,0.6,1.5,0,2.1c-0.3,0.3-0.7,0.4-1.1,0.4c-0.4,0-0.8-0.1-1.1-0.4L13.6,56.1z'
       })
     ]),
-    h('h3', {style: {marginBottom: '8px'}}, 'No results'),
-    h('p', [
+    h(Heading, null, () => 'No results'),
+    h(Content, null, () => [
       'No results found, press ',
-      h('a', {href: '#'}, 'here'),
+      h(Link, {onPress: action('linkPress')}, () => 'here'),
       ' for more info.'
     ])
   ]);
@@ -144,12 +175,18 @@ export const DynamicCards: Story = {
     setup() {
       let removeIndex = ref('');
       let dynamicItems = ref(items.slice());
+      let splitArgs = computed(() => splitCardViewArgs(args as Record<string, unknown>, {
+        height: '100%',
+        width: '100%'
+      }));
       let onRemove = () => {
         dynamicItems.value = removeNthItem(removeIndex.value, dynamicItems.value);
       };
 
       return {
-        args,
+        actionProps: actionHandlers(),
+        cardViewArgs: computed(() => splitArgs.value.cardViewArgs),
+        cardViewStyle: computed(() => splitArgs.value.cardViewStyle),
         dynamicItems,
         onRemove,
         removeIndex
@@ -164,43 +201,39 @@ export const DynamicCards: Story = {
           width: '800px'
         }
       }, [
-        h('div', {
-          style: {
-            alignItems: 'flex-end',
-            display: 'flex',
-            gap: '8px',
-            marginBottom: '12px',
-            maxWidth: '500px'
-          }
-        }, [
-          h('label', [
-            h('span', {
-              style: {
-                display: 'block',
-                fontSize: '12px',
-                marginBottom: '4px'
-              }
-            }, 'Nth item to remove'),
-            h('input', {
-              onInput: (event: Event) => {
-                let target = event.target as HTMLInputElement;
-                this.removeIndex = target.value;
-              },
-              style: {padding: '6px 8px', width: '180px'},
-              value: this.removeIndex
+        h(Flex, {
+          direction: 'column',
+          height: '100%',
+          width: '100%'
+        }, {
+          default: () => [
+            h(Flex, {
+              alignItems: 'end',
+              direction: 'row',
+              style: {maxWidth: '500px'}
+            }, {
+              default: () => [
+                h(TextField, {
+                  label: 'Nth item to remove',
+                  modelValue: this.removeIndex,
+                  'onUpdate:modelValue': (value: string) => {
+                    this.removeIndex = value;
+                  }
+                }),
+                h(ActionButton, {
+                  onPress: this.onRemove
+                }, {
+                  default: () => 'Remove'
+                })
+              ]
+            }),
+            h(CardView, {
+              ...this.cardViewArgs,
+              ...this.actionProps,
+              items: this.dynamicItems,
+              style: this.cardViewStyle
             })
-          ]),
-          h('button', {
-            onClick: this.onRemove,
-            style: {height: '32px', padding: '0 10px'},
-            type: 'button'
-          }, 'Remove')
-        ]),
-        h(CardView, {
-          ...this.args,
-          ...actionHandlers(),
-          items: this.dynamicItems,
-          style: {height: '100%', width: '100%'}
+          ]
         })
       ]);
     }
@@ -213,6 +246,18 @@ export const DynamicCards: Story = {
 
 export const StaticCards: Story = {
   render: (args) => ({
+    setup() {
+      let splitArgs = computed(() => splitCardViewArgs(args as Record<string, unknown>, {
+        height: '100%',
+        width: '100%'
+      }));
+
+      return {
+        actionProps: actionHandlers(),
+        cardViewArgs: computed(() => splitArgs.value.cardViewArgs),
+        cardViewStyle: computed(() => splitArgs.value.cardViewStyle)
+      };
+    },
     render() {
       return h('div', {
         style: {
@@ -223,10 +268,10 @@ export const StaticCards: Story = {
         }
       }, [
         h(CardView, {
-          ...args,
-          ...actionHandlers(),
+          ...this.cardViewArgs,
+          ...this.actionProps,
           items: items.slice(0, 5),
-          style: {height: '100%', width: '100%'}
+          style: this.cardViewStyle
         })
       ]);
     }
@@ -264,6 +309,18 @@ export const HorizontalGridConstructor: Story = {
 
 export const FalsyIds: Story = {
   render: (args) => ({
+    setup() {
+      let splitArgs = computed(() => splitCardViewArgs(args as Record<string, unknown>, {
+        height: '100%',
+        width: '100%'
+      }));
+
+      return {
+        actionProps: actionHandlers(),
+        cardViewArgs: computed(() => splitArgs.value.cardViewArgs),
+        cardViewStyle: computed(() => splitArgs.value.cardViewStyle)
+      };
+    },
     render() {
       return h('div', {
         style: {
@@ -274,10 +331,10 @@ export const FalsyIds: Story = {
         }
       }, [
         h(CardView, {
-          ...args,
-          ...actionHandlers(),
+          ...this.cardViewArgs,
+          ...this.actionProps,
           items: falsyItems,
-          style: {height: '100%', width: '100%'}
+          style: this.cardViewStyle
         })
       ]);
     }
@@ -303,12 +360,18 @@ export const ControlledCards: Story = {
       let removeIndex = ref('');
       let controlledItems = ref(items.slice());
       let selectedKeys = ref<StorySelectionValue>('all');
+      let splitArgs = computed(() => splitCardViewArgs(args as Record<string, unknown>, {
+        height: '100%',
+        width: '100%'
+      }));
       let onRemove = () => {
         controlledItems.value = removeNthItem(removeIndex.value, controlledItems.value);
       };
 
       return {
-        args,
+        actionProps: actionHandlers(),
+        cardViewArgs: computed(() => splitArgs.value.cardViewArgs),
+        cardViewStyle: computed(() => splitArgs.value.cardViewStyle),
         controlledItems,
         onRemove,
         removeIndex,
@@ -324,49 +387,45 @@ export const ControlledCards: Story = {
           width: '800px'
         }
       }, [
-        h('div', {
-          style: {
-            alignItems: 'flex-end',
-            display: 'flex',
-            gap: '8px',
-            marginBottom: '12px',
-            maxWidth: '500px'
-          }
-        }, [
-          h('label', [
-            h('span', {
-              style: {
-                display: 'block',
-                fontSize: '12px',
-                marginBottom: '4px'
+        h(Flex, {
+          direction: 'column',
+          height: '100%',
+          width: '100%'
+        }, {
+          default: () => [
+            h(Flex, {
+              alignItems: 'end',
+              direction: 'row',
+              style: {maxWidth: '500px'}
+            }, {
+              default: () => [
+                h(TextField, {
+                  label: 'Nth item to remove',
+                  modelValue: this.removeIndex,
+                  'onUpdate:modelValue': (value: string) => {
+                    this.removeIndex = value;
+                  }
+                }),
+                h(ActionButton, {
+                  onPress: this.onRemove
+                }, {
+                  default: () => 'Remove'
+                })
+              ]
+            }),
+            h(CardView, {
+              ...this.cardViewArgs,
+              ...this.actionProps,
+              items: this.controlledItems,
+              selectedKeys: this.selectedKeys,
+              style: this.cardViewStyle,
+              onSelectionChange: (keys: unknown) => {
+                let nextSelection = normalizeStorySelectionValue(keys);
+                this.selectedKeys = nextSelection;
+                action('onSelectionChange')(nextSelection);
               }
-            }, 'Nth item to remove'),
-            h('input', {
-              onInput: (event: Event) => {
-                let target = event.target as HTMLInputElement;
-                this.removeIndex = target.value;
-              },
-              style: {padding: '6px 8px', width: '180px'},
-              value: this.removeIndex
             })
-          ]),
-          h('button', {
-            onClick: this.onRemove,
-            style: {height: '32px', padding: '0 10px'},
-            type: 'button'
-          }, 'Remove')
-        ]),
-        h(CardView, {
-          ...this.args,
-          ...actionHandlers(),
-          items: this.controlledItems,
-          selectedKeys: this.selectedKeys,
-          style: {height: '100%', width: '100%'},
-          onSelectionChange: (keys: unknown) => {
-            let nextSelection = normalizeStorySelectionValue(keys);
-            this.selectedKeys = nextSelection;
-            action('onSelectionChange')(nextSelection);
-          }
+          ]
         })
       ]);
     }
@@ -381,30 +440,31 @@ export const NoCards: Story = {
   render: (args) => ({
     setup() {
       let show = ref(false);
+      let splitArgs = computed(() => splitCardViewArgs(args as Record<string, unknown>, {
+        background: 'var(--spectrum-global-color-gray-300)'
+      }));
 
       return {
-        args,
+        actionProps: actionHandlers(),
+        cardViewArgs: computed(() => splitArgs.value.cardViewArgs),
+        cardViewStyle: computed(() => splitArgs.value.cardViewStyle),
         show
       };
     },
     render() {
-      return h('div', [
-        h('button', {
-          onClick: () => {
+      return h(Fragment, null, [
+        h(ActionButton, {
+          onPress: () => {
             this.show = !this.show;
-          },
-          style: {marginBottom: '8px'},
-          type: 'button'
-        }, 'Toggle items'),
-        h(CardView, {
-          ...this.args,
-          ...actionHandlers(),
-          items: this.show ? items : [],
-          style: {
-            background: 'var(--spectrum-global-color-gray-300)',
-            height: '800px',
-            width: '800px'
           }
+        }, {
+          default: () => 'Toggle items'
+        }),
+        h(CardView, {
+          ...this.cardViewArgs,
+          ...this.actionProps,
+          items: this.show ? items : [],
+          style: this.cardViewStyle
         })
       ]);
     }
@@ -454,17 +514,21 @@ export const AsyncLoading: Story = {
     setup() {
       let asyncItems = ref<GridCardItem[]>([]);
       let loadingState = ref<'idle' | 'loading'>('loading');
+      let splitArgs = computed(() => splitCardViewArgs(args as Record<string, unknown>, {
+        height: '100%',
+        width: '100%'
+      }));
 
-      onMounted(() => {
-        setTimeout(() => {
-          asyncItems.value = items.slice(0, 8);
-          loadingState.value = 'idle';
-        }, 1500);
-      });
+      setTimeout(() => {
+        asyncItems.value = items.slice(0, 8);
+        loadingState.value = 'idle';
+      }, 1500);
 
       return {
-        args,
+        actionProps: actionHandlers(),
         asyncItems,
+        cardViewArgs: computed(() => splitArgs.value.cardViewArgs),
+        cardViewStyle: computed(() => splitArgs.value.cardViewStyle),
         loadingState
       };
     },
@@ -478,11 +542,11 @@ export const AsyncLoading: Story = {
         }
       }, [
         h(CardView, {
-          ...this.args,
-          ...actionHandlers(),
+          ...this.cardViewArgs,
+          ...this.actionProps,
           items: this.asyncItems,
           loadingState: this.loadingState,
-          style: {height: '100%', width: '100%'}
+          style: this.cardViewStyle
         })
       ]);
     }
