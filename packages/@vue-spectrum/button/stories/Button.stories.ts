@@ -1,6 +1,7 @@
 import {action} from 'storybook/actions';
 import {Button} from '@vue-spectrum/button';
 import Bell from '@spectrum-icons-vue/workflow/Bell';
+import {Form} from '@vue-spectrum/form';
 import {h, ref} from 'vue';
 import {Provider} from '@vue-spectrum/provider';
 import {theme as defaultTheme} from '@vue-spectrum/theme-default';
@@ -566,17 +567,19 @@ export const PendingSpinner: Story = {
             flexWrap: 'wrap'
           }
         }, [
-          renderPendingButtonContainer(this.buttonProps, h('form', {
+          renderPendingButtonContainer(this.buttonProps, h(Form, {
             onSubmit: this.handleFormSubmit
-          }, [
-            h(Button, {
-              ...this.buttonProps,
-              isPending: this.pendingForm,
-              type: 'submit'
-            }, {
-              default: () => ['Form submit']
-            })
-          ]))
+          }, {
+            default: () => [
+              h(Button, {
+                ...this.buttonProps,
+                isPending: this.pendingForm,
+                type: 'submit'
+              }, {
+                default: () => ['Form submit']
+              })
+            ]
+          }))
         ])
       ]));
     }

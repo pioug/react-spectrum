@@ -4,6 +4,7 @@ import {h, nextTick} from 'vue';
 import {readFileSync} from 'node:fs';
 import {resolve} from 'node:path';
 import {setInteractionModality} from '@vue-aria/interactions';
+import Bell from '@spectrum-icons-vue/workflow/Bell';
 import EditWorkflow from '@spectrum-icons-vue/workflow/Edit';
 import CheckmarkCircle from '@spectrum-icons-vue/workflow/CheckmarkCircle';
 import {Avatar} from '@vue-spectrum/avatar';
@@ -865,6 +866,7 @@ describe('Vue migration primitives', () => {
     expect(wrapper.attributes('data-style')).toBe('outline');
     expect(wrapper.attributes('data-static-color')).toBe('white');
     expect(wrapper.attributes('tabindex')).toBe('0');
+    expect(wrapper.get('.spectrum-Button-label').attributes('role')).toBe('none');
 
     await wrapper.trigger('mouseenter');
     expect(wrapper.classes()).toContain('is-hovered');
@@ -928,6 +930,66 @@ describe('Vue migration primitives', () => {
     expect(wrapper.attributes('data-react-aria-pressable')).toBe('true');
   });
 
+  it('normalizes button icon and label slot contracts to react parity', () => {
+    let wrapper = mount(Button, {
+      slots: {
+        default: () => [h(Bell), 'Default']
+      }
+    });
+
+    expect(wrapper.attributes('id')).toBeDefined();
+
+    let icon = wrapper.get('svg');
+    expect(icon.attributes('id')).toBeDefined();
+    expect(icon.classes()).toContain('spectrum-Icon');
+    expect(icon.classes()).toContain('spectrum-Icon--sizeS');
+
+    let label = wrapper.get('.spectrum-Button-label');
+    expect(label.attributes('id')).toBeDefined();
+    expect(label.attributes('role')).toBe('none');
+    expect(label.text()).toBe('Default');
+  });
+
+  it('blocks pending button press handlers and renders spinner semantics after delay', async () => {
+    vi.useFakeTimers();
+
+    let onClick = vi.fn();
+    let wrapper = mount(Button, {
+      props: {
+        isPending: true
+      },
+      attrs: {
+        onClick
+      },
+      slots: {
+        default: () => [h(Bell), 'Pending button']
+      }
+    });
+
+    try {
+      expect(wrapper.attributes('aria-disabled')).toBe('true');
+      expect(wrapper.attributes('aria-label')).toBe('pending');
+      expect(wrapper.attributes('aria-labelledby')).toBeDefined();
+      expect(wrapper.attributes('disabled')).toBeUndefined();
+      expect(wrapper.get('.spectrum-Button-circleLoader').attributes('style')).toContain('visibility: hidden');
+
+      await wrapper.trigger('click');
+      expect(onClick).not.toHaveBeenCalled();
+      expect(wrapper.emitted('click')).toBeUndefined();
+
+      vi.advanceTimersByTime(1000);
+      await nextTick();
+
+      expect(wrapper.get('.spectrum-Button-circleLoader').attributes('style')).toContain('visibility: visible');
+      expect(wrapper.get('[role="progressbar"]').attributes('aria-label')).toBe('pending');
+      expect(wrapper.get('[aria-live]').attributes('aria-live')).toBe('off');
+      expect(wrapper.find('[role="img"][aria-label="pending"]').exists()).toBe(true);
+    } finally {
+      wrapper.unmount();
+      vi.useRealTimers();
+    }
+  });
+
   it('maps action button DOM contract, classes, and keyboard focus-ring parity', async () => {
     let wrapper = mount(ActionButton, {
       props: {
@@ -940,6 +1002,7 @@ describe('Vue migration primitives', () => {
     });
 
     expect(wrapper.get('.spectrum-ActionButton-label').text()).toBe('Action');
+    expect(wrapper.get('.spectrum-ActionButton-label').attributes('role')).toBe('none');
     expect(wrapper.classes()).toContain('spectrum-ActionButton');
     expect(wrapper.classes()).toContain('spectrum-BaseButton');
     expect(wrapper.classes()).toContain('i18nFontFamily');
@@ -1007,6 +1070,7 @@ describe('Vue migration primitives', () => {
     expect(wrapper.classes()).toContain('spectrum-BaseButton');
     expect(wrapper.classes()).toContain('i18nFontFamily');
     expect(wrapper.find('.spectrum-ActionButton-label').text()).toBe('Toggle me');
+    expect(wrapper.find('.spectrum-ActionButton-label').attributes('role')).toBe('none');
     expect(wrapper.attributes('aria-pressed')).toBe('true');
     expect(wrapper.classes()).toContain('is-selected');
     expect(wrapper.attributes('data-react-aria-pressable')).toBe('true');

@@ -1,9 +1,25 @@
 import '@adobe/spectrum-css-temp/components/button/vars.css';
 import './stateClassOverrides.css';
+import {ProgressCircle} from '@vue-spectrum/progress';
 import {useProviderProps} from '@vue-spectrum/provider';
 import {classNames} from '@vue-spectrum/utils';
-import {computed, type ComputedRef, defineComponent, h, isVNode, onBeforeUnmount, type PropType, ref, Text as VueText, watch} from 'vue';
-import {getEventTarget} from '@vue-aria/utils';
+import {
+  cloneVNode,
+  computed,
+  type ComputedRef,
+  defineComponent,
+  h,
+  isVNode,
+  mergeProps,
+  onBeforeUnmount,
+  type PropType,
+  ref,
+  Text as VueText,
+  type VNode,
+  type VNodeChild,
+  watch
+} from 'vue';
+import {getEventTarget, isAppleDevice, isFirefox, useId} from '@vue-aria/utils';
 const styles: {[key: string]: string} = {};
 
 
@@ -18,6 +34,7 @@ type EventHandler<EventType> = ((event: EventType) => void) | Array<(event: Even
 
 let hasGlobalModalityListeners = false;
 let isKeyboardModality = true;
+const PENDING_LABEL = 'pending';
 
 function ensureGlobalModalityListeners() {
   if (hasGlobalModalityListeners || typeof window === 'undefined') {
@@ -109,6 +126,159 @@ function isTextOnlyChild(value: unknown): boolean {
   }
 
   return false;
+}
+
+function toClassTokens(value: unknown): string[] {
+  if (typeof value === 'string') {
+    return value.split(/\s+/).filter(Boolean);
+  }
+
+  if (Array.isArray(value)) {
+    return value.flatMap((entry) => toClassTokens(entry));
+  }
+
+  if (value && typeof value === 'object') {
+    return Object.entries(value)
+      .filter(([, isEnabled]) => Boolean(isEnabled))
+      .map(([className]) => className);
+  }
+
+  return [];
+}
+
+function mergeClassTokens(...values: unknown[]): string | undefined {
+  let merged = Array.from(new Set(values.flatMap((value) => toClassTokens(value))));
+  return merged.length > 0 ? merged.join(' ') : undefined;
+}
+
+function normalizeButtonChildren(
+  children: VNodeChild[],
+  options: {
+    iconClassName: string,
+    iconId?: string,
+    labelClassName: string,
+    labelId?: string
+  }
+): {
+  children: VNodeChild[],
+  hasIcon: boolean,
+  hasLabel: boolean
+} {
+  let hasIcon = false;
+  let hasLabel = false;
+  let assignedIconId = false;
+  let assignedLabelId = false;
+
+  let visit = (value: VNodeChild): VNodeChild[] => {
+    if (Array.isArray(value)) {
+      return value.flatMap((entry) => visit(entry));
+    }
+
+    if (value == null || typeof value === 'boolean') {
+      return [];
+    }
+
+    if (typeof value === 'string' || typeof value === 'number') {
+      let text = String(value);
+      if (text.trim().length === 0) {
+        return [];
+      }
+
+      hasLabel = true;
+
+      let labelProps: Record<string, unknown> = {
+        class: options.labelClassName,
+        role: 'none'
+      };
+
+      if (!assignedLabelId && options.labelId) {
+        labelProps.id = options.labelId;
+        assignedLabelId = true;
+      }
+
+      return [h('span', labelProps, text)];
+    }
+
+    if (!isVNode(value)) {
+      return [value];
+    }
+
+    if (value.type === VueText) {
+      let text = typeof value.children === 'string' || typeof value.children === 'number'
+        ? String(value.children)
+        : '';
+
+      if (text.trim().length === 0) {
+        return [];
+      }
+
+      hasLabel = true;
+
+      let labelProps: Record<string, unknown> = {
+        class: options.labelClassName,
+        role: 'none'
+      };
+
+      if (!assignedLabelId && options.labelId) {
+        labelProps.id = options.labelId;
+        assignedLabelId = true;
+      }
+
+      return [h('span', labelProps, text)];
+    }
+
+    let classTokens = toClassTokens(value.props?.class);
+    let isLabelNode = classTokens.includes(options.labelClassName) || hasVisibleTextChild(value);
+    if (isLabelNode) {
+      hasLabel = true;
+
+      let labelProps: Record<string, unknown> = {
+        class: mergeClassTokens(value.props?.class, options.labelClassName),
+        role: value.props?.role ?? 'none'
+      };
+
+      if (!assignedLabelId && options.labelId) {
+        labelProps.id = options.labelId;
+        assignedLabelId = true;
+      }
+
+      return [cloneVNode(value, labelProps, true)];
+    }
+
+    if (typeof value.type === 'string' && value.type !== 'svg') {
+      return [value];
+    }
+
+    hasIcon = true;
+
+    let iconProps: Record<string, unknown> = {};
+
+    if (!assignedIconId && options.iconId) {
+      iconProps.id = options.iconId;
+      assignedIconId = true;
+    }
+
+    if (typeof value.type !== 'string') {
+      iconProps.class = mergeClassTokens(value.props?.class, options.iconClassName);
+      iconProps.size = value.props?.size ?? 'S';
+    } else if (value.type === 'svg') {
+      iconProps.class = mergeClassTokens(
+        value.props?.class,
+        options.iconClassName,
+        classTokens.some((token) => token.startsWith('spectrum-Icon--size')) ? undefined : 'spectrum-Icon--sizeS'
+      );
+      iconProps.focusable = value.props?.focusable ?? 'false';
+      iconProps.role = value.props?.role ?? 'img';
+    }
+
+    return [cloneVNode(value, iconProps, true)];
+  };
+
+  return {
+    children: children.flatMap((child) => visit(child)),
+    hasIcon,
+    hasLabel
+  };
 }
 
 function mergePressedUserSelectStyle(styleValue: unknown): unknown {
@@ -254,16 +424,6 @@ function useBaseButtonSemantics(
   let elementType = computed(() => props.elementType ?? 'button');
   let interaction = useInteractionState(isDisabled);
 
-  let onClick = (event: MouseEvent) => {
-    if (isUnavailable.value) {
-      event.preventDefault();
-      event.stopPropagation();
-      return;
-    }
-
-    emitClick(event);
-  };
-
   let domProps = computed(() => {
     let userClick = attrs.onClick as EventHandler<MouseEvent>;
     let userMouseEnter = attrs.onMouseenter as EventHandler<MouseEvent>;
@@ -283,17 +443,62 @@ function useBaseButtonSemantics(
       ...attrs,
       autofocus: props.autoFocus || attrs.autofocus || undefined,
       'data-react-aria-pressable': 'true',
-      onBlur: chainHandlers(userBlur, interaction.onBlur),
-      onClick: chainHandlers(userClick, onClick),
-      onFocus: chainHandlers(userFocus, interaction.onFocus),
-      onKeydown: chainHandlers(userKeyDown, interaction.onKeyDown),
-      onKeyup: chainHandlers(userKeyUp, interaction.onKeyUp),
-      onMouseenter: chainHandlers(userMouseEnter, interaction.onMouseEnter),
-      onMouseleave: chainHandlers(userMouseLeave, interaction.onMouseLeave),
-      onPointercancel: chainHandlers(userPointerCancel, interaction.onPointerCancel),
-      onPointerdown: chainHandlers(userPointerDown, interaction.onPointerDown),
-      onPointerleave: chainHandlers(userPointerLeave, interaction.onPointerLeave),
-      onPointerup: chainHandlers(userPointerUp, interaction.onPointerUp)
+      onBlur: (event: FocusEvent) => {
+        invokeEventHandler(userBlur, event);
+        interaction.onBlur(event);
+      },
+      onClick: (event: MouseEvent) => {
+        if (isUnavailable.value) {
+          event.preventDefault();
+          event.stopPropagation();
+          return;
+        }
+
+        invokeEventHandler(userClick, event);
+        emitClick(event);
+      },
+      onFocus: (event: FocusEvent) => {
+        invokeEventHandler(userFocus, event);
+        interaction.onFocus(event);
+      },
+      onKeydown: (event: KeyboardEvent) => {
+        if (!isUnavailable.value) {
+          invokeEventHandler(userKeyDown, event);
+          interaction.onKeyDown(event);
+        }
+      },
+      onKeyup: (event: KeyboardEvent) => {
+        invokeEventHandler(userKeyUp, event);
+        interaction.onKeyUp(event);
+      },
+      onMouseenter: (event: MouseEvent) => {
+        invokeEventHandler(userMouseEnter, event);
+        interaction.onMouseEnter();
+      },
+      onMouseleave: (event: MouseEvent) => {
+        invokeEventHandler(userMouseLeave, event);
+        interaction.onMouseLeave();
+      },
+      onPointercancel: (event: PointerEvent) => {
+        invokeEventHandler(userPointerCancel, event);
+        interaction.onPointerCancel();
+      },
+      onPointerdown: (event: PointerEvent) => {
+        if (isUnavailable.value) {
+          return;
+        }
+
+        invokeEventHandler(userPointerDown, event);
+        interaction.onPointerDown(event);
+      },
+      onPointerleave: (event: PointerEvent) => {
+        invokeEventHandler(userPointerLeave, event);
+        interaction.onPointerLeave();
+      },
+      onPointerup: (event: PointerEvent) => {
+        invokeEventHandler(userPointerUp, event);
+        interaction.onPointerUp();
+      }
     };
 
     delete propsForElement.UNSAFE_style;
@@ -318,7 +523,7 @@ function useBaseButtonSemantics(
 
     propsForElement.role = 'button';
     propsForElement.tabindex = isDisabled.value ? undefined : attrs.tabindex ?? 0;
-    propsForElement['aria-disabled'] = isUnavailable.value ? 'true' : undefined;
+    propsForElement['aria-disabled'] = props.isPending ? 'true' : undefined;
 
     if (elementType.value === 'a') {
       propsForElement.href = isUnavailable.value ? undefined : props.href;
@@ -411,6 +616,10 @@ export const VueButton = defineComponent({
     }) as typeof props;
     let pendingTimer = ref<ReturnType<typeof setTimeout> | null>(null);
     let isProgressVisible = ref(false);
+    let fallbackButtonId = useId();
+    let iconId = useId();
+    let textId = useId();
+    let spinnerId = useId();
 
     watch(() => props.isPending, (isPending) => {
       if (pendingTimer.value) {
@@ -470,10 +679,23 @@ export const VueButton = defineComponent({
 
     return () => {
       let children = slots.default ? slots.default() : ['Button'];
-      let hasLabel = hasVisibleTextChild(children);
+      let buttonId = String(buttonState.domProps.value.id ?? fallbackButtonId);
+      let normalizedChildren = normalizeButtonChildren(Array.isArray(children) ? children : [children], {
+        iconClassName: classNames(styles, 'spectrum-Icon'),
+        iconId,
+        labelClassName: classNames(styles, 'spectrum-Button-label'),
+        labelId: textId
+      });
+      let hasAriaLabel = typeof buttonState.domProps.value['aria-label'] === 'string' || typeof buttonState.domProps.value['aria-labelledby'] === 'string';
+      let pendingAriaLabel = `${hasAriaLabel && typeof buttonState.domProps.value['aria-label'] === 'string' ? buttonState.domProps.value['aria-label'] : ''} ${PENDING_LABEL}`.trim();
+      let pendingAriaLabelledby = hasAriaLabel
+        ? String(buttonState.domProps.value['aria-labelledby'] ?? spinnerId).replace(buttonId, spinnerId)
+        : `${normalizedChildren.hasIcon ? iconId : ''} ${normalizedChildren.hasLabel ? textId : ''} ${spinnerId}`.trim();
+      let ariaLive = isAppleDevice() && (!hasAriaLabel || isFirefox()) ? 'off' : 'polite';
 
       let buttonProps = {
         ...buttonState.domProps.value,
+        id: buttonId,
         class: [
           classNames(
             styles,
@@ -487,7 +709,7 @@ export const VueButton = defineComponent({
               'is-active': buttonState.interaction.isPressed.value,
               'is-disabled': buttonState.isDisabled.value || isProgressVisible.value,
               'is-hovered': buttonState.interaction.isHovered.value,
-              'spectrum-Button--iconOnly': !hasLabel,
+              'spectrum-Button--iconOnly': normalizedChildren.hasIcon && !normalizedChildren.hasLabel,
               'spectrum-Button--pending': isProgressVisible.value
             }
           ),
@@ -495,9 +717,11 @@ export const VueButton = defineComponent({
         ],
         'data-static-color': resolvedStaticColor.value || undefined,
         'data-style': resolvedStyle.value,
-        'data-variant': resolvedVariant.value
+        'data-variant': resolvedVariant.value,
+        'aria-label': resolvedProps.value.isPending ? pendingAriaLabel : buttonState.domProps.value['aria-label'],
+        'aria-labelledby': resolvedProps.value.isPending ? pendingAriaLabelledby : buttonState.domProps.value['aria-labelledby']
       };
-      let renderedChildren = Array.isArray(children) ? [...children] : [children];
+      let renderedChildren = [...normalizedChildren.children];
 
       if (resolvedProps.value.isPending) {
         buttonProps['aria-disabled'] = 'true';
@@ -507,11 +731,34 @@ export const VueButton = defineComponent({
             class: classNames(styles, 'spectrum-Button-circleLoader'),
             style: {visibility: isProgressVisible.value ? 'visible' : 'hidden'}
           }, [
-            h('div', {
-              role: 'img',
-              'aria-label': 'Pending'
+            h(ProgressCircle, {
+              'aria-label': pendingAriaLabel,
+              isIndeterminate: true,
+              size: 'S',
+              staticColor: resolvedStaticColor.value
             })
           ])
+        );
+
+        renderedChildren.push(
+          h('div', {
+            'aria-live': buttonState.interaction.isFocused.value ? ariaLive : 'off'
+          }, isProgressVisible.value
+            ? [
+              h('div', {
+                role: 'img',
+                'aria-labelledby': pendingAriaLabelledby
+              })
+            ]
+            : []
+          )
+        );
+        renderedChildren.push(
+          h('div', {
+            id: spinnerId,
+            role: 'img',
+            'aria-label': pendingAriaLabel
+          })
         );
       }
 
@@ -552,11 +799,14 @@ export const ActionButton = defineComponent({
 
     return () => {
       let children = slots.default ? slots.default() : ['Action'];
-      let renderedChildren = children.every(isTextOnlyChild)
+      let renderedChildren = normalizeButtonChildren(children.every(isTextOnlyChild)
         ? [h('span', {
           class: classNames(styles, 'spectrum-ActionButton-label')
         }, children)]
-        : children;
+        : children, {
+        iconClassName: classNames(styles, 'spectrum-Icon'),
+        labelClassName: classNames(styles, 'spectrum-ActionButton-label')
+      }).children;
 
       return h(state.elementType.value, {
         ...state.domProps.value,
@@ -636,11 +886,14 @@ export const ToggleButton = defineComponent({
 
     return () => {
       let children = slots.default ? slots.default() : ['Toggle'];
-      let renderedChildren = children.every(isTextOnlyChild)
+      let renderedChildren = normalizeButtonChildren(children.every(isTextOnlyChild)
         ? [h('span', {
           class: classNames(styles, 'spectrum-ActionButton-label')
         }, children)]
-        : children;
+        : children, {
+        iconClassName: classNames(styles, 'spectrum-Icon'),
+        labelClassName: classNames(styles, 'spectrum-ActionButton-label')
+      }).children;
 
       return h(state.elementType.value, {
         ...state.domProps.value,
